@@ -43,11 +43,11 @@ public abstract class LibJnhwLoader {
         protected void finalize() throws Throwable {
             try {
                 if (memoryOwner == this) {
-                    LOG.log(Level.INFO, String.format("Finalize: try free memory @0x%016x size: %d", baseAddress, sizeInBytes));
+                    // LOG.log(Level.FINEST, String.format("Finalize: try free memory @0x%016x size: %d", baseAddress, sizeInBytes));
                     freeMemory(baseAddress);
-                    LOG.log(Level.INFO, String.format("memory @0x%016x freed", baseAddress));
+                    // LOG.log(Level.FINEST, String.format("memory @0x%016x freed", baseAddress));
                 } else {
-                    LOG.log(Level.INFO, String.format("Finalize: memory @0x%016x size: %d belongs to %s", baseAddress, sizeInBytes, memoryOwner));
+                    // LOG.log(Level.FINEST, String.format("Finalize: memory @0x%016x size: %d belongs to %s", baseAddress, sizeInBytes, memoryOwner));
                 }
             } catch (Throwable t) {
                 LOG.log(Level.SEVERE, String.format("Finalize: Memory Leak freeing memory @0x%016x size: %d failed", baseAddress, sizeInBytes), t);
