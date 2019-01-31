@@ -24,6 +24,16 @@ public final class Fcntl extends LibJnhwLoader {
 
     @Define
     public final static native int O_NONBLOCK();
+    
+    @Define
+    public final static native int F_GETFL();
+
+    @Define
+    public final static native int F_SETFL();
 
     public final static native int open(CharSequence file, int oflag) throws NativeErrorException;
+    
+    public final static native int fcntl(int fd, int cmd) throws NativeErrorException;
+    
+    public final static native int fcntl(int fd, int cmd, int vararg_0) throws NativeErrorException;
 }

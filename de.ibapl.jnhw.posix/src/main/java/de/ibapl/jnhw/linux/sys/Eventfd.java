@@ -33,5 +33,12 @@ public final class Eventfd extends LibJnhwLoader {
 
     @Define
     public final static native int EFD_SEMAPHORE();
+    
+    /**
+     * Indicates whether sys/eventds.h is available or not.
+     * @return 
+     */
+    @Define
+    public final static native boolean JNHW_HAVE_SYS_EVENTFD_H();
 
 }

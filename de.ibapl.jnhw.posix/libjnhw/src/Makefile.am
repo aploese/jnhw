@@ -4,7 +4,7 @@ noinst_LTLIBRARIES = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.
 
 AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_HEADER_DIR@
 AM_CFLAGS = -O3 -Wall -Werror
-AM_LDFLAGS = -avoid-version --no-undefined 
+AM_LDFLAGS = --no-undefined 
 
 JNHW_RESOURCES_DIR = @JNHW_RESOURCES_DIR@
 

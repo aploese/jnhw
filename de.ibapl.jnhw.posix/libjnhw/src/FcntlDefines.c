@@ -47,7 +47,27 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1NONBLOCK
         return O_NONBLOCK;
     }
 
-    
+    /*
+ * Class:     de_ibapl_jnhw_posix_Fcntl
+ * Method:    F_GETFL
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1GETFL
+    (JNIEnv *env, jclass clazz) {
+        return F_GETFL;
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Fcntl
+ * Method:    F_SETFL
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1SETFL
+    (JNIEnv *env, jclass clazz) {
+        return F_SETFL;
+    }
+
+
 #ifdef __cplusplus
 }
 #endif

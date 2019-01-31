@@ -317,9 +317,9 @@ public final class Termios extends LibJnhwLoader {
         return tcsetattr(fildes, optional_actions, termios.baseAddress);
     }
     
-    private static native int cfsetspeed(long termiosAddress, int speed) throws NotDefinedException, NativeErrorException;
+    private static native int cfsetspeed(long termiosAddress, int speed) throws NativeErrorException;
 
-    public final static  int cfsetspeed(StructTermios termios, int speed) throws NotDefinedException, NativeErrorException {
+    public final static  int cfsetspeed(StructTermios termios, int speed) throws NativeErrorException {
         return cfsetspeed(termios.baseAddress, speed);
     }
 
