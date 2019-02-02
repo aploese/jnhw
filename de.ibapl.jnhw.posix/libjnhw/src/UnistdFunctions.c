@@ -3,7 +3,6 @@
 #include "de_ibapl_jnhw_posix_Unistd.h"
 #include <unistd.h>
 #include <errno.h>
-#include <alloca.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -64,8 +63,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I_3BII
     (JNIEnv *env, jclass clazz, jint fd, jbyteArray buf, jint pos, jint len) {
-        jbyte* _buf = (jbyte*) alloca(len);
-        int result = read(fd, _buf, len);
+        jbyte _buf[len];
+        int result = read(fd, &_buf, len);
         if (result < 0) {
             throwNativeError(env, errno);
         }
@@ -94,12 +93,12 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__I_3BII
     (JNIEnv *env, jclass clazz, jint fd, jbyteArray buf, jint pos, jint len) {
-        jbyte* _buf = (jbyte*) alloca(len);
+        jbyte _buf[len];
         (*env)->GetByteArrayRegion(env, buf, pos, len, _buf);
         if ((*env)->ExceptionOccurred(env)) {
             return -1;
         }
-        int result = write(fd, _buf, len);
+        int result = write(fd, &_buf, len);
         if (result < 0) {
             throwNativeError(env, errno);
         }

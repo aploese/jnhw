@@ -36,7 +36,7 @@ AC_SUBST(JNHW_RESOURCES_DIR)
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([errno.h fcntl.h unistd.h alloca.h poll.h stdlib.h stdint.h sys/ioctl.h sys/eventfd.h termios.h])
+AC_CHECK_HEADERS([errno.h fcntl.h unistd.h poll.h stdlib.h stdint.h sys/ioctl.h sys/eventfd.h termios.h])
 
 
 # Check for jni header files.
