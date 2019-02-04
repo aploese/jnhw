@@ -16,9 +16,6 @@ public abstract class ByteBufferUtils  {
     public static final String UTF8_ENCODING = "UTF-8";
 
     public static int calcBufferWriteBytes(ByteBuffer buffer) {
-        if (buffer.isReadOnly()) {
-            throw new IllegalArgumentException("Read-only buffer");
-        }
         final int remaining = buffer.remaining();
         if (remaining < 0) {
             throw new IllegalArgumentException("buffer.remaining must not < 0");
@@ -27,6 +24,9 @@ public abstract class ByteBufferUtils  {
     }
 
     public static int calcBufferReadBytes(ByteBuffer buffer) {
+        if (buffer.isReadOnly()) {
+            throw new IllegalArgumentException("Read-only buffer");
+        }
         final int remaining = buffer.remaining();
         if (remaining < 0) {
             throw new IllegalArgumentException("buffer.remaining must not < 0");

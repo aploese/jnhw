@@ -19,21 +19,65 @@ public abstract class LibJnhwLoader {
 
     public static class OpaqueMemory {
 
+        static {
+            if (!LibJnhwLoader.isLibLoaded()) {
+                LibJnhwLoader.loadNativeLib();
+            }
+        }
+
         public final long baseAddress;
         public final int sizeInBytes;
         public final OpaqueMemory memoryOwner;
 
-        public final static native long allocateMemory(int sizeInBytes);
+        //get value of define from errno.
+        public final static native int ENOMEM();
+
+        public final static native long allocateMemory(int sizeInBytes) throws NativeErrorException;
+
+        public final static native long allocateArrayMemory(int elements, int sizeInBytes) throws NativeErrorException;
 
         public final static native void freeMemory(long baseAddress);
 
         public OpaqueMemory(int sizeInBytes) {
             this.sizeInBytes = sizeInBytes;
-            baseAddress = allocateMemory(sizeInBytes);
+            try {
+                baseAddress = allocateMemory(sizeInBytes);
+            } catch (NativeErrorException nee) {
+                if (nee.errno == ENOMEM()) {
+                    throw new OutOfMemoryError("Can't allocate " + sizeInBytes + " bytes ENOMEM");
+                } else {
+                    throw new RuntimeException("Can't allocate " + sizeInBytes + " bytes ");
+                }
+            }
+            memoryOwner = this;
+        }
+
+        public OpaqueMemory(int elements, int sizeInBytes) {
+            this.sizeInBytes = sizeInBytes * elements;
+            try {
+                baseAddress = allocateArrayMemory(elements, sizeInBytes);
+            } catch (NativeErrorException nee) {
+                if (nee.errno == ENOMEM()) {
+                    throw new OutOfMemoryError("Can't allocate " + sizeInBytes + " bytes ENOMEM");
+                } else {
+                    throw new RuntimeException("Can't allocate " + sizeInBytes + " bytes ");
+                }
+            }
             memoryOwner = this;
         }
 
         public OpaqueMemory(OpaqueMemory owner, long baseAddress, int sizeInBytes) {
+            final long offset = baseAddress - owner.baseAddress;
+            if (sizeInBytes < 0) {
+                throw new IllegalArgumentException("negative size");
+            }
+
+            if (offset < 0) {
+                throw new IllegalArgumentException("start outside (before) mem area");
+            }
+            if (offset + sizeInBytes > owner.sizeInBytes) {
+                throw new IllegalArgumentException("end will be outside (after)) of owner");
+            }
             this.baseAddress = baseAddress;
             this.sizeInBytes = sizeInBytes;
             memoryOwner = owner;
@@ -61,8 +105,8 @@ public abstract class LibJnhwLoader {
 
         private final T[] pointers;
 
-        public StructArray(int elementSizeInBytes, T[] array) {
-            super(elementSizeInBytes * array.length);
+        public StructArray(T[] array, int elementSizeInBytes) {
+            super(array.length, elementSizeInBytes);
             pointers = array;
             for (int i = 0; i < array.length; i++) {
                 pointers[i] = createElement(baseAddress + i * elementSizeInBytes);

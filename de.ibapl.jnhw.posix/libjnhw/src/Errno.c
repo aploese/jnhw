@@ -447,7 +447,7 @@ extern "C" {
 #ifdef ECHRNG
         return ECHRNG;
 #else 
-        throwException(env, NotDefinedException, "ECHRNG");
+        throw_NotDefinedException(env, "ECHRNG");
 #endif
     }
 
@@ -461,7 +461,7 @@ extern "C" {
 #ifdef EL2NSYNC
         return EL2NSYNC;
 #else 
-        throwException(env, NotDefinedException, "EL2NSYNC");
+        throw_NotDefinedException(env, "EL2NSYNC");
 #endif
     }
 
@@ -475,7 +475,7 @@ extern "C" {
 #ifdef EL3HLT  
         return EL3HLT;
 #else 
-        throwException(env, NotDefinedException, "EL3HLT");
+        throw_NotDefinedException(env, "EL3HLT");
 #endif
     }
 
@@ -489,7 +489,7 @@ extern "C" {
 #ifdef EL3RST
                 return  EL3RST;
 #else 
-        throwException(env, NotDefinedException, "EL3RST");
+        throw_NotDefinedException(env, "EL3RST");
 #endif
     }
 
@@ -503,7 +503,7 @@ extern "C" {
 #ifdef ELNRNG
                 return  ELNRNG;
 #else 
-        throwException(env, NotDefinedException, "ELNRNG");
+        throw_NotDefinedException(env, "ELNRNG");
 #endif
     }
 
@@ -517,7 +517,7 @@ extern "C" {
 #ifdef EUNATCH
         return  EUNATCH;
 #else 
-        throwException(env, NotDefinedException, "EUNATCH");
+        throw_NotDefinedException(env, "EUNATCH");
 #endif
     }
 
@@ -531,7 +531,7 @@ extern "C" {
 #ifdef ENOCSI
         return  ENOCSI;
 #else 
-        throwException(env, NotDefinedException, "ENOCSI");
+        throw_NotDefinedException(env, "ENOCSI");
 #endif
     }
 
@@ -545,7 +545,7 @@ extern "C" {
 #ifdef EL2HLT
         return  EL2HLT;
 #else 
-        throwException(env, NotDefinedException, "EL2HLT");
+        throw_NotDefinedException(env, "EL2HLT");
 #endif
     }
 
@@ -559,7 +559,7 @@ extern "C" {
 #ifdef EBADE
         return  EBADE;
 #else 
-        throwException(env, NotDefinedException, "EBADE");
+        throw_NotDefinedException(env, "EBADE");
 #endif
     }
 
@@ -573,7 +573,7 @@ extern "C" {
 #ifdef EBADR
         return  EBADR;
 #else 
-        throwException(env, NotDefinedException, "EBADR");
+        throw_NotDefinedException(env, "EBADR");
 #endif
     }
 
@@ -587,7 +587,7 @@ extern "C" {
 #ifdef EXFULL
         return  EXFULL;
 #else 
-        throwException(env, NotDefinedException, "EXFULL");
+        throw_NotDefinedException(env, "EXFULL");
 #endif
     }
 
@@ -601,7 +601,7 @@ extern "C" {
 #ifdef ENOANO
         return  ENOANO;
 #else 
-        throwException(env, NotDefinedException, "ENOANO");
+        throw_NotDefinedException(env, "ENOANO");
 #endif
     }
 
@@ -615,7 +615,7 @@ extern "C" {
 #ifdef EBADRQC
         return  EBADRQC;
 #else 
-        throwException(env, NotDefinedException, "EBADRQC");
+        throw_NotDefinedException(env, "EBADRQC");
 #endif
     }
 
@@ -629,7 +629,7 @@ extern "C" {
 #ifdef EBADSLT
         return  EBADSLT;
 #else 
-        throwException(env, NotDefinedException, "EBADSLT");
+        throw_NotDefinedException(env, "EBADSLT");
 #endif
     }
 
@@ -643,7 +643,7 @@ extern "C" {
 #ifdef EDEADLOCK
         return  EDEADLOCK;
 #else 
-        throwException(env, NotDefinedException, "EDEADLOCK");
+        throw_NotDefinedException(env, "EDEADLOCK");
 #endif
     }
 
@@ -657,7 +657,7 @@ extern "C" {
 #ifdef EBFONT
         return  EBFONT;
 #else 
-        throwException(env, NotDefinedException, "EBFONT");
+        throw_NotDefinedException(env, "EBFONT");
 #endif
     }
 
@@ -671,7 +671,7 @@ extern "C" {
 #ifdef ENOSTR
         return  ENOSTR;
 #else 
-        throwException(env, NotDefinedException, "ENOSTR");
+        throw_NotDefinedException(env, "ENOSTR");
 #endif
     }
 
@@ -685,7 +685,7 @@ extern "C" {
 #ifdef ENODATA
         return  ENODATA;
 #else 
-        throwException(env, NotDefinedException, "ENODATA");
+        throw_NotDefinedException(env, "ENODATA");
 #endif
     }
 
@@ -699,7 +699,7 @@ extern "C" {
 #ifdef ETIME
         return  ETIME;
 #else 
-        throwException(env, NotDefinedException, "ETIME");
+        throw_NotDefinedException(env, "ETIME");
 #endif
     }
 
@@ -713,7 +713,7 @@ extern "C" {
 #ifdef ENOSR
         return  ENOSR;
 #else 
-        throwException(env, NotDefinedException, "ENOSR");
+        throw_NotDefinedException(env, "ENOSR");
 #endif
     }
 
@@ -727,7 +727,7 @@ extern "C" {
 #ifdef ENONET
         return  ENONET;
 #else 
-        throwException(env, NotDefinedException, "ENONET");
+        throw_NotDefinedException(env, "ENONET");
 #endif
     }
 
@@ -741,7 +741,7 @@ extern "C" {
 #ifdef ENOPKG
         return  ENOPKG;
 #else 
-        throwException(env, NotDefinedException, "ENOPKG");
+        throw_NotDefinedException(env, "ENOPKG");
 #endif
     }
 
@@ -775,7 +775,7 @@ extern "C" {
 #ifdef EADV
         return  EADV;
 #else 
-        throwException(env, NotDefinedException, "EADV");
+        throw_NotDefinedException(env, "EADV");
 #endif
     }
 
@@ -789,7 +789,7 @@ extern "C" {
 #ifdef ESRMNT
         return  ESRMNT;
 #else 
-        throwException(env, NotDefinedException, "ESRMNT");
+        throw_NotDefinedException(env, "ESRMNT");
 #endif
     }
 
@@ -803,7 +803,7 @@ extern "C" {
 #ifdef ECOMM
         return  ECOMM;
 #else 
-        throwException(env, NotDefinedException, "ECOMM");
+        throw_NotDefinedException(env, "ECOMM");
 #endif
     }
 
@@ -837,7 +837,7 @@ extern "C" {
 #ifdef EDOTDOT
         return  EDOTDOT;
 #else 
-        throwException(env, NotDefinedException, "EDOTDOT");
+        throw_NotDefinedException(env, "EDOTDOT");
 #endif
     }
 
@@ -871,7 +871,7 @@ extern "C" {
 #ifdef ENOTUNIQ
         return  ENOTUNIQ;
 #else 
-        throwException(env, NotDefinedException, "ENOTUNIQ");
+        throw_NotDefinedException(env, "ENOTUNIQ");
 #endif
     }
 
@@ -885,7 +885,7 @@ extern "C" {
 #ifdef  EBADFD
         return  EBADFD;
 #else 
-        throwException(env, NotDefinedException, "EBADFD");
+        throw_NotDefinedException(env, "EBADFD");
 #endif
     }
 
@@ -899,7 +899,7 @@ extern "C" {
 #ifdef EREMCHG
         return  EREMCHG;
 #else 
-        throwException(env, NotDefinedException, "EREMCHG");
+        throw_NotDefinedException(env, "EREMCHG");
 #endif
     }
 
@@ -913,7 +913,7 @@ extern "C" {
 #ifdef ELIBACC
         return  ELIBACC;
 #else 
-        throwException(env, NotDefinedException, "ELIBACC");
+        throw_NotDefinedException(env, "ELIBACC");
 #endif
     }
 
@@ -927,7 +927,7 @@ extern "C" {
 #ifdef ELIBBAD
         return  ELIBBAD;
 #else 
-        throwException(env, NotDefinedException, "ELIBBAD");
+        throw_NotDefinedException(env, "ELIBBAD");
 #endif
     }
 
@@ -941,7 +941,7 @@ extern "C" {
 #ifdef ELIBSCN
         return  ELIBSCN;
 #else 
-        throwException(env, NotDefinedException, "ELIBSCN");
+        throw_NotDefinedException(env, "ELIBSCN");
 #endif
     }
 
@@ -955,7 +955,7 @@ extern "C" {
 #ifdef ELIBMAX
         return  ELIBMAX;
 #else 
-        throwException(env, NotDefinedException, "ELIBMAX");
+        throw_NotDefinedException(env, "ELIBMAX");
 #endif
     }
 
@@ -969,7 +969,7 @@ extern "C" {
 #ifdef ELIBEXEC
         return  ELIBEXEC;
 #else 
-        throwException(env, NotDefinedException, "ELIBEXEC");
+        throw_NotDefinedException(env, "ELIBEXEC");
 #endif
     }
 
@@ -993,7 +993,7 @@ extern "C" {
 #ifdef ERESTART
         return  ERESTART;
 #else 
-        throwException(env, NotDefinedException, "ERESTART");
+        throw_NotDefinedException(env, "ERESTART");
 #endif
     }
 
@@ -1007,7 +1007,7 @@ extern "C" {
 #ifdef ESTRPIPE
         return  ESTRPIPE;
 #else 
-        throwException(env, NotDefinedException, "ESTRPIPE");
+        throw_NotDefinedException(env, "ESTRPIPE");
 #endif
     }
 
@@ -1321,7 +1321,7 @@ extern "C" {
 #ifdef EUCLEAN
         return  EUCLEAN;
 #else 
-        throwException(env, NotDefinedException, "EUCLEAN");
+        throw_NotDefinedException(env, "EUCLEAN");
 #endif
     }
 
@@ -1335,7 +1335,7 @@ extern "C" {
 #ifdef ENOTNAM
         return  ENOTNAM;
 #else 
-        throwException(env, NotDefinedException, "ENOTNAM");
+        throw_NotDefinedException(env, "ENOTNAM");
 #endif
     }
 
@@ -1349,7 +1349,7 @@ extern "C" {
 #ifdef ENAVAIL
         return  ENAVAIL;
 #else 
-        throwException(env, NotDefinedException, "ENAVAIL");
+        throw_NotDefinedException(env, "ENAVAIL");
 #endif
     }
 
@@ -1363,7 +1363,7 @@ extern "C" {
 #ifdef EISNAM
         return  EISNAM;
 #else 
-        throwException(env, NotDefinedException, "EISNAM");
+        throw_NotDefinedException(env, "EISNAM");
 #endif
     }
 
@@ -1377,7 +1377,7 @@ extern "C" {
 #ifdef EREMOTEIO
         return  EREMOTEIO;
 #else 
-        throwException(env, NotDefinedException, "EREMOTEIO");
+        throw_NotDefinedException(env, "EREMOTEIO");
 #endif
     }
 
@@ -1401,7 +1401,7 @@ extern "C" {
 #ifdef ENOMEDIUM
         return  ENOMEDIUM;
 #else 
-        throwException(env, NotDefinedException, "ENOMEDIUM");
+        throw_NotDefinedException(env, "ENOMEDIUM");
 #endif
     }
 
@@ -1415,7 +1415,7 @@ extern "C" {
 #ifdef EMEDIUMTYPE
         return  EMEDIUMTYPE;
 #else 
-        throwException(env, NotDefinedException, "EMEDIUMTYPE");
+        throw_NotDefinedException(env, "EMEDIUMTYPE");
 #endif
     }
 
@@ -1439,7 +1439,7 @@ extern "C" {
 #ifdef ENOKEY
         return  ENOKEY;
 #else 
-        throwException(env, NotDefinedException, "ENOKEY");
+        throw_NotDefinedException(env, "ENOKEY");
 #endif
     }
 
@@ -1453,7 +1453,7 @@ extern "C" {
 #ifdef EKEYEXPIRED
         return  EKEYEXPIRED;
 #else 
-        throwException(env, NotDefinedException, "EKEYEXPIRED");
+        throw_NotDefinedException(env, "EKEYEXPIRED");
 #endif
     }
 
@@ -1467,7 +1467,7 @@ extern "C" {
 #ifdef EKEYREVOKED
         return  EKEYREVOKED;
 #else 
-        throwException(env, NotDefinedException, "EKEYREVOKED");
+        throw_NotDefinedException(env, "EKEYREVOKED");
 #endif
     }
 
@@ -1481,7 +1481,7 @@ extern "C" {
 #ifdef EKEYREJECTED
         return  EKEYREJECTED;
 #else 
-        throwException(env, NotDefinedException, "EKEYREJECTED");
+        throw_NotDefinedException(env, "EKEYREJECTED");
 #endif
     }
 
@@ -1515,7 +1515,7 @@ extern "C" {
 #ifdef ERFKILL
         return  ERFKILL;
 #else 
-        throwException(env, NotDefinedException, "ERFKILL");
+        throw_NotDefinedException(env, "ERFKILL");
 #endif
     }
 
@@ -1529,7 +1529,7 @@ extern "C" {
 #ifdef EHWPOISON
         return  EHWPOISON;
 #else 
-        throwException(env, NotDefinedException, "EHWPOISON");
+        throw_NotDefinedException(env, "EHWPOISON");
 #endif
     }
 

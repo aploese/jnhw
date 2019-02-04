@@ -13,13 +13,8 @@ AC_CONFIG_SRCDIR([src/jnhw.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIRS([m4])
 
-AC_CHECK_SIZEOF([size_t])
-AC_C_BIGENDIAN
-
-
 # Checks for programs.
 AC_PROG_CC
-AC_PROG_CC_C_O
 AC_PROG_INSTALL
 
 AC_ARG_WITH([jni-header-dir],

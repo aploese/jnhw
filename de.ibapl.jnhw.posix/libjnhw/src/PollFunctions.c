@@ -17,7 +17,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jlong pollFdBaseAddress, jlong nfds, jint timeout) {
         int result = poll((void*) pollFdBaseAddress, nfds, timeout);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }

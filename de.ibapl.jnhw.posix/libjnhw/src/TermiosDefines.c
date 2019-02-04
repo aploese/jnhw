@@ -3,7 +3,6 @@
 #include "de_ibapl_jnhw_posix_Termios.h"
 #include <termios.h>
 #include <errno.h>
-#include "JnhwExceptions.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -179,7 +178,7 @@ extern "C" {
 #ifdef B57600
         return B57600;
 #else
-        throwException(env, NotDefinedException, "B57600");
+        throw_NotDefinedException(env, "B57600");
         return 0;
 #endif
     }
@@ -194,7 +193,7 @@ extern "C" {
 #ifdef B115200
         return B115200;
 #else
-        throwException(env, NotDefinedException, "B115200");
+        throw_NotDefinedException(env, "B115200");
         return 0;
 #endif
     }
@@ -209,7 +208,7 @@ extern "C" {
 #ifdef B230400
         return B230400;
 #else
-        throwException(env, NotDefinedException, "B230400");
+        throw_NotDefinedException(env, "B230400");
         return 0;
 #endif
     }
@@ -224,7 +223,7 @@ extern "C" {
 #ifdef B460800
         return B460800;
 #else
-        throwException(env, NotDefinedException, "B460800");
+        throw_NotDefinedException(env, "B460800");
         return 0;
 #endif
     }
@@ -239,7 +238,7 @@ extern "C" {
 #ifdef B500000
         return B500000;
 #else
-        throwException(env, NotDefinedException, "B500000");
+        throw_NotDefinedException(env, "B500000");
         return 0;
 #endif
     }
@@ -254,7 +253,7 @@ extern "C" {
 #ifdef B576000
         return B576000;
 #else
-        throwException(env, NotDefinedException, "B576000");
+        throw_NotDefinedException(env, "B576000");
         return 0;
 #endif
     }
@@ -269,7 +268,7 @@ extern "C" {
 #ifdef B921600
         return B921600;
 #else
-        throwException(env, NotDefinedException, "B921600");
+        throw_NotDefinedException(env, "B921600");
         return 0;
 #endif
     }
@@ -284,7 +283,7 @@ extern "C" {
 #ifdef B1000000
         return B1000000;
 #else
-        throwException(env, NotDefinedException, "B1000000");
+        throw_NotDefinedException(env, "B1000000");
         return 0;
 #endif
     }
@@ -299,7 +298,7 @@ extern "C" {
 #ifdef B1152000
         return B1152000;
 #else
-        throwException(env, NotDefinedException, "B1152000");
+        throw_NotDefinedException(env, "B1152000");
         return 0;
 #endif
     }
@@ -314,7 +313,7 @@ extern "C" {
 #ifdef B1500000
         return B1500000;
 #else
-        throwException(env, NotDefinedException, "B1500000");
+        throw_NotDefinedException(env, "B1500000");
         return 0;
 #endif
     }
@@ -329,7 +328,7 @@ extern "C" {
 #ifdef B2000000
         return B2000000;
 #else
-        throwException(env, NotDefinedException, "B2000000");
+        throw_NotDefinedException(env, "B2000000");
         return 0;
 #endif
     }
@@ -344,7 +343,7 @@ extern "C" {
 #ifdef B2500000
         return B2500000;
 #else
-        throwException(env, NotDefinedException, "B2500000");
+        throw_NotDefinedException(env, "B2500000");
         return 0;
 #endif
     }
@@ -359,7 +358,7 @@ extern "C" {
 #ifdef B3000000
         return B3000000;
 #else
-        throwException(env, NotDefinedException, "B3000000");
+        throw_NotDefinedException(env, "B3000000");
         return 0;
 #endif
     }
@@ -374,7 +373,7 @@ extern "C" {
 #ifdef B3500000
         return B3500000;
 #else
-        throwException(env, NotDefinedException, "B3500000");
+        throw_NotDefinedException(env, "B3500000");
         return 0;
 #endif
     }
@@ -389,7 +388,7 @@ extern "C" {
 #ifdef B4000000
         return B4000000;
 #else
-        throwException(env, NotDefinedException, "B4000000");
+        throw_NotDefinedException(env, "B4000000");
         return 0;
 #endif
     }
@@ -414,7 +413,7 @@ extern "C" {
 #ifdef CMSPAR
         return CMSPAR;
 #else
-        throwException(env, NotDefinedException, "CMSPAR");
+        throw_NotDefinedException(env, "CMSPAR");
         return 0;
 #endif
     }
@@ -549,7 +548,7 @@ extern "C" {
 #ifdef PAREXT
         return PAREXT;
 #else
-        throwException(env, NotDefinedException, "PAREXT");
+        throw_NotDefinedException(env, "PAREXT");
         return 0;
 #endif
     }

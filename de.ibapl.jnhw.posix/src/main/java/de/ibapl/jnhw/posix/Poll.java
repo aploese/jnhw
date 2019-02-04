@@ -120,7 +120,7 @@ public final class Poll extends LibJnhwLoader {
     public static class PollFds extends StructArray<PollFd> {
         
         public PollFds(int arraylength) {
-            super(PollFd.sizeofPollFd(), new PollFd[arraylength]);
+            super(new PollFd[arraylength], PollFd.sizeofPollFd());
         }
 
         @Override
@@ -132,8 +132,8 @@ public final class Poll extends LibJnhwLoader {
     
     private final static native int poll(long fdsAddress, long nfds, int timeout) throws NativeErrorException;
 
-    public final static int poll(StructArray<PollFd> fds, long nfds, int timeout) throws NativeErrorException {
-        return poll(fds.baseAddress, nfds, timeout);
+    public final static int poll(StructArray<PollFd> fds, int timeout) throws NativeErrorException {
+        return poll(fds.baseAddress, fds.length(), timeout);
     }
 
     @Define()

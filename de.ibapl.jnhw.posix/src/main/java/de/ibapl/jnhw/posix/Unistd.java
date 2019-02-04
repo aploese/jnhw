@@ -10,18 +10,23 @@ import java.nio.ByteBuffer;
 @Include("#include <unistd.h>")
 public class Unistd extends LibJnhwLoader {
 
-    private static native void initNative(Class<IntRef> intRef);
-    
-    static {
-        initNative(IntRef.class);
-    }
-
-
     public final static int write(int fd, byte[] buf) throws NativeErrorException {
         return write(fd, buf, 0, buf.length);
     }
 
-    public final static native int pipe(IntRef read_fd, IntRef write_fd);
+    public final static int read(int fd, byte[] buf) throws NativeErrorException {
+        return read(fd, buf, 0, buf.length);
+    }
+
+    /**
+     * 
+     * @param read_fd
+     * @param write_fd
+     * 
+     * @exception NullPointerException if <code>read_fd</code> or <code>write_fd</code> is <code>null</code>.
+     * @throws de.ibapl.jnhw.NativeErrorException if an error occured .
+     */
+    public final static native void pipe(IntRef read_fd, IntRef write_fd) throws NativeErrorException;
 
     private Unistd() {
 
@@ -29,23 +34,65 @@ public class Unistd extends LibJnhwLoader {
 
     public final static native int close(int fd) throws NativeErrorException;
 
+    /**
+     * 
+     * @param fildes
+     * @param buf
+     * @param pos
+     * @param len
+     * @return
+     * @throws NativeErrorException 
+     * @exception NullPointerException if <code>buf<code> is null.
+     * @exception ArrayIndexOutOfBoundsException if <code>pos</code> or <code>len</code> out of bounds.
+     */
     public final static native int read(int fildes, byte[] buf, int pos, int len) throws NativeErrorException;
 
     private static native int read(int fildes, ByteBuffer buffer, int pos, int len) throws NativeErrorException;
 
     public final static int read(int fildes, ByteBuffer buffer) throws NativeErrorException {
-        final int result = read(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
+        final int result;
+        if (buffer.isDirect()) {
+            result = read(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
+        } else {
+            result = read(fildes, buffer.array(), buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
+        }
         buffer.position(buffer.position() + result);
         return result;
     }
 
+    
+    /**
+     * 
+     * @param fildes
+     * @param buf
+     * @param pos
+     * @param len
+     * @return
+     * @throws NativeErrorException 
+     * @exception NullPointerException if <code>buf<code> is null.
+     * @exception ArrayIndexOutOfBoundsException if <code>pos</code> or <code>len</code> out of bounds.
+     */
     public final static native int write(int fildes, byte[] buf, int pos, int len) throws NativeErrorException;
 
-    //We put down ByteBuffer to get the native address and pass the other data onto the stack
+    //We pass down ByteBuffer to get the native address and pass the other data onto the stack
     private static native int write(int fildes, ByteBuffer buffer, int pos, int len) throws NativeErrorException;
 
     public final static int write(int fildes, ByteBuffer buffer) throws NativeErrorException {
-        final int result = write(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
+        final int result;
+        if (buffer.isDirect()) {
+            result = write(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
+        } else {
+            if (buffer.isReadOnly()) {
+                // see buffer.array() why we do this is here.
+                byte[] _buf = new byte[ByteBufferUtils.calcBufferWriteBytes(buffer)];
+                buffer.get(_buf);
+                //We haven't written anything yet, so fix the position for now.
+                buffer.position(buffer.position() - _buf.length);
+                result = write(fildes, _buf, buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
+            } else {
+                result = write(fildes, buffer.array(), buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
+            }
+        }
         buffer.position(buffer.position() + result);
         return result;
     }

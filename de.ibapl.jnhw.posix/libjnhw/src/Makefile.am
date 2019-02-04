@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libjnhw.la
+lib_LTLIBRARIES = libjnhw.la libempty.la
 
 noinst_LTLIBRARIES = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libjnhwcommon.la 
 
@@ -11,6 +11,8 @@ JNHW_RESOURCES_DIR = @JNHW_RESOURCES_DIR@
 libjnhw_la_LIBADD = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libjnhwcommon.la
 
 libjnhw_la_SOURCES = 
+
+libempty_la_SOURCES = 
 
 liberrno_la_SOURCES = \
  Errno.c

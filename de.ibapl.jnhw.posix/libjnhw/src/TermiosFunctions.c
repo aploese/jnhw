@@ -3,7 +3,6 @@
 #include "de_ibapl_jnhw_posix_Termios.h"
 #include <termios.h>
 #include <errno.h>
-#include "JnhwExceptions.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,7 +37,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jlong termiosBaseAddress, jint speed) {
         int result = cfsetispeed((void*) termiosBaseAddress, speed);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }
@@ -52,7 +51,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jlong termiosBaseAddress, jint speed) {
         int result = cfsetospeed((void*) termiosBaseAddress, speed);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }
@@ -66,7 +65,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jint fildes) {
         int result = tcdrain(fildes);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }
@@ -80,8 +79,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jint fildes, jint queue_selector) {
         int result = tcflush(fildes, queue_selector);
         if (result < 0) {
-
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }
@@ -95,8 +93,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jint fildes, jlong termiosBaseAddress) {
         int result = tcgetattr(fildes, (void*) termiosBaseAddress);
         if (result < 0) {
-
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }
@@ -110,8 +107,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jint fildes, jint duration) {
         int result = tcsendbreak(fildes, duration);
         if (result < 0) {
-
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }
@@ -125,8 +121,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jint fildes, jint optional_actions, jlong termiosBaseAddress) {
         int result = tcsetattr(fildes, optional_actions, (void*) termiosBaseAddress);
         if (result < 0) {
-
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }
@@ -140,7 +135,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jlong termiosBaseAddress, jint speed) {
         int result = cfsetspeed((void*) termiosBaseAddress, speed);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }

@@ -8,38 +8,28 @@
 extern "C" {
 #endif
 
-    static jfieldID de_ibapl_jnhw_posix_Unistd_IntRef_value = NULL;
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    initNative
-     * Signature: (Ljava/lang/Class;)V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_initNative
-    (JNIEnv *env, jclass clazz, jclass intRef_Class) {
-        de_ibapl_jnhw_posix_Unistd_IntRef_value = (*env)->GetFieldID(env,
-                intRef_Class, "value", "I");
-        if (de_ibapl_jnhw_posix_Unistd_IntRef_value == NULL) {
-            throwException(env, UnsatisfiedLinkException, "Get FieldID of IntRef.value");
-        }
-    }
-
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    pipe
-     * Signature: (Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/IntRef;)I
+     * Signature: (Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/IntRef;)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_pipe
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_pipe
     (JNIEnv *env, jclass clazz, jobject read_fd_ref, jobject write_fd_ref) {
+        if (read_fd_ref == NULL) {
+            throw_NullPointerException(env, "read_fd_ref is null");
+            return;
+        }
+        if (write_fd_ref == NULL) {
+            throw_NullPointerException(env, "write_fd_ref is null");
+            return;
+        }
         int fdes[2];
         int result = pipe(fdes);
-        (*env)->SetIntField(env, read_fd_ref, de_ibapl_jnhw_posix_Unistd_IntRef_value, fdes[0]);
-        (*env)->SetIntField(env, write_fd_ref, de_ibapl_jnhw_posix_Unistd_IntRef_value, fdes[1]);
+        (*env)->SetIntField(env, read_fd_ref, de_ibapl_jnhw_IntRef_value_ID, fdes[0]);
+        (*env)->SetIntField(env, write_fd_ref, de_ibapl_jnhw_IntRef_value_ID, fdes[1]);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
-        return result;
-
     }
 
     /*
@@ -51,7 +41,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jint fd) {
         int result = close(fd);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }
@@ -63,10 +53,19 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I_3BII
     (JNIEnv *env, jclass clazz, jint fd, jbyteArray buf, jint pos, jint len) {
+        if (buf == NULL) {
+            throw_NullPointerException(env, "buf is null");
+            return -1;
+        }
+        int bufsize = (*env)->GetArrayLength(env, buf);
+        if ((pos < 0) || (pos > bufsize) || (len < 0) || (pos + len > bufsize)) {
+            throw_ArrayIndexOutOfBoundsException(env, "");
+            return -1;
+        }
         jbyte _buf[len];
         int result = read(fd, &_buf, len);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         (*env)->SetByteArrayRegion(env, buf, pos, result, _buf);
         return result;
@@ -81,7 +80,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jint fd, jobject byteBuffer, jint pos, jint len) {
         long result = read(fd, (*env)->GetDirectBufferAddress(env, byteBuffer) + pos, len);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }
@@ -100,7 +99,7 @@ extern "C" {
         }
         int result = write(fd, &_buf, len);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }
@@ -114,7 +113,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jint fd, jobject byteBuffer, jint pos, jint len) {
         long result = write(fd, (*env)->GetDirectBufferAddress(env, byteBuffer) + pos, len);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }
@@ -128,7 +127,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz, jint usec) {
         int result = usleep(usec);
         if (result < 0) {
-            throwNativeError(env, errno);
+            throw_NativeErrorException(env, errno);
         }
         return result;
     }

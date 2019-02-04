@@ -12,5 +12,13 @@ package de.ibapl.jnhw;
 public class IntRef {
     
     public int value;
+
+    public IntRef() {
+        
+    }
+    
+    public IntRef(int initialValue) {
+        this.value = initialValue;
+    }
     
 }

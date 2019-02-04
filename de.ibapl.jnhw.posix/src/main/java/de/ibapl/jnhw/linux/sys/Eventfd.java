@@ -13,12 +13,6 @@ public final class Eventfd extends LibJnhwLoader {
 
     }
 
-    private static native void initNative(Class<LongRef> longRef);
-
-    static {
-        initNative(LongRef.class);
-    }
-
     public final static native int eventfd(int count, int flags) throws NativeErrorException;
 
     public final static native int eventfd_read(int fd, LongRef value) throws NativeErrorException;

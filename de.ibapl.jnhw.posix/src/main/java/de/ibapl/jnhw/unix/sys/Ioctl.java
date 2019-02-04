@@ -13,12 +13,6 @@ public final class Ioctl extends LibJnhwLoader {
         
     }
 
-    private static native void initNative(Class<IntRef> intRef);
-    
-    static {
-        initNative(IntRef.class);
-    }
-
     public final static native int ioctl(int fd, long request) throws NativeErrorException;
 
     public final static native int ioctl(int fd, long request, IntRef value) throws NativeErrorException;
