@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libjnhw.la libempty.la
+lib_LTLIBRARIES = libjnhw.la
 
 noinst_LTLIBRARIES = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libjnhwcommon.la 
 
@@ -11,8 +11,6 @@ JNHW_RESOURCES_DIR = @JNHW_RESOURCES_DIR@
 libjnhw_la_LIBADD = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libjnhwcommon.la
 
 libjnhw_la_SOURCES = 
-
-libempty_la_SOURCES = 
 
 liberrno_la_SOURCES = \
  Errno.c
@@ -47,8 +45,12 @@ libeventfd_la_SOURCES = \
  EventFdDefines.c \
  EventFdFunctions.c
 
+#hook into make all
+all-local: $(JNHW_RESOURCES_DIR)/libjnhw.so
 
-install-jnhw-resources: libjnhw.la
+install-jnhw-resources: $(JNHW_RESOURCES_DIR)/libjnhw.so
+
+$(JNHW_RESOURCES_DIR)/libjnhw.so: libjnhw.la
 	$(MKDIR_P) $(JNHW_RESOURCES_DIR)
 	cp ./.libs/libjnhw.so $(JNHW_RESOURCES_DIR)
 	$(STRIP) -s $(JNHW_RESOURCES_DIR)/libjnhw.so

@@ -130,16 +130,13 @@ am__uninstall_files_from_dir = { \
   }
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
-libempty_la_LIBADD =
-am_libempty_la_OBJECTS =
-libempty_la_OBJECTS = $(am_libempty_la_OBJECTS)
+liberrno_la_LIBADD =
+am_liberrno_la_OBJECTS = Errno.lo
+liberrno_la_OBJECTS = $(am_liberrno_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-liberrno_la_LIBADD =
-am_liberrno_la_OBJECTS = Errno.lo
-liberrno_la_OBJECTS = $(am_liberrno_la_OBJECTS)
 libeventfd_la_LIBADD =
 am_libeventfd_la_OBJECTS = EventFdDefines.lo EventFdFunctions.lo
 libeventfd_la_OBJECTS = $(am_libeventfd_la_OBJECTS)
@@ -213,16 +210,16 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libempty_la_SOURCES) $(liberrno_la_SOURCES) \
-	$(libeventfd_la_SOURCES) $(libfcntl_la_SOURCES) \
-	$(libioclt_la_SOURCES) $(libjnhw_la_SOURCES) \
-	$(libjnhwcommon_la_SOURCES) $(libpoll_la_SOURCES) \
-	$(libtermios_la_SOURCES) $(libunistd_la_SOURCES)
-DIST_SOURCES = $(libempty_la_SOURCES) $(liberrno_la_SOURCES) \
-	$(libeventfd_la_SOURCES) $(libfcntl_la_SOURCES) \
-	$(libioclt_la_SOURCES) $(libjnhw_la_SOURCES) \
-	$(libjnhwcommon_la_SOURCES) $(libpoll_la_SOURCES) \
-	$(libtermios_la_SOURCES) $(libunistd_la_SOURCES)
+SOURCES = $(liberrno_la_SOURCES) $(libeventfd_la_SOURCES) \
+	$(libfcntl_la_SOURCES) $(libioclt_la_SOURCES) \
+	$(libjnhw_la_SOURCES) $(libjnhwcommon_la_SOURCES) \
+	$(libpoll_la_SOURCES) $(libtermios_la_SOURCES) \
+	$(libunistd_la_SOURCES)
+DIST_SOURCES = $(liberrno_la_SOURCES) $(libeventfd_la_SOURCES) \
+	$(libfcntl_la_SOURCES) $(libioclt_la_SOURCES) \
+	$(libjnhw_la_SOURCES) $(libjnhwcommon_la_SOURCES) \
+	$(libpoll_la_SOURCES) $(libtermios_la_SOURCES) \
+	$(libunistd_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -371,14 +368,13 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-lib_LTLIBRARIES = libjnhw.la libempty.la
+lib_LTLIBRARIES = libjnhw.la
 noinst_LTLIBRARIES = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libjnhwcommon.la 
 AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_HEADER_DIR@
 AM_CFLAGS = -O3 -Wall -Werror
 AM_LDFLAGS = --no-undefined 
 libjnhw_la_LIBADD = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libjnhwcommon.la
 libjnhw_la_SOURCES = 
-libempty_la_SOURCES = 
 liberrno_la_SOURCES = \
  Errno.c
 
@@ -491,9 +487,6 @@ clean-noinstLTLIBRARIES:
 	  echo rm -f $${locs}; \
 	  rm -f $${locs}; \
 	}
-
-libempty.la: $(libempty_la_OBJECTS) $(libempty_la_DEPENDENCIES) $(EXTRA_libempty_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK) -rpath $(libdir) $(libempty_la_OBJECTS) $(libempty_la_LIBADD) $(LIBS)
 
 liberrno.la: $(liberrno_la_OBJECTS) $(liberrno_la_DEPENDENCIES) $(EXTRA_liberrno_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(liberrno_la_OBJECTS) $(liberrno_la_LIBADD) $(LIBS)
@@ -666,7 +659,7 @@ distdir-am: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES)
+all-am: Makefile $(LTLIBRARIES) all-local
 installdirs:
 	for dir in "$(DESTDIR)$(libdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
@@ -806,17 +799,17 @@ uninstall-am: uninstall-libLTLIBRARIES
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS TAGS all all-am am--depfiles check check-am clean \
-	clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-noinstLTLIBRARIES cscopelist-am ctags ctags-am distclean \
-	distclean-compile distclean-generic distclean-libtool \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am \
-	install-libLTLIBRARIES install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+.PHONY: CTAGS GTAGS TAGS all all-am all-local am--depfiles check \
+	check-am clean clean-generic clean-libLTLIBRARIES \
+	clean-libtool clean-noinstLTLIBRARIES cscopelist-am ctags \
+	ctags-am distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-libLTLIBRARIES install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags tags-am uninstall uninstall-am uninstall-libLTLIBRARIES
@@ -824,7 +817,12 @@ uninstall-am: uninstall-libLTLIBRARIES
 .PRECIOUS: Makefile
 
 
-install-jnhw-resources: libjnhw.la
+#hook into make all
+all-local: $(JNHW_RESOURCES_DIR)/libjnhw.so
+
+install-jnhw-resources: $(JNHW_RESOURCES_DIR)/libjnhw.so
+
+$(JNHW_RESOURCES_DIR)/libjnhw.so: libjnhw.la
 	$(MKDIR_P) $(JNHW_RESOURCES_DIR)
 	cp ./.libs/libjnhw.so $(JNHW_RESOURCES_DIR)
 	$(STRIP) -s $(JNHW_RESOURCES_DIR)/libjnhw.so
