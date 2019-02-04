@@ -6,6 +6,8 @@ AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_HEADER_DIR@
 AM_CFLAGS = -O3 -Wall -Werror
 AM_LDFLAGS = --no-undefined 
 
+include_HEADERS = jnhw.h
+
 JNHW_RESOURCES_DIR = @JNHW_RESOURCES_DIR@
 
 libjnhw_la_LIBADD = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libjnhwcommon.la
