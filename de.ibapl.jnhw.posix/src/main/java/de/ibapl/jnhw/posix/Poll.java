@@ -2,18 +2,24 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LibJnhwLoader;
+import de.ibapl.jnhw.LibJnhwPosixLoader;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.StructArray;
 
 @Include("#include <poll.h>")
-public final class Poll extends LibJnhwLoader {
+public final class Poll extends LibJnhwPosixLoader {
     
     
     public final static class PollFd extends OpaqueMemory {
         
+        static {
+            LibJnhwPosixLoader.loadLibJnhwPosix();
+        }
+        
         public final static native int sizeofPollFd();
 
-        private static native short events(long baseAddress);
+        static native short events(long baseAddress);
 
         public PollFd(OpaqueMemory owner, long elementBaseAddress) {
             super(owner, elementBaseAddress, sizeofPollFd());
@@ -23,31 +29,31 @@ public final class Poll extends LibJnhwLoader {
             return PollFd.events(baseAddress);
         }
 
-        private static native void events(long baseAddress, short events);
+        static native void events(long baseAddress, short events);
 
         public final void events(short events) {
             PollFd.events(baseAddress, events);
         }
 
-        private static native int fd(long baseAddress);
+        static native int fd(long baseAddress);
 
         public final int fd() {
             return PollFd.fd(baseAddress);
         }
 
-        private static native void fd(long baseAddress, int fd);
+        static native void fd(long baseAddress, int fd);
 
         public final void fd(int fd) {
             PollFd.fd(baseAddress, fd);
         }
 
-        private static native short revents(long baseAddress);
+        static native short revents(long baseAddress);
 
         public final short revents() {
             return PollFd.revents(baseAddress);
         }
 
-        private static native void revents(long baseAddress, short revents);
+        static native void revents(long baseAddress, short revents);
 
         public final void revents(short revents) {
             PollFd.revents(baseAddress, revents);

@@ -11,7 +11,9 @@
     </properties>
     
     <modules>
+        <module>de.ibapl.jnhw.common</module>
         <module>de.ibapl.jnhw.posix</module>
+        <module>de.ibapl.jnhw.winapi</module>
     </modules>
     
     <dependencyManagement>

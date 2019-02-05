@@ -1,13 +1,13 @@
 package de.ibapl.jnhw.unix.sys;
 
-import de.ibapl.jnhw.LibJnhwLoader;
+import de.ibapl.jnhw.LibJnhwPosixLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
 
 @Include("#include <sys/ioctl.h>")
-public final class Ioctl extends LibJnhwLoader {
+public final class Ioctl extends LibJnhwPosixLoader {
     
     private Ioctl() {
         

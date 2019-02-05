@@ -1,0 +1,199 @@
+#include "jnhw.h"
+
+#ifdef HAVE_MARKER_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+#undef de_ibapl_jnhw_winapi_Winnt_MINCHAR
+#define de_ibapl_jnhw_winapi_Winnt_MINCHAR -128L
+#undef de_ibapl_jnhw_winapi_Winnt_MAXCHAR
+#define de_ibapl_jnhw_winapi_Winnt_MAXCHAR 127L
+#undef de_ibapl_jnhw_winapi_Winnt_MINSHORT
+#define de_ibapl_jnhw_winapi_Winnt_MINSHORT -32768L
+#undef de_ibapl_jnhw_winapi_Winnt_MAXSHORT
+#define de_ibapl_jnhw_winapi_Winnt_MAXSHORT 32767L
+#undef de_ibapl_jnhw_winapi_Winnt_MINLONG
+#define de_ibapl_jnhw_winapi_Winnt_MINLONG -2147483648L
+#undef de_ibapl_jnhw_winapi_Winnt_MAXLONG
+#define de_ibapl_jnhw_winapi_Winnt_MAXLONG 2147483647L
+#undef de_ibapl_jnhw_winapi_Winnt_MAXBYTE
+#define de_ibapl_jnhw_winapi_Winnt_MAXBYTE -1L
+#undef de_ibapl_jnhw_winapi_Winnt_MAXWORD
+#define de_ibapl_jnhw_winapi_Winnt_MAXWORD -1L
+#undef de_ibapl_jnhw_winapi_Winnt_DELETE
+#define de_ibapl_jnhw_winapi_Winnt_DELETE 65536L
+#undef de_ibapl_jnhw_winapi_Winnt_READ_CONTROL
+#define de_ibapl_jnhw_winapi_Winnt_READ_CONTROL 131072L
+#undef de_ibapl_jnhw_winapi_Winnt_WRITE_DAC
+#define de_ibapl_jnhw_winapi_Winnt_WRITE_DAC 262144L
+#undef de_ibapl_jnhw_winapi_Winnt_WRITE_OWNER
+#define de_ibapl_jnhw_winapi_Winnt_WRITE_OWNER 524288L
+#undef de_ibapl_jnhw_winapi_Winnt_SYNCHRONIZE
+#define de_ibapl_jnhw_winapi_Winnt_SYNCHRONIZE 1048576L
+#undef de_ibapl_jnhw_winapi_Winnt_STANDARD_RIGHTS_REQUIRED
+#define de_ibapl_jnhw_winapi_Winnt_STANDARD_RIGHTS_REQUIRED 983040L
+#undef de_ibapl_jnhw_winapi_Winnt_STANDARD_RIGHTS_READ
+#define de_ibapl_jnhw_winapi_Winnt_STANDARD_RIGHTS_READ 131072L
+#undef de_ibapl_jnhw_winapi_Winnt_STANDARD_RIGHTS_WRITE
+#define de_ibapl_jnhw_winapi_Winnt_STANDARD_RIGHTS_WRITE 131072L
+#undef de_ibapl_jnhw_winapi_Winnt_STANDARD_RIGHTS_EXECUTE
+#define de_ibapl_jnhw_winapi_Winnt_STANDARD_RIGHTS_EXECUTE 131072L
+#undef de_ibapl_jnhw_winapi_Winnt_STANDARD_RIGHTS_ALL
+#define de_ibapl_jnhw_winapi_Winnt_STANDARD_RIGHTS_ALL 2031616L
+#undef de_ibapl_jnhw_winapi_Winnt_SPECIFIC_RIGHTS_ALL
+#define de_ibapl_jnhw_winapi_Winnt_SPECIFIC_RIGHTS_ALL 65535L
+#undef de_ibapl_jnhw_winapi_Winnt_ACCESS_SYSTEM_SECURITY
+#define de_ibapl_jnhw_winapi_Winnt_ACCESS_SYSTEM_SECURITY 16777216L
+#undef de_ibapl_jnhw_winapi_Winnt_MAXIMUM_ALLOWED
+#define de_ibapl_jnhw_winapi_Winnt_MAXIMUM_ALLOWED 33554432L
+#undef de_ibapl_jnhw_winapi_Winnt_GENERIC_EXECUTE
+#define de_ibapl_jnhw_winapi_Winnt_GENERIC_EXECUTE 536870912L
+#undef de_ibapl_jnhw_winapi_Winnt_GENERIC_ALL
+#define de_ibapl_jnhw_winapi_Winnt_GENERIC_ALL 268435456L
+#undef de_ibapl_jnhw_winapi_Winnt_KEY_QUERY_VALUE
+#define de_ibapl_jnhw_winapi_Winnt_KEY_QUERY_VALUE 1L
+#undef de_ibapl_jnhw_winapi_Winnt_KEY_SET_VALUE
+#define de_ibapl_jnhw_winapi_Winnt_KEY_SET_VALUE 2L
+#undef de_ibapl_jnhw_winapi_Winnt_KEY_CREATE_SUB_KEY
+#define de_ibapl_jnhw_winapi_Winnt_KEY_CREATE_SUB_KEY 4L
+#undef de_ibapl_jnhw_winapi_Winnt_KEY_ENUMERATE_SUB_KEYS
+#define de_ibapl_jnhw_winapi_Winnt_KEY_ENUMERATE_SUB_KEYS 8L
+#undef de_ibapl_jnhw_winapi_Winnt_KEY_NOTIFY
+#define de_ibapl_jnhw_winapi_Winnt_KEY_NOTIFY 16L
+#undef de_ibapl_jnhw_winapi_Winnt_KEY_CREATE_LINK
+#define de_ibapl_jnhw_winapi_Winnt_KEY_CREATE_LINK 32L
+#undef de_ibapl_jnhw_winapi_Winnt_KEY_WOW64_64KEY
+#define de_ibapl_jnhw_winapi_Winnt_KEY_WOW64_64KEY 256L
+#undef de_ibapl_jnhw_winapi_Winnt_KEY_WOW64_32KEY
+#define de_ibapl_jnhw_winapi_Winnt_KEY_WOW64_32KEY 512L
+#undef de_ibapl_jnhw_winapi_Winnt_KEY_WOW64_RES
+#define de_ibapl_jnhw_winapi_Winnt_KEY_WOW64_RES 768L
+#undef de_ibapl_jnhw_winapi_Winnt_KEY_WRITE
+#define de_ibapl_jnhw_winapi_Winnt_KEY_WRITE 131078L
+#undef de_ibapl_jnhw_winapi_Winnt_KEY_ALL_ACCESS
+#define de_ibapl_jnhw_winapi_Winnt_KEY_ALL_ACCESS 983103L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_OPTION_RESERVED
+#define de_ibapl_jnhw_winapi_Winnt_REG_OPTION_RESERVED 0L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_OPTION_NON_VOLATILE
+#define de_ibapl_jnhw_winapi_Winnt_REG_OPTION_NON_VOLATILE 0L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_OPTION_VOLATILE
+#define de_ibapl_jnhw_winapi_Winnt_REG_OPTION_VOLATILE 1L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_OPTION_CREATE_LINK
+#define de_ibapl_jnhw_winapi_Winnt_REG_OPTION_CREATE_LINK 2L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_OPTION_BACKUP_RESTORE
+#define de_ibapl_jnhw_winapi_Winnt_REG_OPTION_BACKUP_RESTORE 4L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_OPTION_OPEN_LINK
+#define de_ibapl_jnhw_winapi_Winnt_REG_OPTION_OPEN_LINK 8L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_LEGAL_OPTION
+#define de_ibapl_jnhw_winapi_Winnt_REG_LEGAL_OPTION 15L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_CREATED_NEW_KEY
+#define de_ibapl_jnhw_winapi_Winnt_REG_CREATED_NEW_KEY 1L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_OPENED_EXISTING_KEY
+#define de_ibapl_jnhw_winapi_Winnt_REG_OPENED_EXISTING_KEY 2L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_STANDARD_FORMAT
+#define de_ibapl_jnhw_winapi_Winnt_REG_STANDARD_FORMAT 1L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_LATEST_FORMAT
+#define de_ibapl_jnhw_winapi_Winnt_REG_LATEST_FORMAT 2L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_NO_COMPRESSION
+#define de_ibapl_jnhw_winapi_Winnt_REG_NO_COMPRESSION 4L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_WHOLE_HIVE_VOLATILE
+#define de_ibapl_jnhw_winapi_Winnt_REG_WHOLE_HIVE_VOLATILE 1L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_REFRESH_HIVE
+#define de_ibapl_jnhw_winapi_Winnt_REG_REFRESH_HIVE 2L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_NO_LAZY_FLUSH
+#define de_ibapl_jnhw_winapi_Winnt_REG_NO_LAZY_FLUSH 4L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_FORCE_RESTORE
+#define de_ibapl_jnhw_winapi_Winnt_REG_FORCE_RESTORE 8L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_APP_HIVE
+#define de_ibapl_jnhw_winapi_Winnt_REG_APP_HIVE 16L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_PROCESS_PRIVATE
+#define de_ibapl_jnhw_winapi_Winnt_REG_PROCESS_PRIVATE 32L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_START_JOURNAL
+#define de_ibapl_jnhw_winapi_Winnt_REG_START_JOURNAL 64L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_HIVE_EXACT_FILE_GROWTH
+#define de_ibapl_jnhw_winapi_Winnt_REG_HIVE_EXACT_FILE_GROWTH 128L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_HIVE_NO_RM
+#define de_ibapl_jnhw_winapi_Winnt_REG_HIVE_NO_RM 256L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_HIVE_SINGLE_LOG
+#define de_ibapl_jnhw_winapi_Winnt_REG_HIVE_SINGLE_LOG 512L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_BOOT_HIVE
+#define de_ibapl_jnhw_winapi_Winnt_REG_BOOT_HIVE 1024L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_FORCE_UNLOAD
+#define de_ibapl_jnhw_winapi_Winnt_REG_FORCE_UNLOAD 1L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_NOTIFY_CHANGE_NAME
+#define de_ibapl_jnhw_winapi_Winnt_REG_NOTIFY_CHANGE_NAME 1L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_NOTIFY_CHANGE_ATTRIBUTES
+#define de_ibapl_jnhw_winapi_Winnt_REG_NOTIFY_CHANGE_ATTRIBUTES 2L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_NOTIFY_CHANGE_LAST_SET
+#define de_ibapl_jnhw_winapi_Winnt_REG_NOTIFY_CHANGE_LAST_SET 4L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_NOTIFY_CHANGE_SECURITY
+#define de_ibapl_jnhw_winapi_Winnt_REG_NOTIFY_CHANGE_SECURITY 8L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_NOTIFY_THREAD_AGNOSTIC
+#define de_ibapl_jnhw_winapi_Winnt_REG_NOTIFY_THREAD_AGNOSTIC 268435456L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_LEGAL_CHANGE_FILTER
+#define de_ibapl_jnhw_winapi_Winnt_REG_LEGAL_CHANGE_FILTER 268435471L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_NONE
+#define de_ibapl_jnhw_winapi_Winnt_REG_NONE 0L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_SZ
+#define de_ibapl_jnhw_winapi_Winnt_REG_SZ 1L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_EXPAND_SZ
+#define de_ibapl_jnhw_winapi_Winnt_REG_EXPAND_SZ 2L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_BINARY
+#define de_ibapl_jnhw_winapi_Winnt_REG_BINARY 3L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_DWORD
+#define de_ibapl_jnhw_winapi_Winnt_REG_DWORD 4L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_DWORD_LITTLE_ENDIAN
+#define de_ibapl_jnhw_winapi_Winnt_REG_DWORD_LITTLE_ENDIAN 4L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_DWORD_BIG_ENDIAN
+#define de_ibapl_jnhw_winapi_Winnt_REG_DWORD_BIG_ENDIAN 5L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_LINK
+#define de_ibapl_jnhw_winapi_Winnt_REG_LINK 6L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_MULTI_SZ
+#define de_ibapl_jnhw_winapi_Winnt_REG_MULTI_SZ 7L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_RESOURCE_LIST
+#define de_ibapl_jnhw_winapi_Winnt_REG_RESOURCE_LIST 8L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_FULL_RESOURCE_DESCRIPTOR
+#define de_ibapl_jnhw_winapi_Winnt_REG_FULL_RESOURCE_DESCRIPTOR 9L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_RESOURCE_REQUIREMENTS_LIST
+#define de_ibapl_jnhw_winapi_Winnt_REG_RESOURCE_REQUIREMENTS_LIST 10L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_QWORD
+#define de_ibapl_jnhw_winapi_Winnt_REG_QWORD 11L
+#undef de_ibapl_jnhw_winapi_Winnt_REG_QWORD_LITTLE_ENDIAN
+#define de_ibapl_jnhw_winapi_Winnt_REG_QWORD_LITTLE_ENDIAN 11L
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winnt
+ * Method:    MAXDWORD
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_MAXDWORD
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winnt
+ * Method:    GENERIC_READ
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_GENERIC_1READ
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winnt
+ * Method:    GENERIC_WRITE
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_GENERIC_1WRITE
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winnt
+ * Method:    KEY_READ
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_KEY_1READ
+  (JNIEnv *, jclass);
+
+#ifdef __cplusplus
+}
+#endif
+#endif

@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-    <artifactId>jnhw</artifactId>
-    <groupId>de.ibapl.jnhw</groupId>
-    <version>0.0.0-SNAPSHOT</version>
-  </parent>
+        <artifactId>jnhw</artifactId>
+        <groupId>de.ibapl.jnhw</groupId>
+        <version>0.0.0-SNAPSHOT</version>
+    </parent>
 
     <groupId>de.ibapl.jnhw</groupId>
     <artifactId>de.ibapl.jnhw.posix</artifactId>
@@ -19,10 +19,15 @@
     </properties>
 
     <dependencies>
-            <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.annotation</artifactId>
-            </dependency>
+        <dependency>
+            <groupId>de.ibapl.jnhw</groupId>
+            <artifactId>de.ibapl.jnhw.common</artifactId>
+            <version>0.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.annotation</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

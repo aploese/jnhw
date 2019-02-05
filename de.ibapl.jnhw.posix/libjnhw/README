@@ -1,1 +1,0 @@
-on debian run configure with "--libdir=/usr/lib/jni/" to install lib in the right location, so the jvm can pick them up (./configure --libdir=/usr/lib/jni/).

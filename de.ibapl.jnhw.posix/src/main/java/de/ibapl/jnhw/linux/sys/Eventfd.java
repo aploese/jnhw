@@ -2,12 +2,12 @@ package de.ibapl.jnhw.linux.sys;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LibJnhwLoader;
+import de.ibapl.jnhw.LibJnhwPosixLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.LongRef;
 
 @Include("#include <sys/eventfd.h>")
-public final class Eventfd extends LibJnhwLoader {
+public final class Eventfd extends LibJnhwPosixLoader {
 
     private Eventfd() {
 

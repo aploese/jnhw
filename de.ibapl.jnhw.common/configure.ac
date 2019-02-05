@@ -1,0 +1,78 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.69])
+AC_INIT([jnhw], [0.0.0], [aploese@gmx.de])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_MAINTAINER_MODE
+
+AM_PROG_AR
+
+LT_INIT([disable-static])
+AC_CONFIG_SRCDIR([src/main/native/jnhw-jni.c])
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIRS([m4])
+
+# Checks for programs.
+AC_PROG_CC
+AC_PROG_INSTALL
+
+# Check for jni header files.
+AX_JNI_INCLUDE_DIR
+AC_SUBST(JNI_INCLUDE_DIRS)
+for JNI_INCLUDE_DIR in $JNI_INCLUDE_DIRS
+do
+    JNI_INCLUDE_FLAGS="$JNI_INCLUDE_FLAGS -I$JNI_INCLUDE_DIR"
+done
+AC_SUBST(JNI_INCLUDE_FLAGS)
+
+#TODO quick and dirty: libversion is encoded
+case "$host_os" in
+    mingw32*)
+        JNHW_LTLIB_SUFFIX="-0.dll"
+        JNHW_LIB_SUFFIX=".dll"
+        case "$host_cpu" in
+            x86_64)
+                JNHW_MULTIARCH_TUPEL="x86_64-windows-pe32+"
+            ;;
+            i686)
+                JNHW_MULTIARCH_TUPEL="x86-windows-pe32"
+            ;;
+            *)
+                fail Unknown CPU
+            ;;
+        esac
+    ;;
+    *)
+        JNHW_LTLIB_SUFFIX=".so"
+        JNHW_LIB_SUFFIX=".so"
+        JNHW_MULTIARCH_TUPEL="\$(host_cpu)-\$(host_os)"
+    ;;
+esac
+
+AC_SUBST(JNHW_LIB_SUFFIX)
+AC_SUBST(JNHW_LTLIB_SUFFIX)
+AC_SUBST(JNHW_MULTIARCH_TUPEL)
+
+JNHW_RESOURCES_DIR="\$(top_builddir)/src/main/resources/lib/\$(JNHW_MULTIARCH_TUPEL)"
+AC_SUBST(JNHW_RESOURCES_DIR)
+
+JNI_HEADER_DIR="\$(top_builddir)/target/generated-sources/include"
+AC_SUBST(JNI_HEADER_DIR)
+
+#get path of jnhw.h - The Quick and Dirty way....
+JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
+AC_SUBST(JNHW_COMMON_SRC_DIR)
+
+# Checks for libraries.
+
+# Checks for header files.
+AC_CHECK_HEADERS([errno.h stdio.h stdarg.h stdlib.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+
+# Checks for library functions.
+
+AC_CONFIG_FILES([Makefile src/Makefile src/main/Makefile src/main/native/Makefile])
+
+AC_OUTPUT

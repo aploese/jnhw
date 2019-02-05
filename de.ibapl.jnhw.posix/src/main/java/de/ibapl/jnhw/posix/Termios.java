@@ -21,9 +21,10 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LibJnhwLoader;
+import de.ibapl.jnhw.LibJnhwPosixLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NotDefinedException;
+import de.ibapl.jnhw.OpaqueMemory;
 
 /**
  *
@@ -35,7 +36,7 @@ import de.ibapl.jnhw.NotDefinedException;
  *
  */
 @Include("#include <termios.h>")
-public final class Termios extends LibJnhwLoader {
+public final class Termios extends LibJnhwPosixLoader {
 
     /**
      * Wrapper for the termios struct.
@@ -43,29 +44,29 @@ public final class Termios extends LibJnhwLoader {
      * @author aploese
      *
      */
-    public static class StructTermios extends LibJnhwLoader.OpaqueMemory {
+    public static class StructTermios extends OpaqueMemory {
 
         public final static native int sizeofTermios();
 
-        private static native int c_iflag(long baseAddress);
+        static native int c_iflag(long baseAddress);
 
-        private static native void c_iflag(long baseAddress, int c_iflag);
+        static native void c_iflag(long baseAddress, int c_iflag);
 
-        private static native int c_oflag(long baseAddress);
+        static native int c_oflag(long baseAddress);
 
-        private static native void c_oflag(long baseAddress, int c_oflag);
+        static native void c_oflag(long baseAddress, int c_oflag);
 
-        private static native int c_cflag(long baseAddress);
+        static native int c_cflag(long baseAddress);
 
-        private static native void c_cflag(long baseAddress, int c_cflag);
+        static native void c_cflag(long baseAddress, int c_cflag);
 
-        private static native int c_lflag(long baseAddress);
+        static native int c_lflag(long baseAddress);
 
-        private static native void c_lflag(long baseAddress, int c_lflag);
+        static native void c_lflag(long baseAddress, int c_lflag);
 
-        private static native byte c_cc(long baseAddress, int index);
+        static native byte c_cc(long baseAddress, int index);
 
-        private static native void c_cc(long baseAddress, int index, byte value);
+        static native void c_cc(long baseAddress, int index, byte value);
         
         public StructTermios() {
             super(sizeofTermios());
