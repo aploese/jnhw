@@ -27,7 +27,7 @@ public class OpaqueMemoryTests {
 
     @Test
     public void testAllocateMem() throws Exception {
-        OpaqueMemory mem = new OpaqueMemory(1024);
+        OpaqueMemory mem = new OpaqueMemory(1024, false);
         Assertions.assertEquals(1024, mem.sizeInBytes);
         Assertions.assertEquals(mem, mem.memoryOwner);
         mem  = null;

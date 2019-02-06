@@ -13,8 +13,8 @@ public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
     
     private final T[] pointers;
 
-    public StructArray(T[] array, int elementSizeInBytes) {
-        super(array.length, elementSizeInBytes);
+    public StructArray(T[] array, int elementSizeInBytes, boolean clearMem) {
+        super(array.length, elementSizeInBytes, clearMem);
         pointers = array;
         for (int i = 0; i < array.length; i++) {
             pointers[i] = createElement(baseAddress + i * elementSizeInBytes);

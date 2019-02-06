@@ -5,6 +5,8 @@
 #include "de_ibapl_jnhw_posix_Termios_StructTermios.h"
 #include <termios.h>
 #include <errno.h>
+#include <stdint.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,7 +29,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_sizeo
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1iflag__J
   (JNIEnv *env, jclass clazz, jlong baseAddress) {
-    return ((struct termios*)(long)baseAddress)->c_iflag;
+    return ((struct termios*)(uintptr_t)baseAddress)->c_iflag;
 }
 
 /*
@@ -37,7 +39,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1if
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1iflag__JI
   (JNIEnv *env, jclass clazz, jlong baseAddress, jint value) {
-    ((struct termios*)(long)baseAddress)->c_iflag = value;
+    ((struct termios*)(uintptr_t)baseAddress)->c_iflag = value;
 }
 
 /*
@@ -47,7 +49,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1if
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1oflag__J
   (JNIEnv *env, jclass clazz, jlong baseAddress) {
-    return ((struct termios*)(long)baseAddress)->c_oflag;
+    return ((struct termios*)(uintptr_t)baseAddress)->c_oflag;
 }
 
 /*
@@ -57,7 +59,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1of
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1oflag__JI
   (JNIEnv *env, jclass clazz, jlong baseAddress, jint value) {
-    ((struct termios*)(long)baseAddress)->c_oflag = value;
+    ((struct termios*)(uintptr_t)baseAddress)->c_oflag = value;
 }
 
 /*
@@ -67,7 +69,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1of
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cflag__J
   (JNIEnv *env, jclass clazz, jlong baseAddress) {
-    return ((struct termios*)(long)baseAddress)->c_cflag;
+    return ((struct termios*)(uintptr_t)baseAddress)->c_cflag;
 }
 
 /*
@@ -77,7 +79,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cf
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cflag__JI
   (JNIEnv *env, jclass clazz, jlong baseAddress, jint value) {
-    ((struct termios*)(long)baseAddress)->c_cflag = value;
+    ((struct termios*)(uintptr_t)baseAddress)->c_cflag = value;
 }
 
 /*
@@ -87,7 +89,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cf
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1lflag__J
   (JNIEnv *env, jclass clazz, jlong baseAddress) {
-    return ((struct termios*)(long)baseAddress)->c_lflag;
+    return ((struct termios*)(uintptr_t)baseAddress)->c_lflag;
 }
 
 /*
@@ -97,7 +99,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1lf
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1lflag__JI
   (JNIEnv *env, jclass clazz, jlong baseAddress, jint value) {
-    ((struct termios*)(long)baseAddress)->c_lflag = value;
+    ((struct termios*)(uintptr_t)baseAddress)->c_lflag = value;
 }
 
 /*
@@ -107,7 +109,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1lf
  */
 JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cc__JI
   (JNIEnv *env, jclass clazz, jlong baseAddress, jint index) {
-    return ((struct termios*)(long)baseAddress)->c_cc[index];
+    return ((struct termios*)(uintptr_t)baseAddress)->c_cc[index];
 }
 
 /*
@@ -117,7 +119,7 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1c
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cc__JIB
   (JNIEnv *env, jclass clazz, jlong baseAddress, jint index, jbyte value) {
-    ((struct termios*)(long)baseAddress)->c_cc[index] = value;
+    ((struct termios*)(uintptr_t)baseAddress)->c_cc[index] = value;
 }
 
 #ifdef __cplusplus

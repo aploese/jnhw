@@ -126,7 +126,8 @@ public final class Poll extends LibJnhwPosixLoader {
     public static class PollFds extends StructArray<PollFd> {
         
         public PollFds(int arraylength) {
-            super(new PollFd[arraylength], PollFd.sizeofPollFd());
+            //get uninitialized mem we need to set this anyway ...
+            super(new PollFd[arraylength], PollFd.sizeofPollFd(), false);
         }
 
         @Override

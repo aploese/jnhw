@@ -47,11 +47,11 @@ libeventfd_la_SOURCES = \
  EventFdFunctions.c
 
 #hook into make all
-all-local: @JNHW_RESOURCES_DIR@/libjnhw-posix@JNHW_LIB_SUFFIX@ 
+all-local: @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@ 
 
-install-jnhw-resources: @JNHW_RESOURCES_DIR@/libjnhw-posix@JNHW_LIB_SUFFIX@ 
+install-jnhw-resources: @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@ 
 
-@JNHW_RESOURCES_DIR@/libjnhw-posix@JNHW_LIB_SUFFIX@: libjnhw-posix.la
+@JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@: libjnhw-posix.la
 	$(MKDIR_P) @JNHW_RESOURCES_DIR@
-	cp ./.libs/libjnhw-posix@JNHW_LTLIB_SUFFIX@ @JNHW_RESOURCES_DIR@/libjnhw-posix@JNHW_LIB_SUFFIX@
-	$(STRIP) -s @JNHW_RESOURCES_DIR@/libjnhw-posix@JNHW_LIB_SUFFIX@
+	cp ./.libs/libjnhw-posix@JNHW_LTLIB_SUFFIX@ @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@
+	$(STRIP) -s @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@

@@ -5,6 +5,8 @@
 #include "de_ibapl_jnhw_posix_Poll.h"
 #include <poll.h>
 #include <errno.h>
+#include <stdint.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,7 +19,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll
     (JNIEnv *env, jclass clazz, jlong pollFdBaseAddress, jlong nfds, jint timeout) {
-        int result = poll((void*)(long) pollFdBaseAddress, nfds, timeout);
+        int result = poll((void*)(uintptr_t) pollFdBaseAddress, nfds, timeout);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }

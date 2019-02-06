@@ -8,6 +8,7 @@ package de.ibapl.jnhw;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -29,11 +30,11 @@ public abstract class LibJnhwLoader {
     static {
         loadLibJnhw();
     }
-    
+
     protected LibJnhwLoader() {
-        
+
     }
-    
+
     protected static void loadLibJnhw() {
         loadNativeLib(LIB_JNHW_COMMON);
         loadNativeLib(LIB_JNHW);
@@ -90,7 +91,11 @@ public abstract class LibJnhwLoader {
                 // Figure out os and arch
                 final String libResourceName = String.format("lib/%s/%s", multiarchtupel.getTupelName(), System.mapLibraryName(libName));
                 // Try from classpath like the tests or extracted jars do
-                String classPathLibName = LibJnhwLoader.class.getClassLoader().getResource(libResourceName).getFile();
+                URL classPathLibURL = LibJnhwLoader.class.getClassLoader().getResource(libResourceName);
+                if (classPathLibURL == null) {
+                    throw new RuntimeException("Lib " + libName + " is not in claspath with resourcename: " + libResourceName);
+                }
+                String classPathLibName = classPathLibURL.getFile();
                 if (new File(classPathLibName).exists()) {
                     // Unbundled aka not within a jar
                     LOG.log(Level.INFO, "Try load {0} from filesystem with libName: {1}", new String[]{libName, classPathLibName});

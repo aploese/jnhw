@@ -69,7 +69,8 @@ public final class Termios extends LibJnhwPosixLoader {
         static native void c_cc(long baseAddress, int index, byte value);
         
         public StructTermios() {
-            super(sizeofTermios());
+            // get unitialized mem
+            super(sizeofTermios(), false);
         }
 
         public final int c_iflag() {

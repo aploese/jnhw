@@ -32,6 +32,7 @@ AC_SUBST(JNI_INCLUDE_FLAGS)
 case "$host_os" in
     mingw32*)
         JNHW_LTLIB_SUFFIX="-0.dll"
+        JNHW_LIB_PREFIX=""
         JNHW_LIB_SUFFIX=".dll"
         case "$host_cpu" in
             x86_64)
@@ -47,6 +48,7 @@ case "$host_os" in
     ;;
     *)
         JNHW_LTLIB_SUFFIX=".so"
+        JNHW_LIB_PREFIX="lib"
         JNHW_LIB_SUFFIX=".so"
 	case "$host_cpu" in
 	i686)
@@ -59,6 +61,7 @@ case "$host_os" in
     ;;
 esac
 
+AC_SUBST(JNHW_LIB_PREFIX)
 AC_SUBST(JNHW_LIB_SUFFIX)
 AC_SUBST(JNHW_LTLIB_SUFFIX)
 AC_SUBST(JNHW_MULTIARCH_TUPEL)

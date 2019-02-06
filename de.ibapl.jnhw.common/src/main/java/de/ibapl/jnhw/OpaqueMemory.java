@@ -20,16 +20,20 @@ public class OpaqueMemory extends LibJnhwLoader {
     //get value of define from errno.
     public static final native int ENOMEM();
 
-    public static final native long allocateMemory(int sizeInBytes) throws NativeErrorException;
+    private static final native long malloc(int sizeInBytes) throws NativeErrorException;
 
-    public static final native long allocateArrayMemory(int elements, int sizeInBytes) throws NativeErrorException;
+    private static final native long calloc(int elements, int sizeInBytes) throws NativeErrorException;
 
-    public static final native void freeMemory(long baseAddress);
+    private static final native void free(long baseAddress);
 
-    public OpaqueMemory(int sizeInBytes) {
+    public OpaqueMemory(int sizeInBytes, boolean clearMem) {
         this.sizeInBytes = sizeInBytes;
         try {
-            baseAddress = allocateMemory(sizeInBytes);
+            if (clearMem) {
+                baseAddress = calloc(1, sizeInBytes);
+            } else {
+                baseAddress = malloc(sizeInBytes);
+            }
         } catch (NativeErrorException nee) {
             if (nee.errno == ENOMEM()) {
                 throw new OutOfMemoryError("Can't allocate " + sizeInBytes + " bytes ENOMEM");
@@ -40,15 +44,19 @@ public class OpaqueMemory extends LibJnhwLoader {
         memoryOwner = this;
     }
 
-    public OpaqueMemory(int elements, int sizeInBytes) {
+    public OpaqueMemory(int elements, int sizeInBytes, boolean clearMem) {
         this.sizeInBytes = sizeInBytes * elements;
         try {
-            baseAddress = allocateArrayMemory(elements, sizeInBytes);
+            if (clearMem) {
+                baseAddress = calloc(elements, sizeInBytes);
+            } else {
+                baseAddress = malloc(sizeInBytes * elements);
+            }
         } catch (NativeErrorException nee) {
             if (nee.errno == ENOMEM()) {
-                throw new OutOfMemoryError("Can't allocate " + sizeInBytes + " bytes ENOMEM");
+                throw new OutOfMemoryError("Can't allocate " + sizeInBytes * elements + " bytes ENOMEM");
             } else {
-                throw new RuntimeException("Can't allocate " + sizeInBytes + " bytes ");
+                throw new RuntimeException("Can't allocate " + sizeInBytes * elements + " bytes ");
             }
         }
         memoryOwner = this;
@@ -75,7 +83,7 @@ public class OpaqueMemory extends LibJnhwLoader {
         try {
             if (memoryOwner == this) {
                 // LOG.log(Level.FINEST, String.format("Finalize: try free memory @0x%016x size: %d", baseAddress, sizeInBytes));
-                freeMemory(baseAddress);
+                free(baseAddress);
                 // LOG.log(Level.FINEST, String.format("memory @0x%016x freed", baseAddress));
             } else {
                 // LOG.log(Level.FINEST, String.format("Finalize: memory @0x%016x size: %d belongs to %s", baseAddress, sizeInBytes, memoryOwner));

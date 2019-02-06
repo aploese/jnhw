@@ -5,6 +5,8 @@
 #include "de_ibapl_jnhw_posix_Poll_PollFd.h"
 #include <errno.h>
 #include <poll.h>
+#include <stdint.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,7 +28,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_sizeofPollFd
  */
 JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__J
   (JNIEnv *env, jclass clazz, jlong baseAddress) {
-    return ((struct pollfd*)(long)baseAddress)->events;
+    return ((struct pollfd*)(uintptr_t)baseAddress)->events;
 }
 
 /*
@@ -36,7 +38,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__J
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__JS
   (JNIEnv *env, jclass clazz, jlong baseAddress, jshort value) {
-    ((struct pollfd*)(long)baseAddress)->events = value;
+    ((struct pollfd*)(uintptr_t)baseAddress)->events = value;
 }
 
 /*
@@ -46,7 +48,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__JS
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__J
   (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((struct pollfd*)(long)baseAddress)->fd;
+        return ((struct pollfd*)(uintptr_t)baseAddress)->fd;
 }
 
 /*
@@ -56,7 +58,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__J
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__JI
   (JNIEnv *env, jclass clazz, jlong baseAddress, jint value) {
-    ((struct pollfd*)(long)baseAddress)->fd = value;
+    ((struct pollfd*)(uintptr_t)baseAddress)->fd = value;
 }
 
 /*
@@ -66,7 +68,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__JI
  */
 JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__J
   (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((struct pollfd*)(long)baseAddress)->revents;
+        return ((struct pollfd*)(uintptr_t)baseAddress)->revents;
 }
 
 /*
@@ -76,7 +78,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__J
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__JS
   (JNIEnv *env, jclass clazz, jlong baseAddress, jshort value) {
-    ((struct pollfd*)(long)baseAddress)->revents = value;
+    ((struct pollfd*)(uintptr_t)baseAddress)->revents = value;
 }
 
 #ifdef __cplusplus

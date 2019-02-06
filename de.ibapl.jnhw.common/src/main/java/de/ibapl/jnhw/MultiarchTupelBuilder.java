@@ -178,7 +178,7 @@ public final class MultiarchTupelBuilder {
             case WINDOWS:
                 switch (os_arch) {
                     case "amd64":
-                        result.add(MultiarchInfo.X86_64__WINDOWS__PE_PLUS);
+                        result.add(MultiarchInfo.X86_64__WINDOWS__PE32_PLUS);
                         return result;
                     case "x86":
                         result.add(MultiarchInfo.I386__WINDOWS__PE32);

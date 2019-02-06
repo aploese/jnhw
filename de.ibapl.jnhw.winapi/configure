@@ -642,6 +642,7 @@ JNHW_RESOURCES_DIR
 JNHW_MULTIARCH_TUPEL
 JNHW_LTLIB_SUFFIX
 JNHW_LIB_SUFFIX
+JNHW_LIB_PREFIX
 JNI_INCLUDE_FLAGS
 JNI_INCLUDE_DIRS
 _ACJNI_JAVAC
@@ -13047,6 +13048,7 @@ done
 case "$host_os" in
     mingw32*)
         JNHW_LTLIB_SUFFIX="-0.dll"
+        JNHW_LIB_PREFIX=""
         JNHW_LIB_SUFFIX=".dll"
         case "$host_cpu" in
             x86_64)
@@ -13062,10 +13064,19 @@ case "$host_os" in
     ;;
     *)
         JNHW_LTLIB_SUFFIX=".so"
+        JNHW_LIB_PREFIX="lib"
         JNHW_LIB_SUFFIX=".so"
-        JNHW_MULTIARCH_TUPEL="\$(host_cpu)-\$(host_os)"
+	case "$host_cpu" in
+	i686)
+        	JNHW_MULTIARCH_TUPEL="i386-\$(host_os)"
+	;;
+	*)
+        	JNHW_MULTIARCH_TUPEL="\$(host_cpu)-\$(host_os)"
+	;;
+	esac
     ;;
 esac
+
 
 
 
@@ -13084,7 +13095,7 @@ JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
 # Checks for libraries.
 
 # Checks for header files.
-for ac_header in errno.h fcntl.h unistd.h poll.h stdlib.h stdint.h sys/ioctl.h sys/eventfd.h termios.h
+for ac_header in fileapi.h minwinbase.h  minwindef.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
 ac_fn_c_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"

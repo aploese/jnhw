@@ -1,5 +1,8 @@
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.Include;
+
+@Include("minwindef.h")
 public abstract class Minwindef {
 
     @Deprecated

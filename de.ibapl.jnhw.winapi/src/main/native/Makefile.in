@@ -131,13 +131,16 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libjnhw_winapi_la_DEPENDENCIES =  \
-	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la
 am_libjnhw_winapi_la_OBJECTS = jnhw-winapi-jni.lo
 libjnhw_winapi_la_OBJECTS = $(am_libjnhw_winapi_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+libminwinbase_la_LIBADD =
+am_libminwinbase_la_OBJECTS = Minwinbase_OVERLAPPED.lo
+libminwinbase_la_OBJECTS = $(am_libminwinbase_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -153,7 +156,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/jnhw-winapi-jni.Plo
+am__depfiles_remade = ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo \
+	./$(DEPDIR)/jnhw-winapi-jni.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -173,8 +177,9 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libjnhw_winapi_la_SOURCES)
-DIST_SOURCES = $(libjnhw_winapi_la_SOURCES)
+SOURCES = $(libjnhw_winapi_la_SOURCES) $(libminwinbase_la_SOURCES)
+DIST_SOURCES = $(libjnhw_winapi_la_SOURCES) \
+	$(libminwinbase_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -233,6 +238,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 JNHW_COMMON_SRC_DIR = @JNHW_COMMON_SRC_DIR@
+JNHW_LIB_PREFIX = @JNHW_LIB_PREFIX@
 JNHW_LIB_SUFFIX = @JNHW_LIB_SUFFIX@
 JNHW_LTLIB_SUFFIX = @JNHW_LTLIB_SUFFIX@
 JNHW_MULTIARCH_TUPEL = @JNHW_MULTIARCH_TUPEL@
@@ -328,13 +334,16 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libjnhw-winapi.la
-noinst_LTLIBRARIES = 
+noinst_LTLIBRARIES = libminwinbase.la
 AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_HEADER_DIR@ -I @JNHW_COMMON_SRC_DIR@
 AM_CFLAGS = -O3 -Wall -Werror
 AM_LDFLAGS = -no-undefined
-libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la
 libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
+
+libminwinbase_la_SOURCES = \
+ Minwinbase_OVERLAPPED.c
 
 all: all-am
 
@@ -419,12 +428,16 @@ clean-noinstLTLIBRARIES:
 libjnhw-winapi.la: $(libjnhw_winapi_la_OBJECTS) $(libjnhw_winapi_la_DEPENDENCIES) $(EXTRA_libjnhw_winapi_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK) -rpath $(libdir) $(libjnhw_winapi_la_OBJECTS) $(libjnhw_winapi_la_LIBADD) $(LIBS)
 
+libminwinbase.la: $(libminwinbase_la_OBJECTS) $(libminwinbase_la_DEPENDENCIES) $(EXTRA_libminwinbase_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libminwinbase_la_OBJECTS) $(libminwinbase_la_LIBADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-winapi-jni.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
@@ -588,7 +601,8 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
+		-rm -f ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo
+	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -634,7 +648,8 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
+		-rm -f ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo
+	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -674,14 +689,14 @@ uninstall-am: uninstall-libLTLIBRARIES
 
 
 #hook into make all
-all-local: @JNHW_RESOURCES_DIR@/libjnhw-winapi@JNHW_LIB_SUFFIX@
+all-local: @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
 
-install-jnhw-resources: @JNHW_RESOURCES_DIR@/libjnhw-winapi@JNHW_LIB_SUFFIX@
+install-jnhw-resources: @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
 
-@JNHW_RESOURCES_DIR@/libjnhw-winapi@JNHW_LIB_SUFFIX@: libjnhw-winapi.la
+@JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@: libjnhw-winapi.la
 	$(MKDIR_P) @JNHW_RESOURCES_DIR@
-	cp ./.libs/libjnhw-winapi@JNHW_LTLIB_SUFFIX@ @JNHW_RESOURCES_DIR@/libjnhw-winapi@JNHW_LIB_SUFFIX@
-	$(STRIP) -s @JNHW_RESOURCES_DIR@/libjnhw-winapi@JNHW_LIB_SUFFIX@
+	cp ./.libs/libjnhw-winapi@JNHW_LTLIB_SUFFIX@ @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
+	$(STRIP) -s @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

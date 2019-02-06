@@ -280,6 +280,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 JNHW_COMMON_SRC_DIR = @JNHW_COMMON_SRC_DIR@
+JNHW_LIB_PREFIX = @JNHW_LIB_PREFIX@
 JNHW_LIB_SUFFIX = @JNHW_LIB_SUFFIX@
 JNHW_LTLIB_SUFFIX = @JNHW_LTLIB_SUFFIX@
 JNHW_MULTIARCH_TUPEL = @JNHW_MULTIARCH_TUPEL@
@@ -832,14 +833,14 @@ uninstall-am: uninstall-libLTLIBRARIES
 
 
 #hook into make all
-all-local: @JNHW_RESOURCES_DIR@/libjnhw-posix@JNHW_LIB_SUFFIX@ 
+all-local: @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@ 
 
-install-jnhw-resources: @JNHW_RESOURCES_DIR@/libjnhw-posix@JNHW_LIB_SUFFIX@ 
+install-jnhw-resources: @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@ 
 
-@JNHW_RESOURCES_DIR@/libjnhw-posix@JNHW_LIB_SUFFIX@: libjnhw-posix.la
+@JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@: libjnhw-posix.la
 	$(MKDIR_P) @JNHW_RESOURCES_DIR@
-	cp ./.libs/libjnhw-posix@JNHW_LTLIB_SUFFIX@ @JNHW_RESOURCES_DIR@/libjnhw-posix@JNHW_LIB_SUFFIX@
-	$(STRIP) -s @JNHW_RESOURCES_DIR@/libjnhw-posix@JNHW_LIB_SUFFIX@
+	cp ./.libs/libjnhw-posix@JNHW_LTLIB_SUFFIX@ @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@
+	$(STRIP) -s @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
