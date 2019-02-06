@@ -1,3 +1,4 @@
+#define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw.h"
 
 #include "de_ibapl_jnhw_OpaqueMemory.h"

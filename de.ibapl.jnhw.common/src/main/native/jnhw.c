@@ -1,3 +1,4 @@
+#define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw.h"
 #include "JnhwExceptions.h"
 
@@ -5,12 +6,12 @@
 extern "C" {
 #endif
 
-    jfieldID de_ibapl_jnhw_ByteRef_value_ID = NULL;
-    jfieldID de_ibapl_jnhw_ShortRef_value_ID = NULL;
-    jfieldID de_ibapl_jnhw_IntRef_value_ID = NULL;
-    jfieldID de_ibapl_jnhw_LongRef_value_ID = NULL;
+JNIEXPORT jfieldID de_ibapl_jnhw_ByteRef_value_ID = NULL;
+JNIEXPORT jfieldID de_ibapl_jnhw_ShortRef_value_ID = NULL;
+JNIEXPORT jfieldID de_ibapl_jnhw_IntRef_value_ID = NULL;
+JNIEXPORT jfieldID de_ibapl_jnhw_LongRef_value_ID = NULL;
 
-    void jnhw_common_init(JNIEnv *env) {
+JNIEXPORT void jnhw_common_init(JNIEnv *env) {
         initExceptions(env);
         if (de_ibapl_jnhw_ByteRef_value_ID == NULL) {
             de_ibapl_jnhw_ByteRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_BYTE_REF, "value", "B");
@@ -26,7 +27,7 @@ extern "C" {
         }
     }
 
-    jclass getGlobalClassRef(JNIEnv *env, const char* className) {
+JNIEXPORT jclass getGlobalClassRef(JNIEnv *env, const char* className) {
         jclass clazz = (*env)->FindClass(env, className);
         if (clazz == NULL) {
             throw_ClassNotFoundException(env, className);
@@ -42,7 +43,7 @@ extern "C" {
 
     }
 
-    jfieldID getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType) {
+JNIEXPORT jfieldID getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType) {
 
         jclass clazz = (*env)->FindClass(env, className);
         if (clazz == NULL) {
@@ -59,7 +60,7 @@ extern "C" {
         return result;
     }
 
-    jfieldID getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* fieldName, const char* fieldType) {
+JNIEXPORT jfieldID getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* fieldName, const char* fieldType) {
 
         jfieldID result = (*env)->GetFieldID(env, clazz, fieldName, fieldType);
         if (result == NULL) {
@@ -69,7 +70,7 @@ extern "C" {
         return result;
     }
 
-    jmethodID getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* methodName, const char* methodSignature) {
+JNIEXPORT jmethodID getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* methodName, const char* methodSignature) {
 
         jmethodID result = (*env)->GetMethodID(env, clazz, methodName, methodSignature);
         if (result == NULL) {

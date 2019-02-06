@@ -9,9 +9,14 @@
 extern "C" {
 #endif
 
+#ifdef _JNHW_COMMON_IMPLEMENTATION_
+#define _JNHW_IMPORT_OR_EXPORT_ JNIEXPORT
+#else
+#define _JNHW_IMPORT_OR_EXPORT_ JNIIMPORT
+#endif   
 
 //Init exceptions ant Refs
-void jnhw_common_init(JNIEnv *env);
+_JNHW_IMPORT_OR_EXPORT_ void jnhw_common_init(JNIEnv *env);
 
 //Exception names
 
@@ -31,37 +36,37 @@ void jnhw_common_init(JNIEnv *env);
 #define JNHW_CLASS_NAME_LONG_REF "de/ibapl/jnhw/LongRef"
 
 //Cached
-extern jfieldID de_ibapl_jnhw_ByteRef_value_ID;
-extern jfieldID de_ibapl_jnhw_ShortRef_value_ID;
-extern jfieldID de_ibapl_jnhw_IntRef_value_ID;
-extern jfieldID de_ibapl_jnhw_LongRef_value_ID;
+_JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_ByteRef_value_ID;
+_JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_ShortRef_value_ID;
+_JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_IntRef_value_ID;
+_JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_LongRef_value_ID;
 
 //Cached Exceptions
-void throw_NativeErrorException(JNIEnv* env, int errno);
+_JNHW_IMPORT_OR_EXPORT_ void throw_NativeErrorException(JNIEnv* env, int errno);
 
-void throw_NotDefinedException(JNIEnv* env, const char*  defineName);
+_JNHW_IMPORT_OR_EXPORT_ void throw_NotDefinedException(JNIEnv* env, const char*  defineName);
 
-void throw_ClassNotFoundException(JNIEnv* env, const char* className);
+_JNHW_IMPORT_OR_EXPORT_ void throw_ClassNotFoundException(JNIEnv* env, const char* className);
 
-void throw_NoSuchFieldException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType);
+_JNHW_IMPORT_OR_EXPORT_ void throw_NoSuchFieldException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType);
 
-void throw_NoSuchMethodException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType);
+_JNHW_IMPORT_OR_EXPORT_ void throw_NoSuchMethodException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType);
 
-void throw_NullPointerException(JNIEnv* env, const char* message);
+_JNHW_IMPORT_OR_EXPORT_ void throw_NullPointerException(JNIEnv* env, const char* message);
 
-void throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message);
+_JNHW_IMPORT_OR_EXPORT_ void throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message);
 
 //extern void throwException(JNIEnv* env, const char* exceptionName, const char* fmt, ...);
 
 
 
-jclass getGlobalClassRef(JNIEnv *env, const char* className);
+_JNHW_IMPORT_OR_EXPORT_ jclass getGlobalClassRef(JNIEnv *env, const char* className);
 
-jfieldID getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType);
+_JNHW_IMPORT_OR_EXPORT_ jfieldID getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType);
 
-jfieldID getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* fieldName, const char* fieldType);
+_JNHW_IMPORT_OR_EXPORT_ jfieldID getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* fieldName, const char* fieldType);
 
-jmethodID getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* methodName, const char* methodSignature);
+_JNHW_IMPORT_OR_EXPORT_ jmethodID getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* methodName, const char* methodSignature);
 
 #ifdef __cplusplus
 }

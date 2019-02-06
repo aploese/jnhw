@@ -1,3 +1,5 @@
+#define _JNHW_COMMON_IMPLEMENTATION_ 1
+#include "jnhw.h"
 #include <stdio.h>
 #include <stdarg.h>
 #include "JnhwExceptions.h"
@@ -44,41 +46,40 @@ extern "C" {
         }
     }
 
-    void throw_NotDefinedException(JNIEnv* env, const char* defineName) {
+JNIEXPORT void throw_NotDefinedException(JNIEnv* env, const char* defineName) {
         (*env)->ThrowNew(env, NotDefinedExceptionClass, defineName);
     }
 
-    void throw_ClassNotFoundException(JNIEnv* env, const char* className) {
+JNIEXPORT void throw_ClassNotFoundException(JNIEnv* env, const char* className) {
         (*env)->ThrowNew(env, ClassNotFoundExceptionClass, className);
     }
 
-    void throw_NoSuchFieldException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType) {
+JNIEXPORT void throw_NoSuchFieldException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType) {
         char buf[1024] = {0};
         snprintf(buf, sizeof (buf) - 1, "Get FieldID of (%s) %s.%s", fieldType, className, fieldName);
         (*env)->ThrowNew(env, NoSuchFieldExceptionClass, buf);
     }
 
-    void throw_NoSuchMethodException(JNIEnv* env, const char* className, const char* methodName, const char* methodSignature) {
+JNIEXPORT void throw_NoSuchMethodException(JNIEnv* env, const char* className, const char* methodName, const char* methodSignature) {
         char buf[1024] = {0};
         snprintf(buf, sizeof (buf) - 1, "Get FieldID of (%s) %s.%s", methodSignature, className, methodName);
         (*env)->ThrowNew(env, NoSuchFieldExceptionClass, buf);
     }
 
-    void throw_NativeErrorException(JNIEnv* env, int errno) {
+JNIEXPORT void throw_NativeErrorException(JNIEnv* env, int errno) {
         const jobject ioeEx = (*env)->NewObject(env, NativeErrorExceptionClass, NativeErrorException_Init_ID, errno);
         (*env)->Throw(env, ioeEx);
     }
 
-    void throw_NullPointerException(JNIEnv* env, const char* message) {
+JNIEXPORT void throw_NullPointerException(JNIEnv* env, const char* message) {
         (*env)->ThrowNew(env, NullPointerExceptionClass, message);
     }
 
-    void throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message) {
+JNIEXPORT void throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message) {
         (*env)->ThrowNew(env, ArrayIndexOutOfBoundsExceptionClass, message);
     }
 
-    void
-    throwException(JNIEnv* env, const char* exceptionName, const char* fmt, ...) {
+JNIEXPORT void throwException(JNIEnv* env, const char* exceptionName, const char* fmt, ...) {
         va_list ap;
         char buf[1024] = {0};
         va_start(ap, fmt);
