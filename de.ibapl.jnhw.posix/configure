@@ -13127,7 +13127,10 @@ case "$host_os" in
 	i686)
         	JNHW_MULTIARCH_TUPEL="i386-\$(host_os)"
 	;;
-	*)
+        arm*)
+                JNHW_MULTIARCH_TUPEL="arm-\$(host_os)"
+        ;;
+ 	*)
         	JNHW_MULTIARCH_TUPEL="\$(host_cpu)-\$(host_os)"
 	;;
 	esac
