@@ -26,7 +26,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_sizeofPollFd
  */
 JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__J
   (JNIEnv *env, jclass clazz, jlong baseAddress) {
-    return ((struct pollfd*)baseAddress)->events;
+    return ((struct pollfd*)(long)baseAddress)->events;
 }
 
 /*
@@ -36,7 +36,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__J
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__JS
   (JNIEnv *env, jclass clazz, jlong baseAddress, jshort value) {
-    ((struct pollfd*)baseAddress)->events = value;
+    ((struct pollfd*)(long)baseAddress)->events = value;
 }
 
 /*
@@ -46,7 +46,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__JS
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__J
   (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((struct pollfd*)baseAddress)->fd;
+        return ((struct pollfd*)(long)baseAddress)->fd;
 }
 
 /*
@@ -56,7 +56,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__J
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__JI
   (JNIEnv *env, jclass clazz, jlong baseAddress, jint value) {
-    ((struct pollfd*)baseAddress)->fd = value;
+    ((struct pollfd*)(long)baseAddress)->fd = value;
 }
 
 /*
@@ -66,7 +66,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__JI
  */
 JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__J
   (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((struct pollfd*)baseAddress)->revents;
+        return ((struct pollfd*)(long)baseAddress)->revents;
 }
 
 /*
@@ -76,7 +76,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__J
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__JS
   (JNIEnv *env, jclass clazz, jlong baseAddress, jshort value) {
-    ((struct pollfd*)baseAddress)->revents = value;
+    ((struct pollfd*)(long)baseAddress)->revents = value;
 }
 
 #ifdef __cplusplus

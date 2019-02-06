@@ -17,7 +17,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll
     (JNIEnv *env, jclass clazz, jlong pollFdBaseAddress, jlong nfds, jint timeout) {
-        int result = poll((void*) pollFdBaseAddress, nfds, timeout);
+        int result = poll((void*)(long) pollFdBaseAddress, nfds, timeout);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }

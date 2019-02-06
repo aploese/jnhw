@@ -46,7 +46,14 @@ case "$host_os" in
     *)
         JNHW_LTLIB_SUFFIX=".so"
         JNHW_LIB_SUFFIX=".so"
-        JNHW_MULTIARCH_TUPEL="\$(host_cpu)-\$(host_os)"
+	case "$host_cpu" in
+	i686)
+        	JNHW_MULTIARCH_TUPEL="i386-\$(host_os)"
+	;;
+	*)
+        	JNHW_MULTIARCH_TUPEL="\$(host_cpu)-\$(host_os)"
+	;;
+	esac
     ;;
 esac
 
