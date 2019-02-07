@@ -16,7 +16,7 @@ extern "C" {
 #endif   
 
 //Init exceptions ant Refs
-_JNHW_IMPORT_OR_EXPORT_ void jnhw_common_init(JNIEnv *env);
+_JNHW_IMPORT_OR_EXPORT_ extern JNICALL void jnhw_common_init(JNIEnv *env);
 
 //Exception names
 
@@ -42,31 +42,31 @@ _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_IntRef_value_ID;
 _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_LongRef_value_ID;
 
 //Cached Exceptions
-_JNHW_IMPORT_OR_EXPORT_ void throw_NativeErrorException(JNIEnv* env, int errno);
+_JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NativeErrorException(JNIEnv* env, int errno);
 
-_JNHW_IMPORT_OR_EXPORT_ void throw_NotDefinedException(JNIEnv* env, const char*  defineName);
+_JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NotDefinedException(JNIEnv* env, const char*  defineName);
 
-_JNHW_IMPORT_OR_EXPORT_ void throw_ClassNotFoundException(JNIEnv* env, const char* className);
+_JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_ClassNotFoundException(JNIEnv* env, const char* className);
 
-_JNHW_IMPORT_OR_EXPORT_ void throw_NoSuchFieldException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType);
+_JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NoSuchFieldException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType);
 
-_JNHW_IMPORT_OR_EXPORT_ void throw_NoSuchMethodException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType);
+_JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NoSuchMethodException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType);
 
-_JNHW_IMPORT_OR_EXPORT_ void throw_NullPointerException(JNIEnv* env, const char* message);
+_JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NullPointerException(JNIEnv* env, const char* message);
 
-_JNHW_IMPORT_OR_EXPORT_ void throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message);
+_JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message);
 
 //extern void throwException(JNIEnv* env, const char* exceptionName, const char* fmt, ...);
 
 
 
-_JNHW_IMPORT_OR_EXPORT_ jclass getGlobalClassRef(JNIEnv *env, const char* className);
+_JNHW_IMPORT_OR_EXPORT_ extern jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className);
 
-_JNHW_IMPORT_OR_EXPORT_ jfieldID getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType);
+_JNHW_IMPORT_OR_EXPORT_ extern jfieldID JNICALL getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType);
 
-_JNHW_IMPORT_OR_EXPORT_ jfieldID getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* fieldName, const char* fieldType);
+_JNHW_IMPORT_OR_EXPORT_ extern jfieldID JNICALL getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* fieldName, const char* fieldType);
 
-_JNHW_IMPORT_OR_EXPORT_ jmethodID getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* methodName, const char* methodSignature);
+_JNHW_IMPORT_OR_EXPORT_ extern jmethodID JNICALL getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* methodName, const char* methodSignature);
 
 #ifdef __cplusplus
 }

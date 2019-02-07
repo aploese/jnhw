@@ -8,7 +8,7 @@ AM_MAINTAINER_MODE
 
 AM_PROG_AR
 
-LT_INIT([disable-static])
+LT_INIT()
 AC_CONFIG_MACRO_DIRS([m4])
 
 # Checks for programs.

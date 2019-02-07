@@ -46,40 +46,40 @@ extern "C" {
         }
     }
 
-JNIEXPORT void throw_NotDefinedException(JNIEnv* env, const char* defineName) {
+JNIEXPORT void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName) {
         (*env)->ThrowNew(env, NotDefinedExceptionClass, defineName);
     }
 
-JNIEXPORT void throw_ClassNotFoundException(JNIEnv* env, const char* className) {
+JNIEXPORT void JNICALL throw_ClassNotFoundException(JNIEnv* env, const char* className) {
         (*env)->ThrowNew(env, ClassNotFoundExceptionClass, className);
     }
 
-JNIEXPORT void throw_NoSuchFieldException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType) {
+JNIEXPORT void JNICALL throw_NoSuchFieldException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType) {
         char buf[1024] = {0};
         snprintf(buf, sizeof (buf) - 1, "Get FieldID of (%s) %s.%s", fieldType, className, fieldName);
         (*env)->ThrowNew(env, NoSuchFieldExceptionClass, buf);
     }
 
-JNIEXPORT void throw_NoSuchMethodException(JNIEnv* env, const char* className, const char* methodName, const char* methodSignature) {
+JNIEXPORT void JNICALL throw_NoSuchMethodException(JNIEnv* env, const char* className, const char* methodName, const char* methodSignature) {
         char buf[1024] = {0};
         snprintf(buf, sizeof (buf) - 1, "Get FieldID of (%s) %s.%s", methodSignature, className, methodName);
         (*env)->ThrowNew(env, NoSuchFieldExceptionClass, buf);
     }
 
-JNIEXPORT void throw_NativeErrorException(JNIEnv* env, int errno) {
+JNIEXPORT void JNICALL throw_NativeErrorException(JNIEnv* env, int errno) {
         const jobject ioeEx = (*env)->NewObject(env, NativeErrorExceptionClass, NativeErrorException_Init_ID, errno);
         (*env)->Throw(env, ioeEx);
     }
 
-JNIEXPORT void throw_NullPointerException(JNIEnv* env, const char* message) {
+JNIEXPORT void JNICALL throw_NullPointerException(JNIEnv* env, const char* message) {
         (*env)->ThrowNew(env, NullPointerExceptionClass, message);
     }
 
-JNIEXPORT void throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message) {
+JNIEXPORT void JNICALL throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message) {
         (*env)->ThrowNew(env, ArrayIndexOutOfBoundsExceptionClass, message);
     }
 
-JNIEXPORT void throwException(JNIEnv* env, const char* exceptionName, const char* fmt, ...) {
+JNIEXPORT void JNICALL throwException(JNIEnv* env, const char* exceptionName, const char* fmt, ...) {
         va_list ap;
         char buf[1024] = {0};
         va_start(ap, fmt);

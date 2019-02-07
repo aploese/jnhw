@@ -8,7 +8,7 @@ AM_MAINTAINER_MODE
 
 AM_PROG_AR
 
-LT_INIT([disable-static])
+LT_INIT()
 AC_CONFIG_SRCDIR([src/main/native/jnhw-winapi-jni.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIRS([m4])

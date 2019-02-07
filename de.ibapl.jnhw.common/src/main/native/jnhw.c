@@ -11,7 +11,7 @@ JNIEXPORT jfieldID de_ibapl_jnhw_ShortRef_value_ID = NULL;
 JNIEXPORT jfieldID de_ibapl_jnhw_IntRef_value_ID = NULL;
 JNIEXPORT jfieldID de_ibapl_jnhw_LongRef_value_ID = NULL;
 
-JNIEXPORT void jnhw_common_init(JNIEnv *env) {
+JNIEXPORT void JNICALL jnhw_common_init(JNIEnv *env) {
         initExceptions(env);
         if (de_ibapl_jnhw_ByteRef_value_ID == NULL) {
             de_ibapl_jnhw_ByteRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_BYTE_REF, "value", "B");
@@ -27,7 +27,7 @@ JNIEXPORT void jnhw_common_init(JNIEnv *env) {
         }
     }
 
-JNIEXPORT jclass getGlobalClassRef(JNIEnv *env, const char* className) {
+JNIEXPORT jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className) {
         jclass clazz = (*env)->FindClass(env, className);
         if (clazz == NULL) {
             throw_ClassNotFoundException(env, className);
@@ -43,7 +43,7 @@ JNIEXPORT jclass getGlobalClassRef(JNIEnv *env, const char* className) {
 
     }
 
-JNIEXPORT jfieldID getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType) {
+JNIEXPORT jfieldID JNICALL getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType) {
 
         jclass clazz = (*env)->FindClass(env, className);
         if (clazz == NULL) {
@@ -60,7 +60,7 @@ JNIEXPORT jfieldID getFieldId(JNIEnv *env, const char* className, const char* fi
         return result;
     }
 
-JNIEXPORT jfieldID getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* fieldName, const char* fieldType) {
+JNIEXPORT jfieldID JNICALL getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* fieldName, const char* fieldType) {
 
         jfieldID result = (*env)->GetFieldID(env, clazz, fieldName, fieldType);
         if (result == NULL) {
@@ -70,7 +70,7 @@ JNIEXPORT jfieldID getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* c
         return result;
     }
 
-JNIEXPORT jmethodID getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* methodName, const char* methodSignature) {
+JNIEXPORT jmethodID JNICALL getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* methodName, const char* methodSignature) {
 
         jmethodID result = (*env)->GetMethodID(env, clazz, methodName, methodSignature);
         if (result == NULL) {
