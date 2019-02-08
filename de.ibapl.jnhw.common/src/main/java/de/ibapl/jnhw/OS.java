@@ -10,16 +10,26 @@ package de.ibapl.jnhw;
  * @author aploese
  */
 public enum OS {
-    LINUX("linux"), WINDOWS("windows"), SOLARIS("solaris"), DARWIN("darwin");
+    LINUX("linux", "lib%1$s.so.%2$d"), 
+    WINDOWS("windows", "lib%1$s-%2$d.dll"), 
+    SOLARIS("solaris","lib%1$s.so.%2$d"), 
+    DARWIN("darwin","lib%1$s.so.%2$d");
+    
     public final String osName;
-
-    private OS(String osName) {
+    public final String formatLibNameString;
+    
+    private OS(String osName, String formatLibNameString) {
         this.osName = osName;
+        this.formatLibNameString = formatLibNameString;
     }
 
     @Override
     public String toString() {
         return osName;
+    }
+
+    String formatLibName(String libName, int libToolInterfaceVersion) {
+        return String.format(formatLibNameString, libName, libToolInterfaceVersion);
     }
     
 }

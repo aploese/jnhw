@@ -13,6 +13,7 @@ package de.ibapl.jnhw;
 public abstract class LibJnhwWinApiLoader extends LibJnhwLoader {
     
     public final static String LIB_JNHW_WIN_API = "jnhw-winapi";
+    public final static int LIB_JNHW_WIN_API_VERSION = 0;
 
     public static boolean isLibJnhwWinApiLoaded() {
         return isLibLoaded(LIB_JNHW_WIN_API);
@@ -27,7 +28,7 @@ public abstract class LibJnhwWinApiLoader extends LibJnhwLoader {
     }
 
     public final static void loadLibJnhwWinApi() {
-        loadNativeLib(LIB_JNHW_WIN_API);
+        loadNativeLib(LIB_JNHW_WIN_API, LIB_JNHW_WIN_API_VERSION);
     }
 
     protected LibJnhwWinApiLoader() {

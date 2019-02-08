@@ -1,12 +1,13 @@
+AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_HEADER_DIR@ -I @JNHW_COMMON_SRC_DIR@
+AM_CFLAGS = -Wall -Werror
+AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
+
+LIB_JNHW_WINAPI_NAME=@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
+LIB_JNHW_WINAPI_RES_NAME=@JNHW_RESOURCES_DIR@/$(LIB_JNHW_WINAPI_NAME)
+
 lib_LTLIBRARIES = libjnhw-winapi.la
 
 noinst_LTLIBRARIES = libminwinbase.la
-
-AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_HEADER_DIR@ -I @JNHW_COMMON_SRC_DIR@
-AM_CFLAGS = -O3 -Wall -Werror
-AM_LDFLAGS = -no-undefined
-
-JNHW_RESOURCES_DIR = @JNHW_RESOURCES_DIR@
 
 libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la
 
@@ -17,11 +18,11 @@ libminwinbase_la_SOURCES = \
  Minwinbase_OVERLAPPED.c
 
 #hook into make all
-all-local: @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
+all-local: $(LIB_JNHW_WINAPI_RES_NAME)
 
-install-jnhw-resources: @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
+install-jnhw-resources: $(LIB_JNHW_WINAPI_RES_NAME)
 
-@JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@: libjnhw-winapi.la
+$(LIB_JNHW_WINAPI_RES_NAME): libjnhw-winapi.la
 	$(MKDIR_P) @JNHW_RESOURCES_DIR@
-	cp ./.libs/libjnhw-winapi@JNHW_LTLIB_SUFFIX@ @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
-	$(STRIP) -s @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
+	cp ./.libs/$(LIB_JNHW_WINAPI_NAME) $(LIB_JNHW_WINAPI_RES_NAME)
+	$(STRIP) -s $(LIB_JNHW_WINAPI_RES_NAME)

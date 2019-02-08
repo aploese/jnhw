@@ -13,6 +13,7 @@ package de.ibapl.jnhw;
 public abstract class LibJnhwPosixLoader extends LibJnhwLoader {
     
     public final static String LIB_JNHW_POSIX = "jnhw-posix";
+    public final static int LIB_JNHW_POSIX_VERSION = 0;
 
     public static boolean isLibJnhwPosixLoaded() {
         return isLibLoaded(LIB_JNHW_POSIX);
@@ -29,7 +30,7 @@ public abstract class LibJnhwPosixLoader extends LibJnhwLoader {
     }
 
     public final static void loadLibJnhwPosix() {
-        loadNativeLib(LIB_JNHW_POSIX);
+        loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION);
     }
 
     protected LibJnhwPosixLoader() {

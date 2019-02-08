@@ -6,7 +6,9 @@
 package de.ibapl.jnhw;
 
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * Build the Multiarch Tuples
@@ -67,8 +69,8 @@ public final class MultiarchTupelBuilder {
         this.sun_cpu_isalist = sun_cpu_isalist;
     }
 
-    public Iterable<MultiarchInfo> guessMultiarch() {
-        LinkedList<MultiarchInfo> result = new LinkedList<>();
+    public Set<MultiarchInfo> guessMultiarch() {
+        Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
         switch (getOs()) {
             case LINUX:
                 switch (os_arch) {
