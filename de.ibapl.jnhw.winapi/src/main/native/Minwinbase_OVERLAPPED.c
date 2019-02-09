@@ -1,3 +1,4 @@
+#include <windows.h>
 #include <config.h>
 #include "jnhw.h"
 
@@ -16,7 +17,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_sizeofOVERLAPPED
     (JNIEnv *env, jclass clazz) {
-        return sizeof (struct OVERLAPPED);
+        return sizeof (OVERLAPPED);
     }
 
     /*
@@ -25,8 +26,8 @@ extern "C" {
      * Signature: (J)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_Internal
-    (JNIEnv *env, jclass clazz, jlongbaseAddres) {
-        return ((struct OVERLAPPED*) (long) baseAddress)->Internal;
+    (JNIEnv *env, jclass clazz, jlong baseAddress) {
+        return ((OVERLAPPED*) (uintptr_t) baseAddress)->Internal;
     }
 
     /*
@@ -35,8 +36,8 @@ extern "C" {
      * Signature: (J)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_InternalHigh
-    (JNIEnv *env, jclass clazz, jlongbaseAddres) {
-        return ((struct OVERLAPPED*) (long) baseAddress)->InternalHigh;
+    (JNIEnv *env, jclass clazz, jlong baseAddress) {
+        return ((OVERLAPPED*) (uintptr_t) baseAddress)->InternalHigh;
     }
 
     /*
@@ -45,8 +46,8 @@ extern "C" {
      * Signature: (J)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_hEvent__J
-    (JNIEnv *env, jclass clazz, jlongbaseAddres) {
-        return ((struct OVERLAPPED*) (long) baseAddress)->hEvent;
+    (JNIEnv *env, jclass clazz, jlong baseAddress) {
+        return (uintptr_t)((OVERLAPPED*) (uintptr_t) baseAddress)->hEvent;
     }
 
     /*
@@ -55,8 +56,8 @@ extern "C" {
      * Signature: (JJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_hEvent__JJ
-    (JNIEnv *env, jclass clazz, jlongbaseAddres, jlong value) {
-        ((struct OVERLAPPED*) (long) baseAddress)->hEvent = value;
+    (JNIEnv *env, jclass clazz, jlong baseAddress, jlong value) {
+        ((OVERLAPPED*) (uintptr_t) baseAddress)->hEvent = (HANDLE)(uintptr_t)value;
     }
 
 #ifdef __cplusplus

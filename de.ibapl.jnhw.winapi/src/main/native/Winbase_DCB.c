@@ -1,3 +1,4 @@
+#include <windows.h>
 #include <config.h>
 #include "jnhw.h"
 
