@@ -1,3 +1,4 @@
+#include <config.h>
 #include "jnhw.h"
 #if HAVE_UNISTD_H
 # include <unistd.h>

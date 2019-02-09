@@ -3,8 +3,6 @@
 
 #include <jni.h>
 
-#include <config.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif

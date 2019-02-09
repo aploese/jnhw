@@ -1,3 +1,4 @@
+#include <config.h>
 #include "jnhw.h"
 
 #ifdef HAVE_POLL_H

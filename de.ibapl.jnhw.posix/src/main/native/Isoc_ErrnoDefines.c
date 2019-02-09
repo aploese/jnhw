@@ -1,3 +1,4 @@
+#include <config.h>
 #include "jnhw.h"
 /*
  * Class:     de_ibapl_jnhw_isoc_Errno

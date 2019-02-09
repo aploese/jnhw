@@ -5,6 +5,7 @@ import de.ibapl.jnhw.OS;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,12 @@ public class WinntTests {
         } else {
             Assertions.assertFalse(Winnt.HAVE_WINNT_H(), "not expected to have winnt.h");
         }
+    }
+
+    @Test
+    public void testMAXDWORD() throws Exception {
+        Assumptions.assumeTrue(LibJnhwLoader.getOS() == OS.WINDOWS);
+        Winnt.MAXDWORD();
     }
 
 }

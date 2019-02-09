@@ -1,3 +1,4 @@
+#include <config.h>
 #include "jnhw.h"
 
 /*
@@ -16,8 +17,8 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winnt_HAVE_1WINNT_1H
 
 #ifdef HAVE_WINNT_H
 
-#include "de_ibapl_jnhw_posix_Poll.h"
-#include <poll.h>
+#include "de_ibapl_jnhw_winapi_Winnt.h"
+#include <winnt.h>
 
 #ifdef __cplusplus
 extern "C" {
