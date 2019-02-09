@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([jnhw], [10.5.3], [aploese@gmx.de])
+AC_INIT([jnhw], [0.0.0], [aploese@gmx.de])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AM_MAINTAINER_MODE
 
@@ -11,7 +11,7 @@ AM_PROG_AR
 LT_INIT()
 AC_CONFIG_SRCDIR([src/main/native/jnhw-jni.c])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_MACRO_DIRS([m4])
+AC_CONFIG_MACRO_DIRS([../m4])
 
 # Checks for programs.
 AC_PROG_CC
@@ -81,6 +81,9 @@ AC_SUBST(JNHW_COMMON_SRC_DIR)
 # Checks for libraries.
 
 # Checks for header files.
+#OpaqueMemory.c
+AC_CHECK_HEADERS([string.h stdlib.h stdint.h errno.h])
+
 AC_CHECK_HEADERS([errno.h stdio.h stdarg.h stdlib.h])
 
 # Checks for typedefs, structures, and compiler characteristics.

@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([jnhw-posix], [22.7.5], [aploese@gmx.de])
+AC_INIT([jnhw-posix], [0.0.0], [aploese@gmx.de])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AM_MAINTAINER_MODE
 
@@ -11,7 +11,7 @@ AM_PROG_AR
 LT_INIT()
 AC_CONFIG_SRCDIR([src/main/native/jnhw-posix-jni.c])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_MACRO_DIRS([m4])
+AC_CONFIG_MACRO_DIRS([../m4])
 
 # Checks for programs.
 AC_PROG_CC

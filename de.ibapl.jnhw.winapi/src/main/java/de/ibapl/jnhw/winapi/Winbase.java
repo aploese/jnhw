@@ -1,9 +1,11 @@
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.winapi.Minwindef.HANDLE;
+import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
+@Include("WinBase.h")
 public abstract class Winbase {
 
     public final static native int WAIT_FAILED();

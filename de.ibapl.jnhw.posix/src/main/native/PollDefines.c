@@ -1,13 +1,27 @@
 #include "jnhw.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*
+     * Class:     de_ibapl_jnhw_posix_Poll
+     * Method:    HAVE_POLL_H
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Poll_HAVE_1POLL_1H
+    (JNIEnv *env, jclass clazz) {
+#ifdef HAVE_POLL_H
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
+    }
+
 #ifdef HAVE_POLL_H
 
 #include "de_ibapl_jnhw_posix_Poll.h"
 #include <poll.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
     /*
      * Class:     de_ibapl_jnhw_posix_Poll

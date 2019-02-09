@@ -7,7 +7,7 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
-import de.ibapl.jnhw.winapi.Minwindef.HANDLE;
+import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
  *

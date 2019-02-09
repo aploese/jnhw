@@ -90,10 +90,12 @@ build_triplet = @build@
 host_triplet = @host@
 subdir = src/main/native
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/../m4/ax_jni_include_dir.m4 \
+	$(top_srcdir)/../m4/libtool.m4 \
+	$(top_srcdir)/../m4/ltoptions.m4 \
+	$(top_srcdir)/../m4/ltsugar.m4 \
+	$(top_srcdir)/../m4/ltversion.m4 \
+	$(top_srcdir)/../m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
@@ -161,8 +163,8 @@ am_libtermios_la_OBJECTS = TermiosDefines.lo TermiosFunctions.lo \
 	Termios_Termios.lo
 libtermios_la_OBJECTS = $(am_libtermios_la_OBJECTS)
 libunistd_la_LIBADD =
-am_libunistd_la_OBJECTS = Isoc_UnistdFunctions.lo \
-	Posix_UnistdFunctions.lo
+am_libunistd_la_OBJECTS = Isoc_UnistdDefines.lo \
+	Isoc_UnistdFunctions.lo Posix_UnistdFunctions.lo
 libunistd_la_OBJECTS = $(am_libunistd_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -186,6 +188,7 @@ am__depfiles_remade = ./$(DEPDIR)/EventFdDefines.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
 	./$(DEPDIR)/Isoc_FcntlDefines.Plo \
 	./$(DEPDIR)/Isoc_FcntlFunctions.Plo \
+	./$(DEPDIR)/Isoc_UnistdDefines.Plo \
 	./$(DEPDIR)/Isoc_UnistdFunctions.Plo \
 	./$(DEPDIR)/PollDefines.Plo ./$(DEPDIR)/PollFunctions.Plo \
 	./$(DEPDIR)/Poll_PollFd.Plo ./$(DEPDIR)/Posix_ErrnoDefines.Plo \
@@ -402,6 +405,7 @@ libioclt_la_SOURCES = \
  IoctlFunctions.c
 
 libunistd_la_SOURCES = \
+ Isoc_UnistdDefines.c \
  Isoc_UnistdFunctions.c \
  Posix_UnistdFunctions.c
 
@@ -538,6 +542,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_FcntlDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_FcntlFunctions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_UnistdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
@@ -720,6 +725,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_FcntlDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_FcntlFunctions.Plo
+	-rm -f ./$(DEPDIR)/Isoc_UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
@@ -785,6 +791,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_FcntlDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_FcntlFunctions.Plo
+	-rm -f ./$(DEPDIR)/Isoc_UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo

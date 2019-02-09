@@ -29,6 +29,7 @@ libioclt_la_SOURCES = \
  IoctlFunctions.c
 
 libunistd_la_SOURCES = \
+ Isoc_UnistdDefines.c \
  Isoc_UnistdFunctions.c \
  Posix_UnistdFunctions.c
 

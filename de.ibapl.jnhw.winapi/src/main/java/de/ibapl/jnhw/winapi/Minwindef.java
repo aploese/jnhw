@@ -1,6 +1,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
+import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 @Include("minwindef.h")
 public abstract class Minwindef {
@@ -40,39 +41,6 @@ public abstract class Minwindef {
     }
     
     
-    //TODO Win32 use int instead of long???
-    public static class HANDLE {
-
-        public long value;
-
-        protected HANDLE(long value) {
-            this.value = value;
-        }
-
-        protected HANDLE() {
-        }
-
-    }
-
-    /**
-     *
-     * The wrapper for a ByteBuffer. The position of the buffer is always 0! It
-     * must be reset to 0 if changed. The limit of the buffer is always amount
-     * of valid bytes in the buffer and must be set if the amount of valid bytes
-     * changed.
-     */
-    public static class LPWSTR {
-
-        public LPWSTR(int size) {
-        }
-
-        public LPWSTR(String value) {
-        }
-
-        public void clear() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-    }
 
     public static class LPBYTE {
 

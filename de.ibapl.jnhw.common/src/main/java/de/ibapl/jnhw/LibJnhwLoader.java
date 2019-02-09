@@ -186,4 +186,8 @@ public abstract class LibJnhwLoader {
         }
     }
 
+    
+    public static OS getOS() {
+        return OS;
+    }
 }

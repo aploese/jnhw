@@ -9,6 +9,8 @@ import java.nio.ByteBuffer;
 @Include("#include <unistd.h>")
 public abstract class Unistd extends LibJnhwPosixLoader {
 
+    public final static native boolean HAVE_UNISTD_H();
+
     public final static int write(int fd, byte[] buf) throws NativeErrorException {
         return write(fd, buf, 0, buf.length);
     }

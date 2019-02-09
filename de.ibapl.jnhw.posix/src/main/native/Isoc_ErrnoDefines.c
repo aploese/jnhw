@@ -1,4 +1,18 @@
 #include "jnhw.h"
+/*
+ * Class:     de_ibapl_jnhw_isoc_Errno
+ * Method:    HAVE_ERRNO_H
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_isoc_Errno_HAVE_1ERRNO_1H
+    (JNIEnv *env, jclass clazz) {
+#ifdef HAVE_ERRNO_H
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
+    }
+
 
 #ifdef HAVE_ERRNO_H
 

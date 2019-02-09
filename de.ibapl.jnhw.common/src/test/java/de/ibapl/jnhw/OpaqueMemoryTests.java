@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class OpaqueMemoryTests {
-
+    
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
     }
@@ -36,5 +36,11 @@ public class OpaqueMemoryTests {
         System.gc();
     }
 
+    @Test
+    public void testClear() throws Exception {
+        OpaqueMemory mem = new OpaqueMemory(1024, false);
+        //TODO test if it is really cleaned
+        OpaqueMemory.clear(mem);
+    }
 
 }

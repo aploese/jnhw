@@ -1,10 +1,5 @@
-package de.ibapl.jnhw.posix;
+package de.ibapl.jnhw.isoc;
 
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.isoc.Errno;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,7 +25,7 @@ public class FcntlTests {
     public void tearDown() throws Exception {
     }
 
-    @Test
+        @Test
     public void testNPEOpen() throws Exception {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Fcntl.open(null, 0);
@@ -42,6 +37,11 @@ public class FcntlTests {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Fcntl.creat(null, 0);
         });
+    }
+
+    @Test
+    public void test_HAVE_FCNTL_H() throws Exception {
+        Assertions.assertTrue(Fcntl.HAVE_FCNTL_H(), "expected to have fcntl.h");
     }
 
 }

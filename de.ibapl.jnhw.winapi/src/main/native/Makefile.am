@@ -7,12 +7,15 @@ LIB_JNHW_WINAPI_RES_NAME=@JNHW_RESOURCES_DIR@/$(LIB_JNHW_WINAPI_NAME)
 
 lib_LTLIBRARIES = libjnhw-winapi.la
 
-noinst_LTLIBRARIES = libminwinbase.la
+noinst_LTLIBRARIES = libwinnt.la libminwinbase.la
 
-libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la
+libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la libwinnt.la
 
 libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
+
+libwinnt_la_SOURCES = \
+ WinntDefines.c
 
 libminwinbase_la_SOURCES = \
  Minwinbase_OVERLAPPED.c

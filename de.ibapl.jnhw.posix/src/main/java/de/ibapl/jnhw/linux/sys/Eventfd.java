@@ -13,6 +13,8 @@ public final class Eventfd extends LibJnhwPosixLoader {
 
     }
 
+    public final static native boolean HAVE_SYS_EVENTFD_H();
+
     public final static native int eventfd(int count, int flags) throws NativeErrorException;
 
     public final static native int eventfd_read(int fd, LongRef value) throws NativeErrorException;
@@ -28,11 +30,4 @@ public final class Eventfd extends LibJnhwPosixLoader {
     @Define
     public final static native int EFD_SEMAPHORE();
     
-    /**
-     * Indicates whether sys/eventds.h is available or not.
-     * @return 
-     */
-    @Define
-    public final static native boolean JNHW_HAVE_SYS_EVENTFD_H();
-
 }

@@ -90,10 +90,12 @@ build_triplet = @build@
 host_triplet = @host@
 subdir = src/main/native
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/../m4/ax_jni_include_dir.m4 \
+	$(top_srcdir)/../m4/libtool.m4 \
+	$(top_srcdir)/../m4/ltoptions.m4 \
+	$(top_srcdir)/../m4/ltsugar.m4 \
+	$(top_srcdir)/../m4/ltversion.m4 \
+	$(top_srcdir)/../m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
@@ -131,7 +133,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libjnhw_winapi_la_DEPENDENCIES =  \
-	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la
+	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la \
+	libwinnt.la
 am_libjnhw_winapi_la_OBJECTS = jnhw-winapi-jni.lo
 libjnhw_winapi_la_OBJECTS = $(am_libjnhw_winapi_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -141,6 +144,9 @@ am__v_lt_1 =
 libminwinbase_la_LIBADD =
 am_libminwinbase_la_OBJECTS = Minwinbase_OVERLAPPED.lo
 libminwinbase_la_OBJECTS = $(am_libminwinbase_la_OBJECTS)
+libwinnt_la_LIBADD =
+am_libwinnt_la_OBJECTS = WinntDefines.lo
+libwinnt_la_OBJECTS = $(am_libwinnt_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -157,7 +163,7 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo \
-	./$(DEPDIR)/jnhw-winapi-jni.Plo
+	./$(DEPDIR)/WinntDefines.Plo ./$(DEPDIR)/jnhw-winapi-jni.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -177,9 +183,10 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libjnhw_winapi_la_SOURCES) $(libminwinbase_la_SOURCES)
+SOURCES = $(libjnhw_winapi_la_SOURCES) $(libminwinbase_la_SOURCES) \
+	$(libwinnt_la_SOURCES)
 DIST_SOURCES = $(libjnhw_winapi_la_SOURCES) \
-	$(libminwinbase_la_SOURCES)
+	$(libminwinbase_la_SOURCES) $(libwinnt_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -340,10 +347,13 @@ AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
 LIB_JNHW_WINAPI_NAME = @JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
 LIB_JNHW_WINAPI_RES_NAME = @JNHW_RESOURCES_DIR@/$(LIB_JNHW_WINAPI_NAME)
 lib_LTLIBRARIES = libjnhw-winapi.la
-noinst_LTLIBRARIES = libminwinbase.la
-libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la
+noinst_LTLIBRARIES = libwinnt.la libminwinbase.la
+libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la libwinnt.la
 libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
+
+libwinnt_la_SOURCES = \
+ WinntDefines.c
 
 libminwinbase_la_SOURCES = \
  Minwinbase_OVERLAPPED.c
@@ -434,6 +444,9 @@ libjnhw-winapi.la: $(libjnhw_winapi_la_OBJECTS) $(libjnhw_winapi_la_DEPENDENCIES
 libminwinbase.la: $(libminwinbase_la_OBJECTS) $(libminwinbase_la_DEPENDENCIES) $(EXTRA_libminwinbase_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libminwinbase_la_OBJECTS) $(libminwinbase_la_LIBADD) $(LIBS)
 
+libwinnt.la: $(libwinnt_la_OBJECTS) $(libwinnt_la_DEPENDENCIES) $(EXTRA_libwinnt_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libwinnt_la_OBJECTS) $(libwinnt_la_LIBADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
@@ -441,6 +454,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinntDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-winapi-jni.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
@@ -605,6 +619,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo
+	-rm -f ./$(DEPDIR)/WinntDefines.Plo
 	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
@@ -652,6 +667,7 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo
+	-rm -f ./$(DEPDIR)/WinntDefines.Plo
 	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic

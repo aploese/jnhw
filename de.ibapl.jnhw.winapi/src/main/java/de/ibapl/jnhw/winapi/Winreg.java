@@ -5,9 +5,9 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.winapi.Minwindef.HKEY;
-import de.ibapl.jnhw.winapi.Minwindef.LPWSTR;
+import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
 
-@Include("Winreg")
+@Include("winreg.h")
 public abstract class Winreg {
 
     public static class REGSAM extends Winnt.ACCESS_MASK {

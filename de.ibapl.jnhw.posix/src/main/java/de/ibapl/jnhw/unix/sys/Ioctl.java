@@ -8,6 +8,8 @@ import de.ibapl.jnhw.IntRef;
 
 @Include("#include <sys/ioctl.h>")
 public final class Ioctl extends LibJnhwPosixLoader {
+
+    public final static native boolean HAVE_SYS_IOCTL_H();
     
     private Ioctl() {
         

@@ -11,6 +11,8 @@ import de.ibapl.jnhw.StructArray;
 public final class Poll extends LibJnhwPosixLoader {
     
     
+    public final static native boolean HAVE_POLL_H();
+
     public final static class PollFd extends OpaqueMemory {
         
         static {

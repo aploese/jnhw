@@ -3,11 +3,6 @@ package de.ibapl.jnhw.isoc;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.LibJnhwPosixLoader;
-import de.ibapl.jnhw.NotDefinedException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Include("#include <errno.h>")
 public abstract class Errno extends LibJnhwPosixLoader {
@@ -15,6 +10,8 @@ public abstract class Errno extends LibJnhwPosixLoader {
     protected Errno() {
 
     }
+
+    public final static native boolean HAVE_ERRNO_H();
 
     /**
      * Mathematics argument out of domain of function.

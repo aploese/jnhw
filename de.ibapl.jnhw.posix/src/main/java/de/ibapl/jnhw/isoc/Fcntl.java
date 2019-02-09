@@ -11,7 +11,8 @@ public class Fcntl extends LibJnhwPosixLoader {
     protected Fcntl() {
     }
 
-    /**
+    public final static native boolean HAVE_FCNTL_H();
+   /**
      * Creates the named file with the mode flags.
      * @param file
      * @param mode

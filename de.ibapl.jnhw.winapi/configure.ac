@@ -11,7 +11,7 @@ AM_PROG_AR
 LT_INIT()
 AC_CONFIG_SRCDIR([src/main/native/jnhw-winapi-jni.c])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_MACRO_DIRS([m4])
+AC_CONFIG_MACRO_DIRS([../m4])
 
 # Checks for programs.
 AC_PROG_CC
@@ -81,7 +81,7 @@ AC_SUBST(JNHW_COMMON_SRC_DIR)
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([fileapi.h minwinbase.h  minwindef.h ])
+AC_CHECK_HEADERS([winnt.h fileapi.h minwinbase.h  minwindef.h ])
 
 # Checks for typedefs, structures, and compiler characteristics.
 

@@ -1,7 +1,9 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Define;
+import de.ibapl.jnhw.Include;
 
+@Include("winerr")
 public abstract class Winerr {
 
     @Define

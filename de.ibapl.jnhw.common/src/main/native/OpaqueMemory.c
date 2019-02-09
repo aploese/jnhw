@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
 
 #ifdef __cplusplus
@@ -57,6 +58,16 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_OpaqueMemory_calloc
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory_free
   (JNIEnv *env, jclass clazz, jlong baseAddress) {
     free((void*)(uintptr_t)baseAddress);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_OpaqueMemory
+ * Method:    memset
+ * Signature: (JBI)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory_memset
+  (JNIEnv *env, jclass clazz, jlong baseAddress, jbyte byteToSet, jint sizeToSet) {
+    memset((void*)(uintptr_t)baseAddress, byteToSet, sizeToSet);
 }
 
 #ifdef __cplusplus

@@ -8,6 +8,7 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
+import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
  *
@@ -15,5 +16,5 @@ import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
  */
 public final class Ioapiset {
 
-    public final static native void GetOverlappedResult(Minwindef.HANDLE hFile, OVERLAPPED lpOverlapped, IntRef lpNumberOfBytesTransferred, boolean bWait) throws NativeErrorException;
+    public final static native void GetOverlappedResult(HANDLE hFile, OVERLAPPED lpOverlapped, IntRef lpNumberOfBytesTransferred, boolean bWait) throws NativeErrorException;
 }

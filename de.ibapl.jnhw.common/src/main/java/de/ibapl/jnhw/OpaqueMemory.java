@@ -25,6 +25,12 @@ public class OpaqueMemory extends LibJnhwLoader {
     private static final native long calloc(int elements, int sizeInBytes) throws NativeErrorException;
 
     private static final native void free(long baseAddress);
+    
+    private static native void memset(long baseAddress, byte c, int size);
+    
+    public static final void clear(OpaqueMemory mem) {
+        memset(mem.baseAddress, (byte)0, mem.sizeInBytes);
+    }
 
     public OpaqueMemory(int sizeInBytes, boolean clearMem) {
         this.sizeInBytes = sizeInBytes;

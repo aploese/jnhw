@@ -8,7 +8,7 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.winapi.Minwindef.HANDLE;
+import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
 import de.ibapl.jnhw.NativeErrorException;
@@ -26,9 +26,9 @@ public final class Fileapi {
 
     private static native long CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, long lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, long hTemplateFile) throws  NativeErrorException;
 
-    public final static Minwindef.HANDLE CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws  NativeErrorException  {
+    public final static HANDLE CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws  NativeErrorException  {
         final long nativeHandle = CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes.baseAddress, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile.value);
-        return new Minwindef.HANDLE(nativeHandle);
+        return new HANDLE(nativeHandle);
     }
  
     private static native void FlushFileBuffers(long hFile) throws NativeErrorException;

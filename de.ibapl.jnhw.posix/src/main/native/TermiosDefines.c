@@ -1,16 +1,31 @@
 #include "jnhw.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    HAVE_TERMIOS_H
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Termios_HAVE_1TERMIOS_1H
+    (JNIEnv *env, jclass clazz) {
+#ifdef HAVE_TERMIOS_H
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
+    }
+
 #ifdef HAVE_TERMIOS_H
 
 #include "de_ibapl_jnhw_posix_Termios.h"
 #include <termios.h>
 #include <errno.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
-/*
+    /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    B0
      * Signature: ()I
@@ -625,12 +640,12 @@ extern "C" {
         return VTIME;
     }
 
-    /*
- * Class:     de_ibapl_jnhw_posix_Termios
- * Method:    NCCS
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NCCS
+        /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    NCCS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NCCS
     (JNIEnv *env, jclass clazz) {
         return NCCS;
     }

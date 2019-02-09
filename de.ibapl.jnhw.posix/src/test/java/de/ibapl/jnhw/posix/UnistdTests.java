@@ -106,7 +106,6 @@ public class UnistdTests {
         IntRef reaDFD = new IntRef();
         IntRef writeFD = new IntRef();
         Unistd.pipe(reaDFD, writeFD);
-        System.err.println("XXXXXXXXXXXXXXXXXXXx " + writeFD.value);
         ByteBuffer writeBuffer = ByteBuffer.allocate(this.writeBytes.length);
         writeBuffer.put(writeBytes);
         writeBuffer.flip();

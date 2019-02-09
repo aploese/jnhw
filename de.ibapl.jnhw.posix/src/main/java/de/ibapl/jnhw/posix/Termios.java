@@ -38,6 +38,8 @@ import de.ibapl.jnhw.OpaqueMemory;
 @Include("#include <termios.h>")
 public final class Termios extends LibJnhwPosixLoader {
 
+        public final static native boolean HAVE_TERMIOS_H();
+
     /**
      * Wrapper for the termios struct.
      *

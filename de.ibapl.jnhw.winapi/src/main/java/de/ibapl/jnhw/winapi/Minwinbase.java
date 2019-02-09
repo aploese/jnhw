@@ -8,6 +8,7 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.OpaqueMemory;
+import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
  *
@@ -29,15 +30,15 @@ public class Minwinbase extends LibJnhwWinApiLoader {
         private static native long hEvent(long baseAddress);
         private static native void hEvent(long baseAddress, long value);
         
-        private Minwindef.HANDLE hEvent;
+        private HANDLE hEvent;
         
-        public final void hEvent(Minwindef.HANDLE value) {
+        public final void hEvent(HANDLE value) {
             hEvent = value;
             hEvent(baseAddress, hEvent.value);
         }
         
         //TODO test for modifications in native mem ???
-        public final Minwindef.HANDLE hEvent() {
+        public final HANDLE hEvent() {
             return hEvent;
         }
 
