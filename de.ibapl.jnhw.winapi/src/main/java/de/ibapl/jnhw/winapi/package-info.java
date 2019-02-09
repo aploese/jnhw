@@ -18,4 +18,4 @@
  * #L%
  */
 @org.osgi.annotation.versioning.Version("0.0.0")
-package de.ibapl.jnhw.posix;
+package de.ibapl.jnhw.winapi;

@@ -1,7 +1,9 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.OS;
 import de.ibapl.jnhw.isoc.Errno;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
 public class UnistdTests {
@@ -33,8 +36,10 @@ public class UnistdTests {
     byte[] writeBytes = "Hello world".getBytes();
     byte[] readBytes = new byte[1024];
 
+    //TODO move to isoc
     @Test
     public void testPipe() throws Exception {
+        Assumptions.assumeFalse(LibJnhwLoader.getOS() == OS.WINDOWS);
         IntRef reaDFD = new IntRef();
         IntRef writeFD = new IntRef();
         Unistd.pipe(reaDFD, writeFD);
@@ -49,6 +54,7 @@ public class UnistdTests {
 
     @Test
     public void testPipeWriteWrongArgs() throws Exception {
+        Assumptions.assumeFalse(LibJnhwLoader.getOS() == OS.WINDOWS);
         IntRef readFD = new IntRef();
         IntRef writeFD = new IntRef();
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -61,6 +67,7 @@ public class UnistdTests {
 
     @Test
     public void testBufWriteWrongArgs() throws Exception {
+        Assumptions.assumeFalse(LibJnhwLoader.getOS() == OS.WINDOWS);
         IntRef readFD = new IntRef();
         IntRef writeFD = new IntRef();
         
@@ -82,6 +89,7 @@ public class UnistdTests {
 
     @Test
     public void testBufReadWrongArgs() throws Exception {
+        Assumptions.assumeFalse(LibJnhwLoader.getOS() == OS.WINDOWS);
         IntRef readFD = new IntRef();
         IntRef writeFD = new IntRef();
 
@@ -103,6 +111,7 @@ public class UnistdTests {
 
     @Test
     public void testPipeWithHeapBuffer() throws Exception {
+        Assumptions.assumeFalse(LibJnhwLoader.getOS() == OS.WINDOWS);
         IntRef reaDFD = new IntRef();
         IntRef writeFD = new IntRef();
         Unistd.pipe(reaDFD, writeFD);

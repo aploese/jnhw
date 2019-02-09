@@ -34,11 +34,6 @@ public class TermiosTests {
     }
 
     @Test
-    public void testCreatePollFd() throws Exception {
-        Poll.PollFds pollFds = new Poll.PollFds(2);
-    }
-
-    @Test
     public void testNPEpoll() throws Exception {
         Assumptions.assumeFalse(LibJnhwLoader.getOS() == OS.WINDOWS);
         Assertions.assertThrows(NullPointerException.class, () -> {
