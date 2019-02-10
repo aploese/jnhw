@@ -144,8 +144,7 @@ libeventfd_la_LIBADD =
 am_libeventfd_la_OBJECTS = EventFdDefines.lo EventFdFunctions.lo
 libeventfd_la_OBJECTS = $(am_libeventfd_la_OBJECTS)
 libfcntl_la_LIBADD =
-am_libfcntl_la_OBJECTS = Isoc_FcntlDefines.lo Isoc_FcntlFunctions.lo \
-	Posix_FcntlDefines.lo Posix_FcntlFunctions.lo
+am_libfcntl_la_OBJECTS = FcntlDefines.lo FcntlFunctions.lo
 libfcntl_la_OBJECTS = $(am_libfcntl_la_OBJECTS)
 libioclt_la_LIBADD =
 am_libioclt_la_OBJECTS = IocltDefines.lo IoctlFunctions.lo
@@ -182,18 +181,15 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/EventFdDefines.Plo \
-	./$(DEPDIR)/EventFdFunctions.Plo ./$(DEPDIR)/IocltDefines.Plo \
+	./$(DEPDIR)/EventFdFunctions.Plo ./$(DEPDIR)/FcntlDefines.Plo \
+	./$(DEPDIR)/FcntlFunctions.Plo ./$(DEPDIR)/IocltDefines.Plo \
 	./$(DEPDIR)/IoctlFunctions.Plo \
 	./$(DEPDIR)/Isoc_ErrnoDefines.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
-	./$(DEPDIR)/Isoc_FcntlDefines.Plo \
-	./$(DEPDIR)/Isoc_FcntlFunctions.Plo \
 	./$(DEPDIR)/Isoc_UnistdDefines.Plo \
 	./$(DEPDIR)/Isoc_UnistdFunctions.Plo \
 	./$(DEPDIR)/PollDefines.Plo ./$(DEPDIR)/PollFunctions.Plo \
 	./$(DEPDIR)/Poll_PollFd.Plo ./$(DEPDIR)/Posix_ErrnoDefines.Plo \
-	./$(DEPDIR)/Posix_FcntlDefines.Plo \
-	./$(DEPDIR)/Posix_FcntlFunctions.Plo \
 	./$(DEPDIR)/Posix_UnistdFunctions.Plo \
 	./$(DEPDIR)/TermiosDefines.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo \
@@ -410,10 +406,8 @@ libunistd_la_SOURCES = \
  Posix_UnistdFunctions.c
 
 libfcntl_la_SOURCES = \
- Isoc_FcntlDefines.c \
- Isoc_FcntlFunctions.c \
- Posix_FcntlDefines.c \
- Posix_FcntlFunctions.c
+ FcntlDefines.c \
+ FcntlFunctions.c
 
 libpoll_la_SOURCES = \
  PollDefines.c \
@@ -536,20 +530,18 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdFunctions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FcntlDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FcntlFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IocltDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_FcntlDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_FcntlFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_UnistdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Poll_PollFd.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_FcntlDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_FcntlFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
@@ -719,20 +711,18 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
+	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
+	-rm -f ./$(DEPDIR)/FcntlFunctions.Plo
 	-rm -f ./$(DEPDIR)/IocltDefines.Plo
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
-	-rm -f ./$(DEPDIR)/Isoc_FcntlDefines.Plo
-	-rm -f ./$(DEPDIR)/Isoc_FcntlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
-	-rm -f ./$(DEPDIR)/Posix_FcntlDefines.Plo
-	-rm -f ./$(DEPDIR)/Posix_FcntlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Posix_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
@@ -785,20 +775,18 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
+	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
+	-rm -f ./$(DEPDIR)/FcntlFunctions.Plo
 	-rm -f ./$(DEPDIR)/IocltDefines.Plo
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
-	-rm -f ./$(DEPDIR)/Isoc_FcntlDefines.Plo
-	-rm -f ./$(DEPDIR)/Isoc_FcntlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
-	-rm -f ./$(DEPDIR)/Posix_FcntlDefines.Plo
-	-rm -f ./$(DEPDIR)/Posix_FcntlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Posix_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo

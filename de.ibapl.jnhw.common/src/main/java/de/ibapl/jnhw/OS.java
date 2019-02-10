@@ -13,6 +13,7 @@ public enum OS {
     LINUX("linux", "lib%1$s.so.%2$d"), 
     WINDOWS("windows", "lib%1$s-%2$d.dll"), 
     SOLARIS("solaris","lib%1$s.so.%2$d"), 
+    FREE_BSD("freebsd", "lib%1$s.so.%2$d"), 
     DARWIN("darwin","lib%1$s.so.%2$d");
     
     public final String osName;

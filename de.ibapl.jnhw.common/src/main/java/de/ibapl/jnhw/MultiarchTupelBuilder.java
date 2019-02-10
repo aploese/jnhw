@@ -19,9 +19,6 @@ import java.util.Set;
  * @author Arne Plöse
  */
 public final class MultiarchTupelBuilder {
-    
-    
-    
 
     // known system properties
     public final String sun_os_patch_level;
@@ -177,6 +174,14 @@ public final class MultiarchTupelBuilder {
                     default:
                         throw new UnsupportedOperationException("Can't handle os.arch of linux\n" + listSystemProperties());
                 }
+            case FREE_BSD:
+                switch (os_arch) {
+                    case "amd64":
+                        result.add(MultiarchInfo.X86_64__FREE_BSD__BSD);
+                        return result;
+                    default:
+                        throw new UnsupportedOperationException("Can't handle os.arch of FreeBSD\n" + listSystemProperties());
+                }
             case WINDOWS:
                 switch (os_arch) {
                     case "amd64":
@@ -195,12 +200,17 @@ public final class MultiarchTupelBuilder {
     }
 
     public OS getOs() {
-        if (os_name.startsWith("Windows")) {
-            return OS.WINDOWS;
-        } else if (os_name.equals("Linux")) {
-            return OS.LINUX;
-        } else {
-            throw new IllegalArgumentException("Unknown OS: " + os_name);
+        switch (os_name) {
+            case "Linux":
+                return OS.LINUX;
+            case "FreeBSD":
+                return OS.LINUX;
+            default:
+                if (os_name.startsWith("Windows")) {
+                    return OS.WINDOWS;
+                } else {
+                    throw new IllegalArgumentException("Unknown OS: " + os_name);
+                }
         }
     }
 

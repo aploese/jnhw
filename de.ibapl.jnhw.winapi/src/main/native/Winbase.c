@@ -1,8 +1,8 @@
-#include <windows.h>
 #include <config.h>
 #include "jnhw.h"
 
 #ifdef HAVE_MARKER_H
+#include <windows.h>
 
 #ifdef __cplusplus
 extern "C" {

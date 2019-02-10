@@ -1,8 +1,24 @@
 #include <config.h>
 #include "jnhw.h"
+
 #if HAVE_UNISTD_H
 # include <unistd.h>
 #endif
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Fcntl
+ * Method:    HAVE_FCNTL_H
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Fcntl_HAVE_1FCNTL_1H
+    (JNIEnv *env, jclass clazz) {
+#ifdef _POSIX_VERSION
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
+    }
+
 
 #ifdef _POSIX_VERSION
 
@@ -12,6 +28,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_RDWR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1RDWR
+    (JNIEnv *env, jclass clazz) {
+        return O_RDWR;
+    }
+
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl

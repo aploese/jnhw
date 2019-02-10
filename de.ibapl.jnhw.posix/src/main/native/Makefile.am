@@ -34,10 +34,8 @@ libunistd_la_SOURCES = \
  Posix_UnistdFunctions.c
 
 libfcntl_la_SOURCES = \
- Isoc_FcntlDefines.c \
- Isoc_FcntlFunctions.c \
- Posix_FcntlDefines.c \
- Posix_FcntlFunctions.c
+ FcntlDefines.c \
+ FcntlFunctions.c
 
 libpoll_la_SOURCES = \
  PollDefines.c \

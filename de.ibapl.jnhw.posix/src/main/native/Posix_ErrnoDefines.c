@@ -434,6 +434,7 @@ extern "C" {
         return ECHRNG;
 #else 
         throw_NotDefinedException(env, "ECHRNG");
+        return 0;
 #endif
     }
 
@@ -448,6 +449,7 @@ extern "C" {
         return EL2NSYNC;
 #else 
         throw_NotDefinedException(env, "EL2NSYNC");
+        return 0;
 #endif
     }
 
@@ -462,6 +464,7 @@ extern "C" {
         return EL3HLT;
 #else 
         throw_NotDefinedException(env, "EL3HLT");
+        return 0;
 #endif
     }
 
@@ -476,6 +479,7 @@ extern "C" {
                 return  EL3RST;
 #else 
         throw_NotDefinedException(env, "EL3RST");
+        return 0;
 #endif
     }
 
@@ -490,6 +494,7 @@ extern "C" {
                 return  ELNRNG;
 #else 
         throw_NotDefinedException(env, "ELNRNG");
+        return 0;
 #endif
     }
 
@@ -504,6 +509,7 @@ extern "C" {
         return  EUNATCH;
 #else 
         throw_NotDefinedException(env, "EUNATCH");
+        return 0;
 #endif
     }
 
@@ -518,6 +524,7 @@ extern "C" {
         return  ENOCSI;
 #else 
         throw_NotDefinedException(env, "ENOCSI");
+        return 0;
 #endif
     }
 
@@ -532,6 +539,7 @@ extern "C" {
         return  EL2HLT;
 #else 
         throw_NotDefinedException(env, "EL2HLT");
+        return 0;
 #endif
     }
 
@@ -546,6 +554,7 @@ extern "C" {
         return  EBADE;
 #else 
         throw_NotDefinedException(env, "EBADE");
+        return 0;
 #endif
     }
 
@@ -560,6 +569,7 @@ extern "C" {
         return  EBADR;
 #else 
         throw_NotDefinedException(env, "EBADR");
+        return 0;
 #endif
     }
 
@@ -574,6 +584,7 @@ extern "C" {
         return  EXFULL;
 #else 
         throw_NotDefinedException(env, "EXFULL");
+        return 0;
 #endif
     }
 
@@ -588,6 +599,7 @@ extern "C" {
         return  ENOANO;
 #else 
         throw_NotDefinedException(env, "ENOANO");
+        return 0;
 #endif
     }
 
@@ -602,6 +614,7 @@ extern "C" {
         return  EBADRQC;
 #else 
         throw_NotDefinedException(env, "EBADRQC");
+        return 0;
 #endif
     }
 
@@ -616,6 +629,7 @@ extern "C" {
         return  EBADSLT;
 #else 
         throw_NotDefinedException(env, "EBADSLT");
+        return 0;
 #endif
     }
 
@@ -630,6 +644,7 @@ extern "C" {
         return  EDEADLOCK;
 #else 
         throw_NotDefinedException(env, "EDEADLOCK");
+        return 0;
 #endif
     }
 
@@ -644,6 +659,7 @@ extern "C" {
         return  EBFONT;
 #else 
         throw_NotDefinedException(env, "EBFONT");
+        return 0;
 #endif
     }
 
@@ -658,6 +674,7 @@ extern "C" {
         return  ENOSTR;
 #else 
         throw_NotDefinedException(env, "ENOSTR");
+        return 0;
 #endif
     }
 
@@ -672,6 +689,7 @@ extern "C" {
         return  ENODATA;
 #else 
         throw_NotDefinedException(env, "ENODATA");
+        return 0;
 #endif
     }
 
@@ -686,6 +704,7 @@ extern "C" {
         return  ETIME;
 #else 
         throw_NotDefinedException(env, "ETIME");
+        return 0;
 #endif
     }
 
@@ -700,6 +719,7 @@ extern "C" {
         return  ENOSR;
 #else 
         throw_NotDefinedException(env, "ENOSR");
+        return 0;
 #endif
     }
 
@@ -714,6 +734,7 @@ extern "C" {
         return  ENONET;
 #else 
         throw_NotDefinedException(env, "ENONET");
+        return 0;
 #endif
     }
 
@@ -728,6 +749,7 @@ extern "C" {
         return  ENOPKG;
 #else 
         throw_NotDefinedException(env, "ENOPKG");
+        return 0;
 #endif
     }
 
@@ -762,6 +784,7 @@ extern "C" {
         return  EADV;
 #else 
         throw_NotDefinedException(env, "EADV");
+        return 0;
 #endif
     }
 
@@ -776,6 +799,7 @@ extern "C" {
         return  ESRMNT;
 #else 
         throw_NotDefinedException(env, "ESRMNT");
+        return 0;
 #endif
     }
 
@@ -790,6 +814,7 @@ extern "C" {
         return  ECOMM;
 #else 
         throw_NotDefinedException(env, "ECOMM");
+        return 0;
 #endif
     }
 
@@ -824,6 +849,7 @@ extern "C" {
         return  EDOTDOT;
 #else 
         throw_NotDefinedException(env, "EDOTDOT");
+        return 0;
 #endif
     }
 
@@ -858,6 +884,7 @@ extern "C" {
         return  ENOTUNIQ;
 #else 
         throw_NotDefinedException(env, "ENOTUNIQ");
+        return 0;
 #endif
     }
 
@@ -872,6 +899,7 @@ extern "C" {
         return  EBADFD;
 #else 
         throw_NotDefinedException(env, "EBADFD");
+        return 0;
 #endif
     }
 
@@ -886,6 +914,7 @@ extern "C" {
         return  EREMCHG;
 #else 
         throw_NotDefinedException(env, "EREMCHG");
+        return 0;
 #endif
     }
 
@@ -900,6 +929,7 @@ extern "C" {
         return  ELIBACC;
 #else 
         throw_NotDefinedException(env, "ELIBACC");
+        return 0;
 #endif
     }
 
@@ -914,6 +944,7 @@ extern "C" {
         return  ELIBBAD;
 #else 
         throw_NotDefinedException(env, "ELIBBAD");
+        return 0;
 #endif
     }
 
@@ -928,6 +959,7 @@ extern "C" {
         return  ELIBSCN;
 #else 
         throw_NotDefinedException(env, "ELIBSCN");
+        return 0;
 #endif
     }
 
@@ -942,6 +974,7 @@ extern "C" {
         return  ELIBMAX;
 #else 
         throw_NotDefinedException(env, "ELIBMAX");
+        return 0;
 #endif
     }
 
@@ -956,6 +989,7 @@ extern "C" {
         return  ELIBEXEC;
 #else 
         throw_NotDefinedException(env, "ELIBEXEC");
+        return 0;
 #endif
     }
 
@@ -970,6 +1004,7 @@ extern "C" {
         return  ERESTART;
 #else 
         throw_NotDefinedException(env, "ERESTART");
+        return 0;
 #endif
     }
 
@@ -984,6 +1019,7 @@ extern "C" {
         return  ESTRPIPE;
 #else 
         throw_NotDefinedException(env, "ESTRPIPE");
+        return 0;
 #endif
     }
 
@@ -1298,6 +1334,7 @@ extern "C" {
         return  EUCLEAN;
 #else 
         throw_NotDefinedException(env, "EUCLEAN");
+        return 0;
 #endif
     }
 
@@ -1312,6 +1349,7 @@ extern "C" {
         return  ENOTNAM;
 #else 
         throw_NotDefinedException(env, "ENOTNAM");
+        return 0;
 #endif
     }
 
@@ -1326,6 +1364,7 @@ extern "C" {
         return  ENAVAIL;
 #else 
         throw_NotDefinedException(env, "ENAVAIL");
+        return 0;
 #endif
     }
 
@@ -1340,6 +1379,7 @@ extern "C" {
         return  EISNAM;
 #else 
         throw_NotDefinedException(env, "EISNAM");
+        return 0;
 #endif
     }
 
@@ -1354,6 +1394,7 @@ extern "C" {
         return  EREMOTEIO;
 #else 
         throw_NotDefinedException(env, "EREMOTEIO");
+        return 0;
 #endif
     }
 
@@ -1378,6 +1419,7 @@ extern "C" {
         return  ENOMEDIUM;
 #else 
         throw_NotDefinedException(env, "ENOMEDIUM");
+        return 0;
 #endif
     }
 
@@ -1392,6 +1434,7 @@ extern "C" {
         return  EMEDIUMTYPE;
 #else 
         throw_NotDefinedException(env, "EMEDIUMTYPE");
+        return 0;
 #endif
     }
 
@@ -1416,6 +1459,7 @@ extern "C" {
         return  ENOKEY;
 #else 
         throw_NotDefinedException(env, "ENOKEY");
+        return 0;
 #endif
     }
 
@@ -1430,6 +1474,7 @@ extern "C" {
         return  EKEYEXPIRED;
 #else 
         throw_NotDefinedException(env, "EKEYEXPIRED");
+        return 0;
 #endif
     }
 
@@ -1444,6 +1489,7 @@ extern "C" {
         return  EKEYREVOKED;
 #else 
         throw_NotDefinedException(env, "EKEYREVOKED");
+        return 0;
 #endif
     }
 
@@ -1458,6 +1504,7 @@ extern "C" {
         return  EKEYREJECTED;
 #else 
         throw_NotDefinedException(env, "EKEYREJECTED");
+        return 0;
 #endif
     }
 
@@ -1492,6 +1539,7 @@ extern "C" {
         return  ERFKILL;
 #else 
         throw_NotDefinedException(env, "ERFKILL");
+        return 0;
 #endif
     }
 
@@ -1506,6 +1554,7 @@ extern "C" {
         return  EHWPOISON;
 #else 
         throw_NotDefinedException(env, "EHWPOISON");
+        return 0;
 #endif
     }
 

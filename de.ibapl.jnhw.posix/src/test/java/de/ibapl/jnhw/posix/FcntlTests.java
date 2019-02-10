@@ -1,4 +1,4 @@
-package de.ibapl.jnhw.isoc;
+package de.ibapl.jnhw.posix;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
