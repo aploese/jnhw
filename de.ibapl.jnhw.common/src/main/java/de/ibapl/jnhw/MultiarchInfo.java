@@ -22,7 +22,8 @@ public enum MultiarchInfo {
     MIPS_64__LINUX__GNU_ABI_64(64, Endianess.BIG, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64), 
     X86_64__WINDOWS__PE32_PLUS(64, Endianess.BIG, Arch.X86_64, OS.WINDOWS, Abi.PE32_PLUS), 
     I386__WINDOWS__PE32(32, Endianess.BIG, Arch.I386, OS.WINDOWS, Abi.PE32), 
-    X86_64__FREE_BSD__BSD(64, Endianess.BIG, Arch.X86_64, OS.FREE_BSD, Abi.BSD);
+    X86_64__FREE_BSD__BSD(64, Endianess.BIG, Arch.X86_64, OS.FREE_BSD, Abi.BSD), 
+    X86_64__MAC_OS_X__BSD(64, Endianess.BIG, Arch.X86_64, OS.MAC_OS_X, Abi.BSD);
     
     
     private MultiarchInfo(int wordSize, Endianess endianess, Arch arch, OS os, Abi abi) {

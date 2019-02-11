@@ -14,7 +14,7 @@ public enum OS {
     WINDOWS("windows", "lib%1$s-%2$d.dll"), 
     SOLARIS("solaris","lib%1$s.so.%2$d"), 
     FREE_BSD("freebsd", "lib%1$s.so.%2$d"), 
-    DARWIN("darwin","lib%1$s.so.%2$d");
+    MAC_OS_X("macosx","lib%1$s.so.%2$d");
     
     public final String osName;
     public final String formatLibNameString;

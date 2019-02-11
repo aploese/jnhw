@@ -182,6 +182,14 @@ public final class MultiarchTupelBuilder {
                     default:
                         throw new UnsupportedOperationException("Can't handle os.arch of FreeBSD\n" + listSystemProperties());
                 }
+            case MAC_OS_X:
+                switch (os_arch) {
+                    case "amd64":
+                        result.add(MultiarchInfo.X86_64__MAC_OS_X__BSD);
+                        return result;
+                    default:
+                        throw new UnsupportedOperationException("Can't handle os.arch of Mac OS X\n" + listSystemProperties());
+                }
             case WINDOWS:
                 switch (os_arch) {
                     case "amd64":
@@ -205,6 +213,8 @@ public final class MultiarchTupelBuilder {
                 return OS.LINUX;
             case "FreeBSD":
                 return OS.FREE_BSD;
+            case "Mac OS X":
+                return OS.MAC_OS_X;
             default:
                 if (os_name.startsWith("Windows")) {
                     return OS.WINDOWS;
