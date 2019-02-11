@@ -204,7 +204,7 @@ public final class MultiarchTupelBuilder {
             case "Linux":
                 return OS.LINUX;
             case "FreeBSD":
-                return OS.LINUX;
+                return OS.FREE_BSD;
             default:
                 if (os_name.startsWith("Windows")) {
                     return OS.WINDOWS;
