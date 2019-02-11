@@ -639,9 +639,9 @@ LIBOBJS
 JNHW_COMMON_SRC_DIR
 JNI_HEADER_DIR
 JNHW_RESOURCES_DIR
-JNHW_MULTIARCH_TUPEL
 JNHW_LIB_SUFFIX
 JNHW_LIB_PREFIX
+JNHW_MULTIARCH_TUPEL
 JNHW_VERSION
 JNHW_VERSION_INFO
 JNI_INCLUDE_FLAGS
@@ -12962,8 +12962,6 @@ JNHW_VERSION="0"
 
 case "$host_os" in
     mingw32*)
-        JNHW_LIB_SUFFIX="-\$(JNHW_VERSION).dll"
-        JNHW_LIB_PREFIX="lib"
         case "$host_cpu" in
             x86_64)
                 JNHW_MULTIARCH_TUPEL="x86_64-windows-pe32+"
@@ -12976,9 +12974,17 @@ case "$host_os" in
             ;;
         esac
     ;;
+    freebsd*)
+	case "$host_cpu" in
+	x86_64)
+        	JNHW_MULTIARCH_TUPEL="x86_64-freebsd-bsd"
+	;;
+	*)
+        	fail not supported
+	;;
+	esac
+    ;;
     *)
-        JNHW_LIB_PREFIX="lib"
-        JNHW_LIB_SUFFIX=".so.\$(JNHW_VERSION)"
 	case "$host_cpu" in
 	i686)
         	JNHW_MULTIARCH_TUPEL="i386-\$(host_os)"
@@ -12992,6 +12998,21 @@ case "$host_os" in
 	esac
     ;;
 esac
+
+
+
+
+case "$host_os" in
+    mingw32*)
+        JNHW_LIB_SUFFIX="-\$(JNHW_VERSION).dll"
+        JNHW_LIB_PREFIX="lib"
+    ;;
+    *)
+        JNHW_LIB_PREFIX="lib"
+        JNHW_LIB_SUFFIX=".so.\$(JNHW_VERSION)"
+    ;;
+esac
+
 
 
 
