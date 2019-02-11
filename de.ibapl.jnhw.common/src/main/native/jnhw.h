@@ -1,5 +1,5 @@
 #ifndef _ljnhw_H
-#define _jnhw_H
+#define _ljnhw_H
 
 #include <jni.h>
 

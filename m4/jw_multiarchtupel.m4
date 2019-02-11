@@ -13,6 +13,16 @@ AC_DEFUN([JW_MULTIARCHTUPEL],
             ;;
         esac
     ;;
+    darwin)
+	case "$host_cpu" in
+	x86_64)
+        	JNHW_MULTIARCH_TUPEL="x86_64-macosx-bsd"
+	;;
+	*)
+        	fail not supported
+	;;
+	esac
+    ;;
     freebsd*)
 	case "$host_cpu" in
 	x86_64)

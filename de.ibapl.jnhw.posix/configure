@@ -639,6 +639,7 @@ LIBOBJS
 JNHW_COMMON_SRC_DIR
 JNI_HEADER_DIR
 JNHW_RESOURCES_DIR
+JNHW_STRIP_FLAG
 JNHW_LIB_SUFFIX
 JNHW_LIB_PREFIX
 JNHW_MULTIARCH_TUPEL
@@ -13122,6 +13123,16 @@ case "$host_os" in
             ;;
         esac
     ;;
+    darwin)
+	case "$host_cpu" in
+	x86_64)
+        	JNHW_MULTIARCH_TUPEL="x86_64-macosx-bsd"
+	;;
+	*)
+        	fail not supported
+	;;
+	esac
+    ;;
     freebsd*)
 	case "$host_cpu" in
 	x86_64)
@@ -13154,10 +13165,17 @@ case "$host_os" in
     mingw32*)
         JNHW_LIB_SUFFIX="-\$(JNHW_VERSION).dll"
         JNHW_LIB_PREFIX="lib"
+        JNHW_STRIP_FLAG="-s"
+    ;;
+    darwin)
+        JNHW_LIB_SUFFIX=".\$(JNHW_VERSION).dylib"
+        JNHW_LIB_PREFIX="lib"
+        JNHW_STRIP_FLAG="-S"
     ;;
     *)
         JNHW_LIB_PREFIX="lib"
         JNHW_LIB_SUFFIX=".so.\$(JNHW_VERSION)"
+        JNHW_STRIP_FLAG="-s"
     ;;
 esac
 

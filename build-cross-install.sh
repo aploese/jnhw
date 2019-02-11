@@ -18,10 +18,16 @@ for d in\
  "mips64el-linux-gnuabi64"\
  "mipsel-linux-gnu"
 do
-  ./configure --host=$d --prefix=`pwd`/target/$d && make clean && make && make install
+  ./configure --host=$d --prefix=`pwd`/target/$d 
+  make clean 
+  make 
+  make install
 done
 
-./configure --prefix=`pwd`/target && make clean && make && make install
+./configure --prefix=`pwd`/target 
+make clean 
+make 
+make install
 
 mvn install
 
