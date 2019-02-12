@@ -15,23 +15,29 @@ extern "C" {
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024SECURITY_1ATTRIBUTES_sizeofSECURITY_1ATTRIBUTES
-  (JNIEnv *env, jclass clazz);
+  (JNIEnv *env, jclass clazz) {
+    return sizeof(SECURITY_ATTRIBUTES);
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Minwinbase_SECURITY_ATTRIBUTES
  * Method:    nLength
- * Signature: ()J
+ * Signature: (J)J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024SECURITY_1ATTRIBUTES_nLength
-  (JNIEnv *, jobject);
+  (JNIEnv *env, jobject clazz,  jlong baseAddress){
+       return ((SECURITY_ATTRIBUTES*) (uintptr_t) baseAddress)->nLength;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Minwinbase_SECURITY_ATTRIBUTES
- * Method:    bInheritHandle0
- * Signature: ()Z
+ * Method:    bInheritHandle
+ * Signature: (J)Z
  */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024SECURITY_1ATTRIBUTES_bInheritHandle0
-  (JNIEnv *, jobject);
+JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024SECURITY_1ATTRIBUTES_bInheritHandle
+  (JNIEnv *env, jobject clazz,  jlong baseAddress){
+       return ((SECURITY_ATTRIBUTES*) (uintptr_t) baseAddress)->bInheritHandle;
+}
 
 #ifdef __cplusplus
 }

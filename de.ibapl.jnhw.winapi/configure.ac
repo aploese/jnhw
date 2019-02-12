@@ -47,7 +47,7 @@ AC_SUBST(JNHW_COMMON_SRC_DIR)
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([winnt.h fileapi.h minwinbase.h  minwindef.h],[],[],[#include <windows.h>])
+AC_CHECK_HEADERS([winnt.h fileapi.h minwinbase.h  minwindef.h winbase.h winreg.h],[],[],[#include <windows.h>])
 
 # Checks for typedefs, structures, and compiler characteristics.
 

@@ -136,7 +136,7 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libjnhw_winapi_la_DEPENDENCIES =  \
 	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la \
-	libwinnt.la
+	libwinnt.la libwinbase.la libwinreg.la
 am_libjnhw_winapi_la_OBJECTS = jnhw-winapi-jni.lo
 libjnhw_winapi_la_OBJECTS = $(am_libjnhw_winapi_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -144,11 +144,19 @@ am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
 libminwinbase_la_LIBADD =
-am_libminwinbase_la_OBJECTS = Minwinbase_OVERLAPPED.lo
+am_libminwinbase_la_OBJECTS = Minwinbase_OVERLAPPED.lo \
+	Minwinbase_SECURITY_ATTRIBUTES.lo
 libminwinbase_la_OBJECTS = $(am_libminwinbase_la_OBJECTS)
+libwinbase_la_LIBADD =
+am_libwinbase_la_OBJECTS = WinbaseDefines.lo Winbase_COMMTIMEOUTS.lo \
+	Winbase_COMSTAT.lo Winbase_DCB.lo
+libwinbase_la_OBJECTS = $(am_libwinbase_la_OBJECTS)
 libwinnt_la_LIBADD =
-am_libwinnt_la_OBJECTS = WinntDefines.lo
+am_libwinnt_la_OBJECTS = WinntDefines.lo Winnt_LPWSTR.lo
 libwinnt_la_OBJECTS = $(am_libwinnt_la_OBJECTS)
+libwinreg_la_LIBADD =
+am_libwinreg_la_OBJECTS = WinregDefines.lo WinregFunctions.lo
+libwinreg_la_OBJECTS = $(am_libwinreg_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -165,7 +173,13 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo \
-	./$(DEPDIR)/WinntDefines.Plo ./$(DEPDIR)/jnhw-winapi-jni.Plo
+	./$(DEPDIR)/Minwinbase_SECURITY_ATTRIBUTES.Plo \
+	./$(DEPDIR)/WinbaseDefines.Plo \
+	./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo \
+	./$(DEPDIR)/Winbase_COMSTAT.Plo ./$(DEPDIR)/Winbase_DCB.Plo \
+	./$(DEPDIR)/WinntDefines.Plo ./$(DEPDIR)/Winnt_LPWSTR.Plo \
+	./$(DEPDIR)/WinregDefines.Plo ./$(DEPDIR)/WinregFunctions.Plo \
+	./$(DEPDIR)/jnhw-winapi-jni.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -186,9 +200,11 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(libjnhw_winapi_la_SOURCES) $(libminwinbase_la_SOURCES) \
-	$(libwinnt_la_SOURCES)
+	$(libwinbase_la_SOURCES) $(libwinnt_la_SOURCES) \
+	$(libwinreg_la_SOURCES)
 DIST_SOURCES = $(libjnhw_winapi_la_SOURCES) \
-	$(libminwinbase_la_SOURCES) $(libwinnt_la_SOURCES)
+	$(libminwinbase_la_SOURCES) $(libwinbase_la_SOURCES) \
+	$(libwinnt_la_SOURCES) $(libwinreg_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -350,16 +366,28 @@ AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
 LIB_JNHW_WINAPI_NAME = @JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
 LIB_JNHW_WINAPI_RES_NAME = @JNHW_RESOURCES_DIR@/$(LIB_JNHW_WINAPI_NAME)
 lib_LTLIBRARIES = libjnhw-winapi.la
-noinst_LTLIBRARIES = libwinnt.la libminwinbase.la
-libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la libwinnt.la
+noinst_LTLIBRARIES = libwinnt.la libminwinbase.la libwinbase.la libwinreg.la
+libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la libwinnt.la libwinbase.la libwinreg.la
 libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
 
 libwinnt_la_SOURCES = \
- WinntDefines.c
+ WinntDefines.c \
+ Winnt_LPWSTR.c
 
 libminwinbase_la_SOURCES = \
- Minwinbase_OVERLAPPED.c
+ Minwinbase_OVERLAPPED.c \
+ Minwinbase_SECURITY_ATTRIBUTES.c
+
+libwinbase_la_SOURCES = \
+ WinbaseDefines.c \
+ Winbase_COMMTIMEOUTS.c \
+ Winbase_COMSTAT.c \
+ Winbase_DCB.c
+
+libwinreg_la_SOURCES = \
+ WinregDefines.c \
+ WinregFunctions.c
 
 all: all-am
 
@@ -447,8 +475,14 @@ libjnhw-winapi.la: $(libjnhw_winapi_la_OBJECTS) $(libjnhw_winapi_la_DEPENDENCIES
 libminwinbase.la: $(libminwinbase_la_OBJECTS) $(libminwinbase_la_DEPENDENCIES) $(EXTRA_libminwinbase_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libminwinbase_la_OBJECTS) $(libminwinbase_la_LIBADD) $(LIBS)
 
+libwinbase.la: $(libwinbase_la_OBJECTS) $(libwinbase_la_DEPENDENCIES) $(EXTRA_libwinbase_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libwinbase_la_OBJECTS) $(libwinbase_la_LIBADD) $(LIBS)
+
 libwinnt.la: $(libwinnt_la_OBJECTS) $(libwinnt_la_DEPENDENCIES) $(EXTRA_libwinnt_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libwinnt_la_OBJECTS) $(libwinnt_la_LIBADD) $(LIBS)
+
+libwinreg.la: $(libwinreg_la_OBJECTS) $(libwinreg_la_DEPENDENCIES) $(EXTRA_libwinreg_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libwinreg_la_OBJECTS) $(libwinreg_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -457,7 +491,15 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Minwinbase_SECURITY_ATTRIBUTES.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinbaseDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winbase_COMSTAT.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winbase_DCB.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinntDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winnt_LPWSTR.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinregDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinregFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-winapi-jni.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
@@ -622,7 +664,15 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo
+	-rm -f ./$(DEPDIR)/Minwinbase_SECURITY_ATTRIBUTES.Plo
+	-rm -f ./$(DEPDIR)/WinbaseDefines.Plo
+	-rm -f ./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo
+	-rm -f ./$(DEPDIR)/Winbase_COMSTAT.Plo
+	-rm -f ./$(DEPDIR)/Winbase_DCB.Plo
 	-rm -f ./$(DEPDIR)/WinntDefines.Plo
+	-rm -f ./$(DEPDIR)/Winnt_LPWSTR.Plo
+	-rm -f ./$(DEPDIR)/WinregDefines.Plo
+	-rm -f ./$(DEPDIR)/WinregFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
@@ -670,7 +720,15 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo
+	-rm -f ./$(DEPDIR)/Minwinbase_SECURITY_ATTRIBUTES.Plo
+	-rm -f ./$(DEPDIR)/WinbaseDefines.Plo
+	-rm -f ./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo
+	-rm -f ./$(DEPDIR)/Winbase_COMSTAT.Plo
+	-rm -f ./$(DEPDIR)/Winbase_DCB.Plo
 	-rm -f ./$(DEPDIR)/WinntDefines.Plo
+	-rm -f ./$(DEPDIR)/Winnt_LPWSTR.Plo
+	-rm -f ./$(DEPDIR)/WinregDefines.Plo
+	-rm -f ./$(DEPDIR)/WinregFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic

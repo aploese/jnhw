@@ -2,7 +2,9 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
+import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.OpaqueMemory;
 
 @Include("winnt.h")
@@ -10,12 +12,14 @@ public final class Winnt extends LibJnhwWinApiLoader {
     
     
 
-    public static class ACCESS_MASK {
+    public static class ACCESS_MASK extends IntRef{
 
-        public final int value;
-
-        protected ACCESS_MASK(int value) {
-            this.value = value;
+        public ACCESS_MASK(int value) {
+            super(value);
+        }
+        
+        public ACCESS_MASK() {
+            super();
         }
 
     }
@@ -34,15 +38,13 @@ public final class Winnt extends LibJnhwWinApiLoader {
     @Define
     public final static native int KEY_READ();
 
-    public static class HANDLE {
+    public static class HANDLE extends LongRef {
 
-        public long value;
-
-        protected HANDLE(long value) {
+        public HANDLE(long value) {
             this.value = value;
         }
 
-        protected HANDLE() {
+        public HANDLE() {
         }
 
     }
@@ -65,7 +67,7 @@ public final class Winnt extends LibJnhwWinApiLoader {
 //            setString(baseAddress, value);
 //        }
 
-        private static native String getNullString(long baseAddress, int maxSize);
+        private static native String getNullString(long baseAddress);
         
         /**
          * return the NULL terminated string @baseaddress 
@@ -73,7 +75,11 @@ public final class Winnt extends LibJnhwWinApiLoader {
          * @return 
          */
         public String getNullString(String value) {
-            return getNullString(baseAddress, sizeInBytes);
+            return getNullString(baseAddress);
+        }
+
+        public void clear() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
 

@@ -25,12 +25,16 @@ public class Minwinbase extends LibJnhwWinApiLoader {
         
         public final static native int sizeofOVERLAPPED();
         
-        public final static native long Internal(long baseAddress);
-        public final static native long InternalHigh(long baseAddress);
+        private final static native long Internal(long baseAddress);
+        private final static native long InternalHigh(long baseAddress);
         private static native long hEvent(long baseAddress);
         private static native void hEvent(long baseAddress, long value);
         
         private HANDLE hEvent;
+
+        public OVERLAPPED(boolean clearMem) {
+            super(sizeofOVERLAPPED(), clearMem);
+        }
         
         public final void hEvent(HANDLE value) {
             hEvent = value;
@@ -42,10 +46,6 @@ public class Minwinbase extends LibJnhwWinApiLoader {
             return hEvent;
         }
 
-        public OVERLAPPED() {
-            super(sizeofOVERLAPPED(), true);
-       }
-
     }
 
     public static class SECURITY_ATTRIBUTES extends OpaqueMemory {
@@ -56,9 +56,9 @@ public class Minwinbase extends LibJnhwWinApiLoader {
         
         public final static native int sizeofSECURITY_ATTRIBUTES();
 
-        public static final native long nLength(long baseAddress);
+        private static final native long nLength(long baseAddress);
         private Minwindef.LPVOID lpSecurityDescriptor;
-        private static native boolean bInheritHandle0(long baseAddress);
+        private static native boolean bInheritHandle(long baseAddress);
 
         public SECURITY_ATTRIBUTES() {
             super(sizeofSECURITY_ATTRIBUTES(), true);

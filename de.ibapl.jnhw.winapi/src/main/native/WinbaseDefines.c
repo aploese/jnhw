@@ -1,7 +1,7 @@
 #include <config.h>
 #include "jnhw.h"
 
-#ifdef HAVE_MARKER_H
+#ifdef HAVE_WINBASE_H
 #include <windows.h>
 
 #ifdef __cplusplus
@@ -13,7 +13,9 @@ extern "C" {
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_WAIT_1FAILED
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return WAIT_FAILED;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -21,7 +23,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_WAIT_1FAILED
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_WAIT_1OBJECT_10
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return WAIT_OBJECT_0;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -29,7 +33,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_WAIT_1OBJECT_10
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_WAIT_1ABANDONED
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return WAIT_ABANDONED;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -37,7 +43,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_WAIT_1ABANDONED
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_WAIT_1TIMEOUT
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return WAIT_TIMEOUT;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -45,7 +53,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_WAIT_1TIMEOUT
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1OVERLAPPED
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return FILE_FLAG_OVERLAPPED;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -53,7 +63,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1OVERLAPPED
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_RTS_1CONTROL_1DISABLE
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return RTS_CONTROL_DISABLE;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -61,7 +73,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_RTS_1CONTROL_1DISABLE
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_RTS_1CONTROL_1HANDSHAKE
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return RTS_CONTROL_HANDSHAKE;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -69,87 +83,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_RTS_1CONTROL_1HANDSHAKE
  * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;
  */
 JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winbase_INVALID_1HANDLE_1VALUE
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    CloseHandle
- * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CloseHandle
-  (JNIEnv *, jclass, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    ClearCommBreak
- * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommBreak
-  (JNIEnv *, jclass, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    ClearCommError
- * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Winbase/COMSTAT;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommError
-  (JNIEnv *, jclass, jobject, jobject, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    EscapeCommFunction
- * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EscapeCommFunction
-  (JNIEnv *, jclass, jobject, jint);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    GetCommModemStatus
- * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;Lde/ibapl/jnhw/IntRef;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommModemStatus
-  (JNIEnv *, jclass, jobject, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    GetCommState
- * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommState
-  (JNIEnv *, jclass, jobject, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    GetCommTimeouts
- * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommTimeouts
-  (JNIEnv *, jclass, jobject, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    SetCommBreak
- * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommBreak
-  (JNIEnv *, jclass, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    SetCommState
- * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommState
-  (JNIEnv *, jclass, jobject, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    SetCommTimeouts
- * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommTimeouts
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *env, jclass clazz) {
+    return INVALID_HANDLE_VALUE;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -157,7 +93,9 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommTimeouts
  * Signature: ()B
  */
 JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_NOPARITY
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return NOPARITY;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -165,7 +103,9 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_NOPARITY
  * Signature: ()B
  */
 JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ODDPARITY
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return ODDPARITY;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -173,7 +113,9 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ODDPARITY
  * Signature: ()B
  */
 JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EVENPARITY
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return EVENPARITY;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -181,7 +123,9 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EVENPARITY
  * Signature: ()B
  */
 JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_MARKPARITY
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return MARKPARITY;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -189,7 +133,9 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_MARKPARITY
  * Signature: ()B
  */
 JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SPACEPARITY
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return SPACEPARITY;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -197,7 +143,9 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SPACEPARITY
  * Signature: ()B
  */
 JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ONESTOPBIT
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return ONESTOPBIT;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -205,7 +153,9 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ONESTOPBIT
  * Signature: ()B
  */
 JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ONE5STOPBITS
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return ONE5STOPBITS;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -213,7 +163,9 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ONE5STOPBITS
  * Signature: ()B
  */
 JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_TWOSTOPBITS
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return TWOSTOPBITS;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -221,7 +173,9 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_TWOSTOPBITS
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_INFINITE
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return INFINITE;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -229,7 +183,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_INFINITE
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SETRTS
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return SETRTS;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -237,7 +193,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SETRTS
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CLRRTS
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return CLRRTS;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -245,7 +203,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CLRRTS
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SETDTR
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return SETDTR;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -253,7 +213,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SETDTR
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CLRDTR
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return CLRDTR;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -261,7 +223,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CLRDTR
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SETBREAK
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return SETBREAK;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -269,7 +233,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SETBREAK
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CLRBREAK
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return CLRBREAK;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -277,7 +243,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CLRBREAK
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_MS_1CTS_1ON
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return MS_CTS_ON;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -285,7 +253,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_MS_1CTS_1ON
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_MS_1DSR_1ON
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return MS_DSR_ON;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -293,7 +263,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_MS_1DSR_1ON
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_MS_1RING_1ON
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return MS_RING_ON;
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
@@ -301,15 +273,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_MS_1RING_1ON
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_MS_1RLSD_1ON
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    GetLastError
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetLastError
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass clazz) {
+    return MS_RLSD_ON;
+}
 
 #ifdef __cplusplus
 }

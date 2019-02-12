@@ -11,7 +11,7 @@
     <artifactId>de.ibapl.jnhw.common</artifactId>
     <version>0.0.0-SNAPSHOT</version>
 
-    <name>de.ibapl.jnhw.common OSGi Bundle</name>
+    <name>JNHW Common</name>
 
     <properties>
         <license.licenseResolver>${project.baseUri}/../src/licenses</license.licenseResolver>
