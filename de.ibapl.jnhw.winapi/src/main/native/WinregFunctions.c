@@ -20,7 +20,7 @@ extern "C" {
     DWORD _lpType;
     DWORD _lpccData = lpccData != NULL ? (*env)->GetIntField(env, lpccData, de_ibapl_jnhw_IntRef_value_ID) : 0;
 
-    LSTATUS result = RegEnumValueW((HKEY)hKey,
+    LSTATUS result = RegEnumValueW((HKEY)(uintptr_t)hKey,
             dwIndex,
             (LPWSTR) (uintptr_t) lpValueName,
             &_lpcchValueName,
@@ -55,10 +55,10 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegOpenKeyExW
 
     HKEY _phkResult;
 
-    LSTATUS result = RegOpenKeyExW((HKEY)hKey, _lpSubKey, ulOptions, samDesired, &_phkResult);
+    LSTATUS result = RegOpenKeyExW((HKEY)(uintptr_t)hKey, _lpSubKey, ulOptions, samDesired, &_phkResult);
 
     (*env)->ReleaseStringChars(env, lpSubKey, _lpSubKey);
-    (*env)->SetLongField(env, phkResult, de_ibapl_jnhw_LongRef_value_ID, (jlong)_phkResult);
+    (*env)->SetLongField(env, phkResult, de_ibapl_jnhw_LongRef_value_ID, (jlong)(uintptr_t)_phkResult);
 
     return result;
 }
@@ -70,7 +70,7 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegOpenKeyExW
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegCloseKey
 (JNIEnv *env, jclass clazz, jlong hKey) {
-    return RegCloseKey((HKEY)hKey);
+    return RegCloseKey((HKEY)(uintptr_t)hKey);
 }
 
 #ifdef __cplusplus

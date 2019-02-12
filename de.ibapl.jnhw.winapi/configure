@@ -13049,7 +13049,7 @@ JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
 # Checks for libraries.
 
 # Checks for header files.
-for ac_header in winnt.h fileapi.h minwinbase.h  minwindef.h winbase.h winreg.h
+for ac_header in winnt.h fileapi.h minwinbase.h  minwindef.h winbase.h winreg.h winerror.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
 ac_fn_c_check_header_compile "$LINENO" "$ac_header" "$as_ac_Header" "#include <windows.h>

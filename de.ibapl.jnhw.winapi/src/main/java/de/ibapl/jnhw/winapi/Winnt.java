@@ -9,9 +9,9 @@ import de.ibapl.jnhw.OpaqueMemory;
 
 @Include("winnt.h")
 public final class Winnt extends LibJnhwWinApiLoader {
-    
+
     public final static native boolean HAVE_WINNT_H();
-    
+
     @Define
     public final static native int MAXDWORD();
 
@@ -24,6 +24,48 @@ public final class Winnt extends LibJnhwWinApiLoader {
     @Define
     public final static native int KEY_READ();
 
+    @Define
+    public final static native int REG_NONE();
+
+    @Define
+    public final static native int REG_SZ();
+
+    @Define
+    public final static native int REG_EXPAND_SZ();
+
+    @Define
+    public final static native int REG_BINARY();
+
+    @Define
+    public final static native int REG_DWORD();
+
+    @Define
+    public final static native int REG_DWORD_LITTLE_ENDIAN();
+
+    @Define
+    public final static native int REG_DWORD_BIG_ENDIAN();
+
+    @Define
+    public final static native int REG_LINK();
+
+    @Define
+    public final static native int REG_MULTI_SZ();
+
+    @Define
+    public final static native int REG_RESOURCE_LIST();
+
+    @Define
+    public final static native int REG_FULL_RESOURCE_DESCRIPTOR();
+
+    @Define
+    public final static native int REG_RESOURCE_REQUIREMENTS_LIST();
+
+    @Define
+    public final static native int REG_QWORD();
+
+    @Define
+    public final static native int REG_QWORD_LITTLE_ENDIAN();
+
     public static class HANDLE extends LongRef {
 
         public HANDLE(long value) {
@@ -34,6 +76,7 @@ public final class Winnt extends LibJnhwWinApiLoader {
         }
 
     }
+
     /**
      *
      * The wrapper for a ByteBuffer. The position of the buffer is always 0! It
@@ -44,44 +87,48 @@ public final class Winnt extends LibJnhwWinApiLoader {
     public static class LPWSTR extends OpaqueMemory {
 
         public final static int SIZE_OF_WCHAR = 2;
+
+        static String stringValueOf(Minwindef.LPBYTE lpData) {
+            return getString(lpData.baseAddress, lpData.bufferEnd.value / SIZE_OF_WCHAR);
+        }
+
         final IntRef bufferEnd;
 
         /**
          * Creates space for a Wide String (16 bit)
-         * @param sizeInChar
-         * @param clearMemory 
+         *
+         * @param elementLength 
+         * @param clearMemory
          */
-        public LPWSTR(int lenInChar, boolean clearMemory) {
-            super(lenInChar, SIZE_OF_WCHAR, clearMemory);
-            bufferEnd = new IntRef(lenInChar);
+        public LPWSTR(int elementLength, boolean clearMemory) {
+            super(elementLength, SIZE_OF_WCHAR, clearMemory);
+            bufferEnd = new IntRef(elementLength);
         }
-        
+
 //        private static native void setString(long baseAddress, String value);
-        
 //        public void set(String value) {
 //            setString(baseAddress, value);
 //        }
-
         private static native String getString(long baseAddress, int charLength);
-        
+
         /**
-         * return the NULL terminated string @baseaddress 
-         * @return 
+         * return the NULL terminated string @baseaddress
+         *
+         * @return
          */
         public String getString() {
             return getString(baseAddress, bufferEnd.value);
         }
 
         public void clear() {
-        	OpaqueMemory.clear(this);
-        	bufferEnd.value = sizeInBytes / SIZE_OF_WCHAR;
+            OpaqueMemory.clear(this);
+            bufferEnd.value = sizeInBytes / SIZE_OF_WCHAR;
         }
 
-        public void resteBufferEnd() {
-        	bufferEnd.value = sizeInBytes;
+        public void resetBufferEnd() {
+            bufferEnd.value = sizeInBytes;
         }
 
     }
-
 
 }

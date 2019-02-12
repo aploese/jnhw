@@ -136,7 +136,7 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libjnhw_winapi_la_DEPENDENCIES =  \
 	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la \
-	libwinnt.la libwinbase.la libwinreg.la
+	libwinnt.la libwinbase.la libwinreg.la libwinerror.la
 am_libjnhw_winapi_la_OBJECTS = jnhw-winapi-jni.lo
 libjnhw_winapi_la_OBJECTS = $(am_libjnhw_winapi_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -151,6 +151,9 @@ libwinbase_la_LIBADD =
 am_libwinbase_la_OBJECTS = WinbaseDefines.lo Winbase_COMMTIMEOUTS.lo \
 	Winbase_COMSTAT.lo Winbase_DCB.lo
 libwinbase_la_OBJECTS = $(am_libwinbase_la_OBJECTS)
+libwinerror_la_LIBADD =
+am_libwinerror_la_OBJECTS = WinerrorDefines.lo
+libwinerror_la_OBJECTS = $(am_libwinerror_la_OBJECTS)
 libwinnt_la_LIBADD =
 am_libwinnt_la_OBJECTS = WinntDefines.lo Winnt_LPWSTR.lo
 libwinnt_la_OBJECTS = $(am_libwinnt_la_OBJECTS)
@@ -177,8 +180,9 @@ am__depfiles_remade = ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo \
 	./$(DEPDIR)/WinbaseDefines.Plo \
 	./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo \
 	./$(DEPDIR)/Winbase_COMSTAT.Plo ./$(DEPDIR)/Winbase_DCB.Plo \
-	./$(DEPDIR)/WinntDefines.Plo ./$(DEPDIR)/Winnt_LPWSTR.Plo \
-	./$(DEPDIR)/WinregDefines.Plo ./$(DEPDIR)/WinregFunctions.Plo \
+	./$(DEPDIR)/WinerrorDefines.Plo ./$(DEPDIR)/WinntDefines.Plo \
+	./$(DEPDIR)/Winnt_LPWSTR.Plo ./$(DEPDIR)/WinregDefines.Plo \
+	./$(DEPDIR)/WinregFunctions.Plo \
 	./$(DEPDIR)/jnhw-winapi-jni.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -200,11 +204,12 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(libjnhw_winapi_la_SOURCES) $(libminwinbase_la_SOURCES) \
-	$(libwinbase_la_SOURCES) $(libwinnt_la_SOURCES) \
-	$(libwinreg_la_SOURCES)
+	$(libwinbase_la_SOURCES) $(libwinerror_la_SOURCES) \
+	$(libwinnt_la_SOURCES) $(libwinreg_la_SOURCES)
 DIST_SOURCES = $(libjnhw_winapi_la_SOURCES) \
 	$(libminwinbase_la_SOURCES) $(libwinbase_la_SOURCES) \
-	$(libwinnt_la_SOURCES) $(libwinreg_la_SOURCES)
+	$(libwinerror_la_SOURCES) $(libwinnt_la_SOURCES) \
+	$(libwinreg_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -366,8 +371,8 @@ AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
 LIB_JNHW_WINAPI_NAME = @JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
 LIB_JNHW_WINAPI_RES_NAME = @JNHW_RESOURCES_DIR@/$(LIB_JNHW_WINAPI_NAME)
 lib_LTLIBRARIES = libjnhw-winapi.la
-noinst_LTLIBRARIES = libwinnt.la libminwinbase.la libwinbase.la libwinreg.la
-libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la libwinnt.la libwinbase.la libwinreg.la
+noinst_LTLIBRARIES = libwinnt.la libminwinbase.la libwinbase.la libwinreg.la libwinerror.la
+libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la libwinnt.la libwinbase.la libwinreg.la libwinerror.la
 libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
 
@@ -388,6 +393,9 @@ libwinbase_la_SOURCES = \
 libwinreg_la_SOURCES = \
  WinregDefines.c \
  WinregFunctions.c
+
+libwinerror_la_SOURCES = \
+ WinerrorDefines.c
 
 all: all-am
 
@@ -478,6 +486,9 @@ libminwinbase.la: $(libminwinbase_la_OBJECTS) $(libminwinbase_la_DEPENDENCIES) $
 libwinbase.la: $(libwinbase_la_OBJECTS) $(libwinbase_la_DEPENDENCIES) $(EXTRA_libwinbase_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libwinbase_la_OBJECTS) $(libwinbase_la_LIBADD) $(LIBS)
 
+libwinerror.la: $(libwinerror_la_OBJECTS) $(libwinerror_la_DEPENDENCIES) $(EXTRA_libwinerror_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libwinerror_la_OBJECTS) $(libwinerror_la_LIBADD) $(LIBS)
+
 libwinnt.la: $(libwinnt_la_OBJECTS) $(libwinnt_la_DEPENDENCIES) $(EXTRA_libwinnt_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libwinnt_la_OBJECTS) $(libwinnt_la_LIBADD) $(LIBS)
 
@@ -496,6 +507,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winbase_COMSTAT.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winbase_DCB.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinerrorDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinntDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winnt_LPWSTR.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinregDefines.Plo@am__quote@ # am--include-marker
@@ -669,6 +681,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo
 	-rm -f ./$(DEPDIR)/Winbase_COMSTAT.Plo
 	-rm -f ./$(DEPDIR)/Winbase_DCB.Plo
+	-rm -f ./$(DEPDIR)/WinerrorDefines.Plo
 	-rm -f ./$(DEPDIR)/WinntDefines.Plo
 	-rm -f ./$(DEPDIR)/Winnt_LPWSTR.Plo
 	-rm -f ./$(DEPDIR)/WinregDefines.Plo
@@ -725,6 +738,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo
 	-rm -f ./$(DEPDIR)/Winbase_COMSTAT.Plo
 	-rm -f ./$(DEPDIR)/Winbase_DCB.Plo
+	-rm -f ./$(DEPDIR)/WinerrorDefines.Plo
 	-rm -f ./$(DEPDIR)/WinntDefines.Plo
 	-rm -f ./$(DEPDIR)/Winnt_LPWSTR.Plo
 	-rm -f ./$(DEPDIR)/WinregDefines.Plo

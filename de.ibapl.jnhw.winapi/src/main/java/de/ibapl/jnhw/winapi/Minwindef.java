@@ -69,7 +69,7 @@ public abstract class Minwindef {
         	bufferEnd.value = sizeInBytes;
         }
 
-        public void resteBufferEnd() {
+        public void resetBufferEnd() {
         	bufferEnd.value = sizeInBytes;
         }
 

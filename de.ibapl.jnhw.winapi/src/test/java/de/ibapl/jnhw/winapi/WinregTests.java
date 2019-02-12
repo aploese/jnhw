@@ -1,5 +1,6 @@
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OS;
@@ -55,25 +56,29 @@ public class WinregTests {
         int dwIndex = 0;
         LPWSTR lpValueName = new LPWSTR(256, true);
         LPBYTE lpData = new LPBYTE(256, false);
+        IntRef lpType = new IntRef();
         boolean collecting = true;
         do {
-        		long result = Winreg.RegEnumValueW(testKey, dwIndex, lpValueName, null, lpData);
-        		if (result == Winerror.ERROR_SUCCESS()) {
-        		System.out.println("lpValueName: " + lpValueName.getString());
-        		lpValueName.resteBufferEnd();
-        		//TODO test bufferEnd  =1 ...
-        		lpData.resteBufferEnd();;
-        		dwIndex++;
-        		} else if (result == Winerror.ERROR_NO_MORE_ITEMS()) {
-        		collecting = false;
-        		} else if (result == Winerror.ERROR_MORE_DATA()) {
-            		lpData.resteBufferEnd();
-            		
-        		}
+            long result = Winreg.RegEnumValueW(testKey, dwIndex, lpValueName, lpType, lpData);
+            if (result == Winerror.ERROR_SUCCESS()) {
+                System.out.print("lpValueName: " + lpValueName.getString());
+                if (lpType.value == Winnt.REG_SZ()) {
+                System.out.println(" = " + LPWSTR.stringValueOf(lpData));
+                }
+                lpValueName.resetBufferEnd();
+                //TODO test bufferEnd  =1 ...
+                lpData.resetBufferEnd();;
+                dwIndex++;
+            } else if (result == Winerror.ERROR_NO_MORE_ITEMS()) {
+                collecting = false;
+            } else if (result == Winerror.ERROR_MORE_DATA()) {
+                lpData.resetBufferEnd();
+
+            }
         } while (collecting);
-        
-        Winreg.RegCloseKey(testKey); 
-        
+
+        Winreg.RegCloseKey(testKey);
+
     }
 
 }
