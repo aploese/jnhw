@@ -45,9 +45,10 @@ public abstract class Winreg extends LibJnhwWinApiLoader {
 
     private static native void RegCloseKey(long hKey);
     
-    public final static void RegEnumValueW(HKEY hKey, int dwIndex, LPWSTR lpValueName, IntRef lpcchValueName, IntRef lpType, LPBYTE lpData, IntRef lpccData) throws NativeErrorException {
+    public final static void RegEnumValueW(HKEY hKey, int dwIndex, LPWSTR lpValueName, IntRef lpType, LPBYTE lpData) throws NativeErrorException {
         final long lpDataBaseAddress = lpData == null ? 0L : lpData.baseAddress;
-        RegEnumValueW(hKey.value, dwIndex, lpValueName.baseAddress, lpcchValueName, lpType, lpDataBaseAddress, lpccData);
+        final IntRef lpDataBufferEnd = lpData == null ? null : lpData.bufferEnd;
+        RegEnumValueW(hKey.value, dwIndex, lpValueName.baseAddress, lpValueName.bufferEnd, lpType, lpDataBaseAddress, lpDataBufferEnd);
     }
 
     public final static void RegOpenKeyExW(HKEY hKey, CharSequence lpSubKey, int ulOptions, REGSAM samDesired, PHKEY phkResult) throws NativeErrorException {

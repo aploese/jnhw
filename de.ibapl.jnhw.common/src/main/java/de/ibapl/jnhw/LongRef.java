@@ -11,4 +11,12 @@ package de.ibapl.jnhw;
  */
 public class LongRef {
     public long value;
+
+    public LongRef(long value) {
+        this.value = value;
+    }
+    
+    public LongRef() {
+    }
+    
 }

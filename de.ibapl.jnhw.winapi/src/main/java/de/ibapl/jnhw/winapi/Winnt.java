@@ -57,8 +57,17 @@ public final class Winnt extends LibJnhwWinApiLoader {
      */
     public static class LPWSTR extends OpaqueMemory {
 
-        public LPWSTR(int size, boolean clearMemory) {
-            super(size, clearMemory);
+        public final static int SIZE_OF_WCHAR = 2;
+        final IntRef bufferEnd;
+
+        /**
+         * Creates space for a Wide String (16 bit)
+         * @param sizeInChar
+         * @param clearMemory 
+         */
+        public LPWSTR(int sizeInChar, boolean clearMemory) {
+            super(sizeInChar, SIZE_OF_WCHAR, clearMemory);
+            bufferEnd = new IntRef(sizeInChar);
         }
         
 //        private static native void setString(long baseAddress, CharSequence value);
@@ -67,15 +76,14 @@ public final class Winnt extends LibJnhwWinApiLoader {
 //            setString(baseAddress, value);
 //        }
 
-        private static native String getNullString(long baseAddress);
+        private static native String getString(long baseAddress, int charLength);
         
         /**
          * return the NULL terminated string @baseaddress 
-         * @param value
          * @return 
          */
-        public String getNullString(String value) {
-            return getNullString(baseAddress);
+        public String getString() {
+            return getString(baseAddress, bufferEnd.value);
         }
 
         public void clear() {

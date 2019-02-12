@@ -1,6 +1,8 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
+import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -55,8 +57,11 @@ public abstract class Minwindef {
 
     public static class LPBYTE extends OpaqueMemory {
 
+        final IntRef bufferEnd;
+
         public LPBYTE(int size, boolean clearMemory) {
             super(size, clearMemory);
+            bufferEnd = new IntRef(size);
         }
 
         public void clear() {
