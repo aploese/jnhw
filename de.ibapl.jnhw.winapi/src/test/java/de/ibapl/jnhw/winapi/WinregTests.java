@@ -64,6 +64,10 @@ public class WinregTests {
                 System.out.print("lpValueName: " + lpValueName.getString());
                 if (lpType.value == Winnt.REG_SZ()) {
                 System.out.println(" = " + LPWSTR.stringValueOf(lpData));
+                } else if (lpType.value == Winnt.REG_MULTI_SZ()) {
+                    System.out.println(" = " + LPWSTR.stringValueOf(lpData));
+                } else {
+                    System.out.println(" = ???");
                 }
                 lpValueName.resetBufferEnd();
                 //TODO test bufferEnd  =1 ...
