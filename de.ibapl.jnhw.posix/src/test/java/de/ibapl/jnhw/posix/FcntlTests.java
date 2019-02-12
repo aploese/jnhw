@@ -6,6 +6,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
+
+import de.ibapl.jnhw.LibJnhwLoader;
 
 public class FcntlTests {
 
@@ -26,6 +30,7 @@ public class FcntlTests {
     }
 
         @Test
+        @DisabledOnOs(OS.WINDOWS)
     public void testNPEOpen() throws Exception {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Fcntl.open(null, 0);
@@ -33,6 +38,7 @@ public class FcntlTests {
     }
 
     @Test
+    @DisabledOnOs(OS.WINDOWS)
     public void testNPECreat() throws Exception {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Fcntl.creat(null, 0);
@@ -41,7 +47,11 @@ public class FcntlTests {
 
     @Test
     public void test_HAVE_FCNTL_H() throws Exception {
-        Assertions.assertTrue(Fcntl.HAVE_FCNTL_H(), "expected to have fcntl.h");
+        if (LibJnhwLoader.getOS() == de.ibapl.jnhw.OS.WINDOWS) {
+        	Assertions.assertFalse(Fcntl.HAVE_FCNTL_H(), "expected not to have fcntl.h");
+        } else {
+        	Assertions.assertTrue(Fcntl.HAVE_FCNTL_H(), "expected to have fcntl.h");
+        }
     }
 
 }

@@ -7,9 +7,9 @@ LIB_JNHW_WINAPI_RES_NAME=@JNHW_RESOURCES_DIR@/$(LIB_JNHW_WINAPI_NAME)
 
 lib_LTLIBRARIES = libjnhw-winapi.la
 
-noinst_LTLIBRARIES = libwinnt.la libminwinbase.la libwinbase.la libwinreg.la
+noinst_LTLIBRARIES = libwinnt.la libminwinbase.la libwinbase.la libwinreg.la libwinerror.la
 
-libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la libwinnt.la libwinbase.la libwinreg.la
+libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la libwinnt.la libwinbase.la libwinreg.la libwinerror.la
 
 libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
@@ -32,7 +32,9 @@ libwinreg_la_SOURCES = \
  WinregDefines.c \
  WinregFunctions.c
 
-
+libwinerror_la_SOURCES = \
+ WinerrorDefines.c
+ 
 #hook into make all
 all-local: $(LIB_JNHW_WINAPI_RES_NAME)
 

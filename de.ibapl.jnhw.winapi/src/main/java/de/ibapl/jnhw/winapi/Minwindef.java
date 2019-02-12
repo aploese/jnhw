@@ -65,7 +65,12 @@ public abstract class Minwindef {
         }
 
         public void clear() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        	OpaqueMemory.clear(this);
+        	bufferEnd.value = sizeInBytes;
+        }
+
+        public void resteBufferEnd() {
+        	bufferEnd.value = sizeInBytes;
         }
 
         public String toString(boolean b) {

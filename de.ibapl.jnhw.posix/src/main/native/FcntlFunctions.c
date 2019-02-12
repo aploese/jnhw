@@ -44,10 +44,10 @@ extern "C" {
    /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    creat
-     * Signature: (Ljava/lang/CharSequence;I)I
+     * Signature: (Ljava/lang/String;I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat
-    (JNIEnv *env, jclass clazz, jobject file, jint mode) {
+    (JNIEnv *env, jclass clazz, jstring file, jint mode) {
         if (file == NULL) {
             throw_NullPointerException(env, "file is null.");
             return -1;
@@ -64,10 +64,10 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    open
-     * Signature: (Ljava/lang/CharSequence;I)I
+     * Signature: (Ljava/lang/String;I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open
-    (JNIEnv *env, jclass clazz, jobject file, jint oflag) {
+    (JNIEnv *env, jclass clazz, jstring file, jint oflag) {
         if (file == NULL) {
             throw_NullPointerException(env, "file is null.");
             return -1;

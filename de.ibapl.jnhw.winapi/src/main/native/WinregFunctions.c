@@ -11,72 +11,66 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    RegEnumValueW
-     * Signature: (JIJLde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/IntRef;JLde/ibapl/jnhw/IntRef;)V
+     * Signature: (JIJLde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/IntRef;JLde/ibapl/jnhw/IntRef;)J
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegEnumValueW
-    (JNIEnv *env, jclass clazz, jlong hKey, jint dwIndex, jlong lpValueName, jobject lpccValueName, jobject lpType, jlong lpData, jobject lpccData);
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegEnumValueW
+    (JNIEnv *env, jclass clazz, jlong hKey, jint dwIndex, jlong lpValueName, jobject lpccValueName, jobject lpType, jlong lpData, jobject lpccData) {
 
-    int _lpcchValueName = (*env)->GetIntField(env, lpccValueName, de_ibapl_jnhw_IntRef_value_ID);
-    int _lpType;
-    int _lpccData = lpccData != null ? (*env)->GetIntField(env, lpccData, de_ibapl_jnhw_IntRef_value_ID) : 0;
+    DWORD _lpcchValueName = (*env)->GetIntField(env, lpccValueName, de_ibapl_jnhw_IntRef_value_ID);
+    DWORD _lpType;
+    DWORD _lpccData = lpccData != NULL ? (*env)->GetIntField(env, lpccData, de_ibapl_jnhw_IntRef_value_ID) : 0;
 
-    LSTATUS result = RegEnumValueW(hKey,
+    LSTATUS result = RegEnumValueW((HKEY)hKey,
             dwIndex,
             (LPWSTR) (uintptr_t) lpValueName,
             &_lpcchValueName,
             NULL,
-            lpType != null ? &_lpType : NULL,
+            lpType != NULL ? &_lpType : NULL,
             (LPBYTE) (uintptr_t) lpData,
-            lpccData != null ? &_lpccData : NULL);
+            lpccData != NULL ? &_lpccData : NULL);
 
     (*env)->SetIntField(env, lpccValueName, de_ibapl_jnhw_IntRef_value_ID, _lpcchValueName);
-    if (lpType != null) {
+    if (lpType != NULL) {
         (*env)->SetIntField(env, lpType, de_ibapl_jnhw_IntRef_value_ID, _lpType);
     }
-    if (lpccData != null) {
+    if (lpccData != NULL) {
         (*env)->SetIntField(env, lpccData, de_ibapl_jnhw_IntRef_value_ID, _lpccData);
     }
 
-    if (result != ERROR_SUCCESS) {
-        throw_NativeErrorException(env, GetLastError());
-    }
+    return result;
 }
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winreg
  * Method:    RegOpenKeyExW
- * Signature: (JLjava/lang/CharSequence;IILde/ibapl/jnhw/LongRef;)V
+ * Signature: (JLjava/lang/String;IILde/ibapl/jnhw/LongRef;)J
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegOpenKeyExW
-(JNIEnv *env, jclass clazz, jlong hKey, jobject lpSubKey, jint ulOptions, jint samDesired, jobject phkResult) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegOpenKeyExW
+(JNIEnv *env, jclass clazz, jlong hKey, jstring lpSubKey, jint ulOptions, jint samDesired, jobject phkResult) {
     if (lpSubKey == NULL) {
         throw_NullPointerException(env, "lpSubKey is null.");
-        return -1;
+        return ERROR_INVALID_PARAMETER;
     }
     LPCWSTR _lpSubKey = (*env)->GetStringChars(env, lpSubKey, NULL);
 
-    int _phkResult;
+    HKEY _phkResult;
 
-    LSTATUS result = RegOpenKeyExW(hKey, _lpSubKey, samDesired, _phkResult);
+    LSTATUS result = RegOpenKeyExW((HKEY)hKey, _lpSubKey, ulOptions, samDesired, &_phkResult);
 
     (*env)->ReleaseStringChars(env, lpSubKey, _lpSubKey);
-    (*env)->SetLongField(env, phkResult, de_ibapl_jnhw_LongRef_value_ID, _phkResult);
+    (*env)->SetLongField(env, phkResult, de_ibapl_jnhw_LongRef_value_ID, (jlong)_phkResult);
 
-    if (ERROR_SUCCESS != result) {
-        throw_NativeErrorException(env, GetLastError());
-    }
+    return result;
 }
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winreg
  * Method:    RegCloseKey
- * Signature: (J)V
+ * Signature: (J)J
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegCloseKey
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegCloseKey
 (JNIEnv *env, jclass clazz, jlong hKey) {
-    if (ERROR_SUCCESS != RegCloseKey(hKey)) {
-        throw_NativeErrorException(env, GetLastError());
-    }
+    return RegCloseKey((HKEY)hKey);
 }
 
 #ifdef __cplusplus

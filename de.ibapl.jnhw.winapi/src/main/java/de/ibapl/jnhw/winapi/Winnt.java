@@ -10,20 +10,6 @@ import de.ibapl.jnhw.OpaqueMemory;
 @Include("winnt.h")
 public final class Winnt extends LibJnhwWinApiLoader {
     
-    
-
-    public static class ACCESS_MASK extends IntRef{
-
-        public ACCESS_MASK(int value) {
-            super(value);
-        }
-        
-        public ACCESS_MASK() {
-            super();
-        }
-
-    }
-
     public final static native boolean HAVE_WINNT_H();
     
     @Define
@@ -65,14 +51,14 @@ public final class Winnt extends LibJnhwWinApiLoader {
          * @param sizeInChar
          * @param clearMemory 
          */
-        public LPWSTR(int sizeInChar, boolean clearMemory) {
-            super(sizeInChar, SIZE_OF_WCHAR, clearMemory);
-            bufferEnd = new IntRef(sizeInChar);
+        public LPWSTR(int lenInChar, boolean clearMemory) {
+            super(lenInChar, SIZE_OF_WCHAR, clearMemory);
+            bufferEnd = new IntRef(lenInChar);
         }
         
-//        private static native void setString(long baseAddress, CharSequence value);
+//        private static native void setString(long baseAddress, String value);
         
-//        public void set(CharSequence value) {
+//        public void set(String value) {
 //            setString(baseAddress, value);
 //        }
 
@@ -87,8 +73,14 @@ public final class Winnt extends LibJnhwWinApiLoader {
         }
 
         public void clear() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        	OpaqueMemory.clear(this);
+        	bufferEnd.value = sizeInBytes / SIZE_OF_WCHAR;
         }
+
+        public void resteBufferEnd() {
+        	bufferEnd.value = sizeInBytes;
+        }
+
     }
 
 

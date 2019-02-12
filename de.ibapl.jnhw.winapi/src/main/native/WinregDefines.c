@@ -30,7 +30,7 @@ extern "C" {
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HKEY_1LOCAL_1MACHINE0
   (JNIEnv *env, jclass clazz) {
-    return HKEY_LOCAL_MACHINE;
+    return (jlong)HKEY_LOCAL_MACHINE;
 }
 
    

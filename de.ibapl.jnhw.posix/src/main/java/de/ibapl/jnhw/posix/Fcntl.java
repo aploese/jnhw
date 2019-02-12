@@ -40,7 +40,7 @@ public final class Fcntl extends LibJnhwPosixLoader {
      *
      * @throws NativeErrorException
      */
-    public final static native int creat(CharSequence file, int mode) throws NativeErrorException;
+    public final static native int creat(String file, int mode) throws NativeErrorException;
 
     public final static native int fcntl(int fd, int cmd) throws NativeErrorException;
 
@@ -58,7 +58,7 @@ public final class Fcntl extends LibJnhwPosixLoader {
      *
      * @throws NativeErrorException
      */
-    public final static native int open(CharSequence file, int oflag) throws NativeErrorException;
+    public final static native int open(String file, int oflag) throws NativeErrorException;
 
     private Fcntl() {
     }

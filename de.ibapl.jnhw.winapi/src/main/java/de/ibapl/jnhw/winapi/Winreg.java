@@ -14,14 +14,6 @@ import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
 @Include("winreg.h")
 public abstract class Winreg extends LibJnhwWinApiLoader {
 
-    public static class REGSAM extends Winnt.ACCESS_MASK {
-
-        public REGSAM(int value) {
-            super(value);
-        }
-
-    }
-
     public final static native boolean HAVE_WINREG_H();
 
     /**
@@ -39,23 +31,23 @@ public abstract class Winreg extends LibJnhwWinApiLoader {
         return HKEY_LOCAL_MACHINE;
     }
 
-    private static native void RegEnumValueW(long hKey, int dwIndex, long lpValueName, IntRef lpcchValueName, IntRef lpType, long lpData, IntRef lpccData) throws NativeErrorException;
+    private static native long RegEnumValueW(long hKey, int dwIndex, long lpValueName, IntRef lpcchValueName, IntRef lpType, long lpData, IntRef lpccData);
 
-    private static native void RegOpenKeyExW(long hKey, CharSequence lpSubKey, int ulOptions, int samDesired, LongRef phkResult) throws NativeErrorException;
+    private static native long RegOpenKeyExW(long hKey, String lpSubKey, int ulOptions, int samDesired, LongRef phkResult);
 
-    private static native void RegCloseKey(long hKey);
+    private static native long RegCloseKey(long hKey);
     
-    public final static void RegEnumValueW(HKEY hKey, int dwIndex, LPWSTR lpValueName, IntRef lpType, LPBYTE lpData) throws NativeErrorException {
+    public final static long RegEnumValueW(HKEY hKey, int dwIndex, LPWSTR lpValueName, IntRef lpType, LPBYTE lpData) {
         final long lpDataBaseAddress = lpData == null ? 0L : lpData.baseAddress;
         final IntRef lpDataBufferEnd = lpData == null ? null : lpData.bufferEnd;
-        RegEnumValueW(hKey.value, dwIndex, lpValueName.baseAddress, lpValueName.bufferEnd, lpType, lpDataBaseAddress, lpDataBufferEnd);
+        return RegEnumValueW(hKey.value, dwIndex, lpValueName.baseAddress, lpValueName.bufferEnd, lpType, lpDataBaseAddress, lpDataBufferEnd);
     }
 
-    public final static void RegOpenKeyExW(HKEY hKey, CharSequence lpSubKey, int ulOptions, REGSAM samDesired, PHKEY phkResult) throws NativeErrorException {
-        RegOpenKeyExW(hKey.value, lpSubKey, ulOptions, samDesired.value, phkResult);
+    public final static long RegOpenKeyExW(HKEY hKey, String lpSubKey, int ulOptions, int samDesired, PHKEY phkResult) {
+        return RegOpenKeyExW(hKey.value, lpSubKey, ulOptions, samDesired, phkResult);
     }
 
-    public final static void RegCloseKey(HKEY hKey) throws NativeErrorException {
-        RegCloseKey(hKey.value);
+    public final static long RegCloseKey(HKEY hKey) throws NativeErrorException {
+        return RegCloseKey(hKey.value);
     }
 }

@@ -3,8 +3,10 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 
-@Include("winerr")
-public abstract class Winerr {
+@Include("winerror.h")
+public abstract class Winerror {
+
+    public final static native boolean HAVE_WINERROR_H();
 
     @Define
     public final static native int ERROR_SUCCESS();
@@ -18,4 +20,10 @@ public abstract class Winerr {
     public final static native int ERROR_INVALID_PARAMETER();
     @Define
     public final static native int ERROR_IO_PENDING();
+    @Define
+    public final static native int ERROR_NO_MORE_ITEMS();
+
+	@Define
+    public final static native int ERROR_MORE_DATA();
+	
 }
