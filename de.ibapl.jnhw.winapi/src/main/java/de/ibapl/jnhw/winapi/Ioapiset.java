@@ -16,5 +16,11 @@ import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
  */
 public final class Ioapiset {
 
-    public final static native void GetOverlappedResult(HANDLE hFile, OVERLAPPED lpOverlapped, IntRef lpNumberOfBytesTransferred, boolean bWait) throws NativeErrorException;
+    public final static native boolean HAVE_IOAPISET_H();
+
+    private static native void GetOverlappedResult(long hFile, long lpOverlapped, IntRef lpNumberOfBytesTransferred, boolean bWait) throws NativeErrorException;
+    
+    public final static void GetOverlappedResult(HANDLE hFile, OVERLAPPED lpOverlapped, IntRef lpNumberOfBytesTransferred, boolean bWait) throws NativeErrorException {
+        GetOverlappedResult(hFile.value, lpOverlapped.baseAddress, lpNumberOfBytesTransferred, bWait);
+    }
 }

@@ -17,6 +17,8 @@ import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
 @Include("minwinbase.h")
 public class Minwinbase extends LibJnhwWinApiLoader {
 
+//TODO   public final static native boolean HAVE_MINWINBASE_H();
+
     public final static class OVERLAPPED extends OpaqueMemory {
 
         static {
@@ -57,7 +59,7 @@ public class Minwinbase extends LibJnhwWinApiLoader {
         public final static native int sizeofSECURITY_ATTRIBUTES();
 
         private static final native long nLength(long baseAddress);
-        private Minwindef.LPVOID lpSecurityDescriptor;
+//        private Minwindef.LPVOID lpSecurityDescriptor;
         private static native boolean bInheritHandle(long baseAddress);
 
         public SECURITY_ATTRIBUTES() {

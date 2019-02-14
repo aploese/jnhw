@@ -5,6 +5,8 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.Include;
+import de.ibapl.jnhw.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -13,9 +15,28 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
  *
  * @author aploese
  */
-public abstract class Synchapi {
+@Include("synchapi.h")
+public abstract class Synchapi extends LibJnhwWinApiLoader {
 
-    public final static native int WaitForSingleObject(HANDLE hHandle, long dwMilliseconds) throws NativeErrorException;
+    public final static native boolean HAVE_SYNCAPI_H();
 
-    public final static native HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException;
+    private static native long WaitForSingleObject(long hHandle, long dwMilliseconds);
+
+    public final static long WaitForSingleObject(HANDLE hHandle, long dwMilliseconds) {
+        return WaitForSingleObject(hHandle.value, dwMilliseconds);
+    }
+
+    private static native long CreateEventW(long lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException;
+
+    public final static HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException {
+        final long result = CreateEventW(lpEventAttributes == null ? 0L : lpEventAttributes.baseAddress, bManualReset, bInitialState, lpName);
+        return new HANDLE(result);
+    }
+    
+    private static native boolean SetEvent(long hEvent);
+    
+    public final static boolean SetEvent(HANDLE hEvent) {
+        return SetEvent(hEvent.value);
+    }
+    
 }

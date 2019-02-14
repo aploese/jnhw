@@ -7,9 +7,26 @@ LIB_JNHW_WINAPI_RES_NAME=@JNHW_RESOURCES_DIR@/$(LIB_JNHW_WINAPI_NAME)
 
 lib_LTLIBRARIES = libjnhw-winapi.la
 
-noinst_LTLIBRARIES = libwinnt.la libminwinbase.la libwinbase.la libwinreg.la libwinerror.la
+noinst_LTLIBRARIES = \
+ libwinnt.la \
+ libminwinbase.la \
+ libwinbase.la \
+ libwinreg.la \
+ libwinerror.la \
+ libsynchapi.la \
+ libfileapi.la \
+ libioapiset.la
 
-libjnhw_winapi_la_LIBADD = @JNHW_COMMON_SRC_DIR@/libjnhw-common.la libminwinbase.la libwinnt.la libwinbase.la libwinreg.la libwinerror.la
+libjnhw_winapi_la_LIBADD = \
+ @JNHW_COMMON_SRC_DIR@/libjnhw-common.la \
+ libminwinbase.la \
+ libwinnt.la \
+ libwinbase.la \
+ libwinreg.la \
+ libwinerror.la  \
+ libsynchapi.la \
+ libfileapi.la \
+ libioapiset.la
 
 libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
@@ -24,6 +41,7 @@ libminwinbase_la_SOURCES = \
 
 libwinbase_la_SOURCES = \
  WinbaseDefines.c \
+ WinbaseFunctions.c \
  Winbase_COMMTIMEOUTS.c \
  Winbase_COMSTAT.c \
  Winbase_DCB.c
@@ -35,6 +53,18 @@ libwinreg_la_SOURCES = \
 libwinerror_la_SOURCES = \
  WinerrorDefines.c
  
+libsynchapi_la_SOURCES = \
+ SynchapiDefines.c \
+ SynchapiFunctions.c
+
+libfileapi_la_SOURCES = \
+ FileapiDefines.c \
+ FileapiFunctions.c
+ 
+libioapiset_la_SOURCES = \
+ IoapisetDefines.c \
+ IoapisetFunctions.c
+
 #hook into make all
 all-local: $(LIB_JNHW_WINAPI_RES_NAME)
 

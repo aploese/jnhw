@@ -2,27 +2,11 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 @Include("minwindef.h")
 public abstract class Minwindef {
-
-    @Deprecated
-    public static class LPVOID {
-
-        public long address;
-
-        public LPVOID(long address) {
-            this.address = address;
-        }
-
-        LPVOID() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-    }
 
     public static class HKEY extends HANDLE {
 
@@ -38,7 +22,7 @@ public abstract class Minwindef {
     }
 
     /**
-     * Just the pointer to HKEY that where meaning it can be overwritten....
+     * Just the pointer to HKEY that where meaning it can be set in a function call ....
      */
     public static class PHKEY extends HKEY {
         
