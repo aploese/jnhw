@@ -3,12 +3,13 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 @Include("WinBase.h")
-public abstract class Winbase {
+public abstract class Winbase extends LibJnhwWinApiLoader {
 
     public final static native boolean HAVE_WINBASE_H();
 
@@ -310,7 +311,7 @@ public abstract class Winbase {
         }
 
         public char XonChar() {
-            return XoffChar(baseAddress);
+            return XonChar(baseAddress);
         }
 
         public void XonChar(char value) {
@@ -412,8 +413,12 @@ public abstract class Winbase {
         }
 
     }
-
-    public final static native HANDLE INVALID_HANDLE_VALUE();
+    @Define
+    private static native long INVALID_HANDLE_VALUE0();
+    
+    public final static HANDLE INVALID_HANDLE_VALUE() {
+        return new HANDLE(INVALID_HANDLE_VALUE0());
+    }
 
     private static native void CloseHandle(long hObject) throws NativeErrorException;
 

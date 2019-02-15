@@ -63,9 +63,9 @@ public class WinregTests {
             if (result == Winerror.ERROR_SUCCESS()) {
                 System.out.print("lpValueName: " + lpValueName.getString());
                 if (lpType.value == Winnt.REG_SZ()) {
-                System.out.println(" = " + LPWSTR.stringValueOf(lpData));
+                System.out.println(" = " + LPWSTR.stringValueOfNullTerminated(lpData));
                 } else if (lpType.value == Winnt.REG_MULTI_SZ()) {
-                    System.out.println(" = " + LPWSTR.stringValueOf(lpData));
+                    System.out.println(" = " + LPWSTR.stringValueOfNullTerminated(lpData));
                 } else {
                     System.out.println(" = ???");
                 }

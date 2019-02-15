@@ -1,4 +1,4 @@
-#include <config.h>
+#include "../../../config.h"
 #include "jnhw.h"
 
 #ifdef HAVE_TERMIOS_H

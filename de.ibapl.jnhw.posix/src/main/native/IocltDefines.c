@@ -1,4 +1,4 @@
-#include <config.h>
+#include "../../../config.h"
 #include "jnhw.h"
 /*
  * Class:     de_ibapl_jnhw_unix_sys_Ioctl

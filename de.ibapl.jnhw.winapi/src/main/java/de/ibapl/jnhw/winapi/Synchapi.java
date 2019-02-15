@@ -18,7 +18,7 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 @Include("synchapi.h")
 public abstract class Synchapi extends LibJnhwWinApiLoader {
 
-    public final static native boolean HAVE_SYNCAPI_H();
+    public final static native boolean HAVE_SYNCHAPI_H();
 
     private static native long WaitForSingleObject(long hHandle, long dwMilliseconds);
 
@@ -34,9 +34,13 @@ public abstract class Synchapi extends LibJnhwWinApiLoader {
     }
     
     private static native boolean SetEvent(long hEvent);
+    private static native boolean ResetEvent(long hEvent);
     
     public final static boolean SetEvent(HANDLE hEvent) {
         return SetEvent(hEvent.value);
     }
     
+    public final static boolean ResetEvent(HANDLE hEvent) {
+        return ResetEvent(hEvent.value);
+    }
 }

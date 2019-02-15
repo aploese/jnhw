@@ -1,23 +1,16 @@
-package de.ibapl.jnhw.posix;
+package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LibJnhwLoader;
-import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OS;
-import de.ibapl.jnhw.isoc.Errno;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledOnOs;
 
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class TermiosTests {
+public class WinbaseTests {
 
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
@@ -36,13 +29,20 @@ public class TermiosTests {
     }
 
     @Test
-    public void test_HAVE_TERMIOS_H() throws Exception {
+    public void test_HAVE_WINBASE_H() throws Exception {
         if (LibJnhwLoader.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Termios.HAVE_TERMIOS_H(), "not expected to have termios.h");
+            Assertions.assertTrue(Winbase.HAVE_WINBASE_H(), "expected to have winbase.h");
         } else {
-            Assertions.assertTrue(Termios.HAVE_TERMIOS_H(), "expected to have termios.h");
+            Assertions.assertFalse(Winbase.HAVE_WINBASE_H(), "not expected to have winbase.h");
         }
     }
 
+    @Test
+    public void testDefines() throws Exception {
+        Assumptions.assumeTrue(LibJnhwLoader.getOS() == OS.WINDOWS);
+        Winbase.CLRBREAK();
+        Winnt.HANDLE h = Winbase.INVALID_HANDLE_VALUE();
+        Assertions.assertTrue(h.value != 0); 
+    }
 
 }

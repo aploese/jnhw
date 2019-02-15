@@ -11,6 +11,7 @@ import org.junit.jupiter.api.condition.OS;
 
 import de.ibapl.jnhw.LibJnhwLoader;
 
+    @DisabledOnOs(OS.WINDOWS)
 public class FcntlTests {
 
     @BeforeAll
@@ -30,7 +31,6 @@ public class FcntlTests {
     }
 
         @Test
-        @DisabledOnOs(OS.WINDOWS)
     public void testNPEOpen() throws Exception {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Fcntl.open(null, 0);
@@ -38,7 +38,6 @@ public class FcntlTests {
     }
 
     @Test
-    @DisabledOnOs(OS.WINDOWS)
     public void testNPECreat() throws Exception {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Fcntl.creat(null, 0);

@@ -1,5 +1,6 @@
-#include <config.h>
+#include "../../../config.h"
 #include "jnhw.h"
+#include "de_ibapl_jnhw_winapi_Fileapi.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -147,8 +147,21 @@ public abstract class LibJnhwLoader {
                 if (splitPos <= 0) {
                     // ERROR
                 }
-                tmpLib = File.createTempFile(classPathLibName.substring(0, splitPos), classPathLibName.substring(splitPos));
-                tmpLib.deleteOnExit();
+                    File tmpLibDir = File.createTempFile(classPathLibName.substring(0, splitPos), classPathLibName.substring(splitPos));
+                    tmpLibDir.delete();
+                    tmpLibDir.mkdir();
+                    tmpLib = new File(tmpLibDir, formattedLibName);
+                    /*
+                    if (getOS() == OS.WINDOWS) {
+                    //On win we must load the lib with the correct name ...
+                    //TODO check if exists ...
+                    //TODO do this for all ???
+                    tmpLib = new File(System.getProperty("java.io.tmpdir"), formattedLibName);
+                } else {
+                    tmpLib = File.createTempFile(classPathLibName.substring(0, splitPos), classPathLibName.substring(splitPos));
+                }
+*/
+                tmpLibDir.deleteOnExit();
                 try (FileOutputStream fos = new FileOutputStream(tmpLib)) {
                     byte[] buff = new byte[1024];
                     int i;
@@ -162,7 +175,7 @@ public abstract class LibJnhwLoader {
                 classPathLibName = tmpLib.getAbsolutePath();
                 System.load(classPathLibName);
                 libNames.put(libName, classPathLibName);
-                tmpLib.delete();
+                tmpLibDir.delete();
                 LOG.log(Level.INFO, "Lib loaded via System.load(\"{0}\")", classPathLibName);
                 return;
             } catch (Throwable t) {

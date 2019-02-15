@@ -88,8 +88,13 @@ public final class Winnt extends LibJnhwWinApiLoader {
 
         public final static int SIZE_OF_WCHAR = 2;
 
-        static String stringValueOf(Minwindef.LPBYTE lpData) {
-            return getString(lpData.baseAddress, lpData.bufferEnd.value / SIZE_OF_WCHAR);
+        /**
+         * Skip the last two 0 bytes aka the last 0 char
+         * @param lpData
+         * @return
+         */
+        public static String stringValueOfNullTerminated(Minwindef.LPBYTE lpData) {
+            return getString(lpData.baseAddress, lpData.bufferEnd.value / SIZE_OF_WCHAR - 1);
         }
 
         final IntRef bufferEnd;

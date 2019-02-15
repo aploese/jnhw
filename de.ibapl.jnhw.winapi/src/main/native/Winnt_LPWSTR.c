@@ -1,9 +1,9 @@
-#include <config.h>
+#include "../../../config.h"
 #include "jnhw.h"
+#include "de_ibapl_jnhw_winapi_Winnt.h"
 
 #ifdef HAVE_WINNT_H
 #include <windows.h>
-#include "de_ibapl_jnhw_winapi_Winnt.h"
 #include <winnt.h>
 
 #ifdef __cplusplus

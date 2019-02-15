@@ -1,5 +1,7 @@
-#include <config.h>
+#include "../../../config.h"
 #include "jnhw.h"
+#include "de_ibapl_jnhw_winapi_Winbase.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -92,14 +94,14 @@ extern "C" {
         return RTS_CONTROL_HANDSHAKE;
     }
 
-    /*
+        /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
-     * Method:    INVALID_HANDLE_VALUE
-     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef/HANDLE;
+     * Method:    INVALID_HANDLE_VALUE0
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winbase_INVALID_1HANDLE_1VALUE
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_INVALID_1HANDLE_1VALUE0
     (JNIEnv *env, jclass clazz) {
-        return INVALID_HANDLE_VALUE;
+        return (jlong) (uintptr_t) INVALID_HANDLE_VALUE;
     }
 
     /*

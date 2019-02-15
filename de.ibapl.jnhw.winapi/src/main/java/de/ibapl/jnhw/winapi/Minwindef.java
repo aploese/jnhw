@@ -2,11 +2,12 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.OpaqueMemory;
 import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 @Include("minwindef.h")
-public abstract class Minwindef {
+public abstract class Minwindef extends LibJnhwWinApiLoader {
 
     public static class HKEY extends HANDLE {
 
@@ -57,8 +58,5 @@ public abstract class Minwindef {
         	bufferEnd.value = sizeInBytes;
         }
 
-        public String toString(boolean b) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
     }
 }

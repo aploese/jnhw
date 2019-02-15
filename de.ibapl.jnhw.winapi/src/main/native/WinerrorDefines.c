@@ -1,5 +1,6 @@
-#include <config.h>
+#include "../../../config.h"
 #include "jnhw.h"
+#include "de_ibapl_jnhw_winapi_Winerror.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -81,6 +82,16 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1INVALID_1PARAME
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1IO_1PENDING
 (JNIEnv *env, jclass clazz) {
 	return ERROR_IO_PENDING;
+}
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winerror
+ * Method:    ERROR_NOACCESS
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1NOACCESS
+(JNIEnv *env, jclass clazz) {
+	return ERROR_NOACCESS;
 }
 
 /*

@@ -1,5 +1,6 @@
-#include <config.h>
+#include "../../../config.h"
 #include "jnhw.h"
+#include "de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED.h"
 
 #ifdef HAVE_MINWINBASE_H
 #include <windows.h>

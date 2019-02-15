@@ -1,7 +1,6 @@
-#include <config.h>
+#include "../../../config.h"
 #include "jnhw.h"
-
-
+#include "de_ibapl_jnhw_winapi_Fileapi.h"
 
 #ifdef HAVE_FILEAPI_H
 #include <windows.h>
@@ -30,7 +29,7 @@ extern "C" {
         if (result == INVALID_HANDLE_VALUE) {
             throw_NativeErrorException(env, GetLastError());
         }
-        return (jlong)(uintptr_t)result;
+        return (jlong) (uintptr_t) result;
     }
 
     /*
@@ -96,12 +95,10 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JLjava_nio_ByteBuffer_2IIJ
     (JNIEnv *env, jclass clazz, jlong hFile, jobject lpBuffer, jint pos, jint len, jlong lpOVERLAPPED) {
-        if (!ReadFile((HANDLE) (uintptr_t) hFile, (*env)->GetDirectBufferAddress(env, lpBuffer) + pos, len, NULL, (LPOVERLAPPED)(uintptr_t)lpOVERLAPPED)) {
+        if (!ReadFile((HANDLE) (uintptr_t) hFile, (*env)->GetDirectBufferAddress(env, lpBuffer) + pos, len, NULL, (LPOVERLAPPED) (uintptr_t) lpOVERLAPPED)) {
             if (GetLastError() != ERROR_IO_PENDING) {
                 throw_NativeErrorException(env, GetLastError());
-            } 
-        } else {
-            throw_NullPointerException(env, "Unexpected path in native code Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JLjava_nio_ByteBuffer_2IIJ");
+            }
         }
     }
 
@@ -152,15 +149,12 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JLjava_nio_ByteBuffer_2IIJ
     (JNIEnv *env, jclass clazz, jlong hFile, jobject lpBuffer, jint pos, jint len, jlong lpOVERLAPPED) {
-        if (!WriteFile((HANDLE) (uintptr_t) hFile, (*env)->GetDirectBufferAddress(env, lpBuffer) + pos, len, NULL, (LPOVERLAPPED)(uintptr_t)lpOVERLAPPED)) {
+        if (!WriteFile((HANDLE) (uintptr_t) hFile, (*env)->GetDirectBufferAddress(env, lpBuffer) + pos, len, NULL, (LPOVERLAPPED) (uintptr_t) lpOVERLAPPED)) {
             if (GetLastError() != ERROR_IO_PENDING) {
                 throw_NativeErrorException(env, GetLastError());
-            } 
-        } else {
-            throw_NullPointerException(env, "Unexpected path in native code Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JLjava_nio_ByteBuffer_2IIJ");
+            }
         }
     }
-
 #ifdef __cplusplus
 }
 #endif

@@ -14,6 +14,7 @@ public class NativeErrorException extends Exception {
     public final int errno;
     
     public NativeErrorException(int errno) {
+        super("Native error: " + errno);
         this.errno = errno;
     }
     

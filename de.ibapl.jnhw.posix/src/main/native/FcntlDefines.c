@@ -1,4 +1,4 @@
-#include <config.h>
+#include "../../../config.h"
 #include "jnhw.h"
 
 #if HAVE_UNISTD_H

@@ -1,5 +1,6 @@
-#include <config.h>
+#include "../../../config.h"
 #include "jnhw.h"
+#include "de_ibapl_jnhw_winapi_Synchapi.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,16 +27,13 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_CreateEventW
     (JNIEnv *env, jclass clazz, jlong lpEventAttributes, jboolean bManualReset, jboolean bInitialState, jstring lpName) {
-        if (lpName == NULL) {
-            throw_NullPointerException(env, "lpName is null.");
-            return ERROR_INVALID_PARAMETER;
+        LPCWSTR _lpName = lpName != NULL ? (*env)->GetStringChars(env, lpName, NULL) : NULL;
+
+        HANDLE result = CreateEventW((LPSECURITY_ATTRIBUTES) (uintptr_t) lpEventAttributes, bManualReset, bInitialState, _lpName);
+        if (lpName != NULL) {
+            (*env)->ReleaseStringChars(env, lpName, _lpName);
         }
-        LPCWSTR _lpName = (*env)->GetStringChars(env, lpName, NULL);
-
-        HANDLE result = CreateEventW((LPSECURITY_ATTRIBUTES) (uintptr_t) & lpEventAttributes, bManualReset, bInitialState, _lpName);
-
-        (*env)->ReleaseStringChars(env, lpName, _lpName);
-
+        
         if (result == NULL) {
             throw_NativeErrorException(env, GetLastError());
         }
@@ -50,6 +48,16 @@ extern "C" {
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SetEvent
     (JNIEnv *env, jclass clazz, jlong hEvent) {
         return SetEvent((HANDLE) (uintptr_t) hEvent);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Synchapi
+     * Method:    ResetEvent
+     * Signature: (J)Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_ResetEvent
+    (JNIEnv *env, jclass clazz, jlong hEvent) {
+        return ResetEvent((HANDLE) (uintptr_t) hEvent);
     }
 
 

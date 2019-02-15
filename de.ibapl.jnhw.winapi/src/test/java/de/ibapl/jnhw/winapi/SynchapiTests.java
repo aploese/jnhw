@@ -33,9 +33,9 @@ public class SynchapiTests {
     @Test
     public void test_HAVE_SYNCAPI_H() throws Exception {
         if (LibJnhwLoader.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Synchapi.HAVE_SYNCAPI_H(), "expected to have synchapi.h");
+            Assertions.assertTrue(Synchapi.HAVE_SYNCHAPI_H(), "expected to have synchapi.h");
         } else {
-            Assertions.assertFalse(Synchapi.HAVE_SYNCAPI_H(), "not expected to have synchapi.h");
+            Assertions.assertFalse(Synchapi.HAVE_SYNCHAPI_H(), "not expected to have synchapi.h");
         }
     }
 
@@ -58,7 +58,7 @@ public class SynchapiTests {
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(5000), () -> {
             new Thread(() -> {
                 try {
-                    wait(100);
+                    Thread.sleep(100);
                     Synchapi.SetEvent(hEvent);
                 } catch (InterruptedException ie) {
                     throw new RuntimeException(ie);

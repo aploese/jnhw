@@ -1,14 +1,15 @@
 package de.ibapl.jnhw.isoc;
 
-import de.ibapl.jnhw.LibJnhwLoader;
-import de.ibapl.jnhw.OS;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
+@DisabledOnOs(OS.WINDOWS)
 public class ErrnoTests {
 
     @BeforeAll
