@@ -1,11 +1,8 @@
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-winapi.h"
 #include "de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED.h"
 
 #ifdef HAVE_MINWINBASE_H
-#include <windows.h>
 #include <minwinbase.h>
-#include "de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED.h"
 
 #ifdef __cplusplus
 extern "C" {

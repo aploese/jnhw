@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+
 
 public class FileapiTests {
 
@@ -45,6 +47,7 @@ public class FileapiTests {
     }
 
     @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testByteBufferSynchron() throws Exception {
         Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
                 Winnt.GENERIC_WRITE(),
@@ -82,6 +85,7 @@ public class FileapiTests {
     }
 
     @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testByteBufferASynchron() throws Exception {
         Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
                 Winnt.GENERIC_WRITE(),

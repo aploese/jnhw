@@ -1,5 +1,4 @@
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-winapi.h"
 #include "de_ibapl_jnhw_winapi_Winerror.h"
 
 #ifdef __cplusplus
@@ -21,7 +20,6 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winerror_HAVE_1WINERR_1H
 }
 
 #ifdef HAVE_WINERROR_H
-#include <windows.h>
 #include <winerror.h>
 
 /*

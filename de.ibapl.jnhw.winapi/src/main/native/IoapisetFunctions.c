@@ -1,9 +1,7 @@
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-winapi.h"
 #include "de_ibapl_jnhw_winapi_Ioapiset.h"
 
 #ifdef HAVE_IOAPISET_H
-#include <windows.h>
 #include <ioapiset.h>
 
 #ifdef __cplusplus

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
 
 public class WinntTests {
 
@@ -38,8 +39,8 @@ public class WinntTests {
     }
 
     @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testMAXDWORD() throws Exception {
-        Assumptions.assumeTrue(LibJnhwLoader.getOS() == OS.WINDOWS);
         Winnt.MAXDWORD();
     }
 

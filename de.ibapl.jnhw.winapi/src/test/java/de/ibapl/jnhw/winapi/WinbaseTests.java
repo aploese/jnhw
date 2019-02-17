@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
 
 public class WinbaseTests {
 
@@ -38,8 +39,8 @@ public class WinbaseTests {
     }
 
     @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testDefines() throws Exception {
-        Assumptions.assumeTrue(LibJnhwLoader.getOS() == OS.WINDOWS);
         Winbase.CLRBREAK();
         Winnt.HANDLE h = Winbase.INVALID_HANDLE_VALUE();
         Assertions.assertTrue(h.value != 0); 

@@ -84,7 +84,7 @@ public abstract class LibJnhwLoader {
         }
     }
 
-    protected static void loadNativeLib(final String libName, int libToolInterfaceVersion) {
+    public static void loadNativeLib(final String libName, int libToolInterfaceVersion) {
         synchronized (libNames) {
             if (libNames.containsKey(libName)) {
                 LOG.log(Level.INFO, "Lib " + libName + " was Loaded as: " + libNames.get(libName));

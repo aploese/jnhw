@@ -1,5 +1,4 @@
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-winapi.h"
 #include "de_ibapl_jnhw_winapi_Fileapi.h"
 
 #ifdef __cplusplus
@@ -21,7 +20,6 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_HAVE_1FILEAPI_1H
 }
 
 #ifdef HAVE_FILEAPI_H
-#include <windows.h>
 #include <fileapi.h>
 
 /*

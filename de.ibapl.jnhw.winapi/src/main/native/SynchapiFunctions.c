@@ -1,5 +1,4 @@
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-winapi.h"
 #include "de_ibapl_jnhw_winapi_Synchapi.h"
 
 #ifdef __cplusplus
@@ -7,7 +6,6 @@ extern "C" {
 #endif
 
 #ifdef HAVE_SYNCHAPI_H
-#include <windows.h>
 #include <synchapi.h>
 
     /*

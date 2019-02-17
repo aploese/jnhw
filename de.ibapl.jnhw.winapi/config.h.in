@@ -48,6 +48,9 @@
 /* Define to 1 if you have the <winbase.h> header file. */
 #undef HAVE_WINBASE_H
 
+/* Define to 1 if you have the <windows.h> header file. */
+#undef HAVE_WINDOWS_H
+
 /* Define to 1 if you have the <winerror.h> header file. */
 #undef HAVE_WINERROR_H
 

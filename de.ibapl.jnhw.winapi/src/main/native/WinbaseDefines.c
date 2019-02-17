@@ -1,5 +1,4 @@
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-winapi.h"
 #include "de_ibapl_jnhw_winapi_Winbase.h"
 
 #ifdef __cplusplus
@@ -21,7 +20,6 @@ extern "C" {
     }
 
 #ifdef HAVE_WINBASE_H
-#include <windows.h>
 #include <winbase.h>
 
     /*

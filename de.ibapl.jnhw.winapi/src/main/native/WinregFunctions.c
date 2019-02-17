@@ -1,9 +1,8 @@
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-winapi.h"
 #include "de_ibapl_jnhw_winapi_Winreg.h"
 
 #ifdef HAVE_WINREG_H
-#include <windows.h>
+#include <winreg.h>
 
 #ifdef __cplusplus
 extern "C" {

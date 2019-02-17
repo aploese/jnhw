@@ -13,7 +13,7 @@ extern "C" {
 #define _JNHW_IMPORT_OR_EXPORT_ JNIIMPORT
 #endif   
 
-//Init exceptions ant Refs
+//Init exceptions and Refs
 _JNHW_IMPORT_OR_EXPORT_ extern JNICALL void jnhw_common_init(JNIEnv *env);
 
 //Exception names
