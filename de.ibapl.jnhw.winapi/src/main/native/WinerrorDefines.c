@@ -112,6 +112,15 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1MORE_1DATA
 	return ERROR_MORE_DATA;
 }
 
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winerror
+ * Method:    ERROR_NOT_FOUND
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1NOT_1FOUND
+(JNIEnv *env, jclass clazz) {
+	return ERROR_NOT_FOUND;
+}
 
 
 #endif

@@ -29,5 +29,8 @@ public abstract class Winerror extends LibJnhwWinApiLoader {
 
 	@Define
     public final static native int ERROR_MORE_DATA();
+
+	@Define
+    public final static native int ERROR_NOT_FOUND();
 	
 }
