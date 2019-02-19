@@ -9,10 +9,6 @@ import org.junit.jupiter.api.Test;
 
 public class NativeLibLoaderTests {
     
-    public static void main(String[] args) {
-        System.err.println("RUNNN");
-    }
-    
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
     }

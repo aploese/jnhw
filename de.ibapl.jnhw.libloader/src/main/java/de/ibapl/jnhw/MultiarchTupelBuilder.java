@@ -5,9 +5,7 @@
  */
 package de.ibapl.jnhw;
 
-import java.util.Collection;
 import java.util.EnumSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -184,7 +182,7 @@ public final class MultiarchTupelBuilder {
                 }
             case MAC_OS_X:
                 switch (os_arch) {
-                    case "amd64":
+                    case "x86_64":
                         result.add(MultiarchInfo.X86_64__MAC_OS_X__BSD);
                         return result;
                     default:

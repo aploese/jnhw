@@ -36,12 +36,16 @@ public abstract class NativeLibLoader {
      */
     static {
         MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-        MULTIARCH_INFO = MULTIARCH_TUPEL_BUILDER.guessMultiarch();
-        Iterator<MultiarchInfo> iter = MULTIARCH_INFO.iterator();
-        if (iter.hasNext()) {
-            OS = iter.next().getOS();
-        } else {
-            OS = null;
+        try {
+            MULTIARCH_INFO = MULTIARCH_TUPEL_BUILDER.guessMultiarch();
+            Iterator<MultiarchInfo> iter = MULTIARCH_INFO.iterator();
+            if (iter.hasNext()) {
+                OS = iter.next().getOS();
+            } else {
+                OS = null;
+            }
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE, "Unknown exception sys propereties: \n" + MULTIARCH_TUPEL_BUILDER.listSystemProperties(), t);
         }
     }
 
