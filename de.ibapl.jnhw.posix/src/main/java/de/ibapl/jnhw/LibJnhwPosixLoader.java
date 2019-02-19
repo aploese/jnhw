@@ -16,7 +16,7 @@ public abstract class LibJnhwPosixLoader extends LibJnhwLoader {
     public final static int LIB_JNHW_POSIX_VERSION = 0;
 
     public static boolean isLibJnhwPosixLoaded() {
-        return NativeLibLoader.isLibLoaded(LIB_JNHW_POSIX);
+            return LibJnhwLoader.isLibJnhwLoaded() && NativeLibLoader.isLibLoaded(LIB_JNHW_POSIX);
     }
 
     public static String getLibJnhwPosixLoadedName() {
@@ -31,6 +31,14 @@ public abstract class LibJnhwPosixLoader extends LibJnhwLoader {
 
     public final static void loadLibJnhwPosix() {
         NativeLibLoader.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION);
+    }
+
+    public static Throwable getLoadException() {
+        if (LibJnhwLoader.isLibJnhwLoaded()) {
+            return NativeLibLoader.getLoadError(LIB_JNHW_POSIX);
+        } else {
+            return LibJnhwLoader.getLoadException();
+        }
     }
 
     protected LibJnhwPosixLoader() {

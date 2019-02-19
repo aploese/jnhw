@@ -20,6 +20,10 @@ public abstract class LibJnhwLoader {
         loadLibJnhw();
     }
 
+    static Throwable getLoadException() {
+        return NativeLibLoader.getLoadError(LIB_JNHW);
+    }
+
     protected LibJnhwLoader() {
 
     }
