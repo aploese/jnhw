@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -36,17 +37,21 @@ public abstract class NativeLibLoader {
      */
     static {
         MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
+        Set<MultiarchInfo> multiarchInfo = EnumSet.noneOf(MultiarchInfo.class); 
+        OS os = null;
         try {
-            MULTIARCH_INFO = MULTIARCH_TUPEL_BUILDER.guessMultiarch();
-            Iterator<MultiarchInfo> iter = MULTIARCH_INFO.iterator();
+             multiarchInfo = MULTIARCH_TUPEL_BUILDER.guessMultiarch();
+            Iterator<MultiarchInfo> iter = multiarchInfo.iterator();
             if (iter.hasNext()) {
-                OS = iter.next().getOS();
+                os = iter.next().getOS();
             } else {
-                OS = null;
+                os = null;
             }
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, "Unknown exception sys propereties: \n" + MULTIARCH_TUPEL_BUILDER.listSystemProperties(), t);
         }
+        OS = os;
+        MULTIARCH_INFO = multiarchInfo;
     }
 
     public static Throwable getLoadError(String libName) {
@@ -58,7 +63,6 @@ public abstract class NativeLibLoader {
     }
 
     protected NativeLibLoader() {
-
     }
 
     public static boolean isLibLoaded(String libname) {
