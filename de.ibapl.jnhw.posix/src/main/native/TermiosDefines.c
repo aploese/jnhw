@@ -573,6 +573,21 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    PARMRK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_PARMRK
+    (JNIEnv *env, jclass clazz) {
+#ifdef PARMRK
+        return PARMRK;
+#else
+        throw_NotDefinedException(env, "PARMRK");
+        return 0;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    PARODD
      * Signature: ()I
      */

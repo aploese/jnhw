@@ -259,6 +259,9 @@ public final class Termios extends LibJnhwPosixLoader {
 
     @Define
     public final static native int PAREXT() throws NotDefinedException;
+    
+    @Define
+    public final static native int PARMRK() throws NotDefinedException;
 
     @Define
     public final static native int PARODD();
