@@ -48,6 +48,11 @@ public final class Termios extends LibJnhwPosixLoader {
      */
     public static class StructTermios extends OpaqueMemory {
 
+        static {
+            LibJnhwPosixLoader.loadLibJnhwPosix();
+        }
+        
+
         public final static native int sizeofTermios();
 
         static native int c_iflag(long baseAddress);

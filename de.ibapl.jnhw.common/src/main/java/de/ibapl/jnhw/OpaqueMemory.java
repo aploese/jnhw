@@ -6,12 +6,14 @@
 package de.ibapl.jnhw;
 
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author aploese
  */
 public class OpaqueMemory extends LibJnhwLoader {
+    protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
     
     public final long baseAddress;
     public final int sizeInBytes;
@@ -95,7 +97,7 @@ public class OpaqueMemory extends LibJnhwLoader {
                 // LOG.log(Level.FINEST, String.format("Finalize: memory @0x%016x size: %d belongs to %s", baseAddress, sizeInBytes, memoryOwner));
             }
         } catch (Throwable t) {
-            LibJnhwLoader.LOG.log(Level.SEVERE, String.format("Finalize: Memory Leak freeing memory @0x%016x size: %d failed", baseAddress, sizeInBytes), t);
+            LOG.log(Level.SEVERE, String.format("Finalize: Memory Leak freeing memory @0x%016x size: %d failed", baseAddress, sizeInBytes), t);
         } finally {
             super.finalize();
         }

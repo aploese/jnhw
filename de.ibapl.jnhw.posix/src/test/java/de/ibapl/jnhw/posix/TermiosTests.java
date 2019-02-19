@@ -3,6 +3,7 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.NativeLibLoader;
 import de.ibapl.jnhw.OS;
 import de.ibapl.jnhw.isoc.Errno;
 import java.nio.Buffer;
@@ -37,7 +38,7 @@ public class TermiosTests {
 
     @Test
     public void test_HAVE_TERMIOS_H() throws Exception {
-        if (LibJnhwLoader.getOS() == OS.WINDOWS) {
+        if (NativeLibLoader.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Termios.HAVE_TERMIOS_H(), "not expected to have termios.h");
         } else {
             Assertions.assertTrue(Termios.HAVE_TERMIOS_H(), "expected to have termios.h");

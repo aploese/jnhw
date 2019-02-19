@@ -16,11 +16,11 @@ public abstract class LibJnhwWinApiLoader extends LibJnhwLoader {
     public final static int LIB_JNHW_WIN_API_VERSION = 0;
 
     public static boolean isLibJnhwWinApiLoaded() {
-        return isLibLoaded(LIB_JNHW_WIN_API);
+        return NativeLibLoader.isLibLoaded(LIB_JNHW_WIN_API);
     }
 
     public static String getLibJnhwWinApiLoadedName() {
-        return getLibLoadedName(LIB_JNHW_WIN_API);
+        return NativeLibLoader.getLibLoadedName(LIB_JNHW_WIN_API);
     }
 
     static {
@@ -28,7 +28,7 @@ public abstract class LibJnhwWinApiLoader extends LibJnhwLoader {
     }
 
     public final static void loadLibJnhwWinApi() {
-        loadNativeLib(LIB_JNHW_WIN_API, LIB_JNHW_WIN_API_VERSION);
+        NativeLibLoader.loadNativeLib(LIB_JNHW_WIN_API, LIB_JNHW_WIN_API_VERSION);
     }
 
     protected LibJnhwWinApiLoader() {

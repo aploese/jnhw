@@ -1,6 +1,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.LibJnhwLoader;
+import de.ibapl.jnhw.NativeLibLoader;
 import de.ibapl.jnhw.OS;
 import java.time.Duration;
 
@@ -33,7 +34,7 @@ public class SynchapiTests {
 
     @Test
     public void test_HAVE_SYNCAPI_H() throws Exception {
-        if (LibJnhwLoader.getOS() == OS.WINDOWS) {
+        if (NativeLibLoader.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Synchapi.HAVE_SYNCHAPI_H(), "expected to have synchapi.h");
         } else {
             Assertions.assertFalse(Synchapi.HAVE_SYNCHAPI_H(), "not expected to have synchapi.h");

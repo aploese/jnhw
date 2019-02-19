@@ -10,6 +10,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
 import de.ibapl.jnhw.LibJnhwLoader;
+import de.ibapl.jnhw.NativeLibLoader;
 
     @DisabledOnOs(OS.WINDOWS)
 public class FcntlTests {
@@ -46,7 +47,7 @@ public class FcntlTests {
 
     @Test
     public void test_HAVE_FCNTL_H() throws Exception {
-        if (LibJnhwLoader.getOS() == de.ibapl.jnhw.OS.WINDOWS) {
+        if (NativeLibLoader.getOS() == de.ibapl.jnhw.OS.WINDOWS) {
         	Assertions.assertFalse(Fcntl.HAVE_FCNTL_H(), "expected not to have fcntl.h");
         } else {
         	Assertions.assertTrue(Fcntl.HAVE_FCNTL_H(), "expected to have fcntl.h");

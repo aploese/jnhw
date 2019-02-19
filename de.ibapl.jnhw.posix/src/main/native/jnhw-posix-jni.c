@@ -10,12 +10,7 @@ JNI_OnLoad(JavaVM *jvm, void *reserved) {
     if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_1_4)) {
         return JNI_ERR;
     }
-
-
-    
-    jnhw_common_init(env);
-    
-    //TODO Test exception for loaded libjnhw ???
+//    jnhw_common_init(env);
     
     return JNI_VERSION_1_4;
 }

@@ -8,10 +8,10 @@
     </parent>
 
     <groupId>de.ibapl.jnhw</groupId>
-    <artifactId>de.ibapl.jnhw.common</artifactId>
+    <artifactId>de.ibapl.jnhw.libloader</artifactId>
     <version>0.0.0-SNAPSHOT</version>
 
-    <name>JNHW Common</name>
+    <name>JNHW Native Lib Loader</name>
 
     <properties>
         <license.licenseResolver>${project.baseUri}/../src/licenses</license.licenseResolver>
@@ -19,11 +19,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>de.ibapl.jnhw</groupId>
-            <artifactId>de.ibapl.jnhw.libloader</artifactId>
-            <version>0.0.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.annotation</artifactId>
@@ -43,21 +38,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                            <compilerArgs>
-                                <arg>-h</arg>
-                                <arg>${project.build.directory}/generated-sources/include/</arg>
-                            </compilerArgs>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -66,6 +46,6 @@
         </plugins>
     </build>
 
-    <description>Provider which accesses the native resources with a Java Native Header Wrapper (JNHR) binding.</description>
+    <description>A loader for native (jni) librarys. </description>
 
 </project>

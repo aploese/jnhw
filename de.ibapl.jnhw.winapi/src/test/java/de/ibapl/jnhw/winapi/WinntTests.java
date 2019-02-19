@@ -1,6 +1,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.LibJnhwLoader;
+import de.ibapl.jnhw.NativeLibLoader;
 import de.ibapl.jnhw.OS;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -31,7 +32,7 @@ public class WinntTests {
 
     @Test
     public void test_HAVE_WINNT_H() throws Exception {
-        if (LibJnhwLoader.getOS() == OS.WINDOWS) {
+        if (NativeLibLoader.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Winnt.HAVE_WINNT_H(), "expected to have winnt.h");
         } else {
             Assertions.assertFalse(Winnt.HAVE_WINNT_H(), "not expected to have winnt.h");
