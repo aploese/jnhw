@@ -143,7 +143,9 @@ public abstract class NativeLibLoader {
                     //MacOS uses lo leaf names for the dylib so the full path must match - its expected to be /tmp
                     //see https://gstreamer.freedesktop.org/documentation/deploying/mac-osx.html
                     //TODO document this once its working
-                    tmpLib = new File(System.getProperty("java.io.tmpdir"), formattedLibName);
+                    //better ose otool -L to get the real path and use this ...???
+                    //provide the path in an property file ??
+                    tmpLib = new File("/tmp", formattedLibName);
                     fileToDeleteAfterLoading = tmpLib;
                 } else {
                     File tmpLibDir = File.createTempFile(classPathLibName.substring(0, splitPos), classPathLibName.substring(splitPos));
