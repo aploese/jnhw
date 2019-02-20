@@ -135,21 +135,24 @@ public abstract class NativeLibLoader {
                 return false;
             }
             String classPathLibName = classPathLibURL.getFile();
-            
+
             // Unbundled aka not within a jar
             LOG.log(Level.INFO, "Try load {0} from filesystem with libName: {1}", new Object[]{libName, classPathLibName});
-            try {
-                System.load(classPathLibName);
-                libNames.put(libName, classPathLibName);
-                loadErrors.remove(libName);
-                LOG.log(Level.WARNING, "TODO INFO {0} loaded via System.load(\"{1}\")", new Object[]{libName, classPathLibName});
-                return true;
-            } catch (UnsatisfiedLinkError ule) {
-                LOG.log(Level.WARNING, "TODO INFO  lib {0} for {1} not loaded: {2}", new Object[]{classPathLibName, libName, ule.getMessage()});
-            } catch (Throwable t) {
-                LOG.log(Level.WARNING, "TODO INFONative lib not loaded.", t);
+            //On MacOS we cant load the lib directly, we must fix first the internal id and lib path ... only copy to tmp and fix the path solves this
+            if (getOS() != OS.MAC_OS_X) {
+                try {
+                    System.load(classPathLibName);
+                    libNames.put(libName, classPathLibName);
+                    loadErrors.remove(libName);
+                    LOG.log(Level.WARNING, "TODO INFO {0} loaded via System.load(\"{1}\")", new Object[]{libName, classPathLibName});
+                    return true;
+                } catch (UnsatisfiedLinkError ule) {
+                    LOG.log(Level.WARNING, "TODO INFO  lib {0} for {1} not loaded: {2}", new Object[]{classPathLibName, libName, ule.getMessage()});
+                } catch (Throwable t) {
+                    LOG.log(Level.WARNING, "TODO INFONative lib not loaded.", t);
+                }
             }
-
+            // Copy to tmp
             try {
                 File tmpLib = copyToNativeLibDir(classPathLibURL, formattedLibName);
                 classPathLibName = tmpLib.getAbsolutePath();
