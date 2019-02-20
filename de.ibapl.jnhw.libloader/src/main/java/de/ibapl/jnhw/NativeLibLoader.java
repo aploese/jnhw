@@ -22,9 +22,9 @@ import java.util.logging.Logger;
  * @author aploese
  */
 public abstract class NativeLibLoader {
-
+    
     protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
-
+    
     private final static Map<String, String> libNames = new HashMap<>();
     private final static Map<String, Throwable> loadErrors = new HashMap<>();
     protected final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER;
@@ -37,10 +37,10 @@ public abstract class NativeLibLoader {
      */
     static {
         MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-        Set<MultiarchInfo> multiarchInfo = EnumSet.noneOf(MultiarchInfo.class); 
+        Set<MultiarchInfo> multiarchInfo = EnumSet.noneOf(MultiarchInfo.class);        
         OS os = null;
         try {
-             multiarchInfo = MULTIARCH_TUPEL_BUILDER.guessMultiarch();
+            multiarchInfo = MULTIARCH_TUPEL_BUILDER.guessMultiarch();
             Iterator<MultiarchInfo> iter = multiarchInfo.iterator();
             if (iter.hasNext()) {
                 os = iter.next().getOS();
@@ -53,30 +53,30 @@ public abstract class NativeLibLoader {
         OS = os;
         MULTIARCH_INFO = multiarchInfo;
     }
-
+    
     public static Throwable getLoadError(String libName) {
         return loadErrors.get(libName);
     }
-
+    
     public static boolean hasLoadError(String libName) {
         return loadErrors.containsKey(libName);
     }
-
+    
     protected NativeLibLoader() {
     }
-
+    
     public static boolean isLibLoaded(String libname) {
         synchronized (libNames) {
             return libNames.containsKey(libname);
         }
     }
-
+    
     public static String getLibLoadedName(String libname) {
         synchronized (libNames) {
             return libNames.get(libname);
         }
     }
-
+    
     public static boolean loadNativeLib(final String libName, int libToolInterfaceVersion) {
         synchronized (libNames) {
             if (libNames.containsKey(libName)) {
@@ -104,7 +104,7 @@ public abstract class NativeLibLoader {
             return loadFromResource(libName, formattedLibName);
         }
     }
-
+    
     private static boolean loadFromResource(final String libName, final String formattedLibName) {
         for (MultiarchInfo mi : MULTIARCH_INFO) {
             // Figure out os and arch
@@ -138,21 +138,23 @@ public abstract class NativeLibLoader {
                 if (splitPos <= 0) {
                     // ERROR
                 }
-                File tmpLibDir = File.createTempFile(classPathLibName.substring(0, splitPos), classPathLibName.substring(splitPos));
-                tmpLibDir.delete();
-                tmpLibDir.mkdir();
-                tmpLib = new File(tmpLibDir, formattedLibName);
-                /*
-                    if (getOS() == OS.WINDOWS) {
-                    //On win we must load the lib with the correct name ...
-                    //TODO check if exists ...
-                    //TODO do this for all ???
+                File fileToDeleteAfterLoading;
+                if (getOS() == OS.MAC_OS_X) {
+                    //MacOS uses lo leaf names for the dylib so the full path must match - its expected to be /tmp
+                    //see https://gstreamer.freedesktop.org/documentation/deploying/mac-osx.html
+                    //TODO document this once its working
                     tmpLib = new File(System.getProperty("java.io.tmpdir"), formattedLibName);
+                    fileToDeleteAfterLoading = tmpLib;
                 } else {
-                    tmpLib = File.createTempFile(classPathLibName.substring(0, splitPos), classPathLibName.substring(splitPos));
+                    File tmpLibDir = File.createTempFile(classPathLibName.substring(0, splitPos), classPathLibName.substring(splitPos));
+                    fileToDeleteAfterLoading = tmpLibDir;
+                    tmpLibDir.delete();
+                    tmpLibDir.mkdir();
+                    tmpLib = new File(tmpLibDir, formattedLibName);
                 }
-                 */
-                tmpLibDir.deleteOnExit();
+                //At least if we finished this should be deleted
+                fileToDeleteAfterLoading.deleteOnExit();
+
                 try (FileOutputStream fos = new FileOutputStream(tmpLib)) {
                     byte[] buff = new byte[1024];
                     int i;
@@ -167,7 +169,7 @@ public abstract class NativeLibLoader {
                 System.load(classPathLibName);
                 libNames.put(libName, classPathLibName);
                 loadErrors.remove(libName);
-                tmpLibDir.delete();
+                fileToDeleteAfterLoading.delete();
                 LOG.log(Level.INFO, "Lib loaded via System.load(\"{0}\")", classPathLibName);
                 return true;
             } catch (Throwable t) {
@@ -180,7 +182,7 @@ public abstract class NativeLibLoader {
         loadErrors.put(libName, null);
         return false;
     }
-
+    
     public static boolean loadClassicalNativeLib(final String libName) {
         synchronized (libNames) {
             if (libNames.containsKey(libName)) {
@@ -191,7 +193,7 @@ public abstract class NativeLibLoader {
             return loadFromResource(libName, System.mapLibraryName(libName));
         }
     }
-
+    
     public static OS getOS() {
         return OS;
     }
