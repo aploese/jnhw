@@ -98,7 +98,7 @@ public abstract class NativeLibLoader {
     public static boolean loadNativeLib(final String libName, int libToolInterfaceVersion) {
         synchronized (libNames) {
             if (libNames.containsKey(libName)) {
-                LOG.log(Level.INFO, "Lib " + libName + " was Loaded as: " + libNames.get(libName));
+                LOG.log(Level.WARNING, "TODO INFOLib " + libName + " was Loaded as: " + libNames.get(libName));
                 return true;
             }
             String[] javaLibraryPath = System.getProperty("java.library.path").split(":");
@@ -110,7 +110,7 @@ public abstract class NativeLibLoader {
                         System.load(absLibName);
                         libNames.put(libName, libName);
                         loadErrors.remove(libName);
-                        LOG.log(Level.INFO, "Lib {0} loaded via System.load(\"{1}\")", new Object[]{libName, absLibName});
+                        LOG.log(Level.WARNING, "TODO INFOLib {0} loaded via System.load(\"{1}\")", new Object[]{libName, absLibName});
                         return true;
                     } catch (UnsatisfiedLinkError ule) {
                         LOG.log(Level.INFO, ule, () -> {
@@ -142,12 +142,12 @@ public abstract class NativeLibLoader {
                 System.load(classPathLibName);
                 libNames.put(libName, classPathLibName);
                 loadErrors.remove(libName);
-                LOG.log(Level.INFO, "Lib {0} loaded via System.load(\"{1}\")", new Object[]{libName, classPathLibName});
+                LOG.log(Level.WARNING, "TODO INFO {0} loaded via System.load(\"{1}\")", new Object[]{libName, classPathLibName});
                 return true;
             } catch (UnsatisfiedLinkError ule) {
-                LOG.log(Level.INFO, "Native lib {0} for {1} not loaded: {2}", new Object[]{classPathLibName, libName, ule.getMessage()});
+                LOG.log(Level.WARNING, "TODO INFO  lib {0} for {1} not loaded: {2}", new Object[]{classPathLibName, libName, ule.getMessage()});
             } catch (Throwable t) {
-                LOG.log(Level.INFO, "Native lib not loaded.", t);
+                LOG.log(Level.WARNING, "TODO INFONative lib not loaded.", t);
             }
 
             try {
@@ -170,7 +170,7 @@ public abstract class NativeLibLoader {
                 System.load(classPathLibName);
                 libNames.put(libName, classPathLibName);
                 loadErrors.remove(libName);
-                LOG.log(Level.INFO, "Lib loaded via System.load(\"{0}\")", classPathLibName);
+                LOG.log(Level.WARNING, "TODO INFOLib loaded via System.load(\"{0}\")", classPathLibName);
                 return true;
             } catch (Throwable t) {
                 LOG.log(Level.SEVERE, "Can't load the lib \"" + classPathLibName + "\" List System Properties\n " + MULTIARCH_TUPEL_BUILDER.listSystemProperties() + "\n", t);
