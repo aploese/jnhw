@@ -92,7 +92,7 @@ public abstract class NativeLibLoader {
                         System.load(absLibName);
                         libNames.put(libName, libName);
                         loadErrors.remove(libName);
-                        LOG.log(Level.INFO, "Lib {0} loaded via System.load(\"{1}\")", new String[]{libName, absLibName});
+                        LOG.log(Level.INFO, "Lib {0} loaded via System.load(\"{1}\")", new Object[]{libName, absLibName});
                         return true;
                     } catch (UnsatisfiedLinkError ule) {
                         LOG.log(Level.INFO, ule, () -> {
@@ -112,21 +112,21 @@ public abstract class NativeLibLoader {
             // Try from classpath like the tests or extracted jars do
             URL classPathLibURL = NativeLibLoader.class.getClassLoader().getResource(libResourceName);
             if (classPathLibURL == null) {
-                LOG.log(Level.SEVERE, "Lib {0} is not in classpath with resourcename: {1}", new String[]{libName, libResourceName});
+                LOG.log(Level.SEVERE, "Lib {0} is not in classpath with resourcename: {1}", new Object[]{libName, libResourceName});
                 loadErrors.put(libName, new RuntimeException("Lib " + libName + " is not in classpath with resourcename: " + libResourceName));
                 return false;
             }
             String classPathLibName = classPathLibURL.getFile();
             // Unbundled aka not within a jar
-            LOG.log(Level.INFO, "Try load {0} from filesystem with libName: {1}", new String[]{libName, classPathLibName});
+            LOG.log(Level.INFO, "Try load {0} from filesystem with libName: {1}", new Object[]{libName, classPathLibName});
             try {
                 System.load(classPathLibName);
                 libNames.put(libName, classPathLibName);
                 loadErrors.remove(libName);
-                LOG.log(Level.INFO, "Lib {0} loaded via System.load(\"{1}\")", new String[]{libName, classPathLibName});
+                LOG.log(Level.INFO, "Lib {0} loaded via System.load(\"{1}\")", new Object[]{libName, classPathLibName});
                 return true;
             } catch (UnsatisfiedLinkError ule) {
-                LOG.log(Level.INFO, "Native lib {0} for {1} not loaded: {2}", new String[]{classPathLibName, libName, ule.getMessage()});
+                LOG.log(Level.INFO, "Native lib {0} for {1} not loaded: {2}", new Object[]{classPathLibName, libName, ule.getMessage()});
             } catch (Throwable t) {
                 LOG.log(Level.INFO, "Native lib not loaded.", t);
             }
@@ -179,16 +179,18 @@ public abstract class NativeLibLoader {
                 loadErrors.put(libName, t);
             }
         }
-        LOG.log(Level.SEVERE, "Giving up can't load the lib {0}! Will list System Properties\n{1}",
-                new String[]{libName, MULTIARCH_TUPEL_BUILDER.listSystemProperties()});
-        loadErrors.put(libName, null);
+        LOG.log(Level.SEVERE, "Giving up can't load the lib {0}! Will list System Properties\n {1}",
+                new Object[]{libName, MULTIARCH_TUPEL_BUILDER.listSystemProperties()});
+        if (!loadErrors.containsKey(libName)) {
+            loadErrors.put(libName, null);
+        }
         return false;
     }
     
     public static boolean loadClassicalNativeLib(final String libName) {
         synchronized (libNames) {
             if (libNames.containsKey(libName)) {
-                LOG.log(Level.INFO, "Lib " + libName + " was Loaded as: " + libNames.get(libName));
+                LOG.log(Level.INFO, "Lib {0} was Loaded as: {1}", new Object[]{libName, libNames.get(libName)});
                 return true;
             }
             LOG.log(Level.INFO, "java.library.path: \"{0}\"", System.getProperty("java.library.path"));
