@@ -5,10 +5,16 @@
  */
 package de.ibapl.jnhw;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.URL;
+import java.nio.CharBuffer;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,14 +28,15 @@ import java.util.logging.Logger;
  * @author aploese
  */
 public abstract class NativeLibLoader {
-    
+
     protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
-    
+
     private final static Map<String, String> libNames = new HashMap<>();
     private final static Map<String, Throwable> loadErrors = new HashMap<>();
     protected final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER;
     protected final static Set<MultiarchInfo> MULTIARCH_INFO;
     protected final static OS OS;
+    protected final static File NATIVE_TEMP_DIR;
 
     /**
      * Setup native lib Sometimes arm-linux-gnueabihf and arm-linux-gnuabihf
@@ -37,7 +44,7 @@ public abstract class NativeLibLoader {
      */
     static {
         MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-        Set<MultiarchInfo> multiarchInfo = EnumSet.noneOf(MultiarchInfo.class);        
+        Set<MultiarchInfo> multiarchInfo = EnumSet.noneOf(MultiarchInfo.class);
         OS os = null;
         try {
             multiarchInfo = MULTIARCH_TUPEL_BUILDER.guessMultiarch();
@@ -52,31 +59,42 @@ public abstract class NativeLibLoader {
         }
         OS = os;
         MULTIARCH_INFO = multiarchInfo;
+
+        File nativeTemDir = null;
+        try {
+            nativeTemDir = File.createTempFile("jnhw-native-loader", "lib-dir");
+            nativeTemDir.delete();
+            nativeTemDir.mkdir();
+            nativeTemDir.deleteOnExit();
+        } catch (IOException ioe) {
+            LOG.log(Level.SEVERE, "Can't create tempDir sys propereties: \n" + MULTIARCH_TUPEL_BUILDER.listSystemProperties(), ioe);
+        }
+        NATIVE_TEMP_DIR = nativeTemDir;
     }
-    
+
     public static Throwable getLoadError(String libName) {
         return loadErrors.get(libName);
     }
-    
+
     public static boolean hasLoadError(String libName) {
         return loadErrors.containsKey(libName);
     }
-    
+
     protected NativeLibLoader() {
     }
-    
+
     public static boolean isLibLoaded(String libname) {
         synchronized (libNames) {
             return libNames.containsKey(libname);
         }
     }
-    
+
     public static String getLibLoadedName(String libname) {
         synchronized (libNames) {
             return libNames.get(libname);
         }
     }
-    
+
     public static boolean loadNativeLib(final String libName, int libToolInterfaceVersion) {
         synchronized (libNames) {
             if (libNames.containsKey(libName)) {
@@ -104,7 +122,7 @@ public abstract class NativeLibLoader {
             return loadFromResource(libName, formattedLibName);
         }
     }
-    
+
     private static boolean loadFromResource(final String libName, final String formattedLibName) {
         for (MultiarchInfo mi : MULTIARCH_INFO) {
             // Figure out os and arch
@@ -117,6 +135,7 @@ public abstract class NativeLibLoader {
                 return false;
             }
             String classPathLibName = classPathLibURL.getFile();
+            
             // Unbundled aka not within a jar
             LOG.log(Level.INFO, "Try load {0} from filesystem with libName: {1}", new Object[]{libName, classPathLibName});
             try {
@@ -131,47 +150,26 @@ public abstract class NativeLibLoader {
                 LOG.log(Level.INFO, "Native lib not loaded.", t);
             }
 
-            // If nothing helps, do it the hard way: unpack to temp and load that.
-            File tmpLib = null;
-            try (InputStream is = classPathLibURL.openStream()) {
-                int splitPos = classPathLibName.lastIndexOf('.');
-                if (splitPos <= 0) {
-                    // ERROR
-                }
-                File fileToDeleteAfterLoading;
-                if (getOS() == OS.MAC_OS_X) {
-                    //MacOS uses lo leaf names for the dylib so the full path must match - its expected to be /tmp
-                    //see https://gstreamer.freedesktop.org/documentation/deploying/mac-osx.html
-                    //TODO document this once its working
-                    //better ose otool -L to get the real path and use this ...???
-                    //provide the path in an property file ??
-                    tmpLib = new File("/tmp", formattedLibName);
-                    fileToDeleteAfterLoading = tmpLib;
-                } else {
-                    File tmpLibDir = File.createTempFile(classPathLibName.substring(0, splitPos), classPathLibName.substring(splitPos));
-                    fileToDeleteAfterLoading = tmpLibDir;
-                    tmpLibDir.delete();
-                    tmpLibDir.mkdir();
-                    tmpLib = new File(tmpLibDir, formattedLibName);
-                }
-                //At least if we finished this should be deleted
-                fileToDeleteAfterLoading.deleteOnExit();
-
-                try (FileOutputStream fos = new FileOutputStream(tmpLib)) {
-                    byte[] buff = new byte[1024];
-                    int i;
-                    while ((i = is.read(buff)) > 0) {
-                        fos.write(buff, 0, i);
-                    }
-                    fos.flush();
-                }
-                LOG.log(Level.INFO, "Try temp copy\nfrom:\t{0}\nto:\t{1}",
-                        new String[]{classPathLibName, tmpLib.getAbsolutePath()});
+            try {
+                File tmpLib = copyToNativeLibDir(classPathLibURL, formattedLibName);
                 classPathLibName = tmpLib.getAbsolutePath();
+
+                if (getOS() == OS.MAC_OS_X) {
+                    URL classPathLibHelperURL = NativeLibLoader.class.getClassLoader().getResource(libResourceName + ".sh");
+                    if (classPathLibHelperURL != null) {
+                        String helperName = formattedLibName + ".sh";
+                        File libLocationFixScript = copyToNativeLibDir(classPathLibHelperURL, helperName);
+                        Process child = new ProcessBuilder("/bin/sh", helperName).directory(NATIVE_TEMP_DIR).start();
+                        child.waitFor();
+                        if (child.exitValue() != 0) {
+                            //Todo collect error stream
+                            LOG.log(Level.SEVERE, "executing Script failed (\"{0}\")", libLocationFixScript);
+                        }
+                    }
+                }
                 System.load(classPathLibName);
                 libNames.put(libName, classPathLibName);
                 loadErrors.remove(libName);
-                fileToDeleteAfterLoading.delete();
                 LOG.log(Level.INFO, "Lib loaded via System.load(\"{0}\")", classPathLibName);
                 return true;
             } catch (Throwable t) {
@@ -186,7 +184,26 @@ public abstract class NativeLibLoader {
         }
         return false;
     }
-    
+
+    private static File copyToNativeLibDir(URL sourceURL, final String targetName) throws IOException {
+        // If nothing helps, do it the hard way: unpack to temp and load that.
+        try (InputStream is = sourceURL.openStream()) {
+            File result = new File(NATIVE_TEMP_DIR, targetName);
+            LOG.log(Level.INFO, "Try temp copy\nfrom:\t{0}\nto:\t{1}",
+                    new Object[]{sourceURL.getFile(), result.getAbsolutePath()});
+
+            try (FileOutputStream fos = new FileOutputStream(result)) {
+                byte[] buff = new byte[1024];
+                int i;
+                while ((i = is.read(buff)) > 0) {
+                    fos.write(buff, 0, i);
+                }
+                fos.flush();
+            }
+            return result;
+        }
+    }
+
     public static boolean loadClassicalNativeLib(final String libName) {
         synchronized (libNames) {
             if (libNames.containsKey(libName)) {
@@ -197,7 +214,7 @@ public abstract class NativeLibLoader {
             return loadFromResource(libName, System.mapLibraryName(libName));
         }
     }
-    
+
     public static OS getOS() {
         return OS;
     }
