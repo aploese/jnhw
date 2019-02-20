@@ -175,11 +175,11 @@ public abstract class NativeLibLoader {
                 LOG.log(Level.INFO, "Lib loaded via System.load(\"{0}\")", classPathLibName);
                 return true;
             } catch (Throwable t) {
-                LOG.log(Level.SEVERE, "Can't load the lib \"" + classPathLibName + "\" List System Properties", t);
+                LOG.log(Level.SEVERE, "Can't load the lib \"" + classPathLibName + "\" List System Properties\n " + MULTIARCH_TUPEL_BUILDER.listSystemProperties() + "\n", t);
                 loadErrors.put(libName, t);
             }
         }
-        LOG.log(Level.SEVERE, "Giving up can't load the lib {0}! Will list System Properties\n {1}",
+        LOG.log(Level.SEVERE, "Giving up; Can't load the lib {0}!\nList System Properties\n {1} \n",
                 new Object[]{libName, MULTIARCH_TUPEL_BUILDER.listSystemProperties()});
         if (!loadErrors.containsKey(libName)) {
             loadErrors.put(libName, null);
