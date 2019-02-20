@@ -1,2 +1,2 @@
 # jnhw
-JNI Header Wrapper a lightwight alternative to JNA or JNR 
+JNI Header Wrapper a lightweight alternative to JNA or JNR 
