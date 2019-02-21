@@ -10,7 +10,44 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+    <developers>
+        <developer>
+            <id>apl</id>
+            <name>Arne Plöse</name>
+            <email>aploese@gmx.de</email>
+            <url>http://github.com/aploese</url>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <url>https://github.com/aploese/jnhw/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <scm>
+        <url>https://github.com/aploese/jnhw</url>
+        <connection>scm:git:https://github.com/aploese/jnhw.git</connection>
+        <developerConnection>scm:git:git@github.com:aploese/jnhw.git</developerConnection>
+    </scm>
+
     <modules>
         <module>de.ibapl.jnhw.libloader</module>
         <module>de.ibapl.jnhw.common</module>
