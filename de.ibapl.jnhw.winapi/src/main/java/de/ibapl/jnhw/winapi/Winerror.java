@@ -32,26 +32,32 @@ public abstract class Winerror extends LibJnhwWinApiLoader {
 
     @Define
     public final static native int ERROR_SUCCESS();
+
     @Define
     public final static native int ERROR_FILE_NOT_FOUND();
+
     @Define
     public final static native int ERROR_ACCESS_DENIED();
+
     @Define
     public final static native int ERROR_GEN_FAILURE();
+
     @Define
     public final static native int ERROR_INVALID_PARAMETER();
+
     @Define
     public final static native int ERROR_IO_PENDING();
+
     @Define
     public final static native int ERROR_NOACCESS();
-    
+
     @Define
     public final static native int ERROR_NO_MORE_ITEMS();
 
-	@Define
+    @Define
     public final static native int ERROR_MORE_DATA();
 
-	@Define
+    @Define
     public final static native int ERROR_NOT_FOUND();
-	
+
 }
