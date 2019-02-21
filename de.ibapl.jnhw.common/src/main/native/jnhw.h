@@ -1,4 +1,4 @@
-/*
+/**
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
  * Copyright (C) 2019-2019, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a

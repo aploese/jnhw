@@ -260,7 +260,7 @@
                             </mapping>
                             <includes>
                                 <include>**/*.c</include>
-                                <include>**/*.f</include>
+                                <include>**/*.h</include>
                             </includes>
                             <excludes>
                                 <exclude>jni-includes/**</exclude>
