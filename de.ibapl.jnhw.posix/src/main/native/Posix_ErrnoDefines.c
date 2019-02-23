@@ -22,7 +22,7 @@
 #include "../../../config.h"
 #include "jnhw.h"
 #if HAVE_UNISTD_H
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 #ifdef _POSIX_VERSION
@@ -34,7 +34,7 @@
 extern "C" {
 #endif
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_posix_Errno
      * Method:    EPERM
      * Signature: ()I
@@ -497,7 +497,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL3RST
     (JNIEnv *env, jclass clazz) {
 #ifdef EL3RST
-                return  EL3RST;
+        return EL3RST;
 #else 
         throw_NotDefinedException(env, "EL3RST");
         return 0;
@@ -512,7 +512,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELNRNG
     (JNIEnv *env, jclass clazz) {
 #ifdef ELNRNG
-                return  ELNRNG;
+        return ELNRNG;
 #else 
         throw_NotDefinedException(env, "ELNRNG");
         return 0;
@@ -527,7 +527,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EUNATCH
     (JNIEnv *env, jclass clazz) {
 #ifdef EUNATCH
-        return  EUNATCH;
+        return EUNATCH;
 #else 
         throw_NotDefinedException(env, "EUNATCH");
         return 0;
@@ -542,7 +542,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOCSI
     (JNIEnv *env, jclass clazz) {
 #ifdef ENOCSI
-        return  ENOCSI;
+        return ENOCSI;
 #else 
         throw_NotDefinedException(env, "ENOCSI");
         return 0;
@@ -557,7 +557,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL2HLT
     (JNIEnv *env, jclass clazz) {
 #ifdef EL2HLT
-        return  EL2HLT;
+        return EL2HLT;
 #else 
         throw_NotDefinedException(env, "EL2HLT");
         return 0;
@@ -572,7 +572,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADE
     (JNIEnv *env, jclass clazz) {
 #ifdef EBADE
-        return  EBADE;
+        return EBADE;
 #else 
         throw_NotDefinedException(env, "EBADE");
         return 0;
@@ -587,7 +587,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADR
     (JNIEnv *env, jclass clazz) {
 #ifdef EBADR
-        return  EBADR;
+        return EBADR;
 #else 
         throw_NotDefinedException(env, "EBADR");
         return 0;
@@ -602,7 +602,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EXFULL
     (JNIEnv *env, jclass clazz) {
 #ifdef EXFULL
-        return  EXFULL;
+        return EXFULL;
 #else 
         throw_NotDefinedException(env, "EXFULL");
         return 0;
@@ -617,7 +617,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOANO
     (JNIEnv *env, jclass clazz) {
 #ifdef ENOANO
-        return  ENOANO;
+        return ENOANO;
 #else 
         throw_NotDefinedException(env, "ENOANO");
         return 0;
@@ -632,7 +632,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADRQC
     (JNIEnv *env, jclass clazz) {
 #ifdef EBADRQC
-        return  EBADRQC;
+        return EBADRQC;
 #else 
         throw_NotDefinedException(env, "EBADRQC");
         return 0;
@@ -647,7 +647,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADSLT
     (JNIEnv *env, jclass clazz) {
 #ifdef EBADSLT
-        return  EBADSLT;
+        return EBADSLT;
 #else 
         throw_NotDefinedException(env, "EBADSLT");
         return 0;
@@ -662,7 +662,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EDEADLOCK
     (JNIEnv *env, jclass clazz) {
 #ifdef EDEADLOCK
-        return  EDEADLOCK;
+        return EDEADLOCK;
 #else 
         throw_NotDefinedException(env, "EDEADLOCK");
         return 0;
@@ -677,7 +677,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBFONT
     (JNIEnv *env, jclass clazz) {
 #ifdef EBFONT
-        return  EBFONT;
+        return EBFONT;
 #else 
         throw_NotDefinedException(env, "EBFONT");
         return 0;
@@ -692,7 +692,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOSTR
     (JNIEnv *env, jclass clazz) {
 #ifdef ENOSTR
-        return  ENOSTR;
+        return ENOSTR;
 #else 
         throw_NotDefinedException(env, "ENOSTR");
         return 0;
@@ -707,7 +707,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENODATA
     (JNIEnv *env, jclass clazz) {
 #ifdef ENODATA
-        return  ENODATA;
+        return ENODATA;
 #else 
         throw_NotDefinedException(env, "ENODATA");
         return 0;
@@ -722,7 +722,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ETIME
     (JNIEnv *env, jclass clazz) {
 #ifdef ETIME
-        return  ETIME;
+        return ETIME;
 #else 
         throw_NotDefinedException(env, "ETIME");
         return 0;
@@ -737,7 +737,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOSR
     (JNIEnv *env, jclass clazz) {
 #ifdef ENOSR
-        return  ENOSR;
+        return ENOSR;
 #else 
         throw_NotDefinedException(env, "ENOSR");
         return 0;
@@ -752,7 +752,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENONET
     (JNIEnv *env, jclass clazz) {
 #ifdef ENONET
-        return  ENONET;
+        return ENONET;
 #else 
         throw_NotDefinedException(env, "ENONET");
         return 0;
@@ -767,7 +767,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOPKG
     (JNIEnv *env, jclass clazz) {
 #ifdef ENOPKG
-        return  ENOPKG;
+        return ENOPKG;
 #else 
         throw_NotDefinedException(env, "ENOPKG");
         return 0;
@@ -802,7 +802,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EADV
     (JNIEnv *env, jclass clazz) {
 #ifdef EADV
-        return  EADV;
+        return EADV;
 #else 
         throw_NotDefinedException(env, "EADV");
         return 0;
@@ -817,7 +817,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESRMNT
     (JNIEnv *env, jclass clazz) {
 #ifdef ESRMNT
-        return  ESRMNT;
+        return ESRMNT;
 #else 
         throw_NotDefinedException(env, "ESRMNT");
         return 0;
@@ -832,7 +832,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECOMM
     (JNIEnv *env, jclass clazz) {
 #ifdef ECOMM
-        return  ECOMM;
+        return ECOMM;
 #else 
         throw_NotDefinedException(env, "ECOMM");
         return 0;
@@ -867,7 +867,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EDOTDOT
     (JNIEnv *env, jclass clazz) {
 #ifdef EDOTDOT
-        return  EDOTDOT;
+        return EDOTDOT;
 #else 
         throw_NotDefinedException(env, "EDOTDOT");
         return 0;
@@ -902,7 +902,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTUNIQ
     (JNIEnv *env, jclass clazz) {
 #ifdef ENOTUNIQ
-        return  ENOTUNIQ;
+        return ENOTUNIQ;
 #else 
         throw_NotDefinedException(env, "ENOTUNIQ");
         return 0;
@@ -917,7 +917,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADFD
     (JNIEnv *env, jclass clazz) {
 #ifdef  EBADFD
-        return  EBADFD;
+        return EBADFD;
 #else 
         throw_NotDefinedException(env, "EBADFD");
         return 0;
@@ -932,7 +932,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EREMCHG
     (JNIEnv *env, jclass clazz) {
 #ifdef EREMCHG
-        return  EREMCHG;
+        return EREMCHG;
 #else 
         throw_NotDefinedException(env, "EREMCHG");
         return 0;
@@ -947,7 +947,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBACC
     (JNIEnv *env, jclass clazz) {
 #ifdef ELIBACC
-        return  ELIBACC;
+        return ELIBACC;
 #else 
         throw_NotDefinedException(env, "ELIBACC");
         return 0;
@@ -962,7 +962,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBBAD
     (JNIEnv *env, jclass clazz) {
 #ifdef ELIBBAD
-        return  ELIBBAD;
+        return ELIBBAD;
 #else 
         throw_NotDefinedException(env, "ELIBBAD");
         return 0;
@@ -977,7 +977,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBSCN
     (JNIEnv *env, jclass clazz) {
 #ifdef ELIBSCN
-        return  ELIBSCN;
+        return ELIBSCN;
 #else 
         throw_NotDefinedException(env, "ELIBSCN");
         return 0;
@@ -992,7 +992,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBMAX
     (JNIEnv *env, jclass clazz) {
 #ifdef ELIBMAX
-        return  ELIBMAX;
+        return ELIBMAX;
 #else 
         throw_NotDefinedException(env, "ELIBMAX");
         return 0;
@@ -1007,7 +1007,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBEXEC
     (JNIEnv *env, jclass clazz) {
 #ifdef ELIBEXEC
-        return  ELIBEXEC;
+        return ELIBEXEC;
 #else 
         throw_NotDefinedException(env, "ELIBEXEC");
         return 0;
@@ -1022,7 +1022,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ERESTART
     (JNIEnv *env, jclass clazz) {
 #ifdef ERESTART
-        return  ERESTART;
+        return ERESTART;
 #else 
         throw_NotDefinedException(env, "ERESTART");
         return 0;
@@ -1037,7 +1037,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESTRPIPE
     (JNIEnv *env, jclass clazz) {
 #ifdef ESTRPIPE
-        return  ESTRPIPE;
+        return ESTRPIPE;
 #else 
         throw_NotDefinedException(env, "ESTRPIPE");
         return 0;
@@ -1352,7 +1352,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EUCLEAN
     (JNIEnv *env, jclass clazz) {
 #ifdef EUCLEAN
-        return  EUCLEAN;
+        return EUCLEAN;
 #else 
         throw_NotDefinedException(env, "EUCLEAN");
         return 0;
@@ -1367,7 +1367,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTNAM
     (JNIEnv *env, jclass clazz) {
 #ifdef ENOTNAM
-        return  ENOTNAM;
+        return ENOTNAM;
 #else 
         throw_NotDefinedException(env, "ENOTNAM");
         return 0;
@@ -1382,7 +1382,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENAVAIL
     (JNIEnv *env, jclass clazz) {
 #ifdef ENAVAIL
-        return  ENAVAIL;
+        return ENAVAIL;
 #else 
         throw_NotDefinedException(env, "ENAVAIL");
         return 0;
@@ -1397,7 +1397,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EISNAM
     (JNIEnv *env, jclass clazz) {
 #ifdef EISNAM
-        return  EISNAM;
+        return EISNAM;
 #else 
         throw_NotDefinedException(env, "EISNAM");
         return 0;
@@ -1412,7 +1412,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EREMOTEIO
     (JNIEnv *env, jclass clazz) {
 #ifdef EREMOTEIO
-        return  EREMOTEIO;
+        return EREMOTEIO;
 #else 
         throw_NotDefinedException(env, "EREMOTEIO");
         return 0;
@@ -1437,7 +1437,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOMEDIUM
     (JNIEnv *env, jclass clazz) {
 #ifdef ENOMEDIUM
-        return  ENOMEDIUM;
+        return ENOMEDIUM;
 #else 
         throw_NotDefinedException(env, "ENOMEDIUM");
         return 0;
@@ -1452,7 +1452,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EMEDIUMTYPE
     (JNIEnv *env, jclass clazz) {
 #ifdef EMEDIUMTYPE
-        return  EMEDIUMTYPE;
+        return EMEDIUMTYPE;
 #else 
         throw_NotDefinedException(env, "EMEDIUMTYPE");
         return 0;
@@ -1477,7 +1477,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOKEY
     (JNIEnv *env, jclass clazz) {
 #ifdef ENOKEY
-        return  ENOKEY;
+        return ENOKEY;
 #else 
         throw_NotDefinedException(env, "ENOKEY");
         return 0;
@@ -1492,7 +1492,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYEXPIRED
     (JNIEnv *env, jclass clazz) {
 #ifdef EKEYEXPIRED
-        return  EKEYEXPIRED;
+        return EKEYEXPIRED;
 #else 
         throw_NotDefinedException(env, "EKEYEXPIRED");
         return 0;
@@ -1507,7 +1507,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYREVOKED
     (JNIEnv *env, jclass clazz) {
 #ifdef EKEYREVOKED
-        return  EKEYREVOKED;
+        return EKEYREVOKED;
 #else 
         throw_NotDefinedException(env, "EKEYREVOKED");
         return 0;
@@ -1522,7 +1522,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYREJECTED
     (JNIEnv *env, jclass clazz) {
 #ifdef EKEYREJECTED
-        return  EKEYREJECTED;
+        return EKEYREJECTED;
 #else 
         throw_NotDefinedException(env, "EKEYREJECTED");
         return 0;
@@ -1557,7 +1557,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ERFKILL
     (JNIEnv *env, jclass clazz) {
 #ifdef ERFKILL
-        return  ERFKILL;
+        return ERFKILL;
 #else 
         throw_NotDefinedException(env, "ERFKILL");
         return 0;
@@ -1572,7 +1572,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EHWPOISON
     (JNIEnv *env, jclass clazz) {
 #ifdef EHWPOISON
-        return  EHWPOISON;
+        return EHWPOISON;
 #else 
         throw_NotDefinedException(env, "EHWPOISON");
         return 0;

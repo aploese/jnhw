@@ -24,8 +24,8 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NativeLibLoader;
-import de.ibapl.jnhw.OS;
+import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.winapi.Minwindef.LPBYTE;
 import de.ibapl.jnhw.winapi.Minwindef.PHKEY;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
@@ -43,22 +43,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 public class WinregTests {
-
-    @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-    }
-
-    @AfterAll
-    public static void tearDownAfterClass() throws Exception {
-    }
-
-    @BeforeEach
-    public void setUp() throws Exception {
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-    }
 
     @Test
     public void test_HAVE_WINREG_H() throws Exception {
@@ -86,7 +70,7 @@ public class WinregTests {
             if (result == Winerror.ERROR_SUCCESS()) {
                 System.out.print("lpValueName: " + lpValueName.getString());
                 if (lpType.value == Winnt.REG_SZ()) {
-                System.out.println(" = " + LPWSTR.stringValueOfNullTerminated(lpData));
+                    System.out.println(" = " + LPWSTR.stringValueOfNullTerminated(lpData));
                 } else if (lpType.value == Winnt.REG_MULTI_SZ()) {
                     System.out.println(" = " + LPWSTR.stringValueOfNullTerminated(lpData));
                 } else {

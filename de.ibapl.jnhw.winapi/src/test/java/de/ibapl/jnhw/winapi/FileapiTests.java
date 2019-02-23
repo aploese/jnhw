@@ -22,9 +22,8 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LibJnhwLoader;
-import de.ibapl.jnhw.NativeLibLoader;
-import de.ibapl.jnhw.OS;
+import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.OS;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.ByteBuffer;
@@ -35,7 +34,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
-
 
 public class FileapiTests {
 
@@ -118,7 +116,7 @@ public class FileapiTests {
                 null);
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED(true);
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
-        
+
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(64);
         byteBuffer.put(WRITE_VALUE.getBytes());
         byteBuffer.flip();
@@ -130,7 +128,7 @@ public class FileapiTests {
         IntRef dwBytesTransferred = new IntRef(0);
         Ioapiset.GetOverlappedResult(hFile, overlapped, dwBytesTransferred, false, byteBuffer);
         Synchapi.ResetEvent(hFile);
-        
+
         Winbase.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 

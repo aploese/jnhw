@@ -24,9 +24,9 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 
 @Include("winnt.h")
 public final class Winnt extends LibJnhwWinApiLoader {
@@ -111,6 +111,7 @@ public final class Winnt extends LibJnhwWinApiLoader {
 
         /**
          * Skip the last two 0 bytes aka the last 0 char
+         *
          * @param lpData
          * @return
          */
@@ -123,7 +124,7 @@ public final class Winnt extends LibJnhwWinApiLoader {
         /**
          * Creates space for a Wide String (16 bit)
          *
-         * @param elementLength 
+         * @param elementLength
          * @param clearMemory
          */
         public LPWSTR(int elementLength, boolean clearMemory) {

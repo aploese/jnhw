@@ -41,7 +41,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetispeed
     (JNIEnv *env, jclass clazz, jlong termiosBaseAddress) {
-        return cfgetispeed((void*)(uintptr_t)termiosBaseAddress);
+        return cfgetispeed((void*) (uintptr_t) termiosBaseAddress);
     }
 
     /*
@@ -51,7 +51,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetospeed
     (JNIEnv *env, jclass clazz, jlong termiosBaseAddress) {
-        return cfgetospeed((void*)(uintptr_t)termiosBaseAddress);
+        return cfgetospeed((void*) (uintptr_t) termiosBaseAddress);
     }
 
     /*
@@ -61,7 +61,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetispeed
     (JNIEnv *env, jclass clazz, jlong termiosBaseAddress, jint speed) {
-        int result = cfsetispeed((void*)(uintptr_t)termiosBaseAddress, speed);
+        int result = cfsetispeed((void*) (uintptr_t) termiosBaseAddress, speed);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -75,7 +75,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetospeed
     (JNIEnv *env, jclass clazz, jlong termiosBaseAddress, jint speed) {
-        int result = cfsetospeed((void*)(uintptr_t)termiosBaseAddress, speed);
+        int result = cfsetospeed((void*) (uintptr_t) termiosBaseAddress, speed);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -117,7 +117,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcgetattr
     (JNIEnv *env, jclass clazz, jint fildes, jlong termiosBaseAddress) {
-        int result = tcgetattr(fildes, (void*)(uintptr_t)termiosBaseAddress);
+        int result = tcgetattr(fildes, (void*) (uintptr_t) termiosBaseAddress);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -145,7 +145,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcsetattr
     (JNIEnv *env, jclass clazz, jint fildes, jint optional_actions, jlong termiosBaseAddress) {
-        int result = tcsetattr(fildes, optional_actions, (void*)(uintptr_t)termiosBaseAddress);
+        int result = tcsetattr(fildes, optional_actions, (void*) (uintptr_t) termiosBaseAddress);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -159,7 +159,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetspeed
     (JNIEnv *env, jclass clazz, jlong termiosBaseAddress, jint speed) {
-        int result = cfsetspeed((void*)(uintptr_t)termiosBaseAddress, speed);
+        int result = cfsetspeed((void*) (uintptr_t) termiosBaseAddress, speed);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }

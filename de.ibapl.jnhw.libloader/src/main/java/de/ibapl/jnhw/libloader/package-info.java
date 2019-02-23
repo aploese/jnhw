@@ -19,23 +19,5 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw;
-
-/**
- *
- * @author aploese
- */
-public enum Arch {
-    X86_64("x86_64"), I386("i386"), ARM("arm"), AARCH64("aarch64"), MIPS_EL("mipsel"), MIPS("mips"), MIPS_64_EL("mips64el"), MIPS_64("mips64");
-
-    public final String archName;
-
-    private Arch(String archName) {
-        this.archName = archName;
-    }
-
-    @Override
-    public String toString() {
-        return archName;
-    }
-}
+@org.osgi.annotation.versioning.Version("1.0.0")
+package de.ibapl.jnhw.libloader;

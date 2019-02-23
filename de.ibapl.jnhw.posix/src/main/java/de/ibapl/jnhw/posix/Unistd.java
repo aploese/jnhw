@@ -29,11 +29,12 @@ import de.ibapl.jnhw.NativeErrorException;
 public final class Unistd extends de.ibapl.jnhw.isoc.Unistd {
 
     /**
-     * 
+     *
      * @param read_fd
      * @param write_fd
-     * 
-     * @exception NullPointerException if <code>read_fd</code> or <code>write_fd</code> is <code>null</code>.
+     *
+     * @exception NullPointerException if <code>read_fd</code> or
+     * <code>write_fd</code> is <code>null</code>.
      * @throws de.ibapl.jnhw.NativeErrorException if an error occured .
      */
     public final static native void pipe(IntRef read_fd, IntRef write_fd) throws NativeErrorException;

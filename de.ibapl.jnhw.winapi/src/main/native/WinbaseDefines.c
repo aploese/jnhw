@@ -113,7 +113,7 @@ extern "C" {
         return RTS_CONTROL_HANDSHAKE;
     }
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    INVALID_HANDLE_VALUE0
      * Signature: ()J

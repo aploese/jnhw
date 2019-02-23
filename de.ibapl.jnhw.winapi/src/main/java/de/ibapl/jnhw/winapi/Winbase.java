@@ -24,9 +24,9 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 @Include("WinBase.h")
@@ -434,9 +434,10 @@ public abstract class Winbase extends LibJnhwWinApiLoader {
         }
 
     }
+
     @Define
     private static native long INVALID_HANDLE_VALUE0();
-    
+
     public final static HANDLE INVALID_HANDLE_VALUE() {
         return new HANDLE(INVALID_HANDLE_VALUE0());
     }

@@ -21,11 +21,12 @@
  */
 package de.ibapl.jnhw;
 
+import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class LibJnhwPosixLoaderTests {
-    
+
     @Test
     public void testLinsLoaded() throws Exception {
         Assertions.assertTrue(LibJnhwPosixLoader.isLibJnhwPosixLoaded());

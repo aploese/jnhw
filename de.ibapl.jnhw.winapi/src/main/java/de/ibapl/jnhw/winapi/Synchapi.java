@@ -22,8 +22,8 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -48,14 +48,15 @@ public abstract class Synchapi extends LibJnhwWinApiLoader {
         final long result = CreateEventW(lpEventAttributes == null ? 0L : lpEventAttributes.baseAddress, bManualReset, bInitialState, lpName);
         return new HANDLE(result);
     }
-    
+
     private static native boolean SetEvent(long hEvent);
+
     private static native boolean ResetEvent(long hEvent);
-    
+
     public final static boolean SetEvent(HANDLE hEvent) {
         return SetEvent(hEvent.value);
     }
-    
+
     public final static boolean ResetEvent(HANDLE hEvent) {
         return ResetEvent(hEvent.value);
     }

@@ -23,10 +23,10 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LibJnhwPosixLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
  *
@@ -40,7 +40,7 @@ import de.ibapl.jnhw.OpaqueMemory;
 @Include("#include <termios.h>")
 public final class Termios extends LibJnhwPosixLoader {
 
-        public final static native boolean HAVE_TERMIOS_H();
+    public final static native boolean HAVE_TERMIOS_H();
 
     /**
      * Wrapper for the termios struct.
@@ -53,7 +53,6 @@ public final class Termios extends LibJnhwPosixLoader {
         static {
             LibJnhwPosixLoader.loadLibJnhwPosix();
         }
-        
 
         public final static native int sizeofTermios();
 
@@ -76,7 +75,7 @@ public final class Termios extends LibJnhwPosixLoader {
         static native byte c_cc(long baseAddress, int index);
 
         static native void c_cc(long baseAddress, int index, byte value);
-        
+
         public StructTermios() {
             // get unitialized mem
             super(sizeofTermios(), false);
@@ -111,7 +110,7 @@ public final class Termios extends LibJnhwPosixLoader {
         }
 
         public final void c_lflag(int c_lflag) {
-             StructTermios.c_lflag(baseAddress, c_lflag);
+            StructTermios.c_lflag(baseAddress, c_lflag);
         }
 
         public final byte c_cc(int index) {
@@ -119,7 +118,7 @@ public final class Termios extends LibJnhwPosixLoader {
         }
 
         public final void c_cc(int index, byte value) {
-             StructTermios.c_cc(baseAddress, index, value);
+            StructTermios.c_cc(baseAddress, index, value);
         }
 
     }
@@ -261,7 +260,7 @@ public final class Termios extends LibJnhwPosixLoader {
 
     @Define
     public final static native int PAREXT() throws NotDefinedException;
-    
+
     @Define
     public final static native int PARMRK() throws NotDefinedException;
 
@@ -285,7 +284,7 @@ public final class Termios extends LibJnhwPosixLoader {
 
     @Define
     public final static native int VTIME();
-    
+
     @Define
     public final static native int NCCS();
 
@@ -318,7 +317,7 @@ public final class Termios extends LibJnhwPosixLoader {
     public final static native int tcflush(int fildes, int queue_selector) throws NativeErrorException;
 
     private static native int tcgetattr(int fildes, long termiosAddress) throws NativeErrorException;
-    
+
     public final static int tcgetattr(int fildes, StructTermios termios) throws NativeErrorException {
         return tcgetattr(fildes, termios.baseAddress);
     }
@@ -326,14 +325,14 @@ public final class Termios extends LibJnhwPosixLoader {
     public final static native int tcsendbreak(int fildes, int duration) throws NativeErrorException;
 
     private static native int tcsetattr(int fildes, int optional_actions, long termiosAddress) throws NativeErrorException;
-    
+
     public final static int tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException {
         return tcsetattr(fildes, optional_actions, termios.baseAddress);
     }
-    
+
     private static native int cfsetspeed(long termiosAddress, int speed) throws NativeErrorException;
 
-    public final static  int cfsetspeed(StructTermios termios, int speed) throws NativeErrorException {
+    public final static int cfsetspeed(StructTermios termios, int speed) throws NativeErrorException {
         return cfsetspeed(termios.baseAddress, speed);
     }
 

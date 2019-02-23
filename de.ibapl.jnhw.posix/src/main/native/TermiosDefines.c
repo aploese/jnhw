@@ -46,7 +46,6 @@ extern "C" {
 #include <termios.h>
 #include <errno.h>
 
-
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    B0
@@ -677,7 +676,7 @@ extern "C" {
         return VTIME;
     }
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    NCCS
      * Signature: ()I

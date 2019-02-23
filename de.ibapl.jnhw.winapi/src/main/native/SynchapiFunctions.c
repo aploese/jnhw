@@ -52,7 +52,7 @@ extern "C" {
         if (lpName != NULL) {
             (*env)->ReleaseStringChars(env, lpName, _lpName);
         }
-        
+
         if (result == NULL) {
             throw_NativeErrorException(env, GetLastError());
         }

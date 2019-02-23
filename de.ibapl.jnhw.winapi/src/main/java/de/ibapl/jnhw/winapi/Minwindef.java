@@ -23,8 +23,8 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 @Include("minwindef.h")
@@ -35,31 +35,28 @@ public abstract class Minwindef extends LibJnhwWinApiLoader {
         public HKEY(long value) {
             super(value);
         }
-        
-        
+
         public HKEY() {
             super();
         }
-        
+
     }
 
     /**
-     * Just the pointer to HKEY that where meaning it can be set in a function call ....
+     * Just the pointer to HKEY that where meaning it can be set in a function
+     * call ....
      */
     public static class PHKEY extends HKEY {
-        
+
         public PHKEY(long value) {
             super(value);
         }
-        
-        
+
         public PHKEY() {
             super();
         }
-        
+
     }
-    
-    
 
     public static class LPBYTE extends OpaqueMemory {
 
@@ -71,12 +68,12 @@ public abstract class Minwindef extends LibJnhwWinApiLoader {
         }
 
         public void clear() {
-        	OpaqueMemory.clear(this);
-        	bufferEnd.value = sizeInBytes;
+            OpaqueMemory.clear(this);
+            bufferEnd.value = sizeInBytes;
         }
 
         public void resetBufferEnd() {
-        	bufferEnd.value = sizeInBytes;
+            bufferEnd.value = sizeInBytes;
         }
 
     }

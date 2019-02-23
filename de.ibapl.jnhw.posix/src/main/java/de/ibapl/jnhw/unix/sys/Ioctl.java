@@ -21,19 +21,19 @@
  */
 package de.ibapl.jnhw.unix.sys;
 
-import de.ibapl.jnhw.LibJnhwPosixLoader;
-import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <sys/ioctl.h>")
 public final class Ioctl extends LibJnhwPosixLoader {
 
     public final static native boolean HAVE_SYS_IOCTL_H();
-    
+
     private Ioctl() {
-        
+
     }
 
     public final static native int ioctl(int fd, long request) throws NativeErrorException;

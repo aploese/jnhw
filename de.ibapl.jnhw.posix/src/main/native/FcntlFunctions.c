@@ -22,7 +22,7 @@
 #include "../../../config.h"
 #include "jnhw.h"
 #if HAVE_UNISTD_H
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 #ifdef _POSIX_VERSION
@@ -62,7 +62,8 @@ extern "C" {
         }
         return result;
     }
-   /*
+
+    /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    creat
      * Signature: (Ljava/lang/String;I)I

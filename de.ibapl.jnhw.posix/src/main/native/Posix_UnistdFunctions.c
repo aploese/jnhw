@@ -22,7 +22,7 @@
 #include "../../../config.h"
 #include "jnhw.h"
 #if HAVE_UNISTD_H
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 #ifdef _POSIX_VERSION

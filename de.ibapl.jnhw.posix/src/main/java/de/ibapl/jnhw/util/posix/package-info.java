@@ -20,4 +20,4 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 @org.osgi.annotation.versioning.Version("1.0.0")
-package de.ibapl.jnhw;
+package de.ibapl.jnhw.util.posix;

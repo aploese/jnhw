@@ -21,6 +21,8 @@
  */
 package de.ibapl.jnhw;
 
+import de.ibapl.jnhw.libloader.NativeLibLoader;
+
 /**
  *
  * @author aploese

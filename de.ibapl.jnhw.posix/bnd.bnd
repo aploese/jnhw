@@ -1,0 +1,8 @@
+Export-Package: \
+	de.ibapl.jnhw.libloader,\
+	de.ibapl.jnhw.util,\
+	de.ibapl.jnhw.isoc,\
+	de.ibapl.jnhw.util.posix,\
+	de.ibapl.jnhw.unix.sys,\
+	de.ibapl.jnhw.posix,\
+	de.ibapl.jnhw.linux.sys

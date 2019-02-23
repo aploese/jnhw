@@ -23,9 +23,9 @@ package de.ibapl.jnhw.linux.sys;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LibJnhwPosixLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.LongRef;
+import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <sys/eventfd.h>")
 public final class Eventfd extends LibJnhwPosixLoader {
@@ -50,5 +50,5 @@ public final class Eventfd extends LibJnhwPosixLoader {
 
     @Define
     public final static native int EFD_SEMAPHORE();
-    
+
 }

@@ -23,23 +23,22 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LibJnhwPosixLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.StructArray;
+import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <poll.h>")
 public final class Poll extends LibJnhwPosixLoader {
-    
-    
+
     public final static native boolean HAVE_POLL_H();
 
     public final static class PollFd extends OpaqueMemory {
-        
+
         static {
             LibJnhwPosixLoader.loadLibJnhwPosix();
         }
-        
+
         public final static native int sizeofPollFd();
 
         static native short events(long baseAddress);
@@ -145,9 +144,9 @@ public final class Poll extends LibJnhwPosixLoader {
             }
         }
     }
-    
+
     public static class PollFds extends StructArray<PollFd> {
-        
+
         public PollFds(int arraylength) {
             //get uninitialized mem we need to set this anyway ...
             super(new PollFd[arraylength], PollFd.sizeofPollFd(), false);
@@ -157,9 +156,9 @@ public final class Poll extends LibJnhwPosixLoader {
         protected PollFd createElement(long elementBaseAddress) {
             return new PollFd(memoryOwner, elementBaseAddress);
         }
-        
+
     }
-    
+
     private final static native int poll(long fdsAddress, long nfds, int timeout) throws NativeErrorException;
 
     public final static int poll(StructArray<PollFd> fds, int timeout) throws NativeErrorException {

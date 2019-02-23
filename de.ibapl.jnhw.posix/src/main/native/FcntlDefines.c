@@ -23,7 +23,7 @@
 #include "jnhw.h"
 
 #if HAVE_UNISTD_H
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 /*
@@ -32,13 +32,13 @@
  * Signature: ()Z
  */
 JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Fcntl_HAVE_1FCNTL_1H
-    (JNIEnv *env, jclass clazz) {
+(JNIEnv *env, jclass clazz) {
 #ifdef _POSIX_VERSION
-        return JNI_TRUE;
+    return JNI_TRUE;
 #else
-        return JNI_FALSE;
+    return JNI_FALSE;
 #endif
-    }
+}
 
 
 #ifdef _POSIX_VERSION
@@ -49,6 +49,7 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Fcntl_HAVE_1FCNTL_1H
 #ifdef __cplusplus
 extern "C" {
 #endif
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    O_RDWR
@@ -58,7 +59,6 @@ extern "C" {
     (JNIEnv *env, jclass clazz) {
         return O_RDWR;
     }
-
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
@@ -89,6 +89,7 @@ extern "C" {
     (JNIEnv *env, jclass clazz) {
         return O_NONBLOCK;
     }
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    F_GETFL

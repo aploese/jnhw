@@ -24,12 +24,12 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.util.ByteBufferUtils;
+import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import java.io.File;
 import java.nio.ByteBuffer;
 
@@ -38,7 +38,7 @@ import java.nio.ByteBuffer;
  * @author aploese
  */
 @Include("fileapi.h")
-public final class Fileapi extends LibJnhwWinApiLoader{
+public final class Fileapi extends LibJnhwWinApiLoader {
 
     public final static native boolean HAVE_FILEAPI_H();
 
@@ -51,11 +51,10 @@ public final class Fileapi extends LibJnhwWinApiLoader{
         final long nativeHandle = CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes != null ? lpSecurityAttributes.baseAddress : 0L, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile != null ? hTemplateFile.value : 0L);
         return new HANDLE(nativeHandle);
     }
-    
+
     public final static HANDLE CreateFileW(File file, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException {
         return CreateFileW(file.getAbsolutePath(), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
     }
-
 
     private static native void FlushFileBuffers(long hFile) throws NativeErrorException;
 
@@ -92,11 +91,13 @@ public final class Fileapi extends LibJnhwWinApiLoader{
     }
 
     /**
-     * use @see Ioapiset.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer) to get the result and fix the ByteBuffers position.
+     * use @see Ioapiset.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer) to
+     * get the result and fix the ByteBuffers position.
+     *
      * @param hFile
      * @param lpBuffer
      * @param lpOverlapped
-     * @throws NativeErrorException 
+     * @throws NativeErrorException
      */
     public final static void ReadFile(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
         if (lpBuffer.isDirect()) {
@@ -127,11 +128,13 @@ public final class Fileapi extends LibJnhwWinApiLoader{
     }
 
     /**
-     * use @see Ioapiset.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer) to get the result and fix the ByteBuffers position.
+     * use @see Ioapiset.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer) to
+     * get the result and fix the ByteBuffers position.
+     *
      * @param hFile
      * @param lpBuffer
      * @param lpOverlapped
-     * @throws NativeErrorException 
+     * @throws NativeErrorException
      */
     public final static void WriteFile(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
         if (lpBuffer.isDirect()) {

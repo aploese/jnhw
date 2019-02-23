@@ -23,8 +23,8 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LibJnhwPosixLoader;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <fcntl.h>")
 public final class Fcntl extends LibJnhwPosixLoader {

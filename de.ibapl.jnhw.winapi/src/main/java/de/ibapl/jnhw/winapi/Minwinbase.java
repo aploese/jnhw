@@ -22,8 +22,8 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
@@ -34,31 +34,33 @@ import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
 public class Minwinbase extends LibJnhwWinApiLoader {
 
 //TODO   public final static native boolean HAVE_MINWINBASE_H();
-
     public final static class OVERLAPPED extends OpaqueMemory {
 
         static {
             LibJnhwWinApiLoader.loadLibJnhwWinApi();
         }
-        
+
         public final static native int sizeofOVERLAPPED();
-        
+
         private final static native long Internal(long baseAddress);
+
         private final static native long InternalHigh(long baseAddress);
+
         private static native long hEvent(long baseAddress);
+
         private static native void hEvent(long baseAddress, long value);
-        
+
         private HANDLE hEvent;
 
         public OVERLAPPED(boolean clearMem) {
             super(sizeofOVERLAPPED(), clearMem);
         }
-        
+
         public final void hEvent(HANDLE value) {
             hEvent = value;
             hEvent(baseAddress, hEvent.value);
         }
-        
+
         //TODO test for modifications in native mem ???
         public final HANDLE hEvent() {
             return hEvent;
@@ -71,17 +73,18 @@ public class Minwinbase extends LibJnhwWinApiLoader {
         static {
             LibJnhwWinApiLoader.loadLibJnhwWinApi();
         }
-        
+
         public final static native int sizeofSECURITY_ATTRIBUTES();
 
         private static final native long nLength(long baseAddress);
 //        private Minwindef.LPVOID lpSecurityDescriptor;
+
         private static native boolean bInheritHandle(long baseAddress);
 
         public SECURITY_ATTRIBUTES() {
             super(sizeofSECURITY_ATTRIBUTES(), true);
-       }
-        
+        }
+
     };
 
 }

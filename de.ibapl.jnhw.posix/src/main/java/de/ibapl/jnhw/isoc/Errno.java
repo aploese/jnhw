@@ -23,7 +23,7 @@ package de.ibapl.jnhw.isoc;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LibJnhwPosixLoader;
+import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <errno.h>")
 public abstract class Errno extends LibJnhwPosixLoader {

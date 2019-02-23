@@ -21,9 +21,8 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.LibJnhwLoader;
-import de.ibapl.jnhw.NativeLibLoader;
-import de.ibapl.jnhw.OS;
+import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.OS;
 import java.time.Duration;
 
 import org.junit.jupiter.api.AfterAll;

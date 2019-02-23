@@ -19,24 +19,28 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw;
+package de.ibapl.jnhw.osgi.tests;
 
-/**
- *
- * @author aploese
- */
-public enum Abi {
-    GNU("gnu"), GNU_EABI_HF("gnueabihf"), GNU_EABI("gnueabi"), GNU_ABI_64("gnuabi64"), BSD("bsd"), PE32_PLUS("pe32+"), PE32("pe32");
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
-    public final String abiName;
+import java.util.Set;
 
-    private Abi(String abiName) {
-        this.abiName = abiName;
-    }
+import org.junit.Test;
 
-    @Override
-    public String toString() {
-        return abiName;
-    }
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 
+public class JnhwLibLoaderTest {
+
+	@Test
+	public void testGetMultiarchinfo() throws Exception {
+		System.out.println("RUN de.ibapl.jnhw.osgi.tests.JnhwLibLoaderTest.testGetMultiarchinfo()");
+		MultiarchTupelBuilder multiarchTupelBuilder= new MultiarchTupelBuilder();
+		Set<MultiarchInfo> multiarchInfos = multiarchTupelBuilder.guessMultiarch();
+		assertFalse(multiarchInfos.isEmpty());
+		fail();
+		System.out
+				.println("FINISHED de.ibapl.jnhw.osgi.tests.JnhwLibLoaderTest.testGetMultiarchinfo()");
+	}
 }

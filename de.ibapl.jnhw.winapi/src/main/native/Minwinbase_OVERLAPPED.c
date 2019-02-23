@@ -66,7 +66,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_hEvent__J
     (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return (uintptr_t)((OVERLAPPED*) (uintptr_t) baseAddress)->hEvent;
+        return (uintptr_t) ((OVERLAPPED*) (uintptr_t) baseAddress)->hEvent;
     }
 
     /*
@@ -76,7 +76,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_hEvent__JJ
     (JNIEnv *env, jclass clazz, jlong baseAddress, jlong value) {
-        ((OVERLAPPED*) (uintptr_t) baseAddress)->hEvent = (HANDLE)(uintptr_t)value;
+        ((OVERLAPPED*) (uintptr_t) baseAddress)->hEvent = (HANDLE) (uintptr_t) value;
     }
 
 #ifdef __cplusplus

@@ -22,9 +22,9 @@
 package de.ibapl.jnhw.isoc;
 
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LibJnhwPosixLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.util.ByteBufferUtils;
+import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.nio.ByteBuffer;
 
 @Include("#include <unistd.h>")
@@ -40,22 +40,19 @@ public abstract class Unistd extends LibJnhwPosixLoader {
         return read(fd, buf, 0, buf.length);
     }
 
-    protected Unistd() {
-
-    }
-
     public final static native int close(int fd) throws NativeErrorException;
 
     /**
-     * 
+     *
      * @param fildes
      * @param buf
      * @param pos
      * @param len
      * @return
-     * @throws NativeErrorException 
+     * @throws NativeErrorException
      * @exception NullPointerException if <code>buf<code> is null.
-     * @exception ArrayIndexOutOfBoundsException if <code>pos</code> or <code>len</code> out of bounds.
+     * @exception ArrayIndexOutOfBoundsException if <code>pos</code> or
+     * <code>len</code> out of bounds.
      */
     public final static native int read(int fildes, byte[] buf, int pos, int len) throws NativeErrorException;
 
@@ -72,17 +69,17 @@ public abstract class Unistd extends LibJnhwPosixLoader {
         return result;
     }
 
-    
     /**
-     * 
+     *
      * @param fildes
      * @param buf
      * @param pos
      * @param len
      * @return
-     * @throws NativeErrorException 
+     * @throws NativeErrorException
      * @exception NullPointerException if <code>buf<code> is null.
-     * @exception ArrayIndexOutOfBoundsException if <code>pos</code> or <code>len</code> out of bounds.
+     * @exception ArrayIndexOutOfBoundsException if <code>pos</code> or
+     * <code>len</code> out of bounds.
      */
     public final static native int write(int fildes, byte[] buf, int pos, int len) throws NativeErrorException;
 
@@ -110,5 +107,9 @@ public abstract class Unistd extends LibJnhwPosixLoader {
     }
 
     public final static native int usleep(int usleep) throws NativeErrorException;
+
+    protected Unistd() {
+
+    }
 
 }

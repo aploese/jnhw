@@ -35,6 +35,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
     private Errno() {
 
     }
+
     /**
      * Operation not permitted.
      */
@@ -717,8 +718,6 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      */
     @Define
     public final static native int ENOTSUP();
-
-
 
     public final static String getErrnoSymbol(int errno) {
         for (Method m : Errno.class.getMethods()) {

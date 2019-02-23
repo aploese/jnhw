@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-/*
+    /*
      * Class:     de_ibapl_jnhw_posix_Poll
      * Method:    HAVE_POLL_H
      * Signature: ()Z

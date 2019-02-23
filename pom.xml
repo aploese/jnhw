@@ -53,6 +53,8 @@
         <module>de.ibapl.jnhw.common</module>
         <module>de.ibapl.jnhw.posix</module>
         <module>de.ibapl.jnhw.winapi</module>
+        <module>de.ibapl.jnhw.osgi-tests</module>
+        <module>de.ibapl.jnhw.osgi-integration-tests</module>
     </modules>
     
     <licenses>
@@ -82,6 +84,22 @@
                 <scope>test</scope>
                 <version>5.3.2</version>
             </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.framework</artifactId>
+                <version>1.8.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>osgi.enroute.pom.distro</artifactId>
+                <version>2.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>osgi.enroute.junit.wrapper</artifactId>
+                <version>4.12.0</version>
+            </dependency>
+            
         </dependencies>
     </dependencyManagement>
 
@@ -172,9 +190,12 @@
                             </goals>
                         </execution>
                     </executions>
-                    <configuration />
-
-
+                    <configuration></configuration>
+                </plugin>
+                <plugin>
+                    <groupId>biz.aQute.bnd</groupId>
+                    <artifactId>bnd-testing-maven-plugin</artifactId>
+                    <version>4.1.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -264,6 +285,9 @@
                             </includes>
                             <excludes>
                                 <exclude>jni-includes/**</exclude>
+                                <exclude>de.ibapl.jnhw.common/config.h</exclude>
+                                <exclude>de.ibapl.jnhw.posix/config.h</exclude>
+                                <exclude>de.ibapl.jnhw.winapi/config.h</exclude>
                             </excludes>
                         </configuration>
                     </execution>

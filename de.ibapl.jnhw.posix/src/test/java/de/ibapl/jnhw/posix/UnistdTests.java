@@ -24,7 +24,6 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.OS;
 import de.ibapl.jnhw.isoc.Errno;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -37,7 +36,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class UnistdTests {
 
     @BeforeAll
@@ -48,6 +47,9 @@ public class UnistdTests {
     public static void tearDownAfterClass() throws Exception {
     }
 
+    byte[] writeBytes = "Hello world".getBytes();
+    byte[] readBytes = new byte[1024];
+
     @BeforeEach
     public void setUp() throws Exception {
     }
@@ -55,9 +57,6 @@ public class UnistdTests {
     @AfterEach
     public void tearDown() throws Exception {
     }
-
-    byte[] writeBytes = "Hello world".getBytes();
-    byte[] readBytes = new byte[1024];
 
     //TODO move to isoc
     @Test
@@ -90,7 +89,7 @@ public class UnistdTests {
     public void testBufWriteWrongArgs() throws Exception {
         IntRef readFD = new IntRef();
         IntRef writeFD = new IntRef();
-        
+
         Unistd.pipe(readFD, writeFD);
 
         Assertions.assertThrows(NullPointerException.class, () -> {

@@ -19,45 +19,24 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw;
-
+package de.ibapl.jnhw.libloader;
 
 /**
  *
  * @author aploese
  */
-public abstract class LibJnhwPosixLoader extends LibJnhwLoader {
-    
-    public final static String LIB_JNHW_POSIX = "jnhw-posix";
-    public final static int LIB_JNHW_POSIX_VERSION = 0;
+public enum Abi {
+    GNU("gnu"), GNU_EABI_HF("gnueabihf"), GNU_EABI("gnueabi"), GNU_ABI_64("gnuabi64"), BSD("bsd"), PE32_PLUS("pe32+"), PE32("pe32");
 
-    public static boolean isLibJnhwPosixLoaded() {
-            return LibJnhwLoader.isLibJnhwLoaded() && NativeLibLoader.isLibLoaded(LIB_JNHW_POSIX);
+    public final String abiName;
+
+    private Abi(String abiName) {
+        this.abiName = abiName;
     }
 
-    public static String getLibJnhwPosixLoadedName() {
-        return NativeLibLoader.getLibLoadedName(LIB_JNHW_POSIX);
-    }
-
-    
-
-    static {
-        loadLibJnhwPosix();
-    }
-
-    public final static void loadLibJnhwPosix() {
-        NativeLibLoader.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION);
-    }
-
-    public static Throwable getLoadException() {
-        if (LibJnhwLoader.isLibJnhwLoaded()) {
-            return NativeLibLoader.getLoadError(LIB_JNHW_POSIX);
-        } else {
-            return LibJnhwLoader.getLoadException();
-        }
-    }
-
-    protected LibJnhwPosixLoader() {
+    @Override
+    public String toString() {
+        return abiName;
     }
 
 }

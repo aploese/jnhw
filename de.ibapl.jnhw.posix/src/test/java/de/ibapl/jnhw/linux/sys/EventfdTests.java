@@ -24,9 +24,9 @@ package de.ibapl.jnhw.linux.sys;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NativeLibLoader;
-import de.ibapl.jnhw.OS;
 import de.ibapl.jnhw.isoc.Errno;
+import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.OS;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import org.junit.jupiter.api.AfterAll;
@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class EventfdTests {
 
     @BeforeAll
@@ -64,6 +64,5 @@ public class EventfdTests {
             Assertions.assertFalse(Eventfd.HAVE_SYS_EVENTFD_H(), "not expected to have sys/eventfd.h");
         }
     }
-
 
 }

@@ -28,13 +28,13 @@
  * Signature: ()Z
  */
 JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_isoc_Unistd_HAVE_1UNISTD_1H
-    (JNIEnv *env, jclass clazz) {
+(JNIEnv *env, jclass clazz) {
 #ifdef HAVE_UNISTD_H
-        return JNI_TRUE;
+    return JNI_TRUE;
 #else
-        return JNI_FALSE;
+    return JNI_FALSE;
 #endif
-    }
+}
 
 #ifdef HAVE_UNISTD_H
 
