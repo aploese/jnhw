@@ -33,29 +33,32 @@ public abstract class LibJnhwLoader {
     public final static int LIB_JNHW_VERSION = 0;
     public final static String LIB_JNHW_COMMON = "jnhw-common";
     public final static int LIB_JNHW_COMMON_VERSION = 0;
+    public final static Throwable LIB_JNHW_COMMON_LOAD_ERROR;
+    public final static Throwable LIB_JNHW_LOAD_ERROR;
 
     static {
-        loadLibJnhw();
-    }
-
-    public static Throwable getLoadException() {
-        return NativeLibLoader.getLoadError(LIB_JNHW);
+        NativeLibLoader nnl = new NativeLibLoader() {};
+        Throwable t = null;
+        try {
+            nnl.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION);
+        } catch (Throwable tJnhwCommon) {
+            t = tJnhwCommon;
+        }
+        LIB_JNHW_COMMON_LOAD_ERROR = t;
+        t = null;
+        try {
+            nnl.loadNativeLib(LIB_JNHW, LIB_JNHW_VERSION);
+        } catch (Throwable tJnhw) {
+            t = tJnhw;
+        }
+        LIB_JNHW_LOAD_ERROR = t;
     }
 
     protected LibJnhwLoader() {
-
     }
 
-    protected static void loadLibJnhw() {
-        NativeLibLoader.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION);
-        NativeLibLoader.loadNativeLib(LIB_JNHW, LIB_JNHW_VERSION);
+    public static boolean touch() {
+        return LIB_JNHW_COMMON_LOAD_ERROR == null && LIB_JNHW_LOAD_ERROR == null;
     }
 
-    public static boolean isLibJnhwLoaded() {
-        return NativeLibLoader.isLibLoaded(LIB_JNHW);
-    }
-
-    public static String getLibJnhwLoadedName() {
-        return NativeLibLoader.getLibLoadedName(LIB_JNHW);
-    }
 }

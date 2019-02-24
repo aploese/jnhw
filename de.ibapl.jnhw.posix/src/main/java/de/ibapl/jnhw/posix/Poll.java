@@ -36,7 +36,7 @@ public final class Poll extends LibJnhwPosixLoader {
     public final static class PollFd extends OpaqueMemory {
 
         static {
-            LibJnhwPosixLoader.loadLibJnhwPosix();
+            LibJnhwPosixLoader.touch();
         }
 
         public final static native int sizeofPollFd();

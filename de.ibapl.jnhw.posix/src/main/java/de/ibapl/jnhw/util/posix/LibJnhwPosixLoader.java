@@ -32,32 +32,24 @@ public abstract class LibJnhwPosixLoader extends LibJnhwLoader {
 
     public final static String LIB_JNHW_POSIX = "jnhw-posix";
     public final static int LIB_JNHW_POSIX_VERSION = 0;
-
-    public static boolean isLibJnhwPosixLoaded() {
-        return LibJnhwLoader.isLibJnhwLoaded() && NativeLibLoader.isLibLoaded(LIB_JNHW_POSIX);
-    }
-
-    public static String getLibJnhwPosixLoadedName() {
-        return NativeLibLoader.getLibLoadedName(LIB_JNHW_POSIX);
-    }
+    public final static Throwable LIB_JNHW_POSIX_LOAD_ERROR;
 
     static {
-        loadLibJnhwPosix();
-    }
-
-    public final static void loadLibJnhwPosix() {
-        NativeLibLoader.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION);
-    }
-
-    public static Throwable getLoadException() {
-        if (LibJnhwLoader.isLibJnhwLoaded()) {
-            return NativeLibLoader.getLoadError(LIB_JNHW_POSIX);
-        } else {
-            return LibJnhwLoader.getLoadException();
+        NativeLibLoader nnl = new NativeLibLoader() {};
+        Throwable t = null;
+        try {
+            nnl.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION);
+        } catch (Throwable tJnhwPosix) {
+            t = tJnhwPosix;
         }
+        LIB_JNHW_POSIX_LOAD_ERROR = t;
     }
 
     protected LibJnhwPosixLoader() {
+    }
+
+    public static boolean touch() {
+        return LIB_JNHW_POSIX_LOAD_ERROR == null;
     }
 
 }

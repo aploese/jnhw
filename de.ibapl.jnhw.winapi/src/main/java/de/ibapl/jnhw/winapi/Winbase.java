@@ -60,6 +60,10 @@ public abstract class Winbase extends LibJnhwWinApiLoader {
      */
     public static class COMSTAT extends OpaqueMemory {
 
+        static {
+            LibJnhwWinApiLoader.touch();
+        }
+
         public final static native int sizeofCOMSTAT();
 
         public COMSTAT(boolean clearMemory) {
@@ -128,6 +132,10 @@ public abstract class Winbase extends LibJnhwWinApiLoader {
     }
 
     public final static class DCB extends OpaqueMemory {
+
+        static {
+            LibJnhwWinApiLoader.touch();
+        }
 
         public DCB(boolean clearMemory) {
             super(sizeofDCB(), clearMemory);
@@ -366,6 +374,10 @@ public abstract class Winbase extends LibJnhwWinApiLoader {
     }
 
     public final static class COMMTIMEOUTS extends OpaqueMemory {
+
+        static {
+            LibJnhwWinApiLoader.touch();
+        }
 
         public final static native int sizeofCOMMTIMEOUTS();
 

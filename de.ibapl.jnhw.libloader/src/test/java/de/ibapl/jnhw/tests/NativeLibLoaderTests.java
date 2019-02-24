@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.tests;
 
 import de.ibapl.jnhw.libloader.NativeLibLoader;
+import java.io.IOException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -50,11 +51,12 @@ public class NativeLibLoaderTests {
     final static String LIB_NON_EXISTANT = "non-existant";
 
     @Test
-    public void testLoadNonExistingLib() throws Exception {
-        NativeLibLoader.loadNativeLib(LIB_NON_EXISTANT, 0);
-        Assertions.assertFalse(NativeLibLoader.isLibLoaded(LIB_NON_EXISTANT));
-        Assertions.assertTrue(NativeLibLoader.hasLoadError(LIB_NON_EXISTANT));
-        Throwable t = NativeLibLoader.getLoadError(LIB_NON_EXISTANT);
+    public void testLoadNonExistingLib() {
+        IOException ioe = Assertions.assertThrows(IOException.class, () -> {
+            new NativeLibLoader() {
+            }.loadNativeLib(LIB_NON_EXISTANT, 0);
+        });
+        System.out.println(ioe.getMessage());
     }
 
     @Test

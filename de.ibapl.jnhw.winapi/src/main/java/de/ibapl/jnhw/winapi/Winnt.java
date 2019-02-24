@@ -107,6 +107,11 @@ public final class Winnt extends LibJnhwWinApiLoader {
      */
     public static class LPWSTR extends OpaqueMemory {
 
+        static {
+            LibJnhwWinApiLoader.touch();
+        }
+
+
         public final static int SIZE_OF_WCHAR = 2;
 
         /**

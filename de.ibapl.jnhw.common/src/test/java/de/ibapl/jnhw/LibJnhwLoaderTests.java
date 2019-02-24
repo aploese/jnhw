@@ -28,7 +28,7 @@ public class LibJnhwLoaderTests {
 
     @Test
     public void testLinsLoaded() throws Exception {
-        Assertions.assertTrue(LibJnhwLoader.isLibJnhwLoaded());
+        Assertions.assertTrue(LibJnhwLoader.touch());
     }
 
 }

@@ -29,7 +29,7 @@ public class LibJnhwWinApiLoaderTests {
 
     @Test
     public void testLinsLoaded() throws Exception {
-        Assertions.assertTrue(LibJnhwWinApiLoader.isLibJnhwWinApiLoaded());
+        Assertions.assertTrue(LibJnhwWinApiLoader.touch());
     }
 
 }

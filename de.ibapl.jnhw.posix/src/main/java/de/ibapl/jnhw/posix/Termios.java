@@ -51,7 +51,7 @@ public final class Termios extends LibJnhwPosixLoader {
     public static class StructTermios extends OpaqueMemory {
 
         static {
-            LibJnhwPosixLoader.loadLibJnhwPosix();
+            LibJnhwPosixLoader.touch();
         }
 
         public final static native int sizeofTermios();

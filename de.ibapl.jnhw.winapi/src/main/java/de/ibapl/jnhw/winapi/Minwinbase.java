@@ -37,7 +37,7 @@ public class Minwinbase extends LibJnhwWinApiLoader {
     public final static class OVERLAPPED extends OpaqueMemory {
 
         static {
-            LibJnhwWinApiLoader.loadLibJnhwWinApi();
+            LibJnhwWinApiLoader.touch();
         }
 
         public final static native int sizeofOVERLAPPED();
@@ -71,7 +71,7 @@ public class Minwinbase extends LibJnhwWinApiLoader {
     public static class SECURITY_ATTRIBUTES extends OpaqueMemory {
 
         static {
-            LibJnhwWinApiLoader.loadLibJnhwWinApi();
+            LibJnhwWinApiLoader.touch();
         }
 
         public final static native int sizeofSECURITY_ATTRIBUTES();

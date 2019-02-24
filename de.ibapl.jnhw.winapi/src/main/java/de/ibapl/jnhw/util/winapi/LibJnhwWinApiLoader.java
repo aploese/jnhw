@@ -30,26 +30,25 @@ import de.ibapl.jnhw.libloader.NativeLibLoader;
  */
 public abstract class LibJnhwWinApiLoader extends LibJnhwLoader {
 
-    public final static String LIB_JNHW_WIN_API = "jnhw-winapi";
-    public final static int LIB_JNHW_WIN_API_VERSION = 0;
-
-    public static boolean isLibJnhwWinApiLoaded() {
-        return NativeLibLoader.isLibLoaded(LIB_JNHW_WIN_API);
-    }
-
-    public static String getLibJnhwWinApiLoadedName() {
-        return NativeLibLoader.getLibLoadedName(LIB_JNHW_WIN_API);
-    }
+    public final static String LIB_JNHW_WINAPI = "jnhw-winapi";
+    public final static int LIB_JNHW_WINAPI_VERSION = 0;
+    public final static Throwable LIB_JNHW_WINAPI_LOAD_ERROR;
 
     static {
-        loadLibJnhwWinApi();
-    }
-
-    public final static void loadLibJnhwWinApi() {
-        NativeLibLoader.loadNativeLib(LIB_JNHW_WIN_API, LIB_JNHW_WIN_API_VERSION);
+        NativeLibLoader nnl = new NativeLibLoader() {};
+        Throwable t = null;
+        try {
+            nnl.loadNativeLib(LIB_JNHW_WINAPI, LIB_JNHW_WINAPI_VERSION);
+        } catch (Throwable tJnhwWinApi) {
+            t = tJnhwWinApi;
+        }
+        LIB_JNHW_WINAPI_LOAD_ERROR = t;
     }
 
     protected LibJnhwWinApiLoader() {
     }
 
+    public static boolean touch() {
+        return LIB_JNHW_WINAPI_LOAD_ERROR == null;
+    }
 }

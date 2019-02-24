@@ -29,7 +29,7 @@ public class LibJnhwPosixLoaderTests {
 
     @Test
     public void testLinsLoaded() throws Exception {
-        Assertions.assertTrue(LibJnhwPosixLoader.isLibJnhwPosixLoaded());
+        Assertions.assertTrue(LibJnhwPosixLoader.touch());
     }
 
 }
