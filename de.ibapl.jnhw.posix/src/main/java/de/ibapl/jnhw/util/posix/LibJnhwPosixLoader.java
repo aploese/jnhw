@@ -34,16 +34,14 @@ public abstract class LibJnhwPosixLoader extends LibJnhwLoader {
     public final static int LIB_JNHW_POSIX_VERSION = 0;
     public final static Throwable LIB_JNHW_POSIX_LOAD_ERROR;
 
+    protected static void doSystemLoad(String absoluteLibName) {
+        System.load(absoluteLibName);
+    }
+
     static {
-        NativeLibLoader nnl = new NativeLibLoader() {
-            @Override
-            protected void doSystemLoad(String absoluteLibName) {
-                System.load(absoluteLibName);
-            }
-        };
         Throwable t = null;
         try {
-            nnl.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION);
+            NativeLibLoader.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION, LibJnhwPosixLoader::doSystemLoad);
         } catch (Throwable tJnhwPosix) {
             t = tJnhwPosix;
         }

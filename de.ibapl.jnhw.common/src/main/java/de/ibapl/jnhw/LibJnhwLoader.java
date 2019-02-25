@@ -36,23 +36,21 @@ public abstract class LibJnhwLoader {
     public final static Throwable LIB_JNHW_COMMON_LOAD_ERROR;
     public final static Throwable LIB_JNHW_LOAD_ERROR;
     
-    static {
-        NativeLibLoader nnl = new NativeLibLoader() {
-            @Override
-            protected void doSystemLoad(String absoluteLibName) {
+            protected static void doSystemLoad(String absoluteLibName) {
                 System.load(absoluteLibName);
             }
-        };
+            
+    static {
         Throwable t = null;
         try {
-            nnl.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION);
+            NativeLibLoader.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwLoader::doSystemLoad);
         } catch (Throwable tJnhwCommon) {
             t = tJnhwCommon;
         }
         LIB_JNHW_COMMON_LOAD_ERROR = t;
         t = null;
         try {
-            nnl.loadNativeLib(LIB_JNHW, LIB_JNHW_VERSION);
+            NativeLibLoader.loadNativeLib(LIB_JNHW, LIB_JNHW_VERSION, LibJnhwLoader::doSystemLoad);
         } catch (Throwable tJnhw) {
             t = tJnhw;
         }

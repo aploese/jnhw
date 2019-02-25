@@ -21,22 +21,16 @@
  */
 package de.ibapl.jnhw.libloader;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.net.URL;
-import java.nio.CharBuffer;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,7 +81,7 @@ public abstract class NativeLibLoader {
         NATIVE_TEMP_DIR = nativeTemDir;
     }
 
-    public NativeLibLoader() {
+    private NativeLibLoader() {
         
     }
 
@@ -96,16 +90,15 @@ public abstract class NativeLibLoader {
      * @param absoluteLibName
      * @return 
      */
-    protected abstract void doSystemLoad(String absoluteLibName);
     
-    public synchronized String loadNativeLib(final String libName, int libToolInterfaceVersion) throws IOException {
+    public static synchronized String loadNativeLib(final String libName, int libToolInterfaceVersion, Consumer<String> consumer) throws IOException {
             String[] javaLibraryPath = System.getProperty("java.library.path").split(":");
             String formattedLibName = OS.formatLibName(libName, libToolInterfaceVersion);
             for (int i = 0; i < javaLibraryPath.length; i++) {
                 final String absLibName = javaLibraryPath[i] + "/" + formattedLibName;
                 if (new File(absLibName).exists()) {
                     try {
-                        doSystemLoad(absLibName);
+                        consumer.accept(absLibName);
                         LOG.log(Level.WARNING, "TODO INFOLib {0} loaded via System.load(\"{1}\")", new Object[]{libName, absLibName});
                         return absLibName;
                     } catch (UnsatisfiedLinkError ule) {
@@ -115,15 +108,15 @@ public abstract class NativeLibLoader {
                     }
                 }
             }
-            return loadFromResource(libName, formattedLibName);
+            return loadFromResource(libName, formattedLibName, consumer);
     }
 
-    private String loadFromResource(final String libName, final String formattedLibName) throws IOException {
+    private static String loadFromResource(final String libName, final String formattedLibName, Consumer<String> consumer) throws IOException {
         for (MultiarchInfo mi : MULTIARCH_INFO) {
             // Figure out os and arch
             final String libResourceName = String.format("/lib/%s/%s", mi.getTupelName(), formattedLibName);
             // Try from classpath like the tests or extracted jars do
-            URL classPathLibURL = getClass().getResource(libResourceName);
+            URL classPathLibURL = consumer.getClass().getResource(libResourceName);
             if (classPathLibURL == null) {
                 LOG.log(Level.SEVERE, "Lib \"{0}\" is not in classpath with resourcename: \"{1}\"", new Object[]{libName, libResourceName});
                 throw new FileNotFoundException("Lib " + libName + " is not in classpath with resourcename: " + libResourceName);
@@ -135,7 +128,7 @@ public abstract class NativeLibLoader {
             //On MacOS we cant load the lib directly, we must fix first the internal id and lib path ... only copy to tmp and fix the path solves this
             if (getOS() != OS.MAC_OS_X) {
                 try {
-                    doSystemLoad(classPathLibName);
+                    consumer.accept(classPathLibName);
                     LOG.log(Level.WARNING, "TODO INFO \"{0}\" loaded via System.load(\"{1}\")", new Object[]{libName, classPathLibName});
                     return classPathLibName;
                 } catch (UnsatisfiedLinkError ule) {
@@ -150,7 +143,7 @@ public abstract class NativeLibLoader {
                 classPathLibName = tmpLib.getAbsolutePath();
                 
                 if (getOS() == OS.MAC_OS_X) {
-                    URL classPathLibHelperURL = getClass().getResource(libResourceName + ".sh");
+                    URL classPathLibHelperURL = consumer.getClass().getResource(libResourceName + ".sh");
                     if (classPathLibHelperURL != null) {
                         String helperName = formattedLibName + ".sh";
                         File libLocationFixScript = copyToNativeLibDir(classPathLibHelperURL, helperName);
@@ -162,7 +155,7 @@ public abstract class NativeLibLoader {
                         }
                     }
                 }
-                doSystemLoad(classPathLibName);
+                consumer.accept(classPathLibName);
                 LOG.log(Level.WARNING, "TODO INFO Lib loaded via System.load(\"{0}\")", classPathLibName);
                 tmpLib.delete();
                 return classPathLibURL.toString();
@@ -196,9 +189,9 @@ public abstract class NativeLibLoader {
         }
     }
 
-    public synchronized String loadClassicalNativeLib(final String libName) throws IOException {
+    public static synchronized String loadClassicalNativeLib(final String libName, Consumer<String> consumer) throws IOException {
             LOG.log(Level.INFO, "java.library.path: \"{0}\"", System.getProperty("java.library.path"));
-            return loadFromResource(libName, System.mapLibraryName(libName));
+            return loadFromResource(libName, System.mapLibraryName(libName), consumer);
     }
 
     public static OS getOS() {
