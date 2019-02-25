@@ -91,6 +91,13 @@ public abstract class NativeLibLoader {
         
     }
 
+    /**
+     * Only call System.load(absLibName); hin the subclass - so OSGi can pick the right classloader...
+     * @param absoluteLibName
+     * @return 
+     */
+    protected abstract void doSystemLoad(String absoluteLibName);
+    
     public synchronized String loadNativeLib(final String libName, int libToolInterfaceVersion) throws IOException {
             String[] javaLibraryPath = System.getProperty("java.library.path").split(":");
             String formattedLibName = OS.formatLibName(libName, libToolInterfaceVersion);
@@ -98,7 +105,7 @@ public abstract class NativeLibLoader {
                 final String absLibName = javaLibraryPath[i] + "/" + formattedLibName;
                 if (new File(absLibName).exists()) {
                     try {
-                        System.load(absLibName);
+                        doSystemLoad(absLibName);
                         LOG.log(Level.WARNING, "TODO INFOLib {0} loaded via System.load(\"{1}\")", new Object[]{libName, absLibName});
                         return absLibName;
                     } catch (UnsatisfiedLinkError ule) {
@@ -128,7 +135,7 @@ public abstract class NativeLibLoader {
             //On MacOS we cant load the lib directly, we must fix first the internal id and lib path ... only copy to tmp and fix the path solves this
             if (getOS() != OS.MAC_OS_X) {
                 try {
-                    System.load(classPathLibName);
+                    doSystemLoad(classPathLibName);
                     LOG.log(Level.WARNING, "TODO INFO \"{0}\" loaded via System.load(\"{1}\")", new Object[]{libName, classPathLibName});
                     return classPathLibName;
                 } catch (UnsatisfiedLinkError ule) {
@@ -155,7 +162,7 @@ public abstract class NativeLibLoader {
                         }
                     }
                 }
-                System.load(classPathLibName);
+                doSystemLoad(classPathLibName);
                 LOG.log(Level.WARNING, "TODO INFO Lib loaded via System.load(\"{0}\")", classPathLibName);
                 tmpLib.delete();
                 return classPathLibURL.toString();

@@ -32,6 +32,14 @@ import org.junit.jupiter.api.Test;
 
 public class NativeLibLoaderTests {
 
+    class TestLoader extends NativeLibLoader {
+
+        @Override
+        protected void doSystemLoad(String absoluteLibName) {
+            System.load(absoluteLibName);
+        }
+        
+    }
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
     }
@@ -50,10 +58,11 @@ public class NativeLibLoaderTests {
 
     final static String LIB_NON_EXISTANT = "non-existant";
 
+    
     @Test
     public void testLoadNonExistingLib() {
         IOException ioe = Assertions.assertThrows(IOException.class, () -> {
-            new NativeLibLoader() {
+            new TestLoader(){
             }.loadNativeLib(LIB_NON_EXISTANT, 0);
         });
         System.out.println(ioe.getMessage());

@@ -35,7 +35,12 @@ public abstract class LibJnhwWinApiLoader extends LibJnhwLoader {
     public final static Throwable LIB_JNHW_WINAPI_LOAD_ERROR;
 
     static {
-        NativeLibLoader nnl = new NativeLibLoader() {};
+        NativeLibLoader nnl = new NativeLibLoader() {
+            @Override
+            protected void doSystemLoad(String absoluteLibName) {
+                System.load(absoluteLibName);
+            }
+        };
         Throwable t = null;
         try {
             nnl.loadNativeLib(LIB_JNHW_WINAPI, LIB_JNHW_WINAPI_VERSION);

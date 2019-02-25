@@ -28,16 +28,21 @@ import de.ibapl.jnhw.libloader.NativeLibLoader;
  * @author aploese
  */
 public abstract class LibJnhwLoader {
-
+    
     public final static String LIB_JNHW = "jnhw";
     public final static int LIB_JNHW_VERSION = 0;
     public final static String LIB_JNHW_COMMON = "jnhw-common";
     public final static int LIB_JNHW_COMMON_VERSION = 0;
     public final static Throwable LIB_JNHW_COMMON_LOAD_ERROR;
     public final static Throwable LIB_JNHW_LOAD_ERROR;
-
+    
     static {
-        NativeLibLoader nnl = new NativeLibLoader() {};
+        NativeLibLoader nnl = new NativeLibLoader() {
+            @Override
+            protected void doSystemLoad(String absoluteLibName) {
+                System.load(absoluteLibName);
+            }
+        };
         Throwable t = null;
         try {
             nnl.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION);
@@ -53,12 +58,12 @@ public abstract class LibJnhwLoader {
         }
         LIB_JNHW_LOAD_ERROR = t;
     }
-
+    
     protected LibJnhwLoader() {
     }
-
+    
     public static boolean touch() {
         return LIB_JNHW_COMMON_LOAD_ERROR == null && LIB_JNHW_LOAD_ERROR == null;
     }
-
+    
 }
