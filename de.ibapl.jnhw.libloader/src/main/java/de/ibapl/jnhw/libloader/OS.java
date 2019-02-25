@@ -45,7 +45,7 @@ public enum OS {
         return osName;
     }
 
-    String formatLibName(String libName, int libToolInterfaceVersion) {
+    public String formatLibName(String libName, int libToolInterfaceVersion) {
         return String.format(formatLibNameString, libName, libToolInterfaceVersion);
     }
 
