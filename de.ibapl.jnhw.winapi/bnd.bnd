@@ -1,6 +1,3 @@
 Export-Package: \
-	de.ibapl.jnhw.util,\
-	de.ibapl.jnhw.libloader,\
-	de.ibapl.jnhw,\
 	de.ibapl.jnhw.winapi,\
 	de.ibapl.jnhw.util.winapi
