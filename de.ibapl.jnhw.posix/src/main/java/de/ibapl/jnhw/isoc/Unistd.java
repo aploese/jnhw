@@ -28,7 +28,14 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.nio.ByteBuffer;
 
 @Include("#include <unistd.h>")
-public abstract class Unistd extends LibJnhwPosixLoader {
+public abstract class Unistd {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwPosixLoader.touch();
+    }
 
     public final static native boolean HAVE_UNISTD_H();
 

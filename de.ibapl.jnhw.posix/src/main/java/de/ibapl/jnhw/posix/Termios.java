@@ -38,7 +38,14 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
  *
  */
 @Include("#include <termios.h>")
-public final class Termios extends LibJnhwPosixLoader {
+public final class Termios {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwPosixLoader.touch();
+    }
 
     public final static native boolean HAVE_TERMIOS_H();
 
@@ -50,6 +57,10 @@ public final class Termios extends LibJnhwPosixLoader {
      */
     public static class StructTermios extends OpaqueMemory {
 
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
         static {
             LibJnhwPosixLoader.touch();
         }

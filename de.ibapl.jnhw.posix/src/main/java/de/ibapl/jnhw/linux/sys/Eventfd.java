@@ -28,7 +28,14 @@ import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <sys/eventfd.h>")
-public final class Eventfd extends LibJnhwPosixLoader {
+public final class Eventfd {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwPosixLoader.touch();
+    }
 
     private Eventfd() {
 

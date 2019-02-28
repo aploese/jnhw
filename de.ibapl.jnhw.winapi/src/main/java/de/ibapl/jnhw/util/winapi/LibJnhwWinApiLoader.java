@@ -22,36 +22,40 @@
 package de.ibapl.jnhw.util.winapi;
 
 import de.ibapl.jnhw.LibJnhwLoader;
+import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.NativeLibLoader;
 
 /**
  *
  * @author aploese
  */
-public abstract class LibJnhwWinApiLoader extends LibJnhwLoader {
+public final class LibJnhwWinApiLoader {
 
     public final static String LIB_JNHW_WINAPI = "jnhw-winapi";
     public final static int LIB_JNHW_WINAPI_VERSION = 0;
-    public final static Throwable LIB_JNHW_WINAPI_LOAD_ERROR;
+    public final static LoadResult LIB_JNHW_WINAPI_LOAD_RESULT;
 
     protected static void doSystemLoad(String absoluteLibName) {
         System.load(absoluteLibName);
     }
 
+    /**
+     * Here the lib is loaded any exceptions are not thrown ar class load time
+     */
     static {
-        Throwable t = null;
-        try {
-            NativeLibLoader.loadNativeLib(LIB_JNHW_WINAPI, LIB_JNHW_WINAPI_VERSION, LibJnhwWinApiLoader::doSystemLoad);
-        } catch (Throwable tJnhwWinApi) {
-            t = tJnhwWinApi;
-        }
-        LIB_JNHW_WINAPI_LOAD_ERROR = t;
+        LibJnhwLoader.touch();
+        LIB_JNHW_WINAPI_LOAD_RESULT = NativeLibLoader.loadNativeLib(LIB_JNHW_WINAPI, LIB_JNHW_WINAPI_VERSION, LibJnhwWinApiLoader::doSystemLoad);
     }
 
-    protected LibJnhwWinApiLoader() {
+    private LibJnhwWinApiLoader() {
     }
 
+    /**
+     * Make sure the native lib is loaded
+     *
+     * @return true if loaded
+     */
     public static boolean touch() {
-        return LIB_JNHW_WINAPI_LOAD_ERROR == null;
+        return LIB_JNHW_WINAPI_LOAD_RESULT.isLoaded();
     }
 }

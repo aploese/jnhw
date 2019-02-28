@@ -82,36 +82,37 @@ public abstract class NativeLibLoader {
     }
 
     private NativeLibLoader() {
-        
+
     }
 
     /**
-     * Only call System.load(absLibName); hin the subclass - so OSGi can pick the right classloader...
+     * Only call System.load(absLibName); hin the subclass - so OSGi can pick
+     * the right classloader...
+     *
      * @param absoluteLibName
-     * @return 
+     * @return
      */
-    
-    public static synchronized String loadNativeLib(final String libName, int libToolInterfaceVersion, Consumer<String> consumer) throws IOException {
-            String[] javaLibraryPath = System.getProperty("java.library.path").split(":");
-            String formattedLibName = OS.formatLibName(libName, libToolInterfaceVersion);
-            for (int i = 0; i < javaLibraryPath.length; i++) {
-                final String absLibName = javaLibraryPath[i] + "/" + formattedLibName;
-                if (new File(absLibName).exists()) {
-                    try {
-                        consumer.accept(absLibName);
-                        LOG.log(Level.WARNING, "TODO INFOLib {0} loaded via System.load(\"{1}\")", new Object[]{libName, absLibName});
-                        return absLibName;
-                    } catch (UnsatisfiedLinkError ule) {
-                        LOG.log(Level.INFO, ule, () -> {
-                            return String.format("Could not load %s via System.load(\"%s\")", libName, absLibName);
-                        });
-                    }
+    public static synchronized LoadResult loadNativeLib(final String libName, int libToolInterfaceVersion, Consumer<String> consumer) {
+        String[] javaLibraryPath = System.getProperty("java.library.path").split(":");
+        String formattedLibName = OS.formatLibName(libName, libToolInterfaceVersion);
+        for (int i = 0; i < javaLibraryPath.length; i++) {
+            final String absLibName = javaLibraryPath[i] + "/" + formattedLibName;
+            if (new File(absLibName).exists()) {
+                try {
+                    consumer.accept(absLibName);
+                    LOG.log(Level.WARNING, "TODO INFOLib {0} loaded via System.load(\"{1}\")", new Object[]{libName, absLibName});
+                    return LoadResult.successFromLibraryPath(libName, formattedLibName, absLibName);
+                } catch (UnsatisfiedLinkError ule) {
+                    LOG.log(Level.INFO, ule, () -> {
+                        return String.format("Could not load %s via System.load(\"%s\")", libName, absLibName);
+                    });
                 }
             }
-            return loadFromResource(libName, formattedLibName, consumer);
+        }
+        return loadFromResource(libName, formattedLibName, consumer);
     }
 
-    private static String loadFromResource(final String libName, final String formattedLibName, Consumer<String> consumer) throws IOException {
+    private static LoadResult loadFromResource(final String libName, final String formattedLibName, Consumer<String> consumer) {
         for (MultiarchInfo mi : MULTIARCH_INFO) {
             // Figure out os and arch
             final String libResourceName = String.format("/lib/%s/%s", mi.getTupelName(), formattedLibName);
@@ -119,7 +120,8 @@ public abstract class NativeLibLoader {
             URL classPathLibURL = consumer.getClass().getResource(libResourceName);
             if (classPathLibURL == null) {
                 LOG.log(Level.SEVERE, "Lib \"{0}\" is not in classpath with resourcename: \"{1}\"", new Object[]{libName, libResourceName});
-                throw new FileNotFoundException("Lib " + libName + " is not in classpath with resourcename: " + libResourceName);
+                //TODO check if we are just in the wrong arch???
+                return LoadResult.fail(libName, formattedLibName, new FileNotFoundException("Lib " + libName + " is not in classpath with resourcename: " + libResourceName));
             }
             String classPathLibName = classPathLibURL.getFile();
 
@@ -130,7 +132,7 @@ public abstract class NativeLibLoader {
                 try {
                     consumer.accept(classPathLibName);
                     LOG.log(Level.WARNING, "TODO INFO \"{0}\" loaded via System.load(\"{1}\")", new Object[]{libName, classPathLibName});
-                    return classPathLibName;
+                    return LoadResult.successFromClassPath(libName, formattedLibName, classPathLibURL);
                 } catch (UnsatisfiedLinkError ule) {
                     LOG.log(Level.WARNING, "TODO INFO  lib {0} for {1} not loaded: {2}", new Object[]{classPathLibName, libName, ule.getMessage()});
                 } catch (Throwable t) {
@@ -141,7 +143,7 @@ public abstract class NativeLibLoader {
             try {
                 File tmpLib = copyToNativeLibDir(classPathLibURL, formattedLibName);
                 classPathLibName = tmpLib.getAbsolutePath();
-                
+
                 if (getOS() == OS.MAC_OS_X) {
                     URL classPathLibHelperURL = consumer.getClass().getResource(libResourceName + ".sh");
                     if (classPathLibHelperURL != null) {
@@ -158,7 +160,7 @@ public abstract class NativeLibLoader {
                 consumer.accept(classPathLibName);
                 LOG.log(Level.WARNING, "TODO INFO Lib loaded via System.load(\"{0}\")", classPathLibName);
                 tmpLib.delete();
-                return classPathLibURL.toString();
+                return LoadResult.successFromTempCopy(libName, formattedLibName, classPathLibURL, tmpLib.getCanonicalPath());
             } catch (Throwable t) {
                 //do not delete tmpLib so it can be examined to figure out what went wrong...
                 // do not stop here.. maybe it is only the wron abi like arm spftfloat and hardfloat ... 
@@ -167,7 +169,7 @@ public abstract class NativeLibLoader {
         }
         LOG.log(Level.SEVERE, "Giving up; Can't load the lib {0}!\nList System Properties\n {1} \n",
                 new Object[]{libName, MULTIARCH_TUPEL_BUILDER.listSystemProperties()});
-                throw new IOException("Can't load the lib \"" + libName + "\" foramtted as: \"" + formattedLibName + "\" for any Architectures");
+        return LoadResult.fail(libName, formattedLibName, new IOException("Can't load the lib \"" + libName + "\" foramtted as: \"" + formattedLibName + "\" for any Architectures"));
     }
 
     private static File copyToNativeLibDir(URL sourceURL, final String targetName) throws IOException {
@@ -189,9 +191,9 @@ public abstract class NativeLibLoader {
         }
     }
 
-    public static synchronized String loadClassicalNativeLib(final String libName, Consumer<String> consumer) throws IOException {
-            LOG.log(Level.INFO, "java.library.path: \"{0}\"", System.getProperty("java.library.path"));
-            return loadFromResource(libName, System.mapLibraryName(libName), consumer);
+    public static synchronized LoadResult loadClassicalNativeLib(final String libName, Consumer<String> consumer) {
+        LOG.log(Level.INFO, "java.library.path: \"{0}\"", System.getProperty("java.library.path"));
+        return loadFromResource(libName, System.mapLibraryName(libName), consumer);
     }
 
     public static OS getOS() {

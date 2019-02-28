@@ -28,7 +28,14 @@ import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 @Include("minwindef.h")
-public abstract class Minwindef extends LibJnhwWinApiLoader {
+public abstract class Minwindef {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
 
     public static class HKEY extends HANDLE {
 

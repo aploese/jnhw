@@ -32,7 +32,14 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
  * @author aploese
  */
 @Include("synchapi.h")
-public abstract class Synchapi extends LibJnhwWinApiLoader {
+public abstract class Synchapi {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
 
     public final static native boolean HAVE_SYNCHAPI_H();
 

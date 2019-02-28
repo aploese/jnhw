@@ -28,7 +28,14 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <sys/ioctl.h>")
-public final class Ioctl extends LibJnhwPosixLoader {
+public final class Ioctl {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwPosixLoader.touch();
+    }
 
     public final static native boolean HAVE_SYS_IOCTL_H();
 

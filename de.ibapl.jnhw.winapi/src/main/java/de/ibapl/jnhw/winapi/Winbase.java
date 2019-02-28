@@ -30,7 +30,14 @@ import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 @Include("WinBase.h")
-public abstract class Winbase extends LibJnhwWinApiLoader {
+public abstract class Winbase {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
 
     public final static native boolean HAVE_WINBASE_H();
 
@@ -60,6 +67,10 @@ public abstract class Winbase extends LibJnhwWinApiLoader {
      */
     public static class COMSTAT extends OpaqueMemory {
 
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
         static {
             LibJnhwWinApiLoader.touch();
         }
@@ -133,6 +144,10 @@ public abstract class Winbase extends LibJnhwWinApiLoader {
 
     public final static class DCB extends OpaqueMemory {
 
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
         static {
             LibJnhwWinApiLoader.touch();
         }
@@ -375,6 +390,10 @@ public abstract class Winbase extends LibJnhwWinApiLoader {
 
     public final static class COMMTIMEOUTS extends OpaqueMemory {
 
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
         static {
             LibJnhwWinApiLoader.touch();
         }

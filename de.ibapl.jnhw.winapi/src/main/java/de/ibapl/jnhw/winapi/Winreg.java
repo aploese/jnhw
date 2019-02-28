@@ -33,7 +33,14 @@ import de.ibapl.jnhw.winapi.Minwindef.LPBYTE;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
 
 @Include("winreg.h")
-public abstract class Winreg extends LibJnhwWinApiLoader {
+public abstract class Winreg {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
 
     public final static native boolean HAVE_WINREG_H();
 

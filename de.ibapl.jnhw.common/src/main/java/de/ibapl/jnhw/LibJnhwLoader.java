@@ -21,47 +21,36 @@
  */
 package de.ibapl.jnhw;
 
+import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.NativeLibLoader;
 
 /**
  *
  * @author aploese
  */
-public abstract class LibJnhwLoader {
-    
+public final class LibJnhwLoader {
+
     public final static String LIB_JNHW = "jnhw";
     public final static int LIB_JNHW_VERSION = 0;
     public final static String LIB_JNHW_COMMON = "jnhw-common";
     public final static int LIB_JNHW_COMMON_VERSION = 0;
-    public final static Throwable LIB_JNHW_COMMON_LOAD_ERROR;
-    public final static Throwable LIB_JNHW_LOAD_ERROR;
-    
-            protected static void doSystemLoad(String absoluteLibName) {
-                System.load(absoluteLibName);
-            }
-            
+    public final static LoadResult LIB_JNHW_COMMON_LOAD_RESULT;
+    public final static LoadResult LIB_JNHW_LOAD_RESULT;
+
+    protected static void doSystemLoad(String absoluteLibName) {
+        System.load(absoluteLibName);
+    }
+
     static {
-        Throwable t = null;
-        try {
-            NativeLibLoader.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwLoader::doSystemLoad);
-        } catch (Throwable tJnhwCommon) {
-            t = tJnhwCommon;
-        }
-        LIB_JNHW_COMMON_LOAD_ERROR = t;
-        t = null;
-        try {
-            NativeLibLoader.loadNativeLib(LIB_JNHW, LIB_JNHW_VERSION, LibJnhwLoader::doSystemLoad);
-        } catch (Throwable tJnhw) {
-            t = tJnhw;
-        }
-        LIB_JNHW_LOAD_ERROR = t;
+        LIB_JNHW_COMMON_LOAD_RESULT = NativeLibLoader.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwLoader::doSystemLoad);
+        LIB_JNHW_LOAD_RESULT = NativeLibLoader.loadNativeLib(LIB_JNHW, LIB_JNHW_VERSION, LibJnhwLoader::doSystemLoad);
     }
-    
-    protected LibJnhwLoader() {
+
+    private LibJnhwLoader() {
     }
-    
+
     public static boolean touch() {
-        return LIB_JNHW_COMMON_LOAD_ERROR == null && LIB_JNHW_LOAD_ERROR == null;
+        return LIB_JNHW_COMMON_LOAD_RESULT.isLoaded() && LIB_JNHW_LOAD_RESULT.isLoaded();
     }
-    
+
 }

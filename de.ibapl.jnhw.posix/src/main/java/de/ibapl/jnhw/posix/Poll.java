@@ -29,12 +29,23 @@ import de.ibapl.jnhw.StructArray;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <poll.h>")
-public final class Poll extends LibJnhwPosixLoader {
+public final class Poll {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwPosixLoader.touch();
+    }
 
     public final static native boolean HAVE_POLL_H();
 
     public final static class PollFd extends OpaqueMemory {
 
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
         static {
             LibJnhwPosixLoader.touch();
         }

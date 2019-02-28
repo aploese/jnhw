@@ -29,7 +29,7 @@
 extern "C" {
 #endif
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_winapi_Winnt_LPWSTR
      * Method:    getString
      * Signature: (JI)Ljava/lang/String;

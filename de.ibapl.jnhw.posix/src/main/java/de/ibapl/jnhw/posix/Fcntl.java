@@ -27,7 +27,14 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <fcntl.h>")
-public final class Fcntl extends LibJnhwPosixLoader {
+public final class Fcntl {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwPosixLoader.touch();
+    }
 
     public final static native boolean HAVE_FCNTL_H();
 

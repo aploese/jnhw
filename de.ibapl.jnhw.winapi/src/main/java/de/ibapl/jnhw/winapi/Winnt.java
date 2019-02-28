@@ -29,7 +29,14 @@ import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 
 @Include("winnt.h")
-public final class Winnt extends LibJnhwWinApiLoader {
+public final class Winnt {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
 
     public final static native boolean HAVE_WINNT_H();
 
@@ -107,10 +114,13 @@ public final class Winnt extends LibJnhwWinApiLoader {
      */
     public static class LPWSTR extends OpaqueMemory {
 
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
         static {
             LibJnhwWinApiLoader.touch();
         }
-
 
         public final static int SIZE_OF_WCHAR = 2;
 

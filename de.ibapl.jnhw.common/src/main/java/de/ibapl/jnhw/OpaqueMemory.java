@@ -28,9 +28,16 @@ import java.util.logging.Logger;
  *
  * @author aploese
  */
-public class OpaqueMemory extends LibJnhwLoader {
+public class OpaqueMemory {
 
     protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwLoader.touch();
+    }
 
     public final long baseAddress;
     public final int sizeInBytes;

@@ -29,7 +29,7 @@
 extern "C" {
 #endif
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_winapi_Minwinbase_SECURITY_ATTRIBUTES
      * Method:    sizeofSECURITY_ATTRIBUTES
      * Signature: ()I

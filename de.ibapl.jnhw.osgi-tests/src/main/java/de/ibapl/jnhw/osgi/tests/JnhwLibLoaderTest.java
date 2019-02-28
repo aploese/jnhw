@@ -33,14 +33,14 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 
 public class JnhwLibLoaderTest {
 
-	@Test
-	public void testGetMultiarchinfo() throws Exception {
-		System.out.println("RUN de.ibapl.jnhw.osgi.tests.JnhwLibLoaderTest.testGetMultiarchinfo()");
-		MultiarchTupelBuilder multiarchTupelBuilder= new MultiarchTupelBuilder();
-		Set<MultiarchInfo> multiarchInfos = multiarchTupelBuilder.guessMultiarch();
-		assertFalse(multiarchInfos.isEmpty());
-		fail();
-		System.out
-				.println("FINISHED de.ibapl.jnhw.osgi.tests.JnhwLibLoaderTest.testGetMultiarchinfo()");
-	}
+    @Test
+    public void testGetMultiarchinfo() throws Exception {
+        System.out.println("RUN de.ibapl.jnhw.osgi.tests.JnhwLibLoaderTest.testGetMultiarchinfo()");
+        MultiarchTupelBuilder multiarchTupelBuilder = new MultiarchTupelBuilder();
+        Set<MultiarchInfo> multiarchInfos = multiarchTupelBuilder.guessMultiarch();
+        assertFalse(multiarchInfos.isEmpty());
+        fail();
+        System.out
+                .println("FINISHED de.ibapl.jnhw.osgi.tests.JnhwLibLoaderTest.testGetMultiarchinfo()");
+    }
 }

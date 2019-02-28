@@ -31,11 +31,22 @@ import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
  * @author aploese
  */
 @Include("minwinbase.h")
-public class Minwinbase extends LibJnhwWinApiLoader {
+public class Minwinbase {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
 
 //TODO   public final static native boolean HAVE_MINWINBASE_H();
     public final static class OVERLAPPED extends OpaqueMemory {
 
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
         static {
             LibJnhwWinApiLoader.touch();
         }
@@ -70,6 +81,10 @@ public class Minwinbase extends LibJnhwWinApiLoader {
 
     public static class SECURITY_ATTRIBUTES extends OpaqueMemory {
 
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
         static {
             LibJnhwWinApiLoader.touch();
         }

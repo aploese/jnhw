@@ -38,7 +38,14 @@ import java.nio.ByteBuffer;
  * @author aploese
  */
 @Include("fileapi.h")
-public final class Fileapi extends LibJnhwWinApiLoader {
+public final class Fileapi {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
 
     public final static native boolean HAVE_FILEAPI_H();
 

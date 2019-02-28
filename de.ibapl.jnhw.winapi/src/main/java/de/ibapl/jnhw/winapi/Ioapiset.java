@@ -34,7 +34,14 @@ import java.nio.ByteBuffer;
  * @author aploese
  */
 @Include("ioapiset.h")
-public final class Ioapiset extends LibJnhwWinApiLoader {
+public final class Ioapiset {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
 
     public final static native boolean HAVE_IOAPISET_H();
 

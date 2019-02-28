@@ -26,7 +26,14 @@ import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <errno.h>")
-public abstract class Errno extends LibJnhwPosixLoader {
+public abstract class Errno {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwPosixLoader.touch();
+    }
 
     protected Errno() {
 

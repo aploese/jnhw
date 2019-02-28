@@ -22,37 +22,41 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.LibJnhwLoader;
+import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.NativeLibLoader;
 
 /**
  *
  * @author aploese
  */
-public abstract class LibJnhwPosixLoader extends LibJnhwLoader {
+public final class LibJnhwPosixLoader {
 
     public final static String LIB_JNHW_POSIX = "jnhw-posix";
     public final static int LIB_JNHW_POSIX_VERSION = 0;
-    public final static Throwable LIB_JNHW_POSIX_LOAD_ERROR;
+    public final static LoadResult LIB_JNHW_POSIX_LOAD_RESULT;
 
     protected static void doSystemLoad(String absoluteLibName) {
         System.load(absoluteLibName);
     }
 
+    /**
+     * Here the lib is loaded any exceptions are not thrown ar class load time
+     */
     static {
-        Throwable t = null;
-        try {
-            NativeLibLoader.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION, LibJnhwPosixLoader::doSystemLoad);
-        } catch (Throwable tJnhwPosix) {
-            t = tJnhwPosix;
-        }
-        LIB_JNHW_POSIX_LOAD_ERROR = t;
+        LibJnhwLoader.touch();
+        LIB_JNHW_POSIX_LOAD_RESULT = NativeLibLoader.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION, LibJnhwPosixLoader::doSystemLoad);
     }
 
-    protected LibJnhwPosixLoader() {
+    private LibJnhwPosixLoader() {
     }
 
+    /**
+     * Make sure the native lib is loaded
+     *
+     * @return true if loaded
+     */
     public static boolean touch() {
-        return LIB_JNHW_POSIX_LOAD_ERROR == null;
+        return LIB_JNHW_POSIX_LOAD_RESULT.isLoaded();
     }
 
 }

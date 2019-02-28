@@ -26,7 +26,14 @@ import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 
 @Include("winerror.h")
-public abstract class Winerror extends LibJnhwWinApiLoader {
+public abstract class Winerror {
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
 
     public final static native boolean HAVE_WINERROR_H();
 

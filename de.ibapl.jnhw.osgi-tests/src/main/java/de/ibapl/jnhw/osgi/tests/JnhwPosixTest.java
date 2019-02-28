@@ -21,9 +21,6 @@
  */
 package de.ibapl.jnhw.osgi.tests;
 
-
-
-
 public class JnhwPosixTest {
 
 }
