@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -53,13 +53,13 @@ public class PollTests {
 
     @Test
     public void testCreatePollFd() throws Exception {
-        Assumptions.assumeFalse(NativeLibLoader.getOS() == OS.WINDOWS);
+        Assumptions.assumeFalse(NativeLibResolver.getOS() == OS.WINDOWS);
         Poll.PollFds pollFds = new Poll.PollFds(2);
     }
 
     @Test
     public void testNPEpoll() throws Exception {
-        Assumptions.assumeFalse(NativeLibLoader.getOS() == OS.WINDOWS);
+        Assumptions.assumeFalse(NativeLibResolver.getOS() == OS.WINDOWS);
         Assertions.assertThrows(NullPointerException.class, () -> {
             Poll.poll(null, 1000);
         });
@@ -67,7 +67,7 @@ public class PollTests {
 
     @Test
     public void test_HAVE_POLL_H() throws Exception {
-        if (NativeLibLoader.getOS() == OS.WINDOWS) {
+        if (NativeLibResolver.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Poll.HAVE_POLL_H(), "not expected to have poll.h");
         } else {
             Assertions.assertTrue(Poll.HAVE_POLL_H(), "expected to have poll.h");

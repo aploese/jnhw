@@ -25,7 +25,7 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.isoc.Errno;
-import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -58,7 +58,7 @@ public class EventfdTests {
 
     @Test
     public void test_HAVE_SYS_EVENTFD_H() throws Exception {
-        if (NativeLibLoader.getOS() == OS.LINUX) {
+        if (NativeLibResolver.getOS() == OS.LINUX) {
             Assertions.assertTrue(Eventfd.HAVE_SYS_EVENTFD_H(), "expected to have sys/eventfd.h");
         } else {
             Assertions.assertFalse(Eventfd.HAVE_SYS_EVENTFD_H(), "not expected to have sys/eventfd.h");

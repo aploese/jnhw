@@ -23,7 +23,7 @@ package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.libloader.LoadResult;
-import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 
 /**
  *
@@ -44,7 +44,7 @@ public final class LibJnhwPosixLoader {
      */
     static {
         LibJnhwLoader.touch();
-        LIB_JNHW_POSIX_LOAD_RESULT = NativeLibLoader.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION, LibJnhwPosixLoader::doSystemLoad);
+        LIB_JNHW_POSIX_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION, LibJnhwPosixLoader::doSystemLoad);
     }
 
     private LibJnhwPosixLoader() {

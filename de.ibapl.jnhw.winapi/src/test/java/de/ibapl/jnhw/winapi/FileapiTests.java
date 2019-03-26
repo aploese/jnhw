@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,7 +59,7 @@ public class FileapiTests {
 
     @Test
     public void test_HAVE_FILEAPI_H() throws Exception {
-        if (NativeLibLoader.getOS() == OS.WINDOWS) {
+        if (NativeLibResolver.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Fileapi.HAVE_FILEAPI_H(), "expected to have fileapi.h");
         } else {
             Assertions.assertFalse(Fileapi.HAVE_FILEAPI_H(), "not expected to have fileapi.h");

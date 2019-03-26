@@ -22,7 +22,7 @@
 package de.ibapl.jnhw;
 
 import de.ibapl.jnhw.libloader.LoadResult;
-import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 
 /**
  *
@@ -42,8 +42,8 @@ public final class LibJnhwLoader {
     }
 
     static {
-        LIB_JNHW_COMMON_LOAD_RESULT = NativeLibLoader.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwLoader::doSystemLoad);
-        LIB_JNHW_LOAD_RESULT = NativeLibLoader.loadNativeLib(LIB_JNHW, LIB_JNHW_VERSION, LibJnhwLoader::doSystemLoad);
+        LIB_JNHW_COMMON_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwLoader::doSystemLoad);
+        LIB_JNHW_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW, LIB_JNHW_VERSION, LibJnhwLoader::doSystemLoad);
     }
 
     private LibJnhwLoader() {

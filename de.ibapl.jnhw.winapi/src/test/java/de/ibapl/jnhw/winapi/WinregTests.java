@@ -24,7 +24,7 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.winapi.Minwindef.LPBYTE;
 import de.ibapl.jnhw.winapi.Minwindef.PHKEY;
@@ -46,7 +46,7 @@ public class WinregTests {
 
     @Test
     public void test_HAVE_WINREG_H() throws Exception {
-        if (NativeLibLoader.getOS() == OS.WINDOWS) {
+        if (NativeLibResolver.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Winreg.HAVE_WINREG_H(), "expected to have winreg.h");
         } else {
             Assertions.assertFalse(Winreg.HAVE_WINREG_H(), "not expected to have winreg.h");

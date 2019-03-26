@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.tests;
 
 import de.ibapl.jnhw.libloader.LoadResult;
-import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import java.io.IOException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -57,14 +57,14 @@ public class NativeLibLoaderTests {
 
     @Test
     public void testLoadNonExistingLib() {
-        LoadResult lr = NativeLibLoader.loadNativeLib(LIB_NON_EXISTANT, 0, NativeLibLoaderTests::doSystemLoad);
+        LoadResult lr = NativeLibResolver.loadNativeLib(LIB_NON_EXISTANT, 0, NativeLibLoaderTests::doSystemLoad);
         Assertions.assertFalse(lr.isLoaded());
         System.out.println(lr.loadError);
     }
 
     @Test
     public void testClear() throws Exception {
-        NativeLibLoader.getOS();
+        NativeLibResolver.getOS();
     }
 
 }

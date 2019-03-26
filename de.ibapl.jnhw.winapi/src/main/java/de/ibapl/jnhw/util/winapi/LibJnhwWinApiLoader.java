@@ -23,7 +23,7 @@ package de.ibapl.jnhw.util.winapi;
 
 import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.libloader.LoadResult;
-import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 
 /**
  *
@@ -44,7 +44,7 @@ public final class LibJnhwWinApiLoader {
      */
     static {
         LibJnhwLoader.touch();
-        LIB_JNHW_WINAPI_LOAD_RESULT = NativeLibLoader.loadNativeLib(LIB_JNHW_WINAPI, LIB_JNHW_WINAPI_VERSION, LibJnhwWinApiLoader::doSystemLoad);
+        LIB_JNHW_WINAPI_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_WINAPI, LIB_JNHW_WINAPI_VERSION, LibJnhwWinApiLoader::doSystemLoad);
     }
 
     private LibJnhwWinApiLoader() {

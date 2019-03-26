@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.libloader.NativeLibLoader;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -52,7 +52,7 @@ public class TermiosTests {
 
     @Test
     public void test_HAVE_TERMIOS_H() throws Exception {
-        if (NativeLibLoader.getOS() == OS.WINDOWS) {
+        if (NativeLibResolver.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Termios.HAVE_TERMIOS_H(), "not expected to have termios.h");
         } else {
             Assertions.assertTrue(Termios.HAVE_TERMIOS_H(), "expected to have termios.h");
