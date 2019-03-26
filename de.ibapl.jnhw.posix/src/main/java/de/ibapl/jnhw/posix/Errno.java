@@ -727,8 +727,14 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                     if (errno == res.intValue()) {
                         return m.getName();
                     }
-                } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
-                    Logger.getLogger(Errno.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InvocationTargetException ite) {
+                    if (ite.getCause() instanceof NotDefinedException) {
+                        //no-op
+                    } else {
+                        Logger.getLogger(Errno.class.getName()).log(Level.SEVERE, "Unknown ex in Errno.getErrnoSymbol(int)", ite);
+                    }
+                } catch (IllegalArgumentException | IllegalAccessException ex) {
+                    Logger.getLogger(Errno.class.getName()).log(Level.SEVERE, "Unknown ex in Errno.getErrnoSymbol(int)", ex);
                 } catch (Exception e) {
                     if (e instanceof NotDefinedException) {
                         //no-op
