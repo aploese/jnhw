@@ -19,40 +19,22 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.libloader;
+package de.ibapl.jnhw.it.hello_world;
 
-/**
- * The os with the libname template.
- * @author aploese
- */
-public enum OS {
-    LINUX("linux", "lib%1$s.so.%2$d"),
-    WINDOWS("windows", "lib%1$s-%2$d.dll"),
-    SOLARIS("solaris", "lib%1$s.so.%2$d"),
-    FREE_BSD("freebsd", "lib%1$s.so.%2$d"),
-    MAC_OS_X("macosx", "lib%1$s.%2$d.dylib");
+import de.ibapl.jnhw.winapi.Fileapi;
+import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.NativeErrorException;
 
-    public final String osName;
-    public final String formatLibNameString;
+import static de.ibapl.jnhw.winapi.ProcessEnv.STD_OUTPUT_HANDLE;
+import static de.ibapl.jnhw.winapi.ProcessEnv.GetStdHandle;
 
-    private OS(String osName, String formatLibNameString) {
-        this.osName = osName;
-        this.formatLibNameString = formatLibNameString;
-    }
 
-    @Override
-    public String toString() {
-        return osName;
-    }
+public class Windows {
 
-    /**
-     * Format the libname with the given libToolInterfaceVersion for the OS.
-     * @param libName
-     * @param libToolInterfaceVersion
-     * @return 
-     */
-    public String formatLibName(String libName, int libToolInterfaceVersion) {
-        return String.format(formatLibNameString, libName, libToolInterfaceVersion);
-    }
+	public static void sayHello() throws NativeErrorException {
+		IntRef iRef = new IntRef();
+		byte[] data = "Hello World! from WIN API".getBytes();
+		Fileapi.WriteFile(GetStdHandle(STD_OUTPUT_HANDLE()), data, 0, data.length, iRef);
+	}
 
 }

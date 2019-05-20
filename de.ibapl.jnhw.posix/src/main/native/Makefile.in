@@ -165,7 +165,8 @@ am_libtermios_la_OBJECTS = TermiosDefines.lo TermiosFunctions.lo \
 libtermios_la_OBJECTS = $(am_libtermios_la_OBJECTS)
 libunistd_la_LIBADD =
 am_libunistd_la_OBJECTS = Isoc_UnistdDefines.lo \
-	Isoc_UnistdFunctions.lo Posix_UnistdFunctions.lo
+	Isoc_UnistdFunctions.lo Posix_UnistdDefines.lo \
+	Posix_UnistdFunctions.lo
 libunistd_la_OBJECTS = $(am_libunistd_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -192,6 +193,7 @@ am__depfiles_remade = ./$(DEPDIR)/EventFdDefines.Plo \
 	./$(DEPDIR)/Isoc_UnistdFunctions.Plo \
 	./$(DEPDIR)/PollDefines.Plo ./$(DEPDIR)/PollFunctions.Plo \
 	./$(DEPDIR)/Poll_PollFd.Plo ./$(DEPDIR)/Posix_ErrnoDefines.Plo \
+	./$(DEPDIR)/Posix_UnistdDefines.Plo \
 	./$(DEPDIR)/Posix_UnistdFunctions.Plo \
 	./$(DEPDIR)/TermiosDefines.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo \
@@ -406,6 +408,7 @@ libioclt_la_SOURCES = \
 libunistd_la_SOURCES = \
  Isoc_UnistdDefines.c \
  Isoc_UnistdFunctions.c \
+ Posix_UnistdDefines.c \
  Posix_UnistdFunctions.c
 
 libfcntl_la_SOURCES = \
@@ -545,6 +548,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Poll_PollFd.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_UnistdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
@@ -726,6 +730,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
+	-rm -f ./$(DEPDIR)/Posix_UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/Posix_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
@@ -790,6 +795,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
+	-rm -f ./$(DEPDIR)/Posix_UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/Posix_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo

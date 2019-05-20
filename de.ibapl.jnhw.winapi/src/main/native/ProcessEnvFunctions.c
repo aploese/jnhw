@@ -19,40 +19,27 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.libloader;
+#include "jnhw-winapi.h"
+#include "de_ibapl_jnhw_winapi_ProcessEnv.h"
 
-/**
- * The os with the libname template.
- * @author aploese
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef HAVE_PROCESSENV_H
+#include <processenv.h>
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_ProcessEnv
+ * Method:    GetStdHandle0
+ * Signature: (I)J
  */
-public enum OS {
-    LINUX("linux", "lib%1$s.so.%2$d"),
-    WINDOWS("windows", "lib%1$s-%2$d.dll"),
-    SOLARIS("solaris", "lib%1$s.so.%2$d"),
-    FREE_BSD("freebsd", "lib%1$s.so.%2$d"),
-    MAC_OS_X("macosx", "lib%1$s.%2$d.dylib");
-
-    public final String osName;
-    public final String formatLibNameString;
-
-    private OS(String osName, String formatLibNameString) {
-        this.osName = osName;
-        this.formatLibNameString = formatLibNameString;
-    }
-
-    @Override
-    public String toString() {
-        return osName;
-    }
-
-    /**
-     * Format the libname with the given libToolInterfaceVersion for the OS.
-     * @param libName
-     * @param libToolInterfaceVersion
-     * @return 
-     */
-    public String formatLibName(String libName, int libToolInterfaceVersion) {
-        return String.format(formatLibNameString, libName, libToolInterfaceVersion);
-    }
-
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_GetStdHandle0
+  (JNIEnv *env, jclass clazz, jint nStdHandle) {
+	return (uintptr_t) GetStdHandle(nStdHandle);
 }
+
+#endif
+#ifdef __cplusplus
+}
+#endif

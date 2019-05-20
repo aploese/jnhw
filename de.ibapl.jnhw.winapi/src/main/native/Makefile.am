@@ -15,8 +15,9 @@ noinst_LTLIBRARIES = \
  libwinerror.la \
  libsynchapi.la \
  libfileapi.la \
- libioapiset.la
-
+ libioapiset.la \
+ libprocessenv.la
+ 
 libjnhw_winapi_la_LIBADD = \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la \
  libminwinbase.la \
@@ -26,7 +27,8 @@ libjnhw_winapi_la_LIBADD = \
  libwinerror.la  \
  libsynchapi.la \
  libfileapi.la \
- libioapiset.la
+ libioapiset.la \
+ libprocessenv.la
 
 libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
@@ -64,6 +66,10 @@ libfileapi_la_SOURCES = \
 libioapiset_la_SOURCES = \
  IoapisetDefines.c \
  IoapisetFunctions.c
+
+libprocessenv_la_SOURCES = \
+ ProcessEnvDefines.c \
+ ProcessEnvFunctions.c 
 
 #hook into make all
 all-local: $(LIB_JNHW_WINAPI_RES_NAME)

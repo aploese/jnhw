@@ -19,40 +19,15 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.libloader;
+package de.ibapl.jnhw.it.hello_world;
 
-/**
- * The os with the libname template.
- * @author aploese
- */
-public enum OS {
-    LINUX("linux", "lib%1$s.so.%2$d"),
-    WINDOWS("windows", "lib%1$s-%2$d.dll"),
-    SOLARIS("solaris", "lib%1$s.so.%2$d"),
-    FREE_BSD("freebsd", "lib%1$s.so.%2$d"),
-    MAC_OS_X("macosx", "lib%1$s.%2$d.dylib");
+import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.posix.Unistd;
 
-    public final String osName;
-    public final String formatLibNameString;
+public class Posix {
 
-    private OS(String osName, String formatLibNameString) {
-        this.osName = osName;
-        this.formatLibNameString = formatLibNameString;
-    }
-
-    @Override
-    public String toString() {
-        return osName;
-    }
-
-    /**
-     * Format the libname with the given libToolInterfaceVersion for the OS.
-     * @param libName
-     * @param libToolInterfaceVersion
-     * @return 
-     */
-    public String formatLibName(String libName, int libToolInterfaceVersion) {
-        return String.format(formatLibNameString, libName, libToolInterfaceVersion);
-    }
+	public static void sayHello() throws NativeErrorException {
+		Unistd.write(Unistd.STDOUT_FILENO(), "Hello World! from POSIX".getBytes());
+	}
 
 }

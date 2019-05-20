@@ -21,12 +21,32 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
 
 @Include("#include <unistd.h>")
 public final class Unistd extends de.ibapl.jnhw.isoc.Unistd {
+
+	/**
+	 * File number of stdin; 0.
+	 * @return
+	 */
+    @Define
+    public final static native int STDIN_FILENO();
+	/**
+	 * File number of stdout; 1.
+	 * @return
+	 */
+    @Define
+    public final static native int STDOUT_FILENO();
+	/**
+	 * File number of stderr; 2.
+	 * @return
+	 */
+    @Define
+    public final static native int STDERR_FILENO();
 
     /**
      *

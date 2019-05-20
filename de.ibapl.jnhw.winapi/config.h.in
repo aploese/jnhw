@@ -6,6 +6,9 @@
 /* Define to 1 if you have the <fileapi.h> header file. */
 #undef HAVE_FILEAPI_H
 
+/* Define to 1 if you have the <fileapi.h,> header file. */
+#undef HAVE_FILEAPI_H_
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
@@ -20,6 +23,9 @@
 
 /* Define to 1 if you have the <minwindef.h> header file. */
 #undef HAVE_MINWINDEF_H
+
+/* Define to 1 if you have the <processenv.h> header file. */
+#undef HAVE_PROCESSENV_H
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H

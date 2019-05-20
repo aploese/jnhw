@@ -31,6 +31,7 @@ libioclt_la_SOURCES = \
 libunistd_la_SOURCES = \
  Isoc_UnistdDefines.c \
  Isoc_UnistdFunctions.c \
+ Posix_UnistdDefines.c \
  Posix_UnistdFunctions.c
 
 libfcntl_la_SOURCES = \

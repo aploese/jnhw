@@ -19,40 +19,53 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.libloader;
+#include "../../../config.h"
+#include "jnhw.h"
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
-/**
- * The os with the libname template.
- * @author aploese
+#ifdef _POSIX_VERSION
+
+#include "de_ibapl_jnhw_posix_Unistd.h"
+#include <errno.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    STDIN_FILENO
+ * Signature: ()I
  */
-public enum OS {
-    LINUX("linux", "lib%1$s.so.%2$d"),
-    WINDOWS("windows", "lib%1$s-%2$d.dll"),
-    SOLARIS("solaris", "lib%1$s.so.%2$d"),
-    FREE_BSD("freebsd", "lib%1$s.so.%2$d"),
-    MAC_OS_X("macosx", "lib%1$s.%2$d.dylib");
-
-    public final String osName;
-    public final String formatLibNameString;
-
-    private OS(String osName, String formatLibNameString) {
-        this.osName = osName;
-        this.formatLibNameString = formatLibNameString;
-    }
-
-    @Override
-    public String toString() {
-        return osName;
-    }
-
-    /**
-     * Format the libname with the given libToolInterfaceVersion for the OS.
-     * @param libName
-     * @param libToolInterfaceVersion
-     * @return 
-     */
-    public String formatLibName(String libName, int libToolInterfaceVersion) {
-        return String.format(formatLibNameString, libName, libToolInterfaceVersion);
-    }
-
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_STDIN_1FILENO
+(JNIEnv *env, jclass clazz) {
+    return STDIN_FILENO;
 }
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    STDOUT_FILENO
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_STDOUT_1FILENO
+(JNIEnv *env, jclass clazz) {
+    return STDOUT_FILENO;
+}
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    STDERR_FILENO
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_STDERR_1FILENO
+(JNIEnv *env, jclass clazz) {
+    return STDERR_FILENO;
+}
+
+
+#ifdef __cplusplus
+}
+#endif
+#endif

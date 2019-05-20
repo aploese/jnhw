@@ -19,40 +19,24 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.libloader;
+package de.ibapl.jnhw.it.hello_world;
+
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 
 /**
- * The os with the libname template.
- * @author aploese
+ * Hello world!
+ *
  */
-public enum OS {
-    LINUX("linux", "lib%1$s.so.%2$d"),
-    WINDOWS("windows", "lib%1$s-%2$d.dll"),
-    SOLARIS("solaris", "lib%1$s.so.%2$d"),
-    FREE_BSD("freebsd", "lib%1$s.so.%2$d"),
-    MAC_OS_X("macosx", "lib%1$s.%2$d.dylib");
-
-    public final String osName;
-    public final String formatLibNameString;
-
-    private OS(String osName, String formatLibNameString) {
-        this.osName = osName;
-        this.formatLibNameString = formatLibNameString;
+public class App 
+{
+    public static void main( String[] args ) throws Exception
+    {
+        MultiarchTupelBuilder mtb =  new MultiarchTupelBuilder();
+        if (mtb.getOs() == OS.WINDOWS) {
+            Windows.sayHello();
+        } else {
+            Posix.sayHello();
+        }
     }
-
-    @Override
-    public String toString() {
-        return osName;
-    }
-
-    /**
-     * Format the libname with the given libToolInterfaceVersion for the OS.
-     * @param libName
-     * @param libToolInterfaceVersion
-     * @return 
-     */
-    public String formatLibName(String libName, int libToolInterfaceVersion) {
-        return String.format(formatLibNameString, libName, libToolInterfaceVersion);
-    }
-
 }
