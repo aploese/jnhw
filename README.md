@@ -1,4 +1,4 @@
-# jnhw
+# Java Native Header Wrapper (JNHW)
 
 JNI Header Wrapper a lightweight alternative to JNA or JNR
 and a helper to resolve a native lib by name and libtool version.
@@ -7,7 +7,7 @@ Unlike JNR
 * all macro constants be natively resolved.
 * all structures will be natively allocated and its filed natively accessed. [see: StructTermios in Termios.java](./de.ibapl.jnhw.posix/src/main/java/de/ibapl/jnhw/posix/Termios.java) and the jni bindings [Termios_Termios.c](de.ibapl.jnhw.posix/src/main/native/Termios_Termios.c) and [TermiosDefines.c](de.ibapl.jnhw.posix/src/main/native/TermiosDefines.c) and [TermiosFunctions.c](de.ibapl.jnhw.posix/src/main/native/TermiosFunctions.c) . Struct termios varies over the OS and even on Linux on different architectures like (i.e. mips is different from the rest).  
 
-Add this dependeny for POSIX.
+Add this dependency for POSIX.
 
 ```
 <dependency>
@@ -25,14 +25,14 @@ and this for the Windows API
     <version>1.0.0</version>
 </dependency>
 ```
-#Usage
+# Usage
 
-#Demos
-##Hello World
+# Demos
+## Hello World
 See [subdirectory it/hello-world/](./it/hello-world).
 run `mvn exec:java -Dexec.mainClass="de.ibapl.jnhw.it.hello_world.App"` in `it/hello_world`.
 
-###POSIX
+### POSIX
 
 Import Unistd in a static manner so the code may become less noisy.
 
@@ -53,7 +53,7 @@ public class Posix {
 }
 ```
 
-###Windows API
+### Windows API
 
 Import  in a static manner `import static de.ibapl.jnhw.posix.Unistd;` so the code may become less noisy.
 
