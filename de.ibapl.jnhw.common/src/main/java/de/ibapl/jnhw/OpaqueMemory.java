@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw;
 
-import java.lang.ref.Cleaner;
+//TODO Java9 import java.lang.ref.Cleaner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  */
 public class OpaqueMemory {
 
-	private static final Cleaner cleaner = Cleaner.create();
+	/*TODO Java9 	private static final Cleaner cleaner = Cleaner.create();
 
 	static class MemoryCleaner implements Runnable {
 
@@ -58,7 +58,7 @@ public class OpaqueMemory {
 
 		}
 	}
-
+*/
 	protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
 
 	/**
@@ -103,7 +103,7 @@ public class OpaqueMemory {
 			}
 		}
 		memoryOwner = this;
-		cleaner.register(this, new MemoryCleaner(baseAddress));
+		//TODO Java9 		cleaner.register(this, new MemoryCleaner(baseAddress));
 	}
 
 	public OpaqueMemory(int elements, int sizeInBytes, boolean clearMem) {
@@ -122,7 +122,7 @@ public class OpaqueMemory {
 			}
 		}
 		memoryOwner = this;
-		cleaner.register(this, new MemoryCleaner(baseAddress));
+		//TODO Java9 		cleaner.register(this, new MemoryCleaner(baseAddress));
 	}
 
 	public OpaqueMemory(OpaqueMemory owner, long baseAddress, int sizeInBytes) {
@@ -140,5 +140,22 @@ public class OpaqueMemory {
 		this.sizeInBytes = sizeInBytes;
 		memoryOwner = owner;
 	}
-
+	
+	//TODO remove for finalize() Java9
+	@Override
+    protected void finalize() throws Throwable {
+        try {
+            if (memoryOwner == this) {
+                // LOG.log(Level.FINEST, String.format("Finalize: try free memory @0x%016x size: %d", baseAddress, sizeInBytes));
+                free(baseAddress);
+                // LOG.log(Level.FINEST, String.format("memory @0x%016x freed", baseAddress));
+            } else {
+                // LOG.log(Level.FINEST, String.format("Finalize: memory @0x%016x size: %d belongs to %s", baseAddress, sizeInBytes, memoryOwner));
+            }
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE, String.format("Finalize: Memory Leak freeing memory @0x%016x size: %d failed", baseAddress, sizeInBytes), t);
+        } finally {
+            super.finalize();
+        }
+    }
 }
