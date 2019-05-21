@@ -3,9 +3,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.ibapl.jnhw</groupId>
 	<artifactId>jnhw</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2019</inceptionYear>
+	<name>JNHW</name>
+	<url>https://github.com/aploese/jnhw/</url>
+	<description>Java Native Header Wrapper
+
+a small, save JNI wrapper for native code access like JNA,JNR but without the overhead.
+</description>
 
 	<properties>
 		<compile.source>1.8</compile.source>
@@ -48,8 +54,7 @@
 		<url>https://github.com/aploese/jnhw</url>
 		<connection>scm:git:https://github.com/aploese/jnhw.git</connection>
 		<developerConnection>scm:git:git@github.com:aploese/jnhw.git</developerConnection>
-	  <tag>jnhw-1.0.0</tag>
-  </scm>
+        </scm>
 
 	<modules>
 		<module>de.ibapl.jnhw.libloader</module>
@@ -316,9 +321,4 @@
 			</build>
 		</profile>
 	</profiles>
-	<name>JNHW</name>
-	<url>https://github.com/aploese/jnhw/</url>
-	<description>Java Native Header Wrapper
-
-a small, save JNI wrapper for native code access like JNA,JNR but without the overhead. </description>
 </project>
