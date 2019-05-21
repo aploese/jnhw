@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.ibapl.jnhw</groupId>
         <artifactId>jnhw</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
     
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>de.ibapl.jnhw</groupId>
             <artifactId>de.ibapl.jnhw.osgi-tests</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
