@@ -27,7 +27,12 @@ package de.ibapl.jnhw;
  */
 public class NotDefinedException extends Exception {
 
-    public NotDefinedException(String msg) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3882075461051707687L;
+
+	public NotDefinedException(String msg) {
         super(msg);
     }
 

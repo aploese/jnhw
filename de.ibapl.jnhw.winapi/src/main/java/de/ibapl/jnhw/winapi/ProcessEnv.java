@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -35,36 +36,18 @@ public class ProcessEnv {
 
 	public final static native boolean HAVE_PROCESSENV_H();
 
-
-	private static HANDLE STD_INPUT_HANDLE;
-	private static HANDLE STD_OUTPUT_HANDLE;
-	private static HANDLE STD_ERROR_HANDLE;
-
+	@Define
 	public final static native int STD_INPUT_HANDLE();
 
+	@Define
 	public final static native int STD_OUTPUT_HANDLE();
 
+	@Define
 	public final static native int STD_ERROR_HANDLE();
 
 	private static native long GetStdHandle0(int nStdHandle) throws NativeErrorException;
 
 	public final static HANDLE GetStdHandle(int nStdHandle) throws NativeErrorException {
-		if (nStdHandle == STD_INPUT_HANDLE()) {
-			if (STD_INPUT_HANDLE == null) {
-				STD_INPUT_HANDLE = new HANDLE(GetStdHandle0(nStdHandle));
-				return STD_INPUT_HANDLE;
-			}
-		} else if (nStdHandle == STD_OUTPUT_HANDLE()) {
-			if (STD_OUTPUT_HANDLE == null) {
-				STD_OUTPUT_HANDLE = new HANDLE(GetStdHandle0(nStdHandle));
-				return STD_OUTPUT_HANDLE;
-			}
-		} else if (nStdHandle == STD_ERROR_HANDLE()) {
-			if (STD_ERROR_HANDLE == null) {
-				STD_ERROR_HANDLE = new HANDLE(GetStdHandle0(nStdHandle));
-				return STD_ERROR_HANDLE;
-			}
-		}
 		return new HANDLE(GetStdHandle0(nStdHandle));
 	}
 

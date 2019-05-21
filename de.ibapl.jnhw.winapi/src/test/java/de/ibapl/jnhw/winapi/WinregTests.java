@@ -21,26 +21,18 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+
 import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LibJnhwLoader;
-import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.winapi.Minwindef.LPBYTE;
 import de.ibapl.jnhw.winapi.Minwindef.PHKEY;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledOnOs;
 
 public class WinregTests {
 

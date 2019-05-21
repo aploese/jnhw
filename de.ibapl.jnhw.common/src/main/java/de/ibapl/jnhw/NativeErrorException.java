@@ -27,7 +27,11 @@ package de.ibapl.jnhw;
  */
 public class NativeErrorException extends Exception {
 
-    public final int errno;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4007403267388096526L;
+	public final int errno;
 
     public NativeErrorException(int errno) {
         super("Native error: " + errno);

@@ -22,12 +22,15 @@
 package de.ibapl.jnhw.it.hello_world;
 
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.posix.Unistd;
+//Import only the needed define from the wrapper of posix's unistd.h.h
+import static de.ibapl.jnhw.posix.Unistd.STDOUT_FILENO;
+//Import only the needed method from the wrapper of iso c's unistd.h.h
+import static de.ibapl.jnhw.isoc.Unistd.write;
 
 public class Posix {
 
 	public static void sayHello() throws NativeErrorException {
-		Unistd.write(Unistd.STDOUT_FILENO(), "Hello World! from POSIX".getBytes());
+		write(STDOUT_FILENO(), "Hello World! from POSIX".getBytes());
 	}
 
 }

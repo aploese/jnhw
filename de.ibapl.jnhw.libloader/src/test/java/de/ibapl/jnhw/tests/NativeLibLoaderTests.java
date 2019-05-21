@@ -21,15 +21,15 @@
  */
 package de.ibapl.jnhw.tests;
 
-import de.ibapl.jnhw.libloader.LoadResult;
-import de.ibapl.jnhw.libloader.NativeLibResolver;
-import java.io.IOException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import de.ibapl.jnhw.libloader.LoadResult;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 
 public class NativeLibLoaderTests {
 
