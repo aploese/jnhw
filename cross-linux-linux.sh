@@ -8,6 +8,8 @@ mvn compile
 # "i386-linux-gnu"
 
 for d in\
+ "x86_64-linux-gnu"\
+ "i386-linux-gnu"\
  "aarch64-linux-gnu"\
  "arm-linux-gnueabi"\
  "arm-linux-gnueabihf"\
@@ -25,10 +27,10 @@ do
 done
 
 
-./configure --prefix=$PWD/target
-make clean
-make
-make install
+#./configure --prefix=$PWD/target
+#make clean
+#make
+#make install
 
 mvn install
 
