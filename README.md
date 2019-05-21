@@ -5,7 +5,7 @@ and a helper to resolve a native lib by name and libtool version.
 
 Unlike JNR 
 * all macro constants be natively resolved.
-* all structures will be natively allocated and its filed natively accessed. [see: StructTermios](./de.ibapl.jnhw.posix/src/main/java/de/ibapl/jnhw/posix/Termios.java). Struct termios varies over the OS and even on Linux on different architectures like (i.e. mips is different from the rest).  
+* all structures will be natively allocated and its filed natively accessed. [see: StructTermios in Termios.java](./de.ibapl.jnhw.posix/src/main/java/de/ibapl/jnhw/posix/Termios.java) and the jni bindings [Termios_Termios.c](de.ibapl.jnhw.posix/src/main/native/Termios_Termios.c) and [TermiosDefines.c](de.ibapl.jnhw.posix/src/main/native/TermiosDefines.c) and [TermiosFunctions.c](de.ibapl.jnhw.posix/src/main/native/TermiosFunctions.c) . Struct termios varies over the OS and even on Linux on different architectures like (i.e. mips is different from the rest).  
 
 Add this dependeny for POSIX.
 
