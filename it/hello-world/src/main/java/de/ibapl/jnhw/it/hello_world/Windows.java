@@ -34,7 +34,7 @@ public class Windows {
 
 	public static void sayHello() throws NativeErrorException {
 		final IntRef iRef = new IntRef();
-		final byte[] data = "Hello World! from WIN API".getBytes();
+		final byte[] data = "Hello World! from WIN API\n".getBytes();
 		WriteFile(GetStdHandle(STD_OUTPUT_HANDLE()), data, 0, data.length, iRef);
 	}
 

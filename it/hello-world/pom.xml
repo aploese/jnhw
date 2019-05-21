@@ -12,8 +12,8 @@
 	<name>hello-world</name>
 
 	<properties>
-		<compile.source>1.8</compile.source>
-		<compile.target>1.8</compile.target>
+		<compile.source>9</compile.source>
+		<compile.target>9</compile.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

@@ -5,7 +5,7 @@ and a helper to resolve a native lib by name and libtool version.
 
 Unlike JNR 
 * all macro constants be natively resolved.
-* all structures will be natively allocated and accessed. [see: StructTermios](./de.ibapl.jnhw.posix/src/main/java/de/ibapl/jnhw/posix/Termios.java). Struct termios varies over the OS and even on Linux on different architectures like (i.e. mips is different from the rest).  
+* all structures will be natively allocated and its filed natively accessed. [see: StructTermios](./de.ibapl.jnhw.posix/src/main/java/de/ibapl/jnhw/posix/Termios.java). Struct termios varies over the OS and even on Linux on different architectures like (i.e. mips is different from the rest).  
 
 Add this dependeny for POSIX.
 
@@ -30,6 +30,7 @@ and this for the Windows API
 #Demos
 ##Hello World
 See [subdirectory it/hello-world/](./it/hello-world).
+run `mvn exec:java -Dexec.mainClass="de.ibapl.jnhw.it.hello_world.App"` in `it/hello_world`.
 
 ###POSIX
 

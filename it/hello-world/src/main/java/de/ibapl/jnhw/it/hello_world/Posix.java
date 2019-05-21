@@ -30,7 +30,7 @@ import static de.ibapl.jnhw.isoc.Unistd.write;
 public class Posix {
 
 	public static void sayHello() throws NativeErrorException {
-		write(STDOUT_FILENO(), "Hello World! from POSIX".getBytes());
+		write(STDOUT_FILENO(), "Hello World! from POSIX\n".getBytes());
 	}
 
 }
