@@ -317,4 +317,8 @@
 		</profile>
 	</profiles>
 	<name>JNHW</name>
+	<url>https://github.com/aploese/jnhw/</url>
+	<description>Java Native Header Wrapper
+
+a small, save JNI wrapper for native code access like JNA,JNR but without the overhead. </description>
 </project>
