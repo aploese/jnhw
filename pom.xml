@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.ibapl.jnhw</groupId>
 	<artifactId>jnhw</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2019</inceptionYear>
 
@@ -48,7 +48,7 @@
 		<url>https://github.com/aploese/jnhw</url>
 		<connection>scm:git:https://github.com/aploese/jnhw.git</connection>
 		<developerConnection>scm:git:git@github.com:aploese/jnhw.git</developerConnection>
-	  <tag>jnhw-1.0.0</tag>
+	  <tag>jnhw-1.0.1</tag>
   </scm>
 
 	<modules>

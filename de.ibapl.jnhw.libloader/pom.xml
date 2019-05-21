@@ -4,7 +4,7 @@
     <parent>
         <artifactId>jnhw</artifactId>
         <groupId>de.ibapl.jnhw</groupId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
     </parent>
 
     <artifactId>de.ibapl.jnhw.libloader</artifactId>
