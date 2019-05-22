@@ -18,6 +18,7 @@ a small, save JNI wrapper for native code access like JNA,JNR but without the ov
 		<compile.target>1.8</compile.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	
 	<developers>
 		<developer>
 			<id>apl</id>
@@ -62,8 +63,6 @@ a small, save JNI wrapper for native code access like JNA,JNR but without the ov
 		<module>de.ibapl.jnhw.common</module>
 		<module>de.ibapl.jnhw.posix</module>
 		<module>de.ibapl.jnhw.winapi</module>
-		<module>de.ibapl.jnhw.osgi-tests</module>
-		<module>de.ibapl.jnhw.osgi-integration-tests</module>
 	</modules>
 
 	<licenses>
@@ -76,39 +75,23 @@ a small, save JNI wrapper for native code access like JNA,JNR but without the ov
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.osgi</groupId>
-				<artifactId>org.osgi.annotation</artifactId>
-				<version>6.0.0</version>
-			</dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.annotation</artifactId>
+            <version>7.0.0</version>
+        </dependency>
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>
 				<scope>test</scope>
-				<version>5.3.2</version>
+				<version>5.4.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-engine</artifactId>
 				<scope>test</scope>
-				<version>5.3.2</version>
+				<version>5.4.2</version>
 			</dependency>
-			<dependency>
-				<groupId>org.osgi</groupId>
-				<artifactId>org.osgi.framework</artifactId>
-				<version>1.8.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.osgi</groupId>
-				<artifactId>osgi.enroute.pom.distro</artifactId>
-				<version>2.1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.osgi</groupId>
-				<artifactId>osgi.enroute.junit.wrapper</artifactId>
-				<version>4.12.0</version>
-			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 
@@ -118,12 +101,12 @@ a small, save JNI wrapper for native code access like JNA,JNR but without the ov
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M2</version>
+					<version>3.0.0-M3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
-					<version>1.2.1</version>
+					<version>1.6.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -147,7 +130,7 @@ a small, save JNI wrapper for native code access like JNA,JNR but without the ov
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.1.1</version>
 					<configuration>
 						<archive>
 							<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -181,7 +164,7 @@ a small, save JNI wrapper for native code access like JNA,JNR but without the ov
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>3.1.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>

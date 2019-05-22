@@ -13,13 +13,13 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.annotation</artifactId>
+        </dependency>
+        <dependency>
             <groupId>de.ibapl.jnhw</groupId>
             <artifactId>de.ibapl.jnhw.libloader</artifactId>
             <version>1.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.annotation</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

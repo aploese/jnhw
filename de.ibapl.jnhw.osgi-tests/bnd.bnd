@@ -1,5 +1,0 @@
-Bundle-Description: 				\
-	Integration Test bundle for JNHW
-
-Test-Cases: ${classes;NAMED;*Test}
-

@@ -27,6 +27,10 @@ and this for the Windows API
 ```
 # Usage
 
+# Error Handling
+
+If an native error occured and the called function flags an error condition to the caller. One calls for ISO C errno and for the windows API GetLastError(). this is done in the jni wrapper which throws the checked exception [NativeErrorException](./de.ibapl.jnhw.common/src/main/java/de/ibapl/jnhw/NativeErrorException.java) in that case.
+
 # Demos
 ## Hello World
 See [subdirectory it/hello-world/](./it/hello-world).
