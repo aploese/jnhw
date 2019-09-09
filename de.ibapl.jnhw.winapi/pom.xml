@@ -5,6 +5,7 @@
         <artifactId>jnhw</artifactId>
         <groupId>de.ibapl.jnhw</groupId>
         <version>1.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>de.ibapl.jnhw.winapi</artifactId>

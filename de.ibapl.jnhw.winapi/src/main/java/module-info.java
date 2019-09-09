@@ -19,5 +19,11 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-@org.osgi.annotation.versioning.Version("1.0.1")
-package de.ibapl.jnhw;
+module de.ibapl.jnhw.winapi {
+	requires java.logging;
+	requires osgi.annotation;
+	requires transitive de.ibapl.jnhw.common;
+	
+	exports de.ibapl.jnhw.winapi;
+	exports de.ibapl.jnhw.util.winapi;
+}

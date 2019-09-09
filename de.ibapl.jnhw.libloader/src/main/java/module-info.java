@@ -19,17 +19,9 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw;
-
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class LibJnhwPosixLoaderTests {
-
-    @Test
-    public void testLinsLoaded() throws Exception {
-        Assertions.assertTrue(LibJnhwPosixLoader.touch());
-    }
-
+module de.ibapl.jnhw.libloader {
+	requires java.logging;
+	requires osgi.annotation;
+	
+	exports de.ibapl.jnhw.libloader;
 }

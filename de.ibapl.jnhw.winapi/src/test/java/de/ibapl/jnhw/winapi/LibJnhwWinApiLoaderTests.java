@@ -19,5 +19,17 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-@org.osgi.annotation.versioning.Version("1.0.1")
-package de.ibapl.jnhw;
+package de.ibapl.jnhw.winapi;
+
+import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+public class LibJnhwWinApiLoaderTests {
+
+    @Test
+    public void testLinsLoaded() throws Exception {
+        Assertions.assertTrue(LibJnhwWinApiLoader.touch());
+    }
+
+}
