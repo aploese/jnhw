@@ -47,4 +47,21 @@ public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
 
     protected abstract T createElement(long elementBaseAddress);
 
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("[");
+        boolean first = true;
+        for (T element : pointers) {
+            if (first) {
+                first = false;
+            } else {
+                sb.append(", ");
+            }
+            sb.append(element);
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
 }
