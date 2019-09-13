@@ -2,6 +2,7 @@ language: java
 matrix:
   include:
     - os: osx
+      jdk: oraclejdk11
     - os: linux
       jdk: oraclejdk11
     - os: linux
