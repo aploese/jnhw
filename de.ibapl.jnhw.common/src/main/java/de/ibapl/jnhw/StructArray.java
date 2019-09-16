@@ -49,7 +49,7 @@ public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("[");
         boolean first = true;
         for (T element : pointers) {
