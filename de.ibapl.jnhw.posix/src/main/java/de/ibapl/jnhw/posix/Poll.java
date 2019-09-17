@@ -91,17 +91,20 @@ public final class Poll {
         public final void revents(short revents) {
             PollFd.revents(baseAddress, revents);
         }
+        
+        @Override
+        public String toString() {
+            return PollFd.toString(baseAddress);
+        }
 
         public final static String toString(long baseAddress) {
             StringBuilder sb = new StringBuilder();
-            sb.append(PollFd.class.getSimpleName()).append(" { \n");
-            sb.append("fd = ").append(PollFd.fd(baseAddress));
-            sb.append("\n\tevents = \"");
+            sb.append("{fd : ").append(PollFd.fd(baseAddress));
+            sb.append(", events : \"");
             event2String(sb, PollFd.events(baseAddress));
-            sb.append("\"\n\trevents = \"");
+            sb.append("\", revents :\"");
             event2String(sb, PollFd.revents(baseAddress));
-            sb.append("\"\n");
-            sb.append("}\n");
+            sb.append("\"}");
             return sb.toString();
         }
 

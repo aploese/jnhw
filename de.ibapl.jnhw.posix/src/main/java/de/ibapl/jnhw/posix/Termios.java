@@ -132,6 +132,124 @@ public final class Termios {
             StructTermios.c_cc(baseAddress, index, value);
         }
 
+        static public void c_cflag2String(StringBuilder sb, int c_cflag) {
+            if ((CSIZE() & c_cflag) == CS5()) {
+                sb.append("CS5 ");
+                c_cflag &= ~CS5();
+            } else if ((CSIZE() & c_cflag) == CS6()) {
+                sb.append("CS6 ");
+                c_cflag &= ~CS6();
+            } else if ((CSIZE() & c_cflag) == CS7()) {
+                sb.append("CS7 ");
+                c_cflag &= ~CS7();
+            } else if ((CSIZE() & c_cflag) == CS8()) {
+                sb.append("CS8 ");
+                c_cflag &= ~CS8();
+            }
+            if ((CSTOPB() & c_cflag) == CSTOPB()) {
+                sb.append("CSTOPB ");
+                c_cflag &= ~CSTOPB();
+            }
+            if ((CREAD() & c_cflag) == CREAD()) {
+                sb.append("CREAD ");
+                c_cflag &= ~CREAD();
+            }
+            if ((PARENB() & c_cflag) == PARENB()) {
+                sb.append("PARENB ");
+                c_cflag &= ~PARENB();
+            }
+            if ((PARODD() & c_cflag) == PARODD()) {
+                sb.append("PARODD ");
+                c_cflag &= ~PARODD();
+            }
+            if ((CLOCAL() & c_cflag) == CLOCAL()) {
+                sb.append("CLOCAL ");
+                c_cflag &= ~CLOCAL();
+            }
+            if ((CRTSCTS() & c_cflag) == CRTSCTS()) {
+                sb.append("CRTSCTS ");
+                c_cflag &= ~CRTSCTS();
+            }
+            if (c_cflag != 0) {
+                sb.append(String.format("0x%08x", c_cflag));
+            }
+        }
+
+        static public void c_iflag2String(StringBuilder sb, int c_iflag) {
+            if ((INPCK() & c_iflag) == INPCK()) {
+                sb.append("INPCK ");
+                c_iflag &= ~INPCK();
+            }
+            if ((IXOFF() & c_iflag) == IXOFF()) {
+                sb.append("IXOFF ");
+                c_iflag &= ~IXOFF();
+            }
+            if ((IXON() & c_iflag) == IXON()) {
+                sb.append("IXON ");
+                c_iflag &= ~IXON();
+            }
+            try {
+                if ((PARMRK() & c_iflag) == PARMRK()) {
+                    sb.append("PARMRK ");
+                    c_iflag &= ~PARMRK();
+                }
+            } catch (NotDefinedException nde) {
+                //no-op PARMRK is not defined
+            }
+            if (c_iflag != 0) {
+                sb.append(String.format("0x%08x", c_iflag));
+            }
+        }
+
+        static public void c_lflag2String(StringBuilder sb, int c_lflag) {
+            if (c_lflag != 0) {
+                sb.append(String.format("0x%08x", c_lflag));
+            }
+        }
+
+        static public void c_oflag2String(StringBuilder sb, int c_oflag) {
+            if (c_oflag != 0) {
+                sb.append(String.format("0x%08x", c_oflag));
+            }
+        }
+
+        static public void c_cc2String(StringBuilder sb, int index, byte c_cc) {
+            String c_ccName = String.valueOf(index);
+            if (VTIME() == index) {
+                c_ccName = "VTIME";
+            } else if (VMIN() == index) {
+                c_ccName = "VMIN";
+            } else if (VSTART() == index) {
+                c_ccName = "VSTART";
+            } else if (VSTOP() == index) {
+                c_ccName = "VSTOP";
+            }
+            sb.append(String.format("\", c_cc[%s] = 0x%02x", c_ccName, c_cc));
+        }
+
+        @Override
+        public String toString() {
+            return StructTermios.toString(baseAddress);
+        }
+
+        public static String toString(long baseaddress) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("{c_iflag = \"");
+            c_iflag2String(sb, StructTermios.c_iflag(baseaddress));
+            sb.append("\", c_oflag = \"");
+            c_oflag2String(sb, StructTermios.c_oflag(baseaddress));
+            sb.append("\", c_cflag = \"");
+            c_cflag2String(sb, StructTermios.c_cflag(baseaddress));
+            sb.append("\", c_lflag = \"");
+            c_lflag2String(sb, StructTermios.c_lflag(baseaddress));
+            sb.append("\", c_line = \"");
+            for (int i = 0; i < NCCS(); i++) {
+                c_cc2String(sb, i, StructTermios.c_cc(baseaddress, i));
+            }
+            sb.append("}");
+            return sb.toString();
+
+        }
     }
 
     @Define
