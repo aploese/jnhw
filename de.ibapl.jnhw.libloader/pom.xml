@@ -10,7 +10,7 @@
 
     <artifactId>de.ibapl.jnhw.libloader</artifactId>
 
-    <name>JNHW Native Lib Loader</name>
+    <name>JNHW :: Native Lib Loader</name>
 
     <dependencies>
         <dependency>

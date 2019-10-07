@@ -10,7 +10,7 @@
 
     <artifactId>de.ibapl.jnhw.posix</artifactId>
 
-    <name>JNHW Posix</name>
+    <name>JNHW :: Posix</name>
 
     <dependencies>
         <dependency>

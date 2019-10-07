@@ -10,7 +10,7 @@
 
     <artifactId>de.ibapl.jnhw.winapi</artifactId>
 
-    <name>JNHW Win API</name>
+    <name>JNHW :: Win API</name>
 
     <dependencies>
         <dependency>

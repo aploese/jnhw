@@ -10,7 +10,7 @@
 
     <artifactId>de.ibapl.jnhw.common</artifactId>
 
-    <name>JNHW Common</name>
+    <name>JNHW :: Common</name>
 
     <dependencies>
         <dependency>
