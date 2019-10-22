@@ -21,8 +21,10 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
+import java.nio.charset.Charset;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -67,10 +69,20 @@ public class WinntTests {
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void test_INVALID_HANDLE_VALUE() throws Exception {
-        Assertions.assertFalse(Winbase.INVALID_HANDLE_VALUE().isValid());
-
         Winnt.HANDLE invalidHandle = Winnt.HANDLE.newInvalidHandle();
+        Winnt.HANDLE ivh = Winbase.INVALID_HANDLE_VALUE();
+        Assertions.assertFalse(ivh.isValid());
         Assertions.assertTrue(invalidHandle.isSameHandleValue(Winbase.INVALID_HANDLE_VALUE()));
     }
 
+    @Test
+//    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void test_LPWSTR_stringValueOfNullTerminated() throws Exception {
+        byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
+        Minwindef.LPBYTE lpByte = new Minwindef.LPBYTE(64, true);
+        OpaqueMemory.copy(data, 0, lpByte, 0, data.length);
+        lpByte.bufferEnd = data.length;
+        Assertions.assertEquals("HELLO WORLD!", Winnt.LPWSTR.stringValueOfNullTerminated(lpByte));
+    }
+    
 }

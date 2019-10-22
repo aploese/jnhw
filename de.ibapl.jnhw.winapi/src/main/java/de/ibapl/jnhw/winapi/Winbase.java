@@ -247,8 +247,18 @@ public abstract class Winbase {
 
     }
 
+    private static HANDLE INVALID_HANDLE_VALUE;
+
     @Define
-    public final static native HANDLE INVALID_HANDLE_VALUE();
+    public final static native HANDLE create_INVALID_HANDLE_VALUE();
+
+    @Define
+    public final static HANDLE INVALID_HANDLE_VALUE() {
+        if (INVALID_HANDLE_VALUE == null) {
+            INVALID_HANDLE_VALUE = create_INVALID_HANDLE_VALUE();
+        }
+        return INVALID_HANDLE_VALUE;
+    }
 
     public final native static void CloseHandle(HANDLE hObject) throws NativeErrorException;
 

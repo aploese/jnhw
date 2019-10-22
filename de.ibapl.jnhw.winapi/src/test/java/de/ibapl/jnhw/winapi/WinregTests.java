@@ -66,7 +66,7 @@ public class WinregTests {
                 } else if (lpType.value == Winnt.REG_MULTI_SZ()) {
                     System.out.println(" = " + LPWSTR.stringValueOfNullTerminated(lpData));
                 } else {
-                    System.out.println(" = ???");
+                    System.out.println(" ... Winnt.Reg*:" + lpType.value);
                 }
                 lpValueName.resetBufferEnd();
                 //TODO test bufferEnd  =1 ...

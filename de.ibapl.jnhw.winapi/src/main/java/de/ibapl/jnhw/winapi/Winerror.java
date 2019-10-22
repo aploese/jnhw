@@ -51,6 +51,9 @@ public abstract class Winerror {
 
     @Define
     public final static native int ERROR_INVALID_PARAMETER();
+    
+    @Define
+    public final static native int ERROR_INVALID_HANDLE();
 
     @Define
     public final static native int ERROR_IO_PENDING();

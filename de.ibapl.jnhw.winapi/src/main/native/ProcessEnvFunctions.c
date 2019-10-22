@@ -29,15 +29,20 @@ extern "C" {
 #ifdef HAVE_PROCESSENV_H
 #include <processenv.h>
 
-/*
- * Class:     de_ibapl_jnhw_winapi_ProcessEnv
- * Method:    GetStdHandle0
- * Signature: (I)J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_GetStdHandle0
-  (JNIEnv *env, jclass clazz, jint nStdHandle) {
-	return (uintptr_t) GetStdHandle(nStdHandle);
-}
+    /*
+     * Class:     de_ibapl_jnhw_winapi_ProcessEnv
+     * Method:    GetStdHandle
+     * Signature: (IZ)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_GetStdHandle
+    (JNIEnv *env, jclass clazz, jint nStdHandle)    {
+        HANDLE result = GetStdHandle(nStdHandle);
+        if (result == INVALID_HANDLE_VALUE) {
+            throw_NativeErrorException(env, GetLastError());
+            return NULL;
+        }
+        return CREATE_HANDLE(result, JNI_TRUE);
+    }
 
 #endif
 #ifdef __cplusplus

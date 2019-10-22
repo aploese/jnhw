@@ -193,7 +193,7 @@ public final class Winnt {
 
     /**
      *
-     * The wrapper for a ByteBuffer. The position of the buffer is always 0! It
+     * The wrapper for a byte buffer. The position of the buffer is always 0! It
      * must be reset to 0 if changed. The limit of the buffer is always amount
      * of valid bytes in the buffer and must be set if the amount of valid bytes
      * changed.

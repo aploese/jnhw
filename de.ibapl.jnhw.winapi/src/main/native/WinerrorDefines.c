@@ -95,6 +95,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winerror
+     * Method:    ERROR_INVALID_HANDLE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1INVALID_1HANDLE
+    (JNIEnv *env, jclass clazz) {
+        return ERROR_INVALID_HANDLE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winerror
      * Method:    ERROR_IO_PENDING
      * Signature: ()I
      */

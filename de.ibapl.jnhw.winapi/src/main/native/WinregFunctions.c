@@ -32,7 +32,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    RegEnumValueW
-     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HKEY;ILde/ibapl/jnhw/winapi/Winnt/LPWSTR;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Minwindef/LPBYTE;)J
+     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef$HKEY;ILde/ibapl/jnhw/winapi/Winnt$LPWSTR;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Minwindef$LPBYTE;)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegEnumValueW
     (JNIEnv *env, jclass clazz, jobject hKey, jint dwIndex, jobject lpValueName, jobject lpType, jobject lpData) {
@@ -77,7 +77,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    RegOpenKeyExW
-     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HKEY;Ljava/lang/String;IILde/ibapl/jnhw/winapi/Minwindef/PHKEY;)J
+     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef$HKEY;Ljava/lang/String;IILde/ibapl/jnhw/winapi/Minwindef$PHKEY;)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegOpenKeyExW
     (JNIEnv *env, jclass clazz, jobject hKey, jstring lpSubKey, jint ulOptions, jint samDesired, jobject phkResult) {
@@ -111,7 +111,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    RegCloseKey
-     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef/HKEY;)J
+     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef$HKEY;)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegCloseKey
     (JNIEnv *env, jclass clazz, jobject hKey) {

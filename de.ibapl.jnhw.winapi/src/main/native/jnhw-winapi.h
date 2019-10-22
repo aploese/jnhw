@@ -50,7 +50,7 @@ extern "C" {
 #define UNWRAP_HANDLE(handle) (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
 #define UNWRAP_HANDLE_OR_NULL(handle) (handle) == NULL ? NULL : (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
 #define SET_HANDLE_VALUE(handle, value) (*env)->SetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID, (jlong) (uintptr_t) value);
-#define CREATE_HANDLE(value, mutable) (*env)->NewObject(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID, value, mutable)
+#define CREATE_HANDLE(value, mutable) (*env)->NewObject(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID, (jlong) (uintptr_t) value, mutable)
 
 #define UNWRAP_HKEY(hKey) (HKEY) (uintptr_t) (*env)->GetLongField(env, (hKey), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
 
@@ -76,6 +76,8 @@ extern "C" {
 
 #define UNWRAP_DCB(dcb) UNWRAP_OPAQUE_MEM_TO(DCB*, dcb)
 
+#define UNWRAP_COMMTIMEOUTS(commTimeOuts) UNWRAP_OPAQUE_MEM_TO(COMMTIMEOUTS*, commTimeOuts)
+     
 #ifdef __cplusplus
 }
 #endif

@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -36,6 +35,6 @@ public class ProcessEnv {
 
 	public final static native boolean HAVE_PROCESSENV_H();
 
-        public final static native HANDLE GetStdHandle(int nStdHandle, boolean test) throws NativeErrorException;
+        public final static native HANDLE GetStdHandle(int nStdHandle) throws NativeErrorException;
 
 }

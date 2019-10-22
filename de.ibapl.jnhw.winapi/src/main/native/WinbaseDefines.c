@@ -145,16 +145,12 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
-     * Method:    INVALID_HANDLE_VALUE
-     * Signature: ()Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+     * Method:    create_INVALID_HANDLE_VALUE
+     * Signature: ()Lde/ibapl/jnhw/winapi/Winnt$HANDLE;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winbase_INVALID_1HANDLE_1VALUE
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winbase_create_1INVALID_1HANDLE_1VALUE
     (JNIEnv *env, jclass clazz) {
-        static jobject cachedHandle = NULL;
-        if (cachedHandle == NULL) {
-            cachedHandle = CREATE_HANDLE((jlong) (uintptr_t) INVALID_HANDLE_VALUE, JNI_FALSE);
-        }
-        return cachedHandle;
+        return CREATE_HANDLE(INVALID_HANDLE_VALUE, JNI_FALSE);
     }
 
     /*

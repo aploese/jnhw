@@ -67,7 +67,7 @@ extern "C" {
             throw_NullPointerException(env, "hFile is null.");
             return;
         }
-        if (!FlushFileBuffers((HANDLE) (uintptr_t) hFile)) {
+        if (!FlushFileBuffers(UNWRAP_HANDLE(hFile))) {
             throw_NativeErrorException(env, GetLastError());
         }
     }
@@ -99,7 +99,7 @@ extern "C" {
         } else if (len > MAX_STACK_BUF_SIZE) {
             _buf = malloc(len);
             if (_buf == NULL) {
-                throwException(env, "java.lang.OutOfMemoryError", "Can`t aquire %d bytes of memory", len);
+                throwException(env, "java/lang/OutOfMemoryError", "Can`t aquire %d bytes of memory", len);
                 return 0;
             }
         } else {
@@ -107,7 +107,7 @@ extern "C" {
         }
 
         DWORD lpNumberOfBytesRead;
-        if (ReadFile(UNWRAP_HANDLE(hFile), &_buf, len, &lpNumberOfBytesRead, NULL)) {
+        if (ReadFile(UNWRAP_HANDLE(hFile), _buf, len, &lpNumberOfBytesRead, NULL)) {
             (*env)->SetByteArrayRegion(env, lpBuffer, pos, lpNumberOfBytesRead, _buf);
         } else {
             throw_NativeErrorException(env, GetLastError());
@@ -238,7 +238,7 @@ extern "C" {
         } else if (len > MAX_STACK_BUF_SIZE) {
             _buf = malloc(len);
             if (_buf == NULL) {
-                throwException(env, "java.lang.OutOfMemoryError", "Can`t aquire %d bytes of memory", len);
+                throwException(env, "java/lang/OutOfMemoryError", "Can`t aquire %d bytes of memory", len);
                 return 0;
             }
         } else {
@@ -251,7 +251,7 @@ extern "C" {
         }
 
         DWORD lpNumberOfBytesWritten;
-        if (WriteFile(UNWRAP_HANDLE(hFile), &_buf, len, &lpNumberOfBytesWritten, NULL)) {
+        if (WriteFile(UNWRAP_HANDLE(hFile), _buf, len, &lpNumberOfBytesWritten, NULL)) {
         } else {
             throw_NativeErrorException(env, errno);
             lpNumberOfBytesWritten = -1;

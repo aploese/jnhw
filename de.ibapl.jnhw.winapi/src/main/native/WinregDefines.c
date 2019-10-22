@@ -45,92 +45,92 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
-     * Method:    HKEY_CLASSES_ROOT0
-     * Signature: ()J
+     * Method:    create_HKEY_CLASSES_ROOT
+     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef/HKEY;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HKEY_1CLASSES_1ROOT0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1CLASSES_1ROOT
     (JNIEnv *env, jclass clazz) {
-        return (jlong) (uintptr_t) HKEY_CLASSES_ROOT;
+        return CREATE_HANDLE(HKEY_CLASSES_ROOT, JNI_FALSE);
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
-     * Method:    HKEY_CURRENT_USER0
-     * Signature: ()J
+     * Method:    create_HKEY_CURRENT_USER
+     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HKEY_1CURRENT_1USER0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1CURRENT_1USER
     (JNIEnv *env, jclass clazz) {
-        return (jlong) (uintptr_t) HKEY_CURRENT_USER;
+        return CREATE_HANDLE(HKEY_CURRENT_USER, JNI_FALSE);
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
-     * Method:    HKEY_LOCAL_MACHINE0
-     * Signature: ()J
+     * Method:    create_HKEY_LOCAL_MACHINE
+     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HKEY_1LOCAL_1MACHINE0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1LOCAL_1MACHINE
     (JNIEnv *env, jclass clazz) {
-        return (jlong) (uintptr_t) HKEY_LOCAL_MACHINE;
+        return CREATE_HANDLE(HKEY_LOCAL_MACHINE, JNI_FALSE);
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
-     * Method:    HKEY_USERS0
-     * Signature: ()J
+     * Method:    create_HKEY_USERS
+     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HKEY_1USERS0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1USERS
     (JNIEnv *env, jclass clazz) {
-        return (jlong) (uintptr_t) HKEY_USERS;
+        return CREATE_HANDLE(HKEY_USERS, JNI_FALSE);
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
-     * Method:    HKEY_PERFORMANCE_DATA0
-     * Signature: ()J
+     * Method:    create_HKEY_PERFORMANCE_DATA
+     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HKEY_1PERFORMANCE_1DATA0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1PERFORMANCE_1DATA
     (JNIEnv *env, jclass clazz) {
-        return (jlong) (uintptr_t) HKEY_PERFORMANCE_DATA;
+        return CREATE_HANDLE(HKEY_PERFORMANCE_DATA, JNI_FALSE);
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
-     * Method:    HKEY_PERFORMANCE_TEXT0
-     * Signature: ()J
+     * Method:    create_HKEY_PERFORMANCE_TEXT
+     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HKEY_1PERFORMANCE_1TEXT0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1PERFORMANCE_1TEXT
     (JNIEnv *env, jclass clazz) {
-        return (jlong) (uintptr_t) HKEY_PERFORMANCE_TEXT;
+        return CREATE_HANDLE(HKEY_PERFORMANCE_TEXT, JNI_FALSE);
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
-     * Method:    HKEY_PERFORMANCE_NLSTEXT0
-     * Signature: ()J
+     * Method:    create_HKEY_PERFORMANCE_NLSTEXT
+     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HKEY_1PERFORMANCE_1NLSTEXT0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1PERFORMANCE_1NLSTEXT
     (JNIEnv *env, jclass clazz) {
-        return (jlong) (uintptr_t) HKEY_PERFORMANCE_NLSTEXT;
+        return CREATE_HANDLE(HKEY_PERFORMANCE_NLSTEXT, JNI_FALSE);
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
-     * Method:    HKEY_CURRENT_CONFIG0
-     * Signature: ()J
+     * Method:    create_HKEY_CURRENT_CONFIG
+     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HKEY_1CURRENT_1CONFIG0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1CURRENT_1CONFIG
     (JNIEnv *env, jclass clazz) {
-        return (jlong) (uintptr_t) HKEY_CURRENT_CONFIG;
+        return CREATE_HANDLE(HKEY_CURRENT_CONFIG, JNI_FALSE);
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
-     * Method:    HKEY_DYN_DATA0
-     * Signature: ()J
+     * Method:    create_HKEY_DYN_DATA
+     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HKEY_1DYN_1DATA0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_create_Winreg_1HKEY_1DYN_1DATA
     (JNIEnv *env, jclass clazz) {
-        return (jlong) (uintptr_t) HKEY_DYN_DATA;
+        return CREATE_HANDLE(HKEY_DYN_DATA, JNI_FALSE);
     }
 
 #ifdef __cplusplus

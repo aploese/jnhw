@@ -139,7 +139,7 @@ extern "C" {
         } else if (len > MAX_STACK_BUF_SIZE) {
             _buf = malloc(len);
             if (_buf == NULL) {
-                throwException(env, "java.lang.OutOfMemoryError", "Can`t aquire %d bytes of memory", len);
+                throwException(env, "java/lang/OutOfMemoryError", "Can`t aquire %d bytes of memory", len);
                 return 0;
             }
         } else {
@@ -230,7 +230,7 @@ extern "C" {
         } else if (len > MAX_STACK_BUF_SIZE) {
             _buf = malloc(len);
             if (_buf == NULL) {
-                throwException(env, "java.lang.OutOfMemoryError", "Can`t aquire %d bytes of memory", len);
+                throwException(env, "java/lang/OutOfMemoryError", "Can`t aquire %d bytes of memory", len);
                 return 0;
             }
         } else {
@@ -279,7 +279,7 @@ extern "C" {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
-        int result =  write(fd, (void*)(uintptr_t)(*env)->GetLongField(env, opaqueMemory, de_ibapl_jnhw_OpaqueMemory_baseAddress_ID), len);
+        int result =  write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory), len);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
