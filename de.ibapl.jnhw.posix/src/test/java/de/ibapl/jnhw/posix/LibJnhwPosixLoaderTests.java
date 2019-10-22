@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ public class LibJnhwPosixLoaderTests {
 
     @Test
     public void testLinsLoaded() throws Exception {
-        Assertions.assertTrue(LibJnhwPosixLoader.touch());
+        Assertions.assertEquals(LoadState.SUCCESS, LibJnhwPosixLoader.touch());
     }
 
 }

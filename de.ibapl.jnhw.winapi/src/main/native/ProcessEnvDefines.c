@@ -44,36 +44,6 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_HAVE_1PROCESSENV
 #include <processenv.h>
 
 
-/*
- * Class:     de_ibapl_jnhw_winapi_ProcessEnv
- * Method:    STD_INPUT_HANDLE
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_STD_1INPUT_1HANDLE
-(JNIEnv *env, jclass clazz) {
-	return STD_INPUT_HANDLE;
-}
-
-/*
- * Class:     de_ibapl_jnhw_winapi_ProcessEnv
- * Method:    STD_OUTPUT_HANDLE
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_STD_1OUTPUT_1HANDLE
-(JNIEnv *env, jclass clazz) {
-	return STD_OUTPUT_HANDLE;
-}
-
-/*
- * Class:     de_ibapl_jnhw_winapi_ProcessEnv
- * Method:    STD_ERROR_HANDLE
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_STD_1ERROR_1HANDLE
-(JNIEnv *env, jclass clazz) {
-	return STD_ERROR_HANDLE;
-}
-
 #endif
 #ifdef __cplusplus
 }

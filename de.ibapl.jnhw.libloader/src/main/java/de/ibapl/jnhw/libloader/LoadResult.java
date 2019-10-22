@@ -41,7 +41,7 @@ public class LoadResult {
         return new LoadResult(libName, systemLibName, classPathLibURL, classPathLibURL.getFile(), null);
     }
 
-    static LoadResult fail(String libName, String systemLibName, Throwable loadError) {
+    public static LoadResult fail(String libName, String systemLibName, Throwable loadError) {
         return new LoadResult(libName, systemLibName, null, null, loadError);
     }
 

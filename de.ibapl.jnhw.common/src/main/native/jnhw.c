@@ -31,34 +31,70 @@ extern "C" {
     JNIEXPORT jfieldID de_ibapl_jnhw_ShortRef_value_ID = NULL;
     JNIEXPORT jfieldID de_ibapl_jnhw_IntRef_value_ID = NULL;
     JNIEXPORT jfieldID de_ibapl_jnhw_LongRef_value_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = NULL;
+    JNIEXPORT jmethodID de_ibapl_jnhw_StructArray_length_ID = NULL;
 
-    JNIEXPORT void JNICALL jnhw_common_init(JNIEnv *env) {
-        initExceptions(env);
+    JNIEXPORT jboolean  JNICALL jnhw_common_init(JNIEnv *env) {
+         if (initExceptions(env) == JNI_FALSE) {
+             return JNI_FALSE;
+         }
         if (de_ibapl_jnhw_ByteRef_value_ID == NULL) {
             de_ibapl_jnhw_ByteRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_BYTE_REF, "value", "B");
+            if (de_ibapl_jnhw_ByteRef_value_ID == NULL) {
+             return JNI_FALSE;
+            }
         }
         if (de_ibapl_jnhw_ShortRef_value_ID == NULL) {
             de_ibapl_jnhw_ShortRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_SHORT_REF, "value", "S");
+            if (de_ibapl_jnhw_ShortRef_value_ID == NULL) {
+             return JNI_FALSE;
+            }
         }
         if (de_ibapl_jnhw_IntRef_value_ID == NULL) {
             de_ibapl_jnhw_IntRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_INT_REF, "value", "I");
+            if (de_ibapl_jnhw_IntRef_value_ID == NULL) {
+             return JNI_FALSE;
+            }
         }
         if (de_ibapl_jnhw_LongRef_value_ID == NULL) {
             de_ibapl_jnhw_LongRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_LONG_REF, "value", "J");
+            if (de_ibapl_jnhw_LongRef_value_ID == NULL) {
+             return JNI_FALSE;
+            }
         }
+        if (de_ibapl_jnhw_OpaqueMemory_baseAddress_ID == NULL) {
+            de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY, "baseAddress", "J");
+            if (de_ibapl_jnhw_OpaqueMemory_baseAddress_ID == NULL) {
+             return JNI_FALSE;
+            }
+        }
+        if (de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID == NULL) {
+            de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY, "sizeInBytes", "I");
+            if (de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID == NULL) {
+             return JNI_FALSE;
+            }
+        }
+        if (de_ibapl_jnhw_StructArray_length_ID == NULL) {
+            de_ibapl_jnhw_StructArray_length_ID = getMethodId(env, JNHW_CLASS_NAME_STRUCT_ARRAY, "length", "()I");
+            if (de_ibapl_jnhw_StructArray_length_ID == NULL) {
+             return JNI_FALSE;
+            }
+        }
+         return JNI_TRUE;
     }
 
     JNIEXPORT jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className) {
         jclass clazz = (*env)->FindClass(env, className);
         if (clazz == NULL) {
-            throw_ClassNotFoundException(env, className);
             return NULL;
         }
+
         jclass result = (*env)->NewGlobalRef(env, clazz);
         (*env)->DeleteLocalRef(env, clazz);
         if (result == NULL) {
-            //TODO what ex to throw???
-            throw_ClassNotFoundException(env, className);
+            throwException(env, "java/lang/RuntimeException", "Cant get global ref for %s", className);
+            return NULL;
         }
         return result;
 
@@ -68,38 +104,70 @@ extern "C" {
 
         jclass clazz = (*env)->FindClass(env, className);
         if (clazz == NULL) {
-            throw_ClassNotFoundException(env, className);
             return NULL;
         }
 
         jfieldID result = (*env)->GetFieldID(env, clazz, fieldName, fieldType);
         (*env)->DeleteLocalRef(env, clazz);
         if (result == NULL) {
-            throw_NoSuchFieldException(env, className, fieldName, fieldType);
             return NULL;
         }
         return result;
     }
 
-    JNIEXPORT jfieldID JNICALL getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* fieldName, const char* fieldType) {
+    JNIEXPORT jmethodID JNICALL getMethodId(JNIEnv *env, const char* className, const char* methodName, const char* methodSignature) {
+
+        jclass clazz = (*env)->FindClass(env, className);
+        if (clazz == NULL) {
+            return NULL;
+        }
+
+        jmethodID result = (*env)->GetMethodID(env, clazz, methodName, methodSignature);
+        (*env)->DeleteLocalRef(env, clazz);
+        if (result == NULL) {
+            return NULL;
+        }
+        return result;
+    }
+
+    JNIEXPORT jfieldID JNICALL getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* fieldName, const char* fieldType) {
 
         jfieldID result = (*env)->GetFieldID(env, clazz, fieldName, fieldType);
         if (result == NULL) {
-            throw_NoSuchFieldException(env, className, fieldName, fieldName);
             return NULL;
         }
         return result;
     }
 
-    JNIEXPORT jmethodID JNICALL getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* className, const char* methodName, const char* methodSignature) {
+    JNIEXPORT jmethodID JNICALL getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* methodName, const char* methodSignature) {
 
         jmethodID result = (*env)->GetMethodID(env, clazz, methodName, methodSignature);
         if (result == NULL) {
-            throw_NoSuchMethodException(env, className, methodName, methodSignature);
             return NULL;
         }
         return result;
     }
+
+    /*
+     * Returns true if the array slice defined by the given offset and length
+     * is out of bounds.
+     */
+    JNIEXPORT int outOfBoundsByteArray(JNIEnv *env, jint pos, jint len, jbyteArray array) {
+        return ((pos < 0) ||
+                (len < 0) ||
+                // We are very careful to avoid signed integer overflow,
+                // the result of which is undefined in C.
+                ((*env)->GetArrayLength(env, array) - pos < len));
+    }
+
+    JNIEXPORT int outOfBoundsOpaqueMemory(JNIEnv *env, jint pos, jint len, jobject opaqueMemory) {
+        return ((pos < 0) ||
+                (len < 0) ||
+                // We are very careful to avoid signed integer overflow,
+                // the result of which is undefined in C.
+                ((*env)->GetIntField(env, opaqueMemory, de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID) - pos < len));
+    }
+
 #ifdef __cplusplus
 }
 #endif

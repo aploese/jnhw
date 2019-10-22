@@ -45,6 +45,36 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    STD_INPUT_HANDLE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_STD_1INPUT_1HANDLE
+    (JNIEnv *env, jclass clazz) {
+        return STD_INPUT_HANDLE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    STD_OUTPUT_HANDLE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_STD_1OUTPUT_1HANDLE
+    (JNIEnv *env, jclass clazz) {
+        return STD_OUTPUT_HANDLE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    STD_ERROR_HANDLE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_STD_1ERROR_1HANDLE
+    (JNIEnv *env, jclass clazz) {
+        return STD_ERROR_HANDLE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    WAIT_FAILED
      * Signature: ()I
      */
@@ -115,12 +145,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
-     * Method:    INVALID_HANDLE_VALUE0
-     * Signature: ()J
+     * Method:    INVALID_HANDLE_VALUE
+     * Signature: ()Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_INVALID_1HANDLE_1VALUE0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winbase_INVALID_1HANDLE_1VALUE
     (JNIEnv *env, jclass clazz) {
-        return (jlong) (uintptr_t) INVALID_HANDLE_VALUE;
+        static jobject result = NULL;
+        if (result == NULL) {
+            result = CREATE_HANDLE((jlong) (uintptr_t) INVALID_HANDLE_VALUE, JNI_FALSE);
+        }
+        return result;
     }
 
     /*

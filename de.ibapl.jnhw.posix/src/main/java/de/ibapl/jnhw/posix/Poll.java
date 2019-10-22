@@ -50,60 +50,32 @@ public final class Poll {
             LibJnhwPosixLoader.touch();
         }
 
-        public final static native int sizeofPollFd();
+        public static native int sizeofPollFd();
 
-        static native short events(long baseAddress);
+        public native short events();
 
-        public PollFd(OpaqueMemory owner, long elementBaseAddress) {
-            super(owner, elementBaseAddress, sizeofPollFd());
+        public PollFd(OpaqueMemory owner, int offset) {
+            super(owner, offset, sizeofPollFd());
         }
 
-        public final short events() {
-            return PollFd.events(baseAddress);
-        }
+        public native void events(short events);
 
-        static native void events(long baseAddress, short events);
+        public native int fd();
 
-        public final void events(short events) {
-            PollFd.events(baseAddress, events);
-        }
+        public native void fd(int fd);
 
-        static native int fd(long baseAddress);
+        public native short revents();
 
-        public final int fd() {
-            return PollFd.fd(baseAddress);
-        }
+        public native void revents(short revents);
 
-        static native void fd(long baseAddress, int fd);
-
-        public final void fd(int fd) {
-            PollFd.fd(baseAddress, fd);
-        }
-
-        static native short revents(long baseAddress);
-
-        public final short revents() {
-            return PollFd.revents(baseAddress);
-        }
-
-        static native void revents(long baseAddress, short revents);
-
-        public final void revents(short revents) {
-            PollFd.revents(baseAddress, revents);
-        }
-        
         @Override
         public String toString() {
-            return PollFd.toString(baseAddress);
-        }
-
-        public final static String toString(long baseAddress) {
             StringBuilder sb = new StringBuilder();
-            sb.append("{fd : ").append(PollFd.fd(baseAddress));
+            sb.append("{fd : ").append(fd());
             sb.append(", events : \"");
-            event2String(sb, PollFd.events(baseAddress));
+            event2String(sb, events());
             sb.append("\", revents :\"");
-            event2String(sb, PollFd.revents(baseAddress));
+            event2String(sb, revents());
             sb.append("\"}");
             return sb.toString();
         }
@@ -167,17 +139,13 @@ public final class Poll {
         }
 
         @Override
-        protected PollFd createElement(long elementBaseAddress) {
-            return new PollFd(memoryOwner, elementBaseAddress);
+        protected PollFd createElementAtOffset(int offset) {
+            return new PollFd(this, offset);
         }
 
     }
 
-    private final static native int poll(long fdsAddress, long nfds, int timeout) throws NativeErrorException;
-
-    public final static int poll(StructArray<PollFd> fds, int timeout) throws NativeErrorException {
-        return poll(fds.baseAddress, fds.length(), timeout);
-    }
+    public final static native int poll(StructArray<PollFd> fds, int timeout) throws NativeErrorException;
 
     @Define()
     public final static native short POLLERR();

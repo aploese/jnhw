@@ -44,7 +44,7 @@ public class WinbaseTests {
     public void testDefines() throws Exception {
         Winbase.CLRBREAK();
         Winnt.HANDLE h = Winbase.INVALID_HANDLE_VALUE();
-        Assertions.assertTrue(h.value != 0);
+        Assertions.assertNotEquals(h, new Winnt.HANDLE(0, false));
     }
 
 }

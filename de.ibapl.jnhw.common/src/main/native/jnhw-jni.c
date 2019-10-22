@@ -32,9 +32,11 @@ extern "C" {
             return JNI_ERR;
         }
 
-        jnhw_common_init(env);
-
-        return JNI_VERSION_1_4;
+        if (jnhw_common_init(env) == JNI_TRUE) {
+            return JNI_VERSION_1_4;
+        } else {
+            return JNI_ERR;
+        }
     }
 
     JNIEXPORT void JNICALL

@@ -25,6 +25,8 @@ import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
 import static de.ibapl.jnhw.posix.Termios.CS8;
+import static de.ibapl.jnhw.posix.Termios.CREAD;
+import static de.ibapl.jnhw.posix.Termios.CLOCAL;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -40,15 +42,14 @@ public class TermiosTests {
             Assertions.assertTrue(Termios.HAVE_TERMIOS_H(), "expected to have termios.h");
         }
     }
-    
+
     @Test
     public void structTermiosToString() throws Exception {
         Termios.StructTermios termios = new Termios.StructTermios();
         Termios.StructTermios.clear(termios);
-        
-        Termios.cfsetspeed(termios, Termios.B9600());
-        termios.c_cflag(Termios.CREAD() | Termios.CLOCAL() | CS8() | CRTSCTS());
 
+        Termios.cfsetspeed(termios, Termios.B9600());
+        termios.c_cflag(CREAD() | CLOCAL() | CS8() | CRTSCTS());
         Assertions.assertFalse(termios.toString().isEmpty(), "Termios.StructTermios is empty");
     }
 

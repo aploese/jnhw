@@ -39,44 +39,35 @@ extern "C" {
         return sizeof (OVERLAPPED);
     }
 
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
-     * Method:    Internal
-     * Signature: (J)J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_Internal
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((OVERLAPPED*) (uintptr_t) baseAddress)->Internal;
+/*
+ * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
+ * Method:    Internal
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_Internal
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_OVERLAPPED(this))->Internal;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
      * Method:    InternalHigh
-     * Signature: (J)J
+     * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_InternalHigh
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((OVERLAPPED*) (uintptr_t) baseAddress)->InternalHigh;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_OVERLAPPED(this))->InternalHigh;
     }
 
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
-     * Method:    hEvent
-     * Signature: (J)J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_hEvent__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return (uintptr_t) ((OVERLAPPED*) (uintptr_t) baseAddress)->hEvent;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
-     * Method:    hEvent
-     * Signature: (JJ)V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_hEvent__JJ
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jlong value) {
-        ((OVERLAPPED*) (uintptr_t) baseAddress)->hEvent = (HANDLE) (uintptr_t) value;
+    
+/*
+ * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
+ * Method:    hEvent0
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_hEvent0
+    (JNIEnv *env, jobject this, jobject hEvent) {
+        (UNWRAP_OVERLAPPED(this))->hEvent = UNWRAP_HANDLE_OR_NULL(hEvent);
     }
 
 #ifdef __cplusplus

@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,8 @@ import org.junit.jupiter.api.Test;
 public class LibJnhwWinApiLoaderTests {
 
     @Test
-    public void testLinsLoaded() throws Exception {
-        Assertions.assertTrue(LibJnhwWinApiLoader.touch());
+    public void testLibIsLoaded() throws Exception {
+        Assertions.assertEquals(LoadState.SUCCESS, LibJnhwWinApiLoader.touch());
     }
 
 }

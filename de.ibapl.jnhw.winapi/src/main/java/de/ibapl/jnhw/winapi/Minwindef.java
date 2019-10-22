@@ -39,8 +39,8 @@ public abstract class Minwindef {
 
     public static class HKEY extends HANDLE {
 
-        public HKEY(long value) {
-            super(value);
+        public HKEY(long value, boolean mutable) {
+            super(value, mutable);
         }
 
         public HKEY() {
@@ -55,8 +55,8 @@ public abstract class Minwindef {
      */
     public static class PHKEY extends HKEY {
 
-        public PHKEY(long value) {
-            super(value);
+        public PHKEY(long value, boolean mutable) {
+            super(value, mutable);
         }
 
         public PHKEY() {
@@ -67,20 +67,20 @@ public abstract class Minwindef {
 
     public static class LPBYTE extends OpaqueMemory {
 
-        final IntRef bufferEnd;
+        int bufferEnd;
 
         public LPBYTE(int size, boolean clearMemory) {
             super(size, clearMemory);
-            bufferEnd = new IntRef(size);
+            bufferEnd = size;
         }
 
         public void clear() {
             OpaqueMemory.clear(this);
-            bufferEnd.value = sizeInBytes;
+            bufferEnd = sizeInBytes;
         }
 
         public void resetBufferEnd() {
-            bufferEnd.value = sizeInBytes;
+            bufferEnd = sizeInBytes;
         }
 
     }

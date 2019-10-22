@@ -19,8 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-posix.h"
 
 #ifdef HAVE_SYS_EVENTFD_H
 
@@ -53,9 +52,9 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_eventfd_1read
     (JNIEnv *env, jclass clazz, jint fd, jobject valueRef) {
-        eventfd_t _valueRef = (*env)->GetLongField(env, valueRef, de_ibapl_jnhw_LongRef_value_ID);
+        eventfd_t _valueRef = GET_LONG_REF_VALUE(valueRef);
         int result = eventfd_read(fd, &_valueRef);
-        (*env)->SetLongField(env, valueRef, de_ibapl_jnhw_LongRef_value_ID, _valueRef);
+        SET_LONG_REF_VALUE(valueRef, _valueRef);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }

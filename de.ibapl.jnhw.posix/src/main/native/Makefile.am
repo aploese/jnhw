@@ -29,10 +29,8 @@ libioclt_la_SOURCES = \
  IoctlFunctions.c
 
 libunistd_la_SOURCES = \
- Isoc_UnistdDefines.c \
- Isoc_UnistdFunctions.c \
- Posix_UnistdDefines.c \
- Posix_UnistdFunctions.c
+ UnistdDefines.c \
+ UnistdFunctions.c
 
 libfcntl_la_SOURCES = \
  FcntlDefines.c \

@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([jnhw-posix], [0.0.0], [aploese@gmx.de])
+AC_INIT([jnhw-posix], [1.1.0], [aploese@gmx.de])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AM_MAINTAINER_MODE
 
@@ -32,7 +32,7 @@ do
 done
 AC_SUBST(JNI_INCLUDE_FLAGS)
 
-JNHW_VERSION_INFO="0:0:0"
+JNHW_VERSION_INFO="0:1:0"
 AC_SUBST(JNHW_VERSION_INFO)
 JNHW_VERSION="0"
 AC_SUBST(JNHW_VERSION)

@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import java.io.File;
@@ -38,7 +39,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 public class FileapiTests {
 
     private File file;
-    private final static String WRITE_VALUE = "Hello world!";
+    private final static byte[] WRITE_VALUE = "Hello world!".getBytes();
 
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
@@ -77,17 +78,17 @@ public class FileapiTests {
                 0,
                 null);
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(64);
-        byteBuffer.put(WRITE_VALUE.getBytes());
+        byteBuffer.put(WRITE_VALUE);
         byteBuffer.flip();
         Fileapi.WriteFile(hFile, byteBuffer);
         Winbase.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
         try (FileInputStream fio = new FileInputStream(file)) {
-            byte[] readBuffer = new byte[WRITE_VALUE.length()];
+            byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
-            for (int i = 0; i < WRITE_VALUE.length(); i++) {
-                Assertions.assertEquals(WRITE_VALUE.charAt(i), (char) readBuffer[i]);
+            for (int i = 0; i < WRITE_VALUE.length; i++) {
+                Assertions.assertEquals(WRITE_VALUE[i], readBuffer[i]);
             }
         }
         hFile = Fileapi.CreateFileW(file,
@@ -98,7 +99,7 @@ public class FileapiTests {
                 0,
                 null);
         byteBuffer.clear();
-        byteBuffer.limit(WRITE_VALUE.length());
+        byteBuffer.limit(WRITE_VALUE.length);
         Fileapi.ReadFile(hFile, byteBuffer);
         Winbase.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
@@ -118,25 +119,24 @@ public class FileapiTests {
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
 
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(64);
-        byteBuffer.put(WRITE_VALUE.getBytes());
+        byteBuffer.put(WRITE_VALUE);
         byteBuffer.flip();
         Fileapi.WriteFile(hFile, byteBuffer, overlapped);
         long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
         if (waitResult != Winbase.WAIT_OBJECT_0()) {
             Assertions.fail("Error during wait");
         }
-        IntRef dwBytesTransferred = new IntRef(0);
-        Ioapiset.GetOverlappedResult(hFile, overlapped, dwBytesTransferred, false, byteBuffer);
+        Ioapiset.GetOverlappedResult(hFile, overlapped, byteBuffer, false);
         Synchapi.ResetEvent(hFile);
 
         Winbase.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
         try (FileInputStream fio = new FileInputStream(file)) {
-            byte[] readBuffer = new byte[WRITE_VALUE.length()];
+            byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
-            for (int i = 0; i < WRITE_VALUE.length(); i++) {
-                Assertions.assertEquals(WRITE_VALUE.charAt(i), (char) readBuffer[i]);
+            for (int i = 0; i < WRITE_VALUE.length; i++) {
+                Assertions.assertEquals(WRITE_VALUE[i], readBuffer[i]);
             }
         }
         hFile = Fileapi.CreateFileW(file,
@@ -147,15 +147,121 @@ public class FileapiTests {
                 0,
                 null);
         byteBuffer.clear();
-        byteBuffer.limit(WRITE_VALUE.length());
+        byteBuffer.limit(WRITE_VALUE.length);
         Fileapi.ReadFile(hFile, byteBuffer, overlapped);
         waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
         if (waitResult != Winbase.WAIT_OBJECT_0()) {
             Assertions.fail("Error during wait");
         }
-        Ioapiset.GetOverlappedResult(hFile, overlapped, dwBytesTransferred, false, byteBuffer);
+        Ioapiset.GetOverlappedResult(hFile, overlapped, byteBuffer, false);
         Winbase.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
+    }
+
+    @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testByteBufferNotDirect() throws Exception {
+        Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_WRITE(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                0,
+                null);
+        Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED(true);
+        overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
+
+        ByteBuffer byteBuffer = ByteBuffer.allocate(64);
+        byteBuffer.put(WRITE_VALUE);
+        byteBuffer.flip();
+        Fileapi.WriteFile(hFile, byteBuffer, overlapped);
+        long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
+        if (waitResult != Winbase.WAIT_OBJECT_0()) {
+            Assertions.fail("Error during wait");
+        }
+        Ioapiset.GetOverlappedResult(hFile, overlapped, byteBuffer, false);
+        Synchapi.ResetEvent(hFile);
+
+        Winbase.CloseHandle(hFile);
+        Assertions.assertFalse(byteBuffer.hasRemaining());
+
+        try (FileInputStream fio = new FileInputStream(file)) {
+            byte[] readBuffer = new byte[WRITE_VALUE.length];
+            fio.read(readBuffer);
+            for (int i = 0; i < WRITE_VALUE.length; i++) {
+                Assertions.assertEquals(WRITE_VALUE[i], readBuffer[i]);
+            }
+        }
+        hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_READ(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                0,
+                null);
+        byteBuffer.clear();
+        byteBuffer.limit(WRITE_VALUE.length);
+        Fileapi.ReadFile(hFile, byteBuffer, overlapped);
+        waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
+        if (waitResult != Winbase.WAIT_OBJECT_0()) {
+            Assertions.fail("Error during wait");
+        }
+        Ioapiset.GetOverlappedResult(hFile, overlapped, byteBuffer, false);
+        Winbase.CloseHandle(hFile);
+        Assertions.assertFalse(byteBuffer.hasRemaining());
+    }
+    
+        @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testOpaqueMemory() throws Exception {
+        Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_WRITE(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                0,
+                null);
+        Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED(true);
+        overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
+
+            OpaqueMemory byteBuffer = new OpaqueMemory(64, true);
+        OpaqueMemory.copy(byteBuffer, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
+        Fileapi.WriteFile(hFile, byteBuffer, overlapped);
+        long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
+        if (waitResult != Winbase.WAIT_OBJECT_0()) {
+            Assertions.fail("Error during wait");
+        }
+        int bytesTransferred = Ioapiset.GetOverlappedResult(hFile, overlapped, false);
+        Synchapi.ResetEvent(hFile);
+
+        Winbase.CloseHandle(hFile);
+        Assertions.assertEquals(byteBuffer.sizeInBytes, bytesTransferred);
+
+        try (FileInputStream fio = new FileInputStream(file)) {
+            byte[] readBuffer = new byte[WRITE_VALUE.length];
+            fio.read(readBuffer);
+            for (int i = 0; i < WRITE_VALUE.length; i++) {
+                Assertions.assertEquals(WRITE_VALUE[i], readBuffer[i]);
+            }
+        }
+        hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_READ(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                0,
+                null);
+        OpaqueMemory.clear(byteBuffer);
+        Fileapi.ReadFile(hFile, byteBuffer, 0, WRITE_VALUE.length, overlapped);
+        waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
+        if (waitResult != Winbase.WAIT_OBJECT_0()) {
+            Assertions.fail("Error during wait");
+        }
+        bytesTransferred = Ioapiset.GetOverlappedResult(hFile, overlapped, false);
+        
+        Winbase.CloseHandle(hFile);
+        
+        Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
     }
 
 }

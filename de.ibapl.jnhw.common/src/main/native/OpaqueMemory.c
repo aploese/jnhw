@@ -32,6 +32,69 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/*
+ * Class:     de_ibapl_jnhw_OpaqueMemory
+ * Method:    copy
+ * Signature: ([BILde/ibapl/jnhw/OpaqueMemory;II)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory_copy___3BILde_ibapl_jnhw_OpaqueMemory_2II
+  (JNIEnv *env, jclass clazz, jbyteArray src, jint srcPos, jobject dest, jint destPos, jint len) {
+    if (outOfBoundsByteArray(env, srcPos, len, src)) {
+        throw_ArrayIndexOutOfBoundsException(env, "Source ArrayIndex!");
+        return;
+    }
+    if (outOfBoundsOpaqueMemory(env, destPos, len, dest)) {
+        throw_IndexOutOfBoundsException(env, "Index outside of destinated opaque memory!");
+        return;
+    }
+    (*env)->GetByteArrayRegion(env, src, srcPos, len, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(dest) + destPos);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_OpaqueMemory
+ * Method:    copy
+ * Signature: (Lde/ibapl/jnhw/OpaqueMemory;I[BII)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory_copy__Lde_ibapl_jnhw_OpaqueMemory_2I_3BII
+  (JNIEnv *env, jclass clazz, jobject src, jint srcPos, jbyteArray dest, jint destPos, jint len) {
+    if (outOfBoundsOpaqueMemory(env, srcPos, len, src)) {
+        throw_IndexOutOfBoundsException(env, "Source index outside of opaque memory!");
+        return;
+    }
+    if (outOfBoundsByteArray(env, destPos, len, dest)) {
+        throw_ArrayIndexOutOfBoundsException(env, "Destination ArrayIndex!");
+        return;
+    }
+    (*env)->SetByteArrayRegion(env, dest, destPos, len, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(src) + srcPos);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_OpaqueMemory
+ * Method:    setByte
+ * Signature: (Lde/ibapl/jnhw/OpaqueMemory;IB)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory_setByte
+  (JNIEnv *env, jclass clazz, jobject opaqueMemory, jint index, jbyte value) {
+    if (outOfBoundsOpaqueMemory(env, index, 1, opaqueMemory)) {
+        throw_IndexOutOfBoundsException(env, "Index outside of allocated memory!");
+        return;
+    }
+    *(UNWRAP_OPAQUE_MEM_TO(jbyte*, opaqueMemory) + index) = value;
+}
+
+/*
+ * Class:     de_ibapl_jnhw_OpaqueMemory
+ * Method:    getByte
+ * Signature: (Lde/ibapl/jnhw/OpaqueMemory;I)B
+ */
+JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_OpaqueMemory_getByte
+  (JNIEnv *env, jclass clazz, jobject opaqueMemory, jint index) {
+    if (outOfBoundsOpaqueMemory(env, index, 1, opaqueMemory)) {
+        throw_IndexOutOfBoundsException(env, "Index outside of allocated memory!");
+        return 0;
+    }
+    return *(UNWRAP_OPAQUE_MEM_TO(jbyte*, opaqueMemory) + index);
+}
 
     /*
      * Class:     de_ibapl_jnhw_OpaqueMemory
@@ -81,14 +144,14 @@ extern "C" {
         free((void*) (uintptr_t) baseAddress);
     }
 
-    /*
-     * Class:     de_ibapl_jnhw_OpaqueMemory
-     * Method:    memset
-     * Signature: (JBI)V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory_memset
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jbyte byteToSet, jint sizeToSet) {
-        memset((void*) (uintptr_t) baseAddress, byteToSet, sizeToSet);
+/*
+ * Class:     de_ibapl_jnhw_OpaqueMemory
+ * Method:    memset
+ * Signature: (Lde/ibapl/jnhw/OpaqueMemory;B)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory_memset
+    (JNIEnv *env, jclass clazz, jobject opaqueMemory, jbyte byteToSet) {
+        memset(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory), byteToSet, SIZE_OF_OPAQUE_MEM(opaqueMemory));
     }
 
 #ifdef __cplusplus

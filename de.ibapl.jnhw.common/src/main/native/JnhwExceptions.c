@@ -34,57 +34,53 @@ extern "C" {
     static jmethodID NativeErrorException_Init_ID = NULL;
 
     static jclass NotDefinedExceptionClass = NULL;
-    static jclass ClassNotFoundExceptionClass = NULL;
-    static jclass NoSuchFieldExceptionClass = NULL;
-    static jclass NoSuchMethodExceptionClass = NULL;
     static jclass NullPointerExceptionClass = NULL;
     static jclass ArrayIndexOutOfBoundsExceptionClass = NULL;
+    static jclass IndexOutOfBoundsExceptionClass = NULL;
 
-    void initExceptions(JNIEnv* env) {
+    jboolean initExceptions(JNIEnv* env) {
         if (NativeErrorExceptionClass == NULL) {
             NativeErrorExceptionClass = getGlobalClassRef(env, NATIVE_ERROR_EXCEPTION);
+            if (NativeErrorExceptionClass == NULL) {
+                return JNI_FALSE;
+            }
         }
         if (NativeErrorException_Init_ID == NULL) {
-            NativeErrorException_Init_ID = getMethodIdOfClassRef(env, NativeErrorExceptionClass, NATIVE_ERROR_EXCEPTION, "<init>", "(I)V");
+            NativeErrorException_Init_ID = getMethodIdOfClassRef(env, NativeErrorExceptionClass, "<init>", "(I)V");
+            if (NativeErrorException_Init_ID == NULL) {
+                return JNI_FALSE;
+            }
         }
         if (NotDefinedExceptionClass == NULL) {
             NotDefinedExceptionClass = getGlobalClassRef(env, NOT_DEFINED_EXCEPTION);
-        }
-        if (ClassNotFoundExceptionClass == NULL) {
-            ClassNotFoundExceptionClass = getGlobalClassRef(env, CLASS_NOT_FOUND_EXCEPTION);
-        }
-        if (NoSuchFieldExceptionClass == NULL) {
-            NoSuchFieldExceptionClass = getGlobalClassRef(env, NO_SUCH_FIELD_EXCEPTION);
-        }
-        if (NoSuchMethodExceptionClass == NULL) {
-            NoSuchMethodExceptionClass = getGlobalClassRef(env, NO_SUCH_METHOD_EXCEPTION);
+            if (NotDefinedExceptionClass == NULL) {
+                return JNI_FALSE;
+            }
         }
         if (NullPointerExceptionClass == NULL) {
             NullPointerExceptionClass = getGlobalClassRef(env, NULL_POINTER_EXCEPTION);
+            if (NullPointerExceptionClass == NULL) {
+                return JNI_FALSE;
+            }
+        }
+        if (IndexOutOfBoundsExceptionClass == NULL) {
+            IndexOutOfBoundsExceptionClass = getGlobalClassRef(env, INDEX_OUT_OF_BOUNDS_EXCEPTION);
+            if (IndexOutOfBoundsExceptionClass == NULL) {
+                return JNI_FALSE;
+            }
         }
         if (ArrayIndexOutOfBoundsExceptionClass == NULL) {
             ArrayIndexOutOfBoundsExceptionClass = getGlobalClassRef(env, ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION);
+            if (ArrayIndexOutOfBoundsExceptionClass == NULL) {
+                return JNI_FALSE;
+            }
         }
+        
+        return JNI_TRUE;
     }
 
     JNIEXPORT void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName) {
         (*env)->ThrowNew(env, NotDefinedExceptionClass, defineName);
-    }
-
-    JNIEXPORT void JNICALL throw_ClassNotFoundException(JNIEnv* env, const char* className) {
-        (*env)->ThrowNew(env, ClassNotFoundExceptionClass, className);
-    }
-
-    JNIEXPORT void JNICALL throw_NoSuchFieldException(JNIEnv* env, const char* className, const char* fieldName, const char* fieldType) {
-        char buf[1024] = {0};
-        snprintf(buf, sizeof (buf) - 1, "Get FieldID of (%s) %s.%s", fieldType, className, fieldName);
-        (*env)->ThrowNew(env, NoSuchFieldExceptionClass, buf);
-    }
-
-    JNIEXPORT void JNICALL throw_NoSuchMethodException(JNIEnv* env, const char* className, const char* methodName, const char* methodSignature) {
-        char buf[1024] = {0};
-        snprintf(buf, sizeof (buf) - 1, "Get FieldID of (%s) %s.%s", methodSignature, className, methodName);
-        (*env)->ThrowNew(env, NoSuchFieldExceptionClass, buf);
     }
 
     JNIEXPORT void JNICALL throw_NativeErrorException(JNIEnv* env, int errno) {
@@ -94,6 +90,10 @@ extern "C" {
 
     JNIEXPORT void JNICALL throw_NullPointerException(JNIEnv* env, const char* message) {
         (*env)->ThrowNew(env, NullPointerExceptionClass, message);
+    }
+
+    JNIEXPORT void JNICALL throw_IndexOutOfBoundsException(JNIEnv* env, const char* message) {
+        (*env)->ThrowNew(env, IndexOutOfBoundsExceptionClass, message);
     }
 
     JNIEXPORT void JNICALL throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message) {

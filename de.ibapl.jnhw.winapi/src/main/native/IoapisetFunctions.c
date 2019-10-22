@@ -32,33 +32,49 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Ioapiset
      * Method:    GetOverlappedResult
-     * Signature: (JJLde/ibapl/jnhw/IntRef;Z)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;Z)I
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_GetOverlappedResult
-    (JNIEnv *env, jclass clazz, jlong hFile, jlong lpOverlapped, jobject lpNumberOfBytesTransferred, jboolean bWait) {
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_GetOverlappedResult
+    (JNIEnv *env, jclass clazz, jobject hFile, jobject lpOverlapped, jboolean bWait) {
+        if (hFile == NULL) {
+            throw_NullPointerException(env, "hFile is null.");
+            return -1;
+        }
+        if (lpOverlapped == NULL) {
+            throw_NullPointerException(env, "lpOVERLAPPED is null.");
+            return -1;
+        }
 
-        DWORD _lpNumberOfBytesTransferred = (*env)->GetIntField(env, lpNumberOfBytesTransferred, de_ibapl_jnhw_IntRef_value_ID);
-
-        BOOL result = GetOverlappedResult((HANDLE) (uintptr_t) hFile,
-                (LPOVERLAPPED) (uintptr_t) lpOverlapped,
-                &_lpNumberOfBytesTransferred,
-                bWait);
-
-        (*env)->SetIntField(env, lpNumberOfBytesTransferred, de_ibapl_jnhw_IntRef_value_ID, _lpNumberOfBytesTransferred);
-        if (!result) {
+        DWORD lpNumberOfBytesTransferred;
+        if (GetOverlappedResult(UNWRAP_HANDLE(hFile),
+                UNWRAP_LPOVERLAPPED(lpOverlapped),
+                &lpNumberOfBytesTransferred,
+                bWait)) {
+            return lpNumberOfBytesTransferred;
+        } else {
             throw_NativeErrorException(env, GetLastError());
+            return -1;
         }
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Ioapiset
      * Method:    CancelIoEx
-     * Signature: (JJ)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_CancelIoEx
-    (JNIEnv *env, jclass clazz, jlong hFile, jlong lpOverlapped) {
-        if (!CancelIoEx((HANDLE) (uintptr_t) hFile,
-                (LPOVERLAPPED) (uintptr_t) lpOverlapped)) {
+    (JNIEnv *env, jclass clazz, jobject hFile, jobject lpOverlapped) {
+        if (hFile == NULL) {
+            throw_NullPointerException(env, "hFile is null.");
+            return;
+        }
+        if (lpOverlapped == NULL) {
+            throw_NullPointerException(env, "lpOVERLAPPED is null.");
+            return;
+        }
+
+        if (!CancelIoEx(UNWRAP_HANDLE(hFile),
+                UNWRAP_LPOVERLAPPED(lpOverlapped))) {
             throw_NativeErrorException(env, GetLastError());
         }
     }
@@ -66,11 +82,16 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Ioapiset
      * Method:    CancelIo
-     * Signature: (J)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_CancelIo
-    (JNIEnv *env, jclass clazz, jlong hFile) {
-        if (!CancelIo((HANDLE) (uintptr_t) hFile)) {
+    (JNIEnv *env, jclass clazz, jobject hFile) {
+        if (hFile == NULL) {
+            throw_NullPointerException(env, "hFile is null.");
+            return;
+        }
+
+        if (!CancelIo(UNWRAP_HANDLE(hFile))) {
             throw_NativeErrorException(env, GetLastError());
         }
     }

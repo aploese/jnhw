@@ -21,6 +21,12 @@
  */
 package de.ibapl.jnhw;
 
+import java.io.File;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.NonWritableChannelException;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -57,11 +63,131 @@ public class OpaqueMemoryTests {
         System.gc();
     }
 
+    private final static byte[] HELLO_WORLD = "Hello World!".getBytes();
+
+    @Test
+    public void testCopy() throws Exception {
+        OpaqueMemory mem = new OpaqueMemory(1024, false);
+        final int MEM_POS = 753;
+        OpaqueMemory.copy(HELLO_WORLD, 0, mem, MEM_POS, HELLO_WORLD.length);
+        byte[] received = new byte[HELLO_WORLD.length];
+        OpaqueMemory.copy(mem, MEM_POS, received, 0, received.length);
+        Assertions.assertArrayEquals(HELLO_WORLD, received);
+    }
+
+    @Test
+    public void testCopyIndex() throws Exception {
+        final OpaqueMemory mem = new OpaqueMemory(16, false);
+        final byte[] array = new byte[16];
+        Assertions.assertAll(() -> {
+            //exact fit
+            OpaqueMemory.copy(mem, 0, array, 0, array.length);
+        }, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(mem, -1, array, 0, 1);
+            }, "Destarray start outside srcmem");
+        }, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(mem, 22, array, 0, 1);
+            }, "Destarray start outside srcmem");
+        }, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(mem, 8, array, 0, 16);
+            }, "Destarray end outside srcmem");
+        }, () -> {
+            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(mem, 0, array, -1, 1);
+            }, "Srcmem start outside destarray");
+        }, () -> {
+            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(mem, 0, array, 22, 1);
+            }, "Srcmem start outside destarray");
+        }, () -> {
+            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(mem, 0, array, 8, 16);
+            }, "Srcmem end outside destarray");
+        }, () -> {
+            //exact fit    
+            OpaqueMemory.copy(array, 0, mem, 0, mem.sizeInBytes);
+        }, () -> {
+            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(array, -1, mem, 0, 1);
+            }, "Destmem start outside srcarray");
+        }, () -> {
+            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(array, 22, mem, 0, 1);
+            }, "Destmem start outside srcarray");
+        }, () -> {
+            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(array, 8, mem, 0, 16);
+            }, "Destmem end outside srcarray");
+        }, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(array, 0, mem, -1, 1);
+            }, "Srcarray start outside destmem");
+        }, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(array, 0, mem, 22, 1);
+            }, "Srcarray start outside destmem");
+        }, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.copy(array, 0, mem, 8, 16);
+            }, "Srcarray end outside destmem");
+        });
+    }
+
+    @Test
+    public void testGetSetByte() throws Exception {
+        OpaqueMemory mem = new OpaqueMemory(1024, false);
+        OpaqueMemory.setByte(mem, 67, (byte) 9);
+        Assertions.assertEquals((byte) 9, OpaqueMemory.getByte(mem, 67));
+    }
+
+    @Test
+    public void testSetGetIndex() throws Exception {
+        final OpaqueMemory mem = new OpaqueMemory(16, false);
+        Assertions.assertAll(() -> {
+            //Exact fit
+            OpaqueMemory.getByte(mem, 0);
+            OpaqueMemory.getByte(mem, 15);
+        }, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.getByte(mem, -1);
+            });
+        }, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.getByte(mem, 22);
+            });
+        }, () -> {
+            //Exact fit
+            OpaqueMemory.setByte(mem, 0, (byte) 0);
+            OpaqueMemory.setByte(mem, 15, (byte) 0);
+        }, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.setByte(mem, -11, (byte) 0);
+            });
+        }, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                OpaqueMemory.setByte(mem, 33, (byte) 0);
+            });
+        });
+    }
+
     @Test
     public void testClear() throws Exception {
         OpaqueMemory mem = new OpaqueMemory(1024, false);
-        //TODO test if it is really cleaned
         OpaqueMemory.clear(mem);
+        for (int i = 0; i < mem.sizeInBytes; i++) {
+            Assertions.assertEquals(0, OpaqueMemory.getByte(mem, i));
+        }
     }
 
+    @Test
+    public void testSetMem() throws Exception {
+        OpaqueMemory mem = new OpaqueMemory(1024, true);
+        OpaqueMemory.memset(mem, (byte) 42);
+        for (int i = 0; i < mem.sizeInBytes; i++) {
+            Assertions.assertEquals(42, OpaqueMemory.getByte(mem, i));
+        }
+    }
 }

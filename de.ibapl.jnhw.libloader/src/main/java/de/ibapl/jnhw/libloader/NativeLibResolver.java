@@ -97,7 +97,6 @@ public abstract class NativeLibResolver {
 	}
 
 	private NativeLibResolver() {
-
 	}
 
 	/**
@@ -197,8 +196,8 @@ public abstract class NativeLibResolver {
 						+ MULTIARCH_TUPEL_BUILDER.listSystemProperties() + "\n", t);
 			}
 		}
-		LOG.log(Level.SEVERE, "Giving up; Can't load the lib {0}!\nList System Properties\n {1} \n",
-				new Object[] { libName, MULTIARCH_TUPEL_BUILDER.listSystemProperties() });
+		LOG.log(Level.SEVERE, "Giving up! Can't load the lib {0} \nList System Properties\n {1} \n",
+				new Object[] { libName, MULTIARCH_TUPEL_BUILDER.listSystemProperties()});
 		return LoadResult.fail(libName, formattedLibName, new IOException("Can't load the lib \"" + libName
 				+ "\" foramtted as: \"" + formattedLibName + "\" for any Architectures"));
 	}

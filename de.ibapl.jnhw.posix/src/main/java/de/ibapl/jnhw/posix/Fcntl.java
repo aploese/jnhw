@@ -24,6 +24,7 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <fcntl.h>")
@@ -39,22 +40,98 @@ public final class Fcntl {
     public final static native boolean HAVE_FCNTL_H();
 
     @Define
+    public final static native int O_RDONLY();
+
+    @Define
+    public final static native int O_WRONLY();
+
+    @Define
     public final static native int O_RDWR();
 
     @Define
-    public final static native int FNONBLOCK();
+    public final static native int O_EXEC() throws NotDefinedException;
+
+    @Define
+    public final static native int O_SEARCH();
+
+    @Define
+    public final static native int O_APPEND();
+
+    @Define
+    public final static native int O_CLOEXEC();
+
+    @Define
+    public final static native int O_CREAT();
+
+    @Define
+    public final static native int O_DIRECTORY();
+
+    @Define
+    public final static native int O_EXCL();
 
     @Define
     public final static native int O_NOCTTY();
 
     @Define
+    public final static native int O_NOFOLLOW();
+
+    @Define
     public final static native int O_NONBLOCK();
+
+    @Define
+    public final static native int O_SYNC();
+
+    @Define
+    public final static native int O_TRUNC();
+
+    @Define
+    public final static native int O_TTY_INIT() throws NotDefinedException;
+
+    @Define
+    public final static native int O_DSYNC();
+
+    @Define
+    public final static native int O_RSYNC();
+
+    @Define
+    public final static native int O_FSYNC() throws NotDefinedException;
+
+    @Define
+    public final static native int O_ASYNC() throws NotDefinedException;
+
+    @Define
+    public final static native int O_ACCMODE();
+    
+    @Define
+    public final static native int F_DUPFD();
+
+    @Define
+    public final static native int F_DUPFD_CLOEXEC();
+
+    @Define
+    public final static native int F_GETFD();
+
+    @Define
+    public final static native int F_SETFD();
 
     @Define
     public final static native int F_GETFL();
 
     @Define
     public final static native int F_SETFL();
+    
+    @Define
+    public final static native int F_GETOWN();
+
+    @Define
+    public final static native int F_SETOWN();
+    
+    @Define
+    public final static native int FNONBLOCK();
+
+    @Define
+    public final static native int FD_CLOEXEC();
+
 
     /**
      * Creates the named file with the mode flags.

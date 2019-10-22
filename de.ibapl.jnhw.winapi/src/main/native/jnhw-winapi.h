@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "../../../config.h"
-#include <jnhw.h>
+#include "jnhw.h"
 
 //TODO move this definition to the Makefile???
 #ifdef HAVE_WINDOWS_H
@@ -37,6 +37,44 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#define JNHW_CLASS_NAME_HANDLE "de/ibapl/jnhw/winapi/Winnt$HANDLE"
+#define JNHW_CLASS_NAME_LPWSTR "de/ibapl/jnhw/winapi/Winnt$LPWSTR"
+#define JNHW_CLASS_NAME_LPBYTE "de/ibapl/jnhw/winapi/Minwindef$LPBYTE"
+     extern jfieldID de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID;
+     extern jmethodID de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID;
+     extern jfieldID de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID;
+     extern jfieldID de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID;
+     extern jclass de_ibapl_jnhw_winapi_Winnt_HANDLE_Class;
+     
+
+#define UNWRAP_HANDLE(handle) (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
+#define UNWRAP_HANDLE_OR_NULL(handle) (handle) == NULL ? NULL : (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
+#define SET_HANDLE_VALUE(handle, value) (*env)->SetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID, (jlong) (uintptr_t) value);
+#define CREATE_HANDLE(value, mutable) (*env)->NewObject(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID, value, mutable)
+
+#define UNWRAP_HKEY(hKey) (HKEY) (uintptr_t) (*env)->GetLongField(env, (hKey), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
+
+#define UNWRAP_OVERLAPPED(overlapped) UNWRAP_OPAQUE_MEM_TO(OVERLAPPED*, overlapped)
+#define UNWRAP_LPOVERLAPPED(lpOverlapped) UNWRAP_OPAQUE_MEM_TO(LPOVERLAPPED, lpOverlapped)
+     
+#define UNWRAP_SECURITY_ATTRIBUTES(securityAttributes) UNWRAP_OPAQUE_MEM_TO(SECURITY_ATTRIBUTES*, securityAttributes)
+
+#define UNWRAP_LPSECURITY_ATTRIBUTES(lpSecurityAttributes) UNWRAP_OPAQUE_MEM_TO(LPSECURITY_ATTRIBUTES, lpSecurityAttributes)
+#define UNWRAP_LPSECURITY_ATTRIBUTES_OR_NULL(lpSecurityAttributes) UNWRAP_OPAQUE_MEM_TO_OR_NULL(LPSECURITY_ATTRIBUTES, lpSecurityAttributes)
+        
+#define UNWRAP_LPCOMSTAT_OR_NULL(lpComstat) UNWRAP_OPAQUE_MEM_TO_OR_NULL(LPCOMSTAT, lpComstat)   
+
+#define UNWRAP_LPDCB(lpDCB) UNWRAP_OPAQUE_MEM_TO(LPDCB, lpDCB)
+
+#define UNWRAP_LPCOMMTIMEOUTS(lpCOMMTIMEOUTS) UNWRAP_OPAQUE_MEM_TO(LPCOMMTIMEOUTS, lpCOMMTIMEOUTS)
+
+#define UNWRAP_LPWSTR(lpWSTR) UNWRAP_OPAQUE_MEM_TO(LPWSTR, lpWSTR)
+
+#define UNWRAP_LPBYTE(lpBYTE) UNWRAP_OPAQUE_MEM_TO(LPBYTE, lpBYTE)
+
+#define UNWRAP_COMSTAT(comstat) UNWRAP_OPAQUE_MEM_TO(COMSTAT*, comstat)
+
+#define UNWRAP_DCB(dcb) UNWRAP_OPAQUE_MEM_TO(DCB*, dcb)
 
 #ifdef __cplusplus
 }

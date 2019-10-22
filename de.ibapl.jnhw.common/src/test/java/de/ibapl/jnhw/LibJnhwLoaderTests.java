@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw;
 
+import de.ibapl.jnhw.libloader.LoadState;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +29,7 @@ public class LibJnhwLoaderTests {
 
     @Test
     public void testLinsLoaded() throws Exception {
-        Assertions.assertTrue(LibJnhwLoader.touch());
+        Assertions.assertEquals(LoadState.SUCCESS, LibJnhwLoader.touch());
     }
 
 }

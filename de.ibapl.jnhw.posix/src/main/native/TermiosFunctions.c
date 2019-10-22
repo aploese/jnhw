@@ -19,8 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-posix.h"
 
 #ifdef HAVE_TERMIOS_H
 
@@ -37,31 +36,43 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfgetispeed
-     * Signature: (J)I
+     * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetispeed
-    (JNIEnv *env, jclass clazz, jlong termiosBaseAddress) {
-        return cfgetispeed((void*) (uintptr_t) termiosBaseAddress);
+    (JNIEnv *env, jclass clazz, jobject structTermios) {
+        if (structTermios == NULL) {
+            throw_NullPointerException(env, "structTermios");
+            return -1;
+        }
+        return cfgetispeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios));
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfgetospeed
-     * Signature: (J)I
+     * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetospeed
-    (JNIEnv *env, jclass clazz, jlong termiosBaseAddress) {
-        return cfgetospeed((void*) (uintptr_t) termiosBaseAddress);
+    (JNIEnv *env, jclass clazz, jobject structTermios) {
+        if (structTermios == NULL) {
+            throw_NullPointerException(env, "structTermios");
+            return -1;
+        }
+        return cfgetospeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios));
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfsetispeed
-     * Signature: (JI)I
+     * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetispeed
-    (JNIEnv *env, jclass clazz, jlong termiosBaseAddress, jint speed) {
-        int result = cfsetispeed((void*) (uintptr_t) termiosBaseAddress, speed);
+    (JNIEnv *env, jclass clazz, jobject structTermios, jint speed) {
+        if (structTermios == NULL) {
+            throw_NullPointerException(env, "structTermios");
+            return -1;
+        }
+        int result = cfsetispeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), speed);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -71,11 +82,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfsetospeed
-     * Signature: (JI)I
+     * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetospeed
-    (JNIEnv *env, jclass clazz, jlong termiosBaseAddress, jint speed) {
-        int result = cfsetospeed((void*) (uintptr_t) termiosBaseAddress, speed);
+    (JNIEnv *env, jclass clazz, jobject structTermios, jint speed) {
+        if (structTermios == NULL) {
+            throw_NullPointerException(env, "structTermios");
+            return -1;
+        }
+        int result = cfsetospeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), speed);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -113,11 +128,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    tcgetattr
-     * Signature: (IJ)I
+     * Signature: (ILde/ibapl/jnhw/posix/Termios/StructTermios;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcgetattr
-    (JNIEnv *env, jclass clazz, jint fildes, jlong termiosBaseAddress) {
-        int result = tcgetattr(fildes, (void*) (uintptr_t) termiosBaseAddress);
+    (JNIEnv *env, jclass clazz, jint fildes, jobject structTermios) {
+        if (structTermios == NULL) {
+            throw_NullPointerException(env, "structTermios");
+            return -1;
+        }
+        int result = tcgetattr(fildes, UNWRAP_STRUCT_TERMIOS_PTR(structTermios));
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -141,11 +160,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    tcsetattr
-     * Signature: (IIJ)I
+     * Signature: (IILde/ibapl/jnhw/posix/Termios/StructTermios;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcsetattr
-    (JNIEnv *env, jclass clazz, jint fildes, jint optional_actions, jlong termiosBaseAddress) {
-        int result = tcsetattr(fildes, optional_actions, (void*) (uintptr_t) termiosBaseAddress);
+    (JNIEnv *env, jclass clazz, jint fildes, jint optional_actions, jobject structTermios) {
+        if (structTermios == NULL) {
+            throw_NullPointerException(env, "structTermios");
+            return -1;
+        }
+        int result = tcsetattr(fildes, optional_actions, UNWRAP_STRUCT_TERMIOS_PTR(structTermios));
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -155,11 +178,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfsetspeed
-     * Signature: (JI)I
+     * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetspeed
-    (JNIEnv *env, jclass clazz, jlong termiosBaseAddress, jint speed) {
-        int result = cfsetspeed((void*) (uintptr_t) termiosBaseAddress, speed);
+    (JNIEnv *env, jclass clazz, jobject structTermios, jint speed) {
+        if (structTermios == NULL) {
+            throw_NullPointerException(env, "structTermios");
+            return -1;
+        }
+        int result = cfsetspeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), speed);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }

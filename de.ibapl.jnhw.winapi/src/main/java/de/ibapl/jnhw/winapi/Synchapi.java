@@ -43,28 +43,12 @@ public abstract class Synchapi {
 
     public final static native boolean HAVE_SYNCHAPI_H();
 
-    private static native long WaitForSingleObject(long hHandle, long dwMilliseconds);
+    public final static native long WaitForSingleObject(HANDLE hHandle, long dwMilliseconds) throws NativeErrorException;
 
-    public final static long WaitForSingleObject(HANDLE hHandle, long dwMilliseconds) {
-        return WaitForSingleObject(hHandle.value, dwMilliseconds);
-    }
+    public final static native HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException;
+    
+    public final static native void SetEvent(HANDLE hEvent) throws NativeErrorException;
 
-    private static native long CreateEventW(long lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException;
-
-    public final static HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException {
-        final long result = CreateEventW(lpEventAttributes == null ? 0L : lpEventAttributes.baseAddress, bManualReset, bInitialState, lpName);
-        return new HANDLE(result);
-    }
-
-    private static native boolean SetEvent(long hEvent);
-
-    private static native boolean ResetEvent(long hEvent);
-
-    public final static boolean SetEvent(HANDLE hEvent) {
-        return SetEvent(hEvent.value);
-    }
-
-    public final static boolean ResetEvent(HANDLE hEvent) {
-        return ResetEvent(hEvent.value);
-    }
+    public final static native void ResetEvent(HANDLE hEvent) throws NativeErrorException;
+    
 }

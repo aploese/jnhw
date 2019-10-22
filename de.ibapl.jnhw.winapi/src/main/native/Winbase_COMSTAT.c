@@ -42,101 +42,101 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
      * Method:    fCtsHold
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_fCtsHold
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((COMSTAT*) (uintptr_t) baseAddress)->fCtsHold;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_COMSTAT(this))->fCtsHold;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
      * Method:    fDsrHold
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_fDsrHold
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((COMSTAT*) (uintptr_t) baseAddress)->fDsrHold;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_COMSTAT(this))->fDsrHold;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
      * Method:    fRlsdHold
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_fRlsdHold
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((COMSTAT*) (uintptr_t) baseAddress)->fRlsdHold;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_COMSTAT(this))->fRlsdHold;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
      * Method:    fXoffHold
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_fXoffHold
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((COMSTAT*) (uintptr_t) baseAddress)->fXoffHold;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_COMSTAT(this))->fXoffHold;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
      * Method:    fXoffSent
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_fXoffSent
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((COMSTAT*) (uintptr_t) baseAddress)->fXoffSent;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_COMSTAT(this))->fXoffSent;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
      * Method:    fEof
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_fEof
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((COMSTAT*) (uintptr_t) baseAddress)->fEof;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_COMSTAT(this))->fEof;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
      * Method:    fTxim
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_fTxim
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((COMSTAT*) (uintptr_t) baseAddress)->fTxim;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_COMSTAT(this))->fTxim;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
      * Method:    fReserved
-     * Signature: (J)I
+     * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_fReserved
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((COMSTAT*) (uintptr_t) baseAddress)->fReserved;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_COMSTAT(this))->fReserved;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
      * Method:    cbInQue
-     * Signature: (J)I
+     * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_cbInQue
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((COMSTAT*) (uintptr_t) baseAddress)->cbInQue;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_COMSTAT(this))->cbInQue;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
      * Method:    cbOutQue
-     * Signature: (J)I
+     * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_cbOutQue
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((COMSTAT*) (uintptr_t) baseAddress)->cbOutQue;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_COMSTAT(this))->cbOutQue;
     }
 
 #ifdef __cplusplus

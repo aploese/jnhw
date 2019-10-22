@@ -36,19 +36,6 @@ public class ProcessEnv {
 
 	public final static native boolean HAVE_PROCESSENV_H();
 
-	@Define
-	public final static native int STD_INPUT_HANDLE();
-
-	@Define
-	public final static native int STD_OUTPUT_HANDLE();
-
-	@Define
-	public final static native int STD_ERROR_HANDLE();
-
-	private static native long GetStdHandle0(int nStdHandle) throws NativeErrorException;
-
-	public final static HANDLE GetStdHandle(int nStdHandle) throws NativeErrorException {
-		return new HANDLE(GetStdHandle0(nStdHandle));
-	}
+        public final static native HANDLE GetStdHandle(int nStdHandle, boolean test) throws NativeErrorException;
 
 }

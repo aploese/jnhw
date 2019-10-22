@@ -19,8 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-posix.h"
 
 #if HAVE_UNISTD_H
 #include <unistd.h>
@@ -52,6 +51,26 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_RDONLY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1RDONLY
+    (JNIEnv *env, jclass clazz) {
+        return O_RDONLY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_WRONLY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1WRONLY
+    (JNIEnv *env, jclass clazz) {
+        return O_WRONLY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    O_RDWR
      * Signature: ()I
      */
@@ -62,12 +81,82 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    FNONBLOCK
+     * Method:    O_EXEC
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_FNONBLOCK
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1EXEC
     (JNIEnv *env, jclass clazz) {
-        return FNONBLOCK;
+#ifdef O_EXEC
+        return O_EXEC;
+#else
+        throw_NotDefinedException(env, "O_EXEC");
+        return 0;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_SEARCH
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1SEARCH
+    (JNIEnv *env, jclass clazz) {
+#ifdef O_SEARCH
+        return O_SEARCH;
+#else
+        throw_NotDefinedException(env, "O_SEARCH");
+        return 0;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_APPEND
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1APPEND
+    (JNIEnv *env, jclass clazz) {
+        return O_APPEND;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_CLOEXEC
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1CLOEXEC
+    (JNIEnv *env, jclass clazz) {
+        return O_CLOEXEC;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_CREAT
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1CREAT
+    (JNIEnv *env, jclass clazz) {
+        return O_CREAT;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_DIRECTORY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1DIRECTORY
+    (JNIEnv *env, jclass clazz) {
+        return O_DIRECTORY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_EXCL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1EXCL
+    (JNIEnv *env, jclass clazz) {
+        return O_EXCL;
     }
 
     /*
@@ -82,12 +171,157 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_NOFOLLOW
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1NOFOLLOW
+    (JNIEnv *env, jclass clazz) {
+        return O_NOFOLLOW;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    O_NONBLOCK
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1NONBLOCK
     (JNIEnv *env, jclass clazz) {
         return O_NONBLOCK;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_SYNC
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1SYNC
+    (JNIEnv *env, jclass clazz) {
+        return O_SYNC;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_TRUNC
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1TRUNC
+    (JNIEnv *env, jclass clazz) {
+        return O_TRUNC;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_TTY_INIT
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1TTY_1INIT
+    (JNIEnv *env, jclass clazz) {
+#ifdef O_TTY_INIT
+        return O_TTY_INIT;
+#else
+        throw_NotDefinedException(env, "O_TTY_INIT");
+        return 0;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_DSYNC
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1DSYNC
+    (JNIEnv *env, jclass clazz) {
+        return O_DSYNC;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_RSYNC
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1RSYNC
+    (JNIEnv *env, jclass clazz) {
+        return O_RSYNC;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_FSYNC
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1FSYNC
+    (JNIEnv *env, jclass clazz) {
+#ifdef O_FSYNC
+        return O_FSYNC;
+#else
+        throw_NotDefinedException(env, "O_FSYNC");
+        return 0;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_ASYNC
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1ASYNC
+    (JNIEnv *env, jclass clazz) {
+#ifdef O_ASYNC
+        return O_ASYNC;
+#else
+        throw_NotDefinedException(env, "O_ASYNC");
+        return 0;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_ACCMODE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1ACCMODE
+    (JNIEnv *env, jclass clazz) {
+        return O_ACCMODE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_DUPFD
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1DUPFD
+    (JNIEnv *env, jclass clazz) {
+        return F_DUPFD;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_DUPFD_CLOEXEC
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1DUPFD_1CLOEXEC
+    (JNIEnv *env, jclass clazz) {
+        return F_DUPFD_CLOEXEC;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_GETFD
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1GETFD
+    (JNIEnv *env, jclass clazz) {
+        return F_GETFD;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_SETFD
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1SETFD
+    (JNIEnv *env, jclass clazz) {
+        return F_SETFD;
     }
 
     /*
@@ -110,6 +344,45 @@ extern "C" {
         return F_SETFL;
     }
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_GETOWN
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1GETOWN
+    (JNIEnv *env, jclass clazz) {
+        return F_GETOWN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_SETOWN
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1SETOWN
+    (JNIEnv *env, jclass clazz) {
+        return F_SETOWN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    FNONBLOCK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_FNONBLOCK
+    (JNIEnv *env, jclass clazz) {
+        return FNONBLOCK;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    FD_CLOEXEC
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_FD_1CLOEXEC
+    (JNIEnv *env, jclass clazz) {
+        return FD_CLOEXEC;
+    }
 
 #ifdef __cplusplus
 }

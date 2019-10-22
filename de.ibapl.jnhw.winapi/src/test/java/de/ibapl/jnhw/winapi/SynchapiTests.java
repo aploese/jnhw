@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.NativeErrorException;
 import java.time.Duration;
 
 import org.junit.jupiter.api.AfterAll;
@@ -82,7 +83,7 @@ public class SynchapiTests {
                 try {
                     Thread.sleep(100);
                     Synchapi.SetEvent(hEvent);
-                } catch (InterruptedException ie) {
+                } catch (InterruptedException | NativeErrorException ie) {
                     throw new RuntimeException(ie);
                 }
 

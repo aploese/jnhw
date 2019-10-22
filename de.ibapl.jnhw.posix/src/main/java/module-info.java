@@ -21,7 +21,7 @@
  */
 module de.ibapl.jnhw.posix {
 	requires java.logging;
-	requires osgi.annotation;
+
 	requires transitive de.ibapl.jnhw.common;
 	
 	exports de.ibapl.jnhw.isoc;

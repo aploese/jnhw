@@ -19,53 +19,9 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "../../../config.h"
 #include "jnhw.h"
-#if HAVE_UNISTD_H
-#include <unistd.h>
-#endif
+#include "../../../config.h"
 
-#ifdef _POSIX_VERSION
+#define UNWRAP_STRUCT_TERMIOS_PTR(structTermios) UNWRAP_OPAQUE_MEM_TO(struct termios*, structTermios)
 
-#include "de_ibapl_jnhw_posix_Unistd.h"
-#include <errno.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    STDIN_FILENO
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_STDIN_1FILENO
-(JNIEnv *env, jclass clazz) {
-    return STDIN_FILENO;
-}
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    STDOUT_FILENO
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_STDOUT_1FILENO
-(JNIEnv *env, jclass clazz) {
-    return STDOUT_FILENO;
-}
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    STDERR_FILENO
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_STDERR_1FILENO
-(JNIEnv *env, jclass clazz) {
-    return STDERR_FILENO;
-}
-
-
-#ifdef __cplusplus
-}
-#endif
-#endif
+#define UNWRAP_STRUCT_POLLFD_PTR(structPollFd) UNWRAP_OPAQUE_MEM_TO(struct pollfd*, structPollFd)

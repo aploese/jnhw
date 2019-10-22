@@ -19,8 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-posix.h"
 
 #ifdef HAVE_POLL_H
 
@@ -28,7 +27,6 @@
 #include <errno.h>
 #include <poll.h>
 #include <stdint.h>
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,61 +45,61 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Poll_PollFd
      * Method:    events
-     * Signature: (J)S
+     * Signature: ()S
      */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((struct pollfd*) (uintptr_t) baseAddress)->events;
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__
+    (JNIEnv *env, jobject pollFd) {
+        return (UNWRAP_STRUCT_POLLFD_PTR(pollFd))->events;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Poll_PollFd
      * Method:    events
-     * Signature: (JS)V
+     * Signature: (S)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__JS
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jshort value) {
-        ((struct pollfd*) (uintptr_t) baseAddress)->events = value;
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__S
+    (JNIEnv *env, jobject pollFd, jshort value) {
+        (UNWRAP_STRUCT_POLLFD_PTR(pollFd))->events = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Poll_PollFd
      * Method:    fd
-     * Signature: (J)I
+     * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((struct pollfd*) (uintptr_t) baseAddress)->fd;
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__
+    (JNIEnv *env, jobject pollFd) {
+        return (UNWRAP_STRUCT_POLLFD_PTR(pollFd))->fd;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Poll_PollFd
      * Method:    fd
-     * Signature: (JI)V
+     * Signature: (I)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__JI
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jint value) {
-        ((struct pollfd*) (uintptr_t) baseAddress)->fd = value;
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__I
+    (JNIEnv *env, jobject pollFd, jint value) {
+        (UNWRAP_STRUCT_POLLFD_PTR(pollFd))->fd = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Poll_PollFd
      * Method:    revents
-     * Signature: (J)S
+     * Signature: ()S
      */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((struct pollfd*) (uintptr_t) baseAddress)->revents;
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__
+    (JNIEnv *env, jobject pollFd) {
+        return (UNWRAP_STRUCT_POLLFD_PTR(pollFd))->revents;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Poll_PollFd
      * Method:    revents
-     * Signature: (JS)V
+     * Signature: (S)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__JS
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jshort value) {
-        ((struct pollfd*) (uintptr_t) baseAddress)->revents = value;
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__S
+    (JNIEnv *env, jobject pollFd, jshort value) {
+        (UNWRAP_STRUCT_POLLFD_PTR(pollFd))->revents = value;
     }
 
 #ifdef __cplusplus

@@ -20,11 +20,16 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-winapi.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+    jfieldID de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID = NULL;
+    jmethodID de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = NULL;
+    jfieldID de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID = NULL;
+    jfieldID de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID = NULL;
+    jclass de_ibapl_jnhw_winapi_Winnt_HANDLE_Class = NULL;
 
     JNIEXPORT jint JNICALL
     JNI_OnLoad(JavaVM *jvm, void *reserved) {
@@ -32,7 +37,41 @@ extern "C" {
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_1_4)) {
             return JNI_ERR;
         }
-        //    jnhw_common_init(env);
+
+        if (de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID == NULL) {
+            de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID = getFieldId(env, JNHW_CLASS_NAME_LPWSTR, "bufferEnd", "I");
+            if (de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID == NULL) {
+                return JNI_ERR;
+            }
+        }
+
+        if (de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID == NULL) {
+            de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID = getFieldId(env, JNHW_CLASS_NAME_LPBYTE, "bufferEnd", "I");
+            if (de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID == NULL) {
+                return JNI_ERR;
+            }
+        }
+
+        if (de_ibapl_jnhw_winapi_Winnt_HANDLE_Class == NULL) {
+            de_ibapl_jnhw_winapi_Winnt_HANDLE_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_HANDLE);
+            if (de_ibapl_jnhw_winapi_Winnt_HANDLE_Class == NULL) {
+                return JNI_ERR;
+            }
+        }
+
+        if (de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID == NULL) {
+            de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID = getFieldIdOfClassRef(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, "value", "J");
+            if (de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID == NULL) {
+                return JNI_ERR;
+            }
+        }
+
+        if (de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID == NULL) {
+           de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, "<init>", "(JZ)V");
+            if (de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID == NULL) {
+                return JNI_ERR;
+            }
+        }
 
         return JNI_VERSION_1_4;
     }

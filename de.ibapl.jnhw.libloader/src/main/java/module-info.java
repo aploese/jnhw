@@ -21,7 +21,6 @@
  */
 module de.ibapl.jnhw.libloader {
 	requires java.logging;
-	requires osgi.annotation;
 	
 	exports de.ibapl.jnhw.libloader;
 }

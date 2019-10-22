@@ -24,6 +24,7 @@ package de.ibapl.jnhw;
 /**
  *
  * @author aploese
+ * @param <T>
  */
 public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
 
@@ -33,7 +34,7 @@ public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
         super(array.length, elementSizeInBytes, clearMem);
         pointers = array;
         for (int i = 0; i < array.length; i++) {
-            pointers[i] = createElement(baseAddress + i * elementSizeInBytes);
+            pointers[i] = createElementAtOffset(elementSizeInBytes * i);
         }
     }
 
@@ -45,7 +46,7 @@ public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
         return pointers.length;
     }
 
-    protected abstract T createElement(long elementBaseAddress);
+    protected abstract T createElementAtOffset(int offset);
 
     @Override
     public String toString() {

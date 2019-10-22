@@ -42,6 +42,15 @@ public abstract class Winbase {
     public final static native boolean HAVE_WINBASE_H();
 
     @Define
+    public final static native int STD_INPUT_HANDLE();
+
+    @Define
+    public final static native int STD_OUTPUT_HANDLE();
+
+    @Define
+    public final static native int STD_ERROR_HANDLE();
+
+    @Define
     public final static native int WAIT_FAILED();
 
     @Define
@@ -81,65 +90,25 @@ public abstract class Winbase {
             super(sizeofCOMSTAT(), clearMemory);
         }
 
-        private static native boolean fCtsHold(long baseAddress);
+        public native boolean fCtsHold();
 
-        private static native boolean fDsrHold(long baseAddress);
+        public native boolean fDsrHold();
 
-        private static native boolean fRlsdHold(long baseAddress);
+        public native boolean fRlsdHold();
 
-        private static native boolean fXoffHold(long baseAddress);
+        public native boolean fXoffHold();
 
-        private static native boolean fXoffSent(long baseAddress);
+        public native boolean fXoffSent();
 
-        private static native boolean fEof(long baseAddress);
+        public native boolean fEof();
 
-        private static native boolean fTxim(long baseAddress);
+        public native boolean fTxim();
 
-        private static native int fReserved(long baseAddress);
+        public native int fReserved();
 
-        private static native int cbInQue(long baseAddress);
+        public native int cbInQue();
 
-        private static native int cbOutQue(long baseAddress);
-
-        public final boolean fCtsHold() {
-            return fCtsHold(baseAddress);
-        }
-
-        public final boolean fDsrHold() {
-            return fDsrHold(baseAddress);
-        }
-
-        public final boolean fRlsdHold() {
-            return fRlsdHold(baseAddress);
-        }
-
-        public final boolean fXoffHold() {
-            return fXoffHold(baseAddress);
-        }
-
-        public final boolean fXoffSent() {
-            return fXoffSent(baseAddress);
-        }
-
-        public final boolean fEof() {
-            return fEof(baseAddress);
-        }
-
-        public final boolean fTxim() {
-            return fTxim(baseAddress);
-        }
-
-        public final int fReserved() {
-            return fReserved(baseAddress);
-        }
-
-        public final int cbInQue() {
-            return cbInQue(baseAddress);
-        }
-
-        public final int cbOutQue() {
-            return cbOutQue(baseAddress);
-        }
+        public native int cbOutQue();
     }
 
     public final static class DCB extends OpaqueMemory {
@@ -154,237 +123,89 @@ public abstract class Winbase {
 
         public DCB(boolean clearMemory) {
             super(sizeofDCB(), clearMemory);
-            DCBlength(baseAddress, sizeofDCB());
+            DCBlength(sizeofDCB());
         }
 
         public final static native int sizeofDCB();
 
         //TODO set this in init!!!
-        private static native void DCBlength(long baseAddress, int value);
+        public native void DCBlength(int value);
 
-        private static native int DCBlength(long baseAddress);
+        public native int DCBlength();
 
-        private static native int BaudRate(long baseAddress);
+        public native int BaudRate();
 
-        private static native void BaudRate(long baseAddress, int value);
+        public native void BaudRate(int value);
 
-        private static native boolean fBinary(long baseAddress);
+        public native boolean fBinary();
 
-        private static native boolean fParity(long baseAddress);
+        public native boolean fParity();
 
-        private static native boolean fOutxCtsFlow(long baseAddress);
+        public native boolean fOutxCtsFlow();
 
-        private static native void fOutxCtsFlow(long baseAddress, boolean value);
+        public native void fOutxCtsFlow(boolean value);
 
-        private static native boolean fOutxDsrFlow(long baseAddress);
+        public native boolean fOutxDsrFlow();
 
-        private static native int fDtrControl(long baseAddress);
+        public native int fDtrControl();
 
-        private static native boolean fDsrSensitivity(long baseAddress);
+        public native boolean fDsrSensitivity();
 
-        private static native boolean fTXContinueOnXoff(long baseAddress);
+        public native boolean fTXContinueOnXoff();
 
-        private static native boolean fOutX(long baseAddress);
+        public native boolean fOutX();
 
-        private static native void fOutX(long baseAddress, boolean value);
+        public native void fOutX(boolean value);
 
-        private static native boolean fInX(long baseAddress);
+        public native boolean fInX();
 
-        private static native void fInX(long baseAddress, boolean value);
+        public native void fInX(boolean value);
 
-        private static native boolean fErrorChar(long baseAddress);
+        public native boolean fErrorChar();
 
-        private static native boolean fNull(long baseAddress);
+        public native boolean fNull();
 
-        private static native int fRtsControl(long baseAddress);
+        public native int fRtsControl();
 
-        private static native void fRtsControl(long baseAddress, int value);
+        public native void fRtsControl(int value);
 
-        private static native boolean fAbortOnError(long baseAddress);
+        public native boolean fAbortOnError();
 
-        private static native int fDummy2(long baseAddress);
+        public native int fDummy2();
 
-        private static native short wReserved(long baseAddress);
+        public native short wReserved();
 
-        private static native short XonLim(long baseAddress);
+        public native short XonLim();
 
-        private static native short XoffLim(long baseAddress);
+        public native short XoffLim();
 
-        private static native byte ByteSize(long baseAddress);
+        public native byte ByteSize();
 
-        private static native void ByteSize(long baseAddress, byte value);
+        public native void ByteSize(byte value);
 
-        private static native byte Parity(long baseAddress);
+        public native byte Parity();
 
-        private static native void Parity(long baseAddress, byte value);
+        public native void Parity(byte value);
 
-        private static native byte StopBits(long baseAddress);
+        public native byte StopBits();
 
-        private static native void StopBits(long baseAddress, byte value);
+        public native void StopBits(byte value);
 
-        private static native char XonChar(long baseAddress);
+        public native char XonChar();
 
-        private static native void XonChar(long baseAddress, char value);
+        public native void XonChar(char value);
 
-        private static native char XoffChar(long baseAddress);
+        public native char XoffChar();
 
-        private static native void XoffChar(long baseAddress, char value);
+        public native void XoffChar(char value);
 
-        private static native char ErrorChar(long baseAddress);
+        public native char ErrorChar();
 
-        private static native char EofChar(long baseAddress);
+        public native char EofChar();
 
-        private static native char EvtChar(long baseAddress);
+        public native char EvtChar();
 
-        private static native short wReserved1(long baseAddress);
-
-        public int BaudRate() {
-            return BaudRate(baseAddress);
-        }
-
-        public void BaudRate(int value) {
-            BaudRate(baseAddress, value);
-        }
-
-        public boolean fBinary() {
-            return fBinary(baseAddress);
-        }
-
-        public boolean fParity() {
-            return fParity(baseAddress);
-        }
-
-        public boolean fOutxCtsFlow() {
-            return fOutxCtsFlow(baseAddress);
-        }
-
-        public void fOutxCtsFlow(boolean value) {
-            fOutxCtsFlow(baseAddress, value);
-        }
-
-        public boolean fOutxDsrFlow() {
-            return fOutxDsrFlow(baseAddress);
-        }
-
-        public int fDtrControl() {
-            return fDtrControl(baseAddress);
-        }
-
-        public boolean fDsrSensitivity() {
-            return fDsrSensitivity(baseAddress);
-        }
-
-        public boolean fTXContinueOnXoff() {
-            return fTXContinueOnXoff(baseAddress);
-        }
-
-        public boolean fOutX() {
-            return fOutX(baseAddress);
-        }
-
-        public void fOutX(boolean value) {
-            fOutX(baseAddress, value);
-        }
-
-        public boolean fInX() {
-            return fInX(baseAddress);
-        }
-
-        public void fInX(boolean value) {
-            fInX(baseAddress, value);
-        }
-
-        public boolean fErrorChar() {
-            return fErrorChar(baseAddress);
-        }
-
-        public boolean fNull() {
-            return fNull(baseAddress);
-        }
-
-        public int fRtsControl() {
-            return fRtsControl(baseAddress);
-        }
-
-        public void fRtsControl(int value) {
-            fRtsControl(baseAddress, value);
-        }
-
-        public boolean fAbortOnError() {
-            return fAbortOnError(baseAddress);
-        }
-
-        public int fDummy2() {
-            return fDummy2(baseAddress);
-        }
-
-        public short wReserved() {
-            return wReserved(baseAddress);
-        }
-
-        public short XonLim() {
-            return XonLim(baseAddress);
-        }
-
-        public short XoffLim() {
-            return XoffLim(baseAddress);
-        }
-
-        public byte ByteSize() {
-            return ByteSize(baseAddress);
-        }
-
-        public void ByteSize(byte value) {
-            ByteSize(baseAddress, value);
-        }
-
-        public byte Parity() {
-            return Parity(baseAddress);
-        }
-
-        public void Parity(byte value) {
-            Parity(baseAddress, value);
-        }
-
-        public byte StopBits() {
-            return StopBits(baseAddress);
-        }
-
-        public void StopBits(byte value) {
-            StopBits(baseAddress, value);
-        }
-
-        public char XonChar() {
-            return XonChar(baseAddress);
-        }
-
-        public void XonChar(char value) {
-            XonChar(baseAddress, value);
-        }
-
-        public char XoffChar() {
-            return XoffChar(baseAddress);
-        }
-
-        public void XoffChar(char value) {
-            XoffChar(baseAddress, value);
-        }
-
-        public char ErrorChar() {
-            return ErrorChar(baseAddress);
-        }
-
-        public char EofChar() {
-            return EofChar(baseAddress);
-        }
-
-        public char EvtChar() {
-            return EvtChar(baseAddress);
-        }
-
-        public short wReserved1() {
-            return wReserved(baseAddress);
-        }
+        public native short wReserved1();
 
     }
 
@@ -404,134 +225,50 @@ public abstract class Winbase {
             super(sizeofCOMMTIMEOUTS(), clearMemory);
         }
 
-        private static native int ReadIntervalTimeout(long baseAddress);
+        public native int ReadIntervalTimeout();
 
-        private static native void ReadIntervalTimeout(long baseAddress, int value);
+        public native void ReadIntervalTimeout(int value);
 
-        private static native int ReadTotalTimeoutMultiplier(long baseAddress);
+        public native int ReadTotalTimeoutMultiplier();
 
-        private static native void ReadTotalTimeoutMultiplier(long baseAddress, int value);
+        public native void ReadTotalTimeoutMultiplier(int value);
 
-        private static native int ReadTotalTimeoutConstant(long baseAddress);
+        public native int ReadTotalTimeoutConstant();
 
-        private static native void ReadTotalTimeoutConstant(long baseAddress, int value);
+        public native void ReadTotalTimeoutConstant(int value);
 
-        private static native int WriteTotalTimeoutMultiplier(long baseAddress);
+        public native int WriteTotalTimeoutMultiplier();
 
-        private static native void WriteTotalTimeoutMultiplier(long baseAddress, int value);
+        public native void WriteTotalTimeoutMultiplier(int value);
 
-        private static native int WriteTotalTimeoutConstant(long baseAddress);
+        public native int WriteTotalTimeoutConstant();
 
-        private static native void WriteTotalTimeoutConstant(long baseAddress, int value);
-
-        public int ReadIntervalTimeout() {
-            return ReadIntervalTimeout(baseAddress);
-        }
-
-        public void ReadIntervalTimeout(int value) {
-            ReadIntervalTimeout(baseAddress, value);
-        }
-
-        public int ReadTotalTimeoutMultiplier() {
-            return ReadTotalTimeoutMultiplier(baseAddress);
-        }
-
-        public void ReadTotalTimeoutMultiplier(int value) {
-            ReadTotalTimeoutMultiplier(baseAddress, value);
-        }
-
-        public int ReadTotalTimeoutConstant() {
-            return ReadTotalTimeoutConstant(baseAddress);
-        }
-
-        public void ReadTotalTimeoutConstant(int value) {
-            ReadTotalTimeoutConstant(baseAddress, value);
-        }
-
-        public int WriteTotalTimeoutMultiplier() {
-            return WriteTotalTimeoutMultiplier(baseAddress);
-        }
-
-        public void WriteTotalTimeoutMultiplier(int value) {
-            WriteTotalTimeoutMultiplier(baseAddress, value);
-        }
-
-        public int WriteTotalTimeoutConstant() {
-            return WriteTotalTimeoutConstant(baseAddress);
-        }
-
-        public void WriteTotalTimeoutConstant(int value) {
-            WriteTotalTimeoutConstant(baseAddress, value);
-        }
+        public native void WriteTotalTimeoutConstant(int value);
 
     }
 
     @Define
-    private static native long INVALID_HANDLE_VALUE0();
+    public final static native HANDLE INVALID_HANDLE_VALUE();
 
-    public final static HANDLE INVALID_HANDLE_VALUE() {
-        return new HANDLE(INVALID_HANDLE_VALUE0());
-    }
+    public final native static void CloseHandle(HANDLE hObject) throws NativeErrorException;
 
-    private static native void CloseHandle(long hObject) throws NativeErrorException;
+    public final native static void ClearCommBreak(HANDLE hFile) throws NativeErrorException;
 
-    public final static void CloseHandle(HANDLE hObject) throws NativeErrorException {
-        CloseHandle(hObject.value);
-    }
+    public final static native void ClearCommError(HANDLE hFile, IntRef lpErrors, COMSTAT lpStat) throws NativeErrorException;
 
-    private static native void ClearCommBreak(long hFile) throws NativeErrorException;
+    public final static native void EscapeCommFunction(HANDLE hFile, int dwFunc) throws NativeErrorException;
 
-    public final static void ClearCommBreak(HANDLE hFile) throws NativeErrorException {
-        ClearCommBreak(hFile.value);
-    }
+    public final static native void GetCommModemStatus(HANDLE hFile, IntRef lpModemStat) throws NativeErrorException;
 
-    private static native void ClearCommError(long hFile, IntRef lpErrors, long lpStat) throws NativeErrorException;
+    public final static native void GetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException;
 
-    public final static void ClearCommError(HANDLE hFile, IntRef lpErrors, COMSTAT lpStat) throws NativeErrorException {
-        ClearCommError(hFile.value, lpErrors, lpStat.baseAddress);
-    }
+    public final static native void GetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException;
 
-    private static native void EscapeCommFunction(long hFile, int dwFunc) throws NativeErrorException;
+    public final static native void SetCommBreak(HANDLE hFile) throws NativeErrorException;
 
-    public final static void EscapeCommFunction(HANDLE hFile, int dwFunc) throws NativeErrorException {
-        EscapeCommFunction(hFile.value, dwFunc);
-    }
+    public final static native void SetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException;
 
-    private static native void GetCommModemStatus(long hFile, IntRef lpModemStat) throws NativeErrorException;
-
-    public final static void GetCommModemStatus(HANDLE hFile, IntRef lpModemStat) throws NativeErrorException {
-        GetCommModemStatus(hFile.value, lpModemStat);
-    }
-
-    private static native void GetCommState(long hFile, long lpDCB) throws NativeErrorException;
-
-    public final static void GetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException {
-        GetCommState(hFile.value, lpDCB.baseAddress);
-    }
-
-    private static native void GetCommTimeouts(long hFile, long lpCommTimeouts) throws NativeErrorException;
-
-    public final static void GetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException {
-        GetCommTimeouts(hFile.value, lpCommTimeouts.baseAddress);
-    }
-
-    private static native void SetCommBreak(long hFile) throws NativeErrorException;
-
-    public final static void SetCommBreak(HANDLE hFile) throws NativeErrorException {
-        SetCommBreak(hFile.value);
-    }
-
-    private static native void SetCommState(long hFile, long lpDCB) throws NativeErrorException;
-
-    public final static void SetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException {
-        SetCommState(hFile.value, lpDCB.baseAddress);
-    }
-
-    private static native void SetCommTimeouts(long hFile, long lpCommTimeouts) throws NativeErrorException;
-
-    public final static void SetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException {
-        SetCommTimeouts(hFile.value, lpCommTimeouts.baseAddress);
-    }
+    public final static native void SetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException;
 
     @Define
     public final static native byte NOPARITY();

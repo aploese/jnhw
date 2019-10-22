@@ -19,8 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-posix.h"
 
 #ifdef HAVE_POLL_H
 
@@ -37,11 +36,16 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Poll
      * Method:    poll
-     * Signature: (JJI)I
+     * Signature: (Lde/ibapl/jnhw/StructArray;I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll
-    (JNIEnv *env, jclass clazz, jlong pollFdBaseAddress, jlong nfds, jint timeout) {
-        int result = poll((void*) (uintptr_t) pollFdBaseAddress, nfds, timeout);
+    (JNIEnv *env, jclass clazz, jobject pollFdArray, jint timeout) {
+        if (pollFdArray == NULL) {
+            throw_NullPointerException(env, "pollFd array");
+            return -1;
+        }
+        int nfds = LENGTH_OF_STRUCTURE_ARRAY(pollFdArray);
+        int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFdArray), nfds, timeout);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }

@@ -32,51 +32,78 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    WaitForSingleObject
-     * Signature: (JJ)J
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;J)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForSingleObject
-    (JNIEnv *env, jclass clazz, jlong hHandle, jlong dwMilliseconds) {
-        return WaitForSingleObject((HANDLE) (uintptr_t) hHandle, dwMilliseconds);
+    (JNIEnv *env, jclass clazz, jobject hHandle, jlong dwMilliseconds) {
+        if (hHandle == NULL) {
+            throw_NullPointerException(env, "hHandle is null");
+            return ERROR_INVALID_PARAMETER;
+        }
+        DWORD result = WaitForSingleObject(UNWRAP_HANDLE(hHandle), dwMilliseconds);
+        if (result == WAIT_FAILED) {
+            throw_NativeErrorException(env, GetLastError());
+        }
+        return result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    CreateEventW
-     * Signature: (JZZLjava/lang/String;)J
+     * Signature: (Lde/ibapl/jnhw/winapi/Minwinbase/SECURITY_ATTRIBUTES;ZZLjava/lang/String;)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_CreateEventW
-    (JNIEnv *env, jclass clazz, jlong lpEventAttributes, jboolean bManualReset, jboolean bInitialState, jstring lpName) {
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_CreateEventW
+    (JNIEnv *env, jclass clazz, jobject lpEventAttributes, jboolean bManualReset, jboolean bInitialState, jstring lpName) {
+        if (lpEventAttributes == NULL) {
+            throw_NullPointerException(env, "lpEventAttributes is null");
+            return NULL;
+        }
+
         LPCWSTR _lpName = lpName != NULL ? (*env)->GetStringChars(env, lpName, NULL) : NULL;
 
-        HANDLE result = CreateEventW((LPSECURITY_ATTRIBUTES) (uintptr_t) lpEventAttributes, bManualReset, bInitialState, _lpName);
+        HANDLE result = CreateEventW(UNWRAP_LPSECURITY_ATTRIBUTES(lpEventAttributes), bManualReset, bInitialState, _lpName);
         if (lpName != NULL) {
             (*env)->ReleaseStringChars(env, lpName, _lpName);
         }
 
         if (result == NULL) {
             throw_NativeErrorException(env, GetLastError());
+            return NULL;
         }
-        return (uintptr_t) result;
+        return CREATE_HANDLE(result, JNI_TRUE);
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    SetEvent
-     * Signature: (J)Z
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SetEvent
-    (JNIEnv *env, jclass clazz, jlong hEvent) {
-        return SetEvent((HANDLE) (uintptr_t) hEvent);
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SetEvent
+    (JNIEnv *env, jclass clazz, jobject hEvent) {
+        if (hEvent == NULL) {
+            throw_NullPointerException(env, "hEvent is null");
+            return;
+        }
+
+        if (!SetEvent(UNWRAP_HANDLE(hEvent))) {
+            throw_NativeErrorException(env, GetLastError());
+        }
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    ResetEvent
-     * Signature: (J)Z
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_ResetEvent
-    (JNIEnv *env, jclass clazz, jlong hEvent) {
-        return ResetEvent((HANDLE) (uintptr_t) hEvent);
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_ResetEvent
+    (JNIEnv *env, jclass clazz, jobject hEvent) {
+        if (hEvent == NULL) {
+            throw_NullPointerException(env, "hEvent is null");
+            return;
+        }
+        if (!ResetEvent(UNWRAP_HANDLE(hEvent))) {
+            throw_NativeErrorException(env, GetLastError());
+        }
     }
 
 

@@ -19,38 +19,13 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.isoc;
+package de.ibapl.jnhw.libloader;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledOnOs;
-
-@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class UnistdTests {
-
-    @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-    }
-
-    @AfterAll
-    public static void tearDownAfterClass() throws Exception {
-    }
-
-    @BeforeEach
-    public void setUp() throws Exception {
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-    }
-
-    @Test
-    public void test_HAVE_UNISTD_H() throws Exception {
-        Assertions.assertTrue(Unistd.HAVE_UNISTD_H(), "expected to have unistd.h");
-    }
-
+/**
+ *
+ * @author aploese
+ */
+public enum LoadState {
+    INIT, LOADING, SUCCESS, FAILURE
+    
 }

@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw;
 
-//TODO Java9 import java.lang.ref.Cleaner;
 import java.lang.ref.Cleaner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,115 +30,122 @@ import java.util.logging.Logger;
  * The base class for any native chunk (i.e. pointer to or structs) of memory.
  * The run method in MemoryCleaner will clean up the allocated memory after
  * finalizing this instance - if this instance owns the memory.
- * 
+ *
  * @author aploese
  */
 public class OpaqueMemory {
 
-	private static final Cleaner cleaner = Cleaner.create();
+    private static final Cleaner cleaner = Cleaner.create();
 
-	static class MemoryCleaner implements Runnable {
+    public static native void copy(byte[] src, int srcPos, OpaqueMemory dest, int destPos, int length);
 
-		final long baseAddress;
+    public static native void copy(OpaqueMemory src, int srcPos, byte[] dest, int destPos, int length);
 
-		MemoryCleaner(final long baseAddress) {
-			this.baseAddress = baseAddress;
-		}
+    public static native void setByte(OpaqueMemory opaqueMemory, int index, byte value);
 
-		public void run() {
-			try {
-				// LOG.log(Level.FINEST, String.format("Finalize: try free memory @0x%016x size:
-				// %d", baseAddress, sizeInBytes));
-				free(baseAddress);
-				// LOG.log(Level.FINEST, String.format("memory @0x%016x freed", baseAddress));
-			} catch (Throwable t) {
-				LOG.log(Level.SEVERE,
-						String.format("Finalize: Memory Leak freeing memory @0x%016x failed", baseAddress), t);
-			}
+    public static native byte getByte(OpaqueMemory opaqueMemory, int index);
 
-		}
-	}
+    static class MemoryCleaner implements Runnable {
 
-	protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
+        final long baseAddress;
 
-	/**
-	 * Make sure the native lib is loaded
-	 */
-	static {
-		LibJnhwLoader.touch();
-	}
+        MemoryCleaner(final long baseAddress) {
+            this.baseAddress = baseAddress;
+        }
 
-	public final long baseAddress;
-	public final int sizeInBytes;
-	public final OpaqueMemory memoryOwner;
+        public void run() {
+            try {
+                // LOG.log(Level.FINEST, String.format("Finalize: try free memory @0x%016x size:
+                // %d", baseAddress, sizeInBytes));
+                free(baseAddress);
+                // LOG.log(Level.FINEST, String.format("memory @0x%016x freed", baseAddress));
+            } catch (Throwable t) {
+                LOG.log(Level.SEVERE,
+                        String.format("Finalize: Memory Leak freeing memory @0x%016x failed", baseAddress), t);
+            }
 
-	// get value of define from errno.
-	public static final native int ENOMEM();
+        }
+    }
 
-	private static final native long malloc(int sizeInBytes) throws NativeErrorException;
+    protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
 
-	private static final native long calloc(int elements, int sizeInBytes) throws NativeErrorException;
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwLoader.touch();
+    }
 
-	private static final native void free(long baseAddress);
+    private final long baseAddress;
+    public final int sizeInBytes;
+    public final OpaqueMemory memoryOwner;
 
-	private static native void memset(long baseAddress, byte c, int size);
+    // get value of define from errno.
+    public static final native int ENOMEM();
 
-	public static final void clear(OpaqueMemory mem) {
-		memset(mem.baseAddress, (byte) 0, mem.sizeInBytes);
-	}
+    private static native long malloc(int sizeInBytes) throws NativeErrorException;
 
-	public OpaqueMemory(int sizeInBytes, boolean clearMem) {
-		this.sizeInBytes = sizeInBytes;
-		try {
-			if (clearMem) {
-				baseAddress = calloc(1, sizeInBytes);
-			} else {
-				baseAddress = malloc(sizeInBytes);
-			}
-		} catch (NativeErrorException nee) {
-			if (nee.errno == ENOMEM()) {
-				throw new OutOfMemoryError("Can't allocate " + sizeInBytes + " bytes ENOMEM");
-			} else {
-				throw new RuntimeException("Can't allocate " + sizeInBytes + " bytes ");
-			}
-		}
-		memoryOwner = this;
-		cleaner.register(this, new MemoryCleaner(baseAddress));
-	}
+    private static native long calloc(int elements, int sizeInBytes) throws NativeErrorException;
 
-	public OpaqueMemory(int elements, int sizeInBytes, boolean clearMem) {
-		this.sizeInBytes = sizeInBytes * elements;
-		try {
-			if (clearMem) {
-				baseAddress = calloc(elements, sizeInBytes);
-			} else {
-				baseAddress = malloc(sizeInBytes * elements);
-			}
-		} catch (NativeErrorException nee) {
-			if (nee.errno == ENOMEM()) {
-				throw new OutOfMemoryError("Can't allocate " + sizeInBytes * elements + " bytes ENOMEM");
-			} else {
-				throw new RuntimeException("Can't allocate " + sizeInBytes * elements + " bytes ");
-			}
-		}
-		memoryOwner = this;
-		cleaner.register(this, new MemoryCleaner(baseAddress));
-	}
+    private static native void free(long baseAddress);
 
-	public OpaqueMemory(OpaqueMemory owner, long baseAddress, int sizeInBytes) {
-		final long offset = baseAddress - owner.baseAddress;
-		if (sizeInBytes < 0) {
-			throw new IllegalArgumentException("negative size");
-		}
-		if (offset < 0) {
-			throw new IllegalArgumentException("start outside (before) mem area");
-		}
-		if (offset + sizeInBytes > owner.sizeInBytes) {
-			throw new IllegalArgumentException("end will be outside (after)) of owner");
-		}
-		this.baseAddress = baseAddress;
-		this.sizeInBytes = sizeInBytes;
-		memoryOwner = owner;
-	}
-	
+    public static native void memset(OpaqueMemory mem, byte c);
+
+    public static void clear(OpaqueMemory mem) {
+        memset(mem, (byte)0);
+    }
+
+    public OpaqueMemory(int sizeInBytes, boolean clearMem) {
+        this.sizeInBytes = sizeInBytes;
+        try {
+            if (clearMem) {
+                baseAddress = calloc(1, sizeInBytes);
+            } else {
+                baseAddress = malloc(sizeInBytes);
+            }
+        } catch (NativeErrorException nee) {
+            if (nee.errno == ENOMEM()) {
+                throw new OutOfMemoryError("Can't allocate " + sizeInBytes + " bytes ENOMEM");
+            } else {
+                throw new RuntimeException("Can't allocate " + sizeInBytes + " bytes ");
+            }
+        }
+        memoryOwner = this;
+        cleaner.register(this, new MemoryCleaner(baseAddress));
+    }
+
+    public OpaqueMemory(int elements, int sizeInBytes, boolean clearMem) {
+        this.sizeInBytes = sizeInBytes * elements;
+        try {
+            if (clearMem) {
+                baseAddress = calloc(elements, sizeInBytes);
+            } else {
+                baseAddress = malloc(sizeInBytes * elements);
+            }
+        } catch (NativeErrorException nee) {
+            if (nee.errno == ENOMEM()) {
+                throw new OutOfMemoryError("Can't allocate " + sizeInBytes * elements + " bytes ENOMEM");
+            } else {
+                throw new RuntimeException("Can't allocate " + sizeInBytes * elements + " bytes ");
+            }
+        }
+        memoryOwner = this;
+        cleaner.register(this, new MemoryCleaner(baseAddress));
+    }
+
+    public OpaqueMemory(OpaqueMemory owner, int offset, int sizeInBytes) {
+        if (sizeInBytes < 0) {
+            throw new IllegalArgumentException("negative size");
+        }
+        if (offset < 0) {
+            throw new IllegalArgumentException("start outside (before) mem area");
+        }
+        if (offset + sizeInBytes > owner.sizeInBytes) {
+            throw new IllegalArgumentException("end will be outside (after)) of owner");
+        }
+        this.baseAddress = owner.baseAddress + offset;
+        this.sizeInBytes = sizeInBytes;
+        memoryOwner = owner;
+    }
+
 }

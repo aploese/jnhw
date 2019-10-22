@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.util.winapi;
 
-import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.libloader.LoadResult;
+import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 
 /**
@@ -33,29 +33,43 @@ public final class LibJnhwWinApiLoader {
 
     public final static String LIB_JNHW_WINAPI = "jnhw-winapi";
     public final static int LIB_JNHW_WINAPI_VERSION = 0;
-    public final static LoadResult LIB_JNHW_WINAPI_LOAD_RESULT;
+    private static LoadResult LIB_JNHW_WINAPI_LOAD_RESULT;
+    private final static Object loadLock = new Object();
+    private static LoadState state = LoadState.INIT;
 
     protected static void doSystemLoad(String absoluteLibName) {
         System.load(absoluteLibName);
-    }
-
-    /**
-     * Here the lib is loaded any exceptions are not thrown ar class load time
-     */
-    static {
-        LibJnhwLoader.touch();
-        LIB_JNHW_WINAPI_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_WINAPI, LIB_JNHW_WINAPI_VERSION, LibJnhwWinApiLoader::doSystemLoad);
     }
 
     private LibJnhwWinApiLoader() {
     }
 
     /**
-     * Make sure the native lib is loaded
+     * load but break any loop loading the lib will trigger OpacqueMemory to
+     * trigger this again
      *
-     * @return true if loaded
+     * @return
      */
-    public static boolean touch() {
-        return LIB_JNHW_WINAPI_LOAD_RESULT.isLoaded();
+    public static LoadState touch() {
+        synchronized (loadLock) {
+            if (state != LoadState.INIT) {
+                return state;
+            }
+            state = LoadState.LOADING;
+        }
+        LIB_JNHW_WINAPI_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_WINAPI, LIB_JNHW_WINAPI_VERSION, LibJnhwWinApiLoader::doSystemLoad);
+        synchronized (loadLock) {
+            if (LIB_JNHW_WINAPI_LOAD_RESULT.isLoaded()) {
+                state = LoadState.SUCCESS;
+            } else {
+                state = LoadState.FAILURE;
+            }
+        }
+        return state;
     }
+
+    public static LoadResult getLoadResult() {
+        return LIB_JNHW_WINAPI_LOAD_RESULT;
+    }
+
 }

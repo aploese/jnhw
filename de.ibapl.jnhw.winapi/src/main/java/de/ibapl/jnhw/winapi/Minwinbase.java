@@ -53,28 +53,26 @@ public class Minwinbase {
 
         public final static native int sizeofOVERLAPPED();
 
-        private final static native long Internal(long baseAddress);
+        public final native long Internal();
 
-        private final static native long InternalHigh(long baseAddress);
+        public final native long InternalHigh();
 
-        private static native long hEvent(long baseAddress);
+        private native void hEvent0(HANDLE value);
 
-        private static native void hEvent(long baseAddress, long value);
-
-        private HANDLE hEvent;
+        private HANDLE cachedHEvent;
 
         public OVERLAPPED(boolean clearMem) {
             super(sizeofOVERLAPPED(), clearMem);
         }
 
         public final void hEvent(HANDLE value) {
-            hEvent = value;
-            hEvent(baseAddress, hEvent.value);
+            cachedHEvent = value;
+            hEvent0(value);
         }
 
         //TODO test for modifications in native mem ???
         public final HANDLE hEvent() {
-            return hEvent;
+            return cachedHEvent;
         }
 
     }
@@ -91,10 +89,10 @@ public class Minwinbase {
 
         public final static native int sizeofSECURITY_ATTRIBUTES();
 
-        private static final native long nLength(long baseAddress);
+        public final native long nLength();
 //        private Minwindef.LPVOID lpSecurityDescriptor;
 
-        private static native boolean bInheritHandle(long baseAddress);
+        public native boolean bInheritHandle();
 
         public SECURITY_ATTRIBUTES() {
             super(sizeofSECURITY_ATTRIBUTES(), true);

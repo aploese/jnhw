@@ -42,391 +42,391 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    DCBlength
-     * Signature: (JI)V
+     * Signature: (I)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_DCBlength__JI
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jint value) {
-        ((DCB*) (uintptr_t) baseAddress)->DCBlength = value;
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_DCBlength__I
+    (JNIEnv *env, jobject this, jint value) {
+        (UNWRAP_DCB(this))->DCBlength = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    DCBlength
-     * Signature: (J)I
+     * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_DCBlength__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->DCBlength;
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_DCBlength__
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->DCBlength;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    BaudRate
-     * Signature: (J)I
+     * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_BaudRate__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->BaudRate;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->BaudRate;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    BaudRate
-     * Signature: (JI)V
+     * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_BaudRate__JI
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jint value) {
-        ((DCB*) (uintptr_t) baseAddress)->BaudRate = value;
+    (JNIEnv *env, jobject this, jint value) {
+        (UNWRAP_DCB(this))->BaudRate = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fBinary
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fBinary
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fBinary;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fBinary;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fParity
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fParity
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fParity;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fParity;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fOutxCtsFlow
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fOutxCtsFlow__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fOutxCtsFlow;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fOutxCtsFlow;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fOutxCtsFlow
-     * Signature: (JZ)V
+     * Signature: (Z)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fOutxCtsFlow__JZ
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jboolean value) {
-        ((DCB*) (uintptr_t) baseAddress)->fOutxCtsFlow = value;
+    (JNIEnv *env, jobject this, jboolean value) {
+        (UNWRAP_DCB(this))->fOutxCtsFlow = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fOutxDsrFlow
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fOutxDsrFlow
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fOutxDsrFlow;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fOutxDsrFlow;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fDtrControl
-     * Signature: (J)I
+     * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fDtrControl
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fDtrControl;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fDtrControl;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fDsrSensitivity
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fDsrSensitivity
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fDsrSensitivity;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fDsrSensitivity;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fTXContinueOnXoff
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fTXContinueOnXoff
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fTXContinueOnXoff;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fTXContinueOnXoff;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fOutX
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fOutX__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fOutX;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fOutX;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fOutX
-     * Signature: (JZ)V
+     * Signature: (Z)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fOutX__JZ
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jboolean value) {
-        ((DCB*) (uintptr_t) baseAddress)->fOutX = value;
+    (JNIEnv *env, jobject this, jboolean value) {
+        (UNWRAP_DCB(this))->fOutX = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fInX
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fInX__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fInX;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fInX;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fInX
-     * Signature: (JZ)V
+     * Signature: (Z)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fInX__JZ
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jboolean value) {
-        ((DCB*) (uintptr_t) baseAddress)->fInX = value;
+    (JNIEnv *env, jobject this, jboolean value) {
+        (UNWRAP_DCB(this))->fInX = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fErrorChar
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fErrorChar
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fErrorChar;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fErrorChar;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fNull
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fNull
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fNull;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fNull;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fRtsControl
-     * Signature: (J)I
+     * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fRtsControl__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fRtsControl;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fRtsControl;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fRtsControl
-     * Signature: (JI)V
+     * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fRtsControl__JI
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jint value) {
-        ((DCB*) (uintptr_t) baseAddress)->fRtsControl = value;
+    (JNIEnv *env, jobject this, jint value) {
+        (UNWRAP_DCB(this))->fRtsControl = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fAbortOnError
-     * Signature: (J)Z
+     * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fAbortOnError
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fAbortOnError;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fAbortOnError;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fDummy2
-     * Signature: (J)I
+     * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fDummy2
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->fDummy2;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->fDummy2;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    wReserved
-     * Signature: (J)S
+     * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_wReserved
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->wReserved;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->wReserved;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    XonLim
-     * Signature: (J)S
+     * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XonLim
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->XonLim;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->XonLim;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    XoffLim
-     * Signature: (J)S
+     * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XoffLim
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->XoffLim;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->XoffLim;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    ByteSize
-     * Signature: (J)B
+     * Signature: ()B
      */
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_ByteSize__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->ByteSize;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->ByteSize;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    ByteSize
-     * Signature: (JB)V
+     * Signature: (B)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_ByteSize__JB
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jbyte value) {
-        ((DCB*) (uintptr_t) baseAddress)->ByteSize = value;
+    (JNIEnv *env, jobject this, jbyte value) {
+        (UNWRAP_DCB(this))->ByteSize = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    Parity
-     * Signature: (J)B
+     * Signature: ()B
      */
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_Parity__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->Parity;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->Parity;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    Parity
-     * Signature: (JB)V
+     * Signature: (B)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_Parity__JB
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jbyte value) {
-        ((DCB*) (uintptr_t) baseAddress)->Parity = value;
+    (JNIEnv *env, jobject this, jbyte value) {
+        (UNWRAP_DCB(this))->Parity = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    StopBits
-     * Signature: (J)B
+     * Signature: ()B
      */
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_StopBits__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->StopBits;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->StopBits;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    StopBits
-     * Signature: (JB)V
+     * Signature: (B)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_StopBits__JB
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jbyte value) {
-        ((DCB*) (uintptr_t) baseAddress)->StopBits = value;
+    (JNIEnv *env, jobject this, jbyte value) {
+        (UNWRAP_DCB(this))->StopBits = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    XonChar
-     * Signature: (J)C
+     * Signature: ()C
      */
     JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XonChar__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->XonChar;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->XonChar;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    XonChar
-     * Signature: (JC)V
+     * Signature: (C)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XonChar__JC
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jchar value) {
-        ((DCB*) (uintptr_t) baseAddress)->XonChar = value;
+    (JNIEnv *env, jobject this, jchar value) {
+        (UNWRAP_DCB(this))->XonChar = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    XoffChar
-     * Signature: (J)C
+     * Signature: ()C
      */
     JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XoffChar__J
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->XoffChar;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->XoffChar;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    XoffChar
-     * Signature: (JC)V
+     * Signature: (C)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XoffChar__JC
-    (JNIEnv *env, jclass clazz, jlong baseAddress, jchar value) {
-        ((DCB*) (uintptr_t) baseAddress)->XoffChar = value;
+    (JNIEnv *env, jobject this, jchar value) {
+        (UNWRAP_DCB(this))->XoffChar = value;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    ErrorChar
-     * Signature: (J)C
+     * Signature: ()C
      */
     JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_ErrorChar
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->ErrorChar;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->ErrorChar;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    EofChar
-     * Signature: (J)C
+     * Signature: ()C
      */
     JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_EofChar
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->EofChar;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->EofChar;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    EvtChar
-     * Signature: (J)C
+     * Signature: ()C
      */
     JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_EvtChar
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->EvtChar;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->EvtChar;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    wReserved1
-     * Signature: (J)S
+     * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_wReserved1
-    (JNIEnv *env, jclass clazz, jlong baseAddress) {
-        return ((DCB*) (uintptr_t) baseAddress)->wReserved1;
+    (JNIEnv *env, jobject this) {
+        return (UNWRAP_DCB(this))->wReserved1;
     }
 
 #ifdef __cplusplus

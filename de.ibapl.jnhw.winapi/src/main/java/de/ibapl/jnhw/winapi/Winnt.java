@@ -23,8 +23,6 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 
@@ -94,13 +92,101 @@ public final class Winnt {
     @Define
     public final static native int REG_QWORD_LITTLE_ENDIAN();
 
-    public static class HANDLE extends LongRef {
+    public static class HANDLE {
 
-        public HANDLE(long value) {
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
+        static {
+            LibJnhwWinApiLoader.touch();
+        }
+        
+        private final boolean mutable;
+        private long value;
+
+        /**
+         * This must be tested if it is always -1L As it ist to be expected.
+         */
+        private final static long INVALID_HANDLE_VALUE = -1L;
+
+        public HANDLE(long value, boolean mutable) {
             this.value = value;
+            this.mutable = mutable;
         }
 
         public HANDLE() {
+            this.mutable = true;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 5;
+            hash = 11 * hash + (int) (this.value ^ (this.value >>> 32));
+            return hash;
+        }
+
+        /**
+         * TODO implement Windows equals system...
+         *
+         * @param obj
+         * @return
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final HANDLE other = (HANDLE) obj;
+            if (this.value != other.value) {
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Test for validity: isSameHandleValue(Winbase.INVALID_HANDLE_VALUE());
+         *
+         * @param o
+         * @return
+         */
+        public boolean isSameHandleValue(HANDLE o) {
+            return value == o.value;
+        }
+
+        public boolean isValid() {
+            return value != INVALID_HANDLE_VALUE;
+        }
+
+        public void invalidate() {
+            if (!mutable) {
+                throw new IllegalStateException("cant invalidate, HANDLE is not mutable!");
+            }
+            value = INVALID_HANDLE_VALUE;
+        }
+
+        public void set(HANDLE newValue) {
+            if (!mutable) {
+                throw new IllegalStateException("cant set, HANDLE is not mutable!");
+            }
+            value = newValue.value;
+        }
+
+        public void clear() {
+            if (!mutable) {
+                throw new IllegalStateException("cant clear, HANDLE is not mutable!");
+            }
+            value = 0;
+        }
+
+        public static HANDLE newInvalidHandle() {
+            return new HANDLE(INVALID_HANDLE_VALUE, true);
         }
 
     }
@@ -131,10 +217,10 @@ public final class Winnt {
          * @return
          */
         public static String stringValueOfNullTerminated(Minwindef.LPBYTE lpData) {
-            return getString(lpData.baseAddress, lpData.bufferEnd.value / SIZE_OF_WCHAR - 1);
+            return getString(lpData, lpData.bufferEnd / SIZE_OF_WCHAR - 1);
         }
 
-        final IntRef bufferEnd;
+        int bufferEnd;
 
         /**
          * Creates space for a Wide String (16 bit)
@@ -144,14 +230,14 @@ public final class Winnt {
          */
         public LPWSTR(int elementLength, boolean clearMemory) {
             super(elementLength, SIZE_OF_WCHAR, clearMemory);
-            bufferEnd = new IntRef(elementLength);
+            bufferEnd = elementLength;
         }
 
 //        private static native void setString(long baseAddress, String value);
 //        public void set(String value) {
 //            setString(baseAddress, value);
 //        }
-        private static native String getString(long baseAddress, int charLength);
+        private static native String getString(OpaqueMemory lpByte, int charLength);
 
         /**
          * return the NULL terminated string @baseaddress
@@ -159,16 +245,16 @@ public final class Winnt {
          * @return
          */
         public String getString() {
-            return getString(baseAddress, bufferEnd.value);
+            return getString(this, bufferEnd);
         }
 
         public void clear() {
             OpaqueMemory.clear(this);
-            bufferEnd.value = sizeInBytes / SIZE_OF_WCHAR;
+            bufferEnd = sizeInBytes / SIZE_OF_WCHAR;
         }
 
         public void resetBufferEnd() {
-            bufferEnd.value = sizeInBytes;
+            bufferEnd = sizeInBytes;
         }
 
     }

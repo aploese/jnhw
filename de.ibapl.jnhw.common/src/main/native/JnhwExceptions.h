@@ -26,7 +26,7 @@ extern "C" {
 #endif
 
 
-    extern void initExceptions(JNIEnv* env);
+    extern jboolean initExceptions(JNIEnv* env);
 #ifdef __cplusplus
 }
 #endif

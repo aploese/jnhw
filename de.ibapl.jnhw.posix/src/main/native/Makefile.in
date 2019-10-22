@@ -164,9 +164,7 @@ am_libtermios_la_OBJECTS = TermiosDefines.lo TermiosFunctions.lo \
 	Termios_Termios.lo
 libtermios_la_OBJECTS = $(am_libtermios_la_OBJECTS)
 libunistd_la_LIBADD =
-am_libunistd_la_OBJECTS = Isoc_UnistdDefines.lo \
-	Isoc_UnistdFunctions.lo Posix_UnistdDefines.lo \
-	Posix_UnistdFunctions.lo
+am_libunistd_la_OBJECTS = UnistdDefines.lo UnistdFunctions.lo
 libunistd_la_OBJECTS = $(am_libunistd_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -189,15 +187,12 @@ am__depfiles_remade = ./$(DEPDIR)/EventFdDefines.Plo \
 	./$(DEPDIR)/IoctlFunctions.Plo \
 	./$(DEPDIR)/Isoc_ErrnoDefines.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
-	./$(DEPDIR)/Isoc_UnistdDefines.Plo \
-	./$(DEPDIR)/Isoc_UnistdFunctions.Plo \
 	./$(DEPDIR)/PollDefines.Plo ./$(DEPDIR)/PollFunctions.Plo \
 	./$(DEPDIR)/Poll_PollFd.Plo ./$(DEPDIR)/Posix_ErrnoDefines.Plo \
-	./$(DEPDIR)/Posix_UnistdDefines.Plo \
-	./$(DEPDIR)/Posix_UnistdFunctions.Plo \
 	./$(DEPDIR)/TermiosDefines.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo \
-	./$(DEPDIR)/Termios_Termios.Plo ./$(DEPDIR)/jnhw-posix-jni.Plo
+	./$(DEPDIR)/Termios_Termios.Plo ./$(DEPDIR)/UnistdDefines.Plo \
+	./$(DEPDIR)/UnistdFunctions.Plo ./$(DEPDIR)/jnhw-posix-jni.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -406,10 +401,8 @@ libioclt_la_SOURCES = \
  IoctlFunctions.c
 
 libunistd_la_SOURCES = \
- Isoc_UnistdDefines.c \
- Isoc_UnistdFunctions.c \
- Posix_UnistdDefines.c \
- Posix_UnistdFunctions.c
+ UnistdDefines.c \
+ UnistdFunctions.c
 
 libfcntl_la_SOURCES = \
  FcntlDefines.c \
@@ -542,17 +535,15 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_UnistdDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Poll_PollFd.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_UnistdDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Termios.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-posix-jni.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
@@ -724,17 +715,15 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
-	-rm -f ./$(DEPDIR)/Isoc_UnistdDefines.Plo
-	-rm -f ./$(DEPDIR)/Isoc_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
-	-rm -f ./$(DEPDIR)/Posix_UnistdDefines.Plo
-	-rm -f ./$(DEPDIR)/Posix_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
+	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
+	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
@@ -789,17 +778,15 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
-	-rm -f ./$(DEPDIR)/Isoc_UnistdDefines.Plo
-	-rm -f ./$(DEPDIR)/Isoc_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
-	-rm -f ./$(DEPDIR)/Posix_UnistdDefines.Plo
-	-rm -f ./$(DEPDIR)/Posix_UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
+	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
+	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic

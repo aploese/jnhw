@@ -55,7 +55,7 @@ public final class Termios {
      * @author aploese
      *
      */
-    public static class StructTermios extends OpaqueMemory {
+    public final static class StructTermios extends OpaqueMemory {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -67,69 +67,29 @@ public final class Termios {
 
         public final static native int sizeofTermios();
 
-        static native int c_iflag(long baseAddress);
+        public native int c_iflag();
 
-        static native void c_iflag(long baseAddress, int c_iflag);
+        public native void c_iflag(int c_iflag);
 
-        static native int c_oflag(long baseAddress);
+        public  native int c_oflag();
 
-        static native void c_oflag(long baseAddress, int c_oflag);
+        public  native void c_oflag(int c_oflag);
 
-        static native int c_cflag(long baseAddress);
+        public  native int c_cflag();
 
-        static native void c_cflag(long baseAddress, int c_cflag);
+        public  native void c_cflag(int c_cflag);
 
-        static native int c_lflag(long baseAddress);
+        public  native int c_lflag();
 
-        static native void c_lflag(long baseAddress, int c_lflag);
+        public  native void c_lflag(int c_lflag);
 
-        static native byte c_cc(long baseAddress, int index);
+        public  native byte c_cc(int index);
 
-        static native void c_cc(long baseAddress, int index, byte value);
+        public native void c_cc(int index, byte value);
 
         public StructTermios() {
             // get unitialized mem
             super(sizeofTermios(), false);
-        }
-
-        public final int c_iflag() {
-            return StructTermios.c_iflag(baseAddress);
-        }
-
-        public final void c_iflag(int c_iflag) {
-            StructTermios.c_iflag(baseAddress, c_iflag);
-        }
-
-        public final int c_oflag() {
-            return StructTermios.c_oflag(baseAddress);
-        }
-
-        public final void c_oflag(int c_oflag) {
-            StructTermios.c_oflag(baseAddress, c_oflag);
-        }
-
-        public final int c_cflag() {
-            return StructTermios.c_cflag(baseAddress);
-        }
-
-        public final void c_cflag(int c_cflag) {
-            StructTermios.c_cflag(baseAddress, c_cflag);
-        }
-
-        public final int c_lflag() {
-            return StructTermios.c_lflag(baseAddress);
-        }
-
-        public final void c_lflag(int c_lflag) {
-            StructTermios.c_lflag(baseAddress, c_lflag);
-        }
-
-        public final byte c_cc(int index) {
-            return StructTermios.c_cc(baseAddress, index);
-        }
-
-        public final void c_cc(int index, byte value) {
-            StructTermios.c_cc(baseAddress, index, value);
         }
 
         static public void c_cflag2String(StringBuilder sb, int c_cflag) {
@@ -229,22 +189,18 @@ public final class Termios {
 
         @Override
         public String toString() {
-            return StructTermios.toString(baseAddress);
-        }
-
-        public static String toString(long baseaddress) {
             StringBuilder sb = new StringBuilder();
             sb.append("{c_iflag = \"");
-            c_iflag2String(sb, StructTermios.c_iflag(baseaddress));
+            c_iflag2String(sb, c_iflag());
             sb.append("\", c_oflag = \"");
-            c_oflag2String(sb, StructTermios.c_oflag(baseaddress));
+            c_oflag2String(sb, c_oflag());
             sb.append("\", c_cflag = \"");
-            c_cflag2String(sb, StructTermios.c_cflag(baseaddress));
+            c_cflag2String(sb, c_cflag());
             sb.append("\", c_lflag = \"");
-            c_lflag2String(sb, StructTermios.c_lflag(baseaddress));
+            c_lflag2String(sb, c_lflag());
             sb.append("\", c_line = \"");
             for (int i = 0; i < NCCS(); i++) {
-                c_cc2String(sb, i, StructTermios.c_cc(baseaddress, i));
+                c_cc2String(sb, i, c_cc(i));
             }
             sb.append("}");
             return sb.toString();
@@ -417,52 +373,24 @@ public final class Termios {
     @Define
     public final static native int NCCS();
 
-    private static native int cfgetispeed(long termiosAddress);
+    public final static native int cfgetispeed(StructTermios termios);
 
-    public final static int cfgetispeed(StructTermios termios) {
-        return cfgetispeed(termios.baseAddress);
-    }
+    public final static native int cfgetospeed(StructTermios termios);
 
-    private static native int cfgetospeed(long termiosAddress);
+    public final static native int cfsetispeed(StructTermios termios, int speed) throws NativeErrorException; 
 
-    public final static int cfgetospeed(StructTermios termios) {
-        return cfgetospeed(termios.baseAddress);
-    }
-
-    private static native int cfsetispeed(long termiosAddress, int speed) throws NativeErrorException;
-
-    public final static int cfsetispeed(StructTermios termios, int speed) throws NativeErrorException {
-        return cfsetispeed(termios.baseAddress, speed);
-    }
-
-    private static native int cfsetospeed(long termiosAddress, int speed) throws NativeErrorException;
-
-    public final static int cfsetospeed(StructTermios termios, int speed) throws NativeErrorException {
-        return cfsetospeed(termios.baseAddress, speed);
-    }
+    public final static native int cfsetospeed(StructTermios termios, int speed) throws NativeErrorException;
 
     public final static native int tcdrain(int fildes) throws NativeErrorException;
 
     public final static native int tcflush(int fildes, int queue_selector) throws NativeErrorException;
 
-    private static native int tcgetattr(int fildes, long termiosAddress) throws NativeErrorException;
-
-    public final static int tcgetattr(int fildes, StructTermios termios) throws NativeErrorException {
-        return tcgetattr(fildes, termios.baseAddress);
-    }
+    public final static native int tcgetattr(int fildes, StructTermios termios) throws NativeErrorException;
 
     public final static native int tcsendbreak(int fildes, int duration) throws NativeErrorException;
 
-    private static native int tcsetattr(int fildes, int optional_actions, long termiosAddress) throws NativeErrorException;
+    public final static native int tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException;
 
-    public final static int tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException {
-        return tcsetattr(fildes, optional_actions, termios.baseAddress);
-    }
-
-    private static native int cfsetspeed(long termiosAddress, int speed) throws NativeErrorException;
-
-    public final static int cfsetspeed(StructTermios termios, int speed) throws NativeErrorException {
-        return cfsetspeed(termios.baseAddress, speed);
-    }
+    public final static native int cfsetspeed(StructTermios termios, int speed) throws NativeErrorException;
 
 }

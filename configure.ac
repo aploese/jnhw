@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([jnhw], [11.5.3], [aploese@gmx.de])
+AC_INIT([jnhw], [1.1.0], [aploese@gmx.de])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AM_MAINTAINER_MODE
 
