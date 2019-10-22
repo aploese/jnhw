@@ -121,12 +121,12 @@ extern "C" {
         return lpNumberOfBytesRead;
     }
 
-    /*
+/*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    ReadFile_ParamsOK
      * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Ljava/nio/ByteBuffer;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile_1ParamsOK
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile_1ParamsOK__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Ljava_nio_ByteBuffer_2II
     (JNIEnv *env, jclass clazz, jobject hFile, jobject lpBuffer, jint pos, jint len) {
 
         DWORD lpNumberOfBytesRead;
