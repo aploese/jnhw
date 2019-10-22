@@ -150,11 +150,11 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winbase_INVALID_1HANDLE_1VALUE
     (JNIEnv *env, jclass clazz) {
-        static jobject result = NULL;
-        if (result == NULL) {
-            result = CREATE_HANDLE((jlong) (uintptr_t) INVALID_HANDLE_VALUE, JNI_FALSE);
+        static jobject cachedHandle = NULL;
+        if (cachedHandle == NULL) {
+            cachedHandle = CREATE_HANDLE((jlong) (uintptr_t) INVALID_HANDLE_VALUE, JNI_FALSE);
         }
-        return result;
+        return cachedHandle;
     }
 
     /*

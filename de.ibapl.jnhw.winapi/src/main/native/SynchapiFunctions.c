@@ -54,14 +54,10 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_CreateEventW
     (JNIEnv *env, jclass clazz, jobject lpEventAttributes, jboolean bManualReset, jboolean bInitialState, jstring lpName) {
-        if (lpEventAttributes == NULL) {
-            throw_NullPointerException(env, "lpEventAttributes is null");
-            return NULL;
-        }
 
         LPCWSTR _lpName = lpName != NULL ? (*env)->GetStringChars(env, lpName, NULL) : NULL;
 
-        HANDLE result = CreateEventW(UNWRAP_LPSECURITY_ATTRIBUTES(lpEventAttributes), bManualReset, bInitialState, _lpName);
+        HANDLE result = CreateEventW(UNWRAP_LPSECURITY_ATTRIBUTES_OR_NULL(lpEventAttributes), bManualReset, bInitialState, _lpName);
         if (lpName != NULL) {
             (*env)->ReleaseStringChars(env, lpName, _lpName);
         }

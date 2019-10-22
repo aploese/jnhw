@@ -22,6 +22,68 @@
 #include "jnhw-winapi.h"
 #include "de_ibapl_jnhw_winapi_Fileapi.h"
 
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    doTest
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_doTest__II
+  (JNIEnv *env, jclass clazz, jint offset, jint len) {
+    return offset + len;
+}
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    doTest
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;II)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_doTest__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2II
+  (JNIEnv *env, jclass clazz, jobject o1, jint offset, jint len) {
+    return offset + len;
+}
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    doTest
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/OpaqueMemory;II)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_doTest__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_OpaqueMemory_2II
+  (JNIEnv *env, jclass clazz, jobject o1, jobject o2, jint offset, jint len) {
+    return offset + len;
+}
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    doTest
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_doTest__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2IILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
+  (JNIEnv *env, jclass clazz, jobject o1, jint offset, jint len, jobject o3) {
+    return offset + len;
+}
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    doTest
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/OpaqueMemory;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_doTest__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_OpaqueMemory_2IILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
+  (JNIEnv *env, jclass clazz, jobject o1, jobject o2, jint offset, jint len, jobject o3) {
+    return offset + len;
+}
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    doTest
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Ljava/nio/ByteBuffer;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_doTest__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Ljava_nio_ByteBuffer_2IILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
+  (JNIEnv *env, jclass clazz, jobject o1, jobject o2, jint offset, jint len, jobject o3) {
+    return offset + len;
+}
+
+
 #ifdef HAVE_FILEAPI_H
 #include <fileapi.h>
 

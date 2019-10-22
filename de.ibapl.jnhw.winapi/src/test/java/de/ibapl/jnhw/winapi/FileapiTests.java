@@ -69,6 +69,40 @@ public class FileapiTests {
 
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testByteArray() throws Exception {
+        Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_WRITE(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                0,
+                null);
+        int bytesWritten = Fileapi.WriteFile(hFile, WRITE_VALUE, 0, WRITE_VALUE.length);
+        Winbase.CloseHandle(hFile);
+        Assertions.assertEquals(WRITE_VALUE.length, bytesWritten);
+
+        try (FileInputStream fio = new FileInputStream(file)) {
+            byte[] readBuffer = new byte[WRITE_VALUE.length];
+            fio.read(readBuffer);
+            for (int i = 0; i < WRITE_VALUE.length; i++) {
+                Assertions.assertEquals(WRITE_VALUE[i], readBuffer[i]);
+            }
+        }
+        hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_READ(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                0,
+                null);
+        byte[] readBuffer = new byte[WRITE_VALUE.length];
+        int bytesRead = Fileapi.ReadFile(hFile, readBuffer, 0, readBuffer.length);
+        Winbase.CloseHandle(hFile);
+        Assertions.assertEquals(WRITE_VALUE.length, bytesRead);
+    }
+
+    @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testByteBufferSynchron() throws Exception {
         Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
                 Winnt.GENERIC_WRITE(),
@@ -210,10 +244,10 @@ public class FileapiTests {
         Winbase.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
     }
-    
-        @Test
+
+    @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testOpaqueMemory() throws Exception {
+    public void testOpaqueMemorySynchron() throws Exception {
         Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
                 Winnt.GENERIC_WRITE(),
                 0,
@@ -221,21 +255,11 @@ public class FileapiTests {
                 Fileapi.OPEN_EXISTING(),
                 0,
                 null);
-        Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED(true);
-        overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
-
-            OpaqueMemory byteBuffer = new OpaqueMemory(64, true);
-        OpaqueMemory.copy(byteBuffer, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
-        Fileapi.WriteFile(hFile, byteBuffer, overlapped);
-        long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
-        if (waitResult != Winbase.WAIT_OBJECT_0()) {
-            Assertions.fail("Error during wait");
-        }
-        int bytesTransferred = Ioapiset.GetOverlappedResult(hFile, overlapped, false);
-        Synchapi.ResetEvent(hFile);
-
+        OpaqueMemory opaqueMemory = new OpaqueMemory(64, true);
+        OpaqueMemory.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
+        int bytesWritten = Fileapi.WriteFile(hFile, opaqueMemory, 0, opaqueMemory.sizeInBytes);
         Winbase.CloseHandle(hFile);
-        Assertions.assertEquals(byteBuffer.sizeInBytes, bytesTransferred);
+        Assertions.assertEquals(WRITE_VALUE.length, bytesWritten);
 
         try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
@@ -251,16 +275,61 @@ public class FileapiTests {
                 Fileapi.OPEN_EXISTING(),
                 0,
                 null);
-        OpaqueMemory.clear(byteBuffer);
-        Fileapi.ReadFile(hFile, byteBuffer, 0, WRITE_VALUE.length, overlapped);
+        int bytesRead = Fileapi.ReadFile(hFile, opaqueMemory, 0, opaqueMemory.sizeInBytes);
+        Winbase.CloseHandle(hFile);
+        Assertions.assertEquals(bytesWritten, bytesRead);
+    }
+
+    @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testOpaqueMemoryASynchron() throws Exception {
+        Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_WRITE(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                0,
+                null);
+        Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED(true);
+        overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
+
+        OpaqueMemory opaqueMemory = new OpaqueMemory(64, true);
+        OpaqueMemory.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
+        Fileapi.WriteFile(hFile, opaqueMemory, overlapped);
+        long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
+        if (waitResult != Winbase.WAIT_OBJECT_0()) {
+            Assertions.fail("Error during wait");
+        }
+        int bytesTransferred = Ioapiset.GetOverlappedResult(hFile, overlapped, false);
+        Synchapi.ResetEvent(hFile);
+
+        Winbase.CloseHandle(hFile);
+        Assertions.assertEquals(opaqueMemory.sizeInBytes, bytesTransferred);
+
+        try (FileInputStream fio = new FileInputStream(file)) {
+            byte[] readBuffer = new byte[WRITE_VALUE.length];
+            fio.read(readBuffer);
+            for (int i = 0; i < WRITE_VALUE.length; i++) {
+                Assertions.assertEquals(WRITE_VALUE[i], readBuffer[i]);
+            }
+        }
+        hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_READ(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                0,
+                null);
+        OpaqueMemory.clear(opaqueMemory);
+        Fileapi.ReadFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
         waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
         if (waitResult != Winbase.WAIT_OBJECT_0()) {
             Assertions.fail("Error during wait");
         }
         bytesTransferred = Ioapiset.GetOverlappedResult(hFile, overlapped, false);
-        
+
         Winbase.CloseHandle(hFile);
-        
+
         Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
     }
 
