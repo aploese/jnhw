@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.util.winapi;
 
+import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
@@ -57,7 +58,12 @@ public final class LibJnhwWinApiLoader {
             }
             state = LoadState.LOADING;
         }
-        LIB_JNHW_WINAPI_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_WINAPI, LIB_JNHW_WINAPI_VERSION, LibJnhwWinApiLoader::doSystemLoad);
+        if (LoadState.SUCCESS == LibJnhwLoader.touch()) {
+            LIB_JNHW_WINAPI_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_WINAPI, LIB_JNHW_WINAPI_VERSION, LibJnhwWinApiLoader::doSystemLoad);
+        } else {
+            //Just mark the error a dependant lib was not properly loaded
+            LIB_JNHW_WINAPI_LOAD_RESULT = LibJnhwLoader.getLoadResult();
+        }
         synchronized (loadLock) {
             if (LIB_JNHW_WINAPI_LOAD_RESULT.isLoaded()) {
                 state = LoadState.SUCCESS;

@@ -58,7 +58,12 @@ public final class LibJnhwPosixLoader {
             }
             state = LoadState.LOADING;
         }
-        LIB_JNHW_POSIX_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION, LibJnhwPosixLoader::doSystemLoad);
+        if (LoadState.SUCCESS == LibJnhwLoader.touch()) {
+            LIB_JNHW_POSIX_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION, LibJnhwPosixLoader::doSystemLoad);
+        } else {
+            //Just mark the error a dependant lib was not properly loaded
+            LIB_JNHW_POSIX_LOAD_RESULT = LibJnhwLoader.getLoadResult();
+        }
         synchronized (loadLock) {
             if (LIB_JNHW_POSIX_LOAD_RESULT.isLoaded()) {
                 state = LoadState.SUCCESS;
@@ -68,7 +73,7 @@ public final class LibJnhwPosixLoader {
         }
         return state;
     }
-    
+
     public static LoadResult getLoadResult() {
         return LIB_JNHW_POSIX_LOAD_RESULT;
     }

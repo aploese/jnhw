@@ -47,20 +47,15 @@ public final class LibJnhwLoader {
     private LibJnhwLoader() {
     }
 
-    public static Throwable getLoadError() {
-        if (!LIB_JNHW_COMMON_LOAD_RESULT.isLoaded()) {
-            return LIB_JNHW_COMMON_LOAD_RESULT.loadError;
-        } else if (!LIB_JNHW_LOAD_RESULT.isLoaded()) {
-            return LIB_JNHW_LOAD_RESULT.loadError;
-        } else {
-            return null;
-        }
+    public static LoadResult getLoadResult() {
+        return LIB_JNHW_LOAD_RESULT;
     }
 
     /**
-     * load but break any loop
-     * loading the lib will trigger OpacqueMemory to trigger this again
-     * @return 
+     * load but break any loop loading the lib will trigger OpacqueMemory to
+     * trigger this again
+     *
+     * @return
      */
     public static LoadState touch() {
         synchronized (loadLock) {
@@ -70,9 +65,13 @@ public final class LibJnhwLoader {
             state = LoadState.LOADING;
         }
         LIB_JNHW_COMMON_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwLoader::doSystemLoad);
-        LIB_JNHW_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW, LIB_JNHW_VERSION, LibJnhwLoader::doSystemLoad);
+        if (LIB_JNHW_COMMON_LOAD_RESULT.isError()) {
+            LIB_JNHW_LOAD_RESULT = LIB_JNHW_COMMON_LOAD_RESULT;
+        } else {
+            LIB_JNHW_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW, LIB_JNHW_VERSION, LibJnhwLoader::doSystemLoad);
+        }
         synchronized (loadLock) {
-            if (LIB_JNHW_COMMON_LOAD_RESULT.isLoaded() && LIB_JNHW_LOAD_RESULT.isLoaded()) {
+            if (LIB_JNHW_LOAD_RESULT.isLoaded()) {
                 state = LoadState.SUCCESS;
             } else {
                 state = LoadState.FAILURE;
