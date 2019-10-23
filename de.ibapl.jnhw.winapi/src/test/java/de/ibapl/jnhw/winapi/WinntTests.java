@@ -76,7 +76,7 @@ public class WinntTests {
     }
 
     @Test
-//    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void test_LPWSTR_stringValueOfNullTerminated() throws Exception {
         byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
         Minwindef.LPBYTE lpByte = new Minwindef.LPBYTE(64, true);
