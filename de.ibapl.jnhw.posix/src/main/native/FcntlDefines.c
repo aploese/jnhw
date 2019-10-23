@@ -241,7 +241,12 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1RSYNC
     (JNIEnv *env, jclass clazz) {
+#ifdef O_RSYNC
         return O_RSYNC;
+#else
+        throw_NotDefinedException(env, "O_RSYNC");
+        return 0;
+#endif
     }
 
     /*

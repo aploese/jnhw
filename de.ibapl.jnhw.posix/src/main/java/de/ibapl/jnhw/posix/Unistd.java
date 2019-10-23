@@ -185,7 +185,7 @@ public final class Unistd {
 
     public final static native int lseek(int fildes, int offset, int whence) throws NativeErrorException;
 
-    public final static native long lseek64(int fildes, long offset, int whence) throws NativeErrorException;
+    public final static native long lseek64(int fildes, long offset, int whence) throws NativeErrorException, NotDefinedException;
 
     /**
      *

@@ -321,7 +321,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_lseek
     (JNIEnv *env, jclass clazz, jint fd, jint offset, jint whence) {
-        __off_t result = lseek(fd, offset, whence);
+        off_t result = lseek(fd, offset, whence);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -335,11 +335,16 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_lseek64
     (JNIEnv *env, jclass clazz, jint fd, jlong offset, jint whence) {
-        __off64_t result = lseek64(fd, offset, whence);
+#ifdef off64_t
+        off64_t result = lseek64(fd, offset, whence);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return result;
+#else
+        throw_NotDefinedException(env, "off64_t not defined in: off64_t lseek64(int fd, ff64_t offset, int whence);");
+            return -1;
+#endif
     }
 
     /*

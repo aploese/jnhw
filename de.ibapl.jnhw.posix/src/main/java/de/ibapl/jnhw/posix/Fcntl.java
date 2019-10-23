@@ -91,7 +91,7 @@ public final class Fcntl {
     public final static native int O_DSYNC();
 
     @Define
-    public final static native int O_RSYNC();
+    public final static native int O_RSYNC() throws NotDefinedException;
 
     @Define
     public final static native int O_FSYNC() throws NotDefinedException;
