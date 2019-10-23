@@ -41,14 +41,6 @@ import java.nio.ByteBuffer;
 @Include("fileapi.h")
 public final class Fileapi {
 
-    public static native HANDLE doTest_HANDLE(int value);
-    public static native int doTest(int offset, int len);
-    public static native int doTest(HANDLE hFile, int offset, int len);
-    public static native int doTest(HANDLE hFile, OpaqueMemory lpBuffer, int offset, int len);
-    public static native int doTest(HANDLE hFile, int offset, int len, OVERLAPPED lpOVERLAPPED);
-    public static native int doTest(HANDLE hFile, OpaqueMemory lpBuffer, int offset, int len, OVERLAPPED lpOVERLAPPED);
-    public static native int doTest(HANDLE hFile, ByteBuffer lpBuffer, int offset, int len, OVERLAPPED lpOVERLAPPED);
-
     /**
      * Make sure the native lib is loaded
      */
