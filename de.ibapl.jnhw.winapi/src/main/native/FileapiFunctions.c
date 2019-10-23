@@ -121,7 +121,7 @@ extern "C" {
         return lpNumberOfBytesRead;
     }
 
-/*
+    /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    ReadFile_ParamsOK
      * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Ljava/nio/ByteBuffer;II)I
@@ -175,6 +175,54 @@ extern "C" {
         DWORD lpNumberOfBytesRead;
         if (ReadFile(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + pos, len, &lpNumberOfBytesRead, NULL)) {
             return lpNumberOfBytesRead;
+        } else {
+            throw_NativeErrorException(env, GetLastError());
+            return -1;
+        }
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Fileapi
+     * Method:    ReadFile
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/ByteRef;)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_0024HANDLE_2Lde_ibapl_jnhw_ByteRef_2
+    (JNIEnv *env, jclass clazz, jobject hFile, jobject byteRef) {
+        if (hFile == NULL) {
+            throw_NullPointerException(env, "hFile is null.");
+            return -1;
+        }
+        if (byteRef == NULL) {
+            throw_NullPointerException(env, "byteRef is null.");
+            return -1;
+        }
+
+        DWORD lpNumberOfBytesRead;
+        jbyte _buf;
+        if (ReadFile(UNWRAP_HANDLE(hFile), &_buf, 1, &lpNumberOfBytesRead, NULL)) {
+            SET_BYTE_REF_VALUE(byteRef, _buf);
+            return lpNumberOfBytesRead;
+        } else {
+            throw_NativeErrorException(env, GetLastError());
+            return -1;
+        }
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Fileapi
+     * Method:    WriteFile
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;B)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_0024HANDLE_2B
+    (JNIEnv *env, jclass clazz, jobject hFile, jbyte b) {
+        if (hFile == NULL) {
+            throw_NullPointerException(env, "hFile is null.");
+            return -1;
+        }
+
+        DWORD lpNumberOfBytesWritten;
+        if (ReadFile(UNWRAP_HANDLE(hFile), &b, 1, &lpNumberOfBytesWritten, NULL)) {
+            return lpNumberOfBytesWritten;
         } else {
             throw_NativeErrorException(env, GetLastError());
             return -1;

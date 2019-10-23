@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.ByteRef;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
@@ -78,6 +79,8 @@ public final class Fileapi {
         lpNumberOfBytesRead.value = ReadFile(hFile, lpBuffer, 0, lpBuffer.sizeInBytes);
     }
 
+    public static native int ReadFile(HANDLE hFile, ByteRef b) throws NativeErrorException;
+
     public static native void ReadFile(HANDLE hFile, OpaqueMemory lpBuffer, int offset, int len, OVERLAPPED lpOVERLAPPED) throws NativeErrorException;
 
     public static void ReadFile(HANDLE hFile, OpaqueMemory lpBuffer, OVERLAPPED lpOVERLAPPED) throws NativeErrorException {
@@ -104,6 +107,15 @@ public final class Fileapi {
     public static void WriteFile(HANDLE hFile, OpaqueMemory lpBuffer, IntRef lpNumberOfBytesWritten) throws NativeErrorException {
         lpNumberOfBytesWritten.value = WriteFile(hFile, lpBuffer, 0, lpBuffer.sizeInBytes);
     }
+
+    /**
+     * Write a single byte.
+     * @param hFile
+     * @param b the byte to write.
+     * @return bytes written, also 1.
+     * @throws NativeErrorException 
+     */
+    public static native int WriteFile(HANDLE hFile, byte b) throws NativeErrorException;
 
     public static native void WriteFile(HANDLE hFile, OpaqueMemory lpBuffer, int offset, int len, OVERLAPPED lpOVERLAPPED) throws NativeErrorException;
 
