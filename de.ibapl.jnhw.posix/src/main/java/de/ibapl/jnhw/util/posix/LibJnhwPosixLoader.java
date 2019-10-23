@@ -33,7 +33,7 @@ import de.ibapl.jnhw.libloader.NativeLibResolver;
 public final class LibJnhwPosixLoader {
 
     public final static String LIB_JNHW_POSIX = "jnhw-posix";
-    public final static int LIB_JNHW_POSIX_VERSION = 0;
+    public final static int LIB_JNHW_POSIX_VERSION = 1;
     private static LoadResult LIB_JNHW_POSIX_LOAD_RESULT;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
