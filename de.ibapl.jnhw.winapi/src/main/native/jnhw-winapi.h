@@ -40,18 +40,23 @@ extern "C" {
 #define JNHW_CLASS_NAME_HANDLE "de/ibapl/jnhw/winapi/Winnt$HANDLE"
 #define JNHW_CLASS_NAME_LPWSTR "de/ibapl/jnhw/winapi/Winnt$LPWSTR"
 #define JNHW_CLASS_NAME_LPBYTE "de/ibapl/jnhw/winapi/Minwindef$LPBYTE"
+     extern jclass de_ibapl_jnhw_winapi_Winnt_HANDLE_Class;
      extern jfieldID de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID;
      extern jmethodID de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID;
      extern jfieldID de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID;
      extern jfieldID de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID;
-     extern jclass de_ibapl_jnhw_winapi_Winnt_HANDLE_Class;
      
 
 #define UNWRAP_HANDLE(handle) (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
 #define UNWRAP_HANDLE_OR_NULL(handle) (handle) == NULL ? NULL : (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
 #define SET_HANDLE_VALUE(handle, value) (*env)->SetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID, (jlong) (uintptr_t) value);
-#define CREATE_HANDLE(value, mutable) (*env)->NewObject(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID, (jlong) (uintptr_t) value, mutable)
+#define CREATE_HANDLE(value) (*env)->NewObject(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID, (jlong) (uintptr_t) value)
 
+#define UNWRAP_PHANDLE(handle) UNWRAP_OPAQUE_MEM_TO(PHANDLE, handle)   
+
+#define UNWRAP_PHKEY(handle)  UNWRAP_OPAQUE_MEM_TO(PHKEY, handle)   
+     
+     
 #define UNWRAP_HKEY(hKey) (HKEY) (uintptr_t) (*env)->GetLongField(env, (hKey), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
 
 #define UNWRAP_OVERLAPPED(overlapped) UNWRAP_OPAQUE_MEM_TO(OVERLAPPED*, overlapped)

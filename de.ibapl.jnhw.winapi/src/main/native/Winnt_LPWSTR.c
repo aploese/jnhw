@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-winapi.h"
-#include "de_ibapl_jnhw_winapi_Winnt.h"
+#include "de_ibapl_jnhw_winapi_Winnt_LPWSTR.h"
 
 #ifdef HAVE_WINNT_H
 #include <winnt.h>

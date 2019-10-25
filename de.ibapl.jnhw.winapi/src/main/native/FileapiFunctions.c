@@ -53,7 +53,7 @@ extern "C" {
         if (result == INVALID_HANDLE_VALUE) {
             throw_NativeErrorException(env, GetLastError());
         }
-        return CREATE_HANDLE(result, JNI_TRUE);
+        return CREATE_HANDLE(result);
     }
 
     /*

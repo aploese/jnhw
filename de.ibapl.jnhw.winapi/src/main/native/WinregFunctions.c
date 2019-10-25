@@ -95,12 +95,9 @@ extern "C" {
         }
         LPCWSTR _lpSubKey = (*env)->GetStringChars(env, lpSubKey, NULL);
 
-        HKEY _phkResult;
-
-        LSTATUS result = RegOpenKeyExW(UNWRAP_HKEY(hKey), _lpSubKey, ulOptions, samDesired, &_phkResult);
+        LSTATUS result = RegOpenKeyExW(UNWRAP_HKEY(hKey), _lpSubKey, ulOptions, samDesired, UNWRAP_PHKEY(phkResult));
 
         (*env)->ReleaseStringChars(env, lpSubKey, _lpSubKey);
-        SET_HANDLE_VALUE(phkResult, _phkResult);
 
         if (result != ERROR_SUCCESS) {
             throw_NativeErrorException(env, GetLastError());

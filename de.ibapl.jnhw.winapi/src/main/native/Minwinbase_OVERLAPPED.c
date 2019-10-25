@@ -63,7 +63,7 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_Int
 /*
  * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
  * Method:    hEvent0
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_hEvent0
     (JNIEnv *env, jobject this, jobject hEvent) {

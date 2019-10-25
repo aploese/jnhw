@@ -32,7 +32,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Ioapiset
      * Method:    GetOverlappedResult
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;Z)I
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;Z)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_GetOverlappedResult
     (JNIEnv *env, jclass clazz, jobject hFile, jobject lpOverlapped, jboolean bWait) {
@@ -60,7 +60,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Ioapiset
      * Method:    CancelIoEx
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_CancelIoEx
     (JNIEnv *env, jclass clazz, jobject hFile, jobject lpOverlapped) {
@@ -82,7 +82,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Ioapiset
      * Method:    CancelIo
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_CancelIo
     (JNIEnv *env, jclass clazz, jobject hFile) {

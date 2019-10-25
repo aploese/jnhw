@@ -101,22 +101,16 @@ public final class Winnt {
         static {
             LibJnhwWinApiLoader.touch();
         }
-        
-        private final boolean mutable;
-        private long value;
+
+        private final long value;
 
         /**
          * This must be tested if it is always -1L As it ist to be expected.
          */
         private final static long INVALID_HANDLE_VALUE = -1L;
 
-        public HANDLE(long value, boolean mutable) {
+        protected HANDLE(long value) {
             this.value = value;
-            this.mutable = mutable;
-        }
-
-        public HANDLE() {
-            this.mutable = true;
         }
 
         @Override
@@ -150,45 +144,54 @@ public final class Winnt {
             return true;
         }
 
+        public boolean isInvalid() {
+            return value == INVALID_HANDLE_VALUE;
+        }
+
+    }
+
+    public static class PHANDLE extends OpaqueMemory {
+
         /**
-         * Test for validity: isSameHandleValue(Winbase.INVALID_HANDLE_VALUE());
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
+        static {
+            LibJnhwWinApiLoader.touch();
+        }
+
+        HANDLE cachedHandle;
+
+        public PHANDLE() {
+            super(8, true);
+            cachedHandle = createTarget(getHandleValue());
+        }
+
+        private native long getHandleValue();
+
+        private native void setHandleValue(long value);
+
+        public HANDLE dereference() {
+            final long currentValue = getHandleValue();
+            if (cachedHandle.value != currentValue) {
+                //cached is not valid anymore, create new one...
+                cachedHandle = createTarget(currentValue);
+            }
+            return cachedHandle;
+        }
+
+        /**
+         * Must be overwritten in subclasses.
          *
-         * @param o
          * @return
          */
-        public boolean isSameHandleValue(HANDLE o) {
-            return value == o.value;
+        protected HANDLE createTarget(long value) {
+            return new HANDLE(value);
         }
 
-        public boolean isValid() {
-            return value != INVALID_HANDLE_VALUE;
+        public void setFromHANDLE(HANDLE target) {
+            setHandleValue(((HANDLE) target).value);
         }
-
-        public void invalidate() {
-            if (!mutable) {
-                throw new IllegalStateException("cant invalidate, HANDLE is not mutable!");
-            }
-            value = INVALID_HANDLE_VALUE;
-        }
-
-        public void set(HANDLE newValue) {
-            if (!mutable) {
-                throw new IllegalStateException("cant set, HANDLE is not mutable!");
-            }
-            value = newValue.value;
-        }
-
-        public void clear() {
-            if (!mutable) {
-                throw new IllegalStateException("cant clear, HANDLE is not mutable!");
-            }
-            value = 0;
-        }
-
-        public static HANDLE newInvalidHandle() {
-            return new HANDLE(INVALID_HANDLE_VALUE, true);
-        }
-
     }
 
     /**

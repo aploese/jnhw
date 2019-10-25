@@ -32,7 +32,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    CloseHandle
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CloseHandle
     (JNIEnv *env, jclass clazz, jobject hObject) {
@@ -48,7 +48,7 @@ extern "C" {
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    ClearCommBreak
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommBreak
     (JNIEnv *env, jclass clazz, jobject hFile) {
@@ -64,7 +64,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommBreak
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    ClearCommError
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Winbase/COMSTAT;)V
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Winbase/COMSTAT;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommError
     (JNIEnv *env, jclass clazz, jobject hFile, jobject lpErrors, jobject lpCOMSTAT) {
@@ -84,7 +84,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommError
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    EscapeCommFunction
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;I)V
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;I)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EscapeCommFunction
     (JNIEnv *env, jclass clazz, jobject hFile, jint dwFunc) {
@@ -100,7 +100,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EscapeCommFunction
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    GetCommModemStatus
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/IntRef;)V
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/IntRef;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommModemStatus
     (JNIEnv *env, jclass clazz, jobject hFile, jobject lpModemStat) {
@@ -118,7 +118,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommModemStatus
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    GetCommState
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommState
     (JNIEnv *env, jclass clazz, jobject hFile, jobject lpDCB) {
@@ -138,7 +138,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommState
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    GetCommTimeouts
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommTimeouts
     (JNIEnv *env, jclass clazz, jobject hFile, jobject lpCOMMTIMEOUTS) {
@@ -158,7 +158,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommTimeouts
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    SetCommBreak
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommBreak
     (JNIEnv *env, jclass clazz, jobject hFile) {
@@ -174,7 +174,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommBreak
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    SetCommState
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommState
     (JNIEnv *env, jclass clazz, jobject hFile, jobject lpDCB) {
@@ -194,7 +194,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommState
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    SetCommTimeouts
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommTimeouts
     (JNIEnv *env, jclass clazz, jobject hFile, jobject lpCOMMTIMEOUTS) {

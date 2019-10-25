@@ -22,7 +22,6 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -39,12 +38,8 @@ public abstract class Minwindef {
 
     public static class HKEY extends HANDLE {
 
-        public HKEY(long value, boolean mutable) {
-            super(value, mutable);
-        }
-
-        public HKEY() {
-            super();
+        public HKEY(long value) {
+            super(value);
         }
 
     }
@@ -53,14 +48,24 @@ public abstract class Minwindef {
      * Just the pointer to HKEY that where meaning it can be set in a function
      * call ....
      */
-    public static class PHKEY extends HKEY {
-
-        public PHKEY(long value, boolean mutable) {
-            super(value, mutable);
-        }
+    public static class PHKEY extends Winnt.PHANDLE {
 
         public PHKEY() {
             super();
+        }
+
+        @Override
+        public HKEY dereference() {
+            return (HKEY) super.dereference();
+        }
+
+        @Override
+        protected HKEY createTarget(long value) {
+            return new HKEY(value);
+        }
+
+        public void setFromHKEY(HKEY target) {
+            setFromHANDLE(target);
         }
 
     }

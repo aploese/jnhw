@@ -25,11 +25,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    jclass de_ibapl_jnhw_winapi_Winnt_HANDLE_Class = NULL;
     jfieldID de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID = NULL;
     jmethodID de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = NULL;
     jfieldID de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID = NULL;
     jfieldID de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID = NULL;
-    jclass de_ibapl_jnhw_winapi_Winnt_HANDLE_Class = NULL;
 
     JNIEXPORT jint JNICALL
     JNI_OnLoad(JavaVM *jvm, void *reserved) {
@@ -67,7 +67,7 @@ extern "C" {
         }
 
         if (de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID == NULL) {
-           de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, "<init>", "(JZ)V");
+           de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, "<init>", "(J)V");
             if (de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID == NULL) {
                 return JNI_ERR;
             }

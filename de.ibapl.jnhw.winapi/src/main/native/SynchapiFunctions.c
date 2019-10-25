@@ -32,7 +32,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    WaitForSingleObject
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;J)J
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;J)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForSingleObject
     (JNIEnv *env, jclass clazz, jobject hHandle, jlong dwMilliseconds) {
@@ -50,7 +50,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    CreateEventW
-     * Signature: (Lde/ibapl/jnhw/winapi/Minwinbase/SECURITY_ATTRIBUTES;ZZLjava/lang/String;)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+     * Signature: (Lde/ibapl/jnhw/winapi/Minwinbase$SECURITY_ATTRIBUTES;ZZLjava/lang/String;)Lde/ibapl/jnhw/winapi/Winnt$HANDLE;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_CreateEventW
     (JNIEnv *env, jclass clazz, jobject lpEventAttributes, jboolean bManualReset, jboolean bInitialState, jstring lpName) {
@@ -66,13 +66,13 @@ extern "C" {
             throw_NativeErrorException(env, GetLastError());
             return NULL;
         }
-        return CREATE_HANDLE(result, JNI_TRUE);
+        return CREATE_HANDLE(result);
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    SetEvent
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SetEvent
     (JNIEnv *env, jclass clazz, jobject hEvent) {

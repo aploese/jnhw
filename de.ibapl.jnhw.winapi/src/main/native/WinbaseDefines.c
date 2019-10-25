@@ -150,7 +150,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winbase_create_1INVALID_1HANDLE_1VALUE
     (JNIEnv *env, jclass clazz) {
-        return CREATE_HANDLE(INVALID_HANDLE_VALUE, JNI_FALSE);
+        return CREATE_HANDLE(INVALID_HANDLE_VALUE);
     }
 
     /*

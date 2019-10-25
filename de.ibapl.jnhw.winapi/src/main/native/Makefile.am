@@ -35,6 +35,7 @@ libjnhw_winapi_la_SOURCES = \
 
 libwinnt_la_SOURCES = \
  WinntDefines.c \
+ Winnt_PHANDLE.c \
  Winnt_LPWSTR.c
 
 libminwinbase_la_SOURCES = \

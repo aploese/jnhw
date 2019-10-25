@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.winapi.Minwindef.LPBYTE;
@@ -51,14 +52,14 @@ public class WinregTests {
         String testKeyStr = "HARDWARE\\DESCRIPTION\\System";
         PHKEY testKey = new PHKEY();
         Winreg.RegOpenKeyExW(Winreg.HKEY_LOCAL_MACHINE(), testKeyStr, 0, Winnt.KEY_READ(), testKey);
-        Assertions.assertNotEquals(testKey, new Winnt.HANDLE(0, false), "PHKEY is 0");
+        Assertions.assertFalse(testKey.cachedHandle.isInvalid(), "PHKEY is not valid");
         int dwIndex = 0;
         LPWSTR lpValueName = new LPWSTR(256, true);
         LPBYTE lpData = new LPBYTE(256, false);
         IntRef lpType = new IntRef();
         boolean collecting = true;
         do {
-            long result = Winreg.RegEnumValueW(testKey, dwIndex, lpValueName, lpType, lpData);
+            long result = Winreg.RegEnumValueW(testKey.dereference(), dwIndex, lpValueName, lpType, lpData);
             if (result == Winerror.ERROR_SUCCESS()) {
                 System.out.print("lpValueName: " + lpValueName.getString());
                 if (lpType.value == Winnt.REG_SZ()) {
@@ -80,7 +81,7 @@ public class WinregTests {
             }
         } while (collecting);
 
-        Winreg.RegCloseKey(testKey);
+        Winreg.RegCloseKey(testKey.dereference());
 
     }
 

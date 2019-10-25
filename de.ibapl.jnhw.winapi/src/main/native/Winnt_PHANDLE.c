@@ -19,32 +19,37 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.winapi;
+#include "jnhw-winapi.h"
+#include "de_ibapl_jnhw_winapi_Winnt_PHANDLE.h"
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledOnOs;
+#ifdef HAVE_WINNT_H
+#include <winnt.h>
 
-import de.ibapl.jnhw.libloader.NativeLibResolver;
-import de.ibapl.jnhw.libloader.OS;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-public class WinbaseTests {
-
-    @Test
-    public void test_HAVE_WINBASE_H() throws Exception {
-        if (NativeLibResolver.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Winbase.HAVE_WINBASE_H(), "expected to have winbase.h");
-        } else {
-            Assertions.assertFalse(Winbase.HAVE_WINBASE_H(), "not expected to have winbase.h");
-        }
-    }
-
-    @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testDefines() throws Exception {
-        Winbase.CLRBREAK();
-        Winnt.HANDLE h = Winbase.INVALID_HANDLE_VALUE();
-        Assertions.assertNotEquals(h, new Winnt.HANDLE(0));
-    }
-
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
+ * Method:    getHandleValue
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_getHandleValue
+  (JNIEnv *env, jobject this) {
+    return (jlong) (uintptr_t) *(UNWRAP_PHANDLE(this));
 }
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
+ * Method:    setHandleValue
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_setHandleValue
+  (JNIEnv *env, jobject this, jlong value) {
+    *(UNWRAP_PHANDLE(this)) = (HANDLE) (uintptr_t) value;
+}
+
+#ifdef __cplusplus
+}
+#endif
+#endif

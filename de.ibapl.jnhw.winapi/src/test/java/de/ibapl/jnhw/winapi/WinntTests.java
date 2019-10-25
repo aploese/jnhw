@@ -69,10 +69,8 @@ public class WinntTests {
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void test_INVALID_HANDLE_VALUE() throws Exception {
-        Winnt.HANDLE invalidHandle = Winnt.HANDLE.newInvalidHandle();
         Winnt.HANDLE ivh = Winbase.INVALID_HANDLE_VALUE();
-        Assertions.assertFalse(ivh.isValid());
-        Assertions.assertTrue(invalidHandle.isSameHandleValue(Winbase.INVALID_HANDLE_VALUE()));
+        Assertions.assertTrue(ivh.isInvalid());
     }
 
     @Test
