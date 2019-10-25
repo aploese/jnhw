@@ -46,6 +46,12 @@ extern "C" {
      */ 
     _JNHW_IMPORT_OR_EXPORT_ extern JNICALL jboolean jnhw_common_init(JNIEnv *env);
 
+    /**
+     * Init exceptions and Refs
+     * @returns JNI_TRUE if all is OK therwise JNI_FALSE if an exception occures
+     * 
+     */ 
+    _JNHW_IMPORT_OR_EXPORT_ extern JNICALL void jnhw_common_release(JNIEnv *env);
     //Exception names
 
 #define NATIVE_ERROR_EXCEPTION "de/ibapl/jnhw/NativeErrorException"
@@ -87,6 +93,8 @@ extern "C" {
 
 
     _JNHW_IMPORT_OR_EXPORT_ extern jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className);
+    
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL deleteGlobalRef(JNIEnv *env, jobject classRef);
 
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID JNICALL getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType);
 

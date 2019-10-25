@@ -75,8 +75,31 @@ extern "C" {
                 return JNI_FALSE;
             }
         }
-        
+
         return JNI_TRUE;
+    }
+
+    void releaseExceptions(JNIEnv* env) {
+        if (NativeErrorExceptionClass != NULL) {
+            deleteGlobalRef(env, NativeErrorExceptionClass);
+            NativeErrorExceptionClass = NULL;
+        }
+        if (NotDefinedExceptionClass != NULL) {
+            deleteGlobalRef(env, NotDefinedExceptionClass);
+            NotDefinedExceptionClass = NULL;
+        }
+        if (NullPointerExceptionClass != NULL) {
+            deleteGlobalRef(env, NullPointerExceptionClass);
+            NullPointerExceptionClass = NULL;
+        }
+        if (IndexOutOfBoundsExceptionClass != NULL) {
+            deleteGlobalRef(env, IndexOutOfBoundsExceptionClass);
+            IndexOutOfBoundsExceptionClass = NULL;
+        }
+        if (ArrayIndexOutOfBoundsExceptionClass != NULL) {
+            deleteGlobalRef(env, ArrayIndexOutOfBoundsExceptionClass);
+            ArrayIndexOutOfBoundsExceptionClass = NULL;
+        }
     }
 
     JNIEXPORT void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName) {

@@ -84,6 +84,18 @@ extern "C" {
          return JNI_TRUE;
     }
 
+    JNIEXPORT void  JNICALL jnhw_common_release(JNIEnv *env) {
+         releaseExceptions(env);
+         
+        de_ibapl_jnhw_ByteRef_value_ID = NULL;
+        de_ibapl_jnhw_ShortRef_value_ID = NULL;
+        de_ibapl_jnhw_IntRef_value_ID = NULL;
+        de_ibapl_jnhw_LongRef_value_ID = NULL;
+        de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = NULL;
+        de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = NULL;
+        de_ibapl_jnhw_StructArray_length_ID = NULL;
+    }
+
     JNIEXPORT jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className) {
         jclass clazz = (*env)->FindClass(env, className);
         if (clazz == NULL) {
@@ -98,6 +110,12 @@ extern "C" {
         }
         return result;
 
+    }
+
+    JNIEXPORT void JNICALL deleteGlobalRef(JNIEnv *env, jobject classRef) {
+        if (classRef != NULL) {
+            (*env)->DeleteGlobalRef(env, classRef);
+        }
     }
 
     JNIEXPORT jfieldID JNICALL getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType) {

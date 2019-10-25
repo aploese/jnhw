@@ -44,6 +44,7 @@ extern "C" {
         JNIEnv *env;
 
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_1_4)) {
+            jnhw_common_release(env);
             return;
         }
 
