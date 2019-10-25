@@ -21,14 +21,12 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.winapi.Minwindef.LPBYTE;
@@ -52,7 +50,7 @@ public class WinregTests {
         String testKeyStr = "HARDWARE\\DESCRIPTION\\System";
         PHKEY testKey = new PHKEY();
         Winreg.RegOpenKeyExW(Winreg.HKEY_LOCAL_MACHINE(), testKeyStr, 0, Winnt.KEY_READ(), testKey);
-        Assertions.assertFalse(testKey.cachedHandle.isInvalid(), "PHKEY is not valid");
+        Assertions.assertFalse(testKey.dereference().isInvalid(), "PHKEY is not valid");
         int dwIndex = 0;
         LPWSTR lpValueName = new LPWSTR(256, true);
         LPBYTE lpData = new LPBYTE(256, false);
