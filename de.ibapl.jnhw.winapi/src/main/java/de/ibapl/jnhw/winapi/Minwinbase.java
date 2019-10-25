@@ -57,22 +57,12 @@ public class Minwinbase {
 
         public final native long InternalHigh();
 
-        private native void hEvent0(HANDLE value);
-
-        private HANDLE cachedHEvent;
+        public native void hEvent(HANDLE value);
+        
+        public native HANDLE hEvent();
 
         public OVERLAPPED(boolean clearMem) {
             super(sizeofOVERLAPPED(), clearMem);
-        }
-
-        public final void hEvent(HANDLE value) {
-            cachedHEvent = value;
-            hEvent0(value);
-        }
-
-        //TODO test for modifications in native mem ???
-        public final HANDLE hEvent() {
-            return cachedHEvent;
         }
 
     }

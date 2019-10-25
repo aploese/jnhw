@@ -50,7 +50,7 @@ public class WinregTests {
         String testKeyStr = "HARDWARE\\DESCRIPTION\\System";
         PHKEY testKey = new PHKEY();
         Winreg.RegOpenKeyExW(Winreg.HKEY_LOCAL_MACHINE(), testKeyStr, 0, Winnt.KEY_READ(), testKey);
-        Assertions.assertFalse(testKey.dereference().isInvalid(), "PHKEY is not valid");
+        Assertions.assertFalse(testKey.dereference().is_INVALID_HANDLE_VALUE(), "PHKEY is not valid");
         int dwIndex = 0;
         LPWSTR lpValueName = new LPWSTR(256, true);
         LPBYTE lpData = new LPBYTE(256, false);

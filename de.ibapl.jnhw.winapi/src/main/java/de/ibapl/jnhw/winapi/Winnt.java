@@ -93,6 +93,16 @@ public final class Winnt {
     public final static native int REG_QWORD_LITTLE_ENDIAN();
 
     public static class HANDLE {
+        
+        final static long INVALID_HANDLE_VALUE__VALUE = -1L;
+
+        final static long NULL__VALUE = 0L;
+
+        public final static HANDLE NULL = new HANDLE(NULL__VALUE);
+        /**
+         * Winbase.INVALID_HANDLE_VALUE()
+         */
+        public final static HANDLE INVALID_HANDLE_VALUE = new HANDLE(INVALID_HANDLE_VALUE__VALUE);
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -104,13 +114,12 @@ public final class Winnt {
 
         private final long value;
 
-        /**
-         * This must be tested if it is always -1L As it ist to be expected.
-         */
-        private final static long INVALID_HANDLE_VALUE = -1L;
-
         protected HANDLE(long value) {
             this.value = value;
+        }
+
+        public HANDLE(HANDLE handle) {
+            this.value = handle.value;
         }
 
         @Override
@@ -144,10 +153,22 @@ public final class Winnt {
             return true;
         }
 
-        public boolean isInvalid() {
-            return value == INVALID_HANDLE_VALUE;
+        public boolean isNot_INVALID_HANDLE_VALUE() {
+            return value != INVALID_HANDLE_VALUE__VALUE;
         }
 
+        public boolean is_INVALID_HANDLE_VALUE() {
+            return value == INVALID_HANDLE_VALUE__VALUE;
+        }
+
+        public boolean is_NULL() {
+            return value == NULL__VALUE;
+        }
+        
+        public boolean isNot_NULL() {
+            return value != NULL__VALUE;
+        }
+        
     }
 
     public static class PHANDLE extends OpaqueMemory {
@@ -164,6 +185,12 @@ public final class Winnt {
 
         public PHANDLE() {
             super(8, true);
+            cachedHandle = createTarget(getHandleValue());
+        }
+
+        public PHANDLE(HANDLE handle) {
+            super(8, false);
+            setHandleValue(handle.value);
             cachedHandle = createTarget(getHandleValue());
         }
 
