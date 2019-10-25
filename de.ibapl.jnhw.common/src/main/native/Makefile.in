@@ -137,16 +137,13 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libjnhw_common_la_LIBADD =
-am_libjnhw_common_la_OBJECTS = jnhw.lo JnhwExceptions.lo \
+am_libjnhw_common_la_OBJECTS = jnhw.lo jnhw-jni.lo JnhwExceptions.lo \
 	OpaqueMemory.lo
 libjnhw_common_la_OBJECTS = $(am_libjnhw_common_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-libjnhw_la_DEPENDENCIES = ./libjnhw-common.la
-am_libjnhw_la_OBJECTS = jnhw-jni.lo
-libjnhw_la_OBJECTS = $(am_libjnhw_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -184,8 +181,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libjnhw_common_la_SOURCES) $(libjnhw_la_SOURCES)
-DIST_SOURCES = $(libjnhw_common_la_SOURCES) $(libjnhw_la_SOURCES)
+SOURCES = $(libjnhw_common_la_SOURCES)
+DIST_SOURCES = $(libjnhw_common_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -345,20 +342,15 @@ top_srcdir = @top_srcdir@
 AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_HEADER_DIR@
 AM_CFLAGS = -Wall -Werror
 AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
-LIB_JNHW_NAME = @JNHW_LIB_PREFIX@jnhw@JNHW_LIB_SUFFIX@
 LIB_JNHW_COMMON_NAME = @JNHW_LIB_PREFIX@jnhw-common@JNHW_LIB_SUFFIX@
-LIB_JNHW_RES_NAME = @JNHW_RESOURCES_DIR@/$(LIB_JNHW_NAME)
 LIB_JNHW_COMMON_RES_NAME = @JNHW_RESOURCES_DIR@/$(LIB_JNHW_COMMON_NAME)
 include_HEADERS = jnhw.h
-lib_LTLIBRARIES = libjnhw-common.la libjnhw.la
-libjnhw_la_LIBADD = ./libjnhw-common.la
+lib_LTLIBRARIES = libjnhw-common.la
 libjnhw_common_la_SOURCES = \
  jnhw.c \
+ jnhw-jni.c \
  JnhwExceptions.c \
  OpaqueMemory.c
-
-libjnhw_la_SOURCES = \
- jnhw-jni.c
 
 all: all-am
 
@@ -431,9 +423,6 @@ clean-libLTLIBRARIES:
 
 libjnhw-common.la: $(libjnhw_common_la_OBJECTS) $(libjnhw_common_la_DEPENDENCIES) $(EXTRA_libjnhw_common_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK) -rpath $(libdir) $(libjnhw_common_la_OBJECTS) $(libjnhw_common_la_LIBADD) $(LIBS)
-
-libjnhw.la: $(libjnhw_la_OBJECTS) $(libjnhw_la_DEPENDENCIES) $(EXTRA_libjnhw_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK) -rpath $(libdir) $(libjnhw_la_OBJECTS) $(libjnhw_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -721,19 +710,14 @@ uninstall-am: uninstall-includeHEADERS uninstall-libLTLIBRARIES
 
 
 #hook into make all
-all-local: $(LIB_JNHW_COMMON_RES_NAME) $(LIB_JNHW_RES_NAME)
+all-local: $(LIB_JNHW_COMMON_RES_NAME)
 
-install-jnhw-resources: $(LIB_JNHW_COMMON_RES_NAME) $(LIB_JNHW_RES_NAME)
+install-jnhw-resources: $(LIB_JNHW_COMMON_RES_NAME)
 
 $(LIB_JNHW_COMMON_RES_NAME): libjnhw-common.la
 	$(MKDIR_P) @JNHW_RESOURCES_DIR@
 	cp ./.libs/$(LIB_JNHW_COMMON_NAME) $(LIB_JNHW_COMMON_RES_NAME)
 	$(STRIP) $(JNHW_STRIP_FLAG) $(LIB_JNHW_COMMON_RES_NAME)
-
-$(LIB_JNHW_RES_NAME): libjnhw.la
-	$(MKDIR_P) @JNHW_RESOURCES_DIR@
-	cp ./.libs/$(LIB_JNHW_NAME) $(LIB_JNHW_RES_NAME)
-	$(STRIP) $(JNHW_STRIP_FLAG) $(LIB_JNHW_RES_NAME)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

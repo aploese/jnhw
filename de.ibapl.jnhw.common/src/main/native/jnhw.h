@@ -44,14 +44,14 @@ extern "C" {
      * @returns JNI_TRUE if all is OK therwise JNI_FALSE if an exception occures
      * 
      */ 
-    _JNHW_IMPORT_OR_EXPORT_ extern JNICALL jboolean jnhw_common_init(JNIEnv *env);
+    JNICALL jboolean jnhw_common_init(JNIEnv *env);
 
     /**
      * Init exceptions and Refs
      * @returns JNI_TRUE if all is OK therwise JNI_FALSE if an exception occures
      * 
      */ 
-    _JNHW_IMPORT_OR_EXPORT_ extern JNICALL void jnhw_common_release(JNIEnv *env);
+    JNICALL void jnhw_common_release(JNIEnv *env);
     //Exception names
 
 #define NATIVE_ERROR_EXCEPTION "de/ibapl/jnhw/NativeErrorException"

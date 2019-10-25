@@ -35,7 +35,7 @@ extern "C" {
     JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_StructArray_length_ID = NULL;
 
-    JNIEXPORT jboolean  JNICALL jnhw_common_init(JNIEnv *env) {
+    jboolean  JNICALL jnhw_common_init(JNIEnv *env) {
          if (initExceptions(env) == JNI_FALSE) {
              return JNI_FALSE;
          }
@@ -84,7 +84,7 @@ extern "C" {
          return JNI_TRUE;
     }
 
-    JNIEXPORT void  JNICALL jnhw_common_release(JNIEnv *env) {
+    void  JNICALL jnhw_common_release(JNIEnv *env) {
          releaseExceptions(env);
          
         de_ibapl_jnhw_ByteRef_value_ID = NULL;

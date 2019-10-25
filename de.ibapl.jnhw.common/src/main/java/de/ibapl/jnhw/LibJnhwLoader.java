@@ -31,12 +31,9 @@ import de.ibapl.jnhw.libloader.NativeLibResolver;
  */
 public final class LibJnhwLoader {
 
-    public final static String LIB_JNHW = "jnhw";
-    public final static int LIB_JNHW_VERSION = 1;
     public final static String LIB_JNHW_COMMON = "jnhw-common";
     public final static int LIB_JNHW_COMMON_VERSION = 1;
     private static LoadResult LIB_JNHW_COMMON_LOAD_RESULT;
-    private static LoadResult LIB_JNHW_LOAD_RESULT;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
 
@@ -48,7 +45,7 @@ public final class LibJnhwLoader {
     }
 
     public static LoadResult getLoadResult() {
-        return LIB_JNHW_LOAD_RESULT;
+        return LIB_JNHW_COMMON_LOAD_RESULT;
     }
 
     /**
@@ -65,13 +62,8 @@ public final class LibJnhwLoader {
             state = LoadState.LOADING;
         }
         LIB_JNHW_COMMON_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwLoader::doSystemLoad);
-        if (LIB_JNHW_COMMON_LOAD_RESULT.isError()) {
-            LIB_JNHW_LOAD_RESULT = LIB_JNHW_COMMON_LOAD_RESULT;
-        } else {
-            LIB_JNHW_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW, LIB_JNHW_VERSION, LibJnhwLoader::doSystemLoad);
-        }
         synchronized (loadLock) {
-            if (LIB_JNHW_LOAD_RESULT.isLoaded()) {
+            if (LIB_JNHW_COMMON_LOAD_RESULT.isLoaded()) {
                 state = LoadState.SUCCESS;
             } else {
                 state = LoadState.FAILURE;

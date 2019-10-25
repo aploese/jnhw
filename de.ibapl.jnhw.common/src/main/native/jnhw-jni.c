@@ -25,13 +25,15 @@
 extern "C" {
 #endif
 
+#define _JNHW_COMMON_IMPLEMENTATION_
+    
     JNIEXPORT jint JNICALL
     JNI_OnLoad(JavaVM *jvm, void *reserved) {
         JNIEnv *env;
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_1_4)) {
             return JNI_ERR;
         }
-
+        
         if (jnhw_common_init(env) == JNI_TRUE) {
             return JNI_VERSION_1_4;
         } else {
