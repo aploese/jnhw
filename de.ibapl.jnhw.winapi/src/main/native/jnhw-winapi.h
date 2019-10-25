@@ -49,16 +49,14 @@ extern "C" {
 
 #define UNWRAP_HANDLE(handle) (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
 #define UNWRAP_HANDLE_OR_NULL(handle) (handle) == NULL ? NULL : (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
-#define SET_HANDLE_VALUE(handle, value) (*env)->SetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID, (jlong) (uintptr_t) value);
 #define CREATE_HANDLE(value) (*env)->NewObject(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID, (jlong) (uintptr_t) value)
 
 #define UNWRAP_PHANDLE(handle) UNWRAP_OPAQUE_MEM_TO(PHANDLE, handle)   
 
-#define UNWRAP_PHKEY(handle)  UNWRAP_OPAQUE_MEM_TO(PHKEY, handle)   
-     
-     
 #define UNWRAP_HKEY(hKey) (HKEY) (uintptr_t) (*env)->GetLongField(env, (hKey), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
 
+#define UNWRAP_PHKEY(handle)  UNWRAP_OPAQUE_MEM_TO(PHKEY, handle)   
+     
 #define UNWRAP_OVERLAPPED(overlapped) UNWRAP_OPAQUE_MEM_TO(OVERLAPPED*, overlapped)
 #define UNWRAP_LPOVERLAPPED(lpOverlapped) UNWRAP_OPAQUE_MEM_TO(LPOVERLAPPED, lpOverlapped)
      

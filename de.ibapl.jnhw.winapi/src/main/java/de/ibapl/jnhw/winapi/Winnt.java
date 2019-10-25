@@ -181,15 +181,18 @@ public final class Winnt {
             LibJnhwWinApiLoader.touch();
         }
 
+        
+        public final static native int sizeofHANDLE();
+        
         HANDLE cachedHandle;
 
         public PHANDLE() {
-            super(8, true);
+            super(sizeofHANDLE(), true);
             cachedHandle = createTarget(getHandleValue());
         }
 
         public PHANDLE(HANDLE handle) {
-            super(8, false);
+            super(sizeofHANDLE(), false);
             setHandleValue(handle.value);
             cachedHandle = createTarget(getHandleValue());
         }

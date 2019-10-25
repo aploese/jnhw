@@ -28,6 +28,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
+ * Method:    sizeofHANDLE
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_sizeofHANDLE
+  (JNIEnv *env, jclass clazz) {
+    return sizeof(HANDLE);
+}
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
