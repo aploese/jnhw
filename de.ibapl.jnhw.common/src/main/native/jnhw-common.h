@@ -19,8 +19,8 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#ifndef _ljnhw_H
-#define _ljnhw_H
+#ifndef _ljnhw_common_H
+#define _ljnhw_common_H
 
 
 #define _GNU_SOURCE
@@ -39,28 +39,9 @@ extern "C" {
 #define _JNHW_IMPORT_OR_EXPORT_ JNIIMPORT
 #endif   
 
-    /**
-     * Init exceptions and Refs
-     * @returns JNI_TRUE if all is OK therwise JNI_FALSE if an exception occures
-     * 
-     */ 
-    JNICALL jboolean jnhw_common_init(JNIEnv *env);
-
-    /**
-     * Init exceptions and Refs
-     * @returns JNI_TRUE if all is OK therwise JNI_FALSE if an exception occures
-     * 
-     */ 
-    JNICALL void jnhw_common_release(JNIEnv *env);
-    //Exception names
-
-#define NATIVE_ERROR_EXCEPTION "de/ibapl/jnhw/NativeErrorException"
-#define NOT_DEFINED_EXCEPTION "de/ibapl/jnhw/NotDefinedException"
-#define NULL_POINTER_EXCEPTION "java/lang/NullPointerException"
-#define ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/ArrayIndexOutOfBoundsException"
-#define INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/IndexOutOfBoundsException"
-
-    //Important class names
+#include "JnhwExceptions.h"
+    
+//Important class names
 #define JNHW_CLASS_NAME_BYTE_REF "de/ibapl/jnhw/ByteRef"
 #define JNHW_CLASS_NAME_SHORT_REF "de/ibapl/jnhw/ShortRef"
 #define JNHW_CLASS_NAME_INT_REF "de/ibapl/jnhw/IntRef"
@@ -76,21 +57,6 @@ extern "C" {
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_OpaqueMemory_baseAddress_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_StructArray_length_ID;
-
-    //Cached Exceptions
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NativeErrorException(JNIEnv* env, int errno);
-
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName);
-
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NullPointerException(JNIEnv* env, const char* message);
-
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message);
-
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_IndexOutOfBoundsException(JNIEnv* env, const char* message);
-
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throwException(JNIEnv* env, const char* exceptionName, const char* fmt, ...);
-
-
 
     _JNHW_IMPORT_OR_EXPORT_ extern jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className);
     

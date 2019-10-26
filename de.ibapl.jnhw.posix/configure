@@ -13199,7 +13199,7 @@ JNHW_RESOURCES_DIR="\$(top_builddir)/src/main/resources/lib/\$(JNHW_MULTIARCH_TU
 JNI_HEADER_DIR="\$(top_builddir)/target/generated-sources/include"
 
 
-#get path of jnhw.h - The Quick and Dirty way....
+#get path of jnhw-common.h - The Quick and Dirty way....
 JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
 
 

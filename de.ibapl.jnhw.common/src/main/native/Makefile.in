@@ -137,7 +137,7 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libjnhw_common_la_LIBADD =
-am_libjnhw_common_la_OBJECTS = jnhw.lo jnhw-jni.lo JnhwExceptions.lo \
+am_libjnhw_common_la_OBJECTS = jnhw-common.lo JnhwExceptions.lo \
 	OpaqueMemory.lo
 libjnhw_common_la_OBJECTS = $(am_libjnhw_common_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -160,8 +160,7 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/JnhwExceptions.Plo \
-	./$(DEPDIR)/OpaqueMemory.Plo ./$(DEPDIR)/jnhw-jni.Plo \
-	./$(DEPDIR)/jnhw.Plo
+	./$(DEPDIR)/OpaqueMemory.Plo ./$(DEPDIR)/jnhw-common.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -344,11 +343,10 @@ AM_CFLAGS = -Wall -Werror
 AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
 LIB_JNHW_COMMON_NAME = @JNHW_LIB_PREFIX@jnhw-common@JNHW_LIB_SUFFIX@
 LIB_JNHW_COMMON_RES_NAME = @JNHW_RESOURCES_DIR@/$(LIB_JNHW_COMMON_NAME)
-include_HEADERS = jnhw.h
+include_HEADERS = jnhw-common.h JnhwExceptions.h
 lib_LTLIBRARIES = libjnhw-common.la
 libjnhw_common_la_SOURCES = \
- jnhw.c \
- jnhw-jni.c \
+ jnhw-common.c \
  JnhwExceptions.c \
  OpaqueMemory.c
 
@@ -432,8 +430,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwExceptions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OpaqueMemory.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-jni.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-common.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -619,8 +616,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
 	-rm -f ./$(DEPDIR)/OpaqueMemory.Plo
-	-rm -f ./$(DEPDIR)/jnhw-jni.Plo
-	-rm -f ./$(DEPDIR)/jnhw.Plo
+	-rm -f ./$(DEPDIR)/jnhw-common.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -668,8 +664,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
 	-rm -f ./$(DEPDIR)/OpaqueMemory.Plo
-	-rm -f ./$(DEPDIR)/jnhw-jni.Plo
-	-rm -f ./$(DEPDIR)/jnhw.Plo
+	-rm -f ./$(DEPDIR)/jnhw-common.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

@@ -5,13 +5,12 @@ AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
 LIB_JNHW_COMMON_NAME=@JNHW_LIB_PREFIX@jnhw-common@JNHW_LIB_SUFFIX@
 LIB_JNHW_COMMON_RES_NAME=@JNHW_RESOURCES_DIR@/$(LIB_JNHW_COMMON_NAME)
  
-include_HEADERS = jnhw.h
+include_HEADERS = jnhw-common.h JnhwExceptions.h
 
 lib_LTLIBRARIES = libjnhw-common.la
 
 libjnhw_common_la_SOURCES = \
- jnhw.c \
- jnhw-jni.c \
+ jnhw-common.c \
  JnhwExceptions.c \
  OpaqueMemory.c
 

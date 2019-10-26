@@ -46,7 +46,7 @@ AC_SUBST(JNHW_RESOURCES_DIR)
 JNI_HEADER_DIR="\$(top_builddir)/target/generated-sources/include"
 AC_SUBST(JNI_HEADER_DIR)
 
-#get path of jnhw.h - The Quick and Dirty way....
+#get path of jnhw-common.h - The Quick and Dirty way....
 JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
 AC_SUBST(JNHW_COMMON_SRC_DIR)
 

@@ -20,10 +20,9 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "jnhw.h"
+#include "jnhw-common.h"
 #include <stdio.h>
 #include <stdarg.h>
-#include "JnhwExceptions.h"
 
 #ifdef __cplusplus
 extern "C" {

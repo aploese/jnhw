@@ -19,9 +19,23 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "jnhw.h"
+#include "jnhw-common.h"
 #include "../../../config.h"
+
+#ifndef _jnhw_posix_H
+#define _jnhw_posix_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
 
 #define UNWRAP_STRUCT_TERMIOS_PTR(structTermios) UNWRAP_OPAQUE_MEM_TO(struct termios*, structTermios)
 
 #define UNWRAP_STRUCT_POLLFD_PTR(structPollFd) UNWRAP_OPAQUE_MEM_TO(struct pollfd*, structPollFd)
+
+ #ifdef __cplusplus
+}
+#endif
+
+#endif

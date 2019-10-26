@@ -20,8 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "jnhw.h"
-#include "JnhwExceptions.h"
+#include "jnhw-common.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,7 +34,7 @@ extern "C" {
     JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_StructArray_length_ID = NULL;
 
-    jboolean  JNICALL jnhw_common_init(JNIEnv *env) {
+    static jboolean  JNICALL jnhw_common_init(JNIEnv *env) {
          if (initExceptions(env) == JNI_FALSE) {
              return JNI_FALSE;
          }
@@ -84,7 +83,7 @@ extern "C" {
          return JNI_TRUE;
     }
 
-    void  JNICALL jnhw_common_release(JNIEnv *env) {
+    static void  JNICALL jnhw_common_release(JNIEnv *env) {
          releaseExceptions(env);
          
         de_ibapl_jnhw_ByteRef_value_ID = NULL;
@@ -184,6 +183,31 @@ extern "C" {
                 // We are very careful to avoid signed integer overflow,
                 // the result of which is undefined in C.
                 ((*env)->GetIntField(env, opaqueMemory, de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID) - pos < len));
+    }
+
+        JNIEXPORT jint JNICALL
+    JNI_OnLoad(JavaVM *jvm, void *reserved) {
+        JNIEnv *env;
+        if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_1_4)) {
+            return JNI_ERR;
+        }
+        
+        if (jnhw_common_init(env) == JNI_TRUE) {
+            return JNI_VERSION_1_4;
+        } else {
+            return JNI_ERR;
+        }
+    }
+
+    JNIEXPORT void JNICALL
+    JNI_OnUnload(JavaVM *jvm, void *reserved) {
+        JNIEnv *env;
+
+        if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_1_4)) {
+            jnhw_common_release(env);
+            return;
+        }
+
     }
 
 #ifdef __cplusplus

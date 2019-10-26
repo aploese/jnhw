@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "jnhw.h"
+#include "jnhw-common.h"
 
 #include "de_ibapl_jnhw_OpaqueMemory.h"
 #include <errno.h>

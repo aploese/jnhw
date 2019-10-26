@@ -19,17 +19,44 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "jnhw.h"
+
+#ifndef JnhwExceptions_H
+#define JnhwExceptions_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#define NATIVE_ERROR_EXCEPTION "de/ibapl/jnhw/NativeErrorException"
+#define NOT_DEFINED_EXCEPTION "de/ibapl/jnhw/NotDefinedException"
+#define NULL_POINTER_EXCEPTION "java/lang/NullPointerException"
+#define ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/ArrayIndexOutOfBoundsException"
+#define INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/IndexOutOfBoundsException"
+
+    //Cached Exceptions
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NativeErrorException(JNIEnv* env, int errno);
+
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName);
+
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NullPointerException(JNIEnv* env, const char* message);
+
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message);
+
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_IndexOutOfBoundsException(JNIEnv* env, const char* message);
+
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throwException(JNIEnv* env, const char* exceptionName, const char* fmt, ...);
+
+    
+#ifdef _JNHW_COMMON_IMPLEMENTATION_
 
     jboolean initExceptions(JNIEnv* env);
     
     void releaseExceptions(JNIEnv* env);
     
+#endif
+    
 #ifdef __cplusplus
 }
+#endif
+
 #endif

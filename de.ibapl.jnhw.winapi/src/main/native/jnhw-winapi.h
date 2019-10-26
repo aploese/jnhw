@@ -19,8 +19,11 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+#ifndef _jnhw_winapi_H
+#define _jnhw_winapi_H
+
 #include "../../../config.h"
-#include "jnhw.h"
+#include "jnhw-common.h"
 
 //TODO move this definition to the Makefile???
 #ifdef HAVE_WINDOWS_H
@@ -37,9 +40,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    
 #define JNHW_CLASS_NAME_HANDLE "de/ibapl/jnhw/winapi/Winnt$HANDLE"
 #define JNHW_CLASS_NAME_LPWSTR "de/ibapl/jnhw/winapi/Winnt$LPWSTR"
 #define JNHW_CLASS_NAME_LPBYTE "de/ibapl/jnhw/winapi/Minwindef$LPBYTE"
+
      extern jclass de_ibapl_jnhw_winapi_Winnt_HANDLE_Class;
      extern jfieldID de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID;
      extern jmethodID de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID;
@@ -80,7 +85,9 @@ extern "C" {
 #define UNWRAP_DCB(dcb) UNWRAP_OPAQUE_MEM_TO(DCB*, dcb)
 
 #define UNWRAP_COMMTIMEOUTS(commTimeOuts) UNWRAP_OPAQUE_MEM_TO(COMMTIMEOUTS*, commTimeOuts)
-     
+
 #ifdef __cplusplus
 }
+#endif
+
 #endif
