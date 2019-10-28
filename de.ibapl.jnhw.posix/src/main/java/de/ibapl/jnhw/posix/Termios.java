@@ -86,7 +86,15 @@ public final class Termios {
         public  native byte c_cc(int index);
 
         public native void c_cc(int index, byte value);
+        
+        public native int c_ispeed() throws NotDefinedException;
 
+        public native void c_ispeed(int speed) throws NotDefinedException;
+        
+        public native int c_ospeed() throws NotDefinedException;
+
+        public native void c_ospeed(int speed) throws NotDefinedException;
+        
         public StructTermios() {
             // get unitialized mem
             super(sizeofTermios(), false);
@@ -207,6 +215,12 @@ public final class Termios {
 
         }
     }
+
+    @Define
+    public final static native int _HAVE_STRUCT_TERMIOS_C_ISPEED() throws NotDefinedException;
+
+    @Define
+    public final static native int _HAVE_STRUCT_TERMIOS_C_OSPEED() throws NotDefinedException;
 
     @Define
     public final static native int B0();

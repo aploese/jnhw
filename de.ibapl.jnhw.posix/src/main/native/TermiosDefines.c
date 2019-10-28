@@ -47,6 +47,36 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    _HAVE_STRUCT_TERMIOS_C_ISPEED
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios__1HAVE_1STRUCT_1TERMIOS_1C_1ISPEED
+    (JNIEnv *env, jclass clazz) {
+#ifdef _HAVE_STRUCT_TERMIOS_C_ISPEED
+        return _HAVE_STRUCT_TERMIOS_C_ISPEED;
+#else
+        throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED");
+        return 0;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    _HAVE_STRUCT_TERMIOS_C_OSPEED
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios__1HAVE_1STRUCT_1TERMIOS_1C_1OSPEED
+    (JNIEnv *env, jclass clazz) {
+#ifdef _HAVE_STRUCT_TERMIOS_C_OSPEED
+        return _HAVE_STRUCT_TERMIOS_C_OSPEED;
+#else
+        throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED");
+        return 0;
+#endif
+    }
+
+        /*
+     * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    B0
      * Signature: ()I
      */

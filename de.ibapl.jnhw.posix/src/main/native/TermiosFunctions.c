@@ -193,6 +193,7 @@ extern "C" {
         return result;
     }
 
+    
 #ifdef __cplusplus
 }
 #endif

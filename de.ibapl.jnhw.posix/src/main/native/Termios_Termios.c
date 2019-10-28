@@ -142,6 +142,64 @@ extern "C" {
         (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cc[index] = value;
     }
 
+    /*
+ * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
+ * Method:    c_ispeed
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ispeed__
+  (JNIEnv *env, jobject structTermios) {
+#if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) || defined(_DARWIN_C_SOURCE) || defined(__BSD_VISIBLE) 
+    return (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed;
+#else
+        throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || _DARWIN_C_SOURCE || __BSD_VISIBLE");
+        return 0;
+#endif
+}
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
+ * Method:    c_ispeed
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ispeed__I
+  (JNIEnv *env, jobject structTermios, jint speed) {
+#if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) || defined(_DARWIN_C_SOURCE) || defined(__BSD_VISIBLE) 
+    (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed = speed;
+#else
+        throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || _DARWIN_C_SOURCE || __BSD_VISIBLE");
+#endif
+}
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
+ * Method:    c_ospeed
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ospeed__
+  (JNIEnv *env, jobject structTermios) {
+#if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) || defined(_DARWIN_C_SOURCE) || defined(__BSD_VISIBLE) 
+        return (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed;
+#else
+        throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || _DARWIN_C_SOURCE || __BSD_VISIBLE");
+        return 0;
+#endif
+}
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
+ * Method:    c_ospeed
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ospeed__I
+  (JNIEnv *env, jobject structTermios, jint speed) {
+#if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) || defined(_DARWIN_C_SOURCE) || defined(__BSD_VISIBLE) 
+    (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed = speed;
+#else
+        throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED || _DARWIN_C_SOURCE || __BSD_VISIBLE");
+#endif
+}
+
 #ifdef __cplusplus
 }
 #endif

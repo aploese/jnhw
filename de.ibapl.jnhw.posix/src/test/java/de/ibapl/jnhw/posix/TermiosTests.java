@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
@@ -40,6 +41,37 @@ public class TermiosTests {
             Assertions.assertFalse(Termios.HAVE_TERMIOS_H(), "not expected to have termios.h");
         } else {
             Assertions.assertTrue(Termios.HAVE_TERMIOS_H(), "expected to have termios.h");
+        }
+    }
+
+    @Test
+    public void structTermios_c_ispeed() throws Exception {
+        Termios.StructTermios structTermios = new Termios.StructTermios();
+        switch (NativeLibResolver.getOS()) {
+            case LINUX:
+                try {
+                    Termios._HAVE_STRUCT_TERMIOS_C_ISPEED();
+                    //Do the test
+                } catch (NotDefinedException nee) {
+                    //Skip the test
+                    return;
+                }
+                break;
+            case MAC_OS_X:
+                //Do the test
+                break;
+            case FREE_BSD:
+                //Do the test
+                break;
+            default:
+                //Skip the test
+                return;
+        }
+        try {
+            structTermios.c_ispeed(9600);
+            Assertions.assertEquals(9600, structTermios.c_ispeed());
+        } catch (NotDefinedException nde) {
+            Assertions.fail("Expected to have termios.c_ispeed but got this: " + nde.getMessage());
         }
     }
 
