@@ -188,12 +188,12 @@ extern "C" {
         JNIEXPORT jint JNICALL
     JNI_OnLoad(JavaVM *jvm, void *reserved) {
         JNIEnv *env;
-        if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_1_4)) {
+        if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
             return JNI_ERR;
         }
         
         if (jnhw_common_init(env) == JNI_TRUE) {
-            return JNI_VERSION_1_4;
+            return JNI_VERSION_10;
         } else {
             return JNI_ERR;
         }
@@ -203,7 +203,7 @@ extern "C" {
     JNI_OnUnload(JavaVM *jvm, void *reserved) {
         JNIEnv *env;
 
-        if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_1_4)) {
+        if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
             jnhw_common_release(env);
             return;
         }

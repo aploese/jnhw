@@ -34,7 +34,7 @@ extern "C" {
     JNIEXPORT jint JNICALL
     JNI_OnLoad(JavaVM *jvm, void *reserved) {
         JNIEnv *env;
-        if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_1_4)) {
+        if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
             return JNI_ERR;
         }
 
@@ -73,14 +73,14 @@ extern "C" {
             }
         }
 
-        return JNI_VERSION_1_4;
+        return JNI_VERSION_10;
     }
 
     JNIEXPORT void JNICALL
     JNI_OnUnload(JavaVM *jvm, void *reserved) {
         JNIEnv *env;
 
-        if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_1_4)) {
+        if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
             if (de_ibapl_jnhw_winapi_Winnt_HANDLE_Class != NULL)
                 deleteGlobalRef(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class);
             de_ibapl_jnhw_winapi_Winnt_HANDLE_Class = NULL;
