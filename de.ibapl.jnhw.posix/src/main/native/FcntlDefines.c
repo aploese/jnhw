@@ -23,6 +23,8 @@
 
 #if HAVE_UNISTD_H
 #include <unistd.h>
+// include POSIX OH (Optional Header) as well, to make FreeBSD happy. 
+#include <sys/stat.h>
 #endif
 
 /*
@@ -231,7 +233,12 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1DSYNC
     (JNIEnv *env, jclass clazz) {
+#ifdef O_DSYNC
         return O_DSYNC;
+#else
+        throw_NotDefinedException(env, "O_DSYNC");
+        return 0;
+#endif
     }
 
     /*

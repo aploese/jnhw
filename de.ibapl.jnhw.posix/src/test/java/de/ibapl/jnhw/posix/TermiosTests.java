@@ -64,8 +64,7 @@ public class TermiosTests {
                 //Do the test
                 break;
             default:
-                //Skip the test
-                return;
+                throw new RuntimeException("Add test wether struct termios has c_ispeed or not!");
         }
         try {
             structTermios.c_ispeed(9600);
