@@ -379,6 +379,10 @@ public class UnistdTests {
             Unistd.write(writeFD.value, (byte[]) null);
         });
 
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Unistd.write(writeFD.value, (byte[]) null, 0, 1);
+        });
+
         Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
             Unistd.write(writeFD.value, new byte[8], 1, 10);
         });
@@ -398,6 +402,10 @@ public class UnistdTests {
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Unistd.read(readFD.value, (byte[]) null);
+        });
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Unistd.read(readFD.value, (byte[]) null, 0, 1);
         });
 
         Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {

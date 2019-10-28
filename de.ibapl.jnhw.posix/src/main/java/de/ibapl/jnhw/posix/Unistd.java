@@ -113,12 +113,12 @@ public final class Unistd {
      */
     public final static native int read(int fildes, byte[] buf, int pos, int len) throws NativeErrorException;
 
-    private static native int read(int fildes, ByteBuffer buffer, int pos, int len) throws NativeErrorException;
+    private static native int read_ParamsOK(int fildes, ByteBuffer buffer, int pos, int len) throws NativeErrorException;
 
     public final static int read(int fildes, ByteBuffer buffer) throws NativeErrorException {
         final int result;
         if (buffer.isDirect()) {
-            result = read(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
+            result = read_ParamsOK(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
         } else {
             result = read(fildes, buffer.array(), buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
         }
@@ -157,12 +157,12 @@ public final class Unistd {
     public final static native int write(int fildes, byte[] buf, int pos, int len) throws NativeErrorException;
 
     //We pass down ByteBuffer to get the native address and pass the other data onto the stack
-    private static native int write(int fildes, ByteBuffer buffer, int pos, int len) throws NativeErrorException;
+    private static native int write_ParamsOK(int fildes, ByteBuffer buffer, int pos, int len) throws NativeErrorException;
 
     public final static int write(int fildes, ByteBuffer buffer) throws NativeErrorException {
         final int result;
         if (buffer.isDirect()) {
-            result = write(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
+            result = write_ParamsOK(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
         } else {
             if (buffer.isReadOnly()) {
                 // see buffer.array() why we do this is here.
@@ -172,7 +172,7 @@ public final class Unistd {
                 _buf.flip();
                 //We haven't written anything yet, so fix the position for now.
                 buffer.position(buffer.position() - bytesToWrite);
-                result = write(fildes, _buf, _buf.position(), _buf.remaining());
+                result = write_ParamsOK(fildes, _buf, _buf.position(), _buf.remaining());
             } else {
                 result = write(fildes, buffer.array(), buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
             }
@@ -199,7 +199,6 @@ public final class Unistd {
     public final static native void pipe(IntRef read_fd, IntRef write_fd) throws NativeErrorException;
 
     private Unistd() {
-
     }
 
 }

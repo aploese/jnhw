@@ -41,7 +41,7 @@
 extern "C" {
 #endif
 
-/*
+        /*
      * Class:     de_ibapl_jnhw_posix_Unistd_JnhwPrimitiveArrayCritical
      * Method:    read
      * Signature: (I[BII)I
@@ -160,10 +160,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    read
+     * Method:    read_ParamsOK
      * Signature: (ILjava/nio/ByteBuffer;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILjava_nio_ByteBuffer_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read_1ParamsOK
     (JNIEnv *env, jclass clazz, jint fd, jobject byteBuffer, jint pos, jint len) {
         //TODO handle the complete Bytebuffer here???
         long result = read(fd, (*env)->GetDirectBufferAddress(env, byteBuffer) + pos, len);
@@ -188,7 +188,7 @@ extern "C" {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
-        int result =  read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory), len);
+        int result = read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory), len);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -218,6 +218,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__I_3BII
     (JNIEnv *env, jclass clazz, jint fd, jbyteArray buf, jint pos, jint len) {
+        if (buf == NULL) {
+            throw_NullPointerException(env, "buf is null");
+            return -1;
+        }
+
         if (outOfBoundsByteArray(env, pos, len, buf)) {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
@@ -256,10 +261,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    write
+     * Method:    write_ParamsOK
      * Signature: (ILjava/nio/ByteBuffer;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILjava_nio_ByteBuffer_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write_1ParamsOK
     (JNIEnv *env, jclass clazz, jint fd, jobject byteBuffer, jint pos, jint len) {
         long result = write(fd, (*env)->GetDirectBufferAddress(env, byteBuffer) + pos, len);
         if (result < 0) {
@@ -268,18 +273,24 @@ extern "C" {
         return result;
     }
 
-/*
+        /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    write
      * Signature: (ILde/ibapl/jnhw/OpaqueMemory;II)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_OpaqueMemory_2II
-    (JNIEnv *env, jclass clazz, jint fd, jobject opaqueMemory, jint pos, jint len) {
-        if (outOfBoundsOpaqueMemory(env, pos, len, opaqueMemory)) {
+    (JNIEnv *env, jclass clazz, jint fd, jobject buf, jint pos, jint len) {
+        if (buf == NULL) {
+            throw_NullPointerException(env, "buf is null");
+            return -1;
+        }
+
+        if (outOfBoundsOpaqueMemory(env, pos, len, buf)) {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
-        int result =  write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory), len);
+
+        int result = write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf), len);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -343,7 +354,7 @@ extern "C" {
         return result;
 #else
         throw_NotDefinedException(env, "off64_t not defined in: off64_t lseek64(int fd, ff64_t offset, int whence);");
-            return -1;
+        return -1;
 #endif
     }
 
@@ -370,7 +381,6 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
     }
-
 
 #ifdef __cplusplus
 }
