@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.LibJnhwLoader;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
@@ -31,6 +32,7 @@ import static de.ibapl.jnhw.posix.Termios.CS8;
 import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
 import de.ibapl.jnhw.util.posix.Defined;
+import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,15 +42,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TermiosTests {
 
-        static MultiarchInfo multiarchInfo;
     @BeforeAll
     public static void setUpClass() {
-        MultiarchTupelBuilder multiarchTupelBuilder = new MultiarchTupelBuilder();
-        Set<MultiarchInfo> multiarchInfos = multiarchTupelBuilder.guessMultiarch();
-        if (multiarchInfos.size() != 1) {
-            fail("Cant guiess multiarch properly");
-        }
-        multiarchInfo = multiarchInfos.iterator().next();
     }
 
 
@@ -63,7 +58,7 @@ public class TermiosTests {
 
     @Test
     public void CMSPAR() {
-        switch (multiarchInfo.getOS()) {
+        switch (NativeLibResolver.getOS()) {
             case LINUX:
                 assertTrue(Defined.defined(Termios::CMSPAR), "CMSPAR");
                 break;
@@ -72,33 +67,33 @@ public class TermiosTests {
                 assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
                 break;
             default:
-                fail("Unknown multiarch: " + multiarchInfo);
+                fail("CMSPAR unknown on: " + NativeLibResolver.getOS());
         }
     }
     
     @Test
     public void PAREXT() {
-        switch (multiarchInfo.getOS()) {
+        switch (NativeLibResolver.getOS()) {
             case LINUX:
             case FREE_BSD:
             case MAC_OS_X:
                 assertFalse(Defined.defined(Termios::PAREXT), "PAREXT");
                 break;
             default:
-                fail("Unknown multiarch: " + multiarchInfo);
+                fail("PAREXT unknown on: " + NativeLibResolver.getOS());
         }
     }
     
     @Test
     public void PARMRK() {
-        switch (multiarchInfo.getOS()) {
+        switch (NativeLibResolver.getOS()) {
             case LINUX:
             case FREE_BSD:
             case MAC_OS_X:
                 assertTrue(Defined.defined(Termios::PARMRK), "PARMRK");
                 break;
             default:
-                fail("Unknown multiarch: " + multiarchInfo);
+                fail("PARMRK unknown on: " + NativeLibResolver.getOS());
         }
     }
     

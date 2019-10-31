@@ -157,6 +157,7 @@ public abstract class NativeLibResolver {
 					consumer.accept(classPathLibName);
 					LOG.log(Level.INFO, "\"{0}\" loaded via System.load(\"{1}\")",
 							new Object[] { libName, classPathLibName });
+                                        MULTIARCH_INFO.removeIf((t) -> {return t != mi;});
 					return LoadResult.successFromClassPath(libName, formattedLibName, classPathLibURL);
 				} catch (UnsatisfiedLinkError ule) {
 					LOG.log(Level.FINE, "lib {0} for {1} not loaded: {2}",
@@ -186,6 +187,7 @@ public abstract class NativeLibResolver {
 				consumer.accept(classPathLibName);
 				LOG.log(Level.INFO, "Lib loaded via System.load(\"{0}\")", classPathLibName);
 				tmpLib.delete();
+                                MULTIARCH_INFO.removeIf((t) -> {return t != mi;});
 				return LoadResult.successFromTempCopy(libName, formattedLibName, classPathLibURL,
 						tmpLib.getCanonicalPath());
 			} catch (Throwable t) {
@@ -229,4 +231,14 @@ public abstract class NativeLibResolver {
 	public static OS getOS() {
 		return RUNNING_ON_OS;
 	}
+        
+        public static MultiarchInfo getMultiarchInfo() {
+            Iterator<MultiarchInfo> i = MULTIARCH_INFO.iterator();
+            MultiarchInfo result = i.next();
+            if (i.hasNext()) {
+                throw new RuntimeException("More than one MultiArchinfo available");
+            } else {
+                return result;
+            }
+        }
 }

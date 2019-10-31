@@ -21,10 +21,8 @@
  */
 package de.ibapl.jnhw.util.posix;
 
-import de.ibapl.jnhw.libloader.MultiarchInfo;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,19 +36,11 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class SizeOfTest {
 
-    static MultiarchInfo multiarchInfo;
-
     public SizeOfTest() {
     }
 
     @BeforeAll
     public static void setUpClass() {
-        MultiarchTupelBuilder multiarchTupelBuilder = new MultiarchTupelBuilder();
-        Set<MultiarchInfo> multiarchInfos = multiarchTupelBuilder.guessMultiarch();
-        if (multiarchInfos.size() != 1) {
-            fail("Cant guiess multiarch properly");
-        }
-        multiarchInfo = multiarchInfos.iterator().next();
     }
 
     @AfterAll
@@ -71,7 +61,7 @@ public class SizeOfTest {
     @Test
     public void testOff_t() {
         System.out.println("off_t");
-        switch (multiarchInfo) {
+        switch (NativeLibResolver.getMultiarchInfo()) {
             case X86_64__LINUX__GNU:
             case X86_64__MAC_OS_X__BSD:
             case X86_64__FREE_BSD__BSD:
@@ -83,7 +73,7 @@ public class SizeOfTest {
                 assertEquals(4, SizeOf.off_t(), "off_t");
                 break;
             default:
-                fail("Unknown multiarch: " + multiarchInfo);
+                fail("no known test value for off_t in multiarch: " + NativeLibResolver.getMultiarchInfo());
         }
     }
 
@@ -93,7 +83,7 @@ public class SizeOfTest {
     @Test
     public void testCc_t() {
         System.out.println("cc_t");
-        switch (multiarchInfo) {
+        switch (NativeLibResolver.getMultiarchInfo()) {
             case X86_64__LINUX__GNU:
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
@@ -103,7 +93,7 @@ public class SizeOfTest {
                 assertEquals(1, SizeOf.cc_t(), "cc_t");
                 break;
             default:
-                fail("Unknown multiarch: " + multiarchInfo);
+                fail("no known test value for off_t in multiarch: " + NativeLibResolver.getMultiarchInfo());
         }
     }
 
@@ -113,7 +103,7 @@ public class SizeOfTest {
     @Test
     public void testTcflag_t() {
         System.out.println("tcflag_t");
-        switch (multiarchInfo) {
+        switch (NativeLibResolver.getMultiarchInfo()) {
             case X86_64__LINUX__GNU:
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
@@ -123,7 +113,7 @@ public class SizeOfTest {
                 assertEquals(4, SizeOf.tcflag_t(), "tcflag_t");
                 break;
             default:
-                fail("Unknown multiarch: " + multiarchInfo);
+                fail("no known test value for off_t in multiarch: " + NativeLibResolver.getMultiarchInfo());
         }
     }
 
@@ -133,7 +123,7 @@ public class SizeOfTest {
     @Test
     public void testSpeed_t() {
         System.out.println("speed_t");
-        switch (multiarchInfo) {
+        switch (NativeLibResolver.getMultiarchInfo()) {
             case X86_64__LINUX__GNU:
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
@@ -143,7 +133,7 @@ public class SizeOfTest {
                 assertEquals(4, SizeOf.speed_t(), "speed_t");
                 break;
             default:
-                fail("Unknown multiarch: " + multiarchInfo);
+                fail("no known test value for off_t in multiarch: " + NativeLibResolver.getMultiarchInfo());
         }
     }
 
@@ -153,7 +143,7 @@ public class SizeOfTest {
     @Test
     public void testEventfd_t() {
         System.out.println("eventfd_t");
-        if (multiarchInfo.getOS() == OS.LINUX) {
+        if (NativeLibResolver.getOS() == OS.LINUX) {
             assertEquals(8, SizeOf.eventfd_t(), "eventfd_t");
         } else {
             assertEquals(0, SizeOf.eventfd_t(), "eventfd_t");
