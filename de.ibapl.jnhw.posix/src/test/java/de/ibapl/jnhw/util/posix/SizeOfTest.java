@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.util.posix;
 
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.AfterEach;
@@ -61,23 +62,25 @@ public class SizeOfTest {
     @Test
     public void testOff_t() {
         System.out.println("off_t");
-        switch (NativeLibResolver.getMultiarchInfo()) {
-            case X86_64__LINUX__GNU:
-            case X86_64__MAC_OS_X__BSD:
-            case X86_64__FREE_BSD__BSD:
-                assertEquals(8, SizeOf.off_t(), "off_t");
-                break;
-            case ARM__LINUX__GNU_EABI:
-            case ARM__LINUX__GNU_EABI_HF:
-            case I386__LINUX__GNU:
-                assertEquals(4, SizeOf.off_t(), "off_t");
-                break;
-            case I386__WINDOWS__PE32:
-            case X86_64__WINDOWS__PE32_PLUS:
-                assertEquals(0, SizeOf.off_t(), "off_t");
-                break;
-            default:
-                fail("no known test value for off_t in multiarch: " + NativeLibResolver.getMultiarchInfo());
+        for (MultiarchInfo mi : NativeLibResolver.getMultiArchInfos()) {
+            switch (mi) {
+                case X86_64__LINUX__GNU:
+                case X86_64__MAC_OS_X__BSD:
+                case X86_64__FREE_BSD__BSD:
+                    assertEquals(8, SizeOf.off_t(), "off_t");
+                    break;
+                case ARM__LINUX__GNU_EABI:
+                case ARM__LINUX__GNU_EABI_HF:
+                case I386__LINUX__GNU:
+                    assertEquals(4, SizeOf.off_t(), "off_t");
+                    break;
+                case I386__WINDOWS__PE32:
+                case X86_64__WINDOWS__PE32_PLUS:
+                    assertEquals(0, SizeOf.off_t(), "off_t");
+                    break;
+                default:
+                    fail("no known test value for off_t in multiarch: " + mi);
+            }
         }
     }
 
@@ -87,21 +90,23 @@ public class SizeOfTest {
     @Test
     public void testCc_t() {
         System.out.println("cc_t");
-        switch (NativeLibResolver.getMultiarchInfo()) {
-            case X86_64__LINUX__GNU:
-            case ARM__LINUX__GNU_EABI:
-            case ARM__LINUX__GNU_EABI_HF:
-            case I386__LINUX__GNU:
-            case X86_64__MAC_OS_X__BSD:
-            case X86_64__FREE_BSD__BSD:
-                assertEquals(1, SizeOf.cc_t(), "cc_t");
-                break;
-            case I386__WINDOWS__PE32:
-            case X86_64__WINDOWS__PE32_PLUS:
-                assertEquals(0, SizeOf.off_t(), "cc_t");
-                break;
-            default:
-                fail("no known test value for cc_t in multiarch: " + NativeLibResolver.getMultiarchInfo());
+        for (MultiarchInfo mi : NativeLibResolver.getMultiArchInfos()) {
+            switch (mi) {
+                case X86_64__LINUX__GNU:
+                case ARM__LINUX__GNU_EABI:
+                case ARM__LINUX__GNU_EABI_HF:
+                case I386__LINUX__GNU:
+                case X86_64__MAC_OS_X__BSD:
+                case X86_64__FREE_BSD__BSD:
+                    assertEquals(1, SizeOf.cc_t(), "cc_t");
+                    break;
+                case I386__WINDOWS__PE32:
+                case X86_64__WINDOWS__PE32_PLUS:
+                    assertEquals(0, SizeOf.off_t(), "cc_t");
+                    break;
+                default:
+                    fail("no known test value for cc_t in multiarch: " + mi);
+            }
         }
     }
 
@@ -111,21 +116,23 @@ public class SizeOfTest {
     @Test
     public void testTcflag_t() {
         System.out.println("tcflag_t");
-        switch (NativeLibResolver.getMultiarchInfo()) {
-            case X86_64__LINUX__GNU:
-            case ARM__LINUX__GNU_EABI:
-            case ARM__LINUX__GNU_EABI_HF:
-            case I386__LINUX__GNU:
-            case X86_64__MAC_OS_X__BSD:
-            case X86_64__FREE_BSD__BSD:
-                assertEquals(4, SizeOf.tcflag_t(), "tcflag_t");
-                break;
-            case I386__WINDOWS__PE32:
-            case X86_64__WINDOWS__PE32_PLUS:
-                assertEquals(0, SizeOf.off_t(), "tcflag_t");
-                break;
-            default:
-                fail("no known test value for tcflag_t in multiarch: " + NativeLibResolver.getMultiarchInfo());
+        for (MultiarchInfo mi : NativeLibResolver.getMultiArchInfos()) {
+            switch (mi) {
+                case X86_64__LINUX__GNU:
+                case ARM__LINUX__GNU_EABI:
+                case ARM__LINUX__GNU_EABI_HF:
+                case I386__LINUX__GNU:
+                case X86_64__MAC_OS_X__BSD:
+                case X86_64__FREE_BSD__BSD:
+                    assertEquals(4, SizeOf.tcflag_t(), "tcflag_t");
+                    break;
+                case I386__WINDOWS__PE32:
+                case X86_64__WINDOWS__PE32_PLUS:
+                    assertEquals(0, SizeOf.off_t(), "tcflag_t");
+                    break;
+                default:
+                    fail("no known test value for tcflag_t in multiarch: " + mi);
+            }
         }
     }
 
@@ -135,21 +142,23 @@ public class SizeOfTest {
     @Test
     public void testSpeed_t() {
         System.out.println("speed_t");
-        switch (NativeLibResolver.getMultiarchInfo()) {
-            case X86_64__LINUX__GNU:
-            case ARM__LINUX__GNU_EABI:
-            case ARM__LINUX__GNU_EABI_HF:
-            case I386__LINUX__GNU:
-            case X86_64__MAC_OS_X__BSD:
-            case X86_64__FREE_BSD__BSD:
-                assertEquals(4, SizeOf.speed_t(), "speed_t");
-                break;
-            case I386__WINDOWS__PE32:
-            case X86_64__WINDOWS__PE32_PLUS:
-                assertEquals(0, SizeOf.off_t(), "speed_t");
-                break;
-            default:
-                fail("no known test value for speed_t in multiarch: " + NativeLibResolver.getMultiarchInfo());
+        for (MultiarchInfo mi : NativeLibResolver.getMultiArchInfos()) {
+            switch (mi) {
+                case X86_64__LINUX__GNU:
+                case ARM__LINUX__GNU_EABI:
+                case ARM__LINUX__GNU_EABI_HF:
+                case I386__LINUX__GNU:
+                case X86_64__MAC_OS_X__BSD:
+                case X86_64__FREE_BSD__BSD:
+                    assertEquals(4, SizeOf.speed_t(), "speed_t");
+                    break;
+                case I386__WINDOWS__PE32:
+                case X86_64__WINDOWS__PE32_PLUS:
+                    assertEquals(0, SizeOf.off_t(), "speed_t");
+                    break;
+                default:
+                    fail("no known test value for speed_t in multiarch: " + mi);
+            }
         }
     }
 
