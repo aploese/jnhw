@@ -19,27 +19,56 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.libloader;
+package de.ibapl.jnhw;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
  * @author aploese
  */
-public enum Arch {
-    X86_64(64, "x86_64"), I386(32, "i386"), ARM(32, "arm"), AARCH64(64, "aarch64"), MIPS_EL(32, "mipsel"), MIPS(32, "mips"), MIPS_64_EL(64, "mips64el"), MIPS_64(64, "mips64");
-
-    public final String archName;
-    public final int wordSize;
+public class DefinedTest {
     
-    private Arch(int wordSize, String archName) {
-        this.wordSize = wordSize;
-        this.archName = archName;
-    }
-
-    @Override
-    public String toString() {
-        return archName;
+    public DefinedTest() {
     }
     
+    @BeforeAll
+    public static void setUpClass() {
+    }
+    
+    @AfterAll
+    public static void tearDownClass() {
+    }
+    
+    @BeforeEach
+    public void setUp() {
+    }
+    
+    @AfterEach
+    public void tearDown() {
+    }
+
+    static int Defined() throws NotDefinedException {
+        return 1;
+    }
+    
+    static int NotDefined() throws NotDefinedException {
+        throw new NotDefinedException("Not defined");
+    }
+    
+    /**
+     * Test of defined method, of class Defined.
+     */
+    @Test
+    public void testDefined() {
+        System.out.println("defined");
+        assertTrue(Defined.defined(DefinedTest::Defined));
+        assertFalse(Defined.defined(DefinedTest::NotDefined));
+    }
     
 }

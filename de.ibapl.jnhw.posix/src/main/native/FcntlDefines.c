@@ -27,6 +27,10 @@
 #include <sys/stat.h>
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Class:     de_ibapl_jnhw_posix_Fcntl
  * Method:    HAVE_FCNTL_H
@@ -41,6 +45,9 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Fcntl_HAVE_1FCNTL_1H
 #endif
 }
 
+#ifdef __cplusplus
+}
+#endif
 
 #ifdef _POSIX_VERSION
 

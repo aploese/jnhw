@@ -27,6 +27,10 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
@@ -39,6 +43,21 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
  */
 @Include("#include <termios.h>")
 public final class Termios {
+
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface speed_t {
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface tcflag_t {
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface cc_t {
+    }
 
     /**
      * Make sure the native lib is loaded
@@ -67,34 +86,38 @@ public final class Termios {
 
         public final static native int sizeofTermios();
 
-        public native int c_iflag();
+        public native @tcflag_t int c_iflag();
 
-        public native void c_iflag(int c_iflag);
+        public native void c_iflag(@tcflag_t int c_iflag);
 
-        public  native int c_oflag();
+        public native @tcflag_t int c_oflag();
 
-        public  native void c_oflag(int c_oflag);
+        public native void c_oflag(@tcflag_t int c_oflag);
 
-        public  native int c_cflag();
+        public native @tcflag_t int c_cflag();
 
-        public  native void c_cflag(int c_cflag);
+        public native void c_cflag(@tcflag_t int c_cflag);
 
-        public  native int c_lflag();
+        public native @tcflag_t int c_lflag();
 
-        public  native void c_lflag(int c_lflag);
+        public native void c_lflag(@tcflag_t int c_lflag);
 
-        public  native byte c_cc(int index);
+        public native @cc_t byte c_cc(int index);
 
-        public native void c_cc(int index, byte value);
-        
-        public native int c_ispeed() throws NotDefinedException;
+        public native void c_cc(int index, @cc_t byte value);
 
-        public native void c_ispeed(int speed) throws NotDefinedException;
-        
-        public native int c_ospeed() throws NotDefinedException;
+        public native @speed_t
+        int c_ispeed() throws NoSuchMethodException;
 
-        public native void c_ospeed(int speed) throws NotDefinedException;
-        
+        public native @speed_t
+        void c_ispeed(int speed) throws NoSuchMethodException;
+
+        public native @speed_t
+        int c_ospeed() throws NoSuchMethodException;
+
+        public native @speed_t
+        void c_ospeed(int speed) throws NoSuchMethodException;
+
         public StructTermios() {
             // get unitialized mem
             super(sizeofTermios(), false);
@@ -387,13 +410,15 @@ public final class Termios {
     @Define
     public final static native int NCCS();
 
-    public final static native int cfgetispeed(StructTermios termios);
+    public final static native @speed_t
+    int cfgetispeed(StructTermios termios);
 
-    public final static native int cfgetospeed(StructTermios termios);
+    public final static native @speed_t
+    int cfgetospeed(StructTermios termios);
 
-    public final static native int cfsetispeed(StructTermios termios, int speed) throws NativeErrorException; 
+    public final static native int cfsetispeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
 
-    public final static native int cfsetospeed(StructTermios termios, int speed) throws NativeErrorException;
+    public final static native int cfsetospeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
 
     public final static native int tcdrain(int fildes) throws NativeErrorException;
 
@@ -405,6 +430,6 @@ public final class Termios {
 
     public final static native int tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException;
 
-    public final static native int cfsetspeed(StructTermios termios, int speed) throws NativeErrorException;
+    public final static native int cfsetspeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
 
 }

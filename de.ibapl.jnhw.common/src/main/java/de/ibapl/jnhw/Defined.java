@@ -21,79 +21,67 @@
  */
 package de.ibapl.jnhw;
 
-import java.util.Arrays;
-import java.util.logging.Logger;
+import java.util.function.IntConsumer;
 
-public final class Defined {
+/**
+ *
+ * @author aploese
+ */
+public class Defined {
 
-    private final static Logger LOG = Logger.getLogger(Defined.class.getCanonicalName());
+    @FunctionalInterface
+    public interface IntDefineSupplier {
 
-    public final static Defined DEFINED = new Defined();
-    public final static Defined NOT_DEFINED = null;
-
-    public final static boolean isDefined(Defined value) {
-        return value == DEFINED;
+        /**
+         * Gets a result.
+         *
+         * @return a result
+         */
+        int getAsInt() throws NotDefinedException;
     }
 
-    public final static boolean isDefined(Byte value) {
-        return value != null;
+    @FunctionalInterface
+    public interface ShortDefineSupplier {
+
+        /**
+         * Gets a result.
+         *
+         * @return a result
+         */
+        short getAsShort() throws NotDefinedException;
     }
 
-    public final static boolean isDefined(byte value) {
-        LOG.warning("Called  isDefined(byte) from " + Arrays.toString(new Exception().getStackTrace()));
-        return true;
+    public static boolean defined(IntDefineSupplier definedSupplier) {
+        try {
+            definedSupplier.getAsInt();
+            return true;
+        } catch (NotDefinedException e) {
+            return false;
+        }
     }
 
-    public final static boolean isDefined(Short value) {
-        return value != null;
+    public static boolean defined(ShortDefineSupplier definedSupplier) {
+        try {
+            definedSupplier.getAsShort();
+            return true;
+        } catch (NotDefinedException e) {
+            return false;
+        }
     }
 
-    public final static boolean isDefined(short value) {
-        LOG.warning("Called  isDefined(short) from " + Arrays.toString(new Exception().getStackTrace()));
-        return true;
+    public static int getValueOr(IntDefineSupplier definedSupplier, int otherwise) {
+        try {
+            return definedSupplier.getAsInt();
+        } catch (NotDefinedException e) {
+            return otherwise;
+        }
     }
 
-    public final static boolean isDefined(Integer value) {
-        return value != null;
-    }
-
-    public final static boolean isDefined(int value) {
-        LOG.warning("Called  isDefined(int) from " + Arrays.toString(new Exception().getStackTrace()));
-        return true;
-    }
-
-    public final static boolean isDefined(Long value) {
-        return value != null;
-    }
-
-    public final static boolean isDefined(long value) {
-        LOG.warning("Called  isDefined(long) from " + Arrays.toString(new Exception().getStackTrace()));
-        return true;
-    }
-
-    public final static boolean isDefined(Float value) {
-        return value != null;
-    }
-
-    public final static boolean isDefined(float value) {
-        LOG.warning("Called  isDefined(float) from " + Arrays.toString(new Exception().getStackTrace()));
-        return true;
-    }
-
-    public final static boolean isDefined(Double value) {
-        return value != null;
-    }
-
-    public final static boolean isDefined(double value) {
-        LOG.warning("Called  isDefined(double) from " + Arrays.toString(new Exception().getStackTrace()));
-        return true;
-    }
-
-    private Defined() {
-
-    }
-
-    public String toString() {
-        return "defined";
+    public static short getValueOr(ShortDefineSupplier definedSupplier, short otherwise) {
+        try {
+            return definedSupplier.getAsShort();
+        } catch (NotDefinedException e) {
+            return otherwise;
+        }
     }
 }

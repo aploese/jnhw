@@ -33,6 +33,7 @@ extern "C" {
     static jmethodID NativeErrorException_Init_ID = NULL;
 
     static jclass NotDefinedExceptionClass = NULL;
+    static jclass NoSuchMethodExceptionClass = NULL;
     static jclass NullPointerExceptionClass = NULL;
     static jclass ArrayIndexOutOfBoundsExceptionClass = NULL;
     static jclass IndexOutOfBoundsExceptionClass = NULL;
@@ -53,6 +54,12 @@ extern "C" {
         if (NotDefinedExceptionClass == NULL) {
             NotDefinedExceptionClass = getGlobalClassRef(env, NOT_DEFINED_EXCEPTION);
             if (NotDefinedExceptionClass == NULL) {
+                return JNI_FALSE;
+            }
+        }
+        if (NoSuchMethodExceptionClass == NULL) {
+            NoSuchMethodExceptionClass = getGlobalClassRef(env, NO_SUCH_METHOD_EXCEPTION);
+            if (NoSuchMethodExceptionClass == NULL) {
                 return JNI_FALSE;
             }
         }
@@ -87,6 +94,10 @@ extern "C" {
             deleteGlobalRef(env, NotDefinedExceptionClass);
             NotDefinedExceptionClass = NULL;
         }
+        if (NoSuchMethodExceptionClass != NULL) {
+            deleteGlobalRef(env, NoSuchMethodExceptionClass);
+            NoSuchMethodExceptionClass = NULL;
+        }
         if (NullPointerExceptionClass != NULL) {
             deleteGlobalRef(env, NullPointerExceptionClass);
             NullPointerExceptionClass = NULL;
@@ -103,6 +114,10 @@ extern "C" {
 
     JNIEXPORT void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName) {
         (*env)->ThrowNew(env, NotDefinedExceptionClass, defineName);
+    }
+
+    JNIEXPORT void JNICALL throw_NoSuchMethodException(JNIEnv* env, const char* methodName) {
+        (*env)->ThrowNew(env, NoSuchMethodExceptionClass, methodName);
     }
 
     JNIEXPORT void JNICALL throw_NativeErrorException(JNIEnv* env, int errno) {

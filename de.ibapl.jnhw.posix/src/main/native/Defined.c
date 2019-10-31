@@ -19,27 +19,56 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.libloader;
+#include "jnhw-posix.h"
+#include "de_ibapl_jnhw_util_posix_Defined.h"
 
-/**
- *
- * @author aploese
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*
+ * Class:     de_ibapl_jnhw_util_posix_Defined
+ * Method:    __linux__
+ * Signature: ()Z
  */
-public enum Arch {
-    X86_64(64, "x86_64"), I386(32, "i386"), ARM(32, "arm"), AARCH64(64, "aarch64"), MIPS_EL(32, "mipsel"), MIPS(32, "mips"), MIPS_64_EL(64, "mips64el"), MIPS_64(64, "mips64");
-
-    public final String archName;
-    public final int wordSize;
-    
-    private Arch(int wordSize, String archName) {
-        this.wordSize = wordSize;
-        this.archName = archName;
-    }
-
-    @Override
-    public String toString() {
-        return archName;
-    }
-    
-    
+JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defined__1_1linux_1_1
+  (JNIEnv *env, jclass clazz) {
+#ifdef __linux__
+    return JNI_TRUE;
+#else
+    return JNI_FALSE;
+#endif
 }
+
+/*
+ * Class:     de_ibapl_jnhw_util_posix_Defined
+ * Method:    __APPLE__
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defined__1_1APPLE_1_1
+  (JNIEnv *env, jclass clazz) {
+#ifdef __APPLE__
+    return JNI_TRUE;
+#else
+    return JNI_FALSE;
+#endif
+}
+
+/*
+ * Class:     de_ibapl_jnhw_util_posix_Defined
+ * Method:    __FreeBSD__
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defined__1_1FreeBSD_1_1
+  (JNIEnv *env, jclass clazz) {
+#ifdef __FreeBSD__
+    return JNI_TRUE;
+#else
+    return JNI_FALSE;
+#endif
+}
+    
+    
+#ifdef __cplusplus
+}
+#endif

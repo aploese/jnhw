@@ -28,6 +28,7 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
+import static de.ibapl.jnhw.posix.sys.Types.off_t;
 import de.ibapl.jnhw.util.ByteBufferUtils;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.nio.ByteBuffer;
@@ -183,9 +184,15 @@ public final class Unistd {
 
     public final static native int usleep(int usleep) throws NativeErrorException;
 
-    public final static native int lseek(int fildes, int offset, int whence) throws NativeErrorException;
-
-    public final static native long lseek64(int fildes, long offset, int whence) throws NativeErrorException, NotDefinedException;
+    /**
+     * 
+     * @param fildes
+     * @param offset depending on the size of @see SizeOf.off_t <code>int</code> or <code>long</code> may be used.
+     * @param whence
+     * @return the position depending on the size of @see SizeOf.off_t <code>int</code> or <code>long</code> may be used. 
+     * @throws NativeErrorException
+     */
+    public final static native @off_t long lseek(int fildes, @off_t long offset, int whence) throws NativeErrorException;
 
     /**
      *

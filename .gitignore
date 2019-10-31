@@ -37,3 +37,4 @@ Makefile
 *.o
 *.lo
 *.la
+/de.ibapl.jnhw.posix/nbproject/

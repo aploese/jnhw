@@ -22,10 +22,13 @@
 #ifndef _ljnhw_common_H
 #define _ljnhw_common_H
 
-
+#ifdef __linux__
 #define _GNU_SOURCE
+#endif
 
-#define _LARGEFILE64_SOURCE
+//#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
+//#define _LARGEFILE64_SOURCE
+//#endif
 
 #include <jni.h>
 

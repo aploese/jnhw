@@ -19,27 +19,18 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.libloader;
+package de.ibapl.jnhw.util.posix;
 
 /**
  *
  * @author aploese
  */
-public enum Arch {
-    X86_64(64, "x86_64"), I386(32, "i386"), ARM(32, "arm"), AARCH64(64, "aarch64"), MIPS_EL(32, "mipsel"), MIPS(32, "mips"), MIPS_64_EL(64, "mips64el"), MIPS_64(64, "mips64");
+public class Defined extends de.ibapl.jnhw.Defined{
 
-    public final String archName;
-    public final int wordSize;
-    
-    private Arch(int wordSize, String archName) {
-        this.wordSize = wordSize;
-        this.archName = archName;
-    }
+    public static native boolean __linux__();
 
-    @Override
-    public String toString() {
-        return archName;
-    }
-    
-    
+    public static native boolean __APPLE__();
+
+    public static native boolean __FreeBSD__();
+
 }

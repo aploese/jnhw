@@ -22,28 +22,88 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.NotDefinedException;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
 import static de.ibapl.jnhw.posix.Termios.CS8;
 import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
-import org.junit.jupiter.api.Assertions;
+import de.ibapl.jnhw.util.posix.Defined;
+import java.util.Set;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TermiosTests {
 
+        static MultiarchInfo multiarchInfo;
+    @BeforeAll
+    public static void setUpClass() {
+        MultiarchTupelBuilder multiarchTupelBuilder = new MultiarchTupelBuilder();
+        Set<MultiarchInfo> multiarchInfos = multiarchTupelBuilder.guessMultiarch();
+        if (multiarchInfos.size() != 1) {
+            fail("Cant guiess multiarch properly");
+        }
+        multiarchInfo = multiarchInfos.iterator().next();
+    }
+
+
     @Test
     public void test_HAVE_TERMIOS_H() throws Exception {
         if (NativeLibResolver.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Termios.HAVE_TERMIOS_H(), "not expected to have termios.h");
+            assertFalse(Termios.HAVE_TERMIOS_H(), "not expected to have termios.h");
         } else {
-            Assertions.assertTrue(Termios.HAVE_TERMIOS_H(), "expected to have termios.h");
+            assertTrue(Termios.HAVE_TERMIOS_H(), "expected to have termios.h");
         }
     }
 
+    @Test
+    public void CMSPAR() {
+        switch (multiarchInfo.getOS()) {
+            case LINUX:
+                assertTrue(Defined.defined(Termios::CMSPAR), "CMSPAR");
+                break;
+            case FREE_BSD:
+            case MAC_OS_X:
+                assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
+                break;
+            default:
+                fail("Unknown multiarch: " + multiarchInfo);
+        }
+    }
+    
+    @Test
+    public void PAREXT() {
+        switch (multiarchInfo.getOS()) {
+            case LINUX:
+            case FREE_BSD:
+            case MAC_OS_X:
+                assertFalse(Defined.defined(Termios::PAREXT), "PAREXT");
+                break;
+            default:
+                fail("Unknown multiarch: " + multiarchInfo);
+        }
+    }
+    
+    @Test
+    public void PARMRK() {
+        switch (multiarchInfo.getOS()) {
+            case LINUX:
+                assertTrue(Defined.defined(Termios::PARMRK), "PARMRK");
+                break;
+            case FREE_BSD:
+            case MAC_OS_X:
+                assertFalse(Defined.defined(Termios::PARMRK), "PARMRK");
+                break;
+            default:
+                fail("Unknown multiarch: " + multiarchInfo);
+        }
+    }
+    
     @Test
     public void structTermios_c_ispeed() throws Exception {
         Termios.StructTermios structTermios = new Termios.StructTermios();
@@ -68,9 +128,9 @@ public class TermiosTests {
         }
         try {
             structTermios.c_ispeed(9600);
-            Assertions.assertEquals(9600, structTermios.c_ispeed());
-        } catch (NotDefinedException nde) {
-            Assertions.fail("Expected to have termios.c_ispeed but got this: " + nde.getMessage());
+            assertEquals(9600, structTermios.c_ispeed());
+        } catch (NoSuchMethodException nsme) {
+            fail("Expected to have termios.c_ispeed but got this: " + nsme.getMessage());
         }
     }
 
@@ -81,7 +141,7 @@ public class TermiosTests {
 
         Termios.cfsetspeed(termios, Termios.B9600());
         termios.c_cflag(CREAD() | CLOCAL() | CS8() | CRTSCTS());
-        Assertions.assertFalse(termios.toString().isEmpty(), "Termios.StructTermios is empty");
+        assertFalse(termios.toString().isEmpty(), "Termios.StructTermios is empty");
     }
 
 }

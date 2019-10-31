@@ -26,9 +26,18 @@ import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 @Include("#include <sys/eventfd.h>")
 public final class Eventfd {
+
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface eventfd_t {
+    }
 
     /**
      * Make sure the native lib is loaded
@@ -45,9 +54,9 @@ public final class Eventfd {
 
     public final static native int eventfd(int count, int flags) throws NativeErrorException;
 
-    public final static native int eventfd_read(int fd, LongRef value) throws NativeErrorException;
+    public final static native int eventfd_read(int fd, @eventfd_t LongRef value) throws NativeErrorException;
 
-    public final static native int eventfd_write(int fd, long value) throws NativeErrorException;
+    public final static native int eventfd_write(int fd, @eventfd_t long value) throws NativeErrorException;
 
     @Define
     public final static native int EFD_CLOEXEC();
