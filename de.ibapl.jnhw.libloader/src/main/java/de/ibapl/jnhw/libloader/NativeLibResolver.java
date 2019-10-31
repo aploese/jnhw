@@ -61,8 +61,8 @@ public abstract class NativeLibResolver {
 	protected final static File NATIVE_TEMP_DIR;
 
 	/**
-	 * Setup native lib. Sometimes arm-linux-gnueabihf and arm-linux-gnuabihf can't
-	 * be distinguished
+	 * Setup native lib. Sometimes arm-linux-gnueabi and arm-linux-gnueabihf can't
+	 * be distinguished afer loading a lib from the resource we know what we are on.
 	 */
 	static {
 		MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
