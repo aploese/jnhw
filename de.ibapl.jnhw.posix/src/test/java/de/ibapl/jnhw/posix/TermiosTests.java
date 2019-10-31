@@ -93,11 +93,9 @@ public class TermiosTests {
     public void PARMRK() {
         switch (multiarchInfo.getOS()) {
             case LINUX:
-                assertTrue(Defined.defined(Termios::PARMRK), "PARMRK");
-                break;
             case FREE_BSD:
             case MAC_OS_X:
-                assertFalse(Defined.defined(Termios::PARMRK), "PARMRK");
+                assertTrue(Defined.defined(Termios::PARMRK), "PARMRK");
                 break;
             default:
                 fail("Unknown multiarch: " + multiarchInfo);
