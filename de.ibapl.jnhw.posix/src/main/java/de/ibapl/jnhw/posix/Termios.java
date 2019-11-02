@@ -106,17 +106,21 @@ public final class Termios {
 
         public native void c_cc(int index, @cc_t byte value);
 
-        public native @speed_t
-        int c_ispeed() throws NoSuchMethodException;
+        public native @cc_t byte c_line() throws de.ibapl.jnhw.NoSuchMethodException;
+
+        public native void c_line(@cc_t byte value) throws de.ibapl.jnhw.NoSuchMethodException;
 
         public native @speed_t
-        void c_ispeed(int speed) throws NoSuchMethodException;
+        int c_ispeed() throws de.ibapl.jnhw.NoSuchMethodException;
 
         public native @speed_t
-        int c_ospeed() throws NoSuchMethodException;
+        void c_ispeed(int speed) throws de.ibapl.jnhw.NoSuchMethodException;
 
         public native @speed_t
-        void c_ospeed(int speed) throws NoSuchMethodException;
+        int c_ospeed() throws de.ibapl.jnhw.NoSuchMethodException;
+
+        public native @speed_t
+        void c_ospeed(int speed) throws de.ibapl.jnhw.NoSuchMethodException;
 
         public StructTermios() {
             // get unitialized mem

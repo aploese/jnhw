@@ -45,7 +45,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_sizeofHANDLE
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_getHandleValue
   (JNIEnv *env, jobject this) {
-    return (jlong) (uintptr_t) *(UNWRAP_PHANDLE(this));
+    return (jlong) (intptr_t) *(UNWRAP_PHANDLE(this));
 }
 
 /*
@@ -55,7 +55,7 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_getHandleVa
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_setHandleValue
   (JNIEnv *env, jobject this, jlong value) {
-    *(UNWRAP_PHANDLE(this)) = (HANDLE) (uintptr_t) value;
+    *(UNWRAP_PHANDLE(this)) = (HANDLE) (intptr_t) value;
 }
 
 #ifdef __cplusplus

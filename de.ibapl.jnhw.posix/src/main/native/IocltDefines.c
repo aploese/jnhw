@@ -27,7 +27,7 @@
  * Signature: ()Z
  */
 JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_HAVE_1SYS_1IOCTL_1H
-(JNIEnv *env, jclass clazz) {
+(__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_SYS_IOCTL_H
     return JNI_TRUE;
 #else
@@ -48,130 +48,130 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    FIONREAD
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_FIONREAD
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_FIONREAD
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return FIONREAD;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCM_CTS
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1CTS
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1CTS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCM_CTS;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCM_DTR
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1DTR
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1DTR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCM_DTR;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCM_CAR
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1CAR
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1CAR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCM_CAR;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCM_RTS
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1RTS
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1RTS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCM_RTS;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCM_RNG
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1RNG
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1RNG
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCM_RNG;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCM_DSR
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1DSR
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1DSR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCM_DSR;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCEXCL
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCEXCL
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCEXCL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCEXCL;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCSBRK
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCSBRK
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCSBRK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCSBRK;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCCBRK
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCCBRK
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCCBRK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCCBRK;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCMGET
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMGET
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMGET
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCMGET;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCMSET
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMSET
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMSET
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCMSET;
     }
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    TIOCOUTQ
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCOUTQ
-    (JNIEnv *env, jclass clazz) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCOUTQ
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCOUTQ;
     }
 

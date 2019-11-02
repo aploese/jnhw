@@ -444,4 +444,9 @@ public class UnistdTests {
         }
     }
     
+    @Test
+    public void testLseek() throws Exception {
+        Unistd.lseek(-1, 1L + Integer.MAX_VALUE , Unistd.SEEK_SET());
+    }
+    
 }

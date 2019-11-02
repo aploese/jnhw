@@ -26,7 +26,6 @@
 #include "de_ibapl_jnhw_posix_Termios_StructTermios.h"
 #include <termios.h>
 #include <errno.h>
-#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,7 +37,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_sizeofTermios
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct termios);
     }
 
@@ -49,7 +48,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1iflag__
     (JNIEnv *env, jobject structTermios) {
-        return (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_iflag;
+        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_iflag;
     }
 
     /*
@@ -59,7 +58,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1iflag__I
     (JNIEnv *env, jobject structTermios, jint value) {
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_iflag = value;
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_iflag = (uint32_t)value;
     }
 
     /*
@@ -69,7 +68,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1oflag__
     (JNIEnv *env, jobject structTermios) {
-        return (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_oflag;
+        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_oflag;
     }
 
     /*
@@ -79,7 +78,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1oflag__I
     (JNIEnv *env, jobject structTermios, jint value) {
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_oflag = value;
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_oflag = (uint32_t)value;
     }
 
     /*
@@ -89,7 +88,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cflag__
     (JNIEnv *env, jobject structTermios) {
-        return (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cflag;
+        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cflag;
     }
 
     /*
@@ -99,7 +98,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cflag__I
     (JNIEnv *env, jobject structTermios, jint value) {
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cflag = value;
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cflag = (uint32_t)value;
     }
 
     /*
@@ -109,7 +108,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1lflag__
     (JNIEnv *env, jobject structTermios) {
-        return (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_lflag;
+        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_lflag;
     }
 
     /*
@@ -119,7 +118,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1lflag__I
     (JNIEnv *env, jobject structTermios, jint value) {
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_lflag = value;
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_lflag = (uint32_t)value;
     }
 
     /*
@@ -129,7 +128,11 @@ extern "C" {
      */
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cc__I
     (JNIEnv *env, jobject structTermios, jint index) {
-        return (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cc[index];
+        if (index < 0) {
+            throw_IllegalArgumentException(env, "index must be >= 0");
+            return -1;
+        }
+        return (signed char) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cc[index];
     }
 
     /*
@@ -139,66 +142,107 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cc__IB
     (JNIEnv *env, jobject structTermios, jint index, jbyte value) {
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cc[index] = value;
+        if (index < 0) {
+            throw_IllegalArgumentException(env, "index must be >= 0");
+            return;
+        }
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cc[index] = (unsigned char) value;
     }
 
     /*
- * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
- * Method:    c_ispeed
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ispeed__
-  (JNIEnv *env, jobject structTermios) {
+     * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
+     * Method:    c_line
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1line__
+    (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
+#ifdef __APPLE__
+        throw_NoSuchMethodException(env, "__APPLE__ no such field termios.c_line");
+        return -1;
+#else
+        return (signed char) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
+     * Method:    c_line
+     * Signature: (B)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1line__B
+    (JNIEnv *env, __attribute__ ((unused)) jobject structTermios, __attribute__ ((unused)) jbyte value) {
+#ifdef __APPLE__
+        throw_NoSuchMethodException(env, "__APPLE__ no such field termios.c_line");
+#else
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line = (unsigned char) value;
+#endif
+    }
+
+/*
+     * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
+     * Method:    c_ispeed
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ispeed__
+    (JNIEnv *env, jobject structTermios) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
-    return (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed;
+        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed;
 #else
         throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || __APPLE__ || __FreeBSD__");
         return 0;
 #endif
-}
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
- * Method:    c_ispeed
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ispeed__I
-  (JNIEnv *env, jobject structTermios, jint speed) {
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
+     * Method:    c_ispeed
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ispeed__I
+    (JNIEnv *env, jobject structTermios, jint speed) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
-    (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed = speed;
+        if (speed < 0) {
+            throw_IllegalArgumentException(env, "speed must be >= 0");
+            return;
+        }
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed = (uint32_t) speed;
 #else
         throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || __APPLE__ || __FreeBSD__");
 #endif
-}
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
- * Method:    c_ospeed
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ospeed__
-  (JNIEnv *env, jobject structTermios) {
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
+     * Method:    c_ospeed
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ospeed__
+    (JNIEnv *env, jobject structTermios) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
-        return (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed;
+        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed;
 #else
         throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || __APPLE__ || __FreeBSD__");
         return 0;
 #endif
-}
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
- * Method:    c_ospeed
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ospeed__I
-  (JNIEnv *env, jobject structTermios, jint speed) {
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
+     * Method:    c_ospeed
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ospeed__I
+    (JNIEnv *env, jobject structTermios, jint speed) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
-    (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed = speed;
+        if (speed < 0) {
+            throw_IllegalArgumentException(env, "speed must be >= 0");
+            return;
+        }
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed = (uint32_t)speed;
 #else
         throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED || __APPLE__ || __FreeBSD__");
 #endif
-}
+    }
 
 #ifdef __cplusplus
 }

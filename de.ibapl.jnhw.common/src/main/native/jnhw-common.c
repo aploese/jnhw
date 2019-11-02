@@ -34,58 +34,58 @@ extern "C" {
     JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_StructArray_length_ID = NULL;
 
-    static jboolean  JNICALL jnhw_common_init(JNIEnv *env) {
-         if (initExceptions(env) == JNI_FALSE) {
-             return JNI_FALSE;
-         }
+    static jboolean JNICALL jnhw_common_init(JNIEnv *env) {
+        if (initExceptions(env) == JNI_FALSE) {
+            return JNI_FALSE;
+        }
         if (de_ibapl_jnhw_ByteRef_value_ID == NULL) {
             de_ibapl_jnhw_ByteRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_BYTE_REF, "value", "B");
             if (de_ibapl_jnhw_ByteRef_value_ID == NULL) {
-             return JNI_FALSE;
+                return JNI_FALSE;
             }
         }
         if (de_ibapl_jnhw_ShortRef_value_ID == NULL) {
             de_ibapl_jnhw_ShortRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_SHORT_REF, "value", "S");
             if (de_ibapl_jnhw_ShortRef_value_ID == NULL) {
-             return JNI_FALSE;
+                return JNI_FALSE;
             }
         }
         if (de_ibapl_jnhw_IntRef_value_ID == NULL) {
             de_ibapl_jnhw_IntRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_INT_REF, "value", "I");
             if (de_ibapl_jnhw_IntRef_value_ID == NULL) {
-             return JNI_FALSE;
+                return JNI_FALSE;
             }
         }
         if (de_ibapl_jnhw_LongRef_value_ID == NULL) {
             de_ibapl_jnhw_LongRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_LONG_REF, "value", "J");
             if (de_ibapl_jnhw_LongRef_value_ID == NULL) {
-             return JNI_FALSE;
+                return JNI_FALSE;
             }
         }
         if (de_ibapl_jnhw_OpaqueMemory_baseAddress_ID == NULL) {
             de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY, "baseAddress", "J");
             if (de_ibapl_jnhw_OpaqueMemory_baseAddress_ID == NULL) {
-             return JNI_FALSE;
+                return JNI_FALSE;
             }
         }
         if (de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID == NULL) {
             de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY, "sizeInBytes", "I");
             if (de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID == NULL) {
-             return JNI_FALSE;
+                return JNI_FALSE;
             }
         }
         if (de_ibapl_jnhw_StructArray_length_ID == NULL) {
             de_ibapl_jnhw_StructArray_length_ID = getMethodId(env, JNHW_CLASS_NAME_STRUCT_ARRAY, "length", "()I");
             if (de_ibapl_jnhw_StructArray_length_ID == NULL) {
-             return JNI_FALSE;
+                return JNI_FALSE;
             }
         }
-         return JNI_TRUE;
+        return JNI_TRUE;
     }
 
-    static void  JNICALL jnhw_common_release(JNIEnv *env) {
-         releaseExceptions(env);
-         
+    static void JNICALL jnhw_common_release(JNIEnv *env) {
+        releaseExceptions(env);
+
         de_ibapl_jnhw_ByteRef_value_ID = NULL;
         de_ibapl_jnhw_ShortRef_value_ID = NULL;
         de_ibapl_jnhw_IntRef_value_ID = NULL;
@@ -104,7 +104,7 @@ extern "C" {
         jclass result = (*env)->NewGlobalRef(env, clazz);
         (*env)->DeleteLocalRef(env, clazz);
         if (result == NULL) {
-            throwException(env, "java/lang/RuntimeException", "Cant get global ref for %s", className);
+            throw_Exception(env, "java/lang/RuntimeException", "Cant get global ref for %s", className);
             return NULL;
         }
         return result;
@@ -185,13 +185,13 @@ extern "C" {
                 ((*env)->GetIntField(env, opaqueMemory, de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID) - pos < len));
     }
 
-        JNIEXPORT jint JNICALL
-    JNI_OnLoad(JavaVM *jvm, void *reserved) {
+    JNIEXPORT jint JNICALL
+    JNI_OnLoad(JavaVM *jvm, __attribute__((unused)) void *reserved) {
         JNIEnv *env;
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
             return JNI_ERR;
         }
-        
+
         if (jnhw_common_init(env) == JNI_TRUE) {
             return JNI_VERSION_10;
         } else {
@@ -200,7 +200,7 @@ extern "C" {
     }
 
     JNIEXPORT void JNICALL
-    JNI_OnUnload(JavaVM *jvm, void *reserved) {
+    JNI_OnUnload(JavaVM *jvm, __attribute__((unused)) void *reserved) {
         JNIEnv *env;
 
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {

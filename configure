@@ -637,6 +637,7 @@ am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
 subdirs
+JNHW_AM_CFLAGS
 _ACJNI_JAVAC
 CPP
 LT_SYS_LIBRARY_PATH
@@ -2142,6 +2143,7 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
+#to be repeaded in subprojects
 am__api_version='1.16'
 
 ac_aux_dir=
@@ -12948,6 +12950,12 @@ if test "x$ac_cv_jni_header_path" != "xnone"; then
 fi
 
 fi
+
+
+
+#pass these args in Makefile.am to AM_CFLAGS -- this is not working ...
+#AC_SUBST([AM_CXXFLAGS], [-Wall -Wextra -Wconversion -Werror])
+//JNHW_AM_CFLAGS=-Wall -Wextra -Wconversion -Werror
 
 
 # Checks for typedefs, structures, and compiler characteristics.

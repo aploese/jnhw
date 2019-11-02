@@ -27,9 +27,19 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.StructArray;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 @Include("#include <poll.h>")
 public final class Poll {
+    
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface nfds_t {
+    }
+
 
     /**
      * Make sure the native lib is loaded

@@ -32,7 +32,7 @@ extern "C" {
      * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_HAVE_1SYNCHAPI_1H
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_SYNCHAPI_H
         return JNI_TRUE;
 #else

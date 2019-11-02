@@ -23,12 +23,13 @@
 #define _ljnhw_common_H
 
 #ifdef __linux__
-#define _GNU_SOURCE
+//#define _GNU_SOURCE
 #endif
 
 //#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
 //#define _LARGEFILE64_SOURCE
 //#endif
+#include <stdint.h>
 
 #include <jni.h>
 
@@ -87,23 +88,24 @@ extern "C" {
      * Unwarap the baseAddress of given opaqueMemory(jobject) of an OpacqueMemory instance anc casts these baseAddress to given type.
      * 
      */
-#define UNWRAP_OPAQUE_MEM_TO_UINTPTR_T(opaqueMemory) (uintptr_t)(*env)->GetLongField(env, opaqueMemory, de_ibapl_jnhw_OpaqueMemory_baseAddress_ID)
+#define UNWRAP_OPAQUE_MEM_TO_INTPTR_T(opaqueMemory) (intptr_t)(*env)->GetLongField(env, opaqueMemory, de_ibapl_jnhw_OpaqueMemory_baseAddress_ID)
     /**
      * Unwarap the baseAddress of given opaqueMemory(jobject) of an OpacqueMemory instance anc casts these baseAddress to given type and put it in ().
      * 
      */
-#define UNWRAP_OPAQUE_MEM_TO(destType, opaqueMemory) (destType) UNWRAP_OPAQUE_MEM_TO_UINTPTR_T(opaqueMemory)
+#define UNWRAP_OPAQUE_MEM_TO(destType, opaqueMemory) (destType) UNWRAP_OPAQUE_MEM_TO_INTPTR_T(opaqueMemory)
     /**
      * Unwarap the baseAddress given opaqueMemory(jobject) of an OpacqueMemory instance anc casts these baseAddress to given type.
      * If opaqueMemory == NULL return NULL, otherwise unwrap.
      * 
      */
-#define UNWRAP_OPAQUE_MEM_TO_OR_NULL(destType, opaqueMemory) opaqueMemory == NULL ? NULL : (destType) UNWRAP_OPAQUE_MEM_TO_UINTPTR_T(opaqueMemory)
+#define UNWRAP_OPAQUE_MEM_TO_OR_NULL(destType, opaqueMemory) opaqueMemory == NULL ? NULL : (destType) UNWRAP_OPAQUE_MEM_TO_INTPTR_T(opaqueMemory)
 #define UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) UNWRAP_OPAQUE_MEM_TO(void*, opaqueMemory)
 
 #define SIZE_OF_OPAQUE_MEM(opaqueMem) (*env)->GetIntField(env, opaqueMem, de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID)
 
-#define LENGTH_OF_STRUCTURE_ARRAY(structureArray) (*env)->CallIntMethod(env, structureArray, de_ibapl_jnhw_StructArray_length_ID)
+//length must always >= 0
+#define LENGTH_OF_STRUCTURE_ARRAY(structureArray) (uint32_t)(*env)->CallIntMethod(env, structureArray, de_ibapl_jnhw_StructArray_length_ID)
 
 #define GET_BYTE_REF_VALUE(valueRef) (*env)->GetByteField(env, valueRef, de_ibapl_jnhw_ByteRef_value_ID)
 #define SET_BYTE_REF_VALUE(valueRef, value) (*env)->SetByteField(env, valueRef, de_ibapl_jnhw_ByteRef_value_ID, value)

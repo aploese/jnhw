@@ -48,42 +48,42 @@ public final class Ioctl {
     public final static native int ioctl(int fd, long request, IntRef value) throws NativeErrorException;
 
     @Define
-    public final static native int FIONREAD();
+    public final static native long FIONREAD();
 
     @Define
-    public final static native int TIOCM_CTS();
+    public final static native long TIOCM_CTS();
 
     @Define
-    public final static native int TIOCM_DTR();
+    public final static native long TIOCM_DTR();
 
     @Define
-    public final static native int TIOCM_CAR();
+    public final static native long TIOCM_CAR();
 
     @Define
-    public final static native int TIOCM_RTS();
+    public final static native long TIOCM_RTS();
 
     @Define
-    public final static native int TIOCM_RNG();
+    public final static native long TIOCM_RNG();
 
     @Define
-    public final static native int TIOCM_DSR();
+    public final static native long TIOCM_DSR();
 
     @Define
-    public final static native int TIOCEXCL();
+    public final static native long TIOCEXCL();
 
     @Define
-    public final static native int TIOCSBRK();
+    public final static native long TIOCSBRK();
 
     @Define
-    public final static native int TIOCCBRK();
+    public final static native long TIOCCBRK();
 
     @Define
-    public final static native int TIOCMGET();
+    public final static native long TIOCMGET();
 
     @Define
-    public final static native int TIOCMSET();
+    public final static native long TIOCMSET();
 
     @Define
-    public final static native int TIOCOUTQ();
+    public final static native long TIOCOUTQ();
 
 }

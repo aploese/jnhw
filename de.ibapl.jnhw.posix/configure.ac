@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT([jnhw-posix], [2.0.0], [aploese@gmx.de])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
 AM_PROG_AR

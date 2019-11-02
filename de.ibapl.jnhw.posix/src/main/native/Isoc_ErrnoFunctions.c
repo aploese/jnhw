@@ -36,7 +36,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_isoc_Errno_errno__
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return errno;
     }
 
@@ -46,7 +46,7 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_isoc_Errno_errno__I
-    (JNIEnv *env, jclass clazz, jint newErrno) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint newErrno) {
         errno = newErrno;
     }
 

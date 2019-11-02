@@ -32,7 +32,7 @@ extern "C" {
  * Signature: ()Z
  */
 JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defined__1_1linux_1_1
-  (JNIEnv *env, jclass clazz) {
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef __linux__
     return JNI_TRUE;
 #else
@@ -46,7 +46,7 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defined__1_1linux_1_1
  * Signature: ()Z
  */
 JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defined__1_1APPLE_1_1
-  (JNIEnv *env, jclass clazz) {
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef __APPLE__
     return JNI_TRUE;
 #else
@@ -60,7 +60,7 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defined__1_1APPLE_1_1
  * Signature: ()Z
  */
 JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defined__1_1FreeBSD_1_1
-  (JNIEnv *env, jclass clazz) {
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef __FreeBSD__
     return JNI_TRUE;
 #else

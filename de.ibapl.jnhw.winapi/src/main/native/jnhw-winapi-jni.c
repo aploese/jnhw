@@ -32,7 +32,7 @@ extern "C" {
     jfieldID de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID = NULL;
 
     JNIEXPORT jint JNICALL
-    JNI_OnLoad(JavaVM *jvm, void *reserved) {
+    JNI_OnLoad(JavaVM *jvm, __attribute__ ((unused)) void *reserved) {
         JNIEnv *env;
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
             return JNI_ERR;
@@ -77,7 +77,7 @@ extern "C" {
     }
 
     JNIEXPORT void JNICALL
-    JNI_OnUnload(JavaVM *jvm, void *reserved) {
+    JNI_OnUnload(JavaVM *jvm, __attribute__ ((unused)) void *reserved) {
         JNIEnv *env;
 
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {

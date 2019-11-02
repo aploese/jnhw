@@ -26,7 +26,6 @@
 #include "de_ibapl_jnhw_posix_Poll_PollFd.h"
 #include <errno.h>
 #include <poll.h>
-#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,7 +37,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_sizeofPollFd
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct pollfd);
     }
 

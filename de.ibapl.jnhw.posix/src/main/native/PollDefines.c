@@ -31,7 +31,7 @@ extern "C" {
      * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Poll_HAVE_1POLL_1H
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_POLL_H
         return JNI_TRUE;
 #else
@@ -50,7 +50,7 @@ extern "C" {
      * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLERR
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return POLLERR;
     }
 
@@ -60,7 +60,7 @@ extern "C" {
      * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLHUP
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return POLLHUP;
     }
 
@@ -70,7 +70,7 @@ extern "C" {
      * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLIN
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return POLLIN;
     }
 
@@ -80,7 +80,7 @@ extern "C" {
      * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLNVAL
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return POLLNVAL;
     }
 
@@ -90,7 +90,7 @@ extern "C" {
      * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLOUT
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return POLLOUT;
     }
 
@@ -100,7 +100,7 @@ extern "C" {
      * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLPRI
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return POLLPRI;
     }
 
@@ -110,7 +110,7 @@ extern "C" {
      * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLRDBAND
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return POLLRDBAND;
     }
 
@@ -120,7 +120,7 @@ extern "C" {
      * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLRDNORM
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return POLLRDNORM;
     }
 
@@ -130,7 +130,7 @@ extern "C" {
      * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLWRBAND
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return POLLWRBAND;
     }
 
@@ -140,7 +140,7 @@ extern "C" {
      * Signature: ()S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLWRNORM
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return POLLWRNORM;
     }
 

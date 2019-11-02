@@ -1,5 +1,5 @@
 AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_HEADER_DIR@ -I @JNHW_COMMON_SRC_DIR@
-AM_CFLAGS = -Wall -Werror
+AM_CFLAGS = -Wall -Wextra -Wconversion -Werror
 AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
 
 LIB_JNHW_POSIX_NAME=@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@
@@ -46,8 +46,7 @@ libeventfd_la_SOURCES = \
  EventFdFunctions.c
 
 libposixutils_la_SOURCES = \
- Defined.c \
- SizeOf.c
+ Defined.c
 
 #hook into make all
 all-local: $(LIB_JNHW_POSIX_RES_NAME)

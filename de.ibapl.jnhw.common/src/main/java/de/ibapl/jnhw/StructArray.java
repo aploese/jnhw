@@ -42,6 +42,10 @@ public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
         return pointers[index];
     }
 
+    /**
+     * length is alway >= 0
+     * @return 
+     */
     public final int length() {
         return pointers.length;
     }

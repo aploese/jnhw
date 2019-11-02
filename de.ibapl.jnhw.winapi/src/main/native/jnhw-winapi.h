@@ -52,13 +52,13 @@ extern "C" {
      extern jfieldID de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID;
      
 
-#define UNWRAP_HANDLE(handle) (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
-#define UNWRAP_HANDLE_OR_NULL(handle) (handle) == NULL ? NULL : (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
-#define CREATE_HANDLE(value) (*env)->NewObject(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID, (jlong) (uintptr_t) value)
+#define UNWRAP_HANDLE(handle) (HANDLE) (intptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
+#define UNWRAP_HANDLE_OR_NULL(handle) (handle) == NULL ? NULL : (HANDLE) (intptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
+#define CREATE_HANDLE(value) (*env)->NewObject(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID, (jlong) (intptr_t) value)
 
 #define UNWRAP_PHANDLE(handle) UNWRAP_OPAQUE_MEM_TO(PHANDLE, handle)   
 
-#define UNWRAP_HKEY(hKey) (HKEY) (uintptr_t) (*env)->GetLongField(env, (hKey), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
+#define UNWRAP_HKEY(hKey) (HKEY) (intptr_t) (*env)->GetLongField(env, (hKey), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
 
 #define UNWRAP_PHKEY(handle)  UNWRAP_OPAQUE_MEM_TO(PHKEY, handle)   
      

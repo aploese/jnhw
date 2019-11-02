@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT([jnhw], [2.0.0], [aploese@gmx.de])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
 AM_PROG_AR
@@ -49,6 +49,7 @@ AC_SUBST(JNI_HEADER_DIR)
 #get path of jnhw-common.h - The Quick and Dirty way....
 JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
 AC_SUBST(JNHW_COMMON_SRC_DIR)
+AC_SUBST([JNHW_AM_CFLAGS],[-Wall -Wextra -Wconversion -Werror])
 
 # Checks for libraries.
 

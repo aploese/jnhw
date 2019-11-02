@@ -160,7 +160,7 @@ libpoll_la_LIBADD =
 am_libpoll_la_OBJECTS = PollDefines.lo PollFunctions.lo Poll_PollFd.lo
 libpoll_la_OBJECTS = $(am_libpoll_la_OBJECTS)
 libposixutils_la_LIBADD =
-am_libposixutils_la_OBJECTS = Defined.lo SizeOf.lo
+am_libposixutils_la_OBJECTS = Defined.lo
 libposixutils_la_OBJECTS = $(am_libposixutils_la_OBJECTS)
 libtermios_la_LIBADD =
 am_libtermios_la_OBJECTS = TermiosDefines.lo TermiosFunctions.lo \
@@ -193,7 +193,7 @@ am__depfiles_remade = ./$(DEPDIR)/Defined.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
 	./$(DEPDIR)/PollDefines.Plo ./$(DEPDIR)/PollFunctions.Plo \
 	./$(DEPDIR)/Poll_PollFd.Plo ./$(DEPDIR)/Posix_ErrnoDefines.Plo \
-	./$(DEPDIR)/SizeOf.Plo ./$(DEPDIR)/TermiosDefines.Plo \
+	./$(DEPDIR)/TermiosDefines.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo \
 	./$(DEPDIR)/Termios_Termios.Plo ./$(DEPDIR)/UnistdDefines.Plo \
 	./$(DEPDIR)/UnistdFunctions.Plo ./$(DEPDIR)/jnhw-posix-jni.Plo
@@ -382,7 +382,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_HEADER_DIR@ -I @JNHW_COMMON_SRC_DIR@
-AM_CFLAGS = -Wall -Werror
+AM_CFLAGS = -Wall -Wextra -Wconversion -Werror
 AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
 LIB_JNHW_POSIX_NAME = @JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@
 LIB_JNHW_POSIX_RES_NAME = @JNHW_RESOURCES_DIR@/$(LIB_JNHW_POSIX_NAME)
@@ -424,8 +424,7 @@ libeventfd_la_SOURCES = \
  EventFdFunctions.c
 
 libposixutils_la_SOURCES = \
- Defined.c \
- SizeOf.c
+ Defined.c
 
 all: all-am
 
@@ -553,7 +552,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Poll_PollFd.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SizeOf.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Termios.Plo@am__quote@ # am--include-marker
@@ -735,7 +733,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
-	-rm -f ./$(DEPDIR)/SizeOf.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
@@ -800,7 +797,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
-	-rm -f ./$(DEPDIR)/SizeOf.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo

@@ -27,7 +27,7 @@
  * Signature: ()Z
  */
 JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_HAVE_1SYS_1EVENTFD_1H
-(JNIEnv *env, jclass clazz) {
+(__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_SYS_EVENTFD_H
     return JNI_TRUE;
 #else
@@ -51,7 +51,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_JNHW_1HAVE_1SYS_1EVENTFD_1H
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return JNI_TRUE;
     }
 
@@ -61,7 +61,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_EFD_1CLOEXEC
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return EFD_CLOEXEC;
     }
 
@@ -71,7 +71,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_EFD_1NONBLOCK
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return EFD_NONBLOCK;
     }
 
@@ -81,7 +81,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_EFD_1SEMAPHORE
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return EFD_SEMAPHORE;
     }
 
@@ -101,7 +101,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_JNHW_1HAVE_1SYS_1EVENTFD_1H
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return JNI_FALSE;
     }
 

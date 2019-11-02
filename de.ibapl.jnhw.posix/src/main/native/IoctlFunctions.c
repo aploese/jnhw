@@ -37,8 +37,8 @@ extern "C" {
      * Signature: (IJ)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IJ
-    (JNIEnv *env, jclass clazz, jint fd, jlong request) {
-        int result = ioctl(fd, request);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jlong request) {
+        int result = ioctl(fd, (uint64_t)request);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -51,11 +51,11 @@ extern "C" {
      * Signature: (IJLde/ibapl/jnhw/IntRef;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IJLde_ibapl_jnhw_IntRef_2
-    (JNIEnv *env, jclass clazz, jint fd, jlong request, jobject intRef) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jlong request, jobject intRef) {
 
         int _intRef = GET_INT_REF_VALUE(intRef);
 
-        int result = ioctl(fd, request, &_intRef);
+        int result = ioctl(fd, (uint64_t)request, &_intRef);
         SET_INT_REF_VALUE(intRef, _intRef);
         if (result < 0) {
             throw_NativeErrorException(env, errno);

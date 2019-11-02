@@ -3,7 +3,8 @@
 
 AC_PREREQ([2.69])
 AC_INIT([jnhw], [2.0.0], [aploese@gmx.de])
-AM_INIT_AUTOMAKE([-Wall -Wconversion -Werror foreign])
+#to be repeaded in subprojects
+AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
 AM_PROG_AR
@@ -25,6 +26,11 @@ AC_ARG_WITH([jni-include-dir],
     [set the jni include dir manually])],
     [JNI_INCLUDE_DIRS="$with_jni_include_dir"],
     [AX_JNI_INCLUDE_DIR])
+
+
+#pass these args in Makefile.am to AM_CFLAGS -- this is not working ...
+#AC_SUBST([AM_CXXFLAGS], [-Wall -Wextra -Wconversion -Werror])
+//AC_SUBST([JNHW_AM_CFLAGS],[-Wall -Wextra -Wconversion -Werror])
 
 # Checks for typedefs, structures, and compiler characteristics.
 

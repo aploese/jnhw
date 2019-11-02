@@ -21,12 +21,6 @@
  */
 package de.ibapl.jnhw;
 
-import java.io.File;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.channels.NonWritableChannelException;
-import java.nio.file.OpenOption;
-import java.nio.file.StandardOpenOption;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;

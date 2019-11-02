@@ -33,6 +33,7 @@ extern "C" {
 #define NULL_POINTER_EXCEPTION "java/lang/NullPointerException"
 #define ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/ArrayIndexOutOfBoundsException"
 #define INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/IndexOutOfBoundsException"
+#define ILLEGAL_ARGUMENT_EXCEPTION "java/lang/IllegalArgumentException"
 
     //Cached Exceptions
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NativeErrorException(JNIEnv* env, int errno);
@@ -47,7 +48,11 @@ extern "C" {
 
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_IndexOutOfBoundsException(JNIEnv* env, const char* message);
 
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throwException(JNIEnv* env, const char* exceptionName, const char* fmt, ...);
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_IllegalArgumentException(JNIEnv* env, const char* message);
+
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_Exception(JNIEnv* env, const char* exceptionName, const char* fmt, ...);
+    
+    
 
 #ifdef _JNHW_COMMON_IMPLEMENTATION_
 

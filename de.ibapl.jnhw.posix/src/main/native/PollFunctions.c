@@ -26,7 +26,6 @@
 #include "de_ibapl_jnhw_posix_Poll.h"
 #include <poll.h>
 #include <errno.h>
-#include <stdint.h>
 
 
 #ifdef __cplusplus
@@ -39,12 +38,12 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/StructArray;I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll
-    (JNIEnv *env, jclass clazz, jobject pollFdArray, jint timeout) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pollFdArray, jint timeout) {
         if (pollFdArray == NULL) {
             throw_NullPointerException(env, "pollFd array");
             return -1;
         }
-        int nfds = LENGTH_OF_STRUCTURE_ARRAY(pollFdArray);
+        nfds_t nfds = LENGTH_OF_STRUCTURE_ARRAY(pollFdArray);
         int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFdArray), nfds, timeout);
         if (result < 0) {
             throw_NativeErrorException(env, errno);

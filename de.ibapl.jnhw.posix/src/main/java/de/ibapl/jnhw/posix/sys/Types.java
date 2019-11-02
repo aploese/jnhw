@@ -6,7 +6,6 @@
 package de.ibapl.jnhw.posix.sys;
 
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.util.posix.SizeOf;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -22,6 +21,11 @@ public class Types {
     @Retention(RetentionPolicy.SOURCE)
     @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
     public static @interface off_t {
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface mode_t {
     }
 
 }

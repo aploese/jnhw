@@ -40,7 +40,7 @@ extern "C" {
      * Signature: (II)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_fcntl__II
-    (JNIEnv *env, jclass clazz, jint fd, jint cmd) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint cmd) {
         int result = fcntl(fd, cmd);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
@@ -54,7 +54,7 @@ extern "C" {
      * Signature: (III)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_fcntl__III
-    (JNIEnv *env, jclass clazz, jint fd, jint cmd, jint vararg_0) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint cmd, jint vararg_0) {
         int result = fcntl(fd, cmd, vararg_0);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
@@ -68,13 +68,21 @@ extern "C" {
      * Signature: (Ljava/lang/String;I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat
-    (JNIEnv *env, jclass clazz, jstring file, jint mode) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring file, jint mode) {
         if (file == NULL) {
             throw_NullPointerException(env, "file is null.");
             return -1;
         }
         const char* _file = (*env)->GetStringUTFChars(env, file, NULL);
-        int result = creat(_file, mode);
+#ifdef __APPLE__
+        if ((mode > INT16_MAX) || (mode < INT16_MIN)) {
+            throw_IllegalArgumentException(env, "mode outside short int");
+            return -1;
+        }
+        int result = creat(_file, (uint16_t)mode);
+#else
+        int result = creat(_file, (uint32_t)mode);
+#endif
         (*env)->ReleaseStringUTFChars(env, file, _file);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
@@ -88,7 +96,7 @@ extern "C" {
      * Signature: (Ljava/lang/String;I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open
-    (JNIEnv *env, jclass clazz, jstring file, jint oflag) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring file, jint oflag) {
         if (file == NULL) {
             throw_NullPointerException(env, "file is null.");
             return -1;

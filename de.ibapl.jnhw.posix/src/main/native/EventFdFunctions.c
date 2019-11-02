@@ -37,8 +37,12 @@ extern "C" {
      * Signature: (II)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_eventfd
-    (JNIEnv *env, jclass clazz, jint count, jint flags) {
-        int result = eventfd(count, flags);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint count, jint flags) {
+        if (count < 0) {
+            throw_IllegalArgumentException(env, "count must be >= 0");
+            return -1;
+        }
+        int result = eventfd((uint32_t)count, flags);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -51,10 +55,10 @@ extern "C" {
      * Signature: (IJ)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_eventfd_1read
-    (JNIEnv *env, jclass clazz, jint fd, jobject valueRef) {
-        eventfd_t _valueRef = GET_LONG_REF_VALUE(valueRef);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject valueRef) {
+        eventfd_t _valueRef = (uint64_t)GET_LONG_REF_VALUE(valueRef);
         int result = eventfd_read(fd, &_valueRef);
-        SET_LONG_REF_VALUE(valueRef, _valueRef);
+        SET_LONG_REF_VALUE(valueRef, (int64_t)_valueRef);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -67,8 +71,8 @@ extern "C" {
      * Signature: (IJ)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_eventfd_1write
-    (JNIEnv *env, jclass clazz, jint fd, jlong value) {
-        int result = eventfd_write(fd, value);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jlong value) {
+        int result = eventfd_write(fd, (uint64_t)value);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }

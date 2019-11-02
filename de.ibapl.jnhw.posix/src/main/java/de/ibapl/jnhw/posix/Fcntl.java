@@ -25,6 +25,7 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NotDefinedException;
+import de.ibapl.jnhw.posix.sys.Types.mode_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 @Include("#include <fcntl.h>")
@@ -145,7 +146,7 @@ public final class Fcntl {
      *
      * @throws NativeErrorException
      */
-    public final static native int creat(String file, int mode) throws NativeErrorException;
+    public final static native int creat(String file, @mode_t int mode) throws NativeErrorException;
 
     public final static native int fcntl(int fd, int cmd) throws NativeErrorException;
 

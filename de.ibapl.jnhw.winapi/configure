@@ -636,6 +636,7 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
+JNHW_AM_CFLAGS
 JNHW_COMMON_SRC_DIR
 JNI_HEADER_DIR
 JNHW_RESOURCES_DIR
@@ -13144,6 +13145,8 @@ JNI_HEADER_DIR="\$(top_builddir)/target/generated-sources/include"
 
 #get path of jnhw-common.h - The Quick and Dirty way....
 JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
+
+JNHW_AM_CFLAGS=-Wall -Wextra -Wconversion -Werror
 
 
 # Checks for libraries.

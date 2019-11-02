@@ -37,6 +37,7 @@ extern "C" {
     static jclass NullPointerExceptionClass = NULL;
     static jclass ArrayIndexOutOfBoundsExceptionClass = NULL;
     static jclass IndexOutOfBoundsExceptionClass = NULL;
+    static jclass IllegalArgumentExceptionClass = NULL;
 
     jboolean initExceptions(JNIEnv* env) {
         if (NativeErrorExceptionClass == NULL) {
@@ -81,6 +82,15 @@ extern "C" {
                 return JNI_FALSE;
             }
         }
+        
+        if (IllegalArgumentExceptionClass == NULL) {
+            IllegalArgumentExceptionClass = getGlobalClassRef(env, ILLEGAL_ARGUMENT_EXCEPTION);
+            if (IllegalArgumentExceptionClass == NULL) {
+                return JNI_FALSE;
+            }
+        }
+        
+        
 
         return JNI_TRUE;
     }
@@ -110,6 +120,10 @@ extern "C" {
             deleteGlobalRef(env, ArrayIndexOutOfBoundsExceptionClass);
             ArrayIndexOutOfBoundsExceptionClass = NULL;
         }
+        if (IllegalArgumentExceptionClass != NULL) {
+            deleteGlobalRef(env, IllegalArgumentExceptionClass);
+            IllegalArgumentExceptionClass = NULL;
+        }
     }
 
     JNIEXPORT void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName) {
@@ -137,7 +151,11 @@ extern "C" {
         (*env)->ThrowNew(env, ArrayIndexOutOfBoundsExceptionClass, message);
     }
 
-    JNIEXPORT void JNICALL throwException(JNIEnv* env, const char* exceptionName, const char* fmt, ...) {
+    JNIEXPORT void JNICALL throw_IllegalArgumentException(JNIEnv* env, const char* message) {
+        (*env)->ThrowNew(env, IllegalArgumentExceptionClass, message);
+    }
+
+    JNIEXPORT void JNICALL throw_Exception(JNIEnv* env, const char* exceptionName, const char* fmt, ...) {
         va_list ap;
         char buf[1024] = {0};
         va_start(ap, fmt);
