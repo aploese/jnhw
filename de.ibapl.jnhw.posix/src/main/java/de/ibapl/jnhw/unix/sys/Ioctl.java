@@ -43,47 +43,47 @@ public final class Ioctl {
 
     }
 
-    public final static native int ioctl(int fd, long request) throws NativeErrorException;
+    public final static native int ioctl(int fd, int request) throws NativeErrorException;
 
-    public final static native int ioctl(int fd, long request, IntRef value) throws NativeErrorException;
-
-    @Define
-    public final static native long FIONREAD();
+    public final static native int ioctl(int fd, int request, IntRef value) throws NativeErrorException;
 
     @Define
-    public final static native long TIOCM_CTS();
+    public final static native int FIONREAD();
 
     @Define
-    public final static native long TIOCM_DTR();
+    public final static native int TIOCM_CTS();
 
     @Define
-    public final static native long TIOCM_CAR();
+    public final static native int TIOCM_DTR();
 
     @Define
-    public final static native long TIOCM_RTS();
+    public final static native int TIOCM_CAR();
 
     @Define
-    public final static native long TIOCM_RNG();
+    public final static native int TIOCM_RTS();
 
     @Define
-    public final static native long TIOCM_DSR();
+    public final static native int TIOCM_RNG();
 
     @Define
-    public final static native long TIOCEXCL();
+    public final static native int TIOCM_DSR();
 
     @Define
-    public final static native long TIOCSBRK();
+    public final static native int TIOCEXCL();
 
     @Define
-    public final static native long TIOCCBRK();
+    public final static native int TIOCSBRK();
 
     @Define
-    public final static native long TIOCMGET();
+    public final static native int TIOCCBRK();
 
     @Define
-    public final static native long TIOCMSET();
+    public final static native int TIOCMGET();
 
     @Define
-    public final static native long TIOCOUTQ();
+    public final static native int TIOCMSET();
+
+    @Define
+    public final static native int TIOCOUTQ();
 
 }

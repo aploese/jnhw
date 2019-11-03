@@ -344,21 +344,20 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_lseek
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jlong offset, jint whence) {
-#if off_t == jlong 
+#if __WORDSIZE == 64
         off_t result = lseek(fd, offset, whence);
-#elif  off_t == jint
-#if defined(off64_t) &&  off64_t == jlong
+#elif __WORDSIZE == 32
+#ifdef _LARGEFILE64_SOURCE
         off64_t result = lseek64(fd, offset, whence);
-#else 
-        if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
+#else
+    if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation offset is only an integer with the size of jint");
             return -1;
         }
-        off_t result = lseek(fd, offset, whence);
+        off_t result = lseek(fd, (int32_t)offset, whence);
 #endif
 #else 
-        off_t is neither a jlong nor jint figure out what it is, and add this case here!
-        stop compilng >>> fix this 
+#error "off_t is neither a jlong nor jint figure out what it is, and add this case here! Stop compilng >>> fix this" 
 #endif
         if (result == -1) {
             throw_NativeErrorException(env, errno);

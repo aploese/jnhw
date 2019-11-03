@@ -117,7 +117,7 @@ public class TermiosTests {
         try {
             structTermios.c_ispeed(9600);
             assertEquals(9600, structTermios.c_ispeed());
-        } catch (NoSuchMethodException nsme) {
+        } catch (de.ibapl.jnhw.NoSuchMethodException nsme) {
             fail("Expected to have termios.c_ispeed but got this: " + nsme.getMessage());
         }
     }

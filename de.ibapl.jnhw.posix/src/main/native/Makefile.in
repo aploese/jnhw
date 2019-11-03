@@ -149,7 +149,7 @@ libfcntl_la_LIBADD =
 am_libfcntl_la_OBJECTS = FcntlDefines.lo FcntlFunctions.lo
 libfcntl_la_OBJECTS = $(am_libfcntl_la_OBJECTS)
 libioclt_la_LIBADD =
-am_libioclt_la_OBJECTS = IocltDefines.lo IoctlFunctions.lo
+am_libioclt_la_OBJECTS = IoctlDefines.lo IoctlFunctions.lo
 libioclt_la_OBJECTS = $(am_libioclt_la_OBJECTS)
 libjnhw_posix_la_DEPENDENCIES = libpoll.la libeventfd.la libfcntl.la \
 	libunistd.la libioclt.la libtermios.la liberrno.la \
@@ -187,7 +187,7 @@ am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/Defined.Plo \
 	./$(DEPDIR)/EventFdDefines.Plo \
 	./$(DEPDIR)/EventFdFunctions.Plo ./$(DEPDIR)/FcntlDefines.Plo \
-	./$(DEPDIR)/FcntlFunctions.Plo ./$(DEPDIR)/IocltDefines.Plo \
+	./$(DEPDIR)/FcntlFunctions.Plo ./$(DEPDIR)/IoctlDefines.Plo \
 	./$(DEPDIR)/IoctlFunctions.Plo \
 	./$(DEPDIR)/Isoc_ErrnoDefines.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
@@ -403,7 +403,7 @@ libtermios_la_SOURCES = \
  Termios_Termios.c
 
 libioclt_la_SOURCES = \
- IocltDefines.c \
+ IoctlDefines.c \
  IoctlFunctions.c
 
 libunistd_la_SOURCES = \
@@ -544,7 +544,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FcntlDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FcntlFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IocltDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoFunctions.Plo@am__quote@ # am--include-marker
@@ -725,7 +725,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
 	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
 	-rm -f ./$(DEPDIR)/FcntlFunctions.Plo
-	-rm -f ./$(DEPDIR)/IocltDefines.Plo
+	-rm -f ./$(DEPDIR)/IoctlDefines.Plo
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
@@ -789,7 +789,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
 	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
 	-rm -f ./$(DEPDIR)/FcntlFunctions.Plo
-	-rm -f ./$(DEPDIR)/IocltDefines.Plo
+	-rm -f ./$(DEPDIR)/IoctlDefines.Plo
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo

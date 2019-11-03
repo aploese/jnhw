@@ -25,7 +25,7 @@ libtermios_la_SOURCES = \
  Termios_Termios.c
 
 libioclt_la_SOURCES = \
- IocltDefines.c \
+ IoctlDefines.c \
  IoctlFunctions.c
 
 libunistd_la_SOURCES = \
