@@ -50,6 +50,26 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    fcntl64
+     * Signature: (II)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_fcntl64__II
+#ifdef _LARGEFILE64_SOURCE
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint cmd) {
+        int result = fcntl64(fd, cmd);
+        if (result < 0) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+#else
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint fd, __attribute__ ((unused)) jint cmd) {
+        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no fcntl64");
+        return -1;
+#endif        
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    fcntl
      * Signature: (III)I
      */
@@ -60,6 +80,26 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
         return result;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    fcntl64
+     * Signature: (III)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_fcntl64__III
+#ifdef _LARGEFILE64_SOURCE
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint cmd, jint vararg_0) {
+        int result = fcntl64(fd, cmd, vararg_0);
+        if (result < 0) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+#else
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint fd, __attribute__ ((unused)) jint cmd, __attribute__ ((unused)) jint vararg_0) {
+        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no fcntl64");
+        return -1;
+#endif        
     }
 
     /*
@@ -79,9 +119,9 @@ extern "C" {
             throw_IllegalArgumentException(env, "mode outside short int");
             return -1;
         }
-        int result = creat(_file, (uint16_t)mode);
+        int result = creat(_file, (uint16_t) mode);
 #else
-        int result = creat(_file, (uint32_t)mode);
+        int result = creat(_file, (uint32_t) mode);
 #endif
         (*env)->ReleaseStringUTFChars(env, file, _file);
         if (result < 0) {
@@ -92,10 +132,37 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    creat64
+     * Signature: (Ljava/lang/String;I)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat64
+#ifdef _LARGEFILE64_SOURCE
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring file, jint mode) {
+        if (file == NULL) {
+            throw_NullPointerException(env, "file is null.");
+            return -1;
+        }
+        const char* _file = (*env)->GetStringUTFChars(env, file, NULL);
+        int result = creat64(_file, (uint32_t) mode);
+
+        (*env)->ReleaseStringUTFChars(env, file, _file);
+        if (result < 0) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+#else
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) __attribute__ ((unused)) jstring file, __attribute__ ((unused)) jint mode) {
+        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no creat64");
+        return -1;
+#endif        
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    open
      * Signature: (Ljava/lang/String;I)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open__Ljava_lang_String_2I
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring file, jint oflag) {
         if (file == NULL) {
             throw_NullPointerException(env, "file is null.");
@@ -109,6 +176,81 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
         return result;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    open
+     * Signature: (Ljava/lang/String;II)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open__Ljava_lang_String_2II
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring file, jint oflag, jint mode) {
+        if (file == NULL) {
+            throw_NullPointerException(env, "file is null.");
+            return -1;
+        }
+
+        const char* _file = (*env)->GetStringUTFChars(env, file, NULL);
+        int result = open(_file, oflag, mode);
+        (*env)->ReleaseStringUTFChars(env, file, _file);
+        if (result < 0) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Fcntl
+ * Method:    open64
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64__Ljava_lang_String_2I
+#ifdef _LARGEFILE64_SOURCE
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring file, jint oflag) {
+        if (file == NULL) {
+            throw_NullPointerException(env, "file is null.");
+            return -1;
+        }
+
+        const char* _file = (*env)->GetStringUTFChars(env, file, NULL);
+        int result = open64(_file, oflag);
+        (*env)->ReleaseStringUTFChars(env, file, _file);
+        if (result < 0) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+#else
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jstring file, __attribute__ ((unused)) jint oflag) {
+        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no open64");
+        return -1;
+#endif        
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Fcntl
+ * Method:    open64
+ * Signature: (Ljava/lang/String;II)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64__Ljava_lang_String_2II
+#ifdef _LARGEFILE64_SOURCE
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring file, jint oflag, jint mode) {
+        if (file == NULL) {
+            throw_NullPointerException(env, "file is null.");
+            return -1;
+        }
+
+        const char* _file = (*env)->GetStringUTFChars(env, file, NULL);
+        int result = open64(_file, oflag, mode);
+        (*env)->ReleaseStringUTFChars(env, file, _file);
+        if (result < 0) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+#else
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jstring file, __attribute__ ((unused)) jint oflag, __attribute__ ((unused)) jint mode) {
+        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no open64");
+        return -1;
+#endif        
     }
 
 

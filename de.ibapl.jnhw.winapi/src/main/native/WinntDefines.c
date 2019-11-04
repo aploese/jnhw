@@ -50,7 +50,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_MAXDWORD
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return MAXDWORD;
+        return (int32_t)MAXDWORD;
     }
 
     /*
@@ -60,7 +60,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_GENERIC_1READ
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return GENERIC_READ;
+        return (int32_t)GENERIC_READ;
     }
 
     /*

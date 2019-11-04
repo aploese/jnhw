@@ -29,6 +29,10 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
 import static de.ibapl.jnhw.posix.sys.Types.off_t;
+import static de.ibapl.jnhw.posix.sys.Types.off64_t;
+import static de.ibapl.jnhw.posix.sys.Types.size_t;
+import static de.ibapl.jnhw.posix.sys.Types.ssize_t;
+import static de.ibapl.jnhw.posix.sys.Types.useconds_t;
 import de.ibapl.jnhw.util.ByteBufferUtils;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.nio.ByteBuffer;
@@ -65,19 +69,21 @@ public final class Unistd {
 
     public static native int SEEK_HOLE() throws NotDefinedException;
 
+    public static native int _POSIX_VERSION();
+
     public static abstract class JnhwPrimitiveArrayCritical {
 
-        public final static int write(int fildes, byte[] buf) throws NativeErrorException {
+        public final static @ssize_t int write(int fildes, byte[] buf) throws NativeErrorException {
             return write(fildes, buf, 0, buf.length);
         }
 
-        public final static int read(int fildes, byte[] buf) throws NativeErrorException {
+        public final static @ssize_t int read(int fildes, byte[] buf) throws NativeErrorException {
             return read(fildes, buf, 0, buf.length);
         }
 
-        public final static native int read(int fildes, byte[] buf, int pos, int len) throws NativeErrorException;
+        public final static native @ssize_t int read(int fildes, byte[] buf, int pos, @size_t int len) throws NativeErrorException;
 
-        public final static native int write(int fildes, byte[] buf, int pos, int len) throws NativeErrorException;
+        public final static native @ssize_t int write(int fildes, byte[] buf, int pos, @size_t int len) throws NativeErrorException;
 
     }
 
@@ -90,11 +96,11 @@ public final class Unistd {
 
     public final static native boolean HAVE_UNISTD_H();
 
-    public final static int write(int fildes, byte[] buf) throws NativeErrorException {
+    public final static @ssize_t int write(int fildes, byte[] buf) throws NativeErrorException {
         return write(fildes, buf, 0, buf.length);
     }
 
-    public final static int read(int fildes, byte[] buf) throws NativeErrorException {
+    public final static @ssize_t int read(int fildes, byte[] buf) throws NativeErrorException {
         return read(fildes, buf, 0, buf.length);
     }
 
@@ -112,11 +118,11 @@ public final class Unistd {
      * @exception ArrayIndexOutOfBoundsException if <code>pos</code> or
      * <code>len</code> out of bounds.
      */
-    public final static native int read(int fildes, byte[] buf, int pos, int len) throws NativeErrorException;
+    public final static native @ssize_t int read(int fildes, byte[] buf, int pos, @size_t int len) throws NativeErrorException;
 
     private static native int read_ParamsOK(int fildes, ByteBuffer buffer, int pos, int len) throws NativeErrorException;
 
-    public final static int read(int fildes, ByteBuffer buffer) throws NativeErrorException {
+    public final static @ssize_t int read(int fildes, ByteBuffer buffer) throws NativeErrorException {
         final int result;
         if (buffer.isDirect()) {
             result = read_ParamsOK(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
@@ -127,21 +133,21 @@ public final class Unistd {
         return result;
     }
 
-    public final static native int write(int fildes, OpaqueMemory mem, int pos, int len) throws NativeErrorException;
+    public final static native @ssize_t int write(int fildes, OpaqueMemory mem, int pos, @size_t int len) throws NativeErrorException;
 
-    public final static int write(int fildes, OpaqueMemory mem) throws NativeErrorException {
+    public final static @ssize_t int write(int fildes, OpaqueMemory mem) throws NativeErrorException {
         return write(fildes, mem, 0, mem.sizeInBytes);
     }
 
-    public final static native int write(int fildes, byte data) throws NativeErrorException;
+    public final static native @ssize_t int write(int fildes, byte data) throws NativeErrorException;
 
-    public final static native int read(int fildes, OpaqueMemory mem, int pos, int len) throws NativeErrorException;
+    public final static native @ssize_t int read(int fildes, OpaqueMemory mem, int pos, @size_t int len) throws NativeErrorException;
 
-    public final static int read(int fildes, OpaqueMemory mem) throws NativeErrorException {
+    public final static @ssize_t int read(int fildes, OpaqueMemory mem) throws NativeErrorException {
         return read(fildes, mem, 0, mem.sizeInBytes);
     }
 
-    public final static native int read(int fildes, ByteRef data) throws NativeErrorException;
+    public final static native @ssize_t int read(int fildes, ByteRef data) throws NativeErrorException;
 
     /**
      *
@@ -155,12 +161,12 @@ public final class Unistd {
      * @exception ArrayIndexOutOfBoundsException if <code>pos</code> or
      * <code>len</code> out of bounds.
      */
-    public final static native int write(int fildes, byte[] buf, int pos, int len) throws NativeErrorException;
+    public final static native @ssize_t int write(int fildes, byte[] buf, int pos, @size_t int len) throws NativeErrorException;
 
     //We pass down ByteBuffer to get the native address and pass the other data onto the stack
     private static native int write_ParamsOK(int fildes, ByteBuffer buffer, int pos, int len) throws NativeErrorException;
 
-    public final static int write(int fildes, ByteBuffer buffer) throws NativeErrorException {
+    public final static @ssize_t int write(int fildes, ByteBuffer buffer) throws NativeErrorException {
         final int result;
         if (buffer.isDirect()) {
             result = write_ParamsOK(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
@@ -182,7 +188,17 @@ public final class Unistd {
         return result;
     }
 
-    public final static native int usleep(int usleep) throws NativeErrorException;
+    public final static native int usleep(@useconds_t int usleep) throws NativeErrorException;
+
+    /**
+     * 
+     * @param fildes
+     * @param offset depending on the size of @see SizeOf.off_t <code>int</code> or <code>long</code> may be used.
+     * @param whence
+     * @return the position depending on the size of @see SizeOf.off_t <code>int</code> or <code>long</code> may be used. 
+     * @throws NativeErrorException
+     */
+    public final static native @off_t int lseek(int fildes, @off_t int offset, int whence) throws NativeErrorException;
 
     /**
      * 
@@ -193,6 +209,16 @@ public final class Unistd {
      * @throws NativeErrorException
      */
     public final static native @off_t long lseek(int fildes, @off_t long offset, int whence) throws NativeErrorException;
+
+    /**
+     * 
+     * @param fildes
+     * @param offset alway 64 bit.
+     * @param whence
+     * @return the position depending on the size of @see SizeOf.off_t <code>int</code> or <code>long</code> may be used. 
+     * @throws NativeErrorException
+     */
+    public final static native @off64_t long lseek64(int fildes, @off64_t long offset, int whence) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
 
     /**
      *

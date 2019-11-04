@@ -35,7 +35,7 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;Z)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_GetOverlappedResult
-    (JNIEnv *env, jclass clazz, jobject hFile, jobject lpOverlapped, jboolean bWait) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpOverlapped, jboolean bWait) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
             return -1;
@@ -50,9 +50,9 @@ extern "C" {
                 UNWRAP_LPOVERLAPPED(lpOverlapped),
                 &lpNumberOfBytesTransferred,
                 bWait)) {
-            return lpNumberOfBytesTransferred;
+            return (int32_t)lpNumberOfBytesTransferred;
         } else {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
             return -1;
         }
     }
@@ -63,7 +63,7 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_CancelIoEx
-    (JNIEnv *env, jclass clazz, jobject hFile, jobject lpOverlapped) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpOverlapped) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
             return;
@@ -75,7 +75,7 @@ extern "C" {
 
         if (!CancelIoEx(UNWRAP_HANDLE(hFile),
                 UNWRAP_LPOVERLAPPED(lpOverlapped))) {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
     }
 
@@ -85,14 +85,14 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_CancelIo
-    (JNIEnv *env, jclass clazz, jobject hFile) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
             return;
         }
 
         if (!CancelIo(UNWRAP_HANDLE(hFile))) {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
     }
 

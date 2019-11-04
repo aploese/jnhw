@@ -35,7 +35,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_sizeofCOMMTIMEOUTS
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (COMMTIMEOUTS);
     }
 
@@ -46,7 +46,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadIntervalTimeout__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_COMMTIMEOUTS(this))->ReadIntervalTimeout;
+         return (int32_t)(UNWRAP_COMMTIMEOUTS(this))->ReadIntervalTimeout;
     }
 
     /*
@@ -56,7 +56,10 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadIntervalTimeout__I
     (JNIEnv *env, jobject this, jint readIntervalTimeout) {
-        (UNWRAP_COMMTIMEOUTS(this))->ReadIntervalTimeout = readIntervalTimeout;
+        if (readIntervalTimeout < 0) {
+            throw_IllegalArgumentException(env, "readIntervalTimeout must not < 0");
+        }
+        (UNWRAP_COMMTIMEOUTS(this))->ReadIntervalTimeout = (uint32_t)readIntervalTimeout;
     }
 
     /*
@@ -66,7 +69,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadTotalTimeoutMultiplier__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutMultiplier;
+        return (int32_t)(UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutMultiplier;
     }
 
     /*
@@ -76,7 +79,10 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadTotalTimeoutMultiplier__I
     (JNIEnv *env, jobject this, jint readTotalTimeoutMultiplier) {
-        (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutMultiplier = readTotalTimeoutMultiplier;
+        if (readTotalTimeoutMultiplier < 0) {
+            throw_IllegalArgumentException(env, "readTotalTimeoutMultiplier must not < 0");
+        }
+        (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutMultiplier = (uint32_t)readTotalTimeoutMultiplier;
     }
 
     /*
@@ -86,7 +92,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadTotalTimeoutConstant__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutConstant;
+        return (int32_t)(UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutConstant;
     }
 
     /*
@@ -96,7 +102,10 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadTotalTimeoutConstant__I
     (JNIEnv *env, jobject this, jint readTotalTimeoutConstant) {
-        (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutConstant = readTotalTimeoutConstant;
+        if (readTotalTimeoutConstant < 0) {
+            throw_IllegalArgumentException(env, "readTotalTimeoutConstant must not < 0");
+        }
+        (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutConstant = (uint32_t)readTotalTimeoutConstant;
     }
 
     /*
@@ -106,7 +115,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_WriteTotalTimeoutMultiplier__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutMultiplier;
+        return (int32_t)(UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutMultiplier;
     }
 
     /*
@@ -116,7 +125,10 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_WriteTotalTimeoutMultiplier__I
     (JNIEnv *env, jobject this, jint writeTotalTimeoutMultiplier) {
-        (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutMultiplier = writeTotalTimeoutMultiplier;
+        if (writeTotalTimeoutMultiplier < 0) {
+            throw_IllegalArgumentException(env, "writeTotalTimeoutMultiplier must not < 0");
+        }
+        (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutMultiplier = (uint32_t)writeTotalTimeoutMultiplier;
     }
 
     /*
@@ -126,7 +138,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_WriteTotalTimeoutConstant__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutConstant;
+        return (int32_t)(UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutConstant;
     }
 
     /*
@@ -136,7 +148,10 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_WriteTotalTimeoutConstant__I
     (JNIEnv *env, jobject this, jint writeTotalTimeoutConstant) {
-        (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutConstant = writeTotalTimeoutConstant;
+        if (writeTotalTimeoutConstant < 0) {
+            throw_IllegalArgumentException(env, "writeTotalTimeoutConstant must not < 0");
+        }
+        (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutConstant = (uint32_t)writeTotalTimeoutConstant;
     }
 
 #ifdef __cplusplus

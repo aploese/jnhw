@@ -2,7 +2,7 @@
 
 #autoreconf -i
 
-mvn clean compile
+mvn clean compile || exit 1
 
 # "x86_64-linux-gnu"
 # "i386-linux-gnu"
@@ -24,16 +24,16 @@ for d in\
  "mips64el-linux-gnuabi64"\
  "mips64el-linux-gnuabin32"
 do
-  ./configure --host=$d --prefix=$PWD/target/$d
-  make clean
-  make
-  make install
+  ./configure --host=$d --prefix=$PWD/target/$d || exit 1
+  make clean || exit 1
+  make || exit 1
+  make install || exit 1
 done
 
 
-./configure --prefix=$PWD/target
-make clean
-make
-make install
+./configure --prefix=$PWD/target || exit 1
+make clean || exit 1
+make || exit 1
+make install || exit 1
 
-mvn install
+mvn install || exit 1

@@ -147,7 +147,7 @@ public abstract class Winbase {
 
         public native boolean fOutxDsrFlow();
 
-        public native int fDtrControl();
+        public native byte fDtrControl();
 
         public native boolean fDsrSensitivity();
 
@@ -165,9 +165,9 @@ public abstract class Winbase {
 
         public native boolean fNull();
 
-        public native int fRtsControl();
+        public native byte fRtsControl();
 
-        public native void fRtsControl(int value);
+        public native void fRtsControl(byte value);
 
         public native boolean fAbortOnError();
 

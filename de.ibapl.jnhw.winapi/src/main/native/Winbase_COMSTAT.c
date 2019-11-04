@@ -35,7 +35,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_sizeofCOMSTAT
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (COMSTAT);
     }
 
@@ -126,7 +126,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_cbInQue
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_COMSTAT(this))->cbInQue;
+        return (int32_t) (UNWRAP_COMSTAT(this))->cbInQue;
     }
 
     /*
@@ -136,7 +136,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_cbOutQue
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_COMSTAT(this))->cbOutQue;
+        return (int32_t) (UNWRAP_COMSTAT(this))->cbOutQue;
     }
 
 #ifdef __cplusplus

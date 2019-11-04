@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mvn compile
+mvn clean compile || exit 1
 
 # "x86_64-linux-gnu"
 # "i386-linux-gnu"

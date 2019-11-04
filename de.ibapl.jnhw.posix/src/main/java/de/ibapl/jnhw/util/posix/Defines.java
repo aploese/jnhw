@@ -19,28 +19,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "jnhw-winapi.h"
-#include "de_ibapl_jnhw_winapi_Winnt_LPWSTR.h"
+package de.ibapl.jnhw.util.posix;
 
-#ifdef HAVE_WINNT_H
-#include <winnt.h>
+import de.ibapl.jnhw.NotDefinedException;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/**
+ *
+ * @author aploese
+ */
+public class Defines {
 
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winnt_LPWSTR
-     * Method:    getString
-     * Signature: (Lde/ibapl/jnhw/OpaqueMemory;I)Ljava/lang/String;
+    public static native boolean __linux__();
+
+    public static native boolean __APPLE__();
+
+    public static native boolean __FreeBSD__();
+    
+    public static native boolean _LARGEFILE64_SOURCE();
+    
+    /**
+     * Its defined at different places:
+     * Linux: bits/wordsize.h
+     * FreeBSD: sys/stdint.h
+     * 
+     * so we keep his here for the moment.
+     * 
+     * @return 
+     * @throws NotDefinedException if run on WINDOWS
      */
-    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024LPWSTR_getString
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject opaqueMem, jint len) {
-        return (*env)->NewString(env, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMem), len);
-    }
-
-
-#ifdef __cplusplus
+    public static native int __WORDSIZE();
+    
 }
-#endif
-#endif

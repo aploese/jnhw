@@ -132,7 +132,9 @@ public final class Fcntl {
 
     @Define
     public final static native int FD_CLOEXEC();
-
+    
+    @Define
+    public final static  native int O_LARGEFILE();
 
     /**
      * Creates the named file with the mode flags.
@@ -147,10 +149,43 @@ public final class Fcntl {
      * @throws NativeErrorException
      */
     public final static native int creat(String file, @mode_t int mode) throws NativeErrorException;
+    
+    /**
+     * Available if _LARGEFILE64_SOURCE is defined.
+     * 
+     * @param file
+     * @param mode
+     * @return
+     * @throws NativeErrorException 
+     */
+    public final static native int creat64(String file, @mode_t int mode) throws NativeErrorException;
 
     public final static native int fcntl(int fd, int cmd) throws NativeErrorException;
 
+    /**
+     * 
+     * Available if _LARGEFILE64_SOURCE is defined.
+     * 
+     * @param fd
+     * @param cmd
+     * @return
+     * @throws NativeErrorException 
+     */
+    public final static native int fcntl64(int fd, int cmd) throws NativeErrorException;
+
     public final static native int fcntl(int fd, int cmd, int vararg_0) throws NativeErrorException;
+    
+    /**
+     * 
+     * Available if _LARGEFILE64_SOURCE is defined.
+     * 
+     * @param fd
+     * @param cmd
+     * @param vararg_0
+     * @return
+     * @throws NativeErrorException 
+     */
+    public final static native int fcntl64(int fd, int cmd, int vararg_0) throws NativeErrorException;
 
     /**
      * Opens the named file with the flags.
@@ -165,6 +200,18 @@ public final class Fcntl {
      * @throws NativeErrorException
      */
     public final static native int open(String file, int oflag) throws NativeErrorException;
+    public final static native int open(String file, int oflag, @mode_t int mode) throws NativeErrorException;
+    
+    /**
+     * Available if _LARGEFILE64_SOURCE is defined.
+     * 
+     * @param file
+     * @param oflag
+     * @return
+     * @throws NativeErrorException 
+     */
+    public final static native int open64(String file, int oflag) throws NativeErrorException;
+    public final static native int open64(String file, int oflag, @mode_t int mode) throws NativeErrorException;
 
     private Fcntl() {
     }

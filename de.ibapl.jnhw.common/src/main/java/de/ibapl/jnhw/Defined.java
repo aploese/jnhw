@@ -21,8 +21,6 @@
  */
 package de.ibapl.jnhw;
 
-import java.util.function.IntConsumer;
-
 /**
  *
  * @author aploese

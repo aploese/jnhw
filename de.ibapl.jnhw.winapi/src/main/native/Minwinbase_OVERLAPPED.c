@@ -46,7 +46,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_Internal
     (__attribute__ ((unused)) JNIEnv *env, jobject this) {
-        return (uint64_t)(UNWRAP_OVERLAPPED(this))->Internal;
+        return (intptr_t)(UNWRAP_OVERLAPPED(this))->Internal;
     }
 
     /*
@@ -56,7 +56,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_InternalHigh
     (__attribute__ ((unused)) JNIEnv *env, jobject this) {
-        return (UNWRAP_OVERLAPPED(this))->InternalHigh;
+        return (intptr_t)(UNWRAP_OVERLAPPED(this))->InternalHigh;
     }
 
     /*

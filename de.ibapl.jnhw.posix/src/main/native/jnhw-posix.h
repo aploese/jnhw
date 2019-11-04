@@ -1,4 +1,4 @@
-/*
+/**
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
  * Copyright (C) 2019-2019, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
@@ -19,6 +19,20 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+#ifdef __linux__
+//#define _GNU_SOURCE
+#define _LARGEFILE64_SOURCE
+#endif
+
+#ifdef __FreeBSD__
+#define _LARGEFILE64_SOURCE
+#endif
+
+//#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
+//#define _LARGEFILE64_SOURCE
+//#endif
+
+
 #include "jnhw-common.h"
 #include "../../../config.h"
 

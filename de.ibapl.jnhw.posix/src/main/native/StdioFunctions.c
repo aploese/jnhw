@@ -20,55 +20,46 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_util_posix_Defined.h"
+#if HAVE_STDIO_H
+#include <stdio.h>
+#endif
+
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#ifdef _POSIX_VERSION
+
+#include <errno.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_util_posix_Defined
- * Method:    __linux__
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defined__1_1linux_1_1
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef __linux__
-    return JNI_TRUE;
-#else
-    return JNI_FALSE;
-#endif
-}
+#include "de_ibapl_jnhw_posix_Stdio.h"
 
-/*
- * Class:     de_ibapl_jnhw_util_posix_Defined
- * Method:    __APPLE__
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defined__1_1APPLE_1_1
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef __APPLE__
-    return JNI_TRUE;
-#else
-    return JNI_FALSE;
-#endif
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Stdio
+     * Method:    remove
+     * Signature: (Ljava/lang/String)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Stdio_remove
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring path) {
+        if (path == NULL) {
+            throw_NullPointerException(env, "file is null.");
+            return;
+        }
+        const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
+        int result = remove(_path);
+        (*env)->ReleaseStringUTFChars(env, path, _path);
+        if (result < 0) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
-/*
- * Class:     de_ibapl_jnhw_util_posix_Defined
- * Method:    __FreeBSD__
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defined__1_1FreeBSD_1_1
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef __FreeBSD__
-    return JNI_TRUE;
-#else
-    return JNI_FALSE;
-#endif
-}
-    
-    
+
+
 #ifdef __cplusplus
 }
+#endif
 #endif

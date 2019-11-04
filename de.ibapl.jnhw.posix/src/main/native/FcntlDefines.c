@@ -23,7 +23,7 @@
 
 #if HAVE_UNISTD_H
 #include <unistd.h>
-// include POSIX OH (Optional Header) as well, to make FreeBSD happy. 
+// include POSIX OH (Optional Header) as well, to make FreeBSD happy.
 #include <sys/stat.h>
 #endif
 
@@ -31,19 +31,19 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_posix_Fcntl
- * Method:    HAVE_FCNTL_H
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Fcntl_HAVE_1FCNTL_1H
-(__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    HAVE_FCNTL_H
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Fcntl_HAVE_1FCNTL_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef _POSIX_VERSION
-    return JNI_TRUE;
+        return JNI_TRUE;
 #else
-    return JNI_FALSE;
+        return JNI_FALSE;
 #endif
-}
+    }
 
 #ifdef __cplusplus
 }
@@ -136,6 +136,21 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1CLOEXEC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return O_CLOEXEC;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    O_LARGEFILE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1LARGEFILE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#ifdef O_LARGEFILE
+        return O_LARGEFILE;
+#else
+        throw_NotDefinedException(env, "O_LARGEFILE");
+        return 0;
+#endif
     }
 
     /*

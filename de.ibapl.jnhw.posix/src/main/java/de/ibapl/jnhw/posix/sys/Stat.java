@@ -21,19 +21,17 @@
  */
 package de.ibapl.jnhw.posix.sys;
 
+import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  *
  * @author aploese
  */
-@Include("#include <sys/types.h>")
-public class Types {
+@Include("#include <sys/stat.h>")
+public class Stat {
+
     /**
      * Make sure the native lib is loaded
      */
@@ -41,36 +39,51 @@ public class Types {
         LibJnhwPosixLoader.touch();
     }
 
-    public final static native boolean HAVE_SYS_TYPES_H();
+    @Define
+    public final static native boolean HAVE_SYS_STAT_H();
 
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface off_t {
-    }
+    @Define
+    public final static native int S_IRWXU();
 
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface off64_t {
-    }
+    @Define
+    public final static native int S_IRUSR();
 
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface mode_t {
-    }
+    @Define
+    public final static native int S_IWUSR();
 
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface ssize_t {
-    }
+    @Define
+    public final static native int S_IXUSR();
 
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface size_t {
-    }
+    @Define
+    public final static native int S_IRWXG();
 
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface useconds_t {
-    }
+    @Define
+    public final static native int S_IRGRP();
 
+    @Define
+    public final static native int S_IWGRP();
+
+    @Define
+    public final static native int S_IXGRP();
+
+    @Define
+    public final static native int S_IRWXO();
+
+    @Define
+    public final static native int S_IROTH();
+
+    @Define
+    public final static native int S_IWOTH();
+
+    @Define
+    public final static native int S_IXOTH();
+
+    @Define
+    public final static native int S_ISUID();
+
+    @Define
+    public final static native int S_ISGID();
+
+    @Define
+    public final static native int S_ISVTX();
 }

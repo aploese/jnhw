@@ -7,9 +7,9 @@ LIB_JNHW_POSIX_RES_NAME=@JNHW_RESOURCES_DIR@/$(LIB_JNHW_POSIX_NAME)
 
 lib_LTLIBRARIES = libjnhw-posix.la
 
-noinst_LTLIBRARIES = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libposixutils.la
+noinst_LTLIBRARIES = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la
 
-libjnhw_posix_la_LIBADD = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+libjnhw_posix_la_LIBADD = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libjnhw_posix_la_SOURCES = \
  jnhw-posix-jni.c
@@ -45,8 +45,19 @@ libeventfd_la_SOURCES = \
  EventFdDefines.c \
  EventFdFunctions.c
 
+libstdio_la_SOURCES = \
+ StdioDefines.c \
+ StdioFunctions.c
+
+libsystypes_la_SOURCES = \
+ TypesDefines.c
+
+libsysstat_la_SOURCES = \
+ StatDefines.c \
+ StatFunctions.c
+
 libposixutils_la_SOURCES = \
- Defined.c
+ Defines.c
 
 #hook into make all
 all-local: $(LIB_JNHW_POSIX_RES_NAME)

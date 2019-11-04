@@ -35,7 +35,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024SECURITY_1ATTRIBUTES_sizeofSECURITY_1ATTRIBUTES
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (SECURITY_ATTRIBUTES);
     }
 
@@ -45,7 +45,7 @@ extern "C" {
      * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024SECURITY_1ATTRIBUTES_nLength
-    (JNIEnv *env, jobject this) {
+    (__attribute__ ((unused)) JNIEnv *env, jobject this) {
         return (UNWRAP_SECURITY_ATTRIBUTES(this))->nLength;
     }
 
@@ -55,8 +55,9 @@ extern "C" {
      * Signature: ()Z
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024SECURITY_1ATTRIBUTES_bInheritHandle
-    (JNIEnv *env, jobject this) {
-        return (UNWRAP_SECURITY_ATTRIBUTES(this))->bInheritHandle;
+    (__attribute__ ((unused)) JNIEnv *env, jobject this) {
+        //Do it in a save manner here.
+        return (UNWRAP_SECURITY_ATTRIBUTES(this))->bInheritHandle ? JNI_TRUE : JNI_FALSE;
     }
 
 #ifdef __cplusplus

@@ -152,16 +152,26 @@ libioclt_la_LIBADD =
 am_libioclt_la_OBJECTS = IoctlDefines.lo IoctlFunctions.lo
 libioclt_la_OBJECTS = $(am_libioclt_la_OBJECTS)
 libjnhw_posix_la_DEPENDENCIES = libpoll.la libeventfd.la libfcntl.la \
-	libunistd.la libioclt.la libtermios.la liberrno.la \
-	libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+	libunistd.la libioclt.la libtermios.la liberrno.la libstdio.la \
+	libsystypes.la libsysstat.la libposixutils.la \
+	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 am_libjnhw_posix_la_OBJECTS = jnhw-posix-jni.lo
 libjnhw_posix_la_OBJECTS = $(am_libjnhw_posix_la_OBJECTS)
 libpoll_la_LIBADD =
 am_libpoll_la_OBJECTS = PollDefines.lo PollFunctions.lo Poll_PollFd.lo
 libpoll_la_OBJECTS = $(am_libpoll_la_OBJECTS)
 libposixutils_la_LIBADD =
-am_libposixutils_la_OBJECTS = Defined.lo
+am_libposixutils_la_OBJECTS = Defines.lo
 libposixutils_la_OBJECTS = $(am_libposixutils_la_OBJECTS)
+libstdio_la_LIBADD =
+am_libstdio_la_OBJECTS = StdioDefines.lo StdioFunctions.lo
+libstdio_la_OBJECTS = $(am_libstdio_la_OBJECTS)
+libsysstat_la_LIBADD =
+am_libsysstat_la_OBJECTS = StatDefines.lo StatFunctions.lo
+libsysstat_la_OBJECTS = $(am_libsysstat_la_OBJECTS)
+libsystypes_la_LIBADD =
+am_libsystypes_la_OBJECTS = TypesDefines.lo
+libsystypes_la_OBJECTS = $(am_libsystypes_la_OBJECTS)
 libtermios_la_LIBADD =
 am_libtermios_la_OBJECTS = TermiosDefines.lo TermiosFunctions.lo \
 	Termios_Termios.lo
@@ -184,7 +194,7 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/Defined.Plo \
+am__depfiles_remade = ./$(DEPDIR)/Defines.Plo \
 	./$(DEPDIR)/EventFdDefines.Plo \
 	./$(DEPDIR)/EventFdFunctions.Plo ./$(DEPDIR)/FcntlDefines.Plo \
 	./$(DEPDIR)/FcntlFunctions.Plo ./$(DEPDIR)/IoctlDefines.Plo \
@@ -193,10 +203,13 @@ am__depfiles_remade = ./$(DEPDIR)/Defined.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
 	./$(DEPDIR)/PollDefines.Plo ./$(DEPDIR)/PollFunctions.Plo \
 	./$(DEPDIR)/Poll_PollFd.Plo ./$(DEPDIR)/Posix_ErrnoDefines.Plo \
+	./$(DEPDIR)/StatDefines.Plo ./$(DEPDIR)/StatFunctions.Plo \
+	./$(DEPDIR)/StdioDefines.Plo ./$(DEPDIR)/StdioFunctions.Plo \
 	./$(DEPDIR)/TermiosDefines.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo \
-	./$(DEPDIR)/Termios_Termios.Plo ./$(DEPDIR)/UnistdDefines.Plo \
-	./$(DEPDIR)/UnistdFunctions.Plo ./$(DEPDIR)/jnhw-posix-jni.Plo
+	./$(DEPDIR)/Termios_Termios.Plo ./$(DEPDIR)/TypesDefines.Plo \
+	./$(DEPDIR)/UnistdDefines.Plo ./$(DEPDIR)/UnistdFunctions.Plo \
+	./$(DEPDIR)/jnhw-posix-jni.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -219,13 +232,15 @@ am__v_CCLD_1 =
 SOURCES = $(liberrno_la_SOURCES) $(libeventfd_la_SOURCES) \
 	$(libfcntl_la_SOURCES) $(libioclt_la_SOURCES) \
 	$(libjnhw_posix_la_SOURCES) $(libpoll_la_SOURCES) \
-	$(libposixutils_la_SOURCES) $(libtermios_la_SOURCES) \
-	$(libunistd_la_SOURCES)
+	$(libposixutils_la_SOURCES) $(libstdio_la_SOURCES) \
+	$(libsysstat_la_SOURCES) $(libsystypes_la_SOURCES) \
+	$(libtermios_la_SOURCES) $(libunistd_la_SOURCES)
 DIST_SOURCES = $(liberrno_la_SOURCES) $(libeventfd_la_SOURCES) \
 	$(libfcntl_la_SOURCES) $(libioclt_la_SOURCES) \
 	$(libjnhw_posix_la_SOURCES) $(libpoll_la_SOURCES) \
-	$(libposixutils_la_SOURCES) $(libtermios_la_SOURCES) \
-	$(libunistd_la_SOURCES)
+	$(libposixutils_la_SOURCES) $(libstdio_la_SOURCES) \
+	$(libsysstat_la_SOURCES) $(libsystypes_la_SOURCES) \
+	$(libtermios_la_SOURCES) $(libunistd_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -387,8 +402,8 @@ AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
 LIB_JNHW_POSIX_NAME = @JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@
 LIB_JNHW_POSIX_RES_NAME = @JNHW_RESOURCES_DIR@/$(LIB_JNHW_POSIX_NAME)
 lib_LTLIBRARIES = libjnhw-posix.la
-noinst_LTLIBRARIES = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libposixutils.la
-libjnhw_posix_la_LIBADD = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+noinst_LTLIBRARIES = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la
+libjnhw_posix_la_LIBADD = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 libjnhw_posix_la_SOURCES = \
  jnhw-posix-jni.c
 
@@ -423,8 +438,19 @@ libeventfd_la_SOURCES = \
  EventFdDefines.c \
  EventFdFunctions.c
 
+libstdio_la_SOURCES = \
+ StdioDefines.c \
+ StdioFunctions.c
+
+libsystypes_la_SOURCES = \
+ TypesDefines.c
+
+libsysstat_la_SOURCES = \
+ StatDefines.c \
+ StatFunctions.c
+
 libposixutils_la_SOURCES = \
- Defined.c
+ Defines.c
 
 all: all-am
 
@@ -527,6 +553,15 @@ libpoll.la: $(libpoll_la_OBJECTS) $(libpoll_la_DEPENDENCIES) $(EXTRA_libpoll_la_
 libposixutils.la: $(libposixutils_la_OBJECTS) $(libposixutils_la_DEPENDENCIES) $(EXTRA_libposixutils_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libposixutils_la_OBJECTS) $(libposixutils_la_LIBADD) $(LIBS)
 
+libstdio.la: $(libstdio_la_OBJECTS) $(libstdio_la_DEPENDENCIES) $(EXTRA_libstdio_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libstdio_la_OBJECTS) $(libstdio_la_LIBADD) $(LIBS)
+
+libsysstat.la: $(libsysstat_la_OBJECTS) $(libsysstat_la_DEPENDENCIES) $(EXTRA_libsysstat_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libsysstat_la_OBJECTS) $(libsysstat_la_LIBADD) $(LIBS)
+
+libsystypes.la: $(libsystypes_la_OBJECTS) $(libsystypes_la_DEPENDENCIES) $(EXTRA_libsystypes_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libsystypes_la_OBJECTS) $(libsystypes_la_LIBADD) $(LIBS)
+
 libtermios.la: $(libtermios_la_OBJECTS) $(libtermios_la_DEPENDENCIES) $(EXTRA_libtermios_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libtermios_la_OBJECTS) $(libtermios_la_LIBADD) $(LIBS)
 
@@ -539,7 +574,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Defined.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Defines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FcntlDefines.Plo@am__quote@ # am--include-marker
@@ -552,9 +587,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Poll_PollFd.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatFunctions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdioDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdioFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Termios.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TypesDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-posix-jni.Plo@am__quote@ # am--include-marker
@@ -720,7 +760,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/Defined.Plo
+		-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
 	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
@@ -733,9 +773,14 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
+	-rm -f ./$(DEPDIR)/StatDefines.Plo
+	-rm -f ./$(DEPDIR)/StatFunctions.Plo
+	-rm -f ./$(DEPDIR)/StdioDefines.Plo
+	-rm -f ./$(DEPDIR)/StdioFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
+	-rm -f ./$(DEPDIR)/TypesDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo
@@ -784,7 +829,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/Defined.Plo
+		-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
 	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
@@ -797,9 +842,14 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
+	-rm -f ./$(DEPDIR)/StatDefines.Plo
+	-rm -f ./$(DEPDIR)/StatFunctions.Plo
+	-rm -f ./$(DEPDIR)/StdioDefines.Plo
+	-rm -f ./$(DEPDIR)/StdioFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
+	-rm -f ./$(DEPDIR)/TypesDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo

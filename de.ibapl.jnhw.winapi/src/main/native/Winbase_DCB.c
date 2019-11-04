@@ -35,7 +35,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_sizeofDCB
-    (JNIEnv *env, jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (DCB);
     }
 
@@ -46,7 +46,10 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_DCBlength__I
     (JNIEnv *env, jobject this, jint value) {
-        (UNWRAP_DCB(this))->DCBlength = value;
+        if (value < 0) {
+            throw_IllegalArgumentException(env, "value must not < 0");
+        }
+        (UNWRAP_DCB(this))->DCBlength = (uint32_t) value;
     }
 
     /*
@@ -56,7 +59,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_DCBlength__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->DCBlength;
+        return (int32_t) (UNWRAP_DCB(this))->DCBlength;
     }
 
     /*
@@ -66,7 +69,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_BaudRate__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->BaudRate;
+        return (int32_t) (UNWRAP_DCB(this))->BaudRate;
     }
 
     /*
@@ -76,7 +79,10 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_BaudRate__I
     (JNIEnv *env, jobject this, jint value) {
-        (UNWRAP_DCB(this))->BaudRate = value;
+        if (value < 0) {
+            throw_IllegalArgumentException(env, "value must not < 0");
+        }
+        (UNWRAP_DCB(this))->BaudRate = (uint32_t) value;
     }
 
     /*
@@ -116,7 +122,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fOutxCtsFlow__Z
     (JNIEnv *env, jobject this, jboolean value) {
-        (UNWRAP_DCB(this))->fOutxCtsFlow = value;
+        (UNWRAP_DCB(this))->fOutxCtsFlow = value ? TRUE : FALSE;
     }
 
     /*
@@ -134,7 +140,7 @@ extern "C" {
      * Method:    fDtrControl
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fDtrControl
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fDtrControl
     (JNIEnv *env, jobject this) {
         return (UNWRAP_DCB(this))->fDtrControl;
     }
@@ -176,7 +182,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fOutX__Z
     (JNIEnv *env, jobject this, jboolean value) {
-        (UNWRAP_DCB(this))->fOutX = value;
+        (UNWRAP_DCB(this))->fOutX = value ? TRUE : FALSE;
     }
 
     /*
@@ -196,7 +202,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fInX__Z
     (JNIEnv *env, jobject this, jboolean value) {
-        (UNWRAP_DCB(this))->fInX = value;
+        (UNWRAP_DCB(this))->fInX = value ? TRUE : FALSE;
     }
 
     /*
@@ -222,9 +228,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fRtsControl
-     * Signature: ()I
+     * Signature: ()B
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fRtsControl__
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fRtsControl__
     (JNIEnv *env, jobject this) {
         return (UNWRAP_DCB(this))->fRtsControl;
     }
@@ -232,11 +238,26 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    fRtsControl
-     * Signature: (I)V
+     * Signature: (B)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fRtsControl__I
-    (JNIEnv *env, jobject this, jint value) {
-        (UNWRAP_DCB(this))->fRtsControl = value;
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fRtsControl__B
+    (JNIEnv *env, jobject this, jbyte value) {
+        switch (value) {
+            case RTS_CONTROL_DISABLE:
+                (UNWRAP_DCB(this))->fRtsControl = RTS_CONTROL_DISABLE;
+                return;
+            case RTS_CONTROL_ENABLE:
+                (UNWRAP_DCB(this))->fRtsControl = RTS_CONTROL_ENABLE;
+                return;
+            case RTS_CONTROL_HANDSHAKE:
+                (UNWRAP_DCB(this))->fRtsControl = RTS_CONTROL_HANDSHAKE;
+                return;
+            case RTS_CONTROL_TOGGLE:
+                (UNWRAP_DCB(this))->fRtsControl = RTS_CONTROL_TOGGLE;
+                return;
+            default:
+                throw_IllegalArgumentException(env, "value must be in range 0 ...3");
+        }
     }
 
     /*
@@ -256,7 +277,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_fDummy2
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->fDummy2;
+        return (int32_t) (UNWRAP_DCB(this))->fDummy2;
     }
 
     /*
@@ -266,7 +287,7 @@ extern "C" {
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_wReserved
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->wReserved;
+        return (int16_t) (UNWRAP_DCB(this))->wReserved;
     }
 
     /*
@@ -276,7 +297,7 @@ extern "C" {
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XonLim
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->XonLim;
+        return (int16_t) (UNWRAP_DCB(this))->XonLim;
     }
 
     /*
@@ -286,7 +307,7 @@ extern "C" {
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XoffLim
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->XoffLim;
+        return (int16_t) (UNWRAP_DCB(this))->XoffLim;
     }
 
     /*
@@ -296,7 +317,7 @@ extern "C" {
      */
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_ByteSize__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->ByteSize;
+        return (int8_t) (UNWRAP_DCB(this))->ByteSize;
     }
 
     /*
@@ -306,7 +327,10 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_ByteSize__B
     (JNIEnv *env, jobject this, jbyte value) {
-        (UNWRAP_DCB(this))->ByteSize = value;
+        if (value < 0) {
+            throw_IllegalArgumentException(env, "value must not < 0");
+        }
+        (UNWRAP_DCB(this))->ByteSize = (uint8_t) value;
     }
 
     /*
@@ -316,7 +340,7 @@ extern "C" {
      */
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_Parity__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->Parity;
+        return (int8_t) (UNWRAP_DCB(this))->Parity;
     }
 
     /*
@@ -326,7 +350,10 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_Parity__B
     (JNIEnv *env, jobject this, jbyte value) {
-        (UNWRAP_DCB(this))->Parity = value;
+        if (value < 0) {
+            throw_IllegalArgumentException(env, "value must not < 0");
+        }
+        (UNWRAP_DCB(this))->Parity = (uint8_t) value;
     }
 
     /*
@@ -336,7 +363,7 @@ extern "C" {
      */
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_StopBits__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->StopBits;
+        return (int8_t) (UNWRAP_DCB(this))->StopBits;
     }
 
     /*
@@ -346,7 +373,10 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_StopBits__B
     (JNIEnv *env, jobject this, jbyte value) {
-        (UNWRAP_DCB(this))->StopBits = value;
+        if (value < 0) {
+            throw_IllegalArgumentException(env, "value must not < 0");
+        }
+        (UNWRAP_DCB(this))->StopBits = (uint8_t) value;
     }
 
     /*
@@ -356,7 +386,7 @@ extern "C" {
      */
     JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XonChar__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->XonChar;
+        return (uint8_t) (UNWRAP_DCB(this))->XonChar;
     }
 
     /*
@@ -366,7 +396,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XonChar__C
     (JNIEnv *env, jobject this, jchar value) {
-        (UNWRAP_DCB(this))->XonChar = value;
+        (UNWRAP_DCB(this))->XonChar = (int8_t) value;
     }
 
     /*
@@ -376,7 +406,7 @@ extern "C" {
      */
     JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XoffChar__
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->XoffChar;
+        return (uint8_t) (UNWRAP_DCB(this))->XoffChar;
     }
 
     /*
@@ -386,7 +416,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_XoffChar__C
     (JNIEnv *env, jobject this, jchar value) {
-        (UNWRAP_DCB(this))->XoffChar = value;
+        (UNWRAP_DCB(this))->XoffChar = (int8_t) value;
     }
 
     /*
@@ -396,7 +426,7 @@ extern "C" {
      */
     JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_ErrorChar
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->ErrorChar;
+        return (uint8_t) (UNWRAP_DCB(this))->ErrorChar;
     }
 
     /*
@@ -406,7 +436,7 @@ extern "C" {
      */
     JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_EofChar
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->EofChar;
+        return (uint8_t) (UNWRAP_DCB(this))->EofChar;
     }
 
     /*
@@ -416,7 +446,7 @@ extern "C" {
      */
     JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_EvtChar
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->EvtChar;
+        return (uint8_t) (UNWRAP_DCB(this))->EvtChar;
     }
 
     /*
@@ -426,7 +456,7 @@ extern "C" {
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_wReserved1
     (JNIEnv *env, jobject this) {
-        return (UNWRAP_DCB(this))->wReserved1;
+        return (int16_t) (UNWRAP_DCB(this))->wReserved1;
     }
 
 #ifdef __cplusplus

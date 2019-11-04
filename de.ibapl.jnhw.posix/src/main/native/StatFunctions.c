@@ -19,18 +19,25 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.util.posix;
+#include "jnhw-posix.h"
+#if HAVE_SYS_STAT_H
+#include <sys/stat.h>
+#endif
 
-/**
- *
- * @author aploese
- */
-public class Defined extends de.ibapl.jnhw.Defined{
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
-    public static native boolean __linux__();
+#ifdef _POSIX_VERSION
 
-    public static native boolean __APPLE__();
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-    public static native boolean __FreeBSD__();
+#include "de_ibapl_jnhw_posix_sys_Stat.h"
 
+
+#ifdef __cplusplus
 }
+#endif
+#endif

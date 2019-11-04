@@ -19,28 +19,28 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "jnhw-winapi.h"
-#include "de_ibapl_jnhw_winapi_Winnt_LPWSTR.h"
+package de.ibapl.jnhw.posix;
 
-#ifdef HAVE_WINNT_H
-#include <winnt.h>
+import de.ibapl.jnhw.Include;
+import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winnt_LPWSTR
-     * Method:    getString
-     * Signature: (Lde/ibapl/jnhw/OpaqueMemory;I)Ljava/lang/String;
+/**
+ *
+ * @author aploese
+ */
+@Include("#include <stdio.h>")
+public class Stdio {
+    /**
+     * Make sure the native lib is loaded
      */
-    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024LPWSTR_getString
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject opaqueMem, jint len) {
-        return (*env)->NewString(env, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMem), len);
+    static {
+        LibJnhwPosixLoader.touch();
     }
 
+    public final static native boolean HAVE_STDIO_H();
+    
+    
+    public static native void remove(String path);
 
-#ifdef __cplusplus
+    
 }
-#endif
-#endif

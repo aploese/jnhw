@@ -29,7 +29,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.posix.sys.Stat;
+import de.ibapl.jnhw.util.posix.Defines;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -44,10 +47,9 @@ public class UnistdTests {
     public final static byte[] TEST_DATA = new byte[1024];
     public final static int POS = 111;
     public final static int LEN = 239;
-    
+
     byte[] writeBytes = "Hello world".getBytes();
     byte[] readBytes = new byte[1024];
-
 
     static {
         for (int i = 0; i < TEST_DATA.length; i++) {
@@ -56,10 +58,12 @@ public class UnistdTests {
     }
 
     private int fd;
-    private File f;
+    private static File f;
 
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
+        f = File.createTempFile("jnhw-test", "");
+        f.delete();
     }
 
     @AfterAll
@@ -68,14 +72,15 @@ public class UnistdTests {
 
     @BeforeEach
     public void setUp() throws Exception {
-        f = File.createTempFile("jnhw-test", "");
-        f.deleteOnExit();
-        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDWR());
-
+        fd = -1;
     }
 
     @AfterEach
     public void tearDown() throws Exception {
+        f.delete();
+        if (fd != -1) {
+            Unistd.close(fd);
+        }
     }
 
     @Test
@@ -84,7 +89,7 @@ public class UnistdTests {
     }
 
     private void writeData() throws Exception {
-        try (FileOutputStream fos = new FileOutputStream(f)) {
+        try (FileOutputStream fos = new FileOutputStream(f.getAbsoluteFile())) {
             fos.write(TEST_DATA, POS, LEN);
         }
     }
@@ -92,7 +97,7 @@ public class UnistdTests {
     public byte[] readData() throws Exception {
         byte[] result = new byte[TEST_DATA.length];
         int length = 0;
-        try (FileInputStream fis = new FileInputStream(f)) {
+        try (FileInputStream fis = new FileInputStream(f.getAbsoluteFile())) {
             length = fis.read(result, POS, LEN);
         }
         Assertions.assertEquals(LEN, length);
@@ -121,6 +126,7 @@ public class UnistdTests {
     @Test
     public void testReadArrayBuffer() throws Exception {
         writeData();
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDONLY());
         byte[] result = new byte[TEST_DATA.length];
         int read = Unistd.read(fd, result, POS, LEN);
         Assertions.assertEquals(LEN, read);
@@ -129,6 +135,7 @@ public class UnistdTests {
 
     @Test
     public void testWriteArrayBuffer() throws Exception {
+        fd = Fcntl.creat(f.getAbsolutePath(), Stat.S_IRUSR() | Stat.S_IWUSR());
         Unistd.write(fd, TEST_DATA, POS, LEN);
         byte[] data = readData();
         compareData(data);
@@ -137,6 +144,7 @@ public class UnistdTests {
     @Test
     public void testReadArrayBufferCritical() throws Exception {
         writeData();
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDONLY());
         byte[] result = new byte[TEST_DATA.length];
         int read = Unistd.JnhwPrimitiveArrayCritical.read(fd, result, POS, LEN);
         Assertions.assertEquals(LEN, read);
@@ -145,6 +153,7 @@ public class UnistdTests {
 
     @Test
     public void testWriteArrayBufferCritical() throws Exception {
+        fd = Fcntl.creat(f.getAbsolutePath(), Stat.S_IRUSR() | Stat.S_IWUSR());
         Unistd.JnhwPrimitiveArrayCritical.write(fd, TEST_DATA, POS, LEN);
         byte[] data = readData();
         compareData(data);
@@ -153,6 +162,7 @@ public class UnistdTests {
     @Test
     public void testReadSingle() throws Exception {
         writeData();
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDONLY());
         byte[] result = new byte[TEST_DATA.length];
         ByteRef byteRef = new ByteRef();
         for (int i = POS; i < POS + LEN; i++) {
@@ -165,6 +175,7 @@ public class UnistdTests {
 
     @Test
     public void testWriteSingle() throws Exception {
+        fd = Fcntl.creat(f.getAbsolutePath(), Stat.S_IRUSR() | Stat.S_IWUSR());
         for (int i = POS; i < POS + LEN; i++) {
             int written = Unistd.write(fd, TEST_DATA[i]);
             Assertions.assertEquals(1, written);
@@ -176,6 +187,7 @@ public class UnistdTests {
     @Test
     public void testReadByteBuffer() throws Exception {
         writeData();
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDONLY());
         ByteBuffer buff = ByteBuffer.allocateDirect(TEST_DATA.length);
         buff.position(POS);
         buff.limit(POS + LEN);
@@ -190,6 +202,7 @@ public class UnistdTests {
 
     @Test
     public void testWriteByteBuffer() throws Exception {
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_WRONLY(), Stat.S_IRUSR() | Stat.S_IWUSR());
         ByteBuffer buff = ByteBuffer.allocateDirect(TEST_DATA.length);
         buff.put(TEST_DATA);
         buff.position(POS);
@@ -202,24 +215,21 @@ public class UnistdTests {
     @Test
     public void testReadOpaqueMemory() throws Exception {
         writeData();
-        OpaqueMemory om = new OpaqueMemory(1024, true);
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDONLY());
+        OpaqueMemory om = new OpaqueMemory(TEST_DATA.length, true);
         int read = Unistd.read(fd, om, POS, LEN);
         Assertions.assertEquals(LEN, read);
         byte[] result = new byte[TEST_DATA.length];
-        Unistd.lseek(fd, 0, Unistd.SEEK_SET());
-        int written = Unistd.write(fd, om, POS, LEN);
-        Assertions.assertEquals(LEN, written);
-        // no access to Opaquememory so read it back for comparision
-        byte[] data = readData();
-        compareData(data);
+        OpaqueMemory.copy(om, 0, result, 0, LEN);
+        compareData(result);
     }
 
     @Test
     public void testWriteOpaqueMemory() throws Exception {
-        ByteBuffer buff = ByteBuffer.allocateDirect(1024);
-        buff.put(TEST_DATA, POS, LEN);
-        buff.flip();
-        Unistd.write(fd, buff);
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_WRONLY(), Stat.S_IRUSR() | Stat.S_IWUSR());
+        OpaqueMemory om = new OpaqueMemory(TEST_DATA.length, true);
+        OpaqueMemory.copy(TEST_DATA, 0, om, 0, TEST_DATA.length);
+        Unistd.write(fd, om, POS, LEN);
         byte[] data = readData();
         compareData(data);
     }
@@ -232,6 +242,7 @@ public class UnistdTests {
      */
     @Test
     public void testWriteReadArrayBuffer10MB() throws Exception {
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_RDWR(), Stat.S_IRUSR() | Stat.S_IWUSR());
         byte[] buffer = new byte[10_000_000];
         int written = Unistd.write(fd, buffer);
         Assertions.assertEquals(buffer.length, written);
@@ -242,6 +253,7 @@ public class UnistdTests {
 
     @Test
     public void testWriteReadArrayBufferPerformance() throws Exception {
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_RDWR());
         byte[] buffer = new byte[512];
         for (int i = 0; i < 100_000; i++) {
             int written = Unistd.write(fd, buffer);
@@ -257,9 +269,7 @@ public class UnistdTests {
      */
     @Test
     public void testWriteReadArrayBufferCritical10MB() throws Exception {
-        File f = File.createTempFile("jnhw-test", "");
-        f.deleteOnExit();
-        int fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDWR());
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_RDWR());
         byte[] buffer = new byte[10_000_000];
         int written = Unistd.JnhwPrimitiveArrayCritical.write(fd, buffer);
         Assertions.assertEquals(buffer.length, written);
@@ -276,9 +286,7 @@ public class UnistdTests {
      */
     @Test
     public void testWriteReadByteBuffer10MB() throws Exception {
-        File f = File.createTempFile("jnhw-test", "");
-        f.deleteOnExit();
-        int fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDWR());
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_RDWR());
         ByteBuffer buffer = ByteBuffer.allocateDirect(10_000_000);
         buffer.position(0);
         buffer.limit(buffer.capacity());
@@ -301,14 +309,11 @@ public class UnistdTests {
      */
     @Test
     public void testWriteReadOpaqueMemory10MB() throws Exception {
-        File f = File.createTempFile("jnhw-test", "");
-        f.deleteOnExit();
-        int fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDWR());
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_RDWR());
         OpaqueMemory mem = new OpaqueMemory(10_000_000, false);
         int written = Unistd.write(fd, mem);
         Assertions.assertEquals(mem.sizeInBytes, written);
         Unistd.lseek(fd, 0, Unistd.SEEK_SET());
-        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDWR());
         int read = Unistd.read(fd, mem);
         Assertions.assertEquals(mem.sizeInBytes, written);
     }
@@ -321,9 +326,7 @@ public class UnistdTests {
      */
     @Test
     public void testWriteReadByte10MB() throws Exception {
-        File f = File.createTempFile("jnhw-test", "");
-        f.deleteOnExit();
-        int fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDWR());
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_RDWR());
         int written = 0;
         for (int i = 0; i < 1_000; i++) {
             written += Unistd.write(fd, (byte) 1);
@@ -443,10 +446,49 @@ public class UnistdTests {
             Assertions.assertEquals((char) writeBytes[i], (char) readBytes[i]);
         }
     }
-    
+
+    @Test
+    public void test64() throws Exception {
+        final long SEEK_TO = 1L + Integer.MAX_VALUE;
+        if (Defines._LARGEFILE64_SOURCE()) {
+            f.delete();
+
+            long seekResult;
+
+            fd = Fcntl.creat64(f.getAbsolutePath(), Stat.S_IRUSR() | Stat.S_IWUSR());
+
+            seekResult = Unistd.lseek64(fd, SEEK_TO, Unistd.SEEK_SET());
+            Assertions.assertEquals(SEEK_TO, seekResult, "result of seek");
+            Unistd.close(fd);
+            f.delete();
+
+            fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_LARGEFILE() | Fcntl.O_RDWR(), Stat.S_IRUSR() | Stat.S_IWUSR());
+            seekResult = Unistd.lseek64(fd, SEEK_TO, Unistd.SEEK_SET());
+            Assertions.assertEquals(SEEK_TO, seekResult, "result of seek");
+            Unistd.close(fd);
+
+            fd = Fcntl.open64(f.getAbsolutePath(), Fcntl.O_RDWR());
+            seekResult = Unistd.lseek64(fd, SEEK_TO, Unistd.SEEK_SET());
+            Assertions.assertEquals(SEEK_TO, seekResult, "result of seek");
+        } else {
+            Assertions.assertThrows(de.ibapl.jnhw.NoSuchMethodException.class, () -> {
+                Unistd.lseek64(-1, 1, Unistd.SEEK_SET());
+            });
+        }
+    }
+
     @Test
     public void testLseek() throws Exception {
-        Unistd.lseek(-1, 1L + Integer.MAX_VALUE , Unistd.SEEK_SET());
+        if (Defines.__WORDSIZE() == 32) {
+            IllegalArgumentException nee = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                Unistd.lseek(-1, 1L + Integer.MAX_VALUE, Unistd.SEEK_SET());
+            });
+        } else if (Defines.__WORDSIZE() == 64) {
+            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                Unistd.lseek(-1, 1L + Integer.MAX_VALUE, Unistd.SEEK_SET());
+            });
+            Assertions.assertEquals(Errno.EBADF(), nee.errno, "-1 is not a valid FD so EBADF is expected");
+        }
     }
-    
+
 }

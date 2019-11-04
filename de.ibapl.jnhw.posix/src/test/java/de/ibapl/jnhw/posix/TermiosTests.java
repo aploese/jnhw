@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.Defined;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
@@ -28,7 +29,7 @@ import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
 import static de.ibapl.jnhw.posix.Termios.CS8;
 import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
-import de.ibapl.jnhw.util.posix.Defined;
+import de.ibapl.jnhw.util.posix.Defines;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;

@@ -50,7 +50,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_STD_1INPUT_1HANDLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return STD_INPUT_HANDLE;
+        return (int32_t)STD_INPUT_HANDLE;
     }
 
     /*
@@ -60,7 +60,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_STD_1OUTPUT_1HANDLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return STD_OUTPUT_HANDLE;
+        return (int32_t)STD_OUTPUT_HANDLE;
     }
 
     /*
@@ -70,7 +70,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_STD_1ERROR_1HANDLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return STD_ERROR_HANDLE;
+        return (int32_t)STD_ERROR_HANDLE;
     }
 
     /*
@@ -80,7 +80,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_WAIT_1FAILED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return WAIT_FAILED;
+        return (int32_t)WAIT_FAILED;
     }
 
     /*
@@ -240,7 +240,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_INFINITE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return INFINITE;
+        return (int32_t)INFINITE;
     }
 
     /*

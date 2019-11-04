@@ -36,7 +36,7 @@ extern "C" {
 #define ILLEGAL_ARGUMENT_EXCEPTION "java/lang/IllegalArgumentException"
 
     //Cached Exceptions
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NativeErrorException(JNIEnv* env, int errno);
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NativeErrorException(JNIEnv* env, int errorNumber);
 
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName);
 

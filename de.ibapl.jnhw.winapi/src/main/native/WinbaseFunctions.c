@@ -35,13 +35,13 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CloseHandle
-    (JNIEnv *env, jclass clazz, jobject hObject) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hObject) {
         if (hObject == NULL) {
             throw_NullPointerException(env, "hObject is null");
             return;
         }
         if (!CloseHandle(UNWRAP_HANDLE(hObject))) {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
     }
 
@@ -51,13 +51,13 @@ extern "C" {
  * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommBreak
-    (JNIEnv *env, jclass clazz, jobject hFile) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
             return;
         }
         if (!ClearCommBreak(UNWRAP_HANDLE(hFile))) {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
     }
 
@@ -67,17 +67,17 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommBreak
  * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Winbase/COMSTAT;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommError
-    (JNIEnv *env, jclass clazz, jobject hFile, jobject lpErrors, jobject lpCOMSTAT) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpErrors, jobject lpCOMSTAT) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
             return;
         }
         DWORD _lpErrors;
         if (!ClearCommError(UNWRAP_HANDLE(hFile), lpErrors != NULL ? &_lpErrors : NULL, UNWRAP_LPCOMSTAT_OR_NULL(lpCOMSTAT))) {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
         if (lpErrors != NULL) {
-            SET_INT_REF_VALUE(lpErrors, _lpErrors);
+            SET_INT_REF_VALUE(lpErrors, (int32_t)_lpErrors);
         }
     }
 
@@ -87,13 +87,13 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommError
  * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;I)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EscapeCommFunction
-    (JNIEnv *env, jclass clazz, jobject hFile, jint dwFunc) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jint dwFunc) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
             return;
         }
-    if (!EscapeCommFunction(UNWRAP_HANDLE(hFile), dwFunc)) {
-            throw_NativeErrorException(env, GetLastError());
+    if (!EscapeCommFunction(UNWRAP_HANDLE(hFile), (uint32_t)dwFunc)) {
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
     }
 
@@ -103,16 +103,16 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EscapeCommFunction
  * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/IntRef;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommModemStatus
-    (JNIEnv *env, jclass clazz, jobject hFile, jobject lpModemStat) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpModemStat) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
             return;
         }
         DWORD _lpModemStat;
         if (!GetCommModemStatus(UNWRAP_HANDLE(hFile), &_lpModemStat)) {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
-        SET_INT_REF_VALUE(lpModemStat, _lpModemStat);
+        SET_INT_REF_VALUE(lpModemStat, (int32_t)_lpModemStat);
     }
 
 /*
@@ -121,7 +121,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommModemStatus
  * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommState
-    (JNIEnv *env, jclass clazz, jobject hFile, jobject lpDCB) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpDCB) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
             return;
@@ -131,7 +131,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommState
             return;
         }
         if (!GetCommState(UNWRAP_HANDLE(hFile), UNWRAP_LPDCB(lpDCB))) {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
     }
 
@@ -141,7 +141,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommState
  * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommTimeouts
-    (JNIEnv *env, jclass clazz, jobject hFile, jobject lpCOMMTIMEOUTS) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpCOMMTIMEOUTS) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
             return;
@@ -151,7 +151,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommTimeouts
             return;
         }
         if (!GetCommTimeouts(UNWRAP_HANDLE(hFile), UNWRAP_LPCOMMTIMEOUTS(lpCOMMTIMEOUTS))) {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
     }
 
@@ -161,13 +161,13 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommTimeouts
  * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommBreak
-    (JNIEnv *env, jclass clazz, jobject hFile) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
             return;
         }
         if (!SetCommBreak(UNWRAP_HANDLE(hFile))) {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
     }
 
@@ -177,7 +177,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommBreak
  * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommState
-    (JNIEnv *env, jclass clazz, jobject hFile, jobject lpDCB) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpDCB) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
             return;
@@ -187,7 +187,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommState
             return;
         }
         if (!SetCommState(UNWRAP_HANDLE(hFile), UNWRAP_LPDCB(lpDCB))) {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
     }
 
@@ -197,7 +197,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommState
  * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommTimeouts
-    (JNIEnv *env, jclass clazz, jobject hFile, jobject lpCOMMTIMEOUTS) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpCOMMTIMEOUTS) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
             return;
@@ -207,7 +207,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommTimeouts
             return;
         }
         if (!SetCommTimeouts(UNWRAP_HANDLE(hFile), UNWRAP_LPCOMMTIMEOUTS(lpCOMMTIMEOUTS))) {
-            throw_NativeErrorException(env, GetLastError());
+            throw_NativeErrorException(env, (int32_t)GetLastError());
         }
     }
 

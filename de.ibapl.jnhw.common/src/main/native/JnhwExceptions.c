@@ -134,8 +134,8 @@ extern "C" {
         (*env)->ThrowNew(env, NoSuchMethodExceptionClass, methodName);
     }
 
-    JNIEXPORT void JNICALL throw_NativeErrorException(JNIEnv* env, int errno) {
-        const jobject ioeEx = (*env)->NewObject(env, NativeErrorExceptionClass, NativeErrorException_Init_ID, errno);
+    JNIEXPORT void JNICALL throw_NativeErrorException(JNIEnv* env, int errorNumber) {
+        const jobject ioeEx = (*env)->NewObject(env, NativeErrorExceptionClass, NativeErrorException_Init_ID, errorNumber);
         (*env)->Throw(env, ioeEx);
     }
 

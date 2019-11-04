@@ -119,7 +119,8 @@ extern "C" {
         }
         void* result = malloc((uint32_t) sizeInBytes);
         if ((result == NULL) && (sizeInBytes > 0)) {
-            throw_NativeErrorException(env, errno);
+            int e = errno;
+            throw_NativeErrorException(env, e);
         }
         return (intptr_t) result;
     }

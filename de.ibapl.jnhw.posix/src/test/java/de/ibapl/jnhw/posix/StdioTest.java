@@ -19,33 +19,29 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.util.posix;
+package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
-import de.ibapl.jnhw.posix.Termios;
-import java.util.function.IntSupplier;
+import java.io.File;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
  *
  * @author aploese
  */
-public class DefinedTest {
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+public class StdioTest {
     
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
-    
-    public DefinedTest() {
+    public StdioTest() {
     }
     
     @BeforeAll
     public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
     }
     
     @AfterAll
@@ -61,40 +57,25 @@ public class DefinedTest {
     }
 
     /**
-     * Test of __linux__ method, of class Defined.
+     * Test of HAVE_STDIO_H method, of class Stdio.
      */
     @Test
-    public void test__linux__() {
-        System.out.println("__linux__");
-        assertEquals(multiarchTupelBuilder.getOs() == OS.LINUX, Defined.__linux__());
+    public void testHAVE_STDIO_H() {
+        System.out.println("HAVE_STDIO_H");
+        assertTrue(Stdio.HAVE_STDIO_H(), "expected to have stdio.h");
     }
 
     /**
-     * Test of __APPLE__ method, of class Defined.
+     * Test of remove method, of class Stdio.
      */
     @Test
-    public void test__APPLE__() {
-        System.out.println("__APPLE__");
-        assertEquals(multiarchTupelBuilder.getOs() == OS.MAC_OS_X, Defined.__APPLE__());
-    }
-
-    /**
-     * Test of __FreeBSD__ method, of class Defined.
-     */
-    @Test
-    public void test__FreeBSD__() {
-        System.out.println("__FreeBSD__");
-        assertEquals(multiarchTupelBuilder.getOs() == OS.FREE_BSD, Defined.__FreeBSD__());
-    }
-
-    /**
-     * Test of defined method, of class Defined.
-     */
-    @Test
-    public void testDefined() {
-        System.out.println("defined");
-        assertTrue(Defined.defined(Termios::B0));
-//TODO move to termios        assertFalse( Defined.defined(Termios::CMSPAR));
+    public void testRemove() throws Exception {
+        System.out.println("remove");
+        File f = File.createTempFile("jnhw-test", "");
+        f.deleteOnExit();
+        assertTrue(f.exists());
+        Stdio.remove(f.getAbsolutePath());
+        assertFalse(f.exists());
     }
     
 }

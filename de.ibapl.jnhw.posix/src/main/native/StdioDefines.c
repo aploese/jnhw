@@ -19,46 +19,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "jnhw-winapi.h"
-#include "de_ibapl_jnhw_winapi_Winnt_PHANDLE.h"
-
-#ifdef HAVE_WINNT_H
-#include <winnt.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
- * Method:    sizeofHANDLE
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_sizeofHANDLE
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return sizeof(HANDLE);
-}
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
- * Method:    getHandleValue
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_getHandleValue
-  (__attribute__ ((unused)) JNIEnv *env, jobject this) {
-    return (intptr_t) *(UNWRAP_PHANDLE(this));
-}
+#include "jnhw-posix.h"
+#include "de_ibapl_jnhw_posix_Stdio.h"
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
- * Method:    setHandleValue
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_setHandleValue
-  (JNIEnv *env, jobject this, jlong value) {
-    *(UNWRAP_PHANDLE(this)) = (HANDLE) (intptr_t) value;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Stdio
+     * Method:    HAVE_STDIO_H
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Stdio_HAVE_1STDIO_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#ifdef HAVE_STDIO_H
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
+    }
 
+#if HAVE_STDIO_H
+#include <stdio.h>
+#endif
+
+#ifdef _POSIX_VERSION
+
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

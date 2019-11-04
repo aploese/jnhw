@@ -22,18 +22,6 @@
 #ifndef _ljnhw_common_H
 #define _ljnhw_common_H
 
-#ifdef __linux__
-//Is there a way to figure out the __WORDSIZE and set according to this _LARGEFILE64_SOURCE ??? 
-//#if __WORDSIZE == 32
-//#define _GNU_SOURCE
-#define _LARGEFILE64_SOURCE
-//#endif
-#endif
-
-//#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
-//#define _LARGEFILE64_SOURCE
-//#endif
-
 #include <stdint.h>
 
 #include <jni.h>
