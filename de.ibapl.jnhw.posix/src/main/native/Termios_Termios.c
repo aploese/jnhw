@@ -155,12 +155,13 @@ extern "C" {
      * Signature: ()B
      */
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1line__
-    (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
-#if defined(__APPLE__) || defined (__FreeBSD__)
-        throw_NoSuchMethodException(env, "__APPLE__ || __FreeBSD__ no such field termios.c_line");
-        return -1;
-#else
+#if defined(__linux__)
+    (JNIEnv *env, jobject structTermios) {
         return (signed char) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line;
+#else
+    (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
+        throw_NoSuchMethodException(env, "only __linux__ has field termios.c_line");
+        return -1;
 #endif
     }
 
@@ -170,11 +171,12 @@ extern "C" {
      * Signature: (B)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1line__B
-    (JNIEnv *env, __attribute__ ((unused)) jobject structTermios, __attribute__ ((unused)) jbyte value) {
-#if defined(__APPLE__) || defined (__FreeBSD__)
-        throw_NoSuchMethodException(env, "__APPLE__ || __FreeBSD__ no such field termios.c_line");
-#else
+#if defined(__linux__)
+    (JNIEnv *env, jobject structTermios, jbyte value) {
         (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line = (unsigned char) value;
+#else
+    (JNIEnv *env, __attribute__ ((unused)) jobject structTermios, __attribute__ ((unused)) jbyte value) {
+        throw_NoSuchMethodException(env, "only __linux__ has field termios.c_line");
 #endif
     }
 
@@ -184,10 +186,11 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ispeed__
-    (JNIEnv *env, jobject structTermios) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
+    (JNIEnv *env, jobject structTermios) {
         return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed;
 #else
+    (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
         throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || __APPLE__ || __FreeBSD__");
         return 0;
 #endif
@@ -199,14 +202,15 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ispeed__I
-    (JNIEnv *env, jobject structTermios, jint speed) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
+    (JNIEnv *env, jobject structTermios, jint speed) {
         if (speed < 0) {
             throw_IllegalArgumentException(env, "speed must be >= 0");
             return;
         }
         (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed = (uint32_t) speed;
 #else
+    (JNIEnv *env, __attribute__ ((unused)) jobject structTermios, __attribute__ ((unused)) jint speed) {
         throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || __APPLE__ || __FreeBSD__");
 #endif
     }
@@ -217,11 +221,12 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ospeed__
-    (JNIEnv *env, jobject structTermios) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
+    (JNIEnv *env, jobject structTermios) {
         return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed;
 #else
-        throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || __APPLE__ || __FreeBSD__");
+    (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
+        throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED || __APPLE__ || __FreeBSD__");
         return 0;
 #endif
     }
@@ -232,14 +237,15 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ospeed__I
-    (JNIEnv *env, jobject structTermios, jint speed) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
+    (JNIEnv *env, jobject structTermios, jint speed) {
         if (speed < 0) {
             throw_IllegalArgumentException(env, "speed must be >= 0");
             return;
         }
         (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed = (uint32_t)speed;
 #else
+    (JNIEnv *env, __attribute__ ((unused)) jobject structTermios, __attribute__ ((unused)) jint speed) {
         throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED || __APPLE__ || __FreeBSD__");
 #endif
     }

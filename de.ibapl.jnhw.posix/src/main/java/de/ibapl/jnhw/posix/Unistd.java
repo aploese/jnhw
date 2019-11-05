@@ -207,6 +207,7 @@ public final class Unistd {
      * @param whence
      * @return the position depending on the size of @see SizeOf.off_t <code>int</code> or <code>long</code> may be used. 
      * @throws NativeErrorException
+     * @throws IndexOutOfBoundsException if offset is greater or smaller as the native off_t can hold
      */
     public final static native @off_t long lseek(int fildes, @off_t long offset, int whence) throws NativeErrorException;
 

@@ -151,7 +151,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1LARGEFILE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__LARGEFILE64_SOURCE)
+#if defined (_LARGEFILE64_SOURCE)
         return O_LARGEFILE;
 #else
 #if defined(O_LARGEFILE)

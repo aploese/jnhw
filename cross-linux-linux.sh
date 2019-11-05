@@ -12,6 +12,8 @@ mvn clean compile || exit 1
 # "mipsisa32r6-linux-gnu"\
 # "mipsisa64r6el-linux-gnuabi64"\
 # "mipsisa64r6-linux-gnuabi64"
+# "mips64-linux-gnuabin32"\
+# "mips64el-linux-gnuabin32"
 
 for d in\
  "aarch64-linux-gnu"\
@@ -20,10 +22,9 @@ for d in\
  "mips-linux-gnu"\
  "mipsel-linux-gnu"\
  "mips64-linux-gnuabi64"\
- "mips64-linux-gnuabin32"\
  "mips64el-linux-gnuabi64"\
- "mips64el-linux-gnuabin32"
 do
+  $d-gcc --version || exit 1
   ./configure --host=$d --prefix=$PWD/target/$d || exit 1
   make clean || exit 1
   make || exit 1
