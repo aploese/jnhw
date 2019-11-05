@@ -156,8 +156,8 @@ extern "C" {
      */
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1line__
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
-#ifdef __APPLE__
-        throw_NoSuchMethodException(env, "__APPLE__ no such field termios.c_line");
+#if defined(__APPLE__) || defined (__FreeBSD__)
+        throw_NoSuchMethodException(env, "__APPLE__ || __FreeBSD__ no such field termios.c_line");
         return -1;
 #else
         return (signed char) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line;
@@ -171,8 +171,8 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1line__B
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios, __attribute__ ((unused)) jbyte value) {
-#ifdef __APPLE__
-        throw_NoSuchMethodException(env, "__APPLE__ no such field termios.c_line");
+#if defined(__APPLE__) || defined (__FreeBSD__)
+        throw_NoSuchMethodException(env, "__APPLE__ || __FreeBSD__ no such field termios.c_line");
 #else
         (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line = (unsigned char) value;
 #endif

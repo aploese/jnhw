@@ -94,7 +94,7 @@ public class DefinesTest {
                 break;
 
             case FREE_BSD:
-                assertTrue(Defines._LARGEFILE64_SOURCE());
+                assertFalse(Defines._LARGEFILE64_SOURCE());
                 break;
             case MAC_OS_X:
                 assertFalse(Defines._LARGEFILE64_SOURCE());

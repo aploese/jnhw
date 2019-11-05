@@ -113,7 +113,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1SEARCH
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) || defined(__APPLE__)
+#if defined (__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
 #if defined(O_SEARCH)
 #error "O_SEARCH defined"
 #endif
@@ -151,14 +151,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1LARGEFILE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) || defined(__APPLE__)
+#if defined (__LARGEFILE64_SOURCE)
+        return O_LARGEFILE;
+#else
 #if defined(O_LARGEFILE)
 #error "O_LARGEFILE defined"
 #endif
         throw_NotDefinedException(env, "O_LARGEFILE");
         return 0;
-#else
-        return O_LARGEFILE;
 #endif
     }
 
@@ -267,7 +267,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1DSYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__FreeBSD__)
+#if defined(O_DSYNC)
+#error "O_DSYNC defined"
+#endif
+        throw_NotDefinedException(env, "O_DSYNC");
+        return 0;
+#else
         return O_DSYNC;
+#endif
     }
 
     /*
@@ -277,7 +285,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1RSYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__)
+#if defined (__APPLE__) || defined (__FreeBSD__)
 #if defined(O_RSYNC)
 #error "O_RSYNC defined"
 #endif

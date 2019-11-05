@@ -114,7 +114,7 @@ extern "C" {
             return -1;
         }
         const char* _file = (*env)->GetStringUTFChars(env, file, NULL);
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__FreeBSD__)
         if ((mode > INT16_MAX) || (mode < INT16_MIN)) {
             throw_IllegalArgumentException(env, "mode outside short int");
             return -1;

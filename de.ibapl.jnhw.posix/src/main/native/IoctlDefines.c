@@ -162,7 +162,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMSET
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__) 
+#if defined(__APPLE__) || defined (__FreeBSD__)
         //Just force the conversation or check at runtime sizeof??
         return (int32_t) TIOCMSET;
 #else
