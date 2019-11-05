@@ -46,11 +46,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winnt
      * Method:    MAXDWORD
-     * Signature: ()I
+     * Signature: ()J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_MAXDWORD
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winnt_MAXDWORD
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int32_t)MAXDWORD;
+        return (int64_t)MAXDWORD;
     }
 
     /*

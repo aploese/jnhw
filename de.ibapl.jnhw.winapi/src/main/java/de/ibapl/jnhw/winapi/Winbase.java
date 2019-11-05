@@ -231,25 +231,25 @@ public abstract class Winbase {
             super(sizeofCOMMTIMEOUTS(), clearMemory);
         }
 
-        public native int ReadIntervalTimeout();
+        public native long ReadIntervalTimeout();
 
-        public native void ReadIntervalTimeout(int value);
+        public native void ReadIntervalTimeout(long value);
 
-        public native int ReadTotalTimeoutMultiplier();
+        public native long ReadTotalTimeoutMultiplier();
 
-        public native void ReadTotalTimeoutMultiplier(int value);
+        public native void ReadTotalTimeoutMultiplier(long value);
 
-        public native int ReadTotalTimeoutConstant();
+        public native long ReadTotalTimeoutConstant();
 
-        public native void ReadTotalTimeoutConstant(int value);
+        public native void ReadTotalTimeoutConstant(long value);
 
-        public native int WriteTotalTimeoutMultiplier();
+        public native long WriteTotalTimeoutMultiplier();
 
-        public native void WriteTotalTimeoutMultiplier(int value);
+        public native void WriteTotalTimeoutMultiplier(long value);
 
-        public native int WriteTotalTimeoutConstant();
+        public native long WriteTotalTimeoutConstant();
 
-        public native void WriteTotalTimeoutConstant(int value);
+        public native void WriteTotalTimeoutConstant(long value);
 
     }
 

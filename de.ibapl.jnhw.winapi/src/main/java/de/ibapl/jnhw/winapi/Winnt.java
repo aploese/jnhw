@@ -39,7 +39,7 @@ public final class Winnt {
     public final static native boolean HAVE_WINNT_H();
 
     @Define
-    public final static native int MAXDWORD();
+    public final static native long MAXDWORD();
 
     @Define
     public final static native int GENERIC_READ();
