@@ -24,7 +24,11 @@ package de.ibapl.jnhw.util.posix;
 import de.ibapl.jnhw.NotDefinedException;
 
 /**
- *
+ * get the defines with gcc:
+ * create an empty file c.c
+ * run gcc -dD -dI -E c.c > c.txt
+ * c.txt contains all macros.
+ * add an <code>#include <headerFileName.h> to get the defines for that header.
  * @author aploese
  */
 public class Defines {
@@ -33,7 +37,11 @@ public class Defines {
 
     public static native boolean __APPLE__();
 
-    public static native boolean __FreeBSD__();
+    /**
+     * 
+     * @return the major version at compile time
+     */
+    public static native int __FreeBSD__() throws NotDefinedException;
     
     public static native boolean _LARGEFILE64_SOURCE();
     

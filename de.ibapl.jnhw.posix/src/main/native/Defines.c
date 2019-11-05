@@ -59,14 +59,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_util_posix_Defines
      * Method:    __FreeBSD__
-     * Signature: ()Z
+     * Signature: ()I
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1FreeBSD_1_1
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1FreeBSD_1_1
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef __FreeBSD__
-        return JNI_TRUE;
+#if defined(__FreeBSD__)
+        return __FreeBSD__;
 #else
-        return JNI_FALSE;
+        throw_NotDefinedException(env, "__FreeBSD__");
+        return -1;
 #endif
     }
 
@@ -77,11 +78,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1WORDSIZE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef __WORDSIZE
-        return __WORDSIZE;
-#else
+#if defined (__WIN32__)
+#if defined(__WORDSIZE)
+#error "__WORDSIZE defined"
+#endif
         throw_NotDefinedException(env, "__WORDSIZE");
         return 0;
+#else
+        return __WORDSIZE;
 #endif
     }
 

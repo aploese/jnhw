@@ -94,12 +94,15 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1EXEC
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef O_EXEC
-        return O_EXEC;
-#else
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined(__APPLE__)
+#if defined(O_EXEC)
+#error "O_EXEC defined"
+#endif
         throw_NotDefinedException(env, "O_EXEC");
         return 0;
+#else
+        return O_EXEC;
 #endif
     }
 
@@ -109,12 +112,15 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1SEARCH
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef O_SEARCH
-        return O_SEARCH;
-#else
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined(__APPLE__)
+#if defined(O_SEARCH)
+#error "O_SEARCH defined"
+#endif
         throw_NotDefinedException(env, "O_SEARCH");
         return 0;
+#else
+        return O_SEARCH;
 #endif
     }
 
@@ -145,11 +151,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1LARGEFILE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef O_LARGEFILE
-        return O_LARGEFILE;
-#else
+#if defined (__linux__) || defined(__APPLE__)
+#if defined(O_LARGEFILE)
+#error "O_LARGEFILE defined"
+#endif
         throw_NotDefinedException(env, "O_LARGEFILE");
         return 0;
+#else
+        return O_LARGEFILE;
 #endif
     }
 
@@ -239,12 +248,15 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1TTY_1INIT
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef O_TTY_INIT
-        return O_TTY_INIT;
-#else
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined(__APPLE__)
+#if defined(O_TTY_INIT)
+#error "O_TTY_INIT defined"
+#endif
         throw_NotDefinedException(env, "O_TTY_INIT");
         return 0;
+#else
+        return O_TTY_INIT;
 #endif
     }
 
@@ -255,12 +267,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1DSYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef O_DSYNC
         return O_DSYNC;
-#else
-        throw_NotDefinedException(env, "O_DSYNC");
-        return 0;
-#endif
     }
 
     /*
@@ -270,11 +277,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1RSYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef O_RSYNC
-        return O_RSYNC;
-#else
+#if defined (__APPLE__)
+#if defined(O_RSYNC)
+#error "O_RSYNC defined"
+#endif
         throw_NotDefinedException(env, "O_RSYNC");
         return 0;
+#else
+        return O_RSYNC;
 #endif
     }
 
@@ -285,11 +295,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1FSYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef O_FSYNC
-        return O_FSYNC;
-#else
+#if defined (__WIN32__)
+#if defined(O_FSYNC)
+#error "O_FSYNC defined"
+#endif
         throw_NotDefinedException(env, "O_FSYNC");
         return 0;
+#else
+        return O_FSYNC;
 #endif
     }
 
@@ -300,11 +313,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1ASYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef O_ASYNC
-        return O_ASYNC;
-#else
+#if defined (__WIN32__)
+#if defined(O_ASYNC)
+#error "O_ASYNC defined"
+#endif
         throw_NotDefinedException(env, "O_ASYNC");
         return 0;
+#else
+        return O_ASYNC;
 #endif
     }
 

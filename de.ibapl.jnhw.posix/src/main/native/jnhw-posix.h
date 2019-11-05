@@ -19,13 +19,20 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#ifdef __linux__
+#if  defined(__linux__)
+#if defined(_LP64)
+//64 bit
+
+#else
+//32 bit
+
 //#define _GNU_SOURCE
+//enable large file support(*64 methods)
 #define _LARGEFILE64_SOURCE
 #endif
-
-#ifdef __FreeBSD__
-#define _LARGEFILE64_SOURCE
+#elif defined(__FreeBSD__)
+//no 
+#elif defined(__APPLE__)
 #endif
 
 //#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)

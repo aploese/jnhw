@@ -42,7 +42,7 @@ extern "C" {
 
 #ifdef HAVE_WINBASE_H
 #include <winbase.h>
-
+    
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    STD_INPUT_HANDLE

@@ -52,13 +52,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios__1HAVE_1STRUCT_1TERMIOS_1C_1ISPEED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef _HAVE_STRUCT_TERMIOS_C_ISPEED
-        return _HAVE_STRUCT_TERMIOS_C_ISPEED;
-#else
+#if defined (__APPLE__)
+#if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED)
+#error "_HAVE_STRUCT_TERMIOS_C_ISPEED defined"
+#endif
         throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED");
         return 0;
+#else
+        return _HAVE_STRUCT_TERMIOS_C_ISPEED;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -67,13 +70,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios__1HAVE_1STRUCT_1TERMIOS_1C_1OSPEED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef _HAVE_STRUCT_TERMIOS_C_OSPEED
-        return _HAVE_STRUCT_TERMIOS_C_OSPEED;
-#else
+#if defined (__APPLE__)
+#if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED)
+#error "_HAVE_STRUCT_TERMIOS_C_OSPEED defined"
+#endif
         throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED");
         return 0;
+#else
+        return _HAVE_STRUCT_TERMIOS_C_OSPEED;
 #endif
-    }
+}
 
         /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -242,13 +248,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B57600
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B57600
         return B57600;
-#else
-        throw_NotDefinedException(env, "B57600");
-        return 0;
-#endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -257,13 +258,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B115200
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B115200
         return B115200;
-#else
-        throw_NotDefinedException(env, "B115200");
-        return 0;
-#endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -272,13 +268,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B230400
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B230400
         return B230400;
-#else
-        throw_NotDefinedException(env, "B230400");
-        return 0;
-#endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -287,13 +278,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B460800
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B460800
-        return B460800;
-#else
+#if defined (__APPLE__)
+#if defined(B460800)
+#error "B460800 defined"
+#endif
         throw_NotDefinedException(env, "B460800");
         return 0;
+#else
+        return B460800;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -302,13 +296,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B500000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B500000
-        return B500000;
-#else
+#if defined (__APPLE__)
+#if defined(B500000)
+#error "B500000 defined"
+#endif
         throw_NotDefinedException(env, "B500000");
         return 0;
+#else
+        return B500000;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -317,13 +314,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B576000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B576000
-        return B576000;
-#else
+#if defined (__APPLE__)
+#if defined(B576000)
+#error "B576000 defined"
+#endif
         throw_NotDefinedException(env, "B576000");
         return 0;
+#else
+        return B576000;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -332,13 +332,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B921600
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B921600
-        return B921600;
-#else
+#if defined (__APPLE__)
+#if defined(B921600)
+#error "B921600 defined"
+#endif
         throw_NotDefinedException(env, "B921600");
         return 0;
+#else
+        return B921600;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -347,13 +350,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B1000000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B1000000
-        return B1000000;
-#else
+#if defined (__APPLE__)
+#if defined(B1000000)
+#error "B1000000 defined"
+#endif
         throw_NotDefinedException(env, "B1000000");
         return 0;
+#else
+        return B1000000;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -362,13 +368,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B1152000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B1152000
-        return B1152000;
-#else
+#if defined (__APPLE__)
+#if defined(B1152000)
+#error "B1152000 defined"
+#endif
         throw_NotDefinedException(env, "B1152000");
         return 0;
+#else
+        return B1152000;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -377,13 +386,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B1500000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B1500000
-        return B1500000;
-#else
+#if defined (__APPLE__)
+#if defined(B1500000)
+#error "B1500000 defined"
+#endif
         throw_NotDefinedException(env, "B1500000");
         return 0;
+#else
+        return B1500000;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -392,13 +404,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B2000000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B2000000
-        return B2000000;
-#else
+#if defined (__APPLE__)
+#if defined(B2000000)
+#error "B2000000 defined"
+#endif
         throw_NotDefinedException(env, "B2000000");
         return 0;
+#else
+        return B2000000;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -407,13 +422,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B2500000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B2500000
-        return B2500000;
-#else
+#if defined (__APPLE__)
+#if defined(B2500000)
+#error "B2500000 defined"
+#endif
         throw_NotDefinedException(env, "B2500000");
         return 0;
+#else
+        return B2500000;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -422,13 +440,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B3000000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B3000000
-        return B3000000;
-#else
+#if defined (__APPLE__)
+#if defined(B3000000)
+#error "B3000000 defined"
+#endif
         throw_NotDefinedException(env, "B3000000");
         return 0;
+#else
+        return B3000000;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -437,13 +458,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B3500000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B3500000
-        return B3500000;
-#else
+#if defined (__APPLE__)
+#if defined(B3500000)
+#error "B3500000 defined"
+#endif
         throw_NotDefinedException(env, "B3500000");
         return 0;
+#else
+        return B3500000;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -452,13 +476,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B4000000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef B4000000
-        return B4000000;
-#else
+#if defined (__APPLE__)
+#if defined(B4000000)
+#error "B4000000 defined"
+#endif
         throw_NotDefinedException(env, "B4000000");
         return 0;
+#else
+        return B4000000;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -477,13 +504,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CMSPAR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef CMSPAR
-        return CMSPAR;
-#else
+#if defined (__APPLE__)
+#if defined(CMSPAR)
+#error "CMSPAR defined"
+#endif
         throw_NotDefinedException(env, "CMSPAR");
         return 0;
+#else
+        return CMSPAR;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -612,13 +642,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_PAREXT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef PAREXT
-        return PAREXT;
-#else
+#if defined (__linux__)  || defined(__APPLE__)
+#if defined(PAREXT)
+#error "PAREXT defined"
+#endif
         throw_NotDefinedException(env, "PAREXT");
         return 0;
+#else
+        return PAREXT;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -627,13 +660,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_PARMRK
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef PARMRK
         return PARMRK;
-#else
-        throw_NotDefinedException(env, "PARMRK");
-        return 0;
-#endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios

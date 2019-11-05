@@ -86,13 +86,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_SEEK_1DATA
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef SEEK_DATA
-        return SEEK_DATA;
-#else
+#if defined (__linux__) || defined(__APPLE__)
+#if defined(SEEK_DATA)
+#error "SEEK_DATA defined"
+#endif
         throw_NotDefinedException(env, "SEEK_DATA");
         return 0;
+#else
+        return SEEK_DATA;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
@@ -101,13 +104,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_SEEK_1HOLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef SEEK_HOLE
-        return SEEK_HOLE;
-#else
+#if defined (__linux__) || defined(__APPLE__)
+#if defined(SEEK_HOLE)
+#error "SEEK_HOLE defined"
+#endif
         throw_NotDefinedException(env, "SEEK_HOLE");
         return 0;
+#else
+        return SEEK_HOLE;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd

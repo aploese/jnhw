@@ -42,7 +42,7 @@ extern "C" {
 
 #ifdef HAVE_FILEAPI_H
 #include <fileapi.h>
-
+    
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    OPEN_EXISTING

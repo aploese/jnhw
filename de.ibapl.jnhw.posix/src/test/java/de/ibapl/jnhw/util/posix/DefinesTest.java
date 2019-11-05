@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.util.posix;
 
+import de.ibapl.jnhw.Defined;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
@@ -79,8 +80,19 @@ public class DefinesTest {
         System.out.println("_LARGEFILE64_SOURCE");
         switch (multiarchTupelBuilder.getOs()) {
             case LINUX:
-                assertTrue(Defines._LARGEFILE64_SOURCE());
+            switch (Defines.__WORDSIZE()) {
+                case 32:
+                    assertTrue(Defines._LARGEFILE64_SOURCE());
+                    break;
+                case 64:
+                    assertFalse(Defines._LARGEFILE64_SOURCE());
+                    break;
+                default:
+                    fail("no case for this wordsize:" + Defines.__WORDSIZE());
+                    break;
+            }
                 break;
+
             case FREE_BSD:
                 assertTrue(Defines._LARGEFILE64_SOURCE());
                 break;
@@ -107,7 +119,7 @@ public class DefinesTest {
     @Test
     public void test__FreeBSD__() {
         System.out.println("__FreeBSD__");
-        assertEquals(multiarchTupelBuilder.getOs() == OS.FREE_BSD, Defines.__FreeBSD__());
+        assertEquals(multiarchTupelBuilder.getOs() == OS.FREE_BSD, Defined.defined(Defines::__FreeBSD__));
     }
 
     /**

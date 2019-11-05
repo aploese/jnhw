@@ -450,13 +450,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECHRNG
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ECHRNG
-        return ECHRNG;
-#else 
+#if defined (__APPLE__)
+#if defined(ECHRNG)
+#error "ECHRNG defined"
+#endif
         throw_NotDefinedException(env, "ECHRNG");
         return 0;
+#else
+        return ECHRNG;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -465,13 +468,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL2NSYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EL2NSYNC
-        return EL2NSYNC;
-#else 
+#if defined (__APPLE__)
+#if defined(EL2NSYNC)
+#error "EL2NSYNC defined"
+#endif
         throw_NotDefinedException(env, "EL2NSYNC");
         return 0;
+#else
+        return EL2NSYNC;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -480,13 +486,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL3HLT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EL3HLT  
-        return EL3HLT;
-#else 
+#if defined (__APPLE__)
+#if defined(EL3HLT)
+#error "EL3HLT defined"
+#endif
         throw_NotDefinedException(env, "EL3HLT");
         return 0;
+#else
+        return EL3HLT;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -495,13 +504,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL3RST
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EL3RST
-        return EL3RST;
-#else 
+#if defined (__APPLE__)
+#if defined(EL3RST)
+#error "EL3RST defined"
+#endif
         throw_NotDefinedException(env, "EL3RST");
         return 0;
+#else
+        return EL3RST;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -510,13 +522,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELNRNG
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ELNRNG
-        return ELNRNG;
-#else 
+#if defined (__APPLE__)
+#if defined(ELNRNG)
+#error "ELNRNG defined"
+#endif
         throw_NotDefinedException(env, "ELNRNG");
         return 0;
+#else
+        return ELNRNG;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -525,13 +540,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EUNATCH
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EUNATCH
-        return EUNATCH;
-#else 
+#if defined (__APPLE__)
+#if defined(EUNATCH)
+#error "EUNATCH defined"
+#endif
         throw_NotDefinedException(env, "EUNATCH");
         return 0;
+#else
+        return EUNATCH;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -540,13 +558,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOCSI
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENOCSI
-        return ENOCSI;
-#else 
+#if defined (__APPLE__)
+#if defined(ENOCSI)
+#error "ENOCSI defined"
+#endif
         throw_NotDefinedException(env, "ENOCSI");
         return 0;
+#else
+        return ENOCSI;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -555,13 +576,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL2HLT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EL2HLT
-        return EL2HLT;
-#else 
+#if defined (__APPLE__)
+#if defined(EL2HLT)
+#error "EL2HLT defined"
+#endif
         throw_NotDefinedException(env, "EL2HLT");
         return 0;
+#else
+        return EL2HLT;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -570,13 +594,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EBADE
-        return EBADE;
-#else 
+#if defined (__APPLE__)
+#if defined(EBADE)
+#error "EBADE defined"
+#endif
         throw_NotDefinedException(env, "EBADE");
         return 0;
+#else
+        return EBADE;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -585,13 +612,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EBADR
-        return EBADR;
-#else 
+#if defined (__APPLE__)
+#if defined(EBADR)
+#error "EBADR defined"
+#endif
         throw_NotDefinedException(env, "EBADR");
         return 0;
+#else
+        return EBADR;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -600,13 +630,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EXFULL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EXFULL
-        return EXFULL;
-#else 
+#if defined (__APPLE__)
+#if defined(EXFULL)
+#error "EXFULL defined"
+#endif
         throw_NotDefinedException(env, "EXFULL");
         return 0;
+#else
+        return EXFULL;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -615,13 +648,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOANO
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENOANO
-        return ENOANO;
-#else 
+#if defined (__APPLE__)
+#if defined(ENOANO)
+#error "ENOANO defined"
+#endif
         throw_NotDefinedException(env, "ENOANO");
         return 0;
+#else
+        return ENOANO;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -630,13 +666,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADRQC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EBADRQC
-        return EBADRQC;
-#else 
+#if defined (__APPLE__)
+#if defined(EBADRQC)
+#error "EBADRQC defined"
+#endif
         throw_NotDefinedException(env, "EBADRQC");
         return 0;
+#else
+        return EBADRQC;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -645,13 +684,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADSLT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EBADSLT
-        return EBADSLT;
-#else 
+#if defined (__APPLE__)
+#if defined(EBADSLT)
+#error "EBADSLT defined"
+#endif
         throw_NotDefinedException(env, "EBADSLT");
         return 0;
+#else
+        return EBADSLT;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -660,13 +702,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EDEADLOCK
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EDEADLOCK
-        return EDEADLOCK;
-#else 
+#if defined (__APPLE__)
+#if defined(EDEADLOCK)
+#error "EDEADLOCK defined"
+#endif
         throw_NotDefinedException(env, "EDEADLOCK");
         return 0;
+#else
+        return EDEADLOCK;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -675,13 +720,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBFONT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EBFONT
-        return EBFONT;
-#else 
+#if defined (__APPLE__)
+#if defined(EBFONT)
+#error "EBFONT defined"
+#endif
         throw_NotDefinedException(env, "EBFONT");
         return 0;
+#else
+        return EBFONT;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -690,13 +738,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOSTR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENOSTR
         return ENOSTR;
-#else 
-        throw_NotDefinedException(env, "ENOSTR");
-        return 0;
-#endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -705,13 +748,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENODATA
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENODATA
         return ENODATA;
-#else 
-        throw_NotDefinedException(env, "ENODATA");
-        return 0;
-#endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -720,13 +758,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ETIME
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ETIME
         return ETIME;
-#else 
-        throw_NotDefinedException(env, "ETIME");
-        return 0;
-#endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -735,13 +768,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOSR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENOSR
         return ENOSR;
-#else 
-        throw_NotDefinedException(env, "ENOSR");
-        return 0;
-#endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -749,14 +777,17 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENONET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENONET
-        return ENONET;
-#else 
+      (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__APPLE__)
+#if defined(ENONET)
+#error "ENONET defined"
+#endif
         throw_NotDefinedException(env, "ENONET");
         return 0;
+#else
+        return ENONET;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -765,13 +796,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOPKG
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENOPKG
-        return ENOPKG;
-#else 
+#if defined (__APPLE__)
+#if defined(ENOPKG)
+#error "ENOPKG defined"
+#endif
         throw_NotDefinedException(env, "ENOPKG");
         return 0;
+#else
+        return ENOPKG;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -800,13 +834,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EADV
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EADV
-        return EADV;
-#else 
+#if defined (__APPLE__)
+#if defined(EADV)
+#error "EADV defined"
+#endif
         throw_NotDefinedException(env, "EADV");
         return 0;
+#else
+        return EADV;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -815,13 +852,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESRMNT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ESRMNT
-        return ESRMNT;
-#else 
+#if defined (__APPLE__)
+#if defined(ESRMNT)
+#error "ESRMNT defined"
+#endif
         throw_NotDefinedException(env, "ESRMNT");
         return 0;
+#else
+        return ESRMNT;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -830,13 +870,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECOMM
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ECOMM
-        return ECOMM;
-#else 
+#if defined (__APPLE__)
+#if defined(ECOMM)
+#error "ECOMM defined"
+#endif
         throw_NotDefinedException(env, "ECOMM");
         return 0;
+#else
+        return ECOMM;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -865,13 +908,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EDOTDOT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EDOTDOT
-        return EDOTDOT;
-#else 
+#if defined (__APPLE__)
+#if defined(EDOTDOT)
+#error "EDOTDOT defined"
+#endif
         throw_NotDefinedException(env, "EDOTDOT");
         return 0;
+#else
+        return EDOTDOT;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -900,13 +946,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTUNIQ
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENOTUNIQ
-        return ENOTUNIQ;
-#else 
+#if defined (__APPLE__)
+#if defined(ENOTUNIQ)
+#error "ENOTUNIQ defined"
+#endif
         throw_NotDefinedException(env, "ENOTUNIQ");
         return 0;
+#else
+        return ENOTUNIQ;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -915,13 +964,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADFD
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef  EBADFD
-        return EBADFD;
-#else 
+#if defined (__APPLE__)
+#if defined(EBADFD)
+#error "EBADFD defined"
+#endif
         throw_NotDefinedException(env, "EBADFD");
         return 0;
+#else
+        return EBADFD;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -930,13 +982,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EREMCHG
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EREMCHG
-        return EREMCHG;
-#else 
+#if defined (__APPLE__)
+#if defined(EREMCHG)
+#error "EREMCHG defined"
+#endif
         throw_NotDefinedException(env, "EREMCHG");
         return 0;
+#else
+        return EREMCHG;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -945,13 +1000,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBACC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ELIBACC
-        return ELIBACC;
-#else 
+#if defined (__APPLE__)
+#if defined(ELIBACC)
+#error "ELIBACC defined"
+#endif
         throw_NotDefinedException(env, "ELIBACC");
         return 0;
+#else
+        return ELIBACC;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -960,13 +1018,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBBAD
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ELIBBAD
-        return ELIBBAD;
-#else 
+#if defined (__APPLE__)
+#if defined(ELIBBAD)
+#error "ELIBBAD defined"
+#endif
         throw_NotDefinedException(env, "ELIBBAD");
         return 0;
+#else
+        return ELIBBAD;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -975,13 +1036,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBSCN
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ELIBSCN
-        return ELIBSCN;
-#else 
+#if defined (__APPLE__)
+#if defined(ELIBSCN)
+#error "ELIBSCN defined"
+#endif
         throw_NotDefinedException(env, "ELIBSCN");
         return 0;
+#else
+        return ELIBSCN;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -990,13 +1054,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBMAX
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ELIBMAX
-        return ELIBMAX;
-#else 
+#if defined (__APPLE__)
+#if defined(ELIBMAX)
+#error "ELIBMAX defined"
+#endif
         throw_NotDefinedException(env, "ELIBMAX");
         return 0;
+#else
+        return ELIBMAX;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1005,13 +1072,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBEXEC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ELIBEXEC
-        return ELIBEXEC;
-#else 
+#if defined (__APPLE__)
+#if defined(ELIBEXEC)
+#error "ELIBEXEC defined"
+#endif
         throw_NotDefinedException(env, "ELIBEXEC");
         return 0;
+#else
+        return ELIBEXEC;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1020,13 +1090,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ERESTART
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ERESTART
-        return ERESTART;
-#else 
+#if defined (__APPLE__)
+#if defined(ERESTART)
+#error "ERESTART defined"
+#endif
         throw_NotDefinedException(env, "ERESTART");
         return 0;
+#else
+        return ERESTART;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1035,13 +1108,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESTRPIPE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ESTRPIPE
-        return ESTRPIPE;
-#else 
+#if defined (__APPLE__)
+#if defined(ESTRPIPE)
+#error "ESTRPIPE defined"
+#endif
         throw_NotDefinedException(env, "ESTRPIPE");
         return 0;
+#else
+        return ESTRPIPE;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1350,13 +1426,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EUCLEAN
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EUCLEAN
-        return EUCLEAN;
-#else 
+#if defined (__APPLE__)
+#if defined(EUCLEAN)
+#error "EUCLEAN defined"
+#endif
         throw_NotDefinedException(env, "EUCLEAN");
         return 0;
+#else
+        return EUCLEAN;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1365,13 +1444,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTNAM
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENOTNAM
-        return ENOTNAM;
-#else 
+#if defined (__APPLE__)
+#if defined(ENOTNAM)
+#error "ENOTNAM defined"
+#endif
         throw_NotDefinedException(env, "ENOTNAM");
         return 0;
+#else
+        return ENOTNAM;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1380,13 +1462,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENAVAIL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENAVAIL
-        return ENAVAIL;
-#else 
+#if defined (__APPLE__)
+#if defined(ENAVAIL)
+#error "ENAVAIL defined"
+#endif
         throw_NotDefinedException(env, "ENAVAIL");
         return 0;
+#else
+        return ENAVAIL;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1395,13 +1480,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EISNAM
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EISNAM
-        return EISNAM;
-#else 
+#if defined (__APPLE__)
+#if defined(EISNAM)
+#error "EISNAM defined"
+#endif
         throw_NotDefinedException(env, "EISNAM");
         return 0;
+#else
+        return EISNAM;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1410,13 +1498,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EREMOTEIO
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EREMOTEIO
-        return EREMOTEIO;
-#else 
+#if defined (__APPLE__)
+#if defined(EREMOTEIO)
+#error "EREMOTEIO defined"
+#endif
         throw_NotDefinedException(env, "EREMOTEIO");
         return 0;
+#else
+        return EREMOTEIO;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1435,13 +1526,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOMEDIUM
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENOMEDIUM
-        return ENOMEDIUM;
-#else 
+#if defined (__APPLE__)
+#if defined(ENOMEDIUM)
+#error "ENOMEDIUM defined"
+#endif
         throw_NotDefinedException(env, "ENOMEDIUM");
         return 0;
+#else
+        return ENOMEDIUM;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1450,13 +1544,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EMEDIUMTYPE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EMEDIUMTYPE
-        return EMEDIUMTYPE;
-#else 
+#if defined (__APPLE__)
+#if defined(EMEDIUMTYPE)
+#error "EMEDIUMTYPE defined"
+#endif
         throw_NotDefinedException(env, "EMEDIUMTYPE");
         return 0;
+#else
+        return EMEDIUMTYPE;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1475,13 +1572,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOKEY
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ENOKEY
-        return ENOKEY;
-#else 
+#if defined (__APPLE__)
+#if defined(ENOKEY)
+#error "ENOKEY defined"
+#endif
         throw_NotDefinedException(env, "ENOKEY");
         return 0;
+#else
+        return ENOKEY;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1490,13 +1590,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYEXPIRED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EKEYEXPIRED
-        return EKEYEXPIRED;
-#else 
+#if defined (__APPLE__)
+#if defined(EKEYEXPIRED)
+#error "EKEYEXPIRED defined"
+#endif
         throw_NotDefinedException(env, "EKEYEXPIRED");
         return 0;
+#else
+        return EKEYEXPIRED;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1505,13 +1608,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYREVOKED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EKEYREVOKED
-        return EKEYREVOKED;
-#else 
+#if defined (__APPLE__)
+#if defined(EKEYREVOKED)
+#error "EKEYREVOKED defined"
+#endif
         throw_NotDefinedException(env, "EKEYREVOKED");
         return 0;
+#else
+        return EKEYREVOKED;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1520,13 +1626,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYREJECTED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EKEYREJECTED
-        return EKEYREJECTED;
-#else 
+#if defined (__APPLE__)
+#if defined(EKEYREJECTED)
+#error "EKEYREJECTED defined"
+#endif
         throw_NotDefinedException(env, "EKEYREJECTED");
         return 0;
+#else
+        return EKEYREJECTED;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1555,13 +1664,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ERFKILL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef ERFKILL
-        return ERFKILL;
-#else 
+#if defined (__APPLE__)
+#if defined(ERFKILL)
+#error "ERFKILL defined"
+#endif
         throw_NotDefinedException(env, "ERFKILL");
         return 0;
+#else
+        return ERFKILL;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1570,13 +1682,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EHWPOISON
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef EHWPOISON
-        return EHWPOISON;
-#else 
+#if defined (__APPLE__)
+#if defined(EHWPOISON)
+#error "EHWPOISON defined"
+#endif
         throw_NotDefinedException(env, "EHWPOISON");
         return 0;
+#else
+        return EHWPOISON;
 #endif
-    }
+}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
