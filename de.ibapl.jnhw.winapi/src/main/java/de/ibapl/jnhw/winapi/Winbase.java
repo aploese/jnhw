@@ -66,10 +66,16 @@ public abstract class Winbase {
     public final static native int FILE_FLAG_OVERLAPPED();
 
     @Define
-    public final static native int RTS_CONTROL_DISABLE();
+    public final static native byte RTS_CONTROL_DISABLE();
 
     @Define
-    public final static native int RTS_CONTROL_HANDSHAKE();
+    public final static native byte RTS_CONTROL_ENABLE();
+        
+    @Define
+    public final static native byte RTS_CONTROL_TOGGLE();
+    
+    @Define
+    public final static native byte RTS_CONTROL_HANDSHAKE();
 
     /**
      * Read only, we do not need to write anything.

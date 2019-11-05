@@ -126,19 +126,39 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    RTS_CONTROL_DISABLE
-     * Signature: ()I
+     * Signature: ()B
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_RTS_1CONTROL_1DISABLE
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_RTS_1CONTROL_1DISABLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return RTS_CONTROL_DISABLE;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
-     * Method:    RTS_CONTROL_HANDSHAKE
-     * Signature: ()I
+     * Method:    RTS_CONTROL_ENABLE
+     * Signature: ()B
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_RTS_1CONTROL_1HANDSHAKE
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_RTS_1CONTROL_1ENABLE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return RTS_CONTROL_ENABLE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    RTS_CONTROL_TOGGLE
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_RTS_1CONTROL_1TOGGLE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return RTS_CONTROL_TOGGLE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    RTS_CONTROL_HANDSHAKE
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_RTS_1CONTROL_1HANDSHAKE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return RTS_CONTROL_HANDSHAKE;
     }
