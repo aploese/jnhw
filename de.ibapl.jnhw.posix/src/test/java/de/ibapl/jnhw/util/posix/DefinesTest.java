@@ -99,6 +99,9 @@ public class DefinesTest {
             case MAC_OS_X:
                 assertFalse(Defines._LARGEFILE64_SOURCE());
                 break;
+            case WINDOWS:
+                assertFalse(Defines._LARGEFILE64_SOURCE());
+                break;
             default:
                 fail("No testcase for OS: " + multiarchTupelBuilder.getOs());
         }
