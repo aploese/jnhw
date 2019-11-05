@@ -131,24 +131,10 @@ public final class MultiarchTupelBuilder {
                             case "32":
                                 switch (sun_cpu_endian) {
                                     case "little":
-                                        switch (sun_arch_abi) {
-                                            case "gnu":
-                                                result.add(MultiarchInfo.MIPS_EL__LINUX__GNU);
-                                                break;
-                                            default:
-                                                throw new UnsupportedOperationException(
-                                                        "Can't handle sun.arch.abi of mipsel linux\n" + listSystemProperties());
-                                        }
+                                        result.add(MultiarchInfo.MIPS_EL__LINUX__GNU);
                                         return result;
                                     case "big":
-                                        switch (sun_arch_abi) {
-                                            case "gnu":
-                                                result.add(MultiarchInfo.MIPS__LINUX__GNU);
-                                                break;
-                                            default:
-                                                throw new UnsupportedOperationException(
-                                                        "Can't handle sun.arch.abi of mips linux\n" + listSystemProperties());
-                                        }
+                                        result.add(MultiarchInfo.MIPS__LINUX__GNU);
                                         return result;
                                     default:
                                         throw new UnsupportedOperationException(

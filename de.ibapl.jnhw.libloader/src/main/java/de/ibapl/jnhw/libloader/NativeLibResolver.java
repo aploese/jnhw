@@ -80,7 +80,7 @@ public abstract class NativeLibResolver {
             }
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
-                    "Unknown exception sys propereties: \n" + MULTIARCH_TUPEL_BUILDER.listSystemProperties(), t);
+                    "Unknown exception sys properties: \n" + MULTIARCH_TUPEL_BUILDER.listSystemProperties(), t);
         }
         RUNNING_ON_OS = os;
         MULTIARCH_INFO = multiarchInfo;
@@ -93,7 +93,7 @@ public abstract class NativeLibResolver {
             nativeTemDir.deleteOnExit();
         } catch (IOException ioe) {
             LOG.log(Level.SEVERE,
-                    "Can't create tempDir sys propereties: \n" + MULTIARCH_TUPEL_BUILDER.listSystemProperties(), ioe);
+                    "Can't create tempDir sys properties: \n" + MULTIARCH_TUPEL_BUILDER.listSystemProperties(), ioe);
         }
         NATIVE_TEMP_DIR = nativeTemDir;
     }
