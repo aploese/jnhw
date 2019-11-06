@@ -36,7 +36,7 @@ extern "C" {
      * Method:    ioctl
      * Signature: (II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IJ
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__II
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint request) {
         int result = ioctl(fd, (uint32_t)request);
         if (result < 0) {
@@ -50,7 +50,7 @@ extern "C" {
      * Method:    ioctl
      * Signature: (IILde/ibapl/jnhw/IntRef;)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IJLde_ibapl_jnhw_IntRef_2
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IILde_ibapl_jnhw_IntRef_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint request, jobject intRef) {
 
         int _intRef = GET_INT_REF_VALUE(intRef);
