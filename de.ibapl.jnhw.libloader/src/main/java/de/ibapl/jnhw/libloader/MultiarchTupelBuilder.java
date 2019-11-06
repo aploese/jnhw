@@ -130,9 +130,6 @@ public final class MultiarchTupelBuilder {
                         switch (sun_arch_data_model) {
                             case "32":
                                 switch (sun_cpu_endian) {
-                                    case "little":
-                                        result.add(MultiarchInfo.MIPS_EL__LINUX__GNU);
-                                        return result;
                                     case "big":
                                         result.add(MultiarchInfo.MIPS__LINUX__GNU);
                                         return result;
@@ -142,16 +139,6 @@ public final class MultiarchTupelBuilder {
                                 }
                             case "64":
                                 switch (sun_cpu_endian) {
-                                    case "little":
-                                        switch (sun_arch_abi) {
-                                            case "gnuabi64":
-                                                result.add(MultiarchInfo.MIPS_64_EL__LINUX__GNU_ABI_64);
-                                                break;
-                                            default:
-                                                throw new UnsupportedOperationException(
-                                                        "Can't handle sun.arch.abi of mips64el linux\n" + listSystemProperties());
-                                        }
-                                        return result;
                                     case "big":
                                         switch (sun_arch_abi) {
                                             case "gnuabi64":
@@ -170,7 +157,37 @@ public final class MultiarchTupelBuilder {
                                 throw new UnsupportedOperationException(
                                         "Can't handle sun.arch.data.model of mips linux\n" + listSystemProperties());
                         }
-
+                    case "mipsel":
+                        switch (sun_arch_data_model) {
+                            case "32":
+                                switch (sun_cpu_endian) {
+                                    case "little":
+                                        result.add(MultiarchInfo.MIPS_EL__LINUX__GNU);
+                                        return result;
+                                    default:
+                                        throw new UnsupportedOperationException(
+                                                "Can't handle sun_cpu_endian of mipsel 32 linux\n" + listSystemProperties());
+                                }
+                            case "64":
+                                switch (sun_cpu_endian) {
+                                    case "little":
+                                        switch (sun_arch_abi) {
+                                            case "gnuabi64":
+                                                result.add(MultiarchInfo.MIPS_64_EL__LINUX__GNU_ABI_64);
+                                                break;
+                                            default:
+                                                throw new UnsupportedOperationException(
+                                                        "Can't handle sun.arch.abi of mips64el linux\n" + listSystemProperties());
+                                        }
+                                        return result;
+                                    default:
+                                        throw new UnsupportedOperationException(
+                                                "Can't handle sun_cpu_endian of mipsel 32 linux\n" + listSystemProperties());
+                                }
+                            default:
+                                throw new UnsupportedOperationException(
+                                        "Can't handle sun.arch.data.model of mipsel linux\n" + listSystemProperties());
+                        }
                     default:
                         throw new UnsupportedOperationException("Can't handle os.arch of linux\n" + listSystemProperties());
                 }
