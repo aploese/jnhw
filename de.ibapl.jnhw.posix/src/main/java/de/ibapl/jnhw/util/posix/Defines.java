@@ -32,6 +32,10 @@ import de.ibapl.jnhw.NotDefinedException;
  * @author aploese
  */
 public class Defines {
+    
+    static {
+        LibJnhwPosixLoader.touch();
+    }
 
     public static native boolean __linux__();
 
