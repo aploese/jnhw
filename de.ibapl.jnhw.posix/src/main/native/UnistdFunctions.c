@@ -162,10 +162,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    read_ParamsOK
+     * Method:    read_ArgsOK
      * Signature: (ILjava/nio/ByteBuffer;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read_1ParamsOK
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read_1ArgsOK
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject byteBuffer, jint pos, jint len) {
         //result can't be larger then int beacuase len is int, so do the conversation
         ssize_t result = read(fd, (*env)->GetDirectBufferAddress(env, byteBuffer) + pos, (uint32_t) len);
@@ -266,10 +266,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    write_ParamsOK
+     * Method:    write_ArgsOK
      * Signature: (ILjava/nio/ByteBuffer;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write_1ParamsOK
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write_1ArgsOK
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject byteBuffer, jint pos, jint len) {
         //result can't be larger then int beacuase len is int, so do the conversation
         ssize_t result = write(fd, (*env)->GetDirectBufferAddress(env, byteBuffer) + pos, (uint32_t) len);

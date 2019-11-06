@@ -23,6 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Defined;
 import de.ibapl.jnhw.NotDefinedException;
+import de.ibapl.jnhw.libloader.Arch;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
@@ -42,7 +43,6 @@ public class TermiosTests {
     public static void setUpClass() {
     }
 
-
     @Test
     public void test_HAVE_TERMIOS_H() throws Exception {
         if (NativeLibResolver.getOS() == OS.WINDOWS) {
@@ -56,7 +56,14 @@ public class TermiosTests {
     public void CMSPAR() {
         switch (NativeLibResolver.getOS()) {
             case LINUX:
-                assertTrue(Defined.defined(Termios::CMSPAR), "CMSPAR");
+                switch (NativeLibResolver.getLoadedArch()) {
+                    case MIPS:
+                    case MIPS_EL:
+                        assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
+                        break;
+                    default:
+                        assertTrue(Defined.defined(Termios::CMSPAR), "CMSPAR");
+                }
                 break;
             case FREE_BSD:
             case MAC_OS_X:
@@ -66,7 +73,7 @@ public class TermiosTests {
                 fail("CMSPAR unknown on: " + NativeLibResolver.getOS());
         }
     }
-    
+
     @Test
     public void PAREXT() {
         switch (NativeLibResolver.getOS()) {
@@ -79,7 +86,7 @@ public class TermiosTests {
                 fail("PAREXT unknown on: " + NativeLibResolver.getOS());
         }
     }
-    
+
     @Test
     public void PARMRK() {
         switch (NativeLibResolver.getOS()) {
@@ -92,7 +99,7 @@ public class TermiosTests {
                 fail("PARMRK unknown on: " + NativeLibResolver.getOS());
         }
     }
-    
+
     @Test
     public void structTermios_c_ispeed() throws Exception {
         Termios.StructTermios structTermios = new Termios.StructTermios();

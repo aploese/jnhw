@@ -251,4 +251,12 @@ public abstract class NativeLibResolver {
     public static Iterable<MultiarchInfo> getMultiArchInfos() {
         return MULTIARCH_INFO::iterator;
     }
+    
+    public static MultiarchInfo getLoadedMultiarch() {
+        return loadedMultiarch;
+    }
+    
+    public static Arch getLoadedArch() {
+        return loadedMultiarch != null ? loadedMultiarch.getArch() : null;
+    }
 }

@@ -69,9 +69,9 @@ public final class Fileapi {
         lpNumberOfBytesRead.value = ReadFile(hFile, lpBuffer, offset, len);
     }
 
-    private static native int ReadFile_ParamsOK(HANDLE hFile, ByteBuffer lpBuffer, int offset, int len) throws NativeErrorException;
+    private static native int ReadFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int offset, int len) throws NativeErrorException;
 
-    private static native void ReadFile_ParamsOK(HANDLE hFile, ByteBuffer lpBuffer, int offset, int len, OVERLAPPED lpOVERLAPPED) throws NativeErrorException;
+    private static native void ReadFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int offset, int len, OVERLAPPED lpOVERLAPPED) throws NativeErrorException;
 
     public static native int ReadFile(HANDLE hFile, OpaqueMemory lpBuffer, int offset, int len) throws NativeErrorException;
 
@@ -94,9 +94,9 @@ public final class Fileapi {
         lpNumberOfBytesWritten.value = WriteFile(hFile, lpBuffer, offset, len);
     }
 
-    private static native int WriteFile_ParamsOK(HANDLE hFile, ByteBuffer lpBuffer, int offset, int len) throws NativeErrorException;
+    private static native int WriteFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int offset, int len) throws NativeErrorException;
 
-    private static native void WriteFile_ParamsOK(HANDLE hFile, ByteBuffer lpBuffer, int offset, int len, OVERLAPPED lpOVERLAPPED) throws NativeErrorException;
+    private static native void WriteFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int offset, int len, OVERLAPPED lpOVERLAPPED) throws NativeErrorException;
 
     public static native int WriteFile(HANDLE hFile, OpaqueMemory lpBuffer, int offset, int len) throws NativeErrorException;
 
@@ -129,7 +129,7 @@ public final class Fileapi {
             if (hFile == null) {
                 throw new NullPointerException("hFile is null!");
             }
-            numberOfBytesRead = ReadFile_ParamsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer));
+            numberOfBytesRead = ReadFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer));
         } else {
             numberOfBytesRead = ReadFile(hFile, lpBuffer.array(), lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer));
         }
@@ -153,7 +153,7 @@ public final class Fileapi {
             if (lpOverlapped == null) {
                 throw new NullPointerException("lpOverlapped is null!");
             }
-            ReadFile_ParamsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), lpOverlapped);
+            ReadFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), lpOverlapped);
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous read ....");
@@ -166,7 +166,7 @@ public final class Fileapi {
             if (hFile == null) {
                 throw new NullPointerException("hFile is null!");
             }
-            numberOfBytesWritten = WriteFile_ParamsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer));
+            numberOfBytesWritten = WriteFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer));
         } else {
             if (lpBuffer.isReadOnly()) {
                 // see buffer.array() why we do this is here.
@@ -199,7 +199,7 @@ public final class Fileapi {
             if (lpOverlapped == null) {
                 throw new NullPointerException("lpOverlapped is null!");
             }
-            WriteFile_ParamsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), lpOverlapped);
+            WriteFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), lpOverlapped);
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous write ....");
