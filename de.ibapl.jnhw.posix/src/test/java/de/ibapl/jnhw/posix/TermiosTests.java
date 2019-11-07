@@ -59,6 +59,8 @@ public class TermiosTests {
                 switch (NativeLibResolver.getLoadedArch()) {
                     case MIPS:
                     case MIPS_EL:
+                    case MIPS_64:
+                    case MIPS_64_EL:
                         assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
                         break;
                     default:
