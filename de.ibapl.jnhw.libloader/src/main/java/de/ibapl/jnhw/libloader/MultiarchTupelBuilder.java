@@ -84,146 +84,127 @@ public final class MultiarchTupelBuilder {
         Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
         switch (os_arch) {
             case "amd64":
-                switch (sun_arch_data_model) {
-                    case "64":
-                        switch (sun_cpu_endian) {
-                            case "little":
-                                result.add(MultiarchInfo.X86_64__LINUX__GNU);
-                                return result;
-                            default:
-                                throw new UnsupportedOperationException(
-                                        "Can't handle sun.arch.abi of amd64 linux\n" + listSystemProperties());
-                        }
-                    default:
-                        throw new UnsupportedOperationException(
-                                "Can't handle sun.arch.data.model of amd64 linux\n" + listSystemProperties());
+                if (!"64".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of amd64 linux\n" + listSystemProperties());
+                } else if (!"little".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of amd64 linux\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.X86_64__LINUX__GNU);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of amd64 linux\n" + listSystemProperties());
                 }
             case "i386":
-                switch (sun_arch_data_model) {
-                    case "32":
-                        switch (sun_cpu_endian) {
-                            case "little":
-                                result.add(MultiarchInfo.I386__LINUX__GNU);
-                                return result;
-                            default:
-                                throw new UnsupportedOperationException(
-                                        "Can't handle sun.arch.abi of i386 linux\n" + listSystemProperties());
-                        }
-                    default:
-                        throw new UnsupportedOperationException(
-                                "Can't handle sun.arch.data.model of i386 linux\n" + listSystemProperties());
+                if (!"32".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of i386 linux\n" + listSystemProperties());
+                } else if (!"little".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of i386 linux\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.I386__LINUX__GNU);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of i386 linux\n" + listSystemProperties());
                 }
             case "arm":
-                switch (sun_arch_data_model) {
-                    case "32":
-                        if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
-                            // info of hard or soft float is missing
-                            result.add(MultiarchInfo.ARM__LINUX__GNU_EABI_HF);
+                if (!"32".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of arm linux\n" + listSystemProperties());
+                } else if (!"little".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of arm linux\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    // info of hard or soft float is missing
+                    result.add(MultiarchInfo.ARM__LINUX__GNU_EABI_HF);
+                    result.add(MultiarchInfo.ARM__LINUX__GNU_EABI);
+                    return result;
+                } else {
+                    switch (sun_arch_abi) {
+                        case "gnueabi":
                             result.add(MultiarchInfo.ARM__LINUX__GNU_EABI);
                             return result;
-                        } else {
-                            switch (sun_arch_abi) {
-                                case "gnueabi":
-                                    result.add(MultiarchInfo.ARM__LINUX__GNU_EABI);
-                                    return result;
-                                case "gnueabihf":
-                                    result.add(MultiarchInfo.ARM__LINUX__GNU_EABI_HF);
-                                    return result;
-                                default:
-                                    throw new UnsupportedOperationException(
-                                            "Can't handle sun.arch.abi of arm linux\n" + listSystemProperties());
-                            }
-                        }
-                    default:
-                        throw new UnsupportedOperationException(
-                                "Can't handle sun.arch.data.model of arm linux\n" + listSystemProperties());
+                        case "gnueabihf":
+                            result.add(MultiarchInfo.ARM__LINUX__GNU_EABI_HF);
+                            return result;
+                        default:
+                            throw new UnsupportedOperationException(
+                                    "Can't handle sun.arch.abi of arm linux\n" + listSystemProperties());
+                    }
                 }
             case "aarch64":
-                switch (sun_arch_data_model) {
-                    case "64":
-                        switch (sun_cpu_endian) {
-                            case "little":
-                                result.add(MultiarchInfo.AARCH64__LINUX__GNU);
-                                return result;
-                            default:
-                                throw new UnsupportedOperationException(
-                                        "Can't handle sun.arch.abi of aarch64 linux\n" + listSystemProperties());
-                        }
-                    default:
-                        throw new UnsupportedOperationException(
-                                "Can't handle sun.arch.data.model of aarch64 linux\n" + listSystemProperties());
+                if (!"64".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of aarch64 linux\n" + listSystemProperties());
+                } else if (!"little".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of aarch64 linux\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.AARCH64__LINUX__GNU);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of aarch64 linux\n" + listSystemProperties());
                 }
             case "mips":
-                switch (sun_arch_data_model) {
-                    case "32":
-                        switch (sun_cpu_endian) {
-                            case "big":
-                                result.add(MultiarchInfo.MIPS__LINUX__GNU);
-                                return result;
-                            default:
-                                throw new UnsupportedOperationException(
-                                        "Can't handle sun_cpu_endian of mips 32 linux\n" + listSystemProperties());
-                        }
-                    default:
-                        throw new UnsupportedOperationException(
-                                "Can't handle sun.arch.data.model of mips linux\n" + listSystemProperties());
+                if (!"32".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of mips linux\n" + listSystemProperties());
+                } else if (!"big".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of mips linux\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.MIPS__LINUX__GNU);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of mips linux\n" + listSystemProperties());
                 }
             case "mipsel":
-                switch (sun_arch_data_model) {
-                    case "32":
-                        switch (sun_cpu_endian) {
-                            case "little":
-                                result.add(MultiarchInfo.MIPS_EL__LINUX__GNU);
-                                return result;
-                            default:
-                                throw new UnsupportedOperationException(
-                                        "Can't handle sun_cpu_endian of mipsel 32 linux\n" + listSystemProperties());
-                        }
-                    default:
-                        throw new UnsupportedOperationException(
-                                "Can't handle sun.arch.data.model of mipsel linux\n" + listSystemProperties());
+                if (!"32".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of mipsel linux\n" + listSystemProperties());
+                } else if (!"little".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of mipsel linux\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.MIPS_EL__LINUX__GNU);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of mipsel linux\n" + listSystemProperties());
                 }
             case "mips64":
-                switch (sun_arch_data_model) {
-                    case "64":
-                        switch (sun_cpu_endian) {
-                            case "big":
-                                switch (sun_arch_abi) {
-                                    case "gnuabi64":
-                                        result.add(MultiarchInfo.MIPS_64__LINUX__GNU_ABI_64);
-                                        return result;
-                                    default:
-                                        throw new UnsupportedOperationException(
-                                                "Can't handle sun.arch.abi of mips64 linux\n" + listSystemProperties());
-                                }
-                            default:
-                                throw new UnsupportedOperationException(
-                                        "Can't handle sun_cpu_endian of mips 32 linux\n" + listSystemProperties());
-                        }
-                    default:
-                        throw new UnsupportedOperationException(
-                                "Can't handle sun.arch.data.model of mips linux\n" + listSystemProperties());
+                if (!"64".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of mips linux\n" + listSystemProperties());
+                } else if (!"big".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of mips64 linux\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.MIPS_64__LINUX__GNU_ABI_64);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of mips64 linux\n" + listSystemProperties());
                 }
             case "mips64el":
-                switch (sun_arch_data_model) {
-                    case "64":
-                        switch (sun_cpu_endian) {
-                            case "little":
-                                switch (sun_arch_abi) {
-                                    case "gnuabi64":
-                                        result.add(MultiarchInfo.MIPS_64_EL__LINUX__GNU_ABI_64);
-                                        return result;
-                                    default:
-                                        throw new UnsupportedOperationException(
-                                                "Can't handle sun.arch.abi of mips64el linux\n" + listSystemProperties());
-                                }
-                            default:
-                                throw new UnsupportedOperationException(
-                                        "Can't handle sun_cpu_endian of mipsel 32 linux\n" + listSystemProperties());
-                        }
-                    default:
-                        throw new UnsupportedOperationException(
-                                "Can't handle sun.arch.data.model of mipsel linux\n" + listSystemProperties());
+                if (!"64".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of mipsel linux\n" + listSystemProperties());
+                } else if (!"little".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of mips64el linux\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.MIPS_64_EL__LINUX__GNU_ABI_64);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of mips64el linux\n" + listSystemProperties());
                 }
             default:
                 throw new UnsupportedOperationException("Can't handle os.arch of linux\n" + listSystemProperties());
@@ -232,7 +213,8 @@ public final class MultiarchTupelBuilder {
     }
 
     private Set<MultiarchInfo> guessFreeBSD() {
-        Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
+        Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class
+        );
         switch (os_arch) {
             case "amd64":
                 result.add(MultiarchInfo.X86_64__FREE_BSD__BSD);
@@ -244,7 +226,8 @@ public final class MultiarchTupelBuilder {
     }
 
     private Set<MultiarchInfo> guessMacOS() {
-        Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
+        Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class
+        );
         switch (os_arch) {
             case "x86_64":
                 result.add(MultiarchInfo.X86_64__MAC_OS_X__BSD);
@@ -256,7 +239,8 @@ public final class MultiarchTupelBuilder {
     }
 
     private Set<MultiarchInfo> guessWindows() {
-        Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
+        Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class
+        );
         switch (os_arch) {
             case "amd64":
                 result.add(MultiarchInfo.X86_64__WINDOWS__PE32_PLUS);
