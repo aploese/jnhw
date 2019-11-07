@@ -213,12 +213,22 @@ public final class MultiarchTupelBuilder {
     }
 
     private Set<MultiarchInfo> guessFreeBSD() {
-        Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class
-        );
+        Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
         switch (os_arch) {
             case "amd64":
-                result.add(MultiarchInfo.X86_64__FREE_BSD__BSD);
-                return result;
+                if (!"64".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of FreeBSD linux\n" + listSystemProperties());
+                } else if (!"little".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of amd64 FreeBSD\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.X86_64__FREE_BSD__BSD);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of amd64 FreeBSD\n" + listSystemProperties());
+                }
             default:
                 throw new UnsupportedOperationException("Can't handle os.arch of FreeBSD\n" + listSystemProperties());
         }
@@ -230,8 +240,19 @@ public final class MultiarchTupelBuilder {
         );
         switch (os_arch) {
             case "x86_64":
-                result.add(MultiarchInfo.X86_64__MAC_OS_X__BSD);
-                return result;
+                if (!"64".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of x86_64 Mac OS X\n" + listSystemProperties());
+                } else if (!"little".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of x86_64 Mac OS X\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.X86_64__MAC_OS_X__BSD);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of x86_64 Mac OS X\n" + listSystemProperties());
+                }
             default:
                 throw new UnsupportedOperationException("Can't handle os.arch of Mac OS X\n" + listSystemProperties());
         }
