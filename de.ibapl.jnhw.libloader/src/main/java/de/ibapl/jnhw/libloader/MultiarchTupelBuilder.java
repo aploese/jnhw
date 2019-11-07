@@ -84,11 +84,35 @@ public final class MultiarchTupelBuilder {
         Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
         switch (os_arch) {
             case "amd64":
-                result.add(MultiarchInfo.X86_64__LINUX__GNU);
-                return result;
+                switch (sun_arch_data_model) {
+                    case "64":
+                        switch (sun_cpu_endian) {
+                            case "little":
+                                result.add(MultiarchInfo.X86_64__LINUX__GNU);
+                                return result;
+                            default:
+                                throw new UnsupportedOperationException(
+                                        "Can't handle sun.arch.abi of amd64 linux\n" + listSystemProperties());
+                        }
+                    default:
+                        throw new UnsupportedOperationException(
+                                "Can't handle sun.arch.data.model of amd64 linux\n" + listSystemProperties());
+                }
             case "i386":
-                result.add(MultiarchInfo.I386__LINUX__GNU);
-                return result;
+                switch (sun_arch_data_model) {
+                    case "32":
+                        switch (sun_cpu_endian) {
+                            case "little":
+                                result.add(MultiarchInfo.I386__LINUX__GNU);
+                                return result;
+                            default:
+                                throw new UnsupportedOperationException(
+                                        "Can't handle sun.arch.abi of i386 linux\n" + listSystemProperties());
+                        }
+                    default:
+                        throw new UnsupportedOperationException(
+                                "Can't handle sun.arch.data.model of i386 linux\n" + listSystemProperties());
+                }
             case "arm":
                 switch (sun_arch_data_model) {
                     case "32":
@@ -140,6 +164,27 @@ public final class MultiarchTupelBuilder {
                                 throw new UnsupportedOperationException(
                                         "Can't handle sun_cpu_endian of mips 32 linux\n" + listSystemProperties());
                         }
+                    default:
+                        throw new UnsupportedOperationException(
+                                "Can't handle sun.arch.data.model of mips linux\n" + listSystemProperties());
+                }
+            case "mipsel":
+                switch (sun_arch_data_model) {
+                    case "32":
+                        switch (sun_cpu_endian) {
+                            case "little":
+                                result.add(MultiarchInfo.MIPS_EL__LINUX__GNU);
+                                return result;
+                            default:
+                                throw new UnsupportedOperationException(
+                                        "Can't handle sun_cpu_endian of mipsel 32 linux\n" + listSystemProperties());
+                        }
+                    default:
+                        throw new UnsupportedOperationException(
+                                "Can't handle sun.arch.data.model of mipsel linux\n" + listSystemProperties());
+                }
+            case "mips64":
+                switch (sun_arch_data_model) {
                     case "64":
                         switch (sun_cpu_endian) {
                             case "big":
@@ -159,17 +204,8 @@ public final class MultiarchTupelBuilder {
                         throw new UnsupportedOperationException(
                                 "Can't handle sun.arch.data.model of mips linux\n" + listSystemProperties());
                 }
-            case "mipsel":
+            case "mips64el":
                 switch (sun_arch_data_model) {
-                    case "32":
-                        switch (sun_cpu_endian) {
-                            case "little":
-                                result.add(MultiarchInfo.MIPS_EL__LINUX__GNU);
-                                return result;
-                            default:
-                                throw new UnsupportedOperationException(
-                                        "Can't handle sun_cpu_endian of mipsel 32 linux\n" + listSystemProperties());
-                        }
                     case "64":
                         switch (sun_cpu_endian) {
                             case "little":
