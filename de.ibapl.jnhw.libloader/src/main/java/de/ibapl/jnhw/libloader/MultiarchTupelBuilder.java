@@ -114,7 +114,7 @@ public final class MultiarchTupelBuilder {
                         throw new UnsupportedOperationException(
                                 "Can't handle sun.arch.data.model of arm linux\n" + listSystemProperties());
                 }
-            case "aarm64":
+            case "aarch64":
                 switch (sun_arch_data_model) {
                     case "64":
                         switch (sun_cpu_endian) {
