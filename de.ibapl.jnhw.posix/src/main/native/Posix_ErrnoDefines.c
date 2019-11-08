@@ -450,14 +450,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECHRNG
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ECHRNG)
+#if defined (__linux__)
+        return ECHRNG;
+#elif defined(ECHRNG)
 #error "ECHRNG defined"
-#endif
+#else
         throw_NotDefinedException(env, "ECHRNG");
         return 0;
-#else
-        return ECHRNG;
 #endif
 }
 
@@ -468,14 +467,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL2NSYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EL2NSYNC)
+#if defined (__linux__)
+        return EL2NSYNC;
+#elif defined(EL2NSYNC)
 #error "EL2NSYNC defined"
-#endif
+#else
         throw_NotDefinedException(env, "EL2NSYNC");
         return 0;
-#else
-        return EL2NSYNC;
 #endif
 }
 
@@ -486,14 +484,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL3HLT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EL3HLT)
+#if defined (__linux__)
+        return EL3HLT;
+#elif defined(EL3HLT)
 #error "EL3HLT defined"
-#endif
+#else
         throw_NotDefinedException(env, "EL3HLT");
         return 0;
-#else
-        return EL3HLT;
 #endif
 }
 
@@ -504,14 +501,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL3RST
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EL3RST)
+#if defined (__linux__)
+        return EL3RST;
+#elif defined(EL3RST)
 #error "EL3RST defined"
-#endif
+#else
         throw_NotDefinedException(env, "EL3RST");
         return 0;
-#else
-        return EL3RST;
 #endif
 }
 
@@ -522,14 +518,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELNRNG
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ELNRNG)
+#if defined (__linux__)
+        return ELNRNG;
+#elif defined(ELNRNG)
 #error "ELNRNG defined"
-#endif
+#else
         throw_NotDefinedException(env, "ELNRNG");
         return 0;
-#else
-        return ELNRNG;
 #endif
 }
 
@@ -540,14 +535,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EUNATCH
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EUNATCH)
+#if defined (__linux__)
+        return EUNATCH;
+#elif defined(EUNATCH)
 #error "EUNATCH defined"
-#endif
+#else
         throw_NotDefinedException(env, "EUNATCH");
         return 0;
-#else
-        return EUNATCH;
 #endif
 }
 
@@ -558,14 +552,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOCSI
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ENOCSI)
+#if defined (__linux__)
+        return ENOCSI;
+#elif defined(ENOCSI)
 #error "ENOCSI defined"
-#endif
+#else
         throw_NotDefinedException(env, "ENOCSI");
         return 0;
-#else
-        return ENOCSI;
 #endif
 }
 
@@ -576,14 +569,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL2HLT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EL2HLT)
+#if defined (__linux__)
+        return EL2HLT;
+#elif defined(EL2HLT)
 #error "EL2HLT defined"
-#endif
+#else
         throw_NotDefinedException(env, "EL2HLT");
         return 0;
-#else
-        return EL2HLT;
 #endif
 }
 
@@ -594,14 +586,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EBADE)
+#if defined (__linux__)
+        return EBADE;
+#elif defined(EBADE)
 #error "EBADE defined"
-#endif
+#else
         throw_NotDefinedException(env, "EBADE");
         return 0;
-#else
-        return EBADE;
 #endif
 }
 
@@ -612,14 +603,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EBADR)
+#if defined (__linux__)
+        return EBADR;
+#elif defined(EBADR)
 #error "EBADR defined"
-#endif
+#else
         throw_NotDefinedException(env, "EBADR");
         return 0;
-#else
-        return EBADR;
 #endif
 }
 
@@ -630,14 +620,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EXFULL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EXFULL)
+#if defined (__linux__)
+        return EXFULL;
+#elif defined(EXFULL)
 #error "EXFULL defined"
-#endif
+#else
         throw_NotDefinedException(env, "EXFULL");
         return 0;
-#else
-        return EXFULL;
 #endif
 }
 
@@ -648,14 +637,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOANO
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ENOANO)
+#if defined (__linux__)
+        return ENOANO;
+#elif defined(ENOANO)
 #error "ENOANO defined"
-#endif
+#else
         throw_NotDefinedException(env, "ENOANO");
         return 0;
-#else
-        return ENOANO;
 #endif
 }
 
@@ -666,14 +654,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADRQC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EBADRQC)
+#if defined (__linux__)
+        return EBADRQC;
+#elif defined(EBADRQC)
 #error "EBADRQC defined"
-#endif
+#else
         throw_NotDefinedException(env, "EBADRQC");
         return 0;
-#else
-        return EBADRQC;
 #endif
 }
 
@@ -684,14 +671,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADSLT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EBADSLT)
+#if defined (__linux__)
+        return EBADSLT;
+#elif defined(EBADSLT)
 #error "EBADSLT defined"
-#endif
+#else
         throw_NotDefinedException(env, "EBADSLT");
         return 0;
-#else
-        return EBADSLT;
 #endif
 }
 
@@ -702,14 +688,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EDEADLOCK
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EDEADLOCK)
+#if defined (__linux__)
+        return EDEADLOCK;
+#elif defined(EDEADLOCK)
 #error "EDEADLOCK defined"
-#endif
+#else
         throw_NotDefinedException(env, "EDEADLOCK");
         return 0;
-#else
-        return EDEADLOCK;
 #endif
 }
 
@@ -720,14 +705,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBFONT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EBFONT)
+#if defined (__linux__)
+        return EBFONT;
+#elif defined(EBFONT)
 #error "EBFONT defined"
-#endif
+#else
         throw_NotDefinedException(env, "EBFONT");
         return 0;
-#else
-        return EBFONT;
 #endif
 }
 
@@ -756,14 +740,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENODATA
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__FreeBSD__)
-#if defined(ENODATA)
+#if defined(__linux__) || defined(__APPLE__)
+        return ENODATA;
+#elif defined(ENODATA)
 #error "ENODATA defined"
-#endif
+#else
         throw_NotDefinedException(env, "ENODATA");
         return 0;
-#else
-        return ENODATA;
 #endif
 }
 
@@ -774,14 +757,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ETIME
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__FreeBSD__)
-#if defined(ETIME)
+#if defined(__linux__) || defined(__APPLE__)
+        return ETIME;
+#elif defined(ETIME)
 #error "ETIME defined"
-#endif
+#else
         throw_NotDefinedException(env, "ETIME");
         return 0;
-#else
-        return ETIME;
 #endif
 }
 
@@ -792,14 +774,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOSR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__FreeBSD__)
-#if defined(ENOSR)
+#if defined(__linux__) || defined(__APPLE__)
+        return ENOSR;
+#elif defined(ENOSR)
 #error "ENOSR defined"
-#endif
+#else
         throw_NotDefinedException(env, "ENOSR");
         return 0;
-#else
-        return ENOSR;
 #endif
 }
 
@@ -810,14 +791,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENONET
       (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ENONET)
+#if defined (__linux__)
+        return ENONET;
+#elif defined(ENONET)
 #error "ENONET defined"
-#endif
+#else
         throw_NotDefinedException(env, "ENONET");
         return 0;
-#else
-        return ENONET;
 #endif
 }
 
@@ -828,14 +808,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOPKG
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ENOPKG)
+#if defined (__linux__)
+        return ENOPKG;
+#elif defined(ENOPKG)
 #error "ENOPKG defined"
-#endif
+#else
         throw_NotDefinedException(env, "ENOPKG");
         return 0;
-#else
-        return ENOPKG;
 #endif
 }
 
@@ -866,14 +845,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EADV
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EADV)
+#if defined (__linux__)
+        return EADV;
+#elif defined(EADV)
 #error "EADV defined"
-#endif
+#else
         throw_NotDefinedException(env, "EADV");
         return 0;
-#else
-        return EADV;
 #endif
 }
 
@@ -884,14 +862,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESRMNT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ESRMNT)
+#if defined (__linux__)
+        return ESRMNT;
+#elif defined(ESRMNT)
 #error "ESRMNT defined"
-#endif
+#else
         throw_NotDefinedException(env, "ESRMNT");
         return 0;
-#else
-        return ESRMNT;
 #endif
 }
 
@@ -902,14 +879,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECOMM
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ECOMM)
+#if defined (__linux__)
+        return ECOMM;
+#elif defined(ECOMM)
 #error "ECOMM defined"
-#endif
+#else
         throw_NotDefinedException(env, "ECOMM");
         return 0;
-#else
-        return ECOMM;
 #endif
 }
 
@@ -940,14 +916,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EDOTDOT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EDOTDOT)
+#if defined (__linux__)
+        return EDOTDOT;
+#elif defined(EDOTDOT)
 #error "EDOTDOT defined"
-#endif
+#else
         throw_NotDefinedException(env, "EDOTDOT");
         return 0;
-#else
-        return EDOTDOT;
 #endif
 }
 
@@ -978,14 +953,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTUNIQ
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ENOTUNIQ)
+#if defined (__linux__)
+        return ENOTUNIQ;
+#elif defined(ENOTUNIQ)
 #error "ENOTUNIQ defined"
-#endif
+#else
         throw_NotDefinedException(env, "ENOTUNIQ");
         return 0;
-#else
-        return ENOTUNIQ;
 #endif
 }
 
@@ -996,14 +970,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADFD
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EBADFD)
+#if defined (__linux__)
+        return EBADFD;
+#elif defined(EBADFD)
 #error "EBADFD defined"
-#endif
+#else
         throw_NotDefinedException(env, "EBADFD");
         return 0;
-#else
-        return EBADFD;
 #endif
 }
 
@@ -1014,14 +987,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EREMCHG
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EREMCHG)
+#if defined (__linux__)
+        return EREMCHG;
+#elif defined(EREMCHG)
 #error "EREMCHG defined"
-#endif
+#else
         throw_NotDefinedException(env, "EREMCHG");
         return 0;
-#else
-        return EREMCHG;
 #endif
 }
 
@@ -1032,14 +1004,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBACC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ELIBACC)
+#if defined (__linux__)
+        return ELIBACC;
+#elif defined(ELIBACC)
 #error "ELIBACC defined"
-#endif
+#else
         throw_NotDefinedException(env, "ELIBACC");
         return 0;
-#else
-        return ELIBACC;
 #endif
 }
 
@@ -1050,14 +1021,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBBAD
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ELIBBAD)
+#if defined (__linux__)
+        return ELIBBAD;
+#elif defined(ELIBBAD)
 #error "ELIBBAD defined"
-#endif
+#else
         throw_NotDefinedException(env, "ELIBBAD");
         return 0;
-#else
-        return ELIBBAD;
 #endif
 }
 
@@ -1068,14 +1038,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBSCN
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ELIBSCN)
+#if defined (__linux__)
+        return ELIBSCN;
+#elif defined(ELIBSCN)
 #error "ELIBSCN defined"
-#endif
+#else
         throw_NotDefinedException(env, "ELIBSCN");
         return 0;
-#else
-        return ELIBSCN;
 #endif
 }
 
@@ -1086,14 +1055,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBMAX
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ELIBMAX)
+#if defined (__linux__)
+        return ELIBMAX;
+#elif defined(ELIBMAX)
 #error "ELIBMAX defined"
-#endif
+#else
         throw_NotDefinedException(env, "ELIBMAX");
         return 0;
-#else
-        return ELIBMAX;
 #endif
 }
 
@@ -1104,14 +1072,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBEXEC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ELIBEXEC)
+#if defined (__linux__)
+        return ELIBEXEC;
+#elif defined(ELIBEXEC)
 #error "ELIBEXEC defined"
-#endif
+#else
         throw_NotDefinedException(env, "ELIBEXEC");
         return 0;
-#else
-        return ELIBEXEC;
 #endif
 }
 
@@ -1122,14 +1089,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ERESTART
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ERESTART)
+#if defined (__linux__)
+        return ERESTART;
+#elif defined(ERESTART)
 #error "ERESTART defined"
-#endif
+#else
         throw_NotDefinedException(env, "ERESTART");
         return 0;
-#else
-        return ERESTART;
 #endif
 }
 
@@ -1140,14 +1106,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESTRPIPE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ESTRPIPE)
+#if defined (__linux__)
+        return ESTRPIPE;
+#elif defined(ESTRPIPE)
 #error "ESTRPIPE defined"
-#endif
+#else
         throw_NotDefinedException(env, "ESTRPIPE");
         return 0;
-#else
-        return ESTRPIPE;
 #endif
 }
 
@@ -1458,14 +1423,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EUCLEAN
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EUCLEAN)
+#if defined (__linux__)
+        return EUCLEAN;
+#elif defined(EUCLEAN)
 #error "EUCLEAN defined"
-#endif
+#else
         throw_NotDefinedException(env, "EUCLEAN");
         return 0;
-#else
-        return EUCLEAN;
 #endif
 }
 
@@ -1476,14 +1440,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTNAM
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ENOTNAM)
+#if defined (__linux__)
+        return ENOTNAM;
+#elif defined(ENOTNAM)
 #error "ENOTNAM defined"
-#endif
+#else
         throw_NotDefinedException(env, "ENOTNAM");
         return 0;
-#else
-        return ENOTNAM;
 #endif
 }
 
@@ -1494,14 +1457,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENAVAIL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ENAVAIL)
+#if defined (__linux__)
+        return ENAVAIL;
+#elif defined(ENAVAIL)
 #error "ENAVAIL defined"
-#endif
+#else
         throw_NotDefinedException(env, "ENAVAIL");
         return 0;
-#else
-        return ENAVAIL;
 #endif
 }
 
@@ -1512,14 +1474,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EISNAM
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EISNAM)
+#if defined (__linux__)
+        return EISNAM;
+#elif defined(EISNAM)
 #error "EISNAM defined"
-#endif
+#else
         throw_NotDefinedException(env, "EISNAM");
         return 0;
-#else
-        return EISNAM;
 #endif
 }
 
@@ -1530,14 +1491,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EREMOTEIO
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EREMOTEIO)
+#if defined (__linux__)
+        return EREMOTEIO;
+#elif defined(EREMOTEIO)
 #error "EREMOTEIO defined"
-#endif
+#else
         throw_NotDefinedException(env, "EREMOTEIO");
         return 0;
-#else
-        return EREMOTEIO;
 #endif
 }
 
@@ -1558,14 +1518,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOMEDIUM
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ENOMEDIUM)
+#if defined (__linux__)
+        return ENOMEDIUM;
+#elif defined(ENOMEDIUM)
 #error "ENOMEDIUM defined"
-#endif
+#else
         throw_NotDefinedException(env, "ENOMEDIUM");
         return 0;
-#else
-        return ENOMEDIUM;
 #endif
 }
 
@@ -1576,14 +1535,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EMEDIUMTYPE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EMEDIUMTYPE)
+#if defined (__linux__)
+        return EMEDIUMTYPE;
+#elif defined(EMEDIUMTYPE)
 #error "EMEDIUMTYPE defined"
-#endif
+#else
         throw_NotDefinedException(env, "EMEDIUMTYPE");
         return 0;
-#else
-        return EMEDIUMTYPE;
 #endif
 }
 
@@ -1604,14 +1562,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOKEY
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ENOKEY)
+#if defined (__linux__)
+        return ENOKEY;
+#elif defined(ENOKEY)
 #error "ENOKEY defined"
-#endif
+#else
         throw_NotDefinedException(env, "ENOKEY");
         return 0;
-#else
-        return ENOKEY;
 #endif
 }
 
@@ -1622,14 +1579,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYEXPIRED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EKEYEXPIRED)
+#if defined (__linux__)
+        return EKEYEXPIRED;
+#elif defined(EKEYEXPIRED)
 #error "EKEYEXPIRED defined"
-#endif
+#else
         throw_NotDefinedException(env, "EKEYEXPIRED");
         return 0;
-#else
-        return EKEYEXPIRED;
 #endif
 }
 
@@ -1640,14 +1596,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYREVOKED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EKEYREVOKED)
+#if defined (__linux__)
+        return EKEYREVOKED;
+#elif defined(EKEYREVOKED)
 #error "EKEYREVOKED defined"
-#endif
+#else
         throw_NotDefinedException(env, "EKEYREVOKED");
         return 0;
-#else
-        return EKEYREVOKED;
 #endif
 }
 
@@ -1658,14 +1613,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYREJECTED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EKEYREJECTED)
+#if defined (__linux__)
+        return EKEYREJECTED;
+#elif defined(EKEYREJECTED)
 #error "EKEYREJECTED defined"
-#endif
+#else
         throw_NotDefinedException(env, "EKEYREJECTED");
         return 0;
-#else
-        return EKEYREJECTED;
 #endif
 }
 
@@ -1696,14 +1650,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ERFKILL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(ERFKILL)
+#if defined (__linux__)
+        return ERFKILL;
+#elif defined(ERFKILL)
 #error "ERFKILL defined"
-#endif
+#else
         throw_NotDefinedException(env, "ERFKILL");
         return 0;
-#else
-        return ERFKILL;
 #endif
 }
 
@@ -1714,14 +1667,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EHWPOISON
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined(__FreeBSD__)
-#if defined(EHWPOISON)
+#if defined (__linux__)
+        return EHWPOISON;
+#elif defined(EHWPOISON)
 #error "EHWPOISON defined"
-#endif
+#else
         throw_NotDefinedException(env, "EHWPOISON");
         return 0;
-#else
-        return EHWPOISON;
 #endif
 }
 
