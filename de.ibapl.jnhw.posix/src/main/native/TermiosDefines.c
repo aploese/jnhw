@@ -52,14 +52,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios__1HAVE_1STRUCT_1TERMIOS_1C_1ISPEED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__) || defined(__linux__) &&  defined(__mips__)
-#if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED)
+#if defined (__linux__) &&  !defined(__mips__)
+        return _HAVE_STRUCT_TERMIOS_C_ISPEED;
+#elif defined(_HAVE_STRUCT_TERMIOS_C_ISPEED)
 #error "_HAVE_STRUCT_TERMIOS_C_ISPEED defined"
-#endif
+#else
         throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED");
         return 0;
-#else
-        return _HAVE_STRUCT_TERMIOS_C_ISPEED;
 #endif
 }
 
@@ -70,14 +69,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios__1HAVE_1STRUCT_1TERMIOS_1C_1OSPEED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__) || defined(__linux__) &&  defined(__mips__)
-#if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED)
+#if defined (__linux__) &&  !defined(__mips__)
+        return _HAVE_STRUCT_TERMIOS_C_OSPEED;
+#elif defined(_HAVE_STRUCT_TERMIOS_C_OSPEED)
 #error "_HAVE_STRUCT_TERMIOS_C_OSPEED defined"
-#endif
+#else
         throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED");
         return 0;
-#else
-        return _HAVE_STRUCT_TERMIOS_C_OSPEED;
 #endif
 }
 
@@ -278,14 +276,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B460800
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__)
-#if defined(B460800)
+#if defined (__linux__) || defined (__FreeBSD__)
+        return B460800;
+#elif defined(B460800)
 #error "B460800 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B460800");
         return 0;
-#else
-        return B460800;
 #endif
 }
 
@@ -296,14 +293,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B500000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__)
-#if defined(B500000)
+#if defined (__linux__)
+        return B500000;
+#elif defined(B500000)
 #error "B500000 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B500000");
         return 0;
-#else
-        return B500000;
 #endif
 }
 
@@ -314,14 +310,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B576000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__)
-#if defined(B576000)
+#if defined (__linux__)
+        return B576000;
+#elif defined(B576000)
 #error "B576000 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B576000");
         return 0;
-#else
-        return B576000;
 #endif
 }
 
@@ -332,14 +327,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B921600
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__)
-#if defined(B921600)
+#if defined (__linux__) || defined (__FreeBSD__)
+        return B921600;
+#elif defined(B921600)
 #error "B921600 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B921600");
         return 0;
-#else
-        return B921600;
 #endif
 }
 
@@ -350,14 +344,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B1000000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__)
-#if defined(B1000000)
+#if defined (__linux__)
+        return B1000000;
+#elif defined(B1000000)
 #error "B1000000 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B1000000");
         return 0;
-#else
-        return B1000000;
 #endif
 }
 
@@ -368,14 +361,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B1152000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__)
-#if defined(B1152000)
+#if defined (__linux__)
+        return B1152000;
+#elif defined(B1152000)
 #error "B1152000 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B1152000");
         return 0;
-#else
-        return B1152000;
 #endif
 }
 
@@ -386,14 +378,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B1500000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__)
-#if defined(B1500000)
+#if defined (__linux__)
+        return B1500000;
+#elif defined(B1500000)
 #error "B1500000 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B1500000");
         return 0;
-#else
-        return B1500000;
 #endif
 }
 
@@ -404,14 +395,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B2000000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__)
-#if defined(B2000000)
+#if defined (__linux__)
+        return B2000000;
+#elif defined(B2000000)
 #error "B2000000 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B2000000");
         return 0;
-#else
-        return B2000000;
 #endif
 }
 
@@ -422,14 +412,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B2500000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__)
-#if defined(B2500000)
+#if defined (__linux__)
+        return B2500000;
+#elif defined(B2500000)
 #error "B2500000 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B2500000");
         return 0;
-#else
-        return B2500000;
 #endif
 }
 
@@ -440,14 +429,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B3000000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__)
-#if defined(B3000000)
+#if defined (__linux__)
+        return B3000000;
+#elif defined(B3000000)
 #error "B3000000 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B3000000");
         return 0;
-#else
-        return B3000000;
 #endif
 }
 
@@ -458,14 +446,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B3500000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__)
-#if defined(B3500000)
+#if defined (__linux__)
+        return B3500000;
+#elif defined(B3500000)
 #error "B3500000 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B3500000");
         return 0;
-#else
-        return B3500000;
 #endif
 }
 
@@ -476,14 +463,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B4000000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__)
-#if defined(B4000000)
+#if defined (__linux__)
+        return B4000000;
+#elif defined(B4000000)
 #error "B4000000 defined"
-#endif
+#else
         throw_NotDefinedException(env, "B4000000");
         return 0;
-#else
-        return B4000000;
 #endif
 }
 
@@ -504,14 +490,13 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CMSPAR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__) || defined(__linux__) &&  defined(__mips__)
-#if defined(CMSPAR)
+#if defined(__linux__) &&  !defined(__mips__)
+        return CMSPAR;
+#elif defined(CMSPAR)
 #error "CMSPAR defined"
-#endif
+#else
         throw_NotDefinedException(env, "CMSPAR");
         return 0;
-#else
-        return CMSPAR;
 #endif
 }
 
@@ -642,14 +627,12 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_PAREXT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__)  || defined(__APPLE__) || defined (__FreeBSD__)
+        //placeholder
 #if defined(PAREXT)
 #error "PAREXT defined"
-#endif
+#else
         throw_NotDefinedException(env, "PAREXT");
         return 0;
-#else
-        return PAREXT;
 #endif
 }
 
