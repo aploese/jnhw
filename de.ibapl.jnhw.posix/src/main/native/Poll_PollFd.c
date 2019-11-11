@@ -32,7 +32,7 @@ extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Poll_PollFd
+     * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
      * Method:    sizeofPollFd
      * Signature: ()I
      */
@@ -42,7 +42,7 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Poll_PollFd
+     * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
      * Method:    events
      * Signature: ()S
      */
@@ -52,7 +52,7 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Poll_PollFd
+     * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
      * Method:    events
      * Signature: (S)V
      */
@@ -62,7 +62,7 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Poll_PollFd
+     * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
      * Method:    fd
      * Signature: ()I
      */
@@ -72,7 +72,7 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Poll_PollFd
+     * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
      * Method:    fd
      * Signature: (I)V
      */
@@ -82,7 +82,7 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Poll_PollFd
+     * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
      * Method:    revents
      * Signature: ()S
      */
@@ -92,7 +92,7 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Poll_PollFd
+     * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
      * Method:    revents
      * Signature: (S)V
      */

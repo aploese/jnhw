@@ -26,9 +26,9 @@ import de.ibapl.jnhw.NotDefinedException;
 /**
  * get the defines with gcc:
  * create an empty file c.c
- * run gcc -dD -dI -E c.c > c.txt
+ * run <code>gcc -dD -dI -E c.c &gt; c.txt</code>
  * c.txt contains all macros.
- * add an <code>#include <headerFileName.h> to get the defines for that header.
+ * add an <code>#include &lt;headerFileName.h&gt;</code> to get the defines for that header.
  * @author aploese
  */
 public class Defines {
@@ -37,16 +37,29 @@ public class Defines {
         LibJnhwPosixLoader.touch();
     }
 
+    /**
+     * @return true if symbol <code>__linux__</code> was defined at compile time of the native code.
+     */
     public static native boolean __linux__();
 
+    /**
+     * @return true if symbol <code>__APPLE__</code> was defined at compile time of the native code.
+     */
     public static native boolean __APPLE__();
 
     /**
      * 
      * @return the major version at compile time
+     * @throws de.ibapl.jnhw.NotDefinedException if <code>__FreeBSD__</code> was defined at compile time of the native code.
      */
     public static native int __FreeBSD__() throws NotDefinedException;
     
+    /**
+     * _LARGEFILE64_SOURCE was defined at native compile time.
+     * If _LARGEFILE64_SOURCE was defined then all largefile64 functions (i.e. open64, read64, fseek64, ...) are available.
+     * 
+     * @return true if symbol <code>_LARGEFILE64_SOURCE</code> was defined at compile time of the native code.
+     */
     public static native boolean _LARGEFILE64_SOURCE();
     
     /**

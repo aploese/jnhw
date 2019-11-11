@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.StructArray;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.AfterAll;
@@ -61,7 +62,10 @@ public class PollTests {
     public void testNPEpoll() throws Exception {
         Assumptions.assumeFalse(NativeLibResolver.getOS() == OS.WINDOWS);
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Poll.poll(null, 1000);
+            Poll.poll((Poll.PollFd)null, 1000);
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Poll.poll((Poll.PollFd)null, 1000);
         });
     }
 

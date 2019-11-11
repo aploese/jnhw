@@ -20,23 +20,8 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 /**
- * Very thin and safe wrapper classes around common used headers on a ISOC/POSIX/UNIX/Linux system.
+ * JNHW helper classes.
  * 
- * See specs at:
- * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/">The Open Group Base Specifications Issue 7, 2018 edition
- *   IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)
- *   Copyright © 2001-2018 IEEE and The Open Group</a>.
  * 
  */
-module de.ibapl.jnhw.posix {
-    requires java.logging;
-
-    requires transitive de.ibapl.jnhw.common;
-
-    exports de.ibapl.jnhw.isoc;
-    exports de.ibapl.jnhw.util.posix;
-    exports de.ibapl.jnhw.unix.sys;
-    exports de.ibapl.jnhw.posix;
-    exports de.ibapl.jnhw.linux.sys;
-
-}
+package de.ibapl.jnhw.util.posix;

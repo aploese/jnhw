@@ -28,13 +28,20 @@ package de.ibapl.jnhw;
  */
 public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
 
+    @FunctionalInterface
+    protected interface ElementFactory<T extends OpaqueMemory>{
+        
+        T create(StructArray<T> parent, int offset);
+        
+    }
+    
     private final T[] pointers;
 
-    public StructArray(T[] array, int elementSizeInBytes, boolean clearMem) {
+    public StructArray(T[] array, ElementFactory<T> factory, int elementSizeInBytes, boolean clearMem) {
         super(array.length, elementSizeInBytes, clearMem);
         pointers = array;
         for (int i = 0; i < array.length; i++) {
-            pointers[i] = createElementAtOffset(elementSizeInBytes * i);
+            pointers[i] = factory.create(this, elementSizeInBytes * i);
         }
     }
 
@@ -49,8 +56,6 @@ public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
     public final int length() {
         return pointers.length;
     }
-
-    protected abstract T createElementAtOffset(int offset);
 
     @Override
     public String toString() {
