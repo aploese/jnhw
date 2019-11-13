@@ -77,6 +77,116 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return O_WRONLY;
     }
+    
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    AT_FDCWD
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_AT_1FDCWD
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return AT_FDCWD;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    AT_EACCESS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_AT_1EACCESS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return AT_EACCESS;
+    }
+    
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    AT_SYMLINK_NOFOLLOW
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_AT_1SYMLINK_1NOFOLLOW
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return AT_SYMLINK_NOFOLLOW;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    AT_SYMLINK_FOLLOW
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_AT_1SYMLINK_1FOLLOW
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return AT_SYMLINK_FOLLOW;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    AT_REMOVEDIR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_AT_1REMOVEDIR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return AT_REMOVEDIR;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    POSIX_FADV_DONTNEED
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1DONTNEED
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return POSIX_FADV_DONTNEED;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    POSIX_FADV_NOREUSE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1NOREUSE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return POSIX_FADV_NOREUSE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    POSIX_FADV_NORMAL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1NORMAL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return POSIX_FADV_NORMAL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    POSIX_FADV_RANDOM
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1RANDOM
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return POSIX_FADV_RANDOM;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    POSIX_FADV_SEQUENTIAL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1SEQUENTIAL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return POSIX_FADV_SEQUENTIAL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    POSIX_FADV_WILLNEED
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1WILLNEED
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return POSIX_FADV_WILLNEED;
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
@@ -401,7 +511,38 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return F_SETFL;
     }
+    
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_GETLK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1GETLK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return F_GETLK;
+    }
+    
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_SETLK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1SETLK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return F_SETLK;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_SETLKW
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1SETLKW
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return F_SETLKW;
+    }
+    
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    F_GETOWN
@@ -441,7 +582,68 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return FD_CLOEXEC;
     }
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_RDLCK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1RDLCK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return F_RDLCK;
+    }
+    
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_UNLCK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1UNLCK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return F_UNLCK;
+    }
+    
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    F_WRLCK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_F_1WRLCK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return F_WRLCK;
+    }
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    SEEK_SET
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_SEEK_1SET
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SEEK_SET;
+    }
+            
+            
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    SEEK_CUR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_SEEK_1CUR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SEEK_CUR;
+    }
+            
+    /*
+     * Class:     de_ibapl_jnhw_posix_Fcntl
+     * Method:    SEEK_END
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_SEEK_1END
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SEEK_END;
+    }
+            
+            
 #ifdef __cplusplus
 }
 #endif

@@ -25,6 +25,15 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
+/**
+ * Wrapper around the <code>&lt;errno.h&gt;</code> header.
+ * @see(module-info) for markers
+ * See specs at:
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h
+ * - system error numbers</a>.
+ *
+ * @author aploese
+ */
 @Include("#include <errno.h>")
 public abstract class Errno {
 
@@ -42,25 +51,49 @@ public abstract class Errno {
     public final static native boolean HAVE_ERRNO_H();
 
     /**
-     * Mathematics argument out of domain of function.
+     * ISOC,POSIX: Mathematics argument out of domain of function.
+     *
+     * @return the native symbolic constant of EDOM.
      */
     @Define
     public final static native int EDOM();
 
     /**
-     * Illegal byte sequence.
+     * ISOC,POSIX: Illegal byte sequence.
+     *
+     * @return the native symbolic constant of EILSEQ,
      */
     @Define
     public final static native int EILSEQ();
 
     /**
-     * Result too large.
+     * ISOC,POSIX: Result too large.
+     *
+     * @return the native symbolic constant of ERANGE.
      */
     @Define
     public final static native int ERANGE();
 
+    /**
+     * Read access to <code>errno</code>.
+     *
+     * See specs at:
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h
+     * - system error numbers</a>.
+     *
+     * @author aploese
+     */
     public final static native int errno();
 
+    /**
+     * Write access to <code>errno</code>.
+     *
+     * See specs at:
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h
+     * - system error numbers</a>.
+     *
+     * @author aploese
+     */
     public final static native void errno(int value);
 
 }

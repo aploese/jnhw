@@ -83,7 +83,7 @@ public final class Poll {
 
         /**
          * Get the real size of struct pollfd natively.
-         * 
+         *
          * @return the native value sizeof(struct pollfd).
          */
         public static native int sizeofPollFd();
@@ -239,7 +239,7 @@ public final class Poll {
      * - input/output multiplexing</a>.
      *
      * @param fds an array of pollfd.
-     * @param timeout the timeout.
+     * @param timeout the timeout in milliseconds.
      * @return the native result.
      * @throws NativeErrorException trown if native result &lt; 0.
      */
@@ -251,15 +251,14 @@ public final class Poll {
      * - input/output multiplexing</a>.
      *
      * @param fd a single pollfd.
-     * @param timeout the timeout.
+     * @param timeout the timeout in milliseconds.
      * @return the native result.
      * @throws NativeErrorException trown if native result &lt; 0.
      */
     public final static native int poll(PollFd fd, int timeout) throws NativeErrorException;
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">POLLERR</a>.
+     * <b>POSIX:</b> An error has occurred (revents only).
      *
      * @return the native symbolic constant of POLLERR.
      */
@@ -267,8 +266,7 @@ public final class Poll {
     public final static native short POLLERR();
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">POLLHUP</a>.
+     * <b>POSIX:</b> Device has been disconnected (revents only).
      *
      * @return the native symbolic constant of POLLHUP.
      */
@@ -276,8 +274,7 @@ public final class Poll {
     public final static native short POLLHUP();
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">POLLIN</a>.
+     * <b>POSIX:</b> Data other than high-priority data may be read without blocking.
      *
      * @return the native symbolic constant of POLLIN.
      */
@@ -285,8 +282,7 @@ public final class Poll {
     public final static native short POLLIN();
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">POLLNVAL</a>.
+     * <b>POSIX:</b> Invalid fd member (revents only).
      *
      * @return the native symbolic constant of .POLLNVAL
      */
@@ -294,8 +290,7 @@ public final class Poll {
     public final static native short POLLNVAL();
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">POLLOUT</a>.
+     * <b>POSIX:</b> High priority data may be read without blocking.
      *
      * @return the native symbolic constant of POLLOUT.
      */
@@ -303,8 +298,7 @@ public final class Poll {
     public final static native short POLLOUT();
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">POLLPRI</a>.
+     * <b>POSIX:</b> High priority data may be read without blocking.
      *
      * @return the native symbolic constant of POLLPRI.
      */
@@ -312,8 +306,7 @@ public final class Poll {
     public final static native short POLLPRI();
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">POLLRDBAND</a>.
+     * <b>POSIX:</b> Normal data may be read without blocking.
      *
      * @return the native symbolic constant of POLLRDBAND.
      */
@@ -321,8 +314,7 @@ public final class Poll {
     public final static native short POLLRDBAND();
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">POLLRDNORM</a>.
+     * <b>POSIX:</b> Normal data may be read without blocking.
      *
      * @return the native symbolic constant of POLLRDNORM.
      */
@@ -330,8 +322,7 @@ public final class Poll {
     public final static native short POLLRDNORM();
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">POLLWRBAND</a>.
+     * <b>POSIX:</b> Priority data may be written.
      *
      * @return the native symbolic constant of POLLWRBAND.
      */
@@ -339,8 +330,7 @@ public final class Poll {
     public final static native short POLLWRBAND();
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">POLLWRNORM</a>.
+     * <b>POSIX:</b> Equivalent to POLLOUT.
      *
      * @return the native symbolic constant of POLLWRNORM.
      */

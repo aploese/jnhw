@@ -21,6 +21,26 @@
  */
 /**
  * Very thin and safe wrapper classes around common used headers on a ISOC/POSIX/UNIX/Linux system.
+ * <p>
+ * A note to the markers used for the native symbolic constants and functions:
+ * <ul>
+ * <li>
+ * <b>POSIX:</b> its a POSIX standard
+ * </li><li>
+ * <b>POSIX.ADV:</b> its an optional POSIX standard, <a href="https://pubs.opengroup.org/onlinepubs/9699919799/help/codes.html#ADV">ADV</a>.
+ * </li><li>
+ * <b>POSIX.SOI:</b> its an optional POSIX standard, <a href="https://pubs.opengroup.org/onlinepubs/9699919799/help/codes.html#SOI">SOI</a>.
+ * </li><li>
+ * <b>POSIX.XSI:</b> its an optional POSIX standard, <a href="https://pubs.opengroup.org/onlinepubs/9699919799/help/codes.html#XSI">XSI</a>.
+ * </li><li>
+ * <b>Non POSIX:</b> its not a POSIX standard, but its available on all plattforms.
+ * </li><li>
+ * <b>ISOC:</b> its an Iso C standard.
+ * </li><li>
+ * <b>Linux:</b> its Linux.
+ * </li>
+ * </ul>
+ * </p>
  * 
  * See specs at:
  * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/">The Open Group Base Specifications Issue 7, 2018 edition

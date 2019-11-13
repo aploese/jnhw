@@ -29,696 +29,1130 @@ import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Wrapper around the <code>&lt;errno.h&gt;</code> header.
+ *
+ * See specs at:
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h
+ * - system error numbers</a>.
+ *
+ * @author aploese
+ */
 @Include("#include <errno.h>")
 public final class Errno extends de.ibapl.jnhw.isoc.Errno {
 
-    private Errno() {
+    protected Errno() {
 
     }
 
     /**
-     * Operation not permitted.
+     * <b>POSIX:</b> Operation not permitted.
+     *
+     * @return the native symbolic constant of EPERM.
      */
     @Define
     public final static native int EPERM();
 
     /**
-     * No such file or directory.
+     * <b>POSIX:</b> No such file or directory.
+     *
+     * @return the native symbolic constant of ENOENT.
      */
     @Define
     public final static native int ENOENT();
 
     /**
-     * No such process.
+     * <b>POSIX:</b> No such process.
+     *
+     * @return the native symbolic constant of ESRCH.
      */
     @Define
     public final static native int ESRCH();
 
     /**
-     * Interrupted function.
+     * <b>POSIX:</b> Interrupted function.
+     *
+     * @return the native symbolic constant of EINTR.
      */
     @Define
     public final static native int EINTR();
 
     /**
-     * I/O error.
+     * <b>POSIX:</b> I/O error.
+     *
+     * @return the native symbolic constant of EIO.
      */
     @Define
     public final static native int EIO();
 
     /**
-     * No such device or address.
+     * <b>POSIX:</b> No such device or address.
+     *
+     * @return the native symbolic constant of ENXIO.
      */
     @Define
     public final static native int ENXIO();
 
     /**
-     * Argument list too long.
+     * <b>POSIX:</b> Argument list too long.
+     *
+     * @return the native symbolic constant of E2BIG.
      */
     @Define
     public final static native int E2BIG();
 
     /**
-     * Executable file format error.
+     * <b>POSIX:</b> Executable file format error.
+     *
+     * @return the native symbolic constant of ENOEXEC.
      */
     @Define
     public final static native int ENOEXEC();
 
     /**
-     * Bad file descriptor.
+     * <b>POSIX:</b> Bad file descriptor.
+     *
+     * @return the native symbolic constant of EBADF.
      */
     @Define
     public final static native int EBADF();
 
     /**
-     * No child processes.
+     * <b>POSIX:</b> No child processes.
+     *
+     * @return the native symbolic constant of ECHILD.
      */
     @Define
     public final static native int ECHILD();
 
     /**
-     * Resource unavailable, try again (may be the same value as [EWOULDBLOCK]).
+     * <b>POSIX:</b> Resource unavailable, try again (may be the same value as
+     * [EWOULDBLOCK]).
+     *
+     * @return the native symbolic constant of EAGAIN.
      */
     @Define
     public final static native int EAGAIN();
 
     /**
-     * Not enough space.
+     * <b>POSIX:</b> Not enough space.
+     *
+     * @return the native symbolic constant of ENOMEM.
      */
     @Define
     public final static native int ENOMEM();
 
     /**
-     * Permission denied.
+     * <b>POSIX:</b> Permission denied.
+     *
+     * @return the native symbolic constant of EACCES.
      */
     @Define
     public final static native int EACCES();
 
     /**
-     * Bad address.
+     * <b>POSIX:</b> Bad address.
+     *
+     * @return the native symbolic constant of EFAULT.
      */
     @Define
     public final static native int EFAULT();
 
+    /**
+     * <b>Non POSIX:</b> Block device required.
+     *
+     * @return the native symbolic constant of ENOTBLK.
+     */
     @Define
     public final static native int ENOTBLK();
 
     /**
-     * Device or resource busy.
+     * POSIX Device or resource busy.
+     *
+     * @return the native symbolic constant of EBUSY.
      */
     @Define
     public final static native int EBUSY();
 
     /**
-     * File exists.
+     * <b>POSIX:</b> File exists.
+     *
+     * @return the native symbolic constant of EEXIST.
      */
     @Define
     public final static native int EEXIST();
 
     /**
-     * Cross-device link.
+     * <b>POSIX:</b> Cross-device link.
+     *
+     * @return the native symbolic constant of EXDEV.
      */
     @Define
     public final static native int EXDEV();
 
     /**
-     * No such device.
+     * <b>POSIX:</b> No such device.
+     *
+     * @return the native symbolic constant of ENODEV.
      */
     @Define
     public final static native int ENODEV();
 
     /**
-     * Not a directory or a symbolic link to a directory.
+     * <b>POSIX:</b> Not a directory or a symbolic link to a directory.
+     *
+     * @return the native symbolic constant of ENOTDIR.
      */
     @Define
     public final static native int ENOTDIR();
 
     /**
-     * Is a directory.
+     * <b>POSIX:</b> Is a directory.
+     *
+     * @return the native symbolic constant of EISDIR.
      */
     @Define
     public final static native int EISDIR();
 
     /**
-     * Invalid argument.
+     * <b>POSIX:</b> Invalid argument.
+     *
+     * @return the native symbolic constant of EINVAL.
      */
     @Define
     public final static native int EINVAL();
 
     /**
-     * Too many files open in system.
+     * <b>POSIX:</b> Too many files open in system.
+     *
+     * @return the native symbolic constant of ENFILE.
      */
     @Define
     public final static native int ENFILE();
 
     /**
-     * File descriptor value too large.
+     * <b>POSIX:</b> File descriptor value too large.
+     *
+     * @return the native symbolic constant of EMFILE.
      */
     @Define
     public final static native int EMFILE();
 
     /**
-     * Inappropriate I/O control operation.
+     * <b>POSIX:</b> Inappropriate I/O control operation.
+     *
+     * @return the native symbolic constant of ENOTTY.
      */
     @Define
     public final static native int ENOTTY();
 
     /**
-     * Text file busy.
+     * <b>POSIX:</b> Text file busy.
+     *
+     * @return the native symbolic constant of ETXTBSY.
      */
     @Define
     public final static native int ETXTBSY();
 
     /**
-     * File too large.
+     * <b>POSIX:</b> File too large.
+     *
+     * @return the native symbolic constant of EFBIG.
      */
     @Define
     public final static native int EFBIG();
 
     /**
-     * No space left on device.
+     * <b>POSIX:</b> No space left on device.
+     *
+     * @return the native symbolic constant of ENOSPC.
      */
     @Define
     public final static native int ENOSPC();
 
     /**
-     * Invalid seek.
+     * <b>POSIX:</b> Invalid seek.
+     *
+     * @return the native symbolic constant of ESPIPE.
      */
     @Define
     public final static native int ESPIPE();
 
     /**
-     * Read-only file system.
+     * <b>POSIX:</b> Read-only file system.
+     *
+     * @return the native symbolic constant of EROFS.
      */
     @Define
     public final static native int EROFS();
 
     /**
-     * Too many links.
+     * <b>POSIX:</b> Too many links.
+     *
+     * @return the native symbolic constant of EMLINK.
      */
     @Define
     public final static native int EMLINK();
 
     /**
-     * Broken pipe.
+     * <b>POSIX:</b> Broken pipe.
+     *
+     * @return the native symbolic constant of EPIPE.
      */
     @Define
     public final static native int EPIPE();
 
     /**
-     * Resource deadlock would occur.
+     * <b>POSIX:</b> Resource deadlock would occur.
+     *
+     * @return the native symbolic constant of EDEADLK.
      */
     @Define
     public final static native int EDEADLK();
 
     /**
-     * Filename too long.
+     * <b>POSIX:</b> Filename too long.
+     *
+     * @return the native symbolic constant of ENAMETOOLONG.
      */
     @Define
     public final static native int ENAMETOOLONG();
 
     /**
-     * No locks available.
+     * <b>POSIX:</b> No locks available.
+     *
+     * @return the native symbolic constant of ENOLCK.
      */
     @Define
     public final static native int ENOLCK();
 
     /**
-     * Functionality not supported.
+     * <b>POSIX:</b> Functionality not supported.
+     *
+     * @return the native symbolic constant of ENOSYS.
      */
     @Define
     public final static native int ENOSYS();
 
     /**
-     * Directory not empty.
+     * <b>POSIX:</b> Directory not empty.
+     *
+     * @return the native symbolic constant of ENOTEMPTY.
      */
     @Define
     public final static native int ENOTEMPTY();
 
     /**
-     * Too many levels of symbolic links.
+     * <b>POSIX:</b> Too many levels of symbolic links.
+     *
+     * @return the native symbolic constant of ELOOP.
      */
     @Define
     public final static native int ELOOP();
 
     /**
-     * Operation would block (may be the same value as [@see EAGAIN]).
+     * <b>POSIX:</b> Operation would block (may be the same value as [@see
+     * EAGAIN]).
+     *
+     * @return the native symbolic constant of EWOULDBLOCK.
      */
     @Define
     public final static native int EWOULDBLOCK();
 
     /**
-     * No message of the desired type.
+     * <b>POSIX:</b> No message of the desired type.
+     *
+     * @return the native symbolic constant of ENOMSG.
      */
     @Define
     public final static native int ENOMSG();
 
     /**
-     * Identifier removed.
+     * <b>POSIX:</b> Identifier removed.
+     *
+     * @return the native symbolic constant of EIDRM.
      */
     @Define
     public final static native int EIDRM();
 
-    //LINUX()
+    /**
+     * <b>Linux:</b> Channel number out of range.
+     *
+     * @return the native symbolic constant of ECHRNG.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ECHRNG() throws NotDefinedException;
 
-    //LINUX()
+    /**
+     * <b>Linux:</b> Level 2 not synchronized.
+     *
+     * @return the native symbolic constant of EL2NSYNC.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EL2NSYNC() throws NotDefinedException;
 
-    //LINUX()
+    /**
+     * <b>Linux:</b> Level 3 halted.
+     *
+     * @return the native symbolic constant of EL3HLT.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EL3HLT() throws NotDefinedException;
 
-    //LINUX()
+    /**
+     * <b>Linux:</b> Level 3 reset.
+     *
+     * @return the native symbolic constant of EL3RST.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EL3RST() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Link number out of range.
+     *
+     * @return the native symbolic constant of ELNRNG.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ELNRNG() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Protocol driver not attached.
+     *
+     * @return the native symbolic constant of EUNATCH.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EUNATCH() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> No CSI structure available.
+     *
+     * @return the native symbolic constant of ENOCSI.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ENOCSI() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> evel 2 halted.
+     *
+     * @return the native symbolic constant of EL2HLT.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EL2HLT() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Invalid exchange.
+     *
+     * @return the native symbolic constant of EBADE.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EBADE() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Invalid request descriptor.
+     *
+     * @return the native symbolic constant of EBADR.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EBADR() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Exchange full.
+     *
+     * @return the native symbolic constant of EXFULL.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EXFULL() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> No anode.
+     *
+     * @return the native symbolic constant of ENOANO.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ENOANO() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Invalid request code.
+     *
+     * @return the native symbolic constant of EBADRQC.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EBADRQC() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Invalid slot.
+     *
+     * @return the native symbolic constant of EBADSLT.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EBADSLT() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> @see(EDEADLK)
+     *
+     * @return the native symbolic constant of EDEADLOCK.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EDEADLOCK() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Bad font file format
+     *
+     * @return the native symbolic constant of EBFONT.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EBFONT() throws NotDefinedException;
 
     /**
-     * Not a STREAM.
+     * <b>POSIX.XSI:</b> Not a STREAM.
+     *
+     * @return the native symbolic constant of ENOSTR.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
-    //POSIX(POSIX.Marker.XSI)
     @Define
     public final static native int ENOSTR() throws NotDefinedException;
 
     /**
-     * No message is available on the STREAM head read queue.
+     * <b>POSIX.XSI:</b> No message is available on the STREAM head read queue.
+     *
+     * @return the native symbolic constant of ENODATA.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
-    //POSIX(POSIX.Marker.XSI)
     @Define
     public final static native int ENODATA() throws NotDefinedException;
 
     /**
-     * Stream @see ioctl_H.ioctl() timeout.
+     * <b>POSIX:</b> Stream @see ioctl_H.ioctl() timeout.
+     *
+     * @return the native symbolic constant of ETIME.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
     public final static native int ETIME() throws NotDefinedException;
 
     /**
-     * No STREAM resources.
+     * <b>POSIX.XSI:</b> No STREAM resources.
+     *
+     * @return the native symbolic constant of ENOSR.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
-    //POSIX(POSIX.Marker.XSI)
     @Define
     public final static native int ENOSR() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Machine is not on the network.
+     *
+     * @return the native symbolic constant of ENONET.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ENONET() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Package not installed.
+     *
+     * @return the native symbolic constant of ENOPKG.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ENOPKG() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Non POSIX:</b> Object is remote
+     *
+     * @return the native symbolic constant of EREMOTE.
+     * @throws NotDefinedException
+     */
     @Define
-    public final static native int EREMOTE();
+    public final static native int EREMOTE() throws NotDefinedException;
 
     /**
-     * Reserved.
+     * <b>POSIX:</b> Reserved.
+     *
+     * @return the native symbolic constant of ENOLINK.
      */
     @Define
     public final static native int ENOLINK();
 
+    /**
+     * <b>Non POSIX:</b> Advertise error.
+     *
+     * @return the native symbolic constant of EADV.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EADV() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Srmount error.
+     *
+     * @return the native symbolic constant of ESRMNT.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ESRMNT() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Communication error on send.
+     *
+     * @return the native symbolic constant of ECOMM.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ECOMM() throws NotDefinedException;
 
     /**
-     * Protocol error.
+     * <b>POSIX:</b> Protocol error.
+     *
+     * @return the native symbolic constant of EPROTO.
      */
     @Define
     public final static native int EPROTO();
 
     /**
-     * Reserved.
+     * <b>POSIX:</b> Reserved.
+     *
+     * @return the native symbolic constant of EMULTIHOP.
      */
     @Define
     public final static native int EMULTIHOP();
 
-    //LINUX
+    /**
+     * <b>Linux:</b> RFS specific error.
+     *
+     * @return the native symbolic constant of EDOTDOT.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EDOTDOT() throws NotDefinedException;
 
     /**
-     * Bad message.
+     * <b>POSIX:</b> Bad message.
+     *
+     * @return the native symbolic constant of EBADMSG.
      */
     @Define
     public final static native int EBADMSG();
 
     /**
-     * Value too large to be stored in data type.
+     * <b>POSIX:</b> Value too large to be stored in data type.
+     *
+     * @return the native symbolic constant of EOVERFLOW.
      */
     @Define
     public final static native int EOVERFLOW();
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Name not unique on network.
+     *
+     * @return the native symbolic constant of ENOTUNIQ.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ENOTUNIQ() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> File descriptor in bad state.
+     *
+     * @return the native symbolic constant of EBADFD.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EBADFD() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Remote address changed.
+     *
+     * @return the native symbolic constant of EREMCHG.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EREMCHG() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Can not access a needed shared library.
+     *
+     * @return the native symbolic constant of ELIBACC.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ELIBACC() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Accessing a corrupted shared library.
+     *
+     * @return the native symbolic constant of ELIBBAD.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ELIBBAD() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> .lib section in a.out corrupted.
+     *
+     * @return the native symbolic constant of ELIBSCN.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ELIBSCN() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Attempting to link in too many shared libraries.
+     *
+     * @return the native symbolic constant of ELIBMAX.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ELIBMAX() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Cannot exec a shared library directly.
+     *
+     * @return the native symbolic constant of ELIBEXEC.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ELIBEXEC() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Interrupted system call should be restarted.
+     *
+     * @return the native symbolic constant of ERESTART.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ERESTART() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Streams pipe error.
+     *
+     * @return the native symbolic constant of ESTRPIPE.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ESTRPIPE() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Non POSIX:</b> Too many users.
+     *
+     * @return the native symbolic constant of EUSERS.
+     */
     @Define
     public final static native int EUSERS();
 
     /**
-     * Not a socket.
+     * <b>POSIX:</b> Not a socket.
+     *
+     * @return the native symbolic constant of ENOTSOCK.
      */
     @Define
     public final static native int ENOTSOCK();
 
     /**
-     * Destination address required.
+     * <b>POSIX:</b> Destination address required.
+     *
+     * @return the native symbolic constant of EDESTADDRREQ.
      */
     @Define
     public final static native int EDESTADDRREQ();
 
     /**
-     * Message too large.
+     * <b>POSIX:</b> Message too large.
+     *
+     * @return the native symbolic c.
      */
     @Define
     public final static native int EMSGSIZE();
 
     /**
-     * Protocol wrong type for socket.
+     * <b>POSIX:</b> Protocol wrong type for socket.
+     *
+     * @return the native symbolic constant of EPROTOTYPE.
      */
     @Define
     public final static native int EPROTOTYPE();
 
     /**
-     * Protocol not available.
+     * <b>POSIX:</b> Protocol not available.
+     *
+     * @return the native symbolic constant of ENOPROTOOPT.
      */
     @Define
     public final static native int ENOPROTOOPT();
 
     /**
-     * Protocol not supported.
+     * <b>POSIX:</b> Protocol not supported.
+     *
+     * @return the native symbolic constant of EPROTONOSUPPORT.
      */
     @Define
     public final static native int EPROTONOSUPPORT();
 
-    //LINUX
+    /**
+     * <b>Non POSIX:</b> Socket type not supported
+     *
+     * @return the native symbolic constant of ESOCKTNOSUPPORT.
+     */
     @Define
     public final static native int ESOCKTNOSUPPORT();
 
     /**
-     * Operation not supported on socket (may be the same value as [@see
-     * ENOTSUP]).
+     * <b>POSIX:</b> Operation not supported on socket (may be the same value as
+     * [@see ENOTSUP]).
+     *
+     * @return the native symbolic constant of EOPNOTSUPP.
      */
     @Define
     public final static native int EOPNOTSUPP();
 
-    //LINUX
+    /**
+     * <b>Non POSIX:</b> Protocol family not supported.
+     *
+     * @return the native symbolic constant of EPFNOSUPPORT.
+     */
     @Define
     public final static native int EPFNOSUPPORT();
 
     /**
-     * Address family not supported.
+     * <b>POSIX:</b> Address family not supported.
+     *
+     * @return the native symbolic constant of EAFNOSUPPORT.
      */
     @Define
     public final static native int EAFNOSUPPORT();
 
     /**
-     * Address in use.
+     * <b>POSIX:</b> Address in use.
+     *
+     * @return the native symbolic constant of EADDRINUSE.
      */
     @Define
     public final static native int EADDRINUSE();
 
     /**
-     * Address not available.
+     * <b>POSIX:</b> Address not available.
+     *
+     * @return the native symbolic constant of EADDRNOTAVAIL.
      */
     @Define
     public final static native int EADDRNOTAVAIL();
 
     /**
-     * Network is down.
+     * <b>POSIX:</b> Network is down.
+     *
+     * @return the native symbolic constant of ENETDOWN.
      */
     @Define
     public final static native int ENETDOWN();
 
     /**
-     * Network unreachable.
+     * <b>POSIX:</b> Network unreachable.
+     *
+     * @return the native symbolic constant of ENETUNREACH.
      */
     @Define
     public final static native int ENETUNREACH();
 
     /**
-     * Connection aborted by network.
+     * <b>POSIX:</b> Connection aborted by network.
+     *
+     * @return the native symbolic constant of ENETRESET.
      */
     @Define
     public final static native int ENETRESET();
 
     /**
-     * Connection aborted.
+     * <b>POSIX:</b> Connection aborted.
+     *
+     * @return the native symbolic constant of ECONNABORTED.
      */
     @Define
     public final static native int ECONNABORTED();
 
     /**
-     * Connection reset.
+     * <b>POSIX:</b> Connection reset.
+     *
+     * @return the native symbolic constant of ECONNRESET.
      */
     @Define
     public final static native int ECONNRESET();
 
     /**
-     * No buffer space available.
+     * <b>POSIX:</b> No buffer space available.
+     *
+     * @return the native symbolic constant of ENOBUFS.
      */
     @Define
     public final static native int ENOBUFS();
 
     /**
-     * Socket is connected.
+     * <b>POSIX:</b> Socket is connected.
+     *
+     * @return the native symbolic constant of EISCONN.
      */
     @Define
     public final static native int EISCONN();
 
     /**
-     * The socket is not connected.
+     * <b>POSIX:</b> The socket is not connected.
+     *
+     * @return the native symbolic constant of ENOTCONN.
      */
     @Define
     public final static native int ENOTCONN();
 
-    //LINUX
+    /**
+     * <b>Non POSIX:</b> Cannot send after transport endpoint shutdown.
+     *
+     * @return the native symbolic constant of ESHUTDOWN.
+     */
     @Define
     public final static native int ESHUTDOWN();
 
-    //LINUX
+    /**
+     * <b>Non POSIX:</b> Too many references: cannot splice.
+     *
+     * @return the native symbolic constant of ETOOMANYREFS.
+     */
     @Define
     public final static native int ETOOMANYREFS();
 
     /**
-     * Connection timed out.
+     * <b>POSIX:</b> Connection timed out.
+     *
+     * @return the native symbolic constant of ETIMEDOUT.
      */
-    //POSIX(POSIX.Marker.XSI)
     @Define
     public final static native int ETIMEDOUT();
 
     /**
-     * Connection refused.
+     * <b>POSIX:</b> Connection refused.
+     *
+     * @return the native symbolic constant of ECONNREFUSED.
      */
     @Define
     public final static native int ECONNREFUSED();
 
-    //LINUX
+    /**
+     * <b>Non POSIX:</b> Host is down.
+     *
+     * @return the native symbolic constant of EHOSTDOWN.
+     */
     @Define
     public final static native int EHOSTDOWN();
 
     /**
-     * Host is unreachable.
+     * <b>POSIX:</b> Host is unreachable.
+     *
+     * @return the native symbolic constant of EHOSTUNREACH.
      */
     @Define
     public final static native int EHOSTUNREACH();
 
     /**
-     * Connection already in progress.
+     * <b>POSIX:</b> Connection already in progress.
+     *
+     * @return the native symbolic constant of EALREADY.
      */
     @Define
     public final static native int EALREADY();
 
     /**
-     * Operation in progress.
+     * <b>POSIX:</b> Operation in progress.
+     *
+     * @return the native symbolic constant of EINPROGRESS.
      */
     @Define
     public final static native int EINPROGRESS();
 
     /**
-     * Reserved.
+     * <b>POSIX:</b> Reserved.
+     *
+     * @return the native symbolic constant of ESTALE.
      */
     @Define
     public final static native int ESTALE();
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Structure needs cleaning.
+     *
+     * @return the native symbolic constant of EUCLEAN.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EUCLEAN() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Not a XENIX named type file.
+     *
+     * @return the native symbolic constant of ENOTNAM.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ENOTNAM() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> No XENIX semaphores available.
+     *
+     * @return the native symbolic constant of ENAVAIL.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ENAVAIL() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Is a named type file.
+     *
+     * @return the native symbolic constant of EISNAM.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EISNAM() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Remote I/O error.
+     *
+     * @return the native symbolic constant of EREMOTEIO.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EREMOTEIO() throws NotDefinedException;
 
     /**
-     * Reserved.
+     * <b>POSIX:</b> Reserved.
+     *
+     * @return the native symbolic constant of EDQUOT.
      */
     @Define
     public final static native int EDQUOT();
 
-    //LINUX
+    /**
+     * <b>Linux:</b> No medium found.
+     *
+     * @return the native symbolic constant of ENOMEDIUM.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ENOMEDIUM() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Wrong medium type.
+     *
+     * @return the native symbolic constant of EMEDIUMTYPE.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EMEDIUMTYPE() throws NotDefinedException;
 
     /**
-     * Operation canceled.
+     * <b>POSIX:</b> Operation canceled.
+     *
+     * @return the native symbolic constant of ECANCELED.
      */
     @Define
     public final static native int ECANCELED();
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Required key not available
+     *
+     * @return the native symbolic constant of ENOKEY.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ENOKEY() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Key has expired.
+     *
+     * @return the native symbolic constant of EKEYEXPIRED.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EKEYEXPIRED() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Key has been revoked.
+     *
+     * @return the native symbolic constant of EKEYREVOKED.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EKEYREVOKED() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Key was rejected by service.
+     *
+     * @return the native symbolic constant of EKEYREJECTED.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EKEYREJECTED() throws NotDefinedException;
 
     /**
-     * Previous owner died.
+     * <b>POSIX:</b> Previous owner died.
+     *
+     * @return the native symbolic constant of EOWNERDEAD.
      */
     @Define
     public final static native int EOWNERDEAD();
 
     /**
-     * State not recoverable.
+     * <b>POSIX:</b> State not recoverable.
+     *
+     * @return the native symbolic constant of ENOTRECOVERABLE.
      */
     @Define
     public final static native int ENOTRECOVERABLE();
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Operation not possible due to RF-kill.
+     *
+     * @return the native symbolic constant of ERFKILL.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int ERFKILL() throws NotDefinedException;
 
-    //LINUX
+    /**
+     * <b>Linux:</b> Memory page has hardware error.
+     *
+     * @return the native symbolic constant of EHWPOISON.
+     * @throws NotDefinedException
+     */
     @Define
     public final static native int EHWPOISON() throws NotDefinedException;
 
     /**
-     * Not supported (may be the same value as [@see EOPNOTSUPP]).
+     * <b>Non POSIX:</b> Not supported (may be the same value as [@see
+     * EOPNOTSUPP]).
+     *
+     * @return the native symbolic constant of ENOTSUP.
      */
     @Define
     public final static native int ENOTSUP();
 
+    /**
+     * Translate the native errno to its symbolic constant name.
+     *
+     * @param errno
+     * @return
+     */
     public final static String getErrnoSymbol(int errno) {
         for (Method m : Errno.class.getMethods()) {
             if (m.getAnnotation(Define.class) != null) {
