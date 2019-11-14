@@ -361,7 +361,19 @@ extern "C" {
         return 0;
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jlong offset, jlong len, jint advice) {
+#if __WORDSIZE == 64
         return posix_fadvise(fd, offset, len, advice);
+#elif __WORDSIZE == 32
+        if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
+            throw_IndexOutOfBoundsException(env, "In this native implementation offset is only an integer with the size of jint");
+            return -1;
+        }
+        if ((len > INT32_MAX) || (len < INT32_MIN)) {
+            throw_IndexOutOfBoundsException(env, "In this native implementation len is only an integer with the size of jint");
+            return -1;
+        }
+        return posix_fadvise(fd, (int32_t)offset, (int32_t)len, advice);
+#endif
 #endif
     }
 
@@ -372,7 +384,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_posix_1fadvise64
 #ifdef _LARGEFILE64_SOURCE
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jlong offset, jlong len, jint advice) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jlong offset, jlong len, jint advice) {
         return posix_fadvise64(fd, offset, len, advice);
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fd, __attribute__ ((unused)) jlong offset, __attribute__ ((unused)) jlong len, __attribute__ ((unused)) jint advice) {
@@ -393,7 +405,19 @@ extern "C" {
         return 0;
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jlong offset, jlong len) {
+#if __WORDSIZE == 64
         return posix_fallocate(fd, offset, len);
+#elif __WORDSIZE == 32
+        if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
+            throw_IndexOutOfBoundsException(env, "In this native implementation offset is only an integer with the size of jint");
+            return -1;
+        }
+        if ((len > INT32_MAX) || (len < INT32_MIN)) {
+            throw_IndexOutOfBoundsException(env, "In this native implementation len is only an integer with the size of jint");
+            return -1;
+        }
+        return posix_fallocate(fd, (int32_t)offset, (int32_t)len);
+#endif
 #endif
     }
 
@@ -404,8 +428,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_posix_1fallocate64
 #ifdef _LARGEFILE64_SOURCE
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jlong offset, jlong len) {
-        return posix_fallocate(fd, offset, len);
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jlong offset, jlong len) {
+        return posix_fallocate64(fd, offset, len);
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fd, __attribute__ ((unused)) jlong offset, __attribute__ ((unused)) jlong len) {
         throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no posix_fadvice");
