@@ -179,6 +179,20 @@ public final class Termios {
                 sb.append("CRTSCTS ");
                 c_cflag &= ~CRTSCTS();
             }
+            try {
+                if ((CMSPAR() & c_cflag) == CMSPAR()) {
+                    sb.append("CMSPAR ");
+                    c_cflag &= ~CMSPAR();
+                }
+            } catch (de.ibapl.jnhw.NotDefinedException nde) {
+            }
+            try {
+                if ((PAREXT()& c_cflag) == PAREXT()) {
+                    sb.append("PAREXT ");
+                    c_cflag &= ~PAREXT();
+                }
+            } catch (de.ibapl.jnhw.NotDefinedException nde) {
+            }
             if (c_cflag != 0) {
                 sb.append(String.format("0x%08x", c_cflag));
             }
@@ -455,7 +469,7 @@ public final class Termios {
             } else if (VTIME() == index) {
                 c_ccName = "VTIME";
             }
-            sb.append(String.format("\", c_cc[%s] = 0x%02x", c_ccName, c_cc));
+            sb.append(String.format(", c_cc[%s] = 0x%02x", c_ccName, c_cc));
         }
 
         @Override
@@ -469,7 +483,19 @@ public final class Termios {
             c_cflag2String(sb, c_cflag());
             sb.append("\", c_lflag = \"");
             c_lflag2String(sb, c_lflag());
-            sb.append("\", c_line = \"");
+            sb.append("\"");
+            try {
+                sb.append(String.format(", c_line = 0x%02x", c_line()));
+            } catch (de.ibapl.jnhw.NoSuchMethodException nsme) {
+            }
+            try {
+                sb.append(String.format(", c_ispeed = 0x%08x", c_ispeed()));
+            } catch (de.ibapl.jnhw.NoSuchMethodException nsme) {
+            }
+            try {
+                sb.append(String.format(", c_ospeed = 0x%08x", c_ospeed()));
+            } catch (de.ibapl.jnhw.NoSuchMethodException nsme) {
+            }
             for (int i = 0; i < NCCS(); i++) {
                 c_cc2String(sb, i, c_cc(i));
             }
@@ -498,7 +524,7 @@ public final class Termios {
     public final static native int _HAVE_STRUCT_TERMIOS_C_OSPEED() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> Hang up.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> Hang up.
      *
      * @return the native symbolic constant of BO.
      */
@@ -506,7 +532,7 @@ public final class Termios {
     public final static native int B0();
 
     /**
-     * <b>POSIX:</b> 50 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 50 baud.
      *
      * @return the native symbolic constant of B50.
      */
@@ -514,7 +540,7 @@ public final class Termios {
     public final static native int B50();
 
     /**
-     * <b>POSIX:</b> 75 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 75 baud.
      *
      * @return the native symbolic constant of B75.
      */
@@ -522,7 +548,7 @@ public final class Termios {
     public final static native int B75();
 
     /**
-     * <b>POSIX:</b> 110 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 110 baud.
      *
      * @return the native symbolic constant of B110.
      */
@@ -530,7 +556,7 @@ public final class Termios {
     public final static native int B110();
 
     /**
-     * <b>POSIX:</b> 134.5 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 134.5 baud.
      *
      * @return the native symbolic constant of B134.
      */
@@ -538,7 +564,7 @@ public final class Termios {
     public final static native int B134();
 
     /**
-     * <b>POSIX:</b> 150 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 150 baud.
      *
      * @return the native symbolic constant of B150.
      */
@@ -546,7 +572,7 @@ public final class Termios {
     public final static native int B150();
 
     /**
-     * <b>POSIX:</b> 200 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 200 baud.
      *
      * @return the native symbolic constant of B200.
      */
@@ -554,7 +580,7 @@ public final class Termios {
     public final static native int B200();
 
     /**
-     * <b>POSIX:</b> 300 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 300 baud.
      *
      * @return the native symbolic constant of B300.
      */
@@ -562,7 +588,7 @@ public final class Termios {
     public final static native int B300();
 
     /**
-     * <b>POSIX:</b> 600 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 600 baud.
      *
      * @return the native symbolic constant of B600.
      */
@@ -570,7 +596,7 @@ public final class Termios {
     public final static native int B600();
 
     /**
-     * <b>POSIX:</b> 1200 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 1200 baud.
      *
      * @return the native symbolic constant of B1200.
      */
@@ -578,7 +604,7 @@ public final class Termios {
     public final static native int B1200();
 
     /**
-     * <b>POSIX:</b> 1800 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 1800 baud.
      *
      * @return the native symbolic constant of B1800.
      */
@@ -586,7 +612,7 @@ public final class Termios {
     public final static native int B1800();
 
     /**
-     * <b>POSIX:</b> 2400 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 2400 baud.
      *
      * @return the native symbolic constant of B2400.
      */
@@ -594,7 +620,7 @@ public final class Termios {
     public final static native int B2400();
 
     /**
-     * <b>POSIX:</b> 4800 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 4800 baud.
      *
      * @return the native symbolic constant of B4800.
      */
@@ -602,7 +628,7 @@ public final class Termios {
     public final static native int B4800();
 
     /**
-     * <b>POSIX:</b> 9600 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 9600 baud.
      *
      * @return the native symbolic constant of B9600.
      */
@@ -610,7 +636,7 @@ public final class Termios {
     public final static native int B9600();
 
     /**
-     * <b>POSIX:</b> 19200 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 19200 baud.
      *
      * @return the native symbolic constant of B19200.
      */
@@ -618,7 +644,7 @@ public final class Termios {
     public final static native int B19200();
 
     /**
-     * <b>POSIX:</b> 38400 baud.
+     * <b>POSIX:</b> <i>Baud Rate Selection</i> 38400 baud.
      *
      * @return the native symbolic constant of B38400.
      */
@@ -626,7 +652,7 @@ public final class Termios {
     public final static native int B38400();
 
     /**
-     * <b>Non POSIX:</b> 57600 baus
+     * <b>Non POSIX:</b> <i>Baud Rate Selection</i> 57600 baus
      *
      * @return the native symbolic constant of B57600.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -635,7 +661,7 @@ public final class Termios {
     public final static native int B57600() throws NotDefinedException;
 
     /**
-     * <b>Non POSIX:</b> 115200 baud.
+     * <b>Non POSIX:</b> <i>Baud Rate Selection</i> 115200 baud.
      *
      * @return the native symbolic constant of B115200.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -644,7 +670,7 @@ public final class Termios {
     public final static native int B115200() throws NotDefinedException;
 
     /**
-     * <b>Non POSIX:</b> 230400 baud.
+     * <b>Non POSIX:</b> <i>Baud Rate Selection</i> 230400 baud.
      *
      * @return the native symbolic constant of B230400.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -653,7 +679,7 @@ public final class Termios {
     public final static native int B230400() throws NotDefinedException;
 
     /**
-     * <b>Linux,FreeBSD:</b> 460800 baud.
+     * <b>Linux,FreeBSD:</b> <i>Baud Rate Selection</i> 460800 baud.
      *
      * @return the native symbolic constant of B460800.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -662,7 +688,7 @@ public final class Termios {
     public final static native int B460800() throws NotDefinedException;
 
     /**
-     * <b>Linux:</b> 500000 baud.
+     * <b>Linux:</b> <i>Baud Rate Selection</i> 500000 baud.
      *
      * @return the native symbolic constant of B500000.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -671,7 +697,7 @@ public final class Termios {
     public final static native int B500000() throws NotDefinedException;
 
     /**
-     * <b>Linux:</b> 576000 baud.
+     * <b>Linux:</b> <i>Baud Rate Selection</i> 576000 baud.
      *
      * @return the native symbolic constant of B576000.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -680,7 +706,7 @@ public final class Termios {
     public final static native int B576000() throws NotDefinedException;
 
     /**
-     * <b>Linux,FreeBSD:</b> 921600 baud.
+     * <b>Linux,FreeBSD:</b> <i>Baud Rate Selection</i> 921600 baud.
      *
      * @return the native symbolic constant of B921600.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -689,7 +715,7 @@ public final class Termios {
     public final static native int B921600() throws NotDefinedException;
 
     /**
-     * <b>Linux:</b> 1000000 baud.
+     * <b>Linux:</b> <i>Baud Rate Selection</i> 1000000 baud.
      *
      * @return the native symbolic constant of B1000000.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -698,7 +724,7 @@ public final class Termios {
     public final static native int B1000000() throws NotDefinedException;
 
     /**
-     * <b>Linux:</b> 1152000 baud.
+     * <b>Linux:</b> <i>Baud Rate Selection</i> 1152000 baud.
      *
      * @return the native symbolic constant of B1152000.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -707,7 +733,7 @@ public final class Termios {
     public final static native int B1152000() throws NotDefinedException;
 
     /**
-     * <b>Linux:</b> 1500000 baud.
+     * <b>Linux:</b> <i>Baud Rate Selection</i> 1500000 baud.
      *
      * @return the native symbolic constant of B1500000.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -716,7 +742,7 @@ public final class Termios {
     public final static native int B1500000() throws NotDefinedException;
 
     /**
-     * <b>Linux:</b> 2000000 baud.
+     * <b>Linux:</b> <i>Baud Rate Selection</i> 2000000 baud.
      *
      * @return the native symbolic constant of B2000000.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -725,7 +751,7 @@ public final class Termios {
     public final static native int B2000000() throws NotDefinedException;
 
     /**
-     * <b>Linux:</b> 2500000 baud.
+     * <b>Linux:</b> <i>Baud Rate Selection</i> 2500000 baud.
      *
      * @return the native symbolic constant of B2500000.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -734,7 +760,7 @@ public final class Termios {
     public final static native int B2500000() throws NotDefinedException;
 
     /**
-     * <b>Linux:</b> 3000000 baud.
+     * <b>Linux:</b> <i>Baud Rate Selection</i> 3000000 baud.
      *
      * @return the native symbolic constant of B3000000.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -743,7 +769,7 @@ public final class Termios {
     public final static native int B3000000() throws NotDefinedException;
 
     /**
-     * <b>Linux:</b> 3500000 baud.
+     * <b>Linux:</b> <i>Baud Rate Selection</i> 3500000 baud.
      *
      * @return the native symbolic constant of B3500000.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -752,7 +778,7 @@ public final class Termios {
     public final static native int B3500000() throws NotDefinedException;
 
     /**
-     * <b>Linux:</b> 4000000 baud.
+     * <b>Linux:</b> <i>Baud Rate Selection</i> 4000000 baud.
      *
      * @return the native symbolic constant of B4000000.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -761,7 +787,7 @@ public final class Termios {
     public final static native int B4000000() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> Ignore modem status lines.
+     * <b>POSIX:</b> <i>Control Modes</i> Ignore modem status lines.
      *
      * @return the native symbolic constant of CLOCAL.
      */
@@ -769,7 +795,7 @@ public final class Termios {
     public final static native int CLOCAL();
 
     /**
-     * <b>POSIX:</b> Enable echo.
+     * <b>POSIX:</b> <i>Local Modes</i> Enable echo.
      *
      * @return the native symbolic constant of ECHO.
      */
@@ -777,7 +803,8 @@ public final class Termios {
     public final static native int ECHO();
 
     /**
-     * <b>POSIX:</b> Echo erase character as error-correcting backspace.
+     * <b>POSIX:</b> <i>Local Modes</i> Echo erase character as error-correcting
+     * backspace.
      *
      * @return the native symbolic constant of ECHOE.
      */
@@ -785,7 +812,7 @@ public final class Termios {
     public final static native int ECHOE();
 
     /**
-     * <b>POSIX:</b> Echo KILL.
+     * <b>POSIX:</b> <i>Local Modes</i> Echo KILL.
      *
      * @return the native symbolic constant of ECHOK.
      */
@@ -793,7 +820,7 @@ public final class Termios {
     public final static native int ECHOK();
 
     /**
-     * <b>POSIX:</b> Echo NL.
+     * <b>POSIX:</b> <i>Local Modes</i> Echo NL.
      *
      * @return the native symbolic constant of ECHONL.
      */
@@ -801,7 +828,8 @@ public final class Termios {
     public final static native int ECHONL();
 
     /**
-     * <b>POSIX:</b> Canonical input (erase and kill processing).
+     * <b>POSIX:</b> <i>Local Modes</i> Canonical input (erase and kill
+     * processing).
      *
      * @return the native symbolic constant of ICANON.
      */
@@ -809,7 +837,8 @@ public final class Termios {
     public final static native int ICANON();
 
     /**
-     * <b>POSIX:</b> Enable extended input character processing.
+     * <b>POSIX:</b> <i>Local Modes</i> Enable extended input character
+     * processing.
      *
      * @return the native symbolic constant of IEXTEN.
      */
@@ -817,7 +846,7 @@ public final class Termios {
     public final static native int IEXTEN();
 
     /**
-     * <b>POSIX:</b> Enable signals.
+     * <b>POSIX:</b> <i>Local Modes</i> Enable signals.
      *
      * @return the native symbolic constant of ISIG.
      */
@@ -825,7 +854,7 @@ public final class Termios {
     public final static native int ISIG();
 
     /**
-     * <b>POSIX:</b> Disable flush after interrupt or quit.
+     * <b>POSIX:</b> <i>Local Modes</i> Disable flush after interrupt or quit.
      *
      * @return the native symbolic constant of NOFLSH.
      */
@@ -833,7 +862,7 @@ public final class Termios {
     public final static native int NOFLSH();
 
     /**
-     * <b>POSIX:</b> Send SIGTTOU for background output.
+     * <b>POSIX:</b> <i>Local Modes</i> Send SIGTTOU for background output.
      *
      * @return the native symbolic constant of TOSTOP.
      */
@@ -841,16 +870,17 @@ public final class Termios {
     public final static native int TOSTOP();
 
     /**
-     * <b>POSIX:</b>
+     * <b>Linux:</b> <i>Control Modes</i> Use d "stick" (mark/space) parity
+     * (supported on certain serial devices).
      *
-     * @return the native symbolic constant of .
+     * @return the native symbolic constant of CMSPAR.
      * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
     public final static native int CMSPAR() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> Enable receiver.
+     * <b>POSIX:</b> <i>Control Modes</i> Enable receiver.
      *
      * @return the native symbolic constant of CREAD.
      */
@@ -858,7 +888,7 @@ public final class Termios {
     public final static native int CREAD();
 
     /**
-     * <b>POSIX:</b>
+     * <b>Non POSIX:</b> <i>Control Modes</i>
      *
      * @return the native symbolic constant of .
      */
@@ -866,7 +896,7 @@ public final class Termios {
     public final static native int CRTSCTS();
 
     /**
-     * <b>POSIX:</b> 5 bits.
+     * <b>POSIX:</b> <i>Control Modes</i> 5 bits.
      *
      * @return the native symbolic constant of CS5.
      */
@@ -874,7 +904,7 @@ public final class Termios {
     public final static native int CS5();
 
     /**
-     * <b>POSIX:</b> 6 bits.
+     * <b>POSIX:</b> <i>Control Modes</i> 6 bits.
      *
      * @return the native symbolic constant of CS6.
      */
@@ -882,7 +912,7 @@ public final class Termios {
     public final static native int CS6();
 
     /**
-     * <b>POSIX:</b> 7 bits.
+     * <b>POSIX:</b> <i>Control Modes</i> 7 bits.
      *
      * @return the native symbolic constant of CS7.
      */
@@ -890,7 +920,7 @@ public final class Termios {
     public final static native int CS7();
 
     /**
-     * <b>POSIX:</b> 8 bits.
+     * <b>POSIX:</b> <i>Control Modes</i> 8 bits.
      *
      * @return the native symbolic constant of CS8.
      */
@@ -898,7 +928,7 @@ public final class Termios {
     public final static native int CS8();
 
     /**
-     * <b>POSIX:</b> Character size:
+     * <b>POSIX:</b> <i>Control Modes</i> Character size:
      *
      * @return the native symbolic constant of CSIZE.
      */
@@ -906,7 +936,7 @@ public final class Termios {
     public final static native int CSIZE();
 
     /**
-     * <b>POSIX:</b> Send two stop bits, else one.
+     * <b>POSIX:</b> <i>Control Modes</i> Send two stop bits, else one.
      *
      * @return the native symbolic constant of CSTOPB.
      */
@@ -914,7 +944,7 @@ public final class Termios {
     public final static native int CSTOPB();
 
     /**
-     * <b>POSIX:</b> Signal interrupt on break.
+     * <b>POSIX:</b> <i>Input Modes</i> Signal interrupt on break.
      *
      * @return the native symbolic constant of BRKINT.
      */
@@ -922,7 +952,7 @@ public final class Termios {
     public final static native int BRKINT();
 
     /**
-     * <b>POSIX:</b> Map CR to NL on input.
+     * <b>POSIX:</b> <i>Input Modes</i> Map CR to NL on input.
      *
      * @return the native symbolic constant of ICRNL.
      */
@@ -930,7 +960,7 @@ public final class Termios {
     public final static native int ICRNL();
 
     /**
-     * <b>POSIX:</b> Ignore break condition.
+     * <b>POSIX:</b> <i>Input Modes</i> Ignore break condition.
      *
      * @return the native symbolic constant of IGNBRK.
      */
@@ -938,7 +968,7 @@ public final class Termios {
     public final static native int IGNBRK();
 
     /**
-     * <b>POSIX:</b> Ignore CR.
+     * <b>POSIX:</b> <i>Input Modes</i> Ignore CR.
      *
      * @return the native symbolic constant of IGNCR.
      */
@@ -946,7 +976,7 @@ public final class Termios {
     public final static native int IGNCR();
 
     /**
-     * <b>POSIX:</b> Ignore characters with parity errors.
+     * <b>POSIX:</b> <i>Input Modes</i> Ignore characters with parity errors.
      *
      * @return the native symbolic constant of IGNPAR.
      */
@@ -954,7 +984,7 @@ public final class Termios {
     public final static native int IGNPAR();
 
     /**
-     * <b>POSIX:</b> Map NL to CR on input.
+     * <b>POSIX:</b> <i>Input Modes</i> Map NL to CR on input.
      *
      * @return the native symbolic constant of INLCR.
      */
@@ -962,7 +992,7 @@ public final class Termios {
     public final static native int INLCR();
 
     /**
-     * <b>POSIX:</b> Enable input parity check.
+     * <b>POSIX:</b> <i>Input Modes</i> Enable input parity check.
      *
      * @return the native symbolic constant of INPCK.
      */
@@ -970,7 +1000,7 @@ public final class Termios {
     public final static native int INPCK();
 
     /**
-     * <b>POSIX:</b> Strip character.
+     * <b>POSIX:</b> <i>Input Modes</i> Strip character.
      *
      * @return the native symbolic constant of ISTRIP.
      */
@@ -978,7 +1008,7 @@ public final class Termios {
     public final static native int ISTRIP();
 
     /**
-     * <b>POSIX:</b> Enable any character to restart output.
+     * <b>POSIX:</b> <i>Input Modes</i> Enable any character to restart output.
      *
      * @return the native symbolic constant of IXANY.
      */
@@ -986,23 +1016,23 @@ public final class Termios {
     public final static native int IXANY();
 
     /**
-     * <b>POSIX:</b>
+     * <b>POSIX:</b> <i>Input Modes</i> Enable start/stop input control.
      *
-     * @return the native symbolic constant of .
+     * @return the native symbolic constant of IXOFF.
      */
     @Define
     public final static native int IXOFF();
 
     /**
-     * <b>POSIX:</b>
+     * <b>POSIX:</b> <i>Input Modes</i> Enable start/stop output control.
      *
-     * @return the native symbolic constant of .
+     * @return the native symbolic constant of IXON.
      */
     @Define
     public final static native int IXON();
 
     /**
-     * <b>POSIX:</b> Parity enable.
+     * <b>POSIX:</b> <i>Control Modes</i> Parity enable.
      *
      * @return the native symbolic constant of PARENB.
      */
@@ -1010,16 +1040,17 @@ public final class Termios {
     public final static native int PARENB();
 
     /**
-     * <b>POSIX:</b>
+     * <b>???:</b> <i>Control Modes</i>  ???Use d "stick" (mark/space) parity
+     * (supported on certain serial devices).???
      *
-     * @return the native symbolic constant of .
+     * @return the native symbolic constant of PAREXT.
      * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
     public final static native int PAREXT() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> Mark parity errors.
+     * <b>POSIX:</b> <i>Input Modes</i> Mark parity errors.
      *
      * @return the native symbolic constant of .
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1028,7 +1059,7 @@ public final class Termios {
     public final static native int PARMRK() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> Post-process output.
+     * <b>POSIX:</b> <i>Output Modes</i> Post-process output.
      *
      * @return the native symbolic constant of OPOST.
      */
@@ -1036,7 +1067,7 @@ public final class Termios {
     public final static native int OPOST();
 
     /**
-     * <b>POSIX.XSI:</b> Map NL to CR-NL on output.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Map NL to CR-NL on output.
      *
      * @return the native symbolic constant of ONLCR.
      */
@@ -1044,7 +1075,7 @@ public final class Termios {
     public final static native int ONLCR();
 
     /**
-     * <b>POSIX,XSI:</b> Map CR to NL on output.
+     * <b>POSIX,XSI:</b> <i>Output Modes</i> Map CR to NL on output.
      *
      * @return the native symbolic constant of OCRNL.
      */
@@ -1052,7 +1083,7 @@ public final class Termios {
     public final static native int OCRNL();
 
     /**
-     * <b>POSIX.XSI:</b> No CR output at column 0.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> No CR output at column 0.
      *
      * @return the native symbolic constant of ONOCR.
      */
@@ -1060,7 +1091,7 @@ public final class Termios {
     public final static native int ONOCR();
 
     /**
-     * <b>POSIX.XSI:</b> NL performs CR function.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> NL performs CR function.
      *
      * @return the native symbolic constant of ONLRET.
      */
@@ -1068,15 +1099,16 @@ public final class Termios {
     public final static native int ONLRET();
 
     /**
-     * <b>POSIX.XSI:</b> Fill is DEL.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Fill is DEL.
      *
      * @return the native symbolic constant of OFDEL.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
     public final static native int OFDEL() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Use fill characters for delay.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Use fill characters for delay.
      *
      * @return the native symbolic constant of OFILL.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1085,8 +1117,8 @@ public final class Termios {
     public final static native int OFILL() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Select newline delays: <code>NL0</code> or
-     * <code>NL1</code>
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Select newline delays:
+     * <code>NL0</code> or <code>NL1</code>
      *
      * @return the native symbolic constant of NLDLY.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1095,7 +1127,7 @@ public final class Termios {
     public final static native int NLDLY() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Newline type 0.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Newline type 0.
      *
      * @return the native symbolic constant of NL0.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1104,7 +1136,7 @@ public final class Termios {
     public final static native int NL0() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Newline type 1.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Newline type 1.
      *
      * @return the native symbolic constant of NL1.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1113,7 +1145,7 @@ public final class Termios {
     public final static native int NL1() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Select carriage-return delays:
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Select carriage-return delays:
      *
      * @return the native symbolic constant of CRDLY.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1122,7 +1154,7 @@ public final class Termios {
     public final static native int CRDLY() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Carriage-return delay type 0.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 0.
      *
      * @return the native symbolic constant of CR0.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1131,7 +1163,7 @@ public final class Termios {
     public final static native int CR0() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Carriage-return delay type 1.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 1.
      *
      * @return the native symbolic constant of CR1.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1140,7 +1172,7 @@ public final class Termios {
     public final static native int CR1() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Carriage-return delay type 2.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 2.
      *
      * @return the native symbolic constant of CR2.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1149,7 +1181,7 @@ public final class Termios {
     public final static native int CR2() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Carriage-return delay type 3.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 3.
      *
      * @return the native symbolic constant of CR3.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1158,7 +1190,7 @@ public final class Termios {
     public final static native int CR3() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Select horizontal-tab delays:
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Select horizontal-tab delays:
      *
      * @return the native symbolic constant of TABDLY.
      */
@@ -1166,7 +1198,7 @@ public final class Termios {
     public final static native int TABDLY();
 
     /**
-     * <b>POSIX.XSI:</b> Horizontal-tab delay type 0.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Horizontal-tab delay type 0.
      *
      * @return the native symbolic constant of TAB0.
      */
@@ -1174,7 +1206,7 @@ public final class Termios {
     public final static native int TAB0();
 
     /**
-     * <b>POSIX.XSI:</b> Horizontal-tab delay type 1.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Horizontal-tab delay type 1.
      *
      * @return the native symbolic constant of TAB1.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1183,7 +1215,7 @@ public final class Termios {
     public final static native int TAB1() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Horizontal-tab delay type 2.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Horizontal-tab delay type 2.
      *
      * @return the native symbolic constant of TAB2.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1192,7 +1224,7 @@ public final class Termios {
     public final static native int TAB2() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Expand tabs to spaces.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Expand tabs to spaces.
      *
      * @return the native symbolic constant of TAB3.
      */
@@ -1200,7 +1232,7 @@ public final class Termios {
     public final static native int TAB3();
 
     /**
-     * <b>POSIX.XSI:</b> Select backspace delays:
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Select backspace delays:
      *
      * @return the native symbolic constant of BSDLY.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1209,7 +1241,7 @@ public final class Termios {
     public final static native int BSDLY() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Backspace-delay type 0.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Backspace-delay type 0.
      *
      * @return the native symbolic constant of BS0.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1218,7 +1250,7 @@ public final class Termios {
     public final static native int BS0() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Backspace-delay type 1.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Backspace-delay type 1.
      *
      * @return the native symbolic constant of BS1.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1227,7 +1259,7 @@ public final class Termios {
     public final static native int BS1() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b>
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Select vertical-tab delays:
      *
      * @return the native symbolic constant of VTDLY.
      */
@@ -1235,7 +1267,7 @@ public final class Termios {
     public final static native int VTDLY() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Vertical-tab delay type 0.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Vertical-tab delay type 0.
      *
      * @return the native symbolic constant of VT0.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1244,7 +1276,7 @@ public final class Termios {
     public final static native int VT0() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Vertical-tab delay type 1.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Vertical-tab delay type 1.
      *
      * @return the native symbolic constant of VT1.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1253,7 +1285,7 @@ public final class Termios {
     public final static native int VT1() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Select form-feed delays:
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Select form-feed delays:
      *
      * @return the native symbolic constant of FFDLY.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1262,7 +1294,7 @@ public final class Termios {
     public final static native int FFDLY() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Form-feed delay type 0.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Form-feed delay type 0.
      *
      * @return the native symbolic constant of FF0.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1271,7 +1303,7 @@ public final class Termios {
     public final static native int FF0() throws NotDefinedException;
 
     /**
-     * <b>POSIX.XSI:</b> Form-feed delay type 1.
+     * <b>POSIX.XSI:</b> <i>Output Modes</i> Form-feed delay type 1.
      *
      * @return the native symbolic constant of FF1.
      * @throws de.ibapl.jnhw.NotDefinedException
@@ -1280,7 +1312,7 @@ public final class Termios {
     public final static native int FF1() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> Odd parity, else even.
+     * <b>POSIX:</b> <i>Control Modes</i> Odd parity, else even.
      *
      * @return the native symbolic constant of PARODD.
      */
@@ -1288,7 +1320,7 @@ public final class Termios {
     public final static native int PARODD();
 
     /**
-     * <b>POSIX:</b> Hang up on last close.
+     * <b>POSIX:</b> <i>Control Modes</i> Hang up on last close.
      *
      * @return the native symbolic constant of HUPCL.
      */
