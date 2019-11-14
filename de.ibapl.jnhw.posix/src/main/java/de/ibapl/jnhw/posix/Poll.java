@@ -33,7 +33,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Wrapper around the <code>&lt;poll.h&gt;</code> header.
+ * Wrapper around the {@code<poll.h>} header.
  *
  * See specs at:
  * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">poll.h
@@ -246,7 +246,6 @@ public final class Poll {
     public final static native int poll(PollFds fds, int timeout) throws NativeErrorException;
 
     /**
-     * See specs at:
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/poll.html">poll
      * - input/output multiplexing</a>.
      *

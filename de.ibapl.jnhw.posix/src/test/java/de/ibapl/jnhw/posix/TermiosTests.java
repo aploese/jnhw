@@ -139,6 +139,7 @@ public class TermiosTests {
 
         Termios.cfsetspeed(termios, Termios.B9600());
         termios.c_cflag(CREAD() | CLOCAL() | CS8() | CRTSCTS());
+        
         assertFalse(termios.toString().isEmpty(), "Termios.StructTermios is empty");
     }
 

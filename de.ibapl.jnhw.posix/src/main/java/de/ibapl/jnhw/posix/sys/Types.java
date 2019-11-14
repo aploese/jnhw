@@ -29,6 +29,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Wrapper around the {@code <sys/stat.h>} header.
+ *
+ * See specs at:
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">sys/types.h - data types</a>.
  *
  * @author aploese
  */
@@ -73,4 +77,9 @@ public class Types {
     public static @interface useconds_t {
     }
 
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface pid_t {
+    }
+    
 }

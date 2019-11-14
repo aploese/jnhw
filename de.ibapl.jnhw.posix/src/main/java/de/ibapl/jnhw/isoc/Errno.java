@@ -26,7 +26,7 @@ import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
- * Wrapper around the <code>&lt;errno.h&gt;</code> header.
+ * Wrapper around the {@code<errno.h>} header.
  * @see(module-info) for markers
  * See specs at:
  * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h

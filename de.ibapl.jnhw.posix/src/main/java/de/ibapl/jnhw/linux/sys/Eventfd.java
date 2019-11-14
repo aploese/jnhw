@@ -31,6 +31,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Wrapper around the linux {@code<sys/eventfd.h>} header.
+ * execute {@code man eventfd} on linux to get more informations.
+ *
+ * @author aploese
+ */
 @Include("#include <sys/eventfd.h>")
 public final class Eventfd {
 
@@ -52,18 +58,56 @@ public final class Eventfd {
 
     public final static native boolean HAVE_SYS_EVENTFD_H();
 
+    /**
+     * <b>Linux:</b> creates  an "eventfd object" that can be used as an event wait/notify mechanism by user-space applications, and by the kernel to notify user-space applications of events.
+     * @param count
+     * @param flags
+     * @return
+     * @throws NativeErrorException 
+     */
     public final static native int eventfd(int count, int flags) throws NativeErrorException;
 
+    /**
+     * Additional glibc feature to makr read from an eventfd simpler.
+     * 
+     * @param fd
+     * @param value
+     * @return
+     * @throws NativeErrorException 
+     */
     public final static native int eventfd_read(int fd, @eventfd_t LongRef value) throws NativeErrorException;
 
+    /**
+     * Additional glibc feature to makr write to an eventfd simpler.
+     * 
+     * @param fd
+     * @param value
+     * @return
+     * @throws NativeErrorException 
+     */
     public final static native int eventfd_write(int fd, @eventfd_t long value) throws NativeErrorException;
 
-    @Define
+        /**
+     * <b>Linux:</b> Set the close-on-exec (FD_CLOEXEC) flag on the new file descriptor.
+     *
+     * @return the native symbolic constant of EFD_CLOEXEC.
+     */
+@Define
     public final static native int EFD_CLOEXEC();
 
+        /**
+     * <b>Linux:</b> Set the O_NONBLOCK file status flag on the open file description (see open(2)) referred to by the new file descriptor..
+     *
+     * @return the native symbolic constant of EFD_NONBLOCK.
+     */
     @Define
     public final static native int EFD_NONBLOCK();
 
+        /**
+     * <b>Linux:</b> Provide semaphore-like semantics for reads from the new file descriptor.
+     *
+     * @return the native symbolic constant of EFD_SEMAPHORE.
+     */
     @Define
     public final static native int EFD_SEMAPHORE();
 

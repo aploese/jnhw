@@ -36,6 +36,8 @@ import java.io.File;
 import java.nio.ByteBuffer;
 
 /**
+ * Wrapper around the {@code<fileapi.h>} header.
+ * See specs at: <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">fileapi.h</a>
  *
  * @author aploese
  */
@@ -54,12 +56,44 @@ public final class Fileapi {
     @Define
     public final static native int OPEN_EXISTING();
 
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew">CreateFileW</a>
+     * 
+     * @param lpFileName
+     * @param dwDesiredAccess
+     * @param dwShareMode
+     * @param lpSecurityAttributes
+     * @param dwCreationDisposition
+     * @param dwFlagsAndAttributes
+     * @param hTemplateFile
+     * @return
+     * @throws NativeErrorException 
+     */
     public final static native HANDLE CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException;
 
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew">CreateFileW</a>
+     * 
+     * @param file
+     * @param dwDesiredAccess
+     * @param dwShareMode
+     * @param lpSecurityAttributes
+     * @param dwCreationDisposition
+     * @param dwFlagsAndAttributes
+     * @param hTemplateFile
+     * @return
+     * @throws NativeErrorException 
+     */
     public final static HANDLE CreateFileW(File file, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException {
         return CreateFileW(file.getAbsolutePath(), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
     }
 
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-flushfilebuffers">CreateFileW</a>
+     * 
+     * @param hFile
+     * @throws NativeErrorException 
+     */
     public final static native void FlushFileBuffers(HANDLE hFile) throws NativeErrorException;
 
     // No async Read with byte[] we cant copy back

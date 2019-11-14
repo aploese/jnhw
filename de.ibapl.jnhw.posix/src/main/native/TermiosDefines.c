@@ -60,7 +60,7 @@ extern "C" {
         throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -77,9 +77,9 @@ extern "C" {
         throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED");
         return 0;
 #endif
-}
+    }
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    B0
      * Signature: ()I
@@ -247,7 +247,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B57600
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return B57600;
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -257,7 +257,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B115200
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return B115200;
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -267,7 +267,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B230400
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return B230400;
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -284,7 +284,7 @@ extern "C" {
         throw_NotDefinedException(env, "B460800");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -301,7 +301,7 @@ extern "C" {
         throw_NotDefinedException(env, "B500000");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -318,7 +318,7 @@ extern "C" {
         throw_NotDefinedException(env, "B576000");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -335,7 +335,7 @@ extern "C" {
         throw_NotDefinedException(env, "B921600");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -352,7 +352,7 @@ extern "C" {
         throw_NotDefinedException(env, "B1000000");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -369,7 +369,7 @@ extern "C" {
         throw_NotDefinedException(env, "B1152000");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -386,7 +386,7 @@ extern "C" {
         throw_NotDefinedException(env, "B1500000");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -403,7 +403,7 @@ extern "C" {
         throw_NotDefinedException(env, "B2000000");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -420,7 +420,7 @@ extern "C" {
         throw_NotDefinedException(env, "B2500000");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -437,7 +437,7 @@ extern "C" {
         throw_NotDefinedException(env, "B3000000");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -454,7 +454,7 @@ extern "C" {
         throw_NotDefinedException(env, "B3500000");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -471,7 +471,7 @@ extern "C" {
         throw_NotDefinedException(env, "B4000000");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -481,6 +481,100 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CLOCAL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return CLOCAL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    ECHO
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_ECHO
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ECHO;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    ECHOE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_ECHOE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ECHOE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    ECHOK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_ECHOK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ECHOK;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    ECHONL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_ECHONL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ECHONL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    ICANON
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_ICANON
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ICANON;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    IEXTEN
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_IEXTEN
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return IEXTEN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    ISIG
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_ISIG
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ISIG;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    NOFLSH
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NOFLSH
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__APPLE__)
+        return (int32_t)NOFLSH;
+#else
+        return NOFLSH;
+#endif        
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TOSTOP
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TOSTOP
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TOSTOP;
     }
 
     /*
@@ -498,7 +592,7 @@ extern "C" {
         throw_NotDefinedException(env, "CMSPAR");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -582,12 +676,92 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    BRKINT
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_BRKINT
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return BRKINT;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    ICRNL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_ICRNL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ICRNL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    IGNBRK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_IGNBRK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return IGNBRK;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    IGNCR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_IGNCR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return IGNCR;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    IGNPAR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_IGNPAR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return IGNPAR;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    INLCR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_INLCR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return INLCR;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    INPCK
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_INPCK
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return INPCK;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    ISTRIP
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_ISTRIP
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ISTRIP;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    IXANY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_IXANY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return IXANY;
     }
 
     /*
@@ -634,7 +808,7 @@ extern "C" {
         throw_NotDefinedException(env, "PAREXT");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -644,7 +818,297 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_PARMRK
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return PARMRK;
-}
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    OPOST
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_OPOST
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return OPOST;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    ONLCR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_ONLCR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ONLCR;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    OCRNL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_OCRNL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return OCRNL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    ONOCR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_ONOCR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ONOCR;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    ONLRET
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_ONLRET
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ONLRET;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    OFDEL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_OFDEL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return OFDEL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    OFILL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_OFILL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return OFILL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    NLDLY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NLDLY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return NLDLY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    NL0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NL0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return NL0;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    NL1
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NL1
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return NL1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    CRDLY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CRDLY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CRDLY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    CR0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CR0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CR0;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    CR1
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CR1
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CR1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    CR2
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CR2
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CR2;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    CR3
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CR3
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CR3;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TABDLY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TABDLY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TABDLY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TAB0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TAB0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TAB0;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TAB1
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TAB1
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TAB1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TAB2
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TAB2
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TAB2;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TAB3
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TAB3
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TAB3;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    BSDLY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_BSDLY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return BSDLY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    BS0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_BS0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return BS0;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    BS1
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_BS1
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return BS1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    VTDLY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VTDLY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return VTDLY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    VT0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VT0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return VT0;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    VT1
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VT1
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return VT1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    FFDLY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_FFDLY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FFDLY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    FF0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_FF0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FF0;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    FF1
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_FF1
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FF1;
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -658,12 +1122,12 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
-     * Method:    TCIOFLUSH
+     * Method:    HUPCL
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TCIOFLUSH
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_HUPCL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TCIOFLUSH;
+        return HUPCL;
     }
 
     /*
@@ -678,12 +1142,162 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TCSADRAIN
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TCSADRAIN
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TCSADRAIN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TCSAFLUSH
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TCSAFLUSH
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TCSAFLUSH;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TCIFLUSH
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TCIFLUSH
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TCIFLUSH;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TCIOFLUSH
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TCIOFLUSH
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TCIOFLUSH;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TCOFLUSH
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TCOFLUSH
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TCOFLUSH;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TCIOFF
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TCIOFF
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TCIOFF;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TCION
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TCION
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TCION;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TCOOFF
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TCOOFF
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TCOOFF;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    TCOON
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TCOON
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TCOON;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    VEOF
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VEOF
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return VEOF;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    VEOL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VEOL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return VEOL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    VERASE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VERASE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return VERASE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    VINTR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VINTR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return VINTR;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    VKILL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VKILL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return VKILL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    VMIN
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VMIN
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return VMIN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    VQUIT
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VQUIT
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return VQUIT;
     }
 
     /*
@@ -704,6 +1318,16 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VSTOP
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return VSTOP;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    VSUSP
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VSUSP
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return VSUSP;
     }
 
     /*

@@ -25,12 +25,22 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NotDefinedException;
+import de.ibapl.jnhw.posix.sys.Types.off_t;
+import de.ibapl.jnhw.posix.sys.Types.off64_t;
 import de.ibapl.jnhw.posix.sys.Types.mode_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Wrapper around the <code>&lt;fcntl.h&gt;</code> header.
+ * Wrapper around the {@code<fcntl.h>} header.
  *
+ * <p>
+ * <b>Todo:</b> struct flock, flock64
+ *</p>
+ * 
  * See specs at:
  * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html">errno.h
  * - system error numbers</a>.
@@ -39,6 +49,19 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
  */
 @Include("#include <fcntl.h>")
 public final class Fcntl {
+    /**
+     * See specs at:
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html"><code>typedef
+     * pid_t</code></a>.
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys/types.h.html"><code>typedef
+     * pid_t</code></a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @interface pid_t{
+    }
 
     /**
      * Make sure the native lib is loaded
@@ -69,7 +92,7 @@ public final class Fcntl {
     public final static native int O_WRONLY();
 
     /**
-     * <b>POSIX:</b> Use the current working directory to determine the target
+     * <b>POSIX:</b> Use the current working directory to determine the target.
      * of relative file paths.
      *
      * @return the native symbolic constant of AT_FDCWD.
@@ -114,55 +137,61 @@ public final class Fcntl {
      * specified data in the near future.
      *
      * @return the native symbolic constant of POSIX_FADV_DONTNEED.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int POSIX_FADV_DONTNEED();
+    public final static native int POSIX_FADV_DONTNEED() throws NotDefinedException;
 
     /**
      * <b>POSIX.ADV:</b> The application expects to access the specified data
      * once and then not reuse it thereafter.
      *
      * @return the native symbolic constant of POSIX_FADV_NOREUSE.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int POSIX_FADV_NOREUSE();
+    public final static native int POSIX_FADV_NOREUSE() throws NotDefinedException;
 
     /**
      * <b>POSIX.ADV:</b> The application has no advice to give on its behavior
-     * with respect to the specified data. It is the default characteristic if
-     * no advice is given for an open file.
+     * with respect to the specified data.It is the default characteristic if
+ no advice is given for an open file.
      *
      * @return the native symbolic constant of POSIX_FADV_NORMAL.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int POSIX_FADV_NORMAL();
+    public final static native int POSIX_FADV_NORMAL() throws NotDefinedException;
 
     /**
      * <b>POSIX.ADV:</b> The application expects to access the specified data in
      * a random order.
      *
      * @return the native symbolic constant of POSIX_FADV_RANDOM.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int POSIX_FADV_RANDOM();
+    public final static native int POSIX_FADV_RANDOM() throws NotDefinedException;
 
     /**
      * <b>POSIX.ADV:</b> The application expects to access the specified data
      * sequentially from lower offsets to higher offsets.
      *
      * @return the native symbolic constant of POSIX_FADV_SEQUENTIAL.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int POSIX_FADV_SEQUENTIAL();
+    public final static native int POSIX_FADV_SEQUENTIAL() throws NotDefinedException;
 
     /**
      * <b>POSIX.ADV:</b> The application expects to access the specified data in
      * the near future.
      *
      * @return the native symbolic constant of POSIX_FADV_WILLNEED.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int POSIX_FADV_WILLNEED();
+    public final static native int POSIX_FADV_WILLNEED() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> Open for reading and writing.
@@ -549,6 +578,7 @@ public final class Fcntl {
      *
      * @param fd
      * @param cmd
+     * @param vararg_0
      * @return
      * @throws NativeErrorException
      */
@@ -587,6 +617,22 @@ public final class Fcntl {
     public final static native int open(String file, int oflag, @mode_t int mode) throws NativeErrorException;
 
     /**
+     * 
+     * See specs at:
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/open.html">open,
+     * openat - open file</a>.
+     * 
+     * @param fd
+     * @param file
+     * @param oflag
+     * @return
+     * @throws NativeErrorException 
+     */
+    public final static native int openat(int fd, String file, int oflag) throws NativeErrorException;
+
+    public final static native int openat(int fd, String file, int oflag, @mode_t int mode) throws NativeErrorException;
+
+    /**
      * Available if _LARGEFILE64_SOURCE is defined.
      *
      * @param file
@@ -597,5 +643,37 @@ public final class Fcntl {
     public final static native int open64(String file, int oflag) throws NativeErrorException;
 
     public final static native int open64(String file, int oflag, @mode_t int mode) throws NativeErrorException;
+
+    public final static native int openat64(int fd, String file, int oflag) throws NativeErrorException;
+
+    public final static native int openat64(int fd, String file, int oflag, @mode_t int mode) throws NativeErrorException;
+    
+
+    /**
+     * See specs at:
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/posix_fadvise.html">posix_fadvise - file advisory information (ADVANCED REALTIME)</a>.
+     * 
+     * @param fd
+     * @param offset
+     * @param len
+     * @param advice
+     * @return Upon successful completion, posix_fadvise() shall return zero; otherwise, an error number shall be returned to indicate the error.
+     */
+    public final static native int posix_fadvise(int fd, @off_t long offset, @off_t long len, int advice);
+
+    public final static native int posix_fadvise64(int fd, @off64_t long offset, @off64_t long len, int advice);
+
+    /**
+     * See specs at:
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/posix_fallocate.html">posix_fallocate - file space control (ADVANCED REALTIME)</a>.
+     * 
+     * @param fd
+     * @param offset
+     * @param len
+     * @return Upon successful completion, posix_fallocate() shall return zero; otherwise, an error number shall be returned to indicate the error.
+     */
+    public final static native int posix_fallocate(int fd, @off_t long offset, @off_t long len);
+
+    public final static native int posix_fallocate64(int fd, @off64_t long offset, @off64_t long len);
 
 }

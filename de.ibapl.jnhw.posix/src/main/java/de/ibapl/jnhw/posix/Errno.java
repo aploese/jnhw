@@ -30,7 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Wrapper around the <code>&lt;errno.h&gt;</code> header.
+ * Wrapper around the {@code<errno.h>} header.
  *
  * See specs at:
  * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h

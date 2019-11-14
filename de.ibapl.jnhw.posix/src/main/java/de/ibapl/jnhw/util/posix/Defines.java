@@ -28,7 +28,7 @@ import de.ibapl.jnhw.NotDefinedException;
  * create an empty file c.c
  * run <code>gcc -dD -dI -E c.c &gt; c.txt</code>
  * c.txt contains all macros.
- * add an <code>#include &lt;headerFileName.h&gt;</code> to get the defines for that header.
+ * add an <code>#include &lt;headerFileName.h>} to get the defines for that header.
  * @author aploese
  */
 public class Defines {

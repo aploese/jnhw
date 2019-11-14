@@ -26,6 +26,7 @@ import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.posix.sys.Types.pid_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -33,13 +34,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Wrapper around the {@code<termios.h>} header.
  *
- * Wrapper around POSIX termios.h with optional,os and architecture extensions.
- * See specs at: <a href=
- * "http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html</a>
+ * See specs at:
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">termios.h
+ * - define values for termios</a>.
  *
  * @author aploese
- *
  */
 @Include("#include <termios.h>")
 public final class Termios {
@@ -86,27 +87,33 @@ public final class Termios {
 
         public final static native int sizeofTermios();
 
-        public native @tcflag_t int c_iflag();
+        public native @tcflag_t
+        int c_iflag();
 
         public native void c_iflag(@tcflag_t int c_iflag);
 
-        public native @tcflag_t int c_oflag();
+        public native @tcflag_t
+        int c_oflag();
 
         public native void c_oflag(@tcflag_t int c_oflag);
 
-        public native @tcflag_t int c_cflag();
+        public native @tcflag_t
+        int c_cflag();
 
         public native void c_cflag(@tcflag_t int c_cflag);
 
-        public native @tcflag_t int c_lflag();
+        public native @tcflag_t
+        int c_lflag();
 
         public native void c_lflag(@tcflag_t int c_lflag);
 
-        public native @cc_t byte c_cc(int index);
+        public native @cc_t
+        byte c_cc(int index);
 
         public native void c_cc(int index, @cc_t byte value);
 
-        public native @cc_t byte c_line() throws de.ibapl.jnhw.NoSuchMethodException;
+        public native @cc_t
+        byte c_line() throws de.ibapl.jnhw.NoSuchMethodException;
 
         public native void c_line(@cc_t byte value) throws de.ibapl.jnhw.NoSuchMethodException;
 
@@ -131,13 +138,16 @@ public final class Termios {
             if ((CSIZE() & c_cflag) == CS5()) {
                 sb.append("CS5 ");
                 c_cflag &= ~CS5();
-            } else if ((CSIZE() & c_cflag) == CS6()) {
+            } 
+            if ((CSIZE() & c_cflag) == CS6()) {
                 sb.append("CS6 ");
                 c_cflag &= ~CS6();
-            } else if ((CSIZE() & c_cflag) == CS7()) {
+            } 
+            if ((CSIZE() & c_cflag) == CS7()) {
                 sb.append("CS7 ");
                 c_cflag &= ~CS7();
-            } else if ((CSIZE() & c_cflag) == CS8()) {
+            } 
+            if ((CSIZE() & c_cflag) == CS8()) {
                 sb.append("CS8 ");
                 c_cflag &= ~CS8();
             }
@@ -157,6 +167,10 @@ public final class Termios {
                 sb.append("PARODD ");
                 c_cflag &= ~PARODD();
             }
+            if ((HUPCL()& c_cflag) == HUPCL()) {
+                sb.append("HUPCL ");
+                c_cflag &= ~HUPCL();
+            }
             if ((CLOCAL() & c_cflag) == CLOCAL()) {
                 sb.append("CLOCAL ");
                 c_cflag &= ~CLOCAL();
@@ -171,9 +185,41 @@ public final class Termios {
         }
 
         static public void c_iflag2String(StringBuilder sb, int c_iflag) {
+            if ((BRKINT() & c_iflag) == BRKINT()) {
+                sb.append("BRKINT ");
+                c_iflag &= ~BRKINT();
+            }
+            if ((ICRNL() & c_iflag) == ICRNL()) {
+                sb.append("ICRNL ");
+                c_iflag &= ~ICRNL();
+            }
+            if ((IGNBRK() & c_iflag) == IGNBRK()) {
+                sb.append("IGNBRK ");
+                c_iflag &= ~IGNBRK();
+            }
+            if ((IGNCR() & c_iflag) == IGNCR()) {
+                sb.append("IGNCR ");
+                c_iflag &= ~IGNCR();
+            }
+            if ((IGNPAR() & c_iflag) == IGNPAR()) {
+                sb.append("IGNPAR ");
+                c_iflag &= ~IGNPAR();
+            }
+            if ((INLCR() & c_iflag) == INLCR()) {
+                sb.append("INLCR ");
+                c_iflag &= ~INLCR();
+            }
             if ((INPCK() & c_iflag) == INPCK()) {
                 sb.append("INPCK ");
                 c_iflag &= ~INPCK();
+            }
+            if ((ISTRIP() & c_iflag) == ISTRIP()) {
+                sb.append("ISTRIP ");
+                c_iflag &= ~ISTRIP();
+            }
+            if ((IXANY() & c_iflag) == IXANY()) {
+                sb.append("IXANY ");
+                c_iflag &= ~IXANY();
             }
             if ((IXOFF() & c_iflag) == IXOFF()) {
                 sb.append("IXOFF ");
@@ -197,12 +243,140 @@ public final class Termios {
         }
 
         static public void c_lflag2String(StringBuilder sb, int c_lflag) {
+            if ((ECHO() & c_lflag) == ECHO()) {
+                sb.append("ECHO ");
+                c_lflag &= ~ECHO();
+            }
+            if ((ECHOE() & c_lflag) == ECHOE()) {
+                sb.append("ECHOE ");
+                c_lflag &= ~ECHOE();
+            }
+            if ((ECHOK() & c_lflag) == ECHOK()) {
+                sb.append("ECHOK ");
+                c_lflag &= ~ECHOK();
+            }
+            if ((ECHONL() & c_lflag) == ECHONL()) {
+                sb.append("ECHONL ");
+                c_lflag &= ~ECHONL();
+            }
+            if ((ICANON() & c_lflag) == ICANON()) {
+                sb.append("ICANON ");
+                c_lflag &= ~ICANON();
+            }
+            if ((IEXTEN() & c_lflag) == IEXTEN()) {
+                sb.append("IEXTEN ");
+                c_lflag &= ~IEXTEN();
+            }
+            if ((ISIG() & c_lflag) == ISIG()) {
+                sb.append("ISIG ");
+                c_lflag &= ~ISIG();
+            }
+            if ((NOFLSH() & c_lflag) == NOFLSH()) {
+                sb.append("NOFLSH ");
+                c_lflag &= ~NOFLSH();
+            }
+            if ((TOSTOP() & c_lflag) == TOSTOP()) {
+                sb.append("TOSTOP ");
+                c_lflag &= ~TOSTOP();
+            }
             if (c_lflag != 0) {
                 sb.append(String.format("0x%08x", c_lflag));
             }
         }
 
         static public void c_oflag2String(StringBuilder sb, int c_oflag) {
+            if ((OPOST() & c_oflag) == OPOST()) {
+                sb.append("OPOST ");
+                c_oflag &= ~OPOST();
+            }
+            if ((ONLCR() & c_oflag) == ONLCR()) {
+                sb.append("ONLCR ");
+                c_oflag &= ~ONLCR();
+            }
+            if ((OCRNL() & c_oflag) == OCRNL()) {
+                sb.append("OCRNL ");
+                c_oflag &= ~OCRNL();
+            }
+            if ((ONOCR() & c_oflag) == ONOCR()) {
+                sb.append("ONOCR ");
+                c_oflag &= ~ONOCR();
+            }
+            if ((ONLRET() & c_oflag) == ONLRET()) {
+                sb.append("ONLRET ");
+                c_oflag &= ~ONLRET();
+            }
+            if ((OFDEL() & c_oflag) == OFDEL()) {
+                sb.append("OFDEL ");
+                c_oflag &= ~OFDEL();
+            }
+            if ((OFILL() & c_oflag) == OFILL()) {
+                sb.append("OFILL ");
+                c_oflag &= ~OFILL();
+            } 
+            if ((NLDLY() & c_oflag) == NL0()) {
+                sb.append("NL0 ");
+                c_oflag &= ~NL0();
+            }
+            if ((NLDLY() & c_oflag) == NL1()) {
+                sb.append("NL1 ");
+                c_oflag &= ~NL1();
+            }
+            if ((CRDLY() & c_oflag) == CR0()) {
+                sb.append("CR0 ");
+                c_oflag &= ~CR0();
+            }
+            if ((CRDLY() & c_oflag) == CR1()) {
+                sb.append("CR1 ");
+                c_oflag &= ~CR1();
+            }
+            if ((CRDLY() & c_oflag) == CR2()) {
+                sb.append("CR2 ");
+                c_oflag &= ~CR2();
+            }
+            if ((CRDLY() & c_oflag) == CR3()) {
+                sb.append("CR3 ");
+                c_oflag &= ~CR3();
+            }
+            if ((TABDLY() & c_oflag) == TAB0()) {
+                sb.append("TAB0 ");
+                c_oflag &= ~TAB0();
+            }
+            if ((TABDLY() & c_oflag) == TAB1()) {
+                sb.append("TAB1 ");
+                c_oflag &= ~TAB1();
+            }
+            if ((TABDLY() & c_oflag) == TAB2()) {
+                sb.append("TAB2 ");
+                c_oflag &= ~TAB2();
+            }
+            if ((TABDLY() & c_oflag) == TAB3()) {
+                sb.append("TAB3 ");
+                c_oflag &= ~TAB3();
+            }
+            if ((BSDLY() & c_oflag) == BS0()) {
+                sb.append("BS0 ");
+                c_oflag &= ~BS0();
+            }
+            if ((BSDLY() & c_oflag) == BS1()) {
+                sb.append("BS1 ");
+                c_oflag &= ~BS1();
+            }
+            if ((VTDLY() & c_oflag) == VT0()) {
+                sb.append("VT0 ");
+                c_oflag &= ~VT0();
+            }
+            if ((VTDLY() & c_oflag) == VT1()) {
+                sb.append("VT1 ");
+                c_oflag &= ~VT1();
+            }
+            if ((FFDLY() & c_oflag) == FF0()) {
+                sb.append("FF0 ");
+                c_oflag &= ~FF0();
+            }
+            if ((FFDLY() & c_oflag) == FF1()) {
+                sb.append("FF1 ");
+                c_oflag &= ~FF1();
+            }
             if (c_oflag != 0) {
                 sb.append(String.format("0x%08x", c_oflag));
             }
@@ -210,14 +384,28 @@ public final class Termios {
 
         static public void c_cc2String(StringBuilder sb, int index, byte c_cc) {
             String c_ccName = String.valueOf(index);
-            if (VTIME() == index) {
-                c_ccName = "VTIME";
+            if (VEOF() == index) {
+                c_ccName = "VEOF";
+            } else if (VEOL() == index) {
+                c_ccName = "VEOL";
+            } else if (VERASE() == index) {
+                c_ccName = "VERASE";
+            } else if (VINTR() == index) {
+                c_ccName = "VINTR";
+            } else if (VKILL() == index) {
+                c_ccName = "VKILL";
             } else if (VMIN() == index) {
                 c_ccName = "VMIN";
+            } else if (VQUIT() == index) {
+                c_ccName = "VQUIT";
             } else if (VSTART() == index) {
                 c_ccName = "VSTART";
             } else if (VSTOP() == index) {
                 c_ccName = "VSTOP";
+            } else if (VSUSP() == index) {
+                c_ccName = "VSUSP";
+            } else if (VTIME() == index) {
+                c_ccName = "VTIME";
             }
             sb.append(String.format("\", c_cc[%s] = 0x%02x", c_ccName, c_cc));
         }
@@ -243,197 +431,1099 @@ public final class Termios {
         }
     }
 
+    /**
+     * <b>Linux:</b>
+     *
+     * @return the native symbolic constant of .
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int _HAVE_STRUCT_TERMIOS_C_ISPEED() throws NotDefinedException;
 
+    /**
+     * <b>Linux:</b>
+     *
+     * @return the native symbolic constant of .
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int _HAVE_STRUCT_TERMIOS_C_OSPEED() throws NotDefinedException;
 
+    /**
+     * <b>POSIX:</b> Hang up.
+     *
+     * @return the native symbolic constant of BO.
+     */
     @Define
     public final static native int B0();
 
+    /**
+     * <b>POSIX:</b> 50 baud.
+     *
+     * @return the native symbolic constant of B50.
+     */
     @Define
     public final static native int B50();
 
+    /**
+     * <b>POSIX:</b> 75 baud.
+     *
+     * @return the native symbolic constant of B75.
+     */
     @Define
     public final static native int B75();
 
+    /**
+     * <b>POSIX:</b> 110 baud.
+     *
+     * @return the native symbolic constant of B110.
+     */
     @Define
     public final static native int B110();
 
+    /**
+     * <b>POSIX:</b> 134.5 baud.
+     *
+     * @return the native symbolic constant of B134.
+     */
     @Define
     public final static native int B134();
 
+    /**
+     * <b>POSIX:</b> 150 baud.
+     *
+     * @return the native symbolic constant of B150.
+     */
     @Define
     public final static native int B150();
 
+    /**
+     * <b>POSIX:</b> 200 baud.
+     *
+     * @return the native symbolic constant of B200.
+     */
     @Define
     public final static native int B200();
 
+    /**
+     * <b>POSIX:</b> 300 baud.
+     *
+     * @return the native symbolic constant of B300.
+     */
     @Define
     public final static native int B300();
 
+    /**
+     * <b>POSIX:</b> 600 baud.
+     *
+     * @return the native symbolic constant of B600.
+     */
     @Define
     public final static native int B600();
 
+    /**
+     * <b>POSIX:</b> 1200 baud.
+     *
+     * @return the native symbolic constant of B1200.
+     */
     @Define
     public final static native int B1200();
 
+    /**
+     * <b>POSIX:</b> 1800 baud.
+     *
+     * @return the native symbolic constant of B1800.
+     */
     @Define
     public final static native int B1800();
 
+    /**
+     * <b>POSIX:</b> 2400 baud.
+     *
+     * @return the native symbolic constant of B2400.
+     */
     @Define
     public final static native int B2400();
 
+    /**
+     * <b>POSIX:</b> 4800 baud.
+     *
+     * @return the native symbolic constant of B4800.
+     */
     @Define
     public final static native int B4800();
 
+    /**
+     * <b>POSIX:</b> 9600 baud.
+     *
+     * @return the native symbolic constant of B9600.
+     */
     @Define
     public final static native int B9600();
 
+    /**
+     * <b>POSIX:</b> 19200 baud.
+     *
+     * @return the native symbolic constant of B19200.
+     */
     @Define
     public final static native int B19200();
 
+    /**
+     * <b>POSIX:</b> 38400 baud.
+     *
+     * @return the native symbolic constant of B38400.
+     */
     @Define
     public final static native int B38400();
 
+    /**
+     * <b>Non POSIX:</b> 57600 baus
+     *
+     * @return the native symbolic constant of B57600.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B57600() throws NotDefinedException;
 
+    /**
+     * <b>Non POSIX:</b> 115200 baud.
+     *
+     * @return the native symbolic constant of B115200.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B115200() throws NotDefinedException;
 
+    /**
+     * <b>Non POSIX:</b> 230400 baud.
+     *
+     * @return the native symbolic constant of B230400.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B230400() throws NotDefinedException;
 
+    /**
+     * <b>Linux,FreeBSD:</b> 460800 baud.
+     *
+     * @return the native symbolic constant of B460800.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B460800() throws NotDefinedException;
 
+    /**
+     * <b>Linux:</b> 500000 baud.
+     *
+     * @return the native symbolic constant of B500000.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B500000() throws NotDefinedException;
 
+    /**
+     * <b>Linux:</b> 576000 baud.
+     *
+     * @return the native symbolic constant of B576000.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B576000() throws NotDefinedException;
 
+    /**
+     * <b>Linux,FreeBSD:</b> 921600 baud.
+     *
+     * @return the native symbolic constant of B921600.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B921600() throws NotDefinedException;
 
+    /**
+     * <b>Linux:</b> 1000000 baud.
+     *
+     * @return the native symbolic constant of B1000000.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B1000000() throws NotDefinedException;
 
+    /**
+     * <b>Linux:</b> 1152000 baud.
+     *
+     * @return the native symbolic constant of B1152000.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B1152000() throws NotDefinedException;
 
+    /**
+     * <b>Linux:</b> 1500000 baud.
+     *
+     * @return the native symbolic constant of B1500000.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B1500000() throws NotDefinedException;
 
+    /**
+     * <b>Linux:</b> 2000000 baud.
+     *
+     * @return the native symbolic constant of B2000000.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B2000000() throws NotDefinedException;
 
+    /**
+     * <b>Linux:</b> 2500000 baud.
+     *
+     * @return the native symbolic constant of B2500000.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B2500000() throws NotDefinedException;
 
+    /**
+     * <b>Linux:</b> 3000000 baud.
+     *
+     * @return the native symbolic constant of B3000000.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B3000000() throws NotDefinedException;
 
+    /**
+     * <b>Linux:</b> 3500000 baud.
+     *
+     * @return the native symbolic constant of B3500000.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B3500000() throws NotDefinedException;
 
+    /**
+     * <b>Linux:</b> 4000000 baud.
+     *
+     * @return the native symbolic constant of B4000000.
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int B4000000() throws NotDefinedException;
 
+    /**
+     * <b>POSIX:</b> Ignore modem status lines.
+     *
+     * @return the native symbolic constant of CLOCAL.
+     */
     @Define
     public final static native int CLOCAL();
 
+    /**
+     * <b>POSIX:</b> Enable echo.
+     *
+     * @return the native symbolic constant of ECHO.
+     */
+    @Define
+    public final static native int ECHO();
+
+ 
+    /**
+     * <b>POSIX:</b> Echo erase character as error-correcting backspace.
+     *
+     * @return the native symbolic constant of ECHOE.
+     */
+    @Define
+    public final static native int ECHOE();
+
+    /**
+     * <b>POSIX:</b> Echo KILL.
+     *
+     * @return the native symbolic constant of ECHOK.
+     */
+    @Define
+    public final static native int ECHOK();
+
+    /**
+     * <b>POSIX:</b> Echo NL.
+     *
+     * @return the native symbolic constant of ECHONL.
+     */
+    @Define
+    public final static native int ECHONL();
+
+    /**
+     * <b>POSIX:</b> Canonical input (erase and kill processing).
+     *
+     * @return the native symbolic constant of ICANON.
+     */
+    @Define
+    public final static native int ICANON();
+
+    /**
+     * <b>POSIX:</b> Enable extended input character processing.
+     *
+     * @return the native symbolic constant of IEXTEN.
+     */
+    @Define
+    public final static native int IEXTEN();
+
+    /**
+     * <b>POSIX:</b> Enable signals.
+     *
+     * @return the native symbolic constant of ISIG.
+     */
+    @Define
+    public final static native int ISIG();
+
+    /**
+     * <b>POSIX:</b> Disable flush after interrupt or quit.
+     *
+     * @return the native symbolic constant of NOFLSH.
+     */
+    @Define
+    public final static native int NOFLSH();
+
+    /**
+     * <b>POSIX:</b> Send SIGTTOU for background output.
+     *
+     * @return the native symbolic constant of TOSTOP.
+     */
+    @Define
+    public final static native int TOSTOP();
+   /**
+     * <b>POSIX:</b>
+     *
+     * @return the native symbolic constant of .
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int CMSPAR() throws NotDefinedException;
 
+    /**
+     * <b>POSIX:</b> Enable receiver.
+     *
+     * @return the native symbolic constant of CREAD.
+     */
     @Define
     public final static native int CREAD();
 
+    /**
+     * <b>POSIX:</b>
+     *
+     * @return the native symbolic constant of .
+     */
     @Define
     public final static native int CRTSCTS();
 
+    /**
+     * <b>POSIX:</b> 5 bits.
+     *
+     * @return the native symbolic constant of CS5.
+     */
     @Define
     public final static native int CS5();
 
+    /**
+     * <b>POSIX:</b> 6 bits.
+     *
+     * @return the native symbolic constant of CS6.
+     */
     @Define
     public final static native int CS6();
 
+    /**
+     * <b>POSIX:</b> 7 bits.
+     *
+     * @return the native symbolic constant of CS7.
+     */
     @Define
     public final static native int CS7();
 
+    /**
+     * <b>POSIX:</b> 8 bits.
+     *
+     * @return the native symbolic constant of CS8.
+     */
     @Define
     public final static native int CS8();
 
+    /**
+     * <b>POSIX:</b> Character size: 
+     *
+     * @return the native symbolic constant of CSIZE.
+     */
     @Define
     public final static native int CSIZE();
 
+    /**
+     * <b>POSIX:</b> Send two stop bits, else one.
+     *
+     * @return the native symbolic constant of CSTOPB.
+     */
     @Define
     public final static native int CSTOPB();
 
+    /**
+     * <b>POSIX:</b> Signal interrupt on break.
+     *
+     * @return the native symbolic constant of BRKINT.
+     */
+    @Define
+    public final static native int BRKINT();
+
+    /**
+     * <b>POSIX:</b> Map CR to NL on input.
+     *
+     * @return the native symbolic constant of ICRNL.
+     */
+    @Define
+    public final static native int ICRNL();
+
+    /**
+     * <b>POSIX:</b> Ignore break condition.
+     *
+     * @return the native symbolic constant of IGNBRK.
+     */
+    @Define
+    public final static native int IGNBRK();
+
+    /**
+     * <b>POSIX:</b> Ignore CR.
+     *
+     * @return the native symbolic constant of IGNCR.
+     */
+    @Define
+    public final static native int IGNCR();
+
+    /**
+     * <b>POSIX:</b> Ignore characters with parity errors.
+     *
+     * @return the native symbolic constant of IGNPAR.
+     */
+    @Define
+    public final static native int IGNPAR();
+
+    /**
+     * <b>POSIX:</b> Map NL to CR on input.
+     *
+     * @return the native symbolic constant of INLCR.
+     */
+    @Define
+    public final static native int INLCR();
+
+    /**
+     * <b>POSIX:</b> Enable input parity check.
+     *
+     * @return the native symbolic constant of INPCK.
+     */
     @Define
     public final static native int INPCK();
 
+    /**
+     * <b>POSIX:</b> Strip character.
+     *
+     * @return the native symbolic constant of ISTRIP.
+     */
+    @Define
+    public final static native int ISTRIP();
+
+    /**
+     * <b>POSIX:</b> Enable any character to restart output.
+     *
+     * @return the native symbolic constant of IXANY.
+     */
+    @Define
+    public final static native int IXANY();
+
+    /**
+     * <b>POSIX:</b>
+     *
+     * @return the native symbolic constant of .
+     */
     @Define
     public final static native int IXOFF();
 
+    /**
+     * <b>POSIX:</b>
+     *
+     * @return the native symbolic constant of .
+     */
     @Define
     public final static native int IXON();
 
+    /**
+     * <b>POSIX:</b> Parity enable.
+     *
+     * @return the native symbolic constant of PARENB.
+     */
     @Define
     public final static native int PARENB();
 
+    /**
+     * <b>POSIX:</b>
+     *
+     * @return the native symbolic constant of .
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int PAREXT() throws NotDefinedException;
 
+    /**
+     * <b>POSIX:</b> Mark parity errors.
+     *
+     * @return the native symbolic constant of .
+     * @throws de.ibapl.jnhw.NotDefinedException
+     */
     @Define
     public final static native int PARMRK() throws NotDefinedException;
 
+    /**
+     * <b>POSIX:</b> Post-process output.
+     *
+     * @return the native symbolic constant of OPOST.
+     */
+    @Define
+    public final static native int OPOST();
+
+    /**
+     * <b>POSIX.XSI:</b> Map NL to CR-NL on output.
+     *
+     * @return the native symbolic constant of ONLCR.
+     */
+    @Define
+    public final static native int ONLCR();
+
+    /**
+     * <b>POSIX,XSI:</b> Map CR to NL on output.
+     *
+     * @return the native symbolic constant of OCRNL.
+     */
+    @Define
+    public final static native int OCRNL();
+
+    /**
+     * <b>POSIX.XSI:</b> No CR output at column 0.
+     *
+     * @return the native symbolic constant of ONOCR.
+     */
+    @Define
+    public final static native int ONOCR();
+
+    /**
+     * <b>POSIX.XSI:</b> NL performs CR function.
+     *
+     * @return the native symbolic constant of ONLRET.
+     */
+    @Define
+    public final static native int ONLRET();
+
+    /**
+     * <b>POSIX.XSI:</b> Fill is DEL.
+     *
+     * @return the native symbolic constant of OFDEL.
+     */
+    @Define
+    public final static native int OFDEL();
+
+    /**
+     * <b>POSIX.XSI:</b> Use fill characters for delay.
+     *
+     * @return the native symbolic constant of OFILL.
+     */
+    @Define
+    public final static native int OFILL();
+
+    /**
+     * <b>POSIX.XSI:</b> Select newline delays: <code>NL0</code> or
+     * <code>NL1</code>
+     *
+     * @return the native symbolic constant of NLDLY.
+     */
+    @Define
+    public final static native int NLDLY();
+
+    /**
+     * <b>POSIX.XSI:</b> Newline type 0.
+     *
+     * @return the native symbolic constant of NL0.
+     */
+    @Define
+    public final static native int NL0();
+
+    /**
+     * <b>POSIX.XSI:</b> Newline type 1.
+     *
+     * @return the native symbolic constant of NL1.
+     */
+    @Define
+    public final static native int NL1();
+
+    /**
+     * <b>POSIX.XSI:</b> Select carriage-return delays:
+     *
+     * @return the native symbolic constant of CRDLY.
+     */
+    @Define
+    public final static native int CRDLY();
+
+    /**
+     * <b>POSIX.XSI:</b> Carriage-return delay type 0.
+     *
+     * @return the native symbolic constant of CR0.
+     */
+    @Define
+    public final static native int CR0();
+
+    /**
+     * <b>POSIX.XSI:</b> Carriage-return delay type 1.
+     *
+     * @return the native symbolic constant of CR1.
+     */
+    @Define
+    public final static native int CR1();
+
+    /**
+     * <b>POSIX.XSI:</b> Carriage-return delay type 2.
+     *
+     * @return the native symbolic constant of CR2.
+     */
+    @Define
+    public final static native int CR2();
+
+    /**
+     * <b>POSIX.XSI:</b> Carriage-return delay type 3.
+     *
+     * @return the native symbolic constant of CR3.
+     */
+    @Define
+    public final static native int CR3();
+
+    /**
+     * <b>POSIX.XSI:</b> Select horizontal-tab delays:
+     *
+     * @return the native symbolic constant of TABDLY.
+     */
+    @Define
+    public final static native int TABDLY();
+
+    /**
+     * <b>POSIX.XSI:</b> Horizontal-tab delay type 0.
+     *
+     * @return the native symbolic constant of TAB0.
+     */
+    @Define
+    public final static native int TAB0();
+
+    /**
+     * <b>POSIX.XSI:</b> Horizontal-tab delay type 1.
+     *
+     * @return the native symbolic constant of TAB1.
+     */
+    @Define
+    public final static native int TAB1();
+
+    /**
+     * <b>POSIX.XSI:</b> Horizontal-tab delay type 2.
+     *
+     * @return the native symbolic constant of TAB2.
+     */
+    @Define
+    public final static native int TAB2();
+
+    /**
+     * <b>POSIX.XSI:</b> Expand tabs to spaces.
+     *
+     * @return the native symbolic constant of TAB3.
+     */
+    @Define
+    public final static native int TAB3();
+
+    /**
+     * <b>POSIX.XSI:</b> Select backspace delays:
+     *
+     * @return the native symbolic constant of BSDLY.
+     */
+    @Define
+    public final static native int BSDLY();
+
+    /**
+     * <b>POSIX.XSI:</b> Backspace-delay type 0.
+     *
+     * @return the native symbolic constant of BS0.
+     */
+    @Define
+    public final static native int BS0();
+
+    /**
+     * <b>POSIX.XSI:</b> Backspace-delay type 1.
+     *
+     * @return the native symbolic constant of BS1.
+     */
+    @Define
+    public final static native int BS1();
+
+    /**
+     * <b>POSIX.XSI:</b>
+     *
+     * @return the native symbolic constant of VTDLY.
+     */
+    @Define
+    public final static native int VTDLY();
+
+    /**
+     * <b>POSIX.XSI:</b> Vertical-tab delay type 0.
+     *
+     * @return the native symbolic constant of VT0.
+     */
+    @Define
+    public final static native int VT0();
+
+    /**
+     * <b>POSIX.XSI:</b> Vertical-tab delay type 1.
+     *
+     * @return the native symbolic constant of VT1.
+     */
+    @Define
+    public final static native int VT1();
+
+    /**
+     * <b>POSIX.XSI:</b> Select form-feed delays:
+     *
+     * @return the native symbolic constant of FFDLY.
+     */
+    @Define
+    public final static native int FFDLY();
+
+    /**
+     * <b>POSIX.XSI:</b> Form-feed delay type 0.
+     *
+     * @return the native symbolic constant of FF0.
+     */
+    @Define
+    public final static native int FF0();
+
+    /**
+     * <b>POSIX.XSI:</b> Form-feed delay type 1.
+     *
+     * @return the native symbolic constant of FF1.
+     */
+    @Define
+    public final static native int FF1();
+
+    /**
+     * <b>POSIX:</b> Odd parity, else even.
+     *
+     * @return the native symbolic constant of PARODD.
+     */
     @Define
     public final static native int PARODD();
 
+    /**
+     * <b>POSIX:</b> Hang up on last close.
+     *
+     * @return the native symbolic constant of HUPCL.
+     */
     @Define
-    public final static native int TCIOFLUSH();
-
+    public final static native int HUPCL();
+    
+    /**
+     * <b>POSIX:</b> <i>Attribute Selection</i> Change attributes immediately.
+     *
+     * @return the native symbolic constant of TCSANOW.
+     */
     @Define
     public final static native int TCSANOW();
 
+    /**
+     * <b>POSIX:</b> <i>Attribute Selection</i> Change attributes when output has drained; also flush pending input.
+     *
+     * @return the native symbolic constant of TCSADRAIN.
+     */
+    @Define
+    public final static native int TCSADRAIN();
+
+    /**
+     * <b>POSIX:</b> <i>Attribute Selection</i> Change attributes when output has drained.
+     *
+     * @return the native symbolic constant of TCSAFLUSH.
+     */
+    @Define
+    public final static native int TCSAFLUSH();
+
+    /**
+     * <b>POSIX:</b> <i>Line Control</i> Flush pending input.
+     *
+     * @return the native symbolic constant of TCIFLUSH.
+     */
+    @Define
+    public final static native int TCIFLUSH();
+
+    /**
+     * <b>POSIX:</b> <i>Line Control</i> Flush both pending input and untransmitted output.
+     *
+     * @return the native symbolic constant of TCIOFLUSH.
+     */
+    @Define
+    public final static native int TCIOFLUSH();
+
+
+    /**
+     * <b>POSIX:</b> <i>Line Control</i> Flush untransmitted output.
+     *
+     * @return the native symbolic constant of TCOFLUSH.
+     */
+    @Define
+    public final static native int TCOFLUSH();
+
+    /**
+     * <b>POSIX:</b> <i>Line Control</i> Transmit a STOP character, intended to suspend input data.
+     *
+     * @return the native symbolic constant of TCIOFF.
+     */
+    @Define
+    public final static native int TCIOFF();
+
+    /**
+     * <b>POSIX:</b> <i>Line Control</i> Transmit a START character, intended to restart input data.
+     *
+     * @return the native symbolic constant of TCION.
+     */
+    @Define
+    public final static native int TCION();
+
+    /**
+     * <b>POSIX:</b> <i>Line Control</i> Suspend output.
+     *
+     * @return the native symbolic constant of TCOOFF.
+     */
+    @Define
+    public final static native int TCOOFF();
+
+    /**
+     * <b>POSIX:</b> <i>Line Control</i> Restart output.
+     *
+     * @return the native symbolic constant of TCOON.
+     */
+    @Define
+    public final static native int TCOON();
+
+ 
+    /**
+     * <b>POSIX:</b> EOF character in <b>Canonical Mode</b>.
+     *
+     * @return the native symbolic constant of VEOF.
+     */
+    @Define
+    public final static native int VEOF();
+
+    /**
+     * <b>POSIX:</b> EOL character in <b>Canonical Mode</b>.
+     *
+     * @return the native symbolic constant of VEOL.
+     */
+    @Define
+    public final static native int VEOL();
+
+    /**
+     * <b>POSIX:</b> ERASE character in <b>Canonical Mode</b>.
+     *
+     * @return the native symbolic constant of VERASE.
+     */
+    @Define
+    public final static native int VERASE();
+
+    /**
+     * <b>POSIX:</b> INTR character in <b>Canonical Mode</b> and
+     * <b>Non-Canonical Mode</b>.
+     *
+     * @return the native symbolic constant of VINTR.
+     */
+    @Define
+    public final static native int VINTR();
+
+    /**
+     * <b>POSIX:</b> KILL character in <b>Canonical Mode</b>.
+     *
+     * @return the native symbolic constant of VKILL.
+     */
+    @Define
+    public final static native int VKILL();
+
+    /**
+     * <b>POSIX:</b> MIN value in <b>Non-Canonical Mode</b>.
+     *
+     * @return the native symbolic constant of VMIN.
+     */
     @Define
     public final static native int VMIN();
 
+    /**
+     * <b>POSIX:</b> QUIT character in <b>Canonical Mode</b> and
+     * <b>Non-Canonical Mode</b>.
+     *
+     * @return the native symbolic constant of VQUIT.
+     */
+    @Define
+    public final static native int VQUIT();
+
+    /**
+     * <b>POSIX:</b> START character in <b>Canonical Mode</b> and
+     * <b>Non-Canonical Mode</b>.
+     *
+     * @return the native symbolic constant of VSTART.
+     */
     @Define
     public final static native int VSTART();
 
+    /**
+     * <b>POSIX:</b> STOP character in <b>Canonical Mode</b> and
+     * <b>Non-Canonical Mode</b>.
+     *
+     * @return the native symbolic constant of VSTOP.
+     */
     @Define
     public final static native int VSTOP();
 
+    /**
+     * <b>POSIX:</b> VSUSP character in <b>Canonical Mode</b> and
+     * <b>Non-Canonical Mode</b>.
+     *
+     * @return the native symbolic constant of VSUSP.
+     */
+    @Define
+    public final static native int VSUSP();
+
+    /**
+     * <b>POSIX:</b> VTIME value in <b>Non-Canonical Mode</b>.
+     *
+     * @return the native symbolic constant of VTIME.
+     */
     @Define
     public final static native int VTIME();
 
+    /**
+     * <b>POSIX:</b> Size of the array c_cc for control characters.
+     *
+     * @return the native symbolic constant of NCCS.
+     */
     @Define
     public final static native int NCCS();
 
+    /**
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfgetispeed.html">cfgetispeed - get input baud rate</a>.
+     * 
+     * @param termios
+     * @return 
+     */
     public final static native @speed_t
     int cfgetispeed(StructTermios termios);
 
+    /**
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfgetospeed.html">cfgetispeed - get output baud rate</a>.
+     * 
+     * @param termios
+     * @return 
+     */
     public final static native @speed_t
     int cfgetospeed(StructTermios termios);
 
+    /**
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfsetispeed.html">cfgetispeed - set input baud rate</a>.
+     * 
+     * @param termios
+     * @param speed
+     * @return 
+     * @throws de.ibapl.jnhw.NativeErrorException 
+     */
     public final static native int cfsetispeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
 
+    /**
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfsetospeed.html">cfgetispeed - set output baud rate</a>.
+     * 
+     * @param termios
+     * @param speed
+     * @return 
+     * @throws de.ibapl.jnhw.NativeErrorException 
+     */
     public final static native int cfsetospeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
 
+    /**
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcdrain.html">tcdrain - wait for transmission of output</a>.
+     * 
+     * @param fildes
+     * @return 
+     * @throws de.ibapl.jnhw.NativeErrorException 
+     */
     public final static native int tcdrain(int fildes) throws NativeErrorException;
 
+    /**
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcflow.html">tcflow - suspend or restart the transmission or reception of data</a>.
+     * 
+     * @param fildes
+     * @param action
+     * @return
+     * @throws NativeErrorException 
+     */
+    public final static native int tcflow(int fildes, int action) throws NativeErrorException;
+
+    /**
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcflush.html">tcflush - flush non-transmitted output data, non-read input data, or both</a>.
+     * 
+     * @param fildes
+     * @param queue_selector
+     * @return
+     * @throws NativeErrorException 
+     */
     public final static native int tcflush(int fildes, int queue_selector) throws NativeErrorException;
 
+    /**
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcgetattr.html">tcgetattr - get the parameters associated with the terminal</a>.
+     * 
+     * @param fildes
+     * @param termios
+     * @return
+     * @throws NativeErrorException 
+     */
     public final static native int tcgetattr(int fildes, StructTermios termios) throws NativeErrorException;
 
+    /**
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcgetsid.html">tcgetsid - get the process group ID for the session leader for the controlling terminal</a>.
+     * 
+     * @param fildes
+     * @return 
+     */
+    public final static native @pid_t int tcgetsid(int fildes);
+
+    /**
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcsendbreak.html">tcsendbreak - send a break for a specific duration</a>.
+     * 
+     * @param fildes
+     * @param duration
+     * @return
+     * @throws NativeErrorException 
+     */
     public final static native int tcsendbreak(int fildes, int duration) throws NativeErrorException;
 
+    /**
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcsetattr.html">tcsetattr - set the parameters associated with the terminal</a>.
+     * 
+     * @param fildes
+     * @param optional_actions
+     * @param termios
+     * @return
+     * @throws NativeErrorException 
+     */
     public final static native int tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException;
 
+    /**
+     * 
+     * @param termios
+     * @param speed
+     * @return
+     * @throws NativeErrorException 
+     */
     public final static native int cfsetspeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
 
 }

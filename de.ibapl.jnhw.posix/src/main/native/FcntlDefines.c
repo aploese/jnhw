@@ -135,7 +135,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1DONTNEED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+#if defined(POSIX_FADV_DONTNEED)
+#error "POSIX_FADV_DONTNEED defined"
+#endif
+        throw_NotDefinedException(env, "POSIX_FADV_DONTNEED");
+        return 0;
+#else
         return POSIX_FADV_DONTNEED;
+#endif
     }
 
     /*
@@ -145,7 +153,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1NOREUSE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+#if defined(POSIX_FADV_NOREUSE)
+#error "POSIX_FADV_NOREUSE defined"
+#endif
+        throw_NotDefinedException(env, "POSIX_FADV_NOREUSE");
+        return 0;
+#else
         return POSIX_FADV_NOREUSE;
+#endif
     }
 
     /*
@@ -155,7 +171,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1NORMAL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+#if defined(POSIX_FADV_NORMAL)
+#error "POSIX_FADV_NORMAL defined"
+#endif
+        throw_NotDefinedException(env, "POSIX_FADV_NORMAL");
+        return 0;
+#else
         return POSIX_FADV_NORMAL;
+#endif
     }
 
     /*
@@ -165,7 +189,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1RANDOM
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+#if defined(POSIX_FADV_RANDOM)
+#error "POSIX_FADV_RANDOM defined"
+#endif
+        throw_NotDefinedException(env, "POSIX_FADV_RANDOM");
+        return 0;
+#else
         return POSIX_FADV_RANDOM;
+#endif
     }
 
     /*
@@ -175,7 +207,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1SEQUENTIAL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+#if defined(POSIX_FADV_SEQUENTIAL)
+#error "POSIX_FADV_SEQUENTIAL defined"
+#endif
+        throw_NotDefinedException(env, "POSIX_FADV_SEQUENTIAL");
+        return 0;
+#else
         return POSIX_FADV_SEQUENTIAL;
+#endif
     }
 
     /*
@@ -185,7 +225,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1WILLNEED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+#if defined(POSIX_FADV_WILLNEED)
+#error "POSIX_FADV_WILLNEED defined"
+#endif
+        throw_NotDefinedException(env, "POSIX_FADV_WILLNEED");
+        return 0;
+#else
         return POSIX_FADV_WILLNEED;
+#endif
     }
 
     /*

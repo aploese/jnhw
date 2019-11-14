@@ -416,6 +416,18 @@ extern "C" {
         }
     }
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    fsync
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_fsync
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd) {
+        if (!fsync(fd)) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
+
 #ifdef __cplusplus
 }
 #endif

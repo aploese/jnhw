@@ -120,6 +120,20 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    tcflow
+     * Signature: (II)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcflow
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fildes, jint action) {
+        int result = tcflow(fildes, action);
+        if (result < 0) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    tcflush
      * Signature: (II)I
      */
@@ -150,6 +164,20 @@ extern "C" {
         return result;
     }
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios
+     * Method:    tcgetsid
+     * Signature: (II)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcgetsid
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fildes) {
+        pid_t result = tcgetsid(fildes);
+        if (result < 0) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+    }
+    
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    tcsendbreak
