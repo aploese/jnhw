@@ -560,7 +560,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NOFLSH
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__)
+#if defined (__APPLE__) || defined (__FreeBSD__)
         return (int32_t)NOFLSH;
 #else
         return NOFLSH;
@@ -877,7 +877,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_OFDEL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return OFDEL;
+#elif defined(OFDEL)
+#error "OFDEL defined"
+#else
+        throw_NotDefinedException(env, "OFDEL");
+        return 0;
+#endif
     }
 
     /*
@@ -887,7 +894,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_OFILL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return OFILL;
+#elif defined(OFILL)
+#error "OFILL defined"
+#else
+        throw_NotDefinedException(env, "OFILL");
+        return 0;
+#endif
     }
 
     /*
@@ -897,7 +911,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NLDLY
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return NLDLY;
+#elif defined(NLDLY)
+#error "NLDLY defined"
+#else
+        throw_NotDefinedException(env, "NLDLY");
+        return 0;
+#endif
     }
 
     /*
@@ -907,7 +928,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NL0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return NL0;
+#elif defined(NL0)
+#error "NL0 defined"
+#else
+        throw_NotDefinedException(env, "NL0");
+        return 0;
+#endif
     }
 
     /*
@@ -917,7 +945,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NL1
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return NL1;
+#elif defined(NL1)
+#error "NL1 defined"
+#else
+        throw_NotDefinedException(env, "NL1");
+        return 0;
+#endif
     }
 
     /*
@@ -927,7 +962,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CRDLY
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return CRDLY;
+#elif defined(CRDLY)
+#error "CRDLY defined"
+#else
+        throw_NotDefinedException(env, "CRDLY");
+        return 0;
+#endif
     }
 
     /*
@@ -937,7 +979,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CR0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return CR0;
+#elif defined(CR0)
+#error "CR0 defined"
+#else
+        throw_NotDefinedException(env, "CR0");
+        return 0;
+#endif
     }
 
     /*
@@ -947,7 +996,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CR1
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return CR1;
+#elif defined(CR1)
+#error "CR1 defined"
+#else
+        throw_NotDefinedException(env, "CR1");
+        return 0;
+#endif
     }
 
     /*
@@ -957,7 +1013,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CR2
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return CR2;
+#elif defined(CR2)
+#error "CR2 defined"
+#else
+        throw_NotDefinedException(env, "CR2");
+        return 0;
+#endif
     }
 
     /*
@@ -967,7 +1030,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CR3
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return CR3;
+#elif defined(CR3)
+#error "CR3 defined"
+#else
+        throw_NotDefinedException(env, "CR3");
+        return 0;
+#endif
     }
 
     /*
@@ -997,7 +1067,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TAB1
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return TAB1;
+#elif defined(TAB1)
+#error "TAB1 defined"
+#else
+        throw_NotDefinedException(env, "TAB1");
+        return 0;
+#endif
     }
 
     /*
@@ -1007,7 +1084,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TAB2
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return TAB2;
+#elif defined(TAB2)
+#error "TAB2 defined"
+#else
+        throw_NotDefinedException(env, "TAB2");
+        return 0;
+#endif
     }
 
     /*
@@ -1027,7 +1111,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_BSDLY
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return BSDLY;
+#elif defined(BSDLY)
+#error "BSDLY defined"
+#else
+        throw_NotDefinedException(env, "BSDLY");
+        return 0;
+#endif
     }
 
     /*
@@ -1037,7 +1128,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_BS0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return BS0;
+#elif defined(BS0)
+#error "BS0 defined"
+#else
+        throw_NotDefinedException(env, "BS0");
+        return 0;
+#endif
     }
 
     /*
@@ -1047,7 +1145,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_BS1
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return BS1;
+#elif defined(BS1)
+#error "BS1 defined"
+#else
+        throw_NotDefinedException(env, "BS1");
+        return 0;
+#endif
     }
 
     /*
@@ -1057,7 +1162,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VTDLY
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return VTDLY;
+#elif defined(VTDLY)
+#error "VTDLY defined"
+#else
+        throw_NotDefinedException(env, "VTDLY");
+        return 0;
+#endif
     }
 
     /*
@@ -1067,7 +1179,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VT0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return VT0;
+#elif defined(VT0)
+#error "VT0 defined"
+#else
+        throw_NotDefinedException(env, "VT0");
+        return 0;
+#endif
     }
 
     /*
@@ -1077,7 +1196,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_VT1
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return VT1;
+#elif defined(VT1)
+#error "VT1 defined"
+#else
+        throw_NotDefinedException(env, "VT1");
+        return 0;
+#endif
     }
 
     /*
@@ -1087,7 +1213,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_FFDLY
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return FFDLY;
+#elif defined(FFDLY)
+#error "FFDLY defined"
+#else
+        throw_NotDefinedException(env, "FFDLY");
+        return 0;
+#endif
     }
 
     /*
@@ -1097,7 +1230,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_FF0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return FF0;
+#elif defined(FF0)
+#error "FF0 defined"
+#else
+        throw_NotDefinedException(env, "FF0");
+        return 0;
+#endif
     }
 
     /*
@@ -1107,7 +1247,14 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_FF1
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) || defined (__APPLE__)
         return FF1;
+#elif defined(FF1)
+#error "FF1 defined"
+#else
+        throw_NotDefinedException(env, "FF1");
+        return 0;
+#endif
     }
 
     /*
