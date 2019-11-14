@@ -138,15 +138,15 @@ public final class Termios {
             if ((CSIZE() & c_cflag) == CS5()) {
                 sb.append("CS5 ");
                 c_cflag &= ~CS5();
-            } 
+            }
             if ((CSIZE() & c_cflag) == CS6()) {
                 sb.append("CS6 ");
                 c_cflag &= ~CS6();
-            } 
+            }
             if ((CSIZE() & c_cflag) == CS7()) {
                 sb.append("CS7 ");
                 c_cflag &= ~CS7();
-            } 
+            }
             if ((CSIZE() & c_cflag) == CS8()) {
                 sb.append("CS8 ");
                 c_cflag &= ~CS8();
@@ -167,7 +167,7 @@ public final class Termios {
                 sb.append("PARODD ");
                 c_cflag &= ~PARODD();
             }
-            if ((HUPCL()& c_cflag) == HUPCL()) {
+            if ((HUPCL() & c_cflag) == HUPCL()) {
                 sb.append("HUPCL ");
                 c_cflag &= ~HUPCL();
             }
@@ -305,77 +305,125 @@ public final class Termios {
                 sb.append("ONLRET ");
                 c_oflag &= ~ONLRET();
             }
-            if ((OFDEL() & c_oflag) == OFDEL()) {
-                sb.append("OFDEL ");
-                c_oflag &= ~OFDEL();
+            try {
+                if ((OFDEL() & c_oflag) == OFDEL()) {
+                    sb.append("OFDEL ");
+                    c_oflag &= ~OFDEL();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((OFILL() & c_oflag) == OFILL()) {
-                sb.append("OFILL ");
-                c_oflag &= ~OFILL();
-            } 
-            if ((NLDLY() & c_oflag) == NL0()) {
-                sb.append("NL0 ");
-                c_oflag &= ~NL0();
+            try {
+                if ((OFILL() & c_oflag) == OFILL()) {
+                    sb.append("OFILL ");
+                    c_oflag &= ~OFILL();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((NLDLY() & c_oflag) == NL1()) {
-                sb.append("NL1 ");
-                c_oflag &= ~NL1();
+            try {
+                if ((NLDLY() & c_oflag) == NL0()) {
+                    sb.append("NL0 ");
+                    c_oflag &= ~NL0();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((CRDLY() & c_oflag) == CR0()) {
-                sb.append("CR0 ");
-                c_oflag &= ~CR0();
+            try {
+                if ((NLDLY() & c_oflag) == NL1()) {
+                    sb.append("NL1 ");
+                    c_oflag &= ~NL1();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((CRDLY() & c_oflag) == CR1()) {
-                sb.append("CR1 ");
-                c_oflag &= ~CR1();
+            try {
+                if ((CRDLY() & c_oflag) == CR0()) {
+                    sb.append("CR0 ");
+                    c_oflag &= ~CR0();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((CRDLY() & c_oflag) == CR2()) {
-                sb.append("CR2 ");
-                c_oflag &= ~CR2();
+            try {
+                if ((CRDLY() & c_oflag) == CR1()) {
+                    sb.append("CR1 ");
+                    c_oflag &= ~CR1();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((CRDLY() & c_oflag) == CR3()) {
-                sb.append("CR3 ");
-                c_oflag &= ~CR3();
+            try {
+                if ((CRDLY() & c_oflag) == CR2()) {
+                    sb.append("CR2 ");
+                    c_oflag &= ~CR2();
+                }
+            } catch (NotDefinedException nde) {
+            }
+            try {
+                if ((CRDLY() & c_oflag) == CR3()) {
+                    sb.append("CR3 ");
+                    c_oflag &= ~CR3();
+                }
+            } catch (NotDefinedException nde) {
             }
             if ((TABDLY() & c_oflag) == TAB0()) {
                 sb.append("TAB0 ");
                 c_oflag &= ~TAB0();
             }
-            if ((TABDLY() & c_oflag) == TAB1()) {
-                sb.append("TAB1 ");
-                c_oflag &= ~TAB1();
+            try {
+                if ((TABDLY() & c_oflag) == TAB1()) {
+                    sb.append("TAB1 ");
+                    c_oflag &= ~TAB1();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((TABDLY() & c_oflag) == TAB2()) {
-                sb.append("TAB2 ");
-                c_oflag &= ~TAB2();
+            try {
+                if ((TABDLY() & c_oflag) == TAB2()) {
+                    sb.append("TAB2 ");
+                    c_oflag &= ~TAB2();
+                }
+            } catch (NotDefinedException nde) {
             }
             if ((TABDLY() & c_oflag) == TAB3()) {
                 sb.append("TAB3 ");
                 c_oflag &= ~TAB3();
             }
-            if ((BSDLY() & c_oflag) == BS0()) {
-                sb.append("BS0 ");
-                c_oflag &= ~BS0();
+            try {
+                if ((BSDLY() & c_oflag) == BS0()) {
+                    sb.append("BS0 ");
+                    c_oflag &= ~BS0();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((BSDLY() & c_oflag) == BS1()) {
-                sb.append("BS1 ");
-                c_oflag &= ~BS1();
+            try {
+                if ((BSDLY() & c_oflag) == BS1()) {
+                    sb.append("BS1 ");
+                    c_oflag &= ~BS1();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((VTDLY() & c_oflag) == VT0()) {
-                sb.append("VT0 ");
-                c_oflag &= ~VT0();
+            try {
+                if ((VTDLY() & c_oflag) == VT0()) {
+                    sb.append("VT0 ");
+                    c_oflag &= ~VT0();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((VTDLY() & c_oflag) == VT1()) {
-                sb.append("VT1 ");
-                c_oflag &= ~VT1();
+            try {
+                if ((VTDLY() & c_oflag) == VT1()) {
+                    sb.append("VT1 ");
+                    c_oflag &= ~VT1();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((FFDLY() & c_oflag) == FF0()) {
-                sb.append("FF0 ");
-                c_oflag &= ~FF0();
+            try {
+                if ((FFDLY() & c_oflag) == FF0()) {
+                    sb.append("FF0 ");
+                    c_oflag &= ~FF0();
+                }
+            } catch (NotDefinedException nde) {
             }
-            if ((FFDLY() & c_oflag) == FF1()) {
-                sb.append("FF1 ");
-                c_oflag &= ~FF1();
+            try {
+                if ((FFDLY() & c_oflag) == FF1()) {
+                    sb.append("FF1 ");
+                    c_oflag &= ~FF1();
+                }
+            } catch (NotDefinedException nde) {
             }
             if (c_oflag != 0) {
                 sb.append(String.format("0x%08x", c_oflag));
@@ -728,7 +776,6 @@ public final class Termios {
     @Define
     public final static native int ECHO();
 
- 
     /**
      * <b>POSIX:</b> Echo erase character as error-correcting backspace.
      *
@@ -792,7 +839,8 @@ public final class Termios {
      */
     @Define
     public final static native int TOSTOP();
-   /**
+
+    /**
      * <b>POSIX:</b>
      *
      * @return the native symbolic constant of .
@@ -850,7 +898,7 @@ public final class Termios {
     public final static native int CS8();
 
     /**
-     * <b>POSIX:</b> Character size: 
+     * <b>POSIX:</b> Character size:
      *
      * @return the native symbolic constant of CSIZE.
      */
@@ -1025,80 +1073,89 @@ public final class Termios {
      * @return the native symbolic constant of OFDEL.
      */
     @Define
-    public final static native int OFDEL();
+    public final static native int OFDEL() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Use fill characters for delay.
      *
      * @return the native symbolic constant of OFILL.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int OFILL();
+    public final static native int OFILL() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Select newline delays: <code>NL0</code> or
      * <code>NL1</code>
      *
      * @return the native symbolic constant of NLDLY.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int NLDLY();
+    public final static native int NLDLY() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Newline type 0.
      *
      * @return the native symbolic constant of NL0.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int NL0();
+    public final static native int NL0() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Newline type 1.
      *
      * @return the native symbolic constant of NL1.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int NL1();
+    public final static native int NL1() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Select carriage-return delays:
      *
      * @return the native symbolic constant of CRDLY.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int CRDLY();
+    public final static native int CRDLY() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Carriage-return delay type 0.
      *
      * @return the native symbolic constant of CR0.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int CR0();
+    public final static native int CR0() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Carriage-return delay type 1.
      *
      * @return the native symbolic constant of CR1.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int CR1();
+    public final static native int CR1() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Carriage-return delay type 2.
      *
      * @return the native symbolic constant of CR2.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int CR2();
+    public final static native int CR2() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Carriage-return delay type 3.
      *
      * @return the native symbolic constant of CR3.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int CR3();
+    public final static native int CR3() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Select horizontal-tab delays:
@@ -1120,17 +1177,19 @@ public final class Termios {
      * <b>POSIX.XSI:</b> Horizontal-tab delay type 1.
      *
      * @return the native symbolic constant of TAB1.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int TAB1();
+    public final static native int TAB1() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Horizontal-tab delay type 2.
      *
      * @return the native symbolic constant of TAB2.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int TAB2();
+    public final static native int TAB2() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Expand tabs to spaces.
@@ -1144,25 +1203,28 @@ public final class Termios {
      * <b>POSIX.XSI:</b> Select backspace delays:
      *
      * @return the native symbolic constant of BSDLY.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int BSDLY();
+    public final static native int BSDLY() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Backspace-delay type 0.
      *
      * @return the native symbolic constant of BS0.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int BS0();
+    public final static native int BS0() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Backspace-delay type 1.
      *
      * @return the native symbolic constant of BS1.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int BS1();
+    public final static native int BS1() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b>
@@ -1170,47 +1232,52 @@ public final class Termios {
      * @return the native symbolic constant of VTDLY.
      */
     @Define
-    public final static native int VTDLY();
+    public final static native int VTDLY() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Vertical-tab delay type 0.
      *
      * @return the native symbolic constant of VT0.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int VT0();
+    public final static native int VT0() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Vertical-tab delay type 1.
      *
      * @return the native symbolic constant of VT1.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int VT1();
+    public final static native int VT1() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Select form-feed delays:
      *
      * @return the native symbolic constant of FFDLY.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int FFDLY();
+    public final static native int FFDLY() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Form-feed delay type 0.
      *
      * @return the native symbolic constant of FF0.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int FF0();
+    public final static native int FF0() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> Form-feed delay type 1.
      *
      * @return the native symbolic constant of FF1.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int FF1();
+    public final static native int FF1() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> Odd parity, else even.
@@ -1227,7 +1294,7 @@ public final class Termios {
      */
     @Define
     public final static native int HUPCL();
-    
+
     /**
      * <b>POSIX:</b> <i>Attribute Selection</i> Change attributes immediately.
      *
@@ -1237,7 +1304,8 @@ public final class Termios {
     public final static native int TCSANOW();
 
     /**
-     * <b>POSIX:</b> <i>Attribute Selection</i> Change attributes when output has drained; also flush pending input.
+     * <b>POSIX:</b> <i>Attribute Selection</i> Change attributes when output
+     * has drained; also flush pending input.
      *
      * @return the native symbolic constant of TCSADRAIN.
      */
@@ -1245,7 +1313,8 @@ public final class Termios {
     public final static native int TCSADRAIN();
 
     /**
-     * <b>POSIX:</b> <i>Attribute Selection</i> Change attributes when output has drained.
+     * <b>POSIX:</b> <i>Attribute Selection</i> Change attributes when output
+     * has drained.
      *
      * @return the native symbolic constant of TCSAFLUSH.
      */
@@ -1261,13 +1330,13 @@ public final class Termios {
     public final static native int TCIFLUSH();
 
     /**
-     * <b>POSIX:</b> <i>Line Control</i> Flush both pending input and untransmitted output.
+     * <b>POSIX:</b> <i>Line Control</i> Flush both pending input and
+     * untransmitted output.
      *
      * @return the native symbolic constant of TCIOFLUSH.
      */
     @Define
     public final static native int TCIOFLUSH();
-
 
     /**
      * <b>POSIX:</b> <i>Line Control</i> Flush untransmitted output.
@@ -1278,7 +1347,8 @@ public final class Termios {
     public final static native int TCOFLUSH();
 
     /**
-     * <b>POSIX:</b> <i>Line Control</i> Transmit a STOP character, intended to suspend input data.
+     * <b>POSIX:</b> <i>Line Control</i> Transmit a STOP character, intended to
+     * suspend input data.
      *
      * @return the native symbolic constant of TCIOFF.
      */
@@ -1286,7 +1356,8 @@ public final class Termios {
     public final static native int TCIOFF();
 
     /**
-     * <b>POSIX:</b> <i>Line Control</i> Transmit a START character, intended to restart input data.
+     * <b>POSIX:</b> <i>Line Control</i> Transmit a START character, intended to
+     * restart input data.
      *
      * @return the native symbolic constant of TCION.
      */
@@ -1309,7 +1380,6 @@ public final class Termios {
     @Define
     public final static native int TCOON();
 
- 
     /**
      * <b>POSIX:</b> EOF character in <b>Canonical Mode</b>.
      *
@@ -1412,117 +1482,130 @@ public final class Termios {
     public final static native int NCCS();
 
     /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfgetispeed.html">cfgetispeed - get input baud rate</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfgetispeed.html">cfgetispeed
+     * - get input baud rate</a>.
+     *
      * @param termios
-     * @return 
+     * @return
      */
     public final static native @speed_t
     int cfgetispeed(StructTermios termios);
 
     /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfgetospeed.html">cfgetispeed - get output baud rate</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfgetospeed.html">cfgetispeed
+     * - get output baud rate</a>.
+     *
      * @param termios
-     * @return 
+     * @return
      */
     public final static native @speed_t
     int cfgetospeed(StructTermios termios);
 
     /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfsetispeed.html">cfgetispeed - set input baud rate</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfsetispeed.html">cfgetispeed
+     * - set input baud rate</a>.
+     *
      * @param termios
      * @param speed
-     * @return 
-     * @throws de.ibapl.jnhw.NativeErrorException 
+     * @return
+     * @throws de.ibapl.jnhw.NativeErrorException
      */
     public final static native int cfsetispeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
 
     /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfsetospeed.html">cfgetispeed - set output baud rate</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cfsetospeed.html">cfgetispeed
+     * - set output baud rate</a>.
+     *
      * @param termios
      * @param speed
-     * @return 
-     * @throws de.ibapl.jnhw.NativeErrorException 
+     * @return
+     * @throws de.ibapl.jnhw.NativeErrorException
      */
     public final static native int cfsetospeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
 
     /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcdrain.html">tcdrain - wait for transmission of output</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcdrain.html">tcdrain
+     * - wait for transmission of output</a>.
+     *
      * @param fildes
-     * @return 
-     * @throws de.ibapl.jnhw.NativeErrorException 
+     * @return
+     * @throws de.ibapl.jnhw.NativeErrorException
      */
     public final static native int tcdrain(int fildes) throws NativeErrorException;
 
     /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcflow.html">tcflow - suspend or restart the transmission or reception of data</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcflow.html">tcflow
+     * - suspend or restart the transmission or reception of data</a>.
+     *
      * @param fildes
      * @param action
      * @return
-     * @throws NativeErrorException 
+     * @throws NativeErrorException
      */
     public final static native int tcflow(int fildes, int action) throws NativeErrorException;
 
     /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcflush.html">tcflush - flush non-transmitted output data, non-read input data, or both</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcflush.html">tcflush
+     * - flush non-transmitted output data, non-read input data, or both</a>.
+     *
      * @param fildes
      * @param queue_selector
      * @return
-     * @throws NativeErrorException 
+     * @throws NativeErrorException
      */
     public final static native int tcflush(int fildes, int queue_selector) throws NativeErrorException;
 
     /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcgetattr.html">tcgetattr - get the parameters associated with the terminal</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcgetattr.html">tcgetattr
+     * - get the parameters associated with the terminal</a>.
+     *
      * @param fildes
      * @param termios
      * @return
-     * @throws NativeErrorException 
+     * @throws NativeErrorException
      */
     public final static native int tcgetattr(int fildes, StructTermios termios) throws NativeErrorException;
 
     /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcgetsid.html">tcgetsid - get the process group ID for the session leader for the controlling terminal</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcgetsid.html">tcgetsid
+     * - get the process group ID for the session leader for the controlling
+     * terminal</a>.
+     *
      * @param fildes
-     * @return 
+     * @return
      */
-    public final static native @pid_t int tcgetsid(int fildes);
+    public final static native @pid_t
+    int tcgetsid(int fildes);
 
     /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcsendbreak.html">tcsendbreak - send a break for a specific duration</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcsendbreak.html">tcsendbreak
+     * - send a break for a specific duration</a>.
+     *
      * @param fildes
      * @param duration
      * @return
-     * @throws NativeErrorException 
+     * @throws NativeErrorException
      */
     public final static native int tcsendbreak(int fildes, int duration) throws NativeErrorException;
 
     /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcsetattr.html">tcsetattr - set the parameters associated with the terminal</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tcsetattr.html">tcsetattr
+     * - set the parameters associated with the terminal</a>.
+     *
      * @param fildes
      * @param optional_actions
      * @param termios
      * @return
-     * @throws NativeErrorException 
+     * @throws NativeErrorException
      */
     public final static native int tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException;
 
     /**
-     * 
+     *
      * @param termios
      * @param speed
      * @return
-     * @throws NativeErrorException 
+     * @throws NativeErrorException
      */
     public final static native int cfsetspeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
 
