@@ -23,16 +23,11 @@ package de.ibapl.jnhw.linux.sys;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledOnOs;
 
-import de.ibapl.jnhw.libloader.NativeLibResolver;
-import de.ibapl.jnhw.libloader.OS;
-
-@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+@EnabledOnOs(org.junit.jupiter.api.condition.OS.LINUX)
 public class EventfdTests {
 
     @BeforeAll
@@ -49,15 +44,6 @@ public class EventfdTests {
 
     @AfterEach
     public void tearDown() throws Exception {
-    }
-
-    @Test
-    public void test_HAVE_SYS_EVENTFD_H() throws Exception {
-        if (NativeLibResolver.getOS() == OS.LINUX) {
-            Assertions.assertTrue(Eventfd.HAVE_SYS_EVENTFD_H(), "expected to have sys/eventfd.h");
-        } else {
-            Assertions.assertFalse(Eventfd.HAVE_SYS_EVENTFD_H(), "not expected to have sys/eventfd.h");
-        }
     }
 
 }

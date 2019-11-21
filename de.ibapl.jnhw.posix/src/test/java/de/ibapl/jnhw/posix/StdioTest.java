@@ -22,10 +22,6 @@
 package de.ibapl.jnhw.posix;
 
 import java.io.File;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -37,34 +33,6 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class StdioTest {
     
-    public StdioTest() {
-    }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
-    }
-
-    /**
-     * Test of HAVE_STDIO_H method, of class Stdio.
-     */
-    @Test
-    public void testHAVE_STDIO_H() {
-        System.out.println("HAVE_STDIO_H");
-        assertTrue(Stdio.HAVE_STDIO_H(), "expected to have stdio.h");
-    }
-
     /**
      * Test of remove method, of class Stdio.
      */

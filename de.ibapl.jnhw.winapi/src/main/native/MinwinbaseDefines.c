@@ -19,27 +19,32 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw;
+#include "jnhw-winapi.h"
+#include "de_ibapl_jnhw_winapi_Minwindef.h"
 
-/**
- * A int reference holder.
- * This is used to pass a pointer to int32_t or uint32_t argument in and out of functions.
- * 
- * @author aploese
- */
-public class IntRef {
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-    /**
-     * the int int32_t or uint32_t.
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Minwindef
+     * Method:    HAVE_MINWINDEF_H
+     * Signature: ()Z
      */
-    public int value;
-
-    public IntRef() {
-
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Minwindef_HAVE_1MINWINDEF_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#ifdef HAVE_MINWINDEF_H
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
     }
 
-    public IntRef(int initialValue) {
-        this.value = initialValue;
-    }
+#ifdef HAVE_MINWINDEF_H
+#include <minwindef.h>
 
+
+#endif
+#ifdef __cplusplus
 }
+#endif

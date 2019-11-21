@@ -21,21 +21,31 @@
  */
 package de.ibapl.jnhw.util.posix;
 
+import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Defined;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.linux.sys.Eventfd;
+import de.ibapl.jnhw.posix.Fcntl;
+import de.ibapl.jnhw.posix.Poll;
+import de.ibapl.jnhw.posix.Stdio;
 import de.ibapl.jnhw.posix.Termios;
-import java.util.function.IntSupplier;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
+import de.ibapl.jnhw.posix.Unistd;
+import de.ibapl.jnhw.posix.sys.Stat;
+import de.ibapl.jnhw.posix.sys.Types;
+import de.ibapl.jnhw.unix.sys.Ioctl;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
+ * Test all symbolic constants XXX that are defined with #define XXX
  *
  * @author aploese
  */
@@ -43,33 +53,181 @@ public class DefinesTest {
 
     private static MultiarchTupelBuilder multiarchTupelBuilder;
 
-    public DefinesTest() {
-    }
-
     @BeforeAll
     public static void setUpClass() {
         multiarchTupelBuilder = new MultiarchTupelBuilder();
     }
 
-    @AfterAll
-    public static void tearDownClass() {
+    public static void testDefines(Class clazz) throws Exception {
+        System.out.println(clazz.getName() + " Defines: ");
+        for (Method m : clazz.getMethods()) {
+            final Class<?> exceptionTypes[] = m.getExceptionTypes();
+            try {
+                final Define define = m.getAnnotation(Define.class);
+                if (define != null) {
+                    System.out.println("\t" + m.getName() + " = " + m.invoke(clazz));
+                }
+            } catch (InvocationTargetException ite) {
+                if (ite.getTargetException() instanceof NotDefinedException) {
+                    boolean found = false;
+                    for (Class<?> et : exceptionTypes) {
+                        if (et == NotDefinedException.class) {
+                            found = true;
+                            break;
+                        }
+                        if (found) {
+                            System.out.println("\t" + m.getName() + " NOT DEFINED!");
+                        } else {
+                            Assertions.fail("Name: " + m.getName() + " throws NotDefinedException but dont declare it" + ite.getTargetException());
+                        }
+                    }
+                } else {
+                    Assertions.fail("Name: " + m.getName() + " throws InvocationTargetException: " + ite.getTargetException());
+                }
+            } catch (Throwable t) {
+                Assertions.fail("Name: " + m.getName() + " throws unknown exception: " + t);
+            }
+        }
     }
 
-    @BeforeEach
-    public void setUp() {
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testEventfdDefines() throws Exception {
+        testDefines(Eventfd.class);
     }
 
-    @AfterEach
-    public void tearDown() {
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testFcntlDefines() throws Exception {
+        testDefines(Fcntl.class);
     }
 
     /**
-     * Test of __linux__ method, of class Defines.
+     * Test of HAVE_STDIO_H method, of class Stdio.
      */
     @Test
-    public void test__linux__() {
-        System.out.println("__linux__");
-        assertEquals(multiarchTupelBuilder.getOs() == OS.LINUX, Defines.__linux__());
+    public void test_HAVE_STDIO_H() {
+        System.out.println("HAVE_STDIO_H");
+        assertTrue(Stdio.HAVE_STDIO_H(), "expected to have stdio.h");
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testIoctlDefines() throws Exception {
+        testDefines(Ioctl.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testIsocErrnoDefines() throws Exception {
+        testDefines(de.ibapl.jnhw.isoc.Errno.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testPollDefines() throws Exception {
+        testDefines(Poll.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testPosixErrnoDefines() throws Exception {
+        testDefines(de.ibapl.jnhw.posix.Errno.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testStatDefines() throws Exception {
+        testDefines(Stat.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testStdioDefines() throws Exception {
+        testDefines(Stdio.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testTermiosDefines() throws Exception {
+        testDefines(Termios.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testTypesDefines() throws Exception {
+        testDefines(Types.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testUnistdDefines() throws Exception {
+        testDefines(Unistd.class);
+    }
+
+    @Test
+    public void test_HAVE_ERRNO_H() throws Exception {
+        Assertions.assertTrue(de.ibapl.jnhw.isoc.Errno.HAVE_ERRNO_H(), "expected to have errno.h");
+    }
+
+    @Test
+    public void test_HAVE_FCNTL_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Fcntl.HAVE_FCNTL_H(), "expected not to have fcntl.h");
+        } else {
+            Assertions.assertTrue(Fcntl.HAVE_FCNTL_H(), "expected to have fcntl.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_POLL_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Poll.HAVE_POLL_H(), "not expected to have poll.h");
+        } else {
+            Assertions.assertTrue(Poll.HAVE_POLL_H(), "expected to have poll.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_SYS_EVENTFD_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.LINUX) {
+            Assertions.assertTrue(Eventfd.HAVE_SYS_EVENTFD_H(), "expected to have sys/eventfd.h");
+        } else {
+            Assertions.assertFalse(Eventfd.HAVE_SYS_EVENTFD_H(), "not expected to have sys/eventfd.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_SYS_IOCTL_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            assertFalse(Ioctl.HAVE_SYS_IOCTL_H(), "not expected to have sys/ioctl.h");
+        } else {
+            assertTrue(Ioctl.HAVE_SYS_IOCTL_H(), "expected to have sys/ioctl.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_SYS_STAT_H() throws Exception {
+        Assertions.assertTrue(Stat.HAVE_SYS_STAT_H(), "expected to have sys/stat.h");
+    }
+
+    @Test
+    public void test_HAVE_SYS_TYPES_H() throws Exception {
+        Assertions.assertTrue(Types.HAVE_SYS_TYPES_H(), "expected to have sys/types.h");
+    }
+
+    @Test
+    public void test_HAVE_TERMIOS_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            assertFalse(Termios.HAVE_TERMIOS_H(), "not expected to have termios.h");
+        } else {
+            assertTrue(Termios.HAVE_TERMIOS_H(), "expected to have termios.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_UNISTD_H() throws Exception {
+        Assertions.assertTrue(Unistd.HAVE_UNISTD_H(), "expected to have unistd.h");
     }
 
     /**
@@ -78,19 +236,19 @@ public class DefinesTest {
     @Test
     public void test_LARGEFILE64_SOURCE() {
         System.out.println("_LARGEFILE64_SOURCE");
-        switch (multiarchTupelBuilder.getOs()) {
+        switch (multiarchTupelBuilder.getOS()) {
             case LINUX:
-            switch (Defines.__WORDSIZE()) {
-                case 32:
-                    assertTrue(Defines._LARGEFILE64_SOURCE());
-                    break;
-                case 64:
-                    assertFalse(Defines._LARGEFILE64_SOURCE());
-                    break;
-                default:
-                    fail("no case for this wordsize:" + Defines.__WORDSIZE());
-                    break;
-            }
+                switch (Defines.__WORDSIZE()) {
+                    case 32:
+                        assertTrue(Defines._LARGEFILE64_SOURCE());
+                        break;
+                    case 64:
+                        assertFalse(Defines._LARGEFILE64_SOURCE());
+                        break;
+                    default:
+                        fail("no case for this wordsize:" + Defines.__WORDSIZE());
+                        break;
+                }
                 break;
 
             case FREE_BSD:
@@ -103,7 +261,7 @@ public class DefinesTest {
                 assertFalse(Defines._LARGEFILE64_SOURCE());
                 break;
             default:
-                fail("No testcase for OS: " + multiarchTupelBuilder.getOs());
+                fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
         }
     }
 
@@ -113,7 +271,7 @@ public class DefinesTest {
     @Test
     public void test__APPLE__() {
         System.out.println("__APPLE__");
-        assertEquals(multiarchTupelBuilder.getOs() == OS.MAC_OS_X, Defines.__APPLE__());
+        assertEquals(multiarchTupelBuilder.getOS() == OS.MAC_OS_X, Defines.__APPLE__());
     }
 
     /**
@@ -122,7 +280,7 @@ public class DefinesTest {
     @Test
     public void test__FreeBSD__() {
         System.out.println("__FreeBSD__");
-        assertEquals(multiarchTupelBuilder.getOs() == OS.FREE_BSD, Defined.defined(Defines::__FreeBSD__));
+        assertEquals(multiarchTupelBuilder.getOS() == OS.FREE_BSD, Defined.defined(Defines::__FreeBSD__));
     }
 
     /**
@@ -140,6 +298,15 @@ public class DefinesTest {
                 assertEquals(mi.getWordSize(), Defines.__WORDSIZE(), "wordsize");
             }
         }
+    }
+
+    /**
+     * Test of __linux__ method, of class Defines.
+     */
+    @Test
+    public void test__linux__() {
+        System.out.println("__linux__");
+        assertEquals(multiarchTupelBuilder.getOS() == OS.LINUX, Defines.__linux__());
     }
 
 }

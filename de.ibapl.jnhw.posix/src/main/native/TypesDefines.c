@@ -27,11 +27,11 @@ extern "C" {
 #include "de_ibapl_jnhw_posix_sys_Types.h"
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Types
+     * Class:     de_ibapl_jnhw_posix_sys_Types
      * Method:    HAVE_SYS_TYPES_H
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Stdio_HAVE_1SYS_1TYPES_1H
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_HAVE_1SYS_1TYPES_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_SYS_TYPES_H
         return JNI_TRUE;

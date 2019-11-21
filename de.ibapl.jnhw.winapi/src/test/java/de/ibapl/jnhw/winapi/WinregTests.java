@@ -21,31 +21,18 @@
  */
 package de.ibapl.jnhw.winapi;
 
-
+import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.winapi.Minwindef.LPBYTE;
+import de.ibapl.jnhw.winapi.Minwindef.PHKEY;
+import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.libloader.NativeLibResolver;
-import de.ibapl.jnhw.libloader.OS;
-import de.ibapl.jnhw.winapi.Minwindef.LPBYTE;
-import de.ibapl.jnhw.winapi.Minwindef.PHKEY;
-import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
-
+@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinregTests {
 
     @Test
-    public void test_HAVE_WINREG_H() throws Exception {
-        if (NativeLibResolver.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Winreg.HAVE_WINREG_H(), "expected to have winreg.h");
-        } else {
-            Assertions.assertFalse(Winreg.HAVE_WINREG_H(), "not expected to have winreg.h");
-        }
-    }
-
-    @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testRegOpenKey() throws Exception {
         String testKeyStr = "HARDWARE\\DESCRIPTION\\System";
         PHKEY testKey = new PHKEY();
@@ -78,9 +65,7 @@ public class WinregTests {
 
             }
         } while (collecting);
-
         Winreg.RegCloseKey(testKey.dereference());
-
     }
 
 }

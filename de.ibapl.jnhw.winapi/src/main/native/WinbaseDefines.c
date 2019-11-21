@@ -42,7 +42,7 @@ extern "C" {
 
 #ifdef HAVE_WINBASE_H
 #include <winbase.h>
-    
+
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    STD_INPUT_HANDLE
@@ -50,7 +50,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_STD_1INPUT_1HANDLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int32_t)STD_INPUT_HANDLE;
+        return (int32_t) STD_INPUT_HANDLE;
     }
 
     /*
@@ -60,7 +60,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_STD_1OUTPUT_1HANDLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int32_t)STD_OUTPUT_HANDLE;
+        return (int32_t) STD_OUTPUT_HANDLE;
     }
 
     /*
@@ -70,7 +70,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_STD_1ERROR_1HANDLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int32_t)STD_ERROR_HANDLE;
+        return (int32_t) STD_ERROR_HANDLE;
     }
 
     /*
@@ -80,7 +80,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_WAIT_1FAILED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int32_t)WAIT_FAILED;
+        return (int32_t) WAIT_FAILED;
     }
 
     /*
@@ -115,12 +115,192 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_ATTRIBUTE_ARCHIVE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1ATTRIBUTE_1ARCHIVE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_ATTRIBUTE_ARCHIVE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_ATTRIBUTE_ENCRYPTED
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1ATTRIBUTE_1ENCRYPTED
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_ATTRIBUTE_ENCRYPTED;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_ATTRIBUTE_HIDDEN
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1ATTRIBUTE_1HIDDEN
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_ATTRIBUTE_HIDDEN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_ATTRIBUTE_NORMAL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1ATTRIBUTE_1NORMAL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_ATTRIBUTE_NORMAL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_ATTRIBUTE_OFFLINE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1ATTRIBUTE_1OFFLINE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_ATTRIBUTE_OFFLINE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_ATTRIBUTE_READONLY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1ATTRIBUTE_1READONLY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_ATTRIBUTE_READONLY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_ATTRIBUTE_SYSTEM
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1ATTRIBUTE_1SYSTEM
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_ATTRIBUTE_SYSTEM;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_ATTRIBUTE_TEMPORARY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1ATTRIBUTE_1TEMPORARY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_ATTRIBUTE_TEMPORARY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_FLAG_BACKUP_SEMANTICS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1BACKUP_1SEMANTICS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_FLAG_BACKUP_SEMANTICS;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_FLAG_DELETE_ON_CLOSE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1DELETE_1ON_1CLOSE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_FLAG_DELETE_ON_CLOSE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_FLAG_NO_BUFFERING
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1NO_1BUFFERING
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_FLAG_NO_BUFFERING;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_FLAG_OPEN_NO_RECALL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1OPEN_1NO_1RECALL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_FLAG_OPEN_NO_RECALL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_FLAG_OPEN_REPARSE_POINT
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1OPEN_1REPARSE_1POINT
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_FLAG_OPEN_REPARSE_POINT;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    FILE_FLAG_OVERLAPPED
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1OVERLAPPED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return FILE_FLAG_OVERLAPPED;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_FLAG_POSIX_SEMANTICS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1POSIX_1SEMANTICS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_FLAG_POSIX_SEMANTICS;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_FLAG_RANDOM_ACCESS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1RANDOM_1ACCESS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_FLAG_RANDOM_ACCESS;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_FLAG_SESSION_AWARE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1SESSION_1AWARE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_FLAG_SESSION_AWARE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_FLAG_SEQUENTIAL_SCAN
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1SEQUENTIAL_1SCAN
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_FLAG_SEQUENTIAL_SCAN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_FLAG_WRITE_THROUGH
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1FLAG_1WRITE_1THROUGH
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return (int32_t) FILE_FLAG_WRITE_THROUGH;
     }
 
     /*
@@ -162,15 +342,34 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return RTS_CONTROL_HANDSHAKE;
     }
-
+        /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    DTR_CONTROL_DISABLE
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_DTR_1CONTROL_1DISABLE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return DTR_CONTROL_DISABLE;
+    }
+ 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
-     * Method:    create_INVALID_HANDLE_VALUE
-     * Signature: ()Lde/ibapl/jnhw/winapi/Winnt$HANDLE;
+     * Method:    DTR_CONTROL_ENABLE
+     * Signature: ()B
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winbase_create_1INVALID_1HANDLE_1VALUE
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_DTR_1CONTROL_1ENABLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREATE_HANDLE(INVALID_HANDLE_VALUE);
+        return DTR_CONTROL_ENABLE;
+    }
+ 
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    DTR_CONTROL_HANDSHAKE
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_DTR_1CONTROL_1HANDSHAKE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return DTR_CONTROL_HANDSHAKE;
     }
 
     /*
@@ -260,7 +459,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_INFINITE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int32_t)INFINITE;
+        return (int32_t) INFINITE;
     }
 
     /*
@@ -271,6 +470,26 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SETRTS
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return SETRTS;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SETXOFF
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SETXOFF
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SETXOFF;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SETXON
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SETXON
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SETXON;
     }
 
     /*
@@ -361,6 +580,56 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_MS_1RLSD_1ON
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return MS_RLSD_ON;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    CE_BREAK
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CE_1BREAK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CE_BREAK;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    CE_FRAME
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CE_1FRAME
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CE_FRAME;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    CE_OVERRUN
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CE_1OVERRUN
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CE_OVERRUN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    CE_RXOVER
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CE_1RXOVER
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CE_RXOVER;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    CE_RXPARITY
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CE_1RXPARITY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CE_RXPARITY;
     }
 
 #endif

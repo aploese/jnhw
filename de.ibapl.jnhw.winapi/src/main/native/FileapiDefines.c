@@ -42,8 +42,37 @@ extern "C" {
 
 #ifdef HAVE_FILEAPI_H
 #include <fileapi.h>
-    
-    /*
+        /*
+     * Class:     de_ibapl_jnhw_winapi_Fileapi
+     * Method:    CREATE_ALWAYS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_CREATE_1ALWAYS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CREATE_ALWAYS;
+    }
+
+        /*
+     * Class:     de_ibapl_jnhw_winapi_Fileapi
+     * Method:    CREATE_NEW
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_CREATE_1NEW
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CREATE_NEW;
+    }
+
+        /*
+     * Class:     de_ibapl_jnhw_winapi_Fileapi
+     * Method:    OPEN_ALWAYS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_OPEN_1ALWAYS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return OPEN_ALWAYS;
+    }
+
+        /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    OPEN_EXISTING
      * Signature: ()I
@@ -51,6 +80,16 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_OPEN_1EXISTING
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return OPEN_EXISTING;
+    }
+
+        /*
+     * Class:     de_ibapl_jnhw_winapi_Fileapi
+     * Method:    TRUNCATE_EXISTING
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_TRUNCATE_1EXISTING
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return TRUNCATE_EXISTING;
     }
 
 

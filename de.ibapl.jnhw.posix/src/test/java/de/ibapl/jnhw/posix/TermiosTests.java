@@ -23,34 +23,17 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Defined;
 import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.libloader.Arch;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
-import de.ibapl.jnhw.libloader.OS;
+import static de.ibapl.jnhw.posix.Termios.CLOCAL;
+import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
 import static de.ibapl.jnhw.posix.Termios.CS8;
-import static de.ibapl.jnhw.posix.Termios.CREAD;
-import static de.ibapl.jnhw.posix.Termios.CLOCAL;
-import de.ibapl.jnhw.util.posix.Defines;
-import org.junit.jupiter.api.BeforeAll;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TermiosTests {
-
-    @BeforeAll
-    public static void setUpClass() {
-    }
-
-    @Test
-    public void test_HAVE_TERMIOS_H() throws Exception {
-        if (NativeLibResolver.getOS() == OS.WINDOWS) {
-            assertFalse(Termios.HAVE_TERMIOS_H(), "not expected to have termios.h");
-        } else {
-            assertTrue(Termios.HAVE_TERMIOS_H(), "expected to have termios.h");
-        }
-    }
 
     @Test
     public void CMSPAR() {
@@ -108,13 +91,13 @@ public class TermiosTests {
         switch (NativeLibResolver.getOS()) {
             case LINUX:
                 try {
-                    Termios._HAVE_STRUCT_TERMIOS_C_ISPEED();
-                    //Do the test
-                } catch (NotDefinedException nee) {
-                    //Skip the test
-                    return;
-                }
-                break;
+                Termios._HAVE_STRUCT_TERMIOS_C_ISPEED();
+                //Do the test
+            } catch (NotDefinedException nee) {
+                //Skip the test
+                return;
+            }
+            break;
             case MAC_OS_X:
                 //Do the test
                 break;
@@ -139,7 +122,7 @@ public class TermiosTests {
 
         Termios.cfsetspeed(termios, Termios.B9600());
         termios.c_cflag(CREAD() | CLOCAL() | CS8() | CRTSCTS());
-        
+
         assertFalse(termios.toString().isEmpty(), "Termios.StructTermios is empty");
     }
 

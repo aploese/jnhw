@@ -21,7 +21,7 @@
  */
 /**
  * Very thin and safe wrapper classes around common used headers on a POSIX system
- * under the <code>sys</code> path.
+ * under the {@code sys} path.
  * 
  * See specs at:
  * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/">The Open Group Base Specifications Issue 7, 2018 edition

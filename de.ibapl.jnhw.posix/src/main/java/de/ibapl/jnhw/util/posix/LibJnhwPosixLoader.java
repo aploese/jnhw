@@ -33,8 +33,8 @@ import de.ibapl.jnhw.libloader.NativeLibResolver;
 public final class LibJnhwPosixLoader {
 
     public final static String LIB_JNHW_POSIX = "jnhw-posix";
-    public final static int LIB_JNHW_POSIX_VERSION = 1;
     private static LoadResult LIB_JNHW_POSIX_LOAD_RESULT;
+    public final static int LIB_JNHW_POSIX_VERSION = 1;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
 
@@ -42,7 +42,8 @@ public final class LibJnhwPosixLoader {
         System.load(absoluteLibName);
     }
 
-    private LibJnhwPosixLoader() {
+    public static LoadResult getLoadResult() {
+        return LIB_JNHW_POSIX_LOAD_RESULT;
     }
 
     /**
@@ -74,8 +75,7 @@ public final class LibJnhwPosixLoader {
         return state;
     }
 
-    public static LoadResult getLoadResult() {
-        return LIB_JNHW_POSIX_LOAD_RESULT;
+    private LibJnhwPosixLoader() {
     }
 
 }

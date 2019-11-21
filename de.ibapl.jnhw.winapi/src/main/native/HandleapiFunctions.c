@@ -19,27 +19,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw;
+#include "jnhw-winapi.h"
+#include "de_ibapl_jnhw_winapi_Handleapi.h"
 
-/**
- * A int reference holder.
- * This is used to pass a pointer to int32_t or uint32_t argument in and out of functions.
- * 
- * @author aploese
- */
-public class IntRef {
+#ifdef HAVE_HANDLEAPI_H
+#include <handleapi.h>
 
-    /**
-     * the int int32_t or uint32_t.
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Handleapi
+     * Method:    CloseHandle
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
      */
-    public int value;
-
-    public IntRef() {
-
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Handleapi_CloseHandle
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hObject) {
+        if (hObject == NULL) {
+            throw_NullPointerException(env, "hObject is null");
+            return;
+        }
+        if (!CloseHandle(UNWRAP_HANDLE(hObject))) {
+            throw_NativeErrorException(env, (int32_t)GetLastError());
+        }
     }
 
-    public IntRef(int initialValue) {
-        this.value = initialValue;
-    }
 
+#ifdef __cplusplus
 }
+#endif
+#endif

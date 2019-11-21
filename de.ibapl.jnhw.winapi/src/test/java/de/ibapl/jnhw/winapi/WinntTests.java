@@ -22,59 +22,26 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.OpaqueMemory;
-import de.ibapl.jnhw.libloader.NativeLibResolver;
-import de.ibapl.jnhw.libloader.OS;
 import java.nio.charset.Charset;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
+@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinntTests {
 
-    @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-    }
-
-    @AfterAll
-    public static void tearDownAfterClass() throws Exception {
-    }
-
-    @BeforeEach
-    public void setUp() throws Exception {
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-    }
-
     @Test
-    public void test_HAVE_WINNT_H() throws Exception {
-        if (NativeLibResolver.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Winnt.HAVE_WINNT_H(), "expected to have winnt.h");
-        } else {
-            Assertions.assertFalse(Winnt.HAVE_WINNT_H(), "not expected to have winnt.h");
-        }
-    }
-
-    @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testMAXDWORD() throws Exception {
         Winnt.MAXDWORD();
     }
-    
+
     @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void test_INVALID_HANDLE_VALUE() throws Exception {
-        Winnt.HANDLE ivh = Winbase.INVALID_HANDLE_VALUE();
+        Winnt.HANDLE ivh = Handleapi.INVALID_HANDLE_VALUE();
         Assertions.assertTrue(ivh.is_INVALID_HANDLE_VALUE());
     }
 
     @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void test_LPWSTR_stringValueOfNullTerminated() throws Exception {
         byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
         Minwindef.LPBYTE lpByte = new Minwindef.LPBYTE(64, true);
@@ -82,5 +49,5 @@ public class WinntTests {
         lpByte.bufferEnd = data.length;
         Assertions.assertEquals("HELLO WORLD!", Winnt.LPWSTR.stringValueOfNullTerminated(lpByte));
     }
-    
+
 }

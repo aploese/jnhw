@@ -23,47 +23,14 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.NativeErrorException;
 import java.time.Duration;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
-import de.ibapl.jnhw.libloader.NativeLibResolver;
-import de.ibapl.jnhw.libloader.OS;
-
+@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SynchapiTests {
 
-    @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-    }
-
-    @AfterAll
-    public static void tearDownAfterClass() throws Exception {
-    }
-
-    @BeforeEach
-    public void setUp() throws Exception {
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-    }
-
     @Test
-    public void test_HAVE_SYNCAPI_H() throws Exception {
-        if (NativeLibResolver.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Synchapi.HAVE_SYNCHAPI_H(), "expected to have synchapi.h");
-        } else {
-            Assertions.assertFalse(Synchapi.HAVE_SYNCHAPI_H(), "not expected to have synchapi.h");
-        }
-    }
-
-    @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testWaitForSingleTimeout() throws Exception {
         final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(5000), () -> {
@@ -71,11 +38,10 @@ public class SynchapiTests {
             Assertions.assertEquals(Winbase.WAIT_TIMEOUT(), result);
             return null;
         });
-        Winbase.CloseHandle(hEvent);
+        Handleapi.CloseHandle(hEvent);
     }
 
     @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testWaitForSingleSignaled() throws Exception {
         final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(5000), () -> {
@@ -92,6 +58,6 @@ public class SynchapiTests {
             Assertions.assertEquals(Winbase.WAIT_OBJECT_0(), result);
             return null;
         });
-        Winbase.CloseHandle(hEvent);
+        Handleapi.CloseHandle(hEvent);
     }
 }

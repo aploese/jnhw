@@ -53,7 +53,7 @@ AC_SUBST([JNHW_AM_CFLAGS],[-Wall -Wextra -Wconversion -Werror])
 
 # Checks for header files.
 AC_CHECK_HEADERS([windows.h])
-AC_CHECK_HEADERS([winnt.h fileapi.h minwinbase.h  minwindef.h winbase.h winreg.h winerror.h synchapi.h ioapiset.h fileapi.h, processenv.h],[],[],[#include <windows.h>])
+AC_CHECK_HEADERS([winnt.h fileapi.h minwinbase.h  minwindef.h winbase.h winreg.h winerror.h synchapi.h ioapiset.h fileapi.h processenv.h handleapi.h errhandlingapi.h],[],[],[#include <windows.h>])
 
 # Checks for typedefs, structures, and compiler characteristics.
 

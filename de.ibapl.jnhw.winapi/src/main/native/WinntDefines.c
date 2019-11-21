@@ -45,12 +45,62 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    FILE_SHARE_DELETE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_FILE_1SHARE_1DELETE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_SHARE_DELETE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    FILE_SHARE_READ
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_FILE_1SHARE_1READ
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_SHARE_READ;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    FILE_SHARE_WRITE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_FILE_1SHARE_1WRITE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_SHARE_WRITE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
      * Method:    MAXDWORD
      * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winnt_MAXDWORD
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int64_t)MAXDWORD;
+        return (int64_t) MAXDWORD;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    GENERIC_ALL
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_GENERIC_1ALL
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return (int32_t) GENERIC_ALL;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    GENERIC_EXECUTE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_GENERIC_1EXECUTE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return (int32_t) GENERIC_EXECUTE;
     }
 
     /*
@@ -60,7 +110,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_GENERIC_1READ
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int32_t)GENERIC_READ;
+        return (int32_t) GENERIC_READ;
     }
 
     /*
@@ -71,6 +121,85 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_GENERIC_1WRITE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return GENERIC_WRITE;
+    }
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    KEY_ALL_ACCESS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_KEY_1ALL_1ACCESS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return KEY_ALL_ACCESS;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    KEY_EXECUTE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_KEY_1EXECUTE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return KEY_EXECUTE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    KEY_QUERY_VALUE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_KEY_1QUERY_1VALUE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return KEY_QUERY_VALUE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    KEY_SET_VALUE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_KEY_1SET_1VALUE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return KEY_SET_VALUE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    KEY_CREATE_SUB_KEY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_KEY_1CREATE_1SUB_1KEY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return KEY_CREATE_SUB_KEY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    KEY_ENUMERATE_SUB_KEYS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_KEY_1ENUMERATE_1SUB_1KEYS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return KEY_ENUMERATE_SUB_KEYS;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    KEY_NOTIFY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_KEY_1NOTIFY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return KEY_NOTIFY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    KEY_CREATE_LINK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_KEY_1CREATE_1LINK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return KEY_CREATE_LINK;
     }
 
     /*
@@ -83,6 +212,67 @@ extern "C" {
         return KEY_READ;
     }
 
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    REG_OPTION_NON_VOLATILE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_REG_1OPTION_1NON_1VOLATILE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return REG_OPTION_NON_VOLATILE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    REG_OPTION_VOLATILE
+
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_REG_1OPTION_1VOLATILE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return REG_OPTION_VOLATILE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    REG_OPTION_CREATE_LINK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_REG_1OPTION_1CREATE_1LINK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return REG_OPTION_CREATE_LINK;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    REG_OPTION_BACKUP_RESTORE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_REG_1OPTION_1BACKUP_1RESTORE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return REG_OPTION_BACKUP_RESTORE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    REG_OPTION_OPEN_LINK
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_REG_1OPTION_1OPEN_1LINK
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return REG_OPTION_OPEN_LINK;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    REG_OPENED_EXISTING_KEY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_REG_1OPENED_1EXISTING_1KEY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return REG_OPENED_EXISTING_KEY;
+    }
+    
     /*
      * Class:     de_ibapl_jnhw_winapi_Winnt
      * Method:    REG_NONE
@@ -221,6 +411,16 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_REG_1QWORD_1LITTLE_1ENDIAN
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return REG_QWORD_LITTLE_ENDIAN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    REG_CREATED_NEW_KEY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_REG_1CREATED_1NEW_1KEY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return REG_CREATED_NEW_KEY;
     }
 
 #ifdef __cplusplus

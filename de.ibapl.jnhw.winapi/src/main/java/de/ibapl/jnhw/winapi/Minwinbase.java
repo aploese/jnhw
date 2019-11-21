@@ -24,9 +24,12 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
-import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
+ * Wrapper around the
+ * <a href="https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/">minwinbase.h</a>
+ * header.
  *
  * @author aploese
  */
@@ -40,7 +43,13 @@ public class Minwinbase {
         LibJnhwWinApiLoader.touch();
     }
 
-//TODO   public final static native boolean HAVE_MINWINBASE_H();
+    public final static native boolean HAVE_MINWINBASE_H();
+
+    /**
+     * <b>WIN:</b> <a href="https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-overlapped">{@code structure
+     * OVERLAPPED}</a>.
+     *
+     */
     public final static class OVERLAPPED extends OpaqueMemory {
 
         /**
@@ -51,22 +60,45 @@ public class Minwinbase {
             LibJnhwWinApiLoader.touch();
         }
 
+        /**
+         * Get the real size of struct OVERLAPPED natively.
+         *
+         * @return the native value sizeof(struct OVERLAPPED).
+         */
         public final static native int sizeofOVERLAPPED();
 
+        /**
+         * @return the native value of Internal;
+         */
         public final native long Internal();
 
+        /**
+         * @return the native value of InternalHigh;
+         */
         public final native long InternalHigh();
 
-        public native void hEvent(HANDLE value);
-        
+        /**
+         * @param hEvent the value of hEvent to be set natively.
+         */
+        public native void hEvent(HANDLE hEvent);
+
+        /**
+         * @return the native value of hEvent;
+         */
         public native HANDLE hEvent();
 
-        public OVERLAPPED(boolean clearMem) {
-            super(sizeofOVERLAPPED(), clearMem);
+        public OVERLAPPED() {
+            //always clean field Pointer must be zero!
+            super(sizeofOVERLAPPED(), true);
         }
 
     }
 
+    /**
+     * <b>WIN:</b> <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa379560(v=vs.85)">{@code structure
+     * SECURITY_ATTRIBUTES}</a>.
+     *
+     */
     public static class SECURITY_ATTRIBUTES extends OpaqueMemory {
 
         /**
@@ -77,11 +109,22 @@ public class Minwinbase {
             LibJnhwWinApiLoader.touch();
         }
 
+        /**
+         * Get the real size of struct SECURITY_ATTRIBUTES natively.
+         *
+         * @return the native value sizeof(struct SECURITY_ATTRIBUTES).
+         */
         public final static native int sizeofSECURITY_ATTRIBUTES();
 
+        /**
+         * @return the native value of nLength;
+         */
         public final native long nLength();
 //        private Minwindef.LPVOID lpSecurityDescriptor;
 
+        /**
+         * @return the native value of bInheritHandle;
+         */
         public native boolean bInheritHandle();
 
         public SECURITY_ATTRIBUTES() {

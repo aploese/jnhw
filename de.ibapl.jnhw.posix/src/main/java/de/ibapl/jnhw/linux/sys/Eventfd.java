@@ -23,8 +23,8 @@ package de.ibapl.jnhw.linux.sys;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.LongRef;
+import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -32,18 +32,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Wrapper around the linux {@code<sys/eventfd.h>} header.
- * execute {@code man eventfd} on linux to get more informations.
+ * Wrapper around the linux {@code <sys/eventfd.h>} header. execute
+ * {@code  man eventfd} on linux to get more informations.
  *
  * @author aploese
  */
 @Include("#include <sys/eventfd.h>")
 public final class Eventfd {
-
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface eventfd_t {
-    }
 
     /**
      * Make sure the native lib is loaded
@@ -52,63 +47,78 @@ public final class Eventfd {
         LibJnhwPosixLoader.touch();
     }
 
-    private Eventfd() {
-
-    }
-
-    public final static native boolean HAVE_SYS_EVENTFD_H();
-
     /**
-     * <b>Linux:</b> creates  an "eventfd object" that can be used as an event wait/notify mechanism by user-space applications, and by the kernel to notify user-space applications of events.
-     * @param count
-     * @param flags
-     * @return
-     * @throws NativeErrorException 
-     */
-    public final static native int eventfd(int count, int flags) throws NativeErrorException;
-
-    /**
-     * Additional glibc feature to makr read from an eventfd simpler.
-     * 
-     * @param fd
-     * @param value
-     * @return
-     * @throws NativeErrorException 
-     */
-    public final static native int eventfd_read(int fd, @eventfd_t LongRef value) throws NativeErrorException;
-
-    /**
-     * Additional glibc feature to makr write to an eventfd simpler.
-     * 
-     * @param fd
-     * @param value
-     * @return
-     * @throws NativeErrorException 
-     */
-    public final static native int eventfd_write(int fd, @eventfd_t long value) throws NativeErrorException;
-
-        /**
-     * <b>Linux:</b> Set the close-on-exec (FD_CLOEXEC) flag on the new file descriptor.
+     * <b>Linux:</b> Set the close-on-exec (FD_CLOEXEC) flag on the new file
+     * descriptor.
      *
      * @return the native symbolic constant of EFD_CLOEXEC.
      */
-@Define
+    @Define
     public final static native int EFD_CLOEXEC();
 
-        /**
-     * <b>Linux:</b> Set the O_NONBLOCK file status flag on the open file description (see open(2)) referred to by the new file descriptor..
+    /**
+     * <b>Linux:</b> Set the O_NONBLOCK file status flag on the open file
+     * description (see open(2)) referred to by the new file descriptor..
      *
      * @return the native symbolic constant of EFD_NONBLOCK.
      */
     @Define
     public final static native int EFD_NONBLOCK();
 
-        /**
-     * <b>Linux:</b> Provide semaphore-like semantics for reads from the new file descriptor.
+    /**
+     * <b>Linux:</b> Provide semaphore-like semantics for reads from the new
+     * file descriptor.
      *
      * @return the native symbolic constant of EFD_SEMAPHORE.
      */
     @Define
     public final static native int EFD_SEMAPHORE();
+
+    public final static native boolean HAVE_SYS_EVENTFD_H();
+
+    /**
+     * <b>Linux:</b> eventfd - create a file descriptor for event notification.
+     * eventfd creates an "eventfd object" that can be used as an event
+     * wait/notify mechanism by user-space applications, and by the kernel to
+     * notify user-space applications of events.
+     *
+     * @param count the initial value of the counter.
+     * @param flags
+     * {@link EFD_CLOEXEC} |  {@link EFD_NONBLOCK}| {@link EFD_SEMAPHORE}.
+     * @return a new file descriptor that can be used to refer to the eventfd
+     * object.
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native int eventfd(int count, int flags) throws NativeErrorException;
+
+    /**
+     * Additional glibc feature to make read from an eventfd simpler.
+     *
+     * @param fd a valid file descriptor from a call to {@code  eventfd}.
+     * @param value a 8 byte buffer to hold the readed value.
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native void eventfd_read(int fd, @eventfd_t LongRef value) throws NativeErrorException;
+
+    /**
+     * Additional glibc feature to make write to an eventfd simpler.
+     *
+     * @param fd a valid file descriptor from a call to {@code  eventfd}.
+     * @param value the 8 bytes to be to write out.
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native void eventfd_write(int fd, @eventfd_t long value) throws NativeErrorException;
+
+    private Eventfd() {
+
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface eventfd_t {
+    }
 
 }

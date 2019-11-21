@@ -29,22 +29,6 @@
 extern "C" {
 #endif
 
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winbase
-     * Method:    CloseHandle
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_CloseHandle
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hObject) {
-        if (hObject == NULL) {
-            throw_NullPointerException(env, "hObject is null");
-            return;
-        }
-        if (!CloseHandle(UNWRAP_HANDLE(hObject))) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
-        }
-    }
-
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    ClearCommBreak

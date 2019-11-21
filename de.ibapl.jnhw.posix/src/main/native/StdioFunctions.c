@@ -50,9 +50,9 @@ extern "C" {
             return;
         }
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
-        int result = remove(_path);
+        const int result = remove(_path);
         (*env)->ReleaseStringUTFChars(env, path, _path);
-        if (result < 0) {
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
     }

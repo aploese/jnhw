@@ -26,9 +26,9 @@ import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
- * Wrapper around the {@code<errno.h>} header.
- * @see(module-info) for markers
- * See specs at:
+ * Wrapper around the {@code <errno.h>} header.
+ *
+ * @see(module-info) for markers See specs at:
  * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h
  * - system error numbers</a>.
  *
@@ -43,12 +43,6 @@ public abstract class Errno {
     static {
         LibJnhwPosixLoader.touch();
     }
-
-    protected Errno() {
-
-    }
-
-    public final static native boolean HAVE_ERRNO_H();
 
     /**
      * ISOC,POSIX: Mathematics argument out of domain of function.
@@ -74,8 +68,10 @@ public abstract class Errno {
     @Define
     public final static native int ERANGE();
 
+    public final static native boolean HAVE_ERRNO_H();
+
     /**
-     * Read access to <code>errno</code>.
+     * Read access to {@code errno}.
      *
      * See specs at:
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h
@@ -86,7 +82,7 @@ public abstract class Errno {
     public final static native int errno();
 
     /**
-     * Write access to <code>errno</code>.
+     * Write access to {@code errno}.
      *
      * See specs at:
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h
@@ -95,5 +91,9 @@ public abstract class Errno {
      * @author aploese
      */
     public final static native void errno(int value);
+
+    protected Errno() {
+
+    }
 
 }

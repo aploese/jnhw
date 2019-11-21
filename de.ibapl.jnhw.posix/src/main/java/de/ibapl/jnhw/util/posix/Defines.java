@@ -24,54 +24,57 @@ package de.ibapl.jnhw.util.posix;
 import de.ibapl.jnhw.NotDefinedException;
 
 /**
- * get the defines with gcc:
- * create an empty file c.c
- * run <code>gcc -dD -dI -E c.c &gt; c.txt</code>
- * c.txt contains all macros.
- * add an <code>#include &lt;headerFileName.h>} to get the defines for that header.
+ * get the defines with gcc: create an empty file c.c run
+ * {@code gcc -dD -dI -E c.c &gt; c.txt} c.txt contains all macros. add an
+ * {@code #include &lt;headerFileName.h>} to get the defines for that header.
+ *
  * @author aploese
  */
 public class Defines {
-    
+
     static {
         LibJnhwPosixLoader.touch();
     }
 
     /**
-     * @return true if symbol <code>__linux__</code> was defined at compile time of the native code.
+     * _LARGEFILE64_SOURCE was defined at native compile time. If
+     * _LARGEFILE64_SOURCE was defined then all largefile64 functions (i.e.
+     * open64, read64, fseek64, ...) are available.
+     *
+     * @return true if symbol {@code _LARGEFILE64_SOURCE} was defined at compile
+     * time of the native code.
      */
-    public static native boolean __linux__();
+    public static native boolean _LARGEFILE64_SOURCE();
 
     /**
-     * @return true if symbol <code>__APPLE__</code> was defined at compile time of the native code.
+     * @return true if symbol {@code __APPLE__} was defined at compile time of
+     * the native code.
      */
     public static native boolean __APPLE__();
 
     /**
-     * 
+     *
      * @return the major version at compile time
-     * @throws de.ibapl.jnhw.NotDefinedException if <code>__FreeBSD__</code> was defined at compile time of the native code.
+     * @throws de.ibapl.jnhw.NotDefinedException if {@code __FreeBSD__} was
+     * defined at compile time of the native code.
      */
     public static native int __FreeBSD__() throws NotDefinedException;
-    
+
     /**
-     * _LARGEFILE64_SOURCE was defined at native compile time.
-     * If _LARGEFILE64_SOURCE was defined then all largefile64 functions (i.e. open64, read64, fseek64, ...) are available.
-     * 
-     * @return true if symbol <code>_LARGEFILE64_SOURCE</code> was defined at compile time of the native code.
-     */
-    public static native boolean _LARGEFILE64_SOURCE();
-    
-    /**
-     * Its defined at different places:
-     * Linux: bits/wordsize.h
-     * FreeBSD: sys/stdint.h
-     * 
+     * Its defined at different places: Linux: bits/wordsize.h FreeBSD:
+     * sys/stdint.h
+     *
      * so we keep his here for the moment.
-     * 
-     * @return 
+     *
+     * @return
      * @throws NotDefinedException if run on WINDOWS
      */
     public static native int __WORDSIZE();
-    
+
+    /**
+     * @return true if symbol {@code __linux__} was defined at compile time of
+     * the native code.
+     */
+    public static native boolean __linux__();
+
 }

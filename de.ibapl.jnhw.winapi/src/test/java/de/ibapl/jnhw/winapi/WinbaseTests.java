@@ -21,30 +21,9 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
-import de.ibapl.jnhw.libloader.NativeLibResolver;
-import de.ibapl.jnhw.libloader.OS;
-
+@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinbaseTests {
-
-    @Test
-    public void test_HAVE_WINBASE_H() throws Exception {
-        if (NativeLibResolver.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Winbase.HAVE_WINBASE_H(), "expected to have winbase.h");
-        } else {
-            Assertions.assertFalse(Winbase.HAVE_WINBASE_H(), "not expected to have winbase.h");
-        }
-    }
-
-    @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testDefines() throws Exception {
-        Winbase.CLRBREAK();
-        Winnt.HANDLE h = Winbase.INVALID_HANDLE_VALUE();
-        Assertions.assertNotEquals(h, new Winnt.HANDLE(0));
-    }
 
 }

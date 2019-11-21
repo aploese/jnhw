@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * The base class for any native chunk (i.e. pointer to or structs) of memory.
+ * The base class for any chunk (i.e. pointer to or structs) of native memory.
  * The run method in MemoryCleaner will clean up the allocated memory after
  * finalizing this instance - if this instance owns the memory.
  *
@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  */
 public class OpaqueMemory {
 
-    private static final Cleaner cleaner = Cleaner.create();
+    private static final Cleaner CLEANER = Cleaner.create();
 
     public static native void copy(byte[] src, int srcPos, OpaqueMemory dest, int destPos, int length);
 
@@ -53,6 +53,7 @@ public class OpaqueMemory {
             this.baseAddress = baseAddress;
         }
 
+        @Override
         public void run() {
             try {
                 // LOG.log(Level.FINEST, String.format("Finalize: try free memory @0x%016x size:
@@ -111,7 +112,7 @@ public class OpaqueMemory {
             }
         }
         memoryOwner = this;
-        cleaner.register(this, new MemoryCleaner(baseAddress));
+        CLEANER.register(this, new MemoryCleaner(baseAddress));
     }
 
     public OpaqueMemory(int elements, int sizeInBytes, boolean clearMem) {
@@ -130,7 +131,7 @@ public class OpaqueMemory {
             }
         }
         memoryOwner = this;
-        cleaner.register(this, new MemoryCleaner(baseAddress));
+        CLEANER.register(this, new MemoryCleaner(baseAddress));
     }
 
     public OpaqueMemory(OpaqueMemory owner, int offset, int sizeInBytes) {

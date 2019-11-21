@@ -43,7 +43,7 @@ extern "C" {
             throw_NullPointerException(env, "structTermios");
             return -1;
         }
-        return (int32_t)cfgetispeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios));
+        return (int32_t) cfgetispeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios));
     }
 
     /*
@@ -57,111 +57,99 @@ extern "C" {
             throw_NullPointerException(env, "structTermios");
             return -1;
         }
-        return (int32_t)cfgetospeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios));
+        return (int32_t) cfgetospeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios));
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfsetispeed
-     * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)I
+     * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetispeed
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetispeed
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject structTermios, jint speed) {
         if (structTermios == NULL) {
             throw_NullPointerException(env, "structTermios");
-            return -1;
+            return;
         }
         if (speed < 0) {
             throw_IllegalArgumentException(env, "speed must be >= 0");
-            return -1;
+            return;
         }
-        int result = cfsetispeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), (uint32_t)speed);
-        if (result < 0) {
+        if (cfsetispeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), (uint32_t) speed)) {
             throw_NativeErrorException(env, errno);
         }
-        return result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfsetospeed
-     * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)I
+     * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetospeed
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetospeed
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject structTermios, jint speed) {
         if (structTermios == NULL) {
             throw_NullPointerException(env, "structTermios");
-            return -1;
+            return;
         }
         if (speed < 0) {
             throw_IllegalArgumentException(env, "speed must be >= 0");
-            return -1;
+            return;
         }
-        int result = cfsetospeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), (uint32_t)speed);
-        if (result < 0) {
+        if (cfsetospeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), (uint32_t) speed)) {
             throw_NativeErrorException(env, errno);
         }
-        return result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    tcdrain
-     * Signature: (I)I
+     * Signature: (I)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcdrain
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_tcdrain
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fildes) {
-        int result = tcdrain(fildes);
-        if (result < 0) {
+        if (tcdrain(fildes)) {
             throw_NativeErrorException(env, errno);
         }
-        return result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    tcflow
-     * Signature: (II)I
+     * Signature: (II)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcflow
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_tcflow
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fildes, jint action) {
-        int result = tcflow(fildes, action);
-        if (result < 0) {
+        if (tcflow(fildes, action)) {
             throw_NativeErrorException(env, errno);
         }
-        return result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    tcflush
-     * Signature: (II)I
+     * Signature: (II)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcflush
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_tcflush
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fildes, jint queue_selector) {
-        int result = tcflush(fildes, queue_selector);
-        if (result < 0) {
+        if (tcflush(fildes, queue_selector)) {
             throw_NativeErrorException(env, errno);
         }
-        return result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    tcgetattr
-     * Signature: (ILde/ibapl/jnhw/posix/Termios/StructTermios;)I
+     * Signature: (ILde/ibapl/jnhw/posix/Termios/StructTermios;)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcgetattr
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_tcgetattr
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fildes, jobject structTermios) {
         if (structTermios == NULL) {
             throw_NullPointerException(env, "structTermios");
-            return -1;
+            return;
         }
-        int result = tcgetattr(fildes, UNWRAP_STRUCT_TERMIOS_PTR(structTermios));
-        if (result < 0) {
+        if (tcgetattr(fildes, UNWRAP_STRUCT_TERMIOS_PTR(structTermios))) {
             throw_NativeErrorException(env, errno);
         }
-        return result;
     }
 
     /*
@@ -171,68 +159,62 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcgetsid
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fildes) {
-        pid_t result = tcgetsid(fildes);
-        if (result < 0) {
+        const pid_t result = tcgetsid(fildes);
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return result;
     }
-    
+
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    tcsendbreak
-     * Signature: (II)I
+     * Signature: (II)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcsendbreak
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_tcsendbreak
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fildes, jint duration) {
-        int result = tcsendbreak(fildes, duration);
-        if (result < 0) {
+        if (tcsendbreak(fildes, duration)) {
             throw_NativeErrorException(env, errno);
         }
-        return result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    tcsetattr
-     * Signature: (IILde/ibapl/jnhw/posix/Termios/StructTermios;)I
+     * Signature: (IILde/ibapl/jnhw/posix/Termios/StructTermios;)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_tcsetattr
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_tcsetattr
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fildes, jint optional_actions, jobject structTermios) {
         if (structTermios == NULL) {
             throw_NullPointerException(env, "structTermios");
-            return -1;
+            return;
         }
-        int result = tcsetattr(fildes, optional_actions, UNWRAP_STRUCT_TERMIOS_PTR(structTermios));
-        if (result < 0) {
+        if (tcsetattr(fildes, optional_actions, UNWRAP_STRUCT_TERMIOS_PTR(structTermios))) {
             throw_NativeErrorException(env, errno);
         }
-        return result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfsetspeed
-     * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)I
+     * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetspeed
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetspeed
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject structTermios, jint speed) {
         if (structTermios == NULL) {
             throw_NullPointerException(env, "structTermios");
-            return -1;
+            return;
         }
         if (speed < 0) {
             throw_IllegalArgumentException(env, "speed must be >= 0");
-            return -1;
+            return;
         }
-        int result = cfsetspeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), (uint32_t)speed);
-        if (result < 0) {
+        if (cfsetspeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), (uint32_t) speed)) {
             throw_NativeErrorException(env, errno);
         }
-        return result;
     }
 
-    
+
 #ifdef __cplusplus
 }
 #endif

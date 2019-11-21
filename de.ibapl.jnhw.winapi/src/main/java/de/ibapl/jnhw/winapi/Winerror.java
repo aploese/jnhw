@@ -25,6 +25,16 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 
+/**
+ * Wrapper around the
+ * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winerror/">winerror.h</a>
+ * header with the
+ * <a href="https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes#system-error-codes">Systrem
+ * Error Codes</a>.
+ *
+ *
+ * @author aploese
+ */
 @Include("winerror.h")
 public abstract class Winerror {
 
@@ -35,39 +45,135 @@ public abstract class Winerror {
         LibJnhwWinApiLoader.touch();
     }
 
-    public final static native boolean HAVE_WINERROR_H();
-
-    @Define
-    public final static native int ERROR_SUCCESS();
-
-    @Define
-    public final static native int ERROR_FILE_NOT_FOUND();
-
+    /**
+     * Access is denied.
+     *
+     * @return the native symbolic constant of ERROR_ACCESS_DENIED.
+     */
     @Define
     public final static native int ERROR_ACCESS_DENIED();
 
+    /**
+     * Cannot create a file when that file already exists.
+     *
+     * @return the native symbolic constant of ERROR_ALREADY_EXISTS.
+     */
+    @Define
+    public final static native int ERROR_ALREADY_EXISTS();
+
+    /**
+     * The file exists.
+     *
+     * @return the native symbolic constant of ERROR_FILE_EXISTS.
+     */
+    @Define
+    public final static native int ERROR_FILE_EXISTS();
+
+    /**
+     * The system cannot find the file specified.
+     *
+     * @return the native symbolic constant of ERROR_FILE_NOT_FOUND.
+     */
+    @Define
+    public final static native int ERROR_FILE_NOT_FOUND();
+
+    /**
+     * The system cannot read from the specified device.
+     *
+     * @return the native symbolic constant of ERROR_GEN_FAILURE.
+     */
     @Define
     public final static native int ERROR_GEN_FAILURE();
 
-    @Define
-    public final static native int ERROR_INVALID_PARAMETER();
-    
+    /**
+     * The handle is invalid.
+     *
+     * @return the native symbolic constant of ERROR_INVALID_HANDLE.
+     */
     @Define
     public final static native int ERROR_INVALID_HANDLE();
 
+    /**
+     * The specified network password is not correct.
+     *
+     * @return the native symbolic constant of ERROR_INVALID_PARAMETER.
+     */
+    @Define
+    public final static native int ERROR_INVALID_PARAMETER();
+
+    /**
+     * Overlapped I/O event is not in a signaled state.
+     *
+     * @return the native symbolic constant of ERROR_IO_INCOMPLETE.
+     */
+    @Define
+    public final static native int ERROR_IO_INCOMPLETE();
+
+    /**
+     * Overlapped I/O operation is in progress.
+     *
+     * @return the native symbolic constant of ERROR_IO_PENDING.
+     */
     @Define
     public final static native int ERROR_IO_PENDING();
 
-    @Define
-    public final static native int ERROR_NOACCESS();
-
-    @Define
-    public final static native int ERROR_NO_MORE_ITEMS();
-
+    /**
+     * More data is available.
+     *
+     * @return the native symbolic constant of ERROR_MORE_DATA.
+     */
     @Define
     public final static native int ERROR_MORE_DATA();
 
+    /**
+     * Invalid access to memory location.
+     *
+     * @return the native symbolic constant of ERROR_NOACCESS.
+     */
+    @Define
+    public final static native int ERROR_NOACCESS();
+
+    /**
+     * Element not found.
+     *
+     * @return the native symbolic constant of ERROR_NOT_FOUND.
+     */
     @Define
     public final static native int ERROR_NOT_FOUND();
+
+    /**
+     * No more data is available.
+     *
+     * @return the native symbolic constant of ERROR_NO_MORE_ITEMS.
+     */
+    @Define
+    public final static native int ERROR_NO_MORE_ITEMS();
+
+    /**
+     * All pipe instances are busy.
+     *
+     * @return the native symbolic constant of ERROR_PIPE_BUSY.
+     */
+    @Define
+    public final static native int ERROR_PIPE_BUSY();
+
+    /**
+     * The process cannot access the file because it is being used by another
+     * process.
+     *
+     * @return the native symbolic constant of ERROR_SHARING_VIOLATION.
+     */
+    @Define
+    public final static native int ERROR_SHARING_VIOLATION();
+
+    /**
+     * The operation completed successfully.
+     *
+     * @return the native symbolic constant of ERROR_SUCCESS.
+     */
+    @Define
+    public final static native int ERROR_SUCCESS();
+
+    public final static native boolean HAVE_WINERROR_H();
 
 }

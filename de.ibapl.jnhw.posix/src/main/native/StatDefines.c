@@ -31,7 +31,7 @@ extern "C" {
      * Method:    HAVE_SYS_STAT_H
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Stat_HAVE_1SYS_1STAT_1H
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_HAVE_1SYS_1STAT_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_SYS_STAT_H
         return JNI_TRUE;

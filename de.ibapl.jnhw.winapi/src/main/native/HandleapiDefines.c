@@ -19,27 +19,43 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw;
+#include "jnhw-winapi.h"
+#include "de_ibapl_jnhw_winapi_Handleapi.h"
 
-/**
- * A int reference holder.
- * This is used to pass a pointer to int32_t or uint32_t argument in and out of functions.
- * 
- * @author aploese
- */
-public class IntRef {
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-    /**
-     * the int int32_t or uint32_t.
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Handeleapi
+     * Method:    HAVE_HANDLEAPI_H
+     * Signature: ()Z
      */
-    public int value;
-
-    public IntRef() {
-
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Handleapi_HAVE_1HANDLEAPI_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#ifdef HAVE_HANDLEAPI_H
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
     }
 
-    public IntRef(int initialValue) {
-        this.value = initialValue;
+#ifdef HAVE_HANDLEAPI_H
+#include <handleapi.h>
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Handleapi
+     * Method:    create_INVALID_HANDLE_VALUE
+     * Signature: ()Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Handleapi_create_1INVALID_1HANDLE_1VALUE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CREATE_HANDLE(INVALID_HANDLE_VALUE);
     }
 
+
+#endif
+
+#ifdef __cplusplus
 }
+#endif

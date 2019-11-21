@@ -31,7 +31,7 @@ extern "C" {
      * Method:    HAVE_WINERROR_H
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winerror_HAVE_1WINERR_1H
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winerror_HAVE_1WINERROR_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_WINERROR_H
         return JNI_TRUE;
@@ -153,6 +153,59 @@ extern "C" {
         return ERROR_NOT_FOUND;
     }
 
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winerror
+     * Method:    ERROR_SHARING_VIOLATION
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1SHARING_1VIOLATION
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ERROR_SHARING_VIOLATION;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winerror
+     * Method:    ERROR_ALREADY_EXISTS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1ALREADY_1EXISTS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ERROR_ALREADY_EXISTS;
+    }
+    
+            
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winerror
+     * Method:    ERROR_FILE_EXISTS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1FILE_1EXISTS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ERROR_FILE_EXISTS;
+    }
+            
+            
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winerror
+     * Method:    ERROR_PIPE_BUSY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1PIPE_1BUSY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ERROR_PIPE_BUSY;
+    }
+            
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winerror
+     * Method:    ERROR_IO_INCOMPLETE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1IO_1INCOMPLETE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ERROR_IO_INCOMPLETE;
+    }
+            
 
 #endif
 

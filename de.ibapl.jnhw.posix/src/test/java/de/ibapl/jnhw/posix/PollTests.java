@@ -21,61 +21,26 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.StructArray;
-import de.ibapl.jnhw.libloader.NativeLibResolver;
-import de.ibapl.jnhw.libloader.OS;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class PollTests {
 
-    @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-    }
-
-    @AfterAll
-    public static void tearDownAfterClass() throws Exception {
-    }
-
-    @BeforeEach
-    public void setUp() throws Exception {
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void testCreatePollFd() throws Exception {
-        Assumptions.assumeFalse(NativeLibResolver.getOS() == OS.WINDOWS);
         Poll.PollFds pollFds = new Poll.PollFds(2);
     }
 
     @Test
     public void testNPEpoll() throws Exception {
-        Assumptions.assumeFalse(NativeLibResolver.getOS() == OS.WINDOWS);
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Poll.poll((Poll.PollFd)null, 1000);
+            Poll.poll((Poll.PollFd) null, 1000);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Poll.poll((Poll.PollFd)null, 1000);
+            Poll.poll((Poll.PollFd) null, 1000);
         });
-    }
-
-    @Test
-    public void test_HAVE_POLL_H() throws Exception {
-        if (NativeLibResolver.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Poll.HAVE_POLL_H(), "not expected to have poll.h");
-        } else {
-            Assertions.assertTrue(Poll.HAVE_POLL_H(), "expected to have poll.h");
-        }
     }
 
 }

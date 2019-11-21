@@ -43,9 +43,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll__Lde_ibapl_jnhw_posix_
             throw_NullPointerException(env, "pollFd array");
             return -1;
         }
-        nfds_t nfds = LENGTH_OF_STRUCTURE_ARRAY(pollFdArray);
-        int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFdArray), nfds, timeout);
-        if (result < 0) {
+        const nfds_t nfds = LENGTH_OF_STRUCTURE_ARRAY(pollFdArray);
+        const int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFdArray), nfds, timeout);
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return result;
@@ -62,8 +62,8 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll__Lde_ibapl_jnhw_posix_
             throw_NullPointerException(env, "pollFd array");
             return -1;
         }
-        int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFd), 1, timeout);
-        if (result < 0) {
+        const int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFd), 1, timeout);
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return result;

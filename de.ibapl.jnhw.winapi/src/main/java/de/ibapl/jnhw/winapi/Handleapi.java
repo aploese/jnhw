@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
@@ -28,13 +29,18 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
  * Wrapper around the
- * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processenv/">processenv.h</a>
+ * <a href="https://docs.microsoft.com/en-us/windows/win32/api/handleapi/">handleapi.h</a>
  * header.
  *
  * @author aploese
  */
-@Include("processenv.h")
-public class ProcessEnv {
+@Include("handleapi.h")
+public abstract class Handleapi {
+
+    /**
+     * cached instance.
+     */
+    private static HANDLE INVALID_HANDLE_VALUE;
 
     /**
      * Make sure the native lib is loaded
@@ -44,19 +50,32 @@ public class ProcessEnv {
     }
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/console/getstdhandle">GetStdHandle</a>
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-closehandle">CloseHandle</a>
+     * Closes an open object handle.
      *
-     * @param nStdHandle The standard device. This parameter can be one of the
-     * following values. STD_INPUT_HANDLE, STD_OUTPUT_HANDLE, STD_ERROR_HANDLE.
-     * @return If the function succeeds, the return value is a handle to the
-     * specified device, or a redirected handle set by a previous call to
-     * SetStdHandle.
+     * @param hObject a valid handle to an open object.
+     *
+     * @throws NullPointerException if hObject is {@code null].
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native HANDLE GetStdHandle(int nStdHandle) throws NativeErrorException;
+    public final native static void CloseHandle(HANDLE hObject) throws NativeErrorException;
 
-    public final static native boolean HAVE_PROCESSENV_H();
+    public final static native boolean HAVE_HANDLEAPI_H();
+
+    /**
+     *
+     * @return the native symbolic constant of INVALID_HANDLE_VALUE.
+     */
+    @Define
+    public final static HANDLE INVALID_HANDLE_VALUE() {
+        if (INVALID_HANDLE_VALUE == null) {
+            INVALID_HANDLE_VALUE = create_INVALID_HANDLE_VALUE();
+        }
+        return INVALID_HANDLE_VALUE;
+    }
+
+    private final static native HANDLE create_INVALID_HANDLE_VALUE();
 
 }

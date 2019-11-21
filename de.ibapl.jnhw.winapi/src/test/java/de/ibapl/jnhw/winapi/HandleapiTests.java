@@ -19,27 +19,19 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw;
+package de.ibapl.jnhw.winapi;
 
-/**
- * A int reference holder.
- * This is used to pass a pointer to int32_t or uint32_t argument in and out of functions.
- * 
- * @author aploese
- */
-public class IntRef {
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
 
-    /**
-     * the int int32_t or uint32_t.
-     */
-    public int value;
+@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+public class HandleapiTests {
 
-    public IntRef() {
-
-    }
-
-    public IntRef(int initialValue) {
-        this.value = initialValue;
+    @Test
+    public void testDefines() throws Exception {
+        Winnt.HANDLE h = Handleapi.INVALID_HANDLE_VALUE();
+        Assertions.assertNotEquals(h, new Winnt.HANDLE(0));
     }
 
 }

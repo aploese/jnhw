@@ -33,7 +33,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Wrapper around the {@code<poll.h>} header.
+ * Wrapper around the {@code <poll.h>} header.
  *
  * See specs at:
  * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">poll.h
@@ -45,18 +45,6 @@ import java.lang.annotation.Target;
 public final class Poll {
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html"><code>typedef
-     * nfds_t</code></a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface nfds_t {
-    }
-
-    /**
      * Make sure the native lib is loaded
      */
     static {
@@ -66,9 +54,128 @@ public final class Poll {
     public final static native boolean HAVE_POLL_H();
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html"><code>structure
-     * pollfd</code></a>.
+     * <b>POSIX:</b> An error has occurred (revents only).
+     *
+     * @return the native symbolic constant of POLLERR.
+     */
+    @Define()
+    public final static native short POLLERR();
+
+    /**
+     * <b>POSIX:</b> Device has been disconnected (revents only).
+     *
+     * @return the native symbolic constant of POLLHUP.
+     */
+    @Define()
+    public final static native short POLLHUP();
+
+    /**
+     * <b>POSIX:</b> Data other than high-priority data may be read without
+     * blocking.
+     *
+     * @return the native symbolic constant of POLLIN.
+     */
+    @Define()
+    public final static native short POLLIN();
+
+    /**
+     * <b>POSIX:</b> Invalid fd member (revents only).
+     *
+     * @return the native symbolic constant of .POLLNVAL
+     */
+    @Define()
+    public final static native short POLLNVAL();
+
+    /**
+     * <b>POSIX:</b> High priority data may be read without blocking.
+     *
+     * @return the native symbolic constant of POLLOUT.
+     */
+    @Define()
+    public final static native short POLLOUT();
+
+    /**
+     * <b>POSIX:</b> High priority data may be read without blocking.
+     *
+     * @return the native symbolic constant of POLLPRI.
+     */
+    @Define()
+    public final static native short POLLPRI();
+
+    /**
+     * <b>POSIX:</b> Normal data may be read without blocking.
+     *
+     * @return the native symbolic constant of POLLRDBAND.
+     */
+    @Define()
+    public final static native short POLLRDBAND();
+
+    /**
+     * <b>POSIX:</b> Normal data may be read without blocking.
+     *
+     * @return the native symbolic constant of POLLRDNORM.
+     */
+    @Define()
+    public final static native short POLLRDNORM();
+
+    /**
+     * <b>POSIX:</b> Priority data may be written.
+     *
+     * @return the native symbolic constant of POLLWRBAND.
+     */
+    @Define()
+    public final static native short POLLWRBAND();
+
+    /**
+     * <b>POSIX:</b> Equivalent to POLLOUT.
+     *
+     * @return the native symbolic constant of POLLWRNORM.
+     */
+    @Define()
+    public final static native short POLLWRNORM();
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/poll.html">poll
+     * - input/output multiplexing</a>.
+     *
+     * @param fds an array of pollfd.
+     * @param timeout the timeout in milliseconds.
+     * @return the native result.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native int poll(PollFds fds, int timeout) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/poll.html">poll
+     * - input/output multiplexing</a>.
+     *
+     * @param fd a single pollfd.
+     * @param timeout the timeout in milliseconds.
+     * @return the native result.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native int poll(PollFd fd, int timeout) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code typedef
+     * nfds_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface nfds_t {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+     * pollfd}</a>.
      *
      */
     public final static class PollFd extends OpaqueMemory {
@@ -97,54 +204,48 @@ public final class Poll {
         }
 
         /**
-         * See specs at:
-         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html"><code>structure
-         * pollfd</code></a>.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
          *
-         * @returnthe native value of events;
+         * @return the native value of events;
          */
         public native short events();
 
         /**
-         * See specs at:
-         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html"><code>structure
-         * pollfd</code></a>.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
          *
          * @param events the value of events to be set natively.
          */
         public native void events(short events);
 
         /**
-         * See specs at:
-         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html"><code>structure
-         * pollfd</code></a>.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
          *
-         * @returnthe native value of fd;
+         * @return the native value of fd;
          */
         public native int fd();
 
         /**
-         * See specs at:
-         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html"><code>structure
-         * pollfd</code></a>.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
          *
          * @param fd the value of fd to be set natively.
          */
         public native void fd(int fd);
 
         /**
-         * See specs at:
-         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html"><code>structure
-         * pollfd</code></a>.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
          *
          * @return the native value of revents;
          */
         public native short revents();
 
         /**
-         * See specs at:
-         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html"><code>structure
-         * pollfd</code></a>.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
          *
          * @param revents the value of revents to be set natively.
          */
@@ -214,9 +315,8 @@ public final class Poll {
     }
 
     /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html"><code>structure
-     * pollfd</code></a>.
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+     * pollfd}</a>.
      *
      */
     public static class PollFds extends StructArray<PollFd> {
@@ -231,109 +331,5 @@ public final class Poll {
         }
 
     }
-
-    /**
-     *
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/poll.html">poll
-     * - input/output multiplexing</a>.
-     *
-     * @param fds an array of pollfd.
-     * @param timeout the timeout in milliseconds.
-     * @return the native result.
-     * @throws NativeErrorException trown if native result &lt; 0.
-     */
-    public final static native int poll(PollFds fds, int timeout) throws NativeErrorException;
-
-    /**
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/poll.html">poll
-     * - input/output multiplexing</a>.
-     *
-     * @param fd a single pollfd.
-     * @param timeout the timeout in milliseconds.
-     * @return the native result.
-     * @throws NativeErrorException trown if native result &lt; 0.
-     */
-    public final static native int poll(PollFd fd, int timeout) throws NativeErrorException;
-
-    /**
-     * <b>POSIX:</b> An error has occurred (revents only).
-     *
-     * @return the native symbolic constant of POLLERR.
-     */
-    @Define()
-    public final static native short POLLERR();
-
-    /**
-     * <b>POSIX:</b> Device has been disconnected (revents only).
-     *
-     * @return the native symbolic constant of POLLHUP.
-     */
-    @Define()
-    public final static native short POLLHUP();
-
-    /**
-     * <b>POSIX:</b> Data other than high-priority data may be read without blocking.
-     *
-     * @return the native symbolic constant of POLLIN.
-     */
-    @Define()
-    public final static native short POLLIN();
-
-    /**
-     * <b>POSIX:</b> Invalid fd member (revents only).
-     *
-     * @return the native symbolic constant of .POLLNVAL
-     */
-    @Define()
-    public final static native short POLLNVAL();
-
-    /**
-     * <b>POSIX:</b> High priority data may be read without blocking.
-     *
-     * @return the native symbolic constant of POLLOUT.
-     */
-    @Define()
-    public final static native short POLLOUT();
-
-    /**
-     * <b>POSIX:</b> High priority data may be read without blocking.
-     *
-     * @return the native symbolic constant of POLLPRI.
-     */
-    @Define()
-    public final static native short POLLPRI();
-
-    /**
-     * <b>POSIX:</b> Normal data may be read without blocking.
-     *
-     * @return the native symbolic constant of POLLRDBAND.
-     */
-    @Define()
-    public final static native short POLLRDBAND();
-
-    /**
-     * <b>POSIX:</b> Normal data may be read without blocking.
-     *
-     * @return the native symbolic constant of POLLRDNORM.
-     */
-    @Define()
-    public final static native short POLLRDNORM();
-
-    /**
-     * <b>POSIX:</b> Priority data may be written.
-     *
-     * @return the native symbolic constant of POLLWRBAND.
-     */
-    @Define()
-    public final static native short POLLWRBAND();
-
-    /**
-     * <b>POSIX:</b> Equivalent to POLLOUT.
-     *
-     * @return the native symbolic constant of POLLWRNORM.
-     */
-    @Define()
-    public final static native short POLLWRNORM();
 
 }

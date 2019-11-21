@@ -60,7 +60,7 @@ extern "C" {
      * Method:    TIOCM_LE
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_LE
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1LE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCM_LE;
     }
@@ -70,7 +70,7 @@ extern "C" {
      * Method:    TIOCM_ST
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_ST
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1ST
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCM_ST;
     }
@@ -80,7 +80,7 @@ extern "C" {
      * Method:    TIOCM_SR
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_SR
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1SR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCM_SR;
     }
@@ -120,7 +120,7 @@ extern "C" {
      * Method:    TIOCM_CD
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_CD
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1CD
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCM_CD;
     }
@@ -150,7 +150,7 @@ extern "C" {
      * Method:    TIOCM_RI
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_RI
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCM_1RI
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return TIOCM_RI;
     }

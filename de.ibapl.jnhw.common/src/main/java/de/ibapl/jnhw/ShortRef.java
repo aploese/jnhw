@@ -22,10 +22,15 @@
 package de.ibapl.jnhw;
 
 /**
- *
+ * A short reference holder.
+ * This is used to pass a pointer to int16_t or uint16_t argument in and out of functions.
+ * 
  * @author aploese
  */
 public class ShortRef {
 
+    /**
+     * the int int16_t or uint16_t.
+     */
     public short value;
 }

@@ -46,24 +46,24 @@ extern "C" {
      * Signature: (I[BII)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_00024JnhwPrimitiveArrayCritical_read
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jbyteArray buf, jint pos, jint len) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jbyteArray buf, jint off, jint nByte) {
         if (buf == NULL) {
             throw_NullPointerException(env, "buf is null");
             return -1;
         }
-        if (outOfBoundsByteArray(env, pos, len, buf)) {
+        if (outOfBoundsByteArray(env, off, nByte, buf)) {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
 
-        if (len == 0) {
+        if (nByte == 0) {
             return 0;
         }
 
         jbyte* _buf = (*env)->GetPrimitiveArrayCritical(env, buf, 0);
-        //result can't be larger then int beacuase len is int, so do the conversation
-        ssize_t result = read(fd, _buf + pos, (uint32_t) len);
-        if (result < 0) {
+        //result can't be larger then int beacuase nByte is int, so do the conversation
+        const ssize_t result = read(fd, _buf + off, (uint32_t) nByte);
+        if (result == -1) {
             (*env)->ReleasePrimitiveArrayCritical(env, buf, _buf, JNI_ABORT); // error, so no need to copy back.
             throw_NativeErrorException(env, errno);
         }
@@ -77,24 +77,24 @@ extern "C" {
      * Signature: (I[BII)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_00024JnhwPrimitiveArrayCritical_write
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jbyteArray buf, jint pos, jint len) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jbyteArray buf, jint off, jint nByte) {
         if (buf == NULL) {
             throw_NullPointerException(env, "buf is null");
             return -1;
         }
-        if (outOfBoundsByteArray(env, pos, len, buf)) {
+        if (outOfBoundsByteArray(env, off, nByte, buf)) {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
 
-        if (len == 0) {
+        if (nByte == 0) {
             return 0;
         }
 
         jbyte* _buf = (*env)->GetPrimitiveArrayCritical(env, buf, 0);
-        //result can't be larger then int beacuase len is int, so do the conversation
-        ssize_t result = write(fd, _buf + pos, (uint32_t) len);
-        if (result < 0) {
+        //result can't be larger then int beacuase nByte is int, so do the conversation
+        const ssize_t result = write(fd, _buf + off, (uint32_t) nByte);
+        if (result == -1) {
             (*env)->ReleasePrimitiveArrayCritical(env, buf, _buf, JNI_ABORT); // data was written out so no need to copy back.
             throw_NativeErrorException(env, errno);
         }
@@ -105,15 +105,13 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    close
-     * Signature: (I)I
+     * Signature: (I)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_close
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_close
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd) {
-        int result = close(fd);
-        if (result < 0) {
+        if (close(fd)) {
             throw_NativeErrorException(env, errno);
         }
-        return result;
     }
 
     /*
@@ -122,37 +120,37 @@ extern "C" {
      * Signature: (I[BII)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I_3BII
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jbyteArray buf, jint pos, jint len) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jbyteArray buf, jint off, jint nByte) {
         if (buf == NULL) {
             throw_NullPointerException(env, "buf is null");
             return -1;
         }
 
-        if (outOfBoundsByteArray(env, pos, len, buf)) {
+        if (outOfBoundsByteArray(env, off, nByte, buf)) {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
 
-        jbyte stackBuf[len > MAX_STACK_BUF_SIZE ? 0 : len];
+        jbyte stackBuf[nByte > MAX_STACK_BUF_SIZE ? 0 : nByte];
         jbyte *_buf = NULL;
-        if (len == 0) {
+        if (nByte == 0) {
             return 0;
-        } else if (len > MAX_STACK_BUF_SIZE) {
-            _buf = malloc((uint32_t) len);
+        } else if (nByte > MAX_STACK_BUF_SIZE) {
+            _buf = malloc((uint32_t) nByte);
             if (_buf == NULL) {
-                throw_Exception(env, "java/lang/OutOfMemoryError", "Can`t aquire %d bytes of memory", len);
+                throw_Exception(env, "java/lang/OutOfMemoryError", "Can`t aquire %d bytes of memory", nByte);
                 return 0;
             }
         } else {
             _buf = stackBuf;
         }
 
-        //result can't be larger then int beacuase len is int, so do the conversation
-        ssize_t result = read(fd, _buf, (uint32_t) len);
-        if (result < 0) {
+        //result can't be larger then int beacuase nByte is int, so do the conversation
+        const ssize_t result = read(fd, _buf, (uint32_t) nByte);
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
-        (*env)->SetByteArrayRegion(env, buf, pos, (int32_t) result, _buf);
+        (*env)->SetByteArrayRegion(env, buf, off, (int32_t) result, _buf);
 
         if (_buf != stackBuf) {
             free(_buf);
@@ -166,10 +164,10 @@ extern "C" {
      * Signature: (ILjava/nio/ByteBuffer;II)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read_1ArgsOK
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject byteBuffer, jint pos, jint len) {
-        //result can't be larger then int beacuase len is int, so do the conversation
-        ssize_t result = read(fd, (*env)->GetDirectBufferAddress(env, byteBuffer) + pos, (uint32_t) len);
-        if (result < 0) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject byteBuffer, jint off, jint nByte) {
+        //result can't be larger then int beacuase nByte is int, so do the conversation
+        const ssize_t result = read(fd, (*env)->GetDirectBufferAddress(env, byteBuffer) + off, (uint32_t) nByte);
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return (int32_t) result;
@@ -181,18 +179,18 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/OpaqueMemory;II)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_OpaqueMemory_2II
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject opaqueMemory, jint pos, jint len) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject opaqueMemory, jint off, jint nByte) {
         if (opaqueMemory == NULL) {
             throw_NullPointerException(env, "buf is null");
             return -1;
         }
-        if (outOfBoundsOpaqueMemory(env, pos, len, opaqueMemory)) {
+        if (outOfBoundsOpaqueMemory(env, off, nByte, opaqueMemory)) {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
-        //result can't be larger then int beacuase len is int, so do the conversation
-        ssize_t result = read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) + pos, (uint32_t) len);
-        if (result < 0) {
+        //result can't be larger then int beacuase nByte is int, so do the conversation
+        const ssize_t result = read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) + off, (uint32_t) nByte);
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return (int32_t) result;
@@ -206,10 +204,10 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_ByteRef_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject byteRef) {
         jbyte _valueRef;
-        //result can't be larger then int beacuase len is int, so do the conversation
-        int result = (int) read(fd, &_valueRef, 1);
+        //result can't be larger then int beacuase nByte is int, so do the conversation
+        const int result = (int) read(fd, &_valueRef, 1);
         SET_BYTE_REF_VALUE(byteRef, _valueRef);
-        if (result < 0) {
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return result;
@@ -221,41 +219,41 @@ extern "C" {
      * Signature: (I[BII)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__I_3BII
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jbyteArray buf, jint pos, jint len) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jbyteArray buf, jint off, jint nByte) {
         if (buf == NULL) {
             throw_NullPointerException(env, "buf is null");
             return -1;
         }
 
-        if (outOfBoundsByteArray(env, pos, len, buf)) {
+        if (outOfBoundsByteArray(env, off, nByte, buf)) {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
 
-        jbyte stackBuf[len > MAX_STACK_BUF_SIZE ? 0 : len];
+        jbyte stackBuf[nByte > MAX_STACK_BUF_SIZE ? 0 : nByte];
         jbyte *_buf = NULL;
-        if (len == 0) {
+        if (nByte == 0) {
             return 0;
-        } else if (len > MAX_STACK_BUF_SIZE) {
-            _buf = malloc((uint32_t) len);
+        } else if (nByte > MAX_STACK_BUF_SIZE) {
+            _buf = malloc((uint32_t) nByte);
             if (_buf == NULL) {
-                throw_Exception(env, "java/lang/OutOfMemoryError", "Can`t aquire %d bytes of memory", len);
+                throw_Exception(env, "java/lang/OutOfMemoryError", "Can`t aquire %d bytes of memory", nByte);
                 return 0;
             }
         } else {
             _buf = stackBuf;
         }
 
-        (*env)->GetByteArrayRegion(env, buf, pos, len, _buf);
+        (*env)->GetByteArrayRegion(env, buf, off, nByte, _buf);
         if ((*env)->ExceptionOccurred(env)) {
             if (_buf != stackBuf) {
                 free(_buf);
             }
             return -1;
         }
-        //result can't be larger then int beacuase len is int, so do the conversation
-        ssize_t result = write(fd, _buf, (uint32_t) len);
-        if (result < 0) {
+        //result can't be larger then int beacuase nByte is int, so do the conversation
+        const ssize_t result = write(fd, _buf, (uint32_t) nByte);
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         if (_buf != stackBuf) {
@@ -270,10 +268,10 @@ extern "C" {
      * Signature: (ILjava/nio/ByteBuffer;II)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write_1ArgsOK
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject byteBuffer, jint pos, jint len) {
-        //result can't be larger then int beacuase len is int, so do the conversation
-        ssize_t result = write(fd, (*env)->GetDirectBufferAddress(env, byteBuffer) + pos, (uint32_t) len);
-        if (result < 0) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject byteBuffer, jint off, jint nByte) {
+        //result can't be larger then int beacuase nByte is int, so do the conversation
+        const ssize_t result = write(fd, (*env)->GetDirectBufferAddress(env, byteBuffer) + off, (uint32_t) nByte);
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return (int32_t) result;
@@ -285,20 +283,20 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/OpaqueMemory;II)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_OpaqueMemory_2II
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject buf, jint pos, jint len) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject buf, jint off, jint nByte) {
         if (buf == NULL) {
             throw_NullPointerException(env, "buf is null");
             return -1;
         }
 
-        if (outOfBoundsOpaqueMemory(env, pos, len, buf)) {
+        if (outOfBoundsOpaqueMemory(env, off, nByte, buf)) {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
 
-        //result can't be larger then int beacuase len is int, so do the conversation
-        ssize_t result = write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf) + pos, (uint32_t) len);
-        if (result < 0) {
+        //result can't be larger then int beacuase nByte is int, so do the conversation
+        const ssize_t result = write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf) + off, (uint32_t) nByte);
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return (int32_t) result;
@@ -311,8 +309,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__IB
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jbyte data) {
-        int result = (int) write(fd, &data, 1);
-        if (result < 0) {
+        const int result = (int) write(fd, &data, 1);
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return result;
@@ -321,19 +319,17 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    usleep
-     * Signature: (I)I
+     * Signature: (I)V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_usleep
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_usleep
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint usec) {
-        if (usec < 0) {
+        if (usec == -1) {
             throw_IllegalArgumentException(env, "usec < 0");
-            return -1;
+            return;
         }
-        int result = usleep((uint32_t) usec);
-        if (result < 0) {
+        if (usleep((uint32_t) usec)) {
             throw_NativeErrorException(env, errno);
         }
-        return result;
     }
 
     /*
@@ -343,7 +339,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_lseek__III
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint offset, jint whence) {
-        off_t result = lseek(fd, offset, whence);
+        const off_t result = lseek(fd, offset, whence);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -358,13 +354,13 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_lseek__IJI
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jlong offset, jint whence) {
 #if __WORDSIZE == 64
-        off_t result = lseek(fd, offset, whence);
+        const off_t result = lseek(fd, offset, whence);
 #elif __WORDSIZE == 32
         if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation offset is only an integer with the size of jint");
             return -1;
         }
-        off_t result = lseek(fd, (int32_t) offset, whence);
+        const off_t result = lseek(fd, (int32_t) offset, whence);
 #endif
         if (result == -1) {
             throw_NativeErrorException(env, errno);
@@ -380,7 +376,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_lseek64
 #ifdef _LARGEFILE64_SOURCE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jlong offset, jint whence) {
-        off64_t result = lseek64(fd, offset, whence);
+        const off64_t result = lseek64(fd, offset, whence);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -408,10 +404,10 @@ extern "C" {
             return;
         }
         int fdes[2];
-        int result = pipe(fdes);
+        const int result = pipe(fdes);
         SET_INT_REF_VALUE(read_fd_ref, fdes[0]);
         SET_INT_REF_VALUE(write_fd_ref, fdes[1]);
-        if (result < 0) {
+        if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
     }

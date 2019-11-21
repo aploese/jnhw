@@ -22,10 +22,15 @@
 package de.ibapl.jnhw;
 
 /**
- *
+ * A byte reference holder.
+ * This is used to pass a pointer to int8_t or uint8_t argument in and out of functions.
+ * 
  * @author aploese
  */
 public class ByteRef {
 
+    /**
+     * the int8_t or uint8_t value.
+     */
     public byte value;
 }

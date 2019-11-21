@@ -30,92 +30,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Wrapper around the {@code<stdio.h>} header.
+ * Wrapper around the {@code <stdio.h>} header.
  *
  * See specs at:
- * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">stdio.h - standard buffered input/output</a>.
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">stdio.h
+ * - standard buffered input/output</a>.
  *
  * @author aploese
  */
 @Include("#include <stdio.h>")
 public class Stdio {
-    
-    
-    /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html"><code>typedef
-     * FILE</code></a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface FILE{
-    }
-    
-    /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html"><code>typedef
-     * fpos_t</code></a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface fpos_t{
-    }
-
-    /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html"><code>typedef
-     * off_t</code></a>.
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys/types.h.html"><code>typedef
-     * off_t</code></a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface off_t{
-    }
-
-    /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html"><code>typedef
-     * size_t</code></a>.
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stddef.h.html"><code>typedef
-     * off_t</code></a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface size_t{
-    }
-
-    /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html"><code>typedef
-     * ssize_t</code></a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface ssize_t{
-    }
-
-    /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html"><code>typedef
-     * va_list</code></a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface va_list{
-    }
 
     /**
      * Make sure the native lib is loaded
@@ -125,15 +49,89 @@ public class Stdio {
     }
 
     public final static native boolean HAVE_STDIO_H();
-    
+
     /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/remove.html">remove
+     * - remove a file</a>.
      *
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/remove.html">remove - remove a file</a>.
-     * @param path 
-     * @throws de.ibapl.jnhw.NativeErrorException 
+     * @param path the pathname naming the file.
+     *
+     * @throws NullPointerException if {@code file} is {@code null}.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
      */
     public static native void remove(String path) throws NativeErrorException;
 
-    
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
+     * FILE}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @interface FILE {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
+     * fpos_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @interface fpos_t {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
+     * off_t}</a>.
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys/types.h.html">{@code typedef
+     * off_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @interface off_t {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
+     * size_t}</a>.
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stddef.h.html">{@code typedef
+     * off_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @interface size_t {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
+     * ssize_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @interface ssize_t {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
+     * va_list}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @interface va_list {
+    }
+
 }

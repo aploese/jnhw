@@ -276,7 +276,7 @@ public final class MultiarchTupelBuilder {
     }
 
     public Set<MultiarchInfo> guessMultiarch() {
-        switch (getOs()) {
+        switch (getOS()) {
             case LINUX:
                 return guessLinux();
             case FREE_BSD:
@@ -291,7 +291,7 @@ public final class MultiarchTupelBuilder {
 
     }
 
-    public OS getOs() {
+    public OS getOS() {
         switch (os_name) {
             case "Linux":
                 return OS.LINUX;

@@ -21,20 +21,19 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
-import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
  * Wrapper around the
- * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processenv/">processenv.h</a>
+ * <a href="https://docs.microsoft.com/en-us/windows/win32/api/errhandlingapi/">errhandlingapi.h</a>
  * header.
  *
  * @author aploese
  */
-@Include("processenv.h")
-public class ProcessEnv {
+@Include("errhandlingapi.h")
+public abstract class Errhandlingapi {
 
     /**
      * Make sure the native lib is loaded
@@ -44,19 +43,24 @@ public class ProcessEnv {
     }
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/console/getstdhandle">GetStdHandle</a>
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror">GetLastError</a>
+     * Retrieves the calling thread's last-error code value. The last-error code
+     * is maintained on a per-thread basis. Multiple threads do not overwrite
+     * each other's last-error code.
      *
-     * @param nStdHandle The standard device. This parameter can be one of the
-     * following values. STD_INPUT_HANDLE, STD_OUTPUT_HANDLE, STD_ERROR_HANDLE.
-     * @return If the function succeeds, the return value is a handle to the
-     * specified device, or a redirected handle set by a previous call to
-     * SetStdHandle.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
+     * @return the calling thread's last-error code. The Return Value section of
+     * the documentation for each function that sets the last-error code notes
+     * the conditions under which the function sets the last-error code. Most
+     * functions that set the thread's last-error code set it when they fail.
+     * However, some functions also set the last-error code when they succeed.
+     * If the function is not documented to set the last-error code, the value
+     * returned by this function is simply the most recent last-error code to
+     * have been set; some functions set the last-error code to 0 on success and
+     * others do not.
      */
-    public final static native HANDLE GetStdHandle(int nStdHandle) throws NativeErrorException;
+    @Define
+    public final static native int GetLastError();
 
-    public final static native boolean HAVE_PROCESSENV_H();
+    public final static native boolean HAVE_ERRHANDLINGAPI_H();
 
 }

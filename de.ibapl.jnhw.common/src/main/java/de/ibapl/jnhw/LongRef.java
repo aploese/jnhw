@@ -22,11 +22,16 @@
 package de.ibapl.jnhw;
 
 /**
- *
+ * A long reference holder.
+ * This is used to pass a pointer to int64_t or uint64_t argument in and out of functions.
+ * 
  * @author aploese
  */
 public class LongRef {
 
+    /**
+     * the int int64_t or uint64_t.
+     */
     public long value;
 
     public LongRef(long value) {

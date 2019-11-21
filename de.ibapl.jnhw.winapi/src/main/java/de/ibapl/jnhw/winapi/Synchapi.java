@@ -28,6 +28,10 @@ import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
+ * Wrapper around the
+ * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/">synchapi.h</a>
+ * header.
+ *
  *
  * @author aploese
  */
@@ -41,14 +45,74 @@ public abstract class Synchapi {
         LibJnhwWinApiLoader.touch();
     }
 
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-createeventw">CreateEventW</a>
+     * Creates or opens a named or unnamed event object.
+     *
+     * @param lpEventAttributes a pointer to a SECURITY_ATTRIBUTES structure. If
+     * this parameter is NULL, the handle cannot be inherited by child
+     * processes.
+     * @param bManualReset If this parameter is TRUE, the function creates a
+     * manual-reset event object, which requires the use of the ResetEvent
+     * function to set the event state to nonsignaled. If this parameter is
+     * FALSE, the function creates an auto-reset event object, and system
+     * automatically resets the event state to nonsignaled after a single
+     * waiting thread has been released.
+     * @param bInitialState If this parameter is TRUE, the initial state of the
+     * event object is signaled; otherwise, it is nonsignaled.
+     * @param lpName The name of the event object. The name is limited to
+     * MAX_PATH characters. Name comparison is case sensitive. If lpName is
+     * NULL, the event object is created without a name.
+     * @return If the function succeeds, the return value is a handle to the
+     * event object.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException;
+
     public final static native boolean HAVE_SYNCHAPI_H();
 
-    public final static native long WaitForSingleObject(HANDLE hHandle, long dwMilliseconds) throws NativeErrorException;
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-resetevent">ResetEvent</a>
+     * Sets the specified event object to the nonsignaled state.
+     *
+     * @param hEvent A handle to the object.
+     *
+     * @throws NullPointerException if hHandle is {@code null].
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native void ResetEvent(HANDLE hEvent) throws NativeErrorException;
 
-    public final static native HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException;
-    
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-setevent">SetEvent</a>
+     * Sets the specified event object to the signaled state.
+     *
+     * @param hEvent A handle to the object.
+     *
+     * @throws NullPointerException if hHandle is {@code null].
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
     public final static native void SetEvent(HANDLE hEvent) throws NativeErrorException;
 
-    public final static native void ResetEvent(HANDLE hEvent) throws NativeErrorException;
-    
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject">WaitForSingleObject</a>
+     * Waits until the specified object is in the signaled state or the time-out
+     * interval elapses.
+     *
+     * @param hHandle A handle to the object.
+     * @param dwMilliseconds the time-out interval, in milliseconds.
+     * @return on succes one of WAIT_ABANDONED, WAIT_OBJECT_0 or WAIT_TIMEOUT.
+     *
+     * @throws NullPointerException if hHandle is {@code null].
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native long WaitForSingleObject(HANDLE hHandle, long dwMilliseconds) throws NativeErrorException;
+
 }

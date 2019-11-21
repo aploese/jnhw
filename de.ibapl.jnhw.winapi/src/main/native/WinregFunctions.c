@@ -46,12 +46,12 @@ extern "C" {
         }
         //jobject lpccValueName, 
         //, jobject lpccData
-        DWORD lpcchValueName = (uint32_t)(*env)->GetIntField(env, lpValueName, de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID);
+        DWORD lpcchValueName = (uint32_t) (*env)->GetIntField(env, lpValueName, de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID);
         DWORD _lpType;
-        DWORD lpccData = lpData != NULL ? (uint32_t)(*env)->GetIntField(env, lpData, de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID) : 0;
+        DWORD lpccData = lpData != NULL ? (uint32_t) (*env)->GetIntField(env, lpData, de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID) : 0;
 
         LSTATUS result = RegEnumValueW(UNWRAP_HKEY(hKey),
-                (uint32_t)dwIndex,
+                (uint32_t) dwIndex,
                 UNWRAP_LPWSTR(lpValueName),
                 &lpcchValueName,
                 NULL,
@@ -59,17 +59,23 @@ extern "C" {
                 lpData == NULL ? NULL : UNWRAP_LPBYTE(lpData),
                 lpData == NULL ? NULL : &lpccData);
 
-        (*env)->SetIntField(env, lpValueName, de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID, (int32_t)lpcchValueName);
+        (*env)->SetIntField(env, lpValueName, de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID, (int32_t) lpcchValueName);
         if (lpType != NULL) {
-            SET_INT_REF_VALUE(lpType, (int32_t)_lpType);
+            SET_INT_REF_VALUE(lpType, (int32_t) _lpType);
         }
         if (lpData != NULL) {
-            (*env)->SetIntField(env, lpData, de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID, (int32_t)lpccData);
+            (*env)->SetIntField(env, lpData, de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID, (int32_t) lpccData);
         }
 
-        if ((result == ERROR_SUCCESS) || (result == ERROR_NO_MORE_ITEMS) || (result == ERROR_MORE_DATA)) {
-        } else {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+        switch (result) {
+            case ERROR_SUCCESS:
+                return ERROR_SUCCESS;
+            case ERROR_NO_MORE_ITEMS:
+                return ERROR_NO_MORE_ITEMS;
+            case ERROR_MORE_DATA:
+                return ERROR_MORE_DATA;
+            default:
+                throw_NativeErrorException(env, (int32_t) GetLastError());
         }
         return result;
     }
@@ -77,50 +83,48 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    RegOpenKeyExW
-     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef$HKEY;Ljava/lang/String;IILde/ibapl/jnhw/winapi/Minwindef$PHKEY;)J
+     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef$HKEY;Ljava/lang/String;IILde/ibapl/jnhw/winapi/Minwindef$PHKEY;)V
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegOpenKeyExW
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegOpenKeyExW
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hKey, jstring lpSubKey, jint ulOptions, jint samDesired, jobject phkResult) {
         if (hKey == NULL) {
             throw_NullPointerException(env, "hKey is null");
-            return ERROR_INVALID_PARAMETER;
+            return;
         }
         if (lpSubKey == NULL) {
             throw_NullPointerException(env, "lpSubKey is null.");
-            return ERROR_INVALID_PARAMETER;
+            return;
         }
         if (phkResult == NULL) {
             throw_NullPointerException(env, "phkResult is null.");
-            return ERROR_INVALID_PARAMETER;
+            return;
         }
         LPCWSTR _lpSubKey = (*env)->GetStringChars(env, lpSubKey, NULL);
 
-        LSTATUS result = RegOpenKeyExW(UNWRAP_HKEY(hKey), _lpSubKey, (uint32_t)ulOptions, (uint32_t)samDesired, UNWRAP_PHKEY(phkResult));
+        LSTATUS result = RegOpenKeyExW(UNWRAP_HKEY(hKey), _lpSubKey, (uint32_t) ulOptions, (uint32_t) samDesired, UNWRAP_PHKEY(phkResult));
 
         (*env)->ReleaseStringChars(env, lpSubKey, _lpSubKey);
 
         if (result != ERROR_SUCCESS) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
-        return result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    RegCloseKey
-     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef$HKEY;)J
+     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef$HKEY;)V
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegCloseKey
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegCloseKey
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hKey) {
         if (hKey == NULL) {
             throw_NullPointerException(env, "hKey is null");
-            return ERROR_INVALID_PARAMETER;
+            return;
         }
         LSTATUS result = RegCloseKey(UNWRAP_HKEY(hKey));
         if (result != ERROR_SUCCESS) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
-        return result;
     }
 
 #ifdef __cplusplus

@@ -10,17 +10,21 @@ lib_LTLIBRARIES = libjnhw-winapi.la
 noinst_LTLIBRARIES = \
  libwinnt.la \
  libminwinbase.la \
+ libminwindef.la \
  libwinbase.la \
  libwinreg.la \
  libwinerror.la \
  libsynchapi.la \
  libfileapi.la \
  libioapiset.la \
+ libhandleapi.la \
+ liberrhandlingapi.la \
  libprocessenv.la
  
 libjnhw_winapi_la_LIBADD = \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la \
  libminwinbase.la \
+ libminwindef.la \
  libwinnt.la \
  libwinbase.la \
  libwinreg.la \
@@ -28,6 +32,8 @@ libjnhw_winapi_la_LIBADD = \
  libsynchapi.la \
  libfileapi.la \
  libioapiset.la \
+ libhandleapi.la \
+ liberrhandlingapi.la \
  libprocessenv.la
 
 libjnhw_winapi_la_SOURCES = \
@@ -39,8 +45,12 @@ libwinnt_la_SOURCES = \
  Winnt_LPWSTR.c
 
 libminwinbase_la_SOURCES = \
+ MinwinbaseDefines.c \
  Minwinbase_OVERLAPPED.c \
  Minwinbase_SECURITY_ATTRIBUTES.c
+
+libminwindef_la_SOURCES = \
+ MinwindefDefines.c
 
 libwinbase_la_SOURCES = \
  WinbaseDefines.c \
@@ -67,6 +77,14 @@ libfileapi_la_SOURCES = \
 libioapiset_la_SOURCES = \
  IoapisetDefines.c \
  IoapisetFunctions.c
+
+libhandleapi_la_SOURCES = \
+ HandleapiDefines.c \
+ HandleapiFunctions.c
+
+liberrhandlingapi_la_SOURCES = \
+ ErrhandlingapiDefines.c \
+ ErrhandlingapiFunctions.c
 
 libprocessenv_la_SOURCES = \
  ProcessEnvDefines.c \

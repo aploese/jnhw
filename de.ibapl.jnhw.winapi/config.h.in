@@ -3,11 +3,14 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
+/* Define to 1 if you have the <errhandlingapi.h> header file. */
+#undef HAVE_ERRHANDLINGAPI_H
+
 /* Define to 1 if you have the <fileapi.h> header file. */
 #undef HAVE_FILEAPI_H
 
-/* Define to 1 if you have the <fileapi.h,> header file. */
-#undef HAVE_FILEAPI_H_
+/* Define to 1 if you have the <handleapi.h> header file. */
+#undef HAVE_HANDLEAPI_H
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H

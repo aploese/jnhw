@@ -29,15 +29,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Wrapper around the {@code <sys/stat.h>} header.
+ * Wrapper around the {@code  <sys/stat.h>} header.
  *
  * See specs at:
- * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">sys/types.h - data types</a>.
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">sys/types.h
+ * - data types</a>.
  *
  * @author aploese
  */
 @Include("#include <sys/types.h>")
 public class Types {
+
     /**
      * Make sure the native lib is loaded
      */
@@ -47,39 +49,81 @@ public class Types {
 
     public final static native boolean HAVE_SYS_TYPES_H();
 
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * off_t}</a>.
+     *
+     * @author aploese
+     */
     @Retention(RetentionPolicy.SOURCE)
     @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
     public static @interface off_t {
     }
 
+    /**
+     * <b>Linux:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * off_t}</a>, but 64 bit wide.
+     *
+     * @author aploese
+     */
     @Retention(RetentionPolicy.SOURCE)
     @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
     public static @interface off64_t {
     }
 
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * mode_t}</a>.
+     *
+     * @author aploese
+     */
     @Retention(RetentionPolicy.SOURCE)
     @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
     public static @interface mode_t {
     }
 
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * ssize_t}</a>.
+     *
+     * @author aploese
+     */
     @Retention(RetentionPolicy.SOURCE)
     @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
     public static @interface ssize_t {
     }
 
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * size_t}</a>.
+     *
+     * @author aploese
+     */
     @Retention(RetentionPolicy.SOURCE)
     @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
     public static @interface size_t {
     }
 
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * useconds_t}</a>.
+     *
+     * @author aploese
+     */
     @Retention(RetentionPolicy.SOURCE)
     @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
     public static @interface useconds_t {
     }
 
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * pid_t}</a>.
+     *
+     * @author aploese
+     */
     @Retention(RetentionPolicy.SOURCE)
     @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
     public static @interface pid_t {
     }
-    
+
 }

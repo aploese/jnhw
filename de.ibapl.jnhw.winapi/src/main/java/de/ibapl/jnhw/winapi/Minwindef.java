@@ -24,9 +24,16 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
-import static de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
-@Include("minwindef.h")
+/**
+ * Wrapper around the
+ * <a href="https://docs.microsoft.com/en-us/windows/win32/api/windef/">windef.h</a>
+ * header.
+ *
+ * @author aploese
+ */
+@Include("windef.h")
 public abstract class Minwindef {
 
     /**
@@ -36,6 +43,16 @@ public abstract class Minwindef {
         LibJnhwWinApiLoader.touch();
     }
 
+    public static final native boolean HAVE_MINWINDEF_H();
+
+    /**
+     * Wrapper for
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#hkey">HKEY</a>.<p>
+     * A handle to a registry key.<br>
+     * This type is declared in WinDef.h as follows:<br>
+     * typedef HANDLE HKEY;
+     * </p>
+     */
     public static class HKEY extends HANDLE {
 
         public HKEY(long value) {
@@ -45,31 +62,13 @@ public abstract class Minwindef {
     }
 
     /**
-     * Just the pointer to HKEY that where meaning it can be set in a function
-     * call ....
+     * Wrapper for
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#lpbyte">LPBYTE</a>.<p>
+     * A pointer to a BYTE.<br>
+     * This type is declared in WinDef.h as follows:<br>
+     * typedef BYTE far *LPBYTE;
+     * </p>
      */
-    public static class PHKEY extends Winnt.PHANDLE {
-
-        public PHKEY() {
-            super();
-        }
-
-        @Override
-        public HKEY dereference() {
-            return (HKEY) super.dereference();
-        }
-
-        @Override
-        protected HKEY createTarget(long value) {
-            return new HKEY(value);
-        }
-
-        public void setFromHKEY(HKEY target) {
-            setFromHANDLE(target);
-        }
-
-    }
-
     public static class LPBYTE extends OpaqueMemory {
 
         int bufferEnd;
@@ -86,6 +85,38 @@ public abstract class Minwindef {
 
         public void resetBufferEnd() {
             bufferEnd = sizeInBytes;
+        }
+
+    }
+
+    /**
+     * Wrapper for
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#phkey">PHKEY</a>.<p>
+     * A pointer to an HKEY.<br>
+     * This type is declared in WinDef.h as follows:<br>
+     * typedef HKEY *PHKEY;
+     * </p>
+     */
+    public static class PHKEY extends Winnt.PHANDLE {
+
+        public PHKEY() {
+            super((value) -> {
+                return new HKEY(value);
+            });
+        }
+
+        @Override
+        public HKEY dereference() {
+            return (HKEY) super.dereference();
+        }
+
+        @Override
+        protected HKEY createTarget(long value) {
+            return new HKEY(value);
+        }
+
+        public void setFromHKEY(HKEY target) {
+            setFromHANDLE(target);
         }
 
     }
