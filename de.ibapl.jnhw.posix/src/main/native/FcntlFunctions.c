@@ -138,7 +138,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat64
 #ifdef _LARGEFILE64_SOURCE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring path, jint mode) {
-        if (file == NULL) {
+        if (path == NULL) {
             throw_NullPointerException(env, "path is null.");
             return -1;
         }
@@ -249,7 +249,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64__Ljava_lang_String_2I
 #ifdef _LARGEFILE64_SOURCE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring path, jint oflag) {
-        if (file == NULL) {
+        if (path == NULL) {
             throw_NullPointerException(env, "path is null.");
             return -1;
         }
@@ -276,7 +276,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64__Ljava_lang_String_2II
 #ifdef _LARGEFILE64_SOURCE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring path, jint oflag, jint mode) {
-        if (file == NULL) {
+        if (path == NULL) {
             throw_NullPointerException(env, "path is null.");
             return -1;
         }
@@ -303,7 +303,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat64__ILjava_lang_String_2I
 #ifdef _LARGEFILE64_SOURCE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jstring path, jint oflag) {
-        if (file == NULL) {
+        if (path == NULL) {
             throw_NullPointerException(env, "path is null.");
             return -1;
         }
@@ -330,7 +330,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat64__ILjava_lang_String_2II
 #ifdef _LARGEFILE64_SOURCE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jstring path, jint oflag, jint mode) {
-        if (file == NULL) {
+        if (path == NULL) {
             throw_NullPointerException(env, "path is null.");
             return -1;
         }
@@ -425,7 +425,7 @@ extern "C" {
             throw_IndexOutOfBoundsException(env, "In this native implementation len is only an integer with the size of jint");
             return;
         }
-        const int reult = posix_fallocate(fildes, (int32_t)offset, (int32_t)len);
+        const int result = posix_fallocate(fildes, (int32_t)offset, (int32_t)len);
         if (result) {
               throw_NativeErrorException(env, result);
         }
