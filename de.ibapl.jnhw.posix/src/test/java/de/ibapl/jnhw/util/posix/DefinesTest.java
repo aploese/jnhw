@@ -43,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledOnOs;
 
 /**
  * Test all symbolic constants XXX that are defined with #define XXX
@@ -91,7 +92,7 @@ public class DefinesTest {
     }
 
     @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.LINUX)
     public void testEventfdDefines() throws Exception {
         testDefines(Eventfd.class);
     }
