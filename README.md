@@ -13,7 +13,7 @@ Add this dependency for POSIX.
 <dependency>
     <groupId>de.ibapl.jnhw</groupId>
     <artifactId>de.ibapl.jnhw.posix</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
 and this for the Windows API
@@ -22,7 +22,7 @@ and this for the Windows API
 <dependency>
     <groupId>de.ibapl.jnhw</groupId>
     <artifactId>de.ibapl.jnhw.posix</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
 # Usage
@@ -59,10 +59,7 @@ public class Posix {
 
 ### Windows API
 
-Import  in a static manner `import static de.ibapl.jnhw.posix.Unistd;` so the code may become less noisy.
-
 ```java
-import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
 //Import only the needed define from the wrapper of processenv.h
 import static de.ibapl.jnhw.winapi.ProcessEnv.STD_OUTPUT_HANDLE;
@@ -74,9 +71,7 @@ import static de.ibapl.jnhw.winapi.Fileapi.WriteFile;
 public class Windows {
 
 	public static void sayHello() throws NativeErrorException {
-		final IntRef iRef = new IntRef();
-		final byte[] data = "Hello World! from WIN API".getBytes();
-		WriteFile(GetStdHandle(STD_OUTPUT_HANDLE()), data, 0, data.length, iRef);
+		WriteFile(GetStdHandle(STD_OUTPUT_HANDLE()), "Hello World! from WIN API".getBytes());
 	}
 
 }

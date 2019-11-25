@@ -43,8 +43,8 @@ import java.lang.annotation.Target;
  * </p>
  *
  * See specs at:
- * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html">errno.h
- * - system error numbers</a>.
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html">fcntl.h
+ * - file control options</a>.
  *
  * @author aploese
  */
