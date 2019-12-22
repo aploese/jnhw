@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class LibJnhwWinApiLoaderTests {
 
     @Test
-    public void testLibIsLoaded() throws Exception {
+    public void testLibWinApiIsLoaded() throws Exception {
         Assertions.assertEquals(LoadState.SUCCESS, LibJnhwWinApiLoader.touch());
     }
 

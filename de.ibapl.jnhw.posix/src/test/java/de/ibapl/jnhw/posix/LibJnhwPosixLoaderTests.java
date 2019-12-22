@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class LibJnhwPosixLoaderTests {
 
     @Test
-    public void testLinsLoaded() throws Exception {
+    public void testLibPosixIsLoaded() throws Exception {
         Assertions.assertEquals(LoadState.SUCCESS, LibJnhwPosixLoader.touch());
     }
 

@@ -25,7 +25,6 @@
 
 #include "de_ibapl_jnhw_posix_Termios_StructTermios.h"
 #include <termios.h>
-#include <errno.h>
 
 #ifdef __cplusplus
 extern "C" {

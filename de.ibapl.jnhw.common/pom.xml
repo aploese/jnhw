@@ -51,6 +51,19 @@
                             </compilerArgs>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>testCompile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <configuration>
+                            <compilerArgs>
+                                <arg>-h</arg>
+                                <arg>${project.build.directory}/generated-test-sources/include/</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>

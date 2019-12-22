@@ -74,7 +74,7 @@ public class OpaqueMemory {
      * Make sure the native lib is loaded
      */
     static {
-        LibJnhwLoader.touch();
+        LibJnhwCommonLoader.touch();
     }
 
     private final long baseAddress;
@@ -93,9 +93,27 @@ public class OpaqueMemory {
     public static native void memset(OpaqueMemory mem, byte c);
 
     public static void clear(OpaqueMemory mem) {
-        memset(mem, (byte)0);
+        memset(mem, (byte) 0);
     }
 
+    /**
+     * Create a static memory slice which will NOT be freed - its static.
+     *
+     * @param baseAddress the base Address.
+     * @param sizeInBytes the size.
+     */
+    protected OpaqueMemory(long baseAddress, int sizeInBytes) {
+        this.baseAddress = baseAddress;
+        this.sizeInBytes = sizeInBytes;
+        memoryOwner = null;
+    }
+
+    /**
+     * Creates a new memory which will be freed at the end of life.
+     *
+     * @param sizeInBytes
+     * @param clearMem
+     */
     public OpaqueMemory(int sizeInBytes, boolean clearMem) {
         this.sizeInBytes = sizeInBytes;
         try {
@@ -115,25 +133,37 @@ public class OpaqueMemory {
         CLEANER.register(this, new MemoryCleaner(baseAddress));
     }
 
-    public OpaqueMemory(int elements, int sizeInBytes, boolean clearMem) {
-        this.sizeInBytes = sizeInBytes * elements;
+    /**
+     *
+     * @param elements
+     * @param elementSizeInBytes
+     * @param clearMem
+     */
+    public OpaqueMemory(int elements, int elementSizeInBytes, boolean clearMem) {
+        this.sizeInBytes = elementSizeInBytes * elements;
         try {
             if (clearMem) {
-                baseAddress = calloc(elements, sizeInBytes);
+                baseAddress = calloc(elements, elementSizeInBytes);
             } else {
-                baseAddress = malloc(sizeInBytes * elements);
+                baseAddress = malloc(sizeInBytes);
             }
         } catch (NativeErrorException nee) {
             if (nee.errno == ENOMEM()) {
-                throw new OutOfMemoryError("Can't allocate " + sizeInBytes * elements + " bytes ENOMEM");
+                throw new OutOfMemoryError("Can't allocate " + sizeInBytes + " bytes ENOMEM");
             } else {
-                throw new RuntimeException("Can't allocate " + sizeInBytes * elements + " bytes ");
+                throw new RuntimeException("Can't allocate " + sizeInBytes + " bytes ");
             }
         }
         memoryOwner = this;
         CLEANER.register(this, new MemoryCleaner(baseAddress));
     }
 
+    /**
+     *
+     * @param owner
+     * @param offset
+     * @param sizeInBytes
+     */
     public OpaqueMemory(OpaqueMemory owner, int offset, int sizeInBytes) {
         if (sizeInBytes < 0) {
             throw new IllegalArgumentException("negative size");

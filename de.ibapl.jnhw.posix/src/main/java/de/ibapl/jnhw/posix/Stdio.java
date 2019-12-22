@@ -88,43 +88,6 @@ public class Stdio {
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
-     * off_t}</a>.
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys/types.h.html">{@code typedef
-     * off_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface off_t {
-    }
-
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
-     * size_t}</a>.
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stddef.h.html">{@code typedef
-     * off_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface size_t {
-    }
-
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
-     * ssize_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface ssize_t {
-    }
-
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
      * va_list}</a>.
      *
      * @author aploese

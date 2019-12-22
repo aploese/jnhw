@@ -613,16 +613,6 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    FNONBLOCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_FNONBLOCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return FNONBLOCK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    FD_CLOEXEC
      * Signature: ()I
      */

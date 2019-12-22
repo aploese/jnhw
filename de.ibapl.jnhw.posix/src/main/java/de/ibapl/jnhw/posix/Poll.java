@@ -204,6 +204,7 @@ public final class Poll {
         }
 
         /**
+         * The input event flags.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
          * pollfd}</a>.
          *
@@ -212,6 +213,7 @@ public final class Poll {
         public native short events();
 
         /**
+         * The input event flags.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
          * pollfd}</a>.
          *
@@ -220,6 +222,7 @@ public final class Poll {
         public native void events(short events);
 
         /**
+         * The file descriptor being polled.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
          * pollfd}</a>.
          *
@@ -228,6 +231,7 @@ public final class Poll {
         public native int fd();
 
         /**
+         * The file descriptor being polled.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
          * pollfd}</a>.
          *
@@ -236,6 +240,7 @@ public final class Poll {
         public native void fd(int fd);
 
         /**
+         * The output event flags.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
          * pollfd}</a>.
          *
@@ -244,6 +249,7 @@ public final class Poll {
         public native short revents();
 
         /**
+         * The output event flags.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
          * pollfd}</a>.
          *
@@ -320,6 +326,14 @@ public final class Poll {
      *
      */
     public static class PollFds extends StructArray<PollFd> {
+
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
+        static {
+            LibJnhwPosixLoader.touch();
+        }
 
         public PollFds(int arraylength) {
             //get uninitialized mem we need to set this anyway ...

@@ -368,7 +368,7 @@ public final class Unistd {
     private static native int read_ArgsOK(int fildes, ByteBuffer buffer, int off, int nByte) throws NativeErrorException;
 
     /**
-     * <b>POSIX:</b>
+     * <b>LINUX,APPLE,BSD:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/usleep.html">usleep
      * - suspend execution for an interval</a>.
      *

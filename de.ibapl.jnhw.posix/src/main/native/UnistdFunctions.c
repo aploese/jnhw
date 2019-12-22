@@ -20,6 +20,8 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
+    
+
 #if HAVE_UNISTD_H
 #include <unistd.h>
 #endif

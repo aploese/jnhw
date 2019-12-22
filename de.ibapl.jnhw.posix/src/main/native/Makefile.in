@@ -134,14 +134,17 @@ am__uninstall_files_from_dir = { \
   }
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
-liberrno_la_LIBADD =
-am_liberrno_la_OBJECTS = Isoc_ErrnoDefines.lo Isoc_ErrnoFunctions.lo \
-	Posix_ErrnoDefines.lo
-liberrno_la_OBJECTS = $(am_liberrno_la_OBJECTS)
+libaio_la_LIBADD =
+am_libaio_la_OBJECTS = AioDefines.lo AioFunctions.lo Aio_Aiocbs.lo
+libaio_la_OBJECTS = $(am_libaio_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+liberrno_la_LIBADD =
+am_liberrno_la_OBJECTS = Isoc_ErrnoDefines.lo Isoc_ErrnoFunctions.lo \
+	Posix_ErrnoDefines.lo
+liberrno_la_OBJECTS = $(am_liberrno_la_OBJECTS)
 libeventfd_la_LIBADD =
 am_libeventfd_la_OBJECTS = EventFdDefines.lo EventFdFunctions.lo
 libeventfd_la_OBJECTS = $(am_libeventfd_la_OBJECTS)
@@ -151,18 +154,29 @@ libfcntl_la_OBJECTS = $(am_libfcntl_la_OBJECTS)
 libioclt_la_LIBADD =
 am_libioclt_la_OBJECTS = IoctlDefines.lo IoctlFunctions.lo
 libioclt_la_OBJECTS = $(am_libioclt_la_OBJECTS)
-libjnhw_posix_la_DEPENDENCIES = libpoll.la libeventfd.la libfcntl.la \
-	libunistd.la libioclt.la libtermios.la liberrno.la libstdio.la \
+libjnhw_posix_la_DEPENDENCIES = libaio.la libpoll.la libeventfd.la \
+	libfcntl.la liblocale.la libtime.la libunistd.la libioclt.la \
+	libsignal.la libtermios.la liberrno.la libstdio.la \
 	libsystypes.la libsysstat.la libposixutils.la \
 	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 am_libjnhw_posix_la_OBJECTS = jnhw-posix-jni.lo
 libjnhw_posix_la_OBJECTS = $(am_libjnhw_posix_la_OBJECTS)
+liblocale_la_LIBADD =
+am_liblocale_la_OBJECTS = LocaleDefines.lo LocaleFunctions.lo \
+	Locale_Lconv.lo
+liblocale_la_OBJECTS = $(am_liblocale_la_OBJECTS)
 libpoll_la_LIBADD =
 am_libpoll_la_OBJECTS = PollDefines.lo PollFunctions.lo Poll_PollFd.lo
 libpoll_la_OBJECTS = $(am_libpoll_la_OBJECTS)
 libposixutils_la_LIBADD =
 am_libposixutils_la_OBJECTS = Defines.lo
 libposixutils_la_OBJECTS = $(am_libposixutils_la_OBJECTS)
+libsignal_la_LIBADD =
+am_libsignal_la_OBJECTS = SignalDefines.lo SignalFunctions.lo \
+	Signal_Sigaction.lo Signal_Sigevent.lo Signal_Siginfo_t.lo \
+	Signal_Sigset_t.lo Signal_Sigval.lo Signal_Stack_t.lo \
+	Signal_Ucontext_t.lo Signal_Mcontext_t.lo
+libsignal_la_OBJECTS = $(am_libsignal_la_OBJECTS)
 libstdio_la_LIBADD =
 am_libstdio_la_OBJECTS = StdioDefines.lo StdioFunctions.lo
 libstdio_la_OBJECTS = $(am_libstdio_la_OBJECTS)
@@ -176,6 +190,10 @@ libtermios_la_LIBADD =
 am_libtermios_la_OBJECTS = TermiosDefines.lo TermiosFunctions.lo \
 	Termios_Termios.lo
 libtermios_la_OBJECTS = $(am_libtermios_la_OBJECTS)
+libtime_la_LIBADD =
+am_libtime_la_OBJECTS = TimeDefines.lo TimeFunctions.lo \
+	Time_Itimerspec.lo Time_Timespec.lo Time_Tm.lo
+libtime_la_OBJECTS = $(am_libtime_la_OBJECTS)
 libunistd_la_LIBADD =
 am_libunistd_la_OBJECTS = UnistdDefines.lo UnistdFunctions.lo
 libunistd_la_OBJECTS = $(am_libunistd_la_OBJECTS)
@@ -194,22 +212,34 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/Defines.Plo \
-	./$(DEPDIR)/EventFdDefines.Plo \
+am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
+	./$(DEPDIR)/AioFunctions.Plo ./$(DEPDIR)/Aio_Aiocbs.Plo \
+	./$(DEPDIR)/Defines.Plo ./$(DEPDIR)/EventFdDefines.Plo \
 	./$(DEPDIR)/EventFdFunctions.Plo ./$(DEPDIR)/FcntlDefines.Plo \
 	./$(DEPDIR)/FcntlFunctions.Plo ./$(DEPDIR)/IoctlDefines.Plo \
 	./$(DEPDIR)/IoctlFunctions.Plo \
 	./$(DEPDIR)/Isoc_ErrnoDefines.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
-	./$(DEPDIR)/PollDefines.Plo ./$(DEPDIR)/PollFunctions.Plo \
-	./$(DEPDIR)/Poll_PollFd.Plo ./$(DEPDIR)/Posix_ErrnoDefines.Plo \
-	./$(DEPDIR)/StatDefines.Plo ./$(DEPDIR)/StatFunctions.Plo \
-	./$(DEPDIR)/StdioDefines.Plo ./$(DEPDIR)/StdioFunctions.Plo \
-	./$(DEPDIR)/TermiosDefines.Plo \
+	./$(DEPDIR)/LocaleDefines.Plo ./$(DEPDIR)/LocaleFunctions.Plo \
+	./$(DEPDIR)/Locale_Lconv.Plo ./$(DEPDIR)/PollDefines.Plo \
+	./$(DEPDIR)/PollFunctions.Plo ./$(DEPDIR)/Poll_PollFd.Plo \
+	./$(DEPDIR)/Posix_ErrnoDefines.Plo \
+	./$(DEPDIR)/SignalDefines.Plo ./$(DEPDIR)/SignalFunctions.Plo \
+	./$(DEPDIR)/Signal_Mcontext_t.Plo \
+	./$(DEPDIR)/Signal_Sigaction.Plo \
+	./$(DEPDIR)/Signal_Sigevent.Plo \
+	./$(DEPDIR)/Signal_Siginfo_t.Plo \
+	./$(DEPDIR)/Signal_Sigset_t.Plo ./$(DEPDIR)/Signal_Sigval.Plo \
+	./$(DEPDIR)/Signal_Stack_t.Plo \
+	./$(DEPDIR)/Signal_Ucontext_t.Plo ./$(DEPDIR)/StatDefines.Plo \
+	./$(DEPDIR)/StatFunctions.Plo ./$(DEPDIR)/StdioDefines.Plo \
+	./$(DEPDIR)/StdioFunctions.Plo ./$(DEPDIR)/TermiosDefines.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo \
-	./$(DEPDIR)/Termios_Termios.Plo ./$(DEPDIR)/TypesDefines.Plo \
-	./$(DEPDIR)/UnistdDefines.Plo ./$(DEPDIR)/UnistdFunctions.Plo \
-	./$(DEPDIR)/jnhw-posix-jni.Plo
+	./$(DEPDIR)/Termios_Termios.Plo ./$(DEPDIR)/TimeDefines.Plo \
+	./$(DEPDIR)/TimeFunctions.Plo ./$(DEPDIR)/Time_Itimerspec.Plo \
+	./$(DEPDIR)/Time_Timespec.Plo ./$(DEPDIR)/Time_Tm.Plo \
+	./$(DEPDIR)/TypesDefines.Plo ./$(DEPDIR)/UnistdDefines.Plo \
+	./$(DEPDIR)/UnistdFunctions.Plo ./$(DEPDIR)/jnhw-posix-jni.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -229,18 +259,22 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(liberrno_la_SOURCES) $(libeventfd_la_SOURCES) \
-	$(libfcntl_la_SOURCES) $(libioclt_la_SOURCES) \
-	$(libjnhw_posix_la_SOURCES) $(libpoll_la_SOURCES) \
-	$(libposixutils_la_SOURCES) $(libstdio_la_SOURCES) \
-	$(libsysstat_la_SOURCES) $(libsystypes_la_SOURCES) \
-	$(libtermios_la_SOURCES) $(libunistd_la_SOURCES)
-DIST_SOURCES = $(liberrno_la_SOURCES) $(libeventfd_la_SOURCES) \
-	$(libfcntl_la_SOURCES) $(libioclt_la_SOURCES) \
-	$(libjnhw_posix_la_SOURCES) $(libpoll_la_SOURCES) \
-	$(libposixutils_la_SOURCES) $(libstdio_la_SOURCES) \
-	$(libsysstat_la_SOURCES) $(libsystypes_la_SOURCES) \
-	$(libtermios_la_SOURCES) $(libunistd_la_SOURCES)
+SOURCES = $(libaio_la_SOURCES) $(liberrno_la_SOURCES) \
+	$(libeventfd_la_SOURCES) $(libfcntl_la_SOURCES) \
+	$(libioclt_la_SOURCES) $(libjnhw_posix_la_SOURCES) \
+	$(liblocale_la_SOURCES) $(libpoll_la_SOURCES) \
+	$(libposixutils_la_SOURCES) $(libsignal_la_SOURCES) \
+	$(libstdio_la_SOURCES) $(libsysstat_la_SOURCES) \
+	$(libsystypes_la_SOURCES) $(libtermios_la_SOURCES) \
+	$(libtime_la_SOURCES) $(libunistd_la_SOURCES)
+DIST_SOURCES = $(libaio_la_SOURCES) $(liberrno_la_SOURCES) \
+	$(libeventfd_la_SOURCES) $(libfcntl_la_SOURCES) \
+	$(libioclt_la_SOURCES) $(libjnhw_posix_la_SOURCES) \
+	$(liblocale_la_SOURCES) $(libpoll_la_SOURCES) \
+	$(libposixutils_la_SOURCES) $(libsignal_la_SOURCES) \
+	$(libstdio_la_SOURCES) $(libsysstat_la_SOURCES) \
+	$(libsystypes_la_SOURCES) $(libtermios_la_SOURCES) \
+	$(libtime_la_SOURCES) $(libunistd_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -402,10 +436,39 @@ AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
 LIB_JNHW_POSIX_NAME = @JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@
 LIB_JNHW_POSIX_RES_NAME = @JNHW_RESOURCES_DIR@/$(LIB_JNHW_POSIX_NAME)
 lib_LTLIBRARIES = libjnhw-posix.la
-noinst_LTLIBRARIES = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la
-libjnhw_posix_la_LIBADD = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+noinst_LTLIBRARIES = libaio.la libpoll.la libeventfd.la libfcntl.la liblocale.la libtime.la libunistd.la libioclt.la libsignal.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la
+libjnhw_posix_la_LIBADD = libaio.la libpoll.la libeventfd.la libfcntl.la liblocale.la libtime.la libunistd.la libioclt.la libsignal.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 libjnhw_posix_la_SOURCES = \
  jnhw-posix-jni.c
+
+libaio_la_SOURCES = \
+ AioDefines.c \
+ AioFunctions.c \
+ Aio_Aiocbs.c
+
+libsignal_la_SOURCES = \
+ SignalDefines.c \
+ SignalFunctions.c \
+ Signal_Sigaction.c \
+ Signal_Sigevent.c \
+ Signal_Siginfo_t.c \
+ Signal_Sigset_t.c \
+ Signal_Sigval.c \
+ Signal_Stack_t.c \
+ Signal_Ucontext_t.c \
+ Signal_Mcontext_t.c
+
+libtime_la_SOURCES = \
+ TimeDefines.c \
+ TimeFunctions.c \
+ Time_Itimerspec.c \
+ Time_Timespec.c \
+ Time_Tm.c
+
+liblocale_la_SOURCES = \
+ LocaleDefines.c \
+ LocaleFunctions.c \
+ Locale_Lconv.c 
 
 liberrno_la_SOURCES = \
  Isoc_ErrnoDefines.c \
@@ -532,6 +595,9 @@ clean-noinstLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
+libaio.la: $(libaio_la_OBJECTS) $(libaio_la_DEPENDENCIES) $(EXTRA_libaio_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libaio_la_OBJECTS) $(libaio_la_LIBADD) $(LIBS)
+
 liberrno.la: $(liberrno_la_OBJECTS) $(liberrno_la_DEPENDENCIES) $(EXTRA_liberrno_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(liberrno_la_OBJECTS) $(liberrno_la_LIBADD) $(LIBS)
 
@@ -547,11 +613,17 @@ libioclt.la: $(libioclt_la_OBJECTS) $(libioclt_la_DEPENDENCIES) $(EXTRA_libioclt
 libjnhw-posix.la: $(libjnhw_posix_la_OBJECTS) $(libjnhw_posix_la_DEPENDENCIES) $(EXTRA_libjnhw_posix_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK) -rpath $(libdir) $(libjnhw_posix_la_OBJECTS) $(libjnhw_posix_la_LIBADD) $(LIBS)
 
+liblocale.la: $(liblocale_la_OBJECTS) $(liblocale_la_DEPENDENCIES) $(EXTRA_liblocale_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(liblocale_la_OBJECTS) $(liblocale_la_LIBADD) $(LIBS)
+
 libpoll.la: $(libpoll_la_OBJECTS) $(libpoll_la_DEPENDENCIES) $(EXTRA_libpoll_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libpoll_la_OBJECTS) $(libpoll_la_LIBADD) $(LIBS)
 
 libposixutils.la: $(libposixutils_la_OBJECTS) $(libposixutils_la_DEPENDENCIES) $(EXTRA_libposixutils_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libposixutils_la_OBJECTS) $(libposixutils_la_LIBADD) $(LIBS)
+
+libsignal.la: $(libsignal_la_OBJECTS) $(libsignal_la_DEPENDENCIES) $(EXTRA_libsignal_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libsignal_la_OBJECTS) $(libsignal_la_LIBADD) $(LIBS)
 
 libstdio.la: $(libstdio_la_OBJECTS) $(libstdio_la_DEPENDENCIES) $(EXTRA_libstdio_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libstdio_la_OBJECTS) $(libstdio_la_LIBADD) $(LIBS)
@@ -565,6 +637,9 @@ libsystypes.la: $(libsystypes_la_OBJECTS) $(libsystypes_la_DEPENDENCIES) $(EXTRA
 libtermios.la: $(libtermios_la_OBJECTS) $(libtermios_la_DEPENDENCIES) $(EXTRA_libtermios_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libtermios_la_OBJECTS) $(libtermios_la_LIBADD) $(LIBS)
 
+libtime.la: $(libtime_la_OBJECTS) $(libtime_la_DEPENDENCIES) $(EXTRA_libtime_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libtime_la_OBJECTS) $(libtime_la_LIBADD) $(LIBS)
+
 libunistd.la: $(libunistd_la_OBJECTS) $(libunistd_la_DEPENDENCIES) $(EXTRA_libunistd_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libunistd_la_OBJECTS) $(libunistd_la_LIBADD) $(LIBS)
 
@@ -574,6 +649,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioFunctions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Aio_Aiocbs.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Defines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdFunctions.Plo@am__quote@ # am--include-marker
@@ -583,10 +661,23 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoFunctions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleFunctions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Locale_Lconv.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Poll_PollFd.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalFunctions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Mcontext_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Sigaction.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Sigevent.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Siginfo_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Sigset_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Sigval.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Stack_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Ucontext_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdioDefines.Plo@am__quote@ # am--include-marker
@@ -594,6 +685,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Termios.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeFunctions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Itimerspec.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Timespec.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Tm.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TypesDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdFunctions.Plo@am__quote@ # am--include-marker
@@ -760,7 +856,10 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/Defines.Plo
+		-rm -f ./$(DEPDIR)/AioDefines.Plo
+	-rm -f ./$(DEPDIR)/AioFunctions.Plo
+	-rm -f ./$(DEPDIR)/Aio_Aiocbs.Plo
+	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
 	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
@@ -769,10 +868,23 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
+	-rm -f ./$(DEPDIR)/LocaleDefines.Plo
+	-rm -f ./$(DEPDIR)/LocaleFunctions.Plo
+	-rm -f ./$(DEPDIR)/Locale_Lconv.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
+	-rm -f ./$(DEPDIR)/SignalDefines.Plo
+	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
+	-rm -f ./$(DEPDIR)/Signal_Mcontext_t.Plo
+	-rm -f ./$(DEPDIR)/Signal_Sigaction.Plo
+	-rm -f ./$(DEPDIR)/Signal_Sigevent.Plo
+	-rm -f ./$(DEPDIR)/Signal_Siginfo_t.Plo
+	-rm -f ./$(DEPDIR)/Signal_Sigset_t.Plo
+	-rm -f ./$(DEPDIR)/Signal_Sigval.Plo
+	-rm -f ./$(DEPDIR)/Signal_Stack_t.Plo
+	-rm -f ./$(DEPDIR)/Signal_Ucontext_t.Plo
 	-rm -f ./$(DEPDIR)/StatDefines.Plo
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo
 	-rm -f ./$(DEPDIR)/StdioDefines.Plo
@@ -780,6 +892,11 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
+	-rm -f ./$(DEPDIR)/TimeDefines.Plo
+	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
+	-rm -f ./$(DEPDIR)/Time_Itimerspec.Plo
+	-rm -f ./$(DEPDIR)/Time_Timespec.Plo
+	-rm -f ./$(DEPDIR)/Time_Tm.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
@@ -829,7 +946,10 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/Defines.Plo
+		-rm -f ./$(DEPDIR)/AioDefines.Plo
+	-rm -f ./$(DEPDIR)/AioFunctions.Plo
+	-rm -f ./$(DEPDIR)/Aio_Aiocbs.Plo
+	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
 	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
@@ -838,10 +958,23 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
+	-rm -f ./$(DEPDIR)/LocaleDefines.Plo
+	-rm -f ./$(DEPDIR)/LocaleFunctions.Plo
+	-rm -f ./$(DEPDIR)/Locale_Lconv.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
+	-rm -f ./$(DEPDIR)/SignalDefines.Plo
+	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
+	-rm -f ./$(DEPDIR)/Signal_Mcontext_t.Plo
+	-rm -f ./$(DEPDIR)/Signal_Sigaction.Plo
+	-rm -f ./$(DEPDIR)/Signal_Sigevent.Plo
+	-rm -f ./$(DEPDIR)/Signal_Siginfo_t.Plo
+	-rm -f ./$(DEPDIR)/Signal_Sigset_t.Plo
+	-rm -f ./$(DEPDIR)/Signal_Sigval.Plo
+	-rm -f ./$(DEPDIR)/Signal_Stack_t.Plo
+	-rm -f ./$(DEPDIR)/Signal_Ucontext_t.Plo
 	-rm -f ./$(DEPDIR)/StatDefines.Plo
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo
 	-rm -f ./$(DEPDIR)/StdioDefines.Plo
@@ -849,6 +982,11 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
+	-rm -f ./$(DEPDIR)/TimeDefines.Plo
+	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
+	-rm -f ./$(DEPDIR)/Time_Itimerspec.Plo
+	-rm -f ./$(DEPDIR)/Time_Timespec.Plo
+	-rm -f ./$(DEPDIR)/Time_Tm.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo

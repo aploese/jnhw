@@ -81,15 +81,12 @@ extern "C" {
         JNIEnv *env;
 
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
-            if (de_ibapl_jnhw_winapi_Winnt_HANDLE_Class != NULL)
-                deleteGlobalRef(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class);
-            de_ibapl_jnhw_winapi_Winnt_HANDLE_Class = NULL;
+            deleteGlobalRef(env, &de_ibapl_jnhw_winapi_Winnt_HANDLE_Class);
+            de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID = NULL;
+            de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = NULL;
+            de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID = NULL;
+            de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID = NULL;
         }
-        de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID = NULL;
-        de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = NULL;
-        de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID = NULL;
-        de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID = NULL;
-        return;
     }
 
 

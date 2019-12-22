@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mvn clean compile
+mvn clean compile test-compile
 
 ./configure --prefix=$PWD/target/ || exit 1
 make clean || exit 1

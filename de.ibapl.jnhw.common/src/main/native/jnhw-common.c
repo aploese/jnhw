@@ -22,6 +22,18 @@
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
 
+//Important class names
+#define JNHW_CLASS_NAME_BYTE_REF   "de/ibapl/jnhw/ByteRef"
+#define JNHW_CLASS_NAME_SHORT_REF  "de/ibapl/jnhw/ShortRef"
+#define JNHW_CLASS_NAME_INT_REF    "de/ibapl/jnhw/IntRef"
+#define JNHW_CLASS_NAME_LONG_REF   "de/ibapl/jnhw/LongRef"
+#define JNHW_CLASS_NAME_OBJECT_REF "de/ibapl/jnhw/ObjectRef"
+
+#define JNHW_CLASS_NAME_NATIVE_FUNCTION_POINTER "de/ibapl/jnhw/NativeFunctionPointer"
+
+#define JNHW_CLASS_NAME_OPAQUE_MEMORY "de/ibapl/jnhw/OpaqueMemory"
+#define JNHW_CLASS_NAME_STRUCT_ARRAY "de/ibapl/jnhw/StructArray"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -30,9 +42,13 @@ extern "C" {
     JNIEXPORT jfieldID de_ibapl_jnhw_ShortRef_value_ID = NULL;
     JNIEXPORT jfieldID de_ibapl_jnhw_IntRef_value_ID = NULL;
     JNIEXPORT jfieldID de_ibapl_jnhw_LongRef_value_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_ObjectRef_value_ID = NULL;
     JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = NULL;
     JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_StructArray_length_ID = NULL;
+    JNIEXPORT jclass de_ibapl_jnhw_NativeFunctionPointer_Class = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = NULL;
+    JNIEXPORT jmethodID de_ibapl_jnhw_NativeFunctionPointer_init_ID = NULL;
 
     static jboolean JNICALL jnhw_common_init(JNIEnv *env) {
         if (initExceptions(env) == JNI_FALSE) {
@@ -62,6 +78,12 @@ extern "C" {
                 return JNI_FALSE;
             }
         }
+        if (de_ibapl_jnhw_ObjectRef_value_ID == NULL) {
+            de_ibapl_jnhw_ObjectRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_OBJECT_REF, "value", "Ljava/lang/Object;");
+            if (de_ibapl_jnhw_ObjectRef_value_ID == NULL) {
+                return JNI_FALSE;
+            }
+        }
         if (de_ibapl_jnhw_OpaqueMemory_baseAddress_ID == NULL) {
             de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY, "baseAddress", "J");
             if (de_ibapl_jnhw_OpaqueMemory_baseAddress_ID == NULL) {
@@ -80,19 +102,47 @@ extern "C" {
                 return JNI_FALSE;
             }
         }
+
+        if (de_ibapl_jnhw_NativeFunctionPointer_Class == NULL) {
+            de_ibapl_jnhw_NativeFunctionPointer_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_NATIVE_FUNCTION_POINTER);
+            if (de_ibapl_jnhw_NativeFunctionPointer_Class == NULL) {
+                return JNI_FALSE;
+            }
+        }
+        if (de_ibapl_jnhw_NativeFunctionPointer_init_ID == NULL) {
+            de_ibapl_jnhw_NativeFunctionPointer_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_NativeFunctionPointer_Class, "<init>", "(J)V");
+            if (de_ibapl_jnhw_NativeFunctionPointer_init_ID == NULL) {
+                return JNI_FALSE;
+            }
+        }
+        if (de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID == NULL) {
+            de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = getFieldIdOfClassRef(env, de_ibapl_jnhw_NativeFunctionPointer_Class, "nativeAddress", "J");
+            if (de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID == NULL) {
+                return JNI_FALSE;
+            }
+        }
+
+        if (initCallback_I_V(env) == JNI_FALSE) {
+            return JNI_FALSE;
+        }
         return JNI_TRUE;
     }
 
     static void JNICALL jnhw_common_release(JNIEnv *env) {
+        releaseCallback_I_V(env);
         releaseExceptions(env);
 
         de_ibapl_jnhw_ByteRef_value_ID = NULL;
         de_ibapl_jnhw_ShortRef_value_ID = NULL;
         de_ibapl_jnhw_IntRef_value_ID = NULL;
         de_ibapl_jnhw_LongRef_value_ID = NULL;
+        de_ibapl_jnhw_ObjectRef_value_ID = NULL;
         de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = NULL;
         de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = NULL;
         de_ibapl_jnhw_StructArray_length_ID = NULL;
+        deleteGlobalRef(env, &de_ibapl_jnhw_NativeFunctionPointer_Class);
+        de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = NULL;
+        de_ibapl_jnhw_NativeFunctionPointer_init_ID = NULL;
     }
 
     JNIEXPORT jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className) {
@@ -111,9 +161,10 @@ extern "C" {
 
     }
 
-    JNIEXPORT void JNICALL deleteGlobalRef(JNIEnv *env, jobject classRef) {
-        if (classRef != NULL) {
-            (*env)->DeleteGlobalRef(env, classRef);
+    JNIEXPORT void JNICALL deleteGlobalRef(JNIEnv *env, jobject *classRef) {
+        if (*classRef != NULL) {
+            (*env)->DeleteGlobalRef(env, *classRef);
+            *classRef = NULL;
         }
     }
 
@@ -126,43 +177,29 @@ extern "C" {
 
         jfieldID result = (*env)->GetFieldID(env, clazz, fieldName, fieldType);
         (*env)->DeleteLocalRef(env, clazz);
-        if (result == NULL) {
-            return NULL;
-        }
         return result;
     }
 
     JNIEXPORT jmethodID JNICALL getMethodId(JNIEnv *env, const char* className, const char* methodName, const char* methodSignature) {
-
         jclass clazz = (*env)->FindClass(env, className);
         if (clazz == NULL) {
             return NULL;
         }
-
         jmethodID result = (*env)->GetMethodID(env, clazz, methodName, methodSignature);
         (*env)->DeleteLocalRef(env, clazz);
-        if (result == NULL) {
-            return NULL;
-        }
         return result;
     }
 
     JNIEXPORT jfieldID JNICALL getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* fieldName, const char* fieldType) {
-
-        jfieldID result = (*env)->GetFieldID(env, clazz, fieldName, fieldType);
-        if (result == NULL) {
-            return NULL;
-        }
-        return result;
+        return (*env)->GetFieldID(env, clazz, fieldName, fieldType);
     }
 
     JNIEXPORT jmethodID JNICALL getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* methodName, const char* methodSignature) {
+        return (*env)->GetMethodID(env, clazz, methodName, methodSignature);
+    }
 
-        jmethodID result = (*env)->GetMethodID(env, clazz, methodName, methodSignature);
-        if (result == NULL) {
-            return NULL;
-        }
-        return result;
+    JNIEXPORT jmethodID JNICALL getStaticMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* methodName, const char* methodSignature) {
+        return (*env)->GetStaticMethodID(env, clazz, methodName, methodSignature);
     }
 
     /*
@@ -186,7 +223,7 @@ extern "C" {
     }
 
     JNIEXPORT jint JNICALL
-    JNI_OnLoad(JavaVM *jvm, __attribute__((unused)) void *reserved) {
+    JNI_OnLoad(JavaVM *jvm, __attribute__ ((unused)) void *reserved) {
         JNIEnv *env;
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
             return JNI_ERR;
@@ -200,7 +237,7 @@ extern "C" {
     }
 
     JNIEXPORT void JNICALL
-    JNI_OnUnload(JavaVM *jvm, __attribute__((unused)) void *reserved) {
+    JNI_OnUnload(JavaVM *jvm, __attribute__ ((unused)) void *reserved) {
         JNIEnv *env;
 
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {

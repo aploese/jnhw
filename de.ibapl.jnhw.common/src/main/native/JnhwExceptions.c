@@ -24,6 +24,15 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#define NATIVE_ERROR_EXCEPTION "de/ibapl/jnhw/NativeErrorException"
+#define NOT_DEFINED_EXCEPTION "de/ibapl/jnhw/NotDefinedException"
+#define NO_SUCH_METHOD_EXCEPTION "de/ibapl/jnhw/NoSuchMethodException"
+#define NULL_POINTER_EXCEPTION "java/lang/NullPointerException"
+#define ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/ArrayIndexOutOfBoundsException"
+#define INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/IndexOutOfBoundsException"
+#define ILLEGAL_ARGUMENT_EXCEPTION "java/lang/IllegalArgumentException"
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -82,48 +91,27 @@ extern "C" {
                 return JNI_FALSE;
             }
         }
-        
+
         if (IllegalArgumentExceptionClass == NULL) {
             IllegalArgumentExceptionClass = getGlobalClassRef(env, ILLEGAL_ARGUMENT_EXCEPTION);
             if (IllegalArgumentExceptionClass == NULL) {
                 return JNI_FALSE;
             }
         }
-        
-        
+
+
 
         return JNI_TRUE;
     }
 
     void releaseExceptions(JNIEnv* env) {
-        if (NativeErrorExceptionClass != NULL) {
-            deleteGlobalRef(env, NativeErrorExceptionClass);
-            NativeErrorExceptionClass = NULL;
-        }
-        if (NotDefinedExceptionClass != NULL) {
-            deleteGlobalRef(env, NotDefinedExceptionClass);
-            NotDefinedExceptionClass = NULL;
-        }
-        if (NoSuchMethodExceptionClass != NULL) {
-            deleteGlobalRef(env, NoSuchMethodExceptionClass);
-            NoSuchMethodExceptionClass = NULL;
-        }
-        if (NullPointerExceptionClass != NULL) {
-            deleteGlobalRef(env, NullPointerExceptionClass);
-            NullPointerExceptionClass = NULL;
-        }
-        if (IndexOutOfBoundsExceptionClass != NULL) {
-            deleteGlobalRef(env, IndexOutOfBoundsExceptionClass);
-            IndexOutOfBoundsExceptionClass = NULL;
-        }
-        if (ArrayIndexOutOfBoundsExceptionClass != NULL) {
-            deleteGlobalRef(env, ArrayIndexOutOfBoundsExceptionClass);
-            ArrayIndexOutOfBoundsExceptionClass = NULL;
-        }
-        if (IllegalArgumentExceptionClass != NULL) {
-            deleteGlobalRef(env, IllegalArgumentExceptionClass);
-            IllegalArgumentExceptionClass = NULL;
-        }
+        deleteGlobalRef(env, &NativeErrorExceptionClass);
+        deleteGlobalRef(env, &NotDefinedExceptionClass);
+        deleteGlobalRef(env, &NoSuchMethodExceptionClass);
+        deleteGlobalRef(env, &NullPointerExceptionClass);
+        deleteGlobalRef(env, &IndexOutOfBoundsExceptionClass);
+        deleteGlobalRef(env, &ArrayIndexOutOfBoundsExceptionClass);
+        deleteGlobalRef(env, &IllegalArgumentExceptionClass);
     }
 
     JNIEXPORT void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName) {

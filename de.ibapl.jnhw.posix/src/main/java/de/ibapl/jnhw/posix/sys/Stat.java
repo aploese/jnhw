@@ -44,7 +44,6 @@ public class Stat {
         LibJnhwPosixLoader.touch();
     }
 
-    @Define
     public final static native boolean HAVE_SYS_STAT_H();
 
     /**

@@ -30,10 +30,6 @@ import de.ibapl.jnhw.posix.sys.Types.mode_t;
 import de.ibapl.jnhw.posix.sys.Types.off64_t;
 import de.ibapl.jnhw.posix.sys.Types.off_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  * Wrapper around the {@code <fcntl.h>} header.
@@ -107,14 +103,6 @@ public final class Fcntl {
      */
     @Define
     public final static native int FD_CLOEXEC();
-
-    /**
-     * <b>POSIX:</b> .
-     *
-     * @return the native symbolic constant of .
-     */
-    @Define
-    public final static native int FNONBLOCK();
 
     /**
      * <b>POSIX:</b> Duplicate file descriptor.
@@ -814,20 +802,6 @@ public final class Fcntl {
     public final static native void posix_fallocate64(int fildes, @off64_t long offset, @off64_t long len) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
 
     private Fcntl() {
-    }
-
-    /**
-     * See specs at:
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html">{@code typedef
-     * pid_t}</a>.
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys/types.h.html">{@code typedef
-     * pid_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface pid_t {
     }
 
 }

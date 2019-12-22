@@ -28,10 +28,14 @@ import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.linux.sys.Eventfd;
+import de.ibapl.jnhw.posix.Aio;
 import de.ibapl.jnhw.posix.Fcntl;
+import de.ibapl.jnhw.posix.Locale;
 import de.ibapl.jnhw.posix.Poll;
+import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.posix.Stdio;
 import de.ibapl.jnhw.posix.Termios;
+import de.ibapl.jnhw.posix.Time;
 import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -93,6 +97,12 @@ public class DefinesTest {
 
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.LINUX)
+    public void testAioDefines() throws Exception {
+        testDefines(Aio.class);
+    }
+
+    @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.LINUX)
     public void testEventfdDefines() throws Exception {
         testDefines(Eventfd.class);
     }
@@ -101,15 +111,6 @@ public class DefinesTest {
     @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testFcntlDefines() throws Exception {
         testDefines(Fcntl.class);
-    }
-
-    /**
-     * Test of HAVE_STDIO_H method, of class Stdio.
-     */
-    @Test
-    public void test_HAVE_STDIO_H() {
-        System.out.println("HAVE_STDIO_H");
-        assertTrue(Stdio.HAVE_STDIO_H(), "expected to have stdio.h");
     }
 
     @Test
@@ -126,6 +127,12 @@ public class DefinesTest {
 
     @Test
     @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testLocaleDefines() throws Exception {
+        testDefines(Locale.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testPollDefines() throws Exception {
         testDefines(Poll.class);
     }
@@ -134,6 +141,12 @@ public class DefinesTest {
     @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testPosixErrnoDefines() throws Exception {
         testDefines(de.ibapl.jnhw.posix.Errno.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testSignalDefines() throws Exception {
+        testDefines(Signal.class);
     }
 
     @Test
@@ -156,6 +169,12 @@ public class DefinesTest {
 
     @Test
     @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testTimeDefines() throws Exception {
+        testDefines(Time.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testTypesDefines() throws Exception {
         testDefines(Types.class);
     }
@@ -164,6 +183,15 @@ public class DefinesTest {
     @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testUnistdDefines() throws Exception {
         testDefines(Unistd.class);
+    }
+
+    @Test
+    public void test_HAVE_AIO_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Aio.HAVE_AIO_H(), "expected not to have aio.h");
+        } else {
+            Assertions.assertTrue(Aio.HAVE_AIO_H(), "expected to have aio.h");
+        }
     }
 
     @Test
@@ -181,12 +209,36 @@ public class DefinesTest {
     }
 
     @Test
+    public void test_HAVE_LOCALE_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Locale.HAVE_LOCALE_H(), "expected not to have locale.h");
+        } else {
+            Assertions.assertTrue(Locale.HAVE_LOCALE_H(), "expected to have locale.h");
+        }
+    }
+
+    @Test
     public void test_HAVE_POLL_H() throws Exception {
         if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Poll.HAVE_POLL_H(), "not expected to have poll.h");
         } else {
             Assertions.assertTrue(Poll.HAVE_POLL_H(), "expected to have poll.h");
         }
+    }
+
+    @Test
+    public void test_HAVE_SIGNAL_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Signal.HAVE_SIGNAL_H(), "not expected to have signal.h");
+        } else {
+            Assertions.assertTrue(Signal.HAVE_SIGNAL_H(), "expected to have signal.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_STDIO_H() {
+        System.out.println("HAVE_STDIO_H");
+        assertTrue(Stdio.HAVE_STDIO_H(), "expected to have stdio.h");
     }
 
     @Test
@@ -227,6 +279,15 @@ public class DefinesTest {
     }
 
     @Test
+    public void test_HAVE_TIME_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            assertFalse(Time.HAVE_TIME_H(), "not expected to have time.h");
+        } else {
+            assertTrue(Time.HAVE_TIME_H(), "expected to have time.h");
+        }
+    }
+
+    @Test
     public void test_HAVE_UNISTD_H() throws Exception {
         Assertions.assertTrue(Unistd.HAVE_UNISTD_H(), "expected to have unistd.h");
     }
@@ -244,7 +305,7 @@ public class DefinesTest {
                         assertTrue(Defines._LARGEFILE64_SOURCE());
                         break;
                     case 64:
-                        assertFalse(Defines._LARGEFILE64_SOURCE());
+                        assertTrue(Defines._LARGEFILE64_SOURCE());
                         break;
                     default:
                         fail("no case for this wordsize:" + Defines.__WORDSIZE());

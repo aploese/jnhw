@@ -138,7 +138,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libjnhw_common_la_LIBADD =
 am_libjnhw_common_la_OBJECTS = jnhw-common.lo JnhwExceptions.lo \
-	OpaqueMemory.lo
+	OpaqueMemory.lo Callback_I_V.lo
 libjnhw_common_la_OBJECTS = $(am_libjnhw_common_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -159,8 +159,9 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/JnhwExceptions.Plo \
-	./$(DEPDIR)/OpaqueMemory.Plo ./$(DEPDIR)/jnhw-common.Plo
+am__depfiles_remade = ./$(DEPDIR)/Callback_I_V.Plo \
+	./$(DEPDIR)/JnhwExceptions.Plo ./$(DEPDIR)/OpaqueMemory.Plo \
+	./$(DEPDIR)/jnhw-common.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -247,11 +248,13 @@ JNHW_LIB_SUFFIX = @JNHW_LIB_SUFFIX@
 JNHW_MULTIARCH_TUPEL = @JNHW_MULTIARCH_TUPEL@
 JNHW_RESOURCES_DIR = @JNHW_RESOURCES_DIR@
 JNHW_STRIP_FLAG = @JNHW_STRIP_FLAG@
+JNHW_TEST_RESOURCES_DIR = @JNHW_TEST_RESOURCES_DIR@
 JNHW_VERSION = @JNHW_VERSION@
 JNHW_VERSION_INFO = @JNHW_VERSION_INFO@
 JNI_HEADER_DIR = @JNI_HEADER_DIR@
 JNI_INCLUDE_DIRS = @JNI_INCLUDE_DIRS@
 JNI_INCLUDE_FLAGS = @JNI_INCLUDE_FLAGS@
+JNI_TEST_HEADER_DIR = @JNI_TEST_HEADER_DIR@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
@@ -349,7 +352,8 @@ lib_LTLIBRARIES = libjnhw-common.la
 libjnhw_common_la_SOURCES = \
  jnhw-common.c \
  JnhwExceptions.c \
- OpaqueMemory.c
+ OpaqueMemory.c \
+ Callback_I_V.c
 
 all: all-am
 
@@ -429,6 +433,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_V.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwExceptions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OpaqueMemory.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-common.Plo@am__quote@ # am--include-marker
@@ -615,7 +620,8 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
+		-rm -f ./$(DEPDIR)/Callback_I_V.Plo
+	-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
 	-rm -f ./$(DEPDIR)/OpaqueMemory.Plo
 	-rm -f ./$(DEPDIR)/jnhw-common.Plo
 	-rm -f Makefile
@@ -663,7 +669,8 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
+		-rm -f ./$(DEPDIR)/Callback_I_V.Plo
+	-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
 	-rm -f ./$(DEPDIR)/OpaqueMemory.Plo
 	-rm -f ./$(DEPDIR)/jnhw-common.Plo
 	-rm -f Makefile

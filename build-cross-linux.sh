@@ -2,7 +2,7 @@
 
 #autoreconf -i
 
-mvn clean compile || exit 1
+mvn clean compile  test-compile || exit 1
 
 # "x86_64-linux-gnu"
 # "i386-linux-gnu"

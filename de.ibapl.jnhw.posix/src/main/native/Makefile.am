@@ -7,12 +7,42 @@ LIB_JNHW_POSIX_RES_NAME=@JNHW_RESOURCES_DIR@/$(LIB_JNHW_POSIX_NAME)
 
 lib_LTLIBRARIES = libjnhw-posix.la
 
-noinst_LTLIBRARIES = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la
+noinst_LTLIBRARIES = libaio.la libpoll.la libeventfd.la libfcntl.la liblocale.la libtime.la libunistd.la libioclt.la libsignal.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la
 
-libjnhw_posix_la_LIBADD = libpoll.la libeventfd.la libfcntl.la libunistd.la libioclt.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+libjnhw_posix_la_LIBADD = libaio.la libpoll.la libeventfd.la libfcntl.la liblocale.la libtime.la libunistd.la libioclt.la libsignal.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libjnhw_posix_la_SOURCES = \
  jnhw-posix-jni.c
+
+libaio_la_SOURCES = \
+ AioDefines.c \
+ AioFunctions.c \
+ Aio_Aiocbs.c
+  
+libsignal_la_SOURCES = \
+ SignalDefines.c \
+ SignalFunctions.c \
+ Signal_Sigaction.c \
+ Signal_Sigevent.c \
+ Signal_Siginfo_t.c \
+ Signal_Sigset_t.c \
+ Signal_Sigval.c \
+ Signal_Stack_t.c \
+ Signal_Ucontext_t.c \
+ Signal_Mcontext_t.c
+
+
+libtime_la_SOURCES = \
+ TimeDefines.c \
+ TimeFunctions.c \
+ Time_Itimerspec.c \
+ Time_Timespec.c \
+ Time_Tm.c
+
+liblocale_la_SOURCES = \
+ LocaleDefines.c \
+ LocaleFunctions.c \
+ Locale_Lconv.c 
 
 liberrno_la_SOURCES = \
  Isoc_ErrnoDefines.c \

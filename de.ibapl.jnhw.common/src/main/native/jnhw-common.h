@@ -22,6 +22,7 @@
 #ifndef _ljnhw_common_H
 #define _ljnhw_common_H
 
+
 #include <stdint.h>
 
 #include <jni.h>
@@ -37,27 +38,24 @@ extern "C" {
 #endif   
 
 #include "JnhwExceptions.h"
+#include "Callback_I_V.h"
     
-//Important class names
-#define JNHW_CLASS_NAME_BYTE_REF "de/ibapl/jnhw/ByteRef"
-#define JNHW_CLASS_NAME_SHORT_REF "de/ibapl/jnhw/ShortRef"
-#define JNHW_CLASS_NAME_INT_REF "de/ibapl/jnhw/IntRef"
-#define JNHW_CLASS_NAME_LONG_REF "de/ibapl/jnhw/LongRef"
-#define JNHW_CLASS_NAME_OPAQUE_MEMORY "de/ibapl/jnhw/OpaqueMemory"
-#define JNHW_CLASS_NAME_STRUCT_ARRAY "de/ibapl/jnhw/StructArray"
-
     //Cached
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_ByteRef_value_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_ShortRef_value_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_IntRef_value_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_LongRef_value_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_ObjectRef_value_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_OpaqueMemory_baseAddress_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_StructArray_length_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_NativeFunctionPointer_Class;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_NativeFunctionPointer_init_ID;
 
     _JNHW_IMPORT_OR_EXPORT_ extern jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className);
     
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL deleteGlobalRef(JNIEnv *env, jobject classRef);
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL deleteGlobalRef(JNIEnv *env, jobject *classRef);
 
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID JNICALL getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType);
 
@@ -67,6 +65,7 @@ extern "C" {
 
     _JNHW_IMPORT_OR_EXPORT_ extern jmethodID JNICALL getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* methodName, const char* methodSignature);
 
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID JNICALL getStaticMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* methodName, const char* methodSignature);
     /*
      * Returns true if the array slice defined by the given offset and length
      * is out of bounds.
@@ -112,7 +111,12 @@ extern "C" {
 #define GET_LONG_REF_VALUE(valueRef) (*env)->GetLongField(env, valueRef, de_ibapl_jnhw_LongRef_value_ID)
 #define SET_LONG_REF_VALUE(valueRef, value) (*env)->SetLongField(env, valueRef, de_ibapl_jnhw_LongRef_value_ID, value)
 
+#define GET_OBJECT_REF_VALUE(valueRef) (*env)->GetObjectField(env, valueRef, de_ibapl_jnhw_ObjectRef_value_ID)
+#define SET_OBJECT_REF_VALUE(valueRef, value) (*env)->SetObjectField(env, valueRef, de_ibapl_jnhw_ObjectRef_value_ID, value)
 
+#define UNWRAP_NATIVE_FUNCTION_POINTER(nativeFunctionPointer)(void*)(intptr_t)(*env)->GetLongField(env, nativeFunctionPointer, de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID)
+#define CREATE_NATIVE_FUNCTION_POINTER(value) (*env)->NewObject(env, de_ibapl_jnhw_NativeFunctionPointer_Class, de_ibapl_jnhw_NativeFunctionPointer_init_ID, (jlong) (intptr_t) value)
+    
 #ifdef __cplusplus
 }
 #endif

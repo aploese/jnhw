@@ -28,8 +28,13 @@ import org.junit.jupiter.api.Test;
 public class LibJnhwLoaderTests {
 
     @Test
-    public void testLinsLoaded() throws Exception {
-        Assertions.assertEquals(LoadState.SUCCESS, LibJnhwLoader.touch());
+    public void testLibComonIsLoaded() throws Exception {
+        Assertions.assertEquals(LoadState.SUCCESS, LibJnhwCommonLoader.touch());
+    }
+
+    @Test
+    public void testLibCommonTestIsLoaded() throws Exception {
+        Assertions.assertEquals(LoadState.SUCCESS, LibJnhwCommonTestLoader.touch());
     }
 
 }

@@ -27,20 +27,12 @@
 extern "C" {
 #endif
 
-#define NATIVE_ERROR_EXCEPTION "de/ibapl/jnhw/NativeErrorException"
-#define NOT_DEFINED_EXCEPTION "de/ibapl/jnhw/NotDefinedException"
-#define NO_SUCH_METHOD_EXCEPTION "de/ibapl/jnhw/NoSuchMethodException"
-#define NULL_POINTER_EXCEPTION "java/lang/NullPointerException"
-#define ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/ArrayIndexOutOfBoundsException"
-#define INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/IndexOutOfBoundsException"
-#define ILLEGAL_ARGUMENT_EXCEPTION "java/lang/IllegalArgumentException"
-
     //Cached Exceptions
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NativeErrorException(JNIEnv* env, int errorNumber);
 
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName);
 
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NoSuchMethodException(JNIEnv* env, const char* methodName);
+//Remove??    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NoSuchMethodException(JNIEnv* env, const char* methodName);
 
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NullPointerException(JNIEnv* env, const char* message);
 

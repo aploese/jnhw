@@ -126,4 +126,69 @@ public class Types {
     public static @interface pid_t {
     }
 
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * pthread_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface pthread_t {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * clock_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface clock_t {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * time_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface time_t {
+    }
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * clockid_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface clockid_t {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * timer_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface timer_t {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * uid_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface uid_t {
+    }
+
 }

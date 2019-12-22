@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.util.posix;
 
-import de.ibapl.jnhw.LibJnhwLoader;
+import de.ibapl.jnhw.LibJnhwCommonLoader;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
@@ -59,11 +59,11 @@ public final class LibJnhwPosixLoader {
             }
             state = LoadState.LOADING;
         }
-        if (LoadState.SUCCESS == LibJnhwLoader.touch()) {
+        if (LoadState.SUCCESS == LibJnhwCommonLoader.touch()) {
             LIB_JNHW_POSIX_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_POSIX, LIB_JNHW_POSIX_VERSION, LibJnhwPosixLoader::doSystemLoad);
         } else {
             //Just mark the error a dependant lib was not properly loaded
-            LIB_JNHW_POSIX_LOAD_RESULT = LibJnhwLoader.getLoadResult();
+            LIB_JNHW_POSIX_LOAD_RESULT = LibJnhwCommonLoader.getLoadResult();
         }
         synchronized (loadLock) {
             if (LIB_JNHW_POSIX_LOAD_RESULT.isLoaded()) {
