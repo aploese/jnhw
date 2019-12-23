@@ -21,12 +21,12 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.Callback_I_V;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeFunctionPointer;
-import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
@@ -110,6 +110,138 @@ public class Signal {
 
         public Sigset_t(OpaqueMemory owner, int offset) {
             super(owner, offset, sizeofSigset_t());
+        }
+
+        private boolean maybeDoFormatBeforeFirst(StringBuilder sb, boolean first) {
+            if (!first) {
+                sb.append(", ");
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            boolean isFirst = true;
+            sb.append("[");
+            try {
+                if ((Signal.sigismember(this, Signal.SIGABRT()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGABRT");
+                }
+                if ((Signal.sigismember(this, Signal.SIGALRM()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGALRM");
+                }
+                if ((Signal.sigismember(this, Signal.SIGBUS()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGBUS");
+                }
+                if ((Signal.sigismember(this, Signal.SIGCHLD()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGCHLD");
+                }
+                if ((Signal.sigismember(this, Signal.SIGCONT()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGCONT");
+                }
+                if ((Signal.sigismember(this, Signal.SIGFPE()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGFPE");
+                }
+                if ((Signal.sigismember(this, Signal.SIGHUP()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGHUP");
+                }
+                if ((Signal.sigismember(this, Signal.SIGILL()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGILL");
+                }
+                if ((Signal.sigismember(this, Signal.SIGINT()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGINT");
+                }
+                if ((Signal.sigismember(this, Signal.SIGKILL()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGKILL");
+                }
+                if ((Signal.sigismember(this, Signal.SIGPIPE()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGPIPE");
+                }
+                if ((Signal.sigismember(this, Signal.SIGPOLL()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGPOLL");
+                }
+                if ((Signal.sigismember(this, Signal.SIGPROF()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGPROF");
+                }
+                if ((Signal.sigismember(this, Signal.SIGQUIT()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGQUIT");
+                }
+                if ((Signal.sigismember(this, Signal.SIGSEGV()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGSEGV");
+                }
+                if ((Signal.sigismember(this, Signal.SIGSTOP()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGSTOP");
+                }
+                if ((Signal.sigismember(this, Signal.SIGSYS()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGSYS");
+                }
+                if ((Signal.sigismember(this, Signal.SIGTERM()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGTERM");
+                }
+                if ((Signal.sigismember(this, Signal.SIGTRAP()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGTRAP");
+                }
+                if ((Signal.sigismember(this, Signal.SIGTSTP()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGTSTP");
+                }
+                if ((Signal.sigismember(this, Signal.SIGTTIN()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGTTIN");
+                }
+                if ((Signal.sigismember(this, Signal.SIGTTOU()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGTTOU");
+                }
+                if ((Signal.sigismember(this, Signal.SIGURG()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGURG");
+                }
+                if ((Signal.sigismember(this, Signal.SIGUSR1()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGUSR1");
+                }
+                if ((Signal.sigismember(this, Signal.SIGUSR2()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGUSR2");
+                }
+                if ((Signal.sigismember(this, Signal.SIGVTALRM()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGVTALRM");
+                }
+                if ((Signal.sigismember(this, Signal.SIGXCPU()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGXCPU");
+                }
+                if ((Signal.sigismember(this, Signal.SIGXFSZ()))) {
+                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    sb.append("SIGXFSZ");
+                }
+            } catch (NativeErrorException nee) {
+                throw new RuntimeException(nee);
+            }
+            sb.append("]");
+            return sb.toString();
         }
 
     }
@@ -575,7 +707,7 @@ public class Signal {
      * sigaction}</a>.
      *
      */
-    public abstract static class Sigaction extends OpaqueMemory {
+    public static class Sigaction extends OpaqueMemory {
 
         /**
          * Make sure the native lib is loaded
@@ -625,10 +757,6 @@ public class Signal {
          */
         public final native void sa_flags(int sa_flags);
 
-    }
-
-    public static class SigactionHandler extends Sigaction {
-
         /**
          * Pointer to a signal-catching function or one of the SIG_IGN or
          * SIG_DFL.
@@ -641,9 +769,6 @@ public class Signal {
 
         public final native void sa_handler(NativeFunctionPointer<Callback_I_V> sa_handler);
 
-    }
-
-    public static class SigactionSigaction extends Sigaction {
         /**
          * Pointer to a signal-catching function
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
@@ -651,7 +776,9 @@ public class Signal {
          *
          * @return the native value of sa_sigaction.
          */
-//TODO        public final native long sa_sigaction();
+        public final native void sa_sigaction(NativeFunctionPointer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, ?>> sa_sigaction);
+
+        public final native NativeFunctionPointer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, ?>> sa_sigaction();
     }
 
     /**
@@ -1504,7 +1631,7 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigaction(int sig, Sigaction act, ObjectRef<Sigaction> oact) throws NativeErrorException;
+    public final static native void sigaction(int sig, Sigaction act, Sigaction oact) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1636,7 +1763,7 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigpending() throws NativeErrorException;
+    public final static native void sigpending(Sigset_t set) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>

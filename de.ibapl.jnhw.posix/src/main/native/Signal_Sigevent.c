@@ -31,45 +31,46 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    _sigev_value_Offset
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent__1sigev_1value_1Offset
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return offsetof (struct sigevent, sigev_value);
-}
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sizeofSigevent
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sizeofSigevent
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return sizeof (struct sigevent);
-  }
+        /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
+     * Method:    _sigev_value_Offset
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent__1sigev_1value_1Offset
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct sigevent, sigev_value);
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_notify
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify
-  (__attribute__ ((unused)) JNIEnv *env, jobject structSigevent) {
-    return (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
+     * Method:    sizeofSigevent
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sizeofSigevent
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return sizeof (struct sigevent);
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_signo
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1signo
-  (__attribute__ ((unused)) JNIEnv *env, jobject structSigevent) {
-    return (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_signo;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
+     * Method:    sigev_notify
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify
+    (__attribute__ ((unused)) JNIEnv *env, jobject structSigevent) {
+        return (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
+     * Method:    sigev_signo
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1signo
+    (__attribute__ ((unused)) JNIEnv *env, jobject structSigevent) {
+        return (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_signo;
+    }
 
 #ifdef __cplusplus
 }

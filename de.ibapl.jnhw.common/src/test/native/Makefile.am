@@ -17,7 +17,8 @@ libtests_la_SOURCES = \
  IntRefTests.c \
  LongRefTests.c \
  ObjectRefTests.c \
- Callback_I_V_Tests.c
+ Callback_I_V_Tests.c \
+ Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.c
 
 #hook into make all
 all-local: $(LIB_JNHW_COMMON_TEST_RES_NAME)

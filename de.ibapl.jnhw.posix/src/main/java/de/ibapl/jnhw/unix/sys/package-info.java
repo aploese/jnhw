@@ -22,11 +22,11 @@
 /**
  * Very thin and safe wrapper classes around common used headers on a UNIX system
  * under the {@code sys} path.
- * 
+ *
  * See specs at:
- * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/">The Open Group Base Specifications Issue 7, 2018 edition
- *   IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)
- *   Copyright © 2001-2018 IEEE and The Open Group</a>.
- * 
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/">The Open Group
+ * Base Specifications Issue 7, 2018 edition IEEE Std 1003.1-2017 (Revision of
+ * IEEE Std 1003.1-2008) Copyright © 2001-2018 IEEE and The Open Group</a>.
+ *
  */
 package de.ibapl.jnhw.unix.sys;

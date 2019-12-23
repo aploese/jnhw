@@ -62,7 +62,7 @@ public abstract class Callback_I_V extends NativeCallback<Callback_I_V> {
     private static void cb_0(int value) {
         final Callback_I_V ref = ref_0.get();
         if (ref == null) {
-            LOG.log(Level.SEVERE, "Unassigned callback for cb_0");
+            LOG.log(Level.SEVERE, "Unassigned callback for cb_0({0})", new Object[]{value});
         } else {
             ref.callback(value);
         }
@@ -71,7 +71,7 @@ public abstract class Callback_I_V extends NativeCallback<Callback_I_V> {
     private static void cb_1(int value) {
         final Callback_I_V ref = ref_1.get();
         if (ref == null) {
-            LOG.log(Level.SEVERE, "Unassigned callback for cb_1");
+            LOG.log(Level.SEVERE, "Unassigned callback for cb_1({0})", new Object[]{value});
         } else {
             ref.callback(value);
         }

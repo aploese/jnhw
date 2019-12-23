@@ -104,12 +104,13 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return LC_CTYPE_MASK;
     }
-/*
- * Class:     de_ibapl_jnhw_posix_Locale
- * Method:    LC_GLOBAL_LOCALE
- * Signature: ()Lde/ibapl/jnhw/posix/Locale$Locale_t;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1GLOBAL_1LOCALE
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Locale
+     * Method:    LC_GLOBAL_LOCALE
+     * Signature: ()Lde/ibapl/jnhw/posix/Locale$Locale_t;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1GLOBAL_1LOCALE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return CREATE_LOCALE_T(LC_GLOBAL_LOCALE);
     }

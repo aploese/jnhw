@@ -34,10 +34,12 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    si_addr
-     * Signature: ()J
+     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_si_1addr
-    (JNIEnv *, jclass);
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_si_1addr
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return CREATE_NATIVE_FUNCTION_POINTER(0); //TODO si_addr
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -147,7 +149,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigaddset
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject set, jint signo) {
         if (set == NULL) {
-            throw_NullPointerException(env, "set");
+            throw_NullPointerException(env, "set is null");
             return;
         }
         if (sigaddset(UNWRAP_OPAQUE_MEM_TO(sigset_t*, set), signo)) {
@@ -172,7 +174,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigdelset
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject set, jint signo) {
         if (set == NULL) {
-            throw_NullPointerException(env, "set");
+            throw_NullPointerException(env, "set is null");
             return;
         }
         if (sigdelset(UNWRAP_OPAQUE_MEM_TO(sigset_t*, set), signo)) {
@@ -189,7 +191,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigemptyset
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject set) {
         if (set == NULL) {
-            throw_NullPointerException(env, "set");
+            throw_NullPointerException(env, "set is null");
             return;
         }
         if (sigemptyset(UNWRAP_OPAQUE_MEM_TO(sigset_t*, set))) {
@@ -206,7 +208,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigfillset
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject set) {
         if (set == NULL) {
-            throw_NullPointerException(env, "set");
+            throw_NullPointerException(env, "set is null");
             return;
         }
         if (sigfillset(UNWRAP_OPAQUE_MEM_TO(sigset_t*, set))) {
@@ -247,7 +249,7 @@ extern "C" {
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Signal_sigismember
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject set, jint signo) {
         if (set == NULL) {
-            throw_NullPointerException(env, "set");
+            throw_NullPointerException(env, "set is null");
             return JNI_FALSE;
         }
         const int result = sigismember(UNWRAP_OPAQUE_MEM_TO(sigset_t*, set), signo);
@@ -303,10 +305,18 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    sigpending
-     * Signature: ()V
+     * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigpending
-    (JNIEnv *, jclass);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject set) {
+        if (set == NULL) {
+            throw_NullPointerException(env, "set is null");
+            return;
+        }
+        if (sigpending(UNWRAP_SIGSET_T_PTR(set))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -314,7 +324,13 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Sigset_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigprocmask
-    (JNIEnv *, jclass, jint, jobject, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint how, jobject set, jobject oset) {
+        sigset_t *_set = UNWRAP_SIGSET_T_PTR_OR_NULL(set);
+        sigset_t *_oset = UNWRAP_SIGSET_T_PTR_OR_NULL(oset);
+        if (sigprocmask(how, _set, _oset)) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal

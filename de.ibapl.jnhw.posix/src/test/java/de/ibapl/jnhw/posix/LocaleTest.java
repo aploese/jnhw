@@ -37,6 +37,7 @@ public class LocaleTest {
 
     /**
      * Test of duplocale method, of class Locale.
+     *
      * @throws java.lang.Exception
      */
     @Test
@@ -91,6 +92,7 @@ public class LocaleTest {
 
     /**
      * Test of newlocale method, of class Locale.
+     *
      * @throws java.lang.Exception
      */
     @Test
@@ -118,6 +120,7 @@ public class LocaleTest {
 
     /**
      * Test of uselocale method, of class Locale.
+     *
      * @throws java.lang.Exception
      */
     @Test

@@ -31,45 +31,46 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    sizeofSigaction
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sizeofSigaction
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return sizeof (struct sigaction);
-  }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    _sa_mask_Offset
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction__1sa_1mask_1Offset
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return offsetof (struct sigaction, sa_mask);
-}
+        /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
+     * Method:    sizeofSigaction
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sizeofSigaction
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return sizeof (struct sigaction);
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    sa_flags
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1flags__
-  (__attribute__ ((unused)) JNIEnv *env, jobject structSigaction) {
-    return (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_flags;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
+     * Method:    _sa_mask_Offset
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction__1sa_1mask_1Offset
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct sigaction, sa_mask);
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    sa_flags
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1flags__I
-  (__attribute__ ((unused)) JNIEnv *env, jobject structSigaction, jint sa_flags) {
-    (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_flags = sa_flags;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
+     * Method:    sa_flags
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1flags__
+    (__attribute__ ((unused)) JNIEnv *env, jobject structSigaction) {
+        return (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_flags;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
+     * Method:    sa_flags
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1flags__I
+    (__attribute__ ((unused)) JNIEnv *env, jobject structSigaction, jint sa_flags) {
+        (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_flags = sa_flags;
+    }
 
 #ifdef __cplusplus
 }

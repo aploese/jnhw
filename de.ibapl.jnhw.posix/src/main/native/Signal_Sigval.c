@@ -30,55 +30,55 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigval
- * Method:    sizeofSigval
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sizeofSigval
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return sizeof (union sigval);
-  }
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigval
+     * Method:    sizeofSigval
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sizeofSigval
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return sizeof (union sigval);
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigval
- * Method:    sival_int
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1int__
-  (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval) {
-    return (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_int;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigval
+     * Method:    sival_int
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1int__
+    (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval) {
+        return (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_int;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigval
- * Method:    sival_int
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1int__I
-  (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval, jint sival_int) {
-    (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_int = sival_int;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigval
+     * Method:    sival_int
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1int__I
+    (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval, jint sival_int) {
+        (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_int = sival_int;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigval
- * Method:    sival_ptr
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr__
-  (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval) {
-    return (intptr_t)(UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_ptr;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigval
+     * Method:    sival_ptr
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr__
+    (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval) {
+        return (intptr_t) (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_ptr;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigval
- * Method:    sival_ptr
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr__J
-  (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval, jlong sival_ptr) {
-    (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_ptr = (void *)sival_ptr;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigval
+     * Method:    sival_ptr
+     * Signature: (J)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr__J
+    (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval, jlong sival_ptr) {
+        (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_ptr = (void *) sival_ptr;
+    }
 
 #ifdef __cplusplus
 }

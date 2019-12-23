@@ -21,7 +21,7 @@
  */
 /**
  * JNHW helper classes.
- * 
- * 
+ *
+ *
  */
 package de.ibapl.jnhw.util.posix;

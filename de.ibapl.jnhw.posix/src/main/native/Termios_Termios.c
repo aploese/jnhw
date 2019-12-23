@@ -47,7 +47,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1iflag__
     (JNIEnv *env, jobject structTermios) {
-        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_iflag;
+        return (int32_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_iflag;
     }
 
     /*
@@ -57,7 +57,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1iflag__I
     (JNIEnv *env, jobject structTermios, jint value) {
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_iflag = (uint32_t)value;
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_iflag = (uint32_t) value;
     }
 
     /*
@@ -67,7 +67,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1oflag__
     (JNIEnv *env, jobject structTermios) {
-        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_oflag;
+        return (int32_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_oflag;
     }
 
     /*
@@ -77,7 +77,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1oflag__I
     (JNIEnv *env, jobject structTermios, jint value) {
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_oflag = (uint32_t)value;
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_oflag = (uint32_t) value;
     }
 
     /*
@@ -87,7 +87,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cflag__
     (JNIEnv *env, jobject structTermios) {
-        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cflag;
+        return (int32_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cflag;
     }
 
     /*
@@ -97,7 +97,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1cflag__I
     (JNIEnv *env, jobject structTermios, jint value) {
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cflag = (uint32_t)value;
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cflag = (uint32_t) value;
     }
 
     /*
@@ -107,7 +107,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1lflag__
     (JNIEnv *env, jobject structTermios) {
-        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_lflag;
+        return (int32_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_lflag;
     }
 
     /*
@@ -117,7 +117,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1lflag__I
     (JNIEnv *env, jobject structTermios, jint value) {
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_lflag = (uint32_t)value;
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_lflag = (uint32_t) value;
     }
 
     /*
@@ -179,7 +179,7 @@ extern "C" {
 #endif
     }
 
-/*
+    /*
      * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
      * Method:    c_ispeed
      * Signature: ()I
@@ -187,7 +187,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ispeed__
 #if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
     (JNIEnv *env, jobject structTermios) {
-        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed;
+        return (int32_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
         throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || __APPLE__ || __FreeBSD__");
@@ -222,7 +222,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ospeed__
 #if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
     (JNIEnv *env, jobject structTermios) {
-        return (int32_t)(UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed;
+        return (int32_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
         throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED || __APPLE__ || __FreeBSD__");
@@ -242,7 +242,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "speed must be >= 0");
             return;
         }
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed = (uint32_t)speed;
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed = (uint32_t) speed;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios, __attribute__ ((unused)) jint speed) {
         throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED || __APPLE__ || __FreeBSD__");

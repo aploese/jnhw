@@ -56,12 +56,12 @@ extern "C" {
 #define JNHW_CLASS_NAME_LOCALE_T "de/ibapl/jnhw/posix/Locale$Locale_t"
 #define JNHW_CLASS_NAME_TIME_TM "de/ibapl/jnhw/posix/Time$Tm"
 
-extern jclass de_ibapl_jnhw_posix_Locale_Locale_t_Class;
-extern jfieldID de_ibapl_jnhw_posix_Locale_Locale_t_nativeValue_ID;
-extern jmethodID de_ibapl_jnhw_posix_Locale_Locale_t_init_ID;
+    extern jclass de_ibapl_jnhw_posix_Locale_Locale_t_Class;
+    extern jfieldID de_ibapl_jnhw_posix_Locale_Locale_t_nativeValue_ID;
+    extern jmethodID de_ibapl_jnhw_posix_Locale_Locale_t_init_ID;
 
-extern jclass de_ibapl_jnhw_posix_Time_Tm_Class;
-extern jmethodID de_ibapl_jnhw_posix_Time_Tm_init_ID;
+    extern jclass de_ibapl_jnhw_posix_Time_Tm_Class;
+    extern jmethodID de_ibapl_jnhw_posix_Time_Tm_init_ID;
 
 #define UNWRAP_LOCALE_T(Locale_tObject) (locale_t) (*env)->GetLongField(env, Locale_tObject, de_ibapl_jnhw_posix_Locale_Locale_t_nativeValue_ID)   
 #define CREATE_LOCALE_T(value) (*env)->NewObject(env, de_ibapl_jnhw_posix_Locale_Locale_t_Class, de_ibapl_jnhw_posix_Locale_Locale_t_init_ID, value)
@@ -93,6 +93,8 @@ extern jmethodID de_ibapl_jnhw_posix_Time_Tm_init_ID;
 
 #define UNWRAP_STRUCT_AIOCB_PTR(structAiocb) UNWRAP_OPAQUE_MEM_TO(struct aiocb*, structAiocb)
 
+#define UNWRAP_SIGSET_T_PTR(sigset)UNWRAP_OPAQUE_MEM_TO(sigset_t*, sigset)
+#define UNWRAP_SIGSET_T_PTR_OR_NULL(sigset) UNWRAP_OPAQUE_MEM_TO_OR_NULL(sigset_t*, sigset)
 
 #ifdef __cplusplus
 }

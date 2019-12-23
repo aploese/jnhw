@@ -363,7 +363,7 @@ extern "C" {
 #if __WORDSIZE == 64
         const int result = posix_fadvise(fildes, offset, len, advice);
         if (result) {
-              throw_NativeErrorException(env, result);
+            throw_NativeErrorException(env, result);
         }
 #elif __WORDSIZE == 32
         if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
@@ -374,9 +374,9 @@ extern "C" {
             throw_IndexOutOfBoundsException(env, "In this native implementation len is only an integer with the size of jint");
             return;
         }
-        const int result = posix_fadvise(fildes, (int32_t)offset, (int32_t)len, advice);
+        const int result = posix_fadvise(fildes, (int32_t) offset, (int32_t) len, advice);
         if (result) {
-              throw_NativeErrorException(env, result);
+            throw_NativeErrorException(env, result);
         }
 #endif
 #endif
@@ -392,7 +392,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fildes, jlong offset, jlong len, jint advice) {
         const int result = posix_fadvise64(fildes, offset, len, advice);
         if (result) {
-              throw_NativeErrorException(env, result);
+            throw_NativeErrorException(env, result);
         }
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fildes, __attribute__ ((unused)) jlong offset, __attribute__ ((unused)) jlong len, __attribute__ ((unused)) jint advice) {
@@ -414,7 +414,7 @@ extern "C" {
 #if __WORDSIZE == 64
         const int result = posix_fallocate(fildes, offset, len);
         if (result) {
-              throw_NativeErrorException(env, result);
+            throw_NativeErrorException(env, result);
         }
 #elif __WORDSIZE == 32
         if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
@@ -425,9 +425,9 @@ extern "C" {
             throw_IndexOutOfBoundsException(env, "In this native implementation len is only an integer with the size of jint");
             return;
         }
-        const int result = posix_fallocate(fildes, (int32_t)offset, (int32_t)len);
+        const int result = posix_fallocate(fildes, (int32_t) offset, (int32_t) len);
         if (result) {
-              throw_NativeErrorException(env, result);
+            throw_NativeErrorException(env, result);
         }
 #endif
 #endif
@@ -443,7 +443,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fildes, jlong offset, jlong len) {
         const int result = posix_fallocate64(fildes, offset, len);
         if (result) {
-              throw_NativeErrorException(env, result);
+            throw_NativeErrorException(env, result);
         }
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fildes, __attribute__ ((unused)) jlong offset, __attribute__ ((unused)) jlong len) {

@@ -30,7 +30,7 @@
 extern "C" {
 #endif
 
-/*
+    /*
      * Class:     de_ibapl_jnhw_posix_Time_Timespec
      * Method:    sizeofTimespec
      * Signature: ()I

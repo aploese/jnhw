@@ -38,7 +38,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__II
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint request) {
-        const int result = ioctl(fd, (uint32_t)request);
+        const int result = ioctl(fd, (uint32_t) request);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -55,7 +55,7 @@ extern "C" {
 
         const int _intRef = GET_INT_REF_VALUE(intRef);
 
-        const int result = ioctl(fd, (uint32_t)request, &_intRef);
+        const int result = ioctl(fd, (uint32_t) request, &_intRef);
         SET_INT_REF_VALUE(intRef, _intRef);
         if (result < 0) {
             throw_NativeErrorException(env, errno);

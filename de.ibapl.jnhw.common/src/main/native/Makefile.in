@@ -138,7 +138,8 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libjnhw_common_la_LIBADD =
 am_libjnhw_common_la_OBJECTS = jnhw-common.lo JnhwExceptions.lo \
-	OpaqueMemory.lo Callback_I_V.lo
+	OpaqueMemory.lo Callback_I_V.lo \
+	Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.lo
 libjnhw_common_la_OBJECTS = $(am_libjnhw_common_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -159,9 +160,10 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/Callback_I_V.Plo \
-	./$(DEPDIR)/JnhwExceptions.Plo ./$(DEPDIR)/OpaqueMemory.Plo \
-	./$(DEPDIR)/jnhw-common.Plo
+am__depfiles_remade =  \
+	./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.Plo \
+	./$(DEPDIR)/Callback_I_V.Plo ./$(DEPDIR)/JnhwExceptions.Plo \
+	./$(DEPDIR)/OpaqueMemory.Plo ./$(DEPDIR)/jnhw-common.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -353,7 +355,8 @@ libjnhw_common_la_SOURCES = \
  jnhw-common.c \
  JnhwExceptions.c \
  OpaqueMemory.c \
- Callback_I_V.c
+ Callback_I_V.c \
+ Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.c
 
 all: all-am
 
@@ -433,6 +436,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_V.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwExceptions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OpaqueMemory.Plo@am__quote@ # am--include-marker
@@ -620,7 +624,8 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/Callback_I_V.Plo
+		-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.Plo
+	-rm -f ./$(DEPDIR)/Callback_I_V.Plo
 	-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
 	-rm -f ./$(DEPDIR)/OpaqueMemory.Plo
 	-rm -f ./$(DEPDIR)/jnhw-common.Plo
@@ -669,7 +674,8 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/Callback_I_V.Plo
+		-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.Plo
+	-rm -f ./$(DEPDIR)/Callback_I_V.Plo
 	-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
 	-rm -f ./$(DEPDIR)/OpaqueMemory.Plo
 	-rm -f ./$(DEPDIR)/jnhw-common.Plo

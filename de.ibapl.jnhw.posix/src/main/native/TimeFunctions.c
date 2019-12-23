@@ -213,7 +213,7 @@ extern "C" {
         const char* _string = (*env)->GetStringUTFChars(env, string, NULL);
         const struct tm *tm = getdate(_string);
         (*env)->ReleaseStringUTFChars(env, string, _string);
-        
+
         if (tm) {
             return WRAP_STATIC_STRUCT_TM(tm);
         } else {

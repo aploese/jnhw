@@ -458,7 +458,7 @@ extern "C" {
         throw_NotDefinedException(env, "ECHRNG");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -475,7 +475,7 @@ extern "C" {
         throw_NotDefinedException(env, "EL2NSYNC");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -492,7 +492,7 @@ extern "C" {
         throw_NotDefinedException(env, "EL3HLT");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -509,7 +509,7 @@ extern "C" {
         throw_NotDefinedException(env, "EL3RST");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -526,7 +526,7 @@ extern "C" {
         throw_NotDefinedException(env, "ELNRNG");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -543,7 +543,7 @@ extern "C" {
         throw_NotDefinedException(env, "EUNATCH");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -560,7 +560,7 @@ extern "C" {
         throw_NotDefinedException(env, "ENOCSI");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -577,7 +577,7 @@ extern "C" {
         throw_NotDefinedException(env, "EL2HLT");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -594,7 +594,7 @@ extern "C" {
         throw_NotDefinedException(env, "EBADE");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -611,7 +611,7 @@ extern "C" {
         throw_NotDefinedException(env, "EBADR");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -628,7 +628,7 @@ extern "C" {
         throw_NotDefinedException(env, "EXFULL");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -645,7 +645,7 @@ extern "C" {
         throw_NotDefinedException(env, "ENOANO");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -662,7 +662,7 @@ extern "C" {
         throw_NotDefinedException(env, "EBADRQC");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -679,7 +679,7 @@ extern "C" {
         throw_NotDefinedException(env, "EBADSLT");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -696,7 +696,7 @@ extern "C" {
         throw_NotDefinedException(env, "EDEADLOCK");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -713,7 +713,7 @@ extern "C" {
         throw_NotDefinedException(env, "EBFONT");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -731,7 +731,7 @@ extern "C" {
 #else
         return ENOSTR;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -748,7 +748,7 @@ extern "C" {
         throw_NotDefinedException(env, "ENODATA");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -765,7 +765,7 @@ extern "C" {
         throw_NotDefinedException(env, "ETIME");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -782,7 +782,7 @@ extern "C" {
         throw_NotDefinedException(env, "ENOSR");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -790,7 +790,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENONET
-      (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
         return ENONET;
 #elif defined(ENONET)
@@ -799,7 +799,7 @@ extern "C" {
         throw_NotDefinedException(env, "ENONET");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -816,7 +816,7 @@ extern "C" {
         throw_NotDefinedException(env, "ENOPKG");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -853,7 +853,7 @@ extern "C" {
         throw_NotDefinedException(env, "EADV");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -870,7 +870,7 @@ extern "C" {
         throw_NotDefinedException(env, "ESRMNT");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -887,7 +887,7 @@ extern "C" {
         throw_NotDefinedException(env, "ECOMM");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -924,7 +924,7 @@ extern "C" {
         throw_NotDefinedException(env, "EDOTDOT");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -961,7 +961,7 @@ extern "C" {
         throw_NotDefinedException(env, "ENOTUNIQ");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -978,7 +978,7 @@ extern "C" {
         throw_NotDefinedException(env, "EBADFD");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -995,7 +995,7 @@ extern "C" {
         throw_NotDefinedException(env, "EREMCHG");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1012,7 +1012,7 @@ extern "C" {
         throw_NotDefinedException(env, "ELIBACC");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1029,7 +1029,7 @@ extern "C" {
         throw_NotDefinedException(env, "ELIBBAD");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1046,7 +1046,7 @@ extern "C" {
         throw_NotDefinedException(env, "ELIBSCN");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1063,7 +1063,7 @@ extern "C" {
         throw_NotDefinedException(env, "ELIBMAX");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1080,7 +1080,7 @@ extern "C" {
         throw_NotDefinedException(env, "ELIBEXEC");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1097,7 +1097,7 @@ extern "C" {
         throw_NotDefinedException(env, "ERESTART");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1114,7 +1114,7 @@ extern "C" {
         throw_NotDefinedException(env, "ESTRPIPE");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1431,7 +1431,7 @@ extern "C" {
         throw_NotDefinedException(env, "EUCLEAN");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1448,7 +1448,7 @@ extern "C" {
         throw_NotDefinedException(env, "ENOTNAM");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1465,7 +1465,7 @@ extern "C" {
         throw_NotDefinedException(env, "ENAVAIL");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1482,7 +1482,7 @@ extern "C" {
         throw_NotDefinedException(env, "EISNAM");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1499,7 +1499,7 @@ extern "C" {
         throw_NotDefinedException(env, "EREMOTEIO");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1526,7 +1526,7 @@ extern "C" {
         throw_NotDefinedException(env, "ENOMEDIUM");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1543,7 +1543,7 @@ extern "C" {
         throw_NotDefinedException(env, "EMEDIUMTYPE");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1570,7 +1570,7 @@ extern "C" {
         throw_NotDefinedException(env, "ENOKEY");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1587,7 +1587,7 @@ extern "C" {
         throw_NotDefinedException(env, "EKEYEXPIRED");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1604,7 +1604,7 @@ extern "C" {
         throw_NotDefinedException(env, "EKEYREVOKED");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1621,7 +1621,7 @@ extern "C" {
         throw_NotDefinedException(env, "EKEYREJECTED");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1658,7 +1658,7 @@ extern "C" {
         throw_NotDefinedException(env, "ERFKILL");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
@@ -1675,7 +1675,7 @@ extern "C" {
         throw_NotDefinedException(env, "EHWPOISON");
         return 0;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno

@@ -26,6 +26,7 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeFunctionPointer;
 import de.ibapl.jnhw.ObjectRef;
+import de.ibapl.jnhw.OpaqueMemory;
 import java.lang.ref.Cleaner;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
@@ -53,10 +54,8 @@ public class SignalTest {
     public void testSi_addr() {
         System.out.println("si_addr");
         long expResult = 0L;
-        long result = Signal.si_addr();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        NativeFunctionPointer<?> result = Signal.si_addr();
+        Assertions.assertNotNull(result);
     }
 
     /**
@@ -199,7 +198,7 @@ public class SignalTest {
         Signal.raise(Signal.SIGCHLD());
 
         final IntRef sigRef = new IntRef();
-        Signal.SigactionHandler sa = new Signal.SigactionHandler();
+        Signal.Sigaction sa = new Signal.Sigaction();
         sa.sa_flags(Signal.SA_RESTART());
         Signal.sigemptyset(sa.sa_mask);
 
@@ -223,7 +222,7 @@ public class SignalTest {
         System.out.println("sigaction");
         int sig = 0;
         Signal.Sigaction act = null;
-        ObjectRef<Signal.Sigaction> oact = null;
+        Signal.Sigaction oact = null;
         Signal.sigaction(sig, act, oact);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -419,9 +418,16 @@ public class SignalTest {
     @Test
     public void testSigpending() throws Exception {
         System.out.println("sigpending");
-        Signal.sigpending();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+            Signal.sigpending(null);
+        });
+        assertEquals(Errno.EFAULT(), nee.errno);
+
+        Signal.Sigset_t set = new Signal.Sigset_t();
+        Signal.sigemptyset(set);
+        Signal.sigpending(set);
+        assertEquals("[]", set.toString());
+        Assertions.assertArrayEquals(new byte[Signal.Sigset_t.sizeofSigset_t()], OpaqueMemory.toBytes(set));
     }
 
     /**
@@ -430,12 +436,29 @@ public class SignalTest {
     @Test
     public void testSigprocmask() throws Exception {
         System.out.println("sigprocmask");
-        int how = 0;
-        Signal.Sigset_t set = null;
-        Signal.Sigset_t oset = null;
-        Signal.sigprocmask(how, set, oset);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        Signal.sigprocmask(0, null, null);
+
+        final Signal.Sigset_t oset = new Signal.Sigset_t();
+        Signal.sigemptyset(oset);
+        Signal.sigprocmask(0, null, oset);
+        //make sure SIGUSR1 is in signak mask; we want to set it
+        System.err.println("current sigprocmask: " + oset);
+        Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1()));
+        Signal.Sigset_t set = new Signal.Sigset_t();
+        Signal.sigemptyset(set);
+        Signal.sigaddset(set, Signal.SIGUSR1());
+        Signal.sigprocmask(Signal.SIG_BLOCK(), set, null);
+        //Test that SIGUSR1 was set
+        final Signal.Sigset_t changedSet = new Signal.Sigset_t();
+        Signal.sigemptyset(changedSet);
+        Signal.sigprocmask(0, null, changedSet);
+        System.err.println("current sigprocmask: " + changedSet.toString());
+        Assertions.assertTrue(Signal.sigismember(changedSet, Signal.SIGUSR1()));
+
+        //restore old mask
+        Signal.sigprocmask(Signal.SIG_SETMASK(), oset, null);
+
     }
 
     /**

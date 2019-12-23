@@ -77,7 +77,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return O_WRONLY;
     }
-    
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    AT_FDCWD
@@ -97,7 +97,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return AT_EACCESS;
     }
-    
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    AT_SYMLINK_NOFOLLOW
@@ -559,7 +559,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return F_SETFL;
     }
-    
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    F_GETLK
@@ -569,7 +569,6 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return F_GETLK;
     }
-    
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
@@ -590,7 +589,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return F_SETLKW;
     }
-    
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    F_GETOWN
@@ -620,6 +619,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return FD_CLOEXEC;
     }
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    F_RDLCK
@@ -629,7 +629,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return F_RDLCK;
     }
-    
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    F_UNLCK
@@ -639,7 +639,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return F_UNLCK;
     }
-    
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    F_WRLCK
@@ -659,8 +659,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return SEEK_SET;
     }
-            
-            
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    SEEK_CUR
@@ -670,7 +669,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return SEEK_CUR;
     }
-            
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    SEEK_END
@@ -680,8 +679,8 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return SEEK_END;
     }
-            
-            
+
+
 #ifdef __cplusplus
 }
 #endif

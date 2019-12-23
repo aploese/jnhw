@@ -79,7 +79,7 @@ extern "C" {
         jobject result = NULL;
         jmethodID lconvInitID = (*env)->GetMethodID(env, lconvClass, "<init>", "(JI)V");
         if (lconvInitID != NULL) {
-            result = (*env)->NewObject(env, lconvClass, lconvInitID, (intptr_t)lconv, sizeof (struct lconv));
+            result = (*env)->NewObject(env, lconvClass, lconvInitID, (intptr_t) lconv, sizeof (struct lconv));
         }
         (*env)->DeleteLocalRef(env, lconvClass);
         return result;

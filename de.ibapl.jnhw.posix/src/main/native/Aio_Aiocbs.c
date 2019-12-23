@@ -99,7 +99,8 @@ extern "C" {
     (JNIEnv *env, jobject structAiocb) {
         return (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->;
     }
-*/
+     */
+
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
      * Method:    aio_nbytes
@@ -107,7 +108,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1nbytes__
     (JNIEnv *env, jobject structAiocb) {
-        return (int64_t)(UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes;
+        return (int64_t) (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes;
     }
 
     /*
@@ -117,7 +118,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1nbytes__I
     (JNIEnv *env, jobject structAiocb, jlong aio_nbytes) {
-        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = (uint64_t)aio_nbytes;
+        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = (uint64_t) aio_nbytes;
     }
 
     /*
@@ -137,7 +138,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1reqprio__I
     (JNIEnv *env, jobject structAiocb, jint aio_reqprio) {
-        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_reqprio  = aio_reqprio;
+        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_reqprio = aio_reqprio;
     }
 
     /*
@@ -159,7 +160,8 @@ extern "C" {
     (JNIEnv *env, jobject structAiocb) {
         return (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->;
     }
-*/
+     */
+
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
      * Method:    aio_lio_opcode

@@ -42,7 +42,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "count must be >= 0");
             return -1;
         }
-        const int result = eventfd((uint32_t)count, flags);
+        const int result = eventfd((uint32_t) count, flags);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }
@@ -56,9 +56,9 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_eventfd_1read
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject valueRef) {
-        eventfd_t _valueRef = (uint64_t)GET_LONG_REF_VALUE(valueRef);
+        eventfd_t _valueRef = (uint64_t) GET_LONG_REF_VALUE(valueRef);
         const int result = eventfd_read(fd, &_valueRef);
-        SET_LONG_REF_VALUE(valueRef, (int64_t)_valueRef);
+        SET_LONG_REF_VALUE(valueRef, (int64_t) _valueRef);
         if (result) {
             throw_NativeErrorException(env, errno);
         }
@@ -71,7 +71,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_eventfd_1write
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jlong value) {
-        if (eventfd_write(fd, (uint64_t)value)) {
+        if (eventfd_write(fd, (uint64_t) value)) {
             throw_NativeErrorException(env, errno);
         }
     }

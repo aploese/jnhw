@@ -95,7 +95,7 @@ extern "C" {
 #else
         return SEEK_DATA;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
@@ -113,7 +113,7 @@ extern "C" {
 #else
         return SEEK_HOLE;
 #endif
-}
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd

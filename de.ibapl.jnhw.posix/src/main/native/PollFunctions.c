@@ -32,12 +32,12 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_posix_Poll
- * Method:    poll
- * Signature: (Lde/ibapl/jnhw/posix/Poll$PollFds;I)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll__Lde_ibapl_jnhw_posix_Poll_00024PollFds_2I
+    /*
+     * Class:     de_ibapl_jnhw_posix_Poll
+     * Method:    poll
+     * Signature: (Lde/ibapl/jnhw/posix/Poll$PollFds;I)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll__Lde_ibapl_jnhw_posix_Poll_00024PollFds_2I
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pollFdArray, jint timeout) {
         if (pollFdArray == NULL) {
             throw_NullPointerException(env, "pollFd array");

@@ -21,6 +21,6 @@
  */
 /**
  * Very thin and safe wrapper classes around common used headers on a Linux system.
- * 
+ *
  */
 package de.ibapl.jnhw.linux.sys;

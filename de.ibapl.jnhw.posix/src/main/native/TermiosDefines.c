@@ -561,7 +561,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NOFLSH
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__APPLE__) || defined (__FreeBSD__)
-        return (int32_t)NOFLSH;
+        return (int32_t) NOFLSH;
 #else
         return NOFLSH;
 #endif        

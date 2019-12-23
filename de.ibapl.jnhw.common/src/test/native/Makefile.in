@@ -145,7 +145,8 @@ am__v_lt_1 =
 libtests_la_LIBADD =
 am_libtests_la_OBJECTS = ByteRefTests.lo ShortRefTests.lo \
 	IntRefTests.lo LongRefTests.lo ObjectRefTests.lo \
-	Callback_I_V_Tests.lo
+	Callback_I_V_Tests.lo \
+	Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -163,6 +164,7 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/ByteRefTests.Plo \
+	./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.Plo \
 	./$(DEPDIR)/Callback_I_V_Tests.Plo ./$(DEPDIR)/IntRefTests.Plo \
 	./$(DEPDIR)/LongRefTests.Plo ./$(DEPDIR)/ObjectRefTests.Plo \
 	./$(DEPDIR)/ShortRefTests.Plo \
@@ -360,7 +362,8 @@ libtests_la_SOURCES = \
  IntRefTests.c \
  LongRefTests.c \
  ObjectRefTests.c \
- Callback_I_V_Tests.c
+ Callback_I_V_Tests.c \
+ Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.c
 
 all: all-am
 
@@ -455,6 +458,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ByteRefTests.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_V_Tests.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IntRefTests.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LongRefTests.Plo@am__quote@ # am--include-marker
@@ -624,6 +628,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/ByteRefTests.Plo
+	-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_V_Tests.Plo
 	-rm -f ./$(DEPDIR)/IntRefTests.Plo
 	-rm -f ./$(DEPDIR)/LongRefTests.Plo
@@ -676,6 +681,7 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/ByteRefTests.Plo
+	-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_V_Tests.Plo
 	-rm -f ./$(DEPDIR)/IntRefTests.Plo
 	-rm -f ./$(DEPDIR)/LongRefTests.Plo

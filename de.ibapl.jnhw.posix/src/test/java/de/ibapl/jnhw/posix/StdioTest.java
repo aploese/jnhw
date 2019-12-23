@@ -22,8 +22,8 @@
 package de.ibapl.jnhw.posix;
 
 import java.io.File;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
@@ -32,7 +32,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
  */
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class StdioTest {
-    
+
     /**
      * Test of remove method, of class Stdio.
      */
@@ -45,5 +45,5 @@ public class StdioTest {
         Stdio.remove(f.getAbsolutePath());
         assertFalse(f.exists());
     }
-    
+
 }

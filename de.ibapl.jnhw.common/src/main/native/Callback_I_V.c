@@ -23,7 +23,6 @@
 #include "Callback_I_V.h"
 
 #include "de_ibapl_jnhw_Callback_I_V.h"
-#include "jnhw-common.h"
 
 
 #define JNHW_CLASS_NAME_CALL_BACK "de/ibapl/jnhw/Callback_I_V"
@@ -46,6 +45,9 @@ extern "C" {
             return JNI_FALSE;
         }
         Callback_I_V_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_CALL_BACK);
+        if (Callback_I_V_Class == NULL) {
+            return JNI_FALSE;
+        }
 
         cb_0_ID = getStaticMethodIdOfClassRef(env, Callback_I_V_Class, "cb_0", "(I)V");
         if (cb_0_ID == NULL) {

@@ -31,95 +31,96 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
- * Method:    sizeofSiginfo_t
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_sizeofSiginfo_1t
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return sizeof (siginfo_t);
-  }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
- * Method:    _si_value_Offset
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t__1si_1value_1Offset
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return offsetof (siginfo_t, si_value);
-}
+        /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    sizeofSiginfo_t
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_sizeofSiginfo_1t
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return sizeof (siginfo_t);
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
- * Method:    si_signo
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1signo
-  (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
-    return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_signo;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    _si_value_Offset
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t__1si_1value_1Offset
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(siginfo_t, si_value);
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
- * Method:    si_code
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1code
-  (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
-    return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_code;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    si_signo
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1signo
+    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+        return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_signo;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
- * Method:    si_errno
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1errno
-  (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
-    return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_errno;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    si_code
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1code
+    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+        return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_code;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
- * Method:    si_pid
- * Signature: ()I;
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1pid
-  (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
-    return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_pid;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    si_errno
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1errno
+    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+        return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_errno;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
- * Method:    si_addr
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1addr
-  (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
-    return (intptr_t)(UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_addr;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    si_pid
+     * Signature: ()I;
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1pid
+    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+        return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_pid;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
- * Method:    si_status
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1status
-  (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
-    return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_status;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    si_addr
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1addr
+    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+        return (intptr_t) (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_addr;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
- * Method:    si_band
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1band
-  (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
-    return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_band;
-}
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    si_status
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1status
+    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+        return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_status;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    si_band
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1band
+    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+        return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_band;
+    }
 
 
 #ifdef __cplusplus

@@ -37,37 +37,6 @@ public class OpaqueMemory {
 
     private static final Cleaner CLEANER = Cleaner.create();
 
-    public static native void copy(byte[] src, int srcPos, OpaqueMemory dest, int destPos, int length);
-
-    public static native void copy(OpaqueMemory src, int srcPos, byte[] dest, int destPos, int length);
-
-    public static native void setByte(OpaqueMemory opaqueMemory, int index, byte value);
-
-    public static native byte getByte(OpaqueMemory opaqueMemory, int index);
-
-    static class MemoryCleaner implements Runnable {
-
-        final long baseAddress;
-
-        MemoryCleaner(final long baseAddress) {
-            this.baseAddress = baseAddress;
-        }
-
-        @Override
-        public void run() {
-            try {
-                // LOG.log(Level.FINEST, String.format("Finalize: try free memory @0x%016x size:
-                // %d", baseAddress, sizeInBytes));
-                free(baseAddress);
-                // LOG.log(Level.FINEST, String.format("memory @0x%016x freed", baseAddress));
-            } catch (Throwable t) {
-                LOG.log(Level.SEVERE,
-                        String.format("Finalize: Memory Leak freeing memory @0x%016x failed", baseAddress), t);
-            }
-
-        }
-    }
-
     protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
 
     /**
@@ -77,24 +46,38 @@ public class OpaqueMemory {
         LibJnhwCommonLoader.touch();
     }
 
-    private final long baseAddress;
-    public final int sizeInBytes;
-    public final OpaqueMemory memoryOwner;
-
     // get value of define from errno.
     public static final native int ENOMEM();
 
-    private static native long malloc(int sizeInBytes) throws NativeErrorException;
-
     private static native long calloc(int elements, int sizeInBytes) throws NativeErrorException;
-
-    private static native void free(long baseAddress);
-
-    public static native void memset(OpaqueMemory mem, byte c);
 
     public static void clear(OpaqueMemory mem) {
         memset(mem, (byte) 0);
     }
+
+    public static native void copy(byte[] src, int srcPos, OpaqueMemory dest, int destPos, int length);
+
+    public static native void copy(OpaqueMemory src, int srcPos, byte[] dest, int destPos, int length);
+
+    private static native void free(long baseAddress);
+
+    public static native byte getByte(OpaqueMemory opaqueMemory, int index);
+
+    private static native long malloc(int sizeInBytes) throws NativeErrorException;
+
+    public static native void memset(OpaqueMemory mem, byte c);
+
+    public static native void setByte(OpaqueMemory opaqueMemory, int index, byte value);
+
+    public static byte[] toBytes(OpaqueMemory mem) {
+        final byte[] result = new byte[mem.sizeInBytes];
+        copy(mem, 0, result, 0, mem.sizeInBytes);
+        return result;
+    }
+
+    private final long baseAddress;
+    public final OpaqueMemory memoryOwner;
+    public final int sizeInBytes;
 
     /**
      * Create a static memory slice which will NOT be freed - its static.
@@ -177,6 +160,64 @@ public class OpaqueMemory {
         this.baseAddress = owner.baseAddress + offset;
         this.sizeInBytes = sizeInBytes;
         memoryOwner = owner;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + (int) (this.baseAddress ^ (this.baseAddress >>> 32));
+        hash = 37 * hash + this.sizeInBytes;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (obj instanceof OpaqueMemory) {
+            final OpaqueMemory other = (OpaqueMemory) obj;
+            if (this.baseAddress != other.baseAddress) {
+                return false;
+            }
+            return this.sizeInBytes == other.sizeInBytes;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        if (memoryOwner == this) {
+            return String.format("{baseAddress : 0x%08x, sizeInBytes : %d, memoryOwner : this}", baseAddress, sizeInBytes);
+        } else {
+            return String.format("{baseAddress : 0x%08x, sizeInBytes : %d, memoryOwner : %s}", baseAddress, sizeInBytes, memoryOwner);
+        }
+    }
+
+    static class MemoryCleaner implements Runnable {
+
+        final long baseAddress;
+
+        MemoryCleaner(final long baseAddress) {
+            this.baseAddress = baseAddress;
+        }
+
+        @Override
+        public void run() {
+            try {
+                // LOG.log(Level.FINEST, String.format("Finalize: try free memory @0x%016x size:
+                // %d", baseAddress, sizeInBytes));
+                free(baseAddress);
+                // LOG.log(Level.FINEST, String.format("memory @0x%016x freed", baseAddress));
+            } catch (Throwable t) {
+                LOG.log(Level.SEVERE,
+                        String.format("Finalize: Memory Leak freeing memory @0x%016x failed", baseAddress), t);
+            }
+
+        }
     }
 
 }
