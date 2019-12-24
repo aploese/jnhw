@@ -34,13 +34,13 @@ extern "C" {
     static jclass Callback_Class;
     static jmethodID trampoline_ID;
 
-/*
- * Class:     de_ibapl_jnhw_Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V
- * Method:    initNative
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqueMemory_1V_initNative
-  (JNIEnv *env, jclass clazz) {
+    /*
+     * Class:     de_ibapl_jnhw_Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V
+     * Method:    initNative
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqueMemory_1V_initNative
+    (JNIEnv *env, jclass clazz) {
         if ((*env)->GetJavaVM(env, &jvm)) {
             return;
         }
@@ -62,19 +62,19 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqu
         (*jvm)->DetachCurrentThread(jvm); \
     }
 
-TRAMPOLINE(0)
-TRAMPOLINE(1)
-TRAMPOLINE(2)
-TRAMPOLINE(3)
-TRAMPOLINE(4)
-TRAMPOLINE(5)
-TRAMPOLINE(6)
-TRAMPOLINE(7)
+    TRAMPOLINE(0)
+    TRAMPOLINE(1)
+    TRAMPOLINE(2)
+    TRAMPOLINE(3)
+    TRAMPOLINE(4)
+    TRAMPOLINE(5)
+    TRAMPOLINE(6)
+    TRAMPOLINE(7)
 
 #define MAX_CALL_BACKS 8
 
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V
      * Method:    MAX_CALL_BACKS
      * Signature: ()I
@@ -92,8 +92,15 @@ TRAMPOLINE(7)
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqueMemory_1V_getNativeAddress
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
         switch (index) {
-            case 0: return (intptr_t) & trampoline_0;
-            case 1: return (intptr_t) & trampoline_1;
+#define TRAMPOLINE_CASE(index) case index: return (intptr_t) &trampoline_ ## index;
+                TRAMPOLINE_CASE(0);
+                TRAMPOLINE_CASE(1);
+                TRAMPOLINE_CASE(2);
+                TRAMPOLINE_CASE(3);
+                TRAMPOLINE_CASE(4);
+                TRAMPOLINE_CASE(5);
+                TRAMPOLINE_CASE(6);
+                TRAMPOLINE_CASE(7);
             default:
                 throw_IllegalArgumentException(env, "index < 0 or index > MAX_CALL_BACKS");
                 return 0L;

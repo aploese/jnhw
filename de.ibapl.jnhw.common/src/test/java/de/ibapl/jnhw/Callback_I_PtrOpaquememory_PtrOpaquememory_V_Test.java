@@ -74,6 +74,25 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
 
     private native void doCallTheCallback(int value, A a, B b);
 
+    private class DummyCB extends Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V {
+
+        @Override
+        protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        protected OpaqueMemory wrapA(long address) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        protected OpaqueMemory wrapB(long address) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+    }
+
     /**
      * Test of MAX_INT_CONSUMER_CALLBACKS method, of class
      * IntConsumerCallbackFactory.
@@ -81,9 +100,26 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
     @Test
     public void testMAX_CALL_BACKS() {
         System.out.println("MAX_CALL_BACKS");
-        int result = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.MAX_CALL_BACKS();
-        assertEquals(8, result);
-        assertEquals(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.MAX_CALL_BACKS(), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
+        int maxCB = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.MAX_CALL_BACKS();
+        assertEquals(8, maxCB);
+        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V[] cbs = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V[maxCB];
+        for (int i = 0; i < cbs.length; i++) {
+            cbs[i] = new DummyCB();
+            assertEquals(maxCB - (i + 1), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
+        }
+
+        RuntimeException re = assertThrows(RuntimeException.class, () -> {
+            new DummyCB();
+        });
+        assertEquals("No more Callbacks available! max: 8 reached", re.getMessage());
+
+        cbs = null;
+
+        System.runFinalization();
+        System.gc();
+
+        assertEquals(maxCB, Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
+
     }
 
     @Test
