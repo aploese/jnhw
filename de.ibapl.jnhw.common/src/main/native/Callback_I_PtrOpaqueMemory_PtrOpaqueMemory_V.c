@@ -24,8 +24,6 @@
 
 #include "jnhw-common.h"
 
-#define MAX_CALL_BACKS 2
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,19 +54,25 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqu
         }
     }
 
-    void trampoline_0(int value, void* ptr_a, void* ptr_b) {
-        JNIEnv *env;
-        (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL);
-        (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, 0, value, (intptr_t) ptr_a, (intptr_t) ptr_b);
-        (*jvm)->DetachCurrentThread(jvm);
+#define TRAMPOLINE(index) \
+    void trampoline_ ## index (int value, void* ptr_a, void* ptr_b) { \
+        JNIEnv *env; \
+        (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL); \
+        (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, value, (intptr_t) ptr_a, (intptr_t) ptr_b); \
+        (*jvm)->DetachCurrentThread(jvm); \
     }
 
-    void trampoline_1(int value, void* ptr_a, void* ptr_b) {
-        JNIEnv *env;
-        (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL);
-        (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, 1, value, (intptr_t) ptr_a, (intptr_t) ptr_b);
-        (*jvm)->DetachCurrentThread(jvm);
-    }
+TRAMPOLINE(0)
+TRAMPOLINE(1)
+TRAMPOLINE(2)
+TRAMPOLINE(3)
+TRAMPOLINE(4)
+TRAMPOLINE(5)
+TRAMPOLINE(6)
+TRAMPOLINE(7)
+
+#define MAX_CALL_BACKS 8
+
 
         /*
      * Class:     de_ibapl_jnhw_Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V

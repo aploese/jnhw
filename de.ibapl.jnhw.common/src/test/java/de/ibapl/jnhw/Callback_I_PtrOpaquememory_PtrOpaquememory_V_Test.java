@@ -81,9 +81,9 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
     @Test
     public void testMAX_CALL_BACKS() {
         System.out.println("MAX_CALL_BACKS");
-        int result = Callback_I_V.MAX_CALL_BACKS();
-        assertEquals(2, result);
-        assertEquals(Callback_I_V.MAX_CALL_BACKS(), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
+        int result = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.MAX_CALL_BACKS();
+        assertEquals(8, result);
+        assertEquals(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.MAX_CALL_BACKS(), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
     }
 
     @Test
@@ -141,7 +141,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
         System.runFinalization();
         System.gc();
 
-        assertEquals(Callback_I_V.MAX_CALL_BACKS(), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
+        assertEquals(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.MAX_CALL_BACKS(), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
         //it is still callable, but its is only logged...
         assertTrue(getCallbackPtr().addressEquals(nativeCallbackPointer));
 
