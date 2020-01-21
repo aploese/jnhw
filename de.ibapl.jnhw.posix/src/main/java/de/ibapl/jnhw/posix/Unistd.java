@@ -28,10 +28,13 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.posix.sys.Types.gid_t;
 import de.ibapl.jnhw.posix.sys.Types.off64_t;
 import de.ibapl.jnhw.posix.sys.Types.off_t;
+import de.ibapl.jnhw.posix.sys.Types.pid_t;
 import de.ibapl.jnhw.posix.sys.Types.size_t;
 import de.ibapl.jnhw.posix.sys.Types.ssize_t;
+import de.ibapl.jnhw.posix.sys.Types.uid_t;
 import de.ibapl.jnhw.posix.sys.Types.useconds_t;
 import de.ibapl.jnhw.util.ByteBufferUtils;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
@@ -154,6 +157,63 @@ public final class Unistd {
      * indicates an error.
      */
     public final static native void fsync(int fildes) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpid.html">getpid
+     * - get the process ID</a>.
+     */
+    public final native static @pid_t
+    int getpid();
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getppid.html">getppid
+     * - get the parent process ID</a>.
+     */
+    public final native static @pid_t
+    int getppid();
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getuid.html">getuid
+     * - get a real user ID</a>.
+     */
+    public final native static @uid_t
+    int getuid();
+
+    //TODO java doc + gid APUE page 256ff
+    public final native static void seteuid(@uid_t int uid);
+
+    public final native static void setreuid(@uid_t int uid);
+
+    public final native static void setuid(@uid_t int uid);
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/geteuid.html">geteuid
+     * - get the effective user ID</a>.
+     */
+    public final native static @uid_t
+    int geteuid();
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getgid.html">getgid
+     * - get the real group ID</a>.
+     *
+     * @return the real group ID
+     */
+    public final native static @gid_t
+    int getgid();
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getegid.html">getegid
+     * - get the effective group ID</a>.
+     */
+    public final native static @gid_t
+    int getegid();
 
     /**
      * <b>POSIX:</b>

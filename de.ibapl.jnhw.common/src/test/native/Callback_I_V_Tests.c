@@ -21,6 +21,8 @@
  */
 #include "jnhw-common.h"
 #include "de_ibapl_jnhw_Callback_I_V_Test.h"
+#include <pthread.h>
+#include <signal.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,6 +51,11 @@ extern "C" {
         return CREATE_NATIVE_FUNCTION_POINTER(callbackPtr);
     }
 
+    void * thr_fn(void *args) {
+            callbackPtr(*((int*)args));
+            return NULL;
+    }
+    
     /*
      * Class:     de_ibapl_jnhw_Callback_I_V_Tests
      * Method:    doCallTheCallback
@@ -56,7 +63,9 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_1Test_doCallTheCallback
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jint value) {
-        callbackPtr(value);
+        pthread_t thread;
+        pthread_create(&thread, NULL, thr_fn, &value);
+        pthread_join(thread, NULL);
     }
 
 

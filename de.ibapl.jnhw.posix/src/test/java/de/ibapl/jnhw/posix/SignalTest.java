@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.Callback_I_V;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
@@ -48,79 +49,36 @@ public class SignalTest {
     }
 
     /**
-     * Test of si_addr method, of class Signal.
-     */
-    @Test
-    public void testSi_addr() {
-        System.out.println("si_addr");
-        long expResult = 0L;
-        NativeFunctionPointer<?> result = Signal.si_addr();
-        Assertions.assertNotNull(result);
-    }
-
-    /**
-     * Test of si_pid method, of class Signal.
-     */
-    @Test
-    public void testSi_pid() {
-        System.out.println("si_pid");
-        int expResult = 0;
-        int result = Signal.si_pid();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of si_status method, of class Signal.
-     */
-    @Test
-    public void testSi_status() {
-        System.out.println("si_status");
-        int expResult = 0;
-        int result = Signal.si_status();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of si_uid method, of class Signal.
-     */
-    @Test
-    public void testSi_uid() {
-        System.out.println("si_uid");
-        int expResult = 0;
-        int result = Signal.si_uid();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of si_band method, of class Signal.
-     */
-    @Test
-    public void testSi_band() {
-        System.out.println("si_band");
-        long expResult = 0L;
-        long result = Signal.si_band();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of kill method, of class Signal.
      */
     @Test
     public void testKill() throws Exception {
         System.out.println("kill");
-        int pid = 0;
-        int sig = 0;
-        Signal.kill(pid, sig);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        final int sig = Signal.SIGCHLD(); //TODO SIGQUIT blows anything away .... WHY???
+
+        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final Signal.Sigaction act = new Signal.Sigaction();
+        act.sa_flags(0);
+        Signal.sigemptyset(act.sa_mask);
+
+        Callback_I_V sa_handler = new Callback_I_V() {
+            @Override
+            protected void callback(int sig) {
+                sigRef.value = sig;
+            }
+        };
+        act.sa_handler(sa_handler);
+
+        final Signal.Sigaction oact = new Signal.Sigaction();
+        Signal.sigaction(sig, act, oact);
+        try {
+            Signal.kill(Unistd.getpid(), sig);
+            Thread.sleep(10);
+            assertEquals(sig, sigRef.value);
+        } finally {
+            Signal.sigaction(sig, oact, null);
+        }
     }
 
     /**
@@ -152,14 +110,17 @@ public class SignalTest {
     /**
      * Test of psignal method, of class Signal.
      */
+    //TODO Does work, no output...
     @Test
     public void testPsignal() throws Exception {
         System.out.println("psignal");
-        int signum = 0;
-        String message = "";
-        Signal.psignal(signum, message);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Signal.SIGABRT();
+        System.err.print("psignal MSG >>>");
+        Signal.psignal(Signal.SIGUSR1(), "Send SIGUSR1 to std err");
+        System.err.println("<<< psignal MSG");
+        System.err.flush();
+        System.out.flush();
+        //TODO mark as not executing as expected but do not fail??
     }
 
     /**
@@ -195,12 +156,12 @@ public class SignalTest {
     @Test
     public void testRaise() throws Exception {
         System.out.println("raise");
-        Signal.raise(Signal.SIGCHLD());
+        final int sig = Signal.SIGCHLD(); //TODO SIGQUIT does nothing ??? see testKill .... WHY???
 
-        final IntRef sigRef = new IntRef();
-        Signal.Sigaction sa = new Signal.Sigaction();
-        sa.sa_flags(Signal.SA_RESTART());
-        Signal.sigemptyset(sa.sa_mask);
+        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final Signal.Sigaction act = new Signal.Sigaction();
+        act.sa_flags(0);
+        Signal.sigemptyset(act.sa_mask);
 
         Callback_I_V sa_handler = new Callback_I_V() {
             @Override
@@ -208,10 +169,16 @@ public class SignalTest {
                 sigRef.value = sig;
             }
         };
+        act.sa_handler(sa_handler);
 
-        sa.sa_handler(sa_handler);
-        Signal.sigaction(Signal.SIGQUIT(), sa, null);
-        Signal.raise(Signal.SIGQUIT());
+        final Signal.Sigaction oact = new Signal.Sigaction();
+        Signal.sigaction(sig, act, oact);
+        try {
+            Signal.raise(sig);
+            assertEquals(sig, sigRef.value);
+        } finally {
+            Signal.sigaction(sig, oact, null);
+        }
     }
 
     /**
@@ -220,12 +187,33 @@ public class SignalTest {
     @Test
     public void testSigaction() throws Exception {
         System.out.println("sigaction");
-        int sig = 0;
-        Signal.Sigaction act = null;
-        Signal.Sigaction oact = null;
-        Signal.sigaction(sig, act, oact);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final int SIG = Signal.SIGCHLD();
+
+        final Signal.Sigaction act = new Signal.Sigaction();
+        act.sa_flags(Signal.SA_RESTART());
+        Signal.sigemptyset(act.sa_mask);
+
+        Callback_I_V sa_handler = new Callback_I_V() {
+            @Override
+            protected void callback(int sig) {
+            }
+        };
+        act.sa_handler(sa_handler);
+
+        final Signal.Sigaction oact = new Signal.Sigaction();
+        final Signal.Sigaction actOut = new Signal.Sigaction();
+        Signal.sigaction(SIG, act, oact);
+        try {
+            if ((oact.sa_flags() & Signal.SA_SIGINFO()) == Signal.SA_SIGINFO()) {
+                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_sigaction());
+            } else {
+                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_handler());
+            }
+            Signal.sigaction(SIG, oact, actOut);
+            Assertions.assertEquals(act.sa_handler(), actOut.sa_handler());
+        } finally {
+            Signal.sigaction(SIG, oact, null);
+        }
     }
 
     /**
@@ -271,10 +259,14 @@ public class SignalTest {
     @Test
     public void testSighold() throws Exception {
         System.out.println("sighold");
-        int sig = 0;
-        Signal.sighold(sig);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final int sig = Signal.SIGCHLD();
+        final var old = Signal.signal(sig, null);
+        try {
+            Signal.sighold(sig);
+            assertEquals(Signal.SIG_HOLD(), Signal.signal(sig, null));
+        } finally {
+            Signal.signal(sig, old);
+        }
     }
 
     /**
@@ -283,10 +275,14 @@ public class SignalTest {
     @Test
     public void testSigignore() throws Exception {
         System.out.println("sigignore");
-        int sig = 0;
-        Signal.sigignore(sig);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final int sig = Signal.SIGCHLD();
+        final var old = Signal.signal(sig, null);
+        try {
+            Signal.sigignore(sig);
+            assertEquals(Signal.SIG_IGN(), Signal.signal(sig, null));
+        } finally {
+            Signal.signal(sig, old);
+        }
     }
 
     /**
@@ -309,21 +305,22 @@ public class SignalTest {
     public void testSignal() throws Exception {
         System.out.println("signal");
 
+        final int SIG = Signal.SIGCHLD();
         final var funcIgnore = Signal.SIG_IGN();
-        final var savedOld = Signal.signal(Signal.SIGABRT(), funcIgnore);
-        if (Signal.SIG_DFL().addressEquals(savedOld)) {
-            System.out.println("Old signal handler of SIGABRT is SIG_DFL!");
-        } else if (Signal.SIG_ERR().addressEquals(savedOld)) {
-            System.out.println("Old signal handler of SIGABRT is SIG_ERR!");
-        } else if (Signal.SIG_HOLD().addressEquals(savedOld)) {
-            System.out.println("Old signal handler of SIGABRT is SIG_HOLD!");
-        } else if (Signal.SIG_IGN().addressEquals(savedOld)) {
-            System.out.println("Old signal handler of SIGABRT is SIG_IGN!");
+        final var savedOld = Signal.signal(SIG, funcIgnore);
+        if (Signal.SIG_DFL().equals(savedOld)) {
+            System.out.println("Old signal handler of SIG is SIG_DFL!");
+        } else if (Signal.SIG_ERR().equals(savedOld)) {
+            System.out.println("Old signal handler of SIG is SIG_ERR!");
+        } else if (Signal.SIG_HOLD().equals(savedOld)) {
+            System.out.println("Old signal handler of SIG is SIG_HOLD!");
+        } else if (Signal.SIG_IGN().equals(savedOld)) {
+            System.out.println("Old signal handler of SIG is SIG_IGN!");
         } else {
-            System.out.println("Old signal handler of SIGABRT is " + savedOld);
+            System.out.println("Old signal handler of SIG is " + savedOld);
         }
 
-        Signal.raise(Signal.SIGABRT());
+        Signal.raise(SIG);
 
         final IntRef raisedSignal = new IntRef();
         final Callback_I_V funcHandler = new Callback_I_V() {
@@ -335,25 +332,26 @@ public class SignalTest {
         };
         cleaner.register(funcHandler, () -> {
             try {
-                Signal.signal(Signal.SIGABRT(), savedOld);
+                Signal.signal(SIG, savedOld);
                 System.err.println("Old signal Handler restored to: " + savedOld);
             } catch (NativeErrorException nee) {
                 System.err.println("Cant set old signal Handler " + savedOld);
             }
         });
 
-        var old = Signal.signal(Signal.SIGABRT(), funcHandler);
-        Assertions.assertTrue(funcIgnore.addressEquals(old));
+        var old = Signal.signal(SIG, funcHandler);
+        Assertions.assertEquals(funcIgnore, old);
 
-        Signal.raise(Signal.SIGABRT());
-        Assertions.assertEquals(Signal.SIGABRT(), raisedSignal.value);
+        Signal.raise(SIG);
+        Assertions.assertEquals(SIG, raisedSignal.value);
 
-        old = Signal.signal(Signal.SIGABRT(), null);
-        Assertions.assertTrue(funcHandler.addressEquals(old));
+        old = Signal.signal(SIG, null);
+        Assertions.assertEquals(funcHandler, old);
 
         //Restore the signal on error the cleaner shoult take care of restoring.
-        old = Signal.signal(Signal.SIGABRT(), savedOld);
-        Assertions.assertTrue(NativeFunctionPointer.addressEquals(old, new NativeFunctionPointer(0L)));
+        old = Signal.signal(SIG, savedOld);
+        Assertions.assertEquals(old, new NativeFunctionPointer(0L));
+
     }
 
     /**
@@ -467,9 +465,60 @@ public class SignalTest {
     @Test
     public void testSigqueue() throws Exception {
         System.out.println("sigqueue");
-        Signal.sigqueue();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final int SIG = Signal.SIGUSR1();
+
+        final Signal.Sigaction act = new Signal.Sigaction();
+        act.sa_flags(Signal.SA_SIGINFO());
+        Signal.sigemptyset(act.sa_mask);
+
+        final ObjectRef<Signal.Siginfo_t> siginfo_tRef = new ObjectRef<>(null);
+        final ObjectRef<OpaqueMemory> opmRef = new ObjectRef<>(null);
+
+        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory> sa_handler = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory>() {
+
+            @Override
+            protected void callback(int value, Signal.Siginfo_t a, OpaqueMemory b) {
+                siginfo_tRef.value = a;
+                opmRef.value = b;
+            }
+
+            @Override
+            protected Signal.Siginfo_t wrapA(long address) {
+                return new Signal.Siginfo_t(address, (baseAddress) -> {
+                    return new OpaqueMemory(baseAddress, 128) {
+                    };
+                });
+            }
+
+            @Override
+            protected OpaqueMemory wrapB(long address) {
+                return null; // new OpaqueMemory^(address);
+            }
+        };
+
+        act.sa_sigaction(sa_handler);
+
+        final Signal.Sigaction oact = new Signal.Sigaction();
+        final Signal.Sigaction actOut = new Signal.Sigaction();
+        Signal.sigaction(SIG, act, oact);
+
+        OpaqueMemory data = new OpaqueMemory(128, true);
+
+        Signal.Sigval sigval = new Signal.Sigval();
+        sigval.sival_ptr(data);
+
+        Signal.sigqueue(Unistd.getpid(), SIG, sigval);
+
+        Thread.sleep(100);
+
+        try {
+            Assertions.assertNotNull(siginfo_tRef.value);
+            Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo());
+            Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr());
+        } finally {
+            Signal.sigaction(SIG, oact, null);
+        }
+
     }
 
     /**
@@ -490,9 +539,9 @@ public class SignalTest {
     public void testSigset() throws Exception {
         System.out.println("sigset");
         var result = Signal.sigset(Signal.SIGABRT(), null);
-        Assertions.assertTrue(NativeFunctionPointer.addressEquals(Signal.SIG_DFL(), result));
+        Assertions.assertEquals(Signal.SIG_DFL(), result);
         result = Signal.sigset(Signal.SIGABRT(), result);
-        Assertions.assertTrue(NativeFunctionPointer.addressEquals(new NativeFunctionPointer(0L), result));
+        Assertions.assertEquals(new NativeFunctionPointer(0L), result);
     }
 
     /**

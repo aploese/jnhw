@@ -119,14 +119,13 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
         System.gc();
 
         assertEquals(maxCB, Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
-
     }
 
     @Test
     public void testNativeFunctionPointer() {
         final var testPtr = new NativeFunctionPointer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>>(121);
         setCallback(testPtr);
-        assertTrue(getCallbackPtr().addressEquals(testPtr));
+        assertEquals(getCallbackPtr(), testPtr);
     }
 
     /**
@@ -164,7 +163,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
 
         setCallback(callback);
 
-        assertTrue(getCallbackPtr().addressEquals(callback));
+        assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(42, a, b);
         assertEquals(42, intref.value);
         assertEquals(a, refA.value);
@@ -179,7 +178,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
 
         assertEquals(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.MAX_CALL_BACKS(), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
         //it is still callable, but its is only logged...
-        assertTrue(getCallbackPtr().addressEquals(nativeCallbackPointer));
+        assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
         intref.value = -1;
@@ -227,7 +226,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
 
         setCallback(callback);
 
-        assertTrue(getCallbackPtr().addressEquals(callback));
+        assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(42, a, b);
         assertEquals(42, intref.value);
         assertEquals(a, refA.value);
@@ -243,7 +242,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
         //sleep here, to let the CLEANER do it cleanup....
         Thread.sleep(10);
 
-        assertTrue(getCallbackPtr().addressEquals(NULL_PTR));
+        assertEquals(getCallbackPtr(), NULL_PTR);
 
     }
 }

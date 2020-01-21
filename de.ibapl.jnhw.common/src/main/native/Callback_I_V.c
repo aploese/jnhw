@@ -20,64 +20,89 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "Callback_I_V.h"
-
 #include "de_ibapl_jnhw_Callback_I_V.h"
 
 
-#define JNHW_CLASS_NAME_CALL_BACK "de/ibapl/jnhw/Callback_I_V"
+#include "jnhw-common.h"
 
-#define MAX_CALL_BACKS 2
-
+#include <signal.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#define MAX_CALL_BACKS 8
+
     static JavaVM *jvm;
 
-    static jclass Callback_I_V_Class;
-    static jmethodID cb_0_ID;
-    static jmethodID cb_1_ID;
+    static jclass Callback_Class;
+    static jmethodID trampoline_ID;
 
-    jboolean initCallback_I_V(JNIEnv* env) {
+    /*
+     * Class:     de_ibapl_jnhw_Callback_I_V
+     * Method:    initNative
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_initNative
+    (JNIEnv *env, jclass clazz) {
         if ((*env)->GetJavaVM(env, &jvm)) {
-            return JNI_FALSE;
+            return;
         }
-        Callback_I_V_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_CALL_BACK);
-        if (Callback_I_V_Class == NULL) {
-            return JNI_FALSE;
+        Callback_Class = (*env)->NewGlobalRef(env, clazz);
+        if (Callback_Class == NULL) {
+            return;
         }
-
-        cb_0_ID = getStaticMethodIdOfClassRef(env, Callback_I_V_Class, "cb_0", "(I)V");
-        if (cb_0_ID == NULL) {
-            return JNI_FALSE;
+        trampoline_ID = getStaticMethodIdOfClassRef(env, Callback_Class, "trampoline", "(II)V");
+        if (trampoline_ID == NULL) {
+            return;
         }
-        cb_1_ID = getStaticMethodIdOfClassRef(env, Callback_I_V_Class, "cb_1", "(I)V");
-        if (cb_1_ID == NULL) {
-            return JNI_FALSE;
-        }
-        return JNI_TRUE;
     }
 
-    void releaseCallback_I_V(JNIEnv* env) {
-        deleteGlobalRef(env, &Callback_I_V_Class);
-        cb_0_ID = NULL;
-        cb_1_ID = NULL;
-    }
+#define TRAMPOLINE(index) \
+    void _jnhw_trampoline_I_V__ ## index (int value) {\
+    JNIEnv *env;\
+        if ((*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL)) {\
+            raise(SIGABRT);\
+        } else {\
+            if (*env == NULL) {\
+                raise(SIGKILL);\
+                return;\
+            }\
+            (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, value);\
+            (*jvm)->DetachCurrentThread(jvm);\
+        }\
+}
 
-    void cb_0(int value) {
-        JNIEnv *env;
-        (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL);
-        (*env)->CallStaticVoidMethod(env, Callback_I_V_Class, cb_0_ID, value);
-        (*jvm)->DetachCurrentThread(jvm);
-    }
+    TRAMPOLINE(0)
+    TRAMPOLINE(1)
+    TRAMPOLINE(2)
+    TRAMPOLINE(3)
+    TRAMPOLINE(4)
+    TRAMPOLINE(5)
+    TRAMPOLINE(6)
+    TRAMPOLINE(7)
 
-    void cb_1(int value) {
-        JNIEnv *env;
-        (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL);
-        (*env)->CallStaticVoidMethod(env, Callback_I_V_Class, cb_1_ID, value);
-        (*jvm)->DetachCurrentThread(jvm);
+    /*
+     * Class:     de_ibapl_jnhw_Callback_I_V
+     * Method:    getNativeAddress
+     * Signature: (I)J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_getNativeAddress
+    (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
+        switch (index) {
+#define TRAMPOLINE_CASE(index) case index: return (intptr_t) &_jnhw_trampoline_I_V__ ## index;
+                TRAMPOLINE_CASE(0);
+                TRAMPOLINE_CASE(1);
+                TRAMPOLINE_CASE(2);
+                TRAMPOLINE_CASE(3);
+                TRAMPOLINE_CASE(4);
+                TRAMPOLINE_CASE(5);
+                TRAMPOLINE_CASE(6);
+                TRAMPOLINE_CASE(7);
+            default:
+                throw_IllegalArgumentException(env, "index < 0 or index > MAX_CALL_BACKS");
+                return 0L;
+        }
     }
 
     /*
@@ -90,27 +115,6 @@ extern "C" {
         return MAX_CALL_BACKS;
     }
 
-    /*
-     * Class:     de_ibapl_jnhw_Callback_I_V
-     * Method:    getNativeAddress_0
-     * Signature: ()J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_getNativeAddress_10
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return (intptr_t)&cb_0;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_Callback_I_V
-     * Method:    getNativeAddress_1
-     * Signature: ()J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_getNativeAddress_11
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return (intptr_t)&cb_1;
-    }
-
 #ifdef __cplusplus
 }
 #endif
-

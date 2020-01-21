@@ -31,25 +31,35 @@ import java.util.logging.Logger;
  */
 public abstract class Callback_I_V extends NativeCallback<Callback_I_V> {
 
+    private final static Logger LOG = Logger.getLogger("d.i.j.c.Callback_I_V");
+
+    private static final WeakReference<Callback_I_V> refs[];
+
+    private static native void initNative();
+
     /**
      * Make sure the native lib is loaded
      */
     static {
         LibJnhwCommonLoader.touch();
+        initNative();
+        refs = new WeakReference[MAX_CALL_BACKS()];
+        for (int i = 0; i < refs.length; i++) {
+            refs[i] = new WeakReference(null);
+        }
     }
 
-    private final static Logger LOG = Logger.getLogger("d.i.j.c.CallBack_I_V");
-
-    private static WeakReference<Callback_I_V> ref_0 = new WeakReference<>(null);
-    private static WeakReference<Callback_I_V> ref_1 = new WeakReference<>(null);
-
+    /**
+     * this is just an estimation ...
+     *
+     * @return
+     */
     public static int callbacksAvailable() {
         int result = 0;
-        if (ref_0.get() == null) {
-            result++;
-        }
-        if (ref_1.get() == null) {
-            result++;
+        for (int i = 0; i < refs.length; i++) {
+            if (refs[i].get() == null) {
+                result++;
+            }
         }
         return result;
     }
@@ -59,39 +69,31 @@ public abstract class Callback_I_V extends NativeCallback<Callback_I_V> {
         aquire();
     }
 
-    private static void cb_0(int value) {
-        final Callback_I_V ref = ref_0.get();
-        if (ref == null) {
-            LOG.log(Level.SEVERE, "Unassigned callback for cb_0({0})", new Object[]{value});
-        } else {
-            ref.callback(value);
+    private static void trampoline(final int index, final int value) {
+        try {
+            final var ref = refs[index].get();
+            if (ref == null) {
+                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, %d)", index, value));
+            } else {
+                ref.callback(value);
+            }
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline(%d, %d)", index, value), t);
         }
     }
 
-    private static void cb_1(int value) {
-        final Callback_I_V ref = ref_1.get();
-        if (ref == null) {
-            LOG.log(Level.SEVERE, "Unassigned callback for cb_1({0})", new Object[]{value});
-        } else {
-            ref.callback(value);
-        }
-    }
-
-    private static native long getNativeAddress_0();
-
-    private static native long getNativeAddress_1();
+    private static native long getNativeAddress(final int index);
 
     private synchronized void aquire() {
-        if (ref_0.get() == null) {
-            ref_0 = new WeakReference<>(this);
-            NativeFunctionPointer.setAddress(this, getNativeAddress_0());
-        } else if (ref_1.get() == null) {
-            ref_1 = new WeakReference<>(this);
-            NativeFunctionPointer.setAddress(this, getNativeAddress_1());
-        } else {
-            //Hint: Try run GC to free any??? or add more cbs...
-            throw new RuntimeException("No more Callbacks available! max: " + MAX_CALL_BACKS() + " reached");
+        for (int i = 0; i < refs.length; i++) {
+            if (refs[i].get() == null) {
+                refs[i] = new WeakReference(this);
+                NativeFunctionPointer.setAddress(this, getNativeAddress(i));
+                return;
+            }
         }
+        //Hint: Try run GC to free any??? or add more cbs...
+        throw new RuntimeException("No more Callbacks available! max: " + MAX_CALL_BACKS() + " reached");
     }
 
     public static native int MAX_CALL_BACKS();

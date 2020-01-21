@@ -35,6 +35,12 @@ import java.util.logging.Logger;
  */
 public class OpaqueMemory {
 
+    @FunctionalInterface
+    public static interface OpaqueMemoryProducer<T extends OpaqueMemory> {
+
+        T produce(long baseAddress);
+    }
+
     private static final Cleaner CLEANER = Cleaner.create();
 
     protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");

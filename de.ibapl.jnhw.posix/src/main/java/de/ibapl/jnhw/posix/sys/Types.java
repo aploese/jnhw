@@ -117,6 +117,17 @@ public class Types {
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * gid_t}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    public static @interface gid_t {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
      * pid_t}</a>.
      *
      * @author aploese

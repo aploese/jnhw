@@ -122,14 +122,10 @@ extern "C" {
             }
         }
 
-        if (initCallback_I_V(env) == JNI_FALSE) {
-            return JNI_FALSE;
-        }
         return JNI_TRUE;
     }
 
     static void JNICALL jnhw_common_release(JNIEnv *env) {
-        releaseCallback_I_V(env);
         releaseExceptions(env);
 
         de_ibapl_jnhw_ByteRef_value_ID = NULL;

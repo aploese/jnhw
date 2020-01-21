@@ -29,6 +29,8 @@
 extern "C" {
 #endif
 
+#define MAX_CALL_BACKS 8
+
     static JavaVM *jvm;
 
     static jclass Callback_Class;
@@ -55,7 +57,7 @@ extern "C" {
     }
 
 #define TRAMPOLINE(index) \
-    void trampoline_ ## index (int value, void* ptr_a, void* ptr_b) { \
+    void _jnhw_trampoline_I_PtrOpaqueMemory_PtrOpaqueMemory_V__ ## index (int value, void* ptr_a, void* ptr_b) { \
         JNIEnv *env; \
         (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL); \
         (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, value, (intptr_t) ptr_a, (intptr_t) ptr_b); \
@@ -71,19 +73,6 @@ extern "C" {
     TRAMPOLINE(6)
     TRAMPOLINE(7)
 
-#define MAX_CALL_BACKS 8
-
-
-    /*
-     * Class:     de_ibapl_jnhw_Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V
-     * Method:    MAX_CALL_BACKS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqueMemory_1V_MAX_1CALL_1BACKS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return MAX_CALL_BACKS;
-    }
-
     /*
      * Class:     de_ibapl_jnhw_Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V
      * Method:    getNativeAddress
@@ -92,7 +81,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqueMemory_1V_getNativeAddress
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
         switch (index) {
-#define TRAMPOLINE_CASE(index) case index: return (intptr_t) &trampoline_ ## index;
+#define TRAMPOLINE_CASE(index) case index: return (intptr_t) &_jnhw_trampoline_I_PtrOpaqueMemory_PtrOpaqueMemory_V__ ## index;
                 TRAMPOLINE_CASE(0);
                 TRAMPOLINE_CASE(1);
                 TRAMPOLINE_CASE(2);
@@ -105,6 +94,16 @@ extern "C" {
                 throw_IllegalArgumentException(env, "index < 0 or index > MAX_CALL_BACKS");
                 return 0L;
         }
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V
+     * Method:    MAX_CALL_BACKS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqueMemory_1V_MAX_1CALL_1BACKS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return MAX_CALL_BACKS;
     }
 
 #ifdef __cplusplus

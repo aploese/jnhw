@@ -187,6 +187,41 @@ public class UnistdTests {
         });
 
     }
+    @Test
+    public void testGetegid() throws Exception {
+        System.out.println("getegid");
+       int egid = Unistd.getegid();
+    }
+
+    @Test
+    public void testGeteuid() throws Exception {
+        System.out.println("geteuid");
+        int euid = Unistd.geteuid();
+    }
+
+    @Test
+    public void testGetgid() throws Exception {
+        System.out.println("getgid");
+        int gid = Unistd.getgid();
+    }
+
+    @Test
+    public void testGetpid() throws Exception {
+        System.out.println("getpid");
+        int pid = Unistd.getpid();
+    }
+
+    @Test
+    public void testGetppid() throws Exception {
+        System.out.println("getppid");
+        int ppid = Unistd.getppid();
+    }
+
+    @Test
+    public void testGetuid() throws Exception {
+        System.out.println("getuid");
+        int uid = Unistd.getuid();
+    }
 
     @Test
     public void testLseek() throws Exception {

@@ -32,7 +32,7 @@
 extern "C" {
 #endif
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
      * Method:    sizeofSigaction
      * Signature: ()I
@@ -70,6 +70,46 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1flags__I
     (__attribute__ ((unused)) JNIEnv *env, jobject structSigaction, jint sa_flags) {
         (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_flags = sa_flags;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
+     * Method:    sa_handler
+     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler__
+    (JNIEnv *env, jobject structSigaction) {
+        return CREATE_NATIVE_FUNCTION_POINTER((UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_handler);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
+     * Method:    sa_handler
+     * Signature: (Lde/ibapl/jnhw/NativeFunctionPointer;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler__Lde_ibapl_jnhw_NativeFunctionPointer_2
+    (JNIEnv *env, jobject structSigaction, jobject value) {
+        (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_handler = UNWRAP_NATIVE_FUNCTION_POINTER(value);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
+     * Method:    sa_sigaction
+     * Signature: (Lde/ibapl/jnhw/NativeFunctionPointer;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction__Lde_ibapl_jnhw_NativeFunctionPointer_2
+    (JNIEnv *env, jobject structSigaction, jobject value) {
+        (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction = UNWRAP_NATIVE_FUNCTION_POINTER(value);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
+     * Method:    sa_sigaction
+     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction__
+    (JNIEnv *env, jobject structSigaction) {
+        return CREATE_NATIVE_FUNCTION_POINTER((UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction);
     }
 
 #ifdef __cplusplus

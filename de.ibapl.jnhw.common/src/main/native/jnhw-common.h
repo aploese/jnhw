@@ -38,7 +38,6 @@ extern "C" {
 #endif   
 
 #include "JnhwExceptions.h"
-#include "Callback_I_V.h"
     
     //Cached
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_ByteRef_value_ID;
@@ -93,6 +92,7 @@ extern "C" {
      */
 #define UNWRAP_OPAQUE_MEM_TO_OR_NULL(destType, opaqueMemory) opaqueMemory == NULL ? NULL : (destType) UNWRAP_OPAQUE_MEM_TO_INTPTR_T(opaqueMemory)
 #define UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) UNWRAP_OPAQUE_MEM_TO(void*, opaqueMemory)
+#define UNWRAP_OPAQUE_MEM_TO_VOID_PTR_OR_NULL(opaqueMemory) UNWRAP_OPAQUE_MEM_TO_OR_NULL(void*, opaqueMemory)
 
 #define SIZE_OF_OPAQUE_MEM(opaqueMem) (*env)->GetIntField(env, opaqueMem, de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID)
 

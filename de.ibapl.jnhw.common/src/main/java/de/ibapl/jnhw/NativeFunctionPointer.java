@@ -24,7 +24,7 @@ package de.ibapl.jnhw;
 /**
  *
  * @author aploese
- * @param <T> must be an {@link FunctionalInterface}.
+ * @param <T> .
  */
 public class NativeFunctionPointer<T> {
 
@@ -50,12 +50,23 @@ public class NativeFunctionPointer<T> {
         this.nativeAddress = src.nativeAddress;
     }
 
-    public boolean addressEquals(NativeFunctionPointer other) {
-        return other != null ? this.nativeAddress == other.nativeAddress : false;
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (int) (this.nativeAddress ^ (this.nativeAddress >>> 32));
+        return hash;
     }
 
-    public static boolean addressEquals(NativeFunctionPointer a, NativeFunctionPointer b) {
-        return (a == b) || (a != null && a.addressEquals(b));
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof NativeFunctionPointer)) {
+            return false;
+        }
+        final NativeFunctionPointer<?> other = (NativeFunctionPointer<?>) obj;
+        return this.nativeAddress == other.nativeAddress;
     }
 
     @Override

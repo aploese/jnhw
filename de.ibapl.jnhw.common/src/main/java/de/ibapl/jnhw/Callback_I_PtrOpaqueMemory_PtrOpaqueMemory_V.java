@@ -28,6 +28,8 @@ import java.util.logging.Logger;
 /**
  *
  * @author aploese
+ * @param <A>
+ * @param <B>
  */
 public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A extends OpaqueMemory, B extends OpaqueMemory> extends NativeCallback<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>> {
 
@@ -69,12 +71,17 @@ public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A extends Opa
         aquire();
     }
 
+    @SuppressWarnings("unused")
     private static void trampoline(final int index, final int value, final long a, final long b) {
-        final var ref = refs[index].get();
-        if (ref == null) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, %d, 0x%08x, 0x%08x)", index, value, a, b));
-        } else {
-            ref.callback(value, ref.wrapA(a), ref.wrapB(b));
+        try {
+            final var ref = refs[index].get();
+            if (ref == null) {
+                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, %d, 0x%08x, 0x%08x)", index, value, a, b));
+            } else {
+                ref.callback(value, ref.wrapA(a), ref.wrapB(b));
+            }
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline(%d, %d, 0x%08x, 0x%08x)", index, value, a, b), t);
         }
     }
 
@@ -98,6 +105,8 @@ public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A extends Opa
      * this will be called from the native code.
      *
      * @param value
+     * @param a
+     * @param b
      */
     protected abstract void callback(int value, A a, B b);
 

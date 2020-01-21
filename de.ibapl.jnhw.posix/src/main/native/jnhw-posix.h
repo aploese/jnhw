@@ -81,12 +81,14 @@ extern "C" {
 
 #define UNWRAP_STRUCT_SIGACTION_PTR(structSigaction) UNWRAP_OPAQUE_MEM_TO(struct sigaction*, structSigaction)
 
+#define UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(structSigaction) UNWRAP_OPAQUE_MEM_TO_OR_NULL(struct sigaction*, structSigaction)
+
 #define UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent) UNWRAP_OPAQUE_MEM_TO(struct sigevent*, structSigevent)
 
 #define UNWRAP_SIGINFO_T_PTR(structSiginfo_t) UNWRAP_OPAQUE_MEM_TO(siginfo_t*, structSiginfo_t)
 
 #define UNWRAP_UNION_SIGVAL_PTR(unionSigval) UNWRAP_OPAQUE_MEM_TO(union sigval*, unionSigval)
-
+    
 #define UNWRAP_STACK_T_PTR(structStack_t) UNWRAP_OPAQUE_MEM_TO(stack_t*, structStack_t)
 
 #define UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t) UNWRAP_OPAQUE_MEM_TO(struct ucontext_t*, structUcontext_t)
@@ -96,6 +98,7 @@ extern "C" {
 #define UNWRAP_SIGSET_T_PTR(sigset)UNWRAP_OPAQUE_MEM_TO(sigset_t*, sigset)
 #define UNWRAP_SIGSET_T_PTR_OR_NULL(sigset) UNWRAP_OPAQUE_MEM_TO_OR_NULL(sigset_t*, sigset)
 
+    
 #ifdef __cplusplus
 }
 #endif

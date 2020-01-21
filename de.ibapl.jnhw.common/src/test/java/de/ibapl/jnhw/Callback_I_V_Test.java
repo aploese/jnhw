@@ -31,6 +31,15 @@ import org.junit.jupiter.api.Test;
  * @author aploese
  */
 public class Callback_I_V_Test {
+
+    private class DummyCB extends Callback_I_V {
+
+        @Override
+        protected void callback(int value) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+    }
     
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
@@ -53,16 +62,32 @@ public class Callback_I_V_Test {
     @Test
     public void testMAX_CALL_BACKS() {
         System.out.println("MAX_CALL_BACKS");
-        int result = Callback_I_V.MAX_CALL_BACKS();
-        assertEquals(2, result);
-        assertEquals(Callback_I_V.MAX_CALL_BACKS(), Callback_I_V.callbacksAvailable());
+        int maxCB = Callback_I_V.MAX_CALL_BACKS();
+        assertEquals(8, maxCB);
+        Callback_I_V[] cbs = new Callback_I_V[maxCB];
+        for (int i = 0; i < cbs.length; i++) {
+            cbs[i] = new DummyCB();
+            assertEquals(maxCB - (i + 1), Callback_I_V.callbacksAvailable());
+        }
+
+        RuntimeException re = assertThrows(RuntimeException.class, () -> {
+            new DummyCB();
+        });
+        assertEquals("No more Callbacks available! max: 8 reached", re.getMessage());
+
+        cbs = null;
+
+        System.runFinalization();
+        System.gc();
+
+        assertEquals(maxCB, Callback_I_V.callbacksAvailable());
     }
     
     @Test
     public void testNativeFunctionPointer() {
         final var testPtr = new NativeFunctionPointer<Callback_I_V>(121);
         setCallback(testPtr);
-        assertTrue(getCallbackPtr().addressEquals(testPtr));
+        assertEquals(getCallbackPtr(), testPtr);
     }
 
     /**
@@ -73,11 +98,14 @@ public class Callback_I_V_Test {
         System.out.println("release");
         final IntRef intref = new IntRef();
         final var NULL_PTR = new NativeFunctionPointer<Callback_I_V>(0);
+        final Thread t = Thread.currentThread();
         Callback_I_V callback = new Callback_I_V() {
             
             @Override
             protected void callback(int value) {
-                intref.value = value;
+                if (!t.equals(Thread.currentThread())) {
+                    intref.value = value;
+                }
             }
             
         };
@@ -85,7 +113,7 @@ public class Callback_I_V_Test {
         
         setCallback(callback);
         
-        assertTrue(getCallbackPtr().addressEquals(callback));
+        assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(42);
         assertEquals(42, intref.value);
         
@@ -96,7 +124,7 @@ public class Callback_I_V_Test {
 
         assertEquals(Callback_I_V.MAX_CALL_BACKS(), Callback_I_V.callbacksAvailable());
         //it is still callable, but its is only logged...
-        assertTrue(getCallbackPtr().addressEquals(nativeCallbackPointer));
+        assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
         intref.value = -1;
@@ -128,7 +156,7 @@ public class Callback_I_V_Test {
         
         setCallback(callback);
         
-        assertTrue(getCallbackPtr().addressEquals(callback));
+        assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(42);
         assertEquals(42, intref.value);
         
@@ -140,7 +168,7 @@ public class Callback_I_V_Test {
         //sleep here, to let the CLEANER do it cleanup....
         Thread.sleep(10);
         
-        assertTrue(getCallbackPtr().addressEquals(NULL_PTR));
+        assertEquals(getCallbackPtr(), NULL_PTR);
         
     }
 }
