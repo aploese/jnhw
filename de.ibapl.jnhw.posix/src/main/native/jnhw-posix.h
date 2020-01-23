@@ -80,13 +80,13 @@ extern "C" {
 #define WRAP_STATIC_STRUCT_TM(baseAddress) (*env)->NewObject(env, de_ibapl_jnhw_posix_Time_Tm_Class, de_ibapl_jnhw_posix_Time_Tm_init_ID, baseAddress, sizeof (struct tm))
 
 #define UNWRAP_STRUCT_SIGACTION_PTR(structSigaction) UNWRAP_OPAQUE_MEM_TO(struct sigaction*, structSigaction)
-
 #define UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(structSigaction) UNWRAP_OPAQUE_MEM_TO_OR_NULL(struct sigaction*, structSigaction)
 
 #define UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent) UNWRAP_OPAQUE_MEM_TO(struct sigevent*, structSigevent)
 
 #define UNWRAP_SIGINFO_T_PTR(structSiginfo_t) UNWRAP_OPAQUE_MEM_TO(siginfo_t*, structSiginfo_t)
-
+#define UNWRAP_SIGINFO_T_PTR_OR_NULL(structSiginfo_t) UNWRAP_OPAQUE_MEM_TO_OR_NULL(siginfo_t*, structSiginfo_t)
+    
 #define UNWRAP_UNION_SIGVAL_PTR(unionSigval) UNWRAP_OPAQUE_MEM_TO(union sigval*, unionSigval)
     
 #define UNWRAP_STACK_T_PTR(structStack_t) UNWRAP_OPAQUE_MEM_TO(stack_t*, structStack_t)

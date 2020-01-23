@@ -252,10 +252,6 @@ public class Signal {
      */
     public static final class Sigval<T extends OpaqueMemory> extends OpaqueMemory {
 
-        private T sival_ptr;
-
-        private native void sival_ptr0(OpaqueMemory sival_ptr);
-
         private native long sival_ptr0();
 
         /**
@@ -276,12 +272,8 @@ public class Signal {
             super(sizeofSigval(), false);
         }
 
-        public Sigval(OpaqueMemory owner, int offset, OpaqueMemoryProducer<T> sival_ptrProducer) {
+        public Sigval(OpaqueMemory owner, int offset) {
             super(owner, offset, sizeofSigval());
-            //Make sure the native pointer is also null.
-            if (sival_ptrProducer != null) {
-                sival_ptr = sival_ptrProducer.produce(sival_ptr0());
-            }
         }
 
         /**
@@ -309,8 +301,8 @@ public class Signal {
          *
          * @return the native value of sival_ptr.
          */
-        public T sival_ptr() {
-            return sival_ptr;
+        public T sival_ptr(OpaqueMemoryProducer<T> sival_ptrProducer) {
+            return sival_ptrProducer.produce(sival_ptr0());
         }
 
         /**
@@ -320,10 +312,7 @@ public class Signal {
          *
          * @param sival_ptr the value of sival_ptr to be set natively.
          */
-        public void sival_ptr(T sival_ptr) {
-            sival_ptr0(sival_ptr);
-            this.sival_ptr = sival_ptr;
-        }
+        public final native void sival_ptr(T sival_ptr);
 
     }
 
@@ -363,9 +352,9 @@ public class Signal {
         Notification function.
         pthread_attr_t *sigev_notify_attributes  Notification attributes.
          */
-        public Sigevent(OpaqueMemoryProducer<T> sival_ptrProducer) {
+        public Sigevent() {
             super(sizeofSigevent(), false);
-            sigev_value = new Sigval(this, _sigev_value_Offset(), sival_ptrProducer);
+            sigev_value = new Sigval(this, _sigev_value_Offset());
         }
 
         /**
@@ -1082,9 +1071,9 @@ public class Signal {
 
         public static native int _si_value_Offset();
 
-        public Siginfo_t(OpaqueMemoryProducer<T> sival_ptrProducer) {
+        public Siginfo_t() {
             super(sizeofSiginfo_t(), false);
-            si_value = new Sigval(memoryOwner, _si_value_Offset(), sival_ptrProducer);
+            si_value = new Sigval(memoryOwner, _si_value_Offset());
         }
 
         /**
@@ -1093,9 +1082,9 @@ public class Signal {
          * @param sival_ptrProducer
          * @param address
          */
-        public Siginfo_t(long address, OpaqueMemoryProducer<T> sival_ptrProducer) {
+        public Siginfo_t(long address) {
             super(address, sizeofSiginfo_t());
-            si_value = new Sigval(this, _si_value_Offset(), sival_ptrProducer);
+            si_value = new Sigval(this, _si_value_Offset());
         }
 
         /**
@@ -1783,7 +1772,7 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigrelse() throws NativeErrorException;
+    public final static native void sigrelse(int sig) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1825,10 +1814,14 @@ public class Signal {
      * - wait for queued signals</a>.
      *
      *
+     * @param set
+     *
+     * @return the signal number of the received signal.
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigwait() throws NativeErrorException;
+    public final static native int sigwait(Sigset_t set) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>

@@ -58,7 +58,30 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Siginfo_t;Ljava/lang/String;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_psiginfo
-    (JNIEnv *, jclass, jobject, jstring);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pinfo, jstring message) {
+        if (pinfo == NULL) {
+            throw_NullPointerException(env, "pinfo is null");
+            return;
+        }
+        const int old_errno = errno;
+        const char* _message;
+        if (message == NULL) {
+            _message = NULL;
+        } else {
+            _message = (*env)->GetStringUTFChars(env, message, NULL);
+        }
+        errno = 0;
+        psiginfo(UNWRAP_SIGINFO_T_PTR_OR_NULL(pinfo), _message);
+        if (errno) {
+            if (ferror(stderr)) {
+                throw_NativeErrorException(env, errno);
+            }
+        }
+        if (_message != NULL) {
+            (*env)->ReleaseStringUTFChars(env, message, _message);
+        }
+        errno = old_errno;
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -66,21 +89,24 @@ extern "C" {
      * Signature: (ILjava/lang/String;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_psignal
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint signo, jstring msg) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint signo, jstring message) {
         const int old_errno = errno;
-        if (msg == NULL) {
-            throw_NullPointerException(env, "msg is null");
-            return;
+        const char* _message;
+        if (message == NULL) {
+            _message = NULL;
+        } else {
+            _message = (*env)->GetStringUTFChars(env, message, NULL);
         }
-        const char* _msg = (*env)->GetStringUTFChars(env, msg, NULL);
         errno = 0;
-        psignal(signo, _msg);
+        psignal(signo, _message);
         if (errno) {
             if (ferror(stderr)) {
-            throw_NativeErrorException(env, errno);
+                throw_NativeErrorException(env, errno);
             }
         }
-        (*env)->ReleaseStringUTFChars(env, msg, _msg);
+        if (_message != NULL) {
+            (*env)->ReleaseStringUTFChars(env, message, _message);
+        }
         errno = old_errno;
     }
 
@@ -121,8 +147,9 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig, jobject act, jobject oact) {
         if (act == NULL) {
             throw_NullPointerException(env, "act is null");
+            return;
         }
-        if(sigaction(sig, UNWRAP_STRUCT_SIGACTION_PTR(act), UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(oact))) {
+        if (sigaction(sig, UNWRAP_STRUCT_SIGACTION_PTR(act), UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(oact))) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -325,29 +352,33 @@ extern "C" {
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal
- * Method:    sigqueue
- * Signature: (IILde/ibapl/jnhw/posix/Signal/Sigval;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigqueue
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jint signo, jobject sigval) {
-    if (sigval == NULL) {
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal
+     * Method:    sigqueue
+     * Signature: (IILde/ibapl/jnhw/posix/Signal/Sigval;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigqueue
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jint signo, jobject sigval) {
+        if (sigval == NULL) {
             throw_NullPointerException(env, "sigval is null");
             return;
-    }
-    if (sigqueue(pid, signo, *(UNWRAP_UNION_SIGVAL_PTR(sigval)))) {
+        }
+        if (sigqueue(pid, signo, *(UNWRAP_UNION_SIGVAL_PTR(sigval)))) {
             throw_NativeErrorException(env, errno);
+        }
     }
-}
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    sigrelse
-     * Signature: ()V
+     * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigrelse
-    (JNIEnv *, jclass);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig) {
+        if (sigrelse(sig)) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -368,13 +399,28 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigqueue
         }
         return CREATE_NATIVE_FUNCTION_POINTER(result);
     }
+
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    sigsuspend
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigsuspend
-    (JNIEnv *, jclass, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject sigmask) {
+        if (sigmask == NULL) {
+            throw_NullPointerException(env, "sigmask is null");
+            return;
+        }
+        if (sigsuspend(UNWRAP_SIGSET_T_PTR(sigmask))) {
+            if (errno == EINTR) {
+                //no-op expected
+            } else {
+                throw_NativeErrorException(env, errno);
+            }
+        } else {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -382,15 +428,43 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigqueue
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Siginfo_t;Lde/ibapl/jnhw/posix/Time/Timespec;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigtimedwait
-    (JNIEnv *, jclass, jobject, jobject, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass class, jobject set, jobject info, jobject timeout) {
+        if (set == NULL) {
+            throw_NullPointerException(env, "set is null");
+            return -1;
+        }
+        if (timeout == NULL) {
+            throw_NullPointerException(env, "timeout is null");
+            return -1;
+        }
+
+        const int result = sigtimedwait(UNWRAP_SIGSET_T_PTR(set), UNWRAP_SIGINFO_T_PTR_OR_NULL(info), UNWRAP_STRUCT_TIMESPEC_PTR(timeout));
+        if (result == -1) {
+            throw_NativeErrorException(env, errno);
+            return -1;
+        }
+        return result;
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    sigwait
-     * Signature: ()V
+     * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;)I
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigwait
-    (JNIEnv *, jclass);
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigwait
+    (JNIEnv *env, __attribute__ ((unused)) jclass class, jobject set) {
+        if (set == NULL) {
+            throw_NullPointerException(env, "set is null");
+            return -1;
+        }
+        int sig;
+
+        if (sigwait(UNWRAP_SIGSET_T_PTR(set), &sig)) {
+            throw_NativeErrorException(env, errno);
+            return -1;
+        }
+        return sig;
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -398,7 +472,18 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigqueue
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Siginfo_t;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigwaitinfo
-    (JNIEnv *, jclass, jobject, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass class, jobject set, jobject info) {
+        if (set == NULL) {
+            throw_NullPointerException(env, "set is null");
+            return -1;
+        }
+        const int result = sigwaitinfo(UNWRAP_SIGSET_T_PTR(set), UNWRAP_SIGINFO_T_PTR_OR_NULL(info));
+        if (result == -1) {
+            throw_NativeErrorException(env, errno);
+            return -1;
+        }
+        return result;
+    }
 
 #ifdef __cplusplus
 }
