@@ -25,12 +25,13 @@
 #ifdef HAVE_SIGNAL_H
 
 #include <signal.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    /*
+        /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
      * Method:    sizeofStack_t
      * Signature: ()I
@@ -42,12 +43,32 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
-     * Method:    ss_sp
+     * Method:    ss_sp0
      * Signature: ()J
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp0
     (__attribute__ ((unused)) JNIEnv *env, jobject structStack_t) {
         return (intptr_t) (UNWRAP_STACK_T_PTR(structStack_t))->ss_sp;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
+     * Method:    ss_flags
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1flags__I
+    (__attribute__ ((unused)) JNIEnv *env, jobject structStack_t, jint ss_flags) {
+        (UNWRAP_STACK_T_PTR(structStack_t))->ss_flags = ss_flags;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
+     * Method:    ss_size
+     * Signature: (J)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1size__J
+    (__attribute__ ((unused)) JNIEnv *env, jobject structStack_t, jlong ss_size) {
+        (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint64_t)ss_size;
     }
 
     /*
@@ -55,7 +76,7 @@ extern "C" {
      * Method:    ss_size
      * Signature: ()J
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1size
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1size__
     (__attribute__ ((unused)) JNIEnv *env, jobject structStack_t) {
         return (int64_t) (UNWRAP_STACK_T_PTR(structStack_t))->ss_size;
     }
@@ -65,10 +86,23 @@ extern "C" {
      * Method:    ss_flags
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1flags
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1flags__
     (__attribute__ ((unused)) JNIEnv *env, jobject structStack_t) {
         return (UNWRAP_STACK_T_PTR(structStack_t))->ss_flags;
     }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
+     * Method:    ss_sp
+     * Signature: (Lde/ibapl/jnhw/OpaqueMemory;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp
+    (JNIEnv *env, jobject structStack_t, jobject ss_sp) {
+        (UNWRAP_STACK_T_PTR(structStack_t))->ss_sp = UNWRAP_OPAQUE_MEM_TO_VOID_PTR_OR_NULL(ss_sp);
+    }
+
+
+
 
 #ifdef __cplusplus
 }

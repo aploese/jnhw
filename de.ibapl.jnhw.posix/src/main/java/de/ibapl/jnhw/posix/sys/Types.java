@@ -144,13 +144,26 @@ public class Types {
      * @author aploese
      */
     @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @Target({ElementType.TYPE})
     public static @interface pthread_t {
     }
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
+     * pthread_attr_t Used to identify a thread attribute object.}</a>.
+     *
+     * @author aploese
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.TYPE})
+    public static @interface pthread_attr_t {
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
      * clock_t}</a>.
+     *
+     * shall be an integer or real-floating type.
      *
      * @author aploese
      */

@@ -23,6 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.Callback_I_V;
+import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
@@ -30,7 +31,6 @@ import de.ibapl.jnhw.NativeFunctionPointer;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
-import de.ibapl.jnhw.posix.sys.Types.pthread_t;
 import de.ibapl.jnhw.posix.sys.Types.size_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
@@ -62,18 +62,22 @@ public class Signal {
         }
 
         /**
-         * Get the real size of struct sigset_t natively.
+         * Get the real size of struct mcontext_t natively.
          *
          * @return the native value sizeof(struct mcontext_t).
          */
         public static native int sizeofMcontext_t();
 
-        private Mcontext_t() {
+        public Mcontext_t() {
             super(sizeofMcontext_t(), false);
         }
 
-        private Mcontext_t(OpaqueMemory owner, int offset) {
+        public Mcontext_t(OpaqueMemory owner, int offset) {
             super(owner, offset, sizeofMcontext_t());
+        }
+
+        public Mcontext_t(long baseAddress) {
+            super(baseAddress, sizeofMcontext_t());
         }
 
     }
@@ -301,8 +305,8 @@ public class Signal {
          *
          * @return the native value of sival_ptr.
          */
-        public T sival_ptr(OpaqueMemoryProducer<T> sival_ptrProducer) {
-            return sival_ptrProducer.produce(sival_ptr0());
+        public T sival_ptr(OpaqueMemoryProducer<T, Sigval<T>> sival_ptrProducer) {
+            return sival_ptrProducer.produce(sival_ptr0(), this);
         }
 
         /**
@@ -346,12 +350,6 @@ public class Signal {
          */
         public final Sigval<T> sigev_value;
 
-        /*TODO
-        void (
-        *sigev_notify_function)(union sigval)
-        Notification function.
-        pthread_attr_t *sigev_notify_attributes  Notification attributes.
-         */
         public Sigevent() {
             super(sizeofSigevent(), false);
             sigev_value = new Sigval(this, _sigev_value_Offset());
@@ -373,6 +371,18 @@ public class Signal {
          * @return the native value of sigev_signo.
          */
         public final native int sigev_signo();
+
+        private native long sigev_notify_attributes();
+
+        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemoryProducer<Pthread.Pthread_attr_t, Sigevent> producer) {
+            return producer.produce(sigev_notify_attributes(), this);
+        }
+
+        public final native void sigev_notify_attributes(Pthread.Pthread_attr_t value);
+
+        public final native NativeFunctionPointer<Callback_PtrOpaqueMemory_V<Sigval<T>>> sigev_notify_function();
+
+        public final native <T extends OpaqueMemory> void sigev_notify_function(NativeFunctionPointer<Callback_PtrOpaqueMemory_V<Sigval<T>>> sigev_notify_function);
 
     }
 
@@ -932,10 +942,20 @@ public class Signal {
 
         public static native int _uc_stack_Offset();
 
+        public static native int _uc_mcontext_Offset();
+
         public Ucontext_t() {
             super(sizeofUcontext_t(), false);
             uc_sigmask = new Sigset_t(this, _uc_sigmask_Offset());
             uc_stack = new Stack_t(this, _uc_stack_Offset());
+            uc_mcontext = new Mcontext_t(this, _uc_mcontext_Offset());
+        }
+
+        public Ucontext_t(long baseAddress) {
+            super(baseAddress, sizeofUcontext_t());
+            uc_sigmask = new Sigset_t(this, _uc_sigmask_Offset());
+            uc_stack = new Stack_t(this, _uc_stack_Offset());
+            uc_mcontext = new Mcontext_t(this, _uc_mcontext_Offset());
         }
 
         /**
@@ -945,16 +965,17 @@ public class Signal {
          *
          * @return the native value of uc_link.
          */
-        public final native Ucontext_t uc_link();
+        private native long uc_link0();
 
         /**
          * Pointer to the context that is resumed when this context returns.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
          * ucontext_t}</a>.
          *
-         * @param uc_link the value of uc_link to be set natively.
          */
-        public final native void uc_link(Ucontext_t uc_link);
+        public final Ucontext_t uc_link(OpaqueMemoryProducer<Ucontext_t, Ucontext_t> producer) {
+            return producer.produce(uc_link0(), this);
+        }
 
         /**
          * The set of signals that are blocked when this context is active.
@@ -976,19 +997,8 @@ public class Signal {
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
          * ucontext_t}</a>.
          *
-         * @return the native value of uc_mcontext.
          */
-        public final native Mcontext_t uc_mcontext();
-
-        /**
-         * A machine-specific representation of the saved context.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
-         * ucontext_t}</a>.
-         *
-         * @param uc_mcontext the native value of uc_mcontext to be set
-         * natively.
-         */
-        public final native void uc_mcontext(Mcontext_t uc_mcontext);
+        public final Mcontext_t uc_mcontext;
 
     }
 
@@ -997,7 +1007,7 @@ public class Signal {
      * stack_t}</a>.
      *
      */
-    public static class Stack_t extends OpaqueMemory {
+    public static class Stack_t<T extends OpaqueMemory> extends OpaqueMemory {
 
         /**
          * Make sure the native lib is loaded
@@ -1017,6 +1027,31 @@ public class Signal {
             super(owner, offset, sizeofStack_t());
         }
 
+        public Stack_t() {
+            super(sizeofStack_t(), false);
+        }
+
+        /**
+         * Create a new Stack_t and set s_flags, ss_size and ss_sp.
+         *
+         * @param ss_flags
+         * @param ss_sp
+         * @return
+         */
+        public static <T extends OpaqueMemory> Stack_t<T> of(int ss_flags, T ss_sp) {
+            Stack_t<T> result = new Stack_t();
+            result.ss_flags(ss_flags);
+            result.ss_sp(ss_sp);
+            result.ss_size(ss_sp.sizeInBytes);
+            return result;
+        }
+
+        private native void ss_flags(int ss_flags);
+
+        private native long ss_sp0();
+
+        private native void ss_size(long sizeInBytes);
+
         /**
          * Stack base or pointer.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
@@ -1025,7 +1060,9 @@ public class Signal {
          * @return the native value of ss_sp.
          */
         //TODO this is a Pointer
-        public final native long ss_sp();
+        public final T ss_sp(OpaqueMemoryProducer<T, Stack_t<T>> producer) {
+            return producer.produce(ss_sp0(), this);
+        }
 
         /**
          * Stack size.
@@ -1045,6 +1082,8 @@ public class Signal {
          * @return the native value of ss_flags.
          */
         public final native int ss_flags();
+
+        private native void ss_sp(T ss_sp);
 
     }
 
@@ -1563,7 +1602,7 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void pthread_kill(@pthread_t long thread, int sig) throws NativeErrorException;
+    public final static native void pthread_kill(Pthread.Pthread_t thread, int sig) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1692,7 +1731,7 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void siginterrupt(int sig, int flag) throws NativeErrorException;
+    public final static native void siginterrupt(int sig, boolean flag) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>

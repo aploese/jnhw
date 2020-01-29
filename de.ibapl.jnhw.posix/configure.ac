@@ -53,7 +53,7 @@ AC_SUBST(JNHW_COMMON_SRC_DIR)
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([aio.h errno.h fcntl.h unistd.h stdio.h locale.h poll.h signal.h stdlib.h stdint.h sys/ioctl.h sys/eventfd.h sys/types.h sys/stat.h termios.h time.h])
+AC_CHECK_HEADERS([aio.h errno.h fcntl.h locale.h poll.h pthread.h sys/ioctl.h sys/eventfd.h sys/types.h sys/stat.h signal.h stdlib.h stdint.h stdio.h termios.h time.h unistd.h ])
 
 # Checks for typedefs, structures, and compiler characteristics.
 

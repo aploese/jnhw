@@ -340,7 +340,33 @@ extern "C" {
      * Signature: (Ljava/lang/String;Ljava/lang/String;Lde/ibapl/jnhw/posix/Time$Tm;)Ljava/lang/String;
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strptime
-    (JNIEnv *, jclass, jstring, jstring, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring buf, jstring format, jobject tm) {
+        if (buf == NULL) {
+            throw_NullPointerException(env, "buf");
+            return NULL;
+        }
+        if (format == NULL) {
+            throw_NullPointerException(env, "format");
+            return NULL;
+        }
+        if (tm == NULL) {
+            throw_NullPointerException(env, "tm");
+            return NULL;
+        }
+         const char* _buf = (*env)->GetStringUTFChars(env, buf, NULL);
+         const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
+
+        char* result = strptime(_buf, _format, UNWRAP_STRUCT_TM_PTR(tm));
+        
+        (*env)->ReleaseStringUTFChars(env, buf, _buf);
+        (*env)->ReleaseStringUTFChars(env, format, _format);
+        if (result == NULL) {
+            return NULL;
+        } else {
+            return (*env)->NewStringUTF(env, result);
+        }
+        
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time

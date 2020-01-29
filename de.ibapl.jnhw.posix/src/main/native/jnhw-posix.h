@@ -90,6 +90,7 @@ extern "C" {
 #define UNWRAP_UNION_SIGVAL_PTR(unionSigval) UNWRAP_OPAQUE_MEM_TO(union sigval*, unionSigval)
     
 #define UNWRAP_STACK_T_PTR(structStack_t) UNWRAP_OPAQUE_MEM_TO(stack_t*, structStack_t)
+#define UNWRAP_STACK_T_PTR_OR_NULL(structStack_t) UNWRAP_OPAQUE_MEM_TO_OR_NULL(stack_t*, structStack_t)
 
 #define UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t) UNWRAP_OPAQUE_MEM_TO(struct ucontext_t*, structUcontext_t)
 
@@ -98,7 +99,10 @@ extern "C" {
 #define UNWRAP_SIGSET_T_PTR(sigset)UNWRAP_OPAQUE_MEM_TO(sigset_t*, sigset)
 #define UNWRAP_SIGSET_T_PTR_OR_NULL(sigset) UNWRAP_OPAQUE_MEM_TO_OR_NULL(sigset_t*, sigset)
 
+#define UNWRAP_PTHREAD_T_PTR(pthread)UNWRAP_OPAQUE_MEM_TO(pthread_t*, pthread)
     
+#define UNWRAP_PTHREAD_ATTR_T_PTR(pthread_attr)UNWRAP_OPAQUE_MEM_TO(pthread_attr_t*, pthread_attr)
+
 #ifdef __cplusplus
 }
 #endif

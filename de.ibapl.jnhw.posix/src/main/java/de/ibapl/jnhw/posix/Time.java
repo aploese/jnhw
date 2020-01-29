@@ -64,10 +64,11 @@ public class Time {
      * systems, and it should not be assumed that CLOCKS_PER_SEC is a
      * compile-time constant. .
      *
-     * @return the native symbolic constant of CLOCKS_PER_SEC.
+     * @return the native symbol of CLOCKS_PER_SEC.
      */
     @Define()
-    public final static native int CLOCKS_PER_SEC();
+    public final static native @clock_t
+    int CLOCKS_PER_SEC();
 
     /**
      * <b>POSIX:</b> The identifier for the system-wide monotonic clock, which
@@ -413,6 +414,7 @@ public class Time {
      * @param buf the character string to convert
      * @param format the format to use
      * @param tm the target of the conversation.
+     *
      * @return the index of the character in{@code buf}, following the last
      * character parsed.
      */

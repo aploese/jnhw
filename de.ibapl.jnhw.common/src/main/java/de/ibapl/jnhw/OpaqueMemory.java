@@ -36,9 +36,16 @@ import java.util.logging.Logger;
 public class OpaqueMemory {
 
     @FunctionalInterface
-    public static interface OpaqueMemoryProducer<T extends OpaqueMemory> {
+    public static interface OpaqueMemoryProducer<T extends OpaqueMemory, P extends OpaqueMemory> {
 
-        T produce(long baseAddress);
+        /**
+         *
+         * @param baseAddress
+         * @param parent
+         * @return
+         */
+        T produce(long baseAddress, P parent);
+
     }
 
     private static final Cleaner CLEANER = Cleaner.create();

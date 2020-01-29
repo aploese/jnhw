@@ -32,6 +32,7 @@ import de.ibapl.jnhw.posix.Aio;
 import de.ibapl.jnhw.posix.Fcntl;
 import de.ibapl.jnhw.posix.Locale;
 import de.ibapl.jnhw.posix.Poll;
+import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.posix.Stdio;
 import de.ibapl.jnhw.posix.Termios;
@@ -139,6 +140,12 @@ public class DefinesTest {
 
     @Test
     @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testPthreadDefines() throws Exception {
+        testDefines(Pthread.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testPosixErrnoDefines() throws Exception {
         testDefines(de.ibapl.jnhw.posix.Errno.class);
     }
@@ -223,6 +230,15 @@ public class DefinesTest {
             Assertions.assertFalse(Poll.HAVE_POLL_H(), "not expected to have poll.h");
         } else {
             Assertions.assertTrue(Poll.HAVE_POLL_H(), "expected to have poll.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_PTHREAD_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Pthread.HAVE_PTHREAD_H(), "not expected to have pthread.h");
+        } else {
+            Assertions.assertTrue(Pthread.HAVE_PTHREAD_H(), "expected to have pthread.h");
         }
     }
 

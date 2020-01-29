@@ -50,7 +50,11 @@ extern "C" {
      * Signature: (II)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_killpg
-    (JNIEnv *, jclass, jint, jint);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pgrp, jint sig) {
+        if (killpg(pgrp, sig)) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -113,10 +117,19 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    pthread_kill
-     * Signature: (JI)V
+     * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_pthread_1kill
-    (JNIEnv *, jclass, jlong, jint);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject thread_id, jint sig) {
+        if (thread_id == NULL) {
+            throw_NullPointerException(env, "thread_id is null");
+            return;
+        }
+        if (pthread_kill(*UNWRAP_PTHREAD_T_PTR(thread_id), sig)) {
+            throw_NativeErrorException(env, errno);
+        }
+
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -124,7 +137,13 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Sigset_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_pthread_1sigmask
-    (JNIEnv *, jclass, jint, jobject, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint how, jobject set, jobject oset) {
+        sigset_t *_set = UNWRAP_SIGSET_T_PTR_OR_NULL(set);
+        sigset_t *_oset = UNWRAP_SIGSET_T_PTR_OR_NULL(oset);
+        if (pthread_sigmask(how, _set, _oset)) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -145,11 +164,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigaction
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig, jobject act, jobject oact) {
-        if (act == NULL) {
-            throw_NullPointerException(env, "act is null");
-            return;
-        }
-        if (sigaction(sig, UNWRAP_STRUCT_SIGACTION_PTR(act), UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(oact))) {
+        if (sigaction(sig, UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(act), UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(oact))) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -165,7 +180,7 @@ extern "C" {
             throw_NullPointerException(env, "set is null");
             return;
         }
-        if (sigaddset(UNWRAP_OPAQUE_MEM_TO(sigset_t*, set), signo)) {
+        if (sigaddset(UNWRAP_SIGSET_T_PTR(set), signo)) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -176,7 +191,15 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Stack_t;Lde/ibapl/jnhw/posix/Signal/Stack_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigaltstack
-    (JNIEnv *, jclass, jobject, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject ss, jobject oss) {
+        if (ss == NULL) {
+            throw_NullPointerException(env, "ss is null");
+            return;
+        }
+        if (sigaltstack(UNWRAP_STACK_T_PTR(ss), UNWRAP_STACK_T_PTR_OR_NULL(oss))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -256,10 +279,14 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    siginterrupt
-     * Signature: (II)V
+     * Signature: (IZ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_siginterrupt
-    (JNIEnv *, jclass, jint, jint);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig, jboolean flag) {
+        if (siginterrupt(sig, flag)) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal

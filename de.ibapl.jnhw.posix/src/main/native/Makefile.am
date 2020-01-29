@@ -7,18 +7,88 @@ LIB_JNHW_POSIX_RES_NAME=@JNHW_RESOURCES_DIR@/$(LIB_JNHW_POSIX_NAME)
 
 lib_LTLIBRARIES = libjnhw-posix.la
 
-noinst_LTLIBRARIES = libaio.la libpoll.la libeventfd.la libfcntl.la liblocale.la libtime.la libunistd.la libioclt.la libsignal.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la
+noinst_LTLIBRARIES = \
+ libaio.la \
+ liberrno.la \
+ libeventfd.la \
+ libfcntl.la \
+ libioclt.la \
+ liblocale.la \
+ libpoll.la \
+ libpthread.la \
+ libsignal.la \
+ libstdio.la \
+ libsysstat.la \
+ libsystypes.la \
+ libtermios.la \
+ libtime.la \
+ libunistd.la \
+ libposixutils.la
 
-libjnhw_posix_la_LIBADD = libaio.la libpoll.la libeventfd.la libfcntl.la liblocale.la libtime.la libunistd.la libioclt.la libsignal.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+libjnhw_posix_la_LIBADD = \
+ libaio.la \
+ liberrno.la \
+ libeventfd.la \
+ libfcntl.la \
+ libioclt.la \
+ liblocale.la \
+ libpoll.la \
+ libpthread.la \
+ libsignal.la \
+ libstdio.la \
+ libsysstat.la \
+ libsystypes.la \
+ libtermios.la \
+ libtime.la \
+ libunistd.la \
+ libposixutils.la \
+ @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libjnhw_posix_la_SOURCES = \
  jnhw-posix-jni.c
+
 
 libaio_la_SOURCES = \
  AioDefines.c \
  AioFunctions.c \
  Aio_Aiocbs.c
   
+liberrno_la_SOURCES = \
+ Isoc_ErrnoDefines.c \
+ Isoc_ErrnoFunctions.c \
+ Posix_ErrnoDefines.c
+
+libeventfd_la_SOURCES = \
+ EventFdDefines.c \
+ EventFdFunctions.c
+
+libfcntl_la_SOURCES = \
+ FcntlDefines.c \
+ FcntlFunctions.c
+
+libioclt_la_SOURCES = \
+ IoctlDefines.c \
+ IoctlFunctions.c
+
+liblocale_la_SOURCES = \
+ LocaleDefines.c \
+ LocaleFunctions.c \
+ Locale_Lconv.c 
+
+libpoll_la_SOURCES = \
+ PollDefines.c \
+ PollFunctions.c \
+ Poll_PollFd.c 
+
+libposixutils_la_SOURCES = \
+ Defines.c
+
+libpthread_la_SOURCES = \
+ PthreadDefines.c \
+ PthreadFunctions.c \
+ Pthread_Pthread_t.c \
+ Pthread_Pthread_attr_t.c
+
 libsignal_la_SOURCES = \
  SignalDefines.c \
  SignalFunctions.c \
@@ -31,50 +101,6 @@ libsignal_la_SOURCES = \
  Signal_Ucontext_t.c \
  Signal_Mcontext_t.c
 
-
-libtime_la_SOURCES = \
- TimeDefines.c \
- TimeFunctions.c \
- Time_Itimerspec.c \
- Time_Timespec.c \
- Time_Tm.c
-
-liblocale_la_SOURCES = \
- LocaleDefines.c \
- LocaleFunctions.c \
- Locale_Lconv.c 
-
-liberrno_la_SOURCES = \
- Isoc_ErrnoDefines.c \
- Isoc_ErrnoFunctions.c \
- Posix_ErrnoDefines.c
-
-libtermios_la_SOURCES = \
- TermiosDefines.c \
- TermiosFunctions.c \
- Termios_Termios.c
-
-libioclt_la_SOURCES = \
- IoctlDefines.c \
- IoctlFunctions.c
-
-libunistd_la_SOURCES = \
- UnistdDefines.c \
- UnistdFunctions.c
-
-libfcntl_la_SOURCES = \
- FcntlDefines.c \
- FcntlFunctions.c
-
-libpoll_la_SOURCES = \
- PollDefines.c \
- PollFunctions.c \
- Poll_PollFd.c 
-
-libeventfd_la_SOURCES = \
- EventFdDefines.c \
- EventFdFunctions.c
-
 libstdio_la_SOURCES = \
  StdioDefines.c \
  StdioFunctions.c
@@ -86,8 +112,21 @@ libsysstat_la_SOURCES = \
  StatDefines.c \
  StatFunctions.c
 
-libposixutils_la_SOURCES = \
- Defines.c
+libtermios_la_SOURCES = \
+ TermiosDefines.c \
+ TermiosFunctions.c \
+ Termios_Termios.c
+
+libtime_la_SOURCES = \
+ TimeDefines.c \
+ TimeFunctions.c \
+ Time_Itimerspec.c \
+ Time_Timespec.c \
+ Time_Tm.c
+
+libunistd_la_SOURCES = \
+ UnistdDefines.c \
+ UnistdFunctions.c
 
 #hook into make all
 all-local: $(LIB_JNHW_POSIX_RES_NAME)

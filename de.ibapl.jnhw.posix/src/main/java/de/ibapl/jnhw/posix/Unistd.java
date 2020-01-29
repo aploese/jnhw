@@ -160,6 +160,43 @@ public final class Unistd {
 
     /**
      * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getegid.html">getegid
+     * - get the effective group ID</a>.
+     */
+    public final native static @gid_t
+    int getegid();
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/geteuid.html">geteuid
+     * - get the effective user ID</a>.
+     */
+    public final native static @uid_t
+    int geteuid();
+    //TODO java doc + gid APUE page 256ff
+
+    public final native static void seteuid(@uid_t int uid);
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getgid.html">getgid
+     * - get the real group ID</a>.
+     *
+     * @return the real group ID
+     */
+    public final native static @gid_t
+    int getgid();
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpgrp.html">getpgrp
+     * - get the process group ID of the calling process</a>.
+     */
+    public final native static @pid_t
+    int getpgrp();
+
+    /**
+     * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpid.html">getpid
      * - get the process ID</a>.
      */
@@ -174,6 +211,8 @@ public final class Unistd {
     public final native static @pid_t
     int getppid();
 
+    public final native static void setreuid(@uid_t int uid);
+
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getuid.html">getuid
@@ -182,38 +221,7 @@ public final class Unistd {
     public final native static @uid_t
     int getuid();
 
-    //TODO java doc + gid APUE page 256ff
-    public final native static void seteuid(@uid_t int uid);
-
-    public final native static void setreuid(@uid_t int uid);
-
     public final native static void setuid(@uid_t int uid);
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/geteuid.html">geteuid
-     * - get the effective user ID</a>.
-     */
-    public final native static @uid_t
-    int geteuid();
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getgid.html">getgid
-     * - get the real group ID</a>.
-     *
-     * @return the real group ID
-     */
-    public final native static @gid_t
-    int getgid();
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getegid.html">getegid
-     * - get the effective group ID</a>.
-     */
-    public final native static @gid_t
-    int getegid();
 
     /**
      * <b>POSIX:</b>

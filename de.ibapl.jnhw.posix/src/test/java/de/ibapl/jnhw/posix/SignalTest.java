@@ -23,6 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.Callback_I_V;
+import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeFunctionPointer;
@@ -65,6 +66,7 @@ public class SignalTest {
         Callback_I_V sa_handler = new Callback_I_V() {
             @Override
             protected void callback(int sig) {
+                System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
                 sigRef.value = sig;
             }
         };
@@ -73,6 +75,7 @@ public class SignalTest {
         final Signal.Sigaction oact = new Signal.Sigaction();
         Signal.sigaction(sig, act, oact);
         try {
+            System.out.println("pthread_t of testKill: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
             Signal.kill(Unistd.getpid(), sig);
             Thread.sleep(10);
             assertEquals(sig, sigRef.value);
@@ -87,11 +90,30 @@ public class SignalTest {
     @Test
     public void testKillpg() throws Exception {
         System.out.println("killpg");
-        int pgrp = 0;
-        int sig = 0;
-        Signal.killpg(pgrp, sig);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final int sig = Signal.SIGCHLD();
+
+        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final Signal.Sigaction act = new Signal.Sigaction();
+        act.sa_flags(0);
+        Signal.sigemptyset(act.sa_mask);
+
+        Callback_I_V sa_handler = new Callback_I_V() {
+            @Override
+            protected void callback(int sig) {
+                sigRef.value = sig;
+            }
+        };
+        act.sa_handler(sa_handler);
+
+        final Signal.Sigaction oact = new Signal.Sigaction();
+        Signal.sigaction(sig, act, oact);
+        try {
+            Signal.killpg(Unistd.getpgrp(), sig);
+            Thread.sleep(10);
+            assertEquals(sig, sigRef.value);
+        } finally {
+            Signal.sigaction(sig, oact, null);
+        }
     }
 
     /**
@@ -136,11 +158,41 @@ public class SignalTest {
     @Test
     public void testPthread_kill() throws Exception {
         System.out.println("pthread_kill");
-        long thread = 0L;
-        int sig = 0;
-        Signal.pthread_kill(thread, sig);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("pthread_t of testPthread_kill: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
+
+        final int sig = Signal.SIGCHLD(); //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
+
+        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final Signal.Sigaction act = new Signal.Sigaction();
+        act.sa_flags(0);
+        Signal.sigemptyset(act.sa_mask);
+
+        Callback_I_V sa_handler = new Callback_I_V() {
+            @Override
+            protected void callback(int sig) {
+                sigRef.value = sig;
+                System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
+            }
+        };
+        act.sa_handler(sa_handler);
+
+        final Signal.Sigaction oact = new Signal.Sigaction();
+        Signal.sigaction(sig, act, oact);
+        try {
+            Thread t = new Thread(() -> {
+                try {
+                    System.out.println("pthread_t of thread: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
+                    Signal.pthread_kill(Pthread.pthread_self(), sig);
+                } catch (NativeErrorException nee) {
+                    //no-op
+                }
+            });
+            t.start();
+            t.join();
+            assertEquals(sig, sigRef.value);
+        } finally {
+            Signal.sigaction(sig, oact, null);
+        }
     }
 
     /**
@@ -149,12 +201,30 @@ public class SignalTest {
     @Test
     public void testPthread_sigmask() throws Exception {
         System.out.println("pthread_sigmask");
-        int how = 0;
-        Signal.Sigset_t set = null;
-        Signal.Sigset_t oset = null;
-        Signal.pthread_sigmask(how, set, oset);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        Signal.pthread_sigmask(0, null, null);
+
+        final Signal.Sigset_t oset = new Signal.Sigset_t();
+        Signal.sigemptyset(oset);
+        Signal.pthread_sigmask(0, null, oset);
+        try {
+            //make sure SIGUSR1 is in signak mask; we want to set it
+            System.err.println("current sigprocmask: " + oset);
+            Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1()));
+            Signal.Sigset_t set = new Signal.Sigset_t();
+            Signal.sigemptyset(set);
+            Signal.sigaddset(set, Signal.SIGUSR1());
+            Signal.pthread_sigmask(Signal.SIG_BLOCK(), set, null);
+            //Test that SIGUSR1 was set
+            final Signal.Sigset_t changedSet = new Signal.Sigset_t();
+            Signal.sigemptyset(changedSet);
+            Signal.pthread_sigmask(0, null, changedSet);
+            System.err.println("current sigprocmask: " + changedSet.toString());
+            Assertions.assertTrue(Signal.sigismember(changedSet, Signal.SIGUSR1()));
+        } finally {
+            //restore old mask
+            Signal.pthread_sigmask(Signal.SIG_SETMASK(), oset, null);
+        }
     }
 
     /**
@@ -208,16 +278,21 @@ public class SignalTest {
         act.sa_handler(sa_handler);
 
         final Signal.Sigaction oact = new Signal.Sigaction();
-        final Signal.Sigaction actOut = new Signal.Sigaction();
-        Signal.sigaction(SIG, act, oact);
+        Signal.sigaction(SIG, null, oact);
         try {
+            Signal.sigaction(SIG, act, oact);
+            Signal.sigaction(SIG, act, null);
+
             if ((oact.sa_flags() & Signal.SA_SIGINFO()) == Signal.SA_SIGINFO()) {
                 Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_sigaction());
             } else {
                 Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_handler());
             }
+
+            final Signal.Sigaction actOut = new Signal.Sigaction();
             Signal.sigaction(SIG, oact, actOut);
             Assertions.assertEquals(act.sa_handler(), actOut.sa_handler());
+            Signal.sigaction(SIG, null, null);
         } finally {
             Signal.sigaction(SIG, oact, null);
         }
@@ -229,11 +304,18 @@ public class SignalTest {
     @Test
     public void testSigaltstack() throws Exception {
         System.out.println("sigaltstack");
-        Signal.Stack_t ss = null;
-        Signal.Stack_t oss = null;
+        final OpaqueMemory ss_sp = new OpaqueMemory(Signal.MINSIGSTKSZ(), true);
+        Signal.Stack_t ss = Signal.Stack_t.of(Signal.SS_ONSTACK(), ss_sp);
+        Signal.Stack_t oss = new Signal.Stack_t();
         Signal.sigaltstack(ss, oss);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try {
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Signal.sigaltstack(null, null);
+            });
+
+        } finally {
+            Signal.sigaltstack(oss, null);
+        }
     }
 
     /**
@@ -268,14 +350,14 @@ public class SignalTest {
         System.out.println("sighold");
         final int sig = Signal.SIGCHLD();
         Signal.sighold(sig);
-            Signal.Sigset_t mask = new Signal.Sigset_t();
-            Signal.sigemptyset(mask);
-            Signal.sigprocmask(0, null, mask);
-            Assertions.assertTrue(Signal.sigismember(mask, sig), "Signal is not in mask");
+        Signal.Sigset_t mask = new Signal.Sigset_t();
+        Signal.sigemptyset(mask);
+        Signal.sigprocmask(0, null, mask);
+        Assertions.assertTrue(Signal.sigismember(mask, sig), "Signal is not in mask");
         System.out.println("sigrelse");
         Signal.sigrelse(sig);
-            Signal.sigprocmask(0, null, mask);
-            Assertions.assertFalse(Signal.sigismember(mask, sig), "Signal is still in mask");
+        Signal.sigprocmask(0, null, mask);
+        Assertions.assertFalse(Signal.sigismember(mask, sig), "Signal is still in mask");
     }
 
     /**
@@ -300,11 +382,14 @@ public class SignalTest {
     @Test
     public void testSiginterrupt() throws Exception {
         System.out.println("siginterrupt");
-        int sig = 0;
-        int flag = 0;
-        Signal.siginterrupt(sig, flag);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int sig = Signal.SIGCHLD();
+        Signal.Sigaction oact = new Signal.Sigaction();
+        Signal.sigaction(sig, null, oact);
+        try {
+            Signal.siginterrupt(sig, true);
+        } finally {
+            Signal.sigaction(sig, oact, null);
+        }
     }
 
     /**
@@ -362,9 +447,10 @@ public class SignalTest {
     @Test
     public void testTryToIgnoreSignal_SIGTERM() throws Exception {
         NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-            var unexpected = Signal.signal(Signal.SIGTERM(), Signal.SIG_IGN());
+            var oldSignalHandler = Signal.signal(Signal.SIGSTOP(), Signal.SIG_IGN());
+            Signal.signal(Signal.SIGSTOP(), oldSignalHandler);
         });
-        assertEquals(0, nee.errno);
+        assertEquals("EINVAL", Errno.getErrnoSymbol(nee.errno));
     }
 
     /**
@@ -443,23 +529,24 @@ public class SignalTest {
         final Signal.Sigset_t oset = new Signal.Sigset_t();
         Signal.sigemptyset(oset);
         Signal.sigprocmask(0, null, oset);
-        //make sure SIGUSR1 is in signak mask; we want to set it
-        System.err.println("current sigprocmask: " + oset);
-        Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1()));
-        Signal.Sigset_t set = new Signal.Sigset_t();
-        Signal.sigemptyset(set);
-        Signal.sigaddset(set, Signal.SIGUSR1());
-        Signal.sigprocmask(Signal.SIG_BLOCK(), set, null);
-        //Test that SIGUSR1 was set
-        final Signal.Sigset_t changedSet = new Signal.Sigset_t();
-        Signal.sigemptyset(changedSet);
-        Signal.sigprocmask(0, null, changedSet);
-        System.err.println("current sigprocmask: " + changedSet.toString());
-        Assertions.assertTrue(Signal.sigismember(changedSet, Signal.SIGUSR1()));
-
-        //restore old mask
-        Signal.sigprocmask(Signal.SIG_SETMASK(), oset, null);
-
+        try {
+            //make sure SIGUSR1 is in signak mask; we want to set it
+            System.err.println("current sigprocmask: " + oset);
+            Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1()));
+            Signal.Sigset_t set = new Signal.Sigset_t();
+            Signal.sigemptyset(set);
+            Signal.sigaddset(set, Signal.SIGUSR1());
+            Signal.sigprocmask(Signal.SIG_BLOCK(), set, null);
+            //Test that SIGUSR1 was set
+            final Signal.Sigset_t changedSet = new Signal.Sigset_t();
+            Signal.sigemptyset(changedSet);
+            Signal.sigprocmask(0, null, changedSet);
+            System.err.println("current sigprocmask: " + changedSet.toString());
+            Assertions.assertTrue(Signal.sigismember(changedSet, Signal.SIGUSR1()));
+        } finally {
+            //restore old mask
+            Signal.sigprocmask(Signal.SIG_SETMASK(), oset, null);
+        }
     }
 
     /**
@@ -514,7 +601,7 @@ public class SignalTest {
         try {
             Assertions.assertNotNull(siginfo_tRef.value);
             Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo());
-            Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr((baseAddress) -> {
+            Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr((baseAddress, size) -> {
                 return new OpaqueMemory(baseAddress, data.sizeInBytes) {
                 };
             }));
@@ -716,7 +803,7 @@ public class SignalTest {
         sigval.sival_int(22);
         assertEquals(22, sigval.sival_int());
         sigval.sival_ptr(mem);
-        assertEquals(mem, sigval.sival_ptr((baseAddress) -> {
+        assertEquals(mem, sigval.sival_ptr((baseAddress, size) -> {
             return new OpaqueMemory(baseAddress, mem.sizeInBytes) {
             };
         }));
@@ -742,6 +829,48 @@ public class SignalTest {
         Assertions.assertNotNull(sigevent.sigev_notify());
         Assertions.assertNotNull(sigevent.sigev_signo());
         sigevent.sigev_value.sival_int(66);
+
+        NativeFunctionPointer<Callback_PtrOpaqueMemory_V<Signal.Sigval<OpaqueMemory>>> sigev_notify_function = new NativeFunctionPointer<>(44);
+        sigevent.sigev_notify_function(sigev_notify_function);
+        assertEquals(sigev_notify_function, sigevent.sigev_notify_function());
+        Assertions.assertNotSame(sigev_notify_function, sigevent.sigev_notify_function());
+
+        Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
+        sigevent.sigev_notify_attributes(pthread_attr_t);
+        final Pthread.Pthread_attr_t pthread_attr_t1
+                = sigevent.sigev_notify_attributes((baseAddress, parent) -> {
+                    return new Pthread.Pthread_attr_t(baseAddress);
+                });
+        assertEquals(pthread_attr_t, pthread_attr_t1);
+        Assertions.assertNotSame(pthread_attr_t, pthread_attr_t1);
+    }
+
+    @Test
+    public void testStructStack_t() throws Exception {
+        Signal.Stack_t<OpaqueMemory> stack_t = new Signal.Stack_t();
+        Assertions.assertNotNull(stack_t.ss_flags());
+        Assertions.assertNotNull(stack_t.ss_size());
+        Assertions.assertNotNull(stack_t.ss_sp((baseAddress, parent) -> {
+            return new OpaqueMemory(baseAddress, (int) parent.ss_size()) {
+            };
+        }));
+    }
+
+    @Test
+    public void testStructUcontext_t() throws Exception {
+        Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t();
+        Assertions.assertNull(ucontext_t.uc_link((baseAddress, parent) -> {
+            return baseAddress != 0L ? new Signal.Ucontext_t(baseAddress) : null;
+        })); //Maybe fail sometimes....
+        Assertions.assertNotNull(ucontext_t.uc_mcontext);
+        Assertions.assertNotNull(ucontext_t.uc_sigmask);
+        Assertions.assertNotNull(ucontext_t.uc_stack);
+    }
+
+    @Test
+    public void testStructMcontext_t() throws Exception {
+        Signal.Mcontext_t mcontext_t = new Signal.Mcontext_t();
+        Assertions.assertNotNull(mcontext_t); //Opaque to us
     }
 
     @Test
@@ -763,11 +892,6 @@ public class SignalTest {
 
         Assertions.assertNotEquals(sa_handler, sigaction.sa_handler());
 
-        fail(" Signal_Sigaction.c \n"
-                + " Signal_Stack.c \n"
-                + " Signal_Ucontext.c \n"
-                + " Signal_Mcontext.c \n"
-                + ".");
     }
 
 }

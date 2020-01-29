@@ -154,10 +154,10 @@ libfcntl_la_OBJECTS = $(am_libfcntl_la_OBJECTS)
 libioclt_la_LIBADD =
 am_libioclt_la_OBJECTS = IoctlDefines.lo IoctlFunctions.lo
 libioclt_la_OBJECTS = $(am_libioclt_la_OBJECTS)
-libjnhw_posix_la_DEPENDENCIES = libaio.la libpoll.la libeventfd.la \
-	libfcntl.la liblocale.la libtime.la libunistd.la libioclt.la \
-	libsignal.la libtermios.la liberrno.la libstdio.la \
-	libsystypes.la libsysstat.la libposixutils.la \
+libjnhw_posix_la_DEPENDENCIES = libaio.la liberrno.la libeventfd.la \
+	libfcntl.la libioclt.la liblocale.la libpoll.la libpthread.la \
+	libsignal.la libstdio.la libsysstat.la libsystypes.la \
+	libtermios.la libtime.la libunistd.la libposixutils.la \
 	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 am_libjnhw_posix_la_OBJECTS = jnhw-posix-jni.lo
 libjnhw_posix_la_OBJECTS = $(am_libjnhw_posix_la_OBJECTS)
@@ -171,6 +171,10 @@ libpoll_la_OBJECTS = $(am_libpoll_la_OBJECTS)
 libposixutils_la_LIBADD =
 am_libposixutils_la_OBJECTS = Defines.lo
 libposixutils_la_OBJECTS = $(am_libposixutils_la_OBJECTS)
+libpthread_la_LIBADD =
+am_libpthread_la_OBJECTS = PthreadDefines.lo PthreadFunctions.lo \
+	Pthread_Pthread_t.lo Pthread_Pthread_attr_t.lo
+libpthread_la_OBJECTS = $(am_libpthread_la_OBJECTS)
 libsignal_la_LIBADD =
 am_libsignal_la_OBJECTS = SignalDefines.lo SignalFunctions.lo \
 	Signal_Sigaction.lo Signal_Sigevent.lo Signal_Siginfo_t.lo \
@@ -224,6 +228,10 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/Locale_Lconv.Plo ./$(DEPDIR)/PollDefines.Plo \
 	./$(DEPDIR)/PollFunctions.Plo ./$(DEPDIR)/Poll_PollFd.Plo \
 	./$(DEPDIR)/Posix_ErrnoDefines.Plo \
+	./$(DEPDIR)/PthreadDefines.Plo \
+	./$(DEPDIR)/PthreadFunctions.Plo \
+	./$(DEPDIR)/Pthread_Pthread_attr_t.Plo \
+	./$(DEPDIR)/Pthread_Pthread_t.Plo \
 	./$(DEPDIR)/SignalDefines.Plo ./$(DEPDIR)/SignalFunctions.Plo \
 	./$(DEPDIR)/Signal_Mcontext_t.Plo \
 	./$(DEPDIR)/Signal_Sigaction.Plo \
@@ -263,18 +271,20 @@ SOURCES = $(libaio_la_SOURCES) $(liberrno_la_SOURCES) \
 	$(libeventfd_la_SOURCES) $(libfcntl_la_SOURCES) \
 	$(libioclt_la_SOURCES) $(libjnhw_posix_la_SOURCES) \
 	$(liblocale_la_SOURCES) $(libpoll_la_SOURCES) \
-	$(libposixutils_la_SOURCES) $(libsignal_la_SOURCES) \
-	$(libstdio_la_SOURCES) $(libsysstat_la_SOURCES) \
-	$(libsystypes_la_SOURCES) $(libtermios_la_SOURCES) \
-	$(libtime_la_SOURCES) $(libunistd_la_SOURCES)
+	$(libposixutils_la_SOURCES) $(libpthread_la_SOURCES) \
+	$(libsignal_la_SOURCES) $(libstdio_la_SOURCES) \
+	$(libsysstat_la_SOURCES) $(libsystypes_la_SOURCES) \
+	$(libtermios_la_SOURCES) $(libtime_la_SOURCES) \
+	$(libunistd_la_SOURCES)
 DIST_SOURCES = $(libaio_la_SOURCES) $(liberrno_la_SOURCES) \
 	$(libeventfd_la_SOURCES) $(libfcntl_la_SOURCES) \
 	$(libioclt_la_SOURCES) $(libjnhw_posix_la_SOURCES) \
 	$(liblocale_la_SOURCES) $(libpoll_la_SOURCES) \
-	$(libposixutils_la_SOURCES) $(libsignal_la_SOURCES) \
-	$(libstdio_la_SOURCES) $(libsysstat_la_SOURCES) \
-	$(libsystypes_la_SOURCES) $(libtermios_la_SOURCES) \
-	$(libtime_la_SOURCES) $(libunistd_la_SOURCES)
+	$(libposixutils_la_SOURCES) $(libpthread_la_SOURCES) \
+	$(libsignal_la_SOURCES) $(libstdio_la_SOURCES) \
+	$(libsysstat_la_SOURCES) $(libsystypes_la_SOURCES) \
+	$(libtermios_la_SOURCES) $(libtime_la_SOURCES) \
+	$(libunistd_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -436,8 +446,43 @@ AM_LDFLAGS = -no-undefined -version-info @JNHW_VERSION_INFO@
 LIB_JNHW_POSIX_NAME = @JNHW_LIB_PREFIX@jnhw-posix@JNHW_LIB_SUFFIX@
 LIB_JNHW_POSIX_RES_NAME = @JNHW_RESOURCES_DIR@/$(LIB_JNHW_POSIX_NAME)
 lib_LTLIBRARIES = libjnhw-posix.la
-noinst_LTLIBRARIES = libaio.la libpoll.la libeventfd.la libfcntl.la liblocale.la libtime.la libunistd.la libioclt.la libsignal.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la
-libjnhw_posix_la_LIBADD = libaio.la libpoll.la libeventfd.la libfcntl.la liblocale.la libtime.la libunistd.la libioclt.la libsignal.la libtermios.la liberrno.la libstdio.la libsystypes.la libsysstat.la libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+noinst_LTLIBRARIES = \
+ libaio.la \
+ liberrno.la \
+ libeventfd.la \
+ libfcntl.la \
+ libioclt.la \
+ liblocale.la \
+ libpoll.la \
+ libpthread.la \
+ libsignal.la \
+ libstdio.la \
+ libsysstat.la \
+ libsystypes.la \
+ libtermios.la \
+ libtime.la \
+ libunistd.la \
+ libposixutils.la
+
+libjnhw_posix_la_LIBADD = \
+ libaio.la \
+ liberrno.la \
+ libeventfd.la \
+ libfcntl.la \
+ libioclt.la \
+ liblocale.la \
+ libpoll.la \
+ libpthread.la \
+ libsignal.la \
+ libstdio.la \
+ libsysstat.la \
+ libsystypes.la \
+ libtermios.la \
+ libtime.la \
+ libunistd.la \
+ libposixutils.la \
+ @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+
 libjnhw_posix_la_SOURCES = \
  jnhw-posix-jni.c
 
@@ -445,6 +490,42 @@ libaio_la_SOURCES = \
  AioDefines.c \
  AioFunctions.c \
  Aio_Aiocbs.c
+
+liberrno_la_SOURCES = \
+ Isoc_ErrnoDefines.c \
+ Isoc_ErrnoFunctions.c \
+ Posix_ErrnoDefines.c
+
+libeventfd_la_SOURCES = \
+ EventFdDefines.c \
+ EventFdFunctions.c
+
+libfcntl_la_SOURCES = \
+ FcntlDefines.c \
+ FcntlFunctions.c
+
+libioclt_la_SOURCES = \
+ IoctlDefines.c \
+ IoctlFunctions.c
+
+liblocale_la_SOURCES = \
+ LocaleDefines.c \
+ LocaleFunctions.c \
+ Locale_Lconv.c 
+
+libpoll_la_SOURCES = \
+ PollDefines.c \
+ PollFunctions.c \
+ Poll_PollFd.c 
+
+libposixutils_la_SOURCES = \
+ Defines.c
+
+libpthread_la_SOURCES = \
+ PthreadDefines.c \
+ PthreadFunctions.c \
+ Pthread_Pthread_t.c \
+ Pthread_Pthread_attr_t.c
 
 libsignal_la_SOURCES = \
  SignalDefines.c \
@@ -458,49 +539,6 @@ libsignal_la_SOURCES = \
  Signal_Ucontext_t.c \
  Signal_Mcontext_t.c
 
-libtime_la_SOURCES = \
- TimeDefines.c \
- TimeFunctions.c \
- Time_Itimerspec.c \
- Time_Timespec.c \
- Time_Tm.c
-
-liblocale_la_SOURCES = \
- LocaleDefines.c \
- LocaleFunctions.c \
- Locale_Lconv.c 
-
-liberrno_la_SOURCES = \
- Isoc_ErrnoDefines.c \
- Isoc_ErrnoFunctions.c \
- Posix_ErrnoDefines.c
-
-libtermios_la_SOURCES = \
- TermiosDefines.c \
- TermiosFunctions.c \
- Termios_Termios.c
-
-libioclt_la_SOURCES = \
- IoctlDefines.c \
- IoctlFunctions.c
-
-libunistd_la_SOURCES = \
- UnistdDefines.c \
- UnistdFunctions.c
-
-libfcntl_la_SOURCES = \
- FcntlDefines.c \
- FcntlFunctions.c
-
-libpoll_la_SOURCES = \
- PollDefines.c \
- PollFunctions.c \
- Poll_PollFd.c 
-
-libeventfd_la_SOURCES = \
- EventFdDefines.c \
- EventFdFunctions.c
-
 libstdio_la_SOURCES = \
  StdioDefines.c \
  StdioFunctions.c
@@ -512,8 +550,21 @@ libsysstat_la_SOURCES = \
  StatDefines.c \
  StatFunctions.c
 
-libposixutils_la_SOURCES = \
- Defines.c
+libtermios_la_SOURCES = \
+ TermiosDefines.c \
+ TermiosFunctions.c \
+ Termios_Termios.c
+
+libtime_la_SOURCES = \
+ TimeDefines.c \
+ TimeFunctions.c \
+ Time_Itimerspec.c \
+ Time_Timespec.c \
+ Time_Tm.c
+
+libunistd_la_SOURCES = \
+ UnistdDefines.c \
+ UnistdFunctions.c
 
 all: all-am
 
@@ -622,6 +673,9 @@ libpoll.la: $(libpoll_la_OBJECTS) $(libpoll_la_DEPENDENCIES) $(EXTRA_libpoll_la_
 libposixutils.la: $(libposixutils_la_OBJECTS) $(libposixutils_la_DEPENDENCIES) $(EXTRA_libposixutils_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libposixutils_la_OBJECTS) $(libposixutils_la_LIBADD) $(LIBS)
 
+libpthread.la: $(libpthread_la_OBJECTS) $(libpthread_la_DEPENDENCIES) $(EXTRA_libpthread_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libpthread_la_OBJECTS) $(libpthread_la_LIBADD) $(LIBS)
+
 libsignal.la: $(libsignal_la_OBJECTS) $(libsignal_la_DEPENDENCIES) $(EXTRA_libsignal_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libsignal_la_OBJECTS) $(libsignal_la_LIBADD) $(LIBS)
 
@@ -668,6 +722,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Poll_PollFd.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadFunctions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Pthread_Pthread_attr_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Pthread_Pthread_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Mcontext_t.Plo@am__quote@ # am--include-marker
@@ -875,6 +933,10 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
+	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
+	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
+	-rm -f ./$(DEPDIR)/Pthread_Pthread_attr_t.Plo
+	-rm -f ./$(DEPDIR)/Pthread_Pthread_t.Plo
 	-rm -f ./$(DEPDIR)/SignalDefines.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
 	-rm -f ./$(DEPDIR)/Signal_Mcontext_t.Plo
@@ -965,6 +1027,10 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
+	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
+	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
+	-rm -f ./$(DEPDIR)/Pthread_Pthread_attr_t.Plo
+	-rm -f ./$(DEPDIR)/Pthread_Pthread_t.Plo
 	-rm -f ./$(DEPDIR)/SignalDefines.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
 	-rm -f ./$(DEPDIR)/Signal_Mcontext_t.Plo

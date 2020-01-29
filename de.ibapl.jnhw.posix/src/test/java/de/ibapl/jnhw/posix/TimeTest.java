@@ -404,14 +404,19 @@ public class TimeTest {
     @Test
     public void testStrptime() {
         System.out.println("strptime");
-        String buf = "";
-        String format = "";
-        Time.Tm tm = null;
-        String expResult = "";
+        String buf = "2020-01-27 09:12:57\nJNHW";
+        String format = "%Y-%m-%d %H:%M:%S";
+        Time.Tm tm = new Time.Tm();
+        String expResult = "\nJNHW";
         String result = Time.strptime(buf, format, tm);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(2020 - 1900, tm.tm_year());
+        assertEquals(0, tm.tm_mon());
+        assertEquals(27, tm.tm_mday());
+        assertEquals(9, tm.tm_hour());
+        assertEquals(12, tm.tm_min());
+        assertEquals(57, tm.tm_sec());
+        assertEquals("Mon Jan 27 09:12:57 2020\n", Time.asctime(tm));
     }
 
     /**

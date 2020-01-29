@@ -27,6 +27,7 @@
 #include <signal.h>
 //for offsetof
 #include <stddef.h>
+#include <unistd.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -62,46 +63,25 @@ extern "C" {
         return offsetof(struct ucontext_t, uc_stack);
     }
 
+/*
+ * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
+ * Method:    _uc_mcontext_Offset
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t__1uc_1mcontext_1Offset
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct ucontext_t, uc_mcontext);
+    }
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
-     * Method:    uc_link
-     * Signature: ()Lde/ibapl/jnhw/posix/Signal$Ucontext_t;
-     * /
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_uc_1link__
-    (__attribute__ ((unused)) JNIEnv *env, jobject structUcontext_t) {
-        return (UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t))->uc_link;
-    }
-
-    / *
-     * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
-     * Method:    uc_link
-     * Signature: (Lde/ibapl/jnhw/posix/Signal$Ucontext_t;)V
-     * /
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_uc_1link__Lde_ibapl_jnhw_posix_Signal_00024Ucontext_1t_2
-    (__attribute__ ((unused)) JNIEnv *env, jobject structUcontext_t, jobject uc_link) {
-        (UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t))->uc_link = uc_link;
-    }
-
-/ *
-     * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
-     * Method:    uc_mcontext
-     * Signature: ()Lde/ibapl/jnhw/posix/Signal$Mcontext_t;
-     * /
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_uc_1mcontext__
-    (__attribute__ ((unused)) JNIEnv *env, jobject structUcontext_t) {
-        return (UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t))->uc_mcontext;
-    }
-
-/ *
-     * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
-     * Method:    uc_mcontext
-     * Signature: (Lde/ibapl/jnhw/posix/Signal$Mcontext_t;)V
-     * /
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_uc_1mcontext__Lde_ibapl_jnhw_posix_Signal_00024Mcontext_1t_2
-    (__attribute__ ((unused)) JNIEnv *env, jobject structUcontext_t, jint uc_mcontext) {
-        (UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t))->uc_mcontext = uc_mcontext;
-    }
+     * Method:    uc_link0
+     * Signature: ()J
      */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_uc_1link0
+    (__attribute__ ((unused)) JNIEnv *env, jobject structUcontext_t) {
+        return (intptr_t)(UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t))->uc_link;
+    }
+
 #ifdef __cplusplus
 }
 #endif

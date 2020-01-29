@@ -426,7 +426,7 @@ extern "C" {
         }
     }
 
-/*
+        /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    getpid
      * Signature: ()I
@@ -453,7 +453,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getuid
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int)getuid();
+        return (int) getuid();
     }
 
     /*
@@ -463,7 +463,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_geteuid
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int)geteuid();
+        return (int) geteuid();
     }
 
     /*
@@ -473,7 +473,17 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getgid
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int)getgid();
+        return (int) getgid();
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    getpgrp
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getpgrp
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return (int) getpgrp();
     }
 
     /*
@@ -483,7 +493,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getegid
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int)getegid();
+        return (int) getegid();
     }
 
 
