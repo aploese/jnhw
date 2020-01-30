@@ -562,12 +562,12 @@ public class SignalTest {
         Signal.sigemptyset(act.sa_mask);
 
         final ObjectRef<Signal.Siginfo_t> siginfo_tRef = new ObjectRef<>(null);
-        final ObjectRef<OpaqueMemory> opmRef = new ObjectRef<>(null);
+        final ObjectRef<Signal.Ucontext_t> opmRef = new ObjectRef<>(null);
 
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory> sa_handler = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory>() {
+        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, Signal.Ucontext_t>() {
 
             @Override
-            protected void callback(int value, Signal.Siginfo_t a, OpaqueMemory b) {
+            protected void callback(int value, Signal.Siginfo_t a, Signal.Ucontext_t b) {
                 siginfo_tRef.value = a;
                 opmRef.value = b;
             }
@@ -578,8 +578,8 @@ public class SignalTest {
             }
 
             @Override
-            protected OpaqueMemory wrapB(long address) {
-                return null; // new OpaqueMemory^(address);
+            protected Signal.Ucontext_t wrapB(long address) {
+                return new Signal.Ucontext_t(address);
             }
         };
 
@@ -829,6 +829,11 @@ public class SignalTest {
         Assertions.assertNotNull(sigevent.sigev_notify());
         Assertions.assertNotNull(sigevent.sigev_signo());
         sigevent.sigev_value.sival_int(66);
+
+        sigevent.sigev_notify(Signal.SIGEV_SIGNAL());
+        assertEquals(Signal.SIGEV_SIGNAL(), sigevent.sigev_notify());
+        sigevent.sigev_signo(Signal.SIGBUS());
+        assertEquals(Signal.SIGBUS(), sigevent.sigev_signo());
 
         NativeFunctionPointer<Callback_PtrOpaqueMemory_V<Signal.Sigval<OpaqueMemory>>> sigev_notify_function = new NativeFunctionPointer<>(44);
         sigevent.sigev_notify_function(sigev_notify_function);

@@ -151,11 +151,25 @@ public class TimeTest {
         System.out.println("clock_nanosleep");
         int clock_id = 0;
         int flags = 0;
-        Time.Timespec rqtp = null;
-        Time.Timespec rmtp = null;
-        Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Time.Timespec rqtp = new Time.Timespec(true);
+        rqtp.tv_nsec(10_000_000L); //10ms
+        Time.Timespec rmtp = new Time.Timespec();
+
+        long start = System.nanoTime();
+        Time.clock_nanosleep(Time.CLOCK_MONOTONIC(), 0, rqtp, rmtp);
+        long end = System.nanoTime();
+
+        Assertions.assertTrue(end - start < 11_000_000, "max 10ms but was " + (end - start) + "ns");
+        Assertions.assertTrue(end - start > 9_000_000, "min 8ms");
+
+        rqtp.tv_nsec(0);
+        Time.clock_nanosleep(Time.CLOCK_MONOTONIC(), 0, rqtp, rmtp);
+
+        Time.clock_nanosleep(Time.CLOCK_MONOTONIC(), 0, rqtp, null);
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.clock_nanosleep(Time.CLOCK_MONOTONIC(), 0, null, null);
+        });
     }
 
     /**
@@ -353,16 +367,56 @@ public class TimeTest {
     }
 
     /**
+     * Test Time.Timespec
+     */
+    @Test
+    public void testStructTimespec() {
+        System.out.println("struct timespec");
+        Time.Timespec timespec = new Time.Timespec();
+        timespec.tv_nsec(10_000_000L); //10ms
+        timespec.tv_sec(42);
+        assertEquals(10_000_000L, timespec.tv_nsec(), "tv_sec");
+        assertEquals(42, timespec.tv_sec(), "tv_nsec");
+    }
+
+    /**
      * Test of nanosleep method, of class Time.
      */
     @Test
     public void testNanosleep() throws Exception {
         System.out.println("nanosleep");
-        Time.Timespec rqtp = null;
-        Time.Timespec rmtp = null;
+        Time.Timespec rqtp = new Time.Timespec();
+        rqtp.tv_nsec(10_000_000L); //10ms
+        rqtp.tv_sec(0);
+
+        Time.Timespec rmtp = new Time.Timespec();
+        rmtp.tv_nsec(42);
+        rmtp.tv_sec(42);
+        try {
+            long start = System.nanoTime();
+            Time.nanosleep(rqtp, rmtp);
+            long end = System.nanoTime();
+
+            Assertions.assertTrue(end - start < 11_000_000, "max 10ms but was " + (end - start) + "ns");
+            Assertions.assertTrue(end - start > 9_000_000, "min 8ms");
+        } catch (NativeErrorException nee) {
+            fail(Errno.getErrnoSymbol(nee.errno));
+            Assertions.assertTrue(rmtp.tv_sec() <= rqtp.tv_sec(), "tv_sec");
+            Assertions.assertTrue(rmtp.tv_nsec() <= rqtp.tv_nsec(), "tv_nsec");
+        }
+        //on succes rmtp will not be set
+        assertEquals(42, rmtp.tv_sec());
+        assertEquals(42, rmtp.tv_nsec());
+
+        rqtp.tv_nsec(0);
         Time.nanosleep(rqtp, rmtp);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        Time.nanosleep(rqtp, null);
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.nanosleep(null, null);
+        });
+
     }
 
     /**
@@ -438,28 +492,45 @@ public class TimeTest {
      * Test of timer_create method, of class Time.
      */
     @Test
-    public void testTimer_create() throws Exception {
+    public void testTimer_create_delete() throws Exception {
         System.out.println("timer_create");
-        int clockid = 0;
-        Signal.Sigevent evp = null;
-        int timerid = 0;
-        int expResult = 0;
-        int result = Time.timer_create(clockid, evp, timerid);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
-    /**
-     * Test of timer_delete method, of class Time.
-     */
-    @Test
-    public void testTimer_delete() throws Exception {
-        System.out.println("timer_delete");
-        int timerid = 0;
-        Time.timer_delete(timerid);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final Time.Timer_t timerid = new Time.Timer_t(true);
+
+        Time.timer_create(Time.CLOCK_MONOTONIC(), null, timerid);
+        try {
+            System.out.println("timerid: " + timerid);
+        } finally {
+            Time.timer_delete(timerid);
+        }
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
+        });
+
+        Signal.Sigevent evp = new Signal.Sigevent();
+        //Setup for signal delivery
+        evp.sigev_notify(Signal.SIGEV_SIGNAL());
+        evp.sigev_signo(Signal.SIGCHLD());
+        evp.sigev_value.sival_ptr(timerid);
+
+        Time.timer_create(Time.CLOCK_MONOTONIC(), evp, timerid);
+
+        try {
+            System.out.println("timerid: " + timerid);
+        } finally {
+            Time.timer_delete(timerid);
+        }
+
+        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+            Time.timer_delete(timerid);
+        });
+        assertEquals(Errno.EINVAL(), nee.errno);
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.timer_delete(null);
+        });
+
     }
 
     /**
@@ -468,7 +539,8 @@ public class TimeTest {
     @Test
     public void testTimer_getoverrun() throws Exception {
         System.out.println("timer_getoverrun");
-        int timerid = 0;
+        Time.Timer_t timerid = new Time.Timer_t();
+
         int expResult = 0;
         int result = Time.timer_getoverrun(timerid);
         assertEquals(expResult, result);
@@ -482,7 +554,7 @@ public class TimeTest {
     @Test
     public void testTimer_gettime() throws Exception {
         System.out.println("timer_gettime");
-        int timerid = 0;
+        Time.Timer_t timerid = new Time.Timer_t();
         Time.Itimerspec value = null;
         Time.timer_gettime(timerid, value);
         // TODO review the generated test code and remove the default call to fail.
@@ -495,7 +567,7 @@ public class TimeTest {
     @Test
     public void testTimer_settime() throws Exception {
         System.out.println("timer_settime");
-        int timerid = 0;
+        Time.Timer_t timerid = new Time.Timer_t();
         int flags = 0;
         Time.Itimerspec value = null;
         Time.Itimerspec ovalue = null;
@@ -546,6 +618,12 @@ public class TimeTest {
         for (int i = 0; i < tzname.length; i++) {
             System.out.printf("\ttzname[%d] = %s\n", i, tzname[i]);
         }
+    }
+
+    @Test
+    public void testTimer_t() {
+        Time.Timer_t timer_t = new Time.Timer_t(true);
+        Assertions.assertEquals("0", timer_t.toString());
     }
 
 }

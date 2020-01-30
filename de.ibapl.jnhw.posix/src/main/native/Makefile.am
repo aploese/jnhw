@@ -121,6 +121,7 @@ libtime_la_SOURCES = \
  TimeDefines.c \
  TimeFunctions.c \
  Time_Itimerspec.c \
+ Time_Timer_t.c \
  Time_Timespec.c \
  Time_Tm.c
 

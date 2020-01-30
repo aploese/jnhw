@@ -51,6 +51,8 @@ JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
 AC_SUBST(JNHW_COMMON_SRC_DIR)
 
 # Checks for libraries.
+#ACX_PTHREAD
+AC_SEARCH_LIBS([timer_create],[rt])
 
 # Checks for header files.
 AC_CHECK_HEADERS([aio.h errno.h fcntl.h locale.h poll.h pthread.h sys/ioctl.h sys/eventfd.h sys/types.h sys/stat.h signal.h stdlib.h stdint.h stdio.h termios.h time.h unistd.h ])

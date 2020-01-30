@@ -364,6 +364,8 @@ public class Signal {
          */
         public final native int sigev_notify();
 
+        public final native void sigev_notify(int value);
+
         /**
          * Signal number. * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
          * sigevents}</a>.
@@ -371,6 +373,8 @@ public class Signal {
          * @return the native value of sigev_signo.
          */
         public final native int sigev_signo();
+
+        public final native void sigev_signo(int value);
 
         private native long sigev_notify_attributes();
 

@@ -102,6 +102,7 @@ public class PthreadTest {
     @Test
     public void testPthread_t() {
         Pthread.Pthread_t pthread_t = new Pthread.Pthread_t();
+        Assertions.assertNotNull(pthread_t.toString());
     }
 
     @Test

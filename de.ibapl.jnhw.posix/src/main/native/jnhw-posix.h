@@ -75,6 +75,7 @@ extern "C" {
 #define UNWRAP_STRUCT_TM_PTR(structTm) UNWRAP_OPAQUE_MEM_TO(struct tm*, structTm)
 
 #define UNWRAP_STRUCT_TIMESPEC_PTR(structTimespec) UNWRAP_OPAQUE_MEM_TO(struct timespec*, structTimespec)
+#define UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(structTimespec) UNWRAP_OPAQUE_MEM_TO_OR_NULL(struct timespec*, structTimespec)
 
 #define UNWRAP_STRUCT_TM_PTR(structTm) UNWRAP_OPAQUE_MEM_TO(struct tm*, structTm)
 #define WRAP_STATIC_STRUCT_TM(baseAddress) (*env)->NewObject(env, de_ibapl_jnhw_posix_Time_Tm_Class, de_ibapl_jnhw_posix_Time_Tm_init_ID, baseAddress, sizeof (struct tm))
@@ -83,6 +84,7 @@ extern "C" {
 #define UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(structSigaction) UNWRAP_OPAQUE_MEM_TO_OR_NULL(struct sigaction*, structSigaction)
 
 #define UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent) UNWRAP_OPAQUE_MEM_TO(struct sigevent*, structSigevent)
+#define UNWRAP_STRUCT_SIGEVENT_PTR_OR_NULL(structSigevent) UNWRAP_OPAQUE_MEM_TO_OR_NULL(struct sigevent*, structSigevent)
 
 #define UNWRAP_SIGINFO_T_PTR(structSiginfo_t) UNWRAP_OPAQUE_MEM_TO(siginfo_t*, structSiginfo_t)
 #define UNWRAP_SIGINFO_T_PTR_OR_NULL(structSiginfo_t) UNWRAP_OPAQUE_MEM_TO_OR_NULL(siginfo_t*, structSiginfo_t)
@@ -103,6 +105,8 @@ extern "C" {
     
 #define UNWRAP_PTHREAD_ATTR_T_PTR(pthread_attr)UNWRAP_OPAQUE_MEM_TO(pthread_attr_t*, pthread_attr)
 
+#define UNWRAP_TIMER_T_PTR(timerid)UNWRAP_OPAQUE_MEM_TO(timer_t*, timerid)
+    
 #ifdef __cplusplus
 }
 #endif

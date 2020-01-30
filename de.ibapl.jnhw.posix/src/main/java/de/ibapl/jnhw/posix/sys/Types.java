@@ -201,7 +201,7 @@ public class Types {
      * @author aploese
      */
     @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @Target({ElementType.TYPE})
     public static @interface timer_t {
     }
 

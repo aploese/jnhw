@@ -196,7 +196,7 @@ am_libtermios_la_OBJECTS = TermiosDefines.lo TermiosFunctions.lo \
 libtermios_la_OBJECTS = $(am_libtermios_la_OBJECTS)
 libtime_la_LIBADD =
 am_libtime_la_OBJECTS = TimeDefines.lo TimeFunctions.lo \
-	Time_Itimerspec.lo Time_Timespec.lo Time_Tm.lo
+	Time_Itimerspec.lo Time_Timer_t.lo Time_Timespec.lo Time_Tm.lo
 libtime_la_OBJECTS = $(am_libtime_la_OBJECTS)
 libunistd_la_LIBADD =
 am_libunistd_la_OBJECTS = UnistdDefines.lo UnistdFunctions.lo
@@ -245,9 +245,10 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo \
 	./$(DEPDIR)/Termios_Termios.Plo ./$(DEPDIR)/TimeDefines.Plo \
 	./$(DEPDIR)/TimeFunctions.Plo ./$(DEPDIR)/Time_Itimerspec.Plo \
-	./$(DEPDIR)/Time_Timespec.Plo ./$(DEPDIR)/Time_Tm.Plo \
-	./$(DEPDIR)/TypesDefines.Plo ./$(DEPDIR)/UnistdDefines.Plo \
-	./$(DEPDIR)/UnistdFunctions.Plo ./$(DEPDIR)/jnhw-posix-jni.Plo
+	./$(DEPDIR)/Time_Timer_t.Plo ./$(DEPDIR)/Time_Timespec.Plo \
+	./$(DEPDIR)/Time_Tm.Plo ./$(DEPDIR)/TypesDefines.Plo \
+	./$(DEPDIR)/UnistdDefines.Plo ./$(DEPDIR)/UnistdFunctions.Plo \
+	./$(DEPDIR)/jnhw-posix-jni.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -559,6 +560,7 @@ libtime_la_SOURCES = \
  TimeDefines.c \
  TimeFunctions.c \
  Time_Itimerspec.c \
+ Time_Timer_t.c \
  Time_Timespec.c \
  Time_Tm.c
 
@@ -746,6 +748,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Itimerspec.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Timer_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Timespec.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Tm.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TypesDefines.Plo@am__quote@ # am--include-marker
@@ -957,6 +960,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
 	-rm -f ./$(DEPDIR)/Time_Itimerspec.Plo
+	-rm -f ./$(DEPDIR)/Time_Timer_t.Plo
 	-rm -f ./$(DEPDIR)/Time_Timespec.Plo
 	-rm -f ./$(DEPDIR)/Time_Tm.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
@@ -1051,6 +1055,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
 	-rm -f ./$(DEPDIR)/Time_Itimerspec.Plo
+	-rm -f ./$(DEPDIR)/Time_Timer_t.Plo
 	-rm -f ./$(DEPDIR)/Time_Timespec.Plo
 	-rm -f ./$(DEPDIR)/Time_Tm.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo

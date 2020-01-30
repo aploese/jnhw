@@ -29,12 +29,12 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.Locale.locale_t;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
+import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.posix.sys.Types.clock_t;
 import de.ibapl.jnhw.posix.sys.Types.clockid_t;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
 import de.ibapl.jnhw.posix.sys.Types.size_t;
 import de.ibapl.jnhw.posix.sys.Types.time_t;
-import de.ibapl.jnhw.posix.sys.Types.timer_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -443,8 +443,9 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     *
      */
-    public final static native int timer_create(@clockid_t int clockid, Sigevent evp, @timer_t int timerid) throws NativeErrorException;
+    public final static native void timer_create(@clockid_t int clockid, Sigevent evp, Timer_t timerid) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -455,7 +456,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void timer_delete(@timer_t int timerid) throws NativeErrorException;
+    public final static native void timer_delete(Timer_t timerid) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -466,7 +467,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int timer_getoverrun(@timer_t int timerid) throws NativeErrorException;
+    public final static native int timer_getoverrun(Timer_t timerid) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -477,7 +478,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void timer_gettime(@timer_t int timerid, Itimerspec value) throws NativeErrorException;
+    public final static native void timer_gettime(Timer_t timerid, Itimerspec value) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -488,8 +489,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void timer_settime(@timer_t int timerid, int flags,
-            Itimerspec value, Itimerspec ovalue) throws NativeErrorException;
+    public final static native void timer_settime(Timer_t timerid, int flags, Itimerspec value, Itimerspec ovalue) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -594,6 +594,10 @@ public class Time {
 
         private Timespec(OpaqueMemory parent, int offset) {
             super(parent, offset, sizeofTimespec());
+        }
+
+        Timespec(boolean cleanMem) {
+            super(sizeofTimespec(), cleanMem);
         }
 
         /**
@@ -846,6 +850,41 @@ public class Time {
             sb.append("}");
             return sb.toString();
         }
+
+    }
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html">{@code typedef
+     * pthread_t}</a>.
+     *
+     * @author aploese
+     */
+    @Types.timer_t
+    public static final class Timer_t extends OpaqueMemory {
+
+        /**
+         * Make sure the native lib is loaded
+         */
+        static {
+            LibJnhwPosixLoader.touch();
+        }
+
+        /**
+         * Get the real size of timer_t natively.
+         *
+         * @return the native value sizeof(timer_t).
+         */
+        public static native int sizeofTimer_t();
+
+        public Timer_t() {
+            super(sizeofTimer_t(), false);
+        }
+
+        public Timer_t(boolean cleanMem) {
+            super(sizeofTimer_t(), cleanMem);
+        }
+
+        @Override
+        public native String toString();
 
     }
 

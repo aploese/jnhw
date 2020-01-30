@@ -130,7 +130,15 @@ extern "C" {
      * Signature: (IILde/ibapl/jnhw/posix/Time$Timespec;Lde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1nanosleep
-    (JNIEnv *, jclass, jint, jint, jobject, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clockid, jint flags, jobject rqtp, jobject rmtp) {
+        if (rqtp == NULL) {
+            throw_NullPointerException(env, "rqtp");
+            return;
+        }
+        if (clock_nanosleep(clockid, flags, UNWRAP_STRUCT_TIMESPEC_PTR(rqtp), UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(rmtp))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
@@ -316,7 +324,15 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Time$Timespec;Lde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_nanosleep
-    (JNIEnv *, jclass, jobject, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject rqtp, jobject rmtp) {
+        if (rqtp == NULL) {
+            throw_NullPointerException(env, "rqtp");
+            return;
+        }
+        if (nanosleep(UNWRAP_STRUCT_TIMESPEC_PTR(rqtp), UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(rmtp))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
@@ -353,11 +369,11 @@ extern "C" {
             throw_NullPointerException(env, "tm");
             return NULL;
         }
-         const char* _buf = (*env)->GetStringUTFChars(env, buf, NULL);
-         const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
+        const char* _buf = (*env)->GetStringUTFChars(env, buf, NULL);
+        const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
 
         char* result = strptime(_buf, _format, UNWRAP_STRUCT_TM_PTR(tm));
-        
+
         (*env)->ReleaseStringUTFChars(env, buf, _buf);
         (*env)->ReleaseStringUTFChars(env, format, _format);
         if (result == NULL) {
@@ -365,7 +381,7 @@ extern "C" {
         } else {
             return (*env)->NewStringUTF(env, result);
         }
-        
+
     }
 
     /*
@@ -389,45 +405,61 @@ extern "C" {
         return result;
     }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    timer_create
-     * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigevent;I)I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1create
-    (JNIEnv *, jclass, jint, jobject, jint);
+/*
+ * Class:     de_ibapl_jnhw_posix_Time
+ * Method:    timer_create
+ * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigevent;Lde/ibapl/jnhw/posix/Time/Timer_t;)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1create
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clockid, jobject evp, jobject timerid) {
+        if (timerid == NULL) {
+            throw_NullPointerException(env, "timerid");
+            return;
+        }
+        if (timer_create(clockid, UNWRAP_STRUCT_SIGEVENT_PTR_OR_NULL(evp), UNWRAP_TIMER_T_PTR(timerid))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    timer_delete
-     * Signature: (I)V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1delete
-    (JNIEnv *, jclass, jint);
+/*
+ * Class:     de_ibapl_jnhw_posix_Time
+ * Method:    timer_delete
+ * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1delete
+  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid) {
+        if (timerid == NULL) {
+            throw_NullPointerException(env, "timerid");
+            return;
+        }
+        if (timer_delete(*UNWRAP_TIMER_T_PTR(timerid))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    timer_getoverrun
-     * Signature: (I)I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1getoverrun
-    (JNIEnv *, jclass, jint);
+/*
+ * Class:     de_ibapl_jnhw_posix_Time
+ * Method:    timer_getoverrun
+ * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1getoverrun
+  (JNIEnv *, jclass, jobject);
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    timer_gettime
-     * Signature: (ILde/ibapl/jnhw/posix/Time$Itimerspec;)V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1gettime
-    (JNIEnv *, jclass, jint, jobject);
+/*
+ * Class:     de_ibapl_jnhw_posix_Time
+ * Method:    timer_gettime
+ * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1gettime
+  (JNIEnv *, jclass, jobject, jobject);
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    timer_settime
-     * Signature: (IILde/ibapl/jnhw/posix/Time$Itimerspec;Lde/ibapl/jnhw/posix/Time$Itimerspec;)V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1settime
-    (JNIEnv *, jclass, jint, jint, jobject, jobject);
+/*
+ * Class:     de_ibapl_jnhw_posix_Time
+ * Method:    timer_settime
+ * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;ILde/ibapl/jnhw/posix/Time/Itimerspec;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1settime
+  (JNIEnv *, jclass, jobject, jint, jobject, jobject);
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
