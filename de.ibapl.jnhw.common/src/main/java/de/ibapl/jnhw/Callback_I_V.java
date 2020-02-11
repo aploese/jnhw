@@ -21,82 +21,23 @@
  */
 package de.ibapl.jnhw;
 
-import java.lang.ref.WeakReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author aploese
  */
-public abstract class Callback_I_V extends NativeCallback<Callback_I_V> {
+public abstract class Callback_I_V extends NativeFunctionPointer {
 
-    private final static Logger LOG = Logger.getLogger("d.i.j.c.Callback_I_V");
-
-    private static final WeakReference<Callback_I_V> refs[];
-
-    private static native void initNative();
-
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwCommonLoader.touch();
-        initNative();
-        refs = new WeakReference[MAX_CALL_BACKS()];
-        for (int i = 0; i < refs.length; i++) {
-            refs[i] = new WeakReference(null);
-        }
-    }
-
-    /**
-     * this is just an estimation ...
-     *
-     * @return
-     */
-    public static int callbacksAvailable() {
-        int result = 0;
-        for (int i = 0; i < refs.length; i++) {
-            if (refs[i].get() == null) {
-                result++;
+    public static Callback_I_V wrap(long nativeAddress) {
+        Callback_I_V result = new Callback_I_V() {
+            @Override
+            protected void callback(int value) {
+                throw new UnsupportedOperationException("This is a wrapper for an unknown function. Only the address is known to us, but not the Type!");
             }
-        }
+
+        };
+        NativeFunctionPointer.setAddress(result, nativeAddress);
         return result;
     }
-
-    public Callback_I_V() {
-        super();
-        aquire();
-    }
-
-    private static void trampoline(final int index, final int value) {
-        try {
-            final var ref = refs[index].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, %d)", index, value));
-            } else {
-                ref.callback(value);
-            }
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline(%d, %d)", index, value), t);
-        }
-    }
-
-    private static native long getNativeAddress(final int index);
-
-    private synchronized void aquire() {
-        for (int i = 0; i < refs.length; i++) {
-            if (refs[i].get() == null) {
-                refs[i] = new WeakReference(this);
-                NativeFunctionPointer.setAddress(this, getNativeAddress(i));
-                return;
-            }
-        }
-        //Hint: Try run GC to free any??? or add more cbs...
-        throw new RuntimeException("No more Callbacks available! max: " + MAX_CALL_BACKS() + " reached");
-    }
-
-    public static native int MAX_CALL_BACKS();
 
     /**
      * this will be called from the native code.

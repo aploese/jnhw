@@ -44,45 +44,46 @@ extern "C" {
 #ifdef HAVE_SIGNAL_H
 
 #include <signal.h>
+#include <stdint.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
-     * Method:    SIG_DFL
-     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     * Method:    SIG_DFL0
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1DFL
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREATE_NATIVE_FUNCTION_POINTER(SIG_DFL);
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1DFL0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return (intptr_t)SIG_DFL;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
-     * Method:    SIG_ERR
-     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     * Method:    SIG_ERR0
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1ERR
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREATE_NATIVE_FUNCTION_POINTER(SIG_ERR);
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1ERR0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return (intptr_t)SIG_ERR;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
-     * Method:    SIG_HOLD
-     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     * Method:    SIG_HOLD0
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1HOLD
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREATE_NATIVE_FUNCTION_POINTER(SIG_HOLD);
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1HOLD0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return (intptr_t)SIG_HOLD;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
-     * Method:    SIG_IGN
-     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     * Method:    SIG_IGN0
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1IGN
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREATE_NATIVE_FUNCTION_POINTER(SIG_IGN);
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1IGN0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return (intptr_t)SIG_IGN;
     }
 
     /*

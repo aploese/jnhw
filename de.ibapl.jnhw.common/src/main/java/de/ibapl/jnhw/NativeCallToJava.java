@@ -22,10 +22,11 @@
 package de.ibapl.jnhw;
 
 /**
+ * Marker Interface that a known callbat to Java is there...
  *
  * @author aploese
- * @param <T>
+ *
  */
-public abstract class NativeCallback<T> extends NativeFunctionPointer<T> {
+public interface NativeCallToJava {
 
 }

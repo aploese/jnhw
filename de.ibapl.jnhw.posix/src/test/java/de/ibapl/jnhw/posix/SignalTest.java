@@ -22,7 +22,9 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
+import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl;
 import de.ibapl.jnhw.Callback_I_V;
+import de.ibapl.jnhw.Callback_I_V_Impl;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
@@ -63,7 +65,7 @@ public class SignalTest {
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
 
-        Callback_I_V sa_handler = new Callback_I_V() {
+        Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
                 System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
@@ -97,7 +99,7 @@ public class SignalTest {
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
 
-        Callback_I_V sa_handler = new Callback_I_V() {
+        Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
                 sigRef.value = sig;
@@ -167,7 +169,7 @@ public class SignalTest {
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
 
-        Callback_I_V sa_handler = new Callback_I_V() {
+        Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
                 sigRef.value = sig;
@@ -240,7 +242,7 @@ public class SignalTest {
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
 
-        Callback_I_V sa_handler = new Callback_I_V() {
+        Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
                 sigRef.value = sig;
@@ -270,7 +272,7 @@ public class SignalTest {
         act.sa_flags(Signal.SA_RESTART());
         Signal.sigemptyset(act.sa_mask);
 
-        Callback_I_V sa_handler = new Callback_I_V() {
+        Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
             }
@@ -282,16 +284,15 @@ public class SignalTest {
         try {
             Signal.sigaction(SIG, act, oact);
             Signal.sigaction(SIG, act, null);
-
             if ((oact.sa_flags() & Signal.SA_SIGINFO()) == Signal.SA_SIGINFO()) {
-                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_sigaction());
+                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V::wrap));
             } else {
-                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_handler());
+                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_handler(Callback_I_V::wrap));
             }
 
             final Signal.Sigaction actOut = new Signal.Sigaction();
             Signal.sigaction(SIG, oact, actOut);
-            Assertions.assertEquals(act.sa_handler(), actOut.sa_handler());
+            Assertions.assertEquals(act.sa_handler(Callback_I_V::wrap), actOut.sa_handler(Callback_I_V::wrap));
             Signal.sigaction(SIG, null, null);
         } finally {
             Signal.sigaction(SIG, oact, null);
@@ -417,7 +418,7 @@ public class SignalTest {
         Signal.raise(SIG);
 
         final IntRef raisedSignal = new IntRef();
-        final Callback_I_V funcHandler = new Callback_I_V() {
+        final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
                 raisedSignal.value = sig;
@@ -464,7 +465,7 @@ public class SignalTest {
 
         final ObjectRef<Boolean> boolRef = new ObjectRef(Boolean.FALSE);
 
-        final Callback_I_V funcHandler = new Callback_I_V() {
+        final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
                 System.out.println("Got signal: " + sig);
@@ -564,7 +565,7 @@ public class SignalTest {
         final ObjectRef<Signal.Siginfo_t> siginfo_tRef = new ObjectRef<>(null);
         final ObjectRef<Signal.Ucontext_t> opmRef = new ObjectRef<>(null);
 
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, Signal.Ucontext_t>() {
+        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<>() {
 
             @Override
             protected void callback(int value, Signal.Siginfo_t a, Signal.Ucontext_t b) {
@@ -631,7 +632,7 @@ public class SignalTest {
         System.out.println("sigsuspend");
         final int SIG = Signal.SIGALRM();
 
-        final Callback_I_V funcHandler = new Callback_I_V() {
+        final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
                 System.out.println("Got signal: " + sig);
@@ -824,10 +825,15 @@ public class SignalTest {
         sigevent.sigev_signo(Signal.SIGBUS());
         assertEquals(Signal.SIGBUS(), sigevent.sigev_signo());
 
-        NativeFunctionPointer<Callback_PtrOpaqueMemory_V<Signal.Sigval<OpaqueMemory>>> sigev_notify_function = new NativeFunctionPointer<>(44);
-        sigevent.sigev_notify_function(sigev_notify_function);
-        assertEquals(sigev_notify_function, sigevent.sigev_notify_function());
-        Assertions.assertNotSame(sigev_notify_function, sigevent.sigev_notify_function());
+        Callback_I_V sigev_notify_functionInt = Callback_I_V.wrap(44);
+        sigevent.sigev_notify_function(sigev_notify_functionInt);
+        assertEquals(sigev_notify_functionInt, sigevent.sigev_notify_function());
+        Assertions.assertNotSame(sigev_notify_functionInt, sigevent.sigev_notify_function());
+
+        Callback_PtrOpaqueMemory_V<OpaqueMemory> sigev_notify_functionPtr = Callback_PtrOpaqueMemory_V.wrap(44);
+        sigevent.sigev_notify_function(sigev_notify_functionPtr);
+        assertEquals(sigev_notify_functionPtr, sigevent.sigev_notify_function());
+        Assertions.assertNotSame(sigev_notify_functionPtr, sigevent.sigev_notify_function());
 
         Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
         Pthread.pthread_attr_init(pthread_attr_t);
@@ -876,17 +882,17 @@ public class SignalTest {
         sigaction.sa_flags(22);
         assertEquals(22, sigaction.sa_flags());
 
-        NativeFunctionPointer<Callback_I_V> sa_handler = new NativeFunctionPointer<>(33);
+        Callback_I_V sa_handler = Callback_I_V.wrap(33);
         sigaction.sa_handler(sa_handler);
-        assertEquals(sa_handler, sigaction.sa_handler());
-        Assertions.assertNotSame(sa_handler, sigaction.sa_handler());
+        assertEquals(sa_handler, sigaction.sa_handler(Callback_I_V::wrap));
+        Assertions.assertNotSame(sa_handler, sigaction.sa_handler(Callback_I_V::wrap));
 
-        NativeFunctionPointer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory>> sa_sigaction = new NativeFunctionPointer<>(44);
+        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory> sa_sigaction = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(44);
         sigaction.sa_sigaction(sa_sigaction);
-        assertEquals(sa_sigaction, sigaction.sa_sigaction());
-        Assertions.assertNotSame(sa_sigaction, sigaction.sa_sigaction());
+        assertEquals(sa_sigaction, sigaction.sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V::wrap));
+        Assertions.assertNotSame(sa_sigaction, sigaction.sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V::wrap));
 
-        Assertions.assertNotEquals(sa_handler, sigaction.sa_handler());
+        Assertions.assertNotEquals(sa_handler, sigaction.sa_handler(Callback_I_V::wrap));
 
     }
 

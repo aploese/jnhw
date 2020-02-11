@@ -251,7 +251,7 @@ public class Aio {
      * aiocb}</a>.
      *
      */
-    public static final class Aiocb extends OpaqueMemory {
+    public static final class Aiocb<T extends OpaqueMemory> extends OpaqueMemory {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -276,7 +276,7 @@ public class Aio {
          * aiocb}</a>.
          *
          */
-        public final Sigevent aio_sigevent;
+        public final Sigevent<T> aio_sigevent;
 
         /**
          * cached instance. TODO replace with builder

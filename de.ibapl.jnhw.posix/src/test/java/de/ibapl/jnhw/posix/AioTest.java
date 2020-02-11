@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
+import de.ibapl.jnhw.Callback_I_V_Impl;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import java.io.BufferedReader;
@@ -127,6 +127,7 @@ public class AioTest {
      */
     @Test
     public void testAio_write_ByteBuffer() throws Exception {
+
         System.out.println("aio_write");
 
         final String HELLO_WORLD = "Hello world!\n";
@@ -135,7 +136,7 @@ public class AioTest {
         final IntRef intRef = new IntRef(0);
         File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
 
-        final Aio.Aiocb aiocb = new Aio.Aiocb();
+        final Aio.Aiocb<OpaqueMemory> aiocb = new Aio.Aiocb();
         aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
         final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
         aioBuffer.put(HELLO_WORLD.getBytes());
@@ -156,35 +157,20 @@ public class AioTest {
         System.out.println("aio_write Pthread_t: " + Pthread.pthread_self());
         System.out.println("aio_write currentThread: " + Thread.currentThread());
 
-        aiocb.aio_sigevent.sigev_notify_function(new Callback_PtrOpaqueMemory_V<Signal.Sigval>() {
+        aiocb.aio_sigevent.sigev_notify_function(new Callback_I_V_Impl() {
+
             @Override
-            protected void callback(Signal.Sigval a) {
+            protected void callback(int i) {
                 System.out.println("aio_write enter callback Pthread_t: " + Pthread.pthread_self());
                 System.out.println("aio_write in callback currentThread: " + Thread.currentThread());
                 aioBuffer.position(aioBuffer.position() + (int) aiocb.aio_nbytes());
                 synchronized (intRef) {
-                    intRef.value = a.sival_int();
+                    intRef.value = i;
                     intRef.notify();
                 }
                 System.out.println("aio_write leave callback");
             }
 
-            @Override
-            protected Signal.Sigval wrapA(long address) {
-                System.out.println("aio_write enter wrapA");
-
-                Signal.Sigval result = new Signal.Sigval();
-                result.sival_ptr(new OpaqueMemory(address, 0) {
-                });
-
-                System.out.println("aio_write a: " + result);
-                System.out.println("aio_write in wrapA Equals: " + result.equals(aiocb.aio_sigevent.sigev_value));
-
-                //assertEquals(aiocb.aio_sigevent.sigev_value, result);
-                System.out.println("aio_write leave wrapA");
-                System.out.flush();
-                return result;
-            }
         });
 
         Aio.aio_write(aiocb);

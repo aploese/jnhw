@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
  */
 public class Callback_I_V_Test {
 
-    private class DummyCB extends Callback_I_V {
+    private class DummyCB extends Callback_I_V_Impl {
 
         @Override
         protected void callback(int value) {
@@ -49,9 +49,9 @@ public class Callback_I_V_Test {
     public Callback_I_V_Test() {
     }
     
-    private native NativeFunctionPointer<Callback_I_V> getCallbackPtr();
+    private native NativeFunctionPointer getCallbackPtr();
     
-    private native void setCallback(NativeFunctionPointer<Callback_I_V> callback);
+    private native void setCallback(Callback_I_V callback);
     
     private native void doCallTheCallback(int value);
 
@@ -62,12 +62,12 @@ public class Callback_I_V_Test {
     @Test
     public void testMAX_CALL_BACKS() {
         System.out.println("MAX_CALL_BACKS");
-        int maxCB = Callback_I_V.MAX_CALL_BACKS();
+        int maxCB = Callback_I_V_Impl.MAX_CALL_BACKS();
         assertEquals(8, maxCB);
         Callback_I_V[] cbs = new Callback_I_V[maxCB];
         for (int i = 0; i < cbs.length; i++) {
             cbs[i] = new DummyCB();
-            assertEquals(maxCB - (i + 1), Callback_I_V.callbacksAvailable());
+            assertEquals(maxCB - (i + 1), Callback_I_V_Impl.callbacksAvailable());
         }
 
         RuntimeException re = assertThrows(RuntimeException.class, () -> {
@@ -80,12 +80,12 @@ public class Callback_I_V_Test {
         System.runFinalization();
         System.gc();
 
-        assertEquals(maxCB, Callback_I_V.callbacksAvailable());
+        assertEquals(maxCB, Callback_I_V_Impl.callbacksAvailable());
     }
     
     @Test
     public void testNativeFunctionPointer() {
-        final var testPtr = new NativeFunctionPointer<Callback_I_V>(121);
+        final Callback_I_V testPtr = Callback_I_V.wrap(121);
         setCallback(testPtr);
         assertEquals(getCallbackPtr(), testPtr);
     }
@@ -97,9 +97,9 @@ public class Callback_I_V_Test {
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
         final IntRef intref = new IntRef();
-        final var NULL_PTR = new NativeFunctionPointer<Callback_I_V>(0);
+        final Callback_I_V NULL_PTR = Callback_I_V.wrap(0);
         final Thread t = Thread.currentThread();
-        Callback_I_V callback = new Callback_I_V() {
+        Callback_I_V_Impl callback = new Callback_I_V_Impl() {
             
             @Override
             protected void callback(int value) {
@@ -114,6 +114,7 @@ public class Callback_I_V_Test {
         setCallback(callback);
         
         assertEquals(getCallbackPtr(), callback);
+        assertSame(Callback_I_V_Impl.find(getCallbackPtr()), callback);
         doCallTheCallback(42);
         assertEquals(42, intref.value);
         
@@ -122,7 +123,7 @@ public class Callback_I_V_Test {
         System.runFinalization();
         System.gc();
 
-        assertEquals(Callback_I_V.MAX_CALL_BACKS(), Callback_I_V.callbacksAvailable());
+        assertEquals(Callback_I_V_Impl.MAX_CALL_BACKS(), Callback_I_V_Impl.callbacksAvailable());
         //it is still callable, but its is only logged...
         assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
@@ -141,8 +142,8 @@ public class Callback_I_V_Test {
         Cleaner CLEANER = Cleaner.create();
         
         final IntRef intref = new IntRef();
-        final var NULL_PTR = new NativeFunctionPointer<Callback_I_V>(0);
-        Callback_I_V callback = new Callback_I_V() {
+        final Callback_I_V NULL_PTR = Callback_I_V.wrap(0);
+        Callback_I_V_Impl callback = new Callback_I_V_Impl() {
             
             @Override
             protected void callback(int value) {

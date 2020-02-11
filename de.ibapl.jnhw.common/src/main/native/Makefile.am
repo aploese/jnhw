@@ -13,9 +13,9 @@ libjnhw_common_la_SOURCES = \
  jnhw-common.c \
  JnhwExceptions.c \
  OpaqueMemory.c \
- Callback_I_V.c \
- Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.c \
- Callback_PtrOpaqueMemory_V.c
+ Callback_I_V_Impl.c \
+ Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.c \
+ Callback_PtrOpaqueMemory_V_Impl.c
 
 
 #hook into make all

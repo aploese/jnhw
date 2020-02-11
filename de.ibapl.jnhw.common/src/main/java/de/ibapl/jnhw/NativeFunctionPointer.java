@@ -24,11 +24,10 @@ package de.ibapl.jnhw;
 /**
  *
  * @author aploese
- * @param <T> .
  */
-public class NativeFunctionPointer<T> {
+public class NativeFunctionPointer {
 
-    public static void setAddress(NativeFunctionPointer<?> nativeFunctionPointer, long nativeAddress) {
+    public static void setAddress(NativeFunctionPointer nativeFunctionPointer, long nativeAddress) {
         nativeFunctionPointer.nativeAddress = nativeAddress;
     }
 
@@ -46,7 +45,7 @@ public class NativeFunctionPointer<T> {
      *
      * @param src
      */
-    NativeFunctionPointer(NativeFunctionPointer<T> src) {
+    NativeFunctionPointer(NativeFunctionPointer src) {
         this.nativeAddress = src.nativeAddress;
     }
 
@@ -65,7 +64,7 @@ public class NativeFunctionPointer<T> {
         if (!(obj instanceof NativeFunctionPointer)) {
             return false;
         }
-        final NativeFunctionPointer<?> other = (NativeFunctionPointer<?>) obj;
+        final NativeFunctionPointer other = (NativeFunctionPointer) obj;
         return this.nativeAddress == other.nativeAddress;
     }
 

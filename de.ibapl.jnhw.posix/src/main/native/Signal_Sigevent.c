@@ -83,7 +83,7 @@ extern "C" {
         return (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_signo;
     }
 
-/*
+        /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
      * Method:    sigev_signo
      * Signature: (I)V
@@ -93,7 +93,7 @@ extern "C" {
         (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_signo = value;
     }
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
      * Method:    sigev_notify_attributes
      * Signature: ()J
@@ -123,12 +123,22 @@ extern "C" {
         return CREATE_NATIVE_FUNCTION_POINTER((UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_function);
     }
 
+/*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
+     * Method:    sigev_notify_function
+     * Signature: (Lde/ibapl/jnhw/Callback_I_V;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function__Lde_ibapl_jnhw_Callback_1I_1V_2
+    (JNIEnv *env, jobject structSigevent, jobject value) {
+        (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_function = UNWRAP_NATIVE_FUNCTION_POINTER(value);
+    }
+
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
      * Method:    sigev_notify_function
-     * Signature: (Lde/ibapl/jnhw/NativeFunctionPointer;)V
+     * Signature: (Lde/ibapl/jnhw/Callback_PtrOpaqueMemory_V;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function__Lde_ibapl_jnhw_NativeFunctionPointer_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function__Lde_ibapl_jnhw_Callback_1PtrOpaqueMemory_1V_2
     (JNIEnv *env, jobject structSigevent, jobject value) {
         (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_function = UNWRAP_NATIVE_FUNCTION_POINTER(value);
     }

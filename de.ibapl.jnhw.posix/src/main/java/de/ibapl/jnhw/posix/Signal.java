@@ -33,6 +33,7 @@ import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
 import de.ibapl.jnhw.posix.sys.Types.size_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.util.function.LongFunction;
 
 /**
  * Wrapper around the {@code <signal.h>} header.
@@ -398,11 +399,14 @@ public class Signal {
 
         public final native void sigev_notify_attributes(Pthread.Pthread_attr_t value);
 
-        public final native NativeFunctionPointer<Callback_PtrOpaqueMemory_V<Sigval<T>>> sigev_notify_function();
+        public final native NativeFunctionPointer sigev_notify_function();
 
-        public final native <T extends OpaqueMemory> void sigev_notify_function(NativeFunctionPointer<Callback_PtrOpaqueMemory_V<Sigval<T>>> sigev_notify_function);
+        public final native void sigev_notify_function(Callback_I_V sigev_notify_function);
 
+        public final native void sigev_notify_function(Callback_PtrOpaqueMemory_V<T> sigev_notify_function);
     }
+
+    private final static native long SIG_DFL0();
 
     /**
      *
@@ -410,36 +414,46 @@ public class Signal {
      *
      * @return the native symbolic constant of SIG_DFL.
      */
-    //TODO fake function...
     @Define()
-    public final static native NativeFunctionPointer<Callback_I_V> SIG_DFL();
+    public final static Callback_I_V SIG_DFL() {
+        return Callback_I_V.wrap(SIG_DFL0());
+    }
+
+    public final static native long SIG_ERR0();
 
     /**
      * <b>POSIX:</b> Return value from signal() in case of error.
      *
      * @return the native symbolic constant of SIG_ERR.
      */
-    //TODO fake function...
     @Define()
-    public final static native NativeFunctionPointer<Callback_I_V> SIG_ERR();
+    public final static Callback_I_V SIG_ERR() {
+        return Callback_I_V.wrap(SIG_ERR0());
+    }
+
+    private final static native long SIG_HOLD0();
 
     /**
      * <b>POSIX:</b> Request that signal be held.
      *
      * @return the native symbolic constant of SIG_HOLD.
      */
-    //TODO fake function...
     @Define()
-    public final static native NativeFunctionPointer<Callback_I_V> SIG_HOLD();
+    public final static Callback_I_V SIG_HOLD() {
+        return Callback_I_V.wrap(SIG_HOLD0());
+    }
+
+    private final static native long SIG_IGN0();
 
     /**
      * <b>POSIX:</b> Request that signal be ignored.
      *
      * @return the native symbolic constant of SIG_IGN.
      */
-    //TODO fake function...
     @Define()
-    public final static native NativeFunctionPointer<Callback_I_V> SIG_IGN();
+    public final static Callback_I_V SIG_IGN() {
+        return Callback_I_V.wrap(SIG_IGN0());
+    }
 
     /**
      * <b>POSIX:</b> No asynchronous notification is delivered when the event of
@@ -738,7 +752,7 @@ public class Signal {
      * sigaction}</a>.
      *
      */
-    public static class Sigaction extends OpaqueMemory {
+    public static class Sigaction<T extends OpaqueMemory> extends OpaqueMemory {
 
         /**
          * Make sure the native lib is loaded
@@ -788,6 +802,8 @@ public class Signal {
          */
         public final native void sa_flags(int sa_flags);
 
+        private native long sa_handler0();
+
         /**
          * Pointer to a signal-catching function or one of the SIG_IGN or
          * SIG_DFL.
@@ -796,9 +812,13 @@ public class Signal {
          *
          * @return the native value of sa_handler.
          */
-        public final native NativeFunctionPointer<Callback_I_V> sa_handler();
+        public final Callback_I_V sa_handler(LongFunction<Callback_I_V> producer) {
+            return producer.apply(sa_handler0());
+        }
 
-        public final native void sa_handler(NativeFunctionPointer<Callback_I_V> sa_handler);
+        public final native void sa_handler(Callback_I_V sa_handler);
+
+        public final native long sa_sigaction0();
 
         /**
          * Pointer to a signal-catching function
@@ -807,9 +827,11 @@ public class Signal {
          *
          * @return the native value of sa_sigaction.
          */
-        public final native NativeFunctionPointer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, ?>> sa_sigaction();
+        public final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigaction(LongFunction<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T>> producer) {
+            return producer.apply(sa_sigaction0());
+        }
 
-        public final native <T extends OpaqueMemory> void sa_sigaction(NativeFunctionPointer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T>> sa_sigaction);
+        public final native <T extends OpaqueMemory> void sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigaction);
 
     }
 
@@ -1774,7 +1796,7 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native NativeFunctionPointer<Callback_I_V> signal(int sig, NativeFunctionPointer<Callback_I_V> func) throws NativeErrorException;
+    public final static native Callback_I_V signal(int sig, Callback_I_V func) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1840,7 +1862,7 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      *///TODO args missing ....
-    public final static native NativeFunctionPointer<Callback_I_V> sigset(int sig, NativeFunctionPointer<Callback_I_V> disp) throws NativeErrorException;
+    public final static native Callback_I_V sigset(int sig, Callback_I_V disp) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>

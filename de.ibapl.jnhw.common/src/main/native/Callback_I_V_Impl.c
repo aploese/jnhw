@@ -20,10 +20,12 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "de_ibapl_jnhw_Callback_PtrOpaqueMemory_V.h"
+#include "de_ibapl_jnhw_Callback_I_V_Impl.h"
+
 
 #include "jnhw-common.h"
 
+#include <signal.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,11 +39,11 @@ extern "C" {
     static jmethodID trampoline_ID;
 
     /*
-     * Class:     de_ibapl_jnhw_Callback_PtrOpaqueMemory_V
+     * Class:     de_ibapl_jnhw_Callback_I_V_Impl
      * Method:    initNative
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1PtrOpaqueMemory_1V_initNative
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_1Impl_initNative
     (JNIEnv *env, jclass clazz) {
         if ((*env)->GetJavaVM(env, &jvm)) {
             return;
@@ -50,19 +52,26 @@ extern "C" {
         if (Callback_Class == NULL) {
             return;
         }
-        trampoline_ID = getStaticMethodIdOfClassRef(env, clazz, "trampoline", "(IJ)V");
+        trampoline_ID = getStaticMethodIdOfClassRef(env, Callback_Class, "trampoline", "(II)V");
         if (trampoline_ID == NULL) {
             return;
         }
     }
 
 #define TRAMPOLINE(index) \
-    void _jnhw_trampoline_PtrOpaqueMemory_V__ ## index (void* ptr_a) { \
-        JNIEnv *env; \
-        (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL); \
-        (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, (intptr_t) ptr_a); \
-        (*jvm)->DetachCurrentThread(jvm); \
-    }
+    void _jnhw_trampoline_I_V__ ## index (int value) {\
+    JNIEnv *env;\
+        if ((*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL)) {\
+            raise(SIGABRT);\
+        } else {\
+            if (*env == NULL) {\
+                raise(SIGKILL);\
+                return;\
+            }\
+            (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, value);\
+            (*jvm)->DetachCurrentThread(jvm);\
+        }\
+}
 
     TRAMPOLINE(0)
     TRAMPOLINE(1)
@@ -74,14 +83,14 @@ extern "C" {
     TRAMPOLINE(7)
 
     /*
-     * Class:     de_ibapl_jnhw_Callback_PtrOpaqueMemory_V
+     * Class:     de_ibapl_jnhw_Callback_I_V_Impl
      * Method:    getNativeAddress
      * Signature: (I)J
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_Callback_1PtrOpaqueMemory_1V_getNativeAddress
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_1Impl_getNativeAddress
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
         switch (index) {
-#define TRAMPOLINE_CASE(index) case index: return (intptr_t) &_jnhw_trampoline_PtrOpaqueMemory_V__ ## index;
+#define TRAMPOLINE_CASE(index) case index: return (intptr_t) &_jnhw_trampoline_I_V__ ## index;
                 TRAMPOLINE_CASE(0);
                 TRAMPOLINE_CASE(1);
                 TRAMPOLINE_CASE(2);
@@ -97,11 +106,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_Callback_PtrOpaqueMemory_V
+     * Class:     de_ibapl_jnhw_Callback_I_V_Impl
      * Method:    MAX_CALL_BACKS
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_Callback_1PtrOpaqueMemory_1V_MAX_1CALL_1BACKS
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_1Impl_MAX_1CALL_1BACKS
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return MAX_CALL_BACKS;
     }
@@ -109,4 +118,3 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-

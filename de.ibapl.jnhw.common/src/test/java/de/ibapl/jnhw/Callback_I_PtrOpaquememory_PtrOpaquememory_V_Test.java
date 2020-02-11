@@ -68,13 +68,13 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
     public Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test() {
     }
 
-    private native NativeFunctionPointer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>> getCallbackPtr();
+    private native NativeFunctionPointer getCallbackPtr();
 
-    private native void setCallback(NativeFunctionPointer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>> callback);
+    private native void setCallback(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> callback);
 
     private native void doCallTheCallback(int value, A a, B b);
 
-    private class DummyCB extends Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V {
+    private class DummyCB extends Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl {
 
         @Override
         protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {
@@ -100,12 +100,12 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
     @Test
     public void testMAX_CALL_BACKS() {
         System.out.println("MAX_CALL_BACKS");
-        int maxCB = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.MAX_CALL_BACKS();
+        int maxCB = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.MAX_CALL_BACKS();
         assertEquals(8, maxCB);
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V[] cbs = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V[maxCB];
+        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl[] cbs = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl[maxCB];
         for (int i = 0; i < cbs.length; i++) {
             cbs[i] = new DummyCB();
-            assertEquals(maxCB - (i + 1), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
+            assertEquals(maxCB - (i + 1), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.callbacksAvailable());
         }
 
         RuntimeException re = assertThrows(RuntimeException.class, () -> {
@@ -118,12 +118,12 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
         System.runFinalization();
         System.gc();
 
-        assertEquals(maxCB, Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
+        assertEquals(maxCB, Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.callbacksAvailable());
     }
 
     @Test
     public void testNativeFunctionPointer() {
-        final var testPtr = new NativeFunctionPointer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>>(121);
+        final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> testPtr = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(121);
         setCallback(testPtr);
         assertEquals(getCallbackPtr(), testPtr);
     }
@@ -139,7 +139,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
         final ObjectRef<B> refB = new ObjectRef();
         A a = new A();
         B b = new B();
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> callback = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>() {
+        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A, B> callback = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<>() {
 
             @Override
             protected void callback(int value, A a, B b) {
@@ -164,6 +164,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
         setCallback(callback);
 
         assertEquals(getCallbackPtr(), callback);
+        assertSame(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.find(getCallbackPtr()), callback);
         doCallTheCallback(42, a, b);
         assertEquals(42, intref.value);
         assertEquals(a, refA.value);
@@ -176,7 +177,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
         System.runFinalization();
         System.gc();
 
-        assertEquals(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.MAX_CALL_BACKS(), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.callbacksAvailable());
+        assertEquals(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.MAX_CALL_BACKS(), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.callbacksAvailable());
         //it is still callable, but its is only logged...
         assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
@@ -199,8 +200,8 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
         B b = new B();
 
         final IntRef intref = new IntRef();
-        final var NULL_PTR = new NativeFunctionPointer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>>(0);
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> callback = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<>() {
+        final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> NULL_PTR = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(0);
+        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A, B> callback = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<>() {
 
             @Override
             protected void callback(int value, A a, B b) {
