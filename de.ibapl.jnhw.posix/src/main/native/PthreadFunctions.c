@@ -80,6 +80,38 @@ extern "C" {
         SET_INT_REF_VALUE(clock_id, _clock_id);
     }
 
+/*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    pthread_attr_destroy
+     * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1destroy
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject attr) {
+        if (attr == NULL) {
+            throw_NullPointerException(env, "attr is null");
+            return;
+        }
+        if (pthread_attr_destroy(UNWRAP_PTHREAD_ATTR_T_PTR(attr))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    pthread_attr_init
+     * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1init
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject attr) {
+        if (attr == NULL) {
+            throw_NullPointerException(env, "attr is null");
+            return;
+        }
+        if (pthread_attr_init(UNWRAP_PTHREAD_ATTR_T_PTR(attr))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
+
 #ifdef __cplusplus
 }
 #endif

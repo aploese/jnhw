@@ -25,6 +25,8 @@
 #ifdef HAVE_AIO_H
 
 #include <aio.h>
+//for offsetof
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,6 +40,16 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_sizeofAiocb
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct aiocb);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
+     * Method:    _aio_sigevent_value_Offset
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb__1aio_1sigevent_1value_1Offset
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct aiocb, aio_sigevent);
     }
 
     /*
@@ -82,24 +94,19 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
-     * Method:    aio_buf
-     * Signature: ()Ljava/nio/ByteBuffer;
-     * /
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1buf__
-    (JNIEnv *env, jobject structAiocb) {
-        return (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->;
-    }
-
-    / *
-     * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
-     * Method:    aio_buf
-     * Signature: (Ljava/nio/ByteBuffer;)V
-     * /
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1buf__Ljava_nio_ByteBuffer_2
-    (JNIEnv *env, jobject structAiocb) {
-        return (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->;
-    }
+     * Method:    aio_buf0
+     * Signature: (Ljava/nio/ByteBuffer;II)V
      */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1buf0
+    (JNIEnv *env, jobject structAiocb, jobject byteBuffer, jint off, jint length) {
+        if (byteBuffer == NULL) {
+            (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_buf = NULL;
+            (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = 0;
+        } else {
+            (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_buf = (*env)->GetDirectBufferAddress(env, byteBuffer) + off;
+            (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = (uint64_t) length;
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
@@ -109,16 +116,6 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1nbytes__
     (JNIEnv *env, jobject structAiocb) {
         return (int64_t) (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
-     * Method:    aio_nbytes
-     * Signature: (J)V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1nbytes__I
-    (JNIEnv *env, jobject structAiocb, jlong aio_nbytes) {
-        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = (uint64_t) aio_nbytes;
     }
 
     /*
@@ -140,27 +137,6 @@ extern "C" {
     (JNIEnv *env, jobject structAiocb, jint aio_reqprio) {
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_reqprio = aio_reqprio;
     }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
-     * Method:    aio_sigevent
-     * Signature: ()Lde/ibapl/jnhw/posix/Signal/Sigevent;
-     * /
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1sigevent__
-    (JNIEnv *env, jobject structAiocb) {
-        return (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->;
-    }
-
-    / *
-     * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
-     * Method:    aio_sigevent
-     * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigevent;)V
-     * /
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1sigevent__Lde_ibapl_jnhw_posix_Signal_Sigevent_2
-    (JNIEnv *env, jobject structAiocb) {
-        return (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->;
-    }
-     */
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb

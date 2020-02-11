@@ -268,17 +268,32 @@ public class Aio {
          */
         public static native int sizeofAiocb();
 
+        public static native int _aio_sigevent_value_Offset();
+
         /**
-         * cached instance.
+         * The signal number and value.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
+         * aiocb}</a>.
+         *
          */
-        private Sigevent aio_sigevent;
+        public final Sigevent aio_sigevent;
+
+        /**
+         * cached instance. TODO replace with builder
+         */
+        private ByteBuffer aio_buf;
 
         public Aiocb(OpaqueMemory owner, int offset) {
             super(owner, offset, sizeofAiocb());
+            aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
+            aio_buf(null);
+
         }
 
         public Aiocb() {
             super(sizeofAiocb(), false);
+            aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
+            aio_buf(null);
         }
 
         /**
@@ -324,16 +339,28 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public native ByteBuffer aio_buf();
+        public ByteBuffer aio_buf() {
+            return aio_buf;
+        }
 
+        private native void aio_buf0(ByteBuffer aio_buf, int offset, int length);
         /**
          * The location of buffer.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
          * aiocb}</a>.
          *
+         * aio_nbytes will also be set
+         *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public native void aio_buf(ByteBuffer aio_buf);
+        public void aio_buf(ByteBuffer aio_buf) {
+            this.aio_buf = aio_buf;
+            if (aio_buf == null) {
+                aio_buf0(null, 0, 0);
+            } else {
+                aio_buf0(aio_buf, aio_buf.position(), aio_buf.remaining());
+            }
+        }
 
         /**
          * The length of transfer.
@@ -343,15 +370,6 @@ public class Aio {
          * @return the native value of aio_nbytes.
          */
         public native long aio_nbytes();
-
-        /**
-         * The length of transfer.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
-         * aiocb}</a>.
-         *
-         * @param aio_nbytes the value of aio_nbytes to be set natively.
-         */
-        public native void aio_nbytes(long aio_nbytes);
 
         /**
          * The request priority offset.
@@ -370,24 +388,6 @@ public class Aio {
          * @param aio_reqprio the value of aio_reqprio to be set natively.
          */
         public native void aio_reqprio(int aio_reqprio);
-
-        /**
-         * The signal number and value.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
-         * aiocb}</a>.
-         *
-         * @return the native value of aio_sigevent.
-         */
-        public native Sigevent aio_sigevent();
-
-        /**
-         * The signal number and value.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
-         * aiocb}</a>.
-         *
-         * @param aio_sigevent the value of aio_sigevent to be set natively.
-         */
-        public native void aio_sigevent(Sigevent aio_sigevent);
 
         /**
          * The operation to be performed.

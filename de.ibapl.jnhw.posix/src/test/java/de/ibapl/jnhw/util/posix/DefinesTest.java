@@ -35,6 +35,7 @@ import de.ibapl.jnhw.posix.Poll;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.posix.Stdio;
+import de.ibapl.jnhw.posix.StringHeader;
 import de.ibapl.jnhw.posix.Termios;
 import de.ibapl.jnhw.posix.Time;
 import de.ibapl.jnhw.posix.Unistd;
@@ -97,7 +98,7 @@ public class DefinesTest {
     }
 
     @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.LINUX)
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testAioDefines() throws Exception {
         testDefines(Aio.class);
     }
@@ -166,6 +167,12 @@ public class DefinesTest {
     @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testStdioDefines() throws Exception {
         testDefines(Stdio.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testStringHeaderDefines() throws Exception {
+        testDefines(StringHeader.class);
     }
 
     @Test
@@ -255,6 +262,12 @@ public class DefinesTest {
     public void test_HAVE_STDIO_H() {
         System.out.println("HAVE_STDIO_H");
         assertTrue(Stdio.HAVE_STDIO_H(), "expected to have stdio.h");
+    }
+
+    @Test
+    public void test_HAVE_STRING_H() {
+        System.out.println("HAVE_STRING_H");
+        assertTrue(StringHeader.HAVE_STRING_H(), "expected to have string.h");
     }
 
     @Test

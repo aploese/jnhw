@@ -135,7 +135,7 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libaio_la_LIBADD =
-am_libaio_la_OBJECTS = AioDefines.lo AioFunctions.lo Aio_Aiocbs.lo
+am_libaio_la_OBJECTS = AioDefines.lo AioFunctions.lo Aio_Aiocb.lo
 libaio_la_OBJECTS = $(am_libaio_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -156,9 +156,9 @@ am_libioclt_la_OBJECTS = IoctlDefines.lo IoctlFunctions.lo
 libioclt_la_OBJECTS = $(am_libioclt_la_OBJECTS)
 libjnhw_posix_la_DEPENDENCIES = libaio.la liberrno.la libeventfd.la \
 	libfcntl.la libioclt.la liblocale.la libpoll.la libpthread.la \
-	libsignal.la libstdio.la libsysstat.la libsystypes.la \
-	libtermios.la libtime.la libunistd.la libposixutils.la \
-	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+	libsignal.la libstdio.la libstring.la libsysstat.la \
+	libsystypes.la libtermios.la libtime.la libunistd.la \
+	libposixutils.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 am_libjnhw_posix_la_OBJECTS = jnhw-posix-jni.lo
 libjnhw_posix_la_OBJECTS = $(am_libjnhw_posix_la_OBJECTS)
 liblocale_la_LIBADD =
@@ -184,6 +184,10 @@ libsignal_la_OBJECTS = $(am_libsignal_la_OBJECTS)
 libstdio_la_LIBADD =
 am_libstdio_la_OBJECTS = StdioDefines.lo StdioFunctions.lo
 libstdio_la_OBJECTS = $(am_libstdio_la_OBJECTS)
+libstring_la_LIBADD =
+am_libstring_la_OBJECTS = StringHeaderDefines.lo \
+	StringHeaderFunctions.lo
+libstring_la_OBJECTS = $(am_libstring_la_OBJECTS)
 libsysstat_la_LIBADD =
 am_libsysstat_la_OBJECTS = StatDefines.lo StatFunctions.lo
 libsysstat_la_OBJECTS = $(am_libsysstat_la_OBJECTS)
@@ -217,7 +221,7 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
-	./$(DEPDIR)/AioFunctions.Plo ./$(DEPDIR)/Aio_Aiocbs.Plo \
+	./$(DEPDIR)/AioFunctions.Plo ./$(DEPDIR)/Aio_Aiocb.Plo \
 	./$(DEPDIR)/Defines.Plo ./$(DEPDIR)/EventFdDefines.Plo \
 	./$(DEPDIR)/EventFdFunctions.Plo ./$(DEPDIR)/FcntlDefines.Plo \
 	./$(DEPDIR)/FcntlFunctions.Plo ./$(DEPDIR)/IoctlDefines.Plo \
@@ -241,7 +245,10 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/Signal_Stack_t.Plo \
 	./$(DEPDIR)/Signal_Ucontext_t.Plo ./$(DEPDIR)/StatDefines.Plo \
 	./$(DEPDIR)/StatFunctions.Plo ./$(DEPDIR)/StdioDefines.Plo \
-	./$(DEPDIR)/StdioFunctions.Plo ./$(DEPDIR)/TermiosDefines.Plo \
+	./$(DEPDIR)/StdioFunctions.Plo \
+	./$(DEPDIR)/StringHeaderDefines.Plo \
+	./$(DEPDIR)/StringHeaderFunctions.Plo \
+	./$(DEPDIR)/TermiosDefines.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo \
 	./$(DEPDIR)/Termios_Termios.Plo ./$(DEPDIR)/TimeDefines.Plo \
 	./$(DEPDIR)/TimeFunctions.Plo ./$(DEPDIR)/Time_Itimerspec.Plo \
@@ -274,18 +281,18 @@ SOURCES = $(libaio_la_SOURCES) $(liberrno_la_SOURCES) \
 	$(liblocale_la_SOURCES) $(libpoll_la_SOURCES) \
 	$(libposixutils_la_SOURCES) $(libpthread_la_SOURCES) \
 	$(libsignal_la_SOURCES) $(libstdio_la_SOURCES) \
-	$(libsysstat_la_SOURCES) $(libsystypes_la_SOURCES) \
-	$(libtermios_la_SOURCES) $(libtime_la_SOURCES) \
-	$(libunistd_la_SOURCES)
+	$(libstring_la_SOURCES) $(libsysstat_la_SOURCES) \
+	$(libsystypes_la_SOURCES) $(libtermios_la_SOURCES) \
+	$(libtime_la_SOURCES) $(libunistd_la_SOURCES)
 DIST_SOURCES = $(libaio_la_SOURCES) $(liberrno_la_SOURCES) \
 	$(libeventfd_la_SOURCES) $(libfcntl_la_SOURCES) \
 	$(libioclt_la_SOURCES) $(libjnhw_posix_la_SOURCES) \
 	$(liblocale_la_SOURCES) $(libpoll_la_SOURCES) \
 	$(libposixutils_la_SOURCES) $(libpthread_la_SOURCES) \
 	$(libsignal_la_SOURCES) $(libstdio_la_SOURCES) \
-	$(libsysstat_la_SOURCES) $(libsystypes_la_SOURCES) \
-	$(libtermios_la_SOURCES) $(libtime_la_SOURCES) \
-	$(libunistd_la_SOURCES)
+	$(libstring_la_SOURCES) $(libsysstat_la_SOURCES) \
+	$(libsystypes_la_SOURCES) $(libtermios_la_SOURCES) \
+	$(libtime_la_SOURCES) $(libunistd_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -458,6 +465,7 @@ noinst_LTLIBRARIES = \
  libpthread.la \
  libsignal.la \
  libstdio.la \
+ libstring.la \
  libsysstat.la \
  libsystypes.la \
  libtermios.la \
@@ -476,6 +484,7 @@ libjnhw_posix_la_LIBADD = \
  libpthread.la \
  libsignal.la \
  libstdio.la \
+ libstring.la \
  libsysstat.la \
  libsystypes.la \
  libtermios.la \
@@ -490,7 +499,7 @@ libjnhw_posix_la_SOURCES = \
 libaio_la_SOURCES = \
  AioDefines.c \
  AioFunctions.c \
- Aio_Aiocbs.c
+ Aio_Aiocb.c
 
 liberrno_la_SOURCES = \
  Isoc_ErrnoDefines.c \
@@ -543,6 +552,10 @@ libsignal_la_SOURCES = \
 libstdio_la_SOURCES = \
  StdioDefines.c \
  StdioFunctions.c
+
+libstring_la_SOURCES = \
+ StringHeaderDefines.c \
+ StringHeaderFunctions.c
 
 libsystypes_la_SOURCES = \
  TypesDefines.c
@@ -684,6 +697,9 @@ libsignal.la: $(libsignal_la_OBJECTS) $(libsignal_la_DEPENDENCIES) $(EXTRA_libsi
 libstdio.la: $(libstdio_la_OBJECTS) $(libstdio_la_DEPENDENCIES) $(EXTRA_libstdio_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libstdio_la_OBJECTS) $(libstdio_la_LIBADD) $(LIBS)
 
+libstring.la: $(libstring_la_OBJECTS) $(libstring_la_DEPENDENCIES) $(EXTRA_libstring_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libstring_la_OBJECTS) $(libstring_la_LIBADD) $(LIBS)
+
 libsysstat.la: $(libsysstat_la_OBJECTS) $(libsysstat_la_DEPENDENCIES) $(EXTRA_libsysstat_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libsysstat_la_OBJECTS) $(libsysstat_la_LIBADD) $(LIBS)
 
@@ -707,7 +723,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Aio_Aiocbs.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Aio_Aiocb.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Defines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdFunctions.Plo@am__quote@ # am--include-marker
@@ -742,6 +758,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdioDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdioFunctions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Termios.Plo@am__quote@ # am--include-marker
@@ -919,7 +937,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/AioDefines.Plo
 	-rm -f ./$(DEPDIR)/AioFunctions.Plo
-	-rm -f ./$(DEPDIR)/Aio_Aiocbs.Plo
+	-rm -f ./$(DEPDIR)/Aio_Aiocb.Plo
 	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
@@ -954,6 +972,8 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo
 	-rm -f ./$(DEPDIR)/StdioDefines.Plo
 	-rm -f ./$(DEPDIR)/StdioFunctions.Plo
+	-rm -f ./$(DEPDIR)/StringHeaderDefines.Plo
+	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
@@ -1014,7 +1034,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/AioDefines.Plo
 	-rm -f ./$(DEPDIR)/AioFunctions.Plo
-	-rm -f ./$(DEPDIR)/Aio_Aiocbs.Plo
+	-rm -f ./$(DEPDIR)/Aio_Aiocb.Plo
 	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
@@ -1049,6 +1069,8 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo
 	-rm -f ./$(DEPDIR)/StdioDefines.Plo
 	-rm -f ./$(DEPDIR)/StdioFunctions.Plo
+	-rm -f ./$(DEPDIR)/StringHeaderDefines.Plo
+	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo

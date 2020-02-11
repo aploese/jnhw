@@ -108,6 +108,8 @@ public class PthreadTest {
     @Test
     public void testPthread_attr_t() {
         Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
+        Pthread.pthread_attr_init(pthread_attr_t);
+        Pthread.pthread_attr_destroy(pthread_attr_t);
     }
 
 }

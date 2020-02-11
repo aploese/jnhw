@@ -104,6 +104,7 @@ extern "C" {
 #define UNWRAP_PTHREAD_T_PTR(pthread)UNWRAP_OPAQUE_MEM_TO(pthread_t*, pthread)
     
 #define UNWRAP_PTHREAD_ATTR_T_PTR(pthread_attr)UNWRAP_OPAQUE_MEM_TO(pthread_attr_t*, pthread_attr)
+#define UNWRAP_PTHREAD_ATTR_T_PTR_OR_NULL(pthread_attr)UNWRAP_OPAQUE_MEM_TO_OR_NULL(pthread_attr_t*, pthread_attr)
 
 #define UNWRAP_TIMER_T_PTR(timerid)UNWRAP_OPAQUE_MEM_TO(timer_t*, timerid)
     

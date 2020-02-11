@@ -21,6 +21,14 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
+import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.OpaqueMemory;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.nio.ByteBuffer;
+import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
@@ -82,9 +90,7 @@ public class AioTest {
     @Test
     public void testAio_read() throws Exception {
         System.out.println("aio_read");
-        Aio.Aiocb aiocb = null;
-        Aio.aio_read(aiocb);
-        // TODO review the generated test code and remove the default call to fail.
+// TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -120,12 +126,81 @@ public class AioTest {
      * Test of aio_write method, of class Aio.
      */
     @Test
-    public void testAio_write() throws Exception {
+    public void testAio_write_ByteBuffer() throws Exception {
         System.out.println("aio_write");
-        Aio.Aiocb aiocb = null;
+
+        final String HELLO_WORLD = "Hello world!\n";
+        final int SIVAL_INT = 0x01234567;
+
+        final IntRef intRef = new IntRef(0);
+        File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
+
+        final Aio.Aiocb aiocb = new Aio.Aiocb();
+        aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
+        final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
+        aioBuffer.put(HELLO_WORLD.getBytes());
+
+        aioBuffer.flip();
+        aiocb.aio_buf(aioBuffer);
+        assertEquals(HELLO_WORLD.length(), aiocb.aio_nbytes());
+        assertEquals(0, aioBuffer.position());
+        assertEquals(HELLO_WORLD.length(), aioBuffer.remaining());
+        aiocb.aio_offset(0);
+        aiocb.aio_reqprio(0);
+
+        aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD());
+        aiocb.aio_sigevent.sigev_notify_attributes((Pthread.Pthread_attr_t) null);
+        aiocb.aio_sigevent.sigev_value.sival_int(SIVAL_INT);
+
+        System.out.println("aio_write aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
+        System.out.println("aio_write Pthread_t: " + Pthread.pthread_self());
+        System.out.println("aio_write currentThread: " + Thread.currentThread());
+
+        aiocb.aio_sigevent.sigev_notify_function(new Callback_PtrOpaqueMemory_V<Signal.Sigval>() {
+            @Override
+            protected void callback(Signal.Sigval a) {
+                System.out.println("aio_write enter callback Pthread_t: " + Pthread.pthread_self());
+                System.out.println("aio_write in callback currentThread: " + Thread.currentThread());
+                aioBuffer.position(aioBuffer.position() + (int) aiocb.aio_nbytes());
+                synchronized (intRef) {
+                    intRef.value = a.sival_int();
+                    intRef.notify();
+                }
+                System.out.println("aio_write leave callback");
+            }
+
+            @Override
+            protected Signal.Sigval wrapA(long address) {
+                System.out.println("aio_write enter wrapA");
+
+                Signal.Sigval result = new Signal.Sigval();
+                result.sival_ptr(new OpaqueMemory(address, 0) {
+                });
+
+                System.out.println("aio_write a: " + result);
+                System.out.println("aio_write in wrapA Equals: " + result.equals(aiocb.aio_sigevent.sigev_value));
+
+                //assertEquals(aiocb.aio_sigevent.sigev_value, result);
+                System.out.println("aio_write leave wrapA");
+                System.out.flush();
+                return result;
+            }
+        });
+
         Aio.aio_write(aiocb);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        synchronized (intRef) {
+            if (intRef.value == 0) {
+                intRef.wait(1000);
+            }
+            assertEquals(SIVAL_INT, intRef.value);
+            Assertions.assertFalse(aioBuffer.hasRemaining());
+        }
+        Unistd.close(aiocb.aio_fildes());
+        FileReader fr = new FileReader(tmpFile);
+        BufferedReader br = new BufferedReader(fr);
+        String result = br.readLine() + '\n';
+        assertEquals(HELLO_WORLD, result);
     }
 
     /**

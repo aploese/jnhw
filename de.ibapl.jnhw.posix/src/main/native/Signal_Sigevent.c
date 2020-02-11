@@ -110,7 +110,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1attributes__Lde_ibapl_jnhw_posix_Pthread_00024Pthread_1attr_1t_2
     (JNIEnv *env, jobject structSigevent, jobject value) {
-        (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_attributes = UNWRAP_PTHREAD_ATTR_T_PTR(value);
+        (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_attributes = UNWRAP_PTHREAD_ATTR_T_PTR_OR_NULL(value);
     }
 
     /*

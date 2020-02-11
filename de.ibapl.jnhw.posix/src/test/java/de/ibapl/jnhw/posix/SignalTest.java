@@ -683,18 +683,7 @@ public class SignalTest {
 
         Signal.sigprocmask(Signal.SIG_BLOCK(), set, oset);
         try {
-            /*
-            long PTHread_self
-            new Thread(() -> {
-                try {
-                    Signal.pthread_kill(PTHread_self, SIG);
-                } catch (Exception ex) {
-                    fail("Error in raise thread!");
-                    Logger.getLogger(SignalTest.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }).start();
-             */
-            Signal.raise(SIG);  // currently we cant get pthread_self so we fire the signal here ....
+            Signal.pthread_kill(Pthread.pthread_self(), SIG); //We need to fire in this thread ...
             int signal = Signal.sigtimedwait(set, info, timeout);
 
             assertEquals(SIG, signal);
@@ -841,6 +830,7 @@ public class SignalTest {
         Assertions.assertNotSame(sigev_notify_function, sigevent.sigev_notify_function());
 
         Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
+        Pthread.pthread_attr_init(pthread_attr_t);
         sigevent.sigev_notify_attributes(pthread_attr_t);
         final Pthread.Pthread_attr_t pthread_attr_t1
                 = sigevent.sigev_notify_attributes((baseAddress, parent) -> {
@@ -848,6 +838,7 @@ public class SignalTest {
                 });
         assertEquals(pthread_attr_t, pthread_attr_t1);
         Assertions.assertNotSame(pthread_attr_t, pthread_attr_t1);
+        Pthread.pthread_attr_destroy(pthread_attr_t);
     }
 
     @Test

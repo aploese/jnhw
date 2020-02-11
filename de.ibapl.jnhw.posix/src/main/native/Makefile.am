@@ -18,6 +18,7 @@ noinst_LTLIBRARIES = \
  libpthread.la \
  libsignal.la \
  libstdio.la \
+ libstring.la \
  libsysstat.la \
  libsystypes.la \
  libtermios.la \
@@ -36,6 +37,7 @@ libjnhw_posix_la_LIBADD = \
  libpthread.la \
  libsignal.la \
  libstdio.la \
+ libstring.la \
  libsysstat.la \
  libsystypes.la \
  libtermios.la \
@@ -51,7 +53,7 @@ libjnhw_posix_la_SOURCES = \
 libaio_la_SOURCES = \
  AioDefines.c \
  AioFunctions.c \
- Aio_Aiocbs.c
+ Aio_Aiocb.c
   
 liberrno_la_SOURCES = \
  Isoc_ErrnoDefines.c \
@@ -104,6 +106,10 @@ libsignal_la_SOURCES = \
 libstdio_la_SOURCES = \
  StdioDefines.c \
  StdioFunctions.c
+
+libstring_la_SOURCES = \
+ StringHeaderDefines.c \
+ StringHeaderFunctions.c
 
 libsystypes_la_SOURCES = \
  TypesDefines.c

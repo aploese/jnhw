@@ -280,6 +280,10 @@ public class Signal {
             super(owner, offset, sizeofSigval());
         }
 
+        public Sigval(long baseAddress) {
+            super(baseAddress, sizeofSigval());
+        }
+
         /**
          * Integer signal value.
          * <b>POSIX:</b>
@@ -352,6 +356,16 @@ public class Signal {
 
         public Sigevent() {
             super(sizeofSigevent(), false);
+            sigev_value = new Sigval(this, _sigev_value_Offset());
+        }
+
+        public Sigevent(long baseAddress) {
+            super(baseAddress, sizeofSigevent());
+            sigev_value = new Sigval(this, _sigev_value_Offset());
+        }
+
+        Sigevent(OpaqueMemory owner, int offset) {
+            super(owner, offset, sizeofSigevent());
             sigev_value = new Sigval(this, _sigev_value_Offset());
         }
 

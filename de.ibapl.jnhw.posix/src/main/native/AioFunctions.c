@@ -85,7 +85,15 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocb;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1write
-    (JNIEnv *, jclass, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject aiocb) {
+        if (aiocb == NULL) {
+            throw_NullPointerException(env, "aiocb is null");
+            return;
+        }
+        if (aio_write(UNWRAP_STRUCT_AIOCB_PTR(aiocb))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio

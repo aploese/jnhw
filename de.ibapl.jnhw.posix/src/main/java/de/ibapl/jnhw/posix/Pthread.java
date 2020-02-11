@@ -29,7 +29,7 @@ import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
- * Wrapper around the {@code <aio.h>} header.
+ * Wrapper around the {@code <pthread.h>} header.
  *
  * See specs at:
  * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html">pthread.h
@@ -75,6 +75,22 @@ public class Pthread {
      * - access a thread CPU-time clock (ADVANCED REALTIME THREADS)</a>.
      */
     public final static native void pthread_getcpuclockid(Pthread_t thread_id, @Types.clockid_t IntRef clock_id) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_destroy.html">pthread_attr_destroy,
+     * pthread_attr_init - destroy and initialize the thread attributes
+     * object</a>.
+     */
+    public final static native void pthread_attr_destroy(Pthread_attr_t attr);
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_destroy.html">pthread_attr_destroy,
+     * pthread_attr_init - destroy and initialize the thread attributes
+     * object</a>.
+     */
+    public final static native void pthread_attr_init(Pthread_attr_t attr);
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html">{@code typedef

@@ -149,26 +149,27 @@ public class TimeTest {
     @Test
     public void testClock_nanosleep() throws Exception {
         System.out.println("clock_nanosleep");
-        int clock_id = 0;
+
+        int clock_id = Time.CLOCK_MONOTONIC();
         int flags = 0;
         Time.Timespec rqtp = new Time.Timespec(true);
         rqtp.tv_nsec(10_000_000L); //10ms
         Time.Timespec rmtp = new Time.Timespec();
 
         long start = System.nanoTime();
-        Time.clock_nanosleep(Time.CLOCK_MONOTONIC(), 0, rqtp, rmtp);
+        Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
         long end = System.nanoTime();
 
         Assertions.assertTrue(end - start < 11_000_000, "max 10ms but was " + (end - start) + "ns");
         Assertions.assertTrue(end - start > 9_000_000, "min 8ms");
 
         rqtp.tv_nsec(0);
-        Time.clock_nanosleep(Time.CLOCK_MONOTONIC(), 0, rqtp, rmtp);
+        Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
 
-        Time.clock_nanosleep(Time.CLOCK_MONOTONIC(), 0, rqtp, null);
+        Time.clock_nanosleep(clock_id, flags, rqtp, null);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.clock_nanosleep(Time.CLOCK_MONOTONIC(), 0, null, null);
+            Time.clock_nanosleep(clock_id, flags, null, null);
         });
     }
 
@@ -555,6 +556,7 @@ public class TimeTest {
     public void testTimer_gettime() throws Exception {
         System.out.println("timer_gettime");
         Time.Timer_t timerid = new Time.Timer_t();
+
         Time.Itimerspec value = null;
         Time.timer_gettime(timerid, value);
         // TODO review the generated test code and remove the default call to fail.

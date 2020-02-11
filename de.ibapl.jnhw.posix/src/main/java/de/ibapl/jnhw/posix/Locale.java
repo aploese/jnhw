@@ -584,7 +584,7 @@ public class Locale {
 
         /**
          *
-         * @return
+         * @return (locale_t)0
          */
         public static Locale_t locale_t_0() {
             return new Locale_t(0);
