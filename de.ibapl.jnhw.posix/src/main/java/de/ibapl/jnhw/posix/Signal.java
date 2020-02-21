@@ -329,6 +329,9 @@ public class Signal {
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
      * sigevent}</a>.
      *
+     * TODO this should be opaque base class with a generic class and a
+     * JavaCallback class ???
+     *
      */
     public static final class Sigevent<T extends OpaqueMemory> extends OpaqueMemory {
 

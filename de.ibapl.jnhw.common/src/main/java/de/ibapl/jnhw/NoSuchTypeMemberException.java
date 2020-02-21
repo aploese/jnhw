@@ -22,17 +22,18 @@
 package de.ibapl.jnhw;
 
 /**
+ * Thrown, if a member of an type is not available on this specific platform.
  *
  * @author aploese
  */
-public class NoSuchMethodException extends Exception {
+public class NoSuchTypeMemberException extends Exception {
     
-    public NoSuchMethodException() {
+    public NoSuchTypeMemberException() {
         
     }
     
-    public NoSuchMethodException(String message) {
-        super(message);
+    public NoSuchTypeMemberException(String typeName, String memberName) {
+        super(String.format("No such member %s.%s", typeName, memberName));
     }
     
 }

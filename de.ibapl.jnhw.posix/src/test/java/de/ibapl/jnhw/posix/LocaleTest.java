@@ -124,12 +124,12 @@ public class LocaleTest {
      * @throws java.lang.Exception
      */
     @Test
-    public void testUselocale() throws Exception {
+    public void testUselocale_AND_freelocale() throws Exception {
         System.out.println("uselocale");
         Locale.Locale_t newloc = Locale.LC_GLOBAL_LOCALE();
         Locale.Locale_t result = Locale.uselocale(newloc);
         Assertions.assertNotNull(result);
-        Assertions.assertNotEquals(Locale.Locale_t.locale_t_0(), result);
+            Assertions.assertNotEquals(Locale.Locale_t.locale_t_0(), result);
     }
 
 }

@@ -24,6 +24,7 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.posix.sys.Types.mode_t;
@@ -524,10 +525,10 @@ public final class Fcntl {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchMethodException if _LARGEFILE64_SOURCE is not
+     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int creat64(String path, @mode_t int mode) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
+    public final static native int creat64(String path, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -568,10 +569,10 @@ public final class Fcntl {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchMethodException if _LARGEFILE64_SOURCE is not
+     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int fcntl64(int fildes, int cmd) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
+    public final static native int fcntl64(int fildes, int cmd) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      *
@@ -584,10 +585,10 @@ public final class Fcntl {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchMethodException if _LARGEFILE64_SOURCE is not
+     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int fcntl64(int fildes, int cmd, int vararg_0) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
+    public final static native int fcntl64(int fildes, int cmd, int vararg_0) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -635,10 +636,10 @@ public final class Fcntl {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchMethodException if _LARGEFILE64_SOURCE is not
+     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int open64(String path, int oflag) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
+    public final static native int open64(String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -654,10 +655,10 @@ public final class Fcntl {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchMethodException if _LARGEFILE64_SOURCE is not
+     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int open64(String path, int oflag, @mode_t int mode) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
+    public final static native int open64(String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      *
@@ -712,10 +713,10 @@ public final class Fcntl {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchMethodException if _LARGEFILE64_SOURCE is not
+     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int openat64(int fd, String path, int oflag) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
+    public final static native int openat64(int fd, String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -733,10 +734,10 @@ public final class Fcntl {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchMethodException if _LARGEFILE64_SOURCE is not
+     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int openat64(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
+    public final static native int openat64(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -767,10 +768,10 @@ public final class Fcntl {
      *
      * @throws NativeErrorException if the return value of the native function
      * returns an error code.
-     * @throws de.ibapl.jnhw.NoSuchMethodException if _LARGEFILE64_SOURCE is not
+     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native void posix_fadvise64(int fildes, @off64_t long offset, @off64_t long len, int advice) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
+    public final static native void posix_fadvise64(int fildes, @off64_t long offset, @off64_t long len, int advice) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -796,10 +797,10 @@ public final class Fcntl {
      * @param len the length.
      *
      * @throws NativeErrorException if the return value of the native function
-     * @throws de.ibapl.jnhw.NoSuchMethodException if _LARGEFILE64_SOURCE is not
+     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined. returns an error code.
      */
-    public final static native void posix_fallocate64(int fildes, @off64_t long offset, @off64_t long len) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
+    public final static native void posix_fallocate64(int fildes, @off64_t long offset, @off64_t long len) throws NativeErrorException, NoSuchNativeMethodException;
 
     private Fcntl() {
     }

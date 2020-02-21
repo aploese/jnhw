@@ -190,8 +190,7 @@ public class Locale {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native @locale_t
-    Locale_t duplocale(@locale_t Locale_t locobj) throws NativeErrorException;
+    public final static native Locale_t duplocale(Locale_t locobj) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -201,7 +200,7 @@ public class Locale {
      * @param locobj a valid locale object handle.
      *
      */
-    public final static native void freelocale(@locale_t Locale_t locobj);
+    public final static native void freelocale(Locale_t locobj);
 
     /**
      * <b>POSIX:</b>
@@ -229,8 +228,7 @@ public class Locale {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native @locale_t
-    Locale_t newlocale(int category_mask, String locale, @locale_t Locale_t base) throws NativeErrorException;
+    public final static native Locale_t newlocale(int category_mask, String locale, Locale_t base) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -259,8 +257,7 @@ public class Locale {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native @locale_t
-    Locale_t uselocale(@locale_t Locale_t newloc) throws NativeErrorException;
+    public final static native Locale_t uselocale(Locale_t newloc) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/locale.h.html">{@code typedef
@@ -269,7 +266,7 @@ public class Locale {
      * @author aploese
      */
     @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @Target({ElementType.TYPE})
     public static @interface locale_t {
     }
 
@@ -574,6 +571,7 @@ public class Locale {
         public final native String thousands_sep();
     }
 
+    @locale_t
     public static class Locale_t {
 
         private final long nativeValue;

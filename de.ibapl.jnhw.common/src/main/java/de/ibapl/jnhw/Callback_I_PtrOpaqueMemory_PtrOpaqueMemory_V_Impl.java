@@ -79,8 +79,7 @@ public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A extend
     }
 
     public Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl() {
-        super();
-        aquire();
+        super(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl::aquire);
     }
 
     @SuppressWarnings("unused")
@@ -99,12 +98,18 @@ public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A extend
 
     private static native long getNativeAddress(final int index);
 
-    private synchronized void aquire() {
+    /**
+     * TODO make arg of type
+     * Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<?, ?>
+     *
+     * @param cb
+     * @return
+     */
+    private static synchronized long aquire(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<?, ?> cb) {
         for (int i = 0; i < refs.length; i++) {
             if (refs[i].get() == null) {
-                refs[i] = new WeakReference(this);
-                NativeFunctionPointer.setAddress(this, getNativeAddress(i));
-                return;
+                refs[i] = new WeakReference(cb);
+                return getNativeAddress(i);
             }
         }
         //Hint: Try run GC to free any??? or add more cbs...

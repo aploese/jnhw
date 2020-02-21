@@ -24,6 +24,7 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.ByteRef;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.util.posix.Defines;
@@ -132,7 +133,7 @@ public class UnistdTests {
             seekResult = Unistd.lseek64(fd, SEEK_TO, Unistd.SEEK_SET());
             Assertions.assertEquals(SEEK_TO, seekResult, "result of seek");
         } else {
-            Assertions.assertThrows(de.ibapl.jnhw.NoSuchMethodException.class, () -> {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Unistd.lseek64(-1, 1, Unistd.SEEK_SET());
             });
         }

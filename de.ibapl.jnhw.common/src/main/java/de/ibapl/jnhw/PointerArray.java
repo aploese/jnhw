@@ -26,35 +26,62 @@ package de.ibapl.jnhw;
  * @author aploese
  * @param <T>
  */
-public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
+public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
+
+    public void set(int i, T element) {
+        cachedReferences[i] = element;
+        set0(i, element);
+    }
+
+    private native long get0(int i);
+
+    private native void set0(int i, T element);
 
     @FunctionalInterface
-    protected interface ElementFactory<T extends OpaqueMemory>{
-        
-        T create(StructArray<T> parent, int offset);
-        
-    }
-    
-    private final T[] elements;
+    public static interface ElementProducer<T extends OpaqueMemory> {
 
-    public StructArray(T[] array, ElementFactory<T> factory, int elementSizeInBytes, boolean clearMem) {
-        super(array.length, elementSizeInBytes, clearMem);
-        elements = array;
-        for (int i = 0; i < array.length; i++) {
-            elements[i] = factory.create(this, elementSizeInBytes * i);
+        /**
+         *
+         * @param baseAddress
+         * @param index
+         * @param cachedElement
+         * @return
+         */
+        T produce(long baseAddress, int index, T cachedElement);
+
+    }
+
+    private final Object[] cachedReferences;
+
+    public static native int sizeofPointer();
+
+    public PointerArray(int length, boolean clearMem) {
+        super(length, sizeofPointer(), clearMem);
+        cachedReferences = new Object[length];
+        for (int i = 0; i < cachedReferences.length; i++) {
+            set(i, (T) cachedReferences[i]);
         }
     }
 
-    public final T get(int index) {
-        return elements[index];
+    public final T get(int index, ElementProducer<T> p) {
+        final long baseAddress = get0(index);
+        final T ref = (T) cachedReferences[index];
+        if (OpaqueMemory.isSameAddress(baseAddress, ref)) {
+            return ref;
+        } else {
+            final T newRef = p.produce(baseAddress, index, ref);
+            cachedReferences[index] = newRef;
+            return newRef;
+        }
     }
 
     /**
      * length is alway >= 0
-     * @return 
+     *
+     * @return
      */
     public final int length() {
-        return elements.length;
+        return cachedReferences.length;
     }
 
     @Override
@@ -62,7 +89,7 @@ public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         boolean first = true;
-        for (T element : elements) {
+        for (Object element : cachedReferences) {
             if (first) {
                 first = false;
             } else {

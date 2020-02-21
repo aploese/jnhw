@@ -25,12 +25,12 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
-import de.ibapl.jnhw.StructArray;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.nio.ByteBuffer;
+import java.util.function.LongFunction;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -195,7 +195,7 @@ public class Aio {
      *
      * @param aiocb refers to an asynchronous I/O control block
      * @return If the asynchronous I/O operation has completed, thern the number
-     * aof transferred bytes are returned. * If the asynchronous I/O operation
+     * of transferred bytes are returned. If the asynchronous I/O operation *
      * has not yet completed, the results of aio_return() are undefined.
      *
      * @throws NativeErrorException if the return value of the native function
@@ -209,14 +209,13 @@ public class Aio {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_suspend.html">aio_suspend
      * - wait for an asynchronous I/O request</a>.
      *
-     * @param aiocb refers to an asynchronous I/O control blocks to suspend.
-     * @param nent
+     * @param list refers to an asynchronous I/O control blocks to suspend.
      * @param timeout
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void aio_suspend(Aiocbs aiocb, int nent, Timespec timeout) throws NativeErrorException;
+    public final static native void aio_suspend(Aiocbs list, Timespec timeout) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -232,19 +231,17 @@ public class Aio {
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_suspend.html">lio_listio
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/lio_listio.html">lio_listio
      * - list directed I/O</a>.
      *
      * @param mode
      * @param list refers to an asynchronous I/O control blocks.
-     * @param nent
      * @param sig
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void lio_listio(int mode, Aiocbs list,
-            int nent, Sigevent sig) throws NativeErrorException;
+    public final static native void lio_listio(int mode, Aiocbs list, Sigevent sig) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
@@ -278,22 +275,24 @@ public class Aio {
          */
         public final Sigevent<T> aio_sigevent;
 
-        /**
-         * cached instance. TODO replace with builder
-         */
-        private ByteBuffer aio_buf;
-
         public Aiocb(OpaqueMemory owner, int offset) {
             super(owner, offset, sizeofAiocb());
             aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
-            aio_buf(null);
-
         }
 
         public Aiocb() {
-            super(sizeofAiocb(), false);
+            super(sizeofAiocb(), true);
             aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
-            aio_buf(null);
+        }
+
+        /**
+         * TODO set ByteBuffer ???
+         *
+         * @param address
+         */
+        public Aiocb(long address) {
+            super(address, sizeofAiocb());
+            aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
         }
 
         /**
@@ -332,6 +331,7 @@ public class Aio {
          */
         public native void aio_offset(long aio_offset);
 
+        private native long aio_buf0();
         /**
          * The location of buffer.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
@@ -339,11 +339,14 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public ByteBuffer aio_buf() {
-            return aio_buf;
+        public <T> T aio_buf(LongFunction<T> producer) {
+            return producer.apply(aio_buf0());
         }
 
-        private native void aio_buf0(ByteBuffer aio_buf, int offset, int length);
+        private native void aio_bufByteBuffer(ByteBuffer aio_buf, int offset, int length);
+
+        private native void aio_bufOpaqueMemory(OpaqueMemory aio_buf, int offset, int length);
+
         /**
          * The location of buffer.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
@@ -354,11 +357,48 @@ public class Aio {
          * @param aio_buf the value of aio_buf to be set natively.
          */
         public void aio_buf(ByteBuffer aio_buf) {
-            this.aio_buf = aio_buf;
             if (aio_buf == null) {
-                aio_buf0(null, 0, 0);
+                aio_bufByteBuffer(null, 0, 0);
             } else {
-                aio_buf0(aio_buf, aio_buf.position(), aio_buf.remaining());
+                aio_bufByteBuffer(aio_buf, aio_buf.position(), aio_buf.remaining());
+            }
+        }
+
+        /**
+         * The location of buffer.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
+         * aiocb}</a>.
+         *
+         * aio_nbytes will also be set
+         *
+         * @param aio_buf the value of aio_buf to be set natively.
+         */
+        public void aio_buf(OpaqueMemory aio_buf) {
+            if (aio_buf == null) {
+                aio_bufOpaqueMemory(null, 0, 0);
+            } else {
+                aio_bufOpaqueMemory(aio_buf, 0, aio_buf.sizeInBytes);
+            }
+        }
+
+        /**
+         * The location of buffer.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
+         * aiocb}</a>.
+         *
+         * aio_nbytes will also be set
+         *
+         * @throws ArrayIndexOutOfBoundsException if {@code off} or
+         * {@code aio_nbytes} out of bounds.
+         *
+         *
+         * @param aio_buf the value of aio_buf to be set natively.
+         */
+        public void aio_buf(OpaqueMemory aio_buf, int off, int aio_nbytes) {
+            if (aio_buf == null) {
+                aio_bufOpaqueMemory(null, 0, 0);
+            } else {
+                aio_bufOpaqueMemory(aio_buf, off, aio_nbytes);
             }
         }
 
@@ -414,7 +454,7 @@ public class Aio {
      * aiocb}</a>.
      *
      */
-    public static final class Aiocbs extends StructArray<Aiocb> {
+    public static final class Aiocbs extends PointerArray<Aiocb> {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -426,11 +466,7 @@ public class Aio {
 
         public Aiocbs(int arraylength) {
             //get uninitialized mem we need to set this anyway ...
-            super(new Aiocb[arraylength], Aiocbs::createAtOffset, Aiocb.sizeofAiocb(), false);
-        }
-
-        private static Aiocb createAtOffset(OpaqueMemory parent, int offset) {
-            return new Aiocb(parent, offset);
+            super(arraylength, false);
         }
 
     }

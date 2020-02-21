@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
@@ -47,6 +48,22 @@ public class Pthread {
         LibJnhwPosixLoader.touch();
     }
 
+    /**
+     * <b>POSIX.TPS:</b>
+     *
+     * @return the native symbolic constant of PTHREAD_EXPLICIT_SCHED.
+     */
+    @Define
+    public final static native int PTHREAD_EXPLICIT_SCHED();
+
+    /**
+     * <b>POSIX.TPS:</b>
+     *
+     * @return the native symbolic constant of PTHREAD_INHERIT_SCHED.
+     */
+    @Define
+    public final static native int PTHREAD_INHERIT_SCHED();
+
     public final static native boolean HAVE_PTHREAD_H();
 
     private static native void pthread_self0(Pthread_t result);
@@ -68,6 +85,84 @@ public class Pthread {
      * - pthread_equal - compare thread IDs</a>.
      */
     public final static native boolean pthread_equal(Pthread_t t1, Pthread_t t2);
+
+    /**
+     * <b>POSIX[TPS]:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_getinheritsched.html">pthread_attr_getinheritsched,
+     * pthread_attr_setinheritsched - get and set the inheritsched attribute
+     * (REALTIME THREADS)</a>.
+     *
+     * @param attr
+     *
+     * @return the value of the native inheritsched arg.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native int pthread_attr_getinheritsched(Pthread_attr_t attr) throws NativeErrorException;
+
+    /**
+     * <b>POSIX.TPS:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_getschedparam.html">pthread_attr_getschedparam,
+     * pthread_attr_setschedparam - get and set the schedparam attribute</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native void pthread_attr_getschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException;
+
+        /**
+     * <b>POSIX.TPS:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_setinheritsched.html">pthread_attr_getinheritsched,
+     * pthread_attr_setinheritsched - get and set the inheritsched attribute
+     * (REALTIME THREADS)</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native void pthread_attr_setinheritsched(Pthread_attr_t attr, int inheritsched) throws NativeErrorException;
+
+        /**
+     * <b>POSIX.TPS:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_setschedparam.html">pthread_attr_getschedparam,
+     * pthread_attr_setschedparam - get and set the schedparam attribute</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native void pthread_attr_setschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException;
+
+        /**
+     * <b>POSIX.TPS:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_getschedparam.html">pthread_getschedparam,
+     * pthread_setschedparam - dynamic thread scheduling parameters access
+     * (REALTIME THREADS)</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native void pthread_getschedparam(Pthread_t thread, IntRef policy, Sched.Sched_param param) throws NativeErrorException;
+
+            /**
+     * <b>POSIX.TPS:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_setschedparam.html">pthread_getschedparam,
+     * pthread_setschedparam - dynamic thread scheduling parameters access
+     * (REALTIME THREADS)</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native void pthread_setschedparam(Pthread_t thread, int policy, Sched.Sched_param param) throws NativeErrorException;
+
+    /**
+     * <b>POSIX.TPS:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_setschedprio.html">pthread_setschedprio
+     * - dynamic thread scheduling parameters access (REALTIME THREADS)</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native void pthread_setschedprio(Pthread_t thread, int prio) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>

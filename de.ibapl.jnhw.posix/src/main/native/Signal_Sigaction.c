@@ -59,7 +59,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1flags__
-    (__attribute__ ((unused)) JNIEnv *env, jobject structSigaction) {
+    (JNIEnv *env, jobject structSigaction) {
         return (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_flags;
     }
 
@@ -69,7 +69,7 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1flags__I
-    (__attribute__ ((unused)) JNIEnv *env, jobject structSigaction, jint sa_flags) {
+    (JNIEnv *env, jobject structSigaction, jint sa_flags) {
         (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_flags = sa_flags;
     }
 

@@ -90,14 +90,13 @@ extern "C" {
      * If opaqueMemory == NULL return NULL, otherwise unwrap.
      * 
      */
-#define UNWRAP_OPAQUE_MEM_TO_OR_NULL(destType, opaqueMemory) opaqueMemory == NULL ? NULL : (destType) UNWRAP_OPAQUE_MEM_TO_INTPTR_T(opaqueMemory)
+#define UNWRAP_OPAQUE_MEM_TO_OR_NULL(destType, opaqueMemory) opaqueMemory == NULL ? (destType)NULL : (destType)UNWRAP_OPAQUE_MEM_TO_INTPTR_T(opaqueMemory)
 #define UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) UNWRAP_OPAQUE_MEM_TO(void*, opaqueMemory)
 #define UNWRAP_OPAQUE_MEM_TO_VOID_PTR_OR_NULL(opaqueMemory) UNWRAP_OPAQUE_MEM_TO_OR_NULL(void*, opaqueMemory)
 
 #define SIZE_OF_OPAQUE_MEM(opaqueMem) (*env)->GetIntField(env, opaqueMem, de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID)
 
-//length must always >= 0
-#define LENGTH_OF_STRUCTURE_ARRAY(structureArray) (uint32_t)(*env)->CallIntMethod(env, structureArray, de_ibapl_jnhw_StructArray_length_ID)
+#define LENGTH_OF_STRUCTURE_ARRAY(structureArray) (int32_t)(*env)->CallIntMethod(env, structureArray, de_ibapl_jnhw_StructArray_length_ID)
 
 #define GET_BYTE_REF_VALUE(valueRef) (*env)->GetByteField(env, valueRef, de_ibapl_jnhw_ByteRef_value_ID)
 #define SET_BYTE_REF_VALUE(valueRef, value) (*env)->SetByteField(env, valueRef, de_ibapl_jnhw_ByteRef_value_ID, value)

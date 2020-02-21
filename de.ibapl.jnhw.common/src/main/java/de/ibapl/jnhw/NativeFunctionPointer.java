@@ -21,56 +21,24 @@
  */
 package de.ibapl.jnhw;
 
+import java.util.function.ToLongFunction;
+
 /**
  *
  * @author aploese
  */
-public class NativeFunctionPointer {
+public class NativeFunctionPointer extends NativePointer {
 
-    public static void setAddress(NativeFunctionPointer nativeFunctionPointer, long nativeAddress) {
-        nativeFunctionPointer.nativeAddress = nativeAddress;
+    protected <T extends NativePointer> NativeFunctionPointer(ToLongFunction<T> producer) {
+        super(producer);
     }
 
-    private long nativeAddress;
-
-    public NativeFunctionPointer(long nativeAddress) {
-        this.nativeAddress = nativeAddress;
+    protected NativeFunctionPointer(long nativeAddress) {
+        super(nativeAddress);
     }
 
-    public NativeFunctionPointer() {
-    }
-
-    /**
-     * cast to simple pointer...
-     *
-     * @param src
-     */
-    NativeFunctionPointer(NativeFunctionPointer src) {
-        this.nativeAddress = src.nativeAddress;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + (int) (this.nativeAddress ^ (this.nativeAddress >>> 32));
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof NativeFunctionPointer)) {
-            return false;
-        }
-        final NativeFunctionPointer other = (NativeFunctionPointer) obj;
-        return this.nativeAddress == other.nativeAddress;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("{nativeAddress : 0x%08x}", nativeAddress);
+    protected NativeFunctionPointer(NativePointer src) {
+        super(src);
     }
 
 }

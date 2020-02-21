@@ -33,6 +33,7 @@ import de.ibapl.jnhw.posix.Fcntl;
 import de.ibapl.jnhw.posix.Locale;
 import de.ibapl.jnhw.posix.Poll;
 import de.ibapl.jnhw.posix.Pthread;
+import de.ibapl.jnhw.posix.Sched;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.posix.Stdio;
 import de.ibapl.jnhw.posix.StringHeader;
@@ -159,6 +160,12 @@ public class DefinesTest {
 
     @Test
     @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testSchedDefines() throws Exception {
+        testDefines(Sched.class);
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testStatDefines() throws Exception {
         testDefines(Stat.class);
     }
@@ -246,6 +253,15 @@ public class DefinesTest {
             Assertions.assertFalse(Pthread.HAVE_PTHREAD_H(), "not expected to have pthread.h");
         } else {
             Assertions.assertTrue(Pthread.HAVE_PTHREAD_H(), "expected to have pthread.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_SCHED_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Sched.HAVE_SCHED_H(), "not expected to have sched.h");
+        } else {
+            Assertions.assertTrue(Sched.HAVE_SCHED_H(), "expected to have sched.h");
         }
     }
 

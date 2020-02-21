@@ -57,7 +57,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1int__
-    (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval) {
+    (JNIEnv *env, jobject unionSigval) {
         return (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_int;
     }
 
@@ -67,7 +67,7 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1int__I
-    (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval, jint sival_int) {
+    (JNIEnv *env, jobject unionSigval, jint sival_int) {
         (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_int = sival_int;
     }
 
@@ -77,7 +77,7 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/OpaqueMemory;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr
-    (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval, jobject sival_ptr) {
+    (JNIEnv *env, jobject unionSigval, jobject sival_ptr) {
         (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_ptr = UNWRAP_OPAQUE_MEM_TO_VOID_PTR_OR_NULL(sival_ptr);
     }
 

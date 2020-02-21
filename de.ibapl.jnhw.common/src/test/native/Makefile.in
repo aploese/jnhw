@@ -147,7 +147,7 @@ am_libtests_la_OBJECTS = ByteRefTests.lo ShortRefTests.lo \
 	IntRefTests.lo LongRefTests.lo ObjectRefTests.lo \
 	Callback_I_V_Tests.lo \
 	Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.lo \
-	Callback_PtrOpaqueMemory_V_Tests.lo
+	Callback_PtrOpaqueMemory_V_Tests.lo JnhwExceptionsTest.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -168,8 +168,9 @@ am__depfiles_remade = ./$(DEPDIR)/ByteRefTests.Plo \
 	./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.Plo \
 	./$(DEPDIR)/Callback_I_V_Tests.Plo \
 	./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Tests.Plo \
-	./$(DEPDIR)/IntRefTests.Plo ./$(DEPDIR)/LongRefTests.Plo \
-	./$(DEPDIR)/ObjectRefTests.Plo ./$(DEPDIR)/ShortRefTests.Plo \
+	./$(DEPDIR)/IntRefTests.Plo ./$(DEPDIR)/JnhwExceptionsTest.Plo \
+	./$(DEPDIR)/LongRefTests.Plo ./$(DEPDIR)/ObjectRefTests.Plo \
+	./$(DEPDIR)/ShortRefTests.Plo \
 	./$(DEPDIR)/libjnhw-common-test.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -366,7 +367,8 @@ libtests_la_SOURCES = \
  ObjectRefTests.c \
  Callback_I_V_Tests.c \
  Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.c \
- Callback_PtrOpaqueMemory_V_Tests.c
+ Callback_PtrOpaqueMemory_V_Tests.c \
+ JnhwExceptionsTest.c
 
 all: all-am
 
@@ -465,6 +467,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_V_Tests.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Tests.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IntRefTests.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwExceptionsTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LongRefTests.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ObjectRefTests.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ShortRefTests.Plo@am__quote@ # am--include-marker
@@ -636,6 +639,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Callback_I_V_Tests.Plo
 	-rm -f ./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Tests.Plo
 	-rm -f ./$(DEPDIR)/IntRefTests.Plo
+	-rm -f ./$(DEPDIR)/JnhwExceptionsTest.Plo
 	-rm -f ./$(DEPDIR)/LongRefTests.Plo
 	-rm -f ./$(DEPDIR)/ObjectRefTests.Plo
 	-rm -f ./$(DEPDIR)/ShortRefTests.Plo
@@ -690,6 +694,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Callback_I_V_Tests.Plo
 	-rm -f ./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Tests.Plo
 	-rm -f ./$(DEPDIR)/IntRefTests.Plo
+	-rm -f ./$(DEPDIR)/JnhwExceptionsTest.Plo
 	-rm -f ./$(DEPDIR)/LongRefTests.Plo
 	-rm -f ./$(DEPDIR)/ObjectRefTests.Plo
 	-rm -f ./$(DEPDIR)/ShortRefTests.Plo

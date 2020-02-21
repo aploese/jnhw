@@ -58,7 +58,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1signo
-    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+    (JNIEnv *env, jobject structSiginfo_t) {
         return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_signo;
     }
 
@@ -68,7 +68,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1code
-    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+    (JNIEnv *env, jobject structSiginfo_t) {
         return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_code;
     }
 
@@ -78,7 +78,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1errno
-    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+    (JNIEnv *env, jobject structSiginfo_t) {
         return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_errno;
     }
 
@@ -88,7 +88,7 @@ extern "C" {
      * Signature: ()I;
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1pid
-    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+    (JNIEnv *env, jobject structSiginfo_t) {
         return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_pid;
     }
 
@@ -98,7 +98,7 @@ extern "C" {
      * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1addr
-    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+    (JNIEnv *env, jobject structSiginfo_t) {
         return (intptr_t) (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_addr;
     }
 
@@ -108,7 +108,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1status
-    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+    (JNIEnv *env, jobject structSiginfo_t) {
         return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_status;
     }
 
@@ -118,7 +118,7 @@ extern "C" {
      * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1band
-    (__attribute__ ((unused)) JNIEnv *env, jobject structSiginfo_t) {
+    (JNIEnv *env, jobject structSiginfo_t) {
         return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_band;
     }
 

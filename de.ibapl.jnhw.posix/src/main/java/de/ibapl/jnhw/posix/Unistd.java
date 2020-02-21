@@ -26,6 +26,7 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.sys.Types.gid_t;
@@ -277,11 +278,11 @@ public final class Unistd {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchMethodException if _LARGEFILE64_SOURCE is not
+     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
     public final static native @off64_t
-    long lseek64(int fildes, @off64_t long offset, int whence) throws NativeErrorException, de.ibapl.jnhw.NoSuchMethodException;
+    long lseek64(int fildes, @off64_t long offset, int whence) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>

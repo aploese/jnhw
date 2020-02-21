@@ -27,36 +27,53 @@ import java.util.function.ToLongFunction;
  *
  * @author aploese
  */
-public abstract class Callback_I_V extends NativeFunctionPointer {
+public class NativePointer {
 
-    public static Callback_I_V wrap(long nativeAddress) {
-        Callback_I_V result = new Callback_I_V(nativeAddress) {
-            @Override
-            protected void callback(int value) {
-                throw new UnsupportedOperationException("This is a wrapper for an unknown function. Only the address is known to us, but not the Type!");
-            }
-
-        };
-        return result;
+    public static NativePointer wrap(long nativeAddress) {
+        return new NativePointer(nativeAddress);
     }
 
-    protected <T extends Callback_I_V> Callback_I_V(ToLongFunction<T> producer) {
-        super(producer);
+    private final long nativeAddress;
+
+    protected <T extends NativePointer> NativePointer(ToLongFunction<T> producer) {
+        this.nativeAddress = producer.applyAsLong((T) this);
     }
 
-    protected Callback_I_V(long nativeAddress) {
-        super(nativeAddress);
-    }
-
-    protected Callback_I_V(NativePointer src) {
-        super(src);
+    protected NativePointer(long nativeAddress) {
+        this.nativeAddress = nativeAddress;
     }
 
     /**
-     * this will be called from the native code.
+     * cast to simple pointer...
      *
-     * @param value
+     * @param src
      */
-    protected abstract void callback(int value);
+    protected NativePointer(NativePointer src) {
+        this.nativeAddress = src.nativeAddress;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (int) (this.nativeAddress ^ (this.nativeAddress >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof NativePointer)) {
+            return false;
+        }
+        final NativePointer other = (NativePointer) obj;
+        return this.nativeAddress == other.nativeAddress;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("{nativeAddress : 0x%08x}", nativeAddress);
+    }
 
 }

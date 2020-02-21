@@ -82,7 +82,7 @@ public class Callback_PtrOpaquememory_V_Test {
     public void testMAX_CALL_BACKS() {
         System.out.println("MAX_CALL_BACKS");
         int maxCB = Callback_PtrOpaqueMemory_V_Impl.MAX_CALL_BACKS();
-        assertEquals(8, maxCB);
+        assertEquals(32, maxCB);
         Callback_PtrOpaqueMemory_V_Impl[] cbs = new Callback_PtrOpaqueMemory_V_Impl[maxCB];
         for (int i = 0; i < cbs.length; i++) {
             cbs[i] = new DummyCB();
@@ -92,7 +92,7 @@ public class Callback_PtrOpaquememory_V_Test {
         RuntimeException re = assertThrows(RuntimeException.class, () -> {
             new DummyCB();
         });
-        assertEquals("No more Callbacks available! max: 8 reached", re.getMessage());
+        assertEquals("No more Callbacks available! max: 32 reached", re.getMessage());
 
         cbs = null;
 

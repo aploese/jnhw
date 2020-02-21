@@ -21,6 +21,8 @@
  */
 package de.ibapl.jnhw;
 
+import java.util.function.ToLongFunction;
+
 /**
  *
  * @author aploese
@@ -28,15 +30,26 @@ package de.ibapl.jnhw;
 public abstract class Callback_PtrOpaqueMemory_V<A extends OpaqueMemory> extends NativeFunctionPointer {
 
     public static Callback_PtrOpaqueMemory_V wrap(long nativeAddress) {
-        Callback_PtrOpaqueMemory_V result = new Callback_PtrOpaqueMemory_V() {
+        Callback_PtrOpaqueMemory_V result = new Callback_PtrOpaqueMemory_V(nativeAddress) {
             @Override
             protected void callback(OpaqueMemory a) {
                 throw new UnsupportedOperationException("This is a wrapper for an unknown function. Only the address is known to us, but not the Type!");
             }
 
         };
-        NativeFunctionPointer.setAddress(result, nativeAddress);
         return result;
+    }
+
+    public <T extends Callback_PtrOpaqueMemory_V<A>> Callback_PtrOpaqueMemory_V(ToLongFunction<T> producer) {
+        super(producer);
+    }
+
+    public Callback_PtrOpaqueMemory_V(long nativeAddress) {
+        super(nativeAddress);
+    }
+
+    public Callback_PtrOpaqueMemory_V(NativePointer src) {
+        super(src);
     }
 
     /**

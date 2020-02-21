@@ -47,7 +47,7 @@ extern "C" {
      * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp0
-    (__attribute__ ((unused)) JNIEnv *env, jobject structStack_t) {
+    (JNIEnv *env, jobject structStack_t) {
         return (intptr_t) (UNWRAP_STACK_T_PTR(structStack_t))->ss_sp;
     }
 
@@ -57,7 +57,7 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1flags__I
-    (__attribute__ ((unused)) JNIEnv *env, jobject structStack_t, jint ss_flags) {
+    (JNIEnv *env, jobject structStack_t, jint ss_flags) {
         (UNWRAP_STACK_T_PTR(structStack_t))->ss_flags = ss_flags;
     }
 
@@ -67,7 +67,7 @@ extern "C" {
      * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1size__J
-    (__attribute__ ((unused)) JNIEnv *env, jobject structStack_t, jlong ss_size) {
+    (JNIEnv *env, jobject structStack_t, jlong ss_size) {
         (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint64_t)ss_size;
     }
 
@@ -77,7 +77,7 @@ extern "C" {
      * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1size__
-    (__attribute__ ((unused)) JNIEnv *env, jobject structStack_t) {
+    (JNIEnv *env, jobject structStack_t) {
         return (int64_t) (UNWRAP_STACK_T_PTR(structStack_t))->ss_size;
     }
 
@@ -87,7 +87,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1flags__
-    (__attribute__ ((unused)) JNIEnv *env, jobject structStack_t) {
+    (JNIEnv *env, jobject structStack_t) {
         return (UNWRAP_STACK_T_PTR(structStack_t))->ss_flags;
     }
 

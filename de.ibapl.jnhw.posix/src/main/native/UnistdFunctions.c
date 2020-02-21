@@ -385,7 +385,7 @@ extern "C" {
         return result;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint fd, __attribute__ ((unused)) jlong offset, __attribute__ ((unused)) jint whence) {
-        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no lseek64");
+        throw_NoSuchNativeMethodException(env, "lseek64");
         return -1;
 #endif
     }

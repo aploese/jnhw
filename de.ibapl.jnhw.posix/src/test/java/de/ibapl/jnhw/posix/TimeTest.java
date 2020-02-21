@@ -21,11 +21,11 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.Callback_I_V_Impl;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
-import de.ibapl.jnhw.posix.sys.Types;
 import java.time.LocalDateTime;
 import java.util.Date;
 import org.junit.jupiter.api.Assertions;
@@ -61,6 +61,9 @@ public class TimeTest {
 
         String result = Time.asctime(tm);
         assertEquals("Wed Dec  3 08:17:07 2019\n", result);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.asctime(null);
+        });
     }
 
     /**
@@ -86,6 +89,9 @@ public class TimeTest {
         OpaqueMemory.copy(buf, 0, raw, 0, raw.length);
         assertArrayEquals("Wed Dec  3 08:17:07 2019\n\0".getBytes(), raw);
 
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.asctime_r(null, buf);
+        });
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.asctime_r(tm, null);
         });
@@ -123,11 +129,14 @@ public class TimeTest {
     @Test
     public void testClock_getres() throws Exception {
         System.out.println("clock_getres");
-        int clock_id = 0;
-        Time.Timespec timespec = null;
-        Time.clock_getres(clock_id, timespec);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Time.Timespec timespec = new Time.Timespec(true);
+        Time.clock_getres(Time.CLOCK_MONOTONIC(), timespec);
+
+        assertEquals(0, timespec.tv_sec());
+        assertEquals(1, timespec.tv_nsec());
+
+        Time.clock_getres(Time.CLOCK_REALTIME(), null);
+
     }
 
     /**
@@ -136,11 +145,17 @@ public class TimeTest {
     @Test
     public void testClock_gettime() throws Exception {
         System.out.println("clock_gettime");
-        Types.clockid_t clock_id = null;
-        Time.Timespec timespec = null;
+        int clock_id = Time.CLOCK_MONOTONIC();
+        Time.Timespec timespec = new Time.Timespec(true);
         Time.clock_gettime(clock_id, timespec);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        System.out.println("timespec: " + timespec);
+        Assertions.assertTrue(timespec.tv_sec() > 0, "timespec.tv_sec() > 0");
+        Assertions.assertTrue(timespec.tv_nsec() >= 0, "timespec.tv_nsec() >= 0");
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.clock_gettime(Time.CLOCK_REALTIME(), null);
+        });
     }
 
     /**
@@ -179,11 +194,18 @@ public class TimeTest {
     @Test
     public void testClock_settime() throws Exception {
         System.out.println("clock_settime");
-        Types.clockid_t clock_id = null;
-        Time.Timespec timespec = null;
-        Time.clock_settime(clock_id, timespec);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        Time.Timespec timespec = new Time.Timespec(true);
+
+        //We should not habe the priveleges to set the CLOCK_REALTIME ... so a NativeErrorException with EPERM as errno should be thrown.
+        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+            Time.clock_settime(Time.CLOCK_REALTIME(), timespec);
+        });
+        assertEquals(Errno.EPERM(), nee.errno, "EPERM expected but got " + Errno.getErrnoSymbol(nee.errno));
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.clock_settime(Time.CLOCK_REALTIME(), null);
+        });
     }
 
     /**
@@ -424,33 +446,66 @@ public class TimeTest {
      * Test of strftime method, of class Time.
      */
     @Test
-    public void testStrftime_3args() {
+    public void testStrftime() {
         System.out.println("strftime");
-        long maxsize = 0L;
-        String format = "";
-        Time.Tm timeptr = null;
-        String expResult = "";
+        long maxsize = 1024;
+        String format = "%Y-%m-%d %H:%M:%S";
+        Time.Tm timeptr = new Time.Tm();
+        timeptr.tm_year(2020 - 1900);
+        timeptr.tm_mon(1);
+        timeptr.tm_mday(19);
+        timeptr.tm_hour(16);
+        timeptr.tm_min(03);
+        timeptr.tm_sec(47);
         String result = Time.strftime(maxsize, format, timeptr);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("2020-02-19 16:03:47", result);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Time.strftime(-1, format, timeptr);
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.strftime(maxsize, null, timeptr);
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.strftime(maxsize, format, null);
+        });
     }
 
     /**
      * Test of strftime method, of class Time.
      */
     @Test
-    public void testStrftime_4args() {
+    public void testStrftime_l() throws Exception {
         System.out.println("strftime");
-        long maxsize = 0L;
-        String format = "";
-        Time.Tm timeptr = null;
-        int locale = 0;
-        String expResult = "";
-        String result = Time.strftime(maxsize, format, timeptr, locale);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        long maxsize = 256;
+        String format = "%Y-%m-%d %H:%M:%S";
+        Time.Tm timeptr = new Time.Tm();
+        timeptr.tm_year(2020 - 1900);
+        timeptr.tm_mon(1);
+        timeptr.tm_mday(19);
+        timeptr.tm_hour(16);
+        timeptr.tm_min(03);
+        timeptr.tm_sec(47);
+        Locale.Locale_t locale = Locale.duplocale(Locale.LC_GLOBAL_LOCALE());
+        try {
+            String result = Time.strftime_l(maxsize, format, timeptr, locale);
+            assertEquals("2020-02-19 16:03:47", result);
+
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                Time.strftime_l(-1, format, timeptr, locale);
+            });
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Time.strftime_l(maxsize, null, timeptr, locale);
+            });
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Time.strftime_l(maxsize, format, null, locale);
+            });
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Time.strftime_l(maxsize, format, timeptr, null);
+            });
+        } finally {
+            Locale.freelocale(locale);
+        }
     }
 
     /**
@@ -463,6 +518,7 @@ public class TimeTest {
         String format = "%Y-%m-%d %H:%M:%S";
         Time.Tm tm = new Time.Tm();
         String expResult = "\nJNHW";
+
         String result = Time.strptime(buf, format, tm);
         assertEquals(expResult, result);
         assertEquals(2020 - 1900, tm.tm_year());
@@ -472,6 +528,16 @@ public class TimeTest {
         assertEquals(12, tm.tm_min());
         assertEquals(57, tm.tm_sec());
         assertEquals("Mon Jan 27 09:12:57 2020\n", Time.asctime(tm));
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.strptime(null, format, tm);
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.strptime(buf, null, tm);
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.strptime(buf, format, null);
+        });
+
     }
 
     /**
@@ -510,6 +576,10 @@ public class TimeTest {
         });
 
         Signal.Sigevent evp = new Signal.Sigevent();
+        Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
+        Pthread.pthread_attr_init(attr);
+        evp.sigev_notify_attributes(attr);
+
         //Setup for signal delivery
         evp.sigev_notify(Signal.SIGEV_SIGNAL());
         evp.sigev_signo(Signal.SIGCHLD());
@@ -535,47 +605,71 @@ public class TimeTest {
     }
 
     /**
-     * Test of timer_getoverrun method, of class Time.
+     * Test of timer_* methods, of class Time.
      */
     @Test
-    public void testTimer_getoverrun() throws Exception {
-        System.out.println("timer_getoverrun");
+    public void testTimer() throws Exception {
+        System.out.println("timer_create");
+
+        final IntRef intRef = new IntRef(0);
         Time.Timer_t timerid = new Time.Timer_t();
+        Time.Itimerspec value = new Time.Itimerspec(true);
+        Time.Itimerspec ovalue = new Time.Itimerspec(true);
 
-        int expResult = 0;
-        int result = Time.timer_getoverrun(timerid);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
+        Pthread.pthread_attr_init(attr);
+        /*
+        Sched.Sched_param parm = new Sched.Sched_param();
+        parm.sched_priority(0); //TODO Was 255 but got EINVAL
+        Pthread.pthread_attr_setschedparam(attr, parm);
+         */
 
-    /**
-     * Test of timer_gettime method, of class Time.
-     */
-    @Test
-    public void testTimer_gettime() throws Exception {
-        System.out.println("timer_gettime");
-        Time.Timer_t timerid = new Time.Timer_t();
+        Signal.Sigevent<OpaqueMemory> evp = new Signal.Sigevent<>();
+        evp.sigev_notify_attributes(attr);
+        evp.sigev_value.sival_int(42);
+        evp.sigev_notify(Signal.SIGEV_THREAD());
+        evp.sigev_notify_function(new Callback_I_V_Impl() {
 
-        Time.Itimerspec value = null;
-        Time.timer_gettime(timerid, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+            @Override
+            protected void callback(int sigval) {
+                synchronized (intRef) {
+                    intRef.value = sigval;
+                    intRef.notifyAll();
+                }
+            }
 
-    /**
-     * Test of timer_settime method, of class Time.
-     */
-    @Test
-    public void testTimer_settime() throws Exception {
-        System.out.println("timer_settime");
-        Time.Timer_t timerid = new Time.Timer_t();
-        int flags = 0;
-        Time.Itimerspec value = null;
-        Time.Itimerspec ovalue = null;
-        Time.timer_settime(timerid, flags, value, ovalue);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        });
+
+        Time.timer_create(Time.CLOCK_REALTIME(), evp, timerid);
+        try {
+            value.it_value.tv_sec(2); // after 1 s
+            value.it_value.tv_nsec(0);
+            value.it_interval.tv_sec(1); //fire all 1s
+            value.it_interval.tv_nsec(0);
+            System.out.println("timer_settime");
+            Time.timer_settime(timerid, 0, value, ovalue);
+            Time.Itimerspec itimerspec = new Time.Itimerspec();
+            System.out.println("timer_gettime");
+            Time.timer_gettime(timerid, itimerspec);
+
+            assertEquals(value, itimerspec);
+
+            synchronized (intRef) {
+                if (intRef.value == 0) {
+                    intRef.wait();
+                }
+                assertEquals(42, Byte.MAX_VALUE);
+            }
+
+            System.out.println("timer_getoverrun");
+            int count = Time.timer_getoverrun(timerid);
+
+            assertEquals(0, count);
+
+        } finally {
+            System.out.println("timer_delete");
+            Time.timer_delete(timerid);
+        }
     }
 
     /**

@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Defined;
+import de.ibapl.jnhw.NoSuchTypeMemberException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
@@ -110,8 +111,38 @@ public class TermiosTests {
         try {
             structTermios.c_ispeed(9600);
             assertEquals(9600, structTermios.c_ispeed());
-        } catch (de.ibapl.jnhw.NoSuchMethodException nsme) {
-            fail("Expected to have termios.c_ispeed but got this: " + nsme.getMessage());
+        } catch (NoSuchTypeMemberException nstme) {
+            fail("Expected to have termios.c_ispeed but got this: " + nstme.getMessage());
+        }
+    }
+
+    @Test
+    public void structTermios_c_ospeed() throws Exception {
+        Termios.StructTermios structTermios = new Termios.StructTermios();
+        switch (NativeLibResolver.getOS()) {
+            case LINUX:
+                try {
+                Termios._HAVE_STRUCT_TERMIOS_C_OSPEED();
+                //Do the test
+            } catch (NotDefinedException nee) {
+                //Skip the test
+                return;
+            }
+            break;
+            case MAC_OS_X:
+                //Do the test
+                break;
+            case FREE_BSD:
+                //Do the test
+                break;
+            default:
+                throw new RuntimeException("Add test wether struct termios has c_ospeed or not!");
+        }
+        try {
+            structTermios.c_ospeed(9600);
+            assertEquals(9600, structTermios.c_ospeed());
+        } catch (NoSuchTypeMemberException nstme) {
+            fail("Expected to have termios.c_ospeed but got this: " + nstme.getMessage());
         }
     }
 

@@ -28,7 +28,7 @@ import de.ibapl.jnhw.Callback_I_V_Impl;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NativeFunctionPointer;
+import de.ibapl.jnhw.NativePointer;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import java.lang.ref.Cleaner;
@@ -621,7 +621,7 @@ public class SignalTest {
         var result = Signal.sigset(Signal.SIGABRT(), null);
         Assertions.assertEquals(Signal.SIG_DFL(), result);
         result = Signal.sigset(Signal.SIGABRT(), result);
-        Assertions.assertEquals(new NativeFunctionPointer(0L), result);
+        Assertions.assertEquals(NativePointer.wrap(0L), result);
     }
 
     /**

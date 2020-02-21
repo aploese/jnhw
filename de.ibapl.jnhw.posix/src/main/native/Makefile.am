@@ -16,6 +16,7 @@ noinst_LTLIBRARIES = \
  liblocale.la \
  libpoll.la \
  libpthread.la \
+ libsched.la \
  libsignal.la \
  libstdio.la \
  libstring.la \
@@ -35,6 +36,7 @@ libjnhw_posix_la_LIBADD = \
  liblocale.la \
  libpoll.la \
  libpthread.la \
+ libsched.la \
  libsignal.la \
  libstdio.la \
  libstring.la \
@@ -90,6 +92,11 @@ libpthread_la_SOURCES = \
  PthreadFunctions.c \
  Pthread_Pthread_t.c \
  Pthread_Pthread_attr_t.c
+
+libsched_la_SOURCES = \
+ SchedDefines.c \
+ SchedFunctions.c \
+ Sched_Sched_param.c
 
 libsignal_la_SOURCES = \
  SignalDefines.c \

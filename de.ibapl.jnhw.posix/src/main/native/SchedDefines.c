@@ -20,51 +20,80 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
+#include "de_ibapl_jnhw_posix_Sched.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Pthread
-     * Method:    HAVE_PTHREAD_H
+     * Class:     de_ibapl_jnhw_posix_Sched
+     * Method:    HAVE_SCHED_H
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Pthread_HAVE_1PTHREAD_1H
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Sched_HAVE_1SCHED_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_PTHREAD_H
+#ifdef HAVE_SCHED_H
         return JNI_TRUE;
 #else
         return JNI_FALSE;
 #endif
     }
 
-#ifdef HAVE_PTHREAD_H
 
-#include "de_ibapl_jnhw_posix_Pthread.h"
-#include <pthread.h>
+#ifdef HAVE_SCHED_H
 
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    PTHREAD_EXPLICIT_SCHED
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1EXPLICIT_1SCHED
+#include <sched.h>
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Sched
+     * Method:    SCHED_FIFO
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_SCHED_1FIFO
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return PTHREAD_EXPLICIT_SCHED;
-}
+        return SCHED_FIFO;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    PTHREAD_INHERIT_SCHED
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1INHERIT_1SCHED
+    /*
+     * Class:     de_ibapl_jnhw_posix_Sched
+     * Method:    SCHED_RR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_SCHED_1RR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return PTHREAD_INHERIT_SCHED;
-}
+        return SCHED_RR;
+    }
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_Sched
+     * Method:    SCHED_SPORADIC
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_SCHED_1SPORADIC
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) 
+        throw_NotDefinedException(env, "SCHED_SPORADIC");
+        return 0;
+#elif not defined(SCHED_SPORADIC)
+#error "SCHED_SPORADIC not defined defined"
+#else
+        return SCHED_SPORADIC;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Sched
+     * Method:    SCHED_OTHER
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_SCHED_1OTHER
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SCHED_OTHER;
+    }
+
+
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

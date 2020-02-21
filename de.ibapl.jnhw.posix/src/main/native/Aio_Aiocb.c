@@ -94,10 +94,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
-     * Method:    aio_buf0
+     * Method:    aio_bufByteBuffer
      * Signature: (Ljava/nio/ByteBuffer;II)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1buf0
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1bufByteBuffer
     (JNIEnv *env, jobject structAiocb, jobject byteBuffer, jint off, jint length) {
         if (byteBuffer == NULL) {
             (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_buf = NULL;

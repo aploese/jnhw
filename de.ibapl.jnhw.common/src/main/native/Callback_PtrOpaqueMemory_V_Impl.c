@@ -29,7 +29,7 @@
 extern "C" {
 #endif
 
-#define MAX_CALL_BACKS 8
+#define MAX_CALL_BACKS 32
 
     static JavaVM *jvm;
 
@@ -72,6 +72,30 @@ extern "C" {
     TRAMPOLINE(5)
     TRAMPOLINE(6)
     TRAMPOLINE(7)
+    TRAMPOLINE(8)
+    TRAMPOLINE(9)
+    TRAMPOLINE(10)
+    TRAMPOLINE(11)
+    TRAMPOLINE(12)
+    TRAMPOLINE(13)
+    TRAMPOLINE(14)
+    TRAMPOLINE(15)
+    TRAMPOLINE(16)
+    TRAMPOLINE(17)
+    TRAMPOLINE(18)
+    TRAMPOLINE(19)
+    TRAMPOLINE(20)
+    TRAMPOLINE(21)
+    TRAMPOLINE(22)
+    TRAMPOLINE(23)
+    TRAMPOLINE(24)
+    TRAMPOLINE(25)
+    TRAMPOLINE(26)
+    TRAMPOLINE(27)
+    TRAMPOLINE(28)
+    TRAMPOLINE(29)
+    TRAMPOLINE(30)
+    TRAMPOLINE(31)
 
     /*
      * Class:     de_ibapl_jnhw_Callback_PtrOpaqueMemory_V_Impl
@@ -90,6 +114,30 @@ extern "C" {
                 TRAMPOLINE_CASE(5);
                 TRAMPOLINE_CASE(6);
                 TRAMPOLINE_CASE(7);
+                TRAMPOLINE_CASE(8);
+                TRAMPOLINE_CASE(9);
+                TRAMPOLINE_CASE(10);
+                TRAMPOLINE_CASE(11);
+                TRAMPOLINE_CASE(12);
+                TRAMPOLINE_CASE(13);
+                TRAMPOLINE_CASE(14);
+                TRAMPOLINE_CASE(15);
+                TRAMPOLINE_CASE(16);
+                TRAMPOLINE_CASE(17);
+                TRAMPOLINE_CASE(18);
+                TRAMPOLINE_CASE(19);
+                TRAMPOLINE_CASE(20);
+                TRAMPOLINE_CASE(21);
+                TRAMPOLINE_CASE(22);
+                TRAMPOLINE_CASE(23);
+                TRAMPOLINE_CASE(24);
+                TRAMPOLINE_CASE(25);
+                TRAMPOLINE_CASE(26);
+                TRAMPOLINE_CASE(27);
+                TRAMPOLINE_CASE(28);
+                TRAMPOLINE_CASE(29);
+                TRAMPOLINE_CASE(30);
+                TRAMPOLINE_CASE(31);
             default:
                 throw_IllegalArgumentException(env, "index < 0 or index > MAX_CALL_BACKS");
                 return 0L;

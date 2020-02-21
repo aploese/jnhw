@@ -98,6 +98,8 @@ extern "C" {
 
 #define UNWRAP_STRUCT_AIOCB_PTR(structAiocb) UNWRAP_OPAQUE_MEM_TO(struct aiocb*, structAiocb)
 
+#define UNWRAP_STRUCT_AIOCBS_PTR(list) UNWRAP_OPAQUE_MEM_TO(const struct aiocb**, list)
+
 #define UNWRAP_SIGSET_T_PTR(sigset)UNWRAP_OPAQUE_MEM_TO(sigset_t*, sigset)
 #define UNWRAP_SIGSET_T_PTR_OR_NULL(sigset) UNWRAP_OPAQUE_MEM_TO_OR_NULL(sigset_t*, sigset)
 
@@ -107,7 +109,12 @@ extern "C" {
 #define UNWRAP_PTHREAD_ATTR_T_PTR_OR_NULL(pthread_attr)UNWRAP_OPAQUE_MEM_TO_OR_NULL(pthread_attr_t*, pthread_attr)
 
 #define UNWRAP_TIMER_T_PTR(timerid)UNWRAP_OPAQUE_MEM_TO(timer_t*, timerid)
-    
+
+#define UNWRAP_STRUCT_ITIMERSPEC_T_PTR(value)UNWRAP_OPAQUE_MEM_TO(struct itimerspec*, value)
+#define UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(value)UNWRAP_OPAQUE_MEM_TO_OR_NULL(struct itimerspec*, value)
+
+#define UNWRAP_STRUCT_SCHED_PARAM_PTR(value)UNWRAP_OPAQUE_MEM_TO(struct sched_param*, value)
+
 #ifdef __cplusplus
 }
 #endif

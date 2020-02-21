@@ -77,8 +77,7 @@ public abstract class Callback_I_V_Impl extends Callback_I_V implements NativeCa
     }
 
     public Callback_I_V_Impl() {
-        super();
-        aquire();
+        super(Callback_I_V_Impl::aquire);
     }
 
     private static void trampoline(final int index, final int value) {
@@ -96,12 +95,11 @@ public abstract class Callback_I_V_Impl extends Callback_I_V implements NativeCa
 
     private static native long getNativeAddress(final int index);
 
-    private synchronized void aquire() {
+    private static synchronized long aquire(Callback_I_V_Impl cb) {
         for (int i = 0; i < refs.length; i++) {
             if (refs[i].get() == null) {
-                refs[i] = new WeakReference(this);
-                NativeFunctionPointer.setAddress(this, getNativeAddress(i));
-                return;
+                refs[i] = new WeakReference(cb);
+                return getNativeAddress(i);
             }
         }
         //Hint: Try run GC to free any??? or add more cbs...

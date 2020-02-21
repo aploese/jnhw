@@ -26,6 +26,8 @@
 
 #include <time.h>
 #include <errno.h>
+#include <signal.h>
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,7 +41,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_asctime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject structTm) {
         if (structTm == NULL) {
-            throw_NullPointerException(env, "structTm");
+            throw_NullPointerException(env, "tm is NULL");
             return NULL;
         }
         const char *result = asctime(UNWRAP_STRUCT_TM_PTR(structTm));
@@ -58,11 +60,11 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_asctime_1r
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject structTm, jobject buf) {
         if (structTm == NULL) {
-            throw_NullPointerException(env, "structTm");
+            throw_NullPointerException(env, "tm is NULL");
             return NULL;
         }
         if (buf == NULL) {
-            throw_NullPointerException(env, "buf");
+            throw_NullPointerException(env, "buf is NULL");
             return NULL;
         }
         if (SIZE_OF_OPAQUE_MEM(buf) < 26) {
@@ -95,7 +97,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getcpuclockid
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jobject clock_id) {
         if (clock_id == NULL) {
-            throw_NullPointerException(env, "clock_id");
+            throw_NullPointerException(env, "clock_id is NULL");
             return;
         }
         clockid_t _clock_id = GET_INT_REF_VALUE(clock_id);
@@ -114,15 +116,29 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getres
-    (JNIEnv *, jclass, jint, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jobject timespec) {
+        if (clock_getres(clock_id, UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(timespec))) {
+            throw_NativeErrorException(env, errno);
+            return;
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
      * Method:    clock_gettime
-     * Signature: (Lde/ibapl/jnhw/posix/sys/Types/clockid_t;Lde/ibapl/jnhw/posix/Time$Timespec;)V
+     * Signature: (ILde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1gettime
-    (JNIEnv *, jclass, jobject, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jobject timespec) {
+        if (timespec == NULL) {
+            throw_NullPointerException(env, "timespec is NULL");
+            return;
+        }
+        if (clock_gettime(clock_id, UNWRAP_STRUCT_TIMESPEC_PTR(timespec))) {
+            throw_NativeErrorException(env, errno);
+            return;
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
@@ -132,7 +148,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1nanosleep
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clockid, jint flags, jobject rqtp, jobject rmtp) {
         if (rqtp == NULL) {
-            throw_NullPointerException(env, "rqtp");
+            throw_NullPointerException(env, "rqtp is NULL");
             return;
         }
         if (clock_nanosleep(clockid, flags, UNWRAP_STRUCT_TIMESPEC_PTR(rqtp), UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(rmtp))) {
@@ -143,10 +159,19 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Time
      * Method:    clock_settime
-     * Signature: (Lde/ibapl/jnhw/posix/sys/Types/clockid_t;Lde/ibapl/jnhw/posix/Time$Timespec;)V
+     * Signature: (ILde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1settime
-    (JNIEnv *, jclass, jobject, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jobject timespec) {
+        if (timespec == NULL) {
+            throw_NullPointerException(env, "timespec is NULL");
+            return;
+        }
+        if (clock_settime(clock_id, UNWRAP_STRUCT_TIMESPEC_PTR(timespec))) {
+            throw_NativeErrorException(env, errno);
+            return;
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
@@ -171,7 +196,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_ctime_1r
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong clock, jobject buf) {
         if (buf == NULL) {
-            throw_NullPointerException(env, "buf");
+            throw_NullPointerException(env, "buf is NULL");
             return NULL;
         }
         if (SIZE_OF_OPAQUE_MEM(buf) < 26) {
@@ -215,7 +240,7 @@ extern "C" {
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_getdate
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring string) {
         if (string == NULL) {
-            throw_NullPointerException(env, "string");
+            throw_NullPointerException(env, "string is NULL");
             return NULL;
         }
         const char* _string = (*env)->GetStringUTFChars(env, string, NULL);
@@ -254,7 +279,7 @@ extern "C" {
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime_1r
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer, jobject result) {
         if (result == NULL) {
-            throw_NullPointerException(env, "result");
+            throw_NullPointerException(env, "result is NULL");
             return NULL;
         }
         struct tm *_result = UNWRAP_STRUCT_TM_PTR(result);
@@ -288,7 +313,7 @@ extern "C" {
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_localtime_1r
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer, jobject result) {
         if (result == NULL) {
-            throw_NullPointerException(env, "result");
+            throw_NullPointerException(env, "result is NULL");
             return NULL;
         }
         struct tm *_result = UNWRAP_STRUCT_TM_PTR(result);
@@ -307,7 +332,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_mktime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timeptr) {
         if (timeptr == NULL) {
-            throw_NullPointerException(env, "timeptr");
+            throw_NullPointerException(env, "timeptr is NULL");
             return -1;
         }
         struct tm *_timeptr = UNWRAP_STRUCT_TM_PTR(timeptr);
@@ -326,7 +351,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_nanosleep
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject rqtp, jobject rmtp) {
         if (rqtp == NULL) {
-            throw_NullPointerException(env, "rqtp");
+            throw_NullPointerException(env, "rqtp is NULL");
             return;
         }
         if (nanosleep(UNWRAP_STRUCT_TIMESPEC_PTR(rqtp), UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(rmtp))) {
@@ -334,21 +359,71 @@ extern "C" {
         }
     }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    strftime
-     * Signature: (JLjava/lang/String;Lde/ibapl/jnhw/posix/Time$Tm;)Ljava/lang/String;
-     */
-    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime__JLjava_lang_String_2Lde_ibapl_jnhw_posix_Time_Tm_2
-    (JNIEnv *, jclass, jlong, jstring, jobject);
+/*
+ * Class:     de_ibapl_jnhw_posix_Time
+ * Method:    strftime
+ * Signature: (JLjava/lang/String;Lde/ibapl/jnhw/posix/Time/Tm;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong maxsize, jstring format, jobject timeptr) {
+        if (maxsize < 0) {
+            throw_IllegalArgumentException(env, "maxsize < 0");
+            return NULL;
+        }
+        if (format == NULL) {
+            throw_NullPointerException(env, "format is NULL");
+            return NULL;
+        }
+        if (timeptr == NULL) {
+            throw_NullPointerException(env, "timeptr is NULL");
+            return NULL;
+        }
+        const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
+        char* _result = malloc((uint64_t)maxsize);
+        
+        size_t count = strftime(_result, (uint64_t)maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr));
+        
+        (*env)->ReleaseStringUTFChars(env, format, _format);
+        
+        const jstring result = count == 0 ? NULL : (*env)->NewStringUTF(env, _result);
+        free(_result);
+        return result;
+    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    strftime
-     * Signature: (JLjava/lang/String;Lde/ibapl/jnhw/posix/Time$Tm;I)Ljava/lang/String;
-     */
-    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime__JLjava_lang_String_2Lde_ibapl_jnhw_posix_Time_Tm_2I
-    (JNIEnv *, jclass, jlong, jstring, jobject, jint);
+/*
+ * Class:     de_ibapl_jnhw_posix_Time
+ * Method:    strftime_l
+ * Signature: (JLjava/lang/String;Lde/ibapl/jnhw/posix/Time/Tm;Lde/ibapl/jnhw/posix/Locale/Locale_t;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong maxsize, jstring format, jobject timeptr, jobject locale) {
+        if (maxsize < 0) {
+            throw_IllegalArgumentException(env, "maxsize < 0");
+            return NULL;
+        }
+        if (format == NULL) {
+            throw_NullPointerException(env, "format is NULL");
+            return NULL;
+        }
+        if (timeptr == NULL) {
+            throw_NullPointerException(env, "timeptr is NULL");
+            return NULL;
+        }
+        if (locale == NULL) {
+            throw_NullPointerException(env, "locale is NULL");
+            return NULL;
+        }
+        const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
+        char* _result = malloc((uint64_t)maxsize);
+        
+        size_t count = strftime_l(_result, (uint64_t)maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr), UNWRAP_LOCALE_T(locale));
+        
+        (*env)->ReleaseStringUTFChars(env, format, _format);
+        
+        const jstring result = count == 0 ? NULL : (*env)->NewStringUTF(env, _result);
+        free(_result);
+        return result;
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
@@ -358,15 +433,15 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strptime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring buf, jstring format, jobject tm) {
         if (buf == NULL) {
-            throw_NullPointerException(env, "buf");
+            throw_NullPointerException(env, "buf is NULL");
             return NULL;
         }
         if (format == NULL) {
-            throw_NullPointerException(env, "format");
+            throw_NullPointerException(env, "format is NULL");
             return NULL;
         }
         if (tm == NULL) {
-            throw_NullPointerException(env, "tm");
+            throw_NullPointerException(env, "tm is NULL");
             return NULL;
         }
         const char* _buf = (*env)->GetStringUTFChars(env, buf, NULL);
@@ -405,31 +480,41 @@ extern "C" {
         return result;
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Time
- * Method:    timer_create
- * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigevent;Lde/ibapl/jnhw/posix/Time/Timer_t;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1create
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time
+     * Method:    timer_create
+     * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigevent;Lde/ibapl/jnhw/posix/Time/Timer_t;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1create
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clockid, jobject evp, jobject timerid) {
         if (timerid == NULL) {
-            throw_NullPointerException(env, "timerid");
+            throw_NullPointerException(env, "timerid is NULL");
             return;
         }
-        if (timer_create(clockid, UNWRAP_STRUCT_SIGEVENT_PTR_OR_NULL(evp), UNWRAP_TIMER_T_PTR(timerid))) {
+        struct sigevent* _evp;
+        if (evp != NULL) {
+            _evp = UNWRAP_STRUCT_SIGEVENT_PTR(evp);
+            if (_evp->sigev_notify_attributes == NULL) {
+                throw_NullPointerException(env, "evp->sigev_notify_attributes is NULL");
+                return;
+            }
+        } else {
+            _evp = NULL;
+        }
+        if (timer_create(clockid, _evp, UNWRAP_TIMER_T_PTR(timerid))) {
             throw_NativeErrorException(env, errno);
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Time
- * Method:    timer_delete
- * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1delete
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid) {
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time
+     * Method:    timer_delete
+     * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1delete
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid) {
         if (timerid == NULL) {
-            throw_NullPointerException(env, "timerid");
+            throw_NullPointerException(env, "timerid is NULL");
             return;
         }
         if (timer_delete(*UNWRAP_TIMER_T_PTR(timerid))) {
@@ -437,29 +522,55 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1delete
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Time
- * Method:    timer_getoverrun
- * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1getoverrun
-  (JNIEnv *, jclass, jobject);
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time
+     * Method:    timer_getoverrun
+     * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1getoverrun
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid) {
+        if (timerid == NULL) {
+            throw_NullPointerException(env, "timerid is NULL");
+            return -1;
+        }
+        int result = timer_getoverrun(UNWRAP_TIMER_T_PTR(timerid));
+        if (result == -1) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Time
- * Method:    timer_gettime
- * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1gettime
-  (JNIEnv *, jclass, jobject, jobject);
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time
+     * Method:    timer_gettime
+     * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1gettime
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid, jobject value) {
+        if (timerid == NULL) {
+            throw_NullPointerException(env, "timerid is NULL");
+            return;
+        }
+        if (timer_gettime(UNWRAP_TIMER_T_PTR(timerid), UNWRAP_STRUCT_ITIMERSPEC_T_PTR(value))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Time
- * Method:    timer_settime
- * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;ILde/ibapl/jnhw/posix/Time/Itimerspec;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1settime
-  (JNIEnv *, jclass, jobject, jint, jobject, jobject);
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time
+     * Method:    timer_settime
+     * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;ILde/ibapl/jnhw/posix/Time/Itimerspec;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1settime
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid, jint flags, jobject value, jobject ovalue) {
+        if (timerid == NULL) {
+            throw_NullPointerException(env, "timerid is NULL");
+            return;
+        }
+        if (timer_settime(UNWRAP_TIMER_T_PTR(timerid), flags, UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(value), UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(ovalue))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time

@@ -21,32 +21,19 @@
  */
 package de.ibapl.jnhw;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 /**
+ * Thrown, if a method is not available on this specific platform.
  *
  * @author aploese
  */
-public class LongRefTest {
-
-    @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-        LibJnhwCommonTestLoader.touch();
+public class NoSuchNativeMethodException extends Exception {
+    
+    public NoSuchNativeMethodException() {
+        
     }
-
-    public LongRefTest() {
+    
+    public NoSuchNativeMethodException(String methodName) {
+        super(String.format("No such method %s", methodName));
     }
-
-    private native long testNative(LongRef byteRef, long newValue);
-
-    @Test
-    public void testSomeMethod() {
-        LongRef longRef = new LongRef(-42L);
-        long result = testNative(longRef, 42L);
-        Assertions.assertEquals(-42L, result);
-        Assertions.assertEquals(42L, longRef.value);
-    }
-
+    
 }

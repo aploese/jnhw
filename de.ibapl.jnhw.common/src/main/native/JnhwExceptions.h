@@ -32,7 +32,9 @@ extern "C" {
 
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName);
 
-//Remove??    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NoSuchMethodException(JNIEnv* env, const char* methodName);
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NoSuchNativeMethodException(JNIEnv* env, const char* methodName);
+
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NoSuchTypeMemberException(JNIEnv* env, const char* type, const char* member);
 
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NullPointerException(JNIEnv* env, const char* message);
 

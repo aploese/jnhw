@@ -63,7 +63,7 @@ extern "C" {
         return result;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint fildes, __attribute__ ((unused)) jint cmd) {
-        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no fcntl64");
+        throw_NoSuchNativeMethodException(env, "fcntl64");
         return -1;
 #endif        
     }
@@ -97,7 +97,7 @@ extern "C" {
         return result;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint fildes, __attribute__ ((unused)) jint cmd, __attribute__ ((unused)) jint vararg_0) {
-        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no fcntl64");
+        throw_NoSuchNativeMethodException(env, "fcntl64");
         return -1;
 #endif        
     }
@@ -152,7 +152,7 @@ extern "C" {
         return result;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) __attribute__ ((unused)) jstring path, __attribute__ ((unused)) jint mode) {
-        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no creat64");
+        throw_NoSuchNativeMethodException(env, "creat64");
         return -1;
 #endif        
     }
@@ -263,7 +263,7 @@ extern "C" {
         return result;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jstring path, __attribute__ ((unused)) jint oflag) {
-        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no open64");
+        throw_NoSuchNativeMethodException(env, "open64");
         return -1;
 #endif        
     }
@@ -290,7 +290,7 @@ extern "C" {
         return result;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jstring path, __attribute__ ((unused)) jint oflag, __attribute__ ((unused)) jint mode) {
-        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no open64");
+        throw_NoSuchNativeMethodException(env, "open64");
         return -1;
 #endif        
     }
@@ -317,7 +317,7 @@ extern "C" {
         return result;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fd, __attribute__ ((unused)) jstring path, __attribute__ ((unused)) jint oflag) {
-        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no openat64");
+        throw_NoSuchNativeMethodException(env, "openat64");
         return -1;
 #endif        
     }
@@ -344,7 +344,7 @@ extern "C" {
         return result;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fd, __attribute__ ((unused)) jstring path, __attribute__ ((unused)) jint oflag, __attribute__ ((unused)) jint mode) {
-        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no openat64");
+        throw_NoSuchNativeMethodException(env, "openat64");
         return -1;
 #endif        
     }
@@ -396,7 +396,7 @@ extern "C" {
         }
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fildes, __attribute__ ((unused)) jlong offset, __attribute__ ((unused)) jlong len, __attribute__ ((unused)) jint advice) {
-        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no posix_fadvice");
+        throw_NoSuchNativeMethodException(env, "posix_fadvice");
 #endif        
     }
 
@@ -447,7 +447,7 @@ extern "C" {
         }
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fildes, __attribute__ ((unused)) jlong offset, __attribute__ ((unused)) jlong len) {
-        throw_NoSuchMethodException(env, "_LARGEFILE64_SOURCE not defined at compile time, so no posix_fadvice");
+        throw_NoSuchNativeMethodException(env, "posix_fadvice");
 #endif        
     }
 

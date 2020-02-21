@@ -159,7 +159,7 @@ extern "C" {
         return (signed char) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
-        throw_NoSuchMethodException(env, "only __linux__ has field termios.c_line");
+        throw_NoSuchTypeMemberException(env, "termios", "c_line");
         return -1;
 #endif
     }
@@ -175,7 +175,7 @@ extern "C" {
         (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line = (unsigned char) value;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios, __attribute__ ((unused)) jbyte value) {
-        throw_NoSuchMethodException(env, "only __linux__ has field termios.c_line");
+        throw_NoSuchTypeMemberException(env, "termios", "c_line");
 #endif
     }
 
@@ -190,7 +190,7 @@ extern "C" {
         return (int32_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
-        throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || __APPLE__ || __FreeBSD__");
+        throw_NoSuchTypeMemberException(env, "termios", "c_ispeed");
         return 0;
 #endif
     }
@@ -210,7 +210,7 @@ extern "C" {
         (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed = (uint32_t) speed;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios, __attribute__ ((unused)) jint speed) {
-        throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED || __APPLE__ || __FreeBSD__");
+        throw_NoSuchTypeMemberException(env, "termios", "c_ispeed");
 #endif
     }
 
@@ -225,7 +225,7 @@ extern "C" {
         return (int32_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
-        throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED || __APPLE__ || __FreeBSD__");
+        throw_NoSuchTypeMemberException(env, "termios", "c_ospeed");
         return 0;
 #endif
     }
@@ -245,7 +245,7 @@ extern "C" {
         (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed = (uint32_t) speed;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios, __attribute__ ((unused)) jint speed) {
-        throw_NoSuchMethodException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED || __APPLE__ || __FreeBSD__");
+        throw_NoSuchTypeMemberException(env, "termios", "c_ospeed");
 #endif
     }
 

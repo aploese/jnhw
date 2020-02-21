@@ -35,6 +35,14 @@ import java.util.logging.Logger;
  */
 public class OpaqueMemory {
 
+    static boolean isSameAddress(long baseAddress, OpaqueMemory cachedElement) {
+        if (cachedElement == null) {
+            return baseAddress == 0L;
+        } else {
+            return cachedElement.baseAddress == baseAddress;
+        }
+    }
+
     @FunctionalInterface
     public static interface OpaqueMemoryProducer<T extends OpaqueMemory, P extends OpaqueMemory> {
 

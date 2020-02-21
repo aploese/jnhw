@@ -78,7 +78,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t__1uc_1mc
      * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_uc_1link0
-    (__attribute__ ((unused)) JNIEnv *env, jobject structUcontext_t) {
+    (JNIEnv *env, jobject structUcontext_t) {
         return (intptr_t)(UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t))->uc_link;
     }
 

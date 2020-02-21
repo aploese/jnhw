@@ -27,7 +27,6 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
-import de.ibapl.jnhw.posix.Locale.locale_t;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.posix.sys.Types.clock_t;
@@ -197,7 +196,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void clock_gettime(clockid_t clock_id, Timespec timespec) throws NativeErrorException;
+    public final static native void clock_gettime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -228,7 +227,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void clock_settime(clockid_t clock_id, Timespec timespec) throws NativeErrorException;
+    public final static native void clock_settime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -403,7 +402,7 @@ public class Time {
      *
      * @return on succes the converted time otherwise {@code null}.
      */
-    public final static native String strftime(@size_t long maxsize, String format, Tm timeptr, @locale_t int locale);
+    public final static native String strftime_l(@size_t long maxsize, String format, Tm timeptr, Locale.Locale_t locale);
 
     /**
      * <b>POSIX:</b>
@@ -443,6 +442,9 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NullPointerException if
+     * {@code ((evp != null) && (evp.sigev_notify_attributes == null))}
+     * otherwise we will get a SIGSEV.
      *
      */
     public final static native void timer_create(@clockid_t int clockid, Sigevent evp, Timer_t timerid) throws NativeErrorException;
@@ -544,14 +546,20 @@ public class Time {
 
         public static native int offsetof_it_value();
 
-        public Itimerspec(int sizeInBytes, boolean clearMem) {
-            super(sizeof_itimerspec(), false);
+        public Itimerspec(boolean clearMem) {
+            super(sizeof_itimerspec(), clearMem);
             it_interval = new Timespec(this, offsetof_it_interval());
             it_value = new Timespec(this, offsetof_it_value());
         }
 
+        public Itimerspec() {
+            this(false);
+        }
+
         /**
          * Timer period.
+         * After the timer expires after it_value, it will fire
+         * periodically with the it_interval value.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/time.h.html">{@code structure
          * itimerspec}</a>.
          *
@@ -559,7 +567,8 @@ public class Time {
         public final Timespec it_interval;
 
         /**
-         * Timer expiration.
+         * Timer expiration. After the timer expires after it_value, it will
+         * fire periodically with the it_interval value.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/time.h.html">{@code structure
          * itimerspec}</a>.
          *
@@ -592,11 +601,11 @@ public class Time {
             super(sizeofTimespec(), false);
         }
 
-        private Timespec(OpaqueMemory parent, int offset) {
+        public Timespec(OpaqueMemory parent, int offset) {
             super(parent, offset, sizeofTimespec());
         }
 
-        Timespec(boolean cleanMem) {
+        public Timespec(boolean cleanMem) {
             super(sizeofTimespec(), cleanMem);
         }
 
@@ -636,6 +645,12 @@ public class Time {
          * @param tv_nsec the value of tv_nsec to be set natively.
          */
         public native void tv_nsec(long tv_nsec);
+
+        @Override
+        public String toString() {
+            return String.format("{tv_sec : %d, tv_nsec : %d}", tv_sec(), tv_nsec());
+        }
+
     }
 
     /**

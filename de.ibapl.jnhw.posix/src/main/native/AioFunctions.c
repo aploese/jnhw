@@ -26,6 +26,7 @@
 
 #include <aio.h>
 #include <errno.h>
+#include <unistd.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,7 +46,17 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocb;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1error
-    (JNIEnv *, jclass, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject aiocb) {
+        if (aiocb == NULL) {
+            throw_NullPointerException(env, "aiocb is null");
+            return -1;
+        }
+        const int result = aio_error(UNWRAP_STRUCT_AIOCB_PTR(aiocb));
+        if (result == -1) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
@@ -53,7 +64,15 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Aio/Aiocb;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1fsync
-    (JNIEnv *, jclass, jint, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint op, jobject aiocb) {
+        if (aiocb == NULL) {
+            throw_NullPointerException(env, "aiocb is null");
+            return;
+        }
+        if (aio_fsync(op, UNWRAP_STRUCT_AIOCB_PTR(aiocb))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
@@ -61,7 +80,15 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocb;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1read
-    (JNIEnv *, jclass, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject aiocb) {
+        if (aiocb == NULL) {
+            throw_NullPointerException(env, "aiocb is null");
+            return;
+        }
+        if (aio_read(UNWRAP_STRUCT_AIOCB_PTR(aiocb))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
@@ -69,15 +96,39 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocb;)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1return
-    (JNIEnv *, jclass, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject aiocb) {
+        if (aiocb == NULL) {
+            throw_NullPointerException(env, "aiocb is null");
+            return -1;
+        }
+        const ssize_t result = aio_return(UNWRAP_STRUCT_AIOCB_PTR(aiocb));
+        if (result == -1) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+    }
 
+    
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
      * Method:    aio_suspend
-     * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocbs;ILde/ibapl/jnhw/posix/Time/Timespec;)V
+     * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocbs;Lde/ibapl/jnhw/posix/Time/Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1suspend
-    (JNIEnv *, jclass, jobject, jint, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject list, jobject timeout) {
+        if (list == NULL) {
+            throw_NullPointerException(env, "list is null");
+            return;
+        }
+        if (timeout == NULL) {
+            throw_NullPointerException(env, "timeout is null");
+            return;
+        }
+
+        if (aio_suspend(UNWRAP_STRUCT_AIOCBS_PTR(list), LENGTH_OF_STRUCTURE_ARRAY(list), UNWRAP_STRUCT_TIMESPEC_PTR(timeout))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
@@ -98,10 +149,10 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
      * Method:    lio_listio
-     * Signature: (ILde/ibapl/jnhw/posix/Aio/Aiocbs;ILde/ibapl/jnhw/posix/Signal/Sigevent;)V
+     * Signature: (ILde/ibapl/jnhw/posix/Aio/Aiocbs;Lde/ibapl/jnhw/posix/Signal/Sigevent;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_lio_1listio
-    (JNIEnv *, jclass, jint, jobject, jint, jobject);
+    (JNIEnv *, jclass, jint, jobject, jobject);
 
 #ifdef __cplusplus
 }
