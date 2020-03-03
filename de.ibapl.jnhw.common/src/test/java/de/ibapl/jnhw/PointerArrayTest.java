@@ -21,7 +21,9 @@
  */
 package de.ibapl.jnhw;
 
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,7 +32,23 @@ import org.junit.jupiter.api.Test;
  */
 public class PointerArrayTest {
 
+    @BeforeAll
+    public static void setUpBeforeClass() throws Exception {
+        LibJnhwCommonTestLoader.touch();
+    }
+
+    private static native int getCachedReferencesLength(PointerArray pointerArray);
+
+
     public PointerArrayTest() {
+    }
+
+    /**
+     * Test of si method, of class PointerArray.
+     */
+    @Test
+    public void testSizeofPointer() {
+        Assertions.assertEquals(NativeLibResolver.getLoadedMultiarch().getWordSize(), PointerArray.sizeofPointer() * 8, "Wordize mismatch");
     }
 
     /**
@@ -86,12 +104,45 @@ public class PointerArrayTest {
     @Test
     public void testToString() {
         System.out.println("toString");
-        PointerArray instance = null;
-        String expResult = "";
+        PointerArray instance = new PointerArray(6, true);
+        OpaqueMemory element1 = new OpaqueMemory(1, true);
+        instance.set(1, element1);
         String result = instance.toString();
-        Assertions.assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        Assertions.fail("The test case is a prototype.");
+        Assertions.assertEquals("[null, " + element1 + ", null, null, null, null]", result);
+    }
+
+    @Test
+    public void testArrayBounds() {
+        PointerArray instance = new PointerArray(2, true);
+
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            instance.set(-1, null);
+        });
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            instance.get(-1, (baseAddress, index, cachedElement) -> {
+                return null;
+            });
+        });
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            instance.set(16, null);
+        });
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            instance.get(16, (baseAddress, index, cachedElement) -> {
+                return null;
+            });
+        });
+    }
+
+    @Test
+    public void testCachedPointerArrayLength() {
+        PointerArray instance = new PointerArray(0, true);
+        Assertions.assertEquals(instance.length(), getCachedReferencesLength(instance));
+
+        instance = new PointerArray(1, true);
+        Assertions.assertEquals(instance.length(), getCachedReferencesLength(instance));
+
+        instance = new PointerArray(2, true);
+        Assertions.assertEquals(instance.length(), getCachedReferencesLength(instance));
     }
 
 }

@@ -49,11 +49,11 @@ public class Callback_I_V_Test {
     public Callback_I_V_Test() {
     }
     
-    private native NativeFunctionPointer getCallbackPtr();
+    private static native NativeFunctionPointer getCallbackPtr();
     
-    private native void setCallback(Callback_I_V callback);
+    private static native void setCallback(Callback_I_V callback);
     
-    private native void doCallTheCallback(int value);
+    private static native void doCallTheCallback(int value);
 
     /**
      * Test of MAX_INT_CONSUMER_CALLBACKS method, of class

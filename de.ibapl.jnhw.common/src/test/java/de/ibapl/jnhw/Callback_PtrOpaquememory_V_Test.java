@@ -54,11 +54,11 @@ public class Callback_PtrOpaquememory_V_Test {
     public Callback_PtrOpaquememory_V_Test() {
     }
 
-    private native NativeFunctionPointer getCallbackPtr();
+    private static native NativeFunctionPointer getCallbackPtr();
 
-    private native void setCallback(Callback_PtrOpaqueMemory_V<A> callback);
+    private static native void setCallback(Callback_PtrOpaqueMemory_V<A> callback);
 
-    private native void doCallTheCallback(A a);
+    private static native void doCallTheCallback(A a);
 
     private class DummyCB extends Callback_PtrOpaqueMemory_V_Impl {
 

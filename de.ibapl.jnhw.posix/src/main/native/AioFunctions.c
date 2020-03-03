@@ -35,10 +35,35 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
      * Method:    aio_cancel
-     * Signature: (ILde/ibapl/jnhw/posix/Aio/Aiocb;)I
+     * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocb;)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1cancel
-    (JNIEnv *, jclass, jint, jobject);
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1cancel__Lde_ibapl_jnhw_posix_Aio_00024Aiocb_2
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject aiocb) {
+        if (aiocb == NULL) {
+            throw_NullPointerException(env, "aiocb is null");
+            return -1;
+        }
+        struct aiocb *_aiocb = UNWRAP_STRUCT_AIOCB_PTR(aiocb);
+        const int result = aio_cancel(_aiocb->aio_fildes, _aiocb);
+        if (result == -1) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Aio
+     * Method:    aio_cancel
+     * Signature: (I)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1cancel__I
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fildes) {
+        const int result = aio_cancel(fildes, NULL);
+        if (result == -1) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
@@ -108,7 +133,6 @@ extern "C" {
         return result;
     }
 
-    
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
      * Method:    aio_suspend
@@ -125,7 +149,7 @@ extern "C" {
             return;
         }
 
-        if (aio_suspend(UNWRAP_STRUCT_AIOCBS_PTR(list), LENGTH_OF_STRUCTURE_ARRAY(list), UNWRAP_STRUCT_TIMESPEC_PTR(timeout))) {
+        if (aio_suspend(UNWRAP_CONST_STRUCT_AIOCBS_PTR_PTR(list), LENGTH_OF_AIOCBS(list), UNWRAP_STRUCT_TIMESPEC_PTR(timeout))) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -152,7 +176,17 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Aio/Aiocbs;Lde/ibapl/jnhw/posix/Signal/Sigevent;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_lio_1listio
-    (JNIEnv *, jclass, jint, jobject, jobject);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint mode, jobject list, jobject sig) {
+        if (list == NULL) {
+            throw_NullPointerException(env, "list is null");
+            return;
+        }
+        if (lio_listio(mode, UNWRAP_STRUCT_AIOCBS_PTR_PTR(list), LENGTH_OF_AIOCBS(list), UNWRAP_STRUCT_SIGEVENT_PTR_OR_NULL(sig))) {
+            throw_NativeErrorException(env, errno);
+        }
+
+
+    }
 
 #ifdef __cplusplus
 }

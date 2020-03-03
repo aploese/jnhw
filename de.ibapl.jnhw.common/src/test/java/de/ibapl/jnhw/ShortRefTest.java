@@ -39,7 +39,7 @@ public class ShortRefTest {
     public ShortRefTest() {
     }
 
-    private native short testNative(ShortRef shortRef, short newValue);
+    private static native short testNative(ShortRef shortRef, short newValue);
 
     @Test
     public void testSomeMethod() {

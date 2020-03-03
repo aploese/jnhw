@@ -33,6 +33,7 @@
 
 #define JNHW_CLASS_NAME_OPAQUE_MEMORY "de/ibapl/jnhw/OpaqueMemory"
 #define JNHW_CLASS_NAME_STRUCT_ARRAY "de/ibapl/jnhw/StructArray"
+#define JNHW_CLASS_NAME_POINTER_ARRAY "de/ibapl/jnhw/PointerArray"
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,6 +51,8 @@ extern "C" {
     JNIEXPORT jfieldID de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_NativeFunctionPointer_init_ID = NULL;
 
+    JNIEXPORT jfieldID de_ibapl_jnhw_PointerArray_cachedReferences_ID = NULL;
+    
     static jboolean JNICALL jnhw_common_init(JNIEnv *env) {
         if (initExceptions(env) == JNI_FALSE) {
             return JNI_FALSE;
@@ -96,9 +99,17 @@ extern "C" {
                 return JNI_FALSE;
             }
         }
+        //TODO use array ???
         if (de_ibapl_jnhw_StructArray_length_ID == NULL) {
             de_ibapl_jnhw_StructArray_length_ID = getMethodId(env, JNHW_CLASS_NAME_STRUCT_ARRAY, "length", "()I");
             if (de_ibapl_jnhw_StructArray_length_ID == NULL) {
+                return JNI_FALSE;
+            }
+        }
+
+        if (de_ibapl_jnhw_PointerArray_cachedReferences_ID == NULL) {
+            de_ibapl_jnhw_PointerArray_cachedReferences_ID = getFieldId(env, JNHW_CLASS_NAME_POINTER_ARRAY, "cachedReferences", "[Lde/ibapl/jnhw/OpaqueMemory;");
+            if (de_ibapl_jnhw_PointerArray_cachedReferences_ID == NULL) {
                 return JNI_FALSE;
             }
         }
@@ -139,6 +150,7 @@ extern "C" {
         deleteGlobalRef(env, &de_ibapl_jnhw_NativeFunctionPointer_Class);
         de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = NULL;
         de_ibapl_jnhw_NativeFunctionPointer_init_ID = NULL;
+        de_ibapl_jnhw_PointerArray_cachedReferences_ID = NULL;
     }
 
     JNIEXPORT jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className) {

@@ -19,34 +19,28 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw;
+#include "jnhw-common.h"
+#include "de_ibapl_jnhw_PointerArrayTest.h"
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-/**
- *
- * @author aploese
+/*
+ * Class:     de_ibapl_jnhw_PointerArrayTest
+ * Method:    getCachedReferencesLength
+ * Signature: (Lde/ibapl/jnhw/PointerArray;)I
  */
-public class ObjectRefTest {
-
-    @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-        LibJnhwCommonTestLoader.touch();
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_PointerArrayTest_getCachedReferencesLength
+  (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject pointerArray) {
+    if (de_ibapl_jnhw_PointerArray_cachedReferences_ID == NULL) {
+        throw_Exception(env, "java/lang/RuntimeException", "de_ibapl_jnhw_PointerArray_cachedReferences_ID is NULL!");
+        return -1;
     }
-
-    public ObjectRefTest() {
-    }
-
-    private static native <T> T testNative(ObjectRef<T> objectRef, T newValue);
-
-    @Test
-    public void testSomeMethod() {
-        ObjectRef<Long> objectRef = new ObjectRef(-42L);
-        Long result = testNative(objectRef, 42L);
-        Assertions.assertEquals(Long.valueOf(-42L), result);
-        Assertions.assertEquals(Long.valueOf(42L), objectRef.value);
-    }
-
+    return LENGTH_OF_POINTER_ARRAY(pointerArray);
 }
+
+#ifdef __cplusplus
+}
+#endif
+

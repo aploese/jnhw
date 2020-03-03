@@ -25,6 +25,7 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.PointerArray;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -135,7 +136,8 @@ public class Aio {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_cancel.html">aio_cancel
      * - cancel an asynchronous I/O request</a>.
      *
-     * @param fildes a valid file descriptor.
+     * On the native side the param fildes is taken from aiocb.aio_fildes.
+     *
      * @param aiocbp points to the asynchronous I/O control block for a
      * particular request to be canceled. If aiocbp is NULL, then all
      * outstanding cancelable asynchronous I/O requests against fildes shall be
@@ -146,7 +148,26 @@ public class Aio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int aio_cancel(int fildes, Aiocb aiocbp) throws NativeErrorException;
+    public final static native int aio_cancel(Aiocb aiocbp) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_cancel.html">aio_cancel
+     * - cancel an asynchronous I/O request</a>.
+     *
+     * On the native side aiocbp is passed as NULL parameter. If aiocbp is NULL,
+     * then all outstanding cancelable asynchronous I/O requests against fildes
+     * shall be canceled.
+     *
+     * @param fildes a valid file descriptor.
+     *
+     * @return {@link AIO_CANCELED} on succcess or {@link AIO_NOTCANCELED} if
+     * not all outstanding operations cant be caqncelled.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native int aio_cancel(int fildes) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -465,8 +486,8 @@ public class Aio {
         }
 
         public Aiocbs(int arraylength) {
-            //get uninitialized mem we need to set this anyway ...
-            super(arraylength, false);
+            //get initialized mem
+            super(arraylength, true);
         }
 
     }

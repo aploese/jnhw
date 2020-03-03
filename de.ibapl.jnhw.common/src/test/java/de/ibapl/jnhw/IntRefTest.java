@@ -39,7 +39,7 @@ public class IntRefTest {
     public IntRefTest() {
     }
 
-    private native int testNative(IntRef byteRef, int newValue);
+    private static native int testNative(IntRef byteRef, int newValue);
 
     @Test
     public void testSomeMethod() {

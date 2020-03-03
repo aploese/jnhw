@@ -68,11 +68,11 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
     public Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test() {
     }
 
-    private native NativeFunctionPointer getCallbackPtr();
+    private static native NativeFunctionPointer getCallbackPtr();
 
-    private native void setCallback(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> callback);
+    private static native void setCallback(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> callback);
 
-    private native void doCallTheCallback(int value, A a, B b);
+    private static native void doCallTheCallback(int value, A a, B b);
 
     private class DummyCB extends Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl {
 

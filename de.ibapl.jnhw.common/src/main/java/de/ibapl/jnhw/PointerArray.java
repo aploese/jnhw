@@ -33,8 +33,18 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
         set0(i, element);
     }
 
+    /**
+     *
+     * @param i the index must be in range.
+     * @return
+     */
     private native long get0(int i);
 
+    /**
+     *
+     * @param i the index must be in range.
+     * @param element
+     */
     private native void set0(int i, T element);
 
     @FunctionalInterface
@@ -51,22 +61,21 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
 
     }
 
-    private final Object[] cachedReferences;
+    private final OpaqueMemory[] cachedReferences;
 
     public static native int sizeofPointer();
 
     public PointerArray(int length, boolean clearMem) {
         super(length, sizeofPointer(), clearMem);
-        cachedReferences = new Object[length];
-        for (int i = 0; i < cachedReferences.length; i++) {
-            set(i, (T) cachedReferences[i]);
-        }
+        cachedReferences = new OpaqueMemory[length];
     }
 
     public final T get(int index, ElementProducer<T> p) {
-        final long baseAddress = get0(index);
         final T ref = (T) cachedReferences[index];
-        if (OpaqueMemory.isSameAddress(baseAddress, ref)) {
+        final long baseAddress = get0(index);
+        if ((ref == null) && (baseAddress == 0L)) {
+            return ref;
+        } else if (OpaqueMemory.isSameAddress(baseAddress, ref)) {
             return ref;
         } else {
             final T newRef = p.produce(baseAddress, index, ref);

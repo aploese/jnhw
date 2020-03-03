@@ -97,8 +97,10 @@ extern "C" {
 #define UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t) UNWRAP_OPAQUE_MEM_TO(struct ucontext_t*, structUcontext_t)
 
 #define UNWRAP_STRUCT_AIOCB_PTR(structAiocb) UNWRAP_OPAQUE_MEM_TO(struct aiocb*, structAiocb)
+#define UNWRAP_STRUCT_AIOCB_PTR_OR_NULL(structAiocb) UNWRAP_OPAQUE_MEM_TO_OR_NULL(struct aiocb*, structAiocb)
 
-#define UNWRAP_STRUCT_AIOCBS_PTR(list) UNWRAP_OPAQUE_MEM_TO(const struct aiocb**, list)
+#define UNWRAP_CONST_STRUCT_AIOCBS_PTR_PTR(list) UNWRAP_OPAQUE_MEM_TO(const struct aiocb**, list)
+#define UNWRAP_STRUCT_AIOCBS_PTR_PTR(list) UNWRAP_OPAQUE_MEM_TO(struct aiocb**, list)
 
 #define UNWRAP_SIGSET_T_PTR(sigset)UNWRAP_OPAQUE_MEM_TO(sigset_t*, sigset)
 #define UNWRAP_SIGSET_T_PTR_OR_NULL(sigset) UNWRAP_OPAQUE_MEM_TO_OR_NULL(sigset_t*, sigset)
@@ -115,6 +117,8 @@ extern "C" {
 
 #define UNWRAP_STRUCT_SCHED_PARAM_PTR(value)UNWRAP_OPAQUE_MEM_TO(struct sched_param*, value)
 
+#define LENGTH_OF_AIOCBS(aiocbs) LENGTH_OF_POINTER_ARRAY(aiocbs) 
+    
 #ifdef __cplusplus
 }
 #endif

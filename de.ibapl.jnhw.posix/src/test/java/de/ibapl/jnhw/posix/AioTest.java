@@ -44,6 +44,7 @@ import org.junit.jupiter.api.Test;
 public class AioTest {
 
     public AioTest() {
+        super();
     }
 
     /**
@@ -52,17 +53,20 @@ public class AioTest {
     @Test
     public void testAio_cancel() throws Exception {
         System.out.println("aio_cancel");
-        int fildes = 0;
-        Aio.Aiocb aiocbp = null;
-        int expResult = 0;
-        int result = Aio.aio_cancel(fildes, aiocbp);
-        assertEquals(expResult, result);
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Aio.aio_cancel(fildes, null);
+        Aio.Aiocb aiocbp = new Aio.Aiocb();
+        aiocbp.aio_fildes(-1);
+
+        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+            Aio.aio_cancel(aiocbp);
         });
 
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(Errno.EBADF(), nee.errno);
+
+        nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+            Aio.aio_cancel(-1);
+        });
+
+        assertEquals(Errno.EBADF(), nee.errno);
     }
 
     /**
@@ -72,9 +76,11 @@ public class AioTest {
     public void testAio_error() throws Exception {
         System.out.println("aio_error");
         Aio.Aiocb aiocb = new Aio.Aiocb();
-        int expResult = 0;
+        aiocb.aio_fildes(-1);
+
         int result = Aio.aio_error(aiocb);
-        assertEquals(expResult, result);
+        assertEquals(0, result);
+
         Assertions.assertThrows(NullPointerException.class, () -> {
             Aio.aio_error(null);
         });
@@ -86,23 +92,28 @@ public class AioTest {
     @Test
     public void testAio_fsync() throws Exception {
         System.out.println("aio_fsync");
-        int op = 0;
         Aio.Aiocb aiocb = new Aio.Aiocb();
-        Aio.aio_fsync(op, aiocb);
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Aio.aio_fsync(op, null);
+        aiocb.aio_fildes(-1);
+
+        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+            Aio.aio_fsync(Fcntl.O_SYNC(), aiocb);
         });
 
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(Errno.EBADF(), nee.errno);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Aio.aio_fsync(0, null);
+        });
     }
 
     /**
      * Test of aio_read method, of class Aio.
      */
     @Test
-    public void testAio_read() throws Exception {
+    public void testAio_read_ByteBuffer() throws Exception {
         System.out.println("aio_read");
+        //Clean up references to Callbacks
+        System.gc();
+
         final String HELLO_WORLD = "Hello world!\n";
 
         final ObjectRef objRef = new ObjectRef(null);
@@ -166,7 +177,6 @@ public class AioTest {
         Unistd.close(aiocb.aio_fildes());
         int errno = Aio.aio_error(aiocb);
         assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
-        assertEquals(HELLO_WORLD.length(), Aio.aio_return(aiocb));
         assertEquals(HELLO_WORLD.length(), aioBuffer.position());
 
         byte[] result = new byte[HELLO_WORLD.length()];
@@ -174,6 +184,7 @@ public class AioTest {
         aioBuffer.get(result);
 
         Assertions.assertArrayEquals(HELLO_WORLD.getBytes(), result);
+
         Assertions.assertThrows(NullPointerException.class, () -> {
             Aio.aio_read(null);
         });
@@ -186,6 +197,8 @@ public class AioTest {
     @Test
     public void testAio_readEmpty() throws Exception {
         System.out.println("aio_read empty file");
+        //Clean up references to Callbacks
+        System.gc();
 
         final int SIVAL_INT = 0x01234567;
 
@@ -251,20 +264,20 @@ public class AioTest {
     }
 
     /**
-     * Test of aio_return method, of class Aio.
+     * Test of aio_return method, of class Aio. is tested in read/write too
      */
     @Test
     public void testAio_return() throws Exception {
         System.out.println("aio_return");
-        Aio.Aiocb aiocb = null;
+        Aio.Aiocb aiocb = new Aio.Aiocb();
+        aiocb.aio_fildes(-1);
+
         long expResult = 0L;
         long result = Aio.aio_return(aiocb);
         assertEquals(expResult, result);
         Assertions.assertThrows(NullPointerException.class, () -> {
             Aio.aio_return(null);
         });
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -273,17 +286,23 @@ public class AioTest {
     @Test
     public void testAio_suspend() throws Exception {
         System.out.println("aio_suspend");
-        Aio.Aiocbs aiocbs = null;
-        Time.Timespec timeout = null;
+        Aio.Aiocbs aiocbs = new Aio.Aiocbs(1);
+        Aio.Aiocb aiocb = new Aio.Aiocb();
+        aiocb.aio_fildes(-1);
+        aiocbs.set(0, aiocb);
+
+        Time.Timespec timeout = new Time.Timespec(true);
+        timeout.tv_sec(1);
+
+        //Just a dry run....
         Aio.aio_suspend(aiocbs, timeout);
+
         Assertions.assertThrows(NullPointerException.class, () -> {
             Aio.aio_suspend(null, timeout);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
             Aio.aio_suspend(aiocbs, null);
         });
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -291,8 +310,9 @@ public class AioTest {
      */
     @Test
     public void testAio_write_ByteBuffer() throws Exception {
-
         System.out.println("aio_write");
+        //Clean up references to Callbacks
+        System.gc();
 
         final String HELLO_WORLD = "Hello world!\n";
         final int SIVAL_INT = 0x01234567;
@@ -365,18 +385,74 @@ public class AioTest {
     @Test
     public void testLio_listio() throws Exception {
         System.out.println("lio_listio");
-        int mode = 0;
-        Aio.Aiocbs list = null;
-        Signal.Sigevent sig = null;
-        Aio.lio_listio(mode, list, sig);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Aio.lio_listio(mode, null, sig);
+        //Clean up references to Callbacks
+        System.gc();
+
+        Aio.Aiocbs list = new Aio.Aiocbs(1);
+        Aio.Aiocb aiocb = new Aio.Aiocb();
+        aiocb.aio_fildes(-1);
+        list.set(0, aiocb);
+
+        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+            Aio.lio_listio(Aio.LIO_WAIT(), list, null);
         });
+        assertEquals(Errno.EIO(), nee.errno, Errno.getErrnoSymbol(nee.errno));
+
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Aio.lio_listio(mode, list, null);
+            Aio.lio_listio(Aio.LIO_WAIT(), null, null);
         });
+        Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
+    }
+
+    /**
+     * Test of lio_listio method, of class Aio.
+     */
+    @Test
+    public void testReadLio_listio() throws Exception {
+        System.out.println("lio_listio");
+        //Clean up references to Callbacks
+        System.gc();
+
+        final String HELLO_WORLD = "Hello world!\n";
+
+        final ObjectRef objRef = new ObjectRef(null);
+        File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
+        FileWriter fw = new FileWriter(tmpFile);
+        fw.append(HELLO_WORLD);
+        fw.flush();
+        fw.close();
+
+        final Aio.Aiocb<Aio.Aiocb> aiocb = new Aio.Aiocb();
+        aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
+        aiocb.aio_lio_opcode(Aio.LIO_READ());
+        final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
+
+        aioBuffer.clear();
+        aiocb.aio_buf(aioBuffer);
+        assertEquals(0, aioBuffer.position());
+
+        Aio.Aiocbs list = new Aio.Aiocbs(1);
+        list.set(0, aiocb);
+
+        Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
+        int errno = Aio.aio_error(aiocb);
+        assertEquals(Errno.EINPROGRESS(), errno, "Got errno from aio_error: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+
+        Thread.sleep(1000);
+
+        errno = Aio.aio_error(aiocb);
+        assertEquals(0, errno, "Got errno from aio_error: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+        aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
+
+        assertEquals(HELLO_WORLD.length(), aioBuffer.position());
+
+        byte[] result = new byte[HELLO_WORLD.length()];
+        aioBuffer.flip();
+        aioBuffer.get(result);
+
+        Assertions.assertArrayEquals(HELLO_WORLD.getBytes(), result);
+
+        Unistd.close(aiocb.aio_fildes());
     }
 
     /**
@@ -384,8 +460,18 @@ public class AioTest {
      */
     @Test
     public void testAiocbs() throws Exception {
-        fail(" _AioAiocbs.c \n"
-                + ".");
+        Aio.Aiocbs aiocbs = new Aio.Aiocbs(1);
+
+        Aio.Aiocb aiocb_null = aiocbs.get(0, null);
+        Assertions.assertNull(aiocb_null);
+
+        Aio.Aiocb aiocb = new Aio.Aiocb();
+        aiocb.aio_fildes(-1);
+        aiocbs.set(0, aiocb);
+
+        Aio.Aiocb aiocb_get = aiocbs.get(0, null);
+        assertEquals(aiocb, aiocb_get);
+
     }
 
 }

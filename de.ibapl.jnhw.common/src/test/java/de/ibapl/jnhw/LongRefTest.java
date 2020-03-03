@@ -39,7 +39,7 @@ public class LongRefTest {
     public LongRefTest() {
     }
 
-    private native long testNative(LongRef byteRef, long newValue);
+    private static native long testNative(LongRef byteRef, long newValue);
 
     @Test
     public void testSomeMethod() {
