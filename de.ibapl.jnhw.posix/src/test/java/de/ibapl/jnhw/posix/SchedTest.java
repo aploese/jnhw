@@ -77,7 +77,7 @@ public class SchedTest {
         Time.Timespec interval = new Time.Timespec();
         Sched.sched_rr_get_interval(Unistd.getpid(), interval);
 
-        Assertions.assertEquals(0, interval.tv_nsec());
+        Assertions.assertEquals(8000000, interval.tv_nsec());
         Assertions.assertEquals(0, interval.tv_sec());
     }
 

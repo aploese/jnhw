@@ -491,17 +491,7 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
             throw_NullPointerException(env, "timerid is NULL");
             return;
         }
-        struct sigevent* _evp;
-        if (evp != NULL) {
-            _evp = UNWRAP_STRUCT_SIGEVENT_PTR(evp);
-            if (_evp->sigev_notify_attributes == NULL) {
-                throw_NullPointerException(env, "evp->sigev_notify_attributes is NULL");
-                return;
-            }
-        } else {
-            _evp = NULL;
-        }
-        if (timer_create(clockid, _evp, UNWRAP_TIMER_T_PTR(timerid))) {
+        if (timer_create(clockid, UNWRAP_STRUCT_SIGEVENT_PTR_OR_NULL(evp), UNWRAP_TIMER_T_PTR(timerid))) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -533,7 +523,7 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
             throw_NullPointerException(env, "timerid is NULL");
             return -1;
         }
-        int result = timer_getoverrun(UNWRAP_TIMER_T_PTR(timerid));
+        int result = timer_getoverrun(*UNWRAP_TIMER_T_PTR(timerid));
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -551,7 +541,7 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
             throw_NullPointerException(env, "timerid is NULL");
             return;
         }
-        if (timer_gettime(UNWRAP_TIMER_T_PTR(timerid), UNWRAP_STRUCT_ITIMERSPEC_T_PTR(value))) {
+        if (timer_gettime(*UNWRAP_TIMER_T_PTR(timerid), UNWRAP_STRUCT_ITIMERSPEC_T_PTR(value))) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -567,7 +557,7 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
             throw_NullPointerException(env, "timerid is NULL");
             return;
         }
-        if (timer_settime(UNWRAP_TIMER_T_PTR(timerid), flags, UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(value), UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(ovalue))) {
+        if (timer_settime(*UNWRAP_TIMER_T_PTR(timerid), flags, UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(value), UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(ovalue))) {
             throw_NativeErrorException(env, errno);
         }
     }

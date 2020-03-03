@@ -176,11 +176,11 @@ public class OpaqueMemoryTests {
     @Test
     public void testEquals() throws Exception {
         OpaqueMemory mem = new TestMem(0x2aL, 8);
-        OpaqueMemory mem1 = new TestMem(42L, 8);
+        OpaqueMemory mem1 = new OpaqueMemory(42L, 8);
         OpaqueMemory mem2 = new OpaqueMemory(mem, 0, 8);
         Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
         Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());
-        Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : {baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}}", mem2.toString());
+        Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner.baseAddress : 0x0000002a, memoryOwner.sizeInBytes : 8}", mem2.toString());
         Assertions.assertEquals(mem, mem1);
         Assertions.assertEquals(mem1, mem2);
         Assertions.assertEquals(mem, mem2);

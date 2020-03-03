@@ -35,6 +35,7 @@ import de.ibapl.jnhw.posix.sys.Types.pid_t;
 import de.ibapl.jnhw.posix.sys.Types.size_t;
 import de.ibapl.jnhw.posix.sys.Types.time_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.util.Objects;
 
 /**
  * Wrapper around the {@code <time.h>} header.
@@ -553,7 +554,7 @@ public class Time {
         }
 
         public Itimerspec() {
-            this(false);
+            this(true);
         }
 
         /**
@@ -574,6 +575,41 @@ public class Time {
          *
          */
         public final Timespec it_value;
+
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 23 * hash + Objects.hashCode(this.it_interval);
+            hash = 23 * hash + Objects.hashCode(this.it_value);
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final Itimerspec other = (Itimerspec) obj;
+            if (!Objects.equals(this.it_interval, other.it_interval)) {
+                return false;
+            }
+            if (!Objects.equals(this.it_value, other.it_value)) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("{it_value : %s, it_interval : %s}", it_value, it_interval);
+        }
+
     }
 
     /**
@@ -649,6 +685,35 @@ public class Time {
         @Override
         public String toString() {
             return String.format("{tv_sec : %d, tv_nsec : %d}", tv_sec(), tv_nsec());
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 5;
+            hash = 97 * hash + (int) (this.tv_sec() ^ (this.tv_sec() >>> 32));
+            hash = 97 * hash + (int) (this.tv_nsec() ^ (this.tv_nsec() >>> 32));
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final Timespec other = (Timespec) obj;
+            if (this.tv_sec() != other.tv_sec()) {
+                return false;
+            }
+            if (this.tv_nsec() != other.tv_nsec()) {
+                return false;
+            }
+            return true;
         }
 
     }

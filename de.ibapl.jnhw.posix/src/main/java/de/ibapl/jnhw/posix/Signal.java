@@ -323,6 +323,11 @@ public class Signal {
          */
         public final native void sival_ptr(T sival_ptr);
 
+        @Override
+        public String toString() {
+            return String.format("{sival_int : %d, sival_ptr : 0x%08x}", sival_int(), sival_ptr0());
+        }
+
     }
 
     /**
@@ -359,7 +364,7 @@ public class Signal {
         public final Sigval<T> sigev_value;
 
         public Sigevent() {
-            super(sizeofSigevent(), false);
+            super(sizeofSigevent(), true);
             sigev_value = new Sigval(this, _sigev_value_Offset());
         }
 
@@ -407,6 +412,17 @@ public class Signal {
         public final native void sigev_notify_function(Callback_I_V sigev_notify_function);
 
         public final native void sigev_notify_function(Callback_PtrOpaqueMemory_V<T> sigev_notify_function);
+
+        @Override
+        public String toString() {
+            return String.format("{sigev_notify : %d, sigev_signo : %d, sigev_notify_attributes : %s, sigev_notify_function : %s, sigev_value : %s}", sigev_notify(), sigev_signo(), sigev_notify_attributes((baseAddress, parent) -> {
+                if (baseAddress == 0L) {
+                    return null;
+                } else {
+                    return new Pthread.Pthread_attr_t(baseAddress);
+                }
+            }), sigev_notify_function(), sigev_value);
+        }
     }
 
     private final static native long SIG_DFL0();

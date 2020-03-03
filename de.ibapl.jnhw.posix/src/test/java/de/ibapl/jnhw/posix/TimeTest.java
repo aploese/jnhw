@@ -608,16 +608,42 @@ public class TimeTest {
      * Test of timer_* methods, of class Time.
      */
     @Test
+    public void testTimer_SIGEV_NONE() throws Exception {
+        System.out.println("timer_create Signal");
+        Time.Timer_t timerid = new Time.Timer_t(true);
+        Time.Itimerspec trigger = new Time.Itimerspec(true);
+        Signal.Sigevent sev = new Signal.Sigevent();
+
+        sev.sigev_notify(Signal.SIGEV_NONE());
+
+        Time.timer_create(Time.CLOCK_REALTIME(), sev, timerid);
+
+        assertEquals(0, Time.timer_getoverrun(timerid));
+
+        Time.timer_gettime(timerid, trigger);
+
+        trigger.it_value.tv_nsec(30000);
+        trigger.it_interval.tv_sec(1000);
+
+        Time.timer_settime(timerid, 0, trigger, null);
+
+        Thread.sleep(1000);
+
+        Time.timer_delete(timerid);
+    }
+
+    /**
+     * Test of timer_* methods, of class Time.
+     */
+    @Test
     public void testTimer() throws Exception {
         System.out.println("timer_create");
 
         final IntRef intRef = new IntRef(0);
         Time.Timer_t timerid = new Time.Timer_t();
-        Time.Itimerspec value = new Time.Itimerspec(true);
-        Time.Itimerspec ovalue = new Time.Itimerspec(true);
 
-        Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
-        Pthread.pthread_attr_init(attr);
+        //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
+        //Pthread.pthread_attr_init(attr);
         /*
         Sched.Sched_param parm = new Sched.Sched_param();
         parm.sched_priority(0); //TODO Was 255 but got EINVAL
@@ -625,9 +651,9 @@ public class TimeTest {
          */
 
         Signal.Sigevent<OpaqueMemory> evp = new Signal.Sigevent<>();
-        evp.sigev_notify_attributes(attr);
-        evp.sigev_value.sival_int(42);
+        //evp.sigev_notify_attributes(attr);
         evp.sigev_notify(Signal.SIGEV_THREAD());
+        evp.sigev_value.sival_int(42);
         evp.sigev_notify_function(new Callback_I_V_Impl() {
 
             @Override
@@ -640,25 +666,28 @@ public class TimeTest {
 
         });
 
+        System.out.println("evp: " + evp);
         Time.timer_create(Time.CLOCK_REALTIME(), evp, timerid);
         try {
-            value.it_value.tv_sec(2); // after 1 s
-            value.it_value.tv_nsec(0);
+            Time.Itimerspec value = new Time.Itimerspec(true);
+//          Time.Itimerspec ovalue = new Time.Itimerspec(true);
+            value.it_value.tv_sec(2); // after 2 s
             value.it_interval.tv_sec(1); //fire all 1s
-            value.it_interval.tv_nsec(0);
             System.out.println("timer_settime");
-            Time.timer_settime(timerid, 0, value, ovalue);
+
+            //TODO Errno.EINVAL() aka 22
+            Time.timer_settime(timerid, 0, value, null);
             Time.Itimerspec itimerspec = new Time.Itimerspec();
             System.out.println("timer_gettime");
             Time.timer_gettime(timerid, itimerspec);
 
-            assertEquals(value, itimerspec);
+//TODO 2s will be splitted...            assertEquals(value, itimerspec);
 
             synchronized (intRef) {
                 if (intRef.value == 0) {
                     intRef.wait();
                 }
-                assertEquals(42, Byte.MAX_VALUE);
+                assertEquals(42, intRef.value);
             }
 
             System.out.println("timer_getoverrun");
@@ -666,6 +695,10 @@ public class TimeTest {
 
             assertEquals(0, count);
 
+            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                Time.timer_settime(timerid, 0, null, null);
+            });
+            assertEquals(Errno.EINVAL(), nee.errno);
         } finally {
             System.out.println("timer_delete");
             Time.timer_delete(timerid);
@@ -719,7 +752,7 @@ public class TimeTest {
     @Test
     public void testTimer_t() {
         Time.Timer_t timer_t = new Time.Timer_t(true);
-        Assertions.assertEquals("0", timer_t.toString());
+        Assertions.assertEquals("0x00000000", timer_t.toString());
     }
 
 }

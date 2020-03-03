@@ -41,7 +41,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_sizeofTimer_1t
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return sizeof (time_t);
+        return sizeof (timer_t);
     }
 
     /*
@@ -52,7 +52,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_toString
     (JNIEnv *env, jobject timer) {
         char buf[1024] = {0};
-        snprintf(buf, sizeof (buf) - 1, "%ld", (long) *UNWRAP_TIMER_T_PTR(timer));
+        snprintf(buf, sizeof (buf) - 1, "0x%08lx", (intptr_t) *UNWRAP_TIMER_T_PTR(timer));
         return (*env)->NewStringUTF(env, buf);
     }
 

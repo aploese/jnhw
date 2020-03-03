@@ -205,13 +205,24 @@ public class OpaqueMemory {
         return false;
     }
 
+    public static void nativeToString(OpaqueMemory mem, StringBuilder sb) {
+        sb.append(String.format("baseAddress : 0x%08x, sizeInBytes : %d", mem.baseAddress, mem.sizeInBytes));
+        if (mem.memoryOwner == mem) {
+            sb.append(", memoryOwner : this");
+        } else if (mem.memoryOwner == null) {
+            sb.append(", memoryOwner : null");
+        } else {
+            sb.append(String.format(", memoryOwner.baseAddress : 0x%08x, memoryOwner.sizeInBytes : %d", mem.memoryOwner.baseAddress, mem.memoryOwner.sizeInBytes));
+        }
+    }
+
     @Override
     public String toString() {
-        if (memoryOwner == this) {
-            return String.format("{baseAddress : 0x%08x, sizeInBytes : %d, memoryOwner : this}", baseAddress, sizeInBytes);
-        } else {
-            return String.format("{baseAddress : 0x%08x, sizeInBytes : %d, memoryOwner : %s}", baseAddress, sizeInBytes, memoryOwner);
-        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        nativeToString(this, sb);
+        sb.append("}");
+        return sb.toString();
     }
 
     static class MemoryCleaner implements Runnable {
