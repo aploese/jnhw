@@ -29,7 +29,7 @@
 extern "C" {
 #endif
 
-#define MAX_CALL_BACKS 32
+#define MAX_CALL_BACKS 8
 
     static JavaVM *jvm;
 
@@ -50,7 +50,7 @@ extern "C" {
         if (Callback_Class == NULL) {
             return;
         }
-        trampoline_ID = getStaticMethodIdOfClassRef(env, clazz, "trampoline", "(IJ)V");
+        trampoline_ID = getStaticMethodIdOfClassRef(env, clazz, "trampoline", "(ILde/ibapl/jnhw/NativeAddressHolder;)V");
         if (trampoline_ID == NULL) {
             return;
         }
@@ -60,7 +60,7 @@ extern "C" {
     void _jnhw_trampoline_PtrOpaqueMemory_V__ ## index (void* ptr_a) { \
         JNIEnv *env; \
         (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL); \
-        (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, (intptr_t) ptr_a); \
+        (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, CREATE_NATIVE_ADDRESS_HOLDER(ptr_a)); \
         (*jvm)->DetachCurrentThread(jvm); \
     }
 
@@ -72,40 +72,16 @@ extern "C" {
     TRAMPOLINE(5)
     TRAMPOLINE(6)
     TRAMPOLINE(7)
-    TRAMPOLINE(8)
-    TRAMPOLINE(9)
-    TRAMPOLINE(10)
-    TRAMPOLINE(11)
-    TRAMPOLINE(12)
-    TRAMPOLINE(13)
-    TRAMPOLINE(14)
-    TRAMPOLINE(15)
-    TRAMPOLINE(16)
-    TRAMPOLINE(17)
-    TRAMPOLINE(18)
-    TRAMPOLINE(19)
-    TRAMPOLINE(20)
-    TRAMPOLINE(21)
-    TRAMPOLINE(22)
-    TRAMPOLINE(23)
-    TRAMPOLINE(24)
-    TRAMPOLINE(25)
-    TRAMPOLINE(26)
-    TRAMPOLINE(27)
-    TRAMPOLINE(28)
-    TRAMPOLINE(29)
-    TRAMPOLINE(30)
-    TRAMPOLINE(31)
 
     /*
      * Class:     de_ibapl_jnhw_Callback_PtrOpaqueMemory_V_Impl
      * Method:    getNativeAddress
-     * Signature: (I)J
+     * Signature: (I)Lde/ibapl/jnhw/NativeAddressHolder;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_Callback_1PtrOpaqueMemory_1V_1Impl_getNativeAddress
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_Callback_1PtrOpaqueMemory_1V_1Impl_getNativeAddress
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
         switch (index) {
-#define TRAMPOLINE_CASE(index) case index: return (intptr_t) &_jnhw_trampoline_PtrOpaqueMemory_V__ ## index;
+#define TRAMPOLINE_CASE(index) case index: return CREATE_NATIVE_ADDRESS_HOLDER(&_jnhw_trampoline_PtrOpaqueMemory_V__ ## index);
                 TRAMPOLINE_CASE(0);
                 TRAMPOLINE_CASE(1);
                 TRAMPOLINE_CASE(2);
@@ -114,30 +90,6 @@ extern "C" {
                 TRAMPOLINE_CASE(5);
                 TRAMPOLINE_CASE(6);
                 TRAMPOLINE_CASE(7);
-                TRAMPOLINE_CASE(8);
-                TRAMPOLINE_CASE(9);
-                TRAMPOLINE_CASE(10);
-                TRAMPOLINE_CASE(11);
-                TRAMPOLINE_CASE(12);
-                TRAMPOLINE_CASE(13);
-                TRAMPOLINE_CASE(14);
-                TRAMPOLINE_CASE(15);
-                TRAMPOLINE_CASE(16);
-                TRAMPOLINE_CASE(17);
-                TRAMPOLINE_CASE(18);
-                TRAMPOLINE_CASE(19);
-                TRAMPOLINE_CASE(20);
-                TRAMPOLINE_CASE(21);
-                TRAMPOLINE_CASE(22);
-                TRAMPOLINE_CASE(23);
-                TRAMPOLINE_CASE(24);
-                TRAMPOLINE_CASE(25);
-                TRAMPOLINE_CASE(26);
-                TRAMPOLINE_CASE(27);
-                TRAMPOLINE_CASE(28);
-                TRAMPOLINE_CASE(29);
-                TRAMPOLINE_CASE(30);
-                TRAMPOLINE_CASE(31);
             default:
                 throw_IllegalArgumentException(env, "index < 0 or index > MAX_CALL_BACKS");
                 return 0L;

@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw;
 
-import java.util.function.ToLongFunction;
+import java.util.function.Function;
 
 /**
  *
@@ -29,7 +29,7 @@ import java.util.function.ToLongFunction;
  */
 public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A extends OpaqueMemory, B extends OpaqueMemory> extends NativeFunctionPointer {
 
-    public static Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V wrap(long nativeAddress) {
+    public static Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V wrap(NativeAddressHolder nativeAddress) {
         Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V result = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(nativeAddress) {
 
             @Override
@@ -41,15 +41,11 @@ public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A extends Opa
         return result;
     }
 
-    public <T extends Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>> Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(ToLongFunction<T> producer) {
+    public <T extends Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>> Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(Function<T, NativeAddressHolder> producer) {
         super(producer);
     }
 
-    public Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(long nativeAddress) {
-        super(nativeAddress);
-    }
-
-    public Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(NativePointer src) {
+    public Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(NativeAddressHolder src) {
         super(src);
     }
 
@@ -61,5 +57,10 @@ public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A extends Opa
      * @param b
      */
     protected abstract void callback(int value, A a, B b);
+
+    @FunctionalInterface
+    public interface Producer<A extends OpaqueMemory, B extends OpaqueMemory> extends NativeFunctionPointer.Producer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>> {
+
+    }
 
 }

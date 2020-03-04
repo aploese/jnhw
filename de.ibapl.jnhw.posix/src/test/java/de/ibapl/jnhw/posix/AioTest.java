@@ -24,6 +24,7 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.Callback_I_V_Impl;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V_Impl;
 import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
@@ -159,7 +160,7 @@ public class AioTest {
             }
 
             @Override
-            protected Aio.Aiocb wrapA(long address) {
+            protected Aio.Aiocb wrapA(NativeAddressHolder address) {
                 return new Aio.Aiocb(address);
             }
 

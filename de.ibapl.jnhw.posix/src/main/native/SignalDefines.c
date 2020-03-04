@@ -49,41 +49,41 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    SIG_DFL0
-     * Signature: ()J
+     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1DFL0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1DFL0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (intptr_t)SIG_DFL;
+        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)SIG_DFL);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    SIG_ERR0
-     * Signature: ()J
+     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1ERR0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1ERR0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (intptr_t)SIG_ERR;
+        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)SIG_ERR);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    SIG_HOLD0
-     * Signature: ()J
+     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1HOLD0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1HOLD0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (intptr_t)SIG_HOLD;
+        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)SIG_HOLD);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    SIG_IGN0
-     * Signature: ()J
+     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1IGN0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1IGN0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (intptr_t)SIG_IGN;
+        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)SIG_IGN);
     }
 
     /*

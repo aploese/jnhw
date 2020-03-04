@@ -50,7 +50,7 @@ extern "C" {
         if (Callback_Class == NULL) {
             return;
         }
-        trampoline_ID = getStaticMethodIdOfClassRef(env, clazz, "trampoline", "(IIJJ)V");
+        trampoline_ID = getStaticMethodIdOfClassRef(env, clazz, "trampoline", "(IILde/ibapl/jnhw/NativeAddressHolder;Lde/ibapl/jnhw/NativeAddressHolder;)V");
         if (trampoline_ID == NULL) {
             return;
         }
@@ -60,7 +60,7 @@ extern "C" {
     void _jnhw_trampoline_I_PtrOpaqueMemory_PtrOpaqueMemory_V__ ## index (int value, void* ptr_a, void* ptr_b) { \
         JNIEnv *env; \
         (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL); \
-        (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, value, (intptr_t) ptr_a, (intptr_t) ptr_b); \
+        (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, value, CREATE_NATIVE_ADDRESS_HOLDER(ptr_a), CREATE_NATIVE_ADDRESS_HOLDER(ptr_b)); \
         (*jvm)->DetachCurrentThread(jvm); \
     }
 
@@ -76,12 +76,12 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl
      * Method:    getNativeAddress
-     * Signature: (I)J
+     * Signature: (I)Lde/ibapl/jnhw/NativeAddressHolder;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqueMemory_1V_1Impl_getNativeAddress
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqueMemory_1V_1Impl_getNativeAddress
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
         switch (index) {
-#define TRAMPOLINE_CASE(index) case index: return (intptr_t) &_jnhw_trampoline_I_PtrOpaqueMemory_PtrOpaqueMemory_V__ ## index;
+#define TRAMPOLINE_CASE(index) case index: return CREATE_NATIVE_ADDRESS_HOLDER(&_jnhw_trampoline_I_PtrOpaqueMemory_PtrOpaqueMemory_V__ ## index);
                 TRAMPOLINE_CASE(0);
                 TRAMPOLINE_CASE(1);
                 TRAMPOLINE_CASE(2);

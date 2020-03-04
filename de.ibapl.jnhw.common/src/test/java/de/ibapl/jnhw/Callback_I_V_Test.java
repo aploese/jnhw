@@ -85,7 +85,7 @@ public class Callback_I_V_Test {
     
     @Test
     public void testNativeFunctionPointer() {
-        final Callback_I_V testPtr = Callback_I_V.wrap(121);
+        final Callback_I_V testPtr = Callback_I_V.wrap(new NativeAddressHolder(121));
         setCallback(testPtr);
         assertEquals(getCallbackPtr(), testPtr);
     }
@@ -97,7 +97,7 @@ public class Callback_I_V_Test {
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
         final IntRef intref = new IntRef();
-        final Callback_I_V NULL_PTR = Callback_I_V.wrap(0);
+        final Callback_I_V NULL_PTR = Callback_I_V.wrap(new NativeAddressHolder(0));
         final Thread t = Thread.currentThread();
         Callback_I_V_Impl callback = new Callback_I_V_Impl() {
             
@@ -109,7 +109,7 @@ public class Callback_I_V_Test {
             }
             
         };
-        final var nativeCallbackPointer = new NativeFunctionPointer(callback);
+        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback);
         
         setCallback(callback);
         
@@ -142,7 +142,7 @@ public class Callback_I_V_Test {
         Cleaner CLEANER = Cleaner.create();
         
         final IntRef intref = new IntRef();
-        final Callback_I_V NULL_PTR = Callback_I_V.wrap(0);
+        final Callback_I_V NULL_PTR = Callback_I_V.wrap(new NativeAddressHolder(0));
         Callback_I_V_Impl callback = new Callback_I_V_Impl() {
             
             @Override

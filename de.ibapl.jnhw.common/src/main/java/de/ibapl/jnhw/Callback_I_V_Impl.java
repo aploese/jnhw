@@ -93,9 +93,9 @@ public abstract class Callback_I_V_Impl extends Callback_I_V implements NativeCa
         }
     }
 
-    private static native long getNativeAddress(final int index);
+    private static native NativeAddressHolder getNativeAddress(final int index);
 
-    private static synchronized long aquire(Callback_I_V_Impl cb) {
+    private static synchronized NativeAddressHolder aquire(Callback_I_V_Impl cb) {
         for (int i = 0; i < refs.length; i++) {
             if (refs[i].get() == null) {
                 refs[i] = new WeakReference(cb);

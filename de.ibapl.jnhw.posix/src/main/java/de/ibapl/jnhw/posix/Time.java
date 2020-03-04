@@ -743,10 +743,9 @@ public class Time {
          * TO be called only from native code ...
          *
          * @param baseAddress
-         * @param sizeInBytes
          */
-        private Tm(long baseAddress, int sizeInBytes) {
-            super(baseAddress, sizeInBytes);
+        private Tm(long baseAddress, int sizeof) {
+            super(baseAddress, sizeof);
         }
 
         public Tm() {

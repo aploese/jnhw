@@ -75,11 +75,11 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t__1uc_1mc
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
      * Method:    uc_link0
-     * Signature: ()J
+     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_uc_1link0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_uc_1link0
     (JNIEnv *env, jobject structUcontext_t) {
-        return (intptr_t)(UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t))->uc_link;
+        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)(UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t))->uc_link);
     }
 
 #ifdef __cplusplus

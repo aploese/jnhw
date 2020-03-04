@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw;
 
-import java.util.function.ToLongFunction;
+import java.util.function.Function;
 
 /**
  *
@@ -29,7 +29,7 @@ import java.util.function.ToLongFunction;
  */
 public abstract class Callback_I_V extends NativeFunctionPointer {
 
-    public static Callback_I_V wrap(long nativeAddress) {
+    public static Callback_I_V wrap(NativeAddressHolder nativeAddress) {
         Callback_I_V result = new Callback_I_V(nativeAddress) {
             @Override
             protected void callback(int value) {
@@ -40,15 +40,11 @@ public abstract class Callback_I_V extends NativeFunctionPointer {
         return result;
     }
 
-    protected <T extends Callback_I_V> Callback_I_V(ToLongFunction<T> producer) {
+    protected <T extends Callback_I_V> Callback_I_V(Function<T, NativeAddressHolder> producer) {
         super(producer);
     }
 
-    protected Callback_I_V(long nativeAddress) {
-        super(nativeAddress);
-    }
-
-    protected Callback_I_V(NativePointer src) {
+    protected Callback_I_V(NativeAddressHolder src) {
         super(src);
     }
 
@@ -58,5 +54,10 @@ public abstract class Callback_I_V extends NativeFunctionPointer {
      * @param value
      */
     protected abstract void callback(int value);
+
+    @FunctionalInterface
+    public interface Producer extends NativeFunctionPointer.Producer<Callback_I_V> {
+
+    }
 
 }

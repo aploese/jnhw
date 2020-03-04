@@ -82,20 +82,20 @@ public abstract class Callback_PtrOpaqueMemory_V_Impl<A extends OpaqueMemory> ex
     }
 
     @SuppressWarnings("unused")
-    private static void trampoline(final int index, final long a) {
+    private static void trampoline(final int index, final NativeAddressHolder a) {
         try {
             final Callback_PtrOpaqueMemory_V_Impl ref = refs[index].get();
             if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, 0x%08x)", index, a));
+                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, %s)", index, a));
             } else {
                 ref.callback(ref.wrapA(a));
             }
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline(%d, 0x%08x)", index, a), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline(%d, %s)", index, a), t);
         }
     }
 
-    private static native long getNativeAddress(final int index);
+    private static native NativeAddressHolder getNativeAddress(final int index);
 
     /**
      * TODO make arg of type Callback_PtrOpaqueMemory_V<?>
@@ -103,7 +103,7 @@ public abstract class Callback_PtrOpaqueMemory_V_Impl<A extends OpaqueMemory> ex
      * @param cb
      * @return
      */
-    private static synchronized long aquire(Callback_PtrOpaqueMemory_V<?> cb) {
+    private static synchronized NativeAddressHolder aquire(Callback_PtrOpaqueMemory_V<?> cb) {
         for (int i = 0; i < refs.length; i++) {
             if (refs[i].get() == null) {
                 refs[i] = new WeakReference(cb);
@@ -116,6 +116,6 @@ public abstract class Callback_PtrOpaqueMemory_V_Impl<A extends OpaqueMemory> ex
 
     public static native int MAX_CALL_BACKS();
 
-    protected abstract A wrapA(long address);
+    protected abstract A wrapA(NativeAddressHolder address);
 
 }

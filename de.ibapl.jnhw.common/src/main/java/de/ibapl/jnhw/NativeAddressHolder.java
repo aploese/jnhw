@@ -21,41 +21,27 @@
  */
 package de.ibapl.jnhw;
 
-import java.util.function.ToLongFunction;
-
 /**
  *
  * @author aploese
  */
-public class NativePointer {
+public final class NativeAddressHolder {
 
-    public static NativePointer wrap(long nativeAddress) {
-        return new NativePointer(nativeAddress);
-    }
-
-    private final long nativeAddress;
-
-    protected <T extends NativePointer> NativePointer(ToLongFunction<T> producer) {
-        this.nativeAddress = producer.applyAsLong((T) this);
-    }
-
-    protected NativePointer(long nativeAddress) {
-        this.nativeAddress = nativeAddress;
-    }
+    final long address;
 
     /**
-     * cast to simple pointer...
+     * Called from native code
      *
-     * @param src
+     * @param address
      */
-    protected NativePointer(NativePointer src) {
-        this.nativeAddress = src.nativeAddress;
+    public NativeAddressHolder(long address) {
+        this.address = address;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 41 * hash + (int) (this.nativeAddress ^ (this.nativeAddress >>> 32));
+        hash = 41 * hash + (int) (this.address ^ (this.address >>> 32));
         return hash;
     }
 
@@ -64,16 +50,20 @@ public class NativePointer {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof NativePointer)) {
+        if (!(obj instanceof NativeAddressHolder)) {
             return false;
         }
-        final NativePointer other = (NativePointer) obj;
-        return this.nativeAddress == other.nativeAddress;
+        final NativeAddressHolder other = (NativeAddressHolder) obj;
+        return this.address == other.address;
+    }
+
+    public boolean isNULL() {
+        return address == 0L;
     }
 
     @Override
     public String toString() {
-        return String.format("{nativeAddress : 0x%08x}", nativeAddress);
+        return String.format("{address : 0x%08x}", address);
     }
 
 }

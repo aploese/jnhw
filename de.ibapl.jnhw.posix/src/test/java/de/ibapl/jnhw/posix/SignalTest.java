@@ -27,8 +27,9 @@ import de.ibapl.jnhw.Callback_I_V;
 import de.ibapl.jnhw.Callback_I_V_Impl;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NativePointer;
+import de.ibapl.jnhw.NativeFunctionPointer;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import java.lang.ref.Cleaner;
@@ -268,7 +269,7 @@ public class SignalTest {
         System.out.println("sigaction");
         final int SIG = Signal.SIGCHLD();
 
-        final Signal.Sigaction act = new Signal.Sigaction();
+        final Signal.Sigaction<OpaqueMemory> act = new Signal.Sigaction();
         act.sa_flags(Signal.SA_RESTART());
         Signal.sigemptyset(act.sa_mask);
 
@@ -279,7 +280,7 @@ public class SignalTest {
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction oact = new Signal.Sigaction();
+        final Signal.Sigaction<OpaqueMemory> oact = new Signal.Sigaction();
         Signal.sigaction(SIG, null, oact);
         try {
             Signal.sigaction(SIG, act, oact);
@@ -290,8 +291,9 @@ public class SignalTest {
                 Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_handler(Callback_I_V::wrap));
             }
 
-            final Signal.Sigaction actOut = new Signal.Sigaction();
+            final Signal.Sigaction<OpaqueMemory> actOut = new Signal.Sigaction();
             Signal.sigaction(SIG, oact, actOut);
+
             Assertions.assertEquals(act.sa_handler(Callback_I_V::wrap), actOut.sa_handler(Callback_I_V::wrap));
             Signal.sigaction(SIG, null, null);
         } finally {
@@ -574,12 +576,12 @@ public class SignalTest {
             }
 
             @Override
-            protected Signal.Siginfo_t wrapA(long address) {
+            protected Signal.Siginfo_t wrapA(NativeAddressHolder address) {
                 return new Signal.Siginfo_t(address);
             }
 
             @Override
-            protected Signal.Ucontext_t wrapB(long address) {
+            protected Signal.Ucontext_t wrapB(NativeAddressHolder address) {
                 return new Signal.Ucontext_t(address);
             }
         };
@@ -618,10 +620,10 @@ public class SignalTest {
     @Test
     public void testSigset() throws Exception {
         System.out.println("sigset");
-        var result = Signal.sigset(Signal.SIGABRT(), null);
+        Callback_I_V result = Signal.sigset(Signal.SIGABRT(), null);
         Assertions.assertEquals(Signal.SIG_DFL(), result);
         result = Signal.sigset(Signal.SIGABRT(), result);
-        Assertions.assertEquals(NativePointer.wrap(0L), result);
+        Assertions.assertTrue(NativeFunctionPointer.toNativeAddressHolder(result).isNULL(), "result.address ");
     }
 
     /**
@@ -825,15 +827,13 @@ public class SignalTest {
         sigevent.sigev_signo(Signal.SIGBUS());
         assertEquals(Signal.SIGBUS(), sigevent.sigev_signo());
 
-        Callback_I_V sigev_notify_functionInt = Callback_I_V.wrap(44);
+        Callback_I_V sigev_notify_functionInt = Callback_I_V.wrap(new NativeAddressHolder(44));
         sigevent.sigev_notify_function(sigev_notify_functionInt);
-        assertEquals(sigev_notify_functionInt, sigevent.sigev_notify_function());
-        Assertions.assertNotSame(sigev_notify_functionInt, sigevent.sigev_notify_function());
+        Assertions.assertSame(sigev_notify_functionInt, sigevent.sigev_notify_function(Callback_I_V::wrap));
 
-        Callback_PtrOpaqueMemory_V<OpaqueMemory> sigev_notify_functionPtr = Callback_PtrOpaqueMemory_V.wrap(44);
+        Callback_PtrOpaqueMemory_V<OpaqueMemory> sigev_notify_functionPtr = Callback_PtrOpaqueMemory_V.wrap(new NativeAddressHolder(44));
         sigevent.sigev_notify_function(sigev_notify_functionPtr);
-        assertEquals(sigev_notify_functionPtr, sigevent.sigev_notify_function());
-        Assertions.assertNotSame(sigev_notify_functionPtr, sigevent.sigev_notify_function());
+        Assertions.assertSame(sigev_notify_functionPtr, sigevent.sigev_notify_function(Callback_I_V::wrap));
 
         Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
         Pthread.pthread_attr_init(pthread_attr_t);
@@ -842,8 +842,7 @@ public class SignalTest {
                 = sigevent.sigev_notify_attributes((baseAddress, parent) -> {
                     return new Pthread.Pthread_attr_t(baseAddress);
                 });
-        assertEquals(pthread_attr_t, pthread_attr_t1);
-        Assertions.assertNotSame(pthread_attr_t, pthread_attr_t1);
+        Assertions.assertSame(pthread_attr_t, pthread_attr_t1);
         Pthread.pthread_attr_destroy(pthread_attr_t);
     }
 
@@ -862,7 +861,7 @@ public class SignalTest {
     public void testStructUcontext_t() throws Exception {
         Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t();
         Assertions.assertNull(ucontext_t.uc_link((baseAddress, parent) -> {
-            return baseAddress != 0L ? new Signal.Ucontext_t(baseAddress) : null;
+            return baseAddress.isNULL() ? null : new Signal.Ucontext_t(baseAddress);
         })); //Maybe fail sometimes....
         Assertions.assertNotNull(ucontext_t.uc_mcontext);
         Assertions.assertNotNull(ucontext_t.uc_sigmask);
@@ -877,20 +876,18 @@ public class SignalTest {
 
     @Test
     public void testStructSigaction() throws Exception {
-        Signal.Sigaction sigaction = new Signal.Sigaction();
+        Signal.Sigaction<OpaqueMemory> sigaction = new Signal.Sigaction();
 
         sigaction.sa_flags(22);
         assertEquals(22, sigaction.sa_flags());
 
-        Callback_I_V sa_handler = Callback_I_V.wrap(33);
+        Callback_I_V sa_handler = Callback_I_V.wrap(new NativeAddressHolder(33));
         sigaction.sa_handler(sa_handler);
-        assertEquals(sa_handler, sigaction.sa_handler(Callback_I_V::wrap));
-        Assertions.assertNotSame(sa_handler, sigaction.sa_handler(Callback_I_V::wrap));
+        Assertions.assertSame(sa_handler, sigaction.sa_handler(Callback_I_V::wrap));
 
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory> sa_sigaction = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(44);
+        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory> sa_sigaction = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(new NativeAddressHolder(44));
         sigaction.sa_sigaction(sa_sigaction);
-        assertEquals(sa_sigaction, sigaction.sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V::wrap));
-        Assertions.assertNotSame(sa_sigaction, sigaction.sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V::wrap));
+        Assertions.assertSame(sa_sigaction, sigaction.sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V::wrap));
 
         Assertions.assertNotEquals(sa_handler, sigaction.sa_handler(Callback_I_V::wrap));
 

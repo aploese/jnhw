@@ -83,20 +83,20 @@ public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A extend
     }
 
     @SuppressWarnings("unused")
-    private static void trampoline(final int index, final int value, final long a, final long b) {
+    private static void trampoline(final int index, final int value, final NativeAddressHolder a, final NativeAddressHolder b) {
         try {
             final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl ref = refs[index].get();
             if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, %d, 0x%08x, 0x%08x)", index, value, a, b));
+                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, %d, %s, %s)", index, value, a, b));
             } else {
                 ref.callback(value, ref.wrapA(a), ref.wrapB(b));
             }
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline(%d, %d, 0x%08x, 0x%08x)", index, value, a, b), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline(%d, %d, %s, %s)", index, value, a, b), t);
         }
     }
 
-    private static native long getNativeAddress(final int index);
+    private static native NativeAddressHolder getNativeAddress(final int index);
 
     /**
      * TODO make arg of type
@@ -105,7 +105,7 @@ public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A extend
      * @param cb
      * @return
      */
-    private static synchronized long aquire(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<?, ?> cb) {
+    private static synchronized NativeAddressHolder aquire(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<?, ?> cb) {
         for (int i = 0; i < refs.length; i++) {
             if (refs[i].get() == null) {
                 refs[i] = new WeakReference(cb);
@@ -118,8 +118,8 @@ public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A extend
 
     public static native int MAX_CALL_BACKS();
 
-    protected abstract A wrapA(long address);
+    protected abstract A wrapA(NativeAddressHolder address);
 
-    protected abstract B wrapB(long address);
+    protected abstract B wrapB(NativeAddressHolder address);
 
 }

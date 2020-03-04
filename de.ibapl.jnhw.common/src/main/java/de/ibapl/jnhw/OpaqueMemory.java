@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  */
 public class OpaqueMemory {
 
-    static boolean isSameAddress(long baseAddress, OpaqueMemory om) {
+    public static boolean isSameAddress(long baseAddress, OpaqueMemory om) {
         return om.baseAddress == baseAddress;
     }
 
@@ -48,7 +48,7 @@ public class OpaqueMemory {
          * @param parent
          * @return
          */
-        T produce(long baseAddress, P parent);
+        T produce(NativeAddressHolder address, P parent);
 
     }
 
@@ -99,11 +99,23 @@ public class OpaqueMemory {
     /**
      * Create a static memory slice which will NOT be freed - its static.
      *
-     * @param baseAddress the base Address.
+     * @param baseAddress the base address.
      * @param sizeInBytes the size.
      */
     protected OpaqueMemory(long baseAddress, int sizeInBytes) {
         this.baseAddress = baseAddress;
+        this.sizeInBytes = sizeInBytes;
+        memoryOwner = null;
+    }
+
+    /**
+     * Create a static memory slice which will NOT be freed - its static.
+     *
+     * @param nativePointer the base address.
+     * @param sizeInBytes the size.
+     */
+    protected OpaqueMemory(NativeAddressHolder addressHolder, int sizeInBytes) {
+        this.baseAddress = addressHolder.address;
         this.sizeInBytes = sizeInBytes;
         memoryOwner = null;
     }

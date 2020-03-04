@@ -24,6 +24,7 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -218,7 +219,7 @@ public class Pthread {
             super(owner, offset, sizeofPthread_attr_t());
         }
 
-        public Pthread_attr_t(long baseAddress) {
+        public Pthread_attr_t(NativeAddressHolder baseAddress) {
             super(baseAddress, sizeofPthread_attr_t());
         }
 
@@ -255,7 +256,7 @@ public class Pthread {
             super(owner, offset, sizeofPthread_t());
         }
 
-        public Pthread_t(long baseAddress) {
+        public Pthread_t(NativeAddressHolder baseAddress) {
             super(baseAddress, sizeofPthread_t());
         }
 

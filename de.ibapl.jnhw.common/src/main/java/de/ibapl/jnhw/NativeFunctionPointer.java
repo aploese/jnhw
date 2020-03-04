@@ -21,24 +21,72 @@
  */
 package de.ibapl.jnhw;
 
-import java.util.function.ToLongFunction;
+import java.util.function.Function;
 
 /**
  *
  * @author aploese
  */
-public class NativeFunctionPointer extends NativePointer {
+public class NativeFunctionPointer {
 
-    protected <T extends NativePointer> NativeFunctionPointer(ToLongFunction<T> producer) {
-        super(producer);
+    public static boolean isSameAddress(long baseAddress, NativeFunctionPointer nativeFunctionPointer) {
+        return nativeFunctionPointer.nativeAddress == baseAddress;
     }
 
-    protected NativeFunctionPointer(long nativeAddress) {
-        super(nativeAddress);
+    public static NativeAddressHolder toNativeAddressHolder(NativeFunctionPointer nativeFunctionPointer) {
+        return new NativeAddressHolder(nativeFunctionPointer.nativeAddress);
     }
 
-    protected NativeFunctionPointer(NativePointer src) {
-        super(src);
+    public static NativeFunctionPointer wrap(NativeFunctionPointer nativeFunctionPointer) {
+        return new NativeFunctionPointer(nativeFunctionPointer.nativeAddress);
+    }
+
+    public static NativeFunctionPointer wrap(NativeAddressHolder nativePointer) {
+        return new NativeFunctionPointer(nativePointer.address);
+    }
+
+    public <T extends NativeFunctionPointer> NativeFunctionPointer(Function<T, NativeAddressHolder> producer) {
+        this.nativeAddress = producer.apply((T) this).address;
+    }
+
+    protected NativeFunctionPointer(NativeAddressHolder src) {
+        this.nativeAddress = src.address;
+    }
+
+    private NativeFunctionPointer(long nativeAddress) {
+        this.nativeAddress = nativeAddress;
+    }
+
+    private final long nativeAddress;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (int) (this.nativeAddress ^ (this.nativeAddress >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof NativeFunctionPointer)) {
+            return false;
+        }
+        final NativeFunctionPointer other = (NativeFunctionPointer) obj;
+        return this.nativeAddress == other.nativeAddress;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("{nativeAddress : 0x%08x}", nativeAddress);
+    }
+
+    @FunctionalInterface
+    public interface Producer<A extends NativeFunctionPointer> {
+
+        A produce(NativeAddressHolder nativeAddressHolder);
     }
 
 }

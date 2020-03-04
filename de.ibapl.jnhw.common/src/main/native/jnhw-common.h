@@ -45,12 +45,23 @@ extern "C" {
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_IntRef_value_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_LongRef_value_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_ObjectRef_value_ID;
+    
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_OpaqueMemory_baseAddress_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID;
+    
     _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_StructArray_length_ID;
+    
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_NativeAddressHolder_Class;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_NativeAddressHolder_address_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_NativeAddressHolder_init_ID;
+    
+    //TODO deprecated ...
     _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_NativeFunctionPointer_Class;
+    //TODO deprecated ...
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID;
+    //TODO deprecated ...
     _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_NativeFunctionPointer_init_ID;
+    
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_PointerArray_cachedReferences_ID;
 
     _JNHW_IMPORT_OR_EXPORT_ extern jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className);
@@ -120,6 +131,8 @@ extern "C" {
 #define UNWRAP_NATIVE_FUNCTION_POINTER(nativeFunctionPointer)(void*)(intptr_t)(*env)->GetLongField(env, nativeFunctionPointer, de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID)
 #define CREATE_NATIVE_FUNCTION_POINTER(value) (*env)->NewObject(env, de_ibapl_jnhw_NativeFunctionPointer_Class, de_ibapl_jnhw_NativeFunctionPointer_init_ID, (jlong) (intptr_t) value)
     
+#define CREATE_NATIVE_ADDRESS_HOLDER(value) (*env)->NewObject(env, de_ibapl_jnhw_NativeAddressHolder_Class, de_ibapl_jnhw_NativeAddressHolder_init_ID, (jlong) (intptr_t) value)
+
 #ifdef __cplusplus
 }
 #endif

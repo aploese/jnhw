@@ -77,7 +77,10 @@ public class SchedTest {
         Time.Timespec interval = new Time.Timespec();
         Sched.sched_rr_get_interval(Unistd.getpid(), interval);
 
-        Assertions.assertEquals(8000000, interval.tv_nsec());
+//TODO On LINUX sometimes its 0 and sometimes its 8000000
+        Assertions.assertTrue((0L == interval.tv_nsec()) || (8_000_000L == interval.tv_nsec()), "interval.tv_nsec() 0 or 8000000 but was: " + interval.tv_nsec());
+        //Assertions.assertEquals(0L, interval.tv_nsec());
+        //Assertions.assertEquals(8_000_000L, interval.tv_nsec());
         Assertions.assertEquals(0, interval.tv_sec());
     }
 

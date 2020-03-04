@@ -23,6 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
+import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.PointerArray;
@@ -311,7 +312,7 @@ public class Aio {
          *
          * @param address
          */
-        public Aiocb(long address) {
+        public Aiocb(NativeAddressHolder address) {
             super(address, sizeofAiocb());
             aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
         }

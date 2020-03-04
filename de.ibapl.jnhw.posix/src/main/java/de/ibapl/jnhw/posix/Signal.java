@@ -26,6 +26,7 @@ import de.ibapl.jnhw.Callback_I_V;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
+import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeFunctionPointer;
 import de.ibapl.jnhw.OpaqueMemory;
@@ -33,7 +34,7 @@ import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
 import de.ibapl.jnhw.posix.sys.Types.size_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import java.util.function.LongFunction;
+import java.util.function.Function;
 
 /**
  * Wrapper around the {@code <signal.h>} header.
@@ -77,7 +78,7 @@ public class Signal {
             super(owner, offset, sizeofMcontext_t());
         }
 
-        public Mcontext_t(long baseAddress) {
+        public Mcontext_t(NativeAddressHolder baseAddress) {
             super(baseAddress, sizeofMcontext_t());
         }
 
@@ -257,7 +258,7 @@ public class Signal {
      */
     public static final class Sigval<T extends OpaqueMemory> extends OpaqueMemory {
 
-        private native long sival_ptr0();
+        private native long sival_ptr();
 
         /**
          * Make sure the native lib is loaded
@@ -281,9 +282,11 @@ public class Signal {
             super(owner, offset, sizeofSigval());
         }
 
-        public Sigval(long baseAddress) {
+        public Sigval(NativeAddressHolder baseAddress) {
             super(baseAddress, sizeofSigval());
         }
+
+        private T sival_ptr;
 
         /**
          * Integer signal value.
@@ -310,9 +313,22 @@ public class Signal {
          *
          * @return the native value of sival_ptr.
          */
-        public T sival_ptr(OpaqueMemoryProducer<T, Sigval<T>> sival_ptrProducer) {
-            return sival_ptrProducer.produce(sival_ptr0(), this);
+        public T sival_ptr(OpaqueMemoryProducer<T, Sigval<T>> producer) {
+            final long baseAddress = sival_ptr();
+            if (sival_ptr != null) {
+                if (!OpaqueMemory.isSameAddress(baseAddress, sival_ptr)) {
+                    sival_ptr = producer.produce(new NativeAddressHolder(baseAddress), this);
+                }
+                return sival_ptr;
+            } else {
+                if (baseAddress != 0L) {
+                    sival_ptr = producer.produce(new NativeAddressHolder(baseAddress), this);
+                }
+                return sival_ptr;
+            }
         }
+
+        private native void sival_ptr0(T sival_ptr);
 
         /**
          * Pointer signal value.
@@ -321,11 +337,14 @@ public class Signal {
          *
          * @param sival_ptr the value of sival_ptr to be set natively.
          */
-        public final native void sival_ptr(T sival_ptr);
+        public final void sival_ptr(T sival_ptr) {
+            this.sival_ptr = sival_ptr;
+            sival_ptr0(sival_ptr);
+        }
 
         @Override
         public String toString() {
-            return String.format("{sival_int : %d, sival_ptr : 0x%08x}", sival_int(), sival_ptr0());
+            return String.format("{sival_int : %d, sival_ptr : 0x%08x}", sival_int(), sival_ptr());
         }
 
     }
@@ -362,13 +381,15 @@ public class Signal {
          *
          */
         public final Sigval<T> sigev_value;
+        private NativeFunctionPointer sigev_notify_function;
+        Pthread.Pthread_attr_t sigev_notify_attributes;
 
         public Sigevent() {
             super(sizeofSigevent(), true);
             sigev_value = new Sigval(this, _sigev_value_Offset());
         }
 
-        public Sigevent(long baseAddress) {
+        public Sigevent(NativeAddressHolder baseAddress) {
             super(baseAddress, sizeofSigevent());
             sigev_value = new Sigval(this, _sigev_value_Offset());
         }
@@ -402,21 +423,58 @@ public class Signal {
         private native long sigev_notify_attributes();
 
         public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemoryProducer<Pthread.Pthread_attr_t, Sigevent> producer) {
-            return producer.produce(sigev_notify_attributes(), this);
+            final long baseAddress = sigev_notify_attributes();
+            if (sigev_notify_attributes != null) {
+                if (!OpaqueMemory.isSameAddress(baseAddress, sigev_notify_attributes)) {
+                    sigev_notify_attributes = producer.produce(new NativeAddressHolder(baseAddress), this);
+                }
+                return sigev_notify_attributes;
+            } else {
+                if (baseAddress != 0L) {
+                    sigev_notify_attributes = producer.produce(new NativeAddressHolder(baseAddress), this);
+                }
+                return sigev_notify_attributes;
+            }
         }
 
-        public final native void sigev_notify_attributes(Pthread.Pthread_attr_t value);
+        private native void sigev_notify_attributes0(Pthread.Pthread_attr_t value);
 
-        public final native NativeFunctionPointer sigev_notify_function();
+        public final void sigev_notify_attributes(Pthread.Pthread_attr_t value) {
+            this.sigev_notify_attributes = value;
+            sigev_notify_attributes0(value);
+        }
 
-        public final native void sigev_notify_function(Callback_I_V sigev_notify_function);
+        private native long sigev_notify_function();
 
-        public final native void sigev_notify_function(Callback_PtrOpaqueMemory_V<T> sigev_notify_function);
+        private native void sigev_notify_function0(NativeFunctionPointer sigev_notify_function);
+
+        public final void sigev_notify_function(Callback_I_V sigev_notify_function) {
+            this.sigev_notify_function = sigev_notify_function;
+            sigev_notify_function0(sigev_notify_function);
+        }
+
+        public final void sigev_notify_function(Callback_PtrOpaqueMemory_V<T> sigev_notify_function) {
+            this.sigev_notify_function = sigev_notify_function;
+            sigev_notify_function0(sigev_notify_function);
+        }
+
+        public final NativeFunctionPointer sigev_notify_function(NativeFunctionPointer.Producer producer) {
+            final long baseAddress = sigev_notify_function();
+            if (sigev_notify_function instanceof NativeFunctionPointer) {
+                if (!NativeFunctionPointer.isSameAddress(baseAddress, sigev_notify_function)) {
+                    sigev_notify_function = producer.produce(new NativeAddressHolder(baseAddress));
+                }
+                return sigev_notify_function;
+            } else {
+                sigev_notify_function = producer.produce(new NativeAddressHolder(baseAddress));
+                return sigev_notify_function;
+            }
+        }
 
         @Override
         public String toString() {
-            return String.format("{sigev_notify : %d, sigev_signo : %d, sigev_notify_attributes : %s, sigev_notify_function : %s, sigev_value : %s}", sigev_notify(), sigev_signo(), sigev_notify_attributes((baseAddress, parent) -> {
-                if (baseAddress == 0L) {
+            return String.format("{sigev_notify : %d, sigev_signo : %d, sigev_notify_attributes : %s, sigev_notify_function : 0x%08x, sigev_value : %s}", sigev_notify(), sigev_signo(), sigev_notify_attributes((baseAddress, parent) -> {
+                if (baseAddress.isNULL()) {
                     return null;
                 } else {
                     return new Pthread.Pthread_attr_t(baseAddress);
@@ -425,7 +483,7 @@ public class Signal {
         }
     }
 
-    private final static native long SIG_DFL0();
+    private final static native NativeAddressHolder SIG_DFL0();
 
     /**
      *
@@ -438,7 +496,7 @@ public class Signal {
         return Callback_I_V.wrap(SIG_DFL0());
     }
 
-    public final static native long SIG_ERR0();
+    public final static native NativeAddressHolder SIG_ERR0();
 
     /**
      * <b>POSIX:</b> Return value from signal() in case of error.
@@ -450,7 +508,7 @@ public class Signal {
         return Callback_I_V.wrap(SIG_ERR0());
     }
 
-    private final static native long SIG_HOLD0();
+    private final static native NativeAddressHolder SIG_HOLD0();
 
     /**
      * <b>POSIX:</b> Request that signal be held.
@@ -462,7 +520,7 @@ public class Signal {
         return Callback_I_V.wrap(SIG_HOLD0());
     }
 
-    private final static native long SIG_IGN0();
+    private final static native NativeAddressHolder SIG_IGN0();
 
     /**
      * <b>POSIX:</b> Request that signal be ignored.
@@ -803,6 +861,8 @@ public class Signal {
          */
         public final Sigset_t sa_mask;
 
+        private NativeFunctionPointer cachedHandlerOrAction;
+
         /**
          * Special flags
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
@@ -825,19 +885,33 @@ public class Signal {
 
         /**
          * Pointer to a signal-catching function or one of the SIG_IGN or
-         * SIG_DFL.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
+         * SIG_DFL.<b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
          * sigaction}</a>.
          *
+         * @param producer
          * @return the native value of sa_handler.
          */
-        public final Callback_I_V sa_handler(LongFunction<Callback_I_V> producer) {
-            return producer.apply(sa_handler0());
+        public final Callback_I_V sa_handler(Function<NativeAddressHolder, Callback_I_V> producer) {
+            final long baseAddress = sa_handler0();
+            if (cachedHandlerOrAction instanceof Callback_I_V) {
+                if (!NativeFunctionPointer.isSameAddress(baseAddress, cachedHandlerOrAction)) {
+                    cachedHandlerOrAction = producer.apply(new NativeAddressHolder(baseAddress));
+                }
+                return (Callback_I_V) cachedHandlerOrAction;
+            } else {
+                cachedHandlerOrAction = producer.apply(new NativeAddressHolder(baseAddress));
+                return (Callback_I_V) cachedHandlerOrAction;
+            }
         }
 
-        public final native void sa_handler(Callback_I_V sa_handler);
+        public final native void sa_handler0(Callback_I_V sa_handler);
 
-        public final native long sa_sigaction0();
+        public final void sa_handler(Callback_I_V sa_handler) {
+            cachedHandlerOrAction = sa_handler;
+            sa_handler0(sa_handler);
+        }
+
+        private final native long sa_sigaction0();
 
         /**
          * Pointer to a signal-catching function
@@ -846,12 +920,25 @@ public class Signal {
          *
          * @return the native value of sa_sigaction.
          */
-        public final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigaction(LongFunction<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T>> producer) {
-            return producer.apply(sa_sigaction0());
+        public final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigaction(Function<NativeAddressHolder, Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T>> producer) {
+            final long baseAddress = sa_sigaction0();
+            if (cachedHandlerOrAction instanceof Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V) {
+                if (!NativeFunctionPointer.isSameAddress(baseAddress, cachedHandlerOrAction)) {
+                    cachedHandlerOrAction = producer.apply(new NativeAddressHolder(baseAddress));
+                }
+                return (Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V) cachedHandlerOrAction;
+            } else {
+                cachedHandlerOrAction = producer.apply(new NativeAddressHolder(baseAddress));
+                return (Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V) cachedHandlerOrAction;
+            }
         }
 
-        public final native <T extends OpaqueMemory> void sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigaction);
+        public final native <T extends OpaqueMemory> void sa_sigaction0(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigaction);
 
+        public final <T extends OpaqueMemory> void sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigaction) {
+            cachedHandlerOrAction = sa_sigaction;
+            sa_sigaction0(sa_sigaction);
+        }
     }
 
     /**
@@ -1010,7 +1097,7 @@ public class Signal {
             uc_mcontext = new Mcontext_t(this, _uc_mcontext_Offset());
         }
 
-        public Ucontext_t(long baseAddress) {
+        public Ucontext_t(NativeAddressHolder baseAddress) {
             super(baseAddress, sizeofUcontext_t());
             uc_sigmask = new Sigset_t(this, _uc_sigmask_Offset());
             uc_stack = new Stack_t(this, _uc_stack_Offset());
@@ -1024,7 +1111,7 @@ public class Signal {
          *
          * @return the native value of uc_link.
          */
-        private native long uc_link0();
+        private native NativeAddressHolder uc_link0();
 
         /**
          * Pointer to the context that is resumed when this context returns.
@@ -1107,7 +1194,7 @@ public class Signal {
 
         private native void ss_flags(int ss_flags);
 
-        private native long ss_sp0();
+        private native NativeAddressHolder ss_sp0();
 
         private native void ss_size(long sizeInBytes);
 
@@ -1180,7 +1267,7 @@ public class Signal {
          * @param sival_ptrProducer
          * @param address
          */
-        public Siginfo_t(long address) {
+        public Siginfo_t(NativeAddressHolder address) {
             super(address, sizeofSiginfo_t());
             si_value = new Sigval(this, _si_value_Offset());
         }

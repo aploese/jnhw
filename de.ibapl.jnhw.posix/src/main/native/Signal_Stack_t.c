@@ -44,11 +44,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
      * Method:    ss_sp0
-     * Signature: ()J
+     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp0
     (JNIEnv *env, jobject structStack_t) {
-        return (intptr_t) (UNWRAP_STACK_T_PTR(structStack_t))->ss_sp;
+        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t) (UNWRAP_STACK_T_PTR(structStack_t))->ss_sp);
     }
 
     /*

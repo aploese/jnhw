@@ -31,6 +31,8 @@
 
 #define JNHW_CLASS_NAME_NATIVE_FUNCTION_POINTER "de/ibapl/jnhw/NativeFunctionPointer"
 
+#define JNHW_CLASS_NAME_NATIVE_ADDRESS_HOLDER "de/ibapl/jnhw/NativeAddressHolder"
+
 #define JNHW_CLASS_NAME_OPAQUE_MEMORY "de/ibapl/jnhw/OpaqueMemory"
 #define JNHW_CLASS_NAME_STRUCT_ARRAY "de/ibapl/jnhw/StructArray"
 #define JNHW_CLASS_NAME_POINTER_ARRAY "de/ibapl/jnhw/PointerArray"
@@ -47,12 +49,17 @@ extern "C" {
     JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = NULL;
     JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_StructArray_length_ID = NULL;
+
+    JNIEXPORT jclass de_ibapl_jnhw_NativeAddressHolder_Class = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_NativeAddressHolder_address_ID = NULL;
+    JNIEXPORT jmethodID de_ibapl_jnhw_NativeAddressHolder_init_ID = NULL;
+
     JNIEXPORT jclass de_ibapl_jnhw_NativeFunctionPointer_Class = NULL;
     JNIEXPORT jfieldID de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_NativeFunctionPointer_init_ID = NULL;
 
     JNIEXPORT jfieldID de_ibapl_jnhw_PointerArray_cachedReferences_ID = NULL;
-    
+
     static jboolean JNICALL jnhw_common_init(JNIEnv *env) {
         if (initExceptions(env) == JNI_FALSE) {
             return JNI_FALSE;
@@ -114,6 +121,25 @@ extern "C" {
             }
         }
 
+        if (de_ibapl_jnhw_NativeAddressHolder_Class == NULL) {
+            de_ibapl_jnhw_NativeAddressHolder_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_NATIVE_ADDRESS_HOLDER);
+            if (de_ibapl_jnhw_NativeAddressHolder_Class == NULL) {
+                return JNI_FALSE;
+            }
+        }
+        if (de_ibapl_jnhw_NativeAddressHolder_init_ID == NULL) {
+            de_ibapl_jnhw_NativeAddressHolder_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_NativeAddressHolder_Class, "<init>", "(J)V");
+            if (de_ibapl_jnhw_NativeAddressHolder_init_ID == NULL) {
+                return JNI_FALSE;
+            }
+        }
+        if (de_ibapl_jnhw_NativeAddressHolder_address_ID == NULL) {
+            de_ibapl_jnhw_NativeAddressHolder_address_ID = getFieldIdOfClassRef(env, de_ibapl_jnhw_NativeAddressHolder_Class, "address", "J");
+            if (de_ibapl_jnhw_NativeAddressHolder_address_ID == NULL) {
+                return JNI_FALSE;
+            }
+        }
+
         if (de_ibapl_jnhw_NativeFunctionPointer_Class == NULL) {
             de_ibapl_jnhw_NativeFunctionPointer_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_NATIVE_FUNCTION_POINTER);
             if (de_ibapl_jnhw_NativeFunctionPointer_Class == NULL) {
@@ -147,9 +173,15 @@ extern "C" {
         de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = NULL;
         de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = NULL;
         de_ibapl_jnhw_StructArray_length_ID = NULL;
+        
+        deleteGlobalRef(env, &de_ibapl_jnhw_NativeAddressHolder_Class);
+        de_ibapl_jnhw_NativeAddressHolder_address_ID = NULL;
+        de_ibapl_jnhw_NativeAddressHolder_init_ID = NULL;
+
         deleteGlobalRef(env, &de_ibapl_jnhw_NativeFunctionPointer_Class);
         de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = NULL;
         de_ibapl_jnhw_NativeFunctionPointer_init_ID = NULL;
+
         de_ibapl_jnhw_PointerArray_cachedReferences_ID = NULL;
     }
 

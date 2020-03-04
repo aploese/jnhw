@@ -36,7 +36,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
 
         public final static int SIZE_OF = 2;
 
-        public A(long nativeAddress) {
+        public A(NativeAddressHolder nativeAddress) {
             super(nativeAddress, SIZE_OF);
         }
 
@@ -50,7 +50,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
 
         public final static int SIZE_OF = 4;
 
-        public B(long nativeAddress) {
+        public B(NativeAddressHolder nativeAddress) {
             super(nativeAddress, SIZE_OF);
         }
 
@@ -82,12 +82,12 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
         }
 
         @Override
-        protected OpaqueMemory wrapA(long address) {
+        protected OpaqueMemory wrapA(NativeAddressHolder address) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
-        protected OpaqueMemory wrapB(long address) {
+        protected OpaqueMemory wrapB(NativeAddressHolder address) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -123,7 +123,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
 
     @Test
     public void testNativeFunctionPointer() {
-        final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> testPtr = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(121);
+        final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> testPtr = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(new NativeAddressHolder(121));
         setCallback(testPtr);
         assertEquals(getCallbackPtr(), testPtr);
     }
@@ -149,17 +149,17 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
             }
 
             @Override
-            protected A wrapA(long address) {
+            protected A wrapA(NativeAddressHolder address) {
                 return new A(address);
             }
 
             @Override
-            protected B wrapB(long address) {
+            protected B wrapB(NativeAddressHolder address) {
                 return new B(address);
             }
 
         };
-        final var nativeCallbackPointer = new NativeFunctionPointer(callback);
+        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback);
 
         setCallback(callback);
 
@@ -200,7 +200,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
         B b = new B();
 
         final IntRef intref = new IntRef();
-        final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> NULL_PTR = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(0);
+        final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> NULL_PTR = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(new NativeAddressHolder(0));
         Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A, B> callback = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<>() {
 
             @Override
@@ -211,12 +211,12 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
             }
 
             @Override
-            protected A wrapA(long address) {
+            protected A wrapA(NativeAddressHolder address) {
                 return new A(address);
             }
 
             @Override
-            protected B wrapB(long address) {
+            protected B wrapB(NativeAddressHolder address) {
                 return new B(address);
             }
 

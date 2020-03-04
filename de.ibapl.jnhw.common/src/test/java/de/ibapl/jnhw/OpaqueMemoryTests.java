@@ -167,7 +167,7 @@ public class OpaqueMemoryTests {
 
     private class TestMem extends OpaqueMemory {
 
-        private TestMem(long baseAddress, int sizeInBytes) {
+        private TestMem(NativeAddressHolder baseAddress, int sizeInBytes) {
             super(baseAddress, sizeInBytes);
         }
 
@@ -175,8 +175,8 @@ public class OpaqueMemoryTests {
 
     @Test
     public void testEquals() throws Exception {
-        OpaqueMemory mem = new TestMem(0x2aL, 8);
-        OpaqueMemory mem1 = new OpaqueMemory(42L, 8);
+        OpaqueMemory mem = new TestMem(new NativeAddressHolder(0x2aL), 8);
+        OpaqueMemory mem1 = new OpaqueMemory(new NativeAddressHolder(42L), 8);
         OpaqueMemory mem2 = new OpaqueMemory(mem, 0, 8);
         Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
         Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());
