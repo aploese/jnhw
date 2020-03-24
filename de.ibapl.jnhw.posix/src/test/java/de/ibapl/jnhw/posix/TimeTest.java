@@ -26,6 +26,7 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.util.posix.Defines;
 import java.time.LocalDateTime;
 import java.util.Date;
 import org.junit.jupiter.api.Assertions;
@@ -649,7 +650,6 @@ public class TimeTest {
         parm.sched_priority(0); //TODO Was 255 but got EINVAL
         Pthread.pthread_attr_setschedparam(attr, parm);
          */
-
         Signal.Sigevent<OpaqueMemory> evp = new Signal.Sigevent<>();
         //evp.sigev_notify_attributes(attr);
         evp.sigev_notify(Signal.SIGEV_THREAD());
@@ -682,7 +682,6 @@ public class TimeTest {
             Time.timer_gettime(timerid, itimerspec);
 
 //TODO 2s will be splitted...            assertEquals(value, itimerspec);
-
             synchronized (intRef) {
                 if (intRef.value == 0) {
                     intRef.wait();
@@ -752,7 +751,16 @@ public class TimeTest {
     @Test
     public void testTimer_t() {
         Time.Timer_t timer_t = new Time.Timer_t(true);
-        Assertions.assertEquals("0x00000000", timer_t.toString());
+        switch (Defines.__WORDSIZE()) {
+            case 32:
+                Assertions.assertEquals("0x0000", timer_t.toString());
+                break;
+            case 64:
+                Assertions.assertEquals("0x00000000", timer_t.toString());
+                break;
+            default:
+                fail("Wordsize not supported");
+        }
     }
 
 }
