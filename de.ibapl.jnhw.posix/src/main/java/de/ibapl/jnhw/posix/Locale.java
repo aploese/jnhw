@@ -354,7 +354,7 @@ public class Locale {
          *
          * @return the native value of frac_digits.
          */
-        public final native byte frac_digits();
+        public final native short frac_digits();
 
         /**
          *
@@ -380,7 +380,7 @@ public class Locale {
          *
          * @return the native value of int_frac_digits.
          */
-        public final native byte int_frac_digits();
+        public final native short int_frac_digits();
 
         /**
          * An integer set to 1 if the int_curr_symbol precedes the value for a
@@ -391,7 +391,7 @@ public class Locale {
          *
          * @return the native value of int_n_cs_precedes.
          */
-        public final native byte int_n_cs_precedes();
+        public final native short int_n_cs_precedes();
 
         /**
          * Set to a value indicating the separation of the int_curr_symbol, the
@@ -402,7 +402,7 @@ public class Locale {
          *
          * @return the native value of int_n_sep_by_space.
          */
-        public final native byte int_n_sep_by_space();
+        public final native short int_n_sep_by_space();
 
         /**
          * An integer set to a value indicating the positioning of the
@@ -413,7 +413,7 @@ public class Locale {
          *
          * @return the native value of int_n_sign_posn.
          */
-        public final native byte int_n_sign_posn();
+        public final native short int_n_sign_posn();
 
         /**
          * An integer set to 1 if the int_curr_symbol precedes the value for a
@@ -424,7 +424,7 @@ public class Locale {
          *
          * @return the native value of int_p_cs_precedes.
          */
-        public final native byte int_p_cs_precedes();
+        public final native short int_p_cs_precedes();
 
         /**
          * Set to a value indicating the separation of the int_curr_symbol, the
@@ -435,7 +435,7 @@ public class Locale {
          *
          * @return the native value of int_p_sep_by_space.
          */
-        public final native byte int_p_sep_by_space();
+        public final native short int_p_sep_by_space();
 
         /**
          * An integer set to a value indicating the positioning of the
@@ -446,7 +446,7 @@ public class Locale {
          *
          * @return the native value of int_p_sign_posn.
          */
-        public final native byte int_p_sign_posn();
+        public final native short int_p_sign_posn();
 
         /**
          * The operand is a string containing the symbol that shall be used as
@@ -499,7 +499,7 @@ public class Locale {
          *
          * @return the native value of n_cs_precedes.
          */
-        public final native byte n_cs_precedes();
+        public final native short n_cs_precedes();
 
         /**
          * Set to a value indicating the separation of the currency_symbol, the
@@ -510,7 +510,7 @@ public class Locale {
          *
          * @return the native value of n_sep_by_space.
          */
-        public final native byte n_sep_by_space();
+        public final native short n_sep_by_space();
 
         /**
          * An integer set to a value indicating the positioning of the
@@ -520,7 +520,7 @@ public class Locale {
          *
          * @return the native value of n_sign_posn.
          */
-        public final native byte n_sign_posn();
+        public final native short n_sign_posn();
 
         /**
          * A string that shall be used to indicate a non-negative-valued
@@ -541,7 +541,7 @@ public class Locale {
          *
          * @return the native value of p_cs_precedes.
          */
-        public final native byte p_cs_precedes();
+        public final native short p_cs_precedes();
 
         /**
          * Set to a value indicating the separation of the currency_symbol, the
@@ -552,7 +552,7 @@ public class Locale {
          *
          * @return the native value of p_sep_by_space.
          */
-        public final native byte p_sep_by_space();
+        public final native short p_sep_by_space();
 
         /**
          * An integer set to a value indicating the positioning of the
@@ -562,7 +562,7 @@ public class Locale {
          *
          * @return the native value of p_sign_posn.
          */
-        public final native byte p_sign_posn();
+        public final native short p_sign_posn();
 
         /**
          *

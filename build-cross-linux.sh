@@ -2,7 +2,7 @@
 
 #autoreconf -i
 
-mvn clean compile  test-compile || exit 1
+mvn clean compile test-compile || exit 1
 
 # "x86_64-linux-gnu"
 # "i386-linux-gnu"
@@ -24,7 +24,9 @@ for d in\
  "mips64-linux-gnuabi64"\
  "mips64el-linux-gnuabi64"
 do
-  $d-gcc --version || exit 1
+CC=$d-gcc
+export CC
+  $CC --version || exit 1
   ./configure --host=$d --prefix=$PWD/target/$d || exit 1
   make clean || exit 1
   make || exit 1

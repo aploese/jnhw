@@ -67,9 +67,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    frac_digits
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_frac_1digits
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_frac_1digits
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->frac_digits;
     }
@@ -97,9 +97,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    int_frac_digits
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1frac_1digits
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1frac_1digits
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->int_frac_digits;
     }
@@ -107,9 +107,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    int_n_cs_precedes
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1n_1cs_1precedes
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1n_1cs_1precedes
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->int_n_cs_precedes;
     }
@@ -117,9 +117,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    int_n_sep_by_space
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1n_1sep_1by_1space
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1n_1sep_1by_1space
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->int_n_sep_by_space;
     }
@@ -127,9 +127,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    int_n_sign_posn
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1n_1sign_1posn
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1n_1sign_1posn
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->int_n_sign_posn;
     }
@@ -137,9 +137,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    int_p_cs_precedes
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1p_1cs_1precedes
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1p_1cs_1precedes
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->int_p_cs_precedes;
     }
@@ -147,9 +147,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    int_p_sep_by_space
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1p_1sep_1by_1space
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1p_1sep_1by_1space
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->int_p_sep_by_space;
     }
@@ -157,9 +157,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    int_p_sign_posn
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1p_1sign_1posn
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_int_1p_1sign_1posn
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->int_p_sign_posn;
     }
@@ -207,9 +207,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    n_cs_precedes
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_n_1cs_1precedes
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_n_1cs_1precedes
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->n_cs_precedes;
     }
@@ -217,9 +217,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    n_sep_by_space
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_n_1sep_1by_1space
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_n_1sep_1by_1space
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->n_sep_by_space;
     }
@@ -227,9 +227,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    n_sign_posn
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_n_1sign_1posn
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_n_1sign_1posn
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->n_sign_posn;
     }
@@ -247,9 +247,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    p_cs_precedes
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_p_1cs_1precedes
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_p_1cs_1precedes
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->p_cs_precedes;
     }
@@ -257,9 +257,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    p_sep_by_space
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_p_1sep_1by_1space
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_p_1sep_1by_1space
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->p_sep_by_space;
     }
@@ -267,9 +267,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    p_sign_posn
-     * Signature: ()B
+     * Signature: ()S
      */
-    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_p_1sign_1posn
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_p_1sign_1posn
     (JNIEnv *env, jobject structLconv) {
         return (UNWRAP_STRUCT_LCONV_PTR(structLconv))->p_sign_posn;
     }

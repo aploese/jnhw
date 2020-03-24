@@ -180,7 +180,14 @@ extern "C" {
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_ctime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong clock) {
+#if __WORDSIZE == 64
         const char *result = ctime(&clock);
+#elif __WORDSIZE == 32
+        //TODO linux arm needs long int int32_t will not suffice Why???
+        const char *result = ctime((long int *) &clock);
+#else
+#error Unknown Wordsize
+#endif
         if (result == NULL) {
             return NULL;
         } else {
@@ -203,7 +210,14 @@ extern "C" {
             throw_IllegalArgumentException(env, "buf is too small 26 bytes are the minimum");
             return NULL;
         }
+#if __WORDSIZE == 64
         const char *result = ctime_r(&clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
+#elif __WORDSIZE == 32
+        //TODO linux arm needs long int int32_t will not suffice Why???
+        const char *result = ctime_r((long int*) &clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
+#else
+#error Unknown Wordsize
+#endif
         if (result == NULL) {
             return NULL;
         } else {
@@ -229,7 +243,14 @@ extern "C" {
      */
     JNIEXPORT jdouble JNICALL Java_de_ibapl_jnhw_posix_Time_difftime
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong time1, jlong time0) {
+#if __WORDSIZE == 64
         return difftime(time1, time0);
+#elif __WORDSIZE == 32
+        //TODO linux arm needs long int int32_t will not suffice Why???
+        return difftime((long int) time1, (long int) time0);
+#else
+#error Unknown Wordsize
+#endif
     }
 
     /*
@@ -262,7 +283,14 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
+#if __WORDSIZE == 64
         const struct tm *tm = gmtime(&timer);
+#elif __WORDSIZE == 32
+        //TODO linux arm needs long int int32_t will not suffice Why???
+        const struct tm *tm = gmtime((long int*) &timer);
+#else
+#error Unknown Wordsize
+#endif
         if (tm) {
             return WRAP_STATIC_STRUCT_TM(tm);
         } else {
@@ -283,7 +311,14 @@ extern "C" {
             return NULL;
         }
         struct tm *_result = UNWRAP_STRUCT_TM_PTR(result);
+#if __WORDSIZE == 64
         if (gmtime_r(&timer, _result)) {
+#elif __WORDSIZE == 32
+        //TODO linux arm needs long int int32_t will not suffice Why???
+        if (gmtime_r((long int*)&timer, _result)) {
+#else
+#error Unknown Wordsize
+#endif
             return result;
         } else {
             return NULL;
@@ -297,7 +332,14 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_localtime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
+#if __WORDSIZE == 64
         const struct tm *result = localtime(&timer);
+#elif __WORDSIZE == 32
+        //TODO linux arm needs long int int32_t will not suffice Why???
+        const struct tm *result = localtime((long int*)&timer);
+#else
+#error Unknown Wordsize
+#endif
         if (result) {
             return WRAP_STATIC_STRUCT_TM(result);
         } else {
@@ -317,7 +359,14 @@ extern "C" {
             return NULL;
         }
         struct tm *_result = UNWRAP_STRUCT_TM_PTR(result);
+#if __WORDSIZE == 64
         if (localtime_r(&timer, _result)) {
+#elif __WORDSIZE == 32
+        //TODO linux arm needs long int int32_t will not suffice Why???
+        if (localtime_r((long int*)&timer, _result)) {
+#else
+#error Unknown Wordsize
+#endif
             return result;
         } else {
             return NULL;
@@ -359,12 +408,12 @@ extern "C" {
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Time
- * Method:    strftime
- * Signature: (JLjava/lang/String;Lde/ibapl/jnhw/posix/Time/Tm;)Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time
+     * Method:    strftime
+     * Signature: (JLjava/lang/String;Lde/ibapl/jnhw/posix/Time/Tm;)Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong maxsize, jstring format, jobject timeptr) {
         if (maxsize < 0) {
             throw_IllegalArgumentException(env, "maxsize < 0");
@@ -379,23 +428,43 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime
             return NULL;
         }
         const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
-        char* _result = malloc((uint64_t)maxsize);
-        
-        size_t count = strftime(_result, (uint64_t)maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr));
-        
+#if __WORDSIZE == 64
+        char* _result = malloc((uint64_t) maxsize);
+#elif __WORDSIZE == 32
+        if ((maxsize > INT32_MAX) || (maxsize < INT32_MIN)) {
+            throw_IndexOutOfBoundsException(env, "In this native implementation maxsize is only an integer with the size of jint");
+            return NULL;
+        }
+        char* _result = malloc((uint32_t) maxsize);
+#else
+#error Unknown Wordsize
+#endif
+
+#if __WORDSIZE == 64
+        size_t count = strftime(_result, (uint64_t) maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr));
+#elif __WORDSIZE == 32
+        if ((maxsize > INT32_MAX) || (maxsize < INT32_MIN)) {
+            throw_IndexOutOfBoundsException(env, "In this native implementation maxsize is only an integer with the size of jint");
+            return NULL;
+        }
+        size_t count = strftime(_result, (uint32_t) maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr));
+#else
+#error Unknown Wordsize
+#endif
+
         (*env)->ReleaseStringUTFChars(env, format, _format);
-        
+
         const jstring result = count == 0 ? NULL : (*env)->NewStringUTF(env, _result);
         free(_result);
         return result;
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Time
- * Method:    strftime_l
- * Signature: (JLjava/lang/String;Lde/ibapl/jnhw/posix/Time/Tm;Lde/ibapl/jnhw/posix/Locale/Locale_t;)Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time
+     * Method:    strftime_l
+     * Signature: (JLjava/lang/String;Lde/ibapl/jnhw/posix/Time/Tm;Lde/ibapl/jnhw/posix/Locale/Locale_t;)Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong maxsize, jstring format, jobject timeptr, jobject locale) {
         if (maxsize < 0) {
             throw_IllegalArgumentException(env, "maxsize < 0");
@@ -414,12 +483,31 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
             return NULL;
         }
         const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
-        char* _result = malloc((uint64_t)maxsize);
-        
-        size_t count = strftime_l(_result, (uint64_t)maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr), UNWRAP_LOCALE_T(locale));
-        
+#if __WORDSIZE == 64
+        char* _result = malloc((uint64_t) maxsize);
+#elif __WORDSIZE == 32
+        if ((maxsize > INT32_MAX) || (maxsize < INT32_MIN)) {
+            throw_IndexOutOfBoundsException(env, "In this native implementation maxsize is only an integer with the size of jint");
+            return NULL;
+        }
+        char* _result = malloc((uint32_t) maxsize);
+#else
+#error Unknown Wordsize
+#endif
+
+#if __WORDSIZE == 64
+        size_t count = strftime_l(_result, (uint64_t) maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr), UNWRAP_LOCALE_T(locale));
+#elif __WORDSIZE == 32
+        if ((maxsize > INT32_MAX) || (maxsize < INT32_MIN)) {
+            throw_IndexOutOfBoundsException(env, "In this native implementation maxsize is only an integer with the size of jint");
+            return NULL;
+        }
+        size_t count = strftime_l(_result, (uint32_t) maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr), UNWRAP_LOCALE_T(locale));
+#else
+#error Unknown Wordsize
+#endif
         (*env)->ReleaseStringUTFChars(env, format, _format);
-        
+
         const jstring result = count == 0 ? NULL : (*env)->NewStringUTF(env, _result);
         free(_result);
         return result;
@@ -468,7 +556,18 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject tloc) {
         time_t result;
         if (tloc) {
+#if __WORDSIZE == 64
             time_t _tloc = GET_LONG_REF_VALUE(tloc);
+#elif __WORDSIZE == 32
+        jlong __tloc = GET_LONG_REF_VALUE(tloc);
+        if ((__tloc > INT32_MAX) || (__tloc < INT32_MIN)) {
+            throw_IndexOutOfBoundsException(env, "In this native implementation tloc is only an integer with the size of jint");
+            return 0;
+        }
+        time_t _tloc = (long int)__tloc;
+#else
+#error Unknown Wordsize
+#endif
             result = time(&_tloc);
             SET_LONG_REF_VALUE(tloc, _tloc);
         } else {

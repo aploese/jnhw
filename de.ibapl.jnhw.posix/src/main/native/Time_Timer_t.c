@@ -52,7 +52,13 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_toString
     (JNIEnv *env, jobject timer) {
         char buf[1024] = {0};
+#if __WORDSIZE == 64
         snprintf(buf, sizeof (buf) - 1, "0x%08lx", (intptr_t) *UNWRAP_TIMER_T_PTR(timer));
+#elif __WORDSIZE == 32
+        snprintf(buf, sizeof (buf) - 1, "0x%04x", (intptr_t) *UNWRAP_TIMER_T_PTR(timer));
+#else
+#error Unknown Wordsize
+#endif
         return (*env)->NewStringUTF(env, buf);
     }
 

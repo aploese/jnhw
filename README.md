@@ -76,3 +76,10 @@ public class Windows {
 
 }
 ```
+
+create a file named test.c and include the needed headers.
+run
+```sh
+gcc  -dD -dI -E test.c  | less
+```
+to see the preprocessed defines

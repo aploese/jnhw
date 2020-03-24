@@ -89,7 +89,17 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1offset__J
     (JNIEnv *env, jobject structAiocb, jlong aio_offset) {
+#if __WORDSIZE == 64
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = aio_offset;
+#elif __WORDSIZE == 32
+        if ((aio_offset > INT32_MAX) || (aio_offset < INT32_MIN)) {
+            throw_IndexOutOfBoundsException(env, "In this native implementation aio_offset is only an integer with the size of jint");
+            return;
+        }
+        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = (int32_t)aio_offset;
+#else
+#error Unknown Wordsize
+#endif
     }
 
     /*
@@ -104,8 +114,21 @@ extern "C" {
             (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = 0;
         } else {
             (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_buf = (*env)->GetDirectBufferAddress(env, byteBuffer) + off;
-            (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = (uint64_t) length;
+            // lengt cant be < 0
+            (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = (uint32_t) length;
         }
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
+     * Method:    aio_bufOpaqueMemory
+     * Signature: (Ljava/nio/ByteBuffer;II)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1bufOpaqueMemory
+    (JNIEnv *env, jobject structAiocb, jobject bufOpaqueMemory, jint off, jint length) {
+        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_buf = UNWRAP_OPAQUE_MEM_TO_VOID_PTR_OR_NULL(bufOpaqueMemory) + off;
+        // lengt cant be < 0
+        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = (uint32_t) length;
     }
 
     /*

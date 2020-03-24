@@ -342,7 +342,8 @@ public class Aio {
          *
          * @return the native value of aio_offset.
          */
-        public native long aio_offset();
+        public native @Types.off_t
+        long aio_offset();
 
         /**
          * The file offset.
@@ -351,7 +352,7 @@ public class Aio {
          *
          * @param aio_offset the value of aio_offset to be set natively.
          */
-        public native void aio_offset(long aio_offset);
+        public native void aio_offset(@Types.off_t long aio_offset);
 
         private native long aio_buf0();
         /**
@@ -365,8 +366,20 @@ public class Aio {
             return producer.apply(aio_buf0());
         }
 
+        /**
+         *
+         * @param aio_buf
+         * @param offset
+         * @param length must not < 0
+         */
         private native void aio_bufByteBuffer(ByteBuffer aio_buf, int offset, int length);
 
+        /**
+         *
+         * @param aio_buf
+         * @param offset
+         * @param length must not < 0
+         */
         private native void aio_bufOpaqueMemory(OpaqueMemory aio_buf, int offset, int length);
 
         /**

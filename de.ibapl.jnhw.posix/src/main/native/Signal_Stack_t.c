@@ -31,7 +31,7 @@
 extern "C" {
 #endif
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
      * Method:    sizeofStack_t
      * Signature: ()I
@@ -68,7 +68,21 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1size__J
     (JNIEnv *env, jobject structStack_t, jlong ss_size) {
-        (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint64_t)ss_size;
+        if (ss_size < 0) {
+            throw_IndexOutOfBoundsException(env, "In ss_size < 0");
+            return;
+        }
+#if __WORDSIZE == 64
+        (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint64_t) ss_size;
+#elif __WORDSIZE == 32
+        if (ss_size > INT32_MAX) {
+            throw_IndexOutOfBoundsException(env, "In this native implementation ss_size is only an integer with the size of jint");
+            return;
+        }
+        (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint32_t) ss_size;
+#else
+#error Unknown Wordsize
+#endif
     }
 
     /*
