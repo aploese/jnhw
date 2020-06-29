@@ -25,6 +25,7 @@ import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl;
 import de.ibapl.jnhw.Callback_I_V;
 import de.ibapl.jnhw.Callback_I_V_Impl;
+import de.ibapl.jnhw.Callback_NativeRunnable;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeAddressHolder;
@@ -286,15 +287,15 @@ public class SignalTest {
             Signal.sigaction(SIG, act, oact);
             Signal.sigaction(SIG, act, null);
             if ((oact.sa_flags() & Signal.SA_SIGINFO()) == Signal.SA_SIGINFO()) {
-                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V::wrap));
+                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_sigaction());
             } else {
-                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_handler(Callback_I_V::wrap));
+                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_handler());
             }
 
             final Signal.Sigaction<OpaqueMemory> actOut = new Signal.Sigaction();
             Signal.sigaction(SIG, oact, actOut);
 
-            Assertions.assertEquals(act.sa_handler(Callback_I_V::wrap), actOut.sa_handler(Callback_I_V::wrap));
+            Assertions.assertEquals(act.sa_handler(), actOut.sa_handler());
             Signal.sigaction(SIG, null, null);
         } finally {
             Signal.sigaction(SIG, oact, null);
@@ -827,13 +828,27 @@ public class SignalTest {
         sigevent.sigev_signo(Signal.SIGBUS());
         assertEquals(Signal.SIGBUS(), sigevent.sigev_signo());
 
-        Callback_I_V sigev_notify_functionInt = Callback_I_V.wrap(new NativeAddressHolder(44));
+        Callback_I_V sigev_notify_functionInt = new Callback_I_V(new NativeAddressHolder(44)) {
+            @Override
+            protected void callback(int value) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
         sigevent.sigev_notify_function(sigev_notify_functionInt);
-        Assertions.assertSame(sigev_notify_functionInt, sigevent.sigev_notify_function(Callback_I_V::wrap));
+        Assertions.assertSame(sigev_notify_functionInt, sigevent.sigev_notify_functionAsCallback_I_V());
 
-        Callback_PtrOpaqueMemory_V<OpaqueMemory> sigev_notify_functionPtr = Callback_PtrOpaqueMemory_V.wrap(new NativeAddressHolder(44));
+        Callback_PtrOpaqueMemory_V<OpaqueMemory> sigev_notify_functionPtr = new Callback_PtrOpaqueMemory_V(new NativeAddressHolder(44)) {
+            @Override
+            protected void callback(OpaqueMemory a) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
         sigevent.sigev_notify_function(sigev_notify_functionPtr);
-        Assertions.assertSame(sigev_notify_functionPtr, sigevent.sigev_notify_function(Callback_I_V::wrap));
+        Assertions.assertSame(sigev_notify_functionPtr, sigevent.sigev_notify_functionAsCallback_PtrOpaqueMemory_V());
+
+        Callback_NativeRunnable sigev_notify_functionRunnable = Callback_NativeRunnable.INSTANCE;
+        sigevent.sigev_notify_function(sigev_notify_functionRunnable);
+        Assertions.assertSame(sigev_notify_functionRunnable, sigevent.sigev_notify_functionAsCallback_NativeRunnable());
 
         Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
         Pthread.pthread_attr_init(pthread_attr_t);
@@ -881,15 +896,27 @@ public class SignalTest {
         sigaction.sa_flags(22);
         assertEquals(22, sigaction.sa_flags());
 
-        Callback_I_V sa_handler = Callback_I_V.wrap(new NativeAddressHolder(33));
+        Callback_I_V sa_handler = new Callback_I_V(new NativeAddressHolder(33)) {
+            @Override
+            protected void callback(int value) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
         sigaction.sa_handler(sa_handler);
-        Assertions.assertSame(sa_handler, sigaction.sa_handler(Callback_I_V::wrap));
+        Assertions.assertSame(sa_handler, sigaction.sa_handlerAsCallback_I_V());
 
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory> sa_sigaction = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(new NativeAddressHolder(44));
+        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory> sa_sigaction = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(new NativeAddressHolder(44)) {
+            @Override
+            protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
         sigaction.sa_sigaction(sa_sigaction);
-        Assertions.assertSame(sa_sigaction, sigaction.sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V::wrap));
+        Assertions.assertSame(sa_sigaction, sigaction.sa_sigactionAsCallback_I_PtrOpaqueMemory_PtrOpaqueMemory_V());
 
-        Assertions.assertNotEquals(sa_handler, sigaction.sa_handler(Callback_I_V::wrap));
+        RuntimeException rt = Assertions.assertThrows(RuntimeException.class, () -> {
+            sigaction.sa_handlerAsCallback_I_V();
+        });
 
     }
 

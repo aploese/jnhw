@@ -78,7 +78,7 @@ extern "C" {
 #define UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(structTimespec) UNWRAP_OPAQUE_MEM_TO_OR_NULL(struct timespec*, structTimespec)
 
 #define UNWRAP_STRUCT_TM_PTR(structTm) UNWRAP_OPAQUE_MEM_TO(struct tm*, structTm)
-#define WRAP_STATIC_STRUCT_TM(baseAddress) (*env)->NewObject(env, de_ibapl_jnhw_posix_Time_Tm_Class, de_ibapl_jnhw_posix_Time_Tm_init_ID, baseAddress, sizeof (struct tm))
+#define WRAP_STATIC_STRUCT_TM(baseAddress) (*env)->NewObject(env, de_ibapl_jnhw_posix_Time_Tm_Class, de_ibapl_jnhw_posix_Time_Tm_init_ID, CREATE_NATIVE_ADDRESS_HOLDER(baseAddress), sizeof (struct tm))
 
 #define UNWRAP_STRUCT_SIGACTION_PTR(structSigaction) UNWRAP_OPAQUE_MEM_TO(struct sigaction*, structSigaction)
 #define UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(structSigaction) UNWRAP_OPAQUE_MEM_TO_OR_NULL(struct sigaction*, structSigaction)

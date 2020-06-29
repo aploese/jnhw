@@ -114,7 +114,7 @@ public final class Fcntl {
     public final static native int F_DUPFD();
 
     /**
-     * <b>POSIX:</b> Duplicate file descriptor with the close-on- exec flag
+     * <b>POSIX:</b> Duplicate file descriptor with the close-on-exec flag
      * FD_CLOEXEC set.
      *
      * @return the native symbolic constant of F_DUPFD_CLOEXEC.

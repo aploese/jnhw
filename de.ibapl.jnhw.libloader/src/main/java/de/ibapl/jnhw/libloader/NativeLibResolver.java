@@ -217,7 +217,7 @@ public abstract class NativeLibResolver {
         LOG.log(Level.SEVERE, "Giving up! Can't load the lib {0} \nList System Properties\n {1} \n",
                 new Object[]{libName, MULTIARCH_TUPEL_BUILDER.listSystemProperties()});
         return LoadResult.fail(libName, formattedLibName, new IOException("Can't load the lib \"" + libName
-                + "\" foramtted as: \"" + formattedLibName + "\" for any Architectures"));
+                + "\" formated as: \"" + formattedLibName + "\" for any Architectures"));
     }
 
     private static File copyToNativeLibDir(URL sourceURL, final String targetName) throws IOException {

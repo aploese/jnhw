@@ -104,7 +104,12 @@ public class Callback_PtrOpaquememory_V_Test {
 
     @Test
     public void testNativeFunctionPointer() {
-        final Callback_PtrOpaqueMemory_V<A> testPtr = Callback_PtrOpaqueMemory_V.wrap(new NativeAddressHolder(121));
+        final Callback_PtrOpaqueMemory_V<A> testPtr = new Callback_PtrOpaqueMemory_V(new NativeAddressHolder(121)) {
+            @Override
+            protected void callback(OpaqueMemory a) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
         setCallback(testPtr);
         assertEquals(getCallbackPtr(), testPtr);
     }
@@ -166,7 +171,12 @@ public class Callback_PtrOpaquememory_V_Test {
         final ObjectRef<A> refA = new ObjectRef();
         A a = new A();
 
-        final Callback_PtrOpaqueMemory_V<A> NULL_PTR = Callback_PtrOpaqueMemory_V.wrap(new NativeAddressHolder(0));
+        final Callback_PtrOpaqueMemory_V<A> NULL_PTR = new Callback_PtrOpaqueMemory_V(new NativeAddressHolder(0)) {
+            @Override
+            protected void callback(OpaqueMemory a) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
         Callback_PtrOpaqueMemory_V_Impl<A> callback = new Callback_PtrOpaqueMemory_V_Impl<>() {
 
             @Override

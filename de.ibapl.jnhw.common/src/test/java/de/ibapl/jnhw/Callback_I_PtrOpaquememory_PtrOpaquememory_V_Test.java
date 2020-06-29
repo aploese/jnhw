@@ -123,7 +123,12 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
 
     @Test
     public void testNativeFunctionPointer() {
-        final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> testPtr = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(new NativeAddressHolder(121));
+        final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> testPtr = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(new NativeAddressHolder(121)) {
+            @Override
+            protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
         setCallback(testPtr);
         assertEquals(getCallbackPtr(), testPtr);
     }
@@ -200,7 +205,12 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
         B b = new B();
 
         final IntRef intref = new IntRef();
-        final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> NULL_PTR = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V.wrap(new NativeAddressHolder(0));
+        final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> NULL_PTR = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(new NativeAddressHolder(0)) {
+            @Override
+            protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
         Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A, B> callback = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<>() {
 
             @Override

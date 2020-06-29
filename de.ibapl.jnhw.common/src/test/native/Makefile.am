@@ -20,6 +20,7 @@ libtests_la_SOURCES = \
  Callback_I_V_Tests.c \
  Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.c \
  Callback_PtrOpaqueMemory_V_Tests.c \
+ NativeRunnableTests.c \
  PointerArray_Tests.c \
  JnhwExceptionsTest.c
 

@@ -21,49 +21,40 @@
  */
 package de.ibapl.jnhw;
 
+import java.util.logging.Logger;
+
 /**
  *
  * @author aploese
  */
-public final class NativeAddressHolder {
+public class Callback_NativeRunnable extends NativeFunctionPointer implements NativeCallToJava {
 
-    final long address;
+    private final static Logger LOG = Logger.getLogger("d.i.j.c.Callback_NativeRunnable");
+    /**
+     * We only need one instance
+     *
+     */
+    public static final Callback_NativeRunnable INSTANCE = new Callback_NativeRunnable();
+
+    //TODO release globalRef on native side, if its not deeded anymore ....
+    private static native void initNative();
 
     /**
-     * Called from native code and test classes only
-     *
-     * @param address
+     * Make sure the native lib is loaded
      */
-    public NativeAddressHolder(long address) {
-        this.address = address;
+    static {
+        LibJnhwCommonLoader.touch();
+        initNative();
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + (int) (this.address ^ (this.address >>> 32));
-        return hash;
+    private Callback_NativeRunnable() {
+        super(aquire());
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof NativeAddressHolder)) {
-            return false;
-        }
-        final NativeAddressHolder other = (NativeAddressHolder) obj;
-        return this.address == other.address;
-    }
-
-    public boolean isNULL() {
-        return address == 0L;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("{address : 0x%08x}", address);
-    }
+    /**
+     *
+     * @return
+     */
+    private static native NativeAddressHolder aquire();
 
 }

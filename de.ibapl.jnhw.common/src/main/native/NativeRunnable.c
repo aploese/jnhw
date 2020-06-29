@@ -20,48 +20,46 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "jnhw-common.h"
+#include "de_ibapl_jnhw_NativeRunnable.h"
 
-#include "de_ibapl_jnhw_PointerArray.h"
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
+#include "jnhw-common.h"
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_PointerArray
- * Method:    get0
- * Signature: (I)Lde/ibapl/jnhw/NativeAddressHolder;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_PointerArray_get0
-    (JNIEnv *env, jobject pointerArray, jint index) {
-        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)*(UNWRAP_OPAQUE_MEM_TO_VOID_PTR_PTR(pointerArray) + index));
-    }
-
     /*
-     * Class:     de_ibapl_jnhw_PointerArray
-     * Method:    set0
-     * Signature: (ILde/ibapl/jnhw/OpaqueMemory;)V
+     * Class:     de_ibapl_jnhw_NativeRunnable
+     * Method:    aquireObjectRef
+     * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_PointerArray_set0
-    (JNIEnv *env, jobject pointerArray, jint index, jobject opaqueMemory) {
-        *(UNWRAP_OPAQUE_MEM_TO_VOID_PTR_PTR(pointerArray) + index) = UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory);
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_NativeRunnable_aquireObjectRef
+    (JNIEnv *env, jobject self) {
+        *UNWRAP_OPAQUE_MEM_TO(jobject*, self) = (*env)->NewGlobalRef(env, self);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_PointerArray
-     * Method:    sizeofPointer
+     * Class:     de_ibapl_jnhw_NativeRunnable
+     * Method:    releaseObjectRef
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_NativeRunnable_releaseObjectRef
+    (JNIEnv *env, jobject self) {
+        (*env)->DeleteGlobalRef(env, *UNWRAP_OPAQUE_MEM_TO(jobject*, self));
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_NativeRunnable
+     * Method:    sizeOf_ObjectRef
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_PointerArray_sizeofPointer
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_NativeRunnable_sizeOf_1ObjectRef
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof (void*);
+        return sizeof (jweak);
     }
 
 #ifdef __cplusplus
 }
 #endif
+

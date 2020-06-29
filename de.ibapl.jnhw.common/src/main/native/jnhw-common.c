@@ -31,8 +31,6 @@
 
 #define JNHW_CLASS_NAME_NATIVE_FUNCTION_POINTER "de/ibapl/jnhw/NativeFunctionPointer"
 
-#define JNHW_CLASS_NAME_NATIVE_ADDRESS_HOLDER "de/ibapl/jnhw/NativeAddressHolder"
-
 #define JNHW_CLASS_NAME_OPAQUE_MEMORY "de/ibapl/jnhw/OpaqueMemory"
 #define JNHW_CLASS_NAME_STRUCT_ARRAY "de/ibapl/jnhw/StructArray"
 #define JNHW_CLASS_NAME_POINTER_ARRAY "de/ibapl/jnhw/PointerArray"

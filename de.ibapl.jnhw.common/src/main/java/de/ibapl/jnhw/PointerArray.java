@@ -38,7 +38,7 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
      * @param i the index must be in range.
      * @return
      */
-    private native long get0(int i);
+    private native NativeAddressHolder get0(int i);
 
     /**
      *
@@ -57,7 +57,7 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
          * @param cachedElement
          * @return
          */
-        T produce(long baseAddress, int index, T cachedElement);
+        T produce(NativeAddressHolder baseAddress, int index, T cachedElement);
 
     }
 
@@ -72,10 +72,8 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
 
     public final T get(int index, ElementProducer<T> p) {
         final T ref = (T) cachedReferences[index];
-        final long baseAddress = get0(index);
-        if ((ref == null) && (baseAddress == 0L)) {
-            return ref;
-        } else if (OpaqueMemory.isSameAddress(baseAddress, ref)) {
+        final NativeAddressHolder baseAddress = get0(index);
+        if (OpaqueMemory.isSameAddress(baseAddress, ref)) {
             return ref;
         } else {
             final T newRef = p.produce(baseAddress, index, ref);

@@ -68,7 +68,7 @@ public class PointerArrayTest {
         instance.get(0, (baseAddress, index, cachedElement) -> {
             Assertions.assertEquals(null, cachedElement);
             Assertions.assertEquals(0, index);
-            Assertions.assertEquals(0L, baseAddress);
+            Assertions.assertEquals(new NativeAddressHolder(0L), baseAddress);
             return cachedElement;
         });
         instance.get(1, (baseAddress, index, cachedElement) -> {
@@ -80,7 +80,7 @@ public class PointerArrayTest {
         instance.get(3, (baseAddress, index, cachedElement) -> {
             Assertions.assertEquals(null, cachedElement);
             Assertions.assertEquals(3, index);
-            Assertions.assertEquals(0L, baseAddress);
+            Assertions.assertEquals(new NativeAddressHolder(0L), baseAddress);
             return cachedElement;
         });
         instance.get(2, (baseAddress, index, cachedElement) -> {

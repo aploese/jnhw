@@ -25,6 +25,7 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LongRef;
+import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
@@ -740,12 +741,12 @@ public class Time {
         public static native int sizeofTm();
 
         /**
-         * TO be called only from native code ...
+         * To be called only from native code ...
          *
-         * @param baseAddress
+         * @param addressHolder
          */
-        private Tm(long baseAddress, int sizeof) {
-            super(baseAddress, sizeof);
+        private Tm(NativeAddressHolder addressHolder, int sizeof) {
+            super(addressHolder, sizeof);
         }
 
         public Tm() {

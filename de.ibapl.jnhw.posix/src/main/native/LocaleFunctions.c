@@ -77,9 +77,9 @@ extern "C" {
             return NULL;
         }
         jobject result = NULL;
-        jmethodID lconvInitID = (*env)->GetMethodID(env, lconvClass, "<init>", "(JI)V");
+        jmethodID lconvInitID = (*env)->GetMethodID(env, lconvClass, "<init>", "(Lde/ibapl/jnhw/NativeAddressHolder;I)V");
         if (lconvInitID != NULL) {
-            result = (*env)->NewObject(env, lconvClass, lconvInitID, (intptr_t) lconv, sizeof (struct lconv));
+            result = (*env)->NewObject(env, lconvClass, lconvInitID, CREATE_NATIVE_ADDRESS_HOLDER((intptr_t) lconv), sizeof (struct lconv));
         }
         (*env)->DeleteLocalRef(env, lconvClass);
         return result;

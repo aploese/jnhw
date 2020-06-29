@@ -23,6 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
+import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
@@ -296,8 +297,14 @@ public class Locale {
             super(sizeofLconv(), false);
         }
 
-        private Lconv(long baseAddress, int size) {
-            super(baseAddress, size);
+        /**
+         * To be called only from native code ...
+         *
+         * @param addressHolder
+         * @param size
+         */
+        private Lconv(NativeAddressHolder addressHolder, int size) {
+            super(addressHolder, size);
         }
 
         public String toString() {

@@ -38,6 +38,9 @@ extern "C" {
 #endif   
 
 #include "JnhwExceptions.h"
+
+//globally important class names
+#define JNHW_CLASS_NAME_NATIVE_ADDRESS_HOLDER "de/ibapl/jnhw/NativeAddressHolder"
     
     //Cached
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_ByteRef_value_ID;

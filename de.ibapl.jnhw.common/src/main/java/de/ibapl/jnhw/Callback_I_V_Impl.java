@@ -47,6 +47,7 @@ public abstract class Callback_I_V_Impl extends Callback_I_V implements NativeCa
         return null;
     }
 
+    //TODO release globalRef on native side, if its not deeded anymore ....
     private static native void initNative();
 
     /**

@@ -185,7 +185,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ispeed__
-#if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
+#if (defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) && _HAVE_STRUCT_TERMIOS_C_ISPEED != 0) || defined(__APPLE__) || defined(__FreeBSD__) 
     (JNIEnv *env, jobject structTermios) {
         return (int32_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ispeed;
 #else
@@ -201,7 +201,7 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ispeed__I
-#if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
+#if (defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) && _HAVE_STRUCT_TERMIOS_C_ISPEED != 0) || defined(__APPLE__) || defined(__FreeBSD__) 
     (JNIEnv *env, jobject structTermios, jint speed) {
         if (speed < 0) {
             throw_IllegalArgumentException(env, "speed must be >= 0");
@@ -220,7 +220,7 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ospeed__
-#if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
+#if (defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) && _HAVE_STRUCT_TERMIOS_C_OSPEED != 0) || defined(__APPLE__) || defined(__FreeBSD__) 
     (JNIEnv *env, jobject structTermios) {
         return (int32_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_ospeed;
 #else
@@ -236,7 +236,7 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1ospeed__I
-#if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) || defined(__APPLE__) || defined(__FreeBSD__) 
+#if (defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) && _HAVE_STRUCT_TERMIOS_C_OSPEED != 0) || defined(__APPLE__) || defined(__FreeBSD__) 
     (JNIEnv *env, jobject structTermios, jint speed) {
         if (speed < 0) {
             throw_IllegalArgumentException(env, "speed must be >= 0");

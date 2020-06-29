@@ -59,7 +59,7 @@ extern "C" {
             if (de_ibapl_jnhw_posix_Time_Tm_Class == NULL) {
                 return JNI_ERR;
             }
-            de_ibapl_jnhw_posix_Time_Tm_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_posix_Time_Tm_Class, "<init>", "(JI)V");
+            de_ibapl_jnhw_posix_Time_Tm_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_posix_Time_Tm_Class, "<init>", "(Lde/ibapl/jnhw/NativeAddressHolder;I)V");
             if (de_ibapl_jnhw_posix_Time_Tm_init_ID == NULL) {
                 return JNI_ERR;
             }

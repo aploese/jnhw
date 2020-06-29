@@ -22,10 +22,12 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Callback_I_V_Impl;
+import de.ibapl.jnhw.Callback_NativeRunnable;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V_Impl;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.NativeRunnable;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import java.io.BufferedReader;
@@ -457,7 +459,26 @@ public class AioTest {
     }
 
     /**
-     * Test of sigaction method, of class Signal.
+     * Test struct aiocb.
+     */
+    @Test
+    public void testStructAiocb() throws Exception {
+        Aio.Aiocb aiocb = new Aio.Aiocb();
+
+        ByteBuffer buf = ByteBuffer.allocateDirect(128);
+        buf.position(16);
+        buf.limit(64);
+        aiocb.aio_fildes(-1);
+        assertEquals(-1, aiocb.aio_fildes());
+        aiocb.aio_buf(buf);
+        assertEquals(0, aiocb.aio_offset());
+        assertEquals(48, aiocb.aio_nbytes());
+        aiocb.aio_offset(8);
+        assertEquals(8, aiocb.aio_offset());
+    }
+
+    /**
+     * Test members of struct Aiocb[].
      */
     @Test
     public void testAiocbs() throws Exception {
@@ -474,5 +495,87 @@ public class AioTest {
         assertEquals(aiocb, aiocb_get);
 
     }
+
+    /**
+     * Test of aio_read method, of class Aio.
+     */
+    @Test
+    public void testAio_read_ByteBuffer_NativeRunnable() throws Exception {
+        System.out.println("aio_read");
+        //Clean up references to Callbacks
+        System.gc();
+
+        final String HELLO_WORLD = "Hello world!\n";
+
+        final ObjectRef objRef = new ObjectRef(null);
+        File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
+        FileWriter fw = new FileWriter(tmpFile);
+        fw.append(HELLO_WORLD);
+        fw.flush();
+        fw.close();
+
+        final Aio.Aiocb<NativeRunnable> aiocb = new Aio.Aiocb();
+        aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
+        final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
+
+        aioBuffer.clear();
+        aiocb.aio_buf(aioBuffer);
+        assertEquals(0, aioBuffer.position());
+
+        aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD());
+
+        System.out.println("aio_read aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
+        System.out.println("aio_read Pthread_t: " + Pthread.pthread_self());
+        System.out.println("aio_read currentThread: " + Thread.currentThread());
+
+        aiocb.aio_sigevent.sigev_notify_function(Callback_NativeRunnable.INSTANCE);
+        NativeRunnable callback = new NativeRunnable() {
+
+            @Override
+            protected void callback() {
+                System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self());
+                System.out.println("aio_read in callback currentThread: " + Thread.currentThread());
+                try {
+                    int errno = Aio.aio_error(aiocb);
+                    assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                    aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
+                } catch (NativeErrorException nee) {
+                    fail("aio_read in callback NativeErrorException: " + nee, nee);
+                }
+                synchronized (objRef) {
+                    objRef.value = aiocb;
+                    objRef.notify();
+                }
+                System.out.println("aio_read leave callback");
+            }
+
+        };
+        aiocb.aio_sigevent.sigev_value.sival_ptr(callback);
+        Aio.aio_read(aiocb);
+
+        synchronized (objRef) {
+            if (objRef.value == null) {
+                objRef.wait(1000);
+            }
+            assertEquals(aiocb, objRef.value);
+        }
+
+        Unistd.close(aiocb.aio_fildes());
+        int errno = Aio.aio_error(aiocb);
+        assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+        assertEquals(HELLO_WORLD.length(), aioBuffer.position());
+
+        byte[] result = new byte[HELLO_WORLD.length()];
+        aioBuffer.flip();
+        aioBuffer.get(result);
+
+        Assertions.assertArrayEquals(HELLO_WORLD.getBytes(), result);
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Aio.aio_read(null);
+        });
+
+    }
+
 
 }

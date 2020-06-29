@@ -52,10 +52,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios__1HAVE_1STRUCT_1TERMIOS_1C_1ISPEED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) &&  !defined(__mips__)
+#if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED)
         return _HAVE_STRUCT_TERMIOS_C_ISPEED;
-#elif defined(_HAVE_STRUCT_TERMIOS_C_ISPEED)
-#error "_HAVE_STRUCT_TERMIOS_C_ISPEED defined"
 #else
         throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_ISPEED");
         return 0;
@@ -69,10 +67,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios__1HAVE_1STRUCT_1TERMIOS_1C_1OSPEED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) &&  !defined(__mips__)
+#if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED)
         return _HAVE_STRUCT_TERMIOS_C_OSPEED;
-#elif defined(_HAVE_STRUCT_TERMIOS_C_OSPEED)
-#error "_HAVE_STRUCT_TERMIOS_C_OSPEED defined"
 #else
         throw_NotDefinedException(env, "_HAVE_STRUCT_TERMIOS_C_OSPEED");
         return 0;
@@ -584,7 +580,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CMSPAR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__linux__) &&  !defined(__mips__)
+#if defined(__linux__)
         return CMSPAR;
 #elif defined(CMSPAR)
 #error "CMSPAR defined"

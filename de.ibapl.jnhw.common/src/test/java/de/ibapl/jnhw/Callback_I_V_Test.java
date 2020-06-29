@@ -85,7 +85,13 @@ public class Callback_I_V_Test {
     
     @Test
     public void testNativeFunctionPointer() {
-        final Callback_I_V testPtr = Callback_I_V.wrap(new NativeAddressHolder(121));
+        final Callback_I_V testPtr = new Callback_I_V(new NativeAddressHolder(121)) {
+            @Override
+            protected void callback(int value) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        };
         setCallback(testPtr);
         assertEquals(getCallbackPtr(), testPtr);
     }
@@ -97,7 +103,13 @@ public class Callback_I_V_Test {
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
         final IntRef intref = new IntRef();
-        final Callback_I_V NULL_PTR = Callback_I_V.wrap(new NativeAddressHolder(0));
+        final Callback_I_V NULL_PTR = new Callback_I_V(new NativeAddressHolder(0)) {
+            @Override
+            protected void callback(int value) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        };
         final Thread t = Thread.currentThread();
         Callback_I_V_Impl callback = new Callback_I_V_Impl() {
             
@@ -142,7 +154,12 @@ public class Callback_I_V_Test {
         Cleaner CLEANER = Cleaner.create();
         
         final IntRef intref = new IntRef();
-        final Callback_I_V NULL_PTR = Callback_I_V.wrap(new NativeAddressHolder(0));
+        final Callback_I_V NULL_PTR = new Callback_I_V(new NativeAddressHolder(0)) {
+            @Override
+            protected void callback(int value) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
         Callback_I_V_Impl callback = new Callback_I_V_Impl() {
             
             @Override

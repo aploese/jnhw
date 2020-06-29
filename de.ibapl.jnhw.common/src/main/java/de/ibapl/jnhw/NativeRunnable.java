@@ -21,49 +21,39 @@
  */
 package de.ibapl.jnhw;
 
+import java.util.logging.Logger;
+
 /**
  *
- * @author aploese
+ * @author aploese TODO cleanup on GC
  */
-public final class NativeAddressHolder {
+public abstract class NativeRunnable extends OpaqueMemory {
 
-    final long address;
+    private final static Logger LOG = Logger.getLogger("d.i.j.c.NativeRunnable");
 
     /**
-     * Called from native code and test classes only
-     *
-     * @param address
+     * Make sure the native lib is loaded
      */
-    public NativeAddressHolder(long address) {
-        this.address = address;
+    static {
+        LibJnhwCommonLoader.touch();
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + (int) (this.address ^ (this.address >>> 32));
-        return hash;
+    private native void aquireObjectRef();
+
+    /**
+     * release the object ref on the natice side to allow garbage collection of
+     * this object
+     */
+    //TODO When???
+    public native void releaseObjectRef();
+
+    public static native int sizeOf_ObjectRef();
+
+    public NativeRunnable() {
+        super(sizeOf_ObjectRef(), false);
+        aquireObjectRef();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof NativeAddressHolder)) {
-            return false;
-        }
-        final NativeAddressHolder other = (NativeAddressHolder) obj;
-        return this.address == other.address;
-    }
-
-    public boolean isNULL() {
-        return address == 0L;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("{address : 0x%08x}", address);
-    }
+    protected abstract void callback();
 
 }

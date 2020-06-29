@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  */
 public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A extends OpaqueMemory, B extends OpaqueMemory> extends Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> implements NativeCallToJava {
 
-    private final static Logger LOG = Logger.getLogger("d.i.j.c.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V");
+    private final static Logger LOG = Logger.getLogger("d.i.j.c.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl");
 
     private static final WeakReference<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl> refs[];
 
@@ -49,6 +49,7 @@ public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A extend
         return null;
     }
 
+    //TODO release globalRef on native side, if its not deeded anymore ....
     private static native void initNative();
 
     /**

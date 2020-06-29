@@ -24,8 +24,7 @@ for d in\
  "mips64-linux-gnuabi64"\
  "mips64el-linux-gnuabi64"
 do
-CC=$d-gcc
-export CC
+export CC=$d-gcc
   $CC --version || exit 1
   ./configure --host=$d --prefix=$PWD/target/$d || exit 1
   make clean || exit 1
@@ -34,6 +33,7 @@ export CC
 done
 
 
+export CC=gcc
 ./configure --prefix=$PWD/target || exit 1
 make clean || exit 1
 make || exit 1

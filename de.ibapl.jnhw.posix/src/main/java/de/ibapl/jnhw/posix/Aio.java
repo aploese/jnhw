@@ -32,7 +32,6 @@ import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.nio.ByteBuffer;
-import java.util.function.LongFunction;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -144,7 +143,7 @@ public class Aio {
      * outstanding cancelable asynchronous I/O requests against fildes shall be
      * canceled.
      * @return {@link AIO_CANCELED} on succcess or {@link AIO_NOTCANCELED} if
-     * not all outstanding operations cant be caqncelled.
+     * not all outstanding operations cant be cancelled.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -296,6 +295,7 @@ public class Aio {
          *
          */
         public final Sigevent<T> aio_sigevent;
+        private Object aio_buf;
 
         public Aiocb(OpaqueMemory owner, int offset) {
             super(owner, offset, sizeofAiocb());
@@ -354,16 +354,50 @@ public class Aio {
          */
         public native void aio_offset(@Types.off_t long aio_offset);
 
-        private native long aio_buf0();
+        public final native NativeAddressHolder aio_buf0();
+
         /**
-         * The location of buffer.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
-         * aiocb}</a>.
+         * The location of buffer.<b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
+         * aiocb} </a>.
          *
          * @return the native value of aio_buf.
          */
-        public <T> T aio_buf(LongFunction<T> producer) {
-            return producer.apply(aio_buf0());
+        public ByteBuffer aio_bufAsByteBuffer() {
+            final NativeAddressHolder result = aio_buf0();
+            if (aio_buf == null) {
+                if (result.isNULL()) {
+                    return null;
+                } else {
+                    throw new RuntimeException("aio_buf_ expected to be NULL, but was " + result.toString());
+                }
+            } else if (aio_buf instanceof ByteBuffer) {
+                //TODO result inside of allocated memory?
+                return (ByteBuffer) aio_buf;
+            } else {
+                throw new RuntimeException("Actual class of aio_buf\"" + aio_buf.getClass() + "\" is not ByteBuffer");
+            }
+        }
+
+        /**
+         * The location of buffer.<b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
+         * aiocb} </a>.
+         *
+         * @return the native value of aio_buf.
+         */
+        public OpaqueMemory aio_bufAsOpaqueMemory() {
+            final NativeAddressHolder result = aio_buf0();
+            if (aio_buf == null) {
+                if (result.isNULL()) {
+                    return null;
+                } else {
+                    throw new RuntimeException("aio_buf_ expected to be NULL, but was " + result.toString());
+                }
+            } else if (aio_buf instanceof OpaqueMemory) {
+                //TODO result inside of allocated memory?
+                return (OpaqueMemory) aio_buf;
+            } else {
+                throw new RuntimeException("Actual class of aio_buf\"" + aio_buf.getClass() + "\" is not OpaqueMemory");
+            }
         }
 
         /**
@@ -397,6 +431,7 @@ public class Aio {
             } else {
                 aio_bufByteBuffer(aio_buf, aio_buf.position(), aio_buf.remaining());
             }
+            this.aio_buf = aio_buf;
         }
 
         /**
@@ -414,6 +449,7 @@ public class Aio {
             } else {
                 aio_bufOpaqueMemory(aio_buf, 0, aio_buf.sizeInBytes);
             }
+            this.aio_buf = aio_buf;
         }
 
         /**
@@ -435,6 +471,7 @@ public class Aio {
             } else {
                 aio_bufOpaqueMemory(aio_buf, off, aio_nbytes);
             }
+            this.aio_buf = aio_buf;
         }
 
         /**
@@ -442,9 +479,13 @@ public class Aio {
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
          * aiocb}</a>.
          *
+         * This is set while setting buf to ByteBuffer.remaining() or
+         * OpaqueMemorys size....
+         *
          * @return the native value of aio_nbytes.
          */
-        public native long aio_nbytes();
+        public native @Types.size_t
+        long aio_nbytes();
 
         /**
          * The request priority offset.

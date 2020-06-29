@@ -29,18 +29,6 @@ import java.util.function.Function;
  */
 public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A extends OpaqueMemory, B extends OpaqueMemory> extends NativeFunctionPointer {
 
-    public static Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V wrap(NativeAddressHolder nativeAddress) {
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V result = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(nativeAddress) {
-
-            @Override
-            protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {
-                throw new UnsupportedOperationException("This is a wrapper for an unknown function. Only the address is known to us, but not the Type!");
-            }
-
-        };
-        return result;
-    }
-
     public <T extends Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>> Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(Function<T, NativeAddressHolder> producer) {
         super(producer);
     }
@@ -57,10 +45,5 @@ public abstract class Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A extends Opa
      * @param b
      */
     protected abstract void callback(int value, A a, B b);
-
-    @FunctionalInterface
-    public interface Producer<A extends OpaqueMemory, B extends OpaqueMemory> extends NativeFunctionPointer.Producer<Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B>> {
-
-    }
 
 }

@@ -29,8 +29,8 @@ import java.util.function.Function;
  */
 public class NativeFunctionPointer {
 
-    public static boolean isSameAddress(long baseAddress, NativeFunctionPointer nativeFunctionPointer) {
-        return nativeFunctionPointer.nativeAddress == baseAddress;
+    public static boolean isSameAddress(NativeFunctionPointer ptr1, NativeFunctionPointer ptr2) {
+        return (ptr1 == ptr2) || (ptr1 != null && ptr1.nativeAddress == ptr2.nativeAddress);
     }
 
     public static NativeAddressHolder toNativeAddressHolder(NativeFunctionPointer nativeFunctionPointer) {

@@ -29,17 +29,6 @@ import java.util.function.Function;
  */
 public abstract class Callback_I_V extends NativeFunctionPointer {
 
-    public static Callback_I_V wrap(NativeAddressHolder nativeAddress) {
-        Callback_I_V result = new Callback_I_V(nativeAddress) {
-            @Override
-            protected void callback(int value) {
-                throw new UnsupportedOperationException("This is a wrapper for an unknown function. Only the address is known to us, but not the Type!");
-            }
-
-        };
-        return result;
-    }
-
     protected <T extends Callback_I_V> Callback_I_V(Function<T, NativeAddressHolder> producer) {
         super(producer);
     }
@@ -54,10 +43,5 @@ public abstract class Callback_I_V extends NativeFunctionPointer {
      * @param value
      */
     protected abstract void callback(int value);
-
-    @FunctionalInterface
-    public interface Producer extends NativeFunctionPointer.Producer<Callback_I_V> {
-
-    }
 
 }

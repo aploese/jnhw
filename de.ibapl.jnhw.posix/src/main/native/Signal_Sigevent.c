@@ -94,34 +94,34 @@ extern "C" {
         (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_signo = value;
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_notify_attributes
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1attributes
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
+     * Method:    sigev_notify_attributes
+     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1attributes
     (JNIEnv *env, jobject structSigevent) {
-        return (intptr_t) (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_attributes;
+        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t) (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_attributes);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_notify_attributes0
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1attributes0
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
+     * Method:    sigev_notify_attributes0
+     * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1attributes0
     (JNIEnv *env, jobject structSigevent, jobject value) {
         (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_attributes = UNWRAP_PTHREAD_ATTR_T_PTR_OR_NULL(value);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_notify_function
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
+     * Method:    sigev_notify_function
+     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function
     (JNIEnv *env, jobject structSigevent) {
-        return (intptr_t) (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_function;
+        return CREATE_NATIVE_FUNCTION_POINTER((intptr_t) (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_function);
     }
 
     /*

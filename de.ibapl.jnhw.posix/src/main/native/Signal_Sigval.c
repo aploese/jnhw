@@ -34,11 +34,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigval
      * Method:    sival_ptr
-     * Signature: ()J
+     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr
     (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval) {
-        return (intptr_t) (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_ptr;
+        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t) (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_ptr);
     }
 
     /*

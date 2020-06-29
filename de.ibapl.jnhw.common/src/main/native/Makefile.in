@@ -140,7 +140,8 @@ libjnhw_common_la_LIBADD =
 am_libjnhw_common_la_OBJECTS = jnhw-common.lo JnhwExceptions.lo \
 	OpaqueMemory.lo PointerArray.lo Callback_I_V_Impl.lo \
 	Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.lo \
-	Callback_PtrOpaqueMemory_V_Impl.lo
+	Callback_PtrOpaqueMemory_V_Impl.lo Callback_NativeRunnable.lo \
+	NativeRunnable.lo
 libjnhw_common_la_OBJECTS = $(am_libjnhw_common_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -163,9 +164,11 @@ depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.Plo \
 	./$(DEPDIR)/Callback_I_V_Impl.Plo \
+	./$(DEPDIR)/Callback_NativeRunnable.Plo \
 	./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Impl.Plo \
-	./$(DEPDIR)/JnhwExceptions.Plo ./$(DEPDIR)/OpaqueMemory.Plo \
-	./$(DEPDIR)/PointerArray.Plo ./$(DEPDIR)/jnhw-common.Plo
+	./$(DEPDIR)/JnhwExceptions.Plo ./$(DEPDIR)/NativeRunnable.Plo \
+	./$(DEPDIR)/OpaqueMemory.Plo ./$(DEPDIR)/PointerArray.Plo \
+	./$(DEPDIR)/jnhw-common.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -360,7 +363,9 @@ libjnhw_common_la_SOURCES = \
  PointerArray.c \
  Callback_I_V_Impl.c \
  Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.c \
- Callback_PtrOpaqueMemory_V_Impl.c
+ Callback_PtrOpaqueMemory_V_Impl.c \
+ Callback_NativeRunnable.c \
+ NativeRunnable.c
 
 all: all-am
 
@@ -442,8 +447,10 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_V_Impl.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_NativeRunnable.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Impl.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwExceptions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NativeRunnable.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OpaqueMemory.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PointerArray.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-common.Plo@am__quote@ # am--include-marker
@@ -632,8 +639,10 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_V_Impl.Plo
+	-rm -f ./$(DEPDIR)/Callback_NativeRunnable.Plo
 	-rm -f ./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
+	-rm -f ./$(DEPDIR)/NativeRunnable.Plo
 	-rm -f ./$(DEPDIR)/OpaqueMemory.Plo
 	-rm -f ./$(DEPDIR)/PointerArray.Plo
 	-rm -f ./$(DEPDIR)/jnhw-common.Plo
@@ -684,8 +693,10 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_V_Impl.Plo
+	-rm -f ./$(DEPDIR)/Callback_NativeRunnable.Plo
 	-rm -f ./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
+	-rm -f ./$(DEPDIR)/NativeRunnable.Plo
 	-rm -f ./$(DEPDIR)/OpaqueMemory.Plo
 	-rm -f ./$(DEPDIR)/PointerArray.Plo
 	-rm -f ./$(DEPDIR)/jnhw-common.Plo
