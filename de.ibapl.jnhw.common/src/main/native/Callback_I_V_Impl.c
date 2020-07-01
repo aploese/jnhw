@@ -25,7 +25,7 @@
 
 #include "jnhw-common.h"
 
-#include <signal.h>
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -62,10 +62,10 @@ extern "C" {
     void _jnhw_trampoline_I_V__ ## index (int value) {\
     JNIEnv *env;\
         if ((*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL)) {\
-            raise(SIGABRT);\
+            abort();\
         } else {\
             if (*env == NULL) {\
-                raise(SIGKILL);\
+                abort();\
                 return;\
             }\
             (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, value);\
