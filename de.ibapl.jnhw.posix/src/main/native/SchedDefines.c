@@ -41,9 +41,9 @@ extern "C" {
     }
 
 
-#if defined(HAVE_SCHED_H) && defined(_POSIX_VERSION)
-
+#ifdef _POSIX_VERSION
 #include <sched.h>
+
 
     /*
      * Class:     de_ibapl_jnhw_posix_Sched

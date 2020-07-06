@@ -22,14 +22,14 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Signal_Sigval.h"
 
-#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
-
-#include <signal.h>
-#include <unistd.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+#ifdef _POSIX_VERSION
+#include <signal.h>
+#include <unistd.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigval

@@ -22,16 +22,15 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Locale_Lconv.h"
 
-#if defined(HAVE_LOCALE_H) && defined(_POSIX_VERSION)
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+#if defined(_POSIX_VERSION)
 #include <locale.h>
 
 #if (MAX_CHAR > 127)
 #error MAX_CHAR is bigger then 127 replace any jbyte return with jshort to make it save not to return a negative number....     
-#endif
-
-#ifdef __cplusplus
-extern "C" {
 #endif
 
     /*
@@ -284,7 +283,8 @@ extern "C" {
         return (*env)->NewStringUTF(env, (UNWRAP_STRUCT_LCONV_PTR(structLconv))->thousands_sep);
     }
 
+
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

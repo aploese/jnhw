@@ -19,6 +19,8 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+#include <unistd.h>
+
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Time.h"
 
@@ -41,8 +43,7 @@ extern "C" {
     }
 
 
-#if defined(HAVE_TIME_H) && defined(_POSIX_VERSION)
-
+#ifdef _POSIX_VERSION
 #include <time.h>
 
     /*

@@ -22,16 +22,20 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Time.h"
 
-#if defined(HAVE_TIME_H) && defined(_POSIX_VERSION)
-
+#ifdef HAVE_TIME_H
 #include <time.h>
-#include <errno.h>
-#include <signal.h>
-#include <stdlib.h>
+#include <unistd.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifdef _POSIX_VERSION
+#include <errno.h>
+#include <signal.h>
+#include <stdlib.h>
+
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
@@ -702,8 +706,7 @@ extern "C" {
         tzset();
     }
 
-
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

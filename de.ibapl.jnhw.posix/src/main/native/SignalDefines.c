@@ -41,8 +41,7 @@ extern "C" {
     }
 
 
-#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
-
+#ifdef _POSIX_VERSION
 #include <signal.h>
 #include <stdint.h>
 

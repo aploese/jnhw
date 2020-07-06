@@ -20,6 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
+#include "de_ibapl_jnhw_posix_Termios.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,16 +33,14 @@ extern "C" {
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Termios_HAVE_1TERMIOS_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_TERMIOS_H
+#if defined(HAVE_TERMIOS_H) && defined(_POSIX_VERSION)
         return JNI_TRUE;
 #else
         return JNI_FALSE;
 #endif
     }
 
-#ifdef HAVE_TERMIOS_H
-
-#include "de_ibapl_jnhw_posix_Termios.h"
+#ifdef _POSIX_VERSION
 #include <termios.h>
 #include <errno.h>
 
@@ -1493,7 +1492,7 @@ extern "C" {
         return NCCS;
     }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

@@ -22,14 +22,15 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Signal_Stack_t.h"
 
-#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
-
-#include <signal.h>
-#include <stdint.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+#ifdef _POSIX_VERSION
+#include <signal.h>
+#include <stdint.h>
+
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
@@ -117,8 +118,7 @@ extern "C" {
 
 
 
-
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

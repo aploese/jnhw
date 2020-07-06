@@ -20,6 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
+#include "de_ibapl_jnhw_posix_Poll.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,9 +40,7 @@ extern "C" {
 #endif
     }
 
-#if defined(HAVE_POLL_H) && defined(_POSIX_VERSION)
-
-#include "de_ibapl_jnhw_posix_Poll.h"
+#ifdef _POSIX_VERSION
 #include <poll.h>
 
     /*
@@ -144,7 +143,8 @@ extern "C" {
         return POLLWRNORM;
     }
 
+
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

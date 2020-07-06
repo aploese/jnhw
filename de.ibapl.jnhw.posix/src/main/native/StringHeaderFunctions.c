@@ -19,17 +19,19 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+#include <unistd.h>
+
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_StringHeader.h"
-
-#if defined(HAVE_STRING_H) && defined(_POSIX_VERSION)
-
-#include <string.h>
-#include <errno.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifdef _POSIX_VERSION
+#include <string.h>
+#include <errno.h>
+
 
 /*
  * Class:     de_ibapl_jnhw_posix_StringHeader
@@ -80,7 +82,7 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_StringHeader_strsignal
         }
 }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

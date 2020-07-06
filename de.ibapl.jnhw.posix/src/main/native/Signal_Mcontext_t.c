@@ -22,15 +22,15 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Signal_Mcontext_t.h"
 
-#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
-
-#include <signal.h>
-//for offsetof
-#include <stddef.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+#ifdef _POSIX_VERSION
+#include <signal.h>
+//for offsetof
+#include <stddef.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Mcontext_t
@@ -42,8 +42,7 @@ extern "C" {
         return sizeof (mcontext_t);
     }
 
-
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

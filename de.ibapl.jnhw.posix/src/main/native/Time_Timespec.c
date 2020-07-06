@@ -22,13 +22,12 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Time_Timespec.h"
 
-#if defined(HAVE_TIME_H) && defined(_POSIX_VERSION)
-
-#include <time.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifdef _POSIX_VERSION
+#include <time.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Timespec
@@ -100,7 +99,7 @@ extern "C" {
 #endif
     }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

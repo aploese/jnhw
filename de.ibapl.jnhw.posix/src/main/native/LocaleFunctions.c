@@ -22,14 +22,14 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Locale.h"
 
-#if defined(HAVE_LOCALE_H) && defined(_POSIX_VERSION)
-
-#include <locale.h>
-#include <errno.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#if defined(_POSIX_VERSION)
+#include <locale.h>
+#include <errno.h>
+
 
     /*
      * Class:     de_ibapl_jnhw_posix_Locale
@@ -151,8 +151,7 @@ extern "C" {
         return CREATE_LOCALE_T(result);
     }
 
-
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

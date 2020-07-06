@@ -22,13 +22,12 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Time_Tm.h"
 
-#if defined(HAVE_TIME_H) && defined(_POSIX_VERSION)
-
-#include <time.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifdef _POSIX_VERSION
+#include <time.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Tm
@@ -220,7 +219,7 @@ extern "C" {
         (UNWRAP_STRUCT_TM_PTR(structTm))->tm_isdst = tm_isdst;
     }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

@@ -21,6 +21,7 @@
  */
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_util_posix_Defines.h"
+
 #include <stdint.h>
 #include <unistd.h>
 

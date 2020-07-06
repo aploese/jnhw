@@ -22,17 +22,17 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Sched_Sched_param.h"
 
-#if defined(HAVE_SCHED_H) && defined(_POSIX_VERSION)
-
-#include <sched.h>
-//for offsetof
-#include <stddef.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+    //for offsetof
+#include <stddef.h>
+#include <unistd.h>
 
-/*
+#ifdef _POSIX_VERSION
+#include <sched.h>
+
+    /*
      * Class:     de_ibapl_jnhw_posix_Sched_Sched_param
      * Method:    sizeof_sched_param
      * Signature: ()I
@@ -57,7 +57,7 @@ extern "C" {
         return offsetof(struct sched_param, sched_ss_init_budget);
 #endif
     }
-    
+
     /*
      * Class:     de_ibapl_jnhw_posix_Sched_Sched_param
      * Method:    offsetof_sched_ss_repl_period
@@ -154,10 +154,10 @@ extern "C" {
     (JNIEnv *env, jobject structSched_param, jint sched_ss_max_repl) {
         (UNWRAP_STRUCT_SCHED_PARAM_PTR(structSched_param))->sched_ss_max_repl = sched_ss_max_repl;
 #endif
-}
+    }
 
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

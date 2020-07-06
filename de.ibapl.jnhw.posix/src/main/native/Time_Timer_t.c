@@ -22,19 +22,18 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Time_Timer_t.h"
 
-#if defined(HAVE_TIME_H) && defined(_POSIX_VERSION)
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+#ifdef _POSIX_VERSION
 #include <time.h>
 //for offsetof
 #include <stddef.h>
 #include <unistd.h>
 #include <stdint.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/*
+    /*
      * Class:     de_ibapl_jnhw_posix_Time_Timer_t
      * Method:    sizeofTimer_t
      * Signature: ()I
@@ -62,7 +61,7 @@ extern "C" {
         return (*env)->NewStringUTF(env, buf);
     }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

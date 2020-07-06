@@ -22,16 +22,16 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Signal_Ucontext_t.h"
 
-#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+
+#ifdef _POSIX_VERSION
 #include <signal.h>
 //for offsetof
 #include <stddef.h>
 #include <unistd.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
@@ -82,7 +82,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t__1uc_1mc
         return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)(UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t))->uc_link);
     }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

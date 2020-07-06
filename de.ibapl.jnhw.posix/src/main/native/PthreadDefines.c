@@ -20,6 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
+#include "de_ibapl_jnhw_posix_Pthread.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,10 +40,9 @@ extern "C" {
 #endif
     }
 
-#if defined(HAVE_PTHREAD_H) && defined(_POSIX_VERSION)
-
-#include "de_ibapl_jnhw_posix_Pthread.h"
+#ifdef _POSIX_VERSION
 #include <pthread.h>
+
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
@@ -64,7 +64,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1INHERIT_1SCHED
     return PTHREAD_INHERIT_SCHED;
 }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

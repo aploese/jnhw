@@ -22,15 +22,15 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Sched.h"
 
-#if defined(HAVE_SCHED_H) && defined(_POSIX_VERSION)
-
-#include <sched.h>
-#include <errno.h>
-#include <stdio.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifdef _POSIX_VERSION
+#include <sched.h>
+#include <errno.h>
+#include <stdio.h>
+#include <unistd.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Sched
@@ -153,7 +153,7 @@ extern "C" {
     }
 
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

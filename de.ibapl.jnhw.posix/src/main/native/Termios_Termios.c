@@ -20,15 +20,15 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-
-#ifdef HAVE_TERMIOS_H
-
 #include "de_ibapl_jnhw_posix_Termios_StructTermios.h"
-#include <termios.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifdef _POSIX_VERSION    
+#include <termios.h>
+
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
@@ -249,7 +249,7 @@ extern "C" {
 #endif
     }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

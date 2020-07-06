@@ -22,15 +22,14 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Aio_Aiocb.h"
 
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-
+#ifdef __cplusplus
+extern "C" {
+#endif
+#if defined(_POSIX_VERSION)
 #include <aio.h>
 //for offsetof
 #include <stddef.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
@@ -181,7 +180,7 @@ extern "C" {
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_lio_opcode = aio_lio_opcode;
     }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

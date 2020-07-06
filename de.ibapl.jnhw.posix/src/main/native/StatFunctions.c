@@ -20,24 +20,17 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#if HAVE_SYS_STAT_H
-#include <sys/stat.h>
-#endif
+#include "de_ibapl_jnhw_posix_sys_Stat.h"
 
-#if HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
-#ifdef _POSIX_VERSION
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "de_ibapl_jnhw_posix_sys_Stat.h"
+#ifdef _POSIX_VERSION
+#include <sys/stat.h>
 
-
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

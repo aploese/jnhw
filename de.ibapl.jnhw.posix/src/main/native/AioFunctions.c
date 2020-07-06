@@ -22,15 +22,14 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Aio.h"
 
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-
-#include <aio.h>
-#include <errno.h>
-#include <unistd.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#if defined(_POSIX_VERSION)
+#include <aio.h>
+#include <errno.h>
+#include <unistd.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
@@ -188,7 +187,7 @@ extern "C" {
 
     }
 
+#endif    
 #ifdef __cplusplus
 }
-#endif
 #endif

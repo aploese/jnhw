@@ -22,17 +22,17 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Signal_Siginfo_t.h"
 
-#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
-
-#include <signal.h>
-//for offsetof
-#include <stddef.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-        /*
+
+#ifdef _POSIX_VERSION
+#include <signal.h>
+//for offsetof
+#include <stddef.h>
+
+    /*
      * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
      * Method:    sizeofSiginfo_t
      * Signature: ()I
@@ -122,8 +122,7 @@ extern "C" {
         return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_band;
     }
 
-
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

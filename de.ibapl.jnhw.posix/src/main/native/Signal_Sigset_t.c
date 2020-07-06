@@ -22,13 +22,13 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Signal_Sigset_t.h"
 
-#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
-
-#include <signal.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+#ifdef _POSIX_VERSION
+#include <signal.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigset_t
@@ -40,7 +40,7 @@ extern "C" {
         return sizeof (sigset_t);
     }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

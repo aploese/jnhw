@@ -41,8 +41,7 @@ extern "C" {
     }
 
 
-#if defined(HAVE_LOCALE_H) && defined(_POSIX_VERSION)
-
+#if defined(_POSIX_VERSION)
 #include <locale.h>
 
     /*

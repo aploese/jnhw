@@ -22,18 +22,16 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Time_Itimerspec.h"
 
-#if defined(HAVE_TIME_H) && defined(_POSIX_VERSION)
-
-#include <time.h>
-
-//for offsetof
-#include <stddef.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-        /*
+#ifdef _POSIX_VERSION
+#include <time.h>
+//for offsetof
+#include <stddef.h>
+
+    /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
      * Method:    sizeof_itimerspec
      * Signature: ()I
@@ -62,8 +60,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct itimerspec, it_value);
     }
-
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

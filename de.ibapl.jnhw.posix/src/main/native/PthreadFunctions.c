@@ -19,21 +19,19 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include <signal.h>
-#include <stdlib.h>
-
 #include "jnhw-posix.h"
-
-#if defined(HAVE_PTHREAD_H) && defined(_POSIX_VERSION)
-
 #include "de_ibapl_jnhw_posix_Pthread.h"
-#include <pthread.h>
-#include <errno.h>
-
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifdef _POSIX_VERSION
+#include <pthread.h>
+#include <errno.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Pthread
@@ -267,7 +265,7 @@ extern "C" {
         }
     }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

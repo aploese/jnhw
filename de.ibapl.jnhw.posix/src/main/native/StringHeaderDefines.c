@@ -41,8 +41,7 @@ extern "C" {
     }
 
 
-#if defined(HAVE_STRING_H) && defined(_POSIX_VERSION)
-
+#ifdef _POSIX_VERSION
 #include <string.h>
 
 #endif

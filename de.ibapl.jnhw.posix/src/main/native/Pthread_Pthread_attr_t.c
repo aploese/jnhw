@@ -22,18 +22,18 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Pthread_Pthread_attr_t.h"
 
-#if defined(HAVE_PTHREAD_H) && defined(_POSIX_VERSION)
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+#ifdef _POSIX_VERSION
 #include <pthread.h>
 //for offsetof
 #include <stddef.h>
 #include <unistd.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
-/*
+    /*
      * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_attr_t
      * Method:    sizeofPthread_attr_t
      * Signature: ()I
@@ -43,7 +43,7 @@ extern "C" {
         return sizeof (pthread_attr_t);
     }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif

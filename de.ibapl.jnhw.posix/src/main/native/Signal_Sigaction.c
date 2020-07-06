@@ -22,16 +22,16 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Signal_Sigaction.h"
 
-#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+
+#ifdef _POSIX_VERSION
 #include <signal.h>
 //for offsetof
 #include <stddef.h>
 #include <stdint.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
@@ -113,7 +113,7 @@ extern "C" {
         return CREATE_NATIVE_FUNCTION_POINTER((intptr_t) (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction);
     }
 
+#endif    
 #ifdef __cplusplus
 }
-#endif
 #endif

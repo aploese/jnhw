@@ -22,15 +22,15 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Signal.h"
 
-#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
-
-#include <signal.h>
-#include <errno.h>
-#include <stdio.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+#ifdef _POSIX_VERSION
+#include <signal.h>
+#include <errno.h>
+#include <stdio.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -512,7 +512,7 @@ extern "C" {
         return result;
     }
 
+#endif
 #ifdef __cplusplus
 }
-#endif
 #endif
