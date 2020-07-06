@@ -47,7 +47,6 @@ AC_SUBST(JNI_HEADER_DIR)
 #get path of jnhw-common.h - The Quick and Dirty way....
 JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
 AC_SUBST(JNHW_COMMON_SRC_DIR)
-AC_SUBST([JNHW_AM_CFLAGS],[-Wall -Wextra -Wconversion -Werror])
 
 # Checks for libraries.
 

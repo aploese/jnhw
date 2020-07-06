@@ -55,7 +55,6 @@ AC_SUBST(JNI_TEST_HEADER_DIR)
 #get path of jnhw-common.h - The Quick and Dirty way....
 JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
 AC_SUBST(JNHW_COMMON_SRC_DIR)
-AC_SUBST([JNHW_AM_CFLAGS],[-Wall -Wextra -Wconversion -Werror])
 
 # Checks for libraries.
 
@@ -63,7 +62,7 @@ AC_SUBST([JNHW_AM_CFLAGS],[-Wall -Wextra -Wconversion -Werror])
 #OpaqueMemory.c
 AC_CHECK_HEADERS([string.h stdlib.h stdint.h errno.h])
 
-AC_CHECK_HEADERS([errno.h stdio.h stdarg.h stdlib.h])
+AC_CHECK_HEADERS([errno.h stdio.h stdarg.h stdlib.h pthread.h windows.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 

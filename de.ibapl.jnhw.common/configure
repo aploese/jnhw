@@ -636,7 +636,6 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
-JNHW_AM_CFLAGS
 JNHW_COMMON_SRC_DIR
 JNI_TEST_HEADER_DIR
 JNI_HEADER_DIR
@@ -13156,8 +13155,6 @@ JNI_TEST_HEADER_DIR="\$(top_builddir)/target/generated-test-sources/include"
 #get path of jnhw-common.h - The Quick and Dirty way....
 JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
 
-JNHW_AM_CFLAGS=-Wall -Wextra -Wconversion -Werror
-
 
 # Checks for libraries.
 
@@ -13177,7 +13174,7 @@ fi
 done
 
 
-for ac_header in errno.h stdio.h stdarg.h stdlib.h
+for ac_header in errno.h stdio.h stdarg.h stdlib.h pthread.h windows.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
 ac_fn_c_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
@@ -14900,7 +14897,9 @@ $as_echo X/"$am_mf" |
     { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error $? "Something went wrong bootstrapping makefile fragments
-    for automatic dependency tracking.  Try re-running configure with the
+    for automatic dependency tracking.  If GNU make was not used, consider
+    re-running the configure script with MAKE=\"gmake\" (or whatever is
+    necessary).  You can also try re-running configure with the
     '--disable-dependency-tracking' option to at least be able to build
     the package (albeit without support for automatic dependency tracking).
 See \`config.log' for more details" "$LINENO" 5; }

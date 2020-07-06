@@ -19,10 +19,20 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+#define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
 #include "de_ibapl_jnhw_Callback_I_V_Test.h"
+
+//First go for windows.h because mingw has a pthread.h too...
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#elif defined HAVE_PTHREAD_H
 #include <pthread.h>
+#endif
+
+#ifdef HAVE_SIGNAL_H
 #include <signal.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,10 +61,20 @@ extern "C" {
         return CREATE_NATIVE_FUNCTION_POINTER(callbackPtr);
     }
 
+#ifdef HAVE_WINDOWS_H
+    DWORD WINAPI thr_fn(LPVOID args) {
+            callbackPtr(*((int*)args));
+            return 0;
+    }
+#elif defined HAVE_PTHREAD_H
     void * thr_fn(void *args) {
             callbackPtr(*((int*)args));
             return NULL;
     }
+#else
+    error "Neither pthread.h for POSIX nor windows.h for windows are available ... giving up"
+#endif
+    
     
     /*
      * Class:     de_ibapl_jnhw_Callback_I_V_Tests
@@ -63,9 +83,30 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_1Test_doCallTheCallback
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jint value) {
+#ifdef HAVE_WINDOWS_H
+        HANDLE hThread;
+        DWORD   dwThreadId;
+        
+        hThread = CreateThread( 
+            NULL,           // default security attributes
+            0,              // use default stack size  
+            thr_fn,         // thread function name
+            &value,         // argument to thread function 
+            0,              // use default creation flags 
+            &dwThreadId);   // returns the thread identifier 
+          if (hThread == NULL) 
+        {
+           ExitProcess(3);
+        }
+        WaitForSingleObject(hThread, INFINITE);
+        CloseHandle(hThread);
+#elif defined HAVE_PTHREAD_H
         pthread_t thread;
         pthread_create(&thread, NULL, thr_fn, &value);
         pthread_join(thread, NULL);
+#else
+    error "Neither pthread.h for POSIX nor windows.h for windows are available ... giving up"
+#endif
     }
 
 

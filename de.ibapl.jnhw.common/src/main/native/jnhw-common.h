@@ -22,7 +22,6 @@
 #ifndef _ljnhw_common_H
 #define _ljnhw_common_H
 
-
 #include <stdint.h>
 
 #include <jni.h>
@@ -33,6 +32,9 @@ extern "C" {
 
 #ifdef _JNHW_COMMON_IMPLEMENTATION_
 #define _JNHW_IMPORT_OR_EXPORT_ JNIEXPORT
+
+#include "../../../config.h"
+
 #else
 #define _JNHW_IMPORT_OR_EXPORT_ JNIIMPORT
 #endif   
