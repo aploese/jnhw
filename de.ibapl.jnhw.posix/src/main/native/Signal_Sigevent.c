@@ -22,7 +22,7 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Signal_Sigevent.h"
 
-#ifdef HAVE_SIGNAL_H
+#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
 
 #include <signal.h>
 //for offsetof

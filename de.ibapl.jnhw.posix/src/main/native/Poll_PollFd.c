@@ -21,7 +21,7 @@
  */
 #include "jnhw-posix.h"
 
-#ifdef HAVE_POLL_H
+#if defined(HAVE_POLL_H) && defined(_POSIX_VERSION)
 
 #include "de_ibapl_jnhw_posix_Poll_PollFd.h"
 #include <errno.h>

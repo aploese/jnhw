@@ -22,7 +22,7 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_StringHeader.h"
 
-#ifdef HAVE_STRING_H
+#if defined(HAVE_STRING_H) && defined(_POSIX_VERSION)
 
 #include <string.h>
 #include <errno.h>

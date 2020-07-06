@@ -22,7 +22,7 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Locale_Lconv.h"
 
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) && defined(_POSIX_VERSION)
 
 #include <locale.h>
 

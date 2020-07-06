@@ -22,7 +22,7 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Aio.h"
 
-#ifdef HAVE_AIO_H
+#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
 
 #include <aio.h>
 #include <errno.h>

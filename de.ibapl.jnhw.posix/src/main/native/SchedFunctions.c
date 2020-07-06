@@ -22,7 +22,7 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Sched.h"
 
-#ifdef HAVE_SCHED_H
+#if defined(HAVE_SCHED_H) && defined(_POSIX_VERSION)
 
 #include <sched.h>
 #include <errno.h>

@@ -24,7 +24,7 @@
 
 #include "jnhw-posix.h"
 
-#ifdef HAVE_PTHREAD_H
+#if defined(HAVE_PTHREAD_H) && defined(_POSIX_VERSION)
 
 #include "de_ibapl_jnhw_posix_Pthread.h"
 #include <pthread.h>

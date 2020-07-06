@@ -25,6 +25,7 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.lang.annotation.ElementType;
@@ -67,7 +68,7 @@ public class Locale {
      * @return the native symbolic constant of LC_ALL_MASK.
      */
     @Define()
-    public final static native int LC_ALL_MASK();
+    public final static native int LC_ALL_MASK() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> XXX

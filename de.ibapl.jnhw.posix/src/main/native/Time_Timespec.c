@@ -22,7 +22,7 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Time_Timespec.h"
 
-#ifdef HAVE_TIME_H
+#if defined(HAVE_TIME_H) && defined(_POSIX_VERSION)
 
 #include <time.h>
 

@@ -22,7 +22,7 @@
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Pthread_Pthread_attr_t.h"
 
-#ifdef HAVE_PTHREAD_H
+#if defined(HAVE_PTHREAD_H) && defined(_POSIX_VERSION)
 
 #include <pthread.h>
 //for offsetof

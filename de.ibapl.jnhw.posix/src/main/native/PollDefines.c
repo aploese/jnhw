@@ -32,14 +32,14 @@ extern "C" {
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Poll_HAVE_1POLL_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_POLL_H
+#if defined(HAVE_POLL_H) && defined(_POSIX_VERSION)
         return JNI_TRUE;
 #else
         return JNI_FALSE;
 #endif
     }
 
-#ifdef HAVE_POLL_H
+#if defined(HAVE_POLL_H) && defined(_POSIX_VERSION)
 
 #include "de_ibapl_jnhw_posix_Poll.h"
 #include <poll.h>

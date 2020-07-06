@@ -46,6 +46,12 @@
 
 #include "../../../config.h"
 
+//include unistd.h to have _POSIX_VERSION defined...
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+
 #ifndef _jnhw_posix_H
 #define _jnhw_posix_H
 

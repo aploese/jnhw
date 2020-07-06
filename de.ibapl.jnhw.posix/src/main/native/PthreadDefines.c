@@ -32,14 +32,14 @@ extern "C" {
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Pthread_HAVE_1PTHREAD_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_PTHREAD_H
+#if defined(HAVE_PTHREAD_H) && defined(_POSIX_VERSION)
         return JNI_TRUE;
 #else
         return JNI_FALSE;
 #endif
     }
 
-#ifdef HAVE_PTHREAD_H
+#if defined(HAVE_PTHREAD_H) && defined(_POSIX_VERSION)
 
 #include "de_ibapl_jnhw_posix_Pthread.h"
 #include <pthread.h>

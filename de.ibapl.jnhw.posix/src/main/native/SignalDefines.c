@@ -33,7 +33,7 @@ extern "C" {
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Signal_HAVE_1SIGNAL_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_SIGNAL_H
+#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
         return JNI_TRUE;
 #else
         return JNI_FALSE;
@@ -41,7 +41,7 @@ extern "C" {
     }
 
 
-#ifdef HAVE_SIGNAL_H
+#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
 
 #include <signal.h>
 #include <stdint.h>
