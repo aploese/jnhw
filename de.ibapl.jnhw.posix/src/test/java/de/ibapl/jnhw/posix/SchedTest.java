@@ -24,11 +24,13 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.NoSuchTypeMemberException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
  *
  * @author aploese
  */
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SchedTest {
 
     public SchedTest() {

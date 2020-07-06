@@ -23,11 +23,13 @@ package de.ibapl.jnhw.posix;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
  *
  * @author aploese
  */
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class StringHeaderTest {
 
     public StringHeaderTest() {
