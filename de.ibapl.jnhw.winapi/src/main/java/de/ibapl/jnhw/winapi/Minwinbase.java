@@ -21,7 +21,9 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.Callback_I_I_PtrOpaqueMemory_V_Impl;
 import de.ibapl.jnhw.Include;
+import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -92,7 +94,19 @@ public class Minwinbase {
             super(sizeofOVERLAPPED(), true);
         }
 
+        public OVERLAPPED(NativeAddressHolder addressHolder) {
+            super(addressHolder, sizeofOVERLAPPED());
+        }
+
     }
+
+    public abstract static class LPOVERLAPPED_COMPLETION_ROUTINE extends Callback_I_I_PtrOpaqueMemory_V_Impl<OVERLAPPED> {
+
+        @Override
+        protected abstract void callback(int dwErrorCode, int dwNumberOfBytesTransfered, OVERLAPPED lpOverlapped);
+
+    }
+
 
     /**
      * <b>WIN:</b> <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa379560(v=vs.85)">{@code structure

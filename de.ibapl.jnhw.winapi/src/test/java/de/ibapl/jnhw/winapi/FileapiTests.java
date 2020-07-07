@@ -21,6 +21,8 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.NativeAddressHolder;
+import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import java.io.File;
 import java.io.FileInputStream;
@@ -324,6 +326,94 @@ public class FileapiTests {
         for (int i = 0; i < WRITE_VALUE.length; i++) {
             Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory.getByte(opaqueMemory, i));
         }
+    }
+    /**
+     * Test of readFileEx method, of class Fileapi.
+     */
+    @Test
+    public void testReadFileEx_ByteBuffer() throws Exception {
+        System.out.println("ReadFileEx(ByteBuffer)");
+        //Clean up references to Callbacks
+        System.gc();
+
+        final ObjectRef objRef = new ObjectRef(null);
+
+        Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_WRITE(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                0,
+                null);
+        Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
+
+        ByteBuffer writeBuffer = ByteBuffer.allocateDirect(64);
+        writeBuffer.put(WRITE_VALUE);
+        writeBuffer.flip();
+        Fileapi.WriteFileEx(hFile, writeBuffer, overlapped, new Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE() {
+            @Override
+            protected void callback(int dwErrorCode, int dwNumberOfBytesTransfered, Minwinbase.OVERLAPPED lpOverlapped) {
+                Assertions.assertEquals(0, dwErrorCode, "Got errno from WriteFileEx: " + dwErrorCode);
+                writeBuffer.position(writeBuffer.position() + dwNumberOfBytesTransfered);
+                synchronized (objRef) {
+                    objRef.value = lpOverlapped;
+                    objRef.notify();
+                }
+                System.out.println("WriteFileEx leave callback");
+            }
+
+            @Override
+            protected Minwinbase.OVERLAPPED wrapC(NativeAddressHolder address) {
+                //TODO test an reuse overlapped
+                return new Minwinbase.OVERLAPPED(address);
+            }
+
+        });
+
+        synchronized (objRef) {
+            if (objRef.value == null) {
+                objRef.wait(1000);
+            }
+        }
+        Handleapi.CloseHandle(hFile);
+
+        Assertions.assertEquals(overlapped, objRef.value);
+        Assertions.assertFalse(writeBuffer.hasRemaining());
+
+        ByteBuffer readBuffer = ByteBuffer.allocateDirect(64);
+        readBuffer.limit(readBuffer.capacity());
+        OpaqueMemory.clear(overlapped);
+
+        Fileapi.ReadFileEx(hFile, readBuffer, overlapped, new Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE() {
+            @Override
+            protected void callback(int dwErrorCode, int dwNumberOfBytesTransfered, Minwinbase.OVERLAPPED lpOverlapped) {
+                Assertions.assertEquals(0, dwErrorCode, "Got errno from ReadFileEx: " + dwErrorCode);
+                readBuffer.position(readBuffer.position() + dwNumberOfBytesTransfered);
+                synchronized (objRef) {
+                    objRef.value = lpOverlapped;
+                    objRef.notify();
+                }
+                System.out.println("WriteFileEx leave callback");
+            }
+
+            @Override
+            protected Minwinbase.OVERLAPPED wrapC(NativeAddressHolder address) {
+                //TODO test an reuse overlapped
+                return new Minwinbase.OVERLAPPED(address);
+            }
+
+        });
+
+        synchronized (objRef) {
+            if (objRef.value == null) {
+                objRef.wait(1000);
+            }
+        }
+        Handleapi.CloseHandle(hFile);
+
+        Assertions.assertEquals(overlapped, objRef.value);
+        Assertions.assertEquals(readBuffer.position(), writeBuffer.position());
+
     }
 
 }

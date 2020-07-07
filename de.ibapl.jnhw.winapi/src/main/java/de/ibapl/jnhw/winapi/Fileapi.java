@@ -295,11 +295,11 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFile(HANDLE hFile, ByteBuffer lpBuffer) throws NativeErrorException {
+        if (hFile == null) {
+            throw new NullPointerException("hFile is null!");
+        }
         int numberOfBytesRead;
         if (lpBuffer.isDirect()) {
-            if (hFile == null) {
-                throw new NullPointerException("hFile is null!");
-            }
             numberOfBytesRead = ReadFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer));
         } else {
             numberOfBytesRead = ReadFile(hFile, lpBuffer.array(), lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer));
@@ -336,14 +336,105 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFile(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
+        if (hFile == null) {
+            throw new NullPointerException("hFile is null!");
+        }
+        if (lpOverlapped == null) {
+            throw new NullPointerException("lpOverlapped is null!");
+        }
         if (lpBuffer.isDirect()) {
-            if (hFile == null) {
-                throw new NullPointerException("hFile is null!");
-            }
-            if (lpOverlapped == null) {
-                throw new NullPointerException("lpOverlapped is null!");
-            }
             ReadFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), lpOverlapped);
+        } else {
+            // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
+            throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous read ....");
+        }
+    }
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
+     * Reads data from the specified file or input/output (I/O) device. Reads
+     * occur at the position specified by the file pointer if supported by the
+     * device. This is the asynchronous read for {@link OpaqueMemory}.
+     *
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer a pointer to the {@link OpaqueMemory} that receives the
+     * data read from a file or device.
+     * @param off the start offset in {@code buf} to which the data is
+     * transferred.
+     * @param nNumberOfBytesToRead the maximum number of bytes to read.
+     * @param lpOverlapped A pointer to an {@link OVERLAPPED} structure.
+     *
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     *
+     * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static native void ReadFileEx(HANDLE hFile, OpaqueMemory lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
+     * Reads data from the specified file or input/output (I/O) device. Reads
+     * occur at the position specified by the file pointer if supported by the
+     * device. This is the asynchronous read for {@link OpaqueMemory}.
+     *
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer a pointer to the {@link OpaqueMemory} that receives all
+     * data read from a file or device.
+     * @param lpOverlapped A pointer to an {@link OVERLAPPED} structure.
+     *
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static void ReadFileEx(HANDLE hFile, OpaqueMemory lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
+        ReadFileEx(hFile, lpBuffer, 0, lpBuffer.sizeInBytes, lpOverlapped, lpCompletionRoutine);
+    }
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
+     * Reads data from the specified file or input/output (I/O) device. Reads
+     * occur at the position specified by the file pointer if supported by the
+     * device. This is the asynchronous read for direct {@link ByteBuffer}.
+     *
+     * Use {@link Ioapiset.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
+     * to get the result and update the ByteBuffers position.      <code>
+     *  ReadFile(hFile, lpBuffer, lpOverlapped);
+     *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
+     *  if (waitResult == WAIT_OBJECT_0()) {
+     *  //success
+     *    int bytesRead = GetOverlappedResult(hFile, readOverlapped, lpBuffer, false);
+     *  } else {
+     *  //error
+     *  }
+     * </code>
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer a pointer to an direct {@link ByteBuffer} that receives
+     * the data read from a file or device.
+     * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
+     *
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static void ReadFileEx(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
+        if (hFile == null) {
+            throw new NullPointerException("hFile is null!");
+        }
+        if (lpOverlapped == null) {
+            throw new NullPointerException("lpOverlapped is null!");
+        }
+        if (lpCompletionRoutine == null) {
+            throw new NullPointerException("lpCompletionRoutine");
+        }
+        if (lpBuffer.isDirect()) {
+            ReadFileEx_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), lpOverlapped, lpCompletionRoutine);
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous read ....");
@@ -353,6 +444,8 @@ public final class Fileapi {
     private static native int ReadFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToRead) throws NativeErrorException;
 
     private static native void ReadFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped) throws NativeErrorException;
+
+    private static native void ReadFileEx_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">TRUNCATE_EXISTING</a>
@@ -481,11 +574,11 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, ByteBuffer lpBuffer) throws NativeErrorException {
+        if (hFile == null) {
+            throw new NullPointerException("hFile is null!");
+        }
         int numberOfBytesWritten;
         if (lpBuffer.isDirect()) {
-            if (hFile == null) {
-                throw new NullPointerException("hFile is null!");
-            }
             numberOfBytesWritten = WriteFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer));
         } else {
             if (lpBuffer.isReadOnly()) {
@@ -532,14 +625,103 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
+        if (hFile == null) {
+            throw new NullPointerException("hFile is null!");
+        }
+        if (lpOverlapped == null) {
+            throw new NullPointerException("lpOverlapped is null!");
+        }
         if (lpBuffer.isDirect()) {
-            if (hFile == null) {
-                throw new NullPointerException("hFile is null!");
-            }
-            if (lpOverlapped == null) {
-                throw new NullPointerException("lpOverlapped is null!");
-            }
             WriteFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), lpOverlapped);
+        } else {
+            // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
+            throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous write ....");
+        }
+    }
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
+     * Writes data to the specified file or input/output (I/O) device.Writing
+     * starts at the position specified by the file pointer if supported by the
+     * device. This is the asynchronous write for {@link OpaqueMemory}.
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer the {@link OpaqueMemory} {@code lpBuffer} containing the
+     * data to be written to the file or device.
+     * @param off the start offset in {@code lpBuffer}.
+     * @param nNumberOfBytesToWrite the number of bytes to write.
+     * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
+     *
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     *
+     * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static native void WriteFileEx(HANDLE hFile, OpaqueMemory lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
+     * Writes data to the specified file or input/output (I/O) device.Writing
+     * starts at the position specified by the file pointer if supported by the
+     * device. This is the asynchronous write for {@link OpaqueMemory}.
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer the {@link OpaqueMemory} {@code lpBuffer} containing the
+     * data to be written to the file or device.
+     * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
+     *
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static void WriteFileEx(HANDLE hFile, OpaqueMemory lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
+        WriteFileEx(hFile, lpBuffer, 0, lpBuffer.sizeInBytes, lpOverlapped, lpCompletionRoutine);
+    }
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
+     * Writes data to the specified file or input/output (I/O) device. Writing
+     * starts at the position specified by the file pointer if supported by the
+     * device. This is the asynchronous write for {@link ByteBuffer}.
+     *
+     *
+     * Use {@link Ioapiset.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
+     * to get the result and update the ByteBuffers position.      <code>
+     *  WriteFile(hFile, lpBuffer, lpOverlapped);
+     *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
+     *  if (waitResult == WAIT_OBJECT_0()) {
+     *  //success
+     *    int bytesWritten = GetOverlappedResult(hFile, readOverlapped, lpBuffer, false);
+     *  } else {
+     *  //error
+     *  }
+     * </code>
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer the {@link ByteBuffer} {@code lpBuffer} containing the
+     * data to be written to the file or device.
+     * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
+     *
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static void WriteFileEx(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
+        if (hFile == null) {
+            throw new NullPointerException("hFile is null!");
+        }
+        if (lpOverlapped == null) {
+            throw new NullPointerException("lpOverlapped is null!");
+        }
+        if (lpCompletionRoutine == null) {
+            throw new NullPointerException("lpCompletionRoutine");
+        }
+        if (lpBuffer.isDirect()) {
+            WriteFileEx_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), lpOverlapped, lpCompletionRoutine);
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous write ....");
@@ -549,5 +731,7 @@ public final class Fileapi {
     private static native int WriteFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException;
 
     private static native void WriteFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped) throws NativeErrorException;
+
+    private static native void WriteFileEx_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
 
 }
