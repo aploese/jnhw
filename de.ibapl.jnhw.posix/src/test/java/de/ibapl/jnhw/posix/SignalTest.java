@@ -46,6 +46,7 @@ import org.junit.jupiter.api.condition.OS;
  *
  * @author aploese
  */
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SignalTest {
 
     private final static Cleaner cleaner = Cleaner.create();

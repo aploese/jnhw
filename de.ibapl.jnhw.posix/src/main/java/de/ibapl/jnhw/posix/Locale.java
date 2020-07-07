@@ -262,17 +262,6 @@ public class Locale {
     public final static native Locale_t uselocale(Locale_t newloc) throws NativeErrorException;
 
     /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/locale.h.html">{@code typedef
-     * locale_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.TYPE})
-    public static @interface locale_t {
-    }
-
-    /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/locale.h.html">{@code structure
      * lconv}</a>.
      *
@@ -579,7 +568,12 @@ public class Locale {
         public final native String thousands_sep();
     }
 
-    @locale_t
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/locale.h.html">{@code typedef
+     * locale_t}</a>.
+     *
+     * @author aploese
+     */
     public static class Locale_t {
 
         private final long nativeValue;

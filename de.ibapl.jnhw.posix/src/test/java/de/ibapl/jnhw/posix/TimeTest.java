@@ -34,11 +34,13 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
  *
  * @author aploese
  */
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TimeTest {
 
     public TimeTest() {

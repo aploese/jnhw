@@ -282,8 +282,11 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_STRING_H() {
-        System.out.println("HAVE_STRING_H");
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(StringHeader.HAVE_STRING_H(), "not expected to have string.h");
+        } else {
         assertTrue(StringHeader.HAVE_STRING_H(), "expected to have string.h");
+        }
     }
 
     @Test
