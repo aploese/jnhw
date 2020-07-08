@@ -396,6 +396,61 @@ public abstract class Winbase {
     public final static native int FILE_FLAG_WRITE_THROUGH();
 
     /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">SECURITY_ANONYMOUS</a>
+     * Impersonates a client at the Anonymous impersonation level.
+     *
+     * @return the native symbolic constant of SECURITY_ANONYMOUS.
+     */
+    @Define
+    public final static native int SECURITY_ANONYMOUS();
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">SECURITY_CONTEXT_TRACKING</a>
+     * he security tracking mode is dynamic.
+     *
+     * @return the native symbolic constant of SECURITY_CONTEXT_TRACKING.
+     */
+    @Define
+    public final static native int SECURITY_CONTEXT_TRACKING();
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">SECURITY_DELEGATION</a>
+     * Impersonates a client at the Delegation impersonation level.
+     *
+     * @return the native symbolic constant of SECURITY_DELEGATION.
+     */
+    @Define
+    public final static native int SECURITY_DELEGATION();
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">SECURITY_EFFECTIVE_ONLY</a>
+     * Only the enabled aspects of the client's security context are available
+     * to the server.
+     *
+     * @return the native symbolic constant of SECURITY_EFFECTIVE_ONLY.
+     */
+    @Define
+    public final static native int SECURITY_EFFECTIVE_ONLY();
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">SECURITY_IDENTIFICATION</a>
+     * Impersonates a client at the Identification impersonation level.
+     *
+     * @return the native symbolic constant of SECURITY_IDENTIFICATION.
+     */
+    @Define
+    public final static native int SECURITY_IDENTIFICATION();
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">SECURITY_IMPERSONATION</a>
+     * Impersonate a client at the impersonation level.
+     *
+     * @return the native symbolic constant of SECURITY_IMPERSONATION.
+     */
+    @Define
+    public final static native int SECURITY_IMPERSONATION();
+
+    /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getcommmodemstatus">GetCommModemStatus</a>
      * Directs the specified communications device to perform an extended
      * function.

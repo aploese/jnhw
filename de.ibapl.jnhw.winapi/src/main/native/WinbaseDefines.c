@@ -303,6 +303,66 @@ extern "C" {
         return (int32_t) FILE_FLAG_WRITE_THROUGH;
     }
 
+/*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SECURITY_ANONYMOUS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SECURITY_1ANONYMOUS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SECURITY_ANONYMOUS;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SECURITY_CONTEXT_TRACKING
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SECURITY_1CONTEXT_1TRACKING
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SECURITY_CONTEXT_TRACKING;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SECURITY_DELEGATION
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SECURITY_1DELEGATION
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SECURITY_DELEGATION;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SECURITY_EFFECTIVE_ONLY
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SECURITY_1EFFECTIVE_1ONLY
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SECURITY_EFFECTIVE_ONLY;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SECURITY_IDENTIFICATION
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SECURITY_1IDENTIFICATION
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SECURITY_IDENTIFICATION;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SECURITY_IMPERSONATION
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SECURITY_1IMPERSONATION
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SECURITY_IMPERSONATION;
+    }
+
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    RTS_CONTROL_DISABLE
@@ -342,7 +402,8 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return RTS_CONTROL_HANDSHAKE;
     }
-        /*
+
+    /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    DTR_CONTROL_DISABLE
      * Signature: ()B
@@ -351,7 +412,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return DTR_CONTROL_DISABLE;
     }
- 
+
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    DTR_CONTROL_ENABLE
@@ -361,7 +422,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return DTR_CONTROL_ENABLE;
     }
- 
+
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    DTR_CONTROL_HANDSHAKE

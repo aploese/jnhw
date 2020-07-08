@@ -241,7 +241,7 @@ public class FileapiTests {
                 0,
                 null,
                 Fileapi.OPEN_EXISTING(),
-                0,
+                Winbase.FILE_FLAG_OVERLAPPED(),
                 null);
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
@@ -271,7 +271,7 @@ public class FileapiTests {
                 0,
                 null,
                 Fileapi.OPEN_EXISTING(),
-                0,
+                Winbase.FILE_FLAG_OVERLAPPED(),
                 null);
 
         OpaqueMemory.clear(opaqueMemory);
