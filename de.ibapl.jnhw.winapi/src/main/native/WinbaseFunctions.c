@@ -195,6 +195,43 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommTimeouts
         }
     }
 
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winbase
+ * Method:    SetFileCompletionNotificationModes
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;B)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetFileCompletionNotificationModes
+  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jbyte uFlags) {
+        if (hFile == NULL) {
+            throw_NullPointerException(env, "hFile is null");
+            return;
+        }
+        if (!SetFileCompletionNotificationModes(UNWRAP_HANDLE(hFile), (uint8_t)uFlags)) {
+            throw_NativeErrorException(env, (int32_t)GetLastError());
+        }
+}
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winbase
+ * Method:    BindIoCompletionCallback
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase/LPOVERLAPPED_COMPLETION_ROUTINE;I)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_BindIoCompletionCallback
+  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject Function, jint Flags) {
+        if (hFile == NULL) {
+            throw_NullPointerException(env, "hFile is null");
+            return;
+        }
+        if (Function == NULL) {
+            throw_NullPointerException(env, "Function is null.");
+            return;
+        }
+        if (!BindIoCompletionCallback(UNWRAP_HANDLE(hFile), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(Function), (uint32_t)Flags)) {
+            throw_NativeErrorException(env, (int32_t)GetLastError());
+        }
+}
+
+
 #ifdef __cplusplus
 }
 #endif

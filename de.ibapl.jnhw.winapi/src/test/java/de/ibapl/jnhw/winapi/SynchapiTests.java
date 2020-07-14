@@ -60,4 +60,11 @@ public class SynchapiTests {
         });
         Handleapi.CloseHandle(hEvent);
     }
+
+    @Test
+    public void testSleepEx() throws Exception {
+        Synchapi.SleepEx(10, true);
+        Synchapi.SleepEx(-10, true);
+    }
+
 }

@@ -90,7 +90,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler0__Lde_ibapl_jnhw_Callback_1I_1V_2
     (JNIEnv *env, jobject structSigaction, jobject value) {
-        (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_handler = UNWRAP_NATIVE_FUNCTION_POINTER(value);
+        (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_handler = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (jint), value);
     }
 
     /*
@@ -100,7 +100,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction0__Lde_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqueMemory_1V_2
     (JNIEnv *env, jobject structSigaction, jobject value) {
-        (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction = UNWRAP_NATIVE_FUNCTION_POINTER(value);
+        (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (jint, siginfo_t *, void *), value);
     }
 
     /*

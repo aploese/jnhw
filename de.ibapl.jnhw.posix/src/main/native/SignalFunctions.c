@@ -310,18 +310,18 @@ extern "C" {
         }
     }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Signal
-     * Method:    signal
-     * Signature: (ILde/ibapl/jnhw/NativeFunctionPointer;)Lde/ibapl/jnhw/NativeFunctionPointer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
+/*
+ * Class:     de_ibapl_jnhw_posix_Signal
+ * Method:    signal
+ * Signature: (ILde/ibapl/jnhw/Callback_I_V;)Lde/ibapl/jnhw/Callback_I_V;
+ */
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig, jobject func) {
         __sighandler_t result;
         if (func == NULL) {
             result = signal(sig, NULL);
         } else {
-            result = signal(sig, UNWRAP_NATIVE_FUNCTION_POINTER(func));
+            result = signal(sig, UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (jint), func));
         }
         if (result == SIG_ERR) {
             throw_NativeErrorException(env, errno);
@@ -407,18 +407,18 @@ extern "C" {
         }
     }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Signal
-     * Method:    sigset
-     * Signature: (ILde/ibapl/jnhw/NativeFunctionPointer;)Lde/ibapl/jnhw/NativeFunctionPointer;
-     */
+/*
+ * Class:     de_ibapl_jnhw_posix_Signal
+ * Method:    sigset
+ * Signature: (ILde/ibapl/jnhw/Callback_I_V;)Lde/ibapl/jnhw/Callback_I_V;
+ */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_sigset
     (JNIEnv *env, __attribute__ ((unused)) jclass class, jint sig, jobject disp) {
         __sighandler_t result;
         if (disp == NULL) {
             result = sigset(sig, NULL);
         } else {
-            result = sigset(sig, UNWRAP_NATIVE_FUNCTION_POINTER(disp));
+            result = sigset(sig, UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (jint), disp));
         }
         if (result == SIG_ERR) {
             throw_NativeErrorException(env, errno);

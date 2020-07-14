@@ -43,6 +43,26 @@ extern "C" {
 #ifdef HAVE_WINBASE_H
 #include <winbase.h>
 
+/*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_SKIP_SET_EVENT_ON_HANDLE
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1SKIP_1SET_1EVENT_1ON_1HANDLE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_SKIP_SET_EVENT_ON_HANDLE;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    FILE_SKIP_COMPLETION_PORT_ON_SUCCESS
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_winapi_Winbase_FILE_1SKIP_1COMPLETION_1PORT_1ON_1SUCCESS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return FILE_SKIP_COMPLETION_PORT_ON_SUCCESS;
+    }
+
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    STD_INPUT_HANDLE
@@ -303,7 +323,7 @@ extern "C" {
         return (int32_t) FILE_FLAG_WRITE_THROUGH;
     }
 
-/*
+        /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    SECURITY_ANONYMOUS
      * Signature: ()I

@@ -48,6 +48,28 @@ public abstract class Winbase {
     }
 
     /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setfilecompletionnotificationmodes">FILE_SKIP_SET_EVENT_ON_HANDLE</a>
+     * The I/O Manager does not set the event for the file object if a request
+     * returns with a success code, or the error returned is ERROR_PENDING and
+     * the function that is called is not a synchronous function.
+     *
+     * @return the native symbolic constant of FILE_SKIP_SET_EVENT_ON_HANDLE.
+     */
+    @Define
+    public final static native byte FILE_SKIP_SET_EVENT_ON_HANDLE();
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setfilecompletionnotificationmodes">FILE_SKIP_COMPLETION_PORT_ON_SUCCESS</a>
+     * If some conditions are true, the I/O Manager does not queue a completion
+     * entry to the port, when it would ordinarily do so.
+     *
+     * @return the native symbolic constant of
+     * FILE_SKIP_COMPLETION_PORT_ON_SUCCESS.
+     */
+    @Define
+    public final static native byte FILE_SKIP_COMPLETION_PORT_ON_SUCCESS();
+
+    /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-clearcommerror/">CE_BREAK</a>
      * The hardware detected a break condition.
      *
@@ -1215,5 +1237,33 @@ public abstract class Winbase {
         public native short wReserved1();
 
     }
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setfilecompletionnotificationmodes">SetFileCompletionNotificationModes</a>
+     * Sets the notification modes for a file handle, allowing you to specify
+     * how completion notifications work for the specified file.
+     *
+     * @param hFile
+     * @param uFlags
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    //TODO Test
+    public static native void SetFileCompletionNotificationModes(HANDLE hFile, byte uFlags) throws NativeErrorException;
+
+    /**
+     * *
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-bindiocompletioncallback">BindIoCompletionCallback</a>
+     * Associates the I/O completion port owned by the thread pool with the
+     * specified file handle.
+     *
+     * @param FileHandle
+     * @param Function
+     * @param Flags
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    //TODO Test
+    public static native void BindIoCompletionCallback(HANDLE FileHandle, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE Function, int Flags) throws NativeErrorException;
 
 }

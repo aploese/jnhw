@@ -115,4 +115,18 @@ public abstract class Synchapi {
      */
     public final static native long WaitForSingleObject(HANDLE hHandle, long dwMilliseconds) throws NativeErrorException;
 
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-sleepex">SleepEx</a>
+     * Sets the specified event object to the signaled state.
+     *
+     * @param dwMilliseconds The time interval for which execution is to be
+     * suspended, in milliseconds.
+     *
+     * @param bAlertable enable/disable APC.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native void SleepEx(long dwMilliseconds, boolean bAlertable) throws NativeErrorException;
+
 }

@@ -47,7 +47,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_NativeRunnableTest_setCallback
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
-        callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER(callback);
+        callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(void*), callback);
     }
 
     /*
