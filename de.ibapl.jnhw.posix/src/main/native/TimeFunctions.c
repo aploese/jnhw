@@ -236,8 +236,14 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_daylight
+#if defined(__FreeBSD__)
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    throw_NoSuchNativeMethodException(env, "daylight");
+    return 0;
+#else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return daylight;
+#endif
     }
 
     /*
@@ -263,6 +269,11 @@ extern "C" {
      * Signature: (Ljava/lang/String;)Lde/ibapl/jnhw/posix/Time$Tm;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_getdate
+#if defined(__FreeBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jstring string) {
+    throw_NoSuchNativeMethodException(env, "getdate");
+    return NULL;
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring string) {
         if (string == NULL) {
             throw_NullPointerException(env, "string is NULL");
@@ -278,6 +289,7 @@ extern "C" {
             throw_NativeErrorException(env, getdate_err);
             return NULL;
         }
+#endif
     }
 
     /*
@@ -671,8 +683,14 @@ extern "C" {
      * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_timezone
+#if defined(__FreeBSD__)
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    throw_NoSuchNativeMethodException(env, "timezone");
+    return 0;
+#else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return timezone;
+#endif
     }
 
     /*

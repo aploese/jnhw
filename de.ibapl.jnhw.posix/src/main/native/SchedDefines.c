@@ -72,7 +72,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_SCHED_1SPORADIC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) 
+#if defined (__linux__) || defined(__APPLE__) || defined(__FreeBSD__) 
         throw_NotDefinedException(env, "SCHED_SPORADIC");
         return 0;
 #elif not defined(SCHED_SPORADIC)

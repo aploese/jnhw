@@ -258,13 +258,14 @@ public class Time {
     public final static native String ctime_r(@time_t long clock, OpaqueMemory buf);
 
     /**
-     * <b>POSIX:</b>
+     * <b>POSIX.XSI:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/daylight.html">daylight,
      * timezone, tzname, tzset - set timezone conversion information</a>.
      *
      * @return the native value of daylight.
+     * @throws NoSuchNativeMethodException
      */
-    public final static native int daylight();
+    public final static native int daylight() throws NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -289,8 +290,9 @@ public class Time {
      *
      * @throws de.ibapl.jnhw.NativeErrorException returns the getdate_err error
      * codes.
+     * @throws NoSuchNativeMethodException
      */
-    public final static native Tm getdate(String string) throws NativeErrorException;
+    public final static native Tm getdate(String string) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -496,13 +498,14 @@ public class Time {
     public final static native void timer_settime(Timer_t timerid, int flags, Itimerspec value, Itimerspec ovalue) throws NativeErrorException;
 
     /**
-     * <b>POSIX:</b>
+     * <b>POSIX.XSI:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/timezone.html">daylight,
      * timezone, tzname, tzset - set timezone conversion information</a>.
      *
      * @return the native value of timezone.
+     * @throws NoSuchNativeMethodException
      */
-    public final static native long timezone();
+    public final static native long timezone() throws NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>

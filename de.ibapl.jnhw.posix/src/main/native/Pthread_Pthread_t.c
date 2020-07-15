@@ -50,7 +50,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_toString
     (JNIEnv *env, jobject pthread) {
         char buf[1024] = {0};
-        snprintf(buf, sizeof (buf) - 1, "%ld", *UNWRAP_PTHREAD_T_PTR(pthread));
+        snprintf(buf, sizeof (buf) - 1, "%ld", (uintptr_t)*UNWRAP_PTHREAD_T_PTR(pthread));
         return (*env)->NewStringUTF(env, buf);
     }
 

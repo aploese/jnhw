@@ -36,6 +36,8 @@ public class Defines {
         LibJnhwPosixLoader.touch();
     }
 
+//TODO implement @Define???
+    public static native boolean _LARGEFILE_SOURCE();
     /**
      * _LARGEFILE64_SOURCE was defined at native compile time. If
      * _LARGEFILE64_SOURCE was defined then all largefile64 functions (i.e.
@@ -59,17 +61,32 @@ public class Defines {
      * defined at compile time of the native code.
      */
     public static native int __FreeBSD__() throws NotDefinedException;
-
+    
     /**
      * Its defined at different places: Linux: bits/wordsize.h FreeBSD:
      * sys/stdint.h
      *
      * so we keep his here for the moment.
-     *
+     *_POSIX_C_SOURCE
      * @return
      * @throws NotDefinedException if run on WINDOWS
      */
     public static native int __WORDSIZE();
+    
+//TODO implement
+    public static native int _FILE_OFFSET_BITS();
+    
+//TODO implement
+    public static native int _POSIX_C_SOURCE();
+    
+//TODO implement
+    public static native int __POSIX_VISIBLE();
+
+//TODO implement
+    public static native int _XOPEN_SOURCE();
+    
+//TODO implement
+    public static native int _XOPEN_SOURCE_EXTENDED();
 
     /**
      * @return true if symbol {@code __linux__} was defined at compile time of

@@ -322,7 +322,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_SIGPOLL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__FreeBSD__)
+#if defined(SIGPOLL)
+#error "SIGPOLL defined"
+#endif
+        throw_NotDefinedException(env, "SIGPOLL");
+        return 0;
+#else
         return SIGPOLL;
+#endif
     }
 
     /*

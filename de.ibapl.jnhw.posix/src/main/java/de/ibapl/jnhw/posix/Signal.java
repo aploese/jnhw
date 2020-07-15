@@ -804,9 +804,10 @@ public class Signal {
      * <b>POSIX:</b><i>> Abnormal termination of the process</i> Pollable event.
      *
      * @return the native symbolic constant of SIGPOLL.
+     * @throws NotDefinedException
      */
     @Define()
-    public final static native int SIGPOLL();
+    public final static native int SIGPOLL() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b><i>> Abnormal termination of the process</i> Profiling timer
@@ -1793,8 +1794,9 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException
      */
-    public final static native void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException;
+    public final static native void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>

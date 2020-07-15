@@ -40,7 +40,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_sizeofUcontext_1t
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__FreeBSD__)
+        return sizeof (ucontext_t);
+#else
         return sizeof (struct ucontext_t);
+#endif    
     }
 
     /*
@@ -50,7 +54,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t__1uc_1sigmask_1Offset
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__FreeBSD__)
+        return offsetof(ucontext_t, uc_sigmask);
+#else
         return offsetof(struct ucontext_t, uc_sigmask);
+#endif
     }
 
     /*
@@ -60,7 +68,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t__1uc_1stack_1Offset
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__FreeBSD__)
+        return offsetof(ucontext_t, uc_stack);
+#else
         return offsetof(struct ucontext_t, uc_stack);
+#endif
     }
 
 /*
@@ -70,7 +82,11 @@ extern "C" {
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t__1uc_1mcontext_1Offset
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__FreeBSD__)
+        return offsetof(ucontext_t, uc_mcontext);
+#else
         return offsetof(struct ucontext_t, uc_mcontext);
+#endif
     }
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t

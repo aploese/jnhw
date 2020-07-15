@@ -62,6 +62,10 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Siginfo_t;Ljava/lang/String;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_psiginfo
+#if defined(__FreeBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject pinfo, __attribute__ ((unused)) jstring message) {
+    throw_NoSuchNativeMethodException(env, "psiginfo");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pinfo, jstring message) {
         if (pinfo == NULL) {
             throw_NullPointerException(env, "pinfo is null");
@@ -85,6 +89,7 @@ extern "C" {
             (*env)->ReleaseStringUTFChars(env, message, _message);
         }
         errno = old_errno;
+#endif
     }
 
     /*
@@ -317,7 +322,7 @@ extern "C" {
  */
 JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig, jobject func) {
-        __sighandler_t result;
+        void* result;
         if (func == NULL) {
             result = signal(sig, NULL);
         } else {
@@ -414,7 +419,7 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
  */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_sigset
     (JNIEnv *env, __attribute__ ((unused)) jclass class, jint sig, jobject disp) {
-        __sighandler_t result;
+        void* result;
         if (disp == NULL) {
             result = sigset(sig, NULL);
         } else {

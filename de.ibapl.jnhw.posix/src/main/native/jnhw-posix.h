@@ -33,9 +33,14 @@
 #endif
 #elif defined(__FreeBSD__)
 #define _POSIX_C_SOURCE 200809
+#define _XOPEN_SOURCE 700
+//force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
+#define __BSD_VISIBLE 1
+#define __EXT1_VISIBLE 1
 //no 
 #elif defined(__APPLE__)
 #define _POSIX_C_SOURCE 200809
+#define _XOPEN_SOURCE 700
 #endif
 
 //#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
@@ -99,8 +104,11 @@ extern "C" {
     
 #define UNWRAP_STACK_T_PTR(structStack_t) UNWRAP_OPAQUE_MEM_TO(stack_t*, structStack_t)
 #define UNWRAP_STACK_T_PTR_OR_NULL(structStack_t) UNWRAP_OPAQUE_MEM_TO_OR_NULL(stack_t*, structStack_t)
-
+#if defined (__FreeBSD__)
+#define UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t) UNWRAP_OPAQUE_MEM_TO(ucontext_t*, structUcontext_t)
+#else
 #define UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t) UNWRAP_OPAQUE_MEM_TO(struct ucontext_t*, structUcontext_t)
+#endif
 
 #define UNWRAP_STRUCT_AIOCB_PTR(structAiocb) UNWRAP_OPAQUE_MEM_TO(struct aiocb*, structAiocb)
 #define UNWRAP_STRUCT_AIOCB_PTR_OR_NULL(structAiocb) UNWRAP_OPAQUE_MEM_TO_OR_NULL(struct aiocb*, structAiocb)

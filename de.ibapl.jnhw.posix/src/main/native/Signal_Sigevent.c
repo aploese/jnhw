@@ -131,7 +131,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function0__Lde_ibapl_jnhw_NativeFunctionPointer_2
     (JNIEnv *env, jobject structSigevent, jobject value) {
-        (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_function = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (__sigval_t), value);
+        (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_function = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (union sigval), value);
     }
 
 #ifdef __cplusplus

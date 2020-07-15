@@ -56,8 +56,10 @@ public class StringHeader {
      * <b>POSIX.CX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strerror_l.html">strerror,
      * strerror_l, strerror_r - get error message string</a>.
+     *
+     * @throws NoSuchNativeMethodException
      */
-    public final static native String strerror_l(int errnum, Locale.Locale_t locale);
+    public final static native String strerror_l(int errnum, Locale.Locale_t locale) throws NoSuchNativeMethodException;
 
     /**
      * <b>POSIX.CX:</b>
