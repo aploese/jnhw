@@ -30,6 +30,8 @@ import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeFunctionPointer;
+import de.ibapl.jnhw.NoSuchNativeMethodException;
+import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
@@ -174,9 +176,13 @@ public class Signal {
                     isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
                     sb.append("SIGPIPE");
                 }
+                try {
                 if ((Signal.sigismember(this, Signal.SIGPOLL()))) {
                     isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
                     sb.append("SIGPOLL");
+                    }
+                } catch (NotDefinedException ex) {
+                    //no-op
                 }
                 if ((Signal.sigismember(this, Signal.SIGPROF()))) {
                     isFirst = maybeDoFormatBeforeFirst(sb, isFirst);

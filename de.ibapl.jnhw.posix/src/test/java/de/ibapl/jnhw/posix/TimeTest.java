@@ -26,6 +26,8 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Defines;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -33,6 +35,8 @@ import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -42,6 +46,13 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
  */
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TimeTest {
+
+    private static MultiarchTupelBuilder multiarchTupelBuilder;
+
+    @BeforeAll
+    public static void setUpClass() {
+        multiarchTupelBuilder = new MultiarchTupelBuilder();
+    }
 
     public TimeTest() {
     }
@@ -250,8 +261,9 @@ public class TimeTest {
      * Test of daylight method, of class Time.
      */
     @Test
-    public void testDaylight() {
+    public void testDaylight() throws Exception {
         System.out.println("daylight");
+        Assumptions.assumeFalse(multiarchTupelBuilder.getOS() == OS.FREE_BSD);
         final int oldDaylight = Time.daylight();
         assertEquals(oldDaylight, Time.daylight());
     }
@@ -710,7 +722,8 @@ public class TimeTest {
      * Test of timezone method, of class Time.
      */
     @Test
-    public void testTimezone() {
+    public void testTimezone() throws Exception {
+        Assumptions.assumeFalse(multiarchTupelBuilder.getOS() == OS.FREE_BSD);
         System.out.println("timezone");
         final long oldTimezone = Time.timezone();
         assertEquals(oldTimezone, Time.timezone());
@@ -751,7 +764,7 @@ public class TimeTest {
     }
 
     @Test
-    public void testTimer_t() {
+    public void testTimer_t() throws Exception {
         Time.Timer_t timer_t = new Time.Timer_t(true);
         switch (Defines.__WORDSIZE()) {
             case 32:

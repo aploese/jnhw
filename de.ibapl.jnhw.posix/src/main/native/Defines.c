@@ -31,15 +31,31 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __linux__
-     * Signature: ()Z
+     * Method:    _LARGEFILE_SOURCE
+     * Signature: ()I
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1linux_1_1
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1LARGEFILE_1SOURCE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef __linux__
-        return JNI_TRUE;
+#if defined(_LARGEFILE_SOURCE)
+        return _LARGEFILE_SOURCE;
 #else
-        return JNI_FALSE;
+        throw_NotDefinedException(env, "_LARGEFILE_SOURCE");
+        return -1;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_Defines
+     * Method:    _LARGEFILE64_SOURCE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1LARGEFILE64_1SOURCE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(_LARGEFILE64_SOURCE)
+        return _LARGEFILE64_SOURCE;
+#else
+        throw_NotDefinedException(env, "_LARGEFILE64_SOURCE");
+        return -1;
 #endif
     }
 
@@ -47,13 +63,15 @@ extern "C" {
      * Class:     de_ibapl_jnhw_util_posix_Defines
      * Method:    __APPLE__
      * Signature: ()Z
+     * I
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1APPLE_1_1
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1APPLE_1_1
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef __APPLE__
-        return JNI_TRUE;
+#if defined(__APPLE__)
+        return __APPLE__;
 #else
-        return JNI_FALSE;
+        throw_NotDefinedException(env, "__APPLE__");
+        return -1;
 #endif
     }
 
@@ -92,15 +110,76 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    _LARGEFILE64_SOURCE
-     * Signature: ()Z
+     * Method:    _FILE_OFFSET_BITS
+     * Signature: ()I
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1LARGEFILE64_1SOURCE
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1FILE_1OFFSET_1BITS
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef _LARGEFILE64_SOURCE
-        return JNI_TRUE;
+#if defined (_FILE_OFFSET_BITS)
+        return _FILE_OFFSET_BITS;
 #else
-        return JNI_FALSE;
+        throw_NotDefinedException(env, "_FILE_OFFSET_BITS");
+        return 0;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_Defines
+     * Method:    _POSIX_C_SOURCE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1POSIX_1C_1SOURCE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (_POSIX_C_SOURCE)
+        return _POSIX_C_SOURCE;
+#else
+        throw_NotDefinedException(env, "_POSIX_C_SOURCE");
+        return 0;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_Defines
+     * Method:    _XOPEN_SOURCE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1XOPEN_1SOURCE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (_XOPEN_SOURCE)
+        return _XOPEN_SOURCE;
+#else
+        throw_NotDefinedException(env, "_XOPEN_SOURCE");
+        return 0;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_Defines
+     * Method:    _XOPEN_SOURCE_EXTENDED
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1XOPEN_1SOURCE_1EXTENDED
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (_XOPEN_SOURCE_EXTENDED)
+        return _XOPEN_SOURCE_EXTENDED;
+#else
+        throw_NotDefinedException(env, "_XOPEN_SOURCE_EXTENDED");
+        return 0;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_Defines
+     * Method:    __linux__
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1linux_1_1
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__linux__)
+        return __linux__;
+#else
+        throw_NotDefinedException(env, "__linux__");
+        return -1;
 #endif
     }
 

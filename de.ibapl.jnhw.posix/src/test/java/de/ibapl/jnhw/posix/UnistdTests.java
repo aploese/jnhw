@@ -112,7 +112,7 @@ public class UnistdTests {
     @Test
     public void test64() throws Exception {
         final long SEEK_TO = 1L + Integer.MAX_VALUE;
-        if (Defines._LARGEFILE64_SOURCE()) {
+        if (Defines._LARGEFILE64_SOURCE() != 0) {
             f.delete();
 
             long seekResult;

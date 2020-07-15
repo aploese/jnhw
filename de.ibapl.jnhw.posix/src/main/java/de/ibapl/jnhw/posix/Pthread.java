@@ -26,6 +26,7 @@ import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
