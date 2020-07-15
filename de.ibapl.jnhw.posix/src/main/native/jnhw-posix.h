@@ -19,6 +19,8 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+#ifndef _ljnhw_posix_H
+#define _ljnhw_posix_H
 
 
 #if  defined(__linux__)
@@ -137,6 +139,8 @@ extern "C" {
     
 #ifdef __cplusplus
 }
+#endif
+
 #endif
 
 #endif

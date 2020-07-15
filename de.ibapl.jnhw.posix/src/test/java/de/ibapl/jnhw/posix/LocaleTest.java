@@ -24,6 +24,7 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.NativeErrorException;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -34,7 +35,27 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class LocaleTest {
 
+    @BeforeAll
+    public static void setUpBeforeClass() throws Exception {
+        LibJnhwPosixTestLoader.touch();
+    }
+
     public LocaleTest() {
+    }
+
+    private native long nativeLocale_t(long value);
+
+    /**
+     * Test of duplocale method, of class Locale.
+     *
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testLocale_t() throws Exception {
+        System.out.println("testLocale_t");
+        Assertions.assertEquals(0, nativeLocale_t(0));
+        Assertions.assertEquals(1, nativeLocale_t(1));
+        Assertions.assertEquals(-1, nativeLocale_t(-1));
     }
 
     /**
@@ -46,12 +67,8 @@ public class LocaleTest {
     public void testDuplocale() throws Exception {
         System.out.println("duplocale");
         Locale.Locale_t locobj = Locale.LC_GLOBAL_LOCALE();
-        System.out.println("LC_GLOBAL_LOCALE: " + locobj);
-        System.out.flush();
-        Thread.sleep(100);
         try {
             Locale.Locale_t result = Locale.duplocale(locobj);
-            System.out.println("duplocale(LC_GLOBAL_LOCALE) " + result);
             Assertions.assertNotNull(result);
             Locale.freelocale(result);
         } catch (NativeErrorException nee) {

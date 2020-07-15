@@ -43,12 +43,22 @@ JW_LIB_PREFIX_SUFFIX()
 JNHW_RESOURCES_DIR="\$(top_builddir)/src/main/resources/lib/\$(JNHW_MULTIARCH_TUPEL)"
 AC_SUBST(JNHW_RESOURCES_DIR)
 
+JNHW_TEST_RESOURCES_DIR="\$(top_builddir)/src/test/resources/lib/\$(JNHW_MULTIARCH_TUPEL)"
+AC_SUBST(JNHW_TEST_RESOURCES_DIR)
+
 JNI_HEADER_DIR="\$(top_builddir)/target/generated-sources/include"
 AC_SUBST(JNI_HEADER_DIR)
+
+JNI_TEST_HEADER_DIR="\$(top_builddir)/target/generated-test-sources/include"
+AC_SUBST(JNI_TEST_HEADER_DIR)
 
 #get path of jnhw-common.h - The Quick and Dirty way....
 JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
 AC_SUBST(JNHW_COMMON_SRC_DIR)
+
+#get path of jnhw-posix.h - The Quick and Dirty way....
+JNHW_POSIX_SRC_DIR="\$(top_builddir)/src/main/native"
+AC_SUBST(JNHW_POSIX_SRC_DIR)
 
 # Checks for libraries.
 #ACX_PTHREAD
@@ -61,6 +71,6 @@ AC_CHECK_HEADERS([aio.h errno.h fcntl.h locale.h poll.h pthread.h sys/ioctl.h sy
 
 # Checks for library functions.
 
-AC_CONFIG_FILES([Makefile src/Makefile src/main/Makefile src/main/native/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile src/main/Makefile src/main/native/Makefile src/test/Makefile src/test/native/Makefile])
 
 AC_OUTPUT
