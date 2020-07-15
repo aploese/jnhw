@@ -559,10 +559,9 @@ public class TimeTest {
         assertEquals(9, tm.tm_hour());
         assertEquals(12, tm.tm_min());
         assertEquals(57, tm.tm_sec());
-        assertEquals(0, tm.tm_wday());
+        assertEquals(1, tm.tm_wday()); //TODO Its 1, but freeBSD gives a 0????
 
-        //Its Mon, but freeBSD has a bug????
-        assertEquals("Sun Jan 27 09:12:57 2020\n", Time.asctime(tm));
+        assertEquals("Mon Jan 27 09:12:57 2020\n", Time.asctime(tm));
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.strptime(null, format, tm);
         });

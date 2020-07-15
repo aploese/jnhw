@@ -94,22 +94,23 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint category_mask, jstring locale, jobject base) {
         if (locale == NULL) {
             throw_NullPointerException(env, "locale is null.");
-            return 0;
+            return NULL;
         }
         if (base == NULL) {
             throw_NullPointerException(env, "base is null.");
-            return 0;
+            return NULL;
         }
         const locale_t _base = UNWRAP_LOCALE_T(base);
         if (_base == LC_GLOBAL_LOCALE) {
             throw_IllegalArgumentException(env, "base is LC_GLOBAL_LOCALE");
-            return 0;
+            return NULL;
         }
         const char* _locale = (*env)->GetStringUTFChars(env, locale, NULL);
         locale_t result = newlocale(category_mask, _locale, _base);
         (*env)->ReleaseStringUTFChars(env, locale, _locale);
         if (result == (locale_t) 0) {
             throw_NativeErrorException(env, errno);
+            return NULL;
         }
         return CREATE_LOCALE_T(result);
     }

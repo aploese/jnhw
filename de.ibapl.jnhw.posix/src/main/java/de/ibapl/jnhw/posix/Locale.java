@@ -28,10 +28,6 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -611,6 +607,12 @@ public class Locale {
             final Locale_t other = (Locale_t) obj;
             return this.nativeValue == other.nativeValue;
         }
+
+        @Override
+        public String toString() {
+            return "{nativeValue : " + nativeValue + "}";
+        }
+
 
     }
 }

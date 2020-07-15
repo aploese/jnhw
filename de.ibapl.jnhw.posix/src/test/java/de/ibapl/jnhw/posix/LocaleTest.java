@@ -46,8 +46,12 @@ public class LocaleTest {
     public void testDuplocale() throws Exception {
         System.out.println("duplocale");
         Locale.Locale_t locobj = Locale.LC_GLOBAL_LOCALE();
+        System.out.println("LC_GLOBAL_LOCALE: " + locobj);
+        System.out.flush();
+        Thread.sleep(100);
         try {
             Locale.Locale_t result = Locale.duplocale(locobj);
+            System.out.println("duplocale(LC_GLOBAL_LOCALE) " + result);
             Assertions.assertNotNull(result);
             Locale.freelocale(result);
         } catch (NativeErrorException nee) {
@@ -101,9 +105,9 @@ public class LocaleTest {
     public void testNewlocale_AND_Freelocale() throws Exception {
         System.out.println("newlocale");
         final int category_mask = Locale.LC_NUMERIC_MASK();
-        final String locale = "";
+        final String locale = "C";
         final Locale.Locale_t base = Locale.Locale_t.locale_t_0();
-        Locale.Locale_t result = Locale.newlocale(category_mask, locale, base);
+        final Locale.Locale_t result = Locale.newlocale(category_mask, locale, base);
         Assertions.assertNotNull(result);
         Locale.freelocale(result);
     }
