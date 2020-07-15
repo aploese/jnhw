@@ -23,7 +23,9 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.ObjectRef;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -39,11 +41,14 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class PthreadTest {
 
-    public PthreadTest() {
-    }
+    private static MultiarchTupelBuilder multiarchTupelBuilder;
 
     @BeforeAll
     public static void setUpClass() {
+        multiarchTupelBuilder = new MultiarchTupelBuilder();
+    }
+
+    public PthreadTest() {
     }
 
     @AfterAll
@@ -199,11 +204,15 @@ public class PthreadTest {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Pthread.pthread_setschedparam(null, 0, param);
         });
-        //TODO Why??? EINVAL
-        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+        if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.LINUX) {
+            //TODO Why??? EINVAL
+            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, param);
+            });
+            Assertions.assertEquals(Errno.EINVAL(), nee.errno);
+        } else {
             Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, param);
-        });
-        Assertions.assertEquals(Errno.EINVAL(), nee.errno);
+        }
 
         System.out.println("pthread_getschedparam");
         IntRef intRef = new IntRef();
@@ -226,10 +235,15 @@ public class PthreadTest {
     @Test
     public void testPthread_setschedprio() throws Exception {
         System.out.println("pthread_setschedprio(");
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_setschedprio(null, 0);
-        });
-        Pthread.pthread_setschedprio(Pthread.pthread_self(), 0);
+        if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Pthread.pthread_setschedprio(null, 0);
+            });
+        } else {
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Pthread.pthread_setschedprio(null, 0);
+            });
+            Pthread.pthread_setschedprio(Pthread.pthread_self(), 0);
+        }
     }
-
 }

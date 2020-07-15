@@ -34,6 +34,7 @@
 #elif defined(__FreeBSD__)
 #define _POSIX_C_SOURCE 200809
 #define _XOPEN_SOURCE 700
+#define _XOPEN_SOURCE_EXTENDED 1
 //force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
 #define __BSD_VISIBLE 1
 #define __EXT1_VISIBLE 1
@@ -41,6 +42,7 @@
 #elif defined(__APPLE__)
 #define _POSIX_C_SOURCE 200809
 #define _XOPEN_SOURCE 700
+#define _XOPEN_SOURCE_EXTENDED 1
 #endif
 
 //#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)

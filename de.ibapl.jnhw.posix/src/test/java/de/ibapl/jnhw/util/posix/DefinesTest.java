@@ -362,7 +362,7 @@ public class DefinesTest {
                 break;
 
             case FREE_BSD:
-                assertFalse(Defines._LARGEFILE64_SOURCE() != 0);
+                assertFalse(Defined.defined(Defines::_LARGEFILE64_SOURCE));
                 break;
             case MAC_OS_X:
                 assertFalse(Defines._LARGEFILE64_SOURCE() != 0);
@@ -397,7 +397,7 @@ public class DefinesTest {
                 break;
 
             case FREE_BSD:
-                assertFalse(Defines._LARGEFILE_SOURCE() != 0);
+                assertFalse(Defined.defined(Defines::_LARGEFILE_SOURCE));
                 break;
             case MAC_OS_X:
                 assertFalse(Defines._LARGEFILE_SOURCE() != 0);

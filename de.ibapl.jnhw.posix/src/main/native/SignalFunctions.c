@@ -197,11 +197,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigaltstack
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject ss, jobject oss) {
-        if (ss == NULL) {
-            throw_NullPointerException(env, "ss is null");
-            return;
-        }
-        if (sigaltstack(UNWRAP_STACK_T_PTR(ss), UNWRAP_STACK_T_PTR_OR_NULL(oss))) {
+        if (sigaltstack(UNWRAP_STACK_T_PTR_OR_NULL(ss), UNWRAP_STACK_T_PTR_OR_NULL(oss))) {
             throw_NativeErrorException(env, errno);
         }
     }

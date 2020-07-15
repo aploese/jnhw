@@ -31,13 +31,16 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeFunctionPointer;
+import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.ref.Cleaner;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -48,6 +51,13 @@ import org.junit.jupiter.api.condition.OS;
  */
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SignalTest {
+
+    private static MultiarchTupelBuilder multiarchTupelBuilder;
+
+    @BeforeAll
+    public static void setUpClass() {
+        multiarchTupelBuilder = new MultiarchTupelBuilder();
+    }
 
     private final static Cleaner cleaner = Cleaner.create();
 
@@ -128,15 +138,21 @@ public class SignalTest {
     public void testPsiginfo() throws Exception {
         System.out.println("psiginfo");
         Signal.Siginfo_t pinfo = new Signal.Siginfo_t();
-        System.err.print("psiginfo MSG >>>");
-        Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo");
-        System.err.println("<<< psiginfo MSG");
-        System.err.flush();
-        System.out.flush();
-        Signal.psiginfo(pinfo, null);
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Signal.psiginfo(null, "JNHW Test for Signal.psiginfo");
-        });
+        if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo");
+            });
+        } else {
+            System.err.print("psiginfo MSG >>>");
+            Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo");
+            System.err.println("<<< psiginfo MSG");
+            System.err.flush();
+            System.out.flush();
+            Signal.psiginfo(pinfo, null);
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Signal.psiginfo(null, "JNHW Test for Signal.psiginfo");
+            });
+        }
         //TODO mark as not executing as expected but do not fail??
     }
 
@@ -310,14 +326,12 @@ public class SignalTest {
     public void testSigaltstack() throws Exception {
         System.out.println("sigaltstack");
         final OpaqueMemory ss_sp = new OpaqueMemory(Signal.MINSIGSTKSZ(), true);
-        Signal.Stack_t ss = Signal.Stack_t.of(Signal.SS_ONSTACK(), ss_sp);
+        Signal.Stack_t ss = Signal.Stack_t.of(Signal.SS_DISABLE(), ss_sp);
         Signal.Stack_t oss = new Signal.Stack_t();
-        Signal.sigaltstack(ss, oss);
+        Signal.sigaltstack(null, oss);
         try {
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Signal.sigaltstack(null, null);
-            });
-
+            Signal.sigaltstack(null, null);
+            Signal.sigaltstack(ss, oss);
         } finally {
             Signal.sigaltstack(oss, null);
         }
@@ -495,6 +509,7 @@ public class SignalTest {
             }.start();
             Thread.sleep(100);
             Signal.raise(SIG);
+            Thread.sleep(10);
             synchronized (boolRef) {
                 if (!boolRef.value) {
                     boolRef.wait(500);
@@ -693,7 +708,12 @@ public class SignalTest {
 
             assertEquals(SIG, signal);
             assertEquals(SIG, info.si_signo());
-            assertEquals(0, info.si_code());
+            if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
+                //#define SI_LWP                   /* Signal sent by thr_kill */ from /usr/include/sys/signal.h
+                assertEquals(0x10007, info.si_code());
+            } else {
+                assertEquals(0, info.si_code());
+            }
 
             Signal.raise(SIG);
             signal = Signal.sigtimedwait(set, null, timeout);
@@ -772,7 +792,12 @@ public class SignalTest {
             final int signal = Signal.sigwaitinfo(set, info);
             assertEquals(SIG, signal);
             assertEquals(SIG, info.si_signo());
-            assertEquals(0, info.si_code());
+            if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
+                //#define SI_LWP                   /* Signal sent by thr_kill */ from /usr/include/sys/signal.h
+                assertEquals(0x10007, info.si_code());
+            } else {
+                assertEquals(0, info.si_code());
+            }
             //TODO more???
 
             Signal.raise(SIG);
@@ -875,7 +900,7 @@ public class SignalTest {
 
     @Test
     public void testStructUcontext_t() throws Exception {
-        Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t();
+        Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t(true);
         Assertions.assertNull(ucontext_t.uc_link((baseAddress, parent) -> {
             return baseAddress.isNULL() ? null : new Signal.Ucontext_t(baseAddress);
         })); //Maybe fail sometimes....

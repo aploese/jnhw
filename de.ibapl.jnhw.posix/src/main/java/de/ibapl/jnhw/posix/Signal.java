@@ -1166,7 +1166,11 @@ public class Signal {
         public static native int _uc_mcontext_Offset();
 
         public Ucontext_t() {
-            super(sizeofUcontext_t(), false);
+            this(false);
+        }
+
+        public Ucontext_t(boolean clearMem) {
+            super(sizeofUcontext_t(), clearMem);
             uc_sigmask = new Sigset_t(this, _uc_sigmask_Offset());
             uc_stack = new Stack_t(this, _uc_stack_Offset());
             uc_mcontext = new Mcontext_t(this, _uc_mcontext_Offset());

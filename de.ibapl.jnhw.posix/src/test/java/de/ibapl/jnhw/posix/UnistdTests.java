@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.ByteRef;
+import de.ibapl.jnhw.Defined;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
@@ -112,7 +113,7 @@ public class UnistdTests {
     @Test
     public void test64() throws Exception {
         final long SEEK_TO = 1L + Integer.MAX_VALUE;
-        if (Defines._LARGEFILE64_SOURCE() != 0) {
+        if (Defined.defined(Defines::_LARGEFILE64_SOURCE)) {
             f.delete();
 
             long seekResult;
