@@ -79,7 +79,7 @@ extern "C" {
     extern jmethodID de_ibapl_jnhw_posix_Time_Tm_init_ID;
 
 #define UNWRAP_LOCALE_T(Locale_tObject) (locale_t)(intptr_t)(*env)->GetLongField(env, Locale_tObject, de_ibapl_jnhw_posix_Locale_Locale_t_nativeValue_ID)   
-#define CREATE_LOCALE_T(value) (*env)->NewObject(env, de_ibapl_jnhw_posix_Locale_Locale_t_Class, de_ibapl_jnhw_posix_Locale_Locale_t_init_ID, value)
+#define CREATE_LOCALE_T(value) (*env)->NewObject(env, de_ibapl_jnhw_posix_Locale_Locale_t_Class, de_ibapl_jnhw_posix_Locale_Locale_t_init_ID, ((intptr_t)value))
 
 #define UNWRAP_STRUCT_TERMIOS_PTR(structTermios) UNWRAP_OPAQUE_MEM_TO(struct termios*, structTermios)
 

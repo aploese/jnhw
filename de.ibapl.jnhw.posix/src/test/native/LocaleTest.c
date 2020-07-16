@@ -34,11 +34,11 @@ extern "C" {
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_nativeLocale_1t
   (JNIEnv *env, __attribute__ ((unused)) jobject clazz, jlong value) {
-    locale_t _value = (locale_t)value;
+    locale_t _value = (locale_t)(intptr_t)value;
     jobject __value = CREATE_LOCALE_T(_value);
     locale_t result = UNWRAP_LOCALE_T(__value);
     if (result != _value) {
-        throw_Exception(env, "java/lang/RuntimeException", "Java_de_ibapl_jnhw_posix_LocaleTest_nativeLocale_1t failed expected %dl but was %dl", value, (jlong)result);
+        throw_Exception(env, "java/lang/RuntimeException", "Java_de_ibapl_jnhw_posix_LocaleTest_nativeLocale_1t failed expected %x but was %x", value, (jlong)(intptr_t)result);
     }
     return (intptr_t)result;
 }   
@@ -52,7 +52,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBA
   (JNIEnv *env, __attribute__ ((unused)) jobject clazz, jobject value) {
     locale_t unwrapped = UNWRAP_LOCALE_T(value);
     if (LC_GLOBAL_LOCALE != unwrapped) {
-        throw_Exception(env, "java/lang/RuntimeException", "Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBAL_1LOCALE failed expected %dl but was %dl", (jlong)LC_GLOBAL_LOCALE, (jlong)unwrapped);
+        throw_Exception(env, "java/lang/RuntimeException", "Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBAL_1LOCALE failed expected %x but was %x", LC_GLOBAL_LOCALE, unwrapped);
     } 
 }
 
