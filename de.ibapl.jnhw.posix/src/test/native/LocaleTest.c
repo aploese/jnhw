@@ -43,6 +43,21 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_nativeLocale_1t
     return (intptr_t)result;
 }   
 
+/*
+ * Class:     de_ibapl_jnhw_posix_LocaleTest
+ * Method:    testNativelyLC_GLOBAL_LOCALE
+ * Signature: (Lde/ibapl/jnhw/posix/Locale/Locale_t;)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBAL_1LOCALE
+  (JNIEnv *env, __attribute__ ((unused)) jobject clazz, jobject value) {
+    locale_t unwrapped = UNWRAP_LOCALE_T(value);
+    if (LC_GLOBAL_LOCALE != unwrapped) {
+        throw_Exception(env, "java/lang/RuntimeException", "Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBAL_1LOCALE failed expected %dl but was %dl", (jlong)LC_GLOBAL_LOCALE, (jlong)unwrapped);
+    } 
+}
+
+
+
 #ifdef __cplusplus
 }
 #endif
