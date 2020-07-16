@@ -53,13 +53,22 @@ public class LocaleTest {
      * @throws java.lang.Exception
      */
     @Test
+    public void testUnwrapLC_GLOBAL_LOCALE() throws Exception {
+        System.out.println("testUnwrapLC_GLOBAL_LOCALE");
+        testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE());
+    }
+
+    /**
+     * Test of native create ans wrap of class Locale.Locale_t.
+     *
+     * @throws java.lang.Exception
+     */
+    @Test
     public void testLocale_t() throws Exception {
         System.out.println("testLocale_t");
         Assertions.assertEquals(0, nativeLocale_t(0));
         Assertions.assertEquals(1, nativeLocale_t(1));
         Assertions.assertEquals(-1, nativeLocale_t(-1));
-
-        testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE());
     }
 
     /**
