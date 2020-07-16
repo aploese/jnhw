@@ -93,21 +93,17 @@ extern "C" {
 
 
     /**
-     * Unwarap the baseAddress of given opaqueMemory(jobject) of an OpacqueMemory instance anc casts these baseAddress to given type.
+     * Unwarap the baseAddress of given opaqueMemory(jobject) of an OpaqueMemory instance and cast these baseAddress to given type and put it in ().
      * 
      */
-#define UNWRAP_OPAQUE_MEM_TO_INTPTR_T(opaqueMemory) (intptr_t)(*env)->GetLongField(env, opaqueMemory, de_ibapl_jnhw_OpaqueMemory_baseAddress_ID)
+#define UNWRAP_OPAQUE_MEM_TO(destType, opaqueMemory) ((destType)((intptr_t)(*env)->GetLongField(env, opaqueMemory, de_ibapl_jnhw_OpaqueMemory_baseAddress_ID)))
     /**
-     * Unwarap the baseAddress of given opaqueMemory(jobject) of an OpacqueMemory instance anc casts these baseAddress to given type and put it in ().
-     * 
-     */
-#define UNWRAP_OPAQUE_MEM_TO(destType, opaqueMemory) (destType) UNWRAP_OPAQUE_MEM_TO_INTPTR_T(opaqueMemory)
-    /**
-     * Unwarap the baseAddress given opaqueMemory(jobject) of an OpacqueMemory instance anc casts these baseAddress to given type.
+     * Unwarap the baseAddress given opaqueMemory(jobject) of an OpaqueMemory instance and cast these baseAddress to given type.
      * If opaqueMemory == NULL return NULL, otherwise unwrap.
      * 
      */
-#define UNWRAP_OPAQUE_MEM_TO_OR_NULL(destType, opaqueMemory) opaqueMemory == NULL ? (destType)NULL : (destType)UNWRAP_OPAQUE_MEM_TO_INTPTR_T(opaqueMemory)
+#define UNWRAP_OPAQUE_MEM_TO_OR_NULL(destType, opaqueMemory) opaqueMemory == NULL ? (destType)NULL : UNWRAP_OPAQUE_MEM_TO(destType, opaqueMemory)
+
 #define UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) UNWRAP_OPAQUE_MEM_TO(void*, opaqueMemory)
 #define UNWRAP_OPAQUE_MEM_TO_VOID_PTR_OR_NULL(opaqueMemory) UNWRAP_OPAQUE_MEM_TO_OR_NULL(void*, opaqueMemory)
 #define UNWRAP_OPAQUE_MEM_TO_VOID_PTR_PTR(opaqueMemory) UNWRAP_OPAQUE_MEM_TO(void**, opaqueMemory)

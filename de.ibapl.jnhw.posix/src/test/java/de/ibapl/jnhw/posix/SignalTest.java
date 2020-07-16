@@ -575,7 +575,7 @@ public class SignalTest {
     @Test
     public void testSigqueue() throws Exception {
         System.out.println("sigqueue");
-        final int SIG = Signal.SIGUSR1();
+        final int SIG = Signal.SIGUSR2();
 
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(Signal.SA_SIGINFO());
@@ -618,8 +618,10 @@ public class SignalTest {
 
         Thread.sleep(100);
 
+        System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef.value);
         try {
             Assertions.assertNotNull(siginfo_tRef.value);
+            Assertions.assertEquals(0, siginfo_tRef.value.si_errno());
             Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo());
             Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr((baseAddress, size) -> {
                 return new OpaqueMemory(baseAddress, data.sizeInBytes) {

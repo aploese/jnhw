@@ -1422,6 +1422,12 @@ public class Signal {
          *
          */
         public final Sigval<T> si_value;
+
+        @Override
+        public String toString() {
+            return String.format("{si_addr : %d, si_band : %d, si_code : %d, si_errno : %d, si_pid : %d, si_signo : %d, si_status : %d, si_value : %s}", si_addr(), si_band(), si_code(), si_errno(), si_pid(), si_signo(), si_status(), si_value);
+        }
+
     }
 
     /**
