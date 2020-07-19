@@ -54,7 +54,7 @@ extern "C" {
 #if __WORDSIZE == 64
         snprintf(buf, sizeof (buf) - 1, "0x%016lx", (uintptr_t) *UNWRAP_TIMER_T_PTR(timer));
 #elif __WORDSIZE == 32
-        snprintf(buf, sizeof (buf) - 1, "0x%08lx", (uintptr_t) *UNWRAP_TIMER_T_PTR(timer));
+        snprintf(buf, sizeof (buf) - 1, "0x%08x", (uintptr_t) *UNWRAP_TIMER_T_PTR(timer));
 #else
 #error Unknown Wordsize
 #endif

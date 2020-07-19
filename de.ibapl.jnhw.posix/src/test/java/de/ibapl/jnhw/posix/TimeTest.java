@@ -30,7 +30,12 @@ import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Defines;
+import java.time.DayOfWeek;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -236,7 +241,10 @@ public class TimeTest {
         System.out.println("ctime");
         long clock = 1575382844;
         String result = Time.ctime(clock);
-        assertEquals("Tue Dec  3 15:20:44 2019\n", result);
+        ZonedDateTime zdt = Instant.ofEpochMilli(clock * 1000L).atZone(ZoneOffset.systemDefault());
+        DateTimeFormatterBuilder dtfb = new DateTimeFormatterBuilder();
+        dtfb.appendPattern("E LLL  d H:m:s y\n");
+        assertEquals(dtfb.toFormatter(java.util.Locale.ROOT).format(zdt), result);
     }
 
     /**
@@ -370,7 +378,12 @@ public class TimeTest {
         assertEquals(ldt.getDayOfYear(), result.tm_yday() + 1, "DayOfYear");
         assertEquals(ldt.getMonthValue(), result.tm_mon() + 1, "MonthValue");
         assertEquals(ldt.getDayOfMonth(), result.tm_mday(), "DayOfMonth");
-        assertEquals(ldt.getDayOfWeek().getValue(), result.tm_wday(), "DayOfWeek");
+        if (ldt.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            //Sunday java = 7; posix = 0
+            assertEquals(0, result.tm_wday(), "DayOfWeek SUNDAY -> 0(sun)");
+        } else {
+            assertEquals(ldt.getDayOfWeek().getValue(), result.tm_wday(), "DayOfWeek MONDAY to SATURDAY -> 1(mon) to 6(sat)");
+        }
         assertEquals(ldt.getHour(), result.tm_hour(), "Hour");
         assertEquals(ldt.getMinute(), result.tm_min(), "Minute");
         assertEquals(ldt.getSecond(), result.tm_sec(), "Second");
@@ -395,7 +408,12 @@ public class TimeTest {
         assertEquals(ldt.getDayOfYear(), result.tm_yday() + 1, "DayOfYear");
         assertEquals(ldt.getMonthValue(), result.tm_mon() + 1, "MonthValue");
         assertEquals(ldt.getDayOfMonth(), result.tm_mday(), "DayOfMonth");
-        assertEquals(ldt.getDayOfWeek().getValue(), result.tm_wday(), "DayOfWeek");
+        if (ldt.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            //Sunday java = 7; posix = 0
+            assertEquals(0, result.tm_wday(), "DayOfWeek SUNDAY -> 0(sun)");
+        } else {
+            assertEquals(ldt.getDayOfWeek().getValue(), result.tm_wday(), "DayOfWeek MONDAY to SATURDAY -> 1(mon) to 6(sat)");
+        }
         assertEquals(ldt.getHour(), result.tm_hour(), "Hour");
         assertEquals(ldt.getMinute(), result.tm_min(), "Minute");
         assertEquals(ldt.getSecond(), result.tm_sec(), "Second");
