@@ -61,7 +61,7 @@ JNHW_POSIX_SRC_DIR="\$(top_builddir)/src/main/native"
 AC_SUBST(JNHW_POSIX_SRC_DIR)
 
 # Checks for libraries.
-#ACX_PTHREAD
+AX_PTHREAD(, [AC_MSG_ERROR([libpthread is required])])
 AC_SEARCH_LIBS([timer_create],[rt])
 
 # Checks for header files.

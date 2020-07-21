@@ -153,12 +153,8 @@ public class TimeTest {
         Time.clock_getres(Time.CLOCK_MONOTONIC(), timespec);
 
         assertEquals(0, timespec.tv_sec());
-        if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
-            //is this true? it was running in a virt environment
-            assertEquals(280, timespec.tv_nsec());
-        } else {
-            assertEquals(1, timespec.tv_nsec());
-        }
+        //TODO virt env needs to be fixed 
+        assertEquals(1, timespec.tv_nsec());
 
         Time.clock_getres(Time.CLOCK_REALTIME(), null);
 
@@ -629,6 +625,11 @@ public class TimeTest {
             Time.timer_delete(timerid);
         }
 
+        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+            Time.timer_delete(timerid);
+        });
+        assertEquals(Errno.EINVAL(), nee.errno);
+
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
         });
@@ -651,10 +652,14 @@ public class TimeTest {
             Time.timer_delete(timerid);
         }
 
-        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+        //TODO want crash test...
+//        if (multiarchTupelBuilder.getOS() != OS.FREE_BSD) {
+        //FreeBSD crashes here with a SIGSEGV ...
+        nee = Assertions.assertThrows(NativeErrorException.class, () -> {
             Time.timer_delete(timerid);
         });
         assertEquals(Errno.EINVAL(), nee.errno);
+//        }
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.timer_delete(null);
