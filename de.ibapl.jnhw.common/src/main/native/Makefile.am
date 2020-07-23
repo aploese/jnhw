@@ -3,7 +3,7 @@ AM_CFLAGS = -Wall -Wextra -Wconversion -Werror
 AM_LDFLAGS = -z noexecstack -no-undefined -version-info @JNHW_VERSION_INFO@
 
 LIB_JNHW_COMMON_NAME=@JNHW_LIB_PREFIX@jnhw-common@JNHW_LIBTOOL_LIB_SUFFIX@
-LIB_JNHW_COMMON_RES_NAME=@JNHW_RESOURCES_DIR@/$(LIB_JNHW_COMMON_NAME)
+LIB_JNHW_COMMON_RES_NAME=@JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-common@JNHW_LIB_SUFFIX@
  
 include_HEADERS = jnhw-common.h JnhwExceptions.h
 
