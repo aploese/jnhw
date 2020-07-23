@@ -116,6 +116,10 @@
                         <source>${compile.source}</source>
                         <target>${compile.target}</target>
                         <encoding>${project.build.sourceEncoding}</encoding>
+                            <compilerArgs>
+                                <arg>-verbose</arg>
+                                <arg>-Xlint:all,-options,-path</arg>
+                            </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>

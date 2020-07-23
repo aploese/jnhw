@@ -642,10 +642,12 @@ JNI_HEADER_DIR
 JNHW_TEST_RESOURCES_DIR
 JNHW_RESOURCES_DIR
 JNHW_STRIP_FLAG
+JNHW_LIBTOOL_LIB_SUFFIX
 JNHW_LIB_SUFFIX
 JNHW_LIB_PREFIX
 JNHW_MULTIARCH_TUPEL
 JNHW_VERSION
+JNHW_LIBTOOL_LIB_VERSION
 JNHW_VERSION_INFO
 JNI_INCLUDE_FLAGS
 JNI_INCLUDE_DIRS
@@ -13068,6 +13070,18 @@ done
 
 JNHW_VERSION_INFO="1:0:0"
 
+
+#todo generate automatically from JNHW_VERSION_INFO
+case "$host_os" in
+    openbsd*)
+        JNHW_LIBTOOL_LIB_VERSION="1.0"
+    ;;
+    *)
+        JNHW_LIBTOOL_LIB_VERSION="1"
+    ;;
+esac
+
+
 JNHW_VERSION="1"
 
 
@@ -13099,6 +13113,16 @@ case "$host_os" in
 	case "$host_cpu" in
 	x86_64)
         	JNHW_MULTIARCH_TUPEL="x86_64-freebsd-bsd"
+	;;
+	*)
+        	fail not supported
+	;;
+	esac
+    ;;
+    openbsd*)
+	case "$host_cpu" in
+	x86_64)
+        	JNHW_MULTIARCH_TUPEL="x86_64-openbsd-bsd"
 	;;
 	*)
         	fail not supported
@@ -13137,9 +13161,11 @@ case "$host_os" in
     *)
         JNHW_LIB_PREFIX="lib"
         JNHW_LIB_SUFFIX=".so.\$(JNHW_VERSION)"
+        JNHW_LIBTOOL_LIB_SUFFIX=".so.\$(JNHW_LIBTOOL_LIB_VERSION)"
         JNHW_STRIP_FLAG="-s"
     ;;
 esac
+
 
 
 

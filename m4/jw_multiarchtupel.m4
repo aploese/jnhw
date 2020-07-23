@@ -33,6 +33,16 @@ AC_DEFUN([JW_MULTIARCHTUPEL],
 	;;
 	esac
     ;;
+    openbsd*)
+	case "$host_cpu" in
+	x86_64)
+        	JNHW_MULTIARCH_TUPEL="x86_64-openbsd-bsd"
+	;;
+	*)
+        	fail not supported
+	;;
+	esac
+    ;;
     *)
 	case "$host_cpu" in
 	i686)

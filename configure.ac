@@ -30,7 +30,7 @@ AC_ARG_WITH([jni-include-dir],
 
 #pass these args in Makefile.am to AM_CFLAGS -- this is not working ...
 #AC_SUBST([AM_CXXFLAGS], [-Wall -Wextra -Wconversion -Werror])
-//AC_SUBST([JNHW_AM_CFLAGS],[-Wall -Wextra -Wconversion -Werror])
+#AC_SUBST([JNHW_AM_CFLAGS],[-Wall -Wextra -Wconversion -Werror])
 
 # Checks for typedefs, structures, and compiler characteristics.
 

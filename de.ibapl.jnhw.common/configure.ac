@@ -34,6 +34,18 @@ AC_SUBST(JNI_INCLUDE_FLAGS)
 
 JNHW_VERSION_INFO="1:0:0"
 AC_SUBST(JNHW_VERSION_INFO)
+
+#todo generate automatically from JNHW_VERSION_INFO
+case "$host_os" in
+    openbsd*)
+        JNHW_LIBTOOL_LIB_VERSION="1.0"
+    ;;
+    *)
+        JNHW_LIBTOOL_LIB_VERSION="1"
+    ;;
+esac
+AC_SUBST(JNHW_LIBTOOL_LIB_VERSION)
+
 JNHW_VERSION="1"
 AC_SUBST(JNHW_VERSION)
 
