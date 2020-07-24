@@ -72,7 +72,15 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1HOLD0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(SIG_HOLD)
+#error "SIG_HOLD defined"
+#endif
+        throw_NotDefinedException(env, "SIG_HOLD");
+        return 0;
+#else
         return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)SIG_HOLD);
+#endif
     }
 
     /*
@@ -92,7 +100,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_SIGEV_1NONE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(SIGEV_NONE)
+#error "SIGEV_NONE defined"
+#endif
+        throw_NotDefinedException(env, "SIGEV_NONE");
+        return 0;
+#else
         return SIGEV_NONE;
+#endif
     }
 
     /*
@@ -102,7 +118,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_SIGEV_1SIGNAL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(SIGEV_SIGNAL)
+#error "SIGEV_SIGNAL defined"
+#endif
+        throw_NotDefinedException(env, "SIGEV_SIGNAL");
+        return 0;
+#else
         return SIGEV_SIGNAL;
+#endif
     }
 
     /*
@@ -112,7 +136,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_SIGEV_1THREAD
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(SIGEV_THREAD)
+#error "SIGEV_THREAD defined"
+#endif
+        throw_NotDefinedException(env, "SIGEV_THREAD");
+        return 0;
+#else
         return SIGEV_THREAD;
+#endif
     }
 
     /*
@@ -322,7 +354,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_SIGPOLL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__FreeBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
 #if defined(SIGPOLL)
 #error "SIGPOLL defined"
 #endif
@@ -840,7 +872,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_POLL_1IN
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(POLL_IN)
+#error "POLL_IN defined"
+#endif
+        throw_NotDefinedException(env, "POLL_IN");
+        return 0;
+#else
         return POLL_IN;
+#endif
     }
 
     /*
@@ -850,7 +890,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_POLL_1OUT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(POLL_OUT)
+#error "POLL_OUT defined"
+#endif
+        throw_NotDefinedException(env, "POLL_OUT");
+        return 0;
+#else
         return POLL_OUT;
+#endif
     }
 
     /*
@@ -860,7 +908,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_POLL_1MSG
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+ #if defined(__OpenBSD__)
+#if defined(POLL_MSG)
+#error "POLL_MSG defined"
+#endif
+        throw_NotDefinedException(env, "POLL_MSG");
+        return 0;
+#else
         return POLL_MSG;
+#endif
     }
 
     /*
@@ -870,7 +926,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_POLL_1ERR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(POLL_ERR)
+#error "POLL_ERR defined"
+#endif
+        throw_NotDefinedException(env, "POLL_ERR");
+        return 0;
+#else
         return POLL_ERR;
+#endif
     }
 
     /*
@@ -880,7 +944,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_POLL_1PRI
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(POLL_PRI)
+#error "POLL_PRI defined"
+#endif
+        throw_NotDefinedException(env, "POLL_PRI");
+        return 0;
+#else
         return POLL_PRI;
+#endif
     }
 
     /*
@@ -890,7 +962,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_POLL_1HUP
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(POLL_HUP)
+#error "POLL_HUP defined"
+#endif
+        throw_NotDefinedException(env, "POLL_HUP");
+        return 0;
+#else
         return POLL_HUP;
+#endif
     }
 
     /*
@@ -930,7 +1010,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_SI_1ASYNCIO
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(SI_ASYNCIO)
+#error "SI_ASYNCIO defined"
+#endif
+        throw_NotDefinedException(env, "SI_ASYNCIO");
+        return 0;
+#else
         return SI_ASYNCIO;
+#endif
     }
 
     /*
@@ -940,7 +1028,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_SI_1MESGQ
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(SI_MESGQ)
+#error "SI_MESGQ defined"
+#endif
+        throw_NotDefinedException(env, "SI_MESGQ");
+        return 0;
+#else
         return SI_MESGQ;
+#endif
     }
 
 

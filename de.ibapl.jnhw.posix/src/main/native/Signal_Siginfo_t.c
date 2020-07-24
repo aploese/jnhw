@@ -118,8 +118,14 @@ extern "C" {
      * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1band
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structSiginfo_t) {
+        throw_NoSuchNativeTypeMemberException(env, "struct siginfo_t", "si_band");
+        return -1;
+#else
     (JNIEnv *env, jobject structSiginfo_t) {
         return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_band;
+#endif
     }
 
 #endif

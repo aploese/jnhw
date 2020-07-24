@@ -348,11 +348,11 @@ public class DefinesTest {
         System.out.println("_LARGEFILE64_SOURCE");
         switch (multiarchTupelBuilder.getOS()) {
             case LINUX:
-                switch (Defines.__WORDSIZE()) {
-                    case 32:
+                switch (Defines.__SIZEOF_LONG__()) {
+                    case 4:
                         assertTrue(Defines._LARGEFILE64_SOURCE() != 0);
                         break;
-                    case 64:
+                    case 8:
                         assertTrue(Defines._LARGEFILE64_SOURCE() != 0);
                         break;
                     default:
@@ -383,11 +383,11 @@ public class DefinesTest {
         System.out.println("_LARGEFILE_SOURCE");
         switch (multiarchTupelBuilder.getOS()) {
             case LINUX:
-                switch (Defines.__WORDSIZE()) {
-                    case 32:
+                switch (Defines.__SIZEOF_LONG__()) {
+                    case 4:
                         assertTrue(Defines._LARGEFILE_SOURCE() != 0);
                         break;
-                    case 64:
+                    case 8:
                         assertTrue(Defines._LARGEFILE_SOURCE() != 0);
                         break;
                     default:

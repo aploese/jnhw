@@ -117,6 +117,7 @@ public abstract class Callback_PtrOpaqueMemory_V_Impl<A extends OpaqueMemory> ex
 
     public static native int MAX_CALL_BACKS();
 
+    //TODO Test ex in cb
     protected abstract A wrapA(NativeAddressHolder address);
 
 }

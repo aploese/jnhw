@@ -25,6 +25,9 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.NoSuchNativeMethodException;
+import de.ibapl.jnhw.NoSuchNativeTypeException;
+import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.PointerArray;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
@@ -59,7 +62,7 @@ public class Aio {
      * @return the native symbolic constant of AIO_ALLDONE.
      */
     @Define()
-    public final static native int AIO_ALLDONE();
+    public final static native int AIO_ALLDONE() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> A return value indicating that all requested operations
@@ -68,7 +71,7 @@ public class Aio {
      * @return the native symbolic constant of AIO_CANCELED.
      */
     @Define()
-    public final static native int AIO_CANCELED();
+    public final static native int AIO_CANCELED() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> A return value indicating that some of the requested
@@ -79,7 +82,7 @@ public class Aio {
      */
     @Define()
 
-    public final static native int AIO_NOTCANCELED();
+    public final static native int AIO_NOTCANCELED() throws NotDefinedException;
 
     public final static native boolean HAVE_AIO_H();
 
@@ -90,7 +93,7 @@ public class Aio {
      * @return the native symbolic constant of LIO_NOP.
      */
     @Define()
-    public final static native int LIO_NOP();
+    public final static native int LIO_NOP() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> A {@link lio_listio()} synchronization operation indicating
@@ -101,7 +104,7 @@ public class Aio {
      * @return the native symbolic constant of LIO_NOWAIT.
      */
     @Define()
-    public final static native int LIO_NOWAIT();
+    public final static native int LIO_NOWAIT() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> A {@link lio_listio()} element operation option requesting
@@ -110,7 +113,7 @@ public class Aio {
      * @return the native symbolic constant of LIO_READ.
      */
     @Define()
-    public final static native int LIO_READ();
+    public final static native int LIO_READ() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> A {@link lio_listio()} synchronization operation indicating
@@ -120,7 +123,7 @@ public class Aio {
      * @return the native symbolic constant of LIO_WAIT.
      */
     @Define()
-    public final static native int LIO_WAIT();
+    public final static native int LIO_WAIT() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> A {@link lio_listio()} element operation option requesting
@@ -129,7 +132,7 @@ public class Aio {
      * @return the native symbolic constant of LIO_WRITE.
      */
     @Define()
-    public final static native int LIO_WRITE();
+    public final static native int LIO_WRITE() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b>
@@ -148,7 +151,7 @@ public class Aio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int aio_cancel(Aiocb aiocbp) throws NativeErrorException;
+    public final static native int aio_cancel(Aiocb aiocbp) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -167,7 +170,7 @@ public class Aio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int aio_cancel(int fildes) throws NativeErrorException;
+    public final static native int aio_cancel(int fildes) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -182,7 +185,7 @@ public class Aio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int aio_error(Aiocb aiocb) throws NativeErrorException;
+    public final static native int aio_error(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -195,7 +198,7 @@ public class Aio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void aio_fsync(int op, Aiocb aiocb) throws NativeErrorException;
+    public final static native void aio_fsync(int op, Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -207,7 +210,7 @@ public class Aio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void aio_read(Aiocb aiocb) throws NativeErrorException;
+    public final static native void aio_read(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -223,7 +226,7 @@ public class Aio {
      * indicates an error.
      */
     public final static native @Types.ssize_t
-    long aio_return(Aiocb aiocb) throws NativeErrorException;
+    long aio_return(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -236,7 +239,7 @@ public class Aio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void aio_suspend(Aiocbs list, Timespec timeout) throws NativeErrorException;
+    public final static native void aio_suspend(Aiocbs list, Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -248,7 +251,7 @@ public class Aio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void aio_write(Aiocb aiocb) throws NativeErrorException;
+    public final static native void aio_write(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -262,7 +265,7 @@ public class Aio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void lio_listio(int mode, Aiocbs list, Sigevent sig) throws NativeErrorException;
+    public final static native void lio_listio(int mode, Aiocbs list, Sigevent sig) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
@@ -284,9 +287,9 @@ public class Aio {
          *
          * @return the native value sizeof(struct aiocb).
          */
-        public static native int sizeofAiocb();
+        public static native int sizeofAiocb() throws NoSuchNativeTypeException;
 
-        public static native int _aio_sigevent_value_Offset();
+        public static native int _aio_sigevent_value_Offset() throws NoSuchNativeTypeException;
 
         /**
          * The signal number and value.
@@ -297,12 +300,12 @@ public class Aio {
         public final Sigevent<T> aio_sigevent;
         private Object aio_buf;
 
-        public Aiocb(OpaqueMemory owner, int offset) {
+        public Aiocb(OpaqueMemory owner, int offset) throws NoSuchNativeTypeException {
             super(owner, offset, sizeofAiocb());
             aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
         }
 
-        public Aiocb() {
+        public Aiocb() throws NoSuchNativeTypeException {
             super(sizeofAiocb(), true);
             aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
         }
@@ -312,7 +315,7 @@ public class Aio {
          *
          * @param address
          */
-        public Aiocb(NativeAddressHolder address) {
+        public Aiocb(NativeAddressHolder address) throws NoSuchNativeTypeException {
             super(address, sizeofAiocb());
             aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
         }
@@ -324,7 +327,7 @@ public class Aio {
          *
          * @return the native value of aio_fildes.
          */
-        public native int aio_fildes();
+        public native int aio_fildes() throws NoSuchNativeTypeException;
 
         /**
          * The file descriptor.
@@ -333,7 +336,7 @@ public class Aio {
          *
          * @param aio_fildes the value of aio_fildes to be set natively.
          */
-        public native void aio_fildes(int aio_fildes);
+        public native void aio_fildes(int aio_fildes) throws NoSuchNativeTypeException;
 
         /**
          * The file offset.
@@ -343,7 +346,7 @@ public class Aio {
          * @return the native value of aio_offset.
          */
         public native @Types.off_t
-        long aio_offset();
+        long aio_offset() throws NoSuchNativeTypeException;
 
         /**
          * The file offset.
@@ -352,9 +355,9 @@ public class Aio {
          *
          * @param aio_offset the value of aio_offset to be set natively.
          */
-        public native void aio_offset(@Types.off_t long aio_offset);
+        public native void aio_offset(@Types.off_t long aio_offset) throws NoSuchNativeTypeException;
 
-        public final native NativeAddressHolder aio_buf0();
+        public final native NativeAddressHolder aio_buf0() throws NoSuchNativeTypeException;
 
         /**
          * The location of buffer.<b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
@@ -362,7 +365,7 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public ByteBuffer aio_bufAsByteBuffer() {
+        public ByteBuffer aio_bufAsByteBuffer() throws NoSuchNativeTypeException {
             final NativeAddressHolder result = aio_buf0();
             if (aio_buf == null) {
                 if (result.isNULL()) {
@@ -384,7 +387,7 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public OpaqueMemory aio_bufAsOpaqueMemory() {
+        public OpaqueMemory aio_bufAsOpaqueMemory() throws NoSuchNativeTypeException {
             final NativeAddressHolder result = aio_buf0();
             if (aio_buf == null) {
                 if (result.isNULL()) {
@@ -406,7 +409,7 @@ public class Aio {
          * @param offset
          * @param length must not < 0
          */
-        private native void aio_bufByteBuffer(ByteBuffer aio_buf, int offset, int length);
+        private native void aio_bufByteBuffer(ByteBuffer aio_buf, int offset, int length) throws NoSuchNativeTypeException;
 
         /**
          *
@@ -414,7 +417,7 @@ public class Aio {
          * @param offset
          * @param length must not < 0
          */
-        private native void aio_bufOpaqueMemory(OpaqueMemory aio_buf, int offset, int length);
+        private native void aio_bufOpaqueMemory(OpaqueMemory aio_buf, int offset, int length) throws NoSuchNativeTypeException;
 
         /**
          * The location of buffer.
@@ -425,7 +428,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(ByteBuffer aio_buf) {
+        public void aio_buf(ByteBuffer aio_buf) throws NoSuchNativeTypeException {
             if (aio_buf == null) {
                 aio_bufByteBuffer(null, 0, 0);
             } else {
@@ -443,7 +446,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory aio_buf) {
+        public void aio_buf(OpaqueMemory aio_buf) throws NoSuchNativeTypeException {
             if (aio_buf == null) {
                 aio_bufOpaqueMemory(null, 0, 0);
             } else {
@@ -465,7 +468,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory aio_buf, int off, int aio_nbytes) {
+        public void aio_buf(OpaqueMemory aio_buf, int off, int aio_nbytes) throws NoSuchNativeTypeException {
             if (aio_buf == null) {
                 aio_bufOpaqueMemory(null, 0, 0);
             } else {
@@ -485,7 +488,7 @@ public class Aio {
          * @return the native value of aio_nbytes.
          */
         public native @Types.size_t
-        long aio_nbytes();
+        long aio_nbytes() throws NoSuchNativeTypeException;
 
         /**
          * The request priority offset.
@@ -494,7 +497,7 @@ public class Aio {
          *
          * @return the native value of aio_reqprio.
          */
-        public native int aio_reqprio();
+        public native int aio_reqprio() throws NoSuchNativeTypeException;
 
         /**
          * The request priority offset.
@@ -503,7 +506,7 @@ public class Aio {
          *
          * @param aio_reqprio the value of aio_reqprio to be set natively.
          */
-        public native void aio_reqprio(int aio_reqprio);
+        public native void aio_reqprio(int aio_reqprio) throws NoSuchNativeTypeException;
 
         /**
          * The operation to be performed.
@@ -512,7 +515,7 @@ public class Aio {
          *
          * @return the native value of aio_lio_opcode.
          */
-        public native int aio_lio_opcode();
+        public native int aio_lio_opcode() throws NoSuchNativeTypeException;
 
         /**
          * The operation to be performed.
@@ -521,7 +524,7 @@ public class Aio {
          *
          * @param aio_lio_opcode the value of aio_lio_opcode to be set natively.
          */
-        public native void aio_lio_opcode(int aio_lio_opcode);
+        public native void aio_lio_opcode(int aio_lio_opcode) throws NoSuchNativeTypeException;
 
     }
 
@@ -540,7 +543,7 @@ public class Aio {
             LibJnhwPosixLoader.touch();
         }
 
-        public Aiocbs(int arraylength) {
+        public Aiocbs(int arraylength) throws NoSuchNativeTypeException {
             //get initialized mem
             super(arraylength, true);
         }

@@ -235,6 +235,29 @@ public final class MultiarchTupelBuilder {
 
     }
 
+    private Set<MultiarchInfo> guessOpenBSD() {
+        Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
+        switch (os_arch) {
+            case "amd64":
+                if (!"64".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of OpenBSD linux\n" + listSystemProperties());
+                } else if (!"little".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of amd64 OpenBSD\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.X86_64__OPEN_BSD__BSD);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of amd64 OpenBSD\n" + listSystemProperties());
+                }
+            default:
+                throw new UnsupportedOperationException("Can't handle os.arch of OpenBSD\n" + listSystemProperties());
+        }
+
+    }
+
     private Set<MultiarchInfo> guessMacOS() {
         Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class
         );
@@ -281,6 +304,8 @@ public final class MultiarchTupelBuilder {
                 return guessLinux();
             case FREE_BSD:
                 return guessFreeBSD();
+            case OPEN_BSD:
+                return guessOpenBSD();
             case MAC_OS_X:
                 return guessMacOS();
             case WINDOWS:
@@ -297,6 +322,8 @@ public final class MultiarchTupelBuilder {
                 return OS.LINUX;
             case "FreeBSD":
                 return OS.FREE_BSD;
+            case "OpenBSD":
+                return OS.OPEN_BSD;
             case "Mac OS X":
                 return OS.MAC_OS_X;
             default:

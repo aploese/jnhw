@@ -447,12 +447,13 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
      * @throws NullPointerException if
      * {@code ((evp != null) && (evp.sigev_notify_attributes == null))}
      * otherwise we will get a SIGSEV.
      *
      */
-    public final static native void timer_create(@clockid_t int clockid, Sigevent evp, Timer_t timerid) throws NativeErrorException;
+    public final static native void timer_create(@clockid_t int clockid, Sigevent evp, Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -462,8 +463,9 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
      */
-    public final static native void timer_delete(Timer_t timerid) throws NativeErrorException;
+    public final static native void timer_delete(Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -473,8 +475,9 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
      */
-    public final static native int timer_getoverrun(Timer_t timerid) throws NativeErrorException;
+    public final static native int timer_getoverrun(Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -484,8 +487,9 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
      */
-    public final static native void timer_gettime(Timer_t timerid, Itimerspec value) throws NativeErrorException;
+    public final static native void timer_gettime(Timer_t timerid, Itimerspec value) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -496,7 +500,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void timer_settime(Timer_t timerid, int flags, Itimerspec value, Itimerspec ovalue) throws NativeErrorException;
+    public final static native void timer_settime(Timer_t timerid, int flags, Itimerspec value, Itimerspec ovalue) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX.XSI:</b>

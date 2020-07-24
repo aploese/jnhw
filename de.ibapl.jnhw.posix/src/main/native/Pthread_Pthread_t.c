@@ -50,9 +50,9 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_toString
     (JNIEnv *env, jobject pthread) {
         char buf[1024] = {0};
-#if __WORDSIZE == 32        
+#if __SIZEOF_LONG__ == 4
         snprintf(buf, sizeof (buf) - 1, "%d", (uintptr_t)*UNWRAP_PTHREAD_T_PTR(pthread));
-#elif __WORDSIZE == 64 
+#elif __SIZEOF_LONG__ == 8
         snprintf(buf, sizeof (buf) - 1, "%ld", (uintptr_t)*UNWRAP_PTHREAD_T_PTR(pthread));
 #else
 #error Wordize undefined

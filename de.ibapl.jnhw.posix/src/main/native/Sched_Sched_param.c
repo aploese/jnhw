@@ -48,9 +48,9 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_offsetof_1sched_1ss_1init_1budget
-#if defined(__linux__) || defined(__FreeBSD__)
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        throw_NoSuchTypeMemberException(env, "sched_param", "sched_ss_init_budget");
+        throw_NoSuchNativeTypeMemberException(env, "sched_param", "sched_ss_init_budget");
         return -1;
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
@@ -64,9 +64,9 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_offsetof_1sched_1ss_1repl_1period
-#if defined(__linux__)  || defined(__FreeBSD__)
+#if defined(__linux__)  || defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        throw_NoSuchTypeMemberException(env, "sched_param", "offsetof_sched_ss_repl_period");
+        throw_NoSuchNativeTypeMemberException(env, "sched_param", "offsetof_sched_ss_repl_period");
         return -1;
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
@@ -100,9 +100,9 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_sched_1ss_1low_1priority__
-#if defined(__linux__) || defined(__FreeBSD__)
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jobject sched_param) {
-        throw_NoSuchTypeMemberException(env, "sched_param", "sched_ss_low_priority");
+        throw_NoSuchNativeTypeMemberException(env, "sched_param", "sched_ss_low_priority");
         return -1;
 #else
     (JNIEnv *env, jobject structSched_param) {
@@ -116,9 +116,9 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_sched_1ss_1low_1priority__I
-#if defined(__linux__) || defined(__FreeBSD__)
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jobject sched_param, __attribute__ ((unused)) jint sched_ss_low_priority) {
-        throw_NoSuchTypeMemberException(env, "sched_param", "sched_ss_low_priority");
+        throw_NoSuchNativeTypeMemberException(env, "sched_param", "sched_ss_low_priority");
 #else
     (JNIEnv *env, jobject structSched_param, jint sched_ss_low_priority) {
         (UNWRAP_STRUCT_SCHED_PARAM_PTR(structSched_param))->sched_ss_low_priority = sched_ss_low_priority;
@@ -131,9 +131,9 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_sched_1ss_1max_1repl__
-#if defined(__linux__) || defined(__FreeBSD__)
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jobject sched_param) {
-        throw_NoSuchTypeMemberException(env, "sched_param", "sched_ss_max_repl");
+        throw_NoSuchNativeTypeMemberException(env, "sched_param", "sched_ss_max_repl");
         return -1;
 #else
     (JNIEnv *env, jobject structSched_param) {
@@ -147,9 +147,9 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_sched_1ss_1max_1repl__I
-#if defined(__linux__) || defined(__FreeBSD__)
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jobject sched_param, __attribute__ ((unused)) jint sched_ss_max_repl) {
-        throw_NoSuchTypeMemberException(env, "sched_param", "sched_ss_max_repl");
+        throw_NoSuchNativeTypeMemberException(env, "sched_param", "sched_ss_max_repl");
 #else
     (JNIEnv *env, jobject structSched_param, jint sched_ss_max_repl) {
         (UNWRAP_STRUCT_SCHED_PARAM_PTR(structSched_param))->sched_ss_max_repl = sched_ss_max_repl;

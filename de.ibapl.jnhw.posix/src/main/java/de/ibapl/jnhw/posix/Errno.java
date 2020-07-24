@@ -563,7 +563,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * @return the native symbolic constant of EMULTIHOP.
      */
     @Define
-    public final static native int EMULTIHOP();
+    public final static native int EMULTIHOP() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> Filename too long.
@@ -696,7 +696,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * @return the native symbolic constant of ENOLINK.
      */
     @Define
-    public final static native int ENOLINK();
+    public final static native int ENOLINK() throws NotDefinedException;
 
     /**
      * <b>Linux:</b> No medium found.

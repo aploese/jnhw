@@ -19,41 +19,28 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.libloader;
+package de.ibapl.jnhw;
 
 /**
- * The os with the libname template.
+ * Thrown, if a member of an type is not available on this specific platform.
+ *
  * @author aploese
  */
-public enum OS {
-    LINUX("linux", "lib%1$s.so.%2$d"),
-    WINDOWS("windows", "lib%1$s-%2$d.dll"),
-    SOLARIS("solaris", "lib%1$s.so.%2$d"),
-    FREE_BSD("freebsd", "lib%1$s.so.%2$d"),
-    OPEN_BSD("openbsd", "lib%1$s.so.%2$d"),
-    MAC_OS_X("macosx", "lib%1$s.%2$d.dylib");
+public class NoSuchNativeTypeMemberException extends Exception {
 
-    public final String osName;
-    public final String formatLibNameString;
+    public final String typeName;
 
-    private OS(String osName, String formatLibNameString) {
-        this.osName = osName;
-        this.formatLibNameString = formatLibNameString;
+    public final String memberName;
+
+    public NoSuchNativeTypeMemberException() {
+        typeName = null;
+        memberName = null;
     }
-
-    @Override
-    public String toString() {
-        return osName;
+    
+    public NoSuchNativeTypeMemberException(String typeName, String memberName) {
+        super(String.format("No such member %s.%s", typeName, memberName));
+        this.typeName = typeName;
+        this.memberName = memberName;
     }
-
-    /**
-     * Format the libname with the given libToolInterfaceVersion for the OS.
-     * @param libName
-     * @param libToolInterfaceVersion
-     * @return 
-     */
-    public String formatLibName(String libName, int libToolInterfaceVersion) {
-        return String.format(formatLibNameString, libName, libToolInterfaceVersion);
-    }
-
+    
 }

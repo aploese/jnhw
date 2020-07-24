@@ -32,6 +32,7 @@ import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeFunctionPointer;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
+import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
@@ -203,7 +204,11 @@ public class SignalTest {
             Thread t = new Thread(() -> {
                 try {
                     System.out.println("pthread_t of thread: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
-                    Signal.pthread_kill(Pthread.pthread_self(), sig);
+                    try {
+                        Signal.pthread_kill(Pthread.pthread_self(), sig);
+                    } catch (NoSuchNativeMethodException nsnme) {
+                        throw new RuntimeException(nsnme);
+                    }
                 } catch (NativeErrorException nee) {
                     //no-op
                 }
@@ -498,6 +503,8 @@ public class SignalTest {
                     try {
                         Signal.sigpause(SIG);
                         fail();
+                    } catch (NoSuchNativeMethodException nsnme) {
+                        Assertions.fail(nsnme);
                     } catch (NativeErrorException nee) {
                         assertEquals("EINTR", Errno.getErrnoSymbol(nee.errno));
                         synchronized (boolRef) {
@@ -599,7 +606,12 @@ public class SignalTest {
 
             @Override
             protected Signal.Ucontext_t wrapB(NativeAddressHolder address) {
-                return new Signal.Ucontext_t(address);
+                try {
+                    return new Signal.Ucontext_t(address);
+                } catch (NoSuchNativeTypeException nste) {
+                    Assertions.fail(nste);
+                    throw new RuntimeException(nste);
+                }
             }
         };
 
@@ -904,7 +916,12 @@ public class SignalTest {
     public void testStructUcontext_t() throws Exception {
         Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t(true);
         Assertions.assertNull(ucontext_t.uc_link((baseAddress, parent) -> {
+            try {
             return baseAddress.isNULL() ? null : new Signal.Ucontext_t(baseAddress);
+            } catch (NoSuchNativeTypeException nste) {
+                Assertions.fail(nste);
+                throw new RuntimeException(nste);
+            }
         })); //Maybe fail sometimes....
         Assertions.assertNotNull(ucontext_t.uc_mcontext);
         Assertions.assertNotNull(ucontext_t.uc_sigmask);

@@ -92,12 +92,27 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_util_posix_Defines
+     * Method:    __OpenBSD__
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1OpenBSD_1_1
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+        return __OpenBSD__;
+#else
+        throw_NotDefinedException(env, "__OpenBSD__");
+        return -1;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_Defines
      * Method:    __WORDSIZE
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1WORDSIZE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__WIN32__)
+#if defined (__WIN32__) || defined(__OpenBSD__)
 #if defined(__WORDSIZE)
 #error "__WORDSIZE defined"
 #endif
@@ -106,6 +121,16 @@ extern "C" {
 #else
         return __WORDSIZE;
 #endif
+    }
+
+/*
+     * Class:     de_ibapl_jnhw_util_posix_Defines
+     * Method:    __SIZEOF_LONG__
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1SIZEOF_1LONG_1_1
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __SIZEOF_LONG__;
     }
 
     /*
@@ -119,6 +144,21 @@ extern "C" {
         return _FILE_OFFSET_BITS;
 #else
         throw_NotDefinedException(env, "_FILE_OFFSET_BITS");
+        return 0;
+#endif
+    }
+
+/*
+     * Class:     de_ibapl_jnhw_util_posix_Defines
+     * Method:    _BSD_SOURCE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1BSD_1SOURCE
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (_BSD_SOURCE)
+        return _BSD_SOURCE;
+#else
+        throw_NotDefinedException(env, "_BSD_SOURCE");
         return 0;
 #endif
     }

@@ -73,9 +73,9 @@ extern "C" {
             throw_IndexOutOfBoundsException(env, "In ss_size < 0");
             return;
         }
-#if __WORDSIZE == 64
+#if __SIZEOF_LONG__ == 8
         (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint64_t) ss_size;
-#elif __WORDSIZE == 32
+#elif __SIZEOF_LONG__ == 4
         if (ss_size > INT32_MAX) {
             throw_IndexOutOfBoundsException(env, "In this native implementation ss_size is only an integer with the size of jint");
             return;

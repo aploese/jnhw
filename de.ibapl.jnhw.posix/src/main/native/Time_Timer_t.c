@@ -51,9 +51,9 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_toString
     (JNIEnv *env, jobject timer) {
         char buf[1024] = {0};
-#if __WORDSIZE == 64
+#if __SIZEOF_LONG__ == 8
         snprintf(buf, sizeof (buf) - 1, "0x%016lx", (uintptr_t) *UNWRAP_TIMER_T_PTR(timer));
-#elif __WORDSIZE == 32
+#elif __SIZEOF_LONG__ == 4
         snprintf(buf, sizeof (buf) - 1, "0x%08x", (uintptr_t) *UNWRAP_TIMER_T_PTR(timer));
 #else
 #error Unknown Wordsize

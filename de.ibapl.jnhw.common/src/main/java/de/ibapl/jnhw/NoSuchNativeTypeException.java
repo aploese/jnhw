@@ -26,14 +26,14 @@ package de.ibapl.jnhw;
  *
  * @author aploese
  */
-public class NoSuchTypeMemberException extends Exception {
+public class NoSuchNativeTypeException extends Exception {
     
-    public NoSuchTypeMemberException() {
+    public NoSuchNativeTypeException() {
         
     }
     
-    public NoSuchTypeMemberException(String typeName, String memberName) {
-        super(String.format("No such member %s.%s", typeName, memberName));
+    public NoSuchNativeTypeException(String typeName) {
+        super(String.format("No such type %s", typeName));
     }
     
 }

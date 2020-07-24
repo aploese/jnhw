@@ -56,9 +56,9 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timespec_tv_1sec__J
     (JNIEnv *env, jobject structTimespec, jlong tv_sec) {
-#if __WORDSIZE == 64
+#if __SIZEOF_LONG__ == 8
         (UNWRAP_STRUCT_TIMESPEC_PTR(structTimespec))->tv_sec = tv_sec;
-#elif __WORDSIZE == 32
+#elif __SIZEOF_LONG__ == 4
         if ((tv_sec > INT32_MAX) || (tv_sec < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation tv_sec is only an integer with the size of jint");
             return;
@@ -86,9 +86,9 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timespec_tv_1nsec__J
     (JNIEnv *env, jobject structTimespec, jlong tv_nsec) {
-#if __WORDSIZE == 64
+#if __SIZEOF_LONG__ == 8
         (UNWRAP_STRUCT_TIMESPEC_PTR(structTimespec))->tv_nsec = tv_nsec;
-#elif __WORDSIZE == 32
+#elif __SIZEOF_LONG__ == 4
         if ((tv_nsec > INT32_MAX) || (tv_nsec < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation tv_nsec is only an integer with the size of jint");
             return;

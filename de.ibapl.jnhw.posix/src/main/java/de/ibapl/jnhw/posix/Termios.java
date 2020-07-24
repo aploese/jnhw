@@ -24,7 +24,7 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchTypeMemberException;
+import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
@@ -797,7 +797,7 @@ public final class Termios {
      * @return the native symbolic constant of TAB0.
      */
     @Define
-    public final static native int TAB0();
+    public final static native int TAB0() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Horizontal-tab delay type 1.
@@ -823,7 +823,7 @@ public final class Termios {
      * @return the native symbolic constant of TAB3.
      */
     @Define
-    public final static native int TAB3();
+    public final static native int TAB3() throws NotDefinedException;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select horizontal-tab delays:
@@ -831,7 +831,7 @@ public final class Termios {
      * @return the native symbolic constant of TABDLY.
      */
     @Define
-    public final static native int TABDLY();
+    public final static native int TABDLY() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> <i>Line Control</i> Flush pending input.
@@ -1363,59 +1363,59 @@ public final class Termios {
          * termios}</a>.
          *
          * @return native value of c_line.
-         * @throws NoSuchTypeMemberException if c_line does not exists
+         * @throws NoSuchNativeTypeMemberException if c_line does not exists
          */
         public native @cc_t
-        byte c_line() throws NoSuchTypeMemberException;
+        byte c_line() throws NoSuchNativeTypeMemberException;
 
         /**
          * <b>Linux:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
          * termios}</a>.
          *
          * @param value the value of c_line to be set natively.
-         * @throws NoSuchTypeMemberException if c_line does not         * exists.
+         * @throws NoSuchNativeTypeMemberException if c_line does not * exists.
          */
-        public native void c_line(@cc_t byte value) throws NoSuchTypeMemberException;
+        public native void c_line(@cc_t byte value) throws NoSuchNativeTypeMemberException;
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
          * termios}</a>.
          *
          * @return native value of c_ispeed.
-         * @throws NoSuchTypeMemberException if c_ispeed does not         * exists.
+         * @throws NoSuchNativeTypeMemberException if c_ispeed does not * exists.
          */
         public native @speed_t
-        int c_ispeed() throws NoSuchTypeMemberException;
+        int c_ispeed() throws NoSuchNativeTypeMemberException;
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
          * termios}</a>.
          *
          * @param value the value of c_ispeed to be set natively.
-         * @throws NoSuchTypeMemberException if c_ispeed does not         * exists.
+         * @throws NoSuchNativeTypeMemberException if c_ispeed does not * exists.
          */
         public native @speed_t
-        void c_ispeed(int value) throws NoSuchTypeMemberException;
+        void c_ispeed(int value) throws NoSuchNativeTypeMemberException;
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
          * termios}</a>.
          *
          * @return native value of c_ospeed.
-         * @throws NoSuchTypeMemberException if c_ospeed does not         * exists.
+         * @throws NoSuchNativeTypeMemberException if c_ospeed does not * exists.
          */
         public native @speed_t
-        int c_ospeed() throws NoSuchTypeMemberException;
+        int c_ospeed() throws NoSuchNativeTypeMemberException;
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
          * termios}</a>.
          *
          * @param value the value of c_ospeed to be set natively.
-         * @throws NoSuchTypeMemberException if c_ospeed does not         * exists.
+         * @throws NoSuchNativeTypeMemberException if c_ospeed does not * exists.
          */
         public native @speed_t
-        void c_ospeed(int value) throws NoSuchTypeMemberException;
+        void c_ospeed(int value) throws NoSuchNativeTypeMemberException;
 
         public StructTermios() {
             // get unitialized mem
@@ -1663,9 +1663,12 @@ public final class Termios {
                 }
             } catch (NotDefinedException nde) {
             }
-            if ((TABDLY() & c_oflag) == TAB0()) {
-                sb.append("TAB0 ");
-                c_oflag &= ~TAB0();
+            try {
+                if ((TABDLY() & c_oflag) == TAB0()) {
+                    sb.append("TAB0 ");
+                    c_oflag &= ~TAB0();
+                }
+            } catch (NotDefinedException nde) {
             }
             try {
                 if ((TABDLY() & c_oflag) == TAB1()) {
@@ -1681,9 +1684,12 @@ public final class Termios {
                 }
             } catch (NotDefinedException nde) {
             }
-            if ((TABDLY() & c_oflag) == TAB3()) {
-                sb.append("TAB3 ");
-                c_oflag &= ~TAB3();
+            try {
+                if ((TABDLY() & c_oflag) == TAB3()) {
+                    sb.append("TAB3 ");
+                    c_oflag &= ~TAB3();
+                }
+            } catch (NotDefinedException nde) {
             }
             try {
                 if ((BSDLY() & c_oflag) == BS0()) {
@@ -1774,15 +1780,15 @@ public final class Termios {
             sb.append("\"");
             try {
                 sb.append(String.format(", c_line = 0x%02x", c_line()));
-            } catch (NoSuchTypeMemberException nstme) {
+            } catch (NoSuchNativeTypeMemberException nstme) {
             }
             try {
                 sb.append(String.format(", c_ispeed = 0x%08x", c_ispeed()));
-            } catch (NoSuchTypeMemberException nstme) {
+            } catch (NoSuchNativeTypeMemberException nstme) {
             }
             try {
                 sb.append(String.format(", c_ospeed = 0x%08x", c_ospeed()));
-            } catch (NoSuchTypeMemberException nstme) {
+            } catch (NoSuchNativeTypeMemberException nstme) {
             }
             for (int i = 0; i < NCCS(); i++) {
                 c_cc2String(sb, i, c_cc(i));

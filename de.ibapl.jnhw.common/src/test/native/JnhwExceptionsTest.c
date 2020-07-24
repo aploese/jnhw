@@ -59,12 +59,22 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_JnhwExceptionsTest
-     * Method:    throwNoSuchTypeMemberException
+     * Method:    throwNoSuchNativeTypeException
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwNoSuchTypeMemberException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwNoSuchNativeTypeException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        throw_NoSuchTypeMemberException(env, "a_type", "a_member");
+        throw_NoSuchNativeTypeException(env, "a_type");
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Method:    throwNoSuchNativeTypeMemberException
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwNoSuchNativeTypeMemberException
+    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        throw_NoSuchNativeTypeMemberException(env, "a_type", "a_member");
     }
 
     /*

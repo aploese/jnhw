@@ -280,7 +280,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMSET
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__) || defined (__FreeBSD__)
+#if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__)
         //Just force the conversation or check at runtime sizeof??
         return (int32_t) TIOCMSET;
 #else
@@ -295,7 +295,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMBIC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__) || defined (__FreeBSD__)
+#if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__)
         //Just force the conversation or check at runtime sizeof??
         return (int32_t) TIOCMBIC;
 #else
@@ -310,7 +310,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMBIS
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__) || defined (__FreeBSD__)
+#if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__)
         //Just force the conversation or check at runtime sizeof??
         return (int32_t) TIOCMBIS;
 #else

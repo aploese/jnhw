@@ -28,6 +28,7 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeRunnable;
+import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import java.io.BufferedReader;
@@ -165,8 +166,14 @@ public class AioTest {
 
             @Override
             protected Aio.Aiocb wrapA(NativeAddressHolder address) {
-                return new Aio.Aiocb(address);
+                try {
+                    return new Aio.Aiocb(address);
+                } catch (NoSuchNativeTypeException nste) {
+                    Assertions.fail(nste);
+                    throw new RuntimeException(nste);
+                }
             }
+
 
         });
 

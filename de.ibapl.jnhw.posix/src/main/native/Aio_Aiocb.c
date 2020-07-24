@@ -25,11 +25,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#if defined(_POSIX_VERSION)
+#if defined(_POSIX_VERSION) 
+#if defined(__OpenBSD__)
+#if defined(HAVE_AIO_H)
+#error OpenBSD and aio.h
+#endif
+#else    
 #include <aio.h>
-//for offsetof
+#endif
+    //for offsetof
 #include <stddef.h>
-
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
@@ -37,8 +42,14 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_sizeofAiocb
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+        return -1;
+#else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct aiocb);
+#endif
     }
 
     /*
@@ -47,8 +58,14 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb__1aio_1sigevent_1value_1Offset
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+        return -1;
+#else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct aiocb, aio_sigevent);
+#endif
     }
 
     /*
@@ -57,8 +74,14 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1fildes__
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+        return -1;
+#else
     (JNIEnv *env, jobject structAiocb) {
         return (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_fildes;
+#endif
     }
 
     /*
@@ -67,8 +90,13 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1fildes__I
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb, __attribute__ ((unused)) jint aio_fildes) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+#else
     (JNIEnv *env, jobject structAiocb, jint aio_fildes) {
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_fildes = aio_fildes;
+#endif
     }
 
     /*
@@ -77,8 +105,14 @@ extern "C" {
      * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1offset__
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+        return -1;
+#else
     (JNIEnv *env, jobject structAiocb) {
         return (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset;
+#endif
     }
 
     /*
@@ -87,17 +121,22 @@ extern "C" {
      * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1offset__J
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb, __attribute__ ((unused)) jlong aio_offset) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+#else
     (JNIEnv *env, jobject structAiocb, jlong aio_offset) {
-#if __WORDSIZE == 64
+#if __SIZEOF_LONG__ == 8
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = aio_offset;
-#elif __WORDSIZE == 32
+#elif __SIZEOF_LONG__ == 4
         if ((aio_offset > INT32_MAX) || (aio_offset < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation aio_offset is only an integer with the size of jint");
             return;
         }
-        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = (int32_t)aio_offset;
+        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = (int32_t) aio_offset;
 #else
-#error Unknown Wordsize
+#error Unknown __SIZEOF_LONG__
+#endif
 #endif
     }
 
@@ -107,6 +146,10 @@ extern "C" {
      * Signature: (Ljava/nio/ByteBuffer;II)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1bufByteBuffer
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb, __attribute__ ((unused)) jobject byteBuffer, __attribute__ ((unused)) jint off, __attribute__ ((unused)) jint length) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+#else
     (JNIEnv *env, jobject structAiocb, jobject byteBuffer, jint off, jint length) {
         if (byteBuffer == NULL) {
             (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_buf = NULL;
@@ -116,6 +159,7 @@ extern "C" {
             // lengt cant be < 0
             (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = (uint32_t) length;
         }
+#endif
     }
 
     /*
@@ -124,10 +168,15 @@ extern "C" {
      * Signature: (Ljava/nio/ByteBuffer;II)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1bufOpaqueMemory
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb, __attribute__ ((unused)) jobject bufOpaqueMemory, __attribute__ ((unused)) jint off, __attribute__ ((unused)) jint length) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+#else
     (JNIEnv *env, jobject structAiocb, jobject bufOpaqueMemory, jint off, jint length) {
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_buf = UNWRAP_OPAQUE_MEM_TO_VOID_PTR_OR_NULL(bufOpaqueMemory) + off;
         // lengt cant be < 0
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = (uint32_t) length;
+#endif
     }
 
     /*
@@ -136,8 +185,14 @@ extern "C" {
      * Signature: ()J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1nbytes__
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+        return -1;
+#else
     (JNIEnv *env, jobject structAiocb) {
         return (int64_t) (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes;
+#endif
     }
 
     /*
@@ -146,8 +201,14 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1reqprio__
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+        return -1;
+#else
     (JNIEnv *env, jobject structAiocb) {
         return (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_reqprio;
+#endif
     }
 
     /*
@@ -156,8 +217,13 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1reqprio__I
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb, __attribute__ ((unused)) jint aio_reqprio) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+#else
     (JNIEnv *env, jobject structAiocb, jint aio_reqprio) {
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_reqprio = aio_reqprio;
+#endif
     }
 
     /*
@@ -166,8 +232,14 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1lio_1opcode__
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+        return -1;
+#else
     (JNIEnv *env, jobject structAiocb) {
         return (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_lio_opcode;
+#endif
     }
 
     /*
@@ -176,8 +248,13 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1lio_1opcode__I
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb, __attribute__ ((unused)) jint aio_lio_opcode) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+#else
     (JNIEnv *env, jobject structAiocb, jint aio_lio_opcode) {
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_lio_opcode = aio_lio_opcode;
+#endif
     }
 
 #endif

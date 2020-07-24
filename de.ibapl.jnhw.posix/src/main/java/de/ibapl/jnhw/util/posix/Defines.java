@@ -74,15 +74,33 @@ public class Defines {
     public static native int __FreeBSD__() throws NotDefinedException;
 
     /**
+     *
+     * @return the major version at compile time
+     * @throws de.ibapl.jnhw.NotDefinedException if {@code __FreeBSD__} was
+     * defined at compile time of the native code.
+     */
+    public static native int __OpenBSD__() throws NotDefinedException;
+
+    /**
      * Its defined at different places: Linux: bits/wordsize.h FreeBSD:
      * sys/stdint.h
+     *
+     * but not at OpenBSD
      *
      * so we keep his here for the moment. _POSIX_C_SOURCE
      *
      * @return
-     * @throws NotDefinedException if run on WINDOWS
      */
     public static native int __WORDSIZE() throws NotDefinedException;
+
+    /**
+     * Its defined at different places: OpernBSD
+     *
+     * so we keep his here for the moment. _POSIX_C_SOURCE
+     *
+     * @return
+     */
+    public static native int __SIZEOF_LONG__() throws NotDefinedException;
 
     /**
      * maybe defined in jnhw-posix.h
@@ -91,6 +109,8 @@ public class Defines {
      * @throws NotDefinedException
      */
     public static native int _FILE_OFFSET_BITS() throws NotDefinedException;
+
+    public static native int _BSD_SOURCE() throws NotDefinedException;
 
     /**
      * maybe defined in jnhw-posix.h

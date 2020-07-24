@@ -36,7 +36,6 @@ extern "C" {
 #include <signal.h>
 #include <stdlib.h>
 
-
     /*
      * Class:     de_ibapl_jnhw_posix_Time
      * Method:    asctime
@@ -150,6 +149,10 @@ extern "C" {
      * Signature: (IILde/ibapl/jnhw/posix/Time$Timespec;Lde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1nanosleep
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint clockid, __attribute__ ((unused)) jint flags, __attribute__ ((unused)) jobject rqtp, __attribute__ ((unused)) jobject rmtp) {
+        throw_NoSuchNativeMethodException(env, "clock_nanosleep");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clockid, jint flags, jobject rqtp, jobject rmtp) {
         if (rqtp == NULL) {
             throw_NullPointerException(env, "rqtp is NULL");
@@ -158,6 +161,7 @@ extern "C" {
         if (clock_nanosleep(clockid, flags, UNWRAP_STRUCT_TIMESPEC_PTR(rqtp), UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(rmtp))) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
     /*
@@ -184,9 +188,9 @@ extern "C" {
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_ctime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong clock) {
-#if __WORDSIZE == 64
-        const char *result = ctime(&clock);
-#elif __WORDSIZE == 32
+#if __SIZEOF_LONG__ == 8
+        const char *result = ctime((int64_t *) & clock);
+#elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
         const char *result = ctime((long int *) &clock);
 #else
@@ -214,9 +218,9 @@ extern "C" {
             throw_IllegalArgumentException(env, "buf is too small 26 bytes are the minimum");
             return NULL;
         }
-#if __WORDSIZE == 64
-        const char *result = ctime_r(&clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
-#elif __WORDSIZE == 32
+#if __SIZEOF_LONG__ == 8
+        const char *result = ctime_r((int64_t *) & clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
+#elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
         const char *result = ctime_r((long int*) &clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
 #else
@@ -238,8 +242,8 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_daylight
 #if defined(__FreeBSD__)
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    throw_NoSuchNativeMethodException(env, "daylight");
-    return 0;
+        throw_NoSuchNativeMethodException(env, "daylight");
+        return 0;
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return daylight;
@@ -253,9 +257,9 @@ extern "C" {
      */
     JNIEXPORT jdouble JNICALL Java_de_ibapl_jnhw_posix_Time_difftime
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong time1, jlong time0) {
-#if __WORDSIZE == 64
+#if __SIZEOF_LONG__ == 8
         return difftime(time1, time0);
-#elif __WORDSIZE == 32
+#elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
         return difftime((long int) time1, (long int) time0);
 #else
@@ -269,10 +273,10 @@ extern "C" {
      * Signature: (Ljava/lang/String;)Lde/ibapl/jnhw/posix/Time$Tm;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_getdate
-#if defined(__FreeBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jstring string) {
-    throw_NoSuchNativeMethodException(env, "getdate");
-    return NULL;
+        throw_NoSuchNativeMethodException(env, "getdate");
+        return NULL;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring string) {
         if (string == NULL) {
@@ -299,9 +303,9 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
-#if __WORDSIZE == 64
-        const struct tm *tm = gmtime(&timer);
-#elif __WORDSIZE == 32
+#if __SIZEOF_LONG__ == 8
+        const struct tm *tm = gmtime((int64_t *) & timer);
+#elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
         const struct tm *tm = gmtime((long int*) &timer);
 #else
@@ -327,11 +331,11 @@ extern "C" {
             return NULL;
         }
         struct tm *_result = UNWRAP_STRUCT_TM_PTR(result);
-#if __WORDSIZE == 64
-        if (gmtime_r(&timer, _result)) {
-#elif __WORDSIZE == 32
+#if __SIZEOF_LONG__ == 8
+        if (gmtime_r((int64_t *) & timer, _result)) {
+#elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
-        if (gmtime_r((long int*)&timer, _result)) {
+        if (gmtime_r((long int*) &timer, _result)) {
 #else
 #error Unknown Wordsize
 #endif
@@ -348,11 +352,11 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_localtime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
-#if __WORDSIZE == 64
-        const struct tm *result = localtime(&timer);
-#elif __WORDSIZE == 32
+#if __SIZEOF_LONG__ == 8
+        const struct tm *result = localtime((int64_t *) & timer);
+#elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
-        const struct tm *result = localtime((long int*)&timer);
+        const struct tm *result = localtime((long int*) &timer);
 #else
 #error Unknown Wordsize
 #endif
@@ -375,11 +379,11 @@ extern "C" {
             return NULL;
         }
         struct tm *_result = UNWRAP_STRUCT_TM_PTR(result);
-#if __WORDSIZE == 64
-        if (localtime_r(&timer, _result)) {
-#elif __WORDSIZE == 32
+#if __SIZEOF_LONG__ == 8
+        if (localtime_r((int64_t *) & timer, _result)) {
+#elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
-        if (localtime_r((long int*)&timer, _result)) {
+        if (localtime_r((long int*) &timer, _result)) {
 #else
 #error Unknown Wordsize
 #endif
@@ -444,9 +448,9 @@ extern "C" {
             return NULL;
         }
         const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
-#if __WORDSIZE == 64
+#if __SIZEOF_LONG__ == 8
         char* _result = malloc((uint64_t) maxsize);
-#elif __WORDSIZE == 32
+#elif __SIZEOF_LONG__ == 4
         if ((maxsize > INT32_MAX) || (maxsize < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation maxsize is only an integer with the size of jint");
             return NULL;
@@ -456,9 +460,9 @@ extern "C" {
 #error Unknown Wordsize
 #endif
 
-#if __WORDSIZE == 64
+#if __SIZEOF_LONG__ == 8
         size_t count = strftime(_result, (uint64_t) maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr));
-#elif __WORDSIZE == 32
+#elif __SIZEOF_LONG__ == 4
         if ((maxsize > INT32_MAX) || (maxsize < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation maxsize is only an integer with the size of jint");
             return NULL;
@@ -499,9 +503,9 @@ extern "C" {
             return NULL;
         }
         const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
-#if __WORDSIZE == 64
+#if __SIZEOF_LONG__ == 8
         char* _result = malloc((uint64_t) maxsize);
-#elif __WORDSIZE == 32
+#elif __SIZEOF_LONG__ == 4
         if ((maxsize > INT32_MAX) || (maxsize < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation maxsize is only an integer with the size of jint");
             return NULL;
@@ -511,9 +515,9 @@ extern "C" {
 #error Unknown Wordsize
 #endif
 
-#if __WORDSIZE == 64
+#if __SIZEOF_LONG__ == 8
         size_t count = strftime_l(_result, (uint64_t) maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr), UNWRAP_LOCALE_T(locale));
-#elif __WORDSIZE == 32
+#elif __SIZEOF_LONG__ == 4
         if ((maxsize > INT32_MAX) || (maxsize < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation maxsize is only an integer with the size of jint");
             return NULL;
@@ -572,15 +576,15 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject tloc) {
         time_t result;
         if (tloc) {
-#if __WORDSIZE == 64
+#if __SIZEOF_LONG__ == 8
             time_t _tloc = GET_LONG_REF_VALUE(tloc);
-#elif __WORDSIZE == 32
-        jlong __tloc = GET_LONG_REF_VALUE(tloc);
-        if ((__tloc > INT32_MAX) || (__tloc < INT32_MIN)) {
-            throw_IndexOutOfBoundsException(env, "In this native implementation tloc is only an integer with the size of jint");
-            return 0;
-        }
-        time_t _tloc = (long int)__tloc;
+#elif __SIZEOF_LONG__ == 4
+            jlong __tloc = GET_LONG_REF_VALUE(tloc);
+            if ((__tloc > INT32_MAX) || (__tloc < INT32_MIN)) {
+                throw_IndexOutOfBoundsException(env, "In this native implementation tloc is only an integer with the size of jint");
+                return 0;
+            }
+            time_t _tloc = (long int) __tloc;
 #else
 #error Unknown Wordsize
 #endif
@@ -601,6 +605,10 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigevent;Lde/ibapl/jnhw/posix/Time/Timer_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1create
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint clockid, __attribute__ ((unused)) jobject evp, __attribute__ ((unused)) jobject timerid) {
+        throw_NoSuchNativeMethodException(env, "timer_create");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clockid, jobject evp, jobject timerid) {
         if (timerid == NULL) {
             throw_NullPointerException(env, "timerid is NULL");
@@ -609,6 +617,7 @@ extern "C" {
         if (timer_create(clockid, UNWRAP_STRUCT_SIGEVENT_PTR_OR_NULL(evp), UNWRAP_TIMER_T_PTR(timerid))) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
     /*
@@ -617,6 +626,10 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1delete
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject timerid) {
+        throw_NoSuchNativeMethodException(env, "timer_delete");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid) {
         if (timerid == NULL) {
             throw_NullPointerException(env, "timerid is NULL");
@@ -625,6 +638,7 @@ extern "C" {
         if (timer_delete(*UNWRAP_TIMER_T_PTR(timerid))) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
     /*
@@ -633,7 +647,12 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1getoverrun
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid) {
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject timerid) {
+        throw_NoSuchNativeMethodException(env, "timer_getoverrun");
+        return -1;
+#else
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid){
         if (timerid == NULL) {
             throw_NullPointerException(env, "timerid is NULL");
             return -1;
@@ -643,6 +662,7 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
         return result;
+#endif
     }
 
     /*
@@ -651,6 +671,10 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1gettime
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject timerid, __attribute__ ((unused)) jobject value) {
+        throw_NoSuchNativeMethodException(env, "timer_gettime");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid, jobject value) {
         if (timerid == NULL) {
             throw_NullPointerException(env, "timerid is NULL");
@@ -659,6 +683,7 @@ extern "C" {
         if (timer_gettime(*UNWRAP_TIMER_T_PTR(timerid), UNWRAP_STRUCT_ITIMERSPEC_T_PTR(value))) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
     /*
@@ -667,6 +692,10 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;ILde/ibapl/jnhw/posix/Time/Itimerspec;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1settime
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject timerid, __attribute__ ((unused)) jint flags, __attribute__ ((unused)) jobject value, __attribute__ ((unused)) jobject ovalue) {
+        throw_NoSuchNativeMethodException(env, "timer_settime");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid, jint flags, jobject value, jobject ovalue) {
         if (timerid == NULL) {
             throw_NullPointerException(env, "timerid is NULL");
@@ -675,6 +704,7 @@ extern "C" {
         if (timer_settime(*UNWRAP_TIMER_T_PTR(timerid), flags, UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(value), UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(ovalue))) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
     /*
@@ -685,8 +715,8 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_timezone
 #if defined(__FreeBSD__)
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    throw_NoSuchNativeMethodException(env, "timezone");
-    return 0;
+        throw_NoSuchNativeMethodException(env, "timezone");
+        return 0;
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return timezone;

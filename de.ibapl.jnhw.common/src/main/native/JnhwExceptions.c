@@ -27,7 +27,8 @@
 #define NATIVE_ERROR_EXCEPTION "de/ibapl/jnhw/NativeErrorException"
 #define NOT_DEFINED_EXCEPTION "de/ibapl/jnhw/NotDefinedException"
 #define NO_SUCH_NATIVE_METHOD_EXCEPTION "de/ibapl/jnhw/NoSuchNativeMethodException"
-#define NO_SUCH_TYPE_MEMBER_EXCEPTION "de/ibapl/jnhw/NoSuchTypeMemberException"
+#define NO_SUCH_NATIVE_TYPE_EXCEPTION "de/ibapl/jnhw/NoSuchNativeTypeException"
+#define NO_SUCH_NATIVE_TYPE_MEMBER_EXCEPTION "de/ibapl/jnhw/NoSuchNativeTypeMemberException"
 #define NULL_POINTER_EXCEPTION "java/lang/NullPointerException"
 #define ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/ArrayIndexOutOfBoundsException"
 #define INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/IndexOutOfBoundsException"
@@ -44,8 +45,9 @@ extern "C" {
 
     static jclass NotDefinedExceptionClass = NULL;
     static jclass NoSuchNativeMethodExceptionClass = NULL;
-    static jclass NoSuchTypeMemberExceptionClass = NULL;
-    static jmethodID NoSuchTypeMemberException_Init_ID = NULL;
+    static jclass NoSuchNativeTypeExceptionClass = NULL;
+    static jclass NoSuchNativeTypeMemberExceptionClass = NULL;
+    static jmethodID NoSuchNativeTypeMemberException_Init_ID = NULL;
     static jclass NullPointerExceptionClass = NULL;
     static jclass ArrayIndexOutOfBoundsExceptionClass = NULL;
     static jclass IndexOutOfBoundsExceptionClass = NULL;
@@ -77,19 +79,27 @@ extern "C" {
             }
         }
         
-        if (NoSuchTypeMemberExceptionClass == NULL) {
-            NoSuchTypeMemberExceptionClass = getGlobalClassRef(env, NO_SUCH_TYPE_MEMBER_EXCEPTION);
-            if (NoSuchTypeMemberExceptionClass == NULL) {
+        if (NoSuchNativeTypeExceptionClass == NULL) {
+            NoSuchNativeTypeExceptionClass = getGlobalClassRef(env, NO_SUCH_NATIVE_TYPE_EXCEPTION);
+            if (NoSuchNativeTypeExceptionClass == NULL) {
                 return JNI_FALSE;
             }
         }
 
-        if (NoSuchTypeMemberException_Init_ID == NULL) {
-            NoSuchTypeMemberException_Init_ID = getMethodIdOfClassRef(env, NoSuchTypeMemberExceptionClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
-            if (NoSuchTypeMemberException_Init_ID == NULL) {
+        if (NoSuchNativeTypeMemberExceptionClass == NULL) {
+            NoSuchNativeTypeMemberExceptionClass = getGlobalClassRef(env, NO_SUCH_NATIVE_TYPE_MEMBER_EXCEPTION);
+            if (NoSuchNativeTypeMemberExceptionClass == NULL) {
                 return JNI_FALSE;
             }
         }
+
+        if (NoSuchNativeTypeMemberException_Init_ID == NULL) {
+            NoSuchNativeTypeMemberException_Init_ID = getMethodIdOfClassRef(env, NoSuchNativeTypeMemberExceptionClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
+            if (NoSuchNativeTypeMemberException_Init_ID == NULL) {
+                return JNI_FALSE;
+            }
+        }
+
         if (NullPointerExceptionClass == NULL) {
             NullPointerExceptionClass = getGlobalClassRef(env, NULL_POINTER_EXCEPTION);
             if (NullPointerExceptionClass == NULL) {
@@ -125,7 +135,8 @@ extern "C" {
         deleteGlobalRef(env, &NativeErrorExceptionClass);
         deleteGlobalRef(env, &NotDefinedExceptionClass);
         deleteGlobalRef(env, &NoSuchNativeMethodExceptionClass);
-        deleteGlobalRef(env, &NoSuchTypeMemberExceptionClass);
+        deleteGlobalRef(env, &NoSuchNativeTypeExceptionClass);
+        deleteGlobalRef(env, &NoSuchNativeTypeMemberExceptionClass);
         deleteGlobalRef(env, &NullPointerExceptionClass);
         deleteGlobalRef(env, &IndexOutOfBoundsExceptionClass);
         deleteGlobalRef(env, &ArrayIndexOutOfBoundsExceptionClass);
@@ -140,8 +151,12 @@ extern "C" {
         (*env)->ThrowNew(env, NoSuchNativeMethodExceptionClass, methodName);
     }
 
-    JNIEXPORT void JNICALL throw_NoSuchTypeMemberException(JNIEnv* env, const char* typeName, const char* memberName) {
-        const jobject ioeEx = (*env)->NewObject(env, NoSuchTypeMemberExceptionClass, NoSuchTypeMemberException_Init_ID, (*env)->NewStringUTF(env, typeName), (*env)->NewStringUTF(env, memberName));
+    JNIEXPORT void JNICALL throw_NoSuchNativeTypeException(JNIEnv* env, const char* typeName) {
+        (*env)->ThrowNew(env, NoSuchNativeTypeExceptionClass, typeName);
+    }
+
+    JNIEXPORT void JNICALL throw_NoSuchNativeTypeMemberException(JNIEnv* env, const char* typeName, const char* memberName) {
+        const jobject ioeEx = (*env)->NewObject(env, NoSuchNativeTypeMemberExceptionClass, NoSuchNativeTypeMemberException_Init_ID, (*env)->NewStringUTF(env, typeName), (*env)->NewStringUTF(env, memberName));
         (*env)->Throw(env, ioeEx);
     }
 

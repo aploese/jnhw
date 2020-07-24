@@ -135,7 +135,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1DONTNEED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(POSIX_FADV_DONTNEED)
 #error "POSIX_FADV_DONTNEED defined"
 #endif
@@ -153,7 +153,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1NOREUSE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(POSIX_FADV_NOREUSE)
 #error "POSIX_FADV_NOREUSE defined"
 #endif
@@ -171,7 +171,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1NORMAL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(POSIX_FADV_NORMAL)
 #error "POSIX_FADV_NORMAL defined"
 #endif
@@ -189,7 +189,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1RANDOM
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(POSIX_FADV_RANDOM)
 #error "POSIX_FADV_RANDOM defined"
 #endif
@@ -207,7 +207,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1SEQUENTIAL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(POSIX_FADV_SEQUENTIAL)
 #error "POSIX_FADV_SEQUENTIAL defined"
 #endif
@@ -225,7 +225,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_POSIX_1FADV_1WILLNEED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(POSIX_FADV_WILLNEED)
 #error "POSIX_FADV_WILLNEED defined"
 #endif
@@ -253,7 +253,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1EXEC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) || defined(__APPLE__)
+#if defined (__linux__) || defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(O_EXEC)
 #error "O_EXEC defined"
 #endif
@@ -271,7 +271,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1SEARCH
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
+#if defined (__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
 #if defined(O_SEARCH)
 #error "O_SEARCH defined"
 #endif
@@ -407,7 +407,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1TTY_1INIT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) || defined(__APPLE__)
+#if defined (__linux__) || defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(O_TTY_INIT)
 #error "O_TTY_INIT defined"
 #endif
@@ -461,7 +461,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_O_1FSYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__WIN32__)
+#if defined (__WIN32__) 
 #if defined(O_FSYNC)
 #error "O_FSYNC defined"
 #endif

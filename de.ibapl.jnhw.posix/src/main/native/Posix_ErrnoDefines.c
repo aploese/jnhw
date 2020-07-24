@@ -719,7 +719,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOSTR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__FreeBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
 #if defined(ENOSTR)
 #error "ENOSTR defined"
 #endif
@@ -832,7 +832,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOLINK
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__OpenBSD__)
+#if defined(ENOLINK)
+#error "ENOLINK defined"
+#else
+        throw_NotDefinedException(env, "ENOLINK");
+        return 0;
+#endif
+#else
         return ENOLINK;
+#endif
     }
 
     /*
@@ -903,7 +912,16 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EMULTIHOP
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__OpenBSD__)
+#if defined(EMULTIHOP)
+#error "EMULTIHOP defined"
+#else
+        throw_NotDefinedException(env, "EMULTIHOP");
+        return 0;
+#endif
+#else
         return EMULTIHOP;
+#endif
     }
 
     /*
@@ -1515,7 +1533,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOMEDIUM
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__)
+#if defined (__linux__) || defined(__OpenBSD__)
         return ENOMEDIUM;
 #elif defined(ENOMEDIUM)
 #error "ENOMEDIUM defined"
@@ -1532,7 +1550,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EMEDIUMTYPE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__)
+#if defined (__linux__) || defined(__OpenBSD__)
         return EMEDIUMTYPE;
 #elif defined(EMEDIUMTYPE)
 #error "EMEDIUMTYPE defined"

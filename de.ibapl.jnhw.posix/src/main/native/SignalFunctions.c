@@ -62,9 +62,9 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Siginfo_t;Ljava/lang/String;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_psiginfo
-#if defined(__FreeBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject pinfo, __attribute__ ((unused)) jstring message) {
-    throw_NoSuchNativeMethodException(env, "psiginfo");
+        throw_NoSuchNativeMethodException(env, "psiginfo");
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pinfo, jstring message) {
         if (pinfo == NULL) {
@@ -107,7 +107,11 @@ extern "C" {
             _message = (*env)->GetStringUTFChars(env, message, NULL);
         }
         errno = 0;
+#if defined(__OpenBSD__)
+        psignal((uint32_t)signo, _message);
+#else
         psignal(signo, _message);
+#endif
         if (errno) {
             if (ferror(stderr)) {
                 throw_NativeErrorException(env, errno);
@@ -125,6 +129,10 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_pthread_1kill
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject thread_id, __attribute__ ((unused)) jint sig) {
+        throw_NoSuchNativeMethodException(env, "pthread_kill");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject thread_id, jint sig) {
         if (thread_id == NULL) {
             throw_NullPointerException(env, "thread_id is null");
@@ -133,7 +141,7 @@ extern "C" {
         if (pthread_kill(*UNWRAP_PTHREAD_T_PTR(thread_id), sig)) {
             throw_NativeErrorException(env, errno);
         }
-
+#endif
     }
 
     /*
@@ -259,10 +267,15 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sighold
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint sig) {
+        throw_NoSuchNativeMethodException(env, "sighold");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig) {
         if (sighold(sig)) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
     /*
@@ -271,10 +284,15 @@ extern "C" {
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigignore
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint sig) {
+        throw_NoSuchNativeMethodException(env, "sighold");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig) {
         if (sigignore(sig)) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
     /*
@@ -311,12 +329,12 @@ extern "C" {
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal
- * Method:    signal
- * Signature: (ILde/ibapl/jnhw/Callback_I_V;)Lde/ibapl/jnhw/Callback_I_V;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal
+     * Method:    signal
+     * Signature: (ILde/ibapl/jnhw/Callback_I_V;)Lde/ibapl/jnhw/Callback_I_V;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig, jobject func) {
         void* result;
         if (func == NULL) {
@@ -337,6 +355,10 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigpause
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint sig) {
+        throw_NoSuchNativeMethodException(env, "sigpause");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig) {
         const int result = sigpause(sig);
         if (result == -1) {
@@ -348,6 +370,7 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
         } else {
             throw_Exception(env, "java/lang/RuntimeException", "Result of sigpause not excpected: %d", result);
         }
+#endif
     }
 
     /*
@@ -386,6 +409,10 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
      * Signature: (IILde/ibapl/jnhw/posix/Signal/Sigval;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigqueue
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jint signo, __attribute__ ((unused)) jobject sigval) {
+        throw_NoSuchNativeMethodException(env, "sigqueue");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jint signo, jobject sigval) {
         if (sigval == NULL) {
             throw_NullPointerException(env, "sigval is null");
@@ -394,6 +421,7 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
         if (sigqueue(pid, signo, *(UNWRAP_UNION_SIGVAL_PTR(sigval)))) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
     /*
@@ -402,18 +430,28 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
      * Signature: (I)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigrelse
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint sig) {
+        throw_NoSuchNativeMethodException(env, "sigrelse");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig) {
         if (sigrelse(sig)) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Signal
- * Method:    sigset
- * Signature: (ILde/ibapl/jnhw/Callback_I_V;)Lde/ibapl/jnhw/Callback_I_V;
- */
+        /*
+     * Class:     de_ibapl_jnhw_posix_Signal
+     * Method:    sigset
+     * Signature: (ILde/ibapl/jnhw/Callback_I_V;)Lde/ibapl/jnhw/Callback_I_V;
+     */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_sigset
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass class, __attribute__ ((unused)) jint sig, __attribute__ ((unused)) jobject disp) {
+        throw_NoSuchNativeMethodException(env, "sigset");
+        return NULL;
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass class, jint sig, jobject disp) {
         void* result;
         if (disp == NULL) {
@@ -426,6 +464,7 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
             return NULL;
         }
         return CREATE_NATIVE_FUNCTION_POINTER(result);
+#endif
     }
 
     /*
@@ -456,6 +495,11 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Siginfo_t;Lde/ibapl/jnhw/posix/Time/Timespec;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigtimedwait
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass class, __attribute__ ((unused)) jobject set, __attribute__ ((unused)) jobject info, __attribute__ ((unused)) jobject timeout) {
+        throw_NoSuchNativeMethodException(env, "sigtimedwait");
+        return -1;
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass class, jobject set, jobject info, jobject timeout) {
         if (set == NULL) {
             throw_NullPointerException(env, "set is null");
@@ -472,6 +516,7 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
             return -1;
         }
         return result;
+#endif
     }
 
     /*
@@ -500,6 +545,11 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Siginfo_t;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigwaitinfo
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass class, __attribute__ ((unused)) jobject set, __attribute__ ((unused)) jobject info) {
+        throw_NoSuchNativeMethodException(env, "sigwaitinfo");
+        return -1;
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass class, jobject set, jobject info) {
         if (set == NULL) {
             throw_NullPointerException(env, "set is null");
@@ -511,6 +561,7 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
             return -1;
         }
         return result;
+#endif
     }
 
 #endif

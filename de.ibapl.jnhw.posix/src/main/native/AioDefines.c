@@ -41,8 +41,14 @@ extern "C" {
     }
 
 
-#if defined(_POSIX_VERSION)
+#if defined(_POSIX_VERSION) 
+#if defined(__OpenBSD__)
+#if defined(HAVE_AIO_H)
+#error OpenBSD and aio.h
+#endif
+#else    
 #include <aio.h>
+#endif
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
@@ -51,7 +57,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_AIO_1ALLDONE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(AIO_ALLDONE)
+#error "AIO_ALLDONE defined"
+#endif
+        throw_NotDefinedException(env, "AIO_ALLDONE");
+        return 0;
+#else
         return AIO_ALLDONE;
+#endif
     }
 
     /*
@@ -61,7 +75,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_AIO_1CANCELED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(AIO_CANCELED)
+#error "AIO_CANCELED defined"
+#endif
+        throw_NotDefinedException(env, "AIO_CANCELED");
+        return 0;
+#else
         return AIO_CANCELED;
+#endif
     }
 
     /*
@@ -71,7 +93,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_AIO_1NOTCANCELED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(AIO_NOTCANCELED)
+#error "AIO_NOTCANCELED defined"
+#endif
+        throw_NotDefinedException(env, "AIO_NOTCANCELED");
+        return 0;
+#else
         return AIO_NOTCANCELED;
+#endif
     }
 
     /*
@@ -81,7 +111,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_LIO_1NOP
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(LIO_NOP)
+#error "LIO_NOP defined"
+#endif
+        throw_NotDefinedException(env, "LIO_NOP");
+        return 0;
+#else
         return LIO_NOP;
+#endif
     }
 
     /*
@@ -91,7 +129,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_LIO_1NOWAIT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(LIO_NOWAIT)
+#error "LIO_NOWAIT defined"
+#endif
+        throw_NotDefinedException(env, "LIO_NOWAIT");
+        return 0;
+#else
         return LIO_NOWAIT;
+#endif
     }
 
     /*
@@ -101,7 +147,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_LIO_1READ
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(LIO_READ)
+#error "LIO_READ defined"
+#endif
+        throw_NotDefinedException(env, "LIO_READ");
+        return 0;
+#else
         return LIO_READ;
+#endif
     }
 
     /*
@@ -111,7 +165,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_LIO_1WAIT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(LIO_WAIT)
+#error "LIO_WAIT defined"
+#endif
+        throw_NotDefinedException(env, "LIO_WAIT");
+        return 0;
+#else
         return LIO_WAIT;
+#endif
     }
 
     /*
@@ -121,7 +183,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_LIO_1WRITE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(LIO_WRITE)
+#error "LIO_WRITE defined"
+#endif
+        throw_NotDefinedException(env, "LIO_WRITE");
+        return 0;
+#else
         return LIO_WRITE;
+#endif
     }
 
 

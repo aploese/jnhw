@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.NoSuchTypeMemberException;
+import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -144,32 +144,32 @@ public class SchedTest {
         try {
             sched_param.sched_ss_low_priority(2);
             memberSum += sched_param.sched_ss_low_priority();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
         try {
             sched_param.sched_ss_max_repl(3);
             memberSum += sched_param.sched_ss_max_repl();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
         try {
             sched_param.sched_ss_init_budget().tv_sec(4);
             memberSum += sched_param.sched_ss_init_budget().tv_sec();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
         try {
             sched_param.sched_ss_init_budget().tv_nsec(5);
             memberSum += sched_param.sched_ss_init_budget().tv_nsec();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
         try {
             sched_param.sched_ss_repl_period().tv_sec(6);
             memberSum += sched_param.sched_ss_repl_period().tv_sec();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
         try {
             sched_param.sched_ss_repl_period().tv_nsec(7);
             memberSum += sched_param.sched_ss_repl_period().tv_nsec();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
 
         Assertions.assertEquals(1, sched_param.sched_priority());
@@ -177,32 +177,32 @@ public class SchedTest {
         try {
             Assertions.assertEquals(2, sched_param.sched_ss_low_priority());
             memberSum -= sched_param.sched_ss_low_priority();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
         try {
             Assertions.assertEquals(3, sched_param.sched_ss_max_repl());
             memberSum -= sched_param.sched_ss_max_repl();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
         try {
             Assertions.assertEquals(4, sched_param.sched_ss_init_budget().tv_sec());
             memberSum -= sched_param.sched_ss_init_budget().tv_sec();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
         try {
             Assertions.assertEquals(5, sched_param.sched_ss_init_budget().tv_nsec());
             memberSum -= sched_param.sched_ss_init_budget().tv_nsec();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
         try {
             Assertions.assertEquals(6, sched_param.sched_ss_repl_period().tv_sec());
             memberSum -= sched_param.sched_ss_repl_period().tv_sec();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
         try {
             Assertions.assertEquals(7, sched_param.sched_ss_repl_period().tv_nsec());
             memberSum -= sched_param.sched_ss_repl_period().tv_nsec();
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
         }
         Assertions.assertEquals(0, memberSum);
     }

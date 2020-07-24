@@ -555,7 +555,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NOFLSH
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__)
+#if defined (__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__)
         return (int32_t) NOFLSH;
 #else
         return NOFLSH;
@@ -1042,7 +1042,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TABDLY
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(TABDLY)
+#error "TABDLY defined"
+#endif
+        throw_NotDefinedException(env, "TABDLY");
+        return 0;
+#else
         return TABDLY;
+#endif
     }
 
     /*
@@ -1052,7 +1060,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TAB0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(TAB0)
+#error "TAB0 defined"
+#endif
+        throw_NotDefinedException(env, "TAB0");
+        return 0;
+#else
         return TAB0;
+#endif
     }
 
     /*
@@ -1096,7 +1112,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_TAB3
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+#if defined(TAB3)
+#error "TAB3 defined"
+#endif
+        throw_NotDefinedException(env, "TAB3");
+        return 0;
+#else
         return TAB3;
+#endif
     }
 
     /*

@@ -24,7 +24,8 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchTypeMemberException;
+import de.ibapl.jnhw.NoSuchNativeMethodException;
+import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -70,9 +71,9 @@ public class Sched {
          */
         public static native int sizeof_sched_param();
 
-        public static native int offsetof_sched_ss_init_budget() throws NoSuchTypeMemberException;
+        public static native int offsetof_sched_ss_init_budget() throws NoSuchNativeTypeMemberException;
 
-        public static native int offsetof_sched_ss_repl_period() throws NoSuchTypeMemberException;
+        public static native int offsetof_sched_ss_repl_period() throws NoSuchNativeTypeMemberException;
 
         public Sched_param() {
             this(false);
@@ -83,14 +84,14 @@ public class Sched {
             Time.Timespec t;
             try {
                 t = new Time.Timespec(this, offsetof_sched_ss_init_budget());
-            } catch (NoSuchTypeMemberException nstme) {
+            } catch (NoSuchNativeTypeMemberException nstme) {
                 t = null;
             }
             sched_ss_init_budget = t;
 
             try {
                 t = new Time.Timespec(this, offsetof_sched_ss_repl_period());
-            } catch (NoSuchTypeMemberException nstme) {
+            } catch (NoSuchNativeTypeMemberException nstme) {
                 t = null;
             }
             sched_ss_repl_period = t;
@@ -114,9 +115,9 @@ public class Sched {
          */
         public native void sched_priority(int sched_priority);
 
-        public Time.Timespec sched_ss_init_budget() throws NoSuchTypeMemberException {
+        public Time.Timespec sched_ss_init_budget() throws NoSuchNativeTypeMemberException {
             if (sched_ss_init_budget == null) {
-                throw new NoSuchTypeMemberException("sched_param", "sched_ss_init_budget");
+                throw new NoSuchNativeTypeMemberException("sched_param", "sched_ss_init_budget");
             } else {
                 return sched_ss_init_budget;
             }
@@ -129,10 +130,10 @@ public class Sched {
          *
          * @return the native value of sched_ss_low_priority.
          *
-         * @throws NoSuchTypeMemberException if sched_ss_low_priority does not
+         * @throws NoSuchNativeTypeMemberException if sched_ss_low_priority does not
          * exists.
          */
-        public native int sched_ss_low_priority() throws NoSuchTypeMemberException;
+        public native int sched_ss_low_priority() throws NoSuchNativeTypeMemberException;
 
         /**
          * Low scheduling priority for sporadic server.
@@ -142,10 +143,10 @@ public class Sched {
          * @param sched_ss_low_priority the value of sched_ss_low_priority to be
          * set natively.
          *
-         * @throws NoSuchTypeMemberException if sched_ss_low_priority does not
+         * @throws NoSuchNativeTypeMemberException if sched_ss_low_priority does not
          * exists.
          */
-        public native void sched_ss_low_priority(int sched_ss_low_priority) throws NoSuchTypeMemberException;
+        public native void sched_ss_low_priority(int sched_ss_low_priority) throws NoSuchNativeTypeMemberException;
         /**
          * Replenishment period for sporadic server.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sched.h.html">{@code structure
@@ -169,10 +170,10 @@ public class Sched {
          *
          * @return the native value of sched_ss_max_repl.
          *
-         * @throws NoSuchTypeMemberException if sched_ss_max_repl does not
+         * @throws NoSuchNativeTypeMemberException if sched_ss_max_repl does not
          * exists.
          */
-        public native int sched_ss_max_repl() throws NoSuchTypeMemberException;
+        public native int sched_ss_max_repl() throws NoSuchNativeTypeMemberException;
 
         /**
          * Maximum pending replenishments for sporadic server.
@@ -182,14 +183,14 @@ public class Sched {
          * @param sched_ss_max_repl the value of sched_ss_max_repl to be set
          * natively.
          *
-         * @throws NoSuchTypeMemberException if sched_ss_max_repl does not
+         * @throws NoSuchNativeTypeMemberException if sched_ss_max_repl does not
          * exists.
          */
-        public native void sched_ss_max_repl(int sched_ss_max_repl) throws NoSuchTypeMemberException;
+        public native void sched_ss_max_repl(int sched_ss_max_repl) throws NoSuchNativeTypeMemberException;
 
-        public Time.Timespec sched_ss_repl_period() throws NoSuchTypeMemberException {
+        public Time.Timespec sched_ss_repl_period() throws NoSuchNativeTypeMemberException {
             if (sched_ss_repl_period == null) {
-                throw new NoSuchTypeMemberException("sched_param", "sched_ss_repl_period");
+                throw new NoSuchNativeTypeMemberException("sched_param", "sched_ss_repl_period");
             } else {
                 return sched_ss_repl_period;
             }
@@ -259,8 +260,9 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
      */
-    public final static native void sched_getparam(@Types.pid_t int pid, Sched_param param) throws NativeErrorException;
+    public final static native void sched_getparam(@Types.pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -270,8 +272,9 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
      */
-    public final static native int sched_getscheduler(@Types.pid_t int pid) throws NativeErrorException;
+    public final static native int sched_getscheduler(@Types.pid_t int pid) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -280,8 +283,9 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
      */
-    public final static native void sched_rr_get_interval(@Types.pid_t int pid, Time.Timespec interval) throws NativeErrorException;
+    public final static native void sched_rr_get_interval(@Types.pid_t int pid, Time.Timespec interval) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -290,9 +294,10 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
      */
 
-    public final static native void sched_setparam(@Types.pid_t int pid, Sched_param param) throws NativeErrorException;
+    public final static native void sched_setparam(@Types.pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -301,8 +306,9 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
      */
-    public final static native int sched_setscheduler(@Types.pid_t int pid, int policy, Sched_param param) throws NativeErrorException;
+    public final static native int sched_setscheduler(@Types.pid_t int pid, int policy, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>

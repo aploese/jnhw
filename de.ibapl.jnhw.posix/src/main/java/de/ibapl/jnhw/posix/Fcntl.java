@@ -342,9 +342,10 @@ public final class Fcntl {
      * <b>POSIX:</b> Non-blocking mode.
      *
      * @return the native symbolic constant of O_NONBLOCK.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int O_NONBLOCK();
+    public final static native int O_NONBLOCK() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> Open for reading only.
@@ -753,7 +754,7 @@ public final class Fcntl {
      * @throws NativeErrorException if the return value of the native function
      * returns an error code.
      */
-    public final static native void posix_fadvise(int fildes, @off_t long offset, @off_t long len, int advice) throws NativeErrorException;
+    public final static native void posix_fadvise(int fildes, @off_t long offset, @off_t long len, int advice) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -785,7 +786,7 @@ public final class Fcntl {
      * @throws NativeErrorException if the return value of the native function
      * returns an error code.
      */
-    public final static native void posix_fallocate(int fildes, @off_t long offset, @off_t long len) throws NativeErrorException;
+    public final static native void posix_fallocate(int fildes, @off_t long offset, @off_t long len) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.

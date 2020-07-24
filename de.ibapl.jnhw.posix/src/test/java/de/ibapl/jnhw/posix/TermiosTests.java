@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Defined;
-import de.ibapl.jnhw.NoSuchTypeMemberException;
+import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
@@ -111,7 +111,7 @@ public class TermiosTests {
         try {
             structTermios.c_ispeed(9600);
             assertEquals(9600, structTermios.c_ispeed());
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
             fail("Expected to have termios.c_ispeed but got this: " + nstme.getMessage());
         }
     }
@@ -141,7 +141,7 @@ public class TermiosTests {
         try {
             structTermios.c_ospeed(9600);
             assertEquals(9600, structTermios.c_ospeed());
-        } catch (NoSuchTypeMemberException nstme) {
+        } catch (NoSuchNativeTypeMemberException nstme) {
             fail("Expected to have termios.c_ospeed but got this: " + nstme.getMessage());
         }
     }

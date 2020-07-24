@@ -39,6 +39,7 @@ public enum MultiarchInfo {
     X86_64__WINDOWS__PE32_PLUS(64, Endianess.LITTLE, Arch.X86_64, OS.WINDOWS, Abi.PE32_PLUS),
     I386__WINDOWS__PE32(32, Endianess.LITTLE, Arch.I386, OS.WINDOWS, Abi.PE32),
     X86_64__FREE_BSD__BSD(64, Endianess.LITTLE, Arch.X86_64, OS.FREE_BSD, Abi.BSD),
+    X86_64__OPEN_BSD__BSD(64, Endianess.LITTLE, Arch.X86_64, OS.OPEN_BSD, Abi.BSD),
     X86_64__MAC_OS_X__BSD(64, Endianess.LITTLE, Arch.X86_64, OS.MAC_OS_X, Abi.BSD);
 
     private MultiarchInfo(int wordSize, Endianess endianess, Arch arch, OS os, Abi abi) {
