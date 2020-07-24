@@ -28,6 +28,7 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeRunnable;
+import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
@@ -156,6 +157,8 @@ public class AioTest {
                     aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(a));
                 } catch (NativeErrorException nee) {
                     fail("aio_read in callback NativeErrorException: " + nee, nee);
+                } catch (NoSuchNativeMethodException nsnme) {
+                    fail(nsnme);
                 }
                 synchronized (objRef) {
                     objRef.value = a;
@@ -244,6 +247,8 @@ public class AioTest {
                     aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
                 } catch (NativeErrorException nee) {
                     fail("aio_read in callback NativeErrorException: " + nee, nee);
+                } catch (NoSuchNativeMethodException nsnme) {
+                    fail(nsnme);
                 }
                 synchronized (intRef) {
                     intRef.value = i;
@@ -362,6 +367,8 @@ public class AioTest {
                     aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
                 } catch (NativeErrorException nee) {
                     fail("aio_read in callback NativeErrorException: " + nee, nee);
+                } catch (NoSuchNativeMethodException nsnme) {
+                    fail(nsnme);
                 }
                 synchronized (intRef) {
                     intRef.value = i;
@@ -550,6 +557,8 @@ public class AioTest {
                     aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
                 } catch (NativeErrorException nee) {
                     fail("aio_read in callback NativeErrorException: " + nee, nee);
+                } catch (NoSuchNativeMethodException nsnme) {
+                    fail(nsnme);
                 }
                 synchronized (objRef) {
                     objRef.value = aiocb;

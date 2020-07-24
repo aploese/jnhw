@@ -51,6 +51,7 @@
 #define _POSIX_C_SOURCE 200809
 #define _XOPEN_SOURCE 700
 #define _XOPEN_SOURCE_EXTENDED 1
+#define _BSD_SOURCE 1
 #endif
 
 //#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
