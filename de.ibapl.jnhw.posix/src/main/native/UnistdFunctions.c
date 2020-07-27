@@ -140,7 +140,7 @@ extern "C" {
         } else if (nByte > MAX_STACK_BUF_SIZE) {
             _buf = malloc((uint32_t) nByte);
             if (_buf == NULL) {
-                throw_Exception(env, "java/lang/OutOfMemoryError", "Can`t aquire %d bytes of memory", nByte);
+                throw_Exception(env, OUT_OF_MEMORY_ERROR_CLASS_NAME, "Can`t aquire %d bytes of memory", nByte);
                 return 0;
             }
         } else {
@@ -239,7 +239,7 @@ extern "C" {
         } else if (nByte > MAX_STACK_BUF_SIZE) {
             _buf = malloc((uint32_t) nByte);
             if (_buf == NULL) {
-                throw_Exception(env, "java/lang/OutOfMemoryError", "Can`t aquire %d bytes of memory", nByte);
+                throw_Exception(env, OUT_OF_MEMORY_ERROR_CLASS_NAME, "Can`t aquire %d bytes of memory", nByte);
                 return 0;
             }
         } else {

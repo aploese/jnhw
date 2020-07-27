@@ -66,7 +66,7 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Sched/Sched_param;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1getparam
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jobject sched_param) {
         throw_NoSuchNativeMethodException(env, "sched_getparam");
 #else
@@ -87,7 +87,7 @@ extern "C" {
      * Signature: (I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1getscheduler
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid) {
         throw_NoSuchNativeMethodException(env, "sched_getscheduler");
         return -1;
@@ -107,7 +107,7 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Time/Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1rr_1get_1interval
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jobject interval) {
         throw_NoSuchNativeMethodException(env, "sched_rr_get_interval");
 #else
@@ -128,7 +128,7 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Sched/Sched_param;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1setparam
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jobject sched_param) {
         throw_NoSuchNativeMethodException(env, "sched_setparam");
 #else
@@ -149,7 +149,7 @@ extern "C" {
      * Signature: (IILde/ibapl/jnhw/posix/Sched/Sched_param;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1setscheduler
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jint policy, __attribute__ ((unused)) jobject param) {
         throw_NoSuchNativeMethodException(env, "sched_setscheduler");
         return -1;

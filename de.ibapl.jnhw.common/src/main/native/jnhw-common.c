@@ -192,7 +192,7 @@ extern "C" {
         jclass result = (*env)->NewGlobalRef(env, clazz);
         (*env)->DeleteLocalRef(env, clazz);
         if (result == NULL) {
-            throw_Exception(env, "java/lang/RuntimeException", "Cant get global ref for %s", className);
+            throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "Cant get global ref for %s", className);
             return NULL;
         }
         return result;

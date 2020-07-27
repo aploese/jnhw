@@ -27,6 +27,9 @@
 extern "C" {
 #endif
 
+#define RUNTIME_EXCEPTION_CLASS_NAME "java/lang/RuntimeException"
+#define OUT_OF_MEMORY_ERROR_CLASS_NAME "java/lang/OutOfMemoryError"
+
     //Cached Exceptions
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NativeErrorException(JNIEnv* env, int errorNumber);
 

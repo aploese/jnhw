@@ -135,7 +135,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libjnhw_posix_test_la_DEPENDENCIES = libtests.la \
-	@JNHW_POSIX_SRC_DIR@/libjnhw-posix.la
+	@JNHW_POSIX_SRC_DIR@/libjnhw-posix.la \
+	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 libjnhw_posix_test_la_SOURCES = libjnhw-posix-test.c
 libjnhw_posix_test_la_OBJECTS = libjnhw-posix-test.lo
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -356,7 +357,11 @@ LIB_JNHW_POSIX_TEST_NAME = @JNHW_LIB_PREFIX@jnhw-posix-test@JNHW_LIBTOOL_LIB_SUF
 LIB_JNHW_POSIX_TEST_RES_NAME = @JNHW_TEST_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix-test@JNHW_LIB_SUFFIX@
 lib_LTLIBRARIES = libjnhw-posix-test.la
 noinst_LTLIBRARIES = libtests.la
-libjnhw_posix_test_la_LIBADD = libtests.la @JNHW_POSIX_SRC_DIR@/libjnhw-posix.la
+libjnhw_posix_test_la_LIBADD = \
+libtests.la \
+@JNHW_POSIX_SRC_DIR@/libjnhw-posix.la \
+@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+
 libtests_la_SOURCES = \
  LocaleTest.c
 

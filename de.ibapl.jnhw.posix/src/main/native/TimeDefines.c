@@ -63,7 +63,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_CLOCK_1MONOTONIC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+#if defined(CLOCK_MONOTONIC)
+#error "CLOCK_MONOTONIC defined"
+#endif
+        throw_NotDefinedException(env, "CLOCK_MONOTONIC");
+        return 0;
+#else
         return CLOCK_MONOTONIC;
+#endif
     }
 
     /*
@@ -73,7 +81,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_CLOCK_1PROCESS_1CPUTIME_1ID
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+#if defined(CLOCK_PROCESS_CPUTIME_ID)
+#error "CLOCK_PROCESS_CPUTIME_ID defined"
+#endif
+        throw_NotDefinedException(env, "CLOCK_PROCESS_CPUTIME_ID");
+        return 0;
+#else
         return CLOCK_PROCESS_CPUTIME_ID;
+#endif
     }
 
     /*
@@ -83,7 +99,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_CLOCK_1REALTIME
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+#if defined(CLOCK_REALTIME)
+#error "CLOCK_REALTIME defined"
+#endif
+        throw_NotDefinedException(env, "CLOCK_REALTIME");
+        return 0;
+#else
         return CLOCK_REALTIME;
+#endif
     }
 
     /*
@@ -93,7 +117,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_CLOCK_1THREAD_1CPUTIME_1ID
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+#if defined(CLOCK_THREAD_CPUTIME_ID)
+#error "CLOCK_THREAD_CPUTIME_ID defined"
+#endif
+        throw_NotDefinedException(env, "CLOCK_THREAD_CPUTIME_ID");
+        return 0;
+#else
         return CLOCK_THREAD_CPUTIME_ID;
+#endif
     }
 
     /*
@@ -103,7 +135,15 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_TIMER_1ABSTIME
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+#if defined(TIMER_ABSTIME)
+#error "TIMER_ABSTIME defined"
+#endif
+        throw_NotDefinedException(env, "TIMER_ABSTIME");
+        return 0;
+#else
         return TIMER_ABSTIME;
+#endif
     }
 
 #endif

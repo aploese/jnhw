@@ -37,9 +37,15 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_sizeof_1itimerspec
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+ #if defined(__APPLE__) 
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        throw_NoSuchNativeTypeException(env, "struct itimerspec");
+        return -1;
+#else
+        (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct itimerspec);
-    }
+#endif
+        }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
@@ -47,8 +53,14 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_offsetof_1it_1interval
+ #if defined(__APPLE__) 
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        throw_NoSuchNativeTypeException(env, "struct itimerspec");
+        return -1;
+#else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct itimerspec, it_interval);
+#endif
     }
 
     /*
@@ -57,9 +69,16 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_offsetof_1it_1value
+ #if defined(__APPLE__) 
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        throw_NoSuchNativeTypeException(env, "struct itimerspec");
+        return -1;
+#else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct itimerspec, it_value);
+#endif
     }
+    
 #endif
 #ifdef __cplusplus
 }

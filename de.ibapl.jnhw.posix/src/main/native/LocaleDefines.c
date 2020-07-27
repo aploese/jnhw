@@ -44,6 +44,10 @@ extern "C" {
 #if defined(_POSIX_VERSION)
 #include <locale.h>
 
+#if defined (__APPLE__) 
+#include <xlocale.h>
+#endif
+
     /*
      * Class:     de_ibapl_jnhw_posix_Locale
      * Method:    LC_ALL

@@ -28,6 +28,8 @@ import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
+import de.ibapl.jnhw.NoSuchNativeTypeException;
+import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -75,51 +77,56 @@ public class Time {
     /**
      * <b>POSIX:</b> The identifier for the system-wide monotonic clock, which
      * is defined as a clock measuring real time, whose value cannot be set via
-     * clock_settime() and which cannot have negative clock jumps. The maximum
+     * clock_settime() and which cannot have negative clock jumps.The maximum
      * possible clock jump shall be implementation-defined..
      *
      * @return the native symbolic constant of CLOCK_MONOTONIC.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define()
-    public final static native int CLOCK_MONOTONIC();
+    public final static native int CLOCK_MONOTONIC() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> The identifier of the CPU-time clock associated with the
      * process making a clock() or timer*() function call..
      *
      * @return the native symbolic constant of CLOCK_PROCESS_CPUTIME_ID.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define()
-    public final static native int CLOCK_PROCESS_CPUTIME_ID();
+    public final static native int CLOCK_PROCESS_CPUTIME_ID() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> The identifier of the system-wide clock measuring real
      * time.
      *
      * @return the native symbolic constant of CLOCK_REALTIME.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define()
-    public final static native int CLOCK_REALTIME();
+    public final static native int CLOCK_REALTIME() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> The identifier of the CPU-time clock associated with the
      * thread making a clock() or timer*() function call..
      *
      * @return the native symbolic constant of CLOCK_THREAD_CPUTIME_ID.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define()
-    public final static native int CLOCK_THREAD_CPUTIME_ID();
+    public final static native int CLOCK_THREAD_CPUTIME_ID() throws NotDefinedException;
 
     public final static native boolean HAVE_TIME_H();
 
     /**
-     * <b>POSIX:</b> Flag indicating time is absolute. For functions taking
-     * timer objects, this refers to the clock associated with the timer.
+     * <b>POSIX:</b> Flag indicating time is absolute.For functions taking timer
+     * objects, this refers to the clock associated with the timer.
      *
      * @return the native symbolic constant of TIMER_ABSTIME.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define()
-    public final static native int TIMER_ABSTIME();
+    public final static native int TIMER_ABSTIME() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b>
@@ -170,7 +177,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void clock_getcpuclockid(@pid_t int pid, @clockid_t IntRef clock_id) throws NativeErrorException;
+    public final static native void clock_getcpuclockid(@pid_t int pid, @clockid_t IntRef clock_id) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -184,7 +191,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void clock_getres(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException;
+    public final static native void clock_getres(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -199,7 +206,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void clock_gettime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException;
+    public final static native void clock_gettime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -215,7 +222,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void clock_nanosleep(@clockid_t int clock_id, int flags, Timespec rqtp, Timespec rmtp) throws NativeErrorException;
+    public final static native void clock_nanosleep(@clockid_t int clock_id, int flags, Timespec rqtp, Timespec rmtp) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -230,7 +237,7 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void clock_settime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException;
+    public final static native void clock_settime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -550,19 +557,19 @@ public class Time {
          *
          * @return the native value sizeof(struct itimerspec).
          */
-        public static native int sizeof_itimerspec();
+        public static native int sizeof_itimerspec() throws NoSuchNativeTypeException;
 
-        public static native int offsetof_it_interval();
+        public static native int offsetof_it_interval() throws NoSuchNativeTypeException;
 
-        public static native int offsetof_it_value();
+        public static native int offsetof_it_value() throws NoSuchNativeTypeException;
 
-        public Itimerspec(boolean clearMem) {
+        public Itimerspec(boolean clearMem) throws NoSuchNativeTypeException {
             super(sizeof_itimerspec(), clearMem);
             it_interval = new Timespec(this, offsetof_it_interval());
             it_value = new Timespec(this, offsetof_it_value());
         }
 
-        public Itimerspec() {
+        public Itimerspec() throws NoSuchNativeTypeException {
             this(true);
         }
 
@@ -961,13 +968,13 @@ public class Time {
          *
          * @return the native value sizeof(timer_t).
          */
-        public static native int sizeofTimer_t();
+        public static native int sizeofTimer_t() throws NoSuchNativeTypeException;
 
-        public Timer_t() {
+        public Timer_t() throws NoSuchNativeTypeException {
             super(sizeofTimer_t(), false);
         }
 
-        public Timer_t(boolean cleanMem) {
+        public Timer_t(boolean cleanMem) throws NoSuchNativeTypeException {
             super(sizeofTimer_t(), cleanMem);
         }
 

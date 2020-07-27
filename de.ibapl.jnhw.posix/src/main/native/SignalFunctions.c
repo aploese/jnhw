@@ -62,7 +62,7 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Siginfo_t;Ljava/lang/String;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_psiginfo
-#if defined(__FreeBSD__) || defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject pinfo, __attribute__ ((unused)) jstring message) {
         throw_NoSuchNativeMethodException(env, "psiginfo");
 #else
@@ -107,7 +107,7 @@ extern "C" {
             _message = (*env)->GetStringUTFChars(env, message, NULL);
         }
         errno = 0;
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
         psignal((uint32_t)signo, _message);
 #else
         psignal(signo, _message);
@@ -409,7 +409,7 @@ extern "C" {
      * Signature: (IILde/ibapl/jnhw/posix/Signal/Sigval;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigqueue
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jint signo, __attribute__ ((unused)) jobject sigval) {
         throw_NoSuchNativeMethodException(env, "sigqueue");
 #else
@@ -495,7 +495,7 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Siginfo_t;Lde/ibapl/jnhw/posix/Time/Timespec;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigtimedwait
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass class, __attribute__ ((unused)) jobject set, __attribute__ ((unused)) jobject info, __attribute__ ((unused)) jobject timeout) {
         throw_NoSuchNativeMethodException(env, "sigtimedwait");
         return -1;
@@ -545,7 +545,7 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Siginfo_t;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigwaitinfo
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass class, __attribute__ ((unused)) jobject set, __attribute__ ((unused)) jobject info) {
         throw_NoSuchNativeMethodException(env, "sigwaitinfo");
         return -1;

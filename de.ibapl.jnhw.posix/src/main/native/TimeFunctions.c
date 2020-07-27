@@ -36,6 +36,10 @@ extern "C" {
 #include <signal.h>
 #include <stdlib.h>
 
+#if defined (__APPLE__) 
+#include <xlocale.h>
+#endif
+
     /*
      * Class:     de_ibapl_jnhw_posix_Time
      * Method:    asctime
@@ -89,7 +93,11 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_clock
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__APPLE__)
+        return (int64_t)clock();
+#else
         return clock();
+#endif
     }
 
     /*
@@ -98,6 +106,10 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/IntRef;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getcpuclockid
+#if defined (__APPLE__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jobject clock_id) {
+        throw_NoSuchNativeMethodException(env, "clock_getcpuclockid");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jobject clock_id) {
         if (clock_id == NULL) {
             throw_NullPointerException(env, "clock_id is NULL");
@@ -111,6 +123,7 @@ extern "C" {
         }
 
         SET_INT_REF_VALUE(clock_id, _clock_id);
+#endif
     }
 
     /*
@@ -119,11 +132,16 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getres
+#if defined (__APPLE__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint clock_id, __attribute__ ((unused)) jobject timespec) {
+        throw_NoSuchNativeMethodException(env, "clock_getres");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jobject timespec) {
         if (clock_getres(clock_id, UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(timespec))) {
             throw_NativeErrorException(env, errno);
             return;
         }
+#endif
     }
 
     /*
@@ -132,6 +150,10 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1gettime
+#if defined (__APPLE__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint clock_id, __attribute__ ((unused)) jobject timespec) {
+        throw_NoSuchNativeMethodException(env, "clock_gettime");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jobject timespec) {
         if (timespec == NULL) {
             throw_NullPointerException(env, "timespec is NULL");
@@ -141,6 +163,7 @@ extern "C" {
             throw_NativeErrorException(env, errno);
             return;
         }
+#endif
     }
 
     /*
@@ -149,7 +172,7 @@ extern "C" {
      * Signature: (IILde/ibapl/jnhw/posix/Time$Timespec;Lde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1nanosleep
-#if defined(__OpenBSD__)
+#if defined (__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint clockid, __attribute__ ((unused)) jint flags, __attribute__ ((unused)) jobject rqtp, __attribute__ ((unused)) jobject rmtp) {
         throw_NoSuchNativeMethodException(env, "clock_nanosleep");
 #else
@@ -170,6 +193,10 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1settime
+#if defined (__APPLE__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint clock_id, __attribute__ ((unused)) jobject timespec) {
+        throw_NoSuchNativeMethodException(env, "clock_settime");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jobject timespec) {
         if (timespec == NULL) {
             throw_NullPointerException(env, "timespec is NULL");
@@ -179,6 +206,7 @@ extern "C" {
             throw_NativeErrorException(env, errno);
             return;
         }
+#endif
     }
 
     /*
@@ -189,7 +217,11 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_ctime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong clock) {
 #if __SIZEOF_LONG__ == 8
+#if defined (__APPLE__)
+        const char *result = ctime((long *) & clock);
+#else
         const char *result = ctime((int64_t *) & clock);
+#endif
 #elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
         const char *result = ctime((long int *) &clock);
@@ -219,7 +251,11 @@ extern "C" {
             return NULL;
         }
 #if __SIZEOF_LONG__ == 8
+#if defined (__APPLE__)
+        const char *result = ctime_r((long *) & clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
+#else
         const char *result = ctime_r((int64_t *) & clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
+#endif
 #elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
         const char *result = ctime_r((long int*) &clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
@@ -304,7 +340,11 @@ extern "C" {
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
 #if __SIZEOF_LONG__ == 8
+#if defined (__APPLE__)
+        const struct tm *tm = gmtime((long *) & timer);
+#else
         const struct tm *tm = gmtime((int64_t *) & timer);
+#endif
 #elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
         const struct tm *tm = gmtime((long int*) &timer);
@@ -332,7 +372,11 @@ extern "C" {
         }
         struct tm *_result = UNWRAP_STRUCT_TM_PTR(result);
 #if __SIZEOF_LONG__ == 8
+#if defined (__APPLE__)
+        if (gmtime_r((long *) & timer, _result)) {
+#else
         if (gmtime_r((int64_t *) & timer, _result)) {
+#endif
 #elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
         if (gmtime_r((long int*) &timer, _result)) {
@@ -353,7 +397,11 @@ extern "C" {
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_localtime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
 #if __SIZEOF_LONG__ == 8
+#if defined (__APPLE__)
+        const struct tm *result = localtime((long *) & timer);
+#else
         const struct tm *result = localtime((int64_t *) & timer);
+#endif
 #elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
         const struct tm *result = localtime((long int*) &timer);
@@ -380,7 +428,11 @@ extern "C" {
         }
         struct tm *_result = UNWRAP_STRUCT_TM_PTR(result);
 #if __SIZEOF_LONG__ == 8
+#if defined (__APPLE__)
+        if (localtime_r((long *) & timer, _result)) {
+#else
         if (localtime_r((int64_t *) & timer, _result)) {
+#endif
 #elif __SIZEOF_LONG__ == 4
         //TODO linux arm needs long int int32_t will not suffice Why???
         if (localtime_r((long int*) &timer, _result)) {
@@ -605,7 +657,7 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigevent;Lde/ibapl/jnhw/posix/Time/Timer_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1create
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint clockid, __attribute__ ((unused)) jobject evp, __attribute__ ((unused)) jobject timerid) {
         throw_NoSuchNativeMethodException(env, "timer_create");
 #else
@@ -626,7 +678,7 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1delete
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject timerid) {
         throw_NoSuchNativeMethodException(env, "timer_delete");
 #else
@@ -647,7 +699,7 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1getoverrun
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject timerid) {
         throw_NoSuchNativeMethodException(env, "timer_getoverrun");
         return -1;
@@ -671,7 +723,7 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1gettime
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject timerid, __attribute__ ((unused)) jobject value) {
         throw_NoSuchNativeMethodException(env, "timer_gettime");
 #else
@@ -692,7 +744,7 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;ILde/ibapl/jnhw/posix/Time/Itimerspec;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1settime
-#if defined(__OpenBSD__)
+#if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject timerid, __attribute__ ((unused)) jint flags, __attribute__ ((unused)) jobject value, __attribute__ ((unused)) jobject ovalue) {
         throw_NoSuchNativeMethodException(env, "timer_settime");
 #else

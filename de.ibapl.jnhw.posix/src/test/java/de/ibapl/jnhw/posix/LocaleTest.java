@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.NoSuchNativeMethodException;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,9 +44,9 @@ public class LocaleTest {
     public LocaleTest() {
     }
 
-    private native long nativeLocale_t(long value);
+    private native long nativeLocale_t(long value) throws NoSuchNativeMethodException;
 
-    private native void testNativelyLC_GLOBAL_LOCALE(Locale.Locale_t value);
+    private native void testNativelyLC_GLOBAL_LOCALE(Locale.Locale_t value) throws NoSuchNativeMethodException;
 
     /**
      * Test of native create ans wrap of class Locale.Locale_t.

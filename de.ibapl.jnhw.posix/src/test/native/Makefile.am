@@ -11,7 +11,11 @@ lib_LTLIBRARIES = libjnhw-posix-test.la
 
 noinst_LTLIBRARIES = libtests.la
 
-libjnhw_posix_test_la_LIBADD = libtests.la @JNHW_POSIX_SRC_DIR@/libjnhw-posix.la
+libjnhw_posix_test_la_LIBADD = \
+libtests.la \
+@JNHW_POSIX_SRC_DIR@/libjnhw-posix.la \
+@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+
 
 libtests_la_SOURCES = \
  LocaleTest.c
