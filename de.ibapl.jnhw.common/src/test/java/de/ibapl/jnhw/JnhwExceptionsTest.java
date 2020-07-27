@@ -37,9 +37,9 @@ public class JnhwExceptionsTest {
 
     private static native void throwNoSuchNativeMethodException() throws NoSuchNativeMethodException;
 
-    private static native void throwNoSuchTypeException() throws NoSuchNativeTypeMemberException;
+    private static native void throwNoSuchNativeTypeException() throws NoSuchNativeTypeException;
 
-    private static native void throwNoSuchTypeMemberException() throws NoSuchNativeTypeMemberException;
+    private static native void throwNoSuchNativeTypeMemberException() throws NoSuchNativeTypeMemberException;
 
     private static native void throwNullPointerException() throws NullPointerException;
 
@@ -85,17 +85,17 @@ public class JnhwExceptionsTest {
     }
 
     @Test
-    public void testThrowNoSuchTypeException() {
+    public void testThrowNoSuchNativeTypeException() {
         var ex = Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-            throwNoSuchTypeException();
+            throwNoSuchNativeTypeException();
         });
-        Assertions.assertEquals("No such member a_type", ex.getMessage());
+        Assertions.assertEquals("No such type a_type", ex.getMessage());
     }
 
     @Test
-    public void testThrowNoSuchTypeMemberException() {
+    public void testThrowNoSuchNativeTypeMemberException() {
         var ex = Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
-            throwNoSuchTypeMemberException();
+            throwNoSuchNativeTypeMemberException();
         });
         Assertions.assertEquals("No such member a_type.a_member", ex.getMessage());
     }
