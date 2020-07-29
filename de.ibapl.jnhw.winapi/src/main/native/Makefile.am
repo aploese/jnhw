@@ -93,6 +93,9 @@ libprocessenv_la_SOURCES = \
 #hook into make all
 all-local: $(LIB_JNHW_WINAPI_RES_NAME)
 
+clean-generic:
+	-test -z "$(LIB_JNHW_WINAPI_RES_NAME)" || rm -f $(LIB_JNHW_WINAPI_RES_NAME)
+	
 install-jnhw-resources: $(LIB_JNHW_WINAPI_RES_NAME)
 
 $(LIB_JNHW_WINAPI_RES_NAME): libjnhw-winapi.la

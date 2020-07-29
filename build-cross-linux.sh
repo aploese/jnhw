@@ -26,17 +26,15 @@ for d in\
 do
 export CC=$d-gcc
   $CC --version || exit 1
-  ./configure --host=$d --prefix=$PWD/target/$d || exit 1
+  ./configure --host=$d || exit 1
   make clean || exit 1
   make || exit 1
-  make install || exit 1
 done
 
 
 export CC=gcc
-./configure --prefix=$PWD/target || exit 1
+./configure || exit 1
 make clean || exit 1
 make || exit 1
-make install || exit 1
 
-mvn install || exit 1
+mvn -fae install || exit 1

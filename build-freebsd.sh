@@ -1,6 +1,6 @@
 export JAVA_HOME=/usr/local/openjdk14/
-mvn clean compile  test-compile && \
-./configure --with-jni-include-dir="$JAVA_HOME/include/ $JAVA_HOME/include/freebsd/" && \
-gmake clean && \
-gmake && \
+mvn clean compile  test-compile  || exit 1
+./configure --with-jni-include-dir="$JAVA_HOME/include/ $JAVA_HOME/include/freebsd/"  || exit 1
+gmake clean  || exit 1
+gmake  || exit 1
 mvn -fae install

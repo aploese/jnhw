@@ -628,8 +628,6 @@ install-strip:
 	fi
 mostlyclean-generic:
 
-clean-generic:
-
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
@@ -749,6 +747,9 @@ uninstall-am: uninstall-includeHEADERS uninstall-libLTLIBRARIES
 
 #hook into make all
 all-local: $(LIB_JNHW_COMMON_RES_NAME)
+
+clean-generic:
+	-test -z "$(LIB_JNHW_COMMON_RES_NAME)" || rm -f $(LIB_JNHW_COMMON_RES_NAME)
 
 install-jnhw-resources: $(LIB_JNHW_COMMON_RES_NAME)
 
