@@ -65,8 +65,8 @@ public class StringHeaderTest {
                     break;
                 case MAC_OS_X:
                     assertEquals("Undefined error: 0", StringHeader.strerror(0));
-                    assertEquals("Undefined error: 2147483647", StringHeader.strerror(Integer.MAX_VALUE));
-                    assertEquals("Undefined error: -1", StringHeader.strerror(-1));
+                    assertEquals("Unknown error: 2147483647", StringHeader.strerror(Integer.MAX_VALUE));
+                    assertEquals("Unknown error: -1", StringHeader.strerror(-1));
                     break;
                 default:
                     assertEquals("Success", StringHeader.strerror(0));

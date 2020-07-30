@@ -766,72 +766,82 @@ public class TimeTest {
     @Test
     public void testTimer() throws Exception {
         System.out.println("timer_create");
+        switch (multiarchTupelBuilder.getOS()) {
+            case FREE_BSD:
+            case MAC_OS_X:
+                // precondition for tests not available
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    new Time.Timer_t(true);
+                });
+                break;
+            default:
 
-        final IntRef intRef = new IntRef(0);
-        Time.Timer_t timerid = new Time.Timer_t();
+                final IntRef intRef = new IntRef(0);
+                Time.Timer_t timerid = new Time.Timer_t();
 
-        //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
-        //Pthread.pthread_attr_init(attr);
-        /*
+                //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
+                //Pthread.pthread_attr_init(attr);
+                /*
         Sched.Sched_param parm = new Sched.Sched_param();
         parm.sched_priority(0); //TODO Was 255 but got EINVAL
         Pthread.pthread_attr_setschedparam(attr, parm);
-         */
-        Signal.Sigevent<OpaqueMemory> evp = new Signal.Sigevent<>();
-        //evp.sigev_notify_attributes(attr);
-        evp.sigev_notify(Signal.SIGEV_THREAD());
-        evp.sigev_value.sival_int(42);
-        evp.sigev_notify_function(new Callback_I_V_Impl() {
+                 */
+                Signal.Sigevent<OpaqueMemory> evp = new Signal.Sigevent<>();
+                //evp.sigev_notify_attributes(attr);
+                evp.sigev_notify(Signal.SIGEV_THREAD());
+                evp.sigev_value.sival_int(42);
+                evp.sigev_notify_function(new Callback_I_V_Impl() {
 
-            @Override
-            protected void callback(int sigval) {
-                synchronized (intRef) {
-                    intRef.value = sigval;
-                    intRef.notifyAll();
-                }
-            }
+                    @Override
+                    protected void callback(int sigval) {
+                        synchronized (intRef) {
+                            intRef.value = sigval;
+                            intRef.notifyAll();
+                        }
+                    }
 
-        });
+                });
 
-        System.out.println("evp: " + evp);
-        Time.timer_create(Time.CLOCK_REALTIME(), evp, timerid);
-        try {
-            Time.Itimerspec value = new Time.Itimerspec(true);
+                System.out.println("evp: " + evp);
+                Time.timer_create(Time.CLOCK_REALTIME(), evp, timerid);
+                try {
+                    Time.Itimerspec value = new Time.Itimerspec(true);
 //          Time.Itimerspec ovalue = new Time.Itimerspec(true);
-            value.it_value.tv_sec(2); // after 2 s
-            value.it_interval.tv_sec(1); //fire all 1s
-            System.out.println("timer_settime");
+                    value.it_value.tv_sec(2); // after 2 s
+                    value.it_interval.tv_sec(1); //fire all 1s
+                    System.out.println("timer_settime");
 
-            //TODO Errno.EINVAL() aka 22
-            Time.timer_settime(timerid, 0, value, null);
-            Time.Itimerspec itimerspec = new Time.Itimerspec();
-            System.out.println("timer_gettime");
-            Time.timer_gettime(timerid, itimerspec);
+                    //TODO Errno.EINVAL() aka 22
+                    Time.timer_settime(timerid, 0, value, null);
+                    Time.Itimerspec itimerspec = new Time.Itimerspec();
+                    System.out.println("timer_gettime");
+                    Time.timer_gettime(timerid, itimerspec);
 
 //TODO 2s will be splitted...            assertEquals(value, itimerspec);
-            synchronized (intRef) {
-                if (intRef.value == 0) {
-                    intRef.wait();
+                    synchronized (intRef) {
+                        if (intRef.value == 0) {
+                            intRef.wait();
+                        }
+                        assertEquals(42, intRef.value);
+                    }
+
+                    System.out.println("timer_getoverrun");
+                    int count = Time.timer_getoverrun(timerid);
+
+                    assertEquals(0, count);
+
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                        Time.timer_settime(timerid, 0, null, null);
+                    });
+                    if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
+                        assertEquals(Errno.EFAULT(), nee.errno);
+                    } else {
+                        assertEquals(Errno.EINVAL(), nee.errno);
+                    }
+                } finally {
+                    System.out.println("timer_delete");
+                    Time.timer_delete(timerid);
                 }
-                assertEquals(42, intRef.value);
-            }
-
-            System.out.println("timer_getoverrun");
-            int count = Time.timer_getoverrun(timerid);
-
-            assertEquals(0, count);
-
-            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                Time.timer_settime(timerid, 0, null, null);
-            });
-            if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
-                assertEquals(Errno.EFAULT(), nee.errno);
-            } else {
-                assertEquals(Errno.EINVAL(), nee.errno);
-            }
-        } finally {
-            System.out.println("timer_delete");
-            Time.timer_delete(timerid);
         }
     }
 
