@@ -247,6 +247,7 @@ public class PthreadTest {
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Pthread.pthread_setschedprio(null, 0);
                 });
+                break;
             default:
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Pthread.pthread_setschedprio(null, 0);

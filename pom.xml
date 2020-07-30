@@ -123,7 +123,7 @@
                         <encoding>${project.build.sourceEncoding}</encoding>
                             <compilerArgs>
                                 <arg>-verbose</arg>
-                                <arg>-Xlint:all,-options,-path</arg>
+                                <!--arg>-Xlint:all,-options,-path</arg-->
                             </compilerArgs>
                     </configuration>
                 </plugin>

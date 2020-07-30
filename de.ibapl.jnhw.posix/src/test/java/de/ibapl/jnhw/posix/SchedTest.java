@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
@@ -73,7 +74,7 @@ public class SchedTest {
     public void testSched_getscheduler() throws Exception {
         System.out.println("sched_getscheduler");
         if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
-            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Sched.sched_getscheduler(Unistd.getpid());
             });
         } else {
@@ -89,7 +90,7 @@ public class SchedTest {
     public void testSched_rr_get_interval() throws Exception {
         System.out.println("sched_rr_get_interval");
         if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
-            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Sched.sched_rr_get_interval(Unistd.getpid(), null);
             });
         } else {
@@ -115,10 +116,10 @@ public class SchedTest {
     public void testSched_setgetparam() throws Exception {
         System.out.println("sched_setparam");
         if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
-            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Sched.sched_setparam(Unistd.getpid(), null);
             });
-            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Sched.sched_getparam(Unistd.getpid(), null);
             });
         } else {

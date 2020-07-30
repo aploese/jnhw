@@ -62,10 +62,12 @@ public class StringHeaderTest {
                     assertEquals("No error: 0", StringHeader.strerror(0));
                     assertEquals("Unknown error: 2147483647", StringHeader.strerror(Integer.MAX_VALUE));
                     assertEquals("Unknown error: -1", StringHeader.strerror(-1));
+                    break;
                 case MAC_OS_X:
                     assertEquals("Undefined error: 0", StringHeader.strerror(0));
                     assertEquals("Undefined error: 2147483647", StringHeader.strerror(Integer.MAX_VALUE));
                     assertEquals("Undefined error: -1", StringHeader.strerror(-1));
+                    break;
                 default:
                     assertEquals("Success", StringHeader.strerror(0));
                     assertEquals("Unknown error 2147483647", StringHeader.strerror(Integer.MAX_VALUE));
@@ -88,6 +90,7 @@ public class StringHeaderTest {
                 assertThrows(NoSuchNativeMethodException.class, () -> {
                     StringHeader.strerror_l(Errno.EAGAIN(), null);
                 });
+                break;
             default:
                 assertThrows(NullPointerException.class, () -> {
                     StringHeader.strerror_l(Errno.EAGAIN(), null);
@@ -115,11 +118,13 @@ public class StringHeaderTest {
                     assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));
                     assertEquals("Unknown signal: 0", StringHeader.strsignal(0));
                     assertEquals("Unknown signal: -1", StringHeader.strsignal(-1));
+                    break;
                 case MAC_OS_X:
                     assertEquals("Segmentation fault: 11", StringHeader.strsignal(Signal.SIGSEGV()));
                     assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));
                     assertEquals("Unknown signal: 0", StringHeader.strsignal(0));
                     assertEquals("Unknown signal: -1", StringHeader.strsignal(-1));
+                    break;
                 default:
                     assertEquals("Segmentation fault", StringHeader.strsignal(Signal.SIGSEGV()));
                     assertEquals("Unknown signal 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));

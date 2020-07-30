@@ -652,66 +652,70 @@ public class TimeTest {
     @Test
     public void testTimer_create_delete() throws Exception {
         System.out.println("timer_create");
-        if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
-            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                new Time.Timer_t(true);
-            });
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Time.timer_create(0, null, null);
-            });
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Time.timer_delete(null);
-            });
-        } else {
+        switch (multiarchTupelBuilder.getOS()) {
+            case FREE_BSD:
+            case MAC_OS_X:
+                // precondition for tests not available
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    new Time.Timer_t(true);
+                });
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                    Time.timer_create(0, null, null);
+                });
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                    Time.timer_delete(null);
+                });
+                break;
+            default:
 
-            final Time.Timer_t timerid = new Time.Timer_t(true);
+                final Time.Timer_t timerid = new Time.Timer_t(true);
 
-            Time.timer_create(Time.CLOCK_MONOTONIC(), null, timerid);
-            try {
-                System.out.println("timerid: " + timerid);
-            } finally {
-                Time.timer_delete(timerid);
-            }
+                Time.timer_create(Time.CLOCK_MONOTONIC(), null, timerid);
+                try {
+                    System.out.println("timerid: " + timerid);
+                } finally {
+                    Time.timer_delete(timerid);
+                }
 
-            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                Time.timer_delete(timerid);
-            });
-            assertEquals(Errno.EINVAL(), nee.errno);
+                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    Time.timer_delete(timerid);
+                });
+                assertEquals(Errno.EINVAL(), nee.errno);
 
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
-            });
+                Assertions.assertThrows(NullPointerException.class, () -> {
+                    Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
+                });
 
-            Signal.Sigevent evp = new Signal.Sigevent();
-            Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
-            Pthread.pthread_attr_init(attr);
-            evp.sigev_notify_attributes(attr);
+                Signal.Sigevent evp = new Signal.Sigevent();
+                Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
+                Pthread.pthread_attr_init(attr);
+                evp.sigev_notify_attributes(attr);
 
-            //Setup for signal delivery
-            evp.sigev_notify(Signal.SIGEV_SIGNAL());
-            evp.sigev_signo(Signal.SIGCHLD());
-            evp.sigev_value.sival_ptr(timerid);
+                //Setup for signal delivery
+                evp.sigev_notify(Signal.SIGEV_SIGNAL());
+                evp.sigev_signo(Signal.SIGCHLD());
+                evp.sigev_value.sival_ptr(timerid);
 
-            Time.timer_create(Time.CLOCK_MONOTONIC(), evp, timerid);
+                Time.timer_create(Time.CLOCK_MONOTONIC(), evp, timerid);
 
-            try {
-                System.out.println("timerid: " + timerid);
-            } finally {
-                Time.timer_delete(timerid);
-            }
+                try {
+                    System.out.println("timerid: " + timerid);
+                } finally {
+                    Time.timer_delete(timerid);
+                }
 
-            //TODO want crash test...
+                //TODO want crash test...
 //        if (multiarchTupelBuilder.getOS() != OS.FREE_BSD) {
-            //FreeBSD crashes here with a SIGSEGV ...
-            nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                Time.timer_delete(timerid);
-            });
-            assertEquals(Errno.EINVAL(), nee.errno);
+                //FreeBSD crashes here with a SIGSEGV ...
+                nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    Time.timer_delete(timerid);
+                });
+                assertEquals(Errno.EINVAL(), nee.errno);
 //        }
 
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Time.timer_delete(null);
-            });
+                Assertions.assertThrows(NullPointerException.class, () -> {
+                    Time.timer_delete(null);
+                });
         }
     }
 
@@ -721,26 +725,39 @@ public class TimeTest {
     @Test
     public void testTimer_SIGEV_NONE() throws Exception {
         System.out.println("timer_create Signal");
-        Time.Timer_t timerid = new Time.Timer_t(true);
-        Time.Itimerspec trigger = new Time.Itimerspec(true);
-        Signal.Sigevent sev = new Signal.Sigevent();
+        switch (multiarchTupelBuilder.getOS()) {
+            case FREE_BSD:
+            case MAC_OS_X:
+                // precondition for tests not available
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    new Time.Timer_t(true);
+                });
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    new Time.Itimerspec(true);
+                });
+                break;
+            default:
+                Time.Timer_t timerid = new Time.Timer_t(true);
+                Time.Itimerspec trigger = new Time.Itimerspec(true);
+                Signal.Sigevent sev = new Signal.Sigevent();
 
-        sev.sigev_notify(Signal.SIGEV_NONE());
+                sev.sigev_notify(Signal.SIGEV_NONE());
 
-        Time.timer_create(Time.CLOCK_REALTIME(), sev, timerid);
+                Time.timer_create(Time.CLOCK_REALTIME(), sev, timerid);
 
-        assertEquals(0, Time.timer_getoverrun(timerid));
+                assertEquals(0, Time.timer_getoverrun(timerid));
 
-        Time.timer_gettime(timerid, trigger);
+                Time.timer_gettime(timerid, trigger);
 
-        trigger.it_value.tv_nsec(30000);
-        trigger.it_interval.tv_sec(1000);
+                trigger.it_value.tv_nsec(30000);
+                trigger.it_interval.tv_sec(1000);
 
-        Time.timer_settime(timerid, 0, trigger, null);
+                Time.timer_settime(timerid, 0, trigger, null);
 
-        Thread.sleep(1000);
+                Thread.sleep(1000);
 
-        Time.timer_delete(timerid);
+                Time.timer_delete(timerid);
+        }
     }
 
     /**
@@ -865,16 +882,40 @@ public class TimeTest {
 
     @Test
     public void testTimer_t() throws Exception {
-        Time.Timer_t timer_t = new Time.Timer_t(true);
-        switch (Defines.__WORDSIZE()) {
-            case 32:
-                Assertions.assertEquals("0x00000000", timer_t.toString());
-                break;
-            case 64:
-                Assertions.assertEquals("0x0000000000000000", timer_t.toString());
+        switch (multiarchTupelBuilder.getOS()) {
+            case FREE_BSD:
+            case MAC_OS_X:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    new Time.Timer_t(true);
+                });
                 break;
             default:
-                fail("Wordsize not supported");
+                Time.Timer_t timer_t = new Time.Timer_t(true);
+                switch (Defines.__WORDSIZE()) {
+                    case 32:
+                        Assertions.assertEquals("0x00000000", timer_t.toString());
+                        break;
+                    case 64:
+                        Assertions.assertEquals("0x0000000000000000", timer_t.toString());
+                        break;
+                    default:
+                        fail("Wordsize not supported");
+                }
+        }
+    }
+
+    @Test
+    public void testItimerspec() throws Exception {
+        switch (multiarchTupelBuilder.getOS()) {
+            case FREE_BSD:
+            case MAC_OS_X:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    new Time.Itimerspec(true);
+                });
+                break;
+            default:
+                Time.Itimerspec itimerspec = new Time.Itimerspec(true);
+                Assertions.assertEquals("{it_value : {tv_sec : 0, tv_nsec : 0}, it_interval : {tv_sec : 0, tv_nsec : 0}}", itimerspec.toString());
         }
     }
 
