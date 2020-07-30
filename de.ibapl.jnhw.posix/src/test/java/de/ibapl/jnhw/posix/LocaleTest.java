@@ -23,6 +23,9 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
+import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
@@ -36,8 +39,11 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class LocaleTest {
 
+    private static MultiarchTupelBuilder multiarchTupelBuilder;
+
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
+        multiarchTupelBuilder = new MultiarchTupelBuilder();
         LibJnhwPosixTestLoader.touch();
     }
 
@@ -56,7 +62,14 @@ public class LocaleTest {
     @Test
     public void testUnwrapLC_GLOBAL_LOCALE() throws Exception {
         System.out.println("testUnwrapLC_GLOBAL_LOCALE");
-        testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE());
+        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE());
+            });
+
+        } else {
+            testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE());
+        }
     }
 
     /**
@@ -67,9 +80,16 @@ public class LocaleTest {
     @Test
     public void testLocale_t() throws Exception {
         System.out.println("testLocale_t");
+        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                nativeLocale_t(0);
+            });
+
+        } else {
         Assertions.assertEquals(0, nativeLocale_t(0));
         Assertions.assertEquals(1, nativeLocale_t(1));
-        Assertions.assertEquals(-1, nativeLocale_t(-1));
+            Assertions.assertEquals(-1, nativeLocale_t(-1));
+        }
     }
 
     /**

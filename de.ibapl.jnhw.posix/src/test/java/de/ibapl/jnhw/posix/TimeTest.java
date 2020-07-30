@@ -22,10 +22,12 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Callback_I_V_Impl;
+import de.ibapl.jnhw.Defined;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
+import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
@@ -137,10 +139,19 @@ public class TimeTest {
     @Test
     public void testClock_getcpuclockid() throws Exception {
         System.out.println("clock_getcpuclockid");
-        int pid = 0;
-        IntRef clock_id = new IntRef();
-        Time.clock_getcpuclockid(pid, clock_id);
-        Assertions.assertNotEquals(0, clock_id.value);
+        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Time.clock_getcpuclockid(0, null);
+            });
+        } else {
+            int pid = 0;
+            IntRef clock_id = new IntRef();
+            Time.clock_getcpuclockid(pid, clock_id);
+            Assertions.assertNotEquals(0, clock_id.value);
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Time.clock_getcpuclockid(0, null);
+            });
+        }
     }
 
     /**
@@ -149,15 +160,22 @@ public class TimeTest {
     @Test
     public void testClock_getres() throws Exception {
         System.out.println("clock_getres");
-        Time.Timespec timespec = new Time.Timespec(true);
-        Time.clock_getres(Time.CLOCK_MONOTONIC(), timespec);
+        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+            Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Time.clock_getres(0, null);
+            });
+        } else {
 
-        assertEquals(0, timespec.tv_sec());
-        //TODO virt env needs to be fixed 
-        assertEquals(1, timespec.tv_nsec());
+            Time.Timespec timespec = new Time.Timespec(true);
+            Time.clock_getres(Time.CLOCK_MONOTONIC(), timespec);
 
-        Time.clock_getres(Time.CLOCK_REALTIME(), null);
+            assertEquals(0, timespec.tv_sec());
+            //TODO virt env needs to be fixed
+            assertEquals(1, timespec.tv_nsec());
 
+            Time.clock_getres(Time.CLOCK_REALTIME(), null);
+        }
     }
 
     /**
@@ -166,17 +184,24 @@ public class TimeTest {
     @Test
     public void testClock_gettime() throws Exception {
         System.out.println("clock_gettime");
-        int clock_id = Time.CLOCK_MONOTONIC();
-        Time.Timespec timespec = new Time.Timespec(true);
-        Time.clock_gettime(clock_id, timespec);
+        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+            Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Time.clock_gettime(0, null);
+            });
+        } else {
+            int clock_id = Time.CLOCK_MONOTONIC();
+            Time.Timespec timespec = new Time.Timespec(true);
+            Time.clock_gettime(clock_id, timespec);
 
-        System.out.println("timespec: " + timespec);
-        Assertions.assertTrue(timespec.tv_sec() > 0, "timespec.tv_sec() > 0");
-        Assertions.assertTrue(timespec.tv_nsec() >= 0, "timespec.tv_nsec() >= 0");
+            System.out.println("timespec: " + timespec);
+            Assertions.assertTrue(timespec.tv_sec() > 0, "timespec.tv_sec() > 0");
+            Assertions.assertTrue(timespec.tv_nsec() >= 0, "timespec.tv_nsec() >= 0");
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.clock_gettime(Time.CLOCK_REALTIME(), null);
-        });
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Time.clock_gettime(Time.CLOCK_REALTIME(), null);
+            });
+        }
     }
 
     /**
@@ -185,28 +210,34 @@ public class TimeTest {
     @Test
     public void testClock_nanosleep() throws Exception {
         System.out.println("clock_nanosleep");
+        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+            Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Time.clock_nanosleep(0, 0, null, null);
+            });
+        } else {
+            int clock_id = Time.CLOCK_MONOTONIC();
+            int flags = 0;
+            Time.Timespec rqtp = new Time.Timespec(true);
+            rqtp.tv_nsec(10_000_000L); //10ms
+            Time.Timespec rmtp = new Time.Timespec();
 
-        int clock_id = Time.CLOCK_MONOTONIC();
-        int flags = 0;
-        Time.Timespec rqtp = new Time.Timespec(true);
-        rqtp.tv_nsec(10_000_000L); //10ms
-        Time.Timespec rmtp = new Time.Timespec();
+            long start = System.nanoTime();
+            Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
+            long end = System.nanoTime();
 
-        long start = System.nanoTime();
-        Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
-        long end = System.nanoTime();
+            Assertions.assertTrue(end - start < 12_000_000, "max 12ms but was " + (end - start) + "ns");
+            Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
 
-        Assertions.assertTrue(end - start < 12_000_000, "max 12ms but was " + (end - start) + "ns");
-        Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
+            rqtp.tv_nsec(0);
+            Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
 
-        rqtp.tv_nsec(0);
-        Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
+            Time.clock_nanosleep(clock_id, flags, rqtp, null);
 
-        Time.clock_nanosleep(clock_id, flags, rqtp, null);
-
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.clock_nanosleep(clock_id, flags, null, null);
-        });
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Time.clock_nanosleep(clock_id, flags, null, null);
+            });
+        }
     }
 
     /**
@@ -216,17 +247,23 @@ public class TimeTest {
     public void testClock_settime() throws Exception {
         System.out.println("clock_settime");
 
-        Time.Timespec timespec = new Time.Timespec(true);
+        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+            Assertions.assertFalse(Defined.defined(Time::CLOCK_REALTIME));
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Time.clock_settime(0, null);
+            });
+        } else {
+            Time.Timespec timespec = new Time.Timespec(true);
+            //We should not habe the priveleges to set the CLOCK_REALTIME ... so a NativeErrorException with EPERM as errno should be thrown.
+            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                Time.clock_settime(Time.CLOCK_REALTIME(), timespec);
+            });
+            assertEquals(Errno.EPERM(), nee.errno, "EPERM expected but got " + Errno.getErrnoSymbol(nee.errno));
 
-        //We should not habe the priveleges to set the CLOCK_REALTIME ... so a NativeErrorException with EPERM as errno should be thrown.
-        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-            Time.clock_settime(Time.CLOCK_REALTIME(), timespec);
-        });
-        assertEquals(Errno.EPERM(), nee.errno, "EPERM expected but got " + Errno.getErrnoSymbol(nee.errno));
-
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.clock_settime(Time.CLOCK_REALTIME(), null);
-        });
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Time.clock_settime(Time.CLOCK_REALTIME(), null);
+            });
+        }
     }
 
     /**
@@ -615,56 +652,67 @@ public class TimeTest {
     @Test
     public void testTimer_create_delete() throws Exception {
         System.out.println("timer_create");
+        if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                new Time.Timer_t(true);
+            });
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Time.timer_create(0, null, null);
+            });
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Time.timer_delete(null);
+            });
+        } else {
 
-        final Time.Timer_t timerid = new Time.Timer_t(true);
+            final Time.Timer_t timerid = new Time.Timer_t(true);
 
-        Time.timer_create(Time.CLOCK_MONOTONIC(), null, timerid);
-        try {
-            System.out.println("timerid: " + timerid);
-        } finally {
-            Time.timer_delete(timerid);
-        }
+            Time.timer_create(Time.CLOCK_MONOTONIC(), null, timerid);
+            try {
+                System.out.println("timerid: " + timerid);
+            } finally {
+                Time.timer_delete(timerid);
+            }
 
-        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-            Time.timer_delete(timerid);
-        });
-        assertEquals(Errno.EINVAL(), nee.errno);
+            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                Time.timer_delete(timerid);
+            });
+            assertEquals(Errno.EINVAL(), nee.errno);
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
-        });
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
+            });
 
-        Signal.Sigevent evp = new Signal.Sigevent();
-        Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
-        Pthread.pthread_attr_init(attr);
-        evp.sigev_notify_attributes(attr);
+            Signal.Sigevent evp = new Signal.Sigevent();
+            Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
+            Pthread.pthread_attr_init(attr);
+            evp.sigev_notify_attributes(attr);
 
-        //Setup for signal delivery
-        evp.sigev_notify(Signal.SIGEV_SIGNAL());
-        evp.sigev_signo(Signal.SIGCHLD());
-        evp.sigev_value.sival_ptr(timerid);
+            //Setup for signal delivery
+            evp.sigev_notify(Signal.SIGEV_SIGNAL());
+            evp.sigev_signo(Signal.SIGCHLD());
+            evp.sigev_value.sival_ptr(timerid);
 
-        Time.timer_create(Time.CLOCK_MONOTONIC(), evp, timerid);
+            Time.timer_create(Time.CLOCK_MONOTONIC(), evp, timerid);
 
-        try {
-            System.out.println("timerid: " + timerid);
-        } finally {
-            Time.timer_delete(timerid);
-        }
+            try {
+                System.out.println("timerid: " + timerid);
+            } finally {
+                Time.timer_delete(timerid);
+            }
 
-        //TODO want crash test...
+            //TODO want crash test...
 //        if (multiarchTupelBuilder.getOS() != OS.FREE_BSD) {
-        //FreeBSD crashes here with a SIGSEGV ...
-        nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-            Time.timer_delete(timerid);
-        });
-        assertEquals(Errno.EINVAL(), nee.errno);
+            //FreeBSD crashes here with a SIGSEGV ...
+            nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                Time.timer_delete(timerid);
+            });
+            assertEquals(Errno.EINVAL(), nee.errno);
 //        }
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.timer_delete(null);
-        });
-
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Time.timer_delete(null);
+            });
+        }
     }
 
     /**

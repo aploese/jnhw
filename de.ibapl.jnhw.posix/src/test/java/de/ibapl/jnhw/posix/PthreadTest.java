@@ -26,6 +26,7 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -111,18 +112,23 @@ public class PthreadTest {
     @Test
     public void testPthread_getcpuclockid() throws Exception {
         System.out.println("pthread_getcpuclockid");
-        IntRef clock_id = new IntRef();
+        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Pthread.pthread_getcpuclockid(null, null);
+            });
+        } else {
+            IntRef clock_id = new IntRef();
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Pthread.pthread_getcpuclockid(null, clock_id);
+            });
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_getcpuclockid(null, clock_id);
-        });
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Pthread.pthread_getcpuclockid(Pthread.pthread_self(), null);
+            });
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_getcpuclockid(Pthread.pthread_self(), null);
-        });
-
-        Pthread.pthread_getcpuclockid(Pthread.pthread_self(), clock_id);
-        Assertions.assertNotNull(clock_id.value);
+            Pthread.pthread_getcpuclockid(Pthread.pthread_self(), clock_id);
+            Assertions.assertNotNull(clock_id.value);
+        }
     }
 
     @Test
@@ -235,15 +241,17 @@ public class PthreadTest {
     @Test
     public void testPthread_setschedprio() throws Exception {
         System.out.println("pthread_setschedprio(");
-        if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Pthread.pthread_setschedprio(null, 0);
-            });
-        } else {
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Pthread.pthread_setschedprio(null, 0);
-            });
-            Pthread.pthread_setschedprio(Pthread.pthread_self(), 0);
+        switch (multiarchTupelBuilder.getOS()) {
+            case FREE_BSD:
+            case MAC_OS_X:
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                    Pthread.pthread_setschedprio(null, 0);
+                });
+            default:
+                Assertions.assertThrows(NullPointerException.class, () -> {
+                    Pthread.pthread_setschedprio(null, 0);
+                });
+                Pthread.pthread_setschedprio(Pthread.pthread_self(), 0);
         }
     }
 }

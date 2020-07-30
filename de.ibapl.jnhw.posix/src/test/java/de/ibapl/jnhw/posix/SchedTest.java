@@ -22,7 +22,10 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -32,6 +35,13 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
  */
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SchedTest {
+
+    private static MultiarchTupelBuilder multiarchTupelBuilder;
+
+    @BeforeAll
+    public static void setUpClass() {
+        multiarchTupelBuilder = new MultiarchTupelBuilder();
+    }
 
     public SchedTest() {
     }
@@ -62,8 +72,14 @@ public class SchedTest {
     @Test
     public void testSched_getscheduler() throws Exception {
         System.out.println("sched_getscheduler");
-        int result = Sched.sched_getscheduler(Unistd.getpid());
-        Assertions.assertEquals(Sched.SCHED_OTHER(), result);
+        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                Sched.sched_getscheduler(Unistd.getpid());
+            });
+        } else {
+            int result = Sched.sched_getscheduler(Unistd.getpid());
+            Assertions.assertEquals(Sched.SCHED_OTHER(), result);
+        }
     }
 
     /**
@@ -72,18 +88,24 @@ public class SchedTest {
     @Test
     public void testSched_rr_get_interval() throws Exception {
         System.out.println("sched_rr_get_interval");
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Sched.sched_rr_get_interval(Unistd.getpid(), null);
-        });
+        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                Sched.sched_rr_get_interval(Unistd.getpid(), null);
+            });
+        } else {
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Sched.sched_rr_get_interval(Unistd.getpid(), null);
+            });
 
-        Time.Timespec interval = new Time.Timespec();
-        Sched.sched_rr_get_interval(Unistd.getpid(), interval);
+            Time.Timespec interval = new Time.Timespec();
+            Sched.sched_rr_get_interval(Unistd.getpid(), interval);
 
 //TODO On LINUX sometimes its 0 and sometimes its 8000000
-        Assertions.assertTrue((0L == interval.tv_nsec()) || (8_000_000L == interval.tv_nsec()), "interval.tv_nsec() 0 or 8000000 but was: " + interval.tv_nsec());
-        //Assertions.assertEquals(0L, interval.tv_nsec());
-        //Assertions.assertEquals(8_000_000L, interval.tv_nsec());
-        Assertions.assertEquals(0, interval.tv_sec());
+            Assertions.assertTrue((0L == interval.tv_nsec()) || (8_000_000L == interval.tv_nsec()), "interval.tv_nsec() 0 or 8000000 but was: " + interval.tv_nsec());
+            //Assertions.assertEquals(0L, interval.tv_nsec());
+            //Assertions.assertEquals(8_000_000L, interval.tv_nsec());
+            Assertions.assertEquals(0, interval.tv_sec());
+        }
     }
 
     /**
@@ -92,19 +114,28 @@ public class SchedTest {
     @Test
     public void testSched_setgetparam() throws Exception {
         System.out.println("sched_setparam");
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Sched.sched_setparam(Unistd.getpid(), null);
-        });
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Sched.sched_getparam(Unistd.getpid(), null);
-        });
-        Sched.Sched_param param = new Sched.Sched_param();
-        param.sched_priority(0);
-        Sched.Sched_param param1 = new Sched.Sched_param();
+        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                Sched.sched_setparam(Unistd.getpid(), null);
+            });
+            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                Sched.sched_getparam(Unistd.getpid(), null);
+            });
+        } else {
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Sched.sched_setparam(Unistd.getpid(), null);
+            });
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Sched.sched_getparam(Unistd.getpid(), null);
+            });
+            Sched.Sched_param param = new Sched.Sched_param();
+            param.sched_priority(0);
+            Sched.Sched_param param1 = new Sched.Sched_param();
 
-        Sched.sched_setparam(Unistd.getpid(), param);
-        Sched.sched_getparam(Unistd.getpid(), param1);
-        Assertions.assertEquals(param.sched_priority(), param1.sched_priority());
+            Sched.sched_setparam(Unistd.getpid(), param);
+            Sched.sched_getparam(Unistd.getpid(), param1);
+            Assertions.assertEquals(param.sched_priority(), param1.sched_priority());
+        }
     }
 
     /**
