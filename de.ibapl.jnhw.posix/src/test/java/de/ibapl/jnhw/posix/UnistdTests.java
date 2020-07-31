@@ -227,11 +227,11 @@ public class UnistdTests {
 
     @Test
     public void testLseek() throws Exception {
-        if (Defines.__WORDSIZE() == 32) {
+        if (Defines.__SIZEOF_LONG__() == 4) {
             IndexOutOfBoundsException ioobe = Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 Unistd.lseek(-1, 1L + Integer.MAX_VALUE, Unistd.SEEK_SET());
             });
-        } else if (Defines.__WORDSIZE() == 64) {
+        } else if (Defines.__SIZEOF_LONG__() == 8) {
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                 Unistd.lseek(-1, 1L + Integer.MAX_VALUE, Unistd.SEEK_SET());
             });

@@ -208,10 +208,13 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_AIO_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Aio.HAVE_AIO_H(), "expected not to have aio.h");
-        } else {
-            Assertions.assertTrue(Aio.HAVE_AIO_H(), "expected to have aio.h");
+        switch (multiarchTupelBuilder.getOS()) {
+            case OPEN_BSD:
+            case WINDOWS:
+                Assertions.assertFalse(Aio.HAVE_AIO_H(), "expected not to have aio.h");
+                break;
+            default:
+                Assertions.assertTrue(Aio.HAVE_AIO_H(), "expected to have aio.h");
         }
     }
 
@@ -356,14 +359,13 @@ public class DefinesTest {
                         assertTrue(Defines._LARGEFILE64_SOURCE() != 0);
                         break;
                     default:
-                        fail("no case for this wordsize:" + Defines.__WORDSIZE());
+                        fail("no case for this size of long:" + Defines.__SIZEOF_LONG__());
                         break;
                 }
                 break;
 
             case FREE_BSD:
-                assertFalse(Defined.defined(Defines::_LARGEFILE64_SOURCE));
-                break;
+            case OPEN_BSD:
             case MAC_OS_X:
                 assertFalse(Defined.defined(Defines::_LARGEFILE64_SOURCE));
                 break;
@@ -391,14 +393,13 @@ public class DefinesTest {
                         assertTrue(Defines._LARGEFILE_SOURCE() != 0);
                         break;
                     default:
-                        fail("no case for this wordsize:" + Defines.__WORDSIZE());
+                        fail("no case for this size of long:" + Defines.__SIZEOF_LONG__());
                         break;
                 }
                 break;
 
             case FREE_BSD:
-                assertFalse(Defined.defined(Defines::_LARGEFILE_SOURCE));
-                break;
+            case OPEN_BSD:
             case MAC_OS_X:
                 assertFalse(Defined.defined(Defines::_LARGEFILE_SOURCE));
                 break;
@@ -427,16 +428,13 @@ public class DefinesTest {
         System.out.println("_POSIX_C_SOURCE");
         switch (multiarchTupelBuilder.getOS()) {
             case LINUX:
-                assertEquals(200809, Defines._POSIX_C_SOURCE());
-                break;
             case FREE_BSD:
-                assertEquals(200809, Defines._POSIX_C_SOURCE());
-                break;
+            case OPEN_BSD:
             case MAC_OS_X:
                 assertEquals(200809, Defines._POSIX_C_SOURCE());
                 break;
             case WINDOWS:
-                assertEquals(200809, Defines._POSIX_C_SOURCE());
+                assertEquals(0, Defines._POSIX_C_SOURCE());
                 break;
             default:
                 fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
@@ -451,16 +449,13 @@ public class DefinesTest {
         System.out.println("_XOPEN_SOURCE");
         switch (multiarchTupelBuilder.getOS()) {
             case LINUX:
-                assertEquals(700, Defines._XOPEN_SOURCE());
-                break;
             case FREE_BSD:
-                assertEquals(700, Defines._XOPEN_SOURCE());
-                break;
+            case OPEN_BSD:
             case MAC_OS_X:
                 assertEquals(700, Defines._XOPEN_SOURCE());
                 break;
             case WINDOWS:
-                assertEquals(700, Defines._XOPEN_SOURCE());
+                assertEquals(0, Defines._XOPEN_SOURCE());
                 break;
             default:
                 fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
@@ -475,16 +470,13 @@ public class DefinesTest {
         System.out.println("_XOPEN_SOURCE_EXTENDED");
         switch (multiarchTupelBuilder.getOS()) {
             case LINUX:
-                assertEquals(1, Defines._XOPEN_SOURCE_EXTENDED());
-                break;
             case FREE_BSD:
-                assertEquals(1, Defines._XOPEN_SOURCE_EXTENDED());
-                break;
+            case OPEN_BSD:
             case MAC_OS_X:
                 assertEquals(1, Defines._XOPEN_SOURCE_EXTENDED());
                 break;
             case WINDOWS:
-                assertEquals(1, Defines._XOPEN_SOURCE_EXTENDED());
+                assertEquals(0, Defines._XOPEN_SOURCE_EXTENDED());
                 break;
             default:
                 fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
@@ -516,12 +508,15 @@ public class DefinesTest {
     public void test__WORDSIZE() throws Exception {
         System.out.println("__WORDSIZE");
         for (MultiarchInfo mi : new MultiarchTupelBuilder().guessMultiarch()) {
-            if (mi.getOS() == OS.WINDOWS) {
-                assertThrows(NotDefinedException.class, () -> {
-                    Defines.__WORDSIZE();
-                });
-            } else {
-                assertEquals(mi.getWordSize(), Defines.__WORDSIZE(), "wordsize");
+            switch (mi.getOS()) {
+                case OPEN_BSD:
+                case WINDOWS:
+                    assertThrows(NotDefinedException.class, () -> {
+                        Defines.__WORDSIZE();
+                    });
+                    break;
+                default:
+                    assertEquals(mi.getWordSize(), Defines.__WORDSIZE(), "wordsize");
             }
         }
     }

@@ -243,6 +243,7 @@ public class PthreadTest {
         System.out.println("pthread_setschedprio(");
         switch (multiarchTupelBuilder.getOS()) {
             case FREE_BSD:
+            case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Pthread.pthread_setschedprio(null, 0);
