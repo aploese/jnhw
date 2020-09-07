@@ -210,33 +210,36 @@ public class TimeTest {
     @Test
     public void testClock_nanosleep() throws Exception {
         System.out.println("clock_nanosleep");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
-            Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Time.clock_nanosleep(0, 0, null, null);
-            });
-        } else {
-            int clock_id = Time.CLOCK_MONOTONIC();
-            int flags = 0;
-            Time.Timespec rqtp = new Time.Timespec(true);
-            rqtp.tv_nsec(10_000_000L); //10ms
-            Time.Timespec rmtp = new Time.Timespec();
+        switch (multiarchTupelBuilder.getOS()) {
+            case OPEN_BSD:
+            case MAC_OS_X:
+                Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                    Time.clock_nanosleep(0, 0, null, null);
+                });
+                break;
+            default:
+                int clock_id = Time.CLOCK_MONOTONIC();
+                int flags = 0;
+                Time.Timespec rqtp = new Time.Timespec(true);
+                rqtp.tv_nsec(10_000_000L); //10ms
+                Time.Timespec rmtp = new Time.Timespec();
 
-            long start = System.nanoTime();
-            Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
-            long end = System.nanoTime();
+                long start = System.nanoTime();
+                Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
+                long end = System.nanoTime();
 
-            Assertions.assertTrue(end - start < 12_000_000, "max 12ms but was " + (end - start) + "ns");
-            Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
+                Assertions.assertTrue(end - start < 12_000_000, "max 12ms but was " + (end - start) + "ns");
+                Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
 
-            rqtp.tv_nsec(0);
-            Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
+                rqtp.tv_nsec(0);
+                Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
 
-            Time.clock_nanosleep(clock_id, flags, rqtp, null);
+                Time.clock_nanosleep(clock_id, flags, rqtp, null);
 
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Time.clock_nanosleep(clock_id, flags, null, null);
-            });
+                Assertions.assertThrows(NullPointerException.class, () -> {
+                    Time.clock_nanosleep(clock_id, flags, null, null);
+                });
         }
     }
 
@@ -340,15 +343,18 @@ public class TimeTest {
     public void testGetdate() {
         System.out.println("getdate");
         String string = "Tue Dec  3 15:20:44 2019\n";
-        if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Time.Tm result = Time.getdate(string);
-            });
-        } else {
-            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                Time.Tm result = Time.getdate(string);
-            });
-            assertEquals(1, nee.errno, "getdate_err no DATEMSK expected");
+        switch (multiarchTupelBuilder.getOS()) {
+            case FREE_BSD:
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                    Time.Tm result = Time.getdate(string);
+                });
+                break;
+            default:
+                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    Time.Tm result = Time.getdate(string);
+                });
+                assertEquals(1, nee.errno, "getdate_err no DATEMSK expected");
         }
     }
 
@@ -653,6 +659,14 @@ public class TimeTest {
     public void testTimer_create_delete() throws Exception {
         System.out.println("timer_create");
         switch (multiarchTupelBuilder.getOS()) {
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                    Time.timer_create(0, null, null);
+                });
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                    Time.timer_delete(null);
+                });
+                break;
             case FREE_BSD:
             case MAC_OS_X:
                 // precondition for tests not available
@@ -726,6 +740,12 @@ public class TimeTest {
     public void testTimer_SIGEV_NONE() throws Exception {
         System.out.println("timer_create Signal");
         switch (multiarchTupelBuilder.getOS()) {
+            case OPEN_BSD:
+                // precondition for tests not available
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    new Signal.Sigevent();
+                });
+                break;
             case FREE_BSD:
             case MAC_OS_X:
                 // precondition for tests not available
@@ -767,7 +787,12 @@ public class TimeTest {
     public void testTimer() throws Exception {
         System.out.println("timer_create");
         switch (multiarchTupelBuilder.getOS()) {
-            case FREE_BSD:
+            case OPEN_BSD:
+                // precondition for tests not available
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    new Signal.Sigevent();
+                });
+                break;
             case MAC_OS_X:
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
@@ -901,11 +926,11 @@ public class TimeTest {
                 break;
             default:
                 Time.Timer_t timer_t = new Time.Timer_t(true);
-                switch (Defines.__WORDSIZE()) {
-                    case 32:
+                switch (Defines.__SIZEOF_LONG__()) {
+                    case 4:
                         Assertions.assertEquals("0x00000000", timer_t.toString());
                         break;
-                    case 64:
+                    case 8:
                         Assertions.assertEquals("0x0000000000000000", timer_t.toString());
                         break;
                     default:

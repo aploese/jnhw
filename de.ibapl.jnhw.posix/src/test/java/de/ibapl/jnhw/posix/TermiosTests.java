@@ -29,6 +29,7 @@ import static de.ibapl.jnhw.posix.Termios.CLOCAL;
 import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
 import static de.ibapl.jnhw.posix.Termios.CS8;
+import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -52,6 +53,7 @@ public class TermiosTests {
                 }
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
             case MAC_OS_X:
                 assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
                 break;
@@ -65,6 +67,7 @@ public class TermiosTests {
         switch (NativeLibResolver.getOS()) {
             case LINUX:
             case FREE_BSD:
+            case OPEN_BSD:
             case MAC_OS_X:
                 assertFalse(Defined.defined(Termios::PAREXT), "PAREXT");
                 break;
@@ -78,6 +81,7 @@ public class TermiosTests {
         switch (NativeLibResolver.getOS()) {
             case LINUX:
             case FREE_BSD:
+            case OPEN_BSD:
             case MAC_OS_X:
                 assertTrue(Defined.defined(Termios::PARMRK), "PARMRK");
                 break;
@@ -95,14 +99,21 @@ public class TermiosTests {
                 Termios._HAVE_STRUCT_TERMIOS_C_ISPEED();
                 //Do the test
             } catch (NotDefinedException nee) {
-                //Skip the test
-                return;
+                    Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                        structTermios.c_ispeed();
+                    });
+                    return;
             }
             break;
-            case MAC_OS_X:
+            case FREE_BSD:
                 //Do the test
                 break;
-            case FREE_BSD:
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                    structTermios.c_ispeed();
+                });
+                return;
+            case MAC_OS_X:
                 //Do the test
                 break;
             default:
@@ -125,14 +136,21 @@ public class TermiosTests {
                 Termios._HAVE_STRUCT_TERMIOS_C_OSPEED();
                 //Do the test
             } catch (NotDefinedException nee) {
-                //Skip the test
-                return;
+                    Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                        structTermios.c_ospeed();
+                    });
+                    return;
             }
             break;
-            case MAC_OS_X:
+            case FREE_BSD:
                 //Do the test
                 break;
-            case FREE_BSD:
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                    structTermios.c_ospeed();
+                });
+                return;
+            case MAC_OS_X:
                 //Do the test
                 break;
             default:
