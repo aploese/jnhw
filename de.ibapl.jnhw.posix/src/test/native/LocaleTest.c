@@ -25,6 +25,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#if defined(_POSIX_VERSION)
 
 #include <locale.h>
 /*
@@ -73,3 +74,4 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBA
 }
 #endif
 
+#endif
