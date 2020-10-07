@@ -39,14 +39,8 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_sizeofTimer_1t
-#if defined(__APPLE__) 
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        throw_NoSuchNativeTypeException(env, "timer_t");
-        return -1;
-#else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (timer_t);
-#endif
     }
 
     /*
@@ -55,11 +49,6 @@ extern "C" {
      * Signature: ()Ljava/lang/String;
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_toString
-#if defined(__APPLE__) 
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "No such typedef timer_t");
-        return NULL;
-#else
     (JNIEnv *env, jobject timer) {
         char buf[1024] = {0};
 #if __SIZEOF_LONG__ == 8
@@ -73,7 +62,6 @@ extern "C" {
 #endif
     }
 
-#endif
 #ifdef __cplusplus
 }
 #endif

@@ -34,11 +34,6 @@ extern "C" {
  * Signature: (J)J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_nativeLocale_1t
-#if defined(__APPLE__)
-  (JNIEnv *env, __attribute__ ((unused)) jobject clazz, __attribute__ ((unused)) jlong value) {
-    throw_NoSuchNativeMethodException(env, "nativeLocale_t");
-    return -1;
-#else
   (JNIEnv *env, __attribute__ ((unused)) jobject clazz, jlong value) {
     locale_t _value = (locale_t)(intptr_t)value;
     jobject __value = CREATE_LOCALE_T(_value);
@@ -47,7 +42,6 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_nativeLocale_1t
         throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "Java_de_ibapl_jnhw_posix_LocaleTest_nativeLocale_1t failed expected %p but was %p", value, result);
     }
     return (intptr_t)result;
-#endif
 }   
 
 /*
@@ -56,16 +50,11 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_nativeLocale_1t
  * Signature: (Lde/ibapl/jnhw/posix/Locale/Locale_t;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBAL_1LOCALE
-#if defined(__APPLE__)
-  (JNIEnv *env, __attribute__ ((unused)) jobject clazz, __attribute__ ((unused)) jobject value) {
-    throw_NoSuchNativeMethodException(env, "testNativelyLC_GLOBAL_LOCALE");
-#else
   (JNIEnv *env, __attribute__ ((unused)) jobject clazz, jobject value) {
     locale_t unwrapped = UNWRAP_LOCALE_T(value);
     if (LC_GLOBAL_LOCALE != unwrapped) {
         throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBAL_1LOCALE failed expected %p but was %p", LC_GLOBAL_LOCALE, unwrapped);
     } 
-#endif
   }
 
 

@@ -172,7 +172,7 @@ public class Pthread {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_getcpuclockid.html">pthread_getcpuclockid
      * - access a thread CPU-time clock (ADVANCED REALTIME THREADS)</a>.
      */
-    public final static native void pthread_getcpuclockid(Pthread_t thread_id, @Types.clockid_t IntRef clock_id) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static native void pthread_getcpuclockid(Pthread_t thread_id, @Types.clockid_t IntRef clock_id) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>

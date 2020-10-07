@@ -106,10 +106,6 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/IntRef;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getcpuclockid
-#if defined (__APPLE__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jobject clock_id) {
-        throw_NoSuchNativeMethodException(env, "clock_getcpuclockid");
-#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jobject clock_id) {
         if (clock_id == NULL) {
             throw_NullPointerException(env, "clock_id is NULL");
@@ -123,7 +119,6 @@ extern "C" {
         }
 
         SET_INT_REF_VALUE(clock_id, _clock_id);
-#endif
     }
 
     /*
@@ -132,16 +127,11 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getres
-#if defined (__APPLE__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint clock_id, __attribute__ ((unused)) jobject timespec) {
-        throw_NoSuchNativeMethodException(env, "clock_getres");
-#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jobject timespec) {
         if (clock_getres(clock_id, UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(timespec))) {
             throw_NativeErrorException(env, errno);
             return;
         }
-#endif
     }
 
     /*
@@ -150,10 +140,6 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1gettime
-#if defined (__APPLE__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint clock_id, __attribute__ ((unused)) jobject timespec) {
-        throw_NoSuchNativeMethodException(env, "clock_gettime");
-#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jobject timespec) {
         if (timespec == NULL) {
             throw_NullPointerException(env, "timespec is NULL");
@@ -163,7 +149,6 @@ extern "C" {
             throw_NativeErrorException(env, errno);
             return;
         }
-#endif
     }
 
     /*
@@ -193,10 +178,6 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/posix/Time$Timespec;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1settime
-#if defined (__APPLE__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint clock_id, __attribute__ ((unused)) jobject timespec) {
-        throw_NoSuchNativeMethodException(env, "clock_settime");
-#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jobject timespec) {
         if (timespec == NULL) {
             throw_NullPointerException(env, "timespec is NULL");
@@ -206,7 +187,6 @@ extern "C" {
             throw_NativeErrorException(env, errno);
             return;
         }
-#endif
     }
 
     /*

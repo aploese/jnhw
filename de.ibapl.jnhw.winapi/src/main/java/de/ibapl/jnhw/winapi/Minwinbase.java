@@ -70,11 +70,26 @@ public class Minwinbase {
         public final static native int sizeofOVERLAPPED();
 
         /**
+         * The status code for the I/O request. When the request is issued, the
+         * system sets this member to STATUS_PENDING to indicate that the
+         * operation has not yet started. When the request is completed, the
+         * system sets this member to the status code for the completed request.
+         * <br>
+         * The Internal member was originally reserved for system use and its
+         * behavior may change.
+         *
          * @return the native value of Internal;
+         *
          */
         public final native long Internal();
 
         /**
+         * The number of bytes transferred for the I/O request. The system sets
+         * this member if the request is completed without errors.
+         * <br>
+         * The InternalHigh member was originally reserved for system use and
+         * its behavior may change.
+         *
          * @return the native value of InternalHigh;
          */
         public final native long InternalHigh();

@@ -220,10 +220,6 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;Lde/ibapl/jnhw/IntRef;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1getcpuclockid
-#if defined(__APPLE__) 
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject thread_id, __attribute__ ((unused)) jobject clock_id) {
-    throw_NoSuchNativeMethodException(env, "pthread_setschedprio");
-#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject thread_id, jobject clock_id) {
         if (thread_id == NULL) {
             throw_NullPointerException(env, "thread_id is NULL");
@@ -239,7 +235,6 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
         SET_INT_REF_VALUE(clock_id, _clock_id);
-#endif
     }
 
     /*

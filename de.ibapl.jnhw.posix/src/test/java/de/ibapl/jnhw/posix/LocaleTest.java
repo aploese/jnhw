@@ -49,9 +49,9 @@ public class LocaleTest {
     public LocaleTest() {
     }
 
-    private native long nativeLocale_t(long value) throws NoSuchNativeMethodException;
+    private native long nativeLocale_t(long value);
 
-    private native void testNativelyLC_GLOBAL_LOCALE(Locale.Locale_t value) throws NoSuchNativeMethodException;
+    private native void testNativelyLC_GLOBAL_LOCALE(Locale.Locale_t value);
 
     /**
      * Test of native create ans wrap of class Locale.Locale_t.
