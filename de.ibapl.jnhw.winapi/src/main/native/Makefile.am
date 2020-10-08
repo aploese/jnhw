@@ -9,6 +9,7 @@ lib_LTLIBRARIES = libjnhw-winapi.la
 
 noinst_LTLIBRARIES = \
  libwinnt.la \
+ libbasetsd.la \
  libminwinbase.la \
  libminwindef.la \
  libwinbase.la \
@@ -19,10 +20,12 @@ noinst_LTLIBRARIES = \
  libioapiset.la \
  libhandleapi.la \
  liberrhandlingapi.la \
- libprocessenv.la
+ libprocessenv.la \
+ libprocessthreadsapi.la
  
 libjnhw_winapi_la_LIBADD = \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la \
+ libbasetsd.la \
  libminwinbase.la \
  libminwindef.la \
  libwinnt.la \
@@ -34,7 +37,8 @@ libjnhw_winapi_la_LIBADD = \
  libioapiset.la \
  libhandleapi.la \
  liberrhandlingapi.la \
- libprocessenv.la
+ libprocessenv.la \
+ libprocessthreadsapi.la
 
 libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
@@ -43,6 +47,10 @@ libwinnt_la_SOURCES = \
  WinntDefines.c \
  Winnt_PHANDLE.c \
  Winnt_LPWSTR.c
+
+libbasetsd_la_SOURCES = \
+  BaseTsdDefines.c \
+  BaseTsdFunctions.c
 
 libminwinbase_la_SOURCES = \
  MinwinbaseDefines.c \
@@ -89,6 +97,10 @@ liberrhandlingapi_la_SOURCES = \
 libprocessenv_la_SOURCES = \
  ProcessEnvDefines.c \
  ProcessEnvFunctions.c 
+
+libprocessthreadsapi_la_SOURCES = \
+ ProcessthreadsapiDefines.c \
+ ProcessthreadsapiFunctions.c 
 
 #hook into make all
 all-local: $(LIB_JNHW_WINAPI_RES_NAME)

@@ -18,6 +18,8 @@ libtests_la_SOURCES = \
  LongRefTests.c \
  ObjectRefTests.c \
  Callback_I_V_Tests.c \
+ Callback_J_V_Tests.c \
+ Callback_IJ_V_Tests.c \
  Callback_I_I_PtrOpaqueMemory_V_Tests.c \
  Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.c \
  Callback_PtrOpaqueMemory_V_Tests.c \

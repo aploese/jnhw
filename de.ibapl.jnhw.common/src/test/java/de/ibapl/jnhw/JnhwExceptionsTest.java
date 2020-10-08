@@ -49,6 +49,8 @@ public class JnhwExceptionsTest {
 
     private static native void throwIllegalArgumentException() throws IllegalArgumentException;
 
+    private static native void throwRuntimeException() throws IllegalArgumentException;
+
     private static native void throwException(String className) throws Exception;
 
     @BeforeAll
@@ -130,6 +132,14 @@ public class JnhwExceptionsTest {
             throwIllegalArgumentException();
         });
         Assertions.assertEquals("arg_illegal", ex.getMessage());
+    }
+
+    @Test
+    public void testThrowRuntimeException() {
+        var ex = Assertions.assertThrows(RuntimeException.class, () -> {
+            throwRuntimeException();
+        });
+        Assertions.assertEquals("runtime 42", ex.getMessage());
     }
 
     @Test

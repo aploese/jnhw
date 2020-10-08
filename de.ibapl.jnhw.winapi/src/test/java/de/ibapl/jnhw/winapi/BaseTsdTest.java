@@ -19,11 +19,52 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-module de.ibapl.jnhw.winapi {
-    requires java.logging;
+package de.ibapl.jnhw.winapi;
 
-    requires transitive de.ibapl.jnhw.common;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-    exports de.ibapl.jnhw.winapi;
-    exports de.ibapl.jnhw.util.winapi;
+import de.ibapl.jnhw.winapi.BaseTsd;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ *
+ * @author aploese
+ */
+@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+public class BaseTsdTest {
+
+    public BaseTsdTest() {
+    }
+
+    @BeforeAll
+    public static void setUpClass() {
+    }
+
+    @AfterAll
+    public static void tearDownClass() {
+    }
+
+    @BeforeEach
+    public void setUp() {
+    }
+
+    @AfterEach
+    public void tearDown() {
+    }
+
+    /**
+     * Test of ULONG_PTR.
+     */
+    @Test
+    public void testULONG_PTR() {
+        System.out.println("test ULONG_PTR");
+        assertEquals(64, BaseTsd.sizeofULONG_PTR());
+    }
+
 }

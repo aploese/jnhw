@@ -122,7 +122,6 @@ public class Minwinbase {
 
     }
 
-
     /**
      * <b>WIN:</b> <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa379560(v=vs.85)">{@code structure
      * SECURITY_ATTRIBUTES}</a>.

@@ -516,7 +516,7 @@ public class DefinesTest {
                     });
                     break;
                 default:
-                    assertEquals(mi.getWordSize(), Defines.__WORDSIZE(), "wordsize");
+                    assertEquals(mi.getWordSize().sizeInBit, Defines.__WORDSIZE(), "wordsize");
             }
         }
     }

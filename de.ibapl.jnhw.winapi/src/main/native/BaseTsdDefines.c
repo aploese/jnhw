@@ -19,11 +19,32 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-module de.ibapl.jnhw.winapi {
-    requires java.logging;
+#include "jnhw-winapi.h"
+#include "de_ibapl_jnhw_winapi_BaseTsd.h"
 
-    requires transitive de.ibapl.jnhw.common;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-    exports de.ibapl.jnhw.winapi;
-    exports de.ibapl.jnhw.util.winapi;
+    /*
+    * Class:     de_ibapl_jnhw_winapi_BaseTsd
+    * Method:    HAVE_BASETSD_H
+    * Signature: ()Z
+    */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_BaseTsd_HAVE_1BASETSD_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#ifdef HAVE_BASETSD_H
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
+    }
+
+#ifdef HAVE_BASETSD_H
+#include <basetsd.h>
+
+
+#endif
+#ifdef __cplusplus
 }
+#endif

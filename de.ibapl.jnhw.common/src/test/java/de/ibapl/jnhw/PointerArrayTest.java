@@ -48,7 +48,7 @@ public class PointerArrayTest {
      */
     @Test
     public void testSizeofPointer() {
-        Assertions.assertEquals(NativeLibResolver.getLoadedMultiarch().getWordSize(), PointerArray.sizeofPointer() * 8, "Wordize mismatch");
+        Assertions.assertEquals(NativeLibResolver.getLoadedMultiarch().getWordSize().sizeInBit, PointerArray.sizeofPointer() * 8, "Wordize mismatch");
     }
 
     /**

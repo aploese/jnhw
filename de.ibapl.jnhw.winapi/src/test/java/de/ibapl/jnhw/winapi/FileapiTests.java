@@ -435,6 +435,20 @@ public class FileapiTests {
             Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory.getByte(opaqueMemory, i));
         }
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Test of readFileEx method, of class Fileapi.
+     */
+    @Test
+    public void testReadFileEx_ByteBuffer() throws Exception {
+        System.out.println("ReadFileEx(ByteBuffer)");
+        //Clean up references to Callbacks
+        System.gc();
+
+        final ObjectRef objRef = new ObjectRef(null);
+>>>>>>> 9c4df07446de10a8184d56cd13a8b551441a289e
 
     @Test
     public void testOpaqueMemoryIOCompetitionPort() throws Exception {

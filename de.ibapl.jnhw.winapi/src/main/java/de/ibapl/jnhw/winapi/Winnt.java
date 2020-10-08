@@ -24,6 +24,8 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.Callback_IJ_V_Impl;
+import de.ibapl.jnhw.winapi.BaseTsd.ULONG_PTR;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 
 /**
@@ -632,6 +634,24 @@ public final class Winnt {
         public String toString() {
             return String.format("{value = 0x%08x}", getHandleValue());
         }
+
+    }
+
+    public abstract static class PAPCFUNC extends Callback_IJ_V_Impl {
+        
+    /**
+     * this will be called from the native code on 32 bit.
+     *
+     * @param value
+     */
+    protected abstract void callback(@ULONG_PTR long value);
+
+    /**
+     * this will be called from the native code on 64 bit.
+     *
+     * @param value
+     */
+    protected abstract void callback(@ULONG_PTR int value);
 
     }
 
