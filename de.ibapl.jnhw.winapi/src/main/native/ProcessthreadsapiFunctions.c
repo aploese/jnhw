@@ -47,7 +47,7 @@ JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pfnAPC, jobject hThr
 #if defined(_WIN64)
         if(QueueUserAPC(UNWRAP_NATIVE_FUNCTION_POINTER_TO(PAPCFUNC, pfnAPC), UNWRAP_HANDLE(hThread), (uint64_t)dwData)) {
 #elif defined(_WIN32)
-        if ((dwData > MAX_LONG) || (dwData < MAX_LONG)) {
+        if ((dwData > LONG_MAX) || (dwData < LONG_MAX)) {
             throw_IllegalArgumentException(env, "dwData out of bounds for 32 bit!");
             return;
         }

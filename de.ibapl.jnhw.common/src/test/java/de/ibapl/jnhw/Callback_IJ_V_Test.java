@@ -162,6 +162,7 @@ public class Callback_IJ_V_Test {
             protected void callback(long value) {
                 if (!t.equals(Thread.currentThread())) {
                     longRef.value = value;
+                    intRef.value = -1;
                 }
             }
 
@@ -169,6 +170,7 @@ public class Callback_IJ_V_Test {
             protected void callback(int value) {
                 if (!t.equals(Thread.currentThread())) {
                     intRef.value = value;
+                    longRef.value = -1;
                 }
             }
 
@@ -183,9 +185,11 @@ public class Callback_IJ_V_Test {
         switch (WORD_SIZE) {
             case _32_BIT:
                 assertEquals(42, intRef.value);
+                assertEquals(-1, longRef.value);
                 break;
             case _64_BIT:
                 assertEquals(42, longRef.value);
+                assertEquals(-1, intRef.value);
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -232,11 +236,13 @@ public class Callback_IJ_V_Test {
             @Override
             protected void callback(long value) {
                 longRef.value = value;
+                intRef.value = -1;
             }
 
             @Override
             protected void callback(int value) {
                 intRef.value = value;
+                longRef.value = -1;
             }
 
         };
@@ -251,9 +257,11 @@ public class Callback_IJ_V_Test {
         switch (WORD_SIZE) {
             case _32_BIT:
                 assertEquals(42, intRef.value);
+                assertEquals(-1, longRef.value);
                 break;
             case _64_BIT:
                 assertEquals(42, longRef.value);
+                assertEquals(-1, intRef.value);
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);

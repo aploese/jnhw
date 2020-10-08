@@ -21,7 +21,7 @@
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
-#include "de_ibapl_jnhw_Callback_I_V_Test.h"
+#include "de_ibapl_jnhw_Callback_IJ_V_Test.h"
 
 //First go for windows.h because mingw has a pthread.h too...
 #ifdef HAVE_WINDOWS_H
@@ -79,10 +79,10 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_Callback_IJ_V_Tests
      * Method:    doCallTheCallback
-     * Signature: (I)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1IJ_1V_1Test_doCallTheCallback
-    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jint value) {
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong value) {
 #ifdef HAVE_WINDOWS_H
         HANDLE hThread;
         DWORD   dwThreadId;
