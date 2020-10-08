@@ -19,37 +19,29 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw;
+#define _JNHW_COMMON_IMPLEMENTATION_ 1
+#include "de_ibapl_jnhw_Callback_IJ_V.h"
 
-import java.util.function.Function;
 
-/**
- *
- * @author aploese
+#include "jnhw-common.h"
+
+#include <stdlib.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*
+ * Class:     de_ibapl_jnhw_Callback_IJ_V
+ * Method:    sizeofIntptr_t
+ * Signature: ()I
  */
-public abstract class Callback_IJ_V extends NativeFunctionPointer {
-
-    protected <T extends Callback_IJ_V> Callback_IJ_V(Function<T, NativeAddressHolder> producer) {
-        super(producer);
-    }
-
-    protected Callback_IJ_V(NativeAddressHolder src) {
-        super(src);
-    }
-
-    public static native int sizeofIntptr_t();
-    
-    /**
-     * this will be called from the native code.
-     *
-     * @param value
-     */
-    protected abstract void callback(long value);
-
-    /**
-     * this will be called from the native code.
-     *
-     * @param value
-     */
-    protected abstract void callback(int value);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_Callback_1IJ_1V_sizeofIntptr_1t
+  (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+    return sizeof(intptr_t);
 }
+
+
+#ifdef __cplusplus
+}
+#endif
