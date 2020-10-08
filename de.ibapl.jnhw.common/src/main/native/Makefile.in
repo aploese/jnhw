@@ -139,7 +139,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 libjnhw_common_la_LIBADD =
 am_libjnhw_common_la_OBJECTS = jnhw-common.lo JnhwExceptions.lo \
 	OpaqueMemory.lo PointerArray.lo Callback_I_V_Impl.lo \
-	Callback_J_V_Impl.lo Callback_IJ_V_Impl.lo \
+	Callback_J_V_Impl.lo Callback_IJ_V.lo Callback_IJ_V_Impl.lo \
 	Callback_I_I_PtrOpaqueMemory_V_Impl.lo \
 	Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.lo \
 	Callback_PtrOpaqueMemory_V_Impl.lo Callback_NativeRunnable.lo \
@@ -164,7 +164,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/Callback_IJ_V_Impl.Plo \
+am__depfiles_remade = ./$(DEPDIR)/Callback_IJ_V.Plo \
+	./$(DEPDIR)/Callback_IJ_V_Impl.Plo \
 	./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Impl.Plo \
 	./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.Plo \
 	./$(DEPDIR)/Callback_I_V_Impl.Plo \
@@ -369,6 +370,7 @@ libjnhw_common_la_SOURCES = \
  PointerArray.c \
  Callback_I_V_Impl.c \
  Callback_J_V_Impl.c \
+ Callback_IJ_V.c \
  Callback_IJ_V_Impl.c \
  Callback_I_I_PtrOpaqueMemory_V_Impl.c \
  Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.c \
@@ -454,6 +456,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_IJ_V.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_IJ_V_Impl.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Impl.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.Plo@am__quote@ # am--include-marker
@@ -647,7 +650,8 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/Callback_IJ_V_Impl.Plo
+		-rm -f ./$(DEPDIR)/Callback_IJ_V.Plo
+	-rm -f ./$(DEPDIR)/Callback_IJ_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_V_Impl.Plo
@@ -704,7 +708,8 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/Callback_IJ_V_Impl.Plo
+		-rm -f ./$(DEPDIR)/Callback_IJ_V.Plo
+	-rm -f ./$(DEPDIR)/Callback_IJ_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_V_Impl.Plo
