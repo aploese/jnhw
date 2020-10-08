@@ -65,4 +65,13 @@ public abstract class Processthreadsapi {
      * indicates an error.
      */
     public final static native void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, @ULONG_PTR long dwData);
+    
+        /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthread">GetCurrentThread</a>
+     * Retrieves a pseudo handle for the calling thread.
+     *
+     * @return  a pseudo handle for the current thread.
+     *
+     */
+    public final static native HANDLE GetCurrentThread();
 }

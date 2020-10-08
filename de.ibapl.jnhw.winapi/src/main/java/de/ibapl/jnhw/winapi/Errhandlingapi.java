@@ -58,8 +58,14 @@ public abstract class Errhandlingapi {
      * have been set; some functions set the last-error code to 0 on success and
      * others do not.
      */
-    @Define
     public final static native int GetLastError();
+    
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-setlasterror">GetLastError</a>
+     * Sets the last-error code for the calling thread.
+     *
+     */
+    public final static native void SetLastError(int dwErrCode);
 
     public final static native boolean HAVE_ERRHANDLINGAPI_H();
 

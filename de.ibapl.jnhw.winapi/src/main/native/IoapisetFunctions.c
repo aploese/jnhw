@@ -144,7 +144,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_GetQueuedCompletionSta
             throw_NullPointerException(env, "lpOverlapped is null.");
             return;
         }
-        if (dwMilliseconds < 0) {
+        if ((dwMilliseconds < 0) && ((uint32_t)dwMilliseconds != INFINITE))  {
             throw_IllegalArgumentException(env, "dwMilliseconds < 0");
             return;
         }

@@ -49,5 +49,5 @@ public class WinntTests {
         lpByte.bufferEnd = data.length;
         Assertions.assertEquals("HELLO WORLD!", Winnt.LPWSTR.stringValueOfNullTerminated(lpByte));
     }
-
+    
 }

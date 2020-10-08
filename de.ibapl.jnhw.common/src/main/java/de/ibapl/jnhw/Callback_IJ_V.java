@@ -29,6 +29,13 @@ import java.util.function.Function;
  */
 public abstract class Callback_IJ_V extends NativeFunctionPointer {
 
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwCommonLoader.touch();
+    }
+
     protected <T extends Callback_IJ_V> Callback_IJ_V(Function<T, NativeAddressHolder> producer) {
         super(producer);
     }

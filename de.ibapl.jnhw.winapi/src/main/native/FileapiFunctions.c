@@ -429,11 +429,7 @@ extern "C" {
             throw_NullPointerException(env, "lpCompletionRoutine is null.");
             return;
         }
-        if (ReadFileEx(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
-            if (GetLastError() != ERROR_SUCCESS) {
-                throw_NativeErrorException(env, (int32_t) GetLastError());
-            }
-        } else {    
+        if (!ReadFileEx(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
@@ -445,11 +441,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx_1ArgsOK
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jint off, jint nNumberOfBytesToRead, jobject lpOverlapped, jobject lpCompletionRoutine) {
-        if (ReadFileEx(UNWRAP_HANDLE(hFile), (*env)->GetDirectBufferAddress(env, lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
-            if (GetLastError() != ERROR_SUCCESS) {
-                throw_NativeErrorException(env, (int32_t) GetLastError());
-            }
-        } else {    
+        if (!ReadFileEx(UNWRAP_HANDLE(hFile), (*env)->GetDirectBufferAddress(env, lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
@@ -481,11 +473,7 @@ extern "C" {
             throw_NullPointerException(env, "lpCompletionRoutine is null.");
             return;
         }
-        if (WriteFileEx(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
-            if (GetLastError() != ERROR_SUCCESS) {
-                throw_NativeErrorException(env, (int32_t) GetLastError());
-            }
-        } else {    
+        if (!WriteFileEx(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
@@ -497,11 +485,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx_1ArgsOK
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jint off, jint nNumberOfBytesToWrite, jobject lpOverlapped, jobject lpCompletionRoutine) {
-        if (WriteFileEx(UNWRAP_HANDLE(hFile), (*env)->GetDirectBufferAddress(env, lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
-            if (GetLastError() != ERROR_SUCCESS) {
-                throw_NativeErrorException(env, (int32_t) GetLastError());
-            }
-        } else {    
+        if (!WriteFileEx(UNWRAP_HANDLE(hFile), (*env)->GetDirectBufferAddress(env, lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }

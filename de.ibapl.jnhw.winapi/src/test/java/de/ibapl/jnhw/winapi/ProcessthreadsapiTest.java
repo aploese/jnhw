@@ -21,6 +21,11 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.Callback_IJ_V;
+import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.LongRef;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,23 +44,31 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class ProcessthreadsapiTest {
 
-    public ProcessthreadsapiTest() {
-    }
+    private static MultiarchInfo.WordSize WORD_SIZE;
 
     @BeforeAll
     public static void setUpClass() {
+        MultiarchInfo multiarchInfo = new MultiarchTupelBuilder().guessMultiarch().iterator().next();
+        WORD_SIZE = multiarchInfo.getWordSize();
     }
 
-    @AfterAll
-    public static void tearDownClass() {
+    public ProcessthreadsapiTest() {
     }
 
-    @BeforeEach
-    public void setUp() {
+    /**
+     * Test of QueueUserAPC method, of class Processthreadsapi.
+     */
+    @Test
+    public void test__QueueUserAPC__CanUse__Callback_IJ_V() {
+        assertEquals(Callback_IJ_V.sizeofIntptr_t(), BaseTsd.sizeofULONG_PTR());
     }
 
-    @AfterEach
-    public void tearDown() {
+    /**
+     * Test of GetCurrentThread, of class Processthreadsapi.
+     */
+    @Test
+    public void testGetCurrentThread() {
+        assertNotNull(Processthreadsapi.GetCurrentThread());
     }
 
     /**
@@ -64,11 +77,57 @@ public class ProcessthreadsapiTest {
     @Test
     public void testQueueUserAPC() {
         System.out.println("QueueUserAPC");
-        PAPCFUNC pfnAPC = null;
-        HANDLE hThread = null;
-        Processthreadsapi.QueueUserAPC(pfnAPC, hThread, 0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        final LongRef longRef = new LongRef();
+        final IntRef intRef = new IntRef();
 
+        PAPCFUNC pfnAPC = new PAPCFUNC() {
+            @Override
+            protected void callback(long value) {
+                longRef.value = value;
+                intRef.value = -1;
+            }
+
+            @Override
+            protected void callback(int value) {
+                intRef.value = value;
+                longRef.value = -1;
+            }
+        };
+
+        HANDLE hThread = Processthreadsapi.GetCurrentThread();
+
+        NullPointerException npe = assertThrows(NullPointerException.class, () -> {
+            Processthreadsapi.QueueUserAPC(null, hThread, 0);
+        });
+        assertEquals("pfnAPC is null!", npe.getMessage());
+
+        npe = assertThrows(NullPointerException.class, () -> {
+            Processthreadsapi.QueueUserAPC(pfnAPC, null, 0);
+        });
+        assertEquals("hThread is null!", npe.getMessage());
+
+        Processthreadsapi.QueueUserAPC(pfnAPC, hThread, 42);
+
+        long result = Synchapi.SleepEx(100, true);
+        assertEquals(Winbase.WAIT_IO_COMPLETION(), result);
+        
+        switch (WORD_SIZE) {
+            case _32_BIT:
+                assertEquals(-1, longRef.value);
+                assertEquals(42, intRef.value);
+                assertThrows(IllegalArgumentException.class, () -> {
+                    Processthreadsapi.QueueUserAPC(pfnAPC, null, 1L + Integer.MAX_VALUE);
+                });
+                assertThrows(IllegalArgumentException.class, () -> {
+                    Processthreadsapi.QueueUserAPC(pfnAPC, null, Integer.MIN_VALUE - 1L);
+                });
+                break;
+            case _64_BIT:
+                assertEquals(-1, intRef.value);
+                assertEquals(42, longRef.value);
+                break;
+            default:
+                throw new RuntimeException("Cant handle wordsize " + WORD_SIZE);
+        }
+    }
 }

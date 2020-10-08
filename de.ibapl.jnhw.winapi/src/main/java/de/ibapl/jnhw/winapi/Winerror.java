@@ -174,7 +174,15 @@ public abstract class Winerror {
      */
     @Define
     public final static native int ERROR_SHARING_VIOLATION();
-
+    
+    /**
+     * The wait operation timed out.
+     * 
+     * @return the native symbolic constant of WAIT_TIMEOUT.
+     */
+    @Define
+    public final static native int WAIT_TIMEOUT();
+        
     /**
      * The specified procedure could not be found.
      *

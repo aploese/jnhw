@@ -218,6 +218,16 @@ extern "C" {
         return ERROR_IO_INCOMPLETE;
     }
             
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winerror
+     * Method:    WAIT_TIMEOUT
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_WAIT_1TIMEOUT
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return WAIT_TIMEOUT;
+    }
+            
 #endif
 
 #ifdef __cplusplus

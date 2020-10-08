@@ -155,7 +155,7 @@ public final class Ioapiset {
      * indicates an error.
      */
     //TODO Test
-    public static native HANDLE CreateIoCompletionPort(HANDLE FileHandle, HANDLE ExistingCompletionPort, long CompletionKey, int NumberOfConcurrentThreads) throws NativeErrorException;
+    public static native HANDLE CreateIoCompletionPort(HANDLE FileHandle, HANDLE ExistingCompletionPort, @BaseTsd.ULONG_PTR long CompletionKey, int NumberOfConcurrentThreads) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-getqueuedcompletionstatus">GetQueuedCompletionStatus</a>
@@ -179,7 +179,7 @@ public final class Ioapiset {
      * indicates an error.
      */
     //TODO Test
-    public static native void GetQueuedCompletionStatus(HANDLE CompletionPort, IntRef lpNumberOfBytesTransferred, LongRef lpCompletionKey, ObjectRef<NativeAddressHolder> lpOverlapped, long dwMilliseconds) throws NativeErrorException;
+    public static native void GetQueuedCompletionStatus(HANDLE CompletionPort, IntRef lpNumberOfBytesTransferred, @BaseTsd.ULONG_PTR LongRef lpCompletionKey, ObjectRef<NativeAddressHolder> lpOverlapped, long dwMilliseconds) throws NativeErrorException;
 
     public final static native boolean HAVE_IOAPISET_H();
 
