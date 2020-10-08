@@ -53,7 +53,7 @@ extern "C" {
      
 
 #define UNWRAP_HANDLE(handle) (HANDLE) (intptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
-#define UNWRAP_HANDLE_OR_NULL(handle) (handle) == NULL ? NULL : (HANDLE) (intptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
+#define UNWRAP_HANDLE_OR_NULL(handle) (handle) == NULL ? NULL : UNWRAP_HANDLE(handle)
 #define CREATE_HANDLE(value) (*env)->NewObject(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID, (jlong) (intptr_t) value)
 
 #define UNWRAP_PHANDLE(handle) UNWRAP_OPAQUE_MEM_TO(PHANDLE, handle)   
@@ -88,6 +88,8 @@ extern "C" {
 #define UNWRAP_DCB(dcb) UNWRAP_OPAQUE_MEM_TO(DCB*, dcb)
 
 #define UNWRAP_COMMTIMEOUTS(commTimeOuts) UNWRAP_OPAQUE_MEM_TO(COMMTIMEOUTS*, commTimeOuts)
+
+#define UNWRAP_PAPCFUNC(pfnAPC) ss
 
 #ifdef __cplusplus
 }

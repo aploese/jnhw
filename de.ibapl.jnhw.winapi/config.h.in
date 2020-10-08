@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Define to 1 if you have the <basetsd.h> header file. */
+#undef HAVE_BASETSD_H
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
@@ -29,6 +32,9 @@
 
 /* Define to 1 if you have the <processenv.h> header file. */
 #undef HAVE_PROCESSENV_H
+
+/* Define to 1 if you have the <processthreadsapi.h> header file. */
+#undef HAVE_PROCESSTHREADSAPI_H
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H

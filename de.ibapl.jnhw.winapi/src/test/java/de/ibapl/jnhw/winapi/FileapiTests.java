@@ -327,6 +327,7 @@ public class FileapiTests {
             Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory.getByte(opaqueMemory, i));
         }
     }
+
     /**
      * Test of readFileEx method, of class Fileapi.
      */

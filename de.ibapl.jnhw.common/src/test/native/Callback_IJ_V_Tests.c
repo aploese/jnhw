@@ -42,32 +42,32 @@ extern "C" {
     static _callback_I_V callbackPtr = NULL;
 
     /*
-     * Class:     de_ibapl_jnhw_Callback_I_V_Tests
+     * Class:     de_ibapl_jnhw_Callback_IJ_V_Tests
      * Method:    setCallback
      * Signature: (Lde/ibapl/jnhw/NativeCallback;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_1Test_setCallback
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1IJ_1V_1Test_setCallback
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
         callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int), callback);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_Callback_I_V_Tests
+     * Class:     de_ibapl_jnhw_Callback_IJ_V_Tests
      * Method:    getCallbackPtr
      * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_1Test_getCallbackPtr
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_Callback_1IJ_1V_1Test_getCallbackPtr
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return CREATE_NATIVE_FUNCTION_POINTER(callbackPtr);
     }
 
 #ifdef HAVE_WINDOWS_H
-    DWORD WINAPI thr_fn_I(LPVOID args) {
+    DWORD WINAPI thr_fn_IJ(LPVOID args) {
             callbackPtr(*((int*)args));
             return 0;
     }
 #elif defined HAVE_PTHREAD_H
-    void * thr_fn_I(void *args) {
+    void * thr_fn_IJ(void *args) {
             callbackPtr(*((int*)args));
             return NULL;
     }
@@ -77,11 +77,11 @@ extern "C" {
     
     
     /*
-     * Class:     de_ibapl_jnhw_Callback_I_V_Tests
+     * Class:     de_ibapl_jnhw_Callback_IJ_V_Tests
      * Method:    doCallTheCallback
      * Signature: (I)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1I_1V_1Test_doCallTheCallback
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1IJ_1V_1Test_doCallTheCallback
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jint value) {
 #ifdef HAVE_WINDOWS_H
         HANDLE hThread;
@@ -90,7 +90,7 @@ extern "C" {
         hThread = CreateThread( 
             NULL,           // default security attributes
             0,              // use default stack size  
-            thr_fn_I,         // thread function name
+            thr_fn_IJ,         // thread function name
             &value,         // argument to thread function 
             0,              // use default creation flags 
             &dwThreadId);   // returns the thread identifier 
@@ -102,7 +102,7 @@ extern "C" {
         CloseHandle(hThread);
 #elif defined HAVE_PTHREAD_H
         pthread_t thread;
-        pthread_create(&thread, NULL, thr_fn_I, &value);
+        pthread_create(&thread, NULL, thr_fn_IJ, &value);
         pthread_join(thread, NULL);
 #else
     error "Neither pthread.h for POSIX nor windows.h for windows are available ... giving up"

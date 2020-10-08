@@ -119,6 +119,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Method:    throwRuntimeException
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwRuntimeException
+    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        throw_RuntimeException(env, "runtime %d", 42);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
      * Method:    throwException
      * Signature: (Ljava/lang/String;)V
      */

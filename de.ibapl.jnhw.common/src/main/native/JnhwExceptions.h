@@ -49,6 +49,8 @@ extern "C" {
 
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_IllegalArgumentException(JNIEnv* env, const char* message);
 
+    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_RuntimeException(JNIEnv* env, const char* fmt, ...);
+
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_Exception(JNIEnv* env, const char* exceptionName, const char* fmt, ...);
 
 

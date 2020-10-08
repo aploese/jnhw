@@ -33,6 +33,7 @@
 #define ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/ArrayIndexOutOfBoundsException"
 #define INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/IndexOutOfBoundsException"
 #define ILLEGAL_ARGUMENT_EXCEPTION "java/lang/IllegalArgumentException"
+#define RUNTIME_EXCEPTION "java/lang/RuntimeException"
 
 
 #ifdef __cplusplus
@@ -52,6 +53,7 @@ extern "C" {
     static jclass ArrayIndexOutOfBoundsExceptionClass = NULL;
     static jclass IndexOutOfBoundsExceptionClass = NULL;
     static jclass IllegalArgumentExceptionClass = NULL;
+    static jclass RuntimeExceptionClass = NULL;
 
     jboolean initExceptions(JNIEnv* env) {
         if (NativeErrorExceptionClass == NULL) {
@@ -126,7 +128,12 @@ extern "C" {
             }
         }
 
-
+        if (RuntimeExceptionClass == NULL) {
+            RuntimeExceptionClass = getGlobalClassRef(env, RUNTIME_EXCEPTION);
+            if (RuntimeExceptionClass == NULL) {
+                return JNI_FALSE;
+            }
+        }
 
         return JNI_TRUE;
     }
@@ -141,6 +148,7 @@ extern "C" {
         deleteGlobalRef(env, &IndexOutOfBoundsExceptionClass);
         deleteGlobalRef(env, &ArrayIndexOutOfBoundsExceptionClass);
         deleteGlobalRef(env, &IllegalArgumentExceptionClass);
+        deleteGlobalRef(env, &RuntimeExceptionClass);
     }
 
     JNIEXPORT void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName) {
@@ -186,6 +194,7 @@ extern "C" {
         char buf[1024] = {0};
         va_start(ap, fmt);
         vsnprintf(buf, sizeof (buf) - 1, fmt, ap);
+        va_end(ap);
 
         (*env)->PushLocalFrame(env, 10);
         jclass exceptionClass = (*env)->FindClass(env, exceptionName);
@@ -193,8 +202,17 @@ extern "C" {
             (*env)->ThrowNew(env, exceptionClass, buf);
         }
         (*env)->PopLocalFrame(env, NULL);
-        va_end(ap);
     }
+
+    JNIEXPORT void JNICALL throw_RuntimeException(JNIEnv* env, const char* fmt, ...) {
+        va_list ap;
+        char buf[1024] = {0};
+        va_start(ap, fmt);
+        vsnprintf(buf, sizeof (buf) - 1, fmt, ap);
+        va_end(ap);
+        (*env)->ThrowNew(env, RuntimeExceptionClass, buf);
+    }
+
 #ifdef __cplusplus
 }
 #endif

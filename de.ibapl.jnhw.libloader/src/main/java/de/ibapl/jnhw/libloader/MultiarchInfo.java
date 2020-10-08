@@ -27,22 +27,22 @@ package de.ibapl.jnhw.libloader;
  */
 public enum MultiarchInfo {
 
-    X86_64__LINUX__GNU(64, Endianess.LITTLE, Arch.X86_64, OS.LINUX, Abi.GNU),
-    I386__LINUX__GNU(32, Endianess.LITTLE, Arch.I386, OS.LINUX, Abi.GNU),
-    ARM__LINUX__GNU_EABI_HF(32, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI_HF),
-    ARM__LINUX__GNU_EABI(32, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI),
-    AARCH64__LINUX__GNU(64, Endianess.LITTLE, Arch.AARCH64, OS.LINUX, Abi.GNU),
-    MIPS_EL__LINUX__GNU(32, Endianess.LITTLE, Arch.MIPS_EL, OS.LINUX, Abi.GNU),
-    MIPS__LINUX__GNU(32, Endianess.BIG, Arch.MIPS, OS.LINUX, Abi.GNU),
-    MIPS_64_EL__LINUX__GNU_ABI_64(64, Endianess.LITTLE, Arch.MIPS_64_EL, OS.LINUX, Abi.GNU_ABI_64),
-    MIPS_64__LINUX__GNU_ABI_64(64, Endianess.BIG, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
-    X86_64__WINDOWS__PE32_PLUS(64, Endianess.LITTLE, Arch.X86_64, OS.WINDOWS, Abi.PE32_PLUS),
-    I386__WINDOWS__PE32(32, Endianess.LITTLE, Arch.I386, OS.WINDOWS, Abi.PE32),
-    X86_64__FREE_BSD__BSD(64, Endianess.LITTLE, Arch.X86_64, OS.FREE_BSD, Abi.BSD),
-    X86_64__OPEN_BSD__BSD(64, Endianess.LITTLE, Arch.X86_64, OS.OPEN_BSD, Abi.BSD),
-    X86_64__MAC_OS_X__BSD(64, Endianess.LITTLE, Arch.X86_64, OS.MAC_OS_X, Abi.BSD);
+    X86_64__LINUX__GNU(WordSize._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.LINUX, Abi.GNU),
+    I386__LINUX__GNU(WordSize._32_BIT, Endianess.LITTLE, Arch.I386, OS.LINUX, Abi.GNU),
+    ARM__LINUX__GNU_EABI_HF(WordSize._32_BIT, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI_HF),
+    ARM__LINUX__GNU_EABI(WordSize._32_BIT, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI),
+    AARCH64__LINUX__GNU(WordSize._64_BIT, Endianess.LITTLE, Arch.AARCH64, OS.LINUX, Abi.GNU),
+    MIPS_EL__LINUX__GNU(WordSize._32_BIT, Endianess.LITTLE, Arch.MIPS_EL, OS.LINUX, Abi.GNU),
+    MIPS__LINUX__GNU(WordSize._32_BIT, Endianess.BIG, Arch.MIPS, OS.LINUX, Abi.GNU),
+    MIPS_64_EL__LINUX__GNU_ABI_64(WordSize._64_BIT, Endianess.LITTLE, Arch.MIPS_64_EL, OS.LINUX, Abi.GNU_ABI_64),
+    MIPS_64__LINUX__GNU_ABI_64(WordSize._64_BIT, Endianess.BIG, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
+    X86_64__WINDOWS__PE32_PLUS(WordSize._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.WINDOWS, Abi.PE32_PLUS),
+    I386__WINDOWS__PE32(WordSize._32_BIT, Endianess.LITTLE, Arch.I386, OS.WINDOWS, Abi.PE32),
+    X86_64__FREE_BSD__BSD(WordSize._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.FREE_BSD, Abi.BSD),
+    X86_64__OPEN_BSD__BSD(WordSize._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.OPEN_BSD, Abi.BSD),
+    X86_64__MAC_OS_X__BSD(WordSize._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.MAC_OS_X, Abi.BSD);
 
-    private MultiarchInfo(int wordSize, Endianess endianess, Arch arch, OS os, Abi abi) {
+    private MultiarchInfo(WordSize wordSize, Endianess endianess, Arch arch, OS os, Abi abi) {
         this.arch = arch;
         this.os = os;
         this.abi = abi;
@@ -55,7 +55,18 @@ public enum MultiarchInfo {
         LITTLE;
     }
 
-    private final int wordSize;
+    public static enum WordSize {
+    	_32_BIT(32),
+    	_64_BIT(64);
+    	
+    	public final int sizeInBit;
+    	
+    	private	WordSize(int sizeInBit) {
+    		this.sizeInBit = sizeInBit;
+    	}
+    }
+
+    private final WordSize wordSize;
     private final Endianess endianess;
     private final OS os;
     private final Arch arch;
@@ -65,7 +76,7 @@ public enum MultiarchInfo {
         return String.format("%s-%s-%s", arch.archName, os.osName, abi.abiName);
     }
 
-    public int getWordSize() {
+    public WordSize getWordSize() {
         return wordSize;
     }
 

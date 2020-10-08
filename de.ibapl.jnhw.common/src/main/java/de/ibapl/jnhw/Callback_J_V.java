@@ -19,11 +19,29 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-module de.ibapl.jnhw.winapi {
-    requires java.logging;
+package de.ibapl.jnhw;
 
-    requires transitive de.ibapl.jnhw.common;
+import java.util.function.Function;
 
-    exports de.ibapl.jnhw.winapi;
-    exports de.ibapl.jnhw.util.winapi;
+/**
+ *
+ * @author aploese
+ */
+public abstract class Callback_J_V extends NativeFunctionPointer {
+
+    protected <T extends Callback_J_V> Callback_J_V(Function<T, NativeAddressHolder> producer) {
+        super(producer);
+    }
+
+    protected Callback_J_V(NativeAddressHolder src) {
+        super(src);
+    }
+
+    /**
+     * this will be called from the native code.
+     *
+     * @param value
+     */
+    protected abstract void callback(long value);
+
 }

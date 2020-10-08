@@ -25,6 +25,7 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.winapi.BaseTsd;
 import de.ibapl.jnhw.winapi.Errhandlingapi;
 import de.ibapl.jnhw.winapi.Fileapi;
 import de.ibapl.jnhw.winapi.Handleapi;
@@ -32,6 +33,7 @@ import de.ibapl.jnhw.winapi.Ioapiset;
 import de.ibapl.jnhw.winapi.Minwinbase;
 import de.ibapl.jnhw.winapi.Minwindef;
 import de.ibapl.jnhw.winapi.ProcessEnv;
+import de.ibapl.jnhw.winapi.Processthreadsapi;
 import de.ibapl.jnhw.winapi.Synchapi;
 import de.ibapl.jnhw.winapi.Winbase;
 import de.ibapl.jnhw.winapi.Winerror;
@@ -91,6 +93,12 @@ public class DefinesTest {
 
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testBaseTsdDefines() throws Exception {
+        testDefines(BaseTsd.class);
+    }
+
+    @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testErrhandlingapiDefines() throws Exception {
         testDefines(Errhandlingapi.class);
     }
@@ -133,6 +141,12 @@ public class DefinesTest {
 
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testProcessthreadsapiDefines() throws Exception {
+        testDefines(Processthreadsapi.class);
+    }
+
+    @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testSynchapiDefines() throws Exception {
         testDefines(Synchapi.class);
     }
@@ -167,6 +181,15 @@ public class DefinesTest {
             Assertions.assertTrue(Errhandlingapi.HAVE_ERRHANDLINGAPI_H(), "expected to have errhandlingapi.h");
         } else {
             Assertions.assertFalse(Errhandlingapi.HAVE_ERRHANDLINGAPI_H(), "expected not to have errhandlingapi.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_BASETSD_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            Assertions.assertTrue(BaseTsd.HAVE_BASETSD_H(), "expected to have BaseTsd.h");
+        } else {
+            Assertions.assertFalse(BaseTsd.HAVE_BASETSD_H(), "expected not to have BaseTsd.h");
         }
     }
 
@@ -221,6 +244,15 @@ public class DefinesTest {
             Assertions.assertTrue(ProcessEnv.HAVE_PROCESSENV_H(), "expected to have processenv.h");
         } else {
             Assertions.assertFalse(ProcessEnv.HAVE_PROCESSENV_H(), "expected not to have processenv.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_PROCESSTHREADSAPI_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            Assertions.assertTrue(Processthreadsapi.HAVE_PROCESSTHREADSAPI_H(), "expected to have processthreadsapi.h");
+        } else {
+            Assertions.assertFalse(Processthreadsapi.HAVE_PROCESSTHREADSAPI_H(), "expected not to have processthreadsapi.h");
         }
     }
 

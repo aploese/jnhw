@@ -19,11 +19,31 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-module de.ibapl.jnhw.winapi {
-    requires java.logging;
+#include "jnhw-winapi.h"
+#include "de_ibapl_jnhw_winapi_Processthreadsapi.h"
 
-    requires transitive de.ibapl.jnhw.common;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-    exports de.ibapl.jnhw.winapi;
-    exports de.ibapl.jnhw.util.winapi;
+/*
+ * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
+ * Method:    HAVE_PROCESSTHREADSAPI_H
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_HAVE_1PROCESSTHREADSAPI_1H(
+		__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#ifdef HAVE_PROCESSTHREADSAPI_H
+    return JNI_TRUE;
+#else
+	return JNI_FALSE;
+#endif
 }
+
+#ifdef HAVE_PROCESSTHREADSAPI_H
+#include <processthreadsapi.h>
+
+#endif
+#ifdef __cplusplus
+}
+#endif
