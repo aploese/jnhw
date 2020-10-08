@@ -49,6 +49,24 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
+     * Method:    WaitForSingleObjectEx
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;JZ)J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForSingleObjectEx
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hHandle, jlong dwMilliseconds, jboolean bAlertable) {
+        if (hHandle == NULL) {
+            throw_NullPointerException(env, "hHandle is null");
+            return ERROR_INVALID_PARAMETER;
+        }
+        DWORD result = WaitForSingleObjectEx(UNWRAP_HANDLE(hHandle), (uint32_t) dwMilliseconds, bAlertable);
+        if (result == WAIT_FAILED) {
+            throw_NativeErrorException(env, (int32_t) GetLastError());
+        }
+        return result;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    CreateEventW
      * Signature: (Lde/ibapl/jnhw/winapi/Minwinbase$SECURITY_ATTRIBUTES;ZZLjava/lang/String;)Lde/ibapl/jnhw/winapi/Winnt$HANDLE;
      */
@@ -105,17 +123,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    SleepEx
-     * Signature: (JZ)V
+     * Signature: (JZ)J
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SleepEx
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SleepEx
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong dwMilliseconds, jboolean bAlertable) {
         if (dwMilliseconds < 0) {
             throw_IllegalArgumentException(env, "dwMilliseconds < 0");
-            return;
+            return -1;
         }
-        if (!SleepEx((uint32_t)dwMilliseconds, bAlertable)) {
-            throw_NativeErrorException(env, (int32_t) GetLastError());
-        }
+        return SleepEx((uint32_t)dwMilliseconds, bAlertable);
     }
 
 #endif

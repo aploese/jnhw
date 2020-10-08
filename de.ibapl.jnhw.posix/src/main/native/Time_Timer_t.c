@@ -59,8 +59,8 @@ extern "C" {
 #error Unknown Wordsize
 #endif
         return (*env)->NewStringUTF(env, buf);
-#endif
     }
+#endif
 
 #ifdef __cplusplus
 }

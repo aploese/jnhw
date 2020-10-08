@@ -33,8 +33,24 @@ public class SynchapiTests {
     @Test
     public void testWaitForSingleTimeout() throws Exception {
         final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
-        Assertions.assertTimeoutPreemptively(Duration.ofMillis(5000), () -> {
-            long result = Synchapi.WaitForSingleObject(hEvent, 1000);
+        Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
+            long result = Synchapi.WaitForSingleObject(hEvent, 100);
+            Assertions.assertEquals(Winbase.WAIT_TIMEOUT(), result);
+            return null;
+        });
+        Handleapi.CloseHandle(hEvent);
+    }
+
+    @Test
+    public void testWaitForSingleTimeoutEx() throws Exception {
+        final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
+        Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
+            long result = Synchapi.WaitForSingleObjectEx(hEvent, 100, false);
+            Assertions.assertEquals(Winbase.WAIT_TIMEOUT(), result);
+            return null;
+        });
+        Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
+            long result = Synchapi.WaitForSingleObjectEx(hEvent, 100, true);
             Assertions.assertEquals(Winbase.WAIT_TIMEOUT(), result);
             return null;
         });
@@ -63,8 +79,9 @@ public class SynchapiTests {
 
     @Test
     public void testSleepEx() throws Exception {
+        Synchapi.SleepEx(10, false);
         Synchapi.SleepEx(10, true);
-        Synchapi.SleepEx(-10, true);
+        Assertions.assertThrows(IllegalArgumentException.class, ()-> {Synchapi.SleepEx(-10, true);});
     }
 
 }

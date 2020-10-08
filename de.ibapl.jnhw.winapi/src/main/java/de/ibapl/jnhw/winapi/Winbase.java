@@ -818,6 +818,15 @@ public abstract class Winbase {
     public final static native int WAIT_OBJECT_0();
 
     /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobjectEx/">WAIT_IO_COMPLETION</a>
+     * The state of the specified object is signaled.
+     *
+     * @return the native symbolic constant of WAIT_IO_COMPLETION.
+     */
+    @Define
+    public final static native int WAIT_IO_COMPLETION();
+
+    /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject/">WAIT_TIMEOUT</a>
      * The time-out interval elapsed, and the object's state is nonsignaled.
      *

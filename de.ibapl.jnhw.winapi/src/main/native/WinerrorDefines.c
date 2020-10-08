@@ -166,6 +166,18 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winerror
+     * Method:    ERROR_PROC_NOT_FOUND
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1PROC_1NOT_1FOUND
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return ERROR_PROC_NOT_FOUND;
+    }
+
+
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winerror
      * Method:    ERROR_ALREADY_EXISTS
      * Signature: ()I
      */
@@ -206,7 +218,6 @@ extern "C" {
         return ERROR_IO_INCOMPLETE;
     }
             
-
 #endif
 
 #ifdef __cplusplus

@@ -115,6 +115,17 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    WAIT_IO_COMPLETION
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_WAIT_1IO_1COMPLETION
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return WAIT_IO_COMPLETION;
+    }
+
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    WAIT_ABANDONED
      * Signature: ()I
      */

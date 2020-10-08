@@ -116,6 +116,29 @@ public abstract class Synchapi {
     public final static native long WaitForSingleObject(HANDLE hHandle, long dwMilliseconds) throws NativeErrorException;
 
     /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobjectex">WaitForSingleObjectEx</a>
+     * Waits until the specified object is in the signaled state, an I/O
+     * completion routine or asynchronous procedure call (APC) is queued to the
+     * thread, or the time-out interval elapses.
+     *
+     * @param hHandle A handle to the object.
+     * @param dwMilliseconds the time-out interval, in milliseconds.
+     * @param bAlertable If this parameter is TRUE and the thread is in the
+     * waiting state, the function returns when the system queues an I/O
+     * completion routine or APC, and the thread runs the routine or function.
+     * Otherwise, the function does not return, and the completion routine or
+     * APC function is not executed.
+     *
+     * @return on succes one of WAIT_ABANDONED, WAIT_OBJECT_0 or WAIT_TIMEOUT.
+     *
+     * @throws NullPointerException if hHandle is {@code null].
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native long WaitForSingleObjectEx(HANDLE hHandle, long dwMilliseconds, boolean bAlertable) throws NativeErrorException;
+
+    /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-sleepex">SleepEx</a>
      * Sets the specified event object to the signaled state.
      *
@@ -124,9 +147,7 @@ public abstract class Synchapi {
      *
      * @param bAlertable enable/disable APC.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      */
-    public final static native void SleepEx(long dwMilliseconds, boolean bAlertable) throws NativeErrorException;
+    public final static native long SleepEx(long dwMilliseconds, boolean bAlertable);
 
 }

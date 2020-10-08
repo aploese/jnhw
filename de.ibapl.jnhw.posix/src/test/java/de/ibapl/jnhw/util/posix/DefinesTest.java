@@ -370,7 +370,7 @@ public class DefinesTest {
                 assertFalse(Defined.defined(Defines::_LARGEFILE64_SOURCE));
                 break;
             case WINDOWS:
-                assertFalse(Defines._LARGEFILE64_SOURCE() != 0);
+                assertThrows(NotDefinedException.class, Defines::_LARGEFILE64_SOURCE);
                 break;
             default:
                 fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
@@ -404,7 +404,7 @@ public class DefinesTest {
                 assertFalse(Defined.defined(Defines::_LARGEFILE_SOURCE));
                 break;
             case WINDOWS:
-                assertFalse(Defines._LARGEFILE_SOURCE() != 0);
+                assertThrows(NotDefinedException.class, Defines::_LARGEFILE_SOURCE);
                 break;
             default:
                 fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
@@ -434,7 +434,7 @@ public class DefinesTest {
                 assertEquals(200809, Defines._POSIX_C_SOURCE());
                 break;
             case WINDOWS:
-                assertEquals(0, Defines._POSIX_C_SOURCE());
+                assertThrows(NotDefinedException.class, Defines::_POSIX_C_SOURCE);
                 break;
             default:
                 fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
@@ -455,7 +455,7 @@ public class DefinesTest {
                 assertEquals(700, Defines._XOPEN_SOURCE());
                 break;
             case WINDOWS:
-                assertEquals(0, Defines._XOPEN_SOURCE());
+                assertThrows(NotDefinedException.class, Defines::_XOPEN_SOURCE);
                 break;
             default:
                 fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
@@ -476,7 +476,7 @@ public class DefinesTest {
                 assertEquals(1, Defines._XOPEN_SOURCE_EXTENDED());
                 break;
             case WINDOWS:
-                assertEquals(0, Defines._XOPEN_SOURCE_EXTENDED());
+                assertThrows(NotDefinedException.class, Defines::_XOPEN_SOURCE_EXTENDED);
                 break;
             default:
                 fail("No testcase for OS: " + multiarchTupelBuilder.getOS());

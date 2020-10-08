@@ -46,6 +46,15 @@ public abstract class Winerror {
     }
 
     /**
+     * The operation completed successfully.
+     *
+     * @return the native symbolic constant of ERROR_SUCCESS.
+     */
+    @Define
+    public final static native int ERROR_SUCCESS();
+
+
+    /**
      * Access is denied.
      *
      * @return the native symbolic constant of ERROR_ACCESS_DENIED.
@@ -167,12 +176,12 @@ public abstract class Winerror {
     public final static native int ERROR_SHARING_VIOLATION();
 
     /**
-     * The operation completed successfully.
+     * The specified procedure could not be found.
      *
-     * @return the native symbolic constant of ERROR_SUCCESS.
+     * @return the native symbolic constant of ERROR_PROC_NOT_FOUND.
      */
     @Define
-    public final static native int ERROR_SUCCESS();
+    public final static native int ERROR_PROC_NOT_FOUND();
 
     public final static native boolean HAVE_WINERROR_H();
 
