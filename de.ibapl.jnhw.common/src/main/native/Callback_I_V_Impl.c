@@ -59,7 +59,7 @@ extern "C" {
     }
 
 #define TRAMPOLINE(index) \
-    void _jnhw_trampoline_I_V__ ## index (int value) {\
+    void _jnhw_trampoline_I_V__ ## index (int32_t value) {\
     JNIEnv *env;\
         if ((*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL)) {\
             abort();\

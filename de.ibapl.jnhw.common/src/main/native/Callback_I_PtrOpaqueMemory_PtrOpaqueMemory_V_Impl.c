@@ -57,7 +57,7 @@ extern "C" {
     }
 
 #define TRAMPOLINE(index) \
-    void _jnhw_trampoline_I_PtrOpaqueMemory_PtrOpaqueMemory_V__ ## index (int value, void* ptr_a, void* ptr_b) { \
+    void _jnhw_trampoline_I_PtrOpaqueMemory_PtrOpaqueMemory_V__ ## index (int32_t value, void* ptr_a, void* ptr_b) { \
         JNIEnv *env; \
         (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL); \
         (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, value, CREATE_NATIVE_ADDRESS_HOLDER(ptr_a), CREATE_NATIVE_ADDRESS_HOLDER(ptr_b)); \

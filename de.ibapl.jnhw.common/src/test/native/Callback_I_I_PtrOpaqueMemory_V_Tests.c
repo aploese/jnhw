@@ -27,7 +27,7 @@
 extern "C" {
 #endif
 
-    typedef void (*_callback)(int, int, void*);
+    typedef void (*_callback)(int32_t, int32_t, void*);
     static _callback callbackPtr = NULL;
 
     /*
@@ -47,7 +47,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1I_1I_1PtrOpaquememory_1V_1Test_setCallback
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
-        callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int, int, void*), callback);
+        callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t, int32_t, void*), callback);
     }
 
     /*
