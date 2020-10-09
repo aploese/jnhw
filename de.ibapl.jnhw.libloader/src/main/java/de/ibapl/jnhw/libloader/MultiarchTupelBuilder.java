@@ -290,7 +290,9 @@ public final class MultiarchTupelBuilder {
                 result.add(MultiarchInfo.X86_64__WINDOWS__PE32_PLUS);
                 return result;
             case "x86":
+                //Add first HW specific top down i.e. i686, i586, i486, i386 and then the generic x86
                 result.add(MultiarchInfo.I386__WINDOWS__PE32);
+                result.add(MultiarchInfo.X86__WINDOWS__PE32);
                 return result;
             default:
                 throw new UnsupportedOperationException("Cant handle Windows architecture: " + os_arch);
