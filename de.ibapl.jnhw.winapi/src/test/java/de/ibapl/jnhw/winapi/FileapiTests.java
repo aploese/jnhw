@@ -469,7 +469,7 @@ public class FileapiTests {
         };
                 
 
-        Fileapi.WriteFileEx(hFile, opaqueMemory, overlapped, overlappedCompletionRoutine);
+        Fileapi.WriteFileEx(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped, overlappedCompletionRoutine);
         long waitResult = Synchapi.WaitForSingleObjectEx(overlapped.hEvent(), Winbase.INFINITE(), true);
         Assertions.assertEquals(Winbase.WAIT_IO_COMPLETION(), waitResult, "Error during wait");
         
@@ -477,7 +477,7 @@ public class FileapiTests {
         Synchapi.ResetEvent(overlapped.hEvent());
 
         Handleapi.CloseHandle(hFile);
-        Assertions.assertEquals(opaqueMemory.sizeInBytes, bytesTransferred);
+        Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
 
         try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
@@ -539,8 +539,6 @@ public class FileapiTests {
         Assertions.assertTrue(OpaqueMemory.isSameAddress(overlappedPtr.value, overlapped));
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
-
-        Synchapi.ResetEvent(overlapped.hEvent());
 
         Handleapi.CloseHandle(hFile);
 

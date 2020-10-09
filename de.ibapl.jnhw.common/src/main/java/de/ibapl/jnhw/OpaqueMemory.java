@@ -35,9 +35,17 @@ import java.util.logging.Logger;
  */
 public class OpaqueMemory {
 
+    /**
+     * test if adresses are the same. If either nativeAddress or om is null and
+     * the other has a address of 0 it is considered as the same address.
+     *
+     * @param nativeAddress
+     * @param om
+     * @return
+     */
     public static boolean isSameAddress(NativeAddressHolder nativeAddress, OpaqueMemory om) {
         if (nativeAddress == null) {
-            return om == null;
+            return om == null ? true : om.baseAddress == 0L;
         } else {
             if (om == null) {
                 return nativeAddress.isNULL();

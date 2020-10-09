@@ -55,11 +55,12 @@ public class IoAPITest {
         LongRef lpCompletionKey = new LongRef();
         ObjectRef<NativeAddressHolder> lpOverlapped = new ObjectRef();
         final int dwNumberOfBytesTransferred = 42;
-        long dwMilliseconds = 1000;
+        long dwMilliseconds = 5000;
         new Thread(() -> {
             try {
-                Thread.sleep(100);
+                Thread.sleep(20);
                 IoAPI.PostQueuedCompletionStatus(completionPort, dwNumberOfBytesTransferred, COMPLETION_KEY, overlapped);
+                System.out.println("testPostQueuedCompletionStatus PostQueuedCompletionStatus called");
             } catch (InterruptedException | NativeErrorException ex) {
                 fail(ex);
             }
@@ -77,7 +78,7 @@ public class IoAPITest {
         IoAPI.GetQueuedCompletionStatus(completionPort, lpNumberOfBytesTransferred, lpCompletionKey, lpOverlapped, dwMilliseconds);
         assertEquals(COMPLETION_KEY, lpCompletionKey.value);
         assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.value);
-        assertNull(lpOverlapped.value);
+        assertTrue(lpOverlapped.value.isNULL());
     }
 
 }
