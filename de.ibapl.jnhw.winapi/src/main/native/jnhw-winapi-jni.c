@@ -29,7 +29,7 @@ extern "C" {
     jfieldID de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID = NULL;
     jmethodID de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = NULL;
     jfieldID de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID = NULL;
-    jfieldID de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID = NULL;
+    jfieldID de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID = NULL;
 
     JNIEXPORT jint JNICALL
     JNI_OnLoad(JavaVM *jvm, __attribute__ ((unused)) void *reserved) {
@@ -45,9 +45,9 @@ extern "C" {
             }
         }
 
-        if (de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID == NULL) {
-            de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID = getFieldId(env, JNHW_CLASS_NAME_LPBYTE, "bufferEnd", "I");
-            if (de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID == NULL) {
+        if (de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID == NULL) {
+            de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID = getFieldId(env, JNHW_CLASS_NAME_LPBYTE, "bufferEnd", "I");
+            if (de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID == NULL) {
                 return JNI_ERR;
             }
         }
@@ -85,7 +85,7 @@ extern "C" {
             de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID = NULL;
             de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = NULL;
             de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID = NULL;
-            de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID = NULL;
+            de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID = NULL;
         }
     }
 

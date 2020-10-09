@@ -11,13 +11,14 @@ noinst_LTLIBRARIES = \
  libwinnt.la \
  libbasetsd.la \
  libminwinbase.la \
- libminwindef.la \
+ libwindef.la \
  libwinbase.la \
  libwinreg.la \
  libwinerror.la \
  libsynchapi.la \
  libfileapi.la \
  libioapiset.la \
+ libioapi.la \
  libhandleapi.la \
  liberrhandlingapi.la \
  libprocessenv.la \
@@ -27,7 +28,7 @@ libjnhw_winapi_la_LIBADD = \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la \
  libbasetsd.la \
  libminwinbase.la \
- libminwindef.la \
+ libwindef.la \
  libwinnt.la \
  libwinbase.la \
  libwinreg.la \
@@ -35,6 +36,7 @@ libjnhw_winapi_la_LIBADD = \
  libsynchapi.la \
  libfileapi.la \
  libioapiset.la \
+ libioapi.la \
  libhandleapi.la \
  liberrhandlingapi.la \
  libprocessenv.la \
@@ -57,8 +59,8 @@ libminwinbase_la_SOURCES = \
  Minwinbase_OVERLAPPED.c \
  Minwinbase_SECURITY_ATTRIBUTES.c
 
-libminwindef_la_SOURCES = \
- MinwindefDefines.c
+libwindef_la_SOURCES = \
+ WinDefDefines.c
 
 libwinbase_la_SOURCES = \
  WinbaseDefines.c \
@@ -82,6 +84,10 @@ libfileapi_la_SOURCES = \
  FileapiDefines.c \
  FileapiFunctions.c
  
+libioapi_la_SOURCES = \
+ IoAPIDefines.c \
+ IoAPIFunctions.c
+
 libioapiset_la_SOURCES = \
  IoapisetDefines.c \
  IoapisetFunctions.c

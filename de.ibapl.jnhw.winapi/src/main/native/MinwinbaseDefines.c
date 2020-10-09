@@ -20,28 +20,28 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-winapi.h"
-#include "de_ibapl_jnhw_winapi_Minwindef.h"
+#include "de_ibapl_jnhw_winapi_Minwinbase.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_winapi_Minwindef
-     * Method:    HAVE_MINWINDEF_H
+     * Class:     de_ibapl_jnhw_winapi_Minwinbase
+     * Method:    HAVE_MINWINBASE_H
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Minwindef_HAVE_1MINWINDEF_1H
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_HAVE_1MINWINBASE_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_MINWINDEF_H
+#ifdef HAVE_MINWINBASE_H
         return JNI_TRUE;
 #else
         return JNI_FALSE;
 #endif
     }
 
-#ifdef HAVE_MINWINDEF_H
-#include <minwindef.h>
+#ifdef HAVE_MINWINBASE_H
+#include <minwinbase.h>
 
 
 #endif

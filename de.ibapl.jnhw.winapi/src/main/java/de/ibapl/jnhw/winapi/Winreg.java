@@ -26,9 +26,9 @@ import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
-import de.ibapl.jnhw.winapi.Minwindef.HKEY;
-import de.ibapl.jnhw.winapi.Minwindef.LPBYTE;
-import de.ibapl.jnhw.winapi.Minwindef.PHKEY;
+import de.ibapl.jnhw.winapi.WinDef.HKEY;
+import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
+import de.ibapl.jnhw.winapi.WinDef.PHKEY;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
 
 /**

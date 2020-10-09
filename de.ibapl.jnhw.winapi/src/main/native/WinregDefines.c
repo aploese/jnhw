@@ -46,7 +46,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    create_HKEY_CLASSES_ROOT
-     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef/HKEY;
+     * Signature: ()Lde/ibapl/jnhw/winapi/WinDef/HKEY;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1CLASSES_1ROOT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
@@ -56,7 +56,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    create_HKEY_CURRENT_USER
-     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
+     * Signature: ()Lde/ibapl/jnhw/winapi/WinDef$HKEY;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1CURRENT_1USER
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
@@ -66,7 +66,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    create_HKEY_CURRENT_USER_LOCAL_SETTINGS
-     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
+     * Signature: ()Lde/ibapl/jnhw/winapi/WinDef$HKEY;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1CURRENT_1USER_1LOCAL_1SETTINGS
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
@@ -76,7 +76,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    create_HKEY_LOCAL_MACHINE
-     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
+     * Signature: ()Lde/ibapl/jnhw/winapi/WinDef$HKEY;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1LOCAL_1MACHINE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
@@ -86,7 +86,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    create_HKEY_USERS
-     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
+     * Signature: ()Lde/ibapl/jnhw/winapi/WinDef$HKEY;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1USERS
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
@@ -96,7 +96,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    create_HKEY_PERFORMANCE_DATA
-     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
+     * Signature: ()Lde/ibapl/jnhw/winapi/WinDef$HKEY;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1PERFORMANCE_1DATA
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
@@ -106,7 +106,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    create_HKEY_PERFORMANCE_TEXT
-     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
+     * Signature: ()Lde/ibapl/jnhw/winapi/WinDef$HKEY;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1PERFORMANCE_1TEXT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
@@ -116,7 +116,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    create_HKEY_PERFORMANCE_NLSTEXT
-     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
+     * Signature: ()Lde/ibapl/jnhw/winapi/WinDef$HKEY;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1PERFORMANCE_1NLSTEXT
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
@@ -126,7 +126,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    create_HKEY_CURRENT_CONFIG
-     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
+     * Signature: ()Lde/ibapl/jnhw/winapi/WinDef$HKEY;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1CURRENT_1CONFIG
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
@@ -136,7 +136,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    create_HKEY_DYN_DATA
-     * Signature: ()Lde/ibapl/jnhw/winapi/Minwindef$HKEY;
+     * Signature: ()Lde/ibapl/jnhw/winapi/WinDef$HKEY;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winreg_create_1HKEY_1DYN_1DATA
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {

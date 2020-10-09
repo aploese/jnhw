@@ -19,35 +19,40 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.winapi;
+#include "jnhw-winapi.h"
+#include "de_ibapl_jnhw_winapi_WinDef.h"
 
-import de.ibapl.jnhw.OpaqueMemory;
-import java.nio.charset.Charset;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledOnOs;
+#ifdef HAVE_WINDEF_H
+#include <windef.h>
+#define HAVE_WINDEF_OR_MINWINDEF_H 1;
+#elif defined(HAVE_MINWINDEF_H)
+#include <minwindef.h>
+#define HAVE_WINDEF_OR_MINWINDEF_H 1;
+#endif
 
-@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class WinntTests {
 
-    @Test
-    public void testMAXDWORD() throws Exception {
-        Winnt.MAXDWORD();
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_WinDef
+     * Method:    HAVE_WINDEF_H
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_WinDef_HAVE_1WINDEF_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#ifdef HAVE_WINDEF_OR_MINWINDEF_H
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
     }
 
-    @Test
-    public void test_INVALID_HANDLE_VALUE() throws Exception {
-        Winnt.HANDLE ivh = Handleapi.INVALID_HANDLE_VALUE();
-        Assertions.assertTrue(ivh.is_INVALID_HANDLE_VALUE());
-    }
+#ifdef HAVE_WINDEF_OR_MINWINDEF_H
 
-    @Test
-    public void test_LPWSTR_stringValueOfNullTerminated() throws Exception {
-        byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
-        WinDef.LPBYTE lpByte = new WinDef.LPBYTE(64, true);
-        OpaqueMemory.copy(data, 0, lpByte, 0, data.length);
-        lpByte.bufferEnd = data.length;
-        Assertions.assertEquals("HELLO WORLD!", Winnt.LPWSTR.stringValueOfNullTerminated(lpByte));
-    }
-    
+
+#endif
+#ifdef __cplusplus
 }
+#endif

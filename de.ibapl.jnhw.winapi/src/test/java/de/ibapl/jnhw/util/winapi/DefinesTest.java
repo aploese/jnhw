@@ -29,9 +29,10 @@ import de.ibapl.jnhw.winapi.BaseTsd;
 import de.ibapl.jnhw.winapi.Errhandlingapi;
 import de.ibapl.jnhw.winapi.Fileapi;
 import de.ibapl.jnhw.winapi.Handleapi;
+import de.ibapl.jnhw.winapi.IoAPI;
 import de.ibapl.jnhw.winapi.Ioapiset;
 import de.ibapl.jnhw.winapi.Minwinbase;
-import de.ibapl.jnhw.winapi.Minwindef;
+import de.ibapl.jnhw.winapi.WinDef;
 import de.ibapl.jnhw.winapi.ProcessEnv;
 import de.ibapl.jnhw.winapi.Processthreadsapi;
 import de.ibapl.jnhw.winapi.Synchapi;
@@ -123,14 +124,20 @@ public class DefinesTest {
 
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testIoAPIDefines() throws Exception {
+        testDefines(IoAPI.class);
+    }
+
+    @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testMinwinbaseDefines() throws Exception {
         testDefines(Minwinbase.class);
     }
 
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testMinwindefDefines() throws Exception {
-        testDefines(Minwindef.class);
+    public void testWinDefDefines() throws Exception {
+        testDefines(WinDef.class);
     }
 
     @Test
@@ -212,6 +219,15 @@ public class DefinesTest {
     }
 
     @Test
+    public void test_HAVE_IOAPI_H() throws Exception {
+        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            Assertions.assertTrue(IoAPI.HAVE_IOAPI_H(), "expected to have IoAPI.h");
+        } else {
+            Assertions.assertFalse(IoAPI.HAVE_IOAPI_H(), "expected not to have IoAPI.h");
+        }
+    }
+
+    @Test
     public void test_HAVE_IOAPISET_H() throws Exception {
         if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Ioapiset.HAVE_IOAPISET_H(), "expected to have ioapiset.h");
@@ -230,11 +246,11 @@ public class DefinesTest {
     }
 
     @Test
-    public void test_HAVE_MINWINDEF_H() throws Exception {
+    public void test_HAVE_WINDEF_H() throws Exception {
         if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Minwindef.HAVE_MINWINDEF_H(), "expected to have minwindef.h");
+            Assertions.assertTrue(WinDef.HAVE_WINDEF_H(), "expected to have WinDef.h");
         } else {
-            Assertions.assertFalse(Minwindef.HAVE_MINWINDEF_H(), "expected not to have minwindef.h");
+            Assertions.assertFalse(WinDef.HAVE_WINDEF_H(), "expected not to have WinDef.h");
         }
     }
 

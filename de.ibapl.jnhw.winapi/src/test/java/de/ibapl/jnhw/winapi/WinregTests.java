@@ -22,8 +22,8 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.winapi.Minwindef.LPBYTE;
-import de.ibapl.jnhw.winapi.Minwindef.PHKEY;
+import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
+import de.ibapl.jnhw.winapi.WinDef.PHKEY;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

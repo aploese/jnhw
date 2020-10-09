@@ -66,7 +66,7 @@ public abstract class Handleapi {
 
     /**
      *
-     * @return the native symbolic constant of INVALID_HANDLE_VALUE.
+     * @return the native symbolic constant of INVALID_HANDLE_VALUE as singleton.
      */
     @Define
     public final static HANDLE INVALID_HANDLE_VALUE() {

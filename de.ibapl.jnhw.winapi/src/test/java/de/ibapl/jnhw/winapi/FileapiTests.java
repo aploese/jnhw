@@ -143,6 +143,7 @@ public class FileapiTests {
         Assertions.assertEquals(Winbase.WAIT_OBJECT_0(), waitResult, "Error during wait");
 
         Ioapiset.GetOverlappedResult(hFile, overlapped, byteBuffer, false);
+        Handleapi.CloseHandle(overlapped.hEvent());
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
         byteBuffer.flip();
@@ -216,6 +217,7 @@ public class FileapiTests {
         Assertions.assertEquals(Winbase.WAIT_IO_COMPLETION(), waitResult, "Error during wait");
 
         Ioapiset.GetOverlappedResult(hFile, overlapped, byteBuffer, false);
+        Handleapi.CloseHandle(overlapped.hEvent());
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
         byteBuffer.flip();
@@ -234,9 +236,8 @@ public class FileapiTests {
                 Winbase.FILE_FLAG_OVERLAPPED(),
                 null);
         final Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
-        overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
         final long COMPLETION_KEY = 24;
-        Winnt.HANDLE hIoCompletionPort = Ioapiset.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
+        Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
         
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(64);
         byteBuffer.put(WRITE_VALUE);
@@ -249,15 +250,13 @@ public class FileapiTests {
         
         Fileapi.WriteFile(hFile, byteBuffer, overlapped);
         
-        Ioapiset.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
         
         Assertions.assertNotNull(overlappedPtr.value);
         Assertions.assertTrue(OpaqueMemory.isSameAddress(overlappedPtr.value, overlapped));
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
         ByteBufferUtils.fixBufferPos(byteBuffer, lpNumberOfBytesTransferred.value);
-
-        Synchapi.ResetEvent(overlapped.hEvent());
 
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
@@ -276,14 +275,14 @@ public class FileapiTests {
                 Fileapi.OPEN_EXISTING(),
                 Winbase.FILE_FLAG_OVERLAPPED(),
                 null);
-        hIoCompletionPort = Ioapiset.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
+        hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
         byteBuffer.clear();
         byteBuffer.limit(WRITE_VALUE.length);
         
         Fileapi.ReadFile(hFile, byteBuffer, overlapped);
 
-        Ioapiset.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
         
         Assertions.assertNotNull(overlappedPtr.value);
         Assertions.assertTrue(OpaqueMemory.isSameAddress(overlappedPtr.value, overlapped));
@@ -428,6 +427,7 @@ public class FileapiTests {
         Assertions.assertEquals(Winbase.WAIT_OBJECT_0(), waitResult, "Error during wait");
         bytesTransferred = Ioapiset.GetOverlappedResult(hFile, overlapped, false);
 
+        Handleapi.CloseHandle(overlapped.hEvent());
         Handleapi.CloseHandle(hFile);
 
         Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
@@ -501,6 +501,7 @@ public class FileapiTests {
         
         bytesTransferred = Ioapiset.GetOverlappedResult(hFile, overlapped, false);
 
+        Handleapi.CloseHandle(overlapped.hEvent());
         Handleapi.CloseHandle(hFile);
 
         Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
@@ -519,9 +520,8 @@ public class FileapiTests {
                 Winbase.FILE_FLAG_OVERLAPPED(),
                 null);
         final Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
-        overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
         final long COMPLETION_KEY = 24;
-        Winnt.HANDLE hIoCompletionPort = Ioapiset.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
+        Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
         
         OpaqueMemory opaqueMemory = new OpaqueMemory(64, true);
         OpaqueMemory.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
@@ -533,7 +533,7 @@ public class FileapiTests {
         
         Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
         
-        Ioapiset.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
         
         Assertions.assertNotNull(overlappedPtr.value);
         Assertions.assertTrue(OpaqueMemory.isSameAddress(overlappedPtr.value, overlapped));
@@ -558,13 +558,13 @@ public class FileapiTests {
                 Fileapi.OPEN_EXISTING(),
                 Winbase.FILE_FLAG_OVERLAPPED(),
                 null);
-        hIoCompletionPort = Ioapiset.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
+        hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
         OpaqueMemory.clear(opaqueMemory);
         
         Fileapi.ReadFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
 
-        Ioapiset.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
         
         Assertions.assertNotNull(overlappedPtr.value);
         Assertions.assertTrue(OpaqueMemory.isSameAddress(overlappedPtr.value, overlapped));

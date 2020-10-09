@@ -520,7 +520,7 @@ public final class Winnt {
          * @param lpData
          * @return
          */
-        public static String stringValueOfNullTerminated(Minwindef.LPBYTE lpData) {
+        public static String stringValueOfNullTerminated(WinDef.LPBYTE lpData) {
             return getString(lpData, lpData.bufferEnd / SIZE_OF_WCHAR - 1);
         }
 

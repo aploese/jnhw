@@ -32,7 +32,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    RegEnumValueW
-     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef$HKEY;ILde/ibapl/jnhw/winapi/Winnt$LPWSTR;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Minwindef$LPBYTE;)J
+     * Signature: (Lde/ibapl/jnhw/winapi/WinDef$HKEY;ILde/ibapl/jnhw/winapi/Winnt$LPWSTR;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/WinDef$LPBYTE;)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegEnumValueW
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hKey, jint dwIndex, jobject lpValueName, jobject lpType, jobject lpData) {
@@ -48,7 +48,7 @@ extern "C" {
         //, jobject lpccData
         DWORD lpcchValueName = (uint32_t) (*env)->GetIntField(env, lpValueName, de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID);
         DWORD _lpType;
-        DWORD lpccData = lpData != NULL ? (uint32_t) (*env)->GetIntField(env, lpData, de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID) : 0;
+        DWORD lpccData = lpData != NULL ? (uint32_t) (*env)->GetIntField(env, lpData, de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID) : 0;
 
         LSTATUS result = RegEnumValueW(UNWRAP_HKEY(hKey),
                 (uint32_t) dwIndex,
@@ -64,7 +64,7 @@ extern "C" {
             SET_INT_REF_VALUE(lpType, (int32_t) _lpType);
         }
         if (lpData != NULL) {
-            (*env)->SetIntField(env, lpData, de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID, (int32_t) lpccData);
+            (*env)->SetIntField(env, lpData, de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID, (int32_t) lpccData);
         }
 
         switch (result) {
@@ -83,7 +83,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    RegOpenKeyExW
-     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef$HKEY;Ljava/lang/String;IILde/ibapl/jnhw/winapi/Minwindef$PHKEY;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/WinDef$HKEY;Ljava/lang/String;IILde/ibapl/jnhw/winapi/WinDef$PHKEY;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegOpenKeyExW
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hKey, jstring lpSubKey, jint ulOptions, jint samDesired, jobject phkResult) {
@@ -113,7 +113,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winreg
      * Method:    RegCloseKey
-     * Signature: (Lde/ibapl/jnhw/winapi/Minwindef$HKEY;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/WinDef$HKEY;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegCloseKey
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hKey) {

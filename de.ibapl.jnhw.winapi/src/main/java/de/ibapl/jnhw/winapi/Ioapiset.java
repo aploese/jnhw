@@ -132,55 +132,6 @@ public final class Ioapiset {
         return numberOfBytesTransferred;
     }
 
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/fileio/createiocompletionport">CreateIoCompletionPort</a>
-     * Creates an input/output (I/O) completion port and associates it with a
-     * specified file handle, or creates an I/O completion port that is not yet
-     * associated with a file handle, allowing association at a later time.
-     *
-     * @param FileHandle An open file handle or INVALID_HANDLE_VALUE.
-     * @param ExistingCompletionPort A handle to an existing I/O completion port
-     * or NULL.
-     * @param CompletionKey The per-handle user-defined completion key that is
-     * included in every I/O completion packet for the specified file handle.
-     * @param NumberOfConcurrentThreads The maximum number of threads that the
-     * operating system can allow to concurrently process I/O completion packets
-     * for the I/O completion port.
-     *
-     * @return
-     *
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    //TODO Test
-    public static native HANDLE CreateIoCompletionPort(HANDLE FileHandle, HANDLE ExistingCompletionPort, @BaseTsd.ULONG_PTR long CompletionKey, int NumberOfConcurrentThreads) throws NativeErrorException;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-getqueuedcompletionstatus">GetQueuedCompletionStatus</a>
-     * Attempts to dequeue an I/O completion packet from the specified I/O
-     * completion port.
-     *
-     * @param CompletionPort A handle to the completion port.
-     * @param lpNumberOfBytesTransferred A pointer to a variable that receives
-     * the number of bytes transferred in a completed I/O operation.
-     * @param lpCompletionKey A pointer to a variable that receives the
-     * completion key value associated with the file handle whose I/O operation
-     * has completed.
-     * @param lpOverlapped A pointer to a variable that receives the address of
-     * the OVERLAPPED structure that was specified when the completed I/O
-     * operation was started.
-     * @param dwMilliseconds The number of milliseconds that the caller is
-     * willing to wait for a completion packet to appear at the completion port.
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    //TODO Test
-    public static native void GetQueuedCompletionStatus(HANDLE CompletionPort, IntRef lpNumberOfBytesTransferred, @BaseTsd.ULONG_PTR LongRef lpCompletionKey, ObjectRef<NativeAddressHolder> lpOverlapped, long dwMilliseconds) throws NativeErrorException;
-
     public final static native boolean HAVE_IOAPISET_H();
 
 }

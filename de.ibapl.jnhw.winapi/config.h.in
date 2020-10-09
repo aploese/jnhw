@@ -21,6 +21,9 @@
 /* Define to 1 if you have the <ioapiset.h> header file. */
 #undef HAVE_IOAPISET_H
 
+/* Define to 1 if you have the <ioapi.h> header file. */
+#undef HAVE_IOAPI_H
+
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
@@ -62,6 +65,9 @@
 
 /* Define to 1 if you have the <winbase.h> header file. */
 #undef HAVE_WINBASE_H
+
+/* Define to 1 if you have the <windef.h> header file. */
+#undef HAVE_WINDEF_H
 
 /* Define to 1 if you have the <windows.h> header file. */
 #undef HAVE_WINDOWS_H

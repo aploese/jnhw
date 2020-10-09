@@ -43,13 +43,13 @@ extern "C" {
     
 #define JNHW_CLASS_NAME_HANDLE "de/ibapl/jnhw/winapi/Winnt$HANDLE"
 #define JNHW_CLASS_NAME_LPWSTR "de/ibapl/jnhw/winapi/Winnt$LPWSTR"
-#define JNHW_CLASS_NAME_LPBYTE "de/ibapl/jnhw/winapi/Minwindef$LPBYTE"
+#define JNHW_CLASS_NAME_LPBYTE "de/ibapl/jnhw/winapi/WinDef$LPBYTE"
 
      extern jclass de_ibapl_jnhw_winapi_Winnt_HANDLE_Class;
      extern jfieldID de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID;
      extern jmethodID de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID;
      extern jfieldID de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID;
-     extern jfieldID de_ibapl_jnhw_winapi_Minwindef_LPBYTE_bufferEnd_ID;
+     extern jfieldID de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID;
      
 
 #define UNWRAP_HANDLE(handle) (HANDLE) (intptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   

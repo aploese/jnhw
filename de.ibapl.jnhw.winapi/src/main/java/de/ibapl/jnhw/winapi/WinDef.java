@@ -28,13 +28,13 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
  * Wrapper around the
- * <a href="https://docs.microsoft.com/en-us/windows/win32/api/windef/">windef.h</a>
+ * <a href="https://docs.microsoft.com/en-us/windows/win32/api/windef/">WinDef.h</a>
  * header.
  *
  * @author aploese
  */
-@Include("windef.h")
-public abstract class Minwindef {
+@Include("WinDef.h")
+public abstract class WinDef {
 
     /**
      * Make sure the native lib is loaded
@@ -43,7 +43,7 @@ public abstract class Minwindef {
         LibJnhwWinApiLoader.touch();
     }
 
-    public static final native boolean HAVE_MINWINDEF_H();
+    public static final native boolean HAVE_WINDEF_H();
 
     /**
      * Wrapper for

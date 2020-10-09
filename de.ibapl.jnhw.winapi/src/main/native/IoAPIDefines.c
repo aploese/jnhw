@@ -20,31 +20,39 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-winapi.h"
-#include "de_ibapl_jnhw_winapi_Minwinbase.h"
+#include "de_ibapl_jnhw_winapi_IoAPI.h"
+
+#ifdef HAVE_IOAPI_H
+#include <ioapi.h>
+#define HAVE_IOAPI_OR_IOAPISET_H 1;
+#elif defined(HAVE_IOAPISET_H)
+#include <ioapiset.h>
+//mingw defines this here instead of ioapi.h
+#define HAVE_IOAPI_OR_IOAPISET_H 1;
+#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_winapi_Minwinbase
-     * Method:    HAVE_MINWINBASE_H
+     * Class:     de_ibapl_jnhw_winapi_IoAPI
+     * Method:    HAVE_IOAPI_H
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_HAVE_1MINWINBASE_1H
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_HAVE_1IOAPI_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_MINWINBASE_H
+#ifdef HAVE_IOAPI_OR_IOAPISET_H
         return JNI_TRUE;
 #else
         return JNI_FALSE;
 #endif
     }
 
-#ifdef HAVE_MINWINBASE_H
-#include <minwinbase.h>
-
+#ifdef HAVE_IOAPI_OR_IOAPISET_H
 
 #endif
 #ifdef __cplusplus
 }
 #endif
+

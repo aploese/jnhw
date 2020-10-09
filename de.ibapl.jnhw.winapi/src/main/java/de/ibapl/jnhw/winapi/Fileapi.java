@@ -313,7 +313,7 @@ public final class Fileapi {
      * occur at the position specified by the file pointer if supported by the
      * device. This is the asynchronous read for direct {@link ByteBuffer}.
      *
-     * Use {@link Ioapiset.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
+     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
      * to get the result and update the ByteBuffers position.      <code>
      *  ReadFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
@@ -401,7 +401,7 @@ public final class Fileapi {
      * occur at the position specified by the file pointer if supported by the
      * device. This is the asynchronous read for direct {@link ByteBuffer}.
      *
-     * Use {@link Ioapiset.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
+     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
      * to get the result and update the ByteBuffers position.      <code>
      *  ReadFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
@@ -602,7 +602,7 @@ public final class Fileapi {
      * device. This is the asynchronous write for {@link ByteBuffer}.
      *
      *
-     * Use {@link Ioapiset.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
+     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
      * to get the result and update the ByteBuffers position.      <code>
      *  WriteFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
@@ -688,7 +688,7 @@ public final class Fileapi {
      * device. This is the asynchronous write for {@link ByteBuffer}.
      *
      *
-     * Use {@link Ioapiset.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
+     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
      * to get the result and update the ByteBuffers position.      <code>
      *  WriteFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
