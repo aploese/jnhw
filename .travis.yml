@@ -2,9 +2,15 @@ language: java
 matrix:
   include:
     - os: linux
+      dist: bionic
       jdk: oraclejdk11
     - os: linux
+      dist: bionic
       jdk: openjdk11
+    -os: windows
+      jdk: openjdk11
+    -os: windows
+      jdk: oraclejdk11
 sudo: false
 cache:
   directories:
