@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#autoreconf -i
+
 mvn clean compile test-compile || exit 1
 
 ./configure || exit 1
