@@ -56,7 +56,7 @@ extern "C" {
 #define UNWRAP_HANDLE_OR_NULL(handle) (handle) == NULL ? NULL : UNWRAP_HANDLE(handle)
 #define CREATE_HANDLE(value) (*env)->NewObject(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID, (jlong) (intptr_t) value)
 
-#define UNWRAP_PHANDLE(handle) UNWRAP_OPAQUE_MEM_TO(PHANDLE, handle)   
+#define UNWRAP_PHANDLE(handle) UNWRAP_OPAQUE_MEM_TO(PHANDLE, handle)
 
 #define UNWRAP_HKEY(hKey) (HKEY) (intptr_t) (*env)->GetLongField(env, (hKey), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
 

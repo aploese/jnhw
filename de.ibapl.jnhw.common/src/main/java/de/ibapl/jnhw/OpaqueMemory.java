@@ -36,6 +36,14 @@ import java.util.logging.Logger;
 public class OpaqueMemory {
 
     /**
+     * Make sure the native lib is loaded. Subclasses in common do not need to
+     * call this again....
+     */
+    static {
+        LibJnhwCommonLoader.touch();
+    }
+
+    /**
      * test if adresses are the same. If either nativeAddress or om is null and
      * the other has a address of 0 it is considered as the same address.
      *
@@ -71,13 +79,6 @@ public class OpaqueMemory {
     private static final Cleaner CLEANER = Cleaner.create();
 
     protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
-
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwCommonLoader.touch();
-    }
 
     // get value of define from errno.
     public static final native int ENOMEM();
@@ -156,6 +157,12 @@ public class OpaqueMemory {
      * @param clearMem
      */
     public OpaqueMemory(int elements, int elementSizeInBytes, boolean clearMem) {
+        if (elements < 0) {
+            throw new IllegalArgumentException("elements < 0");
+        }
+        if (elementSizeInBytes < 0) {
+            throw new IllegalArgumentException("elementSizeInBytes < 0");
+        }
         this.sizeInBytes = elementSizeInBytes * elements;
         try {
             if (clearMem) {

@@ -27,7 +27,7 @@ package de.ibapl.jnhw;
  * @param <T>
  */
 public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
-
+    
     @FunctionalInterface
     protected interface ElementFactory<T extends OpaqueMemory>{
         

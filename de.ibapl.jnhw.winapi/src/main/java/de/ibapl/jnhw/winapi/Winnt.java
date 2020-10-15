@@ -25,6 +25,7 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.Callback_IJ_V_Impl;
+import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.winapi.BaseTsd.ULONG_PTR;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 
@@ -485,6 +486,70 @@ public final class Winnt {
 
     }
 
+    public static class ArrayOfHandle extends OpaqueMemory {
+        
+        static {
+            LibJnhwWinApiLoader.touch();
+        }
+
+        public final int length;
+
+        public void set(int i, HANDLE element) {
+            if (i < 0) {
+                throw new IllegalArgumentException("i < 0");
+            } else if (i >= length) {
+                throw new IllegalArgumentException("i >= length");
+            }
+            set0(i, element);
+        }
+
+        /**
+         *
+         * @param i the index must be in range.
+         * @return
+         */
+        private native HANDLE get0(int i);
+
+        /**
+         *
+         * @param i the index must be in range.
+         * @param element
+         */
+        private native void set0(int i, HANDLE element);
+
+        public static native int sizeofHANDLE();
+
+        public ArrayOfHandle(int length, boolean clearMem) {
+            super(length, sizeofHANDLE(), clearMem);
+            this.length = length;
+        }
+
+        public final HANDLE get(int i) {
+            if (i < 0) {
+                throw new IllegalArgumentException("i < 0");
+            } else if (i >= length) {
+                throw new IllegalArgumentException("i >= length");
+            }
+            return get0(i);
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for (int i = 0; i < length; i++) {
+                if (i == 0) {
+                } else {
+                    sb.append(", ");
+                }
+                sb.append(get0(i));
+            }
+            sb.append("]");
+            return sb.toString();
+        }
+
+    }
+
     /**
      * Wrapper for
      * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#lpwstr">LPWSTR</a>.<p>
@@ -638,20 +703,20 @@ public final class Winnt {
     }
 
     public abstract static class PAPCFUNC extends Callback_IJ_V_Impl {
-        
-    /**
-     * this will be called from the native code on 32 bit.
-     *
-     * @param value
-     */
-    protected abstract void callback(@ULONG_PTR long value);
 
-    /**
-     * this will be called from the native code on 64 bit.
-     *
-     * @param value
-     */
-    protected abstract void callback(@ULONG_PTR int value);
+        /**
+         * this will be called from the native code on 32 bit.
+         *
+         * @param value
+         */
+        protected abstract void callback(@ULONG_PTR long value);
+
+        /**
+         * this will be called from the native code on 64 bit.
+         *
+         * @param value
+         */
+        protected abstract void callback(@ULONG_PTR int value);
 
     }
 

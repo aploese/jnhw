@@ -48,7 +48,8 @@ libjnhw_winapi_la_SOURCES = \
 libwinnt_la_SOURCES = \
  WinntDefines.c \
  Winnt_PHANDLE.c \
- Winnt_LPWSTR.c
+ Winnt_LPWSTR.c \
+ Winnt_ArrayOfHandle.c
 
 libbasetsd_la_SOURCES = \
   BaseTsdDefines.c \

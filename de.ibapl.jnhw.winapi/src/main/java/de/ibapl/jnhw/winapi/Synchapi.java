@@ -23,11 +23,10 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.PointerArray;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import de.ibapl.jnhw.winapi.Winnt.PHANDLE;
+import de.ibapl.jnhw.winapi.Winnt.ArrayOfHandle;
 
 /**
  * Wrapper around the
@@ -123,14 +122,14 @@ public abstract class Synchapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static long WaitForMultipleObjects(PointerArray<PHANDLE> lpHandles, boolean bWaitAll, long dwMilliseconds) throws NativeErrorException {
+    public final static long WaitForMultipleObjects(ArrayOfHandle lpHandles, boolean bWaitAll, long dwMilliseconds) throws NativeErrorException {
         if (lpHandles == null) {
             throw new NullPointerException("lpHandles = null");
         }
         if (dwMilliseconds < 0) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForMultipleObjects_ArgsOK(lpHandles.length(), lpHandles, bWaitAll, dwMilliseconds);
+        return WaitForMultipleObjects_ArgsOK(lpHandles.length, lpHandles, bWaitAll, dwMilliseconds);
     }
 
     /**
@@ -162,14 +161,14 @@ public abstract class Synchapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static long WaitForMultipleObjectsEx(PointerArray<PHANDLE> lpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException {
+    public final static long WaitForMultipleObjectsEx(ArrayOfHandle lpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException {
         if (lpHandles == null) {
             throw new NullPointerException("lpHandles = null");
         }
         if (dwMilliseconds < 0) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForMultipleObjectsEx_ArgsOK(lpHandles.length(), lpHandles, bWaitAll, dwMilliseconds, bAlertable);
+        return WaitForMultipleObjectsEx_ArgsOK(lpHandles.length, lpHandles, bWaitAll, dwMilliseconds, bAlertable);
     }
 
     /**
@@ -223,7 +222,7 @@ public abstract class Synchapi {
      */
     public final static native long SleepEx(long dwMilliseconds, boolean bAlertable);
 
-    private static native long WaitForMultipleObjects_ArgsOK(int nCount, PointerArray<PHANDLE> lpHandles, boolean bWaitAll, long dwMilliseconds) throws NativeErrorException;
+    private static native long WaitForMultipleObjects_ArgsOK(int nCount, ArrayOfHandle lpHandles, boolean bWaitAll, long dwMilliseconds) throws NativeErrorException;
 
-    private static native long WaitForMultipleObjectsEx_ArgsOK(int nCount, PointerArray<PHANDLE> lpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException;
+    private static native long WaitForMultipleObjectsEx_ArgsOK(int nCount, ArrayOfHandle lpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException;
 }

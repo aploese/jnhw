@@ -23,6 +23,7 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.PointerArray;
+import de.ibapl.jnhw.StructArray;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -82,9 +83,9 @@ public class SynchapiTests {
     public void testWaitForMultipleSignaled() throws Exception {
         final Winnt.HANDLE hEvent1 = Synchapi.CreateEventW(null, true, false, null);
         final Winnt.HANDLE hEvent2 = Synchapi.CreateEventW(null, true, false, null);
-        final PointerArray<Winnt.PHANDLE> handles = new PointerArray(2, false);
-        handles.set(0, new Winnt.PHANDLE(hEvent1));
-        handles.set(1, new Winnt.PHANDLE(hEvent2));
+        final Winnt.ArrayOfHandle handles = new Winnt.ArrayOfHandle(2, false);
+        handles.set(0, hEvent1);
+        handles.set(1, hEvent2);
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(5000), () -> {
             new Thread(() -> {
                 try {
@@ -107,9 +108,9 @@ public class SynchapiTests {
     public void testWaitForMultipleTimeout() throws Exception {
         final Winnt.HANDLE hEvent1 = Synchapi.CreateEventW(null, true, false, null);
         final Winnt.HANDLE hEvent2 = Synchapi.CreateEventW(null, true, false, null);
-        final PointerArray<Winnt.PHANDLE> handles = new PointerArray(2, false);
-        handles.set(0, new Winnt.PHANDLE(hEvent1));
-        handles.set(1, new Winnt.PHANDLE(hEvent2));
+        final Winnt.ArrayOfHandle handles = new Winnt.ArrayOfHandle(2, false);
+        handles.set(0, hEvent1);
+        handles.set(1, hEvent2);
 
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
             long result = Synchapi.WaitForMultipleObjects(handles, false, 100);
