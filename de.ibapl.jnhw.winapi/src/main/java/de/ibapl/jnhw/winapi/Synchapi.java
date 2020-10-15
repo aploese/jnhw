@@ -23,9 +23,11 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.PointerArray;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import de.ibapl.jnhw.winapi.Winnt.PHANDLE;
 
 /**
  * Wrapper around the
@@ -100,6 +102,77 @@ public abstract class Synchapi {
     public final static native void SetEvent(HANDLE hEvent) throws NativeErrorException;
 
     /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects">WaitForSingleObject</a>
+     * Waits until one or all of the specified objects are in the signaled state
+     * or the time-out interval elapses.
+     *
+     * @param lpHandles An array of object handles.
+     * @param bWaitAll If this parameter is TRUE, the function returns when the
+     * state of all objects in the lpHandles array is signaled. If FALSE, the
+     * function returns when the state of any one of the objects is set to
+     * signaled. In the latter case, the return value indicates the object whose
+     * state caused the function to return.
+     * @param dwMilliseconds the time-out interval, in milliseconds.
+     * @return If the function succeeds, the return value indicates the event
+     * that caused the function to return. It can be one of the following
+     * values. (Note that WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is
+     * defined as 0x00000080L.)
+     *
+     * @throws NullPointerException if hHandle is {@code null].
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static long WaitForMultipleObjects(PointerArray<PHANDLE> lpHandles, boolean bWaitAll, long dwMilliseconds) throws NativeErrorException {
+        if (lpHandles == null) {
+            throw new NullPointerException("lpHandles = null");
+        }
+        if (dwMilliseconds < 0) {
+            throw new IllegalArgumentException("dwMilliseconds < 0");
+        }
+        return WaitForMultipleObjects_ArgsOK(lpHandles.length(), lpHandles, bWaitAll, dwMilliseconds);
+    }
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjectsex">WaitForSingleObjectEx</a>
+     * Waits until the specified object is in the signaled state, an I/O
+     * completion routine or asynchronous procedure call (APC) is queued to the
+     * thread, or the time-out interval elapses.
+     *
+     * @param lpHandles An array of object handles.
+     * @param bWaitAll If this parameter is TRUE, the function returns when the
+     * state of all objects in the lpHandles array is signaled. If FALSE, the
+     * function returns when the state of any one of the objects is set to
+     * signaled. In the latter case, the return value indicates the object whose
+     * state caused the function to return.
+     * @param dwMilliseconds the time-out interval, in milliseconds.
+     * @param bAlertable If this parameter is TRUE and the thread is in the
+     * waiting state, the function returns when the system queues an I/O
+     * completion routine or APC, and the thread runs the routine or function.
+     * Otherwise, the function does not return, and the completion routine or
+     * APC function is not executed.
+     *
+     * @return If the function succeeds, the return value indicates the event
+     * that caused the function to return. It can be one of the following
+     * values. (Note that WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is
+     * defined as 0x00000080L.)
+     *
+     * @throws NullPointerException if hHandle is {@code null].
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static long WaitForMultipleObjectsEx(PointerArray<PHANDLE> lpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException {
+        if (lpHandles == null) {
+            throw new NullPointerException("lpHandles = null");
+        }
+        if (dwMilliseconds < 0) {
+            throw new IllegalArgumentException("dwMilliseconds < 0");
+        }
+        return WaitForMultipleObjectsEx_ArgsOK(lpHandles.length(), lpHandles, bWaitAll, dwMilliseconds, bAlertable);
+    }
+
+    /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject">WaitForSingleObject</a>
      * Waits until the specified object is in the signaled state or the time-out
      * interval elapses.
@@ -150,4 +223,7 @@ public abstract class Synchapi {
      */
     public final static native long SleepEx(long dwMilliseconds, boolean bAlertable);
 
+    private static native long WaitForMultipleObjects_ArgsOK(int nCount, PointerArray<PHANDLE> lpHandles, boolean bWaitAll, long dwMilliseconds) throws NativeErrorException;
+
+    private static native long WaitForMultipleObjectsEx_ArgsOK(int nCount, PointerArray<PHANDLE> lpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException;
 }

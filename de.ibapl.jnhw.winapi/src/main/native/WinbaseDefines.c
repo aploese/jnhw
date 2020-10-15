@@ -126,6 +126,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    MAXIMUM_WAIT_OBJECTS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_MAXIMUM_1WAIT_1OBJECTS
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return MAXIMUM_WAIT_OBJECTS;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
      * Method:    WAIT_ABANDONED
      * Signature: ()I
      */

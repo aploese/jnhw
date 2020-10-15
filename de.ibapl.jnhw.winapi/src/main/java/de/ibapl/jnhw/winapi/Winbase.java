@@ -787,6 +787,15 @@ public abstract class Winbase {
     public final static native byte TWOSTOPBITS();
 
     /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects/">MAXIMUM_WAIT_OBJECTS</a>
+     * The state of the specified object is signaled.
+     *
+     * @return the native symbolic constant of MAXIMUM_WAIT_OBJECTS.
+     */
+    @Define
+    public final static native int MAXIMUM_WAIT_OBJECTS();
+
+    /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject/">WAIT_ABANDONED</a>
      *
      * @return the native symbolic constant of WAIT_ABANDONED.

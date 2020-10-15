@@ -313,8 +313,8 @@ public final class Fileapi {
      * occur at the position specified by the file pointer if supported by the
      * device. This is the asynchronous read for direct {@link ByteBuffer}.
      *
-     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
-     * to get the result and update the ByteBuffers position.      <code>
+     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)} to
+     * get the result and update the ByteBuffers position.      <code>
      *  ReadFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
      *  if (waitResult == WAIT_OBJECT_0()) {
@@ -351,7 +351,7 @@ public final class Fileapi {
     }
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfileex">ReadFile</a>
      * Reads data from the specified file or input/output (I/O) device. Reads
      * occur at the position specified by the file pointer if supported by the
      * device. This is the asynchronous read for {@link OpaqueMemory}.
@@ -364,6 +364,9 @@ public final class Fileapi {
      * transferred.
      * @param nNumberOfBytesToRead the maximum number of bytes to read.
      * @param lpOverlapped A pointer to an {@link OVERLAPPED} structure.
+     * @param lpCompletionRoutine A pointer to a completion routine to be called
+     * when the read operation has been completed and the calling thread is in
+     * an alertable wait state.
      *
      * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
      *
@@ -375,7 +378,7 @@ public final class Fileapi {
     public static native void ReadFileEx(HANDLE hFile, OpaqueMemory lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfileex">ReadFile</a>
      * Reads data from the specified file or input/output (I/O) device. Reads
      * occur at the position specified by the file pointer if supported by the
      * device. This is the asynchronous read for {@link OpaqueMemory}.
@@ -385,6 +388,9 @@ public final class Fileapi {
      * @param lpBuffer a pointer to the {@link OpaqueMemory} that receives all
      * data read from a file or device.
      * @param lpOverlapped A pointer to an {@link OVERLAPPED} structure.
+     * @param lpCompletionRoutine A pointer to a completion routine to be called
+     * when the read operation has been completed and the calling thread is in
+     * an alertable wait state.
      *
      * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
      *
@@ -396,13 +402,13 @@ public final class Fileapi {
     }
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfileex">ReadFile</a>
      * Reads data from the specified file or input/output (I/O) device. Reads
      * occur at the position specified by the file pointer if supported by the
      * device. This is the asynchronous read for direct {@link ByteBuffer}.
      *
-     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
-     * to get the result and update the ByteBuffers position.      <code>
+     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)} to
+     * get the result and update the ByteBuffers position.      <code>
      *  ReadFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
      *  if (waitResult == WAIT_OBJECT_0()) {
@@ -417,6 +423,9 @@ public final class Fileapi {
      * @param lpBuffer a pointer to an direct {@link ByteBuffer} that receives
      * the data read from a file or device.
      * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
+     * @param lpCompletionRoutine A pointer to a completion routine to be called
+     * when the read operation has been completed and the calling thread is in
+     * an alertable wait state.
      *
      * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
      *
@@ -602,8 +611,8 @@ public final class Fileapi {
      * device. This is the asynchronous write for {@link ByteBuffer}.
      *
      *
-     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
-     * to get the result and update the ByteBuffers position.      <code>
+     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)} to
+     * get the result and update the ByteBuffers position.      <code>
      *  WriteFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
      *  if (waitResult == WAIT_OBJECT_0()) {
@@ -640,7 +649,7 @@ public final class Fileapi {
     }
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefileex">WriteFile</a>
      * Writes data to the specified file or input/output (I/O) device.Writing
      * starts at the position specified by the file pointer if supported by the
      * device. This is the asynchronous write for {@link OpaqueMemory}.
@@ -651,6 +660,9 @@ public final class Fileapi {
      * @param off the start offset in {@code lpBuffer}.
      * @param nNumberOfBytesToWrite the number of bytes to write.
      * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
+     * @param lpCompletionRoutine A pointer to a completion routine to be called
+     * when the write operation has been completed and the calling thread is in
+     * an alertable wait state.
      *
      * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
      *
@@ -662,15 +674,18 @@ public final class Fileapi {
     public static native void WriteFileEx(HANDLE hFile, OpaqueMemory lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefileex">WriteFile</a>
      * Writes data to the specified file or input/output (I/O) device.Writing
      * starts at the position specified by the file pointer if supported by the
-     * device. This is the asynchronous write for {@link OpaqueMemory}.
+     * device.This is the asynchronous write for {@link OpaqueMemory}.
      *
      * @param hFile a handle to the file or I/O device.
      * @param lpBuffer the {@link OpaqueMemory} {@code lpBuffer} containing the
      * data to be written to the file or device.
      * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
+     * @param lpCompletionRoutine A pointer to a completion routine to be called
+     * when the write operation has been completed and the calling thread is in
+     * an alertable wait state.
      *
      * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
      *
@@ -682,14 +697,14 @@ public final class Fileapi {
     }
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefileex">WriteFile</a>
      * Writes data to the specified file or input/output (I/O) device. Writing
      * starts at the position specified by the file pointer if supported by the
      * device. This is the asynchronous write for {@link ByteBuffer}.
      *
      *
-     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)}
-     * to get the result and update the ByteBuffers position.      <code>
+     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)} to
+     * get the result and update the ByteBuffers position.      <code>
      *  WriteFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
      *  if (waitResult == WAIT_OBJECT_0()) {
@@ -704,6 +719,9 @@ public final class Fileapi {
      * @param lpBuffer the {@link ByteBuffer} {@code lpBuffer} containing the
      * data to be written to the file or device.
      * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
+     * @param lpCompletionRoutine A pointer to a completion routine to be called
+     * when the write operation has been completed and the calling thread is in
+     * an alertable wait state.
      *
      * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
      *

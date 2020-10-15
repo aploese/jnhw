@@ -27,6 +27,10 @@ package de.ibapl.jnhw;
  * @param <T>
  */
 public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
+    
+    static {
+            LibJnhwCommonLoader.touch();
+    }
 
     public void set(int i, T element) {
         cachedReferences[i] = element;
