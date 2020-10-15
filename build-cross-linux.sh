@@ -22,7 +22,9 @@ for d in\
  "mips-linux-gnu"\
  "mipsel-linux-gnu"\
  "mips64-linux-gnuabi64"\
- "mips64el-linux-gnuabi64"
+ "mips64el-linux-gnuabi64"\
+ "powerpc64le-linux-gnu"\
+ "s390x-linux-gnu"
 do
 export CC=$d-gcc
   $CC --version || exit 1
