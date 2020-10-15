@@ -206,6 +206,17 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of mips64el linux\n" + listSystemProperties());
                 }
+            case "ppc64le":
+                if (!"64".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of ppc64le linux\n" + listSystemProperties());
+                } else if (!"little".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of ppc64le linux\n" + listSystemProperties());
+                } else {
+                    result.add(MultiarchInfo.PPC_64_LE__LINUX__GNU);
+                }
+                
             default:
                 throw new UnsupportedOperationException("Can't handle os.arch of linux\n" + listSystemProperties());
         }

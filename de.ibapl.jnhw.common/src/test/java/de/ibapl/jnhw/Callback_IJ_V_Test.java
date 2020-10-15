@@ -29,7 +29,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.ibapl.jnhw.libloader.MultiarchInfo;
-import de.ibapl.jnhw.libloader.MultiarchInfo.WordSize;
+import de.ibapl.jnhw.libloader.WordSize;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 
 /**

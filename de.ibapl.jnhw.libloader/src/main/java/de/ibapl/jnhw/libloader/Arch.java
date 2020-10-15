@@ -26,12 +26,22 @@ package de.ibapl.jnhw.libloader;
  * @author aploese
  */
 public enum Arch {
-    X86_64(64, "x86_64"), X86(64, "x86"), I386(32, "i386"), ARM(32, "arm"), AARCH64(64, "aarch64"), MIPS_EL(32, "mipsel"), MIPS(32, "mips"), MIPS_64_EL(64, "mips64el"), MIPS_64(64, "mips64");
+    X86_64(WordSize._64_BIT, "x86_64"), 
+    X86(WordSize._32_BIT, "x86"), 
+    I386(WordSize._64_BIT, "i386"), 
+    ARM(WordSize._32_BIT, "arm"), 
+    AARCH64(WordSize._64_BIT, "aarch64"), 
+    MIPS_EL(WordSize._64_BIT, "mipsel"), 
+    MIPS(WordSize._32_BIT, "mips"), 
+    MIPS_64_EL(WordSize._64_BIT, "mips64el"), 
+    MIPS_64(WordSize._64_BIT, "mips64"),
+    PPC_64_LE(WordSize._64_BIT, "ppc64le"),
+    S390(WordSize._64_BIT, "s390");
 
     public final String archName;
-    public final int wordSize;
+    public final WordSize wordSize;
     
-    private Arch(int wordSize, String archName) {
+    private Arch(WordSize wordSize, String archName) {
         this.wordSize = wordSize;
         this.archName = archName;
     }

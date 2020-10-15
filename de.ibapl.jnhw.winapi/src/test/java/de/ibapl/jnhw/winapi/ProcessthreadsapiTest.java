@@ -26,6 +26,7 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.WordSize;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +45,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class ProcessthreadsapiTest {
 
-    private static MultiarchInfo.WordSize WORD_SIZE;
+    private static WordSize WORD_SIZE;
 
     @BeforeAll
     public static void setUpClass() {

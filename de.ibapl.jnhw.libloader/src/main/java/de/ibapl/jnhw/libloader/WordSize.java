@@ -25,24 +25,12 @@ package de.ibapl.jnhw.libloader;
  *
  * @author aploese
  */
-public enum Abi {
-    GNU("gnu"), 
-    GNU_EABI_HF("gnueabihf"), 
-    GNU_EABI("gnueabi"), 
-    GNU_ABI_64("gnuabi64"), 
-    BSD("bsd"), 
-    PE32_PLUS("pe32+"), 
-    PE32("pe32");
+public enum WordSize {
+    _32_BIT(32), _64_BIT(64);
+    public final int sizeInBit;
 
-    public final String abiName;
-
-    private Abi(String abiName) {
-        this.abiName = abiName;
+    private WordSize(int sizeInBit) {
+        this.sizeInBit = sizeInBit;
     }
-
-    @Override
-    public String toString() {
-        return abiName;
-    }
-
+    
 }
