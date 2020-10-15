@@ -37,6 +37,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import org.junit.jupiter.api.Assertions;
@@ -269,6 +270,14 @@ public class TimeTest {
         }
     }
 
+    private String getCtimeFormated(long clock) {
+        ZonedDateTime zdt = Instant.ofEpochMilli(clock * 1000L).atZone(ZoneOffset.systemDefault());
+        DateTimeFormatterBuilder dtfb = new DateTimeFormatterBuilder();
+        dtfb.appendPattern("E LLL  d H:m:s y\n");
+        return dtfb.toFormatter(java.util.Locale.ROOT).format(zdt);
+    }
+
+    
     /**
      * Test of ctime method, of class Time.
      */
@@ -277,10 +286,7 @@ public class TimeTest {
         System.out.println("ctime");
         long clock = 1575382844;
         String result = Time.ctime(clock);
-        ZonedDateTime zdt = Instant.ofEpochMilli(clock * 1000L).atZone(ZoneOffset.systemDefault());
-        DateTimeFormatterBuilder dtfb = new DateTimeFormatterBuilder();
-        dtfb.appendPattern("E LLL  d H:m:s y\n");
-        assertEquals(dtfb.toFormatter(java.util.Locale.ROOT).format(zdt), result);
+        assertEquals(getCtimeFormated(clock), result);
     }
 
     /**
@@ -292,11 +298,12 @@ public class TimeTest {
         long clock = 1575382844;
         OpaqueMemory buf = new OpaqueMemory(26, true);
         String result = Time.ctime_r(clock, buf);
-        assertEquals("Tue Dec  3 15:20:44 2019\n", result);
+        
+        assertEquals(getCtimeFormated(clock), result);
 
         byte[] raw = new byte[buf.sizeInBytes];
         OpaqueMemory.copy(buf, 0, raw, 0, raw.length);
-        assertArrayEquals("Tue Dec  3 15:20:44 2019\n\0".getBytes(), raw);
+        assertArrayEquals((getCtimeFormated(clock) + "\0").getBytes(), raw);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.ctime_r(clock, null);
