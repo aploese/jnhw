@@ -7,9 +7,9 @@ matrix:
     - os: linux
       dist: bionic
       jdk: openjdk11
-    -os: windows
+    - os: windows
       jdk: openjdk11
-    -os: windows
+    - os: windows
       jdk: oraclejdk11
 sudo: false
 cache:
