@@ -228,7 +228,7 @@ public final class MultiarchTupelBuilder {
                     result.add(MultiarchInfo.POWER_PC_64__LINUX__GNU);
                     return result;
                 }
-            case "s390":
+            case "s390x":
                 if (!"64".equals(sun_arch_data_model)) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of s390 linux\n" + listSystemProperties());
@@ -236,7 +236,7 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.cpu.endian of s390 linux\n" + listSystemProperties());
                 } else {
-                    result.add(MultiarchInfo.S390__LINUX__GNU);
+                    result.add(MultiarchInfo.S390_X__LINUX__GNU);
                     return result;
                 }
             case "sparc64":

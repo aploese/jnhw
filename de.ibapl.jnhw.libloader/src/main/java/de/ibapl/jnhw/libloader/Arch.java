@@ -37,7 +37,7 @@ public enum Arch {
     MIPS_64(WordSize._64_BIT, "mips64"),
     POWER_PC_64(WordSize._64_BIT, "powerpc64"),
     POWER_PC_64_LE(WordSize._64_BIT, "powerpc64le"),
-    S390(WordSize._64_BIT, "s390"),
+    S390_X(WordSize._64_BIT, "s390x"),
     SPARC_64(WordSize._64_BIT, "sparc64");
 
     public final String archName;
