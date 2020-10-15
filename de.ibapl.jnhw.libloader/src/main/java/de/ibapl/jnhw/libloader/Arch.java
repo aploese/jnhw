@@ -35,6 +35,7 @@ public enum Arch {
     MIPS(WordSize._32_BIT, "mips"), 
     MIPS_64_EL(WordSize._64_BIT, "mips64el"), 
     MIPS_64(WordSize._64_BIT, "mips64"),
+    PPC_64(WordSize._64_BIT, "ppc64"),
     PPC_64_LE(WordSize._64_BIT, "ppc64le"),
     S390(WordSize._64_BIT, "s390");
 

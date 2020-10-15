@@ -215,8 +215,30 @@ public final class MultiarchTupelBuilder {
                             "Can't handle sun.cpu.endian of ppc64le linux\n" + listSystemProperties());
                 } else {
                     result.add(MultiarchInfo.PPC_64_LE__LINUX__GNU);
+                    return result;
                 }
-                
+            case "ppc64":
+                if (!"64".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of ppc64le linux\n" + listSystemProperties());
+                } else if (!"big".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of ppc64le linux\n" + listSystemProperties());
+                } else {
+                    result.add(MultiarchInfo.PPC_64__LINUX__GNU);
+                    return result;
+                }
+            case "s390":
+                if (!"64".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of s390 linux\n" + listSystemProperties());
+                } else if (!"big".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of s390 linux\n" + listSystemProperties());
+                } else {
+                    result.add(MultiarchInfo.S390__LINUX__GNU);
+                    return result;
+                }
             default:
                 throw new UnsupportedOperationException("Can't handle os.arch of linux\n" + listSystemProperties());
         }
