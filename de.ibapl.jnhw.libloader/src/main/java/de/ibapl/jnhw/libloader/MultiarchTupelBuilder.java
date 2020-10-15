@@ -214,7 +214,7 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.cpu.endian of ppc64le linux\n" + listSystemProperties());
                 } else {
-                    result.add(MultiarchInfo.PPC_64_LE__LINUX__GNU);
+                    result.add(MultiarchInfo.POWER_PC_64_LE__LINUX__GNU);
                     return result;
                 }
             case "ppc64":
@@ -225,7 +225,7 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.cpu.endian of ppc64le linux\n" + listSystemProperties());
                 } else {
-                    result.add(MultiarchInfo.PPC_64__LINUX__GNU);
+                    result.add(MultiarchInfo.POWER_PC_64__LINUX__GNU);
                     return result;
                 }
             case "s390":
@@ -237,6 +237,17 @@ public final class MultiarchTupelBuilder {
                             "Can't handle sun.cpu.endian of s390 linux\n" + listSystemProperties());
                 } else {
                     result.add(MultiarchInfo.S390__LINUX__GNU);
+                    return result;
+                }
+            case "sparc64":
+                if (!"64".equals(sun_arch_data_model)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of sparc64 linux\n" + listSystemProperties());
+                } else if (!"big".equals(sun_cpu_endian)) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of sparc64 linux\n" + listSystemProperties());
+                } else {
+                    result.add(MultiarchInfo.SPARC_64__LINUX__GNU);
                     return result;
                 }
             default:
