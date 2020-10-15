@@ -278,14 +278,6 @@ public class TimeTest {
         return dtfb.toFormatter(java.util.Locale.ROOT).format(zdt);
     }
 
-    private String getCtime_rFormated(long clock) {
-        ZonedDateTime zdt = Instant.ofEpochMilli(clock * 1000L).atZone(ZoneId.of(Time.tzname()[0]));
-        DateTimeFormatterBuilder dtfb = new DateTimeFormatterBuilder();
-        dtfb.appendPattern("E LLL  d H:m:s y\n");
-        return dtfb.toFormatter(java.util.Locale.ROOT).format(zdt);
-    }
-
-    
     /**
      * Test of ctime method, of class Time.
      */
@@ -307,11 +299,11 @@ public class TimeTest {
         OpaqueMemory buf = new OpaqueMemory(26, true);
         String result = Time.ctime_r(clock, buf);
         
-        assertEquals(getCtime_rFormated(clock), result);
+        assertEquals(getCtimeFormated(clock), result);
 
         byte[] raw = new byte[buf.sizeInBytes];
         OpaqueMemory.copy(buf, 0, raw, 0, raw.length);
-        assertArrayEquals((getCtime_rFormated(clock) + "\0").getBytes(), raw);
+        assertArrayEquals((getCtimeFormated(clock) + "\0").getBytes(), raw);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.ctime_r(clock, null);
