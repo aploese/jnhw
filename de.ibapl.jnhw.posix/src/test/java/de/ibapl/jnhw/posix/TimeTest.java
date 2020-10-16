@@ -283,7 +283,7 @@ public class TimeTest {
      */
     @Test
     public void testCtime() {
-        System.out.println("ctime");
+        System.out.println("ctime  @" + ZoneOffset.systemDefault());
         final long clock = 1575382844;
         String result = Time.ctime(clock);
         assertEquals(getCtimeFormated(clock), result);
@@ -294,7 +294,7 @@ public class TimeTest {
      */
     @Test
     public void testCtime_r() throws Exception {
-        System.out.println("ctime_r");
+        System.out.println("ctime_r  @" + ZoneOffset.systemDefault());
         final long clock = 1575382844;
         OpaqueMemory buf = new OpaqueMemory(26, true);
         String result = Time.ctime_r(clock, buf);

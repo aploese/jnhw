@@ -67,13 +67,13 @@ public class DefinesTest {
     }
 
     public static void testDefines(Class clazz) throws Exception {
-        System.out.println(clazz.getName() + " Defines: ");
+        System.out.println(clazz.getName() + " Defines: >>>");
         for (Method m : clazz.getMethods()) {
             final Class<?> exceptionTypes[] = m.getExceptionTypes();
             try {
                 final Define define = m.getAnnotation(Define.class);
                 if (define != null) {
-                    System.out.println("\t" + m.getName() + " = " + m.invoke(clazz));
+                    System.out.println(String.format("\t%-30s = \"%s\"", m.getName(), m.invoke(clazz)));
                 }
             } catch (InvocationTargetException ite) {
                 if (ite.getTargetException() instanceof NotDefinedException) {
@@ -83,12 +83,13 @@ public class DefinesTest {
                             found = true;
                             break;
                         }
-                        if (found) {
-                            System.out.println("\t" + m.getName() + " NOT DEFINED!");
-                        } else {
-                            Assertions.fail("Name: " + m.getName() + " throws NotDefinedException but dont declare it" + ite.getTargetException());
-                        }
                     }
+                    if (found) {
+                    System.out.println(String.format("\t%-30s ... is not defined", m.getName()));
+                    } else {
+                        Assertions.fail("Name: " + m.getName() + " throws NotDefinedException but don't declare it" + ite.getTargetException());
+                    }
+
                 } else {
                     Assertions.fail("Name: " + m.getName() + " throws InvocationTargetException: " + ite.getTargetException());
                 }
@@ -96,6 +97,7 @@ public class DefinesTest {
                 Assertions.fail("Name: " + m.getName() + " throws unknown exception: " + t);
             }
         }
+        System.out.println("<<< " + clazz.getName() + " Defines");
     }
 
     @Test

@@ -377,9 +377,10 @@ public final class Fcntl {
      * if this flag is applied to a non-directory file.
      *
      * @return the native symbolic constant of O_SEARCH.
+     * @throws de.ibapl.jnhw.NotDefinedException
      */
     @Define
-    public final static native int O_SEARCH();
+    public final static native int O_SEARCH() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> Write according to synchronized I/O file integrity
