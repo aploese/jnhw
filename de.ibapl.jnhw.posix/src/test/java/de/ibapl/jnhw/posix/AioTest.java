@@ -195,15 +195,11 @@ public class AioTest {
                         try {
                             System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self());
                             System.out.println("aio_read in callback currentThread: " + Thread.currentThread());
-                            try {
-                                int errno = Aio.aio_error(a);
-                                assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
-                                aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(a));
-                            } catch (NativeErrorException nee) {
-                                fail("aio_read in callback NativeErrorException: " + nee, nee);
-                            } catch (NoSuchNativeMethodException nsnme) {
-                                fail(nsnme);
+                            int errno = Aio.aio_error(a);
+                            if (errno != 0) {
+                                throw new NativeErrorException(errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
                             }
+                            aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(a));
                             synchronized (objRef) {
                                 objRef.value = a;
                                 objRef.notify();
@@ -214,6 +210,7 @@ public class AioTest {
                                 objRef.value = ex;
                                 objRef.notify();
                             }
+                            throw new RuntimeException(ex);
                         }
                     }
 
@@ -222,7 +219,10 @@ public class AioTest {
                         try {
                             return new Aio.Aiocb(address);
                         } catch (NoSuchNativeTypeException nste) {
-                            Assertions.fail(nste);
+                            synchronized (objRef) {
+                                objRef.value = nste;
+                                objRef.notify();
+                            }
                             throw new RuntimeException(nste);
                         }
                     }
@@ -239,7 +239,7 @@ public class AioTest {
 
                 Assertions.assertNotNull(objRef.value);
                 if (objRef.value instanceof Exception) {
-                    throw (Exception) objRef.value;
+                    fail("in callback", (Exception)objRef.value);
                 } else {
                     assertEquals(aiocb, objRef.value);
                 }
@@ -304,16 +304,11 @@ public class AioTest {
                         try {
                             System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self());
                             System.out.println("aio_read in callback i=" + i + " currentThread: " + Thread.currentThread());
-                            try {
-                                int errno = Aio.aio_error(aiocb);
-                                assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
-                                aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
-                                assertEquals(SIVAL_INT, i);
-                            } catch (NativeErrorException nee) {
-                                fail("aio_read in callback NativeErrorException: " + nee, nee);
-                            } catch (NoSuchNativeMethodException nsnme) {
-                                fail(nsnme);
+                            int errno = Aio.aio_error(aiocb);
+                            if (errno != 0) {
+                                throw new NativeErrorException(errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
                             }
+                            aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
                             synchronized (intRef) {
                                 intRef.value = i;
                                 intRef.notify();
@@ -324,6 +319,7 @@ public class AioTest {
                                 intRef.value = ex;
                                 intRef.notify();
                             }
+                            throw new RuntimeException(ex);
                         }
 
                     }
@@ -343,7 +339,7 @@ public class AioTest {
                 }
                 Assertions.assertNotNull(intRef.value);
                 if (intRef.value instanceof Exception) {
-                    throw (Exception) intRef.value;
+                    fail("in callback", (Exception)intRef.value);
                 } else {
                     assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
                 }
@@ -462,16 +458,11 @@ public class AioTest {
                         try {
                             System.out.println("aio_write enter callback Pthread_t: " + Pthread.pthread_self());
                             System.out.println("aio_write in callback i=" + i + " currentThread: " + Thread.currentThread());
-                            try {
-                                int errno = Aio.aio_error(aiocb);
-                                assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
-                                aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
-                                assertEquals(SIVAL_INT, i);
-                            } catch (NativeErrorException nee) {
-                                fail("aio_read in callback NativeErrorException: " + nee, nee);
-                            } catch (NoSuchNativeMethodException nsnme) {
-                                fail(nsnme);
+                            int errno = Aio.aio_error(aiocb);
+                            if (errno != 0) {
+                                throw new NativeErrorException(errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
                             }
+                            aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
                             synchronized (intRef) {
                                 intRef.value = i;
                                 intRef.notify();
@@ -482,6 +473,7 @@ public class AioTest {
                                 intRef.value = ex;
                                 intRef.notify();
                             }
+                            throw new RuntimeException(ex);
                         }
                     }
 
@@ -496,7 +488,7 @@ public class AioTest {
                 }
                 Assertions.assertNotNull(intRef.value);
                 if (intRef.value instanceof Exception) {
-                    throw (Exception) intRef.value;
+                    fail("in callback", (Exception)intRef.value);
                 } else {
                     assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
                 }

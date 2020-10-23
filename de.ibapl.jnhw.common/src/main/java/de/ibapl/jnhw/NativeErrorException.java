@@ -43,4 +43,8 @@ public class NativeErrorException extends Exception {
 		this.errno = errno;
 	}
 
+	public NativeErrorException(int errno, String msg) {
+		super(msg);
+		this.errno = errno;
+	}
 }

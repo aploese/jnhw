@@ -792,7 +792,7 @@ public class TimeTest {
      * Test of timer_* methods, of class Time.
      */
     @Test
-    public void testTimer() throws Exception {
+    public void testTimer() throws Throwable {
         System.out.println("timer_create");
         switch (multiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
@@ -829,8 +829,6 @@ public class TimeTest {
                     @Override
                     protected void callback(int sigval) {
                         try {
-                            assertEquals(42, evp.sigev_value.sival_int());
-                            assertEquals(42, sigval);
                             synchronized (intRef) {
                                 intRef.value = sigval;
                                 intRef.notifyAll();
@@ -840,6 +838,7 @@ public class TimeTest {
                                 intRef.value = ex;
                                 intRef.notifyAll();
                             }
+                            throw ex;
                         }
                     }
 
@@ -866,8 +865,8 @@ public class TimeTest {
                             intRef.wait(ONE_MINUTE);
                         }
                         Assertions.assertNotNull(intRef.value);
-                        if (intRef.value instanceof Exception) {
-                            throw (Exception) intRef.value;
+                        if (intRef.value instanceof Throwable) {
+                            fail("in callback", (Exception) intRef.value);
                         } else {
                             assertEquals(Integer.valueOf(42), intRef.value);
                         }
