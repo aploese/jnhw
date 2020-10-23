@@ -240,7 +240,7 @@ public final class Fcntl {
      * <b>Non POSIX:</b> Enable signal-driven I/O.
      *
      * @return the native symbolic constant of .
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if O_ASYNC is not defined natively.
      */
     @Define
     public final static native int O_ASYNC() throws NotDefinedException;
@@ -276,7 +276,7 @@ public final class Fcntl {
      * completion.
      *
      * @return the native symbolic constant of O_DSYNC.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if O_DSYNC is not defined natively.
      */
     @Define
     public final static native int O_DSYNC() throws NotDefinedException;
@@ -294,7 +294,7 @@ public final class Fcntl {
      * unspecified if this flag is applied to a directory.
      *
      * @return the native symbolic constant of O_EXEC.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if O_EXEC is not defined natively.
      */
     @Define
     public final static native int O_EXEC() throws NotDefinedException;
@@ -303,7 +303,7 @@ public final class Fcntl {
      * <b>Non POSIX:</b> enables synchronous writing for the file. .
      *
      * @return the native symbolic constant of O_FSYNC.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if O_FSYNC is not defined natively.
      */
     @Define
     public final static native int O_FSYNC() throws NotDefinedException;
@@ -318,9 +318,10 @@ public final class Fcntl {
      * feature_test_macros(7)). .
      *
      * @return the native symbolic constant of O_LARGEFILE.
+     * @throws NotDefinedException if O_LARGEFILE is not defined natively.
      */
     @Define
-    public final static native int O_LARGEFILE();
+    public final static native int O_LARGEFILE() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> Do not assign controlling terminal.
@@ -342,7 +343,7 @@ public final class Fcntl {
      * <b>POSIX:</b> Non-blocking mode.
      *
      * @return the native symbolic constant of O_NONBLOCK.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if O_NONBLOCK is not defined natively.
      */
     @Define
     public final static native int O_NONBLOCK() throws NotDefinedException;
@@ -367,7 +368,7 @@ public final class Fcntl {
      * <b>POSIX.SIO:</b> Synchronized read I/O operations.
      *
      * @return the native symbolic constant of O_RSYNC.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if O_RSYNC is not defined natively.
      */
     @Define
     public final static native int O_RSYNC() throws NotDefinedException;
@@ -377,7 +378,7 @@ public final class Fcntl {
      * if this flag is applied to a non-directory file.
      *
      * @return the native symbolic constant of O_SEARCH.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if O_SEARCH is not defined natively.
      */
     @Define
     public final static native int O_SEARCH() throws NotDefinedException;
@@ -404,7 +405,7 @@ public final class Fcntl {
      * that provides conforming behavior.
      *
      * @return the native symbolic constant of O_TTY_INIT.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if O_TTY_INIT is not defined natively.
      */
     @Define
     public final static native int O_TTY_INIT() throws NotDefinedException;
@@ -422,7 +423,7 @@ public final class Fcntl {
      * specified data in the near future.
      *
      * @return the native symbolic constant of POSIX_FADV_DONTNEED.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if POSIX_FADV_DONTNEED is not defined natively.
      */
     @Define
     public final static native int POSIX_FADV_DONTNEED() throws NotDefinedException;
@@ -432,7 +433,7 @@ public final class Fcntl {
      * once and then not reuse it thereafter.
      *
      * @return the native symbolic constant of POSIX_FADV_NOREUSE.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if POSIX_FADV_NOREUSE is not defined natively.
      */
     @Define
     public final static native int POSIX_FADV_NOREUSE() throws NotDefinedException;
@@ -443,7 +444,7 @@ public final class Fcntl {
      * advice is given for an open file.
      *
      * @return the native symbolic constant of POSIX_FADV_NORMAL.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if POSIX_FADV_NORMAL is not defined natively.
      */
     @Define
     public final static native int POSIX_FADV_NORMAL() throws NotDefinedException;
@@ -453,7 +454,7 @@ public final class Fcntl {
      * a random order.
      *
      * @return the native symbolic constant of POSIX_FADV_RANDOM.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if POSIX_FADV_RANDOM is not defined natively.
      */
     @Define
     public final static native int POSIX_FADV_RANDOM() throws NotDefinedException;
@@ -463,7 +464,7 @@ public final class Fcntl {
      * sequentially from lower offsets to higher offsets.
      *
      * @return the native symbolic constant of POSIX_FADV_SEQUENTIAL.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if POSIX_FADV_SEQUENTIAL is not defined natively.
      */
     @Define
     public final static native int POSIX_FADV_SEQUENTIAL() throws NotDefinedException;
@@ -473,7 +474,7 @@ public final class Fcntl {
      * the near future.
      *
      * @return the native symbolic constant of POSIX_FADV_WILLNEED.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if POSIX_FADV_WILLNEED is not defined natively.
      */
     @Define
     public final static native int POSIX_FADV_WILLNEED() throws NotDefinedException;

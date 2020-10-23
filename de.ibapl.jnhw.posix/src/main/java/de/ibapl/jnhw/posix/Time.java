@@ -29,7 +29,6 @@ import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeException;
-import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -216,6 +215,7 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method clock_nanosleep is not available natively.
      */
     public final static native void clock_nanosleep(@clockid_t int clock_id, int flags, Timespec rqtp, Timespec rmtp) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -266,7 +266,7 @@ public class Time {
      * timezone, tzname, tzset - set timezone conversion information</a>.
      *
      * @return the native value of daylight.
-     * @throws NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method daylight is not available natively.
      */
     public final static native int daylight() throws NoSuchNativeMethodException;
 
@@ -293,7 +293,7 @@ public class Time {
      *
      * @throws de.ibapl.jnhw.NativeErrorException returns the getdate_err error
      * codes.
-     * @throws NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method getdate is not available natively.
      */
     public final static native Tm getdate(String string) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -449,11 +449,10 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
      * @throws NullPointerException if
      * {@code ((evp != null) && (evp.sigev_notify_attributes == null))}
      * otherwise we will get a SIGSEV.
-     *
+     * @throws NoSuchNativeMethodException if the method timer_create is not available natively.
      */
     public final static native void timer_create(@clockid_t int clockid, Sigevent evp, Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -465,7 +464,7 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method timer_delete is not available natively.
      */
     public final static native void timer_delete(Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -477,7 +476,7 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method timer_getoverrun is not available natively.
      */
     public final static native int timer_getoverrun(Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -489,7 +488,7 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method timer_gettime is not available natively.
      */
     public final static native void timer_gettime(Timer_t timerid, Itimerspec value) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -510,7 +509,7 @@ public class Time {
      * timezone, tzname, tzset - set timezone conversion information</a>.
      *
      * @return the native value of timezone.
-     * @throws NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method timezone is not available natively.
      */
     public final static native long timezone() throws NoSuchNativeMethodException;
 
@@ -610,10 +609,7 @@ public class Time {
             if (!Objects.equals(this.it_interval, other.it_interval)) {
                 return false;
             }
-            if (!Objects.equals(this.it_value, other.it_value)) {
-                return false;
-            }
-            return true;
+            return Objects.equals(this.it_value, other.it_value);
         }
 
         @Override
@@ -721,10 +717,7 @@ public class Time {
             if (this.tv_sec() != other.tv_sec()) {
                 return false;
             }
-            if (this.tv_nsec() != other.tv_nsec()) {
-                return false;
-            }
-            return true;
+            return this.tv_nsec() == other.tv_nsec();
         }
 
     }
@@ -755,12 +748,17 @@ public class Time {
          *
          * @param addressHolder
          */
+        @SuppressWarnings("unused")
         private Tm(NativeAddressHolder addressHolder, int sizeof) {
             super(addressHolder, sizeof);
         }
 
         public Tm() {
             super(sizeofTm(), false);
+        }
+
+        public Tm(boolean clearMem) {
+            super(sizeofTm(), clearMem);
         }
 
         /**
@@ -928,15 +926,15 @@ public class Time {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append("{tm_year : " + tm_year());
-            sb.append(", tm_yday : " + tm_yday());
-            sb.append(", tm_mon : " + tm_mon());
-            sb.append(", tm_mday : " + tm_mday());
-            sb.append(", tm_wday : " + tm_wday());
-            sb.append(", tm_hour : " + tm_hour());
-            sb.append(", tm_min : " + tm_min());
-            sb.append(", tm_sec : " + tm_sec());
-            sb.append(", tm_isdst : " + tm_isdst());
+            sb.append("{tm_year : ").append(tm_year());
+            sb.append(", tm_yday : ").append(tm_yday());
+            sb.append(", tm_mon : ").append(tm_mon());
+            sb.append(", tm_mday : ").append(tm_mday());
+            sb.append(", tm_wday : ").append(tm_wday());
+            sb.append(", tm_hour : ").append(tm_hour());
+            sb.append(", tm_min : ").append(tm_min());
+            sb.append(", tm_sec : ").append(tm_sec());
+            sb.append(", tm_isdst : ").append(tm_isdst());
             sb.append("}");
             return sb.toString();
         }

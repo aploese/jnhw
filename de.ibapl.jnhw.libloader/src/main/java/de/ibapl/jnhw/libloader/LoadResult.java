@@ -30,22 +30,27 @@ import java.net.URL;
 public class LoadResult {
 
     static LoadResult successFromLibraryPath(String libName, String systemLibName, String libFileName) {
-        return new LoadResult(libName, systemLibName, null, libFileName, null);
+        return new LoadResult(null, libName, systemLibName, null, libFileName, null);
     }
 
-    static LoadResult successFromClassPath(String libName, String systemLibName, URL classPathLibURL) {
-        return new LoadResult(libName, systemLibName, classPathLibURL, classPathLibURL.getFile(), null);
+    static LoadResult successFromClassPath(MultiarchInfo multiarchInfo, String libName, String systemLibName, URL classPathLibURL) {
+        return new LoadResult(multiarchInfo, libName, systemLibName, classPathLibURL, classPathLibURL.getFile(), null);
     }
 
-    static LoadResult successFromTempCopy(String libName, String systemLibName, URL classPathLibURL, String libFileName) {
-        return new LoadResult(libName, systemLibName, classPathLibURL, classPathLibURL.getFile(), null);
+    static LoadResult successFromTempCopy(MultiarchInfo multiarchInfo, String libName, String systemLibName, URL classPathLibURL, String libFileName) {
+        return new LoadResult(multiarchInfo, libName, systemLibName, classPathLibURL, classPathLibURL.getFile(), null);
     }
 
     public static LoadResult fail(String libName, String systemLibName, Throwable loadError) {
-        return new LoadResult(libName, systemLibName, null, null, loadError);
+        return new LoadResult(null, libName, systemLibName, null, null, loadError);
     }
 
-    private LoadResult(String libName, String systemLibName, URL resourdeURL, String libFileName, Throwable loadError) {
+    public static LoadResult fail(MultiarchInfo multiarchInfo, String libName, String systemLibName, Throwable loadError) {
+        return new LoadResult(multiarchInfo, libName, systemLibName, null, null, loadError);
+    }
+
+    private LoadResult(MultiarchInfo multiarchInfo, String libName, String systemLibName, URL resourdeURL, String libFileName, Throwable loadError) {
+        this.multiarchInfo = multiarchInfo;
         this.libName = libName;
         this.systemLibName = systemLibName;
         this.resourdeURL = resourdeURL;
@@ -53,6 +58,7 @@ public class LoadResult {
         this.loadError = loadError;
     }
 
+    public final MultiarchInfo multiarchInfo;
     public final String libName;
     public final String systemLibName;
     public final URL resourdeURL;

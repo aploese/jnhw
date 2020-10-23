@@ -25,7 +25,6 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.Callback_IJ_V_Impl;
-import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.winapi.BaseTsd.ULONG_PTR;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 

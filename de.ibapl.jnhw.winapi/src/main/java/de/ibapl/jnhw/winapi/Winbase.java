@@ -152,7 +152,7 @@ public abstract class Winbase {
      *
      * @param hFile a handle to the communications device.
      *
-     * @throws NullPointerException if hFile is {@code null].
+     * @throws NullPointerException if hFile is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -173,7 +173,7 @@ public abstract class Winbase {
      * device's status information is returned. If this parameter is
      * {@code NULL}, no status information is returned.
      *
-     * @throws NullPointerException if hFile is {@code null].
+     * @throws NullPointerException if hFile is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -228,7 +228,7 @@ public abstract class Winbase {
      * be one of the following values:
      * {@link CLRBREAK}, {@link CLRDTR}, {@link CLRRTS}, {@link SETBREAK}, {@link SETDTR}, {@link SETRTS}, {@link SETXOFF}, {@link SETXON}.
      *
-     * @throws NullPointerException if hFile is {@code null].
+     * @throws NullPointerException if hFile is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -482,7 +482,7 @@ public abstract class Winbase {
      * can be one of the following values: MS_CTS_ON MS_DSR_ON MS_RING_ON
      * MS_RLSD_ON
      *
-     * @throws NullPointerException if hFile is {@code null].
+     * @throws NullPointerException if hFile is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -498,7 +498,7 @@ public abstract class Winbase {
      * @param lpDCB A pointer to a {@link DCB} structure that receives the
      * control settings information.
      *
-     * @throws NullPointerException if hFile or lpDCB is {@code null].
+     * @throws NullPointerException if hFile or lpDCB is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -514,7 +514,7 @@ public abstract class Winbase {
      * @param lpCommTimeouts a pointer to a {@link COMMTIMEOUTS} structure in
      * which the time-out information is returned.
      *
-     * @throws NullPointerException if hFile or lpCommTimeouts is {@code null].
+     * @throws NullPointerException if hFile or lpCommTimeouts is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -738,7 +738,7 @@ public abstract class Winbase {
      *
      * @param hFile a handle to the communications device.
      *
-     * @throws NullPointerException if hFile is {@code null].
+     * @throws NullPointerException if hFile is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -754,7 +754,7 @@ public abstract class Winbase {
      * @param lpDCB a pointer to a {@link DCB} structure that contains the
      * configuration information for the specified communications device.
      *
-     * @throws NullPointerException if hFile or lpDCB is {@code null].
+     * @throws NullPointerException if hFile or lpDCB is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -770,7 +770,7 @@ public abstract class Winbase {
      * @param lpCommTimeouts a pointer to a {@link COMMTIMEOUTS} structure that
      * contains the new time-out values.
      *
-     * @throws NullPointerException if hFile or lpCommTimeouts is {@code null].
+     * @throws NullPointerException if hFile or lpCommTimeouts is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.

@@ -355,9 +355,9 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_lseek__IJI
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jlong offset, jint whence) {
-#if __SIZEOF_LONG__ == 8
+#if defined(__LP64__)
         const off_t result = lseek(fd, offset, whence);
-#elif __SIZEOF_LONG__ == 4
+#else
         if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation offset is only an integer with the size of jint");
             return -1;

@@ -65,7 +65,7 @@ public final class Termios {
      * <b>Linux:</b> <i>Baud Rate Selection</i> 1000000 baud.
      *
      * @return the native symbolic constant of B1000000.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B1000000 is not defined natively.
      */
     @Define
     public final static native int B1000000() throws NotDefinedException;
@@ -82,7 +82,7 @@ public final class Termios {
      * <b>Non POSIX:</b> <i>Baud Rate Selection</i> 115200 baud.
      *
      * @return the native symbolic constant of B115200.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B115200 is not defined natively.
      */
     @Define
     public final static native int B115200() throws NotDefinedException;
@@ -91,7 +91,7 @@ public final class Termios {
      * <b>Linux:</b> <i>Baud Rate Selection</i> 1152000 baud.
      *
      * @return the native symbolic constant of B1152000.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B1152000 is not defined natively.
      */
     @Define
     public final static native int B1152000() throws NotDefinedException;
@@ -124,7 +124,7 @@ public final class Termios {
      * <b>Linux:</b> <i>Baud Rate Selection</i> 1500000 baud.
      *
      * @return the native symbolic constant of B1500000.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B1500000 is not defined natively.
      */
     @Define
     public final static native int B1500000() throws NotDefinedException;
@@ -157,7 +157,7 @@ public final class Termios {
      * <b>Linux:</b> <i>Baud Rate Selection</i> 2000000 baud.
      *
      * @return the native symbolic constant of B2000000.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B2000000 is not defined natively.
      */
     @Define
     public final static native int B2000000() throws NotDefinedException;
@@ -166,7 +166,7 @@ public final class Termios {
      * <b>Non POSIX:</b> <i>Baud Rate Selection</i> 230400 baud.
      *
      * @return the native symbolic constant of B230400.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B230400 is not defined natively.
      */
     @Define
     public final static native int B230400() throws NotDefinedException;
@@ -183,7 +183,7 @@ public final class Termios {
      * <b>Linux:</b> <i>Baud Rate Selection</i> 2500000 baud.
      *
      * @return the native symbolic constant of B2500000.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B2500000 is not defined natively.
      */
     @Define
     public final static native int B2500000() throws NotDefinedException;
@@ -200,7 +200,7 @@ public final class Termios {
      * <b>Linux:</b> <i>Baud Rate Selection</i> 3000000 baud.
      *
      * @return the native symbolic constant of B3000000.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B3000000 is not defined natively.
      */
     @Define
     public final static native int B3000000() throws NotDefinedException;
@@ -209,7 +209,7 @@ public final class Termios {
      * <b>Linux:</b> <i>Baud Rate Selection</i> 3500000 baud.
      *
      * @return the native symbolic constant of B3500000.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B3500000 is not defined natively.
      */
     @Define
     public final static native int B3500000() throws NotDefinedException;
@@ -226,7 +226,7 @@ public final class Termios {
      * <b>Linux:</b> <i>Baud Rate Selection</i> 4000000 baud.
      *
      * @return the native symbolic constant of B4000000.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B4000000 is not defined natively.
      */
     @Define
     public final static native int B4000000() throws NotDefinedException;
@@ -235,7 +235,7 @@ public final class Termios {
      * <b>Linux,FreeBSD:</b> <i>Baud Rate Selection</i> 460800 baud.
      *
      * @return the native symbolic constant of B460800.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B460800 is not defined natively.
      */
     @Define
     public final static native int B460800() throws NotDefinedException;
@@ -260,7 +260,7 @@ public final class Termios {
      * <b>Linux:</b> <i>Baud Rate Selection</i> 500000 baud.
      *
      * @return the native symbolic constant of B500000.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B500000 is not defined natively.
      */
     @Define
     public final static native int B500000() throws NotDefinedException;
@@ -269,7 +269,7 @@ public final class Termios {
      * <b>Non POSIX:</b> <i>Baud Rate Selection</i> 57600 baus
      *
      * @return the native symbolic constant of B57600.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B57600 is not defined natively.
      */
     @Define
     public final static native int B57600() throws NotDefinedException;
@@ -278,7 +278,7 @@ public final class Termios {
      * <b>Linux:</b> <i>Baud Rate Selection</i> 576000 baud.
      *
      * @return the native symbolic constant of B576000.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B576000 is not defined natively.
      */
     @Define
     public final static native int B576000() throws NotDefinedException;
@@ -303,7 +303,7 @@ public final class Termios {
      * <b>Linux,FreeBSD:</b> <i>Baud Rate Selection</i> 921600 baud.
      *
      * @return the native symbolic constant of B921600.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if B921600 is not defined natively.
      */
     @Define
     public final static native int B921600() throws NotDefinedException;
@@ -328,7 +328,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Backspace-delay type 0.
      *
      * @return the native symbolic constant of BS0.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if BS0 is not defined natively.
      */
     @Define
     public final static native int BS0() throws NotDefinedException;
@@ -337,7 +337,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Backspace-delay type 1.
      *
      * @return the native symbolic constant of BS1.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if BS1 is not defined natively.
      */
     @Define
     public final static native int BS1() throws NotDefinedException;
@@ -346,7 +346,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select backspace delays:
      *
      * @return the native symbolic constant of BSDLY.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if BSDLY is not defined natively.
      */
     @Define
     public final static native int BSDLY() throws NotDefinedException;
@@ -364,7 +364,7 @@ public final class Termios {
      * (supported on certain serial devices).
      *
      * @return the native symbolic constant of CMSPAR.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if CMSPAR is not defined natively.
      */
     @Define
     public final static native int CMSPAR() throws NotDefinedException;
@@ -373,7 +373,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 0.
      *
      * @return the native symbolic constant of CR0.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if CR0 is not defined natively.
      */
     @Define
     public final static native int CR0() throws NotDefinedException;
@@ -382,7 +382,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 1.
      *
      * @return the native symbolic constant of CR1.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if CR1 is not defined natively.
      */
     @Define
     public final static native int CR1() throws NotDefinedException;
@@ -391,7 +391,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 2.
      *
      * @return the native symbolic constant of CR2.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if CR2 is not defined natively.
      */
     @Define
     public final static native int CR2() throws NotDefinedException;
@@ -400,7 +400,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 3.
      *
      * @return the native symbolic constant of CR3.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if CR3 is not defined natively.
      */
     @Define
     public final static native int CR3() throws NotDefinedException;
@@ -409,7 +409,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select carriage-return delays:
      *
      * @return the native symbolic constant of CRDLY.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if CRDLY is not defined natively.
      */
     @Define
     public final static native int CRDLY() throws NotDefinedException;
@@ -515,7 +515,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Form-feed delay type 0.
      *
      * @return the native symbolic constant of FF0.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if FF0 is not defined natively.
      */
     @Define
     public final static native int FF0() throws NotDefinedException;
@@ -524,7 +524,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Form-feed delay type 1.
      *
      * @return the native symbolic constant of FF1.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if FF1 is not defined natively.
      */
     @Define
     public final static native int FF1() throws NotDefinedException;
@@ -533,7 +533,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select form-feed delays:
      *
      * @return the native symbolic constant of FFDLY.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if FFDLY is not defined natively.
      */
     @Define
     public final static native int FFDLY() throws NotDefinedException;
@@ -666,7 +666,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Newline type 0.
      *
      * @return the native symbolic constant of NL0.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if NL0 is not defined natively.
      */
     @Define
     public final static native int NL0() throws NotDefinedException;
@@ -675,7 +675,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Newline type 1.
      *
      * @return the native symbolic constant of NL1.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if NL1 is not defined natively.
      */
     @Define
     public final static native int NL1() throws NotDefinedException;
@@ -685,7 +685,7 @@ public final class Termios {
      * or {@code NL1}
      *
      * @return the native symbolic constant of NLDLY.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if NLDLY is not defined natively.
      */
     @Define
     public final static native int NLDLY() throws NotDefinedException;
@@ -710,7 +710,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Fill is DEL.
      *
      * @return the native symbolic constant of OFDEL.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if OFDEL is not defined natively.
      */
     @Define
     public final static native int OFDEL() throws NotDefinedException;
@@ -719,7 +719,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Use fill characters for delay.
      *
      * @return the native symbolic constant of OFILL.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if OFILL is not defined natively.
      */
     @Define
     public final static native int OFILL() throws NotDefinedException;
@@ -769,7 +769,7 @@ public final class Termios {
      * (supported on certain serial devices).???
      *
      * @return the native symbolic constant of PAREXT.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if PAREXT is not defined natively.
      */
     @Define
     public final static native int PAREXT() throws NotDefinedException;
@@ -778,7 +778,7 @@ public final class Termios {
      * <b>POSIX:</b> <i>Input Modes</i> Mark parity errors.
      *
      * @return the native symbolic constant of .
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if PARMRK is not defined natively.
      */
     @Define
     public final static native int PARMRK() throws NotDefinedException;
@@ -795,6 +795,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Horizontal-tab delay type 0.
      *
      * @return the native symbolic constant of TAB0.
+     * @throws NotDefinedException if TAB0 is not defined natively.
      */
     @Define
     public final static native int TAB0() throws NotDefinedException;
@@ -803,7 +804,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Horizontal-tab delay type 1.
      *
      * @return the native symbolic constant of TAB1.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if TAB1 is not defined natively.
      */
     @Define
     public final static native int TAB1() throws NotDefinedException;
@@ -812,7 +813,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Horizontal-tab delay type 2.
      *
      * @return the native symbolic constant of TAB2.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if TAB2 is not defined natively.
      */
     @Define
     public final static native int TAB2() throws NotDefinedException;
@@ -821,6 +822,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Expand tabs to spaces.
      *
      * @return the native symbolic constant of TAB3.
+     * @throws NotDefinedException if TAB3 is not defined natively.
      */
     @Define
     public final static native int TAB3() throws NotDefinedException;
@@ -829,6 +831,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select horizontal-tab delays:
      *
      * @return the native symbolic constant of TABDLY.
+     * @throws NotDefinedException if TABDLY is not defined natively.
      */
     @Define
     public final static native int TABDLY() throws NotDefinedException;
@@ -1015,7 +1018,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Vertical-tab delay type 0.
      *
      * @return the native symbolic constant of VT0.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if VT0 is not defined natively.
      */
     @Define
     public final static native int VT0() throws NotDefinedException;
@@ -1024,7 +1027,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Vertical-tab delay type 1.
      *
      * @return the native symbolic constant of VT1.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if VT1 is not defined natively.
      */
     @Define
     public final static native int VT1() throws NotDefinedException;
@@ -1033,6 +1036,7 @@ public final class Termios {
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select vertical-tab delays:
      *
      * @return the native symbolic constant of VTDLY.
+     * @throws NotDefinedException if VTDLY is not defined natively.
      */
     @Define
     public final static native int VTDLY() throws NotDefinedException;
@@ -1049,7 +1053,7 @@ public final class Termios {
      * <b>Linux:</b>
      *
      * @return the native symbolic constant of .
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if _HAVE_STRUCT_TERMIOS_C_ISPEED is not defined natively.
      */
     @Define
     public final static native int _HAVE_STRUCT_TERMIOS_C_ISPEED() throws NotDefinedException;
@@ -1058,7 +1062,7 @@ public final class Termios {
      * <b>Linux:</b>
      *
      * @return the native symbolic constant of .
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if _HAVE_STRUCT_TERMIOS_C_OSPEED is not defined natively.
      */
     @Define
     public final static native int _HAVE_STRUCT_TERMIOS_C_OSPEED() throws NotDefinedException;

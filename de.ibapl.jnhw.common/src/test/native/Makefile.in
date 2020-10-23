@@ -143,13 +143,13 @@ am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
 libtests_la_LIBADD =
-am_libtests_la_OBJECTS = ByteRefTests.lo ShortRefTests.lo \
-	IntRefTests.lo LongRefTests.lo ObjectRefTests.lo \
-	Callback_I_V_Tests.lo Callback_J_V_Tests.lo \
-	Callback_IJ_V_Tests.lo Callback_I_I_PtrOpaqueMemory_V_Tests.lo \
-	Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.lo \
-	Callback_PtrOpaqueMemory_V_Tests.lo NativeRunnableTests.lo \
-	PointerArray_Tests.lo JnhwExceptionsTest.lo
+am_libtests_la_OBJECTS = ByteRefTest.lo ShortRefTest.lo IntRefTest.lo \
+	LongRefTest.lo ObjectRefTest.lo Callback_I_V_Test.lo \
+	Callback_J_V_Test.lo Callback_IJ_V_Test.lo \
+	Callback_I_I_PtrOpaqueMemory_V_Test.lo \
+	Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Test.lo \
+	Callback_PtrOpaqueMemory_V_Test.lo NativeRunnableTest.lo \
+	PointerArray_Test.lo JnhwExceptionsTest.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -166,19 +166,17 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/ByteRefTests.Plo \
-	./$(DEPDIR)/Callback_IJ_V_Tests.Plo \
-	./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Tests.Plo \
-	./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.Plo \
-	./$(DEPDIR)/Callback_I_V_Tests.Plo \
-	./$(DEPDIR)/Callback_J_V_Tests.Plo \
-	./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Tests.Plo \
-	./$(DEPDIR)/IntRefTests.Plo ./$(DEPDIR)/JnhwExceptionsTest.Plo \
-	./$(DEPDIR)/LongRefTests.Plo \
-	./$(DEPDIR)/NativeRunnableTests.Plo \
-	./$(DEPDIR)/ObjectRefTests.Plo \
-	./$(DEPDIR)/PointerArray_Tests.Plo \
-	./$(DEPDIR)/ShortRefTests.Plo \
+am__depfiles_remade = ./$(DEPDIR)/ByteRefTest.Plo \
+	./$(DEPDIR)/Callback_IJ_V_Test.Plo \
+	./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Test.Plo \
+	./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Test.Plo \
+	./$(DEPDIR)/Callback_I_V_Test.Plo \
+	./$(DEPDIR)/Callback_J_V_Test.Plo \
+	./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Test.Plo \
+	./$(DEPDIR)/IntRefTest.Plo ./$(DEPDIR)/JnhwExceptionsTest.Plo \
+	./$(DEPDIR)/LongRefTest.Plo ./$(DEPDIR)/NativeRunnableTest.Plo \
+	./$(DEPDIR)/ObjectRefTest.Plo \
+	./$(DEPDIR)/PointerArray_Test.Plo ./$(DEPDIR)/ShortRefTest.Plo \
 	./$(DEPDIR)/libjnhw-common-test.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -369,19 +367,19 @@ lib_LTLIBRARIES = libjnhw-common-test.la
 noinst_LTLIBRARIES = libtests.la
 libjnhw_common_test_la_LIBADD = libtests.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 libtests_la_SOURCES = \
- ByteRefTests.c \
- ShortRefTests.c \
- IntRefTests.c \
- LongRefTests.c \
- ObjectRefTests.c \
- Callback_I_V_Tests.c \
- Callback_J_V_Tests.c \
- Callback_IJ_V_Tests.c \
- Callback_I_I_PtrOpaqueMemory_V_Tests.c \
- Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.c \
- Callback_PtrOpaqueMemory_V_Tests.c \
- NativeRunnableTests.c \
- PointerArray_Tests.c \
+ ByteRefTest.c \
+ ShortRefTest.c \
+ IntRefTest.c \
+ LongRefTest.c \
+ ObjectRefTest.c \
+ Callback_I_V_Test.c \
+ Callback_J_V_Test.c \
+ Callback_IJ_V_Test.c \
+ Callback_I_I_PtrOpaqueMemory_V_Test.c \
+ Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Test.c \
+ Callback_PtrOpaqueMemory_V_Test.c \
+ NativeRunnableTest.c \
+ PointerArray_Test.c \
  JnhwExceptionsTest.c
 
 all: all-am
@@ -476,20 +474,20 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ByteRefTests.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_IJ_V_Tests.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Tests.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_V_Tests.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_J_V_Tests.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Tests.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IntRefTests.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ByteRefTest.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_IJ_V_Test.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Test.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Test.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_V_Test.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_J_V_Test.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Test.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IntRefTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwExceptionsTest.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LongRefTests.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NativeRunnableTests.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ObjectRefTests.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PointerArray_Tests.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ShortRefTests.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LongRefTest.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NativeRunnableTest.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ObjectRefTest.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PointerArray_Test.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ShortRefTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libjnhw-common-test.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
@@ -651,20 +649,20 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/ByteRefTests.Plo
-	-rm -f ./$(DEPDIR)/Callback_IJ_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/Callback_I_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/Callback_J_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/IntRefTests.Plo
+		-rm -f ./$(DEPDIR)/ByteRefTest.Plo
+	-rm -f ./$(DEPDIR)/Callback_IJ_V_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback_I_V_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback_J_V_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Test.Plo
+	-rm -f ./$(DEPDIR)/IntRefTest.Plo
 	-rm -f ./$(DEPDIR)/JnhwExceptionsTest.Plo
-	-rm -f ./$(DEPDIR)/LongRefTests.Plo
-	-rm -f ./$(DEPDIR)/NativeRunnableTests.Plo
-	-rm -f ./$(DEPDIR)/ObjectRefTests.Plo
-	-rm -f ./$(DEPDIR)/PointerArray_Tests.Plo
-	-rm -f ./$(DEPDIR)/ShortRefTests.Plo
+	-rm -f ./$(DEPDIR)/LongRefTest.Plo
+	-rm -f ./$(DEPDIR)/NativeRunnableTest.Plo
+	-rm -f ./$(DEPDIR)/ObjectRefTest.Plo
+	-rm -f ./$(DEPDIR)/PointerArray_Test.Plo
+	-rm -f ./$(DEPDIR)/ShortRefTest.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-common-test.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
@@ -711,20 +709,20 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/ByteRefTests.Plo
-	-rm -f ./$(DEPDIR)/Callback_IJ_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/Callback_I_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/Callback_J_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Tests.Plo
-	-rm -f ./$(DEPDIR)/IntRefTests.Plo
+		-rm -f ./$(DEPDIR)/ByteRefTest.Plo
+	-rm -f ./$(DEPDIR)/Callback_IJ_V_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback_I_I_PtrOpaqueMemory_V_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback_I_V_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback_J_V_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback_PtrOpaqueMemory_V_Test.Plo
+	-rm -f ./$(DEPDIR)/IntRefTest.Plo
 	-rm -f ./$(DEPDIR)/JnhwExceptionsTest.Plo
-	-rm -f ./$(DEPDIR)/LongRefTests.Plo
-	-rm -f ./$(DEPDIR)/NativeRunnableTests.Plo
-	-rm -f ./$(DEPDIR)/ObjectRefTests.Plo
-	-rm -f ./$(DEPDIR)/PointerArray_Tests.Plo
-	-rm -f ./$(DEPDIR)/ShortRefTests.Plo
+	-rm -f ./$(DEPDIR)/LongRefTest.Plo
+	-rm -f ./$(DEPDIR)/NativeRunnableTest.Plo
+	-rm -f ./$(DEPDIR)/ObjectRefTest.Plo
+	-rm -f ./$(DEPDIR)/PointerArray_Test.Plo
+	-rm -f ./$(DEPDIR)/ShortRefTest.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-common-test.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic

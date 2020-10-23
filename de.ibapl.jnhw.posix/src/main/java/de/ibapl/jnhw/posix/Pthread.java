@@ -163,7 +163,7 @@ public class Pthread {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodExceptin on FreeBSD
+     * @throws NoSuchNativeMethodException if the method pthread_setschedprio is not available natively.
      */
     public final static native void pthread_setschedprio(Pthread_t thread, int prio) throws NativeErrorException, NoSuchNativeMethodException;
 

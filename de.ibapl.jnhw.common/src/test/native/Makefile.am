@@ -12,19 +12,19 @@ noinst_LTLIBRARIES = libtests.la
 libjnhw_common_test_la_LIBADD = libtests.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libtests_la_SOURCES = \
- ByteRefTests.c \
- ShortRefTests.c \
- IntRefTests.c \
- LongRefTests.c \
- ObjectRefTests.c \
- Callback_I_V_Tests.c \
- Callback_J_V_Tests.c \
- Callback_IJ_V_Tests.c \
- Callback_I_I_PtrOpaqueMemory_V_Tests.c \
- Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Tests.c \
- Callback_PtrOpaqueMemory_V_Tests.c \
- NativeRunnableTests.c \
- PointerArray_Tests.c \
+ ByteRefTest.c \
+ ShortRefTest.c \
+ IntRefTest.c \
+ LongRefTest.c \
+ ObjectRefTest.c \
+ Callback_I_V_Test.c \
+ Callback_J_V_Test.c \
+ Callback_IJ_V_Test.c \
+ Callback_I_I_PtrOpaqueMemory_V_Test.c \
+ Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Test.c \
+ Callback_PtrOpaqueMemory_V_Test.c \
+ NativeRunnableTest.c \
+ PointerArray_Test.c \
  JnhwExceptionsTest.c
 
 #hook into make all

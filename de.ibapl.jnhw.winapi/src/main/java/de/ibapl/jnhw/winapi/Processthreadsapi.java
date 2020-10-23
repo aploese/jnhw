@@ -58,8 +58,8 @@ public abstract class Processthreadsapi {
      * @param dwData A single value that is passed to the APC function pointed
      * to by the pfnAPC parameter.
      *
-     * @throws NullPointerException if pfnAPC is {@code null].
-     * @throws NullPointerException if hThread is {@code null].
+     * @throws NullPointerException if pfnAPC is {@code null}.
+     * @throws NullPointerException if hThread is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.

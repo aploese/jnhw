@@ -68,9 +68,9 @@ public class OpaqueMemory {
 
         /**
          *
-         * @param baseAddress
-         * @param parent
-         * @return
+         * @param address the address to use.
+         * @param parent the parent of the result with given address.
+         * @return a cached or new OpaqueMemory.
          */
         T produce(NativeAddressHolder address, P parent);
 

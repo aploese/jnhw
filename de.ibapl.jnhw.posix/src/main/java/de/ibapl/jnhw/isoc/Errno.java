@@ -77,7 +77,6 @@ public abstract class Errno {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h
      * - system error numbers</a>.
      *
-     * @author aploese
      */
     public final static native int errno();
 
@@ -88,7 +87,6 @@ public abstract class Errno {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h
      * - system error numbers</a>.
      *
-     * @author aploese
      */
     public final static native void errno(int value);
 

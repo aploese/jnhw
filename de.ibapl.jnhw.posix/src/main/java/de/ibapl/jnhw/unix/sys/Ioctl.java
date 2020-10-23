@@ -75,7 +75,7 @@ public final class Ioctl {
      * CTS).
      *
      * @return the native symbolic constant of TIOCGICOUNT.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if TIOCGICOUNT is not defined natively.
      */
     @Define
     public final static native int TIOCGICOUNT() throws NotDefinedException;
@@ -85,7 +85,7 @@ public final class Ioctl {
      * flag in the c_cflag field of the termios structure.
      *
      * @return the native symbolic constant of TIOCGSOFTCAR.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if TIOCGSOFTCAR is not defined natively.
      */
     @Define
     public final static native int TIOCGSOFTCAR() throws NotDefinedException;
@@ -119,7 +119,7 @@ public final class Ioctl {
      * change.
      *
      * @return the native symbolic constant of TIOCMIWAIT.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if TIOCMIWAIT is not defined natively.
      */
     @Define
     public final static native int TIOCMIWAIT() throws NotDefinedException;
@@ -241,7 +241,7 @@ public final class Ioctl {
      * termios structure when *argp is nonzero, and clear it otherwise.
      *
      * @return the native symbolic constant of TIOCSSOFTCAR.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if TIOCSSOFTCAR is not defined natively.
      */
     @Define
     public final static native int TIOCSSOFTCAR() throws NotDefinedException;

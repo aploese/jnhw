@@ -45,6 +45,35 @@ extern "C" {
 #endif
 
 #ifdef _POSIX_VERSION
+    /*
+     * Class:     de_ibapl_jnhw_posix_Stdio
+     * Method:    SEEK_SET
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Stdio_SEEK_1SET
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SEEK_SET;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Stdio
+     * Method:    SEEK_CUR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Stdio_SEEK_1CUR
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SEEK_CUR;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Stdio
+     * Method:    SEEK_END
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Stdio_SEEK_1END
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return SEEK_END;
+    }
 
 #endif
 #ifdef __cplusplus

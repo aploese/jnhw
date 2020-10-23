@@ -63,11 +63,12 @@ public final class Unistd {
     public final static native boolean HAVE_UNISTD_H();
 
     /**
-     * <b>POSIX:</b> eek relative to current position. This must be the same
-     * value as {@link de.ibapl.jnhw.posix.Stdio.SEEK_CUR}.
+     * <b>POSIX:</b>seek relative to current position. This must be the same
+     * value as {@link de.ibapl.jnhw.posix.Stdio.SEEK_CUR()}.
      *
      * @return the native symbolic constant of SEEK_CUR.
      */
+    @Define
     public static native int SEEK_CUR();
 
     /**
@@ -75,8 +76,9 @@ public final class Unistd {
      * file greater than or equal to offset containing data.
      *
      * @return the native symbolic constant of SEEK_DATA.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if SEEK_DATA is not defined natively.
      */
+    @Define
     public static native int SEEK_DATA() throws NotDefinedException;
 
     /**
@@ -85,6 +87,7 @@ public final class Unistd {
      *
      * @return the native symbolic constant of SEEK_END.
      */
+    @Define
     public static native int SEEK_END();
 
     /**
@@ -92,8 +95,9 @@ public final class Unistd {
      * than or equal to offset.
      *
      * @return the native symbolic constant of SEEK_HOLE.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if SEEK_HOLE is not defined natively.
      */
+    @Define
     public static native int SEEK_HOLE() throws NotDefinedException;
 
     /**
@@ -102,6 +106,7 @@ public final class Unistd {
      *
      * @return the native symbolic constant of SEEK_SET.
      */
+    @Define
     public static native int SEEK_SET();
 
     /**
@@ -346,12 +351,12 @@ public final class Unistd {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
      * read - read from a file</a>.
      *
-     * Read the bytes between {@link ByteBuffer.position()} and
-     * {@link ByteBuffer.limit()} from the file. After sucessful reading,
+     * Read the bytes between {@link ByteBuffer#position()} and
+     * {@link ByteBuffer#limit()} from the file. After sucessful reading,
      * position is updated accordingly to the number of bytes read.
      *
      * @param fildes a valid file descriptor open for reading
-     * @param buffer the {link ByteBuffer} into which bytes are to be
+     * @param buffer the {@link ByteBuffer} into which bytes are to be
      * transferred between position and limit.
      * @return The number of bytes read, possibly zero.
      *
@@ -546,8 +551,8 @@ public final class Unistd {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
      * write - write on a file</a>.
      *
-     * Write the bytes between {@link ByteBuffer.position()} and
-     * {@link ByteBuffer.limit()} to the file. After sucessful writing, position
+     * Write the bytes between {@link ByteBuffer#position()} and
+     * {@link ByteBuffer#limit()} to the file. After sucessful writing, position
      * is updated accordingly to the number of written bytes.
      *
      * @param fildes a valid file descriptor open for writing

@@ -360,12 +360,12 @@ extern "C" {
         throw_NoSuchNativeMethodException(env, "posix_fadvise");
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fildes, jlong offset, jlong len, jint advice) {
-#if __SIZEOF_LONG__ == 8
+#if defined(__LP64__)
         const int result = posix_fadvise(fildes, offset, len, advice);
         if (result) {
             throw_NativeErrorException(env, result);
         }
-#elif __SIZEOF_LONG__ == 4
+#else
         if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation offset is only an integer with the size of jint");
             return;
@@ -378,8 +378,6 @@ extern "C" {
         if (result) {
             throw_NativeErrorException(env, result);
         }
-#else
-#error __SIZEOF_LONG__ 
 #endif
 #endif
     }
@@ -413,12 +411,12 @@ extern "C" {
         throw_NoSuchNativeMethodException(env, "posix_fallocate");
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fildes, jlong offset, jlong len) {
-#if __SIZEOF_LONG__ == 8
+#if defined(__LP64__)
         const int result = posix_fallocate(fildes, offset, len);
         if (result) {
             throw_NativeErrorException(env, result);
         }
-#elif __SIZEOF_LONG__ == 4
+#else
         if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation offset is only an integer with the size of jint");
             return;

@@ -220,7 +220,7 @@ public class Sched {
      * <b>POSIX[SS|TPS]:</b> Sporadic server scheduling policy.
      *
      * @return the native symbol of SCHED_SPORADIC.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if SCHED_SPORADIC is not defined natively.
      */
     @Define
     public final static native int SCHED_SPORADIC() throws NotDefinedException;
@@ -260,7 +260,7 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method sched_getparam is not available natively.
      */
     public final static native void sched_getparam(@Types.pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -272,7 +272,7 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method sched_getscheduler is not available natively.
      */
     public final static native int sched_getscheduler(@Types.pid_t int pid) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -283,7 +283,7 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method sched_rr_get_interval is not available natively.
      */
     public final static native void sched_rr_get_interval(@Types.pid_t int pid, Time.Timespec interval) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -294,9 +294,8 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method sched_setparam is not available natively.
      */
-
     public final static native void sched_setparam(@Types.pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
@@ -306,7 +305,7 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws de.ibapl.jnhw.NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method sched_setscheduler is not available natively.
      */
     public final static native int sched_setscheduler(@Types.pid_t int pid, int policy, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 

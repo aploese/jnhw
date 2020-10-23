@@ -62,6 +62,7 @@ public class Locale {
      * <b>POSIX:</b> XXX
      *
      * @return the native symbolic constant of LC_ALL_MASK.
+     * @throws NotDefinedException if LC_ALL_MASK is not defined natively.
      */
     @Define()
     public final static native int LC_ALL_MASK() throws NotDefinedException;

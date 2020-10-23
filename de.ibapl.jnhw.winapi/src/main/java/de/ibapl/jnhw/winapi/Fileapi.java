@@ -92,7 +92,7 @@ public final class Fileapi {
      * @return If the function succeeds, the return value is an open handle to
      * the specified file, device, named pipe, or mail slot.
      *
-     * @throws NullPointerException if lpFileName is {@code null].
+     * @throws NullPointerException if lpFileName is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -123,7 +123,7 @@ public final class Fileapi {
      * @return If the function succeeds, the return value is an open handle to
      * the specified file, device, named pipe, or mail slot.
      *
-     * @throws NullPointerException if file is {@code null].
+     * @throws NullPointerException if file is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -139,7 +139,7 @@ public final class Fileapi {
      *
      * @param hFile A handle to the open file.
      *
-     * @throws NullPointerException if hFile is {@code null].
+     * @throws NullPointerException if hFile is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -179,9 +179,9 @@ public final class Fileapi {
      * @param off the start offset in {@code lpBuffer} to which the data is
      * transferred.
      * @param nNumberOfBytesToRead the maximum number of bytes to read.
-     * @return the number of bytes read.
+     * @return {@code lpNumberOfBytesRead} the number of bytes read.
      *
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
      * @throws ArrayIndexOutOfBoundsException if off and nNumberOfBytesToRead are outside of lpBuffer.
      *
@@ -203,9 +203,9 @@ public final class Fileapi {
      * @param off the start offset in {@code buf} to which the data is
      * transferred.
      * @param nNumberOfBytesToRead the maximum number of bytes to read.
-     * @return the number of bytes read.
+     * @return {@code lpNumberOfBytesRead} the number of bytes read.
      *
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
      * @throws ArrayIndexOutOfBoundsException if pos and nNumberOfBytesToRead are outside of lpBuffer.
      *
@@ -222,11 +222,11 @@ public final class Fileapi {
      *
      *
      * @param hFile a handle to the file or I/O device.
-     * @param b a pointer to the {@link ByterRef} that receives the single byte
+     * @param b a pointer to the {@link ByteRef} that receives the single byte
      * read from a file or device.
-     * @return on succes 1.
+     * @return {@code lpNumberOfBytesRead} the number of bytes read.
      *
-     * @throws NullPointerException if hFile or b is {@code null].
+     * @throws NullPointerException if hFile or b is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -248,7 +248,7 @@ public final class Fileapi {
      * @param nNumberOfBytesToRead the maximum number of bytes to read.
      * @param lpOverlapped A pointer to an {@link OVERLAPPED} structure.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
      *
@@ -269,7 +269,7 @@ public final class Fileapi {
      * data read from a file or device.
      * @param lpOverlapped A pointer to an {@link OVERLAPPED} structure.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -289,7 +289,7 @@ public final class Fileapi {
      * @param lpBuffer a pointer to an direct {@link ByteBuffer} that receives
      * the data read from a file or device.
      *
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -313,8 +313,9 @@ public final class Fileapi {
      * occur at the position specified by the file pointer if supported by the
      * device. This is the asynchronous read for direct {@link ByteBuffer}.
      *
-     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)} to
-     * get the result and update the ByteBuffers position.      <code>
+     * Use {@link Ioapiset#GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer, boolean)} to
+     * get the result and update the ByteBuffers position.
+     * <code>
      *  ReadFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
      *  if (waitResult == WAIT_OBJECT_0()) {
@@ -330,7 +331,7 @@ public final class Fileapi {
      * the data read from a file or device.
      * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if {@code hFile} or {@code lpBuffer} or {@code lpOverlapped} is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -368,7 +369,7 @@ public final class Fileapi {
      * when the read operation has been completed and the calling thread is in
      * an alertable wait state.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
      *
@@ -392,7 +393,7 @@ public final class Fileapi {
      * when the read operation has been completed and the calling thread is in
      * an alertable wait state.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -407,8 +408,9 @@ public final class Fileapi {
      * occur at the position specified by the file pointer if supported by the
      * device. This is the asynchronous read for direct {@link ByteBuffer}.
      *
-     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)} to
-     * get the result and update the ByteBuffers position.      <code>
+     * Use {@link Ioapiset#GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer, boolean)} to
+     * get the result and update the ByteBuffers position.
+     * <code>
      *  ReadFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
      *  if (waitResult == WAIT_OBJECT_0()) {
@@ -427,7 +429,7 @@ public final class Fileapi {
      * when the read operation has been completed and the calling thread is in
      * an alertable wait state.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -468,9 +470,9 @@ public final class Fileapi {
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
-     * Writes data to the specified file or input/output (I/O) device. Writing
-     * starts at the position specified by the file pointer if supported by the
-     * device. This is the synchronous write for a byte array.
+     * Writes data to the specified file or input/output (I/O) device.Writing
+ starts at the position specified by the file pointer if supported by the
+ device. This is the synchronous write for a byte array.
      *
      *
      * @param hFile a handle to the file or I/O device.
@@ -478,8 +480,9 @@ public final class Fileapi {
      * written to the file or device.
      * @param off the start offset in {@code lpBuffer}.
      * @param nNumberOfBytesToWrite the number of bytes to write.
+     * @return {@code lpNumberOfBytesWritten} the number of bytes written.
      *
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
      * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
      *
@@ -490,9 +493,9 @@ public final class Fileapi {
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
-     * Writes data to the specified file or input/output (I/O) device. Writing
-     * starts at the position specified by the file pointer if supported by the
-     * device. This is the synchronous write for {@link OpaqueMemory}.
+     * Writes data to the specified file or input/output (I/O) device.Writing
+ starts at the position specified by the file pointer if supported by the
+ device. This is the synchronous write for {@link OpaqueMemory}.
      *
      *
      * @param hFile a handle to the file or I/O device.
@@ -500,8 +503,9 @@ public final class Fileapi {
      * data to be written to the file or device.
      * @param off the start offset in {@code lpBuffer}.
      * @param nNumberOfBytesToWrite the number of bytes to write.
+     * @return {@code lpNumberOfBytesWritten} the number of bytes written.
      *
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
      * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
      *
@@ -518,7 +522,7 @@ public final class Fileapi {
      *
      * @param hFile a handle to the file or I/O device.
      * @param b the byte to write.
-     * @return on success 1.
+     * @return {@code lpNumberOfBytesWritten} the number of bytes written.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -538,7 +542,7 @@ public final class Fileapi {
      * @param nNumberOfBytesToWrite the number of bytes to write.
      * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
      *
@@ -558,7 +562,7 @@ public final class Fileapi {
      * data to be written to the file or device.
      * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -577,7 +581,7 @@ public final class Fileapi {
      * @param lpBuffer the {@link ByteBuffer} {@code lpBuffer} containing the
      * data to be written to the file or device.
      *
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -611,8 +615,9 @@ public final class Fileapi {
      * device. This is the asynchronous write for {@link ByteBuffer}.
      *
      *
-     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)} to
-     * get the result and update the ByteBuffers position.      <code>
+     * Use {@link Ioapiset#GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer, boolean)} to
+     * get the result and update the ByteBuffers position.
+     * <code>
      *  WriteFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
      *  if (waitResult == WAIT_OBJECT_0()) {
@@ -628,7 +633,7 @@ public final class Fileapi {
      * data to be written to the file or device.
      * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -664,7 +669,7 @@ public final class Fileapi {
      * when the write operation has been completed and the calling thread is in
      * an alertable wait state.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
      *
@@ -687,7 +692,7 @@ public final class Fileapi {
      * when the write operation has been completed and the calling thread is in
      * an alertable wait state.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -703,8 +708,9 @@ public final class Fileapi {
      * device. This is the asynchronous write for {@link ByteBuffer}.
      *
      *
-     * Use {@link IoAPI.GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer)} to
-     * get the result and update the ByteBuffers position.      <code>
+     * Use {@link Ioapiset#GetOverlappedResult(HANDLE, OVERLAPPED, ByteBuffer, boolean)} to
+     * get the result and update the ByteBuffers position.
+     * <code>
      *  WriteFile(hFile, lpBuffer, lpOverlapped);
      *  final long waitResult = WaitForSingleObject(lpOverlapped.hEvent(), INFINITE());
      *  if (waitResult == WAIT_OBJECT_0()) {
@@ -723,7 +729,7 @@ public final class Fileapi {
      * when the write operation has been completed and the calling thread is in
      * an alertable wait state.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.

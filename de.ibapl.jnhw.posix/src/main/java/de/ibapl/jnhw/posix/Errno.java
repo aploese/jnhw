@@ -77,7 +77,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Non POSIX:</b> Advertise error.
      *
      * @return the native symbolic constant of EADV.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EADV is not defined natively.
      */
     @Define
     public final static native int EADV() throws NotDefinedException;
@@ -111,7 +111,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Invalid exchange.
      *
      * @return the native symbolic constant of EBADE.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EBADE is not defined natively.
      */
     @Define
     public final static native int EBADE() throws NotDefinedException;
@@ -128,7 +128,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> File descriptor in bad state.
      *
      * @return the native symbolic constant of EBADFD.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EBADFD is not defined natively.
      */
     @Define
     public final static native int EBADFD() throws NotDefinedException;
@@ -145,7 +145,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Invalid request descriptor.
      *
      * @return the native symbolic constant of EBADR.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EBADR is not defined natively.
      */
     @Define
     public final static native int EBADR() throws NotDefinedException;
@@ -154,7 +154,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Invalid request code.
      *
      * @return the native symbolic constant of EBADRQC.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EBADRQC is not defined natively.
      */
     @Define
     public final static native int EBADRQC() throws NotDefinedException;
@@ -163,7 +163,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Invalid slot.
      *
      * @return the native symbolic constant of EBADSLT.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EBADSLT is not defined natively.
      */
     @Define
     public final static native int EBADSLT() throws NotDefinedException;
@@ -172,7 +172,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Bad font file format
      *
      * @return the native symbolic constant of EBFONT.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EBFONT is not defined natively.
      */
     @Define
     public final static native int EBFONT() throws NotDefinedException;
@@ -205,7 +205,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Channel number out of range.
      *
      * @return the native symbolic constant of ECHRNG.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ECHRNG is not defined natively.
      */
     @Define
     public final static native int ECHRNG() throws NotDefinedException;
@@ -214,7 +214,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Communication error on send.
      *
      * @return the native symbolic constant of ECOMM.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ECOMM is not defined natively.
      */
     @Define
     public final static native int ECOMM() throws NotDefinedException;
@@ -255,7 +255,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> @see(EDEADLK)
      *
      * @return the native symbolic constant of EDEADLOCK.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EDEADLOCK is not defined natively.
      */
     @Define
     public final static native int EDEADLOCK() throws NotDefinedException;
@@ -272,7 +272,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> RFS specific error.
      *
      * @return the native symbolic constant of EDOTDOT.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EDOTDOT is not defined natively.
      */
     @Define
     public final static native int EDOTDOT() throws NotDefinedException;
@@ -329,7 +329,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Memory page has hardware error.
      *
      * @return the native symbolic constant of EHWPOISON.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EHWPOISON is not defined natively.
      */
     @Define
     public final static native int EHWPOISON() throws NotDefinedException;
@@ -394,7 +394,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Is a named type file.
      *
      * @return the native symbolic constant of EISNAM.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EISNAM is not defined natively.
      */
     @Define
     public final static native int EISNAM() throws NotDefinedException;
@@ -403,7 +403,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Key has expired.
      *
      * @return the native symbolic constant of EKEYEXPIRED.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EKEYEXPIRED is not defined natively.
      */
     @Define
     public final static native int EKEYEXPIRED() throws NotDefinedException;
@@ -412,7 +412,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Key was rejected by service.
      *
      * @return the native symbolic constant of EKEYREJECTED.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EKEYREJECTED is not defined natively.
      */
     @Define
     public final static native int EKEYREJECTED() throws NotDefinedException;
@@ -421,7 +421,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Key has been revoked.
      *
      * @return the native symbolic constant of EKEYREVOKED.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EKEYREVOKED is not defined natively.
      */
     @Define
     public final static native int EKEYREVOKED() throws NotDefinedException;
@@ -430,7 +430,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> evel 2 halted.
      *
      * @return the native symbolic constant of EL2HLT.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EL2HLT is not defined natively.
      */
     @Define
     public final static native int EL2HLT() throws NotDefinedException;
@@ -439,7 +439,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Level 2 not synchronized.
      *
      * @return the native symbolic constant of EL2NSYNC.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EL2NSYNC is not defined natively.
      */
     @Define
     public final static native int EL2NSYNC() throws NotDefinedException;
@@ -448,7 +448,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Level 3 halted.
      *
      * @return the native symbolic constant of EL3HLT.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EL3HLT is not defined natively.
      */
     @Define
     public final static native int EL3HLT() throws NotDefinedException;
@@ -457,7 +457,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Level 3 reset.
      *
      * @return the native symbolic constant of EL3RST.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EL3RST is not defined natively.
      */
     @Define
     public final static native int EL3RST() throws NotDefinedException;
@@ -466,7 +466,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Can not access a needed shared library.
      *
      * @return the native symbolic constant of ELIBACC.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ELIBACC is not defined natively.
      */
     @Define
     public final static native int ELIBACC() throws NotDefinedException;
@@ -475,7 +475,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Accessing a corrupted shared library.
      *
      * @return the native symbolic constant of ELIBBAD.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ELIBBAD is not defined natively.
      */
     @Define
     public final static native int ELIBBAD() throws NotDefinedException;
@@ -484,7 +484,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Cannot exec a shared library directly.
      *
      * @return the native symbolic constant of ELIBEXEC.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ELIBEXEC is not defined natively.
      */
     @Define
     public final static native int ELIBEXEC() throws NotDefinedException;
@@ -493,7 +493,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Attempting to link in too many shared libraries.
      *
      * @return the native symbolic constant of ELIBMAX.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ELIBMAX is not defined natively.
      */
     @Define
     public final static native int ELIBMAX() throws NotDefinedException;
@@ -502,7 +502,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> .lib section in a.out corrupted.
      *
      * @return the native symbolic constant of ELIBSCN.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ELIBSCN is not defined natively.
      */
     @Define
     public final static native int ELIBSCN() throws NotDefinedException;
@@ -511,7 +511,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Link number out of range.
      *
      * @return the native symbolic constant of ELNRNG.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ELNRNG is not defined natively.
      */
     @Define
     public final static native int ELNRNG() throws NotDefinedException;
@@ -528,7 +528,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Wrong medium type.
      *
      * @return the native symbolic constant of EMEDIUMTYPE.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EMEDIUMTYPE is not defined natively.
      */
     @Define
     public final static native int EMEDIUMTYPE() throws NotDefinedException;
@@ -561,6 +561,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>POSIX:</b> Reserved.
      *
      * @return the native symbolic constant of EMULTIHOP.
+     * @throws NotDefinedException if EMULTIHOP is not defined natively.
      */
     @Define
     public final static native int EMULTIHOP() throws NotDefinedException;
@@ -577,7 +578,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> No XENIX semaphores available.
      *
      * @return the native symbolic constant of ENAVAIL.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ENAVAIL is not defined natively.
      */
     @Define
     public final static native int ENAVAIL() throws NotDefinedException;
@@ -618,7 +619,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> No anode.
      *
      * @return the native symbolic constant of ENOANO.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ENOANO is not defined natively.
      */
     @Define
     public final static native int ENOANO() throws NotDefinedException;
@@ -635,7 +636,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> No CSI structure available.
      *
      * @return the native symbolic constant of ENOCSI.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ENOCSI is not defined natively.
      */
     @Define
     public final static native int ENOCSI() throws NotDefinedException;
@@ -644,7 +645,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>POSIX.XSI:</b> No message is available on the STREAM head read queue.
      *
      * @return the native symbolic constant of ENODATA.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if ENODATA is not defined natively.
      */
     @Define
     public final static native int ENODATA() throws NotDefinedException;
@@ -677,7 +678,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Required key not available
      *
      * @return the native symbolic constant of ENOKEY.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ENOKEY is not defined natively.
      */
     @Define
     public final static native int ENOKEY() throws NotDefinedException;
@@ -694,6 +695,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>POSIX:</b> Reserved.
      *
      * @return the native symbolic constant of ENOLINK.
+     * @throws NotDefinedException if ENOLINK is not defined natively.
      */
     @Define
     public final static native int ENOLINK() throws NotDefinedException;
@@ -702,7 +704,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> No medium found.
      *
      * @return the native symbolic constant of ENOMEDIUM.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ENOMEDIUM is not defined natively.
      */
     @Define
     public final static native int ENOMEDIUM() throws NotDefinedException;
@@ -727,7 +729,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Machine is not on the network.
      *
      * @return the native symbolic constant of ENONET.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ENONET is not defined natively.
      */
     @Define
     public final static native int ENONET() throws NotDefinedException;
@@ -736,7 +738,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Package not installed.
      *
      * @return the native symbolic constant of ENOPKG.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ENOPKG is not defined natively.
      */
     @Define
     public final static native int ENOPKG() throws NotDefinedException;
@@ -761,7 +763,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>POSIX.XSI:</b> No STREAM resources.
      *
      * @return the native symbolic constant of ENOSR.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if ENOSR is not defined natively.
      */
     @Define
     public final static native int ENOSR() throws NotDefinedException;
@@ -770,7 +772,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>POSIX.XSI:</b> Not a STREAM.
      *
      * @return the native symbolic constant of ENOSTR.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if ENOSTR is not defined natively.
      */
     @Define
     public final static native int ENOSTR() throws NotDefinedException;
@@ -819,7 +821,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Not a XENIX named type file.
      *
      * @return the native symbolic constant of ENOTNAM.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ENOTNAM is not defined natively.
      */
     @Define
     public final static native int ENOTNAM() throws NotDefinedException;
@@ -861,7 +863,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Name not unique on network.
      *
      * @return the native symbolic constant of ENOTUNIQ.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ENOTUNIQ is not defined natively.
      */
     @Define
     public final static native int ENOTUNIQ() throws NotDefinedException;
@@ -951,7 +953,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Remote address changed.
      *
      * @return the native symbolic constant of EREMCHG.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EREMCHG is not defined natively.
      */
     @Define
     public final static native int EREMCHG() throws NotDefinedException;
@@ -960,7 +962,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Non POSIX:</b> Object is remote
      *
      * @return the native symbolic constant of EREMOTE.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EREMOTE is not defined natively.
      */
     @Define
     public final static native int EREMOTE() throws NotDefinedException;
@@ -969,7 +971,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Remote I/O error.
      *
      * @return the native symbolic constant of EREMOTEIO.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EREMOTEIO is not defined natively.
      */
     @Define
     public final static native int EREMOTEIO() throws NotDefinedException;
@@ -978,7 +980,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Interrupted system call should be restarted.
      *
      * @return the native symbolic constant of ERESTART.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ERESTART is not defined natively.
      */
     @Define
     public final static native int ERESTART() throws NotDefinedException;
@@ -987,7 +989,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Operation not possible due to RF-kill.
      *
      * @return the native symbolic constant of ERFKILL.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ERFKILL is not defined natively.
      */
     @Define
     public final static native int ERFKILL() throws NotDefinedException;
@@ -1036,7 +1038,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Srmount error.
      *
      * @return the native symbolic constant of ESRMNT.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ESRMNT is not defined natively.
      */
     @Define
     public final static native int ESRMNT() throws NotDefinedException;
@@ -1053,7 +1055,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Streams pipe error.
      *
      * @return the native symbolic constant of ESTRPIPE.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if ESTRPIPE is not defined natively.
      */
     @Define
     public final static native int ESTRPIPE() throws NotDefinedException;
@@ -1062,7 +1064,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>POSIX:</b> Stream @see ioctl_H.ioctl() timeout.
      *
      * @return the native symbolic constant of ETIME.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if ETIME is not defined natively.
      */
     @Define
     public final static native int ETIME() throws NotDefinedException;
@@ -1095,7 +1097,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Structure needs cleaning.
      *
      * @return the native symbolic constant of EUCLEAN.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EUCLEAN is not defined natively.
      */
     @Define
     public final static native int EUCLEAN() throws NotDefinedException;
@@ -1104,7 +1106,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Protocol driver not attached.
      *
      * @return the native symbolic constant of EUNATCH.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EUNATCH is not defined natively.
      */
     @Define
     public final static native int EUNATCH() throws NotDefinedException;
@@ -1138,7 +1140,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      * <b>Linux:</b> Exchange full.
      *
      * @return the native symbolic constant of EXFULL.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if EXFULL is not defined natively.
      */
     @Define
     public final static native int EXFULL() throws NotDefinedException;
@@ -1165,13 +1167,6 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                     }
                 } catch (IllegalArgumentException | IllegalAccessException ex) {
                     Logger.getLogger(Errno.class.getName()).log(Level.SEVERE, "Unknown ex in Errno.getErrnoSymbol(int)", ex);
-                } catch (Exception e) {
-                    if (e instanceof NotDefinedException) {
-                        //no-op
-                    } else {
-                        //something unexpected happend...
-                        throw e;
-                    }
                 }
             }
         }

@@ -126,16 +126,14 @@ extern "C" {
         throw_NoSuchNativeTypeException(env, "struct aiocb");
 #else
     (JNIEnv *env, jobject structAiocb, jlong aio_offset) {
-#if __SIZEOF_LONG__ == 8
+#if defined(__LP64__)
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = aio_offset;
-#elif __SIZEOF_LONG__ == 4
+#else
         if ((aio_offset > INT32_MAX) || (aio_offset < INT32_MIN)) {
             throw_IndexOutOfBoundsException(env, "In this native implementation aio_offset is only an integer with the size of jint");
             return;
         }
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = (int32_t) aio_offset;
-#else
-#error Unknown __SIZEOF_LONG__
 #endif
 #endif
     }

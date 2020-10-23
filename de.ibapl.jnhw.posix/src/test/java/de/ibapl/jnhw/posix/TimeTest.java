@@ -73,7 +73,7 @@ public class TimeTest {
     @Test
     public void testAsctime() {
         System.out.println("asctime");
-        Time.Tm tm = new Time.Tm();
+        Time.Tm tm = new Time.Tm(true);
         tm.tm_year(119);
         tm.tm_mon(11);
         tm.tm_mday(3);
@@ -96,7 +96,7 @@ public class TimeTest {
     @Test
     public void testAsctime_r() {
         System.out.println("asctime_r");
-        Time.Tm tm = new Time.Tm();
+        Time.Tm tm = new Time.Tm(true);
         tm.tm_year(119);
         tm.tm_mon(11);
         tm.tm_mday(3);
@@ -298,7 +298,7 @@ public class TimeTest {
         final long clock = 1575382844;
         OpaqueMemory buf = new OpaqueMemory(26, true);
         String result = Time.ctime_r(clock, buf);
-        
+
         assertEquals(getCtimeFormated(clock), result);
 
         byte[] raw = new byte[buf.sizeInBytes];
@@ -546,7 +546,7 @@ public class TimeTest {
         System.out.println("strftime");
         long maxsize = 1024;
         String format = "%Y-%m-%d %H:%M:%S";
-        Time.Tm timeptr = new Time.Tm();
+        Time.Tm timeptr = new Time.Tm(true);
         timeptr.tm_year(2020 - 1900);
         timeptr.tm_mon(1);
         timeptr.tm_mday(19);
@@ -575,7 +575,7 @@ public class TimeTest {
         System.out.println("strftime_l");
         long maxsize = 256;
         String format = "%Y-%m-%d %H:%M:%S";
-        Time.Tm timeptr = new Time.Tm();
+        Time.Tm timeptr = new Time.Tm(true);
         timeptr.tm_year(2020 - 1900);
         timeptr.tm_mon(1);
         timeptr.tm_mday(19);
@@ -616,7 +616,6 @@ public class TimeTest {
         String expResult = "\nJNHW";
 
         String result = Time.strptime(buf, format, tm);
-        assertEquals(expResult, result);
         assertEquals(2020 - 1900, tm.tm_year());
         assertEquals(0, tm.tm_mon());
         assertEquals(27, tm.tm_mday());
@@ -631,6 +630,8 @@ public class TimeTest {
             assertEquals(1, tm.tm_wday());
             assertEquals("Mon Jan 27 09:12:57 2020\n", Time.asctime(tm));
         }
+
+        assertEquals(expResult, result, "Expected pointer to String in buf");
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.strptime(null, format, tm);
@@ -673,8 +674,7 @@ public class TimeTest {
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.timer_delete(null);
                 });
-                break;
-            case FREE_BSD:
+                return;
             case MAC_OS_X:
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
@@ -686,58 +686,58 @@ public class TimeTest {
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.timer_delete(null);
                 });
-                break;
-            default:
-
-                final Time.Timer_t timerid = new Time.Timer_t(true);
-
-                Time.timer_create(Time.CLOCK_MONOTONIC(), null, timerid);
-                try {
-                    System.out.println("timerid: " + timerid);
-                } finally {
-                    Time.timer_delete(timerid);
-                }
-
-                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    Time.timer_delete(timerid);
-                });
-                assertEquals(Errno.EINVAL(), nee.errno);
-
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
-                });
-
-                Signal.Sigevent evp = new Signal.Sigevent();
-                Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
-                Pthread.pthread_attr_init(attr);
-                evp.sigev_notify_attributes(attr);
-
-                //Setup for signal delivery
-                evp.sigev_notify(Signal.SIGEV_SIGNAL());
-                evp.sigev_signo(Signal.SIGCHLD());
-                evp.sigev_value.sival_ptr(timerid);
-
-                Time.timer_create(Time.CLOCK_MONOTONIC(), evp, timerid);
-
-                try {
-                    System.out.println("timerid: " + timerid);
-                } finally {
-                    Time.timer_delete(timerid);
-                }
-
-                //TODO want crash test...
-//        if (multiarchTupelBuilder.getOS() != OS.FREE_BSD) {
-                //FreeBSD crashes here with a SIGSEGV ...
-                nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    Time.timer_delete(timerid);
-                });
-                assertEquals(Errno.EINVAL(), nee.errno);
-//        }
-
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Time.timer_delete(null);
-                });
+                return;
         }
+
+        final Time.Timer_t timerid = new Time.Timer_t(true);
+
+        Time.timer_create(Time.CLOCK_MONOTONIC(), null, timerid);
+        try {
+            System.out.println("timerid: " + timerid);
+        } finally {
+            Time.timer_delete(timerid);
+        }
+
+        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+            Time.timer_delete(timerid);
+        });
+        assertEquals(Errno.EINVAL(), nee.errno);
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
+        });
+
+        Signal.Sigevent evp = new Signal.Sigevent();
+        Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
+        Pthread.pthread_attr_init(attr);
+        evp.sigev_notify_attributes(attr);
+
+        //Setup for signal delivery
+        evp.sigev_notify(Signal.SIGEV_SIGNAL());
+        evp.sigev_signo(Signal.SIGCHLD());
+        evp.sigev_value.sival_ptr(timerid);
+
+        Time.timer_create(Time.CLOCK_MONOTONIC(), evp, timerid);
+
+        try {
+            System.out.println("timerid: " + timerid);
+        } finally {
+            Time.timer_delete(timerid);
+        }
+
+        if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+            //FreeBSD crashes here with a SIGSEGV ...
+            fail("Praceholder to gracefully fail the test - Remove this to see if the vm still crashes as of now:  FreeBSD 12.1-RELEASE-p10 and openjdk15-15.0.0+36.1_1");
+        } else {
+            nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                Time.timer_delete(timerid);
+            });
+            assertEquals(Errno.EINVAL(), nee.errno);
+        }
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.timer_delete(null);
+        });
     }
 
     /**

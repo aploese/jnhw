@@ -83,9 +83,9 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
     }
 
     /**
-     * length is alway >= 0
+     * length is alway {@code >= 0}
      *
-     * @return
+     * @return the length of this array of pointer.
      */
     public final int length() {
         return cachedReferences.length;

@@ -30,7 +30,6 @@ import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import java.nio.ByteBuffer;
 
 /**
  * Wrapper around the
@@ -67,7 +66,7 @@ public final class IoAPI {
      *
      * @return
      *
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -90,7 +89,7 @@ public final class IoAPI {
      * operation was started.
      * @param dwMilliseconds The number of milliseconds that the caller is
      * willing to wait for a completion packet to appear at the completion port.
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.

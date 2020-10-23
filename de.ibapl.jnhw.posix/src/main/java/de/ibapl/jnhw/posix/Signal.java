@@ -564,6 +564,7 @@ public class Signal {
      * <b>POSIX:</b> Request that signal be held.
      *
      * @return the native symbolic constant of SIG_HOLD.
+     * @throws NotDefinedException if SIG_HOLD is not defined natively.
      */
     @Define()
     public final static Callback_I_V SIG_HOLD() throws NotDefinedException {
@@ -598,10 +599,9 @@ public class Signal {
      *
      *
      * @return the native symbolic constant of SIGEV_NONE.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if SIGEV_NONE is not defined natively.
      */
     @Define()
-
     public final static native int SIGEV_NONE() throws NotDefinedException;
 
     /**
@@ -610,6 +610,7 @@ public class Signal {
      *
      *
      * @return the native symbolic constant of SIGEV_SIGNAL.
+     * @throws NotDefinedException if SIGEV_SIGNAL is not defined natively.
      */
     @Define()
     public final static native int SIGEV_SIGNAL() throws NotDefinedException;
@@ -619,12 +620,13 @@ public class Signal {
      * notification.
      *
      * @return the native symbolic constant of SIGEV_THREAD.
+     * @throws NotDefinedException if SIGEV_THREAD is not defined natively.
      */
     @Define()
     public final static native int SIGEV_THREAD() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Process abort signal.
      *
      * @return the native symbolic constant of SIGABRT.
@@ -633,7 +635,7 @@ public class Signal {
     public final static native int SIGABRT();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Alarm clock.
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Alarm clock.
      *
      * @return the native symbolic constant of SIGALRM.
      */
@@ -641,7 +643,7 @@ public class Signal {
     public final static native int SIGALRM();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Access to an undefined portion of a memory object.
      *
      *
@@ -652,7 +654,7 @@ public class Signal {
     public final static native int SIGBUS();
 
     /**
-     * <b>POSIX:</b><i>>Ignore the signal</i> Child process terminated, stopped,
+     * <b>POSIX:</b><i>Ignore the signal</i> Child process terminated, stopped,
      * or continued.
      *
      * @return the native symbolic constant of SIGCHLD.
@@ -661,7 +663,7 @@ public class Signal {
     public final static native int SIGCHLD();
 
     /**
-     * <b>POSIX:</b><i>>Continue the process, if it is stopped; otherwise,
+     * <b>POSIX:</b><i>Continue the process, if it is stopped; otherwise,
      * ignore the signal.</i> Continue executing , if stopped.
      *
      * @return the native symbolic constant of SIGCONT.
@@ -670,7 +672,7 @@ public class Signal {
     public final static native int SIGCONT();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Erroneous arithmetic operation.
      *
      *
@@ -681,7 +683,7 @@ public class Signal {
     public final static native int SIGFPE();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Hangup.
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Hangup.
      *
      * @return the native symbolic constant of SIGHUP.
      */
@@ -689,7 +691,7 @@ public class Signal {
     public final static native int SIGHUP();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Illegal instruction.
      *
      * @return the native symbolic constant of SIGILL.
@@ -698,7 +700,7 @@ public class Signal {
     public final static native int SIGILL();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Terminal
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Terminal
      * interrupt signal.
      *
      *
@@ -709,7 +711,7 @@ public class Signal {
     public final static native int SIGINT();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i>Kill(cannot be
+     * <b>POSIX:</b><i>Abnormal termination of the process</i>Kill(cannot be
      * caught or ignored).
      *
      * @return the native symbolic constant of SIGKILL.
@@ -718,7 +720,7 @@ public class Signal {
     public final static native int SIGKILL();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Write on a pipe
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Write on a pipe
      * with no one to read it.
      *
      * @return the native symbolic constant of SIGPIPE.
@@ -727,7 +729,7 @@ public class Signal {
     public final static native int SIGPIPE();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Terminal quit signal.
      *
      *
@@ -738,7 +740,7 @@ public class Signal {
     public final static native int SIGQUIT();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Invalid memory reference.
      *
      * @return the native symbolic constant of SIGSEGV.
@@ -747,7 +749,7 @@ public class Signal {
     public final static native int SIGSEGV();
 
     /**
-     * <b>POSIX:</b><i>>Stop the process</i> Stop executing(cannot be caught or
+     * <b>POSIX:</b><i>Stop the process</i> Stop executing(cannot be caught or
      * ignored).
      *
      * @return the native symbolic constant of SIGSTOP.
@@ -756,7 +758,7 @@ public class Signal {
     public final static native int SIGSTOP();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Termination
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Termination
      * signal.
      *
      * @return the native symbolic constant of SIGTERM.
@@ -765,7 +767,7 @@ public class Signal {
     public final static native int SIGTERM();
 
     /**
-     * <b>POSIX:</b><i>>Stop the process</i> Terminal stop signal.
+     * <b>POSIX:</b><i>Stop the process</i> Terminal stop signal.
      *
      *
      * @return the native symbolic constant of SIGTSTP.
@@ -775,7 +777,7 @@ public class Signal {
     public final static native int SIGTSTP();
 
     /**
-     * <b>POSIX:</b><i>>Stop the process</i> Background process attempting read.
+     * <b>POSIX:</b><i>Stop the process</i> Background process attempting read.
      *
      * @return the native symbolic constant of SIGTTIN.
      */
@@ -783,7 +785,7 @@ public class Signal {
     public final static native int SIGTTIN();
 
     /**
-     * <b>POSIX:</b><i>>Stop the process</i> Background process attempting
+     * <b>POSIX:</b><i>Stop the process</i> Background process attempting
      * write.
      *
      *
@@ -794,7 +796,7 @@ public class Signal {
     public final static native int SIGTTOU();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> User -defined
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> User -defined
      * signal 1.
      *
      *
@@ -805,7 +807,7 @@ public class Signal {
     public final static native int SIGUSR1();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> User -defined
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> User -defined
      * signal 2.
      *
      * @return the native symbolic constant of SIGUSR2.
@@ -814,16 +816,16 @@ public class Signal {
     public final static native int SIGUSR2();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Pollable event.
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Pollable event.
      *
      * @return the native symbolic constant of SIGPOLL.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if SIGPOLL is not defined natively.
      */
     @Define()
     public final static native int SIGPOLL() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Profiling timer
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Profiling timer
      * expired.
      *
      * @return the native symbolic constant of SIGPROF.
@@ -832,7 +834,7 @@ public class Signal {
     public final static native int SIGPROF();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Bad system call.
      *
      * @return the native symbolic constant of SIGSYS.
@@ -841,7 +843,7 @@ public class Signal {
     public final static native int SIGSYS();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Trace /breakpoint trap.
      *
      * @return the native symbolic constant of SIGTRAP.
@@ -850,7 +852,7 @@ public class Signal {
     public final static native int SIGTRAP();
 
     /**
-     * <b>POSIX:</b><i>>Ignore the signal</i> High bandwidth data is available
+     * <b>POSIX:</b><i>Ignore the signal</i> High bandwidth data is available
      * at a socket.
      *
      * @return the native symbolic constant of SIGURG.
@@ -859,7 +861,7 @@ public class Signal {
     public final static native int SIGURG();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Virtual timer
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Virtual timer
      * expired.
      *
      * @return the native symbolic constant of SIGVTALRM.
@@ -868,7 +870,7 @@ public class Signal {
     public final static native int SIGVTALRM();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> CPU time limit exceeded.
      *
      * @return the native symbolic constant of SIGXCPU.
@@ -877,7 +879,7 @@ public class Signal {
     public final static native int SIGXCPU();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> File size limit exceeded.
      *
      *
@@ -1350,7 +1352,6 @@ public class Signal {
         /**
          * Create a wrapper around some unknown mem - it will NOT be freed
          *
-         * @param sival_ptrProducer
          * @param address
          */
         public Siginfo_t(NativeAddressHolder address) {
@@ -1696,9 +1697,9 @@ public class Signal {
      * <b>POSIX:</b>{@link SIGPOLL} Data input available.
      *
      * @return the native symbolic constant of POLL_IN.
+     * @throws NotDefinedException if POLL_IN is not defined natively.
      */
     @Define()
-
     public final static native int POLL_IN() throws NotDefinedException;
 
     /**
@@ -1706,9 +1707,9 @@ public class Signal {
      *
      *
      * @return the native symbolic constant of POLL_OUT.
+     * @throws NotDefinedException if POLL_OUT is not defined natively.
      */
     @Define()
-
     public final static native int POLL_OUT() throws NotDefinedException;
 
     /**
@@ -1716,9 +1717,9 @@ public class Signal {
      *
      *
      * @return the native symbolic constant of POLL_MSG.
+     * @throws NotDefinedException if POLL_MSG is not defined natively.
      */
     @Define()
-
     public final static native int POLL_MSG() throws NotDefinedException;
 
     /**
@@ -1726,15 +1727,16 @@ public class Signal {
      *
      *
      * @return the native symbolic constant of POLL_ERR.
+     * @throws NotDefinedException if POLL_ERR is not defined natively.
      */
     @Define()
-
     public final static native int POLL_ERR() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b>{@link SIGPOLL} High priority input available.
      *
      * @return the native symbolic constant of POLL_PRI.
+     * @throws NotDefinedException if POLL_PRI is not defined natively.
      */
     @Define()
     public final static native int POLL_PRI() throws NotDefinedException;
@@ -1743,6 +1745,7 @@ public class Signal {
      * <b>POSIX:</b>{@link SIGPOLL} Device disconnected.
      *
      * @return the native symbolic constant of POLL_HUP.
+     * @throws NotDefinedException if POLL_HUP is not defined natively.
      */
     @Define()
     public final static native int POLL_HUP() throws NotDefinedException;
@@ -1778,6 +1781,7 @@ public class Signal {
      * request.
      *
      * @return the native symbolic constant of SI_ASYNCIO.
+     * @throws NotDefinedException if SI_ASYNCIO is not defined natively.
      */
     @Define()
     public final static native int SI_ASYNCIO() throws NotDefinedException;
@@ -1787,6 +1791,7 @@ public class Signal {
      * message.
      *
      * @return the native symbolic constant of SI_MESGQ.
+     * @throws NotDefinedException if SI_MESGQ is not defined natively.
      */
     @Define()
     public final static native int SI_MESGQ() throws NotDefinedException;
@@ -1826,7 +1831,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method psiginfo is not available natively.
      */
     public final static native void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -1849,6 +1854,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method pthread_kill is not available natively.
      */
     public final static native void pthread_kill(Pthread.Pthread_t thread, int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -1956,6 +1962,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sighold is not available natively.
      */
     public final static native void sighold(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -1967,6 +1974,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sigignore is not available natively.
      */
     public final static native void sigignore(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2014,6 +2022,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * is -1 and errno is other than EINTR.
+     * @throws NoSuchNativeMethodException if the method sigpause is not available natively.
      */
     public final static native void sigpause(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2047,7 +2056,8 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     */
+      * @throws NoSuchNativeMethodException if the method sigqueue is not available natively.
+    */
     public final static native void sigqueue(@pid_t int pid, int signo, Sigval value) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
@@ -2058,6 +2068,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sigrelse is not available natively.
      */
     public final static native void sigrelse(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2069,6 +2080,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sigset is not available natively.
      *///TODO args missing ....
     public final static native Callback_I_V sigset(int sig, Callback_I_V disp) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2091,6 +2103,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sigtimedwait is not available natively.
      */
     public final static native int sigtimedwait(Sigset_t set, Siginfo_t info,
             Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException;
@@ -2118,6 +2131,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sigwaitinfo is not available natively.
      */
     public final static native int sigwaitinfo(Sigset_t set, Siginfo_t info) throws NativeErrorException, NoSuchNativeMethodException;
 }

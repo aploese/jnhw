@@ -73,16 +73,14 @@ extern "C" {
             throw_IndexOutOfBoundsException(env, "In ss_size < 0");
             return;
         }
-#if __SIZEOF_LONG__ == 8
+#if defined(__LP64__)
         (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint64_t) ss_size;
-#elif __SIZEOF_LONG__ == 4
+#else
         if (ss_size > INT32_MAX) {
             throw_IndexOutOfBoundsException(env, "In this native implementation ss_size is only an integer with the size of jint");
             return;
         }
         (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint32_t) ss_size;
-#else
-#error Unknown Wordsize
 #endif
     }
 

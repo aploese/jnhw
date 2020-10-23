@@ -29,6 +29,7 @@ import static de.ibapl.jnhw.posix.Termios.CLOCAL;
 import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
 import static de.ibapl.jnhw.posix.Termios.CS8;
+import de.ibapl.jnhw.util.posix.Defines;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -41,14 +42,10 @@ public class TermiosTests {
     public void CMSPAR() {
         switch (NativeLibResolver.getOS()) {
             case LINUX:
-                switch (NativeLibResolver.getLoadedArch()) {
-                    case MIPS:
-                    case MIPS_EL:
-                    case MIPS_64:
-                    case MIPS_64_EL:
+                if (Defined.defined(Defines::__mips__)) {
                         assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
                         break;
-                    default:
+                } else {
                         assertTrue(Defined.defined(Termios::CMSPAR), "CMSPAR");
                 }
                 break;

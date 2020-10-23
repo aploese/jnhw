@@ -22,13 +22,14 @@
 package de.ibapl.jnhw.libloader;
 
 /**
- *
+ * The Architecture used.
+ * 
  * @author aploese
  */
 public enum Arch {
     X86_64(WordSize._64_BIT, "x86_64"), 
     X86(WordSize._32_BIT, "x86"), 
-    I386(WordSize._64_BIT, "i386"), 
+    I386(WordSize._32_BIT, "i386"), 
     ARM(WordSize._32_BIT, "arm"), 
     AARCH64(WordSize._64_BIT, "aarch64"), 
     MIPS_EL(WordSize._64_BIT, "mipsel"), 

@@ -50,8 +50,8 @@ public abstract class StructArray<T extends OpaqueMemory> extends OpaqueMemory {
     }
 
     /**
-     * length is alway >= 0
-     * @return 
+     * length is alway {@code >= 0}
+     * @return the length of this array of given struct. 
      */
     public final int length() {
         return elements.length;

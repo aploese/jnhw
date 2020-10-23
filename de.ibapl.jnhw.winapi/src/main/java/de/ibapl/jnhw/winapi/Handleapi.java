@@ -55,7 +55,7 @@ public abstract class Handleapi {
      *
      * @param hObject a valid handle to an open object.
      *
-     * @throws NullPointerException if hObject is {@code null].
+     * @throws NullPointerException if hObject is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.

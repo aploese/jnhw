@@ -22,7 +22,8 @@
 package de.ibapl.jnhw.libloader;
 
 /**
- *
+ * Information on the current architecture, operating system and used application binary interface.
+ * 
  * @author aploese
  */
 public enum MultiarchInfo {

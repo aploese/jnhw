@@ -19,6 +19,11 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+/**
+ * Anything needed to load a native lib.
+ * It resolves the name and a library path like GNU gcc Multiarchtupels.
+ * 
+ */
 module de.ibapl.jnhw.libloader {
 	requires java.logging;
 	

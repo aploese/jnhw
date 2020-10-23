@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw;
 
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -48,7 +49,7 @@ public class PointerArrayTest {
      */
     @Test
     public void testSizeofPointer() {
-        Assertions.assertEquals(NativeLibResolver.getLoadedMultiarch().getWordSize().sizeInBit, PointerArray.sizeofPointer() * 8, "Wordize mismatch");
+        Assertions.assertEquals(new MultiarchTupelBuilder().getWordSize().sizeInBit, PointerArray.sizeofPointer() * 8, "Wordize mismatch");
     }
 
     /**

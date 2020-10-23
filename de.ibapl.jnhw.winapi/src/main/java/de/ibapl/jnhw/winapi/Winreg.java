@@ -221,7 +221,7 @@ public abstract class Winreg {
      *
      * @param hKey a handle to an open registry key.
      *
-     * @throws NullPointerException if hKey is {@code null].
+     * @throws NullPointerException if hKey is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -243,7 +243,7 @@ public abstract class Winreg {
      * value as a null-terminated string.
      * @param lpType A pointer to a variable that receives a code indicating the
      * type of data stored in the specified value.
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types=>Registry
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types">Registry
      * Value Types</a>
      * @param lpData A pointer to a buffer that receives the data for the value
      * entry. This parameter can be NULL if the data is not required.
@@ -255,7 +255,7 @@ public abstract class Winreg {
      * value.</li>
      * </ul>
      *
-     * @throws NullPointerException if hKey or lpValueName or lpType is {@code null].
+     * @throws NullPointerException if hKey or lpValueName or lpType is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -270,14 +270,14 @@ public abstract class Winreg {
      * @param hKey a handle to an open registry key.
      * @param lpSubKey the name of the registry subkey to be opened.
      * @param ulOptions specifies the option to apply when opening the key. Set
-     * this parameter to zero or the following: {@link REG_OPTION_OPEN_LINK}
+     * this parameter to zero or the following: {@link Winnt#REG_OPTION_OPEN_LINK()}
      * @param samDesired a mask that specifies the desired access rights to the
      * key to be opened. The function fails if the security descriptor of the
      * key does not permit the requested access for the calling process.
      * @param phkResult a pointer to a variable that receives a handle to the
      * opened key.
      *
-     * @throws NullPointerException if hKey or lpSubKey or phkResult is {@code null].
+     * @throws NullPointerException if hKey or lpSubKey or phkResult is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
