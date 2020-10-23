@@ -53,7 +53,7 @@ public class IoAPITest {
         final Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         IntRef lpNumberOfBytesTransferred = new IntRef();
         LongRef lpCompletionKey = new LongRef();
-        ObjectRef<NativeAddressHolder> lpOverlapped = new ObjectRef();
+        ObjectRef<NativeAddressHolder> lpOverlapped = new ObjectRef<>();
         final int dwNumberOfBytesTransferred = 42;
         long dwMilliseconds = 5000;
         new Thread(() -> {

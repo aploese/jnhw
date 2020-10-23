@@ -74,7 +74,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
 
     private static native void doCallTheCallback(int value, A a, B b);
 
-    private class DummyCB extends Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl {
+    private class DummyCB extends Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<OpaqueMemory, OpaqueMemory> {
 
         @Override
         protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {
@@ -98,6 +98,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
      * IntConsumerCallbackFactory.
      */
     @Test
+    @SuppressWarnings("UnusedAssignment")
     public void testMAX_CALL_BACKS() {
         System.out.println("MAX_CALL_BACKS");
         int maxCB = Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.MAX_CALL_BACKS();
@@ -108,6 +109,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
             assertEquals(maxCB - (i + 1), Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.callbacksAvailable());
         }
 
+        @SuppressWarnings("ResultOfObjectAllocationIgnored")
         RuntimeException re = assertThrows(RuntimeException.class, () -> {
             new DummyCB();
         });
@@ -123,6 +125,7 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
 
     @Test
     public void testNativeFunctionPointer() {
+        @SuppressWarnings("unchecked")
         final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> testPtr = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(new NativeAddressHolder(121)) {
             @Override
             protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {
@@ -140,8 +143,8 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
         final IntRef intref = new IntRef();
-        final ObjectRef<A> refA = new ObjectRef();
-        final ObjectRef<B> refB = new ObjectRef();
+        final ObjectRef<A> refA = new ObjectRef<>();
+        final ObjectRef<B> refB = new ObjectRef<>();
         A a = new A();
         B b = new B();
         Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<A, B> callback = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<>() {
@@ -199,12 +202,13 @@ public class Callback_I_PtrOpaquememory_PtrOpaquememory_V_Test {
     public void testReleaseByGarbageCollectorAndCleanup() throws Exception {
         System.out.println("release");
         Cleaner CLEANER = Cleaner.create();
-        final ObjectRef<A> refA = new ObjectRef();
-        final ObjectRef<B> refB = new ObjectRef();
+        final ObjectRef<A> refA = new ObjectRef<>();
+        final ObjectRef<B> refB = new ObjectRef<>();
         A a = new A();
         B b = new B();
 
         final IntRef intref = new IntRef();
+        @SuppressWarnings("unchecked")
         final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<A, B> NULL_PTR = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(new NativeAddressHolder(0)) {
             @Override
             protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {

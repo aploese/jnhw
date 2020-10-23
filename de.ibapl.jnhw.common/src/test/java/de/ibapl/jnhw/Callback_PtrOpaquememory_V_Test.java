@@ -104,6 +104,7 @@ public class Callback_PtrOpaquememory_V_Test {
 
     @Test
     public void testNativeFunctionPointer() {
+        @SuppressWarnings("unchecked")
         final Callback_PtrOpaqueMemory_V<A> testPtr = new Callback_PtrOpaqueMemory_V(new NativeAddressHolder(121)) {
             @Override
             protected void callback(OpaqueMemory a) {
@@ -120,7 +121,7 @@ public class Callback_PtrOpaquememory_V_Test {
     @Test
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
-        final ObjectRef<A> refA = new ObjectRef();
+        final ObjectRef<A> refA = new ObjectRef<>();
         A a = new A();
         Callback_PtrOpaqueMemory_V_Impl<A> callback = new Callback_PtrOpaqueMemory_V_Impl<>() {
 
@@ -168,9 +169,10 @@ public class Callback_PtrOpaquememory_V_Test {
     public void testReleaseByGarbageCollectorAndCleanup() throws Exception {
         System.out.println("release");
         Cleaner CLEANER = Cleaner.create();
-        final ObjectRef<A> refA = new ObjectRef();
+        final ObjectRef<A> refA = new ObjectRef<>();
         A a = new A();
 
+        @SuppressWarnings("unchecked")
         final Callback_PtrOpaqueMemory_V<A> NULL_PTR = new Callback_PtrOpaqueMemory_V(new NativeAddressHolder(0)) {
             @Override
             protected void callback(OpaqueMemory a) {

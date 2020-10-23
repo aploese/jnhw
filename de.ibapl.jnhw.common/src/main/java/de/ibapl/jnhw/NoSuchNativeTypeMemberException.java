@@ -28,6 +28,8 @@ package de.ibapl.jnhw;
  */
 public class NoSuchNativeTypeMemberException extends Exception {
 
+    private static final long serialVersionUID = 1L;
+
     public final String typeName;
 
     public final String memberName;

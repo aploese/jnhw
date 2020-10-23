@@ -27,6 +27,8 @@ package de.ibapl.jnhw;
  * @author aploese
  */
 public class NoSuchNativeMethodException extends Exception {
+
+    private static final long serialVersionUID = 1L;
     
     public NoSuchNativeMethodException() {
         

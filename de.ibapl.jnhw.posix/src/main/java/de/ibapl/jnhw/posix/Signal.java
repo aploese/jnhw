@@ -392,16 +392,19 @@ public class Signal {
         private NativeFunctionPointer sigev_notify_function;
         Pthread.Pthread_attr_t sigev_notify_attributes;
 
+        @SuppressWarnings("unchecked")
         public Sigevent() throws NoSuchNativeTypeException {
             super(sizeofSigevent(), true);
             sigev_value = new Sigval(this, _sigev_value_Offset());
         }
 
+        @SuppressWarnings("unchecked")
         public Sigevent(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
             super(baseAddress, sizeofSigevent());
             sigev_value = new Sigval(this, _sigev_value_Offset());
         }
 
+        @SuppressWarnings("unchecked")
         Sigevent(OpaqueMemory owner, int offset) throws NoSuchNativeTypeException {
             super(owner, offset, sizeofSigevent());
             sigev_value = new Sigval(this, _sigev_value_Offset());
@@ -1004,6 +1007,7 @@ public class Signal {
          * @return the native value of sa_sigaction if the cached value match
          * otherwise an exception is thrown.
          */
+        @SuppressWarnings("unchecked")
         public final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigactionAsCallback_I_PtrOpaqueMemory_PtrOpaqueMemory_V() {
             final NativeFunctionPointer sa_sigaction = sa_sigaction();
             if (cachedHandlerOrAction instanceof Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V) {
@@ -1273,7 +1277,7 @@ public class Signal {
          * @return
          */
         public static <T extends OpaqueMemory> Stack_t<T> of(int ss_flags, T ss_sp) {
-            Stack_t<T> result = new Stack_t();
+            Stack_t<T> result = new Stack_t<>();
             result.ss_flags(ss_flags);
             result.ss_sp(ss_sp);
             result.ss_size(ss_sp.sizeInBytes);
@@ -1344,6 +1348,7 @@ public class Signal {
 
         public static native int _si_value_Offset();
 
+        @SuppressWarnings("unchecked")
         public Siginfo_t() {
             super(sizeofSiginfo_t(), false);
             si_value = new Sigval(memoryOwner, _si_value_Offset());
@@ -1354,6 +1359,7 @@ public class Signal {
          *
          * @param address
          */
+        @SuppressWarnings("unchecked")
         public Siginfo_t(NativeAddressHolder address) {
             super(address, sizeofSiginfo_t());
             si_value = new Sigval(this, _si_value_Offset());

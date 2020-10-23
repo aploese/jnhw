@@ -60,7 +60,7 @@ public class Callback_I_I_PtrOpaquememory_V_Test {
 
     private static native void doCallTheCallback(int a, int b, C c);
 
-    private class DummyCB extends Callback_I_I_PtrOpaqueMemory_V_Impl {
+    private class DummyCB extends Callback_I_I_PtrOpaqueMemory_V_Impl<OpaqueMemory> {
 
         @Override
         protected void callback(int a, int b, OpaqueMemory c) {
@@ -104,6 +104,7 @@ public class Callback_I_I_PtrOpaquememory_V_Test {
 
     @Test
     public void testNativeFunctionPointer() {
+        @SuppressWarnings("unchecked")
         final Callback_I_I_PtrOpaqueMemory_V<C> testPtr = new Callback_I_I_PtrOpaqueMemory_V(new NativeAddressHolder(121)) {
             @Override
             protected void callback(int a, int b, OpaqueMemory c) {
@@ -122,7 +123,7 @@ public class Callback_I_I_PtrOpaquememory_V_Test {
         System.out.println("release");
         final IntRef refA = new IntRef();
         final IntRef refB = new IntRef();
-        final ObjectRef<C> refC = new ObjectRef();
+        final ObjectRef<C> refC = new ObjectRef<>();
         C c = new C();
         Callback_I_I_PtrOpaqueMemory_V_Impl<C> callback = new Callback_I_I_PtrOpaqueMemory_V_Impl<>() {
 
@@ -179,10 +180,10 @@ public class Callback_I_I_PtrOpaquememory_V_Test {
         Cleaner CLEANER = Cleaner.create();
         final IntRef refA = new IntRef();
         final IntRef refB = new IntRef();
-        final ObjectRef<C> refC = new ObjectRef();
+        final ObjectRef<C> refC = new ObjectRef<>();
         C c = new C();
 
-        final IntRef intref = new IntRef();
+        @SuppressWarnings("unchecked")
         final Callback_I_I_PtrOpaqueMemory_V<C> NULL_PTR = new Callback_I_I_PtrOpaqueMemory_V(new NativeAddressHolder(0)) {
             @Override
             protected void callback(int a, int b, OpaqueMemory c) {

@@ -246,7 +246,7 @@ public class FileapiTests {
         IntRef lpNumberOfBytesTransferred = new IntRef();
         LongRef lpCompletionKey = new LongRef();
         
-        ObjectRef<NativeAddressHolder> overlappedPtr = new ObjectRef();
+        ObjectRef<NativeAddressHolder> overlappedPtr = new ObjectRef<>();
         
         Fileapi.WriteFile(hFile, byteBuffer, overlapped);
         
@@ -529,7 +529,7 @@ public class FileapiTests {
         IntRef lpNumberOfBytesTransferred = new IntRef();
         LongRef lpCompletionKey = new LongRef();
         
-        ObjectRef<NativeAddressHolder> overlappedPtr = new ObjectRef();
+        ObjectRef<NativeAddressHolder> overlappedPtr = new ObjectRef<>();
         
         Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
         

@@ -71,12 +71,13 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
     }
 
     public final T get(int index, ElementProducer<T> p) {
+        @SuppressWarnings("unchecked")
         final T ref = (T) cachedReferences[index];
-        final NativeAddressHolder baseAddress = get0(index);
-        if (OpaqueMemory.isSameAddress(baseAddress, ref)) {
+        final NativeAddressHolder elementBaseAddress = get0(index);
+        if (OpaqueMemory.isSameAddress(elementBaseAddress, ref)) {
             return ref;
         } else {
-            final T newRef = p.produce(baseAddress, index, ref);
+            final T newRef = p.produce(elementBaseAddress, index, ref);
             cachedReferences[index] = newRef;
             return newRef;
         }

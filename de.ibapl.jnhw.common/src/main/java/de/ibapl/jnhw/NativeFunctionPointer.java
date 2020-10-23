@@ -45,6 +45,7 @@ public class NativeFunctionPointer {
         return new NativeFunctionPointer(nativePointer.address);
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends NativeFunctionPointer> NativeFunctionPointer(Function<T, NativeAddressHolder> producer) {
         this.nativeAddress = producer.apply((T) this).address;
     }

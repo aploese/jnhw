@@ -809,7 +809,7 @@ public class TimeTest {
                 break;
             default:
 
-                final ObjectRef<Integer> intRef = new ObjectRef(null);
+                final ObjectRef<Object> intRef = new ObjectRef<>(null);
                 Time.Timer_t timerid = new Time.Timer_t();
 
                 //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
@@ -831,9 +831,13 @@ public class TimeTest {
                         try {
                             assertEquals(42, evp.sigev_value.sival_int());
                             assertEquals(42, sigval);
-                        } finally {
                             synchronized (intRef) {
                                 intRef.value = sigval;
+                                intRef.notifyAll();
+                            }
+                        } catch (Exception ex) {
+                            synchronized (intRef) {
+                                intRef.value = ex;
                                 intRef.notifyAll();
                             }
                         }
@@ -861,7 +865,12 @@ public class TimeTest {
                         if (intRef.value == null) {
                             intRef.wait(ONE_MINUTE);
                         }
-                        assertEquals(Integer.valueOf(42), intRef.value);
+                        Assertions.assertNotNull(intRef.value);
+                        if (intRef.value instanceof Exception) {
+                            throw (Exception) intRef.value;
+                        } else {
+                            assertEquals(Integer.valueOf(42), intRef.value);
+                        }
                     }
 
                     System.out.println("timer_getoverrun");

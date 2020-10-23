@@ -43,7 +43,7 @@ public class ObjectRefTest {
 
     @Test
     public void testSomeMethod() {
-        ObjectRef<Long> objectRef = new ObjectRef(-42L);
+        ObjectRef<Long> objectRef = new ObjectRef<>(-42L);
         Long result = testNative(objectRef, 42L);
         Assertions.assertEquals(Long.valueOf(-42L), result);
         Assertions.assertEquals(Long.valueOf(42L), objectRef.value);

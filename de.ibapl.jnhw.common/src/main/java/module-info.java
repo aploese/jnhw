@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 module de.ibapl.jnhw.common {
-	requires java.logging;
+	requires transitive java.logging;
 
 	requires transitive de.ibapl.jnhw.libloader;
 	

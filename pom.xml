@@ -118,8 +118,9 @@
                         <encoding>${project.build.sourceEncoding}</encoding>
                     <showDeprecation>true</showDeprecation>
                             <compilerArgs>
-                                <arg>-verbose</arg>
-                                <!--arg>-Xlint:all,-options,-path</arg-->
+                                <!--arg>-verbose</arg-->
+                               <!--arg>-Xlint:all</arg-->
+                               <!--arg>-Xlint:all,-options,-path</arg-->
                             </compilerArgs>
                     </configuration>
                 </plugin>

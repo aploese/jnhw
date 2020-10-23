@@ -76,7 +76,7 @@ public class SignalTest {
 
         final int sig = Signal.SIGCHLD(); //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
-        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -118,7 +118,7 @@ public class SignalTest {
         System.out.println("killpg");
         final int sig = Signal.SIGCHLD();
 
-        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -201,7 +201,7 @@ public class SignalTest {
 
         final int sig = Signal.SIGCHLD(); //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
-        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -278,7 +278,7 @@ public class SignalTest {
         System.out.println("raise");
         final int sig = Signal.SIGCHLD();
 
-        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -291,7 +291,7 @@ public class SignalTest {
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction oact = new Signal.Sigaction();
+        final Signal.Sigaction oact = new Signal.Sigaction<>();
         Signal.sigaction(sig, act, oact);
         try {
             Signal.raise(sig);
@@ -309,7 +309,7 @@ public class SignalTest {
         System.out.println("sigaction");
         final int SIG = Signal.SIGCHLD();
 
-        final Signal.Sigaction<OpaqueMemory> act = new Signal.Sigaction();
+        final Signal.Sigaction<OpaqueMemory> act = new Signal.Sigaction<>();
         act.sa_flags(Signal.SA_RESTART());
         Signal.sigemptyset(act.sa_mask);
 
@@ -320,7 +320,7 @@ public class SignalTest {
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction<OpaqueMemory> oact = new Signal.Sigaction();
+        final Signal.Sigaction<OpaqueMemory> oact = new Signal.Sigaction<>();
         Signal.sigaction(SIG, null, oact);
         try {
             Signal.sigaction(SIG, act, oact);
@@ -331,7 +331,7 @@ public class SignalTest {
                 Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_handler());
             }
 
-            final Signal.Sigaction<OpaqueMemory> actOut = new Signal.Sigaction();
+            final Signal.Sigaction<OpaqueMemory> actOut = new Signal.Sigaction<>();
             Signal.sigaction(SIG, oact, actOut);
 
             Assertions.assertEquals(act.sa_handler(), actOut.sa_handler());
@@ -457,7 +457,7 @@ public class SignalTest {
 
         Signal.raise(SIG);
 
-        final ObjectRef<Integer> raisedSignal = new ObjectRef(null);
+        final ObjectRef<Integer> raisedSignal = new ObjectRef<>(null);
         final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
@@ -503,7 +503,7 @@ public class SignalTest {
         System.out.println("sigpause");
         final int SIG = Signal.SIGUSR1();
 
-        final ObjectRef<Boolean> boolRef = new ObjectRef(Boolean.FALSE);
+        final ObjectRef<Boolean> boolRef = new ObjectRef<>(Boolean.FALSE);
 
         final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
             @Override
@@ -894,6 +894,7 @@ public class SignalTest {
         sigevent.sigev_notify_function(sigev_notify_functionInt);
         Assertions.assertSame(sigev_notify_functionInt, sigevent.sigev_notify_functionAsCallback_I_V());
 
+        @SuppressWarnings("unchecked")
         Callback_PtrOpaqueMemory_V<OpaqueMemory> sigev_notify_functionPtr = new Callback_PtrOpaqueMemory_V(new NativeAddressHolder(44)) {
             @Override
             protected void callback(OpaqueMemory a) {
@@ -920,7 +921,7 @@ public class SignalTest {
 
     @Test
     public void testStructStack_t() throws Exception {
-        Signal.Stack_t<OpaqueMemory> stack_t = new Signal.Stack_t();
+        Signal.Stack_t<OpaqueMemory> stack_t = new Signal.Stack_t<>();
         Assertions.assertNotNull(stack_t.ss_flags());
         Assertions.assertNotNull(stack_t.ss_size());
         Assertions.assertNotNull(stack_t.ss_sp((baseAddress, parent) -> {
@@ -953,7 +954,7 @@ public class SignalTest {
 
     @Test
     public void testStructSigaction() throws Exception {
-        Signal.Sigaction<OpaqueMemory> sigaction = new Signal.Sigaction();
+        Signal.Sigaction<OpaqueMemory> sigaction = new Signal.Sigaction<>();
 
         sigaction.sa_flags(22);
         assertEquals(22, sigaction.sa_flags());
@@ -967,6 +968,7 @@ public class SignalTest {
         sigaction.sa_handler(sa_handler);
         Assertions.assertSame(sa_handler, sigaction.sa_handlerAsCallback_I_V());
 
+        @SuppressWarnings("unchecked")
         Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory> sa_sigaction = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(new NativeAddressHolder(44)) {
             @Override
             protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {

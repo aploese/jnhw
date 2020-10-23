@@ -56,9 +56,10 @@ public class PointerArrayTest {
      * Test of set method, of class PointerArray.
      */
     @Test
+    @SuppressWarnings("unchecked")
     public void testSetAndGet() {
         System.out.println("set");
-        PointerArray instance = new PointerArray(16, true);
+        PointerArray<OpaqueMemory> instance = new PointerArray<>(16, true);
         OpaqueMemory element1 = new OpaqueMemory(8, true);
         OpaqueMemory.setByte(element1, 0, (byte) 1);
         instance.set(1, element1);
@@ -103,9 +104,10 @@ public class PointerArrayTest {
      * Test of toString method, of class PointerArray.
      */
     @Test
+    @SuppressWarnings("unchecked")
     public void testToString() {
         System.out.println("toString");
-        PointerArray instance = new PointerArray(6, true);
+        PointerArray<OpaqueMemory> instance = new PointerArray<>(6, true);
         OpaqueMemory element1 = new OpaqueMemory(1, true);
         instance.set(1, element1);
         String result = instance.toString();
@@ -113,8 +115,9 @@ public class PointerArrayTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testArrayBounds() {
-        PointerArray instance = new PointerArray(2, true);
+        PointerArray<OpaqueMemory> instance = new PointerArray<>(2, true);
 
         Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
             instance.set(-1, null);
@@ -136,7 +139,7 @@ public class PointerArrayTest {
 
     @Test
     public void testCachedPointerArrayLength() {
-        PointerArray instance = new PointerArray(0, true);
+        PointerArray<OpaqueMemory> instance = new PointerArray<>(0, true);
         Assertions.assertEquals(instance.length(), getCachedReferencesLength(instance));
 
         instance = new PointerArray(1, true);

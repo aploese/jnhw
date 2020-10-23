@@ -30,6 +30,7 @@ import java.util.logging.Logger;
  * @author aploese
  * @param <A>
  */
+@SuppressWarnings("unchecked")
 public abstract class Callback_PtrOpaqueMemory_V_Impl<A extends OpaqueMemory> extends Callback_PtrOpaqueMemory_V<A> implements NativeCallToJava {
 
     private final static Logger LOG = Logger.getLogger("d.i.j.c.Callback_PtrOpaqueMemory_V_Impl");
@@ -70,8 +71,8 @@ public abstract class Callback_PtrOpaqueMemory_V_Impl<A extends OpaqueMemory> ex
      */
     public static int callbacksAvailable() {
         int result = 0;
-        for (int i = 0; i < refs.length; i++) {
-            if (refs[i].get() == null) {
+        for (WeakReference<Callback_PtrOpaqueMemory_V_Impl> ref : refs) {
+            if (ref.get() == null) {
                 result++;
             }
         }

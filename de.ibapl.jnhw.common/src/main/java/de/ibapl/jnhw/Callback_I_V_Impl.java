@@ -29,6 +29,7 @@ import java.util.logging.Logger;
  *
  * @author aploese
  */
+@SuppressWarnings("unchecked")
 public abstract class Callback_I_V_Impl extends Callback_I_V implements NativeCallToJava {
 
     private final static Logger LOG = Logger.getLogger("d.i.j.c.Callback_I_V");
@@ -69,8 +70,8 @@ public abstract class Callback_I_V_Impl extends Callback_I_V implements NativeCa
      */
     public static int callbacksAvailable() {
         int result = 0;
-        for (int i = 0; i < refs.length; i++) {
-            if (refs[i].get() == null) {
+        for (WeakReference<Callback_I_V_Impl> ref : refs) {
+            if (ref.get() == null) {
                 result++;
             }
         }

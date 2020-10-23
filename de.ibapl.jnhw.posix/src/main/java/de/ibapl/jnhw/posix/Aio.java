@@ -316,11 +316,13 @@ public class Aio {
         public final Sigevent<T> aio_sigevent;
         private Object aio_buf;
 
+        @SuppressWarnings("unchecked")
         public Aiocb(OpaqueMemory owner, int offset) throws NoSuchNativeTypeException {
             super(owner, offset, sizeofAiocb());
             aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
         }
 
+        @SuppressWarnings("unchecked")
         public Aiocb() throws NoSuchNativeTypeException {
             super(sizeofAiocb(), true);
             aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
@@ -331,6 +333,7 @@ public class Aio {
          *
          * @param address
          */
+        @SuppressWarnings("unchecked")
         public Aiocb(NativeAddressHolder address) throws NoSuchNativeTypeException {
             super(address, sizeofAiocb());
             aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());

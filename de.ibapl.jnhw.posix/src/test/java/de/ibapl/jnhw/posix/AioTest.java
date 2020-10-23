@@ -165,14 +165,14 @@ public class AioTest {
 
                 final String HELLO_WORLD = "Hello world!\n";
 
-                final ObjectRef objRef = new ObjectRef(null);
+                final ObjectRef<Object> objRef = new ObjectRef<>(null);
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
                 FileWriter fw = new FileWriter(tmpFile);
                 fw.append(HELLO_WORLD);
                 fw.flush();
                 fw.close();
 
-                final Aio.Aiocb<Aio.Aiocb> aiocb = new Aio.Aiocb();
+                final Aio.Aiocb<Aio.Aiocb> aiocb = new Aio.Aiocb<>();
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
@@ -190,23 +190,31 @@ public class AioTest {
                 aiocb.aio_sigevent.sigev_notify_function(new Callback_PtrOpaqueMemory_V_Impl<Aio.Aiocb>() {
 
                     @Override
+                    @SuppressWarnings("unchecked")
                     protected void callback(Aio.Aiocb a) {
-                        System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self());
-                        System.out.println("aio_read in callback currentThread: " + Thread.currentThread());
                         try {
-                            int errno = Aio.aio_error(a);
-                            assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
-                            aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(a));
-                        } catch (NativeErrorException nee) {
-                            fail("aio_read in callback NativeErrorException: " + nee, nee);
-                        } catch (NoSuchNativeMethodException nsnme) {
-                            fail(nsnme);
+                            System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self());
+                            System.out.println("aio_read in callback currentThread: " + Thread.currentThread());
+                            try {
+                                int errno = Aio.aio_error(a);
+                                assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                                aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(a));
+                            } catch (NativeErrorException nee) {
+                                fail("aio_read in callback NativeErrorException: " + nee, nee);
+                            } catch (NoSuchNativeMethodException nsnme) {
+                                fail(nsnme);
+                            }
+                            synchronized (objRef) {
+                                objRef.value = a;
+                                objRef.notify();
+                            }
+                            System.out.println("aio_read leave callback");
+                        } catch (Exception ex) {
+                            synchronized (objRef) {
+                                objRef.value = ex;
+                                objRef.notify();
+                            }
                         }
-                        synchronized (objRef) {
-                            objRef.value = a;
-                            objRef.notify();
-                        }
-                        System.out.println("aio_read leave callback");
                     }
 
                     @Override
@@ -227,6 +235,12 @@ public class AioTest {
                     if (objRef.value == null) {
                         objRef.wait(ONE_MINUTE);
                     }
+                }
+
+                Assertions.assertNotNull(objRef.value);
+                if (objRef.value instanceof Exception) {
+                    throw (Exception) objRef.value;
+                } else {
                     assertEquals(aiocb, objRef.value);
                 }
 
@@ -265,10 +279,10 @@ public class AioTest {
 
                 final int SIVAL_INT = 0x01234567;
 
-                final ObjectRef<Integer> intRef = new ObjectRef(null);
+                final ObjectRef<Object> intRef = new ObjectRef<>(null);
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
 
-                final Aio.Aiocb<OpaqueMemory> aiocb = new Aio.Aiocb();
+                final Aio.Aiocb<OpaqueMemory> aiocb = new Aio.Aiocb<>();
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
@@ -287,24 +301,31 @@ public class AioTest {
 
                     @Override
                     protected void callback(int i) {
-                        System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self());
-                        System.out.println("aio_read in callback i=" + i + " currentThread: " + Thread.currentThread());
                         try {
-                            int errno = Aio.aio_error(aiocb);
-                            assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
-                            aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
-                            assertEquals(SIVAL_INT, i);
-                        } catch (NativeErrorException nee) {
-                            fail("aio_read in callback NativeErrorException: " + nee, nee);
-                        } catch (NoSuchNativeMethodException nsnme) {
-                            fail(nsnme);
-                        } finally {
+                            System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self());
+                            System.out.println("aio_read in callback i=" + i + " currentThread: " + Thread.currentThread());
+                            try {
+                                int errno = Aio.aio_error(aiocb);
+                                assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                                aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
+                                assertEquals(SIVAL_INT, i);
+                            } catch (NativeErrorException nee) {
+                                fail("aio_read in callback NativeErrorException: " + nee, nee);
+                            } catch (NoSuchNativeMethodException nsnme) {
+                                fail(nsnme);
+                            }
                             synchronized (intRef) {
                                 intRef.value = i;
                                 intRef.notify();
                             }
                             System.out.println("aio_read leave callback");
+                        } catch (Exception ex) {
+                            synchronized (intRef) {
+                                intRef.value = ex;
+                                intRef.notify();
+                            }
                         }
+
                     }
 
                 });
@@ -319,8 +340,14 @@ public class AioTest {
                     if (intRef.value == null) {
                         intRef.wait(ONE_MINUTE);
                     }
+                }
+                Assertions.assertNotNull(intRef.value);
+                if (intRef.value instanceof Exception) {
+                    throw (Exception) intRef.value;
+                } else {
                     assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
                 }
+
                 errno = Aio.aio_error(aiocb);
                 assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
                 assertEquals(0, Aio.aio_return(aiocb));
@@ -407,7 +434,7 @@ public class AioTest {
                 final String HELLO_WORLD = "Hello world!\n";
                 final int SIVAL_INT = 0x01234567;
 
-                final ObjectRef<Integer> intRef = new ObjectRef(null);
+                final ObjectRef<Object> intRef = new ObjectRef<>(null);
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
 
                 final Aio.Aiocb<OpaqueMemory> aiocb = new Aio.Aiocb();
@@ -432,23 +459,29 @@ public class AioTest {
 
                     @Override
                     protected void callback(int i) {
-                        System.out.println("aio_write enter callback Pthread_t: " + Pthread.pthread_self());
-                        System.out.println("aio_write in callback i=" + i + " currentThread: " + Thread.currentThread());
                         try {
-                            int errno = Aio.aio_error(aiocb);
-                            assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
-                            aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
-                            assertEquals(SIVAL_INT, i);
-                        } catch (NativeErrorException nee) {
-                            fail("aio_read in callback NativeErrorException: " + nee, nee);
-                        } catch (NoSuchNativeMethodException nsnme) {
-                            fail(nsnme);
-                        } finally {
+                            System.out.println("aio_write enter callback Pthread_t: " + Pthread.pthread_self());
+                            System.out.println("aio_write in callback i=" + i + " currentThread: " + Thread.currentThread());
+                            try {
+                                int errno = Aio.aio_error(aiocb);
+                                assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                                aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
+                                assertEquals(SIVAL_INT, i);
+                            } catch (NativeErrorException nee) {
+                                fail("aio_read in callback NativeErrorException: " + nee, nee);
+                            } catch (NoSuchNativeMethodException nsnme) {
+                                fail(nsnme);
+                            }
                             synchronized (intRef) {
                                 intRef.value = i;
                                 intRef.notify();
                             }
                             System.out.println("aio_write leave callback");
+                        } catch (Exception ex) {
+                            synchronized (intRef) {
+                                intRef.value = ex;
+                                intRef.notify();
+                            }
                         }
                     }
 
@@ -460,9 +493,14 @@ public class AioTest {
                     if (intRef.value == null) {
                         intRef.wait(ONE_MINUTE);
                     }
-                    Assertions.assertFalse(aioBuffer.hasRemaining());
+                }
+                Assertions.assertNotNull(intRef.value);
+                if (intRef.value instanceof Exception) {
+                    throw (Exception) intRef.value;
+                } else {
                     assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
                 }
+
                 Unistd.close(aiocb.aio_fildes());
                 FileReader fr = new FileReader(tmpFile);
                 BufferedReader br = new BufferedReader(fr);
@@ -525,7 +563,7 @@ public class AioTest {
 
                 final String HELLO_WORLD = "Hello world!\n";
 
-                final ObjectRef objRef = new ObjectRef(null);
+                final ObjectRef objRef = new ObjectRef<>(null);
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
                 FileWriter fw = new FileWriter(tmpFile);
                 fw.append(HELLO_WORLD);
@@ -636,7 +674,7 @@ public class AioTest {
 
                 final String HELLO_WORLD = "Hello world!\n";
 
-                final ObjectRef objRef = new ObjectRef(null);
+                final ObjectRef objRef = new ObjectRef<>(null);
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
                 FileWriter fw = new FileWriter(tmpFile);
                 fw.append(HELLO_WORLD);
@@ -661,6 +699,7 @@ public class AioTest {
                 NativeRunnable callback = new NativeRunnable() {
 
                     @Override
+                    @SuppressWarnings("unchecked")
                     protected void callback() {
                         System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self());
                         System.out.println("aio_read in callback currentThread: " + Thread.currentThread());
