@@ -52,6 +52,8 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class AioTest {
 
+    // just for vm in qemu...
+    private final static long ONE_MINUTE = 60_000;
     private static MultiarchTupelBuilder multiarchTupelBuilder;
 
     @BeforeAll
@@ -224,7 +226,7 @@ public class AioTest {
 
                 synchronized (objRef) {
                     if (objRef.value == null) {
-                        objRef.wait(1000);
+                        objRef.wait(ONE_MINUTE);
                     }
                     assertEquals(aiocb, objRef.value);
                 }
@@ -314,7 +316,7 @@ public class AioTest {
 
                 synchronized (intRef) {
                     if (intRef.value == 0) {
-                        intRef.wait(1000);
+                        intRef.wait(ONE_MINUTE);
                     }
                     assertEquals(SIVAL_INT, intRef.value);
                 }
@@ -453,7 +455,7 @@ public class AioTest {
 
                 synchronized (intRef) {
                     if (intRef.value == 0) {
-                        intRef.wait(1000);
+                        intRef.wait(ONE_MINUTE);
                     }
                     assertEquals(SIVAL_INT, intRef.value);
                     Assertions.assertFalse(aioBuffer.hasRemaining());
@@ -681,7 +683,7 @@ public class AioTest {
 
                 synchronized (objRef) {
                     if (objRef.value == null) {
-                        objRef.wait(1000);
+                        objRef.wait(ONE_MINUTE);
                     }
                     assertEquals(aiocb, objRef.value);
                 }

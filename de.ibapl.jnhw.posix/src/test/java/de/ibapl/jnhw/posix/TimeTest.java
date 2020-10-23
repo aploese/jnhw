@@ -57,6 +57,8 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TimeTest {
 
+    // just for vm in qemu...
+    private final static long ONE_MINUTE = 60_000;
     private static MultiarchTupelBuilder multiarchTupelBuilder;
 
     @BeforeAll
@@ -852,7 +854,7 @@ public class TimeTest {
 //TODO 2s will be splitted...            assertEquals(value, itimerspec);
                     synchronized (intRef) {
                         if (intRef.value == 0) {
-                            intRef.wait();
+                            intRef.wait(ONE_MINUTE);
                         }
                         assertEquals(42, intRef.value);
                     }

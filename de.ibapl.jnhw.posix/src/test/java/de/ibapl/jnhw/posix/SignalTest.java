@@ -42,6 +42,7 @@ import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -52,6 +53,9 @@ import org.junit.jupiter.api.condition.OS;
  */
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SignalTest {
+    
+    // just for vm in qemu...
+    private final static long ONE_MINUTE = 60_000;
 
     private static MultiarchTupelBuilder multiarchTupelBuilder;
 
@@ -72,7 +76,6 @@ public class SignalTest {
     public void testKill() throws Exception {
         System.out.println("kill");
 
-        final Object lock = new Object();
         final int sig = Signal.SIGCHLD(); //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
         final ObjectRef<Integer> sigRef = new ObjectRef();
@@ -83,10 +86,10 @@ public class SignalTest {
         Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
-                synchronized (lock) {
+                synchronized (sigRef) {
                     System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
                     sigRef.value = sig;
-                    lock.notifyAll();
+                    sigRef.notifyAll();
                 }
 
             }
@@ -98,9 +101,9 @@ public class SignalTest {
         try {
             System.out.println("pthread_t of testKill: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
             Signal.kill(Unistd.getpid(), sig);
-            synchronized (lock) {
+            synchronized (sigRef) {
                 if (sigRef.value == null) {
-                    lock.wait(100);
+                    sigRef.wait(ONE_MINUTE);
                 }
             }
             assertEquals(sig, sigRef.value);
@@ -125,7 +128,10 @@ public class SignalTest {
         Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
-                sigRef.value = sig;
+                synchronized (sigRef) {
+                    sigRef.value = sig;
+                    sigRef.notifyAll();
+                }
             }
         };
         act.sa_handler(sa_handler);
@@ -134,7 +140,11 @@ public class SignalTest {
         Signal.sigaction(sig, act, oact);
         try {
             Signal.killpg(Unistd.getpgrp(), sig);
-            Thread.sleep(10);
+            synchronized (sigRef) {
+                if (sigRef.value == null) {
+                    sigRef.wait(ONE_MINUTE);
+                }
+            }
             assertEquals(sig, sigRef.value);
         } finally {
             Signal.sigaction(sig, oact, null);
@@ -528,7 +538,7 @@ public class SignalTest {
             Thread.sleep(10);
             synchronized (boolRef) {
                 if (!boolRef.value) {
-                    boolRef.wait(500);
+                    boolRef.wait(ONE_MINUTE);
                 }
             }
             Assertions.assertTrue(boolRef.value);
