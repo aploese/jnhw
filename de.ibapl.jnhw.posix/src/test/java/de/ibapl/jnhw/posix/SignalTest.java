@@ -72,6 +72,7 @@ public class SignalTest {
     public void testKill() throws Exception {
         System.out.println("kill");
 
+        final Object lock = new Object();
         final int sig = Signal.SIGCHLD(); //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
         final ObjectRef<Integer> sigRef = new ObjectRef();
@@ -82,8 +83,12 @@ public class SignalTest {
         Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
-                System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
-                sigRef.value = sig;
+                synchronized (lock) {
+                    System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
+                    sigRef.value = sig;
+                    lock.notifyAll();
+                }
+
             }
         };
         act.sa_handler(sa_handler);
@@ -93,7 +98,11 @@ public class SignalTest {
         try {
             System.out.println("pthread_t of testKill: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
             Signal.kill(Unistd.getpid(), sig);
-            Thread.sleep(10);
+            synchronized (lock) {
+                if (sigRef.value == null) {
+                    lock.wait(100);
+                }
+            }
             assertEquals(sig, sigRef.value);
         } finally {
             Signal.sigaction(sig, oact, null);
@@ -917,7 +926,7 @@ public class SignalTest {
         Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t(true);
         Assertions.assertNull(ucontext_t.uc_link((baseAddress, parent) -> {
             try {
-            return baseAddress.isNULL() ? null : new Signal.Ucontext_t(baseAddress);
+                return baseAddress.isNULL() ? null : new Signal.Ucontext_t(baseAddress);
             } catch (NoSuchNativeTypeException nste) {
                 Assertions.fail(nste);
                 throw new RuntimeException(nste);
