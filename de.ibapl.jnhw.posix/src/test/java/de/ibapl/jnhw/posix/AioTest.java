@@ -266,7 +266,7 @@ public class AioTest {
 
                 final int SIVAL_INT = 0x01234567;
 
-                final IntRef intRef = new IntRef(0);
+                final ObjectRef<Integer> intRef = new ObjectRef(null);
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
 
                 final Aio.Aiocb<OpaqueMemory> aiocb = new Aio.Aiocb();
@@ -315,7 +315,7 @@ public class AioTest {
                 assertEquals(Errno.EINPROGRESS(), errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
 
                 synchronized (intRef) {
-                    if (intRef.value == 0) {
+                    if (intRef.value == null) {
                         intRef.wait(ONE_MINUTE);
                     }
                     assertEquals(SIVAL_INT, intRef.value);
@@ -406,7 +406,7 @@ public class AioTest {
                 final String HELLO_WORLD = "Hello world!\n";
                 final int SIVAL_INT = 0x01234567;
 
-                final IntRef intRef = new IntRef(0);
+                final ObjectRef<Integer> intRef = new ObjectRef(null);
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
 
                 final Aio.Aiocb<OpaqueMemory> aiocb = new Aio.Aiocb();
@@ -454,7 +454,7 @@ public class AioTest {
                 Aio.aio_write(aiocb);
 
                 synchronized (intRef) {
-                    if (intRef.value == 0) {
+                    if (intRef.value == null) {
                         intRef.wait(ONE_MINUTE);
                     }
                     assertEquals(SIVAL_INT, intRef.value);

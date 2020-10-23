@@ -28,6 +28,7 @@ import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeException;
+import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
@@ -810,7 +811,7 @@ public class TimeTest {
                 break;
             default:
 
-                final IntRef intRef = new IntRef(0);
+                final ObjectRef<Integer> intRef = new ObjectRef(null);
                 Time.Timer_t timerid = new Time.Timer_t();
 
                 //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
@@ -853,7 +854,7 @@ public class TimeTest {
 
 //TODO 2s will be splitted...            assertEquals(value, itimerspec);
                     synchronized (intRef) {
-                        if (intRef.value == 0) {
+                        if (intRef.value == null) {
                             intRef.wait(ONE_MINUTE);
                         }
                         assertEquals(42, intRef.value);
