@@ -27,7 +27,6 @@ import de.ibapl.jnhw.Callback_I_V;
 import de.ibapl.jnhw.Callback_I_V_Impl;
 import de.ibapl.jnhw.Callback_NativeRunnable;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
-import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeFunctionPointer;
@@ -42,7 +41,6 @@ import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -459,7 +457,7 @@ public class SignalTest {
 
         Signal.raise(SIG);
 
-        final IntRef raisedSignal = new IntRef();
+        final ObjectRef<Integer> raisedSignal = new ObjectRef(null);
         final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
@@ -473,7 +471,7 @@ public class SignalTest {
             Assertions.assertEquals(funcIgnore, old);
 
             Signal.raise(SIG);
-            Assertions.assertEquals(SIG, raisedSignal.value);
+            Assertions.assertEquals(Integer.valueOf(SIG), raisedSignal.value);
 
             old = Signal.signal(SIG, null);
             Assertions.assertEquals(funcHandler, old);

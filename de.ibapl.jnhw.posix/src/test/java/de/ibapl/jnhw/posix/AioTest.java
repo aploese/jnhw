@@ -24,7 +24,6 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.Callback_I_V_Impl;
 import de.ibapl.jnhw.Callback_NativeRunnable;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V_Impl;
-import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeRunnable;
@@ -318,7 +317,7 @@ public class AioTest {
                     if (intRef.value == null) {
                         intRef.wait(ONE_MINUTE);
                     }
-                    assertEquals(SIVAL_INT, intRef.value);
+                    assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
                 }
                 errno = Aio.aio_error(aiocb);
                 assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
@@ -457,7 +456,7 @@ public class AioTest {
                     if (intRef.value == null) {
                         intRef.wait(ONE_MINUTE);
                     }
-                    assertEquals(SIVAL_INT, intRef.value);
+                    assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
                     Assertions.assertFalse(aioBuffer.hasRemaining());
                 }
                 Unistd.close(aiocb.aio_fildes());

@@ -36,10 +36,8 @@ import de.ibapl.jnhw.util.posix.Defines;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import org.junit.jupiter.api.Assertions;
@@ -857,7 +855,7 @@ public class TimeTest {
                         if (intRef.value == null) {
                             intRef.wait(ONE_MINUTE);
                         }
-                        assertEquals(42, intRef.value);
+                        assertEquals(Integer.valueOf(42), intRef.value);
                     }
 
                     System.out.println("timer_getoverrun");
