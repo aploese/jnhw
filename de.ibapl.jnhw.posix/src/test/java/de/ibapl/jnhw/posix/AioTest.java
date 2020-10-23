@@ -543,12 +543,12 @@ public class AioTest {
 
                 Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
                 int errno = Aio.aio_error(aiocb);
-                assertEquals(Errno.EINPROGRESS(), errno, "Got errno from aio_error: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                while (errno != 0) { 
+                    assertEquals(Errno.EINPROGRESS(), errno, "Got errno from aio_error: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                    Thread.sleep(1000);
+                    errno = Aio.aio_error(aiocb);
+                }
 
-                Thread.sleep(1000);
-
-                errno = Aio.aio_error(aiocb);
-                assertEquals(0, errno, "Got errno from aio_error: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
                 aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
 
                 assertEquals(HELLO_WORLD.length(), aioBuffer.position());
