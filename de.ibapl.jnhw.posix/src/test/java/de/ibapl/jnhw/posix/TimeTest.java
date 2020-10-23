@@ -823,13 +823,19 @@ public class TimeTest {
                 //evp.sigev_notify_attributes(attr);
                 evp.sigev_notify(Signal.SIGEV_THREAD());
                 evp.sigev_value.sival_int(42);
+                assertEquals(42, evp.sigev_value.sival_int());
                 evp.sigev_notify_function(new Callback_I_V_Impl() {
 
                     @Override
                     protected void callback(int sigval) {
-                        synchronized (intRef) {
-                            intRef.value = sigval;
-                            intRef.notifyAll();
+                        try {
+                            assertEquals(42, evp.sigev_value.sival_int());
+                            assertEquals(42, sigval);
+                        } finally {
+                            synchronized (intRef) {
+                                intRef.value = sigval;
+                                intRef.notifyAll();
+                            }
                         }
                     }
 

@@ -288,21 +288,23 @@ public class AioTest {
                     @Override
                     protected void callback(int i) {
                         System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self());
-                        System.out.println("aio_read in callback currentThread: " + Thread.currentThread());
+                        System.out.println("aio_read in callback i=" + i + " currentThread: " + Thread.currentThread());
                         try {
                             int errno = Aio.aio_error(aiocb);
                             assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
                             aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
+                            assertEquals(SIVAL_INT, i);
                         } catch (NativeErrorException nee) {
                             fail("aio_read in callback NativeErrorException: " + nee, nee);
                         } catch (NoSuchNativeMethodException nsnme) {
                             fail(nsnme);
+                        } finally {
+                            synchronized (intRef) {
+                                intRef.value = i;
+                                intRef.notify();
+                            }
+                            System.out.println("aio_read leave callback");
                         }
-                        synchronized (intRef) {
-                            intRef.value = i;
-                            intRef.notify();
-                        }
-                        System.out.println("aio_read leave callback");
                     }
 
                 });
@@ -431,21 +433,23 @@ public class AioTest {
                     @Override
                     protected void callback(int i) {
                         System.out.println("aio_write enter callback Pthread_t: " + Pthread.pthread_self());
-                        System.out.println("aio_write in callback currentThread: " + Thread.currentThread());
+                        System.out.println("aio_write in callback i=" + i + " currentThread: " + Thread.currentThread());
                         try {
                             int errno = Aio.aio_error(aiocb);
                             assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
                             aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
+                            assertEquals(SIVAL_INT, i);
                         } catch (NativeErrorException nee) {
                             fail("aio_read in callback NativeErrorException: " + nee, nee);
                         } catch (NoSuchNativeMethodException nsnme) {
                             fail(nsnme);
+                        } finally {
+                            synchronized (intRef) {
+                                intRef.value = i;
+                                intRef.notify();
+                            }
+                            System.out.println("aio_write leave callback");
                         }
-                        synchronized (intRef) {
-                            intRef.value = i;
-                            intRef.notify();
-                        }
-                        System.out.println("aio_write leave callback");
                     }
 
                 });
@@ -456,8 +460,8 @@ public class AioTest {
                     if (intRef.value == null) {
                         intRef.wait(ONE_MINUTE);
                     }
-                    assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
                     Assertions.assertFalse(aioBuffer.hasRemaining());
+                    assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
                 }
                 Unistd.close(aiocb.aio_fildes());
                 FileReader fr = new FileReader(tmpFile);
@@ -542,7 +546,7 @@ public class AioTest {
 
                 Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
                 int errno = Aio.aio_error(aiocb);
-                while (errno != 0) { 
+                while (errno != 0) {
                     assertEquals(Errno.EINPROGRESS(), errno, "Got errno from aio_error: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
                     Thread.sleep(1000);
                     errno = Aio.aio_error(aiocb);
