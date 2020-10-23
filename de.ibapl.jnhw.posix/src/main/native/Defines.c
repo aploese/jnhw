@@ -130,14 +130,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1TIMESIZE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__WIN32__) || defined(__OpenBSD__)
 #if defined(__TIMESIZE)
-#error "__TIMESIZE defined"
-#endif
+        return __TIMESIZE;
+#else
         throw_NotDefinedException(env, "__TIMESIZE");
         return 0;
-#else
-        return __TIMESIZE;
 #endif
     }
 
