@@ -196,14 +196,17 @@ extern "C" {
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_ctime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong clock) {
-#if defined(__TIMESIZE) && (__TIMESIZE == 32 && __WORDSIZE == 32)
+//defined(__TIMESIZE) && (__TIMESIZE == 64) is i.e. on x86_64-linux-gnux32 
+#if defined(__LP64__) || defined(__TIMESIZE) && (__TIMESIZE == 64)
+//64 bit time_t
+        const char *result = ctime((int64_t *) & clock);
+#else
+//32 bit time_t
         if ((clock > INT32_MAX) || (clock < INT32_MIN)) {
             throw_IllegalArgumentException(env, "In this native implementation clock is only an integer with the size of jint");
             return NULL;
         } 
         const char *result = ctime((long int *)&clock);
-#else
-        const char *result = ctime((int64_t *) & clock);
 #endif
         if (result == NULL) {
             return NULL;
@@ -227,15 +230,15 @@ extern "C" {
             throw_IllegalArgumentException(env, "buf is too small 26 bytes are the minimum");
             return NULL;
         }
-#if defined(__TIMESIZE) && (__TIMESIZE == 32 && __WORDSIZE == 32)
+#if defined(__LP64__) || defined(__TIMESIZE) && (__TIMESIZE == 64)
+        const char *result = ctime_r((int64_t *) & clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
+#else
         if ((clock > INT32_MAX) || (clock < INT32_MIN)) {
             throw_IllegalArgumentException(env, "In this native implementation clock is only an integer with the size of jint");
             return NULL;
         } 
 //arm defines time_t as long int all other as int - long int can be assigned to int but not vice versa. So we use long int instead of int32_t, because the __WORDSIZE is 32 bit too.
         const char *result = ctime_r((long int *) &clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
-#else
-        const char *result = ctime_r((int64_t *) & clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
 #endif
         if (result == NULL) {
             return NULL;
@@ -268,7 +271,9 @@ extern "C" {
      */
     JNIEXPORT jdouble JNICALL Java_de_ibapl_jnhw_posix_Time_difftime
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong time1, jlong time0) {
-#if defined(__TIMESIZE) && (__TIMESIZE == 32 && __WORDSIZE == 32)
+#if defined(__LP64__) || defined(__TIMESIZE) && (__TIMESIZE == 64)
+        return difftime(time1, time0);
+#else
         if ((time0 > INT32_MAX) || (time0 < INT32_MIN)) {
             throw_IllegalArgumentException(env, "In this native implementation time0 is only an integer with the size of jint");
             return 0;
@@ -278,8 +283,6 @@ extern "C" {
             return 0;
         } 
         return difftime((long int) time1, (long int) time0);
-#else
-        return difftime(time1, time0);
 #endif
     }
 
@@ -319,14 +322,14 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
-#if defined(__TIMESIZE) && (__TIMESIZE == 32 && __WORDSIZE == 32)
+#if defined(__LP64__) || defined(__TIMESIZE) && (__TIMESIZE == 64)
+        const struct tm *tm = gmtime((int64_t *) & timer);
+#else
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "In this native implementation timer is only an integer with the size of jint");
             return NULL;
         } 
         const struct tm *tm = gmtime((long int *) &timer);
-#else
-        const struct tm *tm = gmtime((int64_t *) & timer);
 #endif
         if (tm) {
             return WRAP_STATIC_STRUCT_TM(tm);
@@ -348,14 +351,14 @@ extern "C" {
             return NULL;
         }
         struct tm *_result = UNWRAP_STRUCT_TM_PTR(result);
-#if defined(__TIMESIZE) && (__TIMESIZE == 32 && __WORDSIZE == 32)
+#if defined(__LP64__) || defined(__TIMESIZE) && (__TIMESIZE == 64)
+        if (gmtime_r((int64_t *) & timer, _result)) {
+#else
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "In this native implementation timer is only an integer with the size of jint");
             return NULL;
         } 
         if (gmtime_r((long int *) &timer, _result)) {
-#else
-        if (gmtime_r((int64_t *) & timer, _result)) {
 #endif
             return result;
         } else {
@@ -370,14 +373,14 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_localtime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
-#if defined(__TIMESIZE) && (__TIMESIZE == 32 && __WORDSIZE == 32)
+#if defined(__LP64__) || defined(__TIMESIZE) && (__TIMESIZE == 64)
+        const struct tm *result = localtime((int64_t *) & timer);
+#else
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "In this native implementation timer is only an integer with the size of jint");
             return NULL;
         } 
         const struct tm *result = localtime((long int *) &timer);
-#else
-        const struct tm *result = localtime((int64_t *) & timer);
 #endif
         if (result) {
             return WRAP_STATIC_STRUCT_TM(result);
@@ -398,14 +401,14 @@ extern "C" {
             return NULL;
         }
         struct tm *_result = UNWRAP_STRUCT_TM_PTR(result);
-#if defined(__TIMESIZE) && (__TIMESIZE == 32 && __WORDSIZE == 32)
+#if defined(__LP64__) || defined(__TIMESIZE) && (__TIMESIZE == 64)
+        if (localtime_r((int64_t *) & timer, _result)) {
+#else
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "In this native implementation timer is only an integer with the size of jint");
             return NULL;
         } 
         if (localtime_r((long int *) &timer, _result)) {
-#else
-        if (localtime_r((int64_t *) & timer, _result)) {
 #endif
             return result;
         } else {
@@ -579,15 +582,15 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject tloc) {
         time_t result;
         if (tloc) {
-#if defined(__TIMESIZE) && (__TIMESIZE == 32 && __WORDSIZE == 32)
+#if defined(__LP64__) || defined(__TIMESIZE) && (__TIMESIZE == 64)
+            time_t _tloc = GET_LONG_REF_VALUE(tloc);
+#else
             jlong __tloc = GET_LONG_REF_VALUE(tloc);
             if ((__tloc > INT32_MAX) || (__tloc < INT32_MIN)) {
                 throw_IndexOutOfBoundsException(env, "In this native implementation tloc is only an integer with the size of jint");
                 return 0;
             }
             time_t _tloc = (long int) __tloc;
-#else
-            time_t _tloc = GET_LONG_REF_VALUE(tloc);
 #endif
             result = time(&_tloc);
             SET_LONG_REF_VALUE(tloc, _tloc);
