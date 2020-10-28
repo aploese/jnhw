@@ -63,12 +63,12 @@ extern "C" {
 
 #ifdef HAVE_WINDOWS_H
     DWORD WINAPI thr_fn_IJ(LPVOID args) {
-            callbackPtr(*((intptr_t*)args));
+            callbackPtr((intptr_t) *((jlong*)args));
             return 0;
     }
 #elif defined HAVE_PTHREAD_H
     void * thr_fn_IJ(void *args) {
-            callbackPtr(*((intptr_t*)args));
+            callbackPtr((intptr_t) *((jlong*)args));
             return NULL;
     }
 #else

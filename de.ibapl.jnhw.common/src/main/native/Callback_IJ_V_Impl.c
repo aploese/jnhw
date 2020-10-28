@@ -59,8 +59,8 @@ extern "C" {
         case 8:
             trampoline_ID = getStaticMethodIdOfClassRef(env, Callback_Class, "trampoline", "(IJ)V");
             break;
-            default:
-                throw_RuntimeException(env, "Can't handle wordsize in bytes: %d", sizeof(intptr_t));
+        default:
+            throw_RuntimeException(env, "Can't handle sizeof(intptr_t) = %d", sizeof(intptr_t));
         }
         if (trampoline_ID == NULL) {
             return;
