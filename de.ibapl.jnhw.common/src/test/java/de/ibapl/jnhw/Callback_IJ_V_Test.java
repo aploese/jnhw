@@ -207,16 +207,7 @@ public class Callback_IJ_V_Test {
         //Just check that the reference is gone...
         ref.value = -1L;
         doCallTheCallback(~CB_VALUE);
-        switch (WORD_SIZE) {
-            case _32_BIT:
-                assertEquals(-1, ref.value);
-                break;
-            case _64_BIT:
-                assertEquals(-1L, ref.value);
-                break;
-            default:
-                throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
-        }
+        assertEquals(-1L, ref.value);
     }
 
     /**
