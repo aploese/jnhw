@@ -73,7 +73,6 @@ public class Callback_IJ_V_Test {
 
     private static native void doCallTheCallback(long value);
 
-    
     @Test
     public void testSizeofIntptr_t() {
         switch (WORD_SIZE) {
@@ -87,7 +86,7 @@ public class Callback_IJ_V_Test {
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
         }
     }
-    
+
     /**
      * Test of MAX_INT_CONSUMER_CALLBACKS method, of class
      * IntConsumerCallbackFactory.
@@ -184,12 +183,18 @@ public class Callback_IJ_V_Test {
         doCallTheCallback(42);
         switch (WORD_SIZE) {
             case _32_BIT:
-                assertEquals(42, intRef.value);
-                assertEquals(-1, longRef.value);
+                assertAll(() -> {
+                    assertEquals(42, intRef.value);
+                }, () -> {
+                    assertEquals(-1, longRef.value);
+                });
                 break;
             case _64_BIT:
-                assertEquals(42, longRef.value);
-                assertEquals(-1, intRef.value);
+                assertAll(() -> {
+                    assertEquals(42, longRef.value);
+                }, () -> {
+                    assertEquals(-1, intRef.value);
+                });
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -206,8 +211,10 @@ public class Callback_IJ_V_Test {
 
         //Just check that the reference is gone...
         longRef.value = -1;
+        intRef.value = -1;
         doCallTheCallback(84);
         assertEquals(-1, longRef.value);
+        assertEquals(-1, intRef.value);
     }
 
     /**
@@ -256,12 +263,18 @@ public class Callback_IJ_V_Test {
         doCallTheCallback(42);
         switch (WORD_SIZE) {
             case _32_BIT:
-                assertEquals(42, intRef.value);
-                assertEquals(-1, longRef.value);
+                assertAll(() -> {
+                    assertEquals(42, intRef.value);
+                }, () -> {
+                    assertEquals(-1, longRef.value);
+                });
                 break;
             case _64_BIT:
-                assertEquals(42, longRef.value);
-                assertEquals(-1, intRef.value);
+                assertAll(() -> {
+                    assertEquals(42, longRef.value);
+                }, () -> {
+                    assertEquals(-1, intRef.value);
+                });
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
