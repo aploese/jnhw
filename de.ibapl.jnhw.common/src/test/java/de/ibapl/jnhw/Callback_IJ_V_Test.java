@@ -39,6 +39,7 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 public class Callback_IJ_V_Test {
 
     private static WordSize WORD_SIZE;
+    private final static long CB_VALUE = 0xFEDCBA9876543210L;
 
     @BeforeAll
     public static void setUpClass() {
@@ -139,8 +140,7 @@ public class Callback_IJ_V_Test {
     @Test
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
-        final LongRef longRef = new LongRef();
-        final IntRef intRef = new IntRef();
+        final ObjectRef<Object> ref = new ObjectRef();
 
         final Callback_IJ_V NULL_PTR = new Callback_IJ_V(new NativeAddressHolder(0)) {
             @Override
@@ -160,16 +160,18 @@ public class Callback_IJ_V_Test {
             @Override
             protected void callback(long value) {
                 if (!t.equals(Thread.currentThread())) {
-                    longRef.value = value;
-                    intRef.value = -1;
+                    ref.value = value;
+                } else {
+                    ref.value = Thread.currentThread();
                 }
             }
 
             @Override
             protected void callback(int value) {
                 if (!t.equals(Thread.currentThread())) {
-                    intRef.value = value;
-                    longRef.value = -1;
+                    ref.value = value;
+                } else {
+                    ref.value = Thread.currentThread();
                 }
             }
 
@@ -180,21 +182,14 @@ public class Callback_IJ_V_Test {
 
         assertEquals(getCallbackPtr(), callback);
         assertSame(Callback_IJ_V_Impl.find(getCallbackPtr()), callback);
-        doCallTheCallback(42);
+        doCallTheCallback(CB_VALUE);
         switch (WORD_SIZE) {
             case _32_BIT:
-                assertAll(() -> {
-                    assertEquals(42, intRef.value);
-                }, () -> {
-                    assertEquals(-1, longRef.value);
-                });
+                assertTrue(ref.value instanceof Integer, "ref.value not Integer.class");
+                assertEquals((int) CB_VALUE, ref.value, String.format("ref mismatch for 32 bit - CB_VALUE = 0x%08x, value = 0x%04x ", CB_VALUE, ref.value));
                 break;
             case _64_BIT:
-                assertAll(() -> {
-                    assertEquals(42, longRef.value);
-                }, () -> {
-                    assertEquals(-1, intRef.value);
-                });
+                assertEquals(CB_VALUE, ref.value);
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -210,11 +205,18 @@ public class Callback_IJ_V_Test {
         assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
-        longRef.value = -1;
-        intRef.value = -1;
-        doCallTheCallback(84);
-        assertEquals(-1, longRef.value);
-        assertEquals(-1, intRef.value);
+        ref.value = -1L;
+        doCallTheCallback(~CB_VALUE);
+        switch (WORD_SIZE) {
+            case _32_BIT:
+                assertEquals(-1, ref.value);
+                break;
+            case _64_BIT:
+                assertEquals(-1L, ref.value);
+                break;
+            default:
+                throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
+        }
     }
 
     /**
@@ -225,8 +227,7 @@ public class Callback_IJ_V_Test {
         System.out.println("release");
         Cleaner CLEANER = Cleaner.create();
 
-        final LongRef longRef = new LongRef();
-        final IntRef intRef = new IntRef();
+        final ObjectRef<Number> ref = new ObjectRef<>();
         final Callback_IJ_V NULL_PTR = new Callback_IJ_V(new NativeAddressHolder(0)) {
             @Override
             protected void callback(int value) {
@@ -242,14 +243,12 @@ public class Callback_IJ_V_Test {
 
             @Override
             protected void callback(long value) {
-                longRef.value = value;
-                intRef.value = -1;
+                ref.value = value;
             }
 
             @Override
             protected void callback(int value) {
-                intRef.value = value;
-                longRef.value = -1;
+                ref.value = value;
             }
 
         };
@@ -260,21 +259,13 @@ public class Callback_IJ_V_Test {
         setCallback(callback);
 
         assertEquals(getCallbackPtr(), callback);
-        doCallTheCallback(42);
+        doCallTheCallback(CB_VALUE);
         switch (WORD_SIZE) {
             case _32_BIT:
-                assertAll(() -> {
-                    assertEquals(42, intRef.value);
-                }, () -> {
-                    assertEquals(-1, longRef.value);
-                });
+                assertEquals(Integer.valueOf((int) CB_VALUE), ref.value);
                 break;
             case _64_BIT:
-                assertAll(() -> {
-                    assertEquals(42, longRef.value);
-                }, () -> {
-                    assertEquals(-1, intRef.value);
-                });
+                assertEquals(Long.valueOf(CB_VALUE), ref.value);
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -285,7 +276,7 @@ public class Callback_IJ_V_Test {
         System.runFinalization();
         System.gc();
 
-        //sleep here, to let the CLEANER do it cleanup....
+        //sleep here, to let the CLEANER do the cleanup....
         Thread.sleep(10);
 
         assertEquals(getCallbackPtr(), NULL_PTR);
