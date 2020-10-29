@@ -32,6 +32,7 @@ import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.Defines;
 import java.time.DayOfWeek;
 import java.time.Instant;
@@ -58,8 +59,10 @@ public class TimeTest {
 
     // just for vm in qemu...
     private final static long ONE_MINUTE = 60_000;
+    private final static @Types.time_t long TIME_T__20191203_142044 = 1575382844;
     private static MultiarchTupelBuilder multiarchTupelBuilder;
 
+    
     @BeforeAll
     public static void setUpClass() {
         multiarchTupelBuilder = new MultiarchTupelBuilder();
@@ -285,7 +288,7 @@ public class TimeTest {
     @Test
     public void testCtime() {
         System.out.println("ctime  @" + ZoneOffset.systemDefault());
-        final long clock = 1575382844;
+        final long clock = TIME_T__20191203_142044;
         String result = Time.ctime(clock);
         assertEquals(getCtimeFormated(clock), result);
     }
@@ -296,7 +299,7 @@ public class TimeTest {
     @Test
     public void testCtime_r() throws Exception {
         System.out.println("ctime_r  @" + ZoneOffset.systemDefault());
-        final long clock = 1575382844;
+        final long clock = TIME_T__20191203_142044;
         OpaqueMemory buf = new OpaqueMemory(26, true);
         String result = Time.ctime_r(clock, buf);
 
@@ -337,10 +340,8 @@ public class TimeTest {
     @Test
     public void testDifftime() {
         System.out.println("difftime");
-        long time1 = 0L;
-        long time0 = 1L;
-        double expResult = -1.0;
-        double result = Time.difftime(time1, time0);
+        double expResult = TIME_T__20191203_142044;
+        double result = Time.difftime(TIME_T__20191203_142044, 0L);
         assertEquals(expResult, result, 0.0);
     }
 
@@ -372,17 +373,33 @@ public class TimeTest {
     @Test
     public void testGmtime() {
         System.out.println("gmtime");
-        long timer = 1575382844;
+        long timer = TIME_T__20191203_142044;
         Time.Tm result = Time.gmtime(timer);
-
-        assertEquals(119, result.tm_year(), "Year");
-        assertEquals(336, result.tm_yday(), "DayOfYear");
-        assertEquals(11, result.tm_mon(), "MonthValue");
-        assertEquals(3, result.tm_mday(), "DayOfMonth");
-        assertEquals(2, result.tm_wday(), "DayOfWeek");
-        assertEquals(14, result.tm_hour(), "Hour");
-        assertEquals(20, result.tm_min(), "Minute");
-        assertEquals(44, result.tm_sec(), "Second");
+        Assertions.assertAll("Time.gmtime",
+                () -> {
+                    assertEquals(119, result.tm_year(), "Year");
+                },
+                () -> {
+                    assertEquals(336, result.tm_yday(), "DayOfYear");
+                },
+                () -> {
+                    assertEquals(11, result.tm_mon(), "MonthValue");
+                },
+                () -> {
+                    assertEquals(3, result.tm_mday(), "DayOfMonth");
+                },
+                () -> {
+                    assertEquals(2, result.tm_wday(), "DayOfWeek");
+                },
+                () -> {
+                    assertEquals(14, result.tm_hour(), "Hour");
+                },
+                () -> {
+                    assertEquals(20, result.tm_min(), "Minute");
+                },
+                () -> {
+                    assertEquals(44, result.tm_sec(), "Second");
+                });
     }
 
     /**
@@ -391,18 +408,34 @@ public class TimeTest {
     @Test
     public void testGmtime_r() throws Exception {
         System.out.println("gmtime_r");
-        long timer = 1575382844;
+        long timer = TIME_T__20191203_142044;
         Time.Tm tm = new Time.Tm();
         Time.Tm result = Time.gmtime_r(timer, tm);
-
-        assertEquals(119, result.tm_year(), "Year");
-        assertEquals(336, result.tm_yday(), "DayOfYear");
-        assertEquals(11, result.tm_mon(), "MonthValue");
-        assertEquals(3, result.tm_mday(), "DayOfMonth");
-        assertEquals(2, result.tm_wday(), "DayOfWeek");
-        assertEquals(14, result.tm_hour(), "Hour");
-        assertEquals(20, result.tm_min(), "Minute");
-        assertEquals(44, result.tm_sec(), "Second");
+        Assertions.assertAll("Time.gmtime_r",
+                () -> {
+                    assertEquals(119, result.tm_year(), "Year");
+                },
+                () -> {
+                    assertEquals(336, result.tm_yday(), "DayOfYear");
+                },
+                () -> {
+                    assertEquals(11, result.tm_mon(), "MonthValue");
+                },
+                () -> {
+                    assertEquals(3, result.tm_mday(), "DayOfMonth");
+                },
+                () -> {
+                    assertEquals(2, result.tm_wday(), "DayOfWeek");
+                },
+                () -> {
+                    assertEquals(14, result.tm_hour(), "Hour");
+                },
+                () -> {
+                    assertEquals(20, result.tm_min(), "Minute");
+                },
+                () -> {
+                    assertEquals(44, result.tm_sec(), "Second");
+                });
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.gmtime_r(timer, null);
@@ -421,19 +454,36 @@ public class TimeTest {
         Time.Tm result = Time.localtime(timer);
         Assertions.assertNotNull(result);
         System.out.println("time: " + timer + " localtime: " + result);
-        assertEquals(ldt.getYear(), result.tm_year() + 1900, "Year");
-        assertEquals(ldt.getDayOfYear(), result.tm_yday() + 1, "DayOfYear");
-        assertEquals(ldt.getMonthValue(), result.tm_mon() + 1, "MonthValue");
-        assertEquals(ldt.getDayOfMonth(), result.tm_mday(), "DayOfMonth");
-        if (ldt.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            //Sunday java = 7; posix = 0
-            assertEquals(0, result.tm_wday(), "DayOfWeek SUNDAY -> 0(sun)");
-        } else {
-            assertEquals(ldt.getDayOfWeek().getValue(), result.tm_wday(), "DayOfWeek MONDAY to SATURDAY -> 1(mon) to 6(sat)");
-        }
-        assertEquals(ldt.getHour(), result.tm_hour(), "Hour");
-        assertEquals(ldt.getMinute(), result.tm_min(), "Minute");
-        assertEquals(ldt.getSecond(), result.tm_sec(), "Second");
+        Assertions.assertAll("testLocaltime",
+                () -> {
+                    assertEquals(ldt.getYear(), result.tm_year() + 1900, "Year");
+                },
+                () -> {
+                    assertEquals(ldt.getDayOfYear(), result.tm_yday() + 1, "DayOfYear");
+                },
+                () -> {
+                    assertEquals(ldt.getMonthValue(), result.tm_mon() + 1, "MonthValue");
+                },
+                () -> {
+                    assertEquals(ldt.getDayOfMonth(), result.tm_mday(), "DayOfMonth");
+                },
+                () -> {
+                    if (ldt.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                        //Sunday java = 7; posix = 0
+                        assertEquals(0, result.tm_wday(), "DayOfWeek SUNDAY -> 0(sun)");
+                    } else {
+                        assertEquals(ldt.getDayOfWeek().getValue(), result.tm_wday(), "DayOfWeek MONDAY to SATURDAY -> 1(mon) to 6(sat)");
+                    }
+                },
+                () -> {
+                    assertEquals(ldt.getHour(), result.tm_hour(), "Hour");
+                },
+                () -> {
+                    assertEquals(ldt.getMinute(), result.tm_min(), "Minute");
+                },
+                () -> {
+                    assertEquals(ldt.getSecond(), result.tm_sec(), "Second");
+                });
     }
 
     /**
@@ -451,19 +501,36 @@ public class TimeTest {
         Assertions.assertEquals(tm, result);
 
         System.out.println("time: " + timer + " localtime: " + result);
-        assertEquals(ldt.getYear(), result.tm_year() + 1900, "Year");
-        assertEquals(ldt.getDayOfYear(), result.tm_yday() + 1, "DayOfYear");
-        assertEquals(ldt.getMonthValue(), result.tm_mon() + 1, "MonthValue");
-        assertEquals(ldt.getDayOfMonth(), result.tm_mday(), "DayOfMonth");
-        if (ldt.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            //Sunday java = 7; posix = 0
-            assertEquals(0, result.tm_wday(), "DayOfWeek SUNDAY -> 0(sun)");
-        } else {
-            assertEquals(ldt.getDayOfWeek().getValue(), result.tm_wday(), "DayOfWeek MONDAY to SATURDAY -> 1(mon) to 6(sat)");
-        }
-        assertEquals(ldt.getHour(), result.tm_hour(), "Hour");
-        assertEquals(ldt.getMinute(), result.tm_min(), "Minute");
-        assertEquals(ldt.getSecond(), result.tm_sec(), "Second");
+        Assertions.assertAll("testLocaltime_r",
+                () -> {
+                    assertEquals(ldt.getYear(), result.tm_year() + 1900, "Year");
+                },
+                () -> {
+                    assertEquals(ldt.getDayOfYear(), result.tm_yday() + 1, "DayOfYear");
+                },
+                () -> {
+                    assertEquals(ldt.getMonthValue(), result.tm_mon() + 1, "MonthValue");
+                },
+                () -> {
+                    assertEquals(ldt.getDayOfMonth(), result.tm_mday(), "DayOfMonth");
+                },
+                () -> {
+                    if (ldt.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                        //Sunday java = 7; posix = 0
+                        assertEquals(0, result.tm_wday(), "DayOfWeek SUNDAY -> 0(sun)");
+                    } else {
+                        assertEquals(ldt.getDayOfWeek().getValue(), result.tm_wday(), "DayOfWeek MONDAY to SATURDAY -> 1(mon) to 6(sat)");
+                    }
+                },
+                () -> {
+                    assertEquals(ldt.getHour(), result.tm_hour(), "Hour");
+                },
+                () -> {
+                    assertEquals(ldt.getMinute(), result.tm_min(), "Minute");
+                },
+                () -> {
+                    assertEquals(ldt.getSecond(), result.tm_sec(), "Second");
+                });
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.localtime_r(timer, null);
@@ -479,7 +546,7 @@ public class TimeTest {
         long timer = System.currentTimeMillis() / 1000;
         Time.Tm tm = Time.localtime(timer);
         long result = Time.mktime(tm);
-        assertEquals(timer, result);
+        assertEquals(timer, result);//may fail too if Time.localtime is broken
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.mktime(null);
@@ -868,7 +935,7 @@ public class TimeTest {
                         if (intRef.value instanceof Throwable) {
                             fail("in callback", (Exception) intRef.value);
                         } else {
-                            assertEquals(Integer.valueOf(42), intRef.value);
+                            assertEquals(42, intRef.value);
                         }
                     }
 
