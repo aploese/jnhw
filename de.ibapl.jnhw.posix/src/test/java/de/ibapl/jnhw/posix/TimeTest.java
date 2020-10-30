@@ -34,6 +34,7 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.Defines;
+import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -449,8 +450,9 @@ public class TimeTest {
     @Test
     public void testLocaltime() throws Exception {
         System.out.println("localtime");
-        final LocalDateTime ldt = LocalDateTime.now();
-        long timer = new Date().getTime() / 1000;
+        Clock clock = Clock.systemDefaultZone();
+        final LocalDateTime ldt = LocalDateTime.now(clock);
+        long timer = clock.millis() / 1000;
         Time.Tm result = Time.localtime(timer);
         Assertions.assertNotNull(result);
         System.out.println("time: " + timer + " localtime: " + result);
