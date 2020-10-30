@@ -279,7 +279,7 @@ public class TimeTest {
     private String getCtimeFormated(long clock) {
         ZonedDateTime zdt = Instant.ofEpochMilli(clock * 1000L).atZone(ZoneOffset.systemDefault());
         DateTimeFormatterBuilder dtfb = new DateTimeFormatterBuilder();
-        dtfb.appendPattern("E LLL  d H:m:s y\n");
+        dtfb.appendPattern("E LLL  d HH:mm:ss y\n");
         return dtfb.toFormatter(java.util.Locale.ROOT).format(zdt);
     }
 
