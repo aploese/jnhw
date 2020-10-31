@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_I_V_Impl;
+import de.ibapl.jnhw.Callback_J_V_Impl;
 import de.ibapl.jnhw.Callback_NativeRunnable;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V_Impl;
 import de.ibapl.jnhw.NativeAddressHolder;
@@ -297,10 +297,10 @@ public class AioTest {
                 System.out.println("aio_read Pthread_t: " + Pthread.pthread_self());
                 System.out.println("aio_read currentThread: " + Thread.currentThread());
 
-                aiocb.aio_sigevent.sigev_notify_function(new Callback_I_V_Impl() {
+                aiocb.aio_sigevent.sigev_notify_function(new Callback_J_V_Impl() {
 
                     @Override
-                    protected void callback(int i) {
+                    protected void callback(long i) {
                         try {
                             System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self());
                             System.out.println("aio_read in callback i=" + i + " currentThread: " + Thread.currentThread());
@@ -310,7 +310,7 @@ public class AioTest {
                             }
                             aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
                             synchronized (intRef) {
-                                intRef.value = i;
+                                intRef.value = (int)i;
                                 intRef.notify();
                             }
                             System.out.println("aio_read leave callback");
@@ -451,10 +451,10 @@ public class AioTest {
                 System.out.println("aio_write Pthread_t: " + Pthread.pthread_self());
                 System.out.println("aio_write currentThread: " + Thread.currentThread());
 
-                aiocb.aio_sigevent.sigev_notify_function(new Callback_I_V_Impl() {
+                aiocb.aio_sigevent.sigev_notify_function(new Callback_J_V_Impl() {
 
                     @Override
-                    protected void callback(int i) {
+                    protected void callback(long i) {
                         try {
                             System.out.println("aio_write enter callback Pthread_t: " + Pthread.pthread_self());
                             System.out.println("aio_write in callback i=" + i + " currentThread: " + Thread.currentThread());
@@ -464,7 +464,7 @@ public class AioTest {
                             }
                             aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
                             synchronized (intRef) {
-                                intRef.value = i;
+                                intRef.value = (int)i;
                                 intRef.notify();
                             }
                             System.out.println("aio_write leave callback");

@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_I_V_Impl;
+import de.ibapl.jnhw.Callback_J_V_Impl;
 import de.ibapl.jnhw.Defined;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LongRef;
@@ -34,7 +34,6 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.Defines;
-import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -824,15 +823,15 @@ public class TimeTest {
                 Signal.Sigevent<OpaqueMemory> evp = new Signal.Sigevent<>();
                 //evp.sigev_notify_attributes(attr);
                 evp.sigev_notify(Signal.SIGEV_THREAD());
-                evp.sigev_value.sival_int(42);
-                assertEquals(42, evp.sigev_value.sival_int());
-                evp.sigev_notify_function(new Callback_I_V_Impl() {
+                evp.sigev_value.sival_int(0x12345678);
+                assertEquals(0x12345678, evp.sigev_value.sival_int());
+                evp.sigev_notify_function(new Callback_J_V_Impl() {
 
                     @Override
-                    protected void callback(int sigval) {
+                    protected void callback(long sigval) {
                         try {
                             synchronized (intRef) {
-                                intRef.value = sigval;
+                                intRef.value = (int)sigval;
                                 intRef.notifyAll();
                             }
                         } catch (Exception ex) {
@@ -870,7 +869,7 @@ public class TimeTest {
                         if (intRef.value instanceof Throwable) {
                             fail("in callback", (Exception) intRef.value);
                         } else {
-                            assertEquals(42, intRef.value);
+                            assertEquals(0x12345678, intRef.value);
                         }
                     }
 

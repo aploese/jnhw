@@ -23,6 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.Callback_I_V;
+import de.ibapl.jnhw.Callback_J_V;
 import de.ibapl.jnhw.Callback_NativeRunnable;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.Define;
@@ -459,7 +460,12 @@ public class Signal {
 
         private native void sigev_notify_function0(NativeFunctionPointer sigev_notify_function) throws NoSuchNativeTypeException;
 
-        public final void sigev_notify_function(Callback_I_V sigev_notify_function) throws NoSuchNativeTypeException {
+        /**
+         * Even if we can get away with an int we dont do this. BIG ENDIAN will acces the other half of the union sigval.sival_ptr for sigval.sival_int.
+         * @param sigev_notify_function
+         * @throws NoSuchNativeTypeException 
+         */
+        public final void sigev_notify_function(Callback_J_V sigev_notify_function) throws NoSuchNativeTypeException {
             this.sigev_notify_function = sigev_notify_function;
             sigev_notify_function0(sigev_notify_function);
         }
@@ -474,15 +480,15 @@ public class Signal {
             sigev_notify_function0(sigev_notify_function);
         }
 
-        public final Callback_I_V sigev_notify_functionAsCallback_I_V() throws NoSuchNativeTypeException {
-            if (sigev_notify_function instanceof Callback_I_V) {
+        public final Callback_J_V sigev_notify_functionAsCallback_J_V() throws NoSuchNativeTypeException {
+            if (sigev_notify_function instanceof Callback_J_V) {
                 if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
-                    return (Callback_I_V) sigev_notify_function;
+                    return (Callback_J_V) sigev_notify_function;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
             } else {
-                throw new RuntimeException("cached sigev_notify_function is not the class Callback_I_V");
+                throw new RuntimeException("cached sigev_notify_function is not the class Callback_J_V");
             }
         }
 

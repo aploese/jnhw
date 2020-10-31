@@ -25,6 +25,7 @@ import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl;
 import de.ibapl.jnhw.Callback_I_V;
 import de.ibapl.jnhw.Callback_I_V_Impl;
+import de.ibapl.jnhw.Callback_J_V;
 import de.ibapl.jnhw.Callback_NativeRunnable;
 import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
 import de.ibapl.jnhw.NativeAddressHolder;
@@ -885,14 +886,14 @@ public class SignalTest {
         sigevent.sigev_signo(Signal.SIGBUS());
         assertEquals(Signal.SIGBUS(), sigevent.sigev_signo());
 
-        Callback_I_V sigev_notify_functionInt = new Callback_I_V(new NativeAddressHolder(44)) {
+        Callback_J_V sigev_notify_functionLong = new Callback_J_V(new NativeAddressHolder(44)) {
             @Override
-            protected void callback(int value) {
+            protected void callback(long value) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
-        sigevent.sigev_notify_function(sigev_notify_functionInt);
-        Assertions.assertSame(sigev_notify_functionInt, sigevent.sigev_notify_functionAsCallback_I_V());
+        sigevent.sigev_notify_function(sigev_notify_functionLong);
+        Assertions.assertSame(sigev_notify_functionLong, sigevent.sigev_notify_functionAsCallback_J_V());
 
         @SuppressWarnings("unchecked")
         Callback_PtrOpaqueMemory_V<OpaqueMemory> sigev_notify_functionPtr = new Callback_PtrOpaqueMemory_V(new NativeAddressHolder(44)) {
