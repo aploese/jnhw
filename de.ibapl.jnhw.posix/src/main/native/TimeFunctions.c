@@ -206,13 +206,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "In this native implementation clock is only an integer with the size of jint");
             return NULL;
         } 
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        const char *result = ctime(((long int *) &clock) + 1);
-#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        const char *result = ctime((long int *)&clock);
-#else
-#error "Can't handle byte order"
-#endif
+        const char *result = ctime(__jlong2long_PTR(clock));
 #endif
         if (result == NULL) {
             return NULL;
@@ -244,13 +238,7 @@ extern "C" {
             return NULL;
         } 
 //arm defines time_t as long int all other as int - long int can be assigned to int but not vice versa. So we use long int instead of int32_t, because the __WORDSIZE is 32 bit too.
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        const char *result = ctime_r(((long int *) &clock)+ 1, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
-#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        const char *result = ctime_r((long int *) &clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
-#else
-#error "Can't handle byte order"
-#endif
+        const char *result = ctime_r(__jlong2long_PTR(clock), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
 #endif
         if (result == NULL) {
             return NULL;
@@ -341,13 +329,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "In this native implementation timer is only an integer with the size of jint");
             return NULL;
         } 
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        const struct tm *tm = gmtime(((long int *) &timer)+ 1);
-#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        const struct tm *tm = gmtime((long int *) &timer);
-#else
-#error "Can't handle byte order"
-#endif
+        const struct tm *tm = gmtime(__jlong2long_PTR(timer));
 #endif
         if (tm) {
             return WRAP_STATIC_STRUCT_TM(tm);
@@ -376,13 +358,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "In this native implementation timer is only an integer with the size of jint");
             return NULL;
         } 
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        if (gmtime_r(((long int *) &timer)+ 1, _result)) {
-#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        if (gmtime_r((long int *) &timer, _result)) {
-#else
-#error "Can't handle byte order"
-#endif
+        if (gmtime_r(__jlong2long_PTR(timer), _result)) {
 #endif
             return result;
         } else {
@@ -404,13 +380,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "In this native implementation timer is only an integer with the size of jint");
             return NULL;
         } 
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        const struct tm *result = localtime(((long int *) &timer) + 1);
-#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        const struct tm *result = localtime((long int *) &timer);
-#else
-#error "Can't handle byte order"
-#endif
+        const struct tm *result = localtime(__jlong2long_PTR(timer));
 
 #endif
         if (result) {
@@ -439,13 +409,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "In this native implementation timer is only an integer with the size of jint");
             return NULL;
         } 
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        if (localtime_r(((long int *) &timer) + 1, _result)) {
-#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        if (localtime_r((long int *) &timer, _result)) {
-#else
-#error "Can't handle byte order"
-#endif
+        if (localtime_r(__jlong2long_PTR(timer), _result)) {
 #endif
             return result;
         } else {
