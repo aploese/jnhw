@@ -811,6 +811,7 @@ public class TimeTest {
             default:
 
                 final ObjectRef<Object> intRef = new ObjectRef<>(null);
+                final LongRef longRef = new LongRef();
                 Time.Timer_t timerid = new Time.Timer_t();
 
                 //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
@@ -832,6 +833,7 @@ public class TimeTest {
                         try {
                             synchronized (intRef) {
                                 intRef.value = (int)sigval;
+                                longRef.value = sigval;
                                 intRef.notifyAll();
                             }
                         } catch (Exception ex) {
@@ -869,7 +871,7 @@ public class TimeTest {
                         if (intRef.value instanceof Throwable) {
                             fail("in callback", (Exception) intRef.value);
                         } else {
-                            assertEquals(0x12345678, intRef.value);
+                            assertEquals(0x12345678, intRef.value, "sigval as long: " + longRef.value);
                         }
                     }
 
