@@ -184,7 +184,8 @@ libsignal_la_LIBADD =
 am_libsignal_la_OBJECTS = SignalDefines.lo SignalFunctions.lo \
 	Signal_Sigaction.lo Signal_Sigevent.lo Signal_Siginfo_t.lo \
 	Signal_Sigset_t.lo Signal_Sigval.lo Signal_Stack_t.lo \
-	Signal_Ucontext_t.lo Signal_Mcontext_t.lo
+	Signal_Ucontext_t.lo Signal_Mcontext_t.lo \
+	Callback__Sigval_int__V_Impl.lo
 libsignal_la_OBJECTS = $(am_libsignal_la_OBJECTS)
 libstdio_la_LIBADD =
 am_libstdio_la_OBJECTS = StdioDefines.lo StdioFunctions.lo
@@ -227,6 +228,7 @@ depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/AioFunctions.Plo ./$(DEPDIR)/Aio_Aiocb.Plo \
+	./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo \
 	./$(DEPDIR)/Defines.Plo ./$(DEPDIR)/EventFdDefines.Plo \
 	./$(DEPDIR)/EventFdFunctions.Plo ./$(DEPDIR)/FcntlDefines.Plo \
 	./$(DEPDIR)/FcntlFunctions.Plo ./$(DEPDIR)/IoctlDefines.Plo \
@@ -574,7 +576,8 @@ libsignal_la_SOURCES = \
  Signal_Sigval.c \
  Signal_Stack_t.c \
  Signal_Ucontext_t.c \
- Signal_Mcontext_t.c
+ Signal_Mcontext_t.c \
+ Callback__Sigval_int__V_Impl.c
 
 libstdio_la_SOURCES = \
  StdioDefines.c \
@@ -754,6 +757,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Aio_Aiocb.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Defines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdFunctions.Plo@am__quote@ # am--include-marker
@@ -969,6 +973,7 @@ distclean: distclean-am
 		-rm -f ./$(DEPDIR)/AioDefines.Plo
 	-rm -f ./$(DEPDIR)/AioFunctions.Plo
 	-rm -f ./$(DEPDIR)/Aio_Aiocb.Plo
+	-rm -f ./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
@@ -1069,6 +1074,7 @@ maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/AioDefines.Plo
 	-rm -f ./$(DEPDIR)/AioFunctions.Plo
 	-rm -f ./$(DEPDIR)/Aio_Aiocb.Plo
+	-rm -f ./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo

@@ -19,8 +19,12 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw;
+package de.ibapl.jnhw.util.posix;
 
+import de.ibapl.jnhw.Callback_I_V;
+import de.ibapl.jnhw.NativeAddressHolder;
+import de.ibapl.jnhw.NativeCallToJava;
+import de.ibapl.jnhw.NativeFunctionPointer;
 import java.lang.ref.WeakReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,15 +34,15 @@ import java.util.logging.Logger;
  * @author aploese
  */
 @SuppressWarnings("unchecked")
-public abstract class Callback_I_V_Impl extends Callback_I_V implements NativeCallToJava {
+public abstract class Callback__Sigval_int__V_Impl extends Callback__Sigval_int__V implements NativeCallToJava {
 
-    private final static Logger LOG = Logger.getLogger("d.i.j.c.Callback_I_V_Impl");
+    private final static Logger LOG = Logger.getLogger("d.i.j.p.Callback__Sigval_int__V_Impl");
 
-    private static final WeakReference<Callback_I_V_Impl> refs[];
+    private static final WeakReference<Callback__Sigval_int__V_Impl> refs[];
 
-    public static Callback_I_V_Impl find(NativeFunctionPointer callbackPtr) {
-        for (WeakReference<Callback_I_V_Impl> wr : refs) {
-            Callback_I_V_Impl cb = wr.get();
+    public static Callback__Sigval_int__V_Impl find(NativeFunctionPointer callbackPtr) {
+        for (WeakReference<Callback__Sigval_int__V_Impl> wr : refs) {
+            Callback__Sigval_int__V_Impl cb = wr.get();
             if (cb != null) {
                 if (cb.equals(callbackPtr)) {
                     return cb;
@@ -55,7 +59,7 @@ public abstract class Callback_I_V_Impl extends Callback_I_V implements NativeCa
      * Make sure the native lib is loaded
      */
     static {
-        LibJnhwCommonLoader.touch();
+        LibJnhwPosixLoader.touch();
         initNative();
         refs = new WeakReference[MAX_CALL_BACKS()];
         for (int i = 0; i < refs.length; i++) {
@@ -70,7 +74,7 @@ public abstract class Callback_I_V_Impl extends Callback_I_V implements NativeCa
      */
     public static int callbacksAvailable() {
         int result = 0;
-        for (WeakReference<Callback_I_V_Impl> ref : refs) {
+        for (WeakReference<Callback__Sigval_int__V_Impl> ref : refs) {
             if (ref.get() == null) {
                 result++;
             }
@@ -78,13 +82,13 @@ public abstract class Callback_I_V_Impl extends Callback_I_V implements NativeCa
         return result;
     }
 
-    public Callback_I_V_Impl() {
-        super(Callback_I_V_Impl::aquire);
+    public Callback__Sigval_int__V_Impl() {
+        super(Callback__Sigval_int__V_Impl::aquire);
     }
 
     private static void trampoline(final int index, final int value) {
         try {
-            final Callback_I_V_Impl ref = refs[index].get();
+            final Callback__Sigval_int__V_Impl ref = refs[index].get();
             if (ref == null) {
                 LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, %d)", index, value));
             } else {
@@ -97,7 +101,7 @@ public abstract class Callback_I_V_Impl extends Callback_I_V implements NativeCa
 
     private static native NativeAddressHolder getNativeAddress(final int index);
 
-    private static synchronized NativeAddressHolder aquire(Callback_I_V_Impl cb) {
+    private static synchronized NativeAddressHolder aquire(Callback__Sigval_int__V_Impl cb) {
         for (int i = 0; i < refs.length; i++) {
             if (refs[i].get() == null) {
                 refs[i] = new WeakReference(cb);

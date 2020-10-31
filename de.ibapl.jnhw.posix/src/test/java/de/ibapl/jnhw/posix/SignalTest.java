@@ -36,6 +36,7 @@ import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import java.lang.ref.Cleaner;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
@@ -886,14 +887,14 @@ public class SignalTest {
         sigevent.sigev_signo(Signal.SIGBUS());
         assertEquals(Signal.SIGBUS(), sigevent.sigev_signo());
 
-        Callback_J_V sigev_notify_functionLong = new Callback_J_V(new NativeAddressHolder(44)) {
+        Callback__Sigval_int__V sigev_notify_functionLong = new Callback__Sigval_int__V(new NativeAddressHolder(44)) {
             @Override
-            protected void callback(long value) {
+            protected void callback(int value) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
         sigevent.sigev_notify_function(sigev_notify_functionLong);
-        Assertions.assertSame(sigev_notify_functionLong, sigevent.sigev_notify_functionAsCallback_J_V());
+        Assertions.assertSame(sigev_notify_functionLong, sigevent.sigev_notify_functionAsCallback__Sigval_int__V());
 
         @SuppressWarnings("unchecked")
         Callback_PtrOpaqueMemory_V<OpaqueMemory> sigev_notify_functionPtr = new Callback_PtrOpaqueMemory_V(new NativeAddressHolder(44)) {

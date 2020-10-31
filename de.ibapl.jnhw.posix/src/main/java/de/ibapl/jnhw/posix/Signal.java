@@ -39,6 +39,7 @@ import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
 import de.ibapl.jnhw.posix.sys.Types.size_t;
+import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -465,7 +466,7 @@ public class Signal {
          * @param sigev_notify_function
          * @throws NoSuchNativeTypeException 
          */
-        public final void sigev_notify_function(Callback_J_V sigev_notify_function) throws NoSuchNativeTypeException {
+        public final void sigev_notify_function(Callback__Sigval_int__V sigev_notify_function) throws NoSuchNativeTypeException {
             this.sigev_notify_function = sigev_notify_function;
             sigev_notify_function0(sigev_notify_function);
         }
@@ -480,15 +481,15 @@ public class Signal {
             sigev_notify_function0(sigev_notify_function);
         }
 
-        public final Callback_J_V sigev_notify_functionAsCallback_J_V() throws NoSuchNativeTypeException {
-            if (sigev_notify_function instanceof Callback_J_V) {
+        public final Callback__Sigval_int__V sigev_notify_functionAsCallback__Sigval_int__V() throws NoSuchNativeTypeException {
+            if (sigev_notify_function instanceof Callback__Sigval_int__V) {
                 if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
-                    return (Callback_J_V) sigev_notify_function;
+                    return (Callback__Sigval_int__V) sigev_notify_function;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
             } else {
-                throw new RuntimeException("cached sigev_notify_function is not the class Callback_J_V");
+                throw new RuntimeException("cached sigev_notify_function is not the class Callback__Sigval_int__V");
             }
         }
 

@@ -111,7 +111,8 @@ libsignal_la_SOURCES = \
  Signal_Sigval.c \
  Signal_Stack_t.c \
  Signal_Ucontext_t.c \
- Signal_Mcontext_t.c
+ Signal_Mcontext_t.c \
+ Callback__Sigval_int__V_Impl.c
 
 libstdio_la_SOURCES = \
  StdioDefines.c \

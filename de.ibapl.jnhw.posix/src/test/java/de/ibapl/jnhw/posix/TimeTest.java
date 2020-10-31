@@ -33,6 +33,7 @@ import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Types;
+import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V_Impl;
 import de.ibapl.jnhw.util.posix.Defines;
 import java.time.DayOfWeek;
 import java.time.Instant;
@@ -811,7 +812,6 @@ public class TimeTest {
             default:
 
                 final ObjectRef<Object> intRef = new ObjectRef<>(null);
-                final LongRef longRef = new LongRef();
                 Time.Timer_t timerid = new Time.Timer_t();
 
                 //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
@@ -826,14 +826,13 @@ public class TimeTest {
                 evp.sigev_notify(Signal.SIGEV_THREAD());
                 evp.sigev_value.sival_int(0x12345678);
                 assertEquals(0x12345678, evp.sigev_value.sival_int());
-                evp.sigev_notify_function(new Callback_J_V_Impl() {
+                evp.sigev_notify_function(new Callback__Sigval_int__V_Impl() {
 
                     @Override
-                    protected void callback(long sigval) {
+                    protected void callback(int sigval) {
                         try {
                             synchronized (intRef) {
                                 intRef.value = (int)sigval;
-                                longRef.value = sigval;
                                 intRef.notifyAll();
                             }
                         } catch (Exception ex) {
@@ -871,7 +870,7 @@ public class TimeTest {
                         if (intRef.value instanceof Throwable) {
                             fail("in callback", (Exception) intRef.value);
                         } else {
-                            assertEquals(0x12345678, intRef.value, "sigval as long: " + longRef.value);
+                            assertEquals(0x12345678, intRef.value);
                         }
                     }
 
