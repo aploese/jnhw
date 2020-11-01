@@ -238,7 +238,7 @@ public class TimeTest {
                 Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
                 long end = System.nanoTime();
 
-                Assertions.assertTrue(end - start < 12_000_000, "max 12ms but was " + (end - start) + "ns");
+                Assertions.assertTrue(end - start < 13_000_000, "max 13ms but was " + (end - start) + "ns");
                 Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
 
                 rqtp.tv_nsec(0);
@@ -519,8 +519,8 @@ public class TimeTest {
             Time.nanosleep(rqtp, rmtp);
             long end = System.nanoTime();
 
-            Assertions.assertTrue(end - start < 11_000_000, "max 10ms but was " + (end - start) + "ns");
-            Assertions.assertTrue(end - start > 9_000_000, "min 8ms");
+            Assertions.assertTrue(end - start < 13_000_000, "max 13ms but was " + (end - start) + "ns");
+            Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
         } catch (NativeErrorException nee) {
             fail(Errno.getErrnoSymbol(nee.errno));
             Assertions.assertTrue(rmtp.tv_sec() <= rqtp.tv_sec(), "tv_sec");
