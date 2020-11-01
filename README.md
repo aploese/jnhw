@@ -41,28 +41,31 @@ run `mvn exec:java -Dexec.mainClass="de.ibapl.jnhw.it.hello_world.App"` in `it/h
 Import Unistd in a static manner so the code may become less noisy.
 
 ```java
+package de.ibapl.jnhw.it.hello_world;
 
 import de.ibapl.jnhw.NativeErrorException;
 //Import only the needed define from the wrapper of posix's unistd.h.h
 import static de.ibapl.jnhw.posix.Unistd.STDOUT_FILENO;
 //Import only the needed method from the wrapper of iso c's unistd.h.h
-import static de.ibapl.jnhw.isoc.Unistd.write;
+import static de.ibapl.jnhw.posix.Unistd.write;
 
 public class Posix {
 
 	public static void sayHello() throws NativeErrorException {
-		write(STDOUT_FILENO(), "Hello World! from POSIX".getBytes());
+		int bytesWritten = write(STDOUT_FILENO(), "Hello World! from POSIX\n".getBytes());
+                System.out.println("Bytes written: " + bytesWritten);
 	}
 
-}
-```
+}```
 
 ### Windows API
 
 ```java
+package de.ibapl.jnhw.it.hello_world;
+
 import de.ibapl.jnhw.NativeErrorException;
 //Import only the needed define from the wrapper of processenv.h
-import static de.ibapl.jnhw.winapi.ProcessEnv.STD_OUTPUT_HANDLE;
+import static de.ibapl.jnhw.winapi.Winbase.STD_OUTPUT_HANDLE;
 //Import only the needed method from the wrapper of processenv.h
 import static de.ibapl.jnhw.winapi.ProcessEnv.GetStdHandle;
 //Import only the needed method from the wrapper of fileapi.h
@@ -71,7 +74,8 @@ import static de.ibapl.jnhw.winapi.Fileapi.WriteFile;
 public class Windows {
 
 	public static void sayHello() throws NativeErrorException {
-		WriteFile(GetStdHandle(STD_OUTPUT_HANDLE()), "Hello World! from WIN API".getBytes());
+		int bytesWritten = WriteFile(GetStdHandle(STD_OUTPUT_HANDLE()), "Hello World! from WIN API\n".getBytes());
+                System.out.println("Bytes written: " + bytesWritten);
 	}
 
 }

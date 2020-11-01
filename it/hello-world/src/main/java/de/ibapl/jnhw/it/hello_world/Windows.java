@@ -21,10 +21,9 @@
  */
 package de.ibapl.jnhw.it.hello_world;
 
-import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
 //Import only the needed define from the wrapper of processenv.h
-import static de.ibapl.jnhw.winapi.ProcessEnv.STD_OUTPUT_HANDLE;
+import static de.ibapl.jnhw.winapi.Winbase.STD_OUTPUT_HANDLE;
 //Import only the needed method from the wrapper of processenv.h
 import static de.ibapl.jnhw.winapi.ProcessEnv.GetStdHandle;
 //Import only the needed method from the wrapper of fileapi.h
@@ -33,9 +32,8 @@ import static de.ibapl.jnhw.winapi.Fileapi.WriteFile;
 public class Windows {
 
 	public static void sayHello() throws NativeErrorException {
-		final IntRef iRef = new IntRef();
-		final byte[] data = "Hello World! from WIN API\n".getBytes();
-		WriteFile(GetStdHandle(STD_OUTPUT_HANDLE()), data, 0, data.length, iRef);
+		int bytesWritten = WriteFile(GetStdHandle(STD_OUTPUT_HANDLE()), "Hello World! from WIN API\n".getBytes());
+                System.out.println("Bytes written: " + bytesWritten);
 	}
 
 }

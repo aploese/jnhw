@@ -25,12 +25,13 @@ import de.ibapl.jnhw.NativeErrorException;
 //Import only the needed define from the wrapper of posix's unistd.h.h
 import static de.ibapl.jnhw.posix.Unistd.STDOUT_FILENO;
 //Import only the needed method from the wrapper of iso c's unistd.h.h
-import static de.ibapl.jnhw.isoc.Unistd.write;
+import static de.ibapl.jnhw.posix.Unistd.write;
 
 public class Posix {
 
 	public static void sayHello() throws NativeErrorException {
-		write(STDOUT_FILENO(), "Hello World! from POSIX\n".getBytes());
+		int bytesWritten = write(STDOUT_FILENO(), "Hello World! from POSIX\n".getBytes());
+                System.out.println("Bytes written: " + bytesWritten);
 	}
 
 }

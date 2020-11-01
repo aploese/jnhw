@@ -192,6 +192,29 @@ public final class Fileapi {
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
+     * Reads data from the specified file or input/output (I/O) device. Reads
+     * occur at the position specified by the file pointer if supported by the
+     * device. This is the synchronous read - for byte[] there is no
+     * asynchronous read.
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer the byte array that receives the data read from a file or
+     * device.
+     * @return {@code lpNumberOfBytesRead} the number of bytes read.
+     *
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
+     *
+     * @throws ArrayIndexOutOfBoundsException if off and nNumberOfBytesToRead are outside of lpBuffer.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static int ReadFile(HANDLE hFile, byte[] lpBuffer) throws NativeErrorException {
+        return ReadFile(hFile, lpBuffer, 0, lpBuffer.length);
+    }
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
      * Reads data from the specified file or input/output (I/O) device.Reads
      * occur at the position specified by the file pointer if supported by the
      * device. This is the synchronous read for {@link OpaqueMemory}.
@@ -491,6 +514,29 @@ public final class Fileapi {
      */
     public static native int WriteFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException;
 
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
+     * Writes data to the specified file or input/output (I/O) device.Writing
+ starts at the position specified by the file pointer if supported by the
+ device. This is the synchronous write for a byte array.
+     *
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer the byte array {@code lpBuffer} containing the data to be
+     * written to the file or device.
+     * @return {@code lpNumberOfBytesWritten} the number of bytes written.
+     *
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
+     *
+     * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static int WriteFile(HANDLE hFile, byte[] lpBuffer) throws NativeErrorException {
+        return WriteFile(hFile, lpBuffer, 0, lpBuffer.length);
+    }
+    
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
      * Writes data to the specified file or input/output (I/O) device.Writing
