@@ -53,7 +53,7 @@ import org.junit.jupiter.api.condition.OS;
  */
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SignalTest {
-    
+
     // just for vm in qemu...
     private final static long ONE_MINUTE = 60_000;
 
@@ -652,12 +652,19 @@ public class SignalTest {
         System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef.value);
         try {
             Assertions.assertNotNull(siginfo_tRef.value);
-            Assertions.assertEquals(0, siginfo_tRef.value.si_errno());
-            Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo());
-            Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr((baseAddress, size) -> {
-                return new OpaqueMemory(baseAddress, data.sizeInBytes) {
-                };
-            }));
+            Assertions.assertAll(
+                    () -> {
+                        Assertions.assertEquals(0, siginfo_tRef.value.si_errno(), "siginfo_tRef.value.si_errno()");
+                    },
+                    () -> {
+                        Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo(), "siginfo_tRef.value.si_signo()");
+                    },
+                    () -> {
+                        Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr((baseAddress, size) -> {
+                            return new OpaqueMemory(baseAddress, data.sizeInBytes) {
+                            };
+                        }), "siginfo_tRef.value.si_value.sival_ptr()");
+                    });
         } finally {
             Signal.sigaction(SIG, oact, null);
         }

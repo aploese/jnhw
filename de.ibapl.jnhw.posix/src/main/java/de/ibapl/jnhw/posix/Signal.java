@@ -1391,7 +1391,7 @@ public class Signal {
         public final native int si_code();
 
         /**
-         * If non -zero , an errno value associated with this signal , as
+         * If non-zero, an errno value associated with this signal, as
          * described in &lt;errno.h&gt;.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
          * siginfo_t}</a>.

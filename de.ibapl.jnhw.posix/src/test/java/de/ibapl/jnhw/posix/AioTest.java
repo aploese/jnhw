@@ -32,6 +32,7 @@ import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V_Impl;
 import java.io.BufferedReader;
 import java.io.File;
@@ -113,7 +114,11 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
 
                 int result = Aio.aio_error(aiocb);
-                assertEquals(0, result);
+                if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+                    assertEquals(Errno.EINVAL(), result);
+                } else {
+                    assertEquals(0, result);
+                }
 
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Aio.aio_error(null);

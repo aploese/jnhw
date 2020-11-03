@@ -23,6 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -54,6 +55,9 @@ public class SchedTest {
         System.out.println("sched_get_priority_max");
         int result = Sched.sched_get_priority_max(Sched.SCHED_OTHER());
         switch (multiarchTupelBuilder.getOS()) {
+            case FREE_BSD:
+                Assertions.assertEquals(103, result);
+                break;
             case OPEN_BSD:
                 Assertions.assertEquals(31, result);
                 break;
@@ -61,7 +65,7 @@ public class SchedTest {
                 Assertions.assertEquals(47, result);
                 break;
             default:
-                Assertions.assertEquals(0, result);
+                Assertions.assertEquals(0, result, "I dont know wthat to expect so assume 0 for Sched.sched_get_priority_max(Sched.SCHED_OTHER())");
         }
     }
 
@@ -120,11 +124,21 @@ public class SchedTest {
 
                 Time.Timespec interval = new Time.Timespec();
                 Sched.sched_rr_get_interval(Unistd.getpid(), interval);
-
-//TODO On LINUX sometimes its 0 and sometimes its 8000000 or even 4000000
-                Assertions.assertTrue((0L == interval.tv_nsec()) || (8_000_000L == interval.tv_nsec() || (4_000_000L == interval.tv_nsec())), "interval.tv_nsec() 0 or 8000000 but was: " + interval.tv_nsec());
-                //Assertions.assertEquals(0L, interval.tv_nsec());
-                //Assertions.assertEquals(8_000_000L, interval.tv_nsec());
+                for (MultiarchInfo mi : multiarchTupelBuilder.guessMultiarch()) {
+                    switch (mi) {
+                        case AARCH64__LINUX__GNU:
+                            Assertions.assertEquals(8_000_000L, interval.tv_nsec(), "interval.tv_nsec()");
+                            break;
+                        case X86_64__LINUX__GNU:
+                            Assertions.assertEquals(0L, interval.tv_nsec(), "interval.tv_nsec()");
+                            break;
+                        case X86_64__FREE_BSD__BSD:
+                            Assertions.assertEquals(9_400_000L, interval.tv_nsec(), "interval.tv_nsec()");
+                            break;
+                        default:
+                            Assertions.assertEquals(0L, interval.tv_nsec(), "I dont know what to expect ... so just assume 0 for interval.tv_nsec()");
+                    }
+                }
                 Assertions.assertEquals(0, interval.tv_sec());
         }
     }
@@ -181,6 +195,7 @@ public class SchedTest {
                 });
                 Sched.Sched_param param = new Sched.Sched_param(true);
                 int result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
+                Assertions.assertEquals(Sched.SCHED_OTHER(), result);
                 result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
                 Assertions.assertEquals(Sched.SCHED_OTHER(), result);
         }
