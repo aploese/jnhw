@@ -500,62 +500,45 @@ public class SignalTest {
      * Test of sigpause method, of class Signal.
      */
     @Test
-    @DisabledOnOs(OS.LINUX) // sigpause does not work as expected ... it does not return
+    @DisabledOnOs(OS.LINUX) // it does not reurn from sigpause
     public void testSigpause() throws Exception {
         System.out.println("sigpause");
-        final int SIG = Signal.SIGUSR1();
+        final int SIG = Signal.SIGUSR2();
 
         final ObjectRef<Object> resultRef = new ObjectRef<>();
-        final ObjectRef<Integer> callbackRef = new ObjectRef<>();
 
-        final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
+        new Thread() {
             @Override
-            protected void callback(int sig) {
-                System.out.println("Got signal: " + sig);
-                callbackRef.value = sig;
-            }
-        };
-        
-        final var oldHandler = Signal.signal(SIG, funcHandler);
-        try {
-            Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
-                new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            Signal.sigpause(SIG);
-                            synchronized (resultRef) {
-                                resultRef.value = Boolean.FALSE;
-                                resultRef.notify();
-                            }
-                        } catch (NoSuchNativeMethodException nsnme) {
-                            synchronized (resultRef) {
-                                resultRef.value = nsnme;
-                                resultRef.notify();
-                            }
-                        } catch (NativeErrorException nee) {
-                            synchronized (resultRef) {
-                                resultRef.value = nee;
-                                resultRef.notify();
-                            }
-                        }
+            public void run() {
+                try {
+                    Signal.sigpause(SIG);
+                    synchronized (resultRef) {
+                        resultRef.value = Boolean.TRUE;
+                        resultRef.notify();
                     }
-                }.start();
-                Thread.sleep(100);
-                Signal.raise(SIG);
-                Thread.sleep(10);
-                synchronized (resultRef) {
-                    if (resultRef.value == null) {
-                        resultRef.wait(ONE_MINUTE);
+                } catch (NoSuchNativeMethodException nsnme) {
+                    synchronized (resultRef) {
+                        resultRef.value = nsnme;
+                        resultRef.notify();
+                    }
+                } catch (NativeErrorException nee) {
+                    synchronized (resultRef) {
+                        resultRef.value = nee;
+                        resultRef.notify();
                     }
                 }
-                Assertions.assertEquals(NativeErrorException.class, resultRef.value.getClass());
-                Assertions.assertEquals(Errno.EINVAL(), ((NativeErrorException) resultRef.value).errno);
-                Assertions.assertEquals(SIG, callbackRef.value);
-            });
-        } finally {
-            Signal.signal(SIG, oldHandler);
+            }
+        }.start();
+        Thread.sleep(100);
+        Signal.raise(SIG);
+        synchronized (resultRef) {
+            if (resultRef.value == null) {
+                resultRef.wait(ONE_MINUTE);
+            }
         }
+        Assertions.assertNotNull(resultRef.value);
+        Assertions.assertEquals(Boolean.class, resultRef.value.getClass(), "value was: " + resultRef.value);
+        Assertions.assertEquals(Boolean.TRUE, resultRef.value);
     }
 
     /**
