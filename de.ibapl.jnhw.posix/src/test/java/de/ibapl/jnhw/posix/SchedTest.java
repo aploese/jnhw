@@ -21,11 +21,14 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -126,10 +129,15 @@ public class SchedTest {
                 Sched.sched_rr_get_interval(Unistd.getpid(), interval);
                 for (MultiarchInfo mi : multiarchTupelBuilder.guessMultiarch()) {
                     switch (mi) {
-                        case AARCH64__LINUX__GNU:
+                        case POWER_PC_64_LE__LINUX__GNU:
                             Assertions.assertEquals(8_000_000L, interval.tv_nsec(), "interval.tv_nsec()");
                             break;
+                        case ARM__LINUX__GNU_EABI:
+                        case ARM__LINUX__GNU_EABI_HF:
+                        case AARCH64__LINUX__GNU:
+                        case I386__LINUX__GNU:
                         case X86_64__LINUX__GNU:
+                        case S390_X__LINUX__GNU:
                             Assertions.assertEquals(0L, interval.tv_nsec(), "interval.tv_nsec()");
                             break;
                         case X86_64__FREE_BSD__BSD:
@@ -194,10 +202,18 @@ public class SchedTest {
                     Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
                 });
                 Sched.Sched_param param = new Sched.Sched_param(true);
-                int result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
-                Assertions.assertEquals(Sched.SCHED_OTHER(), result);
-                result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
-                Assertions.assertEquals(Sched.SCHED_OTHER(), result);
+                if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+                    //Any idea why this is so?
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                        Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
+                    });
+                    assertEquals(Errno.EPERM(), nee.errno, Errno.getErrnoSymbol(nee.errno));
+                } else {
+                    int result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
+                    Assertions.assertEquals(Sched.SCHED_OTHER(), result);
+                    result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
+                    Assertions.assertEquals(Sched.SCHED_OTHER(), result);
+                }
         }
     }
 

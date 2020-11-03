@@ -505,45 +505,57 @@ public class SignalTest {
         System.out.println("sigpause");
         final int SIG = Signal.SIGUSR1();
 
-        final ObjectRef<Boolean> boolRef = new ObjectRef<>(Boolean.FALSE);
+        final ObjectRef<Object> resultRef = new ObjectRef<>();
+        final ObjectRef<Integer> callbackRef = new ObjectRef<>();
 
         final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
                 System.out.println("Got signal: " + sig);
+                callbackRef.value = sig;
             }
         };
-
+        
         final var oldHandler = Signal.signal(SIG, funcHandler);
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        Signal.sigpause(SIG);
-                        fail();
-                    } catch (NoSuchNativeMethodException nsnme) {
-                        Assertions.fail(nsnme);
-                    } catch (NativeErrorException nee) {
-                        assertEquals("EINTR", Errno.getErrnoSymbol(nee.errno));
-                        synchronized (boolRef) {
-                            boolRef.value = Boolean.TRUE;
-                            boolRef.notify();
+        try {
+            Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Signal.sigpause(SIG);
+                            synchronized (resultRef) {
+                                resultRef.value = Boolean.FALSE;
+                                resultRef.notify();
+                            }
+                        } catch (NoSuchNativeMethodException nsnme) {
+                            synchronized (resultRef) {
+                                resultRef.value = nsnme;
+                                resultRef.notify();
+                            }
+                        } catch (NativeErrorException nee) {
+                            synchronized (resultRef) {
+                                resultRef.value = nee;
+                                resultRef.notify();
+                            }
                         }
                     }
+                }.start();
+                Thread.sleep(100);
+                Signal.raise(SIG);
+                Thread.sleep(10);
+                synchronized (resultRef) {
+                    if (resultRef.value == null) {
+                        resultRef.wait(ONE_MINUTE);
+                    }
                 }
-            }.start();
-            Thread.sleep(100);
-            Signal.raise(SIG);
-            Thread.sleep(10);
-            synchronized (boolRef) {
-                if (!boolRef.value) {
-                    boolRef.wait(ONE_MINUTE);
-                }
-            }
-            Assertions.assertTrue(boolRef.value);
-        });
-        Signal.signal(SIG, oldHandler);
+                Assertions.assertEquals(NativeErrorException.class, resultRef.value.getClass());
+                Assertions.assertEquals(Errno.EINVAL(), ((NativeErrorException) resultRef.value).errno);
+                Assertions.assertEquals(SIG, callbackRef.value);
+            });
+        } finally {
+            Signal.signal(SIG, oldHandler);
+        }
     }
 
     /**

@@ -245,7 +245,7 @@ public class AioTest {
 
                 Assertions.assertNotNull(objRef.value);
                 if (objRef.value instanceof Exception) {
-                    fail("in callback", (Exception)objRef.value);
+                    fail("in callback", (Exception) objRef.value);
                 } else {
                     assertEquals(aiocb, objRef.value);
                 }
@@ -345,7 +345,7 @@ public class AioTest {
                 }
                 Assertions.assertNotNull(intRef.value);
                 if (intRef.value instanceof Exception) {
-                    fail("in callback", (Exception)intRef.value);
+                    fail("in callback", (Exception) intRef.value);
                 } else {
                     assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
                 }
@@ -494,7 +494,7 @@ public class AioTest {
                 }
                 Assertions.assertNotNull(intRef.value);
                 if (intRef.value instanceof Exception) {
-                    fail("in callback", (Exception)intRef.value);
+                    fail("in callback", (Exception) intRef.value);
                 } else {
                     assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
                 }
@@ -539,7 +539,15 @@ public class AioTest {
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Aio.lio_listio(Aio.LIO_WAIT(), null, null);
                 });
-                Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
+                
+                if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+                    nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                        Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
+                    });
+                    assertEquals(Errno.EIO(), nee.errno, Errno.getErrnoSymbol(nee.errno));
+                } else {
+                    Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
+                }
         }
     }
 
