@@ -127,25 +127,19 @@ public class SchedTest {
 
                 Time.Timespec interval = new Time.Timespec();
                 Sched.sched_rr_get_interval(Unistd.getpid(), interval);
-                for (MultiarchInfo mi : multiarchTupelBuilder.guessMultiarch()) {
-                    switch (mi) {
-                        case POWER_PC_64_LE__LINUX__GNU:
-                            Assertions.assertEquals(8_000_000L, interval.tv_nsec(), "interval.tv_nsec()");
-                            break;
-                        case ARM__LINUX__GNU_EABI:
-                        case ARM__LINUX__GNU_EABI_HF:
-                        case AARCH64__LINUX__GNU:
-                        case I386__LINUX__GNU:
-                        case X86_64__LINUX__GNU:
-                        case S390_X__LINUX__GNU:
-                            Assertions.assertEquals(0L, interval.tv_nsec(), "interval.tv_nsec()");
-                            break;
-                        case X86_64__FREE_BSD__BSD:
-                            Assertions.assertEquals(9_400_000L, interval.tv_nsec(), "interval.tv_nsec()");
-                            break;
-                        default:
-                            Assertions.assertEquals(0L, interval.tv_nsec(), "I dont know what to expect ... so just assume 0 for interval.tv_nsec()");
-                    }
+                switch (multiarchTupelBuilder.getOS()) {
+                    case LINUX:
+                        if ((0L != interval.tv_nsec())
+                                && (8_000_000L != interval.tv_nsec()) 
+                                && (4_000_000L != interval.tv_nsec())) {
+                            Assertions.fail("interval.tv_nsec() is :" + interval.tv_nsec());
+                        }
+                        break;
+                    case FREE_BSD:
+                        Assertions.assertEquals(94_000_000L, interval.tv_nsec(), "interval.tv_nsec()");
+                        break;
+                    default:
+                        Assertions.assertEquals(0L, interval.tv_nsec(), "I dont know what to expect ... so just assume 0 for interval.tv_nsec()");
                 }
                 Assertions.assertEquals(0, interval.tv_sec());
         }
@@ -160,20 +154,24 @@ public class SchedTest {
         switch (multiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Sched.sched_setparam(Unistd.getpid(), null);
-                });
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Sched.sched_getparam(Unistd.getpid(), null);
-                });
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                         () -> {
+                            Sched.sched_setparam(Unistd.getpid(), null);
+                        });
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                         () -> {
+                            Sched.sched_getparam(Unistd.getpid(), null);
+                        });
                 break;
             default:
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Sched.sched_setparam(Unistd.getpid(), null);
-                });
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Sched.sched_getparam(Unistd.getpid(), null);
-                });
+                Assertions.assertThrows(NullPointerException.class,
+                         () -> {
+                            Sched.sched_setparam(Unistd.getpid(), null);
+                        });
+                Assertions.assertThrows(NullPointerException.class,
+                         () -> {
+                            Sched.sched_getparam(Unistd.getpid(), null);
+                        });
                 Sched.Sched_param param = new Sched.Sched_param();
                 param.sched_priority(0);
                 Sched.Sched_param param1 = new Sched.Sched_param();
@@ -193,20 +191,23 @@ public class SchedTest {
         switch (multiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
-                });
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                         () -> {
+                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
+                        });
                 break;
             default:
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
-                });
+                Assertions.assertThrows(NullPointerException.class,
+                         () -> {
+                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
+                        });
                 Sched.Sched_param param = new Sched.Sched_param(true);
                 if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
                     //Any idea why this is so?
-                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                        Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
-                    });
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
+                             () -> {
+                                Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
+                            });
                     assertEquals(Errno.EPERM(), nee.errno, Errno.getErrnoSymbol(nee.errno));
                 } else {
                     int result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
