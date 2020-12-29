@@ -29,7 +29,7 @@ import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeException;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.posix.sys.Types.clock_t;
@@ -144,7 +144,7 @@ public class Time {
      *
      * @return on succes the converted date and time, otherwise {@code null}
      */
-    public final static native String asctime_r(Tm tm, OpaqueMemory buf);
+    public final static native String asctime_r(Tm tm, OpaqueMemory32 buf);
 
     /**
      * <b>POSIX:</b>
@@ -258,7 +258,7 @@ public class Time {
      *
      * @return on succes the converted time, otherwise {@code null}
      */
-    public final static native String ctime_r(@time_t long clock, OpaqueMemory buf);
+    public final static native String ctime_r(@time_t long clock, OpaqueMemory32 buf);
 
     /**
      * <b>POSIX.XSI:</b>
@@ -537,7 +537,7 @@ public class Time {
      * itimerspec}</a>.
      *
      */
-    public static class Itimerspec extends OpaqueMemory {
+    public static class Itimerspec extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -624,7 +624,7 @@ public class Time {
      * timespec}</a>.
      *
      */
-    public static class Timespec extends OpaqueMemory {
+    public static class Timespec extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -644,7 +644,7 @@ public class Time {
             super(sizeofTimespec(), false);
         }
 
-        public Timespec(OpaqueMemory parent, int offset) {
+        public Timespec(OpaqueMemory32 parent, int offset) {
             super(parent, offset, sizeofTimespec());
         }
 
@@ -727,7 +727,7 @@ public class Time {
      * tm}</a>.
      *
      */
-    public static class Tm extends OpaqueMemory {
+    public static class Tm extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -947,7 +947,7 @@ public class Time {
      * @author aploese
      */
     @Types.timer_t
-    public static final class Timer_t extends OpaqueMemory {
+    public static final class Timer_t extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded

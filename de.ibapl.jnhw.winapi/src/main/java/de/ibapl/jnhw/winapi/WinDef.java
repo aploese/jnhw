@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -69,7 +69,7 @@ public abstract class WinDef {
      * typedef BYTE far *LPBYTE;
      * </p>
      */
-    public static class LPBYTE extends OpaqueMemory {
+    public static class LPBYTE extends OpaqueMemory32 {
 
         int bufferEnd;
 
@@ -79,7 +79,7 @@ public abstract class WinDef {
         }
 
         public void clear() {
-            OpaqueMemory.clear(this);
+            OpaqueMemory32.clear(this);
             bufferEnd = sizeInBytes;
         }
 

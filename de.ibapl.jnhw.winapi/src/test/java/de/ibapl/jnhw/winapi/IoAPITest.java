@@ -26,7 +26,7 @@ import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.ObjectRef;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -71,7 +71,7 @@ public class IoAPITest {
         lpCompletionKey.value = 0;
         assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.value);
         lpNumberOfBytesTransferred.value = 0;
-        assertTrue(OpaqueMemory.isSameAddress(lpOverlapped.value, overlapped));
+        assertTrue(OpaqueMemory32.isSameAddress(lpOverlapped.value, overlapped));
         lpOverlapped.value = null;
 
         IoAPI.PostQueuedCompletionStatus(completionPort, dwNumberOfBytesTransferred, COMPLETION_KEY, null);

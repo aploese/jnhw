@@ -21,10 +21,10 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Callback_I_I_PtrOpaqueMemory_V_Impl;
+import de.ibapl.jnhw.Callback_I_I_PtrAbstractNativeMemory_V_Impl;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -52,7 +52,7 @@ public class Minwinbase {
      * OVERLAPPED}</a>.
      *
      */
-    public final static class OVERLAPPED extends OpaqueMemory {
+    public final static class OVERLAPPED extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -115,7 +115,7 @@ public class Minwinbase {
 
     }
 
-    public abstract static class LPOVERLAPPED_COMPLETION_ROUTINE extends Callback_I_I_PtrOpaqueMemory_V_Impl<OVERLAPPED> {
+    public abstract static class LPOVERLAPPED_COMPLETION_ROUTINE extends Callback_I_I_PtrAbstractNativeMemory_V_Impl<OVERLAPPED> {
 
         @Override
         protected abstract void callback(int dwErrorCode, int dwNumberOfBytesTransfered, OVERLAPPED lpOverlapped);
@@ -127,7 +127,7 @@ public class Minwinbase {
      * SECURITY_ATTRIBUTES}</a>.
      *
      */
-    public static class SECURITY_ATTRIBUTES extends OpaqueMemory {
+    public static class SECURITY_ATTRIBUTES extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we

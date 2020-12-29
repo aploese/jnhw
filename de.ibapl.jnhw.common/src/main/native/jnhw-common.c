@@ -31,9 +31,11 @@
 
 #define JNHW_CLASS_NAME_NATIVE_FUNCTION_POINTER "de/ibapl/jnhw/NativeFunctionPointer"
 
-#define JNHW_CLASS_NAME_OPAQUE_MEMORY "de/ibapl/jnhw/OpaqueMemory"
-#define JNHW_CLASS_NAME_STRUCT_ARRAY "de/ibapl/jnhw/StructArray"
-#define JNHW_CLASS_NAME_POINTER_ARRAY "de/ibapl/jnhw/PointerArray"
+#define JNHW_CLASS_NAME_ABSTRACT_NATIVE_MEMORY "de/ibapl/jnhw/AbstractNativeMemory"
+#define JNHW_CLASS_NAME_OPAQUE_MEMORY_32 "de/ibapl/jnhw/OpaqueMemory32"
+#define JNHW_CLASS_NAME_OPAQUE_MEMORY_64 "de/ibapl/jnhw/OpaqueMemory64"
+#define JNHW_CLASS_NAME_STRUCT_ARRAY_32 "de/ibapl/jnhw/StructArray32"
+#define JNHW_CLASS_NAME_POINTER_ARRAY_32 "de/ibapl/jnhw/PointerArray32"
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,9 +46,10 @@ extern "C" {
     JNIEXPORT jfieldID de_ibapl_jnhw_IntRef_value_ID = NULL;
     JNIEXPORT jfieldID de_ibapl_jnhw_LongRef_value_ID = NULL;
     JNIEXPORT jfieldID de_ibapl_jnhw_ObjectRef_value_ID = NULL;
-    JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = NULL;
-    JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = NULL;
-    JNIEXPORT jmethodID de_ibapl_jnhw_StructArray_length_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_AbstractNativeMemory_baseAddress_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory32_sizeInBytes_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory64_sizeInBytes_ID = NULL;
+    JNIEXPORT jmethodID de_ibapl_jnhw_StructArray32_length_ID = NULL;
 
     JNIEXPORT jclass de_ibapl_jnhw_NativeAddressHolder_Class = NULL;
     JNIEXPORT jfieldID de_ibapl_jnhw_NativeAddressHolder_address_ID = NULL;
@@ -56,7 +59,7 @@ extern "C" {
     JNIEXPORT jfieldID de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_NativeFunctionPointer_init_ID = NULL;
 
-    JNIEXPORT jfieldID de_ibapl_jnhw_PointerArray_cachedReferences_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_PointerArray32_cachedReferences_ID = NULL;
 
     static jboolean JNICALL jnhw_common_init(JNIEnv *env) {
         if (initExceptions(env) == JNI_FALSE) {
@@ -92,29 +95,35 @@ extern "C" {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_OpaqueMemory_baseAddress_ID == NULL) {
-            de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY, "baseAddress", "J");
-            if (de_ibapl_jnhw_OpaqueMemory_baseAddress_ID == NULL) {
+        if (de_ibapl_jnhw_AbstractNativeMemory_baseAddress_ID == NULL) {
+            de_ibapl_jnhw_AbstractNativeMemory_baseAddress_ID = getFieldId(env, JNHW_CLASS_NAME_ABSTRACT_NATIVE_MEMORY, "baseAddress", "J");
+            if (de_ibapl_jnhw_AbstractNativeMemory_baseAddress_ID == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID == NULL) {
-            de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY, "sizeInBytes", "I");
-            if (de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID == NULL) {
+        if (de_ibapl_jnhw_OpaqueMemory32_sizeInBytes_ID == NULL) {
+            de_ibapl_jnhw_OpaqueMemory32_sizeInBytes_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY_32, "sizeInBytes", "I");
+            if (de_ibapl_jnhw_OpaqueMemory32_sizeInBytes_ID == NULL) {
+                return JNI_FALSE;
+            }
+        }
+        if (de_ibapl_jnhw_OpaqueMemory64_sizeInBytes_ID == NULL) {
+            de_ibapl_jnhw_OpaqueMemory64_sizeInBytes_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY_64, "sizeInBytes", "J");
+            if (de_ibapl_jnhw_OpaqueMemory64_sizeInBytes_ID == NULL) {
                 return JNI_FALSE;
             }
         }
         //TODO use array ???
-        if (de_ibapl_jnhw_StructArray_length_ID == NULL) {
-            de_ibapl_jnhw_StructArray_length_ID = getMethodId(env, JNHW_CLASS_NAME_STRUCT_ARRAY, "length", "()I");
-            if (de_ibapl_jnhw_StructArray_length_ID == NULL) {
+        if (de_ibapl_jnhw_StructArray32_length_ID == NULL) {
+            de_ibapl_jnhw_StructArray32_length_ID = getMethodId(env, JNHW_CLASS_NAME_STRUCT_ARRAY_32, "length", "()I");
+            if (de_ibapl_jnhw_StructArray32_length_ID == NULL) {
                 return JNI_FALSE;
             }
         }
 
-        if (de_ibapl_jnhw_PointerArray_cachedReferences_ID == NULL) {
-            de_ibapl_jnhw_PointerArray_cachedReferences_ID = getFieldId(env, JNHW_CLASS_NAME_POINTER_ARRAY, "cachedReferences", "[Lde/ibapl/jnhw/OpaqueMemory;");
-            if (de_ibapl_jnhw_PointerArray_cachedReferences_ID == NULL) {
+        if (de_ibapl_jnhw_PointerArray32_cachedReferences_ID == NULL) {
+            de_ibapl_jnhw_PointerArray32_cachedReferences_ID = getFieldId(env, JNHW_CLASS_NAME_POINTER_ARRAY_32, "cachedReferences", "[Lde/ibapl/jnhw/OpaqueMemory32;");
+            if (de_ibapl_jnhw_PointerArray32_cachedReferences_ID == NULL) {
                 return JNI_FALSE;
             }
         }
@@ -168,9 +177,10 @@ extern "C" {
         de_ibapl_jnhw_IntRef_value_ID = NULL;
         de_ibapl_jnhw_LongRef_value_ID = NULL;
         de_ibapl_jnhw_ObjectRef_value_ID = NULL;
-        de_ibapl_jnhw_OpaqueMemory_baseAddress_ID = NULL;
-        de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID = NULL;
-        de_ibapl_jnhw_StructArray_length_ID = NULL;
+        de_ibapl_jnhw_AbstractNativeMemory_baseAddress_ID = NULL;
+        de_ibapl_jnhw_OpaqueMemory32_sizeInBytes_ID = NULL;
+        de_ibapl_jnhw_OpaqueMemory64_sizeInBytes_ID = NULL;
+        de_ibapl_jnhw_StructArray32_length_ID = NULL;
         
         deleteGlobalRef(env, &de_ibapl_jnhw_NativeAddressHolder_Class);
         de_ibapl_jnhw_NativeAddressHolder_address_ID = NULL;
@@ -180,7 +190,7 @@ extern "C" {
         de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = NULL;
         de_ibapl_jnhw_NativeFunctionPointer_init_ID = NULL;
 
-        de_ibapl_jnhw_PointerArray_cachedReferences_ID = NULL;
+        de_ibapl_jnhw_PointerArray32_cachedReferences_ID = NULL;
     }
 
     JNIEXPORT jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className) {
@@ -252,12 +262,20 @@ extern "C" {
                 ((*env)->GetArrayLength(env, array) - pos < len));
     }
 
-    JNIEXPORT int outOfBoundsOpaqueMemory(JNIEnv *env, jint pos, jint len, jobject opaqueMemory) {
-        return ((pos < 0) ||
+    JNIEXPORT int outOfBoundsOpaqueMemory32(JNIEnv *env, jint pos, jint len, jobject opaqueMemory) {
+        return (pos < 0) ||
                 (len < 0) ||
                 // We are very careful to avoid signed integer overflow,
                 // the result of which is undefined in C.
-                ((*env)->GetIntField(env, opaqueMemory, de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID) - pos < len));
+                (SIZE_OF_OPAQUE_MEM_32(opaqueMemory) - pos < len);
+    }
+
+    JNIEXPORT int outOfBoundsOpaqueMemory64(JNIEnv *env, jlong pos, jlong len, jobject opaqueMemory) {
+        return (pos < 0) ||
+                (len < 0) ||
+                // We are very careful to avoid signed integer overflow,
+                // the result of which is undefined in C.
+                (SIZE_OF_OPAQUE_MEM_64(opaqueMemory) - pos < len);
     }
 
     JNIEXPORT jint JNICALL

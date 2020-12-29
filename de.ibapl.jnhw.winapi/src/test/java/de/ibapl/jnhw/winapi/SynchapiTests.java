@@ -22,8 +22,6 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.PointerArray;
-import de.ibapl.jnhw.StructArray;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

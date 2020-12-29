@@ -107,7 +107,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
      * Method:    ss_sp
-     * Signature: (Lde/ibapl/jnhw/OpaqueMemory;)V
+     * Signature: (Lde/ibapl/jnhw/OpaqueMemory32;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp
     (JNIEnv *env, jobject structStack_t, jobject ss_sp) {

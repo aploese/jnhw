@@ -21,11 +21,10 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
+import de.ibapl.jnhw.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
 import de.ibapl.jnhw.Callback_I_V;
-import de.ibapl.jnhw.Callback_J_V;
 import de.ibapl.jnhw.Callback_NativeRunnable;
-import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
+import de.ibapl.jnhw.Callback_PtrAbstractNativeMemory_V;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeAddressHolder;
@@ -35,7 +34,7 @@ import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
 import de.ibapl.jnhw.posix.sys.Types.size_t;
@@ -60,7 +59,7 @@ public class Signal {
      *
      * @author aploese
      */
-    public static final class Mcontext_t extends OpaqueMemory {
+    public static final class Mcontext_t extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -80,7 +79,7 @@ public class Signal {
             super(sizeofMcontext_t(), false);
         }
 
-        public Mcontext_t(OpaqueMemory owner, int offset) throws NoSuchNativeTypeException {
+        public Mcontext_t(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
             super(owner, offset, sizeofMcontext_t());
         }
 
@@ -99,7 +98,7 @@ public class Signal {
 
     public final static native boolean HAVE_SIGNAL_H();
 
-    public static final class Sigset_t extends OpaqueMemory {
+    public static final class Sigset_t extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -119,7 +118,7 @@ public class Signal {
             super(sizeofSigset_t(), false);
         }
 
-        public Sigset_t(OpaqueMemory owner, int offset) {
+        public Sigset_t(OpaqueMemory32 owner, int offset) {
             super(owner, offset, sizeofSigset_t());
         }
 
@@ -266,7 +265,7 @@ public class Signal {
      * sigval}</a>.
      *
      */
-    public static final class Sigval<T extends OpaqueMemory> extends OpaqueMemory {
+    public static final class Sigval<T extends OpaqueMemory32> extends OpaqueMemory32 {
 
         private native NativeAddressHolder sival_ptr();
 
@@ -288,7 +287,7 @@ public class Signal {
             super(sizeofSigval(), false);
         }
 
-        public Sigval(OpaqueMemory owner, int offset) {
+        public Sigval(OpaqueMemory32 owner, int offset) {
             super(owner, offset, sizeofSigval());
         }
 
@@ -323,10 +322,10 @@ public class Signal {
          *
          * @return the native value of sival_ptr.
          */
-        public T sival_ptr(OpaqueMemoryProducer<T, Sigval<T>> producer) {
+        public T sival_ptr(OpaqueMemory32Producer<T, Sigval<T>> producer) {
             final NativeAddressHolder baseAddress = sival_ptr();
             if (sival_ptr != null) {
-                if (!OpaqueMemory.isSameAddress(baseAddress, sival_ptr)) {
+                if (!OpaqueMemory32.isSameAddress(baseAddress, sival_ptr)) {
                     sival_ptr = producer.produce(baseAddress, this);
                 }
                 return sival_ptr;
@@ -367,7 +366,7 @@ public class Signal {
      * JavaCallback class ???
      *
      */
-    public static final class Sigevent<T extends OpaqueMemory> extends OpaqueMemory {
+    public static final class Sigevent<T extends OpaqueMemory32> extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -407,7 +406,7 @@ public class Signal {
         }
 
         @SuppressWarnings("unchecked")
-        Sigevent(OpaqueMemory owner, int offset) throws NoSuchNativeTypeException {
+        Sigevent(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
             super(owner, offset, sizeofSigevent());
             sigev_value = new Sigval(this, _sigev_value_Offset());
         }
@@ -435,10 +434,10 @@ public class Signal {
 
         private native NativeAddressHolder sigev_notify_attributes() throws NoSuchNativeTypeException;
 
-        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemoryProducer<Pthread.Pthread_attr_t, Sigevent> producer) throws NoSuchNativeTypeException {
+        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemory32Producer<Pthread.Pthread_attr_t, Sigevent> producer) throws NoSuchNativeTypeException {
             final NativeAddressHolder baseAddress = sigev_notify_attributes();
             if (sigev_notify_attributes != null) {
-                if (!OpaqueMemory.isSameAddress(baseAddress, sigev_notify_attributes)) {
+                if (!OpaqueMemory32.isSameAddress(baseAddress, sigev_notify_attributes)) {
                     sigev_notify_attributes = producer.produce(baseAddress, this);
                 }
                 return sigev_notify_attributes;
@@ -471,7 +470,7 @@ public class Signal {
             sigev_notify_function0(sigev_notify_function);
         }
 
-        public final void sigev_notify_function(Callback_PtrOpaqueMemory_V<T> sigev_notify_function) throws NoSuchNativeTypeException {
+        public final void sigev_notify_function(Callback_PtrAbstractNativeMemory_V<T> sigev_notify_function) throws NoSuchNativeTypeException {
             this.sigev_notify_function = sigev_notify_function;
             sigev_notify_function0(sigev_notify_function);
         }
@@ -493,10 +492,10 @@ public class Signal {
             }
         }
 
-        public final Callback_PtrOpaqueMemory_V sigev_notify_functionAsCallback_PtrOpaqueMemory_V() throws NoSuchNativeTypeException {
-            if (sigev_notify_function instanceof Callback_PtrOpaqueMemory_V) {
+        public final Callback_PtrAbstractNativeMemory_V sigev_notify_functionAsCallback_PtrOpaqueMemory_V() throws NoSuchNativeTypeException {
+            if (sigev_notify_function instanceof Callback_PtrAbstractNativeMemory_V) {
                 if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
-                    return (Callback_PtrOpaqueMemory_V) sigev_notify_function;
+                    return (Callback_PtrAbstractNativeMemory_V) sigev_notify_function;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
@@ -904,7 +903,7 @@ public class Signal {
      *
      * @param <T>
      */
-    public static class Sigaction<T extends OpaqueMemory> extends OpaqueMemory {
+    public static class Sigaction<T extends OpaqueMemory32> extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -1015,11 +1014,11 @@ public class Signal {
          * otherwise an exception is thrown.
          */
         @SuppressWarnings("unchecked")
-        public final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigactionAsCallback_I_PtrOpaqueMemory_PtrOpaqueMemory_V() {
+        public final Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Siginfo_t, T> sa_sigactionAsCallback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V() {
             final NativeFunctionPointer sa_sigaction = sa_sigaction();
-            if (cachedHandlerOrAction instanceof Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V) {
+            if (cachedHandlerOrAction instanceof Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V) {
                 if (NativeFunctionPointer.isSameAddress(sa_sigaction, cachedHandlerOrAction)) {
-                    return (Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V) cachedHandlerOrAction;
+                    return (Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V) cachedHandlerOrAction;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
@@ -1028,9 +1027,9 @@ public class Signal {
             }
         }
 
-        public final native <T extends OpaqueMemory> void sa_sigaction0(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigaction);
+        public final native <T extends OpaqueMemory32> void sa_sigaction0(Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Siginfo_t, T> sa_sigaction);
 
-        public final <T extends OpaqueMemory> void sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigaction) {
+        public final <T extends OpaqueMemory32> void sa_sigaction(Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Siginfo_t, T> sa_sigaction) {
             cachedHandlerOrAction = sa_sigaction;
             sa_sigaction0(sa_sigaction);
         }
@@ -1163,7 +1162,7 @@ public class Signal {
      * ucontext_t}</a>.
      *
      */
-    public static class Ucontext_t extends OpaqueMemory {
+    public static class Ucontext_t extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -1218,7 +1217,7 @@ public class Signal {
          * ucontext_t}</a>.
          *
          */
-        public final Ucontext_t uc_link(OpaqueMemoryProducer<Ucontext_t, Ucontext_t> producer) throws NoSuchNativeTypeException {
+        public final Ucontext_t uc_link(OpaqueMemory32Producer<Ucontext_t, Ucontext_t> producer) throws NoSuchNativeTypeException {
             return producer.produce(uc_link0(), this);
         }
 
@@ -1252,7 +1251,7 @@ public class Signal {
      * stack_t}</a>.
      *
      */
-    public static class Stack_t<T extends OpaqueMemory> extends OpaqueMemory {
+    public static class Stack_t<T extends OpaqueMemory32> extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -1268,7 +1267,7 @@ public class Signal {
          */
         public static native int sizeofStack_t();
 
-        private Stack_t(OpaqueMemory owner, int offset) {
+        private Stack_t(OpaqueMemory32 owner, int offset) {
             super(owner, offset, sizeofStack_t());
         }
 
@@ -1283,7 +1282,7 @@ public class Signal {
          * @param ss_sp
          * @return
          */
-        public static <T extends OpaqueMemory> Stack_t<T> of(int ss_flags, T ss_sp) {
+        public static <T extends OpaqueMemory32> Stack_t<T> of(int ss_flags, T ss_sp) {
             Stack_t<T> result = new Stack_t<>();
             result.ss_flags(ss_flags);
             result.ss_sp(ss_sp);
@@ -1305,7 +1304,7 @@ public class Signal {
          * @return the native value of ss_sp.
          */
         //TODO this is a Pointer
-        public final T ss_sp(OpaqueMemoryProducer<T, Stack_t<T>> producer) {
+        public final T ss_sp(OpaqueMemory32Producer<T, Stack_t<T>> producer) {
             return producer.produce(ss_sp0(), this);
         }
 
@@ -1337,7 +1336,7 @@ public class Signal {
      * siginfo_t}</a>.
      *
      */
-    public static class Siginfo_t<T extends OpaqueMemory> extends OpaqueMemory {
+    public static class Siginfo_t<T extends OpaqueMemory32> extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -1358,7 +1357,7 @@ public class Signal {
         @SuppressWarnings("unchecked")
         public Siginfo_t() {
             super(sizeofSiginfo_t(), false);
-            si_value = new Sigval(memoryOwner, _si_value_Offset());
+            si_value = new Sigval(this, _si_value_Offset());
         }
 
         /**

@@ -21,32 +21,28 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
-import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl;
+import de.ibapl.jnhw.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl;
 import de.ibapl.jnhw.Callback_I_V;
 import de.ibapl.jnhw.Callback_I_V_Impl;
-import de.ibapl.jnhw.Callback_J_V;
 import de.ibapl.jnhw.Callback_NativeRunnable;
-import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
+import de.ibapl.jnhw.Callback_PtrAbstractNativeMemory_V;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeFunctionPointer;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.ObjectRef;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import java.lang.ref.Cleaner;
-import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
-import org.junit.jupiter.api.condition.OS;
 
 /**
  *
@@ -312,7 +308,7 @@ public class SignalTest {
         System.out.println("sigaction");
         final int SIG = Signal.SIGCHLD();
 
-        final Signal.Sigaction<OpaqueMemory> act = new Signal.Sigaction<>();
+        final Signal.Sigaction<OpaqueMemory32> act = new Signal.Sigaction<>();
         act.sa_flags(Signal.SA_RESTART());
         Signal.sigemptyset(act.sa_mask);
 
@@ -323,7 +319,7 @@ public class SignalTest {
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction<OpaqueMemory> oact = new Signal.Sigaction<>();
+        final Signal.Sigaction<OpaqueMemory32> oact = new Signal.Sigaction<>();
         Signal.sigaction(SIG, null, oact);
         try {
             Signal.sigaction(SIG, act, oact);
@@ -334,7 +330,7 @@ public class SignalTest {
                 Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_handler());
             }
 
-            final Signal.Sigaction<OpaqueMemory> actOut = new Signal.Sigaction<>();
+            final Signal.Sigaction<OpaqueMemory32> actOut = new Signal.Sigaction<>();
             Signal.sigaction(SIG, oact, actOut);
 
             Assertions.assertEquals(act.sa_handler(), actOut.sa_handler());
@@ -350,7 +346,7 @@ public class SignalTest {
     @Test
     public void testSigaltstack() throws Exception {
         System.out.println("sigaltstack");
-        final OpaqueMemory ss_sp = new OpaqueMemory(Signal.MINSIGSTKSZ(), true);
+        final OpaqueMemory32 ss_sp = new OpaqueMemory32(Signal.MINSIGSTKSZ(), true);
         Signal.Stack_t ss = Signal.Stack_t.of(Signal.SS_DISABLE(), ss_sp);
         Signal.Stack_t oss = new Signal.Stack_t();
         Signal.sigaltstack(null, oss);
@@ -530,7 +526,7 @@ public class SignalTest {
                 }
             }
         }.start();
-        Thread.sleep(1000);
+        Thread.sleep(10000);
         Signal.raise(SIG);
         synchronized (resultRef) {
             if (resultRef.value == null) {
@@ -556,7 +552,7 @@ public class SignalTest {
         Signal.sigemptyset(set);
         Signal.sigpending(set);
         assertEquals("[]", set.toString());
-        Assertions.assertArrayEquals(new byte[Signal.Sigset_t.sizeofSigset_t()], OpaqueMemory.toBytes(set));
+        Assertions.assertArrayEquals(new byte[Signal.Sigset_t.sizeofSigset_t()], OpaqueMemory32.toBytes(set));
     }
 
     /**
@@ -606,7 +602,7 @@ public class SignalTest {
         final ObjectRef<Signal.Siginfo_t> siginfo_tRef = new ObjectRef<>(null);
         final ObjectRef<Signal.Ucontext_t> opmRef = new ObjectRef<>(null);
 
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<>() {
+        Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl<>() {
 
             @Override
             protected void callback(int value, Signal.Siginfo_t a, Signal.Ucontext_t b) {
@@ -636,7 +632,7 @@ public class SignalTest {
         final Signal.Sigaction actOut = new Signal.Sigaction();
         Signal.sigaction(SIG, act, oact);
 
-        OpaqueMemory data = new OpaqueMemory(128, true);
+        OpaqueMemory32 data = new OpaqueMemory32(128, true);
 
         Signal.Sigval sigval = new Signal.Sigval();
         sigval.sival_ptr(data);
@@ -648,8 +644,7 @@ public class SignalTest {
         System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef.value);
         try {
             Assertions.assertNotNull(siginfo_tRef.value);
-            Assertions.assertAll(
-                    () -> {
+            Assertions.assertAll(() -> {
                         Assertions.assertEquals(0, siginfo_tRef.value.si_errno(), "siginfo_tRef.value.si_errno()");
                     },
                     () -> {
@@ -657,7 +652,7 @@ public class SignalTest {
                     },
                     () -> {
                         Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr((baseAddress, size) -> {
-                            return new OpaqueMemory(baseAddress, data.sizeInBytes) {
+                            return new OpaqueMemory32(baseAddress, data.sizeInBytes) {
                             };
                         }), "siginfo_tRef.value.si_value.sival_ptr()");
                     });
@@ -853,13 +848,13 @@ public class SignalTest {
 
     @Test
     public void testUnionSigval() throws Exception {
-        OpaqueMemory mem = new OpaqueMemory(2, false);
-        Signal.Sigval<OpaqueMemory> sigval = new Signal.Sigval<>();
+        OpaqueMemory32 mem = new OpaqueMemory32(2, false);
+        Signal.Sigval<OpaqueMemory32> sigval = new Signal.Sigval<>();
         sigval.sival_int(22);
         assertEquals(22, sigval.sival_int());
         sigval.sival_ptr(mem);
         assertEquals(mem, sigval.sival_ptr((baseAddress, size) -> {
-            return new OpaqueMemory(baseAddress, mem.sizeInBytes) {
+            return new OpaqueMemory32(baseAddress, mem.sizeInBytes) {
             };
         }));
         Assertions.assertNotEquals(22, sigval.sival_int()); //Its is a union, so it must now be different
@@ -867,7 +862,7 @@ public class SignalTest {
 
     @Test
     public void testStructSiginfo_t() throws Exception {
-        Signal.Siginfo_t<OpaqueMemory> siginfo_t = new Signal.Siginfo_t<>();
+        Signal.Siginfo_t<OpaqueMemory32> siginfo_t = new Signal.Siginfo_t<>();
         Assertions.assertNotNull(siginfo_t.si_addr());
         Assertions.assertNotNull(siginfo_t.si_band());
         Assertions.assertNotNull(siginfo_t.si_code());
@@ -880,7 +875,7 @@ public class SignalTest {
 
     @Test
     public void testStructSigevent_t() throws Exception {
-        Signal.Sigevent<OpaqueMemory> sigevent = new Signal.Sigevent<>();
+        Signal.Sigevent<OpaqueMemory32> sigevent = new Signal.Sigevent<>();
         Assertions.assertNotNull(sigevent.sigev_notify());
         Assertions.assertNotNull(sigevent.sigev_signo());
         sigevent.sigev_value.sival_int(66);
@@ -900,9 +895,9 @@ public class SignalTest {
         Assertions.assertSame(sigev_notify_functionLong, sigevent.sigev_notify_functionAsCallback__Sigval_int__V());
 
         @SuppressWarnings("unchecked")
-        Callback_PtrOpaqueMemory_V<OpaqueMemory> sigev_notify_functionPtr = new Callback_PtrOpaqueMemory_V(new NativeAddressHolder(44)) {
+        Callback_PtrAbstractNativeMemory_V<OpaqueMemory32> sigev_notify_functionPtr = new Callback_PtrAbstractNativeMemory_V<>(new NativeAddressHolder(44)) {
             @Override
-            protected void callback(OpaqueMemory a) {
+            protected void callback(OpaqueMemory32 a) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
@@ -926,11 +921,11 @@ public class SignalTest {
 
     @Test
     public void testStructStack_t() throws Exception {
-        Signal.Stack_t<OpaqueMemory> stack_t = new Signal.Stack_t<>();
+        Signal.Stack_t<OpaqueMemory32> stack_t = new Signal.Stack_t<>();
         Assertions.assertNotNull(stack_t.ss_flags());
         Assertions.assertNotNull(stack_t.ss_size());
         Assertions.assertNotNull(stack_t.ss_sp((baseAddress, parent) -> {
-            return new OpaqueMemory(baseAddress, (int) parent.ss_size()) {
+            return new OpaqueMemory32(baseAddress, (int) parent.ss_size()) {
             };
         }));
     }
@@ -959,7 +954,7 @@ public class SignalTest {
 
     @Test
     public void testStructSigaction() throws Exception {
-        Signal.Sigaction<OpaqueMemory> sigaction = new Signal.Sigaction<>();
+        Signal.Sigaction<OpaqueMemory32> sigaction = new Signal.Sigaction<>();
 
         sigaction.sa_flags(22);
         assertEquals(22, sigaction.sa_flags());
@@ -974,14 +969,14 @@ public class SignalTest {
         Assertions.assertSame(sa_handler, sigaction.sa_handlerAsCallback_I_V());
 
         @SuppressWarnings("unchecked")
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory> sa_sigaction = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(new NativeAddressHolder(44)) {
+        Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Signal.Siginfo_t, OpaqueMemory32> sa_sigaction = new Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<>(new NativeAddressHolder(44)) {
             @Override
-            protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {
+            protected void callback(int value, Signal.Siginfo_t a, OpaqueMemory32 b) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
         sigaction.sa_sigaction(sa_sigaction);
-        Assertions.assertSame(sa_sigaction, sigaction.sa_sigactionAsCallback_I_PtrOpaqueMemory_PtrOpaqueMemory_V());
+        Assertions.assertSame(sa_sigaction, sigaction.sa_sigactionAsCallback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V());
 
         RuntimeException rt = Assertions.assertThrows(RuntimeException.class, () -> {
             sigaction.sa_handlerAsCallback_I_V();

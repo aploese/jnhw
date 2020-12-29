@@ -28,8 +28,8 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory;
-import de.ibapl.jnhw.PointerArray;
+import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.PointerArray32;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -288,7 +288,7 @@ public class Aio {
      * aiocb}</a>.
      *
      */
-    public static final class Aiocb<T extends OpaqueMemory> extends OpaqueMemory {
+    public static final class Aiocb<T extends OpaqueMemory32> extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -317,7 +317,7 @@ public class Aio {
         private Object aio_buf;
 
         @SuppressWarnings("unchecked")
-        public Aiocb(OpaqueMemory owner, int offset) throws NoSuchNativeTypeException {
+        public Aiocb(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
             super(owner, offset, sizeofAiocb());
             aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
         }
@@ -406,7 +406,7 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public OpaqueMemory aio_bufAsOpaqueMemory() throws NoSuchNativeTypeException {
+        public OpaqueMemory32 aio_bufAsOpaqueMemory() throws NoSuchNativeTypeException {
             final NativeAddressHolder result = aio_buf0();
             if (aio_buf == null) {
                 if (result.isNULL()) {
@@ -414,9 +414,9 @@ public class Aio {
                 } else {
                     throw new RuntimeException("aio_buf_ expected to be NULL, but was " + result.toString());
                 }
-            } else if (aio_buf instanceof OpaqueMemory) {
+            } else if (aio_buf instanceof OpaqueMemory32) {
                 //TODO result inside of allocated memory?
-                return (OpaqueMemory) aio_buf;
+                return (OpaqueMemory32) aio_buf;
             } else {
                 throw new RuntimeException("Actual class of aio_buf\"" + aio_buf.getClass() + "\" is not OpaqueMemory");
             }
@@ -436,7 +436,7 @@ public class Aio {
          * @param offset
          * @param length must not < 0
          */
-        private native void aio_bufOpaqueMemory(OpaqueMemory aio_buf, int offset, int length) throws NoSuchNativeTypeException;
+        private native void aio_bufOpaqueMemory(OpaqueMemory32 aio_buf, int offset, int length) throws NoSuchNativeTypeException;
 
         /**
          * The location of buffer.
@@ -465,7 +465,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory aio_buf) throws NoSuchNativeTypeException {
+        public void aio_buf(OpaqueMemory32 aio_buf) throws NoSuchNativeTypeException {
             if (aio_buf == null) {
                 aio_bufOpaqueMemory(null, 0, 0);
             } else {
@@ -487,7 +487,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory aio_buf, int off, int aio_nbytes) throws NoSuchNativeTypeException {
+        public void aio_buf(OpaqueMemory32 aio_buf, int off, int aio_nbytes) throws NoSuchNativeTypeException {
             if (aio_buf == null) {
                 aio_bufOpaqueMemory(null, 0, 0);
             } else {
@@ -552,7 +552,7 @@ public class Aio {
      * aiocb}</a>.
      *
      */
-    public static final class Aiocbs extends PointerArray<Aiocb> {
+    public static final class Aiocbs extends PointerArray32<Aiocb> {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we

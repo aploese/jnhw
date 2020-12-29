@@ -26,7 +26,7 @@ import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.lang.annotation.ElementType;
@@ -1263,7 +1263,7 @@ public final class Termios {
      *
      * @author aploese
      */
-    public final static class StructTermios extends OpaqueMemory {
+    public final static class StructTermios extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we

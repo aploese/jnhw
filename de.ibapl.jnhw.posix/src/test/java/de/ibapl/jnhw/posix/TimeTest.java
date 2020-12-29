@@ -29,7 +29,7 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.ObjectRef;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -113,11 +113,11 @@ public class TimeTest {
         tm.tm_sec(7);
         tm.tm_isdst(0);
 
-        OpaqueMemory buf = new OpaqueMemory(26, true);
+        final int BUF_SIZE = 26;
+        OpaqueMemory32 buf = new OpaqueMemory32(BUF_SIZE, true);
         String result = Time.asctime_r(tm, buf);
         assertEquals("Wed Dec  3 08:17:07 2019\n", result);
-        byte[] raw = new byte[buf.sizeInBytes];
-        OpaqueMemory.copy(buf, 0, raw, 0, raw.length);
+        byte[] raw =  OpaqueMemory32.toBytes(buf);
         assertArrayEquals("Wed Dec  3 08:17:07 2019\n\0".getBytes(), raw);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -128,7 +128,7 @@ public class TimeTest {
         });
         //Test that there at least 26 bytes available in the buffer.
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Time.asctime_r(tm, new OpaqueMemory(25, true));
+            Time.asctime_r(tm, new OpaqueMemory32(25, true));
         });
     }
 
@@ -303,13 +303,13 @@ public class TimeTest {
     public void testCtime_r() throws Exception {
         System.out.println("ctime_r  @" + ZoneId.systemDefault());
         final long clock = TIME_T__20191203_142044;
-        OpaqueMemory buf = new OpaqueMemory(26, true);
+        OpaqueMemory32 buf = new OpaqueMemory32(32, true);
         String result = Time.ctime_r(clock, buf);
 
         assertEquals(getCtimeFormated(clock), result);
 
-        byte[] raw = new byte[buf.sizeInBytes];
-        OpaqueMemory.copy(buf, 0, raw, 0, raw.length);
+        byte[] raw = new byte[result.length() + 1];
+        OpaqueMemory32.copy(buf, 0, raw, 0, raw.length);
         assertArrayEquals((getCtimeFormated(clock) + "\0").getBytes(), raw);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -317,7 +317,7 @@ public class TimeTest {
         });
         //Test that there at least 26 bytes available in the buffer.
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Time.ctime_r(clock, new OpaqueMemory(25, true));
+            Time.ctime_r(clock, new OpaqueMemory32(25, true));
         });
     }
 
@@ -821,7 +821,7 @@ public class TimeTest {
         parm.sched_priority(0); //TODO Was 255 but got EINVAL
         Pthread.pthread_attr_setschedparam(attr, parm);
                  */
-                Signal.Sigevent<OpaqueMemory> evp = new Signal.Sigevent<>();
+                Signal.Sigevent<OpaqueMemory32> evp = new Signal.Sigevent<>();
                 //evp.sigev_notify_attributes(attr);
                 evp.sigev_notify(Signal.SIGEV_THREAD());
                 evp.sigev_value.sival_int(0x12345678);

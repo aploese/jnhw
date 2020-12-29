@@ -41,7 +41,7 @@ extern "C" {
             throw_NullPointerException(env, "pollFd array");
             return -1;
         }
-        const int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFdArray), (uint32_t)LENGTH_OF_STRUCTURE_ARRAY(pollFdArray), timeout);
+        const int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFdArray), (uint32_t)LENGTH_OF_STRUCTURE_ARRAY_32(pollFdArray), timeout);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }

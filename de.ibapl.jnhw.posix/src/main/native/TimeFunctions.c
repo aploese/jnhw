@@ -62,7 +62,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Time
      * Method:    asctime_r
-     * Signature: (Lde/ibapl/jnhw/posix/Time$Tm;Lde/ibapl/jnhw/OpaqueMemory;)Ljava/lang/String;
+     * Signature: (Lde/ibapl/jnhw/posix/Time$Tm;Lde/ibapl/jnhw/OpaqueMemory32;)Ljava/lang/String;
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_asctime_1r
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject structTm, jobject buf) {
@@ -74,7 +74,7 @@ extern "C" {
             throw_NullPointerException(env, "buf is NULL");
             return NULL;
         }
-        if (SIZE_OF_OPAQUE_MEM(buf) < 26) {
+        if (SIZE_OF_OPAQUE_MEM_32(buf) < 26) {
             throw_IllegalArgumentException(env, "buf is too small 26 bytes are the minimum");
             return NULL;
         }
@@ -218,7 +218,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Time
      * Method:    ctime_r
-     * Signature: (JLde/ibapl/jnhw/OpaqueMemory;)Ljava/lang/String;
+     * Signature: (JLde/ibapl/jnhw/OpaqueMemory32;)Ljava/lang/String;
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_ctime_1r
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong clock, jobject buf) {
@@ -226,7 +226,7 @@ extern "C" {
             throw_NullPointerException(env, "buf is NULL");
             return NULL;
         }
-        if (SIZE_OF_OPAQUE_MEM(buf) < 26) {
+        if (SIZE_OF_OPAQUE_MEM_32(buf) < 26) {
             throw_IllegalArgumentException(env, "buf is too small 26 bytes are the minimum");
             return NULL;
         }

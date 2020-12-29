@@ -23,14 +23,14 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.Callback_J_V_Impl;
 import de.ibapl.jnhw.Callback_NativeRunnable;
-import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V_Impl;
+import de.ibapl.jnhw.Callback_PtrAbstractNativeMemory_V_Impl;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeRunnable;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.ObjectRef;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V_Impl;
@@ -193,7 +193,7 @@ public class AioTest {
                 System.out.println("aio_read Pthread_t: " + Pthread.pthread_self());
                 System.out.println("aio_read currentThread: " + Thread.currentThread());
 
-                aiocb.aio_sigevent.sigev_notify_function(new Callback_PtrOpaqueMemory_V_Impl<Aio.Aiocb>() {
+                aiocb.aio_sigevent.sigev_notify_function(new Callback_PtrAbstractNativeMemory_V_Impl<Aio.Aiocb>() {
 
                     @Override
                     @SuppressWarnings("unchecked")
@@ -288,7 +288,7 @@ public class AioTest {
                 final ObjectRef<Object> intRef = new ObjectRef<>(null);
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
 
-                final Aio.Aiocb<OpaqueMemory> aiocb = new Aio.Aiocb<>();
+                final Aio.Aiocb<OpaqueMemory32> aiocb = new Aio.Aiocb<>();
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
@@ -439,7 +439,7 @@ public class AioTest {
                 final ObjectRef<Object> intRef = new ObjectRef<>(null);
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
 
-                final Aio.Aiocb<OpaqueMemory> aiocb = new Aio.Aiocb();
+                final Aio.Aiocb<OpaqueMemory32> aiocb = new Aio.Aiocb();
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
                 aioBuffer.put(HELLO_WORLD.getBytes());

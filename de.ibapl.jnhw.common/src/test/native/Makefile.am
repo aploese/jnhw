@@ -20,11 +20,11 @@ libtests_la_SOURCES = \
  Callback_I_V_Test.c \
  Callback_J_V_Test.c \
  Callback_IJ_V_Test.c \
- Callback_I_I_PtrOpaqueMemory_V_Test.c \
- Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Test.c \
- Callback_PtrOpaqueMemory_V_Test.c \
+ Callback_I_I_PtrAbstractNativeMemory_V_Test.c \
+ Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.c \
+ Callback_PtrAbstractNativeMemory_V_Test.c \
  NativeRunnableTest.c \
- PointerArray_Test.c \
+ PointerArray32Test.c \
  JnhwExceptionsTest.c
 
 #hook into make all

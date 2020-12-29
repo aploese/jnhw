@@ -24,8 +24,8 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.OpaqueMemory;
-import de.ibapl.jnhw.StructArray;
+import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.StructArray32;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -178,7 +178,7 @@ public final class Poll {
      * pollfd}</a>.
      *
      */
-    public final static class PollFd extends OpaqueMemory {
+    public final static class PollFd extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -195,7 +195,7 @@ public final class Poll {
          */
         public static native int sizeofPollFd();
 
-        public PollFd(OpaqueMemory owner, int offset) {
+        public PollFd(OpaqueMemory32 owner, int offset) {
             super(owner, offset, sizeofPollFd());
         }
 
@@ -325,7 +325,7 @@ public final class Poll {
      * pollfd}</a>.
      *
      */
-    public static class PollFds extends StructArray<PollFd> {
+    public static class PollFds extends StructArray32<PollFd> {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -340,7 +340,7 @@ public final class Poll {
             super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeofPollFd(), false);
         }
 
-        private static PollFd createAtOffset(OpaqueMemory parent, int offset) {
+        private static PollFd createAtOffset(OpaqueMemory32 parent, int offset) {
             return new PollFd(parent, offset);
         }
 

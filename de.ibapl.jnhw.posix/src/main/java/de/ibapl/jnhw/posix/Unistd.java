@@ -28,7 +28,8 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.OpaqueMemory64;
 import de.ibapl.jnhw.posix.sys.Types.gid_t;
 import de.ibapl.jnhw.posix.sys.Types.off64_t;
 import de.ibapl.jnhw.posix.sys.Types.off_t;
@@ -383,7 +384,7 @@ public final class Unistd {
      * read - read from a file</a>.
      *
      * @param fildes a valid file descriptor open for reading
-     * @param mem the {@link OpaqueMemory} into which bytes are to be
+     * @param mem the {@link OpaqueMemory32} into which bytes are to be
      * transferred.
      * @param off the start offset in {@code mem} to which the data is
      * transferred.
@@ -399,7 +400,7 @@ public final class Unistd {
      * indicates an error.
      */
     public final static native @ssize_t
-    int read(int fildes, OpaqueMemory mem, int off, @size_t int nbyte) throws NativeErrorException;
+    int read(int fildes, OpaqueMemory32 mem, int off, @size_t int nbyte) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -407,7 +408,31 @@ public final class Unistd {
      * read - read from a file</a>.
      *
      * @param fildes a valid file descriptor open for reading
-     * @param mem the {@link OpaqueMemory} into which all bytes are to be
+     * @param mem the {@link OpaqueMemory64} into which bytes are to be
+     * transferred.
+     * @param off the start offset in {@code mem} to which the data is
+     * transferred.
+     * @param nbyte the maximum number of bytes to read.
+     * @return The number of bytes read, possibly zero.
+     *
+     * @throws NullPointerException if {@code mem} is null.
+     *
+     * @throws ArrayIndexOutOfBoundsException if {@code off} or {@code nByte}
+     * out of bounds.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native @ssize_t
+    long read(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException, NoSuchNativeMethodException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
+     * read - read from a file</a>.
+     *
+     * @param fildes a valid file descriptor open for reading
+     * @param mem the {@link OpaqueMemory32} into which all bytes are to be
      * transferred.
      * @return The number of bytes read, possibly zero.
      *
@@ -417,7 +442,27 @@ public final class Unistd {
      * indicates an error.
      */
     public final static @ssize_t
-    int read(int fildes, OpaqueMemory mem) throws NativeErrorException {
+    int read(int fildes, OpaqueMemory32 mem) throws NativeErrorException {
+        return read(fildes, mem, 0, mem.sizeInBytes);
+    }
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
+     * read - read from a file</a>.
+     *
+     * @param fildes a valid file descriptor open for reading
+     * @param mem the {@link OpaqueMemory32} into which all bytes are to be
+     * transferred.
+     * @return The number of bytes read, possibly zero.
+     *
+     * @throws NullPointerException if {@code buf} is null.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static @ssize_t
+    long read(int fildes, OpaqueMemory64 mem) throws NativeErrorException, NoSuchNativeMethodException {
         return read(fildes, mem, 0, mem.sizeInBytes);
     }
 
@@ -489,7 +534,29 @@ public final class Unistd {
      * indicates an error.
      */
     public final static native @ssize_t
-    int write(int fildes, OpaqueMemory mem, int off, @size_t int nbyte) throws NativeErrorException;
+    int write(int fildes, OpaqueMemory32 mem, int off, @size_t int nbyte) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
+     * write - write on a file</a>.
+     *
+     * @param fildes a valid file descriptor open for writing
+     * @param mem The {link OpaqueMemory} from which the bytes are to be
+     * retrieved for writing.
+     * @param off the start offset in {@code mem}.
+     * @param nbyte the number of bytes to write.
+     * @return The number of bytes written, possibly zero.
+     *
+     * @throws NullPointerException if {@code mem} is null.
+     * @throws ArrayIndexOutOfBoundsException if {@code off} or {@code nByte}
+     * out of bounds.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native @ssize_t
+    long write(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -505,7 +572,25 @@ public final class Unistd {
      * indicates an error.
      */
     public final static @ssize_t
-    int write(int fildes, OpaqueMemory mem) throws NativeErrorException {
+    int write(int fildes, OpaqueMemory32 mem) throws NativeErrorException {
+        return write(fildes, mem, 0, mem.sizeInBytes);
+    }
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
+     * write - write on a file</a>.
+     *
+     * @param fildes a valid file descriptor open for writing
+     * @param mem The {link OpaqueMemory} from which all bytes are to be
+     * retrieved for writing.
+     * @return The number of bytes written, possibly zero.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static @ssize_t
+    long write(int fildes, OpaqueMemory64 mem) throws NativeErrorException, NoSuchNativeMethodException {
         return write(fildes, mem, 0, mem.sizeInBytes);
     }
 

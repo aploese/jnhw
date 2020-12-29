@@ -27,7 +27,7 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
@@ -55,7 +55,7 @@ public class Sched {
      * sched_param}</a>.
      *
      */
-    public static class Sched_param extends OpaqueMemory {
+    public static class Sched_param extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded

@@ -25,7 +25,7 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -849,7 +849,7 @@ public abstract class Winbase {
      * COMMTIMEOUTS}</a>.
      *
      */
-    public final static class COMMTIMEOUTS extends OpaqueMemory {
+    public final static class COMMTIMEOUTS extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -932,7 +932,7 @@ public abstract class Winbase {
      * COMSTAT}</a>.
      *
      */
-    public static class COMSTAT extends OpaqueMemory {
+    public static class COMSTAT extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -1009,7 +1009,7 @@ public abstract class Winbase {
      * DCB}</a>.
      *
      */
-    public final static class DCB extends OpaqueMemory {
+    public final static class DCB extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we

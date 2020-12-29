@@ -142,7 +142,7 @@ extern "C" {
 
 #define UNWRAP_STRUCT_SCHED_PARAM_PTR(value)UNWRAP_OPAQUE_MEM_TO(struct sched_param*, value)
 
-#define LENGTH_OF_AIOCBS(aiocbs) LENGTH_OF_POINTER_ARRAY(aiocbs) 
+#define LENGTH_OF_AIOCBS(aiocbs) LENGTH_OF_POINTER_ARRAY_32(aiocbs) 
     
 
 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__

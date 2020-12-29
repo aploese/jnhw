@@ -12,15 +12,18 @@ lib_LTLIBRARIES = libjnhw-common.la
 libjnhw_common_la_SOURCES = \
  jnhw-common.c \
  JnhwExceptions.c \
- OpaqueMemory.c \
- PointerArray.c \
+ AbstractNativeMemory.c \
+ AbstractNativeMemory_MemoryCleaner.c \
+ OpaqueMemory32.c \
+ OpaqueMemory64.c \
+ PointerArray32.c \
  Callback_I_V_Impl.c \
  Callback_J_V_Impl.c \
  Callback_IJ_V.c \
  Callback_IJ_V_Impl.c \
- Callback_I_I_PtrOpaqueMemory_V_Impl.c \
- Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl.c \
- Callback_PtrOpaqueMemory_V_Impl.c \
+ Callback_I_I_PtrAbstractNativeMemory_V_Impl.c \
+ Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl.c \
+ Callback_PtrAbstractNativeMemory_V_Impl.c \
  Callback_NativeRunnable.c \
  NativeRunnable.c
 

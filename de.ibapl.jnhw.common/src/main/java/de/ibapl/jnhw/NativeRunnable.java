@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  *
  * @author aploese TODO cleanup on GC
  */
-public abstract class NativeRunnable extends OpaqueMemory {
+public abstract class NativeRunnable extends OpaqueMemory32 {
 
     private final static Logger LOG = Logger.getLogger("d.i.j.c.NativeRunnable");
 

@@ -27,7 +27,7 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
@@ -197,7 +197,7 @@ public class Pthread {
      * @author aploese
      */
     @Types.pthread_attr_t
-    public static final class Pthread_attr_t extends OpaqueMemory {
+    public static final class Pthread_attr_t extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -217,7 +217,7 @@ public class Pthread {
             super(sizeofPthread_attr_t(), false);
         }
 
-        public Pthread_attr_t(OpaqueMemory owner, int offset) {
+        public Pthread_attr_t(OpaqueMemory32 owner, int offset) {
             super(owner, offset, sizeofPthread_attr_t());
         }
 
@@ -234,7 +234,7 @@ public class Pthread {
      * @author aploese
      */
     @Types.pthread_t
-    public static final class Pthread_t extends OpaqueMemory {
+    public static final class Pthread_t extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded
@@ -254,7 +254,7 @@ public class Pthread {
             super(sizeofPthread_t(), false);
         }
 
-        public Pthread_t(OpaqueMemory owner, int offset) {
+        public Pthread_t(OpaqueMemory32 owner, int offset) {
             super(owner, offset, sizeofPthread_t());
         }
 

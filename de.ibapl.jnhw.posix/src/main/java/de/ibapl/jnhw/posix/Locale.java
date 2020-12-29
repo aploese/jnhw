@@ -26,7 +26,7 @@ import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -263,7 +263,7 @@ public class Locale {
      * lconv}</a>.
      *
      */
-    public static final class Lconv extends OpaqueMemory {
+    public static final class Lconv extends OpaqueMemory32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we

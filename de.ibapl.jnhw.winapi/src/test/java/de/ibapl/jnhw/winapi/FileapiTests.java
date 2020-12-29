@@ -25,7 +25,7 @@ import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.ObjectRef;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.util.ByteBufferUtils;
 import java.io.File;
 import java.io.FileInputStream;
@@ -177,7 +177,7 @@ public class FileapiTests {
 
             @Override
             protected Minwinbase.OVERLAPPED wrapC(NativeAddressHolder address) {
-                if (OpaqueMemory.isSameAddress(address, overlapped)) {
+                if (OpaqueMemory32.isSameAddress(address, overlapped)) {
                     return overlapped;
                 } else {
                     throw new RuntimeException("Address mismatch was: " + address + " bgut expected " + overlapped);
@@ -253,7 +253,7 @@ public class FileapiTests {
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
         
         Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(OpaqueMemory.isSameAddress(overlappedPtr.value, overlapped));
+        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
         ByteBufferUtils.fixBufferPos(byteBuffer, lpNumberOfBytesTransferred.value);
@@ -285,7 +285,7 @@ public class FileapiTests {
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
         
         Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(OpaqueMemory.isSameAddress(overlappedPtr.value, overlapped));
+        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
         ByteBufferUtils.fixBufferPos(byteBuffer, lpNumberOfBytesTransferred.value);
@@ -394,8 +394,8 @@ public class FileapiTests {
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
 
-        OpaqueMemory opaqueMemory = new OpaqueMemory(64, true);
-        OpaqueMemory.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
+        OpaqueMemory32 opaqueMemory = new OpaqueMemory32(64, true);
+        OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
         Fileapi.WriteFile(hFile, opaqueMemory, overlapped);
         long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
         Assertions.assertEquals(Winbase.WAIT_OBJECT_0(), waitResult, "Error during wait");
@@ -421,7 +421,7 @@ public class FileapiTests {
                 Winbase.FILE_FLAG_OVERLAPPED(),
                 null);
 
-        OpaqueMemory.clear(opaqueMemory);
+        OpaqueMemory32.clear(opaqueMemory);
         Fileapi.ReadFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
         waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
         Assertions.assertEquals(Winbase.WAIT_OBJECT_0(), waitResult, "Error during wait");
@@ -432,7 +432,7 @@ public class FileapiTests {
 
         Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
         for (int i = 0; i < WRITE_VALUE.length; i++) {
-            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory.getByte(opaqueMemory, i));
+            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory32.getByte(opaqueMemory, i));
         }
     }
 
@@ -448,8 +448,8 @@ public class FileapiTests {
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
 
-        OpaqueMemory opaqueMemory = new OpaqueMemory(64, true);
-        OpaqueMemory.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
+        OpaqueMemory32 opaqueMemory = new OpaqueMemory32(64, true);
+        OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
 
         Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE overlappedCompletionRoutine = new Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE() {
             @Override
@@ -460,7 +460,7 @@ public class FileapiTests {
 
             @Override
             protected Minwinbase.OVERLAPPED wrapC(NativeAddressHolder address) {
-                if (OpaqueMemory.isSameAddress(address, overlapped)) {
+                if (OpaqueMemory32.isSameAddress(address, overlapped)) {
                     return overlapped;
                 } else {
                     throw new RuntimeException("Address mismatch was: " + address + " bgut expected " + overlapped);
@@ -494,7 +494,7 @@ public class FileapiTests {
                 Winbase.FILE_FLAG_OVERLAPPED(),
                 null);
 
-        OpaqueMemory.clear(opaqueMemory);
+        OpaqueMemory32.clear(opaqueMemory);
         Fileapi.ReadFileEx(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped, overlappedCompletionRoutine);
         waitResult = Synchapi.WaitForSingleObjectEx(overlapped.hEvent(), Winbase.INFINITE(), true);
         Assertions.assertEquals(Winbase.WAIT_IO_COMPLETION(), waitResult, "Error during wait");
@@ -506,7 +506,7 @@ public class FileapiTests {
 
         Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
         for (int i = 0; i < WRITE_VALUE.length; i++) {
-            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory.getByte(opaqueMemory, i));
+            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory32.getByte(opaqueMemory, i));
         }
     }
 
@@ -523,8 +523,8 @@ public class FileapiTests {
         final long COMPLETION_KEY = 24;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
         
-        OpaqueMemory opaqueMemory = new OpaqueMemory(64, true);
-        OpaqueMemory.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
+        OpaqueMemory32 opaqueMemory = new OpaqueMemory32(64, true);
+        OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
         
         IntRef lpNumberOfBytesTransferred = new IntRef();
         LongRef lpCompletionKey = new LongRef();
@@ -536,7 +536,7 @@ public class FileapiTests {
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
         
         Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(OpaqueMemory.isSameAddress(overlappedPtr.value, overlapped));
+        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
 
@@ -558,20 +558,20 @@ public class FileapiTests {
                 null);
         hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        OpaqueMemory.clear(opaqueMemory);
+        OpaqueMemory32.clear(opaqueMemory);
         
         Fileapi.ReadFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
 
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
         
         Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(OpaqueMemory.isSameAddress(overlappedPtr.value, overlapped));
+        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
 
         Handleapi.CloseHandle(hFile);
         for (int i = 0; i < WRITE_VALUE.length; i++) {
-            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory.getByte(opaqueMemory, i));
+            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory32.getByte(opaqueMemory, i));
         }
     }
     
@@ -584,8 +584,8 @@ public class FileapiTests {
                 Fileapi.OPEN_EXISTING(),
                 0,
                 null);
-        OpaqueMemory opaqueMemory = new OpaqueMemory(64, true);
-        OpaqueMemory.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
+        OpaqueMemory32 opaqueMemory = new OpaqueMemory32(64, true);
+        OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
         int bytesWritten = Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length);
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, bytesWritten);
@@ -604,12 +604,12 @@ public class FileapiTests {
                 Fileapi.OPEN_EXISTING(),
                 0,
                 null);
-        OpaqueMemory.clear(opaqueMemory);
+        OpaqueMemory32.clear(opaqueMemory);
         int bytesRead = Fileapi.ReadFile(hFile, opaqueMemory, 0, WRITE_VALUE.length);
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(bytesWritten, bytesRead);
         for (int i = 0; i < WRITE_VALUE.length; i++) {
-            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory.getByte(opaqueMemory, i));
+            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory32.getByte(opaqueMemory, i));
         }
     }
 

@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.OpaqueMemory32;
 import java.nio.charset.Charset;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ public class WinntTests {
     public void test_LPWSTR_stringValueOfNullTerminated() throws Exception {
         byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
         WinDef.LPBYTE lpByte = new WinDef.LPBYTE(64, true);
-        OpaqueMemory.copy(data, 0, lpByte, 0, data.length);
+        OpaqueMemory32.copy(data, 0, lpByte, 0, data.length);
         lpByte.bufferEnd = data.length;
         Assertions.assertEquals("HELLO WORLD!", Winnt.LPWSTR.stringValueOfNullTerminated(lpByte));
     }
