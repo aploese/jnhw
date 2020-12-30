@@ -204,11 +204,6 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/OpaqueMemory64;JJ)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_OpaqueMemory64_2JJ
-#if !defined(_LP64)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint fd, __attribute__ ((unused)) jobject opaqueMemory, __attribute__ ((unused)) jlong off, __attribute__ ((unused)) jlong nByte) {
-        throw_NoSuchNativeMethodException(env, "read(ILde/ibapl/jnhw/OpaqueMemory64;JJ)J");
-        return -1;
-#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject opaqueMemory, jlong off, jlong nByte) {
         if (opaqueMemory == NULL) {
             throw_NullPointerException(env, "buf is null");
@@ -218,13 +213,15 @@ extern "C" {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
-        //result can't be larger then int beacuase nByte is int, so do the conversation
+#if defined(_LP64)
         const ssize_t result = read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) + off, (uint64_t) nByte);
+#else
+        const ssize_t result = read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) + off, (uint32_t) nByte);
+#endif
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return (int64_t) result;
-#endif
     }
 
     /*
@@ -339,11 +336,6 @@ extern "C" {
      * Signature: (ILde/ibapl/jnhw/OpaqueMemory64;JJ)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_OpaqueMemory64_2JJ
-#if !defined(_LP64)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint fd, __attribute__ ((unused)) jobject opaqueMemory, __attribute__ ((unused)) jlong off, __attribute__ ((unused)) jlong nByte) {
-        throw_NoSuchNativeMethodException(env, "write(ILde/ibapl/jnhw/OpaqueMemory64;JJ)J");
-        return -1;
-#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject buf, jlong off, jlong nByte) {
         if (buf == NULL) {
             throw_NullPointerException(env, "buf is null");
@@ -355,13 +347,15 @@ extern "C" {
             return -1;
         }
 
-        //result can't be larger then int beacuase nByte is int, so do the conversation
+#if defined(_LP64)
         const ssize_t result = write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf) + off, (uint64_t) nByte);
+#else
+        const ssize_t result = write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf) + off, (uint32_t) nByte);
+#endif
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
         return (int64_t) result;
-#endif
     }
 
     /*

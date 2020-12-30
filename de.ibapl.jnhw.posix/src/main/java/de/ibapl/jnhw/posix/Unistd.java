@@ -424,7 +424,7 @@ public final class Unistd {
      * indicates an error.
      */
     public final static native @ssize_t
-    long read(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException, NoSuchNativeMethodException;
+    long read(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -462,7 +462,7 @@ public final class Unistd {
      * indicates an error.
      */
     public final static @ssize_t
-    long read(int fildes, OpaqueMemory64 mem) throws NativeErrorException, NoSuchNativeMethodException {
+    long read(int fildes, OpaqueMemory64 mem) throws NativeErrorException {
         return read(fildes, mem, 0, mem.sizeInBytes);
     }
 
