@@ -66,22 +66,24 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_malloc__I
  * Signature: (J)J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_malloc__J
-#if !defined(_LP64)
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz, __attribute__ ((unused))jlong sizeInBytes) {
-        throw_NoSuchNativeMethodException(env, "malloc");
-        return -1;
-#else
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong sizeInBytes) {
         if (sizeInBytes < 0) {
             throw_IllegalArgumentException(env, "sizeInBytes is negative!");
             return -1;
         }
+#if defined(_LP64)
         void* result = malloc((uint64_t) sizeInBytes);
+#else
+        if (sizeInBytes > UINT32_MAX) {
+            throw_IllegalArgumentException(env, "sizeInBytes > UINT32_MAX!");
+            return -1;
+        }
+        void* result = malloc((uint32_t) sizeInBytes);
+#endif
         if (result == NULL) {
             throw_NativeErrorException(env, errno);
         }
         return (intptr_t) result;
-#endif
     }
 
 /*
@@ -90,17 +92,16 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_malloc__J
  * Signature: (II)J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_calloc__II
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint numberOfElements, jint sizeInBytes) {
-        if (sizeInBytes < 0) {
-            throw_IllegalArgumentException(env, "sizeInBytes is negative!");
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nelem, jint elsize) {
+        if (nelem < 0) {
+            throw_IllegalArgumentException(env, "nelem is negative!");
             return -1;
         }
-        if (numberOfElements < 0) {
-            throw_IllegalArgumentException(env, "numberOfElements is negative!");
+        if (elsize < 0) {
+            throw_IllegalArgumentException(env, "elsize is negative!");
             return -1;
         }
-
-        void* result = result = calloc((uint32_t) numberOfElements, (uint32_t) sizeInBytes);
+        void* result = result = calloc((uint32_t) nelem, (uint32_t) elsize);
         if (result == NULL) {
             throw_NativeErrorException(env, errno);
         }
@@ -113,27 +114,32 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_calloc__II
  * Signature: (JJ)J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_calloc__JJ
-#if !defined(_LP64)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jlong numberOfElements, __attribute__ ((unused)) jlong sizeInBytes) {
-        throw_NoSuchNativeMethodException(env, "calloc(JJ)J");
-        return -1;
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong nelem, jlong elsize) {
+        if (nelem < 0) {
+            throw_IllegalArgumentException(env, "nelem is negative!");
+            return -1;
+        }
+        if (elsize < 0) {
+            throw_IllegalArgumentException(env, "elsize is negative!");
+            return -1;
+        }
+#if defined(_LP64)
+        void* result = result = calloc((uint64_t) nelem, (uint64_t) elsize);
 #else
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong numberOfElements, jlong sizeInBytes) {
-        if (sizeInBytes < 0) {
-            throw_IllegalArgumentException(env, "sizeInBytes is negative!");
+        if (nelem > UINT32_MAX) {
+            throw_IllegalArgumentException(env, "nelem > UINT32_MAX!");
             return -1;
         }
-        if (numberOfElements < 0) {
-            throw_IllegalArgumentException(env, "numberOfElements is negative!");
+        if (elsize > UINT32_MAX) {
+            throw_IllegalArgumentException(env, "elsize > UINT32_MAX!");
             return -1;
         }
-
-        void* result = result = calloc((uint64_t) numberOfElements, (uint64_t) sizeInBytes);
+        void* result = result = calloc((uint32_t) nelem, (uint32_t) elsize);
+#endif
         if (result == NULL) {
             throw_NativeErrorException(env, errno);
         }
         return (intptr_t) result;
-#endif
     }
 
 #ifdef __cplusplus

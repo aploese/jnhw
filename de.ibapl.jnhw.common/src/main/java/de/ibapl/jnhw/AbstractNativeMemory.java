@@ -74,9 +74,9 @@ public class AbstractNativeMemory {
     protected final long baseAddress;
     public final AbstractNativeMemory memoryOwner;
     private static native long malloc(int sizeInBytes) throws NativeErrorException;
-    private static native long malloc(long sizeInBytes) throws NativeErrorException, NoSuchNativeMethodException;
-    private static native long calloc(int elements, int sizeInBytes) throws NativeErrorException;
-    private static native long calloc(long elements, long sizeInBytes) throws NativeErrorException, NoSuchNativeMethodException;
+    private static native long malloc(long sizeInBytes) throws NativeErrorException;
+    private static native long calloc(int elements, int elementSizeInBytes) throws NativeErrorException;
+    private static native long calloc(long elements, long elementSizeInBytes) throws NativeErrorException;
 
     
     /**
@@ -136,11 +136,12 @@ public class AbstractNativeMemory {
 
     /**
      * Creates a new memory which will be freed at the end of life.
-     *
+     * On 32 bit systems only uint32_t sizes are possible.
+     * 
      * @param sizeInBytes
      * @param clearMem
      */
-    public AbstractNativeMemory(long sizeInBytes, boolean clearMem) throws NoSuchNativeMethodException {
+    public AbstractNativeMemory(long sizeInBytes, boolean clearMem) {
         try {
             if (clearMem) {
                 baseAddress = calloc(1, sizeInBytes);
@@ -158,23 +159,24 @@ public class AbstractNativeMemory {
         CLEANER.register(this, new MemoryCleaner(baseAddress));
     }
 
-        /**
+    /**
+     * Creates a new memory which will be freed at the end of life.
      *
-     * @param elements
-     * @param elementSizeInBytes
+     * @param nelem
+     * @param elsize
      * @param clearMem
      */
-    public AbstractNativeMemory(int elements, int elementSizeInBytes, boolean clearMem) {
-        if (elements < 0) {
-            throw new IllegalArgumentException("elements < 0");
+    public AbstractNativeMemory(int nelem, int elsize, boolean clearMem) {
+        if (nelem < 0) {
+            throw new IllegalArgumentException("nelem < 0");
         }
-        if (elementSizeInBytes < 0) {
-            throw new IllegalArgumentException("elementSizeInBytes < 0");
+        if (elsize < 0) {
+            throw new IllegalArgumentException("elsize < 0");
         }
-        int sizeInBytes = elementSizeInBytes * elements;
+        int sizeInBytes = elsize * nelem;
         try {
             if (clearMem) {
-                baseAddress = calloc(elements, elementSizeInBytes);
+                baseAddress = calloc(nelem, elsize);
             } else {
                 baseAddress = malloc(sizeInBytes);
             }
@@ -190,22 +192,24 @@ public class AbstractNativeMemory {
     }
 
     /**
-     *
-     * @param elements
-     * @param elementSizeInBytes
+     * Creates a new memory which will be freed at the end of life.
+     * On 32 bit systems only uint32_t sizes are possible.
+     * 
+     * @param nelem
+     * @param elsize
      * @param clearMem
      */
-    public AbstractNativeMemory(long elements, long elementSizeInBytes, boolean clearMem) throws NoSuchNativeMethodException {
-        if (elements < 0) {
-            throw new IllegalArgumentException("elements < 0");
+    public AbstractNativeMemory(long nelem, long elsize, boolean clearMem) {
+        if (nelem < 0) {
+            throw new IllegalArgumentException("nelem < 0");
         }
-        if (elementSizeInBytes < 0) {
-            throw new IllegalArgumentException("elementSizeInBytes < 0");
+        if (elsize < 0) {
+            throw new IllegalArgumentException("elsize < 0");
         }
-        long sizeInBytes = elementSizeInBytes * elements;
+        long sizeInBytes = elsize * nelem;
         try {
             if (clearMem) {
-                baseAddress = calloc(elements, elementSizeInBytes);
+                baseAddress = calloc(nelem, elsize);
             } else {
                 baseAddress = malloc(sizeInBytes);
             }
@@ -224,7 +228,7 @@ public class AbstractNativeMemory {
      * @param owner
      * @param offset
      */
-    public AbstractNativeMemory(AbstractNativeMemory owner, long offset) throws NoSuchNativeMethodException {
+    public AbstractNativeMemory(AbstractNativeMemory owner, long offset) {
         this.baseAddress = owner.baseAddress + offset;
         this.memoryOwner = owner;
     }

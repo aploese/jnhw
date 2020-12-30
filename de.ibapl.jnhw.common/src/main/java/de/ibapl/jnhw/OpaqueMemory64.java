@@ -92,7 +92,7 @@ public class OpaqueMemory64 extends AbstractNativeMemory {
      * @param offset
      * @param sizeInBytes
      */
-    public OpaqueMemory64(OpaqueMemory64 owner, long offset, long sizeInBytes) throws NoSuchNativeMethodException {
+    public OpaqueMemory64(OpaqueMemory64 owner, long offset, long sizeInBytes) {
         super(owner, offset);
         if (sizeInBytes < 0) {
             throw new IllegalArgumentException("negative size");
