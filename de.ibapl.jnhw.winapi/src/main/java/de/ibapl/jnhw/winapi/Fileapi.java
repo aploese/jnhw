@@ -26,6 +26,7 @@ import de.ibapl.jnhw.Define;
 import de.ibapl.jnhw.Include;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.OpaqueMemory64;
 import de.ibapl.jnhw.util.ByteBufferUtils;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
@@ -239,6 +240,30 @@ public final class Fileapi {
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
+     * Reads data from the specified file or input/output (I/O) device.Reads
+     * occur at the position specified by the file pointer if supported by the
+     * device. This is the synchronous read for {@link OpaqueMemory32}.
+     *
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer a pointer to the {@link OpaqueMemory32} that receives the
+     * data read from a file or device.
+     * @param off the start offset in {@code buf} to which the data is
+     * transferred.
+     * @param nNumberOfBytesToRead the maximum number of bytes to read.
+     * @return {@code lpNumberOfBytesRead} the number of bytes read.
+     *
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
+     *
+     * @throws ArrayIndexOutOfBoundsException if pos and nNumberOfBytesToRead are outside of lpBuffer.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static native int ReadFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead) throws NativeErrorException;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
      * Reads a single byte from the specified file or input/output (I/O)
      * device.Reads occur at the position specified by the file pointer if
      * supported by the device. This is the synchronous read.
@@ -279,6 +304,30 @@ public final class Fileapi {
      * indicates an error.
      */
     public static native void ReadFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped) throws NativeErrorException;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
+     * Reads data from the specified file or input/output (I/O) device. Reads
+     * occur at the position specified by the file pointer if supported by the
+     * device. This is the asynchronous read for {@link OpaqueMemory32}.
+     *
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer a pointer to the {@link OpaqueMemory32} that receives the
+     * data read from a file or device.
+     * @param off the start offset in {@code buf} to which the data is
+     * transferred.
+     * @param nNumberOfBytesToRead the maximum number of bytes to read.
+     * @param lpOverlapped A pointer to an {@link OVERLAPPED} structure.
+     *
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
+     *
+     * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static native void ReadFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
@@ -400,6 +449,33 @@ public final class Fileapi {
      * indicates an error.
      */
     public static native void ReadFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfileex">ReadFile</a>
+     * Reads data from the specified file or input/output (I/O) device. Reads
+     * occur at the position specified by the file pointer if supported by the
+     * device. This is the asynchronous read for {@link OpaqueMemory32}.
+     *
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer a pointer to the {@link OpaqueMemory32} that receives the
+     * data read from a file or device.
+     * @param off the start offset in {@code buf} to which the data is
+     * transferred.
+     * @param nNumberOfBytesToRead the maximum number of bytes to read.
+     * @param lpOverlapped A pointer to an {@link OVERLAPPED} structure.
+     * @param lpCompletionRoutine A pointer to a completion routine to be called
+     * when the read operation has been completed and the calling thread is in
+     * an alertable wait state.
+     *
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
+     *
+     * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static native void ReadFileEx(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfileex">ReadFile</a>
@@ -562,6 +638,29 @@ public final class Fileapi {
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
+     * Writes data to the specified file or input/output (I/O) device.Writing
+ starts at the position specified by the file pointer if supported by the
+ device. This is the synchronous write for {@link OpaqueMemory32}.
+     *
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer the {@link OpaqueMemory32} {@code lpBuffer} containing the
+     * data to be written to the file or device.
+     * @param off the start offset in {@code lpBuffer}.
+     * @param nNumberOfBytesToWrite the number of bytes to write.
+     * @return {@code lpNumberOfBytesWritten} the number of bytes written.
+     *
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
+     *
+     * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static native int WriteFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite) throws NativeErrorException;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
      * Writes data to the specified file or input/output (I/O) device. Writing
      * starts at the position specified by the file pointer if supported by the
      * device. This is the synchronous write for a single byte .
@@ -596,6 +695,28 @@ public final class Fileapi {
      * indicates an error.
      */
     public static native void WriteFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped) throws NativeErrorException;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
+     * Writes data to the specified file or input/output (I/O) device.Writing
+     * starts at the position specified by the file pointer if supported by the
+     * device. This is the asynchronous write for {@link OpaqueMemory32}.
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer the {@link OpaqueMemory32} {@code lpBuffer} containing the
+     * data to be written to the file or device.
+     * @param off the start offset in {@code lpBuffer}.
+     * @param nNumberOfBytesToWrite the number of bytes to write.
+     * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
+     *
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
+     *
+     * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static native void WriteFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
@@ -723,6 +844,31 @@ public final class Fileapi {
      * indicates an error.
      */
     public static native void WriteFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefileex">WriteFile</a>
+     * Writes data to the specified file or input/output (I/O) device.Writing
+     * starts at the position specified by the file pointer if supported by the
+     * device. This is the asynchronous write for {@link OpaqueMemory32}.
+     *
+     * @param hFile a handle to the file or I/O device.
+     * @param lpBuffer the {@link OpaqueMemory32} {@code lpBuffer} containing the
+     * data to be written to the file or device.
+     * @param off the start offset in {@code lpBuffer}.
+     * @param nNumberOfBytesToWrite the number of bytes to write.
+     * @param lpOverlapped a pointer to an {@link OVERLAPPED} structure.
+     * @param lpCompletionRoutine A pointer to a completion routine to be called
+     * when the write operation has been completed and the calling thread is in
+     * an alertable wait state.
+     *
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
+     *
+     * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static native void WriteFileEx(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefileex">WriteFile</a>

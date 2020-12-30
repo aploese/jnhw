@@ -21,11 +21,13 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.AbstractNativeMemory;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LongRef;
 import de.ibapl.jnhw.NativeAddressHolder;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.OpaqueMemory64;
 import de.ibapl.jnhw.util.ByteBufferUtils;
 import java.io.File;
 import java.io.FileInputStream;
@@ -177,7 +179,7 @@ public class FileapiTests {
 
             @Override
             protected Minwinbase.OVERLAPPED wrapC(NativeAddressHolder address) {
-                if (OpaqueMemory32.isSameAddress(address, overlapped)) {
+                if (AbstractNativeMemory.isSameAddress(address, overlapped)) {
                     return overlapped;
                 } else {
                     throw new RuntimeException("Address mismatch was: " + address + " bgut expected " + overlapped);
@@ -253,7 +255,7 @@ public class FileapiTests {
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
         
         Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
+        Assertions.assertTrue(AbstractNativeMemory.isSameAddress(overlappedPtr.value, overlapped));
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
         ByteBufferUtils.fixBufferPos(byteBuffer, lpNumberOfBytesTransferred.value);
@@ -285,7 +287,7 @@ public class FileapiTests {
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
         
         Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
+        Assertions.assertTrue(AbstractNativeMemory.isSameAddress(overlappedPtr.value, overlapped));
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
         ByteBufferUtils.fixBufferPos(byteBuffer, lpNumberOfBytesTransferred.value);
@@ -383,7 +385,7 @@ public class FileapiTests {
     }
 
     @Test
-    public void testOpaqueMemoryAsynchronousIO() throws Exception {
+    public void testOpaqueMemory32AsynchronousIO() throws Exception {
         Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
                 Winnt.GENERIC_WRITE(),
                 0,
@@ -437,7 +439,61 @@ public class FileapiTests {
     }
 
     @Test
-    public void testOpaqueMemoryAlertableIO() throws Exception {
+    public void testOpaqueMemory64AsynchronousIO() throws Exception {
+        Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_WRITE(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                Winbase.FILE_FLAG_OVERLAPPED(),
+                null);
+        Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
+        overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
+
+        OpaqueMemory64 opaqueMemory = new OpaqueMemory64(64, true);
+        OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
+        Fileapi.WriteFile(hFile, opaqueMemory, 0, (int)opaqueMemory.sizeInBytes, overlapped);
+        long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
+        Assertions.assertEquals(Winbase.WAIT_OBJECT_0(), waitResult, "Error during wait");
+
+        int bytesTransferred = Ioapiset.GetOverlappedResult(hFile, overlapped, false);
+        Synchapi.ResetEvent(overlapped.hEvent());
+
+        Handleapi.CloseHandle(hFile);
+        Assertions.assertEquals(opaqueMemory.sizeInBytes, bytesTransferred);
+
+        try (FileInputStream fio = new FileInputStream(file)) {
+            byte[] readBuffer = new byte[WRITE_VALUE.length];
+            fio.read(readBuffer);
+            for (int i = 0; i < WRITE_VALUE.length; i++) {
+                Assertions.assertEquals(WRITE_VALUE[i], readBuffer[i]);
+            }
+        }
+        hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_READ(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                Winbase.FILE_FLAG_OVERLAPPED(),
+                null);
+
+        OpaqueMemory64.clear(opaqueMemory);
+        Fileapi.ReadFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
+        waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE());
+        Assertions.assertEquals(Winbase.WAIT_OBJECT_0(), waitResult, "Error during wait");
+        bytesTransferred = Ioapiset.GetOverlappedResult(hFile, overlapped, false);
+
+        Handleapi.CloseHandle(overlapped.hEvent());
+        Handleapi.CloseHandle(hFile);
+
+        Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
+        for (int i = 0; i < WRITE_VALUE.length; i++) {
+            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory64.getByte(opaqueMemory, i));
+        }
+    }
+
+    @Test
+    public void testOpaqueMemory32AlertableIO() throws Exception {
         Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
                 Winnt.GENERIC_WRITE(),
                 0,
@@ -511,7 +567,81 @@ public class FileapiTests {
     }
 
     @Test
-    public void testOpaqueMemoryIOCompetitionPort() throws Exception {
+    public void testOpaqueMemory64AlertableIO() throws Exception {
+        Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_WRITE(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                Winbase.FILE_FLAG_OVERLAPPED(),
+                null);
+        Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
+        overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
+
+        OpaqueMemory64 opaqueMemory = new OpaqueMemory64(64, true);
+        OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
+
+        Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE overlappedCompletionRoutine = new Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE() {
+            @Override
+            protected void callback(int dwErrorCode, int dwNumberOfBytesTransfered, Minwinbase.OVERLAPPED lpOverlapped) {
+                Assertions.assertEquals(Winerror.ERROR_SUCCESS(), dwErrorCode);
+                Assertions.assertEquals(WRITE_VALUE.length, dwNumberOfBytesTransfered);
+            }
+
+            @Override
+            protected Minwinbase.OVERLAPPED wrapC(NativeAddressHolder address) {
+                if (AbstractNativeMemory.isSameAddress(address, overlapped)) {
+                    return overlapped;
+                } else {
+                    throw new RuntimeException("Address mismatch was: " + address + " bgut expected " + overlapped);
+                } 
+            }
+        };
+                
+
+        Fileapi.WriteFileEx(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped, overlappedCompletionRoutine);
+        long waitResult = Synchapi.WaitForSingleObjectEx(overlapped.hEvent(), Winbase.INFINITE(), true);
+        Assertions.assertEquals(Winbase.WAIT_IO_COMPLETION(), waitResult, "Error during wait");
+        
+        int bytesTransferred = Ioapiset.GetOverlappedResult(hFile, overlapped, false);
+        Synchapi.ResetEvent(overlapped.hEvent());
+
+        Handleapi.CloseHandle(hFile);
+        Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
+
+        try (FileInputStream fio = new FileInputStream(file)) {
+            byte[] readBuffer = new byte[WRITE_VALUE.length];
+            fio.read(readBuffer);
+            for (int i = 0; i < WRITE_VALUE.length; i++) {
+                Assertions.assertEquals(WRITE_VALUE[i], readBuffer[i]);
+            }
+        }
+        hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_READ(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                Winbase.FILE_FLAG_OVERLAPPED(),
+                null);
+
+        OpaqueMemory64.clear(opaqueMemory);
+        Fileapi.ReadFileEx(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped, overlappedCompletionRoutine);
+        waitResult = Synchapi.WaitForSingleObjectEx(overlapped.hEvent(), Winbase.INFINITE(), true);
+        Assertions.assertEquals(Winbase.WAIT_IO_COMPLETION(), waitResult, "Error during wait");
+        
+        bytesTransferred = Ioapiset.GetOverlappedResult(hFile, overlapped, false);
+
+        Handleapi.CloseHandle(overlapped.hEvent());
+        Handleapi.CloseHandle(hFile);
+
+        Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
+        for (int i = 0; i < WRITE_VALUE.length; i++) {
+            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory64.getByte(opaqueMemory, i));
+        }
+    }
+
+    @Test
+    public void testOpaqueMemory32IOCompetitionPort() throws Exception {
         Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
                 Winnt.GENERIC_WRITE(), 
                 0,
@@ -576,7 +706,72 @@ public class FileapiTests {
     }
     
     @Test
-    public void testOpaqueMemorySynchronousIO() throws Exception {
+    public void testOpaqueMemory64IOCompetitionPort() throws Exception {
+        Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_WRITE(), 
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                Winbase.FILE_FLAG_OVERLAPPED(),
+                null);
+        final Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
+        final long COMPLETION_KEY = 24;
+        Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
+        
+        OpaqueMemory64 opaqueMemory = new OpaqueMemory64(64, true);
+        OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
+        
+        IntRef lpNumberOfBytesTransferred = new IntRef();
+        LongRef lpCompletionKey = new LongRef();
+        
+        ObjectRef<NativeAddressHolder> overlappedPtr = new ObjectRef<>();
+        
+        Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
+        
+        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        
+        Assertions.assertNotNull(overlappedPtr.value);
+        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
+        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
+        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
+
+        Handleapi.CloseHandle(hFile);
+
+        try (FileInputStream fio = new FileInputStream(file)) {
+            byte[] readBuffer = new byte[WRITE_VALUE.length];
+            fio.read(readBuffer);
+            for (int i = 0; i < WRITE_VALUE.length; i++) {
+                Assertions.assertEquals(WRITE_VALUE[i], readBuffer[i]);
+            }
+        }
+        hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_READ(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                Winbase.FILE_FLAG_OVERLAPPED(),
+                null);
+        hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
+
+        OpaqueMemory64.clear(opaqueMemory);
+        
+        Fileapi.ReadFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
+
+        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        
+        Assertions.assertNotNull(overlappedPtr.value);
+        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
+        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
+        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
+
+        Handleapi.CloseHandle(hFile);
+        for (int i = 0; i < WRITE_VALUE.length; i++) {
+            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory64.getByte(opaqueMemory, i));
+        }
+    }
+
+    @Test
+    public void testOpaqueMemory32SynchronousIO() throws Exception {
         Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
                 Winnt.GENERIC_WRITE(),
                 0,
@@ -613,4 +808,41 @@ public class FileapiTests {
         }
     }
 
+    @Test
+    public void testOpaqueMemory64SynchronousIO() throws Exception {
+        Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_WRITE(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                0,
+                null);
+        OpaqueMemory64 opaqueMemory = new OpaqueMemory64(64, true);
+        OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
+        int bytesWritten = Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length);
+        Handleapi.CloseHandle(hFile);
+        Assertions.assertEquals(WRITE_VALUE.length, bytesWritten);
+
+        try (FileInputStream fio = new FileInputStream(file)) {
+            byte[] readBuffer = new byte[WRITE_VALUE.length];
+            fio.read(readBuffer);
+            for (int i = 0; i < WRITE_VALUE.length; i++) {
+                Assertions.assertEquals(WRITE_VALUE[i], readBuffer[i]);
+            }
+        }
+        hFile = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_READ(),
+                0,
+                null,
+                Fileapi.OPEN_EXISTING(),
+                0,
+                null);
+        OpaqueMemory64.clear(opaqueMemory);
+        int bytesRead = Fileapi.ReadFile(hFile, opaqueMemory, 0, WRITE_VALUE.length);
+        Handleapi.CloseHandle(hFile);
+        Assertions.assertEquals(bytesWritten, bytesRead);
+        for (int i = 0; i < WRITE_VALUE.length; i++) {
+            Assertions.assertEquals(WRITE_VALUE[i], OpaqueMemory64.getByte(opaqueMemory, i));
+        }
+    }
 }

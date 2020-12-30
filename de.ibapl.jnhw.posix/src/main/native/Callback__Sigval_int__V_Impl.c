@@ -19,17 +19,16 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "de_ibapl_jnhw_util_posix_Callback__Sigval_int__V_Impl.h"
-
-
 #include "jnhw-posix.h"
-
-#include <signal.h>
-#include <stdlib.h>
+#include "de_ibapl_jnhw_util_posix_Callback__Sigval_int__V_Impl.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifdef _POSIX_VERSION
+#include <signal.h>
+#include <stdlib.h>
 
 #define MAX_CALL_BACKS 8
 
@@ -117,4 +116,6 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_Callback_1_1Sigval_1int_
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
