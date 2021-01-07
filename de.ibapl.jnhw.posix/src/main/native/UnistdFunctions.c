@@ -241,6 +241,22 @@ extern "C" {
         return result;
     }
 
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    read
+ * Signature: (I)S
+ */
+JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd) {
+        uint8_t value;
+        //result can't be larger then int beacuase nByte is int, so do the conversation
+        const int result = (int) read(fd, &value, 1);
+        if (result == -1) {
+            throw_NativeErrorException(env, errno);
+        }
+        return (jshort)((result << 8) | value);
+    }
+
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    write

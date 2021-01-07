@@ -147,22 +147,26 @@ public class UnistdTest {
         IntRef writeFD = new IntRef();
 
         Unistd.pipe(readFD, writeFD);
+        try {
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Unistd.read(readFD.value, (byte[]) null);
+            });
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Unistd.read(readFD.value, (byte[]) null);
-        });
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Unistd.read(readFD.value, (byte[]) null, 0, 1);
+            });
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Unistd.read(readFD.value, (byte[]) null, 0, 1);
-        });
+            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                Unistd.read(readFD.value, new byte[8], 1, 10);
+            });
 
-        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            Unistd.read(readFD.value, new byte[8], 1, 10);
-        });
-
-        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            Unistd.read(readFD.value, new byte[8], -3, 10);
-        });
+            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                Unistd.read(readFD.value, new byte[8], -3, 10);
+            });
+        } finally {
+            Unistd.close(readFD.value);
+            Unistd.close(writeFD.value);
+        }
 
     }
 
@@ -172,28 +176,33 @@ public class UnistdTest {
         IntRef writeFD = new IntRef();
 
         Unistd.pipe(readFD, writeFD);
+        try {
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Unistd.write(writeFD.value, (byte[]) null);
+            });
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Unistd.write(writeFD.value, (byte[]) null);
-        });
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Unistd.write(writeFD.value, (byte[]) null, 0, 1);
+            });
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Unistd.write(writeFD.value, (byte[]) null, 0, 1);
-        });
+            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                Unistd.write(writeFD.value, new byte[8], 1, 10);
+            });
 
-        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            Unistd.write(writeFD.value, new byte[8], 1, 10);
-        });
-
-        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            Unistd.write(writeFD.value, new byte[8], -3, 10);
-        });
+            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                Unistd.write(writeFD.value, new byte[8], -3, 10);
+            });
+        } finally {
+            Unistd.close(readFD.value);
+            Unistd.close(writeFD.value);
+        }
 
     }
+
     @Test
     public void testGetegid() throws Exception {
         System.out.println("getegid");
-       int egid = Unistd.getegid();
+        int egid = Unistd.getegid();
     }
 
     @Test
@@ -245,39 +254,77 @@ public class UnistdTest {
         IntRef reaDFD = new IntRef();
         IntRef writeFD = new IntRef();
         Unistd.pipe(reaDFD, writeFD);
-        int written = Unistd.write(writeFD.value, writeBytes);
-        int read = Unistd.read(reaDFD.value, readBytes, 0, writeBytes.length);
-        Assertions.assertEquals(writeBytes.length, written);
-        Assertions.assertEquals(written, read);
-        for (int i = 0; i < read; i++) {
-            Assertions.assertEquals((char) writeBytes[i], (char) readBytes[i]);
+        try {
+            int written = Unistd.write(writeFD.value, writeBytes);
+            int read = Unistd.read(reaDFD.value, readBytes, 0, writeBytes.length);
+            Assertions.assertEquals(writeBytes.length, written);
+            Assertions.assertEquals(written, read);
+            for (int i = 0; i < read; i++) {
+                Assertions.assertEquals((char) writeBytes[i], (char) readBytes[i]);
+            }
+        } finally {
+            Unistd.close(reaDFD.value);
+            Unistd.close(writeFD.value);
         }
     }
 
     @Test
-    public void testPipeWithHeapBuffer() throws Exception {
-        IntRef reaDFD = new IntRef();
+    public void testPipeWithHeapBufferOffset() throws Exception {
+        IntRef readFD = new IntRef();
         IntRef writeFD = new IntRef();
-        Unistd.pipe(reaDFD, writeFD);
-        ByteBuffer writeBuffer = ByteBuffer.allocate(this.writeBytes.length);
-        writeBuffer.put(writeBytes);
-        writeBuffer.flip();
-        writeBuffer = writeBuffer.asReadOnlyBuffer();
+        Unistd.pipe(readFD, writeFD);
+        try {
+            final int BYTES_TO_WRITE = 4;
+            final int WRITE_OFFSET = 2;
+            final int READ_OFFSET = 10;
+            
+            ByteBuffer writeBuffer = ByteBuffer.wrap(this.writeBytes).slice(WRITE_OFFSET, BYTES_TO_WRITE);
+            
+            byte[] readBackingArray = new byte[READ_OFFSET + BYTES_TO_WRITE];
 
-        ByteBuffer readBuffer = ByteBuffer.allocate(this.writeBytes.length);
 
-        int written = Unistd.write(writeFD.value, writeBuffer);
-        int read = Unistd.read(reaDFD.value, readBuffer);
-        Assertions.assertEquals(written, read);
+            ByteBuffer readBuffer = ByteBuffer.wrap(readBackingArray).slice(READ_OFFSET, BYTES_TO_WRITE);
+            int written = Unistd.write(writeFD.value, writeBuffer);
 
-        Assertions.assertEquals(writeBytes.length, writeBuffer.position());
-        Assertions.assertEquals(writeBytes.length, readBuffer.position());
-        readBuffer.flip();
-        readBuffer.get(readBytes, 0, writeBytes.length);
+            int read = Unistd.read(readFD.value, readBuffer);
+            Assertions.assertEquals(written, read);
 
-        for (int i = 0; i < read; i++) {
-            Assertions.assertEquals((char) writeBytes[i], (char) readBytes[i]);
+            Assertions.assertEquals(BYTES_TO_WRITE, writeBuffer.position());
+            Assertions.assertEquals(BYTES_TO_WRITE, readBuffer.position());
+            readBuffer.flip();
+            readBuffer.get(readBytes, 0, BYTES_TO_WRITE);
+
+            for (int i = 0; i < read; i++) {
+                Assertions.assertEquals((char) writeBytes[WRITE_OFFSET + i], (char) readBytes[i]);
+                Assertions.assertEquals((char) writeBytes[WRITE_OFFSET + i], (char) readBackingArray[i + READ_OFFSET]);
+            }
+        } finally {
+            Unistd.close(readFD.value);
+            Unistd.close(writeFD.value);
         }
+    }
+
+    @Test
+    public void testPipeWithReadOnlyBuffer() throws Exception {
+        final IntRef readFD = new IntRef();
+        final IntRef writeFD = new IntRef();
+        Unistd.pipe(readFD, writeFD);
+        try {
+            final ByteBuffer writeBuffer = ByteBuffer.wrap(this.writeBytes).asReadOnlyBuffer();
+
+            final ByteBuffer readBuffer = ByteBuffer.allocate(this.writeBytes.length).asReadOnlyBuffer();
+
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                Unistd.write(writeFD.value, writeBuffer);
+            });
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                int read = Unistd.read(readFD.value, readBuffer);
+            });
+        } finally {
+            Unistd.close(readFD.value);
+            Unistd.close(writeFD.value);
+        }
+
     }
 
     @Test
@@ -452,7 +499,7 @@ public class UnistdTest {
      * @throws Exception
      */
     @Test
-    public void testWriteReadByte10MB() throws Exception {
+    public void testWriteReadByteRef10MB() throws Exception {
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_RDWR());
         int written = 0;
         for (int i = 0; i < 1_000; i++) {
@@ -465,10 +512,39 @@ public class UnistdTest {
         ByteRef byteRef = new ByteRef();
         for (int i = 0; i < 1_000; i++) {
             read += Unistd.read(fd, byteRef);
+            Assertions.assertEquals(1, byteRef.value);
         }
         Assertions.assertEquals(1_000, read);
         read = Unistd.read(fd, byteRef);
         Assertions.assertEquals(0, read);
+
+    }
+
+    /**
+     * The size of the buffer would exceed the available stack space... th vm
+     * would crash
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testWriteReadByte10MB() throws Exception {
+        fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_RDWR());
+        int written = 0;
+        for (int i = 0; i < 1_000; i++) {
+            written += Unistd.write(fd, (byte) 1);
+        }
+        Assertions.assertEquals(1_000, written);
+        Unistd.lseek(fd, 0, Unistd.SEEK_SET());
+
+        int read = 0;
+        for (int i = 0; i < 1_000; i++) {
+            short result = Unistd.read(fd);
+            read += Unistd.jnhwIsSingeByteRead(result) ? 1 : 0;
+            Assertions.assertEquals(1, Unistd.jnhwSingeByteReadToByte(result));
+        }
+        Assertions.assertEquals(1_000, read);
+        read = Unistd.read(fd);
+        Assertions.assertFalse(Unistd.jnhwIsSingeByteRead((short) read)); //OK we read nothing and size is 0 too.
 
     }
 

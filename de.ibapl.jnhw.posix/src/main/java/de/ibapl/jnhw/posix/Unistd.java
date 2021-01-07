@@ -41,6 +41,7 @@ import de.ibapl.jnhw.posix.sys.Types.useconds_t;
 import de.ibapl.jnhw.util.ByteBufferUtils;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.nio.ByteBuffer;
+import java.util.logging.Logger;
 
 /**
  * Wrapper around the {@code <stdio.h>} header.
@@ -372,7 +373,11 @@ public final class Unistd {
         if (buffer.isDirect()) {
             result = read_ArgsOK(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
         } else {
-            result = read(fildes, buffer.array(), buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
+            if (buffer.hasArray()) {
+                result = read(fildes, buffer.array(), buffer.arrayOffset() + buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
+            } else {
+                throw new IllegalArgumentException("Can't handle ByteBuffer of class: " + buffer.getClass());
+            }
         }
         buffer.position(buffer.position() + result);
         return result;
@@ -483,6 +488,23 @@ public final class Unistd {
      */
     public final static native @ssize_t
     int read(int fildes, ByteRef data) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/read.html">pread,
+     * read - read from a file</a>.
+     *
+     *
+     * @param fildes a valid file descriptor open for reading
+     * @return the unsigned byte in the low byte and the length in the upper
+     * byte. if nothing was read the value of the lower byte is unspecific, the
+     * length must be 0.
+     *
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native short read(int fildes) throws NativeErrorException;
 
     private static native int read_ArgsOK(int fildes, ByteBuffer buffer, int off, int nByte) throws NativeErrorException;
 
@@ -654,17 +676,10 @@ public final class Unistd {
         if (buffer.isDirect()) {
             result = write_ArgsOK(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
         } else {
-            if (buffer.isReadOnly()) {
-                // see buffer.array() why we do this is here.
-                final int bytesToWrite = ByteBufferUtils.calcBufferWriteBytes(buffer);
-                ByteBuffer _buf = ByteBuffer.allocateDirect(bytesToWrite);
-                _buf.put(buffer);
-                _buf.flip();
-                //We haven't written anything yet, so fix the position for now.
-                buffer.position(buffer.position() - bytesToWrite);
-                result = write_ArgsOK(fildes, _buf, _buf.position(), _buf.remaining());
+            if (buffer.hasArray()) {
+                result = write(fildes, buffer.array(), buffer.arrayOffset() + buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
             } else {
-                result = write(fildes, buffer.array(), buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
+                throw new IllegalArgumentException("Can't handle ByteBuffer of class: " + buffer.getClass());
             }
         }
         buffer.position(buffer.position() + result);
@@ -673,6 +688,18 @@ public final class Unistd {
 
     //We pass down ByteBuffer to get the native address and pass the other data onto the stack
     private static native int write_ArgsOK(int fildes, ByteBuffer buffer, int off, int nByte) throws NativeErrorException;
+
+    public static boolean jnhwIsSingeByteRead(short nread) {
+        return (nread & 0xFF00) == 0x0100;
+    }
+
+    public static byte jnhwSingeByteReadToByte(short nread) {
+        return (byte) (nread & 0xFF);
+    }
+
+    public static int jnhwSingeByteReadToInt(short nread) {
+        return nread & 0x00FF;
+    }
 
     private Unistd() {
     }
