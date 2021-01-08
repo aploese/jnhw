@@ -93,13 +93,13 @@ public class AbstractMemoryTest {
         switch (multiarchInfo) {
             case I386__LINUX__GNU:
                 Assertions.assertEquals(28, NativeMemoryAlignment.offsetOfS_i8_i64__7_i64());
-                Assertions.assertEquals(32, NativeMemoryAlignment.offsetOfS_i8_i64__8_i8());
-                Assertions.assertEquals(36, NativeMemoryAlignment.offsetOfS_i8_i64__9_i32());
-                Assertions.assertEquals(42, NativeMemoryAlignment.offsetOfS_i8_i64__10_i8());
+                Assertions.assertEquals(36, NativeMemoryAlignment.offsetOfS_i8_i64__8_i8());
+                Assertions.assertEquals(40, NativeMemoryAlignment.offsetOfS_i8_i64__9_i32());
+                Assertions.assertEquals(44, NativeMemoryAlignment.offsetOfS_i8_i64__10_i8());
                 Assertions.assertEquals(46, NativeMemoryAlignment.offsetOfS_i8_i64__11_i16());
                 Assertions.assertEquals(48, NativeMemoryAlignment.offsetOfS_i8_i64__12_i8());
-                Assertions.assertEquals(8, NativeMemoryAlignment.alignOfS_i8_i64());
-                Assertions.assertEquals(50, NativeMemoryAlignment.sizeOfS_i8_i64());
+                Assertions.assertEquals(4, NativeMemoryAlignment.alignOfS_i8_i64());
+                Assertions.assertEquals(52, NativeMemoryAlignment.sizeOfS_i8_i64());
                 break;
             default:
                 Assertions.assertEquals(32, NativeMemoryAlignment.offsetOfS_i8_i64__7_i64());
