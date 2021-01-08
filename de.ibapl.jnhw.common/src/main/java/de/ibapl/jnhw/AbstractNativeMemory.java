@@ -38,7 +38,7 @@ public class AbstractNativeMemory {
     static {
         LibJnhwCommonLoader.touch();
     }
-    
+
         static class MemoryCleaner implements Runnable {
 
         final long baseAddress;
@@ -282,4 +282,11 @@ public class AbstractNativeMemory {
 
     public static native int offsetOfS_i64_i8__1_i8();
     
+    public static native int allignOfI8();
+    
+    public static native int allignOfI16();
+    
+    public static native int allignOfI32();
+    
+    public static native int allignOfI64();
 }

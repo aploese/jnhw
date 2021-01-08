@@ -81,11 +81,11 @@ public class AbstractMemoryTest {
     @Test
     public void testSizeOfS_i8_i64() {
         switch (WORD_SIZE) {
-            case _64_BIT:
-                Assertions.assertEquals(16, AbstractNativeMemory.sizeOfS_i8_i64());
-                break;
             case _32_BIT:
                 Assertions.assertEquals(12, AbstractNativeMemory.sizeOfS_i8_i64());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(16, AbstractNativeMemory.sizeOfS_i8_i64());
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -105,11 +105,11 @@ public class AbstractMemoryTest {
     @Test
     public void testSizeOfS_i64_i8() {
         switch (WORD_SIZE) {
-            case _64_BIT:
-                Assertions.assertEquals(16, AbstractNativeMemory.sizeOfS_i64_i8());
-                break;
             case _32_BIT:
                 Assertions.assertEquals(12, AbstractNativeMemory.sizeOfS_i64_i8());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(16, AbstractNativeMemory.sizeOfS_i64_i8());
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -144,11 +144,11 @@ public class AbstractMemoryTest {
     @Test
     public void testOffsetOfS_i8_i64__1_i64() {
         switch (WORD_SIZE) {
-            case _64_BIT:
-                Assertions.assertEquals(ALIGN64, AbstractNativeMemory.offsetOfS_i8_i64__1_i64());
-                break;
             case _32_BIT:
                 Assertions.assertEquals(ALIGN32, AbstractNativeMemory.offsetOfS_i8_i64__1_i64());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(ALIGN64, AbstractNativeMemory.offsetOfS_i8_i64__1_i64());
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -175,13 +175,13 @@ public class AbstractMemoryTest {
         Assertions.assertEquals(AbstractNativeMemory.sizeOfS_i64_i8(), AbstractNativeMemory.sizeOfS_i8_i64());
         Assertions.assertEquals(ALIGN64, AbstractNativeMemory.offsetOfS_i64_i8__1_i8());
         switch (WORD_SIZE) {
-            case _64_BIT:
-                Assertions.assertEquals(AbstractNativeMemory.offsetOfS_i8_i64__1_i64(), AbstractNativeMemory.offsetOfS_i64_i8__1_i8());
-                Assertions.assertEquals(ALIGN64, AbstractNativeMemory.offsetOfS_i8_i64__1_i64());
-                break;
             case _32_BIT:
                 Assertions.assertNotEquals(AbstractNativeMemory.offsetOfS_i8_i64__1_i64(), AbstractNativeMemory.offsetOfS_i64_i8__1_i8());
                 Assertions.assertEquals(ALIGN32, AbstractNativeMemory.offsetOfS_i8_i64__1_i64());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(AbstractNativeMemory.offsetOfS_i8_i64__1_i64(), AbstractNativeMemory.offsetOfS_i64_i8__1_i8());
+                Assertions.assertEquals(ALIGN64, AbstractNativeMemory.offsetOfS_i8_i64__1_i64());
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -198,6 +198,23 @@ public class AbstractMemoryTest {
     public void test_i16_and_i8() {
         Assertions.assertEquals(AbstractNativeMemory.sizeOfS_i16_i8(), AbstractNativeMemory.sizeOfS_i8_i16());
         Assertions.assertEquals(AbstractNativeMemory.offsetOfS_i8_i16__1_i16(), AbstractNativeMemory.offsetOfS_i16_i8__1_i8());
+    }
+
+    @Test
+    public void test_Allignment() {
+        Assertions.assertEquals(ALIGN8, AbstractNativeMemory.allignOfI8());
+        Assertions.assertEquals(ALIGN16, AbstractNativeMemory.allignOfI16());
+        Assertions.assertEquals(ALIGN32, AbstractNativeMemory.allignOfI32());
+        switch (WORD_SIZE) {
+            case _32_BIT:
+        Assertions.assertEquals(ALIGN32, AbstractNativeMemory.allignOfI64());
+                break;
+            case _64_BIT:
+        Assertions.assertEquals(ALIGN64, AbstractNativeMemory.allignOfI64());
+                break;
+            default:
+                throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
+        }
     }
 
 }

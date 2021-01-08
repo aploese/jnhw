@@ -401,6 +401,46 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_offsetOfS_1i64_1i
         return offsetof(struct s_i64_i8, _1_i8);
     }
 
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    allignOfI8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_allignOfI8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return __alignof__(int8_t);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    allignOfI16
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_allignOfI16
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return __alignof__(int16_t);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    allignOfI32
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_allignOfI32
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return __alignof__(int32_t);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    allignOfI64
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_allignOfI64
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return __alignof__(int64_t);
+    }
+
 
 #ifdef __cplusplus
 }
