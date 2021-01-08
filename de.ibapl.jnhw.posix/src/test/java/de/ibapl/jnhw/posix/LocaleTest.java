@@ -85,8 +85,8 @@ public class LocaleTest {
             });
 
         } else {
-        Assertions.assertEquals(0, nativeLocale_t(0));
-        Assertions.assertEquals(1, nativeLocale_t(1));
+            Assertions.assertEquals(0, nativeLocale_t(0));
+            Assertions.assertEquals(1, nativeLocale_t(1));
             Assertions.assertEquals(-1, nativeLocale_t(-1));
         }
     }
@@ -185,7 +185,11 @@ public class LocaleTest {
         Locale.Locale_t newloc = Locale.LC_GLOBAL_LOCALE();
         Locale.Locale_t result = Locale.uselocale(newloc);
         Assertions.assertNotNull(result);
-            Assertions.assertNotEquals(Locale.Locale_t.locale_t_0(), result);
+        Assertions.assertNotEquals(Locale.Locale_t.locale_t_0(), result);
     }
 
+    @Test
+    public void testSizeOfLconv() throws Exception {
+        Assertions.assertEquals(96, Locale.Lconv.sizeofLconv());
+    }
 }

@@ -172,4 +172,9 @@ public class TermiosTest {
         assertFalse(termios.toString().isEmpty(), "Termios.StructTermios is empty");
     }
 
+    @Test
+    public void testSizeOfTermios() throws Exception {
+        Assertions.assertEquals(60, Termios.StructTermios.sizeofTermios());
+    }
+    
 }

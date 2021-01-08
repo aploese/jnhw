@@ -43,4 +43,8 @@ public class PollTest {
         });
     }
 
+    @Test
+    public void testSizeOfPollFd() throws Exception {
+        Assertions.assertEquals(8, Poll.PollFd.sizeofPollFd());
+    }
 }

@@ -551,16 +551,16 @@ public class Time {
          *
          * @return the native value sizeof(struct itimerspec).
          */
-        public static native int sizeof_itimerspec();
+        public static native int sizeofItimerspec();
 
-        public static native int offsetof_it_interval();
+        public static native int offsetofIt_interval();
 
-        public static native int offsetof_it_value();
+        public static native int offsetofIt_value();
 
         public Itimerspec(boolean clearMem) throws NoSuchNativeTypeException {
-            super(sizeof_itimerspec(), clearMem);
-            it_interval = new Timespec(this, offsetof_it_interval());
-            it_value = new Timespec(this, offsetof_it_value());
+            super(sizeofItimerspec(), clearMem);
+            it_interval = new Timespec(this, offsetofIt_interval());
+            it_value = new Timespec(this, offsetofIt_value());
         }
 
         public Itimerspec() throws NoSuchNativeTypeException {

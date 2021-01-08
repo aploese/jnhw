@@ -26,6 +26,8 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+//for offsetof
+#include <stddef.h>
 
 
 #ifdef __cplusplus
@@ -141,6 +143,264 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_calloc__JJ
         }
         return (intptr_t) result;
     }
+
+
+struct s_i8 {
+    int8_t _0_i8;
+};
+
+struct s_3xi8 {
+    int8_t _0_i8;
+    int8_t _1_i8;
+    int8_t _2_i8;
+};
+
+struct s_2xsi8 {
+    struct s_i8 _0_si8;
+    struct s_i8 _1_si8;
+};
+
+struct s_si8_s3xi8 {
+    struct s_i8 _0_si8;
+    struct s_3xi8 _1_s3xi8;
+};
+
+struct s_s3xi8_si8 {
+    struct s_3xi8 _0_s3xi8;
+    struct s_i8 _1_si8;
+};
+
+struct s_i8_i16 {
+    int8_t _0_i8;
+    int16_t _1_i16;
+};
+
+struct s_i8_i32 {
+    int8_t _0_i8;
+    int32_t _1_i32;
+};
+
+struct s_i8_i64 {
+    int8_t _0_i8;
+    int64_t _1_i64;
+};
+
+struct s_i16_i8 {
+    int16_t _0_i16;
+    int8_t _1_i8;
+};
+
+struct s_i32_i8 {
+    int32_t _0_i32;
+    int8_t _1_i8;
+};
+
+struct s_i64_i8 {
+    int64_t _0_i64;
+    int8_t _1_i8;
+};
+
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    sizeOfS_i8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_sizeOfS_1i8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(struct s_i8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    sizeOfS_s2xi8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_sizeOfS_1s2xi8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(struct s_2xsi8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    sizeOfS_3xi8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_sizeOfS_13xi8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(struct s_3xi8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    sizeOfS_si8_s3xi8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_sizeOfS_1si8_1s3xi8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(struct s_si8_s3xi8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    sizeOfS_s3xi8_si8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_sizeOfS_1s3xi8_1si8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(struct s_s3xi8_si8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    sizeOfS_i8_i16
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_sizeOfS_1i8_1i16
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(struct s_i8_i16);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    sizeOfS_i8_i32
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_sizeOfS_1i8_1i32
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(struct s_i8_i32);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    sizeOfS_i8_i64
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_sizeOfS_1i8_1i64
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(struct s_i8_i64);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    sizeOfS_i16_i8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_sizeOfS_1i16_1i8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(struct s_i16_i8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    sizeOfS_i32_i8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_sizeOfS_1i32_1i8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(struct s_i32_i8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    sizeOfS_i64_i8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_sizeOfS_1i64_1i8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(struct s_i64_i8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    offsetOfS_s2xi8__1_si8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_offsetOfS_1s2xi8_1_11_1si8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return offsetof(struct s_2xsi8, _1_si8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    offsetOfS_si8_s3xi8__1_s3xi8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_offsetOfS_1si8_1s3xi8_1_11_1s3xi8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return offsetof(struct s_si8_s3xi8, _1_s3xi8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    offsetOfS_s3xi8_si8__1_si8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_offsetOfS_1s3xi8_1si8_1_11_1si8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return offsetof(struct s_s3xi8_si8, _1_si8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    offsetOfS_i8_i16__1_i16
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_offsetOfS_1i8_1i16_1_11_1i16
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return offsetof(struct s_i8_i16, _1_i16);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    offsetOfS_i8_i32__1_i32
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_offsetOfS_1i8_1i32_1_11_1i32
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return offsetof(struct s_i8_i32, _1_i32);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    offsetOfS_i8_i64__1_i64
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_offsetOfS_1i8_1i64_1_11_1i64
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return offsetof(struct s_i8_i64, _1_i64);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    offsetOfS_i16_i8__1_i8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_offsetOfS_1i16_1i8_1_11_1i8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return offsetof(struct s_i16_i8, _1_i8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    offsetOfS_i32_i8__1_i8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_offsetOfS_1i32_1i8_1_11_1i8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return offsetof(struct s_i32_i8, _1_i8);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Method:    offsetOfS_i64_i8__1_i8
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_offsetOfS_1i64_1i8_1_11_1i8
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return offsetof(struct s_i64_i8, _1_i8);
+    }
+
 
 #ifdef __cplusplus
 }

@@ -256,4 +256,15 @@ public class PthreadTest {
                 Pthread.pthread_setschedprio(Pthread.pthread_self(), 0);
         }
     }
+
+    @Test
+    public void testSizeOfPthread_attr_t() throws Exception {
+        Assertions.assertEquals(56, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+    }
+    
+    @Test
+    public void testSizeOfPthread_t() throws Exception {
+        Assertions.assertEquals(8, Pthread.Pthread_t.sizeofPthread_t());
+    }
+    
 }

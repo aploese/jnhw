@@ -34,20 +34,20 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Sched_Sched_param
-     * Method:    sizeof_sched_param
+     * Method:    sizeofSched_param
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_sizeof_1sched_1param
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_sizeofSched_1param
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct sched_param);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Sched_Sched_param
-     * Method:    offsetof_sched_ss_init_budget
+     * Method:    offsetofSched_ss_init_budget
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_offsetof_1sched_1ss_1init_1budget
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_offsetofSched_1ss_1init_1budget
 #if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeMemberException(env, "sched_param", "sched_ss_init_budget");
@@ -60,10 +60,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Sched_Sched_param
-     * Method:    offsetof_sched_ss_repl_period
+     * Method:    offsetofSched_ss_repl_period
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_offsetof_1sched_1ss_1repl_1period
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_offsetofSched_1ss_1repl_1period
 #if defined(__linux__)  || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeMemberException(env, "sched_param", "offsetof_sched_ss_repl_period");

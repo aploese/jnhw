@@ -24,7 +24,6 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Assertions;
@@ -130,7 +129,7 @@ public class SchedTest {
                 switch (multiarchTupelBuilder.getOS()) {
                     case LINUX:
                         if ((0L != interval.tv_nsec())
-                                && (8_000_000L != interval.tv_nsec()) 
+                                && (8_000_000L != interval.tv_nsec())
                                 && (4_000_000L != interval.tv_nsec())) {
                             Assertions.fail("interval.tv_nsec() is :" + interval.tv_nsec());
                         }
@@ -155,21 +154,21 @@ public class SchedTest {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                         () -> {
+                        () -> {
                             Sched.sched_setparam(Unistd.getpid(), null);
                         });
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                         () -> {
+                        () -> {
                             Sched.sched_getparam(Unistd.getpid(), null);
                         });
                 break;
             default:
                 Assertions.assertThrows(NullPointerException.class,
-                         () -> {
+                        () -> {
                             Sched.sched_setparam(Unistd.getpid(), null);
                         });
                 Assertions.assertThrows(NullPointerException.class,
-                         () -> {
+                        () -> {
                             Sched.sched_getparam(Unistd.getpid(), null);
                         });
                 Sched.Sched_param param = new Sched.Sched_param();
@@ -192,20 +191,20 @@ public class SchedTest {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                         () -> {
+                        () -> {
                             Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
                         });
                 break;
             default:
                 Assertions.assertThrows(NullPointerException.class,
-                         () -> {
+                        () -> {
                             Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
                         });
                 Sched.Sched_param param = new Sched.Sched_param(true);
                 if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
                     //Any idea why this is so?
                     NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
-                             () -> {
+                            () -> {
                                 Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
                             });
                     assertEquals(Errno.EPERM(), nee.errno, Errno.getErrnoSymbol(nee.errno));
@@ -301,6 +300,21 @@ public class SchedTest {
         } catch (NoSuchNativeTypeMemberException nstme) {
         }
         Assertions.assertEquals(0, memberSum);
+    }
+
+    @Test
+    public void testSizeOfSchedparam() throws Exception {
+        Assertions.assertEquals(4, Sched.Sched_param.sizeofSched_param());
+    }
+
+    @Test
+    public void testOffsetOfSched_ss_init_budget() throws Exception {
+        Assertions.assertThrows(NoSuchNativeTypeMemberException.class,  Sched.Sched_param::offsetofSched_ss_init_budget);
+    }
+
+    @Test
+    public void testOffsetOfSched_ss_repl_period() throws Exception {
+        Assertions.assertThrows(NoSuchNativeTypeMemberException.class, Sched.Sched_param::offsetofSched_ss_repl_period);
     }
 
 }

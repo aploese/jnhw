@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_J_V_Impl;
 import de.ibapl.jnhw.Callback_NativeRunnable;
 import de.ibapl.jnhw.Callback_PtrAbstractNativeMemory_V_Impl;
 import de.ibapl.jnhw.NativeAddressHolder;
@@ -751,6 +750,11 @@ public class AioTest {
                     Aio.aio_read(null);
                 });
         }
+    }
+
+    @Test
+    public void testSizeOfAiocb() throws Exception {
+        Assertions.assertEquals(168, Aio.Aiocb.sizeofAiocb());
     }
 
 }

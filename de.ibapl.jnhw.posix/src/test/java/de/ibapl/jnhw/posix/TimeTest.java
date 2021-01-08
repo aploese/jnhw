@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_J_V_Impl;
 import de.ibapl.jnhw.Defined;
 import de.ibapl.jnhw.IntRef;
 import de.ibapl.jnhw.LongRef;
@@ -42,7 +41,6 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatterBuilder;
-import java.util.TimeZone;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -978,4 +976,34 @@ public class TimeTest {
         }
     }
 
+    @Test
+    public void testSizeOfItimerspec() throws Exception {
+        Assertions.assertEquals(32, Time.Itimerspec.sizeofItimerspec());
+    }
+    
+    @Test
+    public void testSizeOfTimer_t() throws Exception {
+        Assertions.assertEquals(8, Time.Timer_t.sizeofTimer_t());
+    }
+    
+    @Test
+    public void testSizeOfTimespec() throws Exception {
+        Assertions.assertEquals(16, Time.Timespec.sizeofTimespec());
+    }
+    
+    @Test
+    public void testSizeOfTm() throws Exception {
+        Assertions.assertEquals(56, Time.Tm.sizeofTm());
+    }
+    @Test
+    public void testOffsetOfIt_interval() throws Exception {
+        Assertions.assertEquals(0, Time.Itimerspec.offsetofIt_interval());
+    }
+    
+    @Test
+    public void testOffsetOfIt_value() throws Exception {
+        Assertions.assertEquals(16, Time.Itimerspec.offsetofIt_value());
+    }
+    
+    
 }

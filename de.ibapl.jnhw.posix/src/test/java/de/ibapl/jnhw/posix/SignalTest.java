@@ -984,4 +984,43 @@ public class SignalTest {
 
     }
 
+    @Test
+    public void testSizeOfMcontext_t() throws Exception {
+        Assertions.assertEquals(256, Signal.Mcontext_t.sizeofMcontext_t());
+    }
+
+    @Test
+    public void testSizeOfSigaction() throws Exception {
+        Assertions.assertEquals(152, Signal.Sigaction.sizeofSigaction());
+    }
+
+    @Test
+    public void testSizeOfSigevent() throws Exception {
+        Assertions.assertEquals(64, Signal.Sigevent.sizeofSigevent());
+    }
+    
+    @Test
+    public void testSizeOfSiginfo_t() throws Exception {
+        Assertions.assertEquals(128, Signal.Siginfo_t.sizeofSiginfo_t());
+    }
+    
+    @Test
+    public void testSizeOfSigset_t() throws Exception {
+        Assertions.assertEquals(128, Signal.Sigset_t.sizeofSigset_t());
+    }
+    
+    @Test
+    public void testSizeOfSigval() throws Exception {
+        Assertions.assertEquals(8, Signal.Sigval.sizeofSigval());
+    }
+    
+    @Test
+    public void testSizeOfStack_t() throws Exception {
+        Assertions.assertEquals(24, Signal.Stack_t.sizeofStack_t());
+    }
+    
+    @Test
+    public void testSizeOfUcontext_t() throws Exception {
+        Assertions.assertEquals(968, Signal.Ucontext_t.sizeofUcontext_t());
+    }
 }

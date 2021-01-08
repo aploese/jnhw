@@ -69,28 +69,28 @@ public class Sched {
          *
          * @return the native value sizeof(struct sched_param).
          */
-        public static native int sizeof_sched_param();
+        public static native int sizeofSched_param();
 
-        public static native int offsetof_sched_ss_init_budget() throws NoSuchNativeTypeMemberException;
+        public static native int offsetofSched_ss_init_budget() throws NoSuchNativeTypeMemberException;
 
-        public static native int offsetof_sched_ss_repl_period() throws NoSuchNativeTypeMemberException;
+        public static native int offsetofSched_ss_repl_period() throws NoSuchNativeTypeMemberException;
 
         public Sched_param() {
             this(false);
         }
         
         public Sched_param(final boolean clearMem) {
-            super(sizeof_sched_param(), clearMem);
+            super(sizeofSched_param(), clearMem);
             Time.Timespec t;
             try {
-                t = new Time.Timespec(this, offsetof_sched_ss_init_budget());
+                t = new Time.Timespec(this, offsetofSched_ss_init_budget());
             } catch (NoSuchNativeTypeMemberException nstme) {
                 t = null;
             }
             sched_ss_init_budget = t;
 
             try {
-                t = new Time.Timespec(this, offsetof_sched_ss_repl_period());
+                t = new Time.Timespec(this, offsetofSched_ss_repl_period());
             } catch (NoSuchNativeTypeMemberException nstme) {
                 t = null;
             }
