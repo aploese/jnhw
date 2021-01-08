@@ -268,6 +268,9 @@ public class UnistdTest {
         }
     }
 
+    //TODO JDK > 13  will support slice(pos, lim) so we could refert to 
+    // ByteBuffer writeBuffer = ByteBuffer.wrap(this.writeBytes).slice(WRITE_OFFSET, BYTES_TO_WRITE);
+    // ByteBuffer readBuffer = ByteBuffer.wrap(readBackingArray).slice(READ_OFFSET, BYTES_TO_WRITE);
     @Test
     public void testPipeWithHeapBufferOffset() throws Exception {
         IntRef readFD = new IntRef();
@@ -278,12 +281,19 @@ public class UnistdTest {
             final int WRITE_OFFSET = 2;
             final int READ_OFFSET = 10;
             
-            ByteBuffer writeBuffer = ByteBuffer.wrap(this.writeBytes).slice(WRITE_OFFSET, BYTES_TO_WRITE);
+            ByteBuffer writeBuffer = ByteBuffer.wrap(this.writeBytes);
+            writeBuffer.position(WRITE_OFFSET);
+            writeBuffer = writeBuffer.slice();
+            writeBuffer.limit(BYTES_TO_WRITE);
             
             byte[] readBackingArray = new byte[READ_OFFSET + BYTES_TO_WRITE];
 
 
-            ByteBuffer readBuffer = ByteBuffer.wrap(readBackingArray).slice(READ_OFFSET, BYTES_TO_WRITE);
+            ByteBuffer readBuffer = ByteBuffer.wrap(readBackingArray);
+            readBuffer.position(READ_OFFSET);
+            readBuffer = readBuffer.slice();
+            readBuffer.limit(BYTES_TO_WRITE);
+            
             int written = Unistd.write(writeFD.value, writeBuffer);
 
             int read = Unistd.read(readFD.value, readBuffer);
