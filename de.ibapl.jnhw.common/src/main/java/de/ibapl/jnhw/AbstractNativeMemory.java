@@ -263,35 +263,67 @@ public class AbstractNativeMemory {
 
         public static native int sizeOfS_s3xi8_si8();
 
-        public static native int sizeOfS_i8_i16();
-
-        public static native int sizeOfS_i8_i32();
-
-        public static native int sizeOfS_i8_i64();
-
-        public static native int sizeOfS_i16_i8();
-
-        public static native int sizeOfS_i32_i8();
-
-        public static native int sizeOfS_i64_i8();
-
         public static native int offsetOfS_s2xi8__1_si8();
 
         public static native int offsetOfS_si8_s3xi8__1_s3xi8();
 
         public static native int offsetOfS_s3xi8_si8__1_si8();
 
+        public static native int sizeOfS_i8_i16();
+
+        public static native int alignOfS_i8_i16();
+
         public static native int offsetOfS_i8_i16__1_i16();
 
-        public static native int offsetOfS_i8_i32__1_i32();
+        public static native int offsetOfS_i8_i16__2_i8();
 
-        public static native int offsetOfS_i8_i64__1_i64();
+        public static native int sizeOfS_i8_i32();
 
-        public static native int offsetOfS_i16_i8__1_i8();
+        public static native int alignOfS_i8_i32();
+        
+        public static native int offsetOfS_i8_i32__1_i16();
 
-        public static native int offsetOfS_i32_i8__1_i8();
+        public static native int offsetOfS_i8_i32__2_i8();
 
-        public static native int offsetOfS_i64_i8__1_i8();
+        public static native int offsetOfS_i8_i32__3_i32();
+
+        public static native int offsetOfS_i8_i32__4_i8();
+
+        public static native int offsetOfS_i8_i32__5_i32();
+
+        public static native int offsetOfS_i8_i32__6_i8();
+
+        public static native int offsetOfS_i8_i32__7_i16();
+
+        public static native int offsetOfS_i8_i32__8_i8();
+
+        public static native int sizeOfS_i8_i64();
+
+        public static native int alignOfS_i8_i64();
+        
+        public static native int offsetOfS_i8_i64__1_i16();
+
+        public static native int offsetOfS_i8_i64__2_i8();
+
+        public static native int offsetOfS_i8_i64__3_i32();
+
+        public static native int offsetOfS_i8_i64__4_i8();
+
+        public static native int offsetOfS_i8_i64__5_i64();
+
+        public static native int offsetOfS_i8_i64__6_i8();
+
+        public static native int offsetOfS_i8_i64__7_i64();
+
+        public static native int offsetOfS_i8_i64__8_i8();
+
+        public static native int offsetOfS_i8_i64__9_i32();
+
+        public static native int offsetOfS_i8_i64__10_i8();
+
+        public static native int offsetOfS_i8_i64__11_i16();
+
+        public static native int offsetOfS_i8_i64__12_i8();
 
         public static native int allignOfI8();
 
