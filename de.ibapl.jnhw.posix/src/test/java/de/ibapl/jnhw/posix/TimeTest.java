@@ -60,10 +60,10 @@ public class TimeTest {
 
     // just for vm in qemu...
     private final static long ONE_MINUTE = 60_000;
-    private final static @Types.time_t long TIME_T__20191203_142044 = 1575382844;
+    private final static @Types.time_t
+    long TIME_T__20191203_142044 = 1575382844;
     private static MultiarchTupelBuilder multiarchTupelBuilder;
 
-    
     @BeforeAll
     public static void setUpClass() {
         multiarchTupelBuilder = new MultiarchTupelBuilder();
@@ -115,7 +115,7 @@ public class TimeTest {
         OpaqueMemory32 buf = new OpaqueMemory32(BUF_SIZE, true);
         String result = Time.asctime_r(tm, buf);
         assertEquals("Wed Dec  3 08:17:07 2019\n", result);
-        byte[] raw =  OpaqueMemory32.toBytes(buf);
+        byte[] raw = OpaqueMemory32.toBytes(buf);
         assertArrayEquals("Wed Dec  3 08:17:07 2019\n\0".getBytes(), raw);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -406,7 +406,7 @@ public class TimeTest {
         System.out.println("localtime");
         final Instant instant = Instant.now();
         final long timer = instant.getEpochSecond();
-        
+
         final Time.Tm result = Time.localtime(timer);
         Assertions.assertNotNull(result);
         System.out.println("time: " + timer + " localtime: " + result);
@@ -462,9 +462,9 @@ public class TimeTest {
         Assertions.assertEquals(tm, result);
 
         System.out.println("time: " + timer + " localtime: " + result);
-        
+
         assertTm(instant, result, ZoneId.systemDefault());
-        
+
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.localtime_r(timer, null);
         });
@@ -830,7 +830,7 @@ public class TimeTest {
                     protected void callback(int sigval) {
                         try {
                             synchronized (intRef) {
-                                intRef.value = (int)sigval;
+                                intRef.value = (int) sigval;
                                 intRef.notifyAll();
                             }
                         } catch (Exception ex) {
@@ -978,52 +978,133 @@ public class TimeTest {
 
     @Test
     public void testSizeOfItimerspec() throws Exception {
-        Assertions.assertEquals(32, Time.Itimerspec.sizeofItimerspec());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(16, Time.Itimerspec.sizeofItimerspec());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(32, Time.Itimerspec.sizeofItimerspec());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testAlignOfItimerspec() throws Exception {
-        Assertions.assertEquals(8, Time.Itimerspec.alignofItimerspec());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Time.Itimerspec.alignofItimerspec());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Time.Itimerspec.alignofItimerspec());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testSizeOfTimer_t() throws Exception {
-        Assertions.assertEquals(8, Time.Timer_t.sizeofTimer_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Time.Timer_t.sizeofTimer_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Time.Timer_t.sizeofTimer_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testAlignOfTimer_t() throws Exception {
-        Assertions.assertEquals(8, Time.Timer_t.alignofTimer_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Time.Timer_t.alignofTimer_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Time.Timer_t.alignofTimer_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testSizeOfTimespec() throws Exception {
-        Assertions.assertEquals(16, Time.Timespec.sizeofTimespec());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(8, Time.Timespec.sizeofTimespec());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(16, Time.Timespec.sizeofTimespec());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testAlignOfTimespec() throws Exception {
-        Assertions.assertEquals(8, Time.Timespec.alignofTimespec());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Time.Timespec.alignofTimespec());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Time.Timespec.alignofTimespec());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testSizeOfTm() throws Exception {
-        Assertions.assertEquals(56, Time.Tm.sizeofTm());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(44, Time.Tm.sizeofTm());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(56, Time.Tm.sizeofTm());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
     @Test
     public void testAlignOfTm() throws Exception {
-        Assertions.assertEquals(8, Time.Tm.alignofTm());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Time.Tm.alignofTm());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Time.Tm.alignofTm());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
     @Test
     public void testOffsetOfIt_interval() throws Exception {
         Assertions.assertEquals(0, Time.Itimerspec.offsetofIt_interval());
     }
-    
+
     @Test
     public void testOffsetOfIt_value() throws Exception {
-        Assertions.assertEquals(16, Time.Itimerspec.offsetofIt_value());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(8, Time.Itimerspec.offsetofIt_value());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(16, Time.Itimerspec.offsetofIt_value());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
 }

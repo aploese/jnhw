@@ -190,11 +190,29 @@ public class LocaleTest {
 
     @Test
     public void testSizeOfLconv() throws Exception {
-        Assertions.assertEquals(96, Locale.Lconv.sizeofLconv());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(56, Locale.Lconv.sizeofLconv());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(96, Locale.Lconv.sizeofLconv());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
     @Test
     public void testAlignOfLconv() throws Exception {
-        Assertions.assertEquals(8, Locale.Lconv.alignofLconv());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Locale.Lconv.alignofLconv());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Locale.Lconv.alignofLconv());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 }

@@ -24,25 +24,16 @@ package de.ibapl.jnhw;
 import de.ibapl.jnhw.AbstractNativeMemory.NativeMemoryAlignment;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.WordSize;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class AbstractMemoryTest {
 
-    private static WordSize WORD_SIZE;
+    private final static MultiarchInfo multiarchInfo = new MultiarchTupelBuilder().guessMultiarch().iterator().next();
     private final int ALIGN8 = 1;
     private final int ALIGN16 = 2;
     private final int ALIGN32 = 4;
     private final int ALIGN64 = 8;
-    
-
-    @BeforeAll
-    public static void setUpClass() {
-        MultiarchInfo multiarchInfo = new MultiarchTupelBuilder().guessMultiarch().iterator().next();
-        WORD_SIZE = multiarchInfo.getWordSize();
-    }
 
     @Test
     public void testSizeOfS_i8() {
@@ -99,18 +90,31 @@ public class AbstractMemoryTest {
         Assertions.assertEquals(12, NativeMemoryAlignment.offsetOfS_i8_i64__4_i8());
         Assertions.assertEquals(16, NativeMemoryAlignment.offsetOfS_i8_i64__5_i64());
         Assertions.assertEquals(24, NativeMemoryAlignment.offsetOfS_i8_i64__6_i8());
-        Assertions.assertEquals(32, NativeMemoryAlignment.offsetOfS_i8_i64__7_i64());
-        Assertions.assertEquals(40, NativeMemoryAlignment.offsetOfS_i8_i64__8_i8());
-        Assertions.assertEquals(44, NativeMemoryAlignment.offsetOfS_i8_i64__9_i32());
-        Assertions.assertEquals(48, NativeMemoryAlignment.offsetOfS_i8_i64__10_i8());
-        Assertions.assertEquals(50, NativeMemoryAlignment.offsetOfS_i8_i64__11_i16());
-        Assertions.assertEquals(52, NativeMemoryAlignment.offsetOfS_i8_i64__12_i8());
-        Assertions.assertEquals(8, NativeMemoryAlignment.alignOfS_i8_i64());
-        Assertions.assertEquals(56, NativeMemoryAlignment.sizeOfS_i8_i64());
+        switch (multiarchInfo) {
+            case I386__LINUX__GNU:
+                Assertions.assertEquals(28, NativeMemoryAlignment.offsetOfS_i8_i64__7_i64());
+                Assertions.assertEquals(32, NativeMemoryAlignment.offsetOfS_i8_i64__8_i8());
+                Assertions.assertEquals(36, NativeMemoryAlignment.offsetOfS_i8_i64__9_i32());
+                Assertions.assertEquals(42, NativeMemoryAlignment.offsetOfS_i8_i64__10_i8());
+                Assertions.assertEquals(46, NativeMemoryAlignment.offsetOfS_i8_i64__11_i16());
+                Assertions.assertEquals(48, NativeMemoryAlignment.offsetOfS_i8_i64__12_i8());
+                Assertions.assertEquals(8, NativeMemoryAlignment.alignOfS_i8_i64());
+                Assertions.assertEquals(50, NativeMemoryAlignment.sizeOfS_i8_i64());
+                break;
+            default:
+                Assertions.assertEquals(32, NativeMemoryAlignment.offsetOfS_i8_i64__7_i64());
+                Assertions.assertEquals(40, NativeMemoryAlignment.offsetOfS_i8_i64__8_i8());
+                Assertions.assertEquals(44, NativeMemoryAlignment.offsetOfS_i8_i64__9_i32());
+                Assertions.assertEquals(48, NativeMemoryAlignment.offsetOfS_i8_i64__10_i8());
+                Assertions.assertEquals(50, NativeMemoryAlignment.offsetOfS_i8_i64__11_i16());
+                Assertions.assertEquals(52, NativeMemoryAlignment.offsetOfS_i8_i64__12_i8());
+                Assertions.assertEquals(8, NativeMemoryAlignment.alignOfS_i8_i64());
+                Assertions.assertEquals(56, NativeMemoryAlignment.sizeOfS_i8_i64());
+        }
     }
 
     public void testSizeOfS_i8_i64() {
-        switch (WORD_SIZE) {
+        switch (multiarchInfo.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(12, NativeMemoryAlignment.sizeOfS_i8_i64());
                 break;
@@ -118,7 +122,7 @@ public class AbstractMemoryTest {
                 Assertions.assertEquals(16, NativeMemoryAlignment.sizeOfS_i8_i64());
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
+                throw new RuntimeException("Unknown Wordsize " + multiarchInfo.getWordSize());
         }
     }
 

@@ -259,22 +259,58 @@ public class PthreadTest {
 
     @Test
     public void testSizeOfPthread_attr_t() throws Exception {
-        Assertions.assertEquals(56, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(36, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(56, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testAlignOfPthread_attr_t() throws Exception {
-        Assertions.assertEquals(8, Pthread.Pthread_attr_t.alignofPthread_attr_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Pthread.Pthread_attr_t.alignofPthread_attr_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Pthread.Pthread_attr_t.alignofPthread_attr_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testSizeOfPthread_t() throws Exception {
-        Assertions.assertEquals(8, Pthread.Pthread_t.sizeofPthread_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Pthread.Pthread_t.sizeofPthread_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Pthread.Pthread_t.sizeofPthread_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testAlignOfPthread_t() throws Exception {
-        Assertions.assertEquals(8, Pthread.Pthread_t.alignofPthread_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Pthread.Pthread_t.alignofPthread_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Pthread.Pthread_t.alignofPthread_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
 }

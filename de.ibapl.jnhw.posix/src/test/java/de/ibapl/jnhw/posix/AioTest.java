@@ -538,7 +538,7 @@ public class AioTest {
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Aio.lio_listio(Aio.LIO_WAIT(), null, null);
                 });
-                
+
                 if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
                     nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                         Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
@@ -754,17 +754,44 @@ public class AioTest {
 
     @Test
     public void testSizeOfAiocb() throws Exception {
-        Assertions.assertEquals(168, Aio.Aiocb.sizeofAiocb());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(144, Aio.Aiocb.sizeofAiocb());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(168, Aio.Aiocb.sizeofAiocb());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
     @Test
     public void testAlignOfAiocb() throws Exception {
-        Assertions.assertEquals(8, Aio.Aiocb.alignofAiocb());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Aio.Aiocb.alignofAiocb());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Aio.Aiocb.alignofAiocb());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
     @Test
     public void testOffsetOfAio_sigevent() throws Exception {
-        Assertions.assertEquals(32, Aio.Aiocb.offsetofAio_sigevent());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(20, Aio.Aiocb.offsetofAio_sigevent());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(32, Aio.Aiocb.offsetofAio_sigevent());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
 }

@@ -645,8 +645,8 @@ public class SignalTest {
         try {
             Assertions.assertNotNull(siginfo_tRef.value);
             Assertions.assertAll(() -> {
-                        Assertions.assertEquals(0, siginfo_tRef.value.si_errno(), "siginfo_tRef.value.si_errno()");
-                    },
+                Assertions.assertEquals(0, siginfo_tRef.value.si_errno(), "siginfo_tRef.value.si_errno()");
+            },
                     () -> {
                         Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo(), "siginfo_tRef.value.si_signo()");
                     },
@@ -801,7 +801,7 @@ public class SignalTest {
      * Test of sigwaitinfo method, of class Signal.
      */
     @Test
-  //  @Disabled //TODO Fail utterly
+    //  @Disabled //TODO Failed utterly on constructor???
     public void testSigwaitinfo() throws Exception {
         System.out.println("sigwaitinfo");
         final int SIG = Signal.SIGALRM();
@@ -987,113 +987,265 @@ public class SignalTest {
 
     @Test
     public void testSizeOfMcontext_t() throws Exception {
-        Assertions.assertEquals(256, Signal.Mcontext_t.sizeofMcontext_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(84, Signal.Mcontext_t.sizeofMcontext_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(256, Signal.Mcontext_t.sizeofMcontext_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
     @Test
     public void testAlignOfMcontext_t() throws Exception {
-        Assertions.assertEquals(8, Signal.Mcontext_t.alignofMcontext_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Mcontext_t.alignofMcontext_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Mcontext_t.alignofMcontext_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
     @Test
     public void testSizeOfSigaction() throws Exception {
-        Assertions.assertEquals(152, Signal.Sigaction.sizeofSigaction());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(140, Signal.Sigaction.sizeofSigaction());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(152, Signal.Sigaction.sizeofSigaction());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
     @Test
     public void testAlignOfSigaction() throws Exception {
-        Assertions.assertEquals(8, Signal.Sigaction.alignofSigaction());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Sigaction.alignofSigaction());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Sigaction.alignofSigaction());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
     @Test
     public void testOffsetofSa_mask() throws Exception {
-        Assertions.assertEquals(8, Signal.Sigaction.offsetofSa_mask());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Sigaction.offsetofSa_mask());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Sigaction.offsetofSa_mask());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
     @Test
     public void testSizeOfSigevent() throws Exception {
         Assertions.assertEquals(64, Signal.Sigevent.sizeofSigevent());
     }
-    
+
     @Test
     public void testAlignOfSigevent() throws Exception {
-        Assertions.assertEquals(8, Signal.Sigevent.alignofSigevent());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Sigevent.alignofSigevent());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Sigevent.alignofSigevent());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testOffsetOfSigev_value() throws Exception {
         Assertions.assertEquals(0, Signal.Sigevent.offsetofSigev_value());
     }
-    
+
     @Test
     public void testSizeOfSiginfo_t() throws Exception {
         Assertions.assertEquals(128, Signal.Siginfo_t.sizeofSiginfo_t());
     }
-    
+
     @Test
     public void testAlignOfSiginfo_t() throws Exception {
-        Assertions.assertEquals(8, Signal.Siginfo_t.alignofSiginfo_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Siginfo_t.alignofSiginfo_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Siginfo_t.alignofSiginfo_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testOffsetOfSi_value() throws Exception {
-        Assertions.assertEquals(24, Signal.Siginfo_t.offsetofSi_value());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(20, Signal.Siginfo_t.offsetofSi_value());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(24, Signal.Siginfo_t.offsetofSi_value());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testSizeOfSigset_t() throws Exception {
         Assertions.assertEquals(128, Signal.Sigset_t.sizeofSigset_t());
     }
-    
+
     @Test
     public void testAlignOfSigset_t() throws Exception {
-        Assertions.assertEquals(8, Signal.Sigset_t.alignofSigset_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Sigset_t.alignofSigset_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Sigset_t.alignofSigset_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testSizeOfSigval() throws Exception {
-        Assertions.assertEquals(8, Signal.Sigval.sizeofSigval());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Sigval.sizeofSigval());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Sigval.sizeofSigval());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testAlignOfSigval() throws Exception {
-        Assertions.assertEquals(8, Signal.Sigval.alignofSigval());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Sigval.alignofSigval());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Sigval.alignofSigval());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testSizeOfStack_t() throws Exception {
-        Assertions.assertEquals(24, Signal.Stack_t.sizeofStack_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(12, Signal.Stack_t.sizeofStack_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(24, Signal.Stack_t.sizeofStack_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testAlignOfStack_t() throws Exception {
-        Assertions.assertEquals(8, Signal.Stack_t.alignofStack_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Stack_t.alignofStack_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Stack_t.alignofStack_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testSizeOfUcontext_t() throws Exception {
-        Assertions.assertEquals(968, Signal.Ucontext_t.sizeofUcontext_t());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(744, Signal.Ucontext_t.sizeofUcontext_t());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(968, Signal.Ucontext_t.sizeofUcontext_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
 
     @Test
     public void testAlignOfUcontext_t() throws Exception {
         Assertions.assertEquals(8, Signal.Ucontext_t.alignofUcontext_t());
     }
-    
+
     @Test
     public void testOffsetofUc_mcontext() throws Exception {
-        Assertions.assertEquals(40, Signal.Ucontext_t.offsetofUc_mcontext());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(20, Signal.Ucontext_t.offsetofUc_mcontext());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(40, Signal.Ucontext_t.offsetofUc_mcontext());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testOffsetofUc_sigmask() throws Exception {
-        Assertions.assertEquals(296, Signal.Ucontext_t.offsetofUc_sigmask());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(104, Signal.Ucontext_t.offsetofUc_sigmask());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(296, Signal.Ucontext_t.offsetofUc_sigmask());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
+
     @Test
     public void testOffsetofUc_stack() throws Exception {
-        Assertions.assertEquals(16, Signal.Ucontext_t.offsetofUc_stack());
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(8, Signal.Ucontext_t.offsetofUc_stack());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(16, Signal.Ucontext_t.offsetofUc_stack());
+                break;
+            default:
+                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+        }
     }
-    
-    
+
 }
