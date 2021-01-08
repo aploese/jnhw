@@ -195,6 +195,8 @@ public final class Poll {
          */
         public static native int sizeofPollFd();
 
+        public static native int alignofPollFd();
+
         public PollFd(OpaqueMemory32 owner, int offset) {
             super(owner, offset, sizeofPollFd());
         }

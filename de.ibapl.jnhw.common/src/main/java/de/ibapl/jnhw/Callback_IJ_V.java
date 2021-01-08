@@ -46,6 +46,8 @@ public abstract class Callback_IJ_V extends NativeFunctionPointer {
 
     public static native int sizeofIntptr_t();
     
+    public static native int alignofIntptr_t();
+
     /**
      * this will be called from the native code.
      *

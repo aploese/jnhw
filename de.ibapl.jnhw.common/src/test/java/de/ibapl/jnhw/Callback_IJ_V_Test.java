@@ -22,7 +22,6 @@
 package de.ibapl.jnhw;
 
 import java.lang.ref.Cleaner;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
@@ -73,6 +72,20 @@ public class Callback_IJ_V_Test {
     private static native void setCallback(Callback_IJ_V callback);
 
     private static native void doCallTheCallback(long value);
+
+    @Test
+    public void testAlignofIntptr_t() {
+        switch (WORD_SIZE) {
+            case _32_BIT:
+                assertEquals(4, Callback_IJ_V.alignofIntptr_t());
+                break;
+            case _64_BIT:
+                assertEquals(8, Callback_IJ_V.alignofIntptr_t());
+                break;
+            default:
+                throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
+        }
+    }
 
     @Test
     public void testSizeofIntptr_t() {

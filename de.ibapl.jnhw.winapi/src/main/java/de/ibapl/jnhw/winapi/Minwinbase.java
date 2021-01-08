@@ -69,6 +69,8 @@ public class Minwinbase {
          */
         public final static native int sizeofOVERLAPPED();
 
+        public final static native int alignofOVERLAPPED();
+
         /**
          * The status code for the I/O request. When the request is issued, the
          * system sets this member to STATUS_PENDING to indicate that the
@@ -143,6 +145,8 @@ public class Minwinbase {
          * @return the native value sizeof(struct SECURITY_ATTRIBUTES).
          */
         public final static native int sizeofSECURITY_ATTRIBUTES();
+
+        public final static native int alignofSECURITY_ATTRIBUTES();
 
         /**
          * @return the native value of nLength;

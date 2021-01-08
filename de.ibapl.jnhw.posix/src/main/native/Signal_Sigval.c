@@ -53,6 +53,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigval
+     * Method:    alignofSigval
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_alignofSigval
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (union sigval);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigval
      * Method:    sival_int
      * Signature: ()I
      */

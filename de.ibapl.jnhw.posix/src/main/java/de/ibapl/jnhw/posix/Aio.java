@@ -305,7 +305,14 @@ public class Aio {
          */
         public static native int sizeofAiocb() throws NoSuchNativeTypeException;
 
-        public static native int _aio_sigevent_value_Offset() throws NoSuchNativeTypeException;
+        /**
+         * Get the alignment of struct lconv natively.
+         *
+         * @return the native value __alignof__(struct lconv).
+         */
+        public static native int alignofAiocb() throws NoSuchNativeTypeException;
+
+        public static native int offsetofAio_sigevent() throws NoSuchNativeTypeException;
 
         /**
          * The signal number and value.
@@ -319,13 +326,13 @@ public class Aio {
         @SuppressWarnings("unchecked")
         public Aiocb(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
             super(owner, offset, sizeofAiocb());
-            aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
+            aio_sigevent = new Sigevent(this, offsetofAio_sigevent());
         }
 
         @SuppressWarnings("unchecked")
         public Aiocb() throws NoSuchNativeTypeException {
             super(sizeofAiocb(), true);
-            aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
+            aio_sigevent = new Sigevent(this, offsetofAio_sigevent());
         }
 
         /**
@@ -336,7 +343,7 @@ public class Aio {
         @SuppressWarnings("unchecked")
         public Aiocb(NativeAddressHolder address) throws NoSuchNativeTypeException {
             super(address, sizeofAiocb());
-            aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
+            aio_sigevent = new Sigevent(this, offsetofAio_sigevent());
         }
 
         /**

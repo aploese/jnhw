@@ -44,6 +44,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Sched_Sched_param
+     * Method:    alignofSched_param
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_00024Sched_1param_alignofSched_1param
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct sched_param);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Sched_Sched_param
      * Method:    offsetofSched_ss_init_budget
      * Signature: ()I
      */

@@ -280,6 +280,13 @@ public class Locale {
          */
         public static native int sizeofLconv();
 
+        /**
+         * Get the alignment of struct lconv natively.
+         *
+         * @return the native value __alignof__(struct lconv).
+         */
+        public static native int alignofLconv();
+
         public Lconv() {
             super(sizeofLconv(), false);
         }

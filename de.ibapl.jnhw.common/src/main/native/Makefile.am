@@ -14,6 +14,7 @@ libjnhw_common_la_SOURCES = \
  JnhwExceptions.c \
  AbstractNativeMemory.c \
  AbstractNativeMemory_MemoryCleaner.c \
+ AbstractNativeMemory_NativeMemoryAlignment.c \
  OpaqueMemory32.c \
  OpaqueMemory64.c \
  PointerArray32.c \

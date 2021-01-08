@@ -192,4 +192,9 @@ public class LocaleTest {
     public void testSizeOfLconv() throws Exception {
         Assertions.assertEquals(96, Locale.Lconv.sizeofLconv());
     }
+
+    @Test
+    public void testAlignOfLconv() throws Exception {
+        Assertions.assertEquals(8, Locale.Lconv.alignofLconv());
+    }
 }

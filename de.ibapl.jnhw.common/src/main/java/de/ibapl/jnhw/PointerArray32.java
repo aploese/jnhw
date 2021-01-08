@@ -65,6 +65,8 @@ public class PointerArray32<T extends OpaqueMemory32> extends OpaqueMemory32 {
 
     public static native int sizeofPointer();
 
+    public static native int alignofPointer();
+
     public PointerArray32(int length, boolean clearMem) {
         super(length, sizeofPointer(), clearMem);
         cachedReferences = new OpaqueMemory32[length];

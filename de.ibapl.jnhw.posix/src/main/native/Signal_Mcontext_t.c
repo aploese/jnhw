@@ -48,6 +48,22 @@ extern "C" {
 #endif
         }
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Mcontext_t
+     * Method:    alignofMcontext_t
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Mcontext_1t_alignofMcontext_1t
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        throw_NoSuchNativeTypeException(env, "struct mcontext_t");
+        return -1;
+#else
+        (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (mcontext_t);
+#endif
+        }
+
 #endif
 #ifdef __cplusplus
 }

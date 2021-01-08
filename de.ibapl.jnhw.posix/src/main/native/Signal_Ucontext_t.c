@@ -54,10 +54,29 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
-     * Method:    _uc_sigmask_Offset
+     * Method:    alignofUcontext_t
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t__1uc_1sigmask_1Offset
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_alignofUcontext_1t
+#if defined(__APPLE__) || defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        throw_NoSuchNativeTypeException(env, "struct ucontext_t");
+        return -1;
+#elif defined(__FreeBSD__)
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (ucontext_t);
+#else
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct ucontext_t);
+#endif    
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
+     * Method:    offsetofUc_sigmask
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_offsetofUc_1sigmask
 #if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct ucontext_t");
@@ -73,10 +92,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
-     * Method:    _uc_stack_Offset
+     * Method:    offsetofUc_stack
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t__1uc_1stack_1Offset
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_offsetofUc_1stack
 #if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct ucontext_t");
@@ -92,10 +111,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
-     * Method:    _uc_mcontext_Offset
+     * Method:    offsetofUc_mcontext
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t__1uc_1mcontext_1Offset
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_offsetofUc_1mcontext
 #if defined(__APPLE__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct ucontext_t");

@@ -39,8 +39,11 @@ public class AbstractNativeMemory {
         LibJnhwCommonLoader.touch();
     }
 
-        static class MemoryCleaner implements Runnable {
+    static class MemoryCleaner implements Runnable {
 
+        static {
+            LibJnhwCommonLoader.touch();
+        }
         final long baseAddress;
 
         MemoryCleaner(final long baseAddress) {
@@ -65,20 +68,23 @@ public class AbstractNativeMemory {
     }
 
     private static final Cleaner CLEANER = Cleaner.create();
+
     // get value of define from errno.
     public static final native int ENOMEM();
-
 
     protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
 
     protected final long baseAddress;
     public final AbstractNativeMemory memoryOwner;
+
     private static native long malloc(int sizeInBytes) throws NativeErrorException;
+
     private static native long malloc(long sizeInBytes) throws NativeErrorException;
+
     private static native long calloc(int elements, int elementSizeInBytes) throws NativeErrorException;
+
     private static native long calloc(long elements, long elementSizeInBytes) throws NativeErrorException;
 
-    
     /**
      * test if adresses are the same. If either nativeAddress or om is null and
      * the other has a address of 0 it is considered as the same address.
@@ -99,7 +105,6 @@ public class AbstractNativeMemory {
         }
     }
 
-
     /**
      * Create a static memory slice which will NOT be freed - its static.
      *
@@ -109,7 +114,7 @@ public class AbstractNativeMemory {
         this.baseAddress = addressHolder.address;
         memoryOwner = null;
     }
-    
+
     /**
      * Creates a new memory which will be freed at the end of life.
      *
@@ -135,9 +140,9 @@ public class AbstractNativeMemory {
     }
 
     /**
-     * Creates a new memory which will be freed at the end of life.
-     * On 32 bit systems only uint32_t sizes are possible.
-     * 
+     * Creates a new memory which will be freed at the end of life. On 32 bit
+     * systems only uint32_t sizes are possible.
+     *
      * @param sizeInBytes
      * @param clearMem
      */
@@ -192,9 +197,9 @@ public class AbstractNativeMemory {
     }
 
     /**
-     * Creates a new memory which will be freed at the end of life.
-     * On 32 bit systems only uint32_t sizes are possible.
-     * 
+     * Creates a new memory which will be freed at the end of life. On 32 bit
+     * systems only uint32_t sizes are possible.
+     *
      * @param nelem
      * @param elsize
      * @param clearMem
@@ -241,52 +246,60 @@ public class AbstractNativeMemory {
         this.baseAddress = owner.baseAddress + offset;
         this.memoryOwner = owner;
     }
-    
-    public static native int sizeOfS_i8();
-    
-    public static native int sizeOfS_s2xi8();
-    
-    public static native int sizeOfS_3xi8();
-    
-    public static native int sizeOfS_si8_s3xi8();
-            
-    public static native int sizeOfS_s3xi8_si8();
-            
-    public static native int sizeOfS_i8_i16();
 
-    public static native int sizeOfS_i8_i32();
+    public static class NativeMemoryAlignment {
 
-    public static native int sizeOfS_i8_i64();
+        static {
+            LibJnhwCommonLoader.touch();
+        }
 
-    public static native int sizeOfS_i16_i8();
+        public static native int sizeOfS_i8();
 
-    public static native int sizeOfS_i32_i8();
+        public static native int sizeOfS_s2xi8();
 
-    public static native int sizeOfS_i64_i8();
-    
-    public static native int offsetOfS_s2xi8__1_si8();
+        public static native int sizeOfS_3xi8();
 
-    public static native int offsetOfS_si8_s3xi8__1_s3xi8();
-    
-    public static native int offsetOfS_s3xi8_si8__1_si8();
-    
-    public static native int offsetOfS_i8_i16__1_i16();
+        public static native int sizeOfS_si8_s3xi8();
 
-    public static native int offsetOfS_i8_i32__1_i32();
+        public static native int sizeOfS_s3xi8_si8();
 
-    public static native int offsetOfS_i8_i64__1_i64();
+        public static native int sizeOfS_i8_i16();
 
-    public static native int offsetOfS_i16_i8__1_i8();
+        public static native int sizeOfS_i8_i32();
 
-    public static native int offsetOfS_i32_i8__1_i8();
+        public static native int sizeOfS_i8_i64();
 
-    public static native int offsetOfS_i64_i8__1_i8();
-    
-    public static native int allignOfI8();
-    
-    public static native int allignOfI16();
-    
-    public static native int allignOfI32();
-    
-    public static native int allignOfI64();
+        public static native int sizeOfS_i16_i8();
+
+        public static native int sizeOfS_i32_i8();
+
+        public static native int sizeOfS_i64_i8();
+
+        public static native int offsetOfS_s2xi8__1_si8();
+
+        public static native int offsetOfS_si8_s3xi8__1_s3xi8();
+
+        public static native int offsetOfS_s3xi8_si8__1_si8();
+
+        public static native int offsetOfS_i8_i16__1_i16();
+
+        public static native int offsetOfS_i8_i32__1_i32();
+
+        public static native int offsetOfS_i8_i64__1_i64();
+
+        public static native int offsetOfS_i16_i8__1_i8();
+
+        public static native int offsetOfS_i32_i8__1_i8();
+
+        public static native int offsetOfS_i64_i8__1_i8();
+
+        public static native int allignOfI8();
+
+        public static native int allignOfI16();
+
+        public static native int allignOfI32();
+
+        public static native int allignOfI64();
+
+    }
 }

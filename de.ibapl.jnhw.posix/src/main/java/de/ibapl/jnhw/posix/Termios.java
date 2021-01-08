@@ -1275,6 +1275,8 @@ public final class Termios {
 
         public final static native int sizeofTermios();
 
+        public final static native int alignofTermios();
+        
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
          * termios}</a>.

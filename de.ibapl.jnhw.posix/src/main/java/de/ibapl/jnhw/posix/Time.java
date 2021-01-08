@@ -553,6 +553,8 @@ public class Time {
          */
         public static native int sizeofItimerspec();
 
+        public static native int alignofItimerspec();
+
         public static native int offsetofIt_interval();
 
         public static native int offsetofIt_value();
@@ -639,6 +641,8 @@ public class Time {
          * @return the native value sizeof(struct timespec).
          */
         public static native int sizeofTimespec();
+
+        public static native int alignofTimespec();
 
         public Timespec() {
             super(sizeofTimespec(), false);
@@ -742,6 +746,8 @@ public class Time {
          * @return the native value sizeof(struct tm).
          */
         public static native int sizeofTm();
+
+        public static native int alignofTm();
 
         /**
          * To be called only from native code ...
@@ -962,6 +968,8 @@ public class Time {
          * @return the native value sizeof(timer_t).
          */
         public static native int sizeofTimer_t();
+
+        public static native int alignofTimer_t();
 
         public Timer_t() throws NoSuchNativeTypeException {
             super(sizeofTimer_t(), false);

@@ -40,6 +40,16 @@ extern "C" {
         return sizeof (sigset_t);
     }
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigset_t
+     * Method:    alignofSigset_t
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigset_1t_alignofSigset_1t
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (sigset_t);
+    }
+
 #endif
 #ifdef __cplusplus
 }

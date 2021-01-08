@@ -42,6 +42,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
+     * Method:    alignofTermios
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_alignofTermios
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct termios);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
      * Method:    c_iflag
      * Signature: ()I
      */

@@ -263,8 +263,18 @@ public class PthreadTest {
     }
     
     @Test
+    public void testAlignOfPthread_attr_t() throws Exception {
+        Assertions.assertEquals(8, Pthread.Pthread_attr_t.alignofPthread_attr_t());
+    }
+    
+    @Test
     public void testSizeOfPthread_t() throws Exception {
         Assertions.assertEquals(8, Pthread.Pthread_t.sizeofPthread_t());
+    }
+    
+    @Test
+    public void testAlignOfPthread_t() throws Exception {
+        Assertions.assertEquals(8, Pthread.Pthread_t.alignofPthread_t());
     }
     
 }

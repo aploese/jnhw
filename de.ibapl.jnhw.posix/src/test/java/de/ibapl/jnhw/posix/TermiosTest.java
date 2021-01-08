@@ -177,4 +177,9 @@ public class TermiosTest {
         Assertions.assertEquals(60, Termios.StructTermios.sizeofTermios());
     }
     
+    @Test
+    public void testAlignOfTermios() throws Exception {
+        Assertions.assertEquals(4, Termios.StructTermios.alignofTermios());
+    }
+    
 }

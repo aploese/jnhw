@@ -801,6 +801,7 @@ public class SignalTest {
      * Test of sigwaitinfo method, of class Signal.
      */
     @Test
+  //  @Disabled //TODO Fail utterly
     public void testSigwaitinfo() throws Exception {
         System.out.println("sigwaitinfo");
         final int SIG = Signal.SIGALRM();
@@ -990,8 +991,23 @@ public class SignalTest {
     }
 
     @Test
+    public void testAlignOfMcontext_t() throws Exception {
+        Assertions.assertEquals(8, Signal.Mcontext_t.alignofMcontext_t());
+    }
+
+    @Test
     public void testSizeOfSigaction() throws Exception {
         Assertions.assertEquals(152, Signal.Sigaction.sizeofSigaction());
+    }
+
+    @Test
+    public void testAlignOfSigaction() throws Exception {
+        Assertions.assertEquals(8, Signal.Sigaction.alignofSigaction());
+    }
+
+    @Test
+    public void testOffsetofSa_mask() throws Exception {
+        Assertions.assertEquals(8, Signal.Sigaction.offsetofSa_mask());
     }
 
     @Test
@@ -1000,8 +1016,28 @@ public class SignalTest {
     }
     
     @Test
+    public void testAlignOfSigevent() throws Exception {
+        Assertions.assertEquals(8, Signal.Sigevent.alignofSigevent());
+    }
+    
+    @Test
+    public void testOffsetOfSigev_value() throws Exception {
+        Assertions.assertEquals(0, Signal.Sigevent.offsetofSigev_value());
+    }
+    
+    @Test
     public void testSizeOfSiginfo_t() throws Exception {
         Assertions.assertEquals(128, Signal.Siginfo_t.sizeofSiginfo_t());
+    }
+    
+    @Test
+    public void testAlignOfSiginfo_t() throws Exception {
+        Assertions.assertEquals(8, Signal.Siginfo_t.alignofSiginfo_t());
+    }
+    
+    @Test
+    public void testOffsetOfSi_value() throws Exception {
+        Assertions.assertEquals(24, Signal.Siginfo_t.offsetofSi_value());
     }
     
     @Test
@@ -1010,8 +1046,18 @@ public class SignalTest {
     }
     
     @Test
+    public void testAlignOfSigset_t() throws Exception {
+        Assertions.assertEquals(8, Signal.Sigset_t.alignofSigset_t());
+    }
+    
+    @Test
     public void testSizeOfSigval() throws Exception {
         Assertions.assertEquals(8, Signal.Sigval.sizeofSigval());
+    }
+    
+    @Test
+    public void testAlignOfSigval() throws Exception {
+        Assertions.assertEquals(8, Signal.Sigval.alignofSigval());
     }
     
     @Test
@@ -1020,7 +1066,34 @@ public class SignalTest {
     }
     
     @Test
+    public void testAlignOfStack_t() throws Exception {
+        Assertions.assertEquals(8, Signal.Stack_t.alignofStack_t());
+    }
+    
+    @Test
     public void testSizeOfUcontext_t() throws Exception {
         Assertions.assertEquals(968, Signal.Ucontext_t.sizeofUcontext_t());
     }
+
+    @Test
+    public void testAlignOfUcontext_t() throws Exception {
+        Assertions.assertEquals(8, Signal.Ucontext_t.alignofUcontext_t());
+    }
+    
+    @Test
+    public void testOffsetofUc_mcontext() throws Exception {
+        Assertions.assertEquals(40, Signal.Ucontext_t.offsetofUc_mcontext());
+    }
+    
+    @Test
+    public void testOffsetofUc_sigmask() throws Exception {
+        Assertions.assertEquals(296, Signal.Ucontext_t.offsetofUc_sigmask());
+    }
+    
+    @Test
+    public void testOffsetofUc_stack() throws Exception {
+        Assertions.assertEquals(16, Signal.Ucontext_t.offsetofUc_stack());
+    }
+    
+    
 }

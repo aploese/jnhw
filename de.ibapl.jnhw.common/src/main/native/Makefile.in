@@ -139,6 +139,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 libjnhw_common_la_LIBADD =
 am_libjnhw_common_la_OBJECTS = jnhw-common.lo JnhwExceptions.lo \
 	AbstractNativeMemory.lo AbstractNativeMemory_MemoryCleaner.lo \
+	AbstractNativeMemory_NativeMemoryAlignment.lo \
 	OpaqueMemory32.lo OpaqueMemory64.lo PointerArray32.lo \
 	Callback_I_V_Impl.lo Callback_J_V_Impl.lo Callback_IJ_V.lo \
 	Callback_IJ_V_Impl.lo \
@@ -168,6 +169,7 @@ depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AbstractNativeMemory.Plo \
 	./$(DEPDIR)/AbstractNativeMemory_MemoryCleaner.Plo \
+	./$(DEPDIR)/AbstractNativeMemory_NativeMemoryAlignment.Plo \
 	./$(DEPDIR)/Callback_IJ_V.Plo \
 	./$(DEPDIR)/Callback_IJ_V_Impl.Plo \
 	./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Impl.Plo \
@@ -372,6 +374,7 @@ libjnhw_common_la_SOURCES = \
  JnhwExceptions.c \
  AbstractNativeMemory.c \
  AbstractNativeMemory_MemoryCleaner.c \
+ AbstractNativeMemory_NativeMemoryAlignment.c \
  OpaqueMemory32.c \
  OpaqueMemory64.c \
  PointerArray32.c \
@@ -465,6 +468,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbstractNativeMemory.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbstractNativeMemory_MemoryCleaner.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbstractNativeMemory_NativeMemoryAlignment.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_IJ_V.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_IJ_V_Impl.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Impl.Plo@am__quote@ # am--include-marker
@@ -662,6 +666,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/AbstractNativeMemory.Plo
 	-rm -f ./$(DEPDIR)/AbstractNativeMemory_MemoryCleaner.Plo
+	-rm -f ./$(DEPDIR)/AbstractNativeMemory_NativeMemoryAlignment.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Impl.Plo
@@ -723,6 +728,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/AbstractNativeMemory.Plo
 	-rm -f ./$(DEPDIR)/AbstractNativeMemory_MemoryCleaner.Plo
+	-rm -f ./$(DEPDIR)/AbstractNativeMemory_NativeMemoryAlignment.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Impl.Plo

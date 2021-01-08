@@ -308,6 +308,11 @@ public class SchedTest {
     }
 
     @Test
+    public void testAlignOfSchedparam() throws Exception {
+        Assertions.assertEquals(4, Sched.Sched_param.alignofSched_param());
+    }
+
+    @Test
     public void testOffsetOfSched_ss_init_budget() throws Exception {
         Assertions.assertThrows(NoSuchNativeTypeMemberException.class,  Sched.Sched_param::offsetofSched_ss_init_budget);
     }

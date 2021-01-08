@@ -44,10 +44,20 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
-     * Method:    _si_value_Offset
+     * Method:    alignofSiginfo_t
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t__1si_1value_1Offset
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_alignofSiginfo_1t
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (siginfo_t);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    offsetofSi_value
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_offsetofSi_1value
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(siginfo_t, si_value);
     }

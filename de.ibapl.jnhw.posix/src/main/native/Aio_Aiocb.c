@@ -54,10 +54,27 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
-     * Method:    _aio_sigevent_value_Offset
+     * Method:    alignofAiocb
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb__1aio_1sigevent_1value_1Offset
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_alignofAiocb
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        throw_NoSuchNativeTypeException(env, "struct aiocb");
+        return -1;
+#else
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct aiocb);
+#endif
+    }
+
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
+     * Method:    offsetofAio_sigevent
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_offsetofAio_1sigevent
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct aiocb");

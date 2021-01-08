@@ -71,6 +71,8 @@ public class Sched {
          */
         public static native int sizeofSched_param();
 
+        public static native int alignofSched_param();
+
         public static native int offsetofSched_ss_init_budget() throws NoSuchNativeTypeMemberException;
 
         public static native int offsetofSched_ss_repl_period() throws NoSuchNativeTypeMemberException;

@@ -45,6 +45,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Timer_t
+     * Method:    alignofTimer_t
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_alignofTimer_1t
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (timer_t);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time_Timer_t
      * Method:    toString
      * Signature: ()Ljava/lang/String;
      */

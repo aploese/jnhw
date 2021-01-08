@@ -757,4 +757,14 @@ public class AioTest {
         Assertions.assertEquals(168, Aio.Aiocb.sizeofAiocb());
     }
 
+    @Test
+    public void testAlignOfAiocb() throws Exception {
+        Assertions.assertEquals(8, Aio.Aiocb.alignofAiocb());
+    }
+
+    @Test
+    public void testOffsetOfAio_sigevent() throws Exception {
+        Assertions.assertEquals(32, Aio.Aiocb.offsetofAio_sigevent());
+    }
+
 }

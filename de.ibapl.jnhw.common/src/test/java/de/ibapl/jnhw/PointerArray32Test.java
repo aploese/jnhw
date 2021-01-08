@@ -22,7 +22,6 @@
 package de.ibapl.jnhw;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.NativeLibResolver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,7 +39,6 @@ public class PointerArray32Test {
 
     private static native int getCachedReferencesLength(PointerArray32 pointerArray);
 
-
     public PointerArray32Test() {
     }
 
@@ -49,7 +47,30 @@ public class PointerArray32Test {
      */
     @Test
     public void testSizeofPointer() {
-        Assertions.assertEquals(new MultiarchTupelBuilder().getWordSize().sizeInBit, PointerArray32.sizeofPointer() * 8, "Wordize mismatch");
+        switch (new MultiarchTupelBuilder().getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, PointerArray32.sizeofPointer());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, PointerArray32.sizeofPointer());
+                break;
+            default:
+                throw new RuntimeException("Unknown Wordsize");
+        }
+    }
+
+    @Test
+    public void testAlignofPointer() {
+        switch (new MultiarchTupelBuilder().getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, PointerArray32.alignofPointer());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, PointerArray32.alignofPointer());
+                break;
+            default:
+                throw new RuntimeException("Unknown Wordsize");
+        }
     }
 
     /**

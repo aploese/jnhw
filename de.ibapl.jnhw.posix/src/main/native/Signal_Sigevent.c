@@ -36,10 +36,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
-     * Method:    _sigev_value_Offset
+     * Method:    offsetofSigev_value
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent__1sigev_1value_1Offset
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_offsetofSigev_1value
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct sigevent");
@@ -63,6 +63,22 @@ extern "C" {
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct sigevent);
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
+     * Method:    alignofSigevent
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_alignofSigevent
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        throw_NoSuchNativeTypeException(env, "struct sigevent");
+        return -1;
+#else
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct sigevent);
 #endif
     }
 

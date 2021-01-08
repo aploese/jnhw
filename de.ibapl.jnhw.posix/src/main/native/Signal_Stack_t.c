@@ -44,6 +44,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
+     * Method:    alignofStack_t
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_alignofStack_1t
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (stack_t);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
      * Method:    ss_sp0
      * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
      */

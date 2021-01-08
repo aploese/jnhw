@@ -45,10 +45,20 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
-     * Method:    _sa_mask_Offset
+     * Method:    alignofSigaction
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction__1sa_1mask_1Offset
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_alignofSigaction
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct sigaction);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
+     * Method:    offsetofSa_mask
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_offsetofSa_1mask
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct sigaction, sa_mask);
     }

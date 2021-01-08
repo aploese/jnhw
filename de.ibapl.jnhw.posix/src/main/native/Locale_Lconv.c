@@ -45,6 +45,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Locale_Lconv
+     * Method:    alignofLconv
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_00024Lconv_alignofLconv
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct lconv);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Locale_Lconv
      * Method:    currency_symbol
      * Signature: ()Ljava/lang/String;
      */

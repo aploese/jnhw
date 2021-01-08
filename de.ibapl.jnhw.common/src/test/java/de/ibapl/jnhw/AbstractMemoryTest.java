@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw;
 
+import de.ibapl.jnhw.AbstractNativeMemory.NativeMemoryAlignment;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.WordSize;
@@ -45,47 +46,47 @@ public class AbstractMemoryTest {
 
     @Test
     public void testSizeOfS_i8() {
-        Assertions.assertEquals(1, AbstractNativeMemory.sizeOfS_i8());
+        Assertions.assertEquals(1, NativeMemoryAlignment.sizeOfS_i8());
     }
 
     @Test
     public void testSizeOfS_s2xi8() {
-        Assertions.assertEquals(2, AbstractNativeMemory.sizeOfS_s2xi8());
+        Assertions.assertEquals(2, NativeMemoryAlignment.sizeOfS_s2xi8());
     }
 
     @Test
     public void testSizeOfS_3xi8() {
-        Assertions.assertEquals(3, AbstractNativeMemory.sizeOfS_3xi8());
+        Assertions.assertEquals(3, NativeMemoryAlignment.sizeOfS_3xi8());
     }
 
     @Test
     public void testSizeOfS_si8_s3xi8() {
-        Assertions.assertEquals(4, AbstractNativeMemory.sizeOfS_si8_s3xi8());
+        Assertions.assertEquals(4, NativeMemoryAlignment.sizeOfS_si8_s3xi8());
     }
 
     @Test
     public void testSizeOfS_s3xi8_si8() {
-        Assertions.assertEquals(4, AbstractNativeMemory.sizeOfS_s3xi8_si8());
+        Assertions.assertEquals(4, NativeMemoryAlignment.sizeOfS_s3xi8_si8());
     }
 
     @Test
     public void testSizeOfS_i8_i16() {
-        Assertions.assertEquals(4, AbstractNativeMemory.sizeOfS_i8_i16());
+        Assertions.assertEquals(4, NativeMemoryAlignment.sizeOfS_i8_i16());
     }
 
     @Test
     public void testSizeOfS_i8_i32() {
-        Assertions.assertEquals(8, AbstractNativeMemory.sizeOfS_i8_i32());
+        Assertions.assertEquals(8, NativeMemoryAlignment.sizeOfS_i8_i32());
     }
 
     @Test
     public void testSizeOfS_i8_i64() {
         switch (WORD_SIZE) {
             case _32_BIT:
-                Assertions.assertEquals(12, AbstractNativeMemory.sizeOfS_i8_i64());
+                Assertions.assertEquals(12, NativeMemoryAlignment.sizeOfS_i8_i64());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(16, AbstractNativeMemory.sizeOfS_i8_i64());
+                Assertions.assertEquals(16, NativeMemoryAlignment.sizeOfS_i8_i64());
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -94,22 +95,22 @@ public class AbstractMemoryTest {
 
     @Test
     public void testSizeOfS_i16_i8() {
-        Assertions.assertEquals(4, AbstractNativeMemory.sizeOfS_i16_i8());
+        Assertions.assertEquals(4, NativeMemoryAlignment.sizeOfS_i16_i8());
     }
 
     @Test
     public void testSizeOfS_i32_i8() {
-        Assertions.assertEquals(8, AbstractNativeMemory.sizeOfS_i32_i8());
+        Assertions.assertEquals(8, NativeMemoryAlignment.sizeOfS_i32_i8());
     }
 
     @Test
     public void testSizeOfS_i64_i8() {
         switch (WORD_SIZE) {
             case _32_BIT:
-                Assertions.assertEquals(12, AbstractNativeMemory.sizeOfS_i64_i8());
+                Assertions.assertEquals(12, NativeMemoryAlignment.sizeOfS_i64_i8());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(16, AbstractNativeMemory.sizeOfS_i64_i8());
+                Assertions.assertEquals(16, NativeMemoryAlignment.sizeOfS_i64_i8());
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -118,37 +119,37 @@ public class AbstractMemoryTest {
 
     @Test
     public void testOffsetOfS_s2xi8__1_si8() {
-        Assertions.assertEquals(ALIGN8, AbstractNativeMemory.offsetOfS_s2xi8__1_si8());
+        Assertions.assertEquals(ALIGN8, NativeMemoryAlignment.offsetOfS_s2xi8__1_si8());
     }
 
     @Test
     public void testOffsetOfS_si8_s3xi8__1_s3xi8() {
-        Assertions.assertEquals(ALIGN8, AbstractNativeMemory.offsetOfS_si8_s3xi8__1_s3xi8());
+        Assertions.assertEquals(ALIGN8, NativeMemoryAlignment.offsetOfS_si8_s3xi8__1_s3xi8());
     }
 
     @Test
     public void testOffsetOfS_s3xi8_si8__1_si8() {
-        Assertions.assertEquals(3, AbstractNativeMemory.offsetOfS_s3xi8_si8__1_si8());
+        Assertions.assertEquals(3, NativeMemoryAlignment.offsetOfS_s3xi8_si8__1_si8());
     }
 
     @Test
     public void testOffsetOfS_i8_i16__1_i16() {
-        Assertions.assertEquals(ALIGN16, AbstractNativeMemory.offsetOfS_i8_i16__1_i16());
+        Assertions.assertEquals(ALIGN16, NativeMemoryAlignment.offsetOfS_i8_i16__1_i16());
     }
 
     @Test
     public void testOffsetOfS_i8_i32__1_i32() {
-        Assertions.assertEquals(ALIGN32, AbstractNativeMemory.offsetOfS_i8_i32__1_i32());
+        Assertions.assertEquals(ALIGN32, NativeMemoryAlignment.offsetOfS_i8_i32__1_i32());
     }
 
     @Test
     public void testOffsetOfS_i8_i64__1_i64() {
         switch (WORD_SIZE) {
             case _32_BIT:
-                Assertions.assertEquals(ALIGN32, AbstractNativeMemory.offsetOfS_i8_i64__1_i64());
+                Assertions.assertEquals(ALIGN32, NativeMemoryAlignment.offsetOfS_i8_i64__1_i64());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(ALIGN64, AbstractNativeMemory.offsetOfS_i8_i64__1_i64());
+                Assertions.assertEquals(ALIGN64, NativeMemoryAlignment.offsetOfS_i8_i64__1_i64());
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -157,31 +158,31 @@ public class AbstractMemoryTest {
 
     @Test
     public void testOffsetOfS_i16_i8__1_i8() {
-        Assertions.assertEquals(ALIGN16, AbstractNativeMemory.offsetOfS_i16_i8__1_i8());
+        Assertions.assertEquals(ALIGN16, NativeMemoryAlignment.offsetOfS_i16_i8__1_i8());
     }
 
     @Test
     public void testOffsetOfS_i32_i8__1_i8() {
-        Assertions.assertEquals(ALIGN32, AbstractNativeMemory.offsetOfS_i32_i8__1_i8());
+        Assertions.assertEquals(ALIGN32, NativeMemoryAlignment.offsetOfS_i32_i8__1_i8());
     }
 
     @Test
     public void testOffsetOfS_i64_i8__1_i8() {
-        Assertions.assertEquals(ALIGN64, AbstractNativeMemory.offsetOfS_i64_i8__1_i8());
+        Assertions.assertEquals(ALIGN64, NativeMemoryAlignment.offsetOfS_i64_i8__1_i8());
     }
 
     @Test
     public void test_i64_and_i8() {
-        Assertions.assertEquals(AbstractNativeMemory.sizeOfS_i64_i8(), AbstractNativeMemory.sizeOfS_i8_i64());
-        Assertions.assertEquals(ALIGN64, AbstractNativeMemory.offsetOfS_i64_i8__1_i8());
+        Assertions.assertEquals(NativeMemoryAlignment.sizeOfS_i64_i8(), NativeMemoryAlignment.sizeOfS_i8_i64());
+        Assertions.assertEquals(ALIGN64, NativeMemoryAlignment.offsetOfS_i64_i8__1_i8());
         switch (WORD_SIZE) {
             case _32_BIT:
-                Assertions.assertNotEquals(AbstractNativeMemory.offsetOfS_i8_i64__1_i64(), AbstractNativeMemory.offsetOfS_i64_i8__1_i8());
-                Assertions.assertEquals(ALIGN32, AbstractNativeMemory.offsetOfS_i8_i64__1_i64());
+                Assertions.assertNotEquals(NativeMemoryAlignment.offsetOfS_i8_i64__1_i64(), NativeMemoryAlignment.offsetOfS_i64_i8__1_i8());
+                Assertions.assertEquals(ALIGN32, NativeMemoryAlignment.offsetOfS_i8_i64__1_i64());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(AbstractNativeMemory.offsetOfS_i8_i64__1_i64(), AbstractNativeMemory.offsetOfS_i64_i8__1_i8());
-                Assertions.assertEquals(ALIGN64, AbstractNativeMemory.offsetOfS_i8_i64__1_i64());
+                Assertions.assertEquals(NativeMemoryAlignment.offsetOfS_i8_i64__1_i64(), NativeMemoryAlignment.offsetOfS_i64_i8__1_i8());
+                Assertions.assertEquals(ALIGN64, NativeMemoryAlignment.offsetOfS_i8_i64__1_i64());
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
@@ -190,31 +191,22 @@ public class AbstractMemoryTest {
 
     @Test
     public void test_i32_and_i8() {
-        Assertions.assertEquals(AbstractNativeMemory.sizeOfS_i32_i8(), AbstractNativeMemory.sizeOfS_i8_i32());
-        Assertions.assertEquals(AbstractNativeMemory.offsetOfS_i8_i32__1_i32(), AbstractNativeMemory.offsetOfS_i32_i8__1_i8());
+        Assertions.assertEquals(NativeMemoryAlignment.sizeOfS_i32_i8(), NativeMemoryAlignment.sizeOfS_i8_i32());
+        Assertions.assertEquals(NativeMemoryAlignment.offsetOfS_i8_i32__1_i32(), NativeMemoryAlignment.offsetOfS_i32_i8__1_i8());
     }
 
     @Test
     public void test_i16_and_i8() {
-        Assertions.assertEquals(AbstractNativeMemory.sizeOfS_i16_i8(), AbstractNativeMemory.sizeOfS_i8_i16());
-        Assertions.assertEquals(AbstractNativeMemory.offsetOfS_i8_i16__1_i16(), AbstractNativeMemory.offsetOfS_i16_i8__1_i8());
+        Assertions.assertEquals(NativeMemoryAlignment.sizeOfS_i16_i8(), NativeMemoryAlignment.sizeOfS_i8_i16());
+        Assertions.assertEquals(NativeMemoryAlignment.offsetOfS_i8_i16__1_i16(), NativeMemoryAlignment.offsetOfS_i16_i8__1_i8());
     }
 
     @Test
     public void test_Allignment() {
-        Assertions.assertEquals(ALIGN8, AbstractNativeMemory.allignOfI8());
-        Assertions.assertEquals(ALIGN16, AbstractNativeMemory.allignOfI16());
-        Assertions.assertEquals(ALIGN32, AbstractNativeMemory.allignOfI32());
-        switch (WORD_SIZE) {
-            case _32_BIT:
-        Assertions.assertEquals(ALIGN32, AbstractNativeMemory.allignOfI64());
-                break;
-            case _64_BIT:
-        Assertions.assertEquals(ALIGN64, AbstractNativeMemory.allignOfI64());
-                break;
-            default:
-                throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
-        }
+        Assertions.assertEquals(ALIGN8, NativeMemoryAlignment.allignOfI8());
+        Assertions.assertEquals(ALIGN16, NativeMemoryAlignment.allignOfI16());
+        Assertions.assertEquals(ALIGN32, NativeMemoryAlignment.allignOfI32());
+        Assertions.assertEquals(ALIGN64, NativeMemoryAlignment.allignOfI64());
     }
 
 }

@@ -43,6 +43,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
+     * Method:    alignofPollFd
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_alignofPollFd
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct pollfd);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
      * Method:    events
      * Signature: ()S
      */

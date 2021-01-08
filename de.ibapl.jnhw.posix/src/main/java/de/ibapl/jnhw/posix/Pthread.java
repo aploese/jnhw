@@ -213,6 +213,8 @@ public class Pthread {
          */
         public static native int sizeofPthread_attr_t();
 
+        public static native int alignofPthread_attr_t();
+
         public Pthread_attr_t() {
             super(sizeofPthread_attr_t(), false);
         }
@@ -249,6 +251,8 @@ public class Pthread {
          * @return the native value sizeof(struct pthread_t).
          */
         public static native int sizeofPthread_t();
+
+        public static native int alignofPthread_t();
 
         public Pthread_t() {
             super(sizeofPthread_t(), false);

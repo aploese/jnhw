@@ -41,6 +41,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Tm
+     * Method:    alignofTm
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Tm_alignofTm
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct tm);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time_Tm
      * Method:    tm_sec
      * Signature: ()I
      */

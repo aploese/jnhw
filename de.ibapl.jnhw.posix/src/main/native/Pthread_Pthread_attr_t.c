@@ -43,6 +43,16 @@ extern "C" {
         return sizeof (pthread_attr_t);
     }
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_attr_t
+     * Method:    alignofPthread_attr_t
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1attr_1t_alignofPthread_1attr_1t
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (pthread_attr_t);
+    }
+
 #endif
 #ifdef __cplusplus
 }

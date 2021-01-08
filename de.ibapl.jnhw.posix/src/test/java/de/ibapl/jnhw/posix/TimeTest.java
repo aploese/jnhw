@@ -982,8 +982,18 @@ public class TimeTest {
     }
     
     @Test
+    public void testAlignOfItimerspec() throws Exception {
+        Assertions.assertEquals(8, Time.Itimerspec.alignofItimerspec());
+    }
+    
+    @Test
     public void testSizeOfTimer_t() throws Exception {
         Assertions.assertEquals(8, Time.Timer_t.sizeofTimer_t());
+    }
+    
+    @Test
+    public void testAlignOfTimer_t() throws Exception {
+        Assertions.assertEquals(8, Time.Timer_t.alignofTimer_t());
     }
     
     @Test
@@ -992,9 +1002,20 @@ public class TimeTest {
     }
     
     @Test
+    public void testAlignOfTimespec() throws Exception {
+        Assertions.assertEquals(8, Time.Timespec.alignofTimespec());
+    }
+    
+    @Test
     public void testSizeOfTm() throws Exception {
         Assertions.assertEquals(56, Time.Tm.sizeofTm());
     }
+
+    @Test
+    public void testAlignOfTm() throws Exception {
+        Assertions.assertEquals(8, Time.Tm.alignofTm());
+    }
+
     @Test
     public void testOffsetOfIt_interval() throws Exception {
         Assertions.assertEquals(0, Time.Itimerspec.offsetofIt_interval());
@@ -1004,6 +1025,5 @@ public class TimeTest {
     public void testOffsetOfIt_value() throws Exception {
         Assertions.assertEquals(16, Time.Itimerspec.offsetofIt_value());
     }
-    
     
 }

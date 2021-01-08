@@ -58,6 +58,16 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_PointerArray32_get0
         return sizeof (void*);
     }
 
+    /*
+     * Class:     de_ibapl_jnhw_PointerArray32
+     * Method:    alignofPointer
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_PointerArray32_alignofPointer
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return __alignof__ (void*);
+    }
+
 #ifdef __cplusplus
 }
 #endif

@@ -43,6 +43,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
+     * Method:    alignofItimerspec
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_alignofItimerspec
+        (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct itimerspec);
+        }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
      * Method:    offsetofIt_interval
      * Signature: ()I
      */

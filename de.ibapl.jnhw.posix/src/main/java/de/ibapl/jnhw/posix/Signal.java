@@ -75,6 +75,8 @@ public class Signal {
          */
         public static native int sizeofMcontext_t() throws NoSuchNativeTypeException;
 
+        public static native int alignofMcontext_t() throws NoSuchNativeTypeException;
+
         public Mcontext_t() throws NoSuchNativeTypeException {
             super(sizeofMcontext_t(), false);
         }
@@ -113,6 +115,8 @@ public class Signal {
          * @return the native value sizeof(struct sigset_t).
          */
         public static native int sizeofSigset_t();
+
+        public static native int alignofSigset_t();
 
         public Sigset_t() {
             super(sizeofSigset_t(), false);
@@ -283,6 +287,8 @@ public class Signal {
          */
         public static native int sizeofSigval();
 
+        public static native int alignofSigval();
+
         public Sigval() {
             super(sizeofSigval(), false);
         }
@@ -375,7 +381,7 @@ public class Signal {
             LibJnhwPosixLoader.touch();
         }
 
-        public static native int _sigev_value_Offset() throws NoSuchNativeTypeException;
+        public static native int offsetofSigev_value() throws NoSuchNativeTypeException;
 
         /**
          * Get the real size of struct sigevent natively.
@@ -383,6 +389,9 @@ public class Signal {
          * @return the native value sizeof(struct sigevent).
          */
         public static native int sizeofSigevent() throws NoSuchNativeTypeException;
+
+        public static native int alignofSigevent() throws NoSuchNativeTypeException;
+
         /**
          * Signal value.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
@@ -396,19 +405,19 @@ public class Signal {
         @SuppressWarnings("unchecked")
         public Sigevent() throws NoSuchNativeTypeException {
             super(sizeofSigevent(), true);
-            sigev_value = new Sigval(this, _sigev_value_Offset());
+            sigev_value = new Sigval(this, offsetofSigev_value());
         }
 
         @SuppressWarnings("unchecked")
         public Sigevent(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
             super(baseAddress, sizeofSigevent());
-            sigev_value = new Sigval(this, _sigev_value_Offset());
+            sigev_value = new Sigval(this, offsetofSigev_value());
         }
 
         @SuppressWarnings("unchecked")
         Sigevent(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
             super(owner, offset, sizeofSigevent());
-            sigev_value = new Sigval(this, _sigev_value_Offset());
+            sigev_value = new Sigval(this, offsetofSigev_value());
         }
 
         /**
@@ -919,11 +928,13 @@ public class Signal {
          */
         public static native int sizeofSigaction();
 
-        public static native int _sa_mask_Offset();
+        public static native int alignofSigaction();
+
+        public static native int offsetofSa_mask();
 
         protected Sigaction() {
             super(sizeofSigaction(), false);
-            sa_mask = new Sigset_t(this, _sa_mask_Offset());
+            sa_mask = new Sigset_t(this, offsetofSa_mask());
         }
 
         /**
@@ -1178,11 +1189,13 @@ public class Signal {
          */
         public static native int sizeofUcontext_t() throws NoSuchNativeTypeException;
 
-        public static native int _uc_sigmask_Offset() throws NoSuchNativeTypeException;
+        public static native int alignofUcontext_t() throws NoSuchNativeTypeException;
 
-        public static native int _uc_stack_Offset() throws NoSuchNativeTypeException;
+        public static native int offsetofUc_sigmask() throws NoSuchNativeTypeException;
 
-        public static native int _uc_mcontext_Offset() throws NoSuchNativeTypeException;
+        public static native int offsetofUc_stack() throws NoSuchNativeTypeException;
+
+        public static native int offsetofUc_mcontext() throws NoSuchNativeTypeException;
 
         public Ucontext_t() throws NoSuchNativeTypeException {
             this(false);
@@ -1190,16 +1203,16 @@ public class Signal {
 
         public Ucontext_t(boolean clearMem) throws NoSuchNativeTypeException {
             super(sizeofUcontext_t(), clearMem);
-            uc_sigmask = new Sigset_t(this, _uc_sigmask_Offset());
-            uc_stack = new Stack_t(this, _uc_stack_Offset());
-            uc_mcontext = new Mcontext_t(this, _uc_mcontext_Offset());
+            uc_sigmask = new Sigset_t(this, offsetofUc_sigmask());
+            uc_stack = new Stack_t(this, offsetofUc_stack());
+            uc_mcontext = new Mcontext_t(this, offsetofUc_mcontext());
         }
 
         public Ucontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
             super(baseAddress, sizeofUcontext_t());
-            uc_sigmask = new Sigset_t(this, _uc_sigmask_Offset());
-            uc_stack = new Stack_t(this, _uc_stack_Offset());
-            uc_mcontext = new Mcontext_t(this, _uc_mcontext_Offset());
+            uc_sigmask = new Sigset_t(this, offsetofUc_sigmask());
+            uc_stack = new Stack_t(this, offsetofUc_stack());
+            uc_mcontext = new Mcontext_t(this, offsetofUc_mcontext());
         }
 
         /**
@@ -1266,6 +1279,8 @@ public class Signal {
          * @return the native value sizeof(struct stack_t).
          */
         public static native int sizeofStack_t();
+
+        public static native int alignofStack_t();
 
         private Stack_t(OpaqueMemory32 owner, int offset) {
             super(owner, offset, sizeofStack_t());
@@ -1352,12 +1367,14 @@ public class Signal {
          */
         public static native int sizeofSiginfo_t();
 
-        public static native int _si_value_Offset();
+        public static native int alignofSiginfo_t();
+
+        public static native int offsetofSi_value();
 
         @SuppressWarnings("unchecked")
         public Siginfo_t() {
             super(sizeofSiginfo_t(), false);
-            si_value = new Sigval(this, _si_value_Offset());
+            si_value = new Sigval(this, offsetofSi_value());
         }
 
         /**
@@ -1368,7 +1385,7 @@ public class Signal {
         @SuppressWarnings("unchecked")
         public Siginfo_t(NativeAddressHolder address) {
             super(address, sizeofSiginfo_t());
-            si_value = new Sigval(this, _si_value_Offset());
+            si_value = new Sigval(this, offsetofSi_value());
         }
 
         /**
