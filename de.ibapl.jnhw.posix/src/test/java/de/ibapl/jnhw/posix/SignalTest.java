@@ -1072,6 +1072,12 @@ public class SignalTest {
     @Test
     public void testOffsetofSa_mask() throws Exception {
         switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+                Assertions.assertEquals(8, Signal.Sigaction.offsetofSa_mask());
+                break;
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
@@ -1079,9 +1085,6 @@ public class SignalTest {
                 break;
             case S390_X__LINUX__GNU:
                 Assertions.assertEquals(24, Signal.Sigaction.offsetofSa_mask());
-                break;
-            case X86_64__LINUX__GNU:
-                Assertions.assertEquals(8, Signal.Sigaction.offsetofSa_mask());
                 break;
             default:
                 Assertions.assertEquals(-1, Signal.Sigaction.offsetofSa_mask());
