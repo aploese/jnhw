@@ -259,15 +259,23 @@ public class PthreadTest {
 
     @Test
     public void testSizeOfPthread_attr_t() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
-            case _32_BIT:
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+                Assertions.assertEquals(64, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+                break;
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
                 Assertions.assertEquals(36, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
                 break;
-            case _64_BIT:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
                 Assertions.assertEquals(56, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
         }
     }
 
