@@ -799,9 +799,11 @@ public class SignalTest {
 
     /**
      * Test of sigwaitinfo method, of class Signal.
+     *
+     * If the test fails after raising the signal and before processing the
+     * signal in the test, the whole testsuite will crash!
      */
     @Test
-    //  @Disabled //TODO Failed utterly on constructor???
     public void testSigwaitinfo() throws Exception {
         System.out.println("sigwaitinfo");
         final int SIG = Signal.SIGALRM();
@@ -814,6 +816,11 @@ public class SignalTest {
 
         Signal.sigprocmask(Signal.SIG_BLOCK(), set, oset);
         try {
+            /*
+             If the test fails after raising the signal 
+             and before processing the signal in the test,
+             the whole testsuite will crash!
+             */
             Signal.raise(SIG);
             final Signal.Sigset_t testSet = new Signal.Sigset_t();
             Signal.sigemptyset(testSet);
