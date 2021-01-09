@@ -754,15 +754,24 @@ public class AioTest {
 
     @Test
     public void testSizeOfAiocb() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
-            case _32_BIT:
-                Assertions.assertEquals(144, Aio.Aiocb.sizeofAiocb());
-                break;
-            case _64_BIT:
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
                 Assertions.assertEquals(168, Aio.Aiocb.sizeofAiocb());
                 break;
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+                Assertions.assertEquals(144, Aio.Aiocb.sizeofAiocb());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(160, Aio.Aiocb.sizeofAiocb());
+                break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Aio.Aiocb.sizeofAiocb());
         }
     }
 
@@ -782,15 +791,24 @@ public class AioTest {
 
     @Test
     public void testOffsetOfAio_sigevent() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
-            case _32_BIT:
-                Assertions.assertEquals(20, Aio.Aiocb.offsetofAio_sigevent());
-                break;
-            case _64_BIT:
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
                 Assertions.assertEquals(32, Aio.Aiocb.offsetofAio_sigevent());
                 break;
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+                Assertions.assertEquals(20, Aio.Aiocb.offsetofAio_sigevent());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(80, Aio.Aiocb.offsetofAio_sigevent());
+                break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Aio.Aiocb.offsetofAio_sigevent());
         }
     }
 

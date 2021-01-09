@@ -1005,12 +1005,19 @@ public class SignalTest {
             case I386__LINUX__GNU:
                 Assertions.assertEquals(88, Signal.Mcontext_t.sizeofMcontext_t());
                 break;
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
+                Assertions.assertEquals(600, Signal.Mcontext_t.sizeofMcontext_t());
+                break;
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
                 Assertions.assertEquals(1272, Signal.Mcontext_t.sizeofMcontext_t());
                 break;
             case S390_X__LINUX__GNU:
                 Assertions.assertEquals(344, Signal.Mcontext_t.sizeofMcontext_t());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(800, Signal.Mcontext_t.sizeofMcontext_t());
                 break;
             case X86_64__LINUX__GNU:
                 Assertions.assertEquals(256, Signal.Mcontext_t.sizeofMcontext_t());
@@ -1030,6 +1037,8 @@ public class SignalTest {
             case ARM__LINUX__GNU_EABI_HF:
                 Assertions.assertEquals(4, Signal.Mcontext_t.alignofMcontext_t());
                 break;
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -1037,21 +1046,30 @@ public class SignalTest {
                 Assertions.assertEquals(8, Signal.Mcontext_t.alignofMcontext_t());
                 break;
             default:
-                Assertions.assertEquals(16, Signal.Mcontext_t.alignofMcontext_t());
+                Assertions.assertEquals(-1, Signal.Mcontext_t.alignofMcontext_t());
         }
     }
 
     @Test
     public void testSizeOfSigaction() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
-            case _32_BIT:
-                Assertions.assertEquals(140, Signal.Sigaction.sizeofSigaction());
-                break;
-            case _64_BIT:
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
                 Assertions.assertEquals(152, Signal.Sigaction.sizeofSigaction());
                 break;
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+                Assertions.assertEquals(140, Signal.Sigaction.sizeofSigaction());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(32, Signal.Sigaction.sizeofSigaction());
+                break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Signal.Sigaction.sizeofSigaction());
         }
     }
 
@@ -1083,6 +1101,10 @@ public class SignalTest {
             case I386__LINUX__GNU:
                 Assertions.assertEquals(4, Signal.Sigaction.offsetofSa_mask());
                 break;
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
+                Assertions.assertEquals(16, Signal.Sigaction.offsetofSa_mask());
+                break;
             case S390_X__LINUX__GNU:
                 Assertions.assertEquals(24, Signal.Sigaction.offsetofSa_mask());
                 break;
@@ -1093,7 +1115,23 @@ public class SignalTest {
 
     @Test
     public void testSizeOfSigevent() throws Exception {
-        Assertions.assertEquals(64, Signal.Sigevent.sizeofSigevent());
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+                Assertions.assertEquals(64, Signal.Sigevent.sizeofSigevent());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(80, Signal.Sigevent.sizeofSigevent());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigevent.sizeofSigevent());
+        }
     }
 
     @Test
@@ -1112,12 +1150,44 @@ public class SignalTest {
 
     @Test
     public void testOffsetOfSigev_value() throws Exception {
-        Assertions.assertEquals(0, Signal.Sigevent.offsetofSigev_value());
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+                Assertions.assertEquals(0, Signal.Sigevent.offsetofSigev_value());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(8, Signal.Sigevent.offsetofSigev_value());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigevent.offsetofSigev_value());
+        }
     }
 
     @Test
     public void testSizeOfSiginfo_t() throws Exception {
-        Assertions.assertEquals(128, Signal.Siginfo_t.sizeofSiginfo_t());
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+                Assertions.assertEquals(128, Signal.Siginfo_t.sizeofSiginfo_t());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(80, Signal.Siginfo_t.sizeofSiginfo_t());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Siginfo_t.sizeofSiginfo_t());
+        }
     }
 
     @Test
@@ -1136,34 +1206,68 @@ public class SignalTest {
 
     @Test
     public void testOffsetOfSi_value() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
-            case _32_BIT:
-                Assertions.assertEquals(20, Signal.Siginfo_t.offsetofSi_value());
-                break;
-            case _64_BIT:
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
                 Assertions.assertEquals(24, Signal.Siginfo_t.offsetofSi_value());
                 break;
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+                Assertions.assertEquals(20, Signal.Siginfo_t.offsetofSi_value());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(32, Signal.Siginfo_t.offsetofSi_value());
+                break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Signal.Siginfo_t.offsetofSi_value());
         }
     }
 
     @Test
     public void testSizeOfSigset_t() throws Exception {
-        Assertions.assertEquals(128, Signal.Sigset_t.sizeofSigset_t());
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+                Assertions.assertEquals(128, Signal.Sigset_t.sizeofSigset_t());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(16, Signal.Sigset_t.sizeofSigset_t());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigset_t.sizeofSigset_t());
+        }
     }
 
     @Test
     public void testAlignOfSigset_t() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
-            case _32_BIT:
-                Assertions.assertEquals(4, Signal.Sigset_t.alignofSigset_t());
-                break;
-            case _64_BIT:
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
                 Assertions.assertEquals(8, Signal.Sigset_t.alignofSigset_t());
                 break;
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+                Assertions.assertEquals(4, Signal.Sigset_t.alignofSigset_t());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(4, Signal.Sigset_t.alignofSigset_t());
+                break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Signal.Sigset_t.alignofSigset_t());
         }
     }
 
@@ -1236,12 +1340,19 @@ public class SignalTest {
             case I386__LINUX__GNU:
                 Assertions.assertEquals(364, Signal.Ucontext_t.sizeofUcontext_t());
                 break;
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
+                Assertions.assertEquals(768, Signal.Ucontext_t.sizeofUcontext_t());
+                break;
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
                 Assertions.assertEquals(1440, Signal.Ucontext_t.sizeofUcontext_t());
                 break;
             case S390_X__LINUX__GNU:
                 Assertions.assertEquals(512, Signal.Ucontext_t.sizeofUcontext_t());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(16, Signal.Ucontext_t.sizeofUcontext_t());
                 break;
             case X86_64__LINUX__GNU:
                 Assertions.assertEquals(968, Signal.Ucontext_t.sizeofUcontext_t());
@@ -1262,11 +1373,16 @@ public class SignalTest {
             case I386__LINUX__GNU:
                 Assertions.assertEquals(4, Signal.Ucontext_t.alignofUcontext_t());
                 break;
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
             case X86_64__LINUX__GNU:
                 Assertions.assertEquals(8, Signal.Ucontext_t.alignofUcontext_t());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(16, Signal.Ucontext_t.alignofUcontext_t());
                 break;
             default:
                 Assertions.assertEquals(-1, Signal.Ucontext_t.alignofUcontext_t());
@@ -1288,9 +1404,14 @@ public class SignalTest {
             case POWER_PC_64__LINUX__GNU:
                 Assertions.assertEquals(168, Signal.Ucontext_t.offsetofUc_mcontext());
                 break;
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
             case S390_X__LINUX__GNU:
             case X86_64__LINUX__GNU:
                 Assertions.assertEquals(40, Signal.Ucontext_t.offsetofUc_mcontext());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(16, Signal.Ucontext_t.offsetofUc_mcontext());
                 break;
             default:
                 Assertions.assertEquals(-1, Signal.Ucontext_t.offsetofUc_mcontext());
@@ -1312,8 +1433,15 @@ public class SignalTest {
             case I386__LINUX__GNU:
                 Assertions.assertEquals(108, Signal.Ucontext_t.offsetofUc_sigmask());
                 break;
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
+                Assertions.assertEquals(640, Signal.Ucontext_t.offsetofUc_sigmask());
+                break;
             case S390_X__LINUX__GNU:
                 Assertions.assertEquals(384, Signal.Ucontext_t.offsetofUc_sigmask());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(0, Signal.Ucontext_t.offsetofUc_sigmask());
                 break;
             case X86_64__LINUX__GNU:
                 Assertions.assertEquals(296, Signal.Ucontext_t.offsetofUc_sigmask());
@@ -1325,15 +1453,24 @@ public class SignalTest {
 
     @Test
     public void testOffsetofUc_stack() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
-            case _32_BIT:
-                Assertions.assertEquals(8, Signal.Ucontext_t.offsetofUc_stack());
-                break;
-            case _64_BIT:
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
                 Assertions.assertEquals(16, Signal.Ucontext_t.offsetofUc_stack());
                 break;
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+                Assertions.assertEquals(8, Signal.Ucontext_t.offsetofUc_stack());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(824, Signal.Ucontext_t.offsetofUc_stack());
+                break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Signal.Ucontext_t.offsetofUc_stack());
         }
     }
 

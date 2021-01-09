@@ -268,11 +268,16 @@ public class PthreadTest {
             case I386__LINUX__GNU:
                 Assertions.assertEquals(36, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
                 break;
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
             case X86_64__LINUX__GNU:
                 Assertions.assertEquals(56, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(8, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
                 break;
             default:
                 Assertions.assertEquals(-1, Pthread.Pthread_attr_t.sizeofPthread_attr_t());

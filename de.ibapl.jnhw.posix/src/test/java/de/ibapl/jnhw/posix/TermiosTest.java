@@ -24,6 +24,7 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.Defined;
 import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.NotDefinedException;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
 import static de.ibapl.jnhw.posix.Termios.CREAD;
@@ -38,15 +39,17 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TermiosTest {
 
+    private static MultiarchTupelBuilder multiarchTupelBuilder;
+
     @Test
     public void CMSPAR() {
         switch (NativeLibResolver.getOS()) {
             case LINUX:
                 if (Defined.defined(Defines::__mips__)) {
-                        assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
-                        break;
+                    assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
+                    break;
                 } else {
-                        assertTrue(Defined.defined(Termios::CMSPAR), "CMSPAR");
+                    assertTrue(Defined.defined(Termios::CMSPAR), "CMSPAR");
                 }
                 break;
             case FREE_BSD:
@@ -96,10 +99,10 @@ public class TermiosTest {
                 Termios._HAVE_STRUCT_TERMIOS_C_ISPEED();
                 //Do the test
             } catch (NotDefinedException nee) {
-                    Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
-                        structTermios.c_ispeed();
-                    });
-                    return;
+                Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                    structTermios.c_ispeed();
+                });
+                return;
             }
             break;
             case FREE_BSD:
@@ -133,10 +136,10 @@ public class TermiosTest {
                 Termios._HAVE_STRUCT_TERMIOS_C_OSPEED();
                 //Do the test
             } catch (NotDefinedException nee) {
-                    Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
-                        structTermios.c_ospeed();
-                    });
-                    return;
+                Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                    structTermios.c_ospeed();
+                });
+                return;
             }
             break;
             case FREE_BSD:
@@ -174,12 +177,32 @@ public class TermiosTest {
 
     @Test
     public void testSizeOfTermios() throws Exception {
-        Assertions.assertEquals(60, Termios.StructTermios.sizeofTermios());
+        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
+            case AARCH64__LINUX__GNU:
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case POWER_PC_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+                Assertions.assertEquals(60, Termios.StructTermios.sizeofTermios());
+                break;
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
+                Assertions.assertEquals(52, Termios.StructTermios.sizeofTermios());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(44, Termios.StructTermios.sizeofTermios());
+                break;
+            default:
+                Assertions.assertEquals(-1, Termios.StructTermios.sizeofTermios());
+        }
     }
-    
+
     @Test
     public void testAlignOfTermios() throws Exception {
         Assertions.assertEquals(4, Termios.StructTermios.alignofTermios());
     }
-    
+
 }
