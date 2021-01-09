@@ -762,6 +762,8 @@ public class AioTest {
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
                 Assertions.assertEquals(144, Aio.Aiocb.sizeofAiocb());
                 break;
             case X86_64__FREE_BSD__BSD:
@@ -801,6 +803,8 @@ public class AioTest {
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
                 Assertions.assertEquals(20, Aio.Aiocb.offsetofAio_sigevent());
                 break;
             case X86_64__FREE_BSD__BSD:

@@ -190,6 +190,8 @@ public class TermiosTest {
                 break;
             case MIPS_64_EL__LINUX__GNU_ABI_64:
             case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
                 Assertions.assertEquals(52, Termios.StructTermios.sizeofTermios());
                 break;
             case X86_64__FREE_BSD__BSD:

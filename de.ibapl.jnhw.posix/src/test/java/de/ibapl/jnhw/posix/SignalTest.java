@@ -644,9 +644,10 @@ public class SignalTest {
         System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef.value);
         try {
             Assertions.assertNotNull(siginfo_tRef.value);
-            Assertions.assertAll(() -> {
-                Assertions.assertEquals(0, siginfo_tRef.value.si_errno(), "siginfo_tRef.value.si_errno()");
-            },
+            Assertions.assertAll(
+                    () -> {
+                        Assertions.assertEquals(0, siginfo_tRef.value.si_errno(), "siginfo_tRef.value.si_errno()");
+                    },
                     () -> {
                         Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo(), "siginfo_tRef.value.si_signo()");
                     },
@@ -1009,6 +1010,10 @@ public class SignalTest {
             case MIPS_64__LINUX__GNU_ABI_64:
                 Assertions.assertEquals(600, Signal.Mcontext_t.sizeofMcontext_t());
                 break;
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
+                Assertions.assertEquals(592, Signal.Mcontext_t.sizeofMcontext_t());
+                break;
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
                 Assertions.assertEquals(1272, Signal.Mcontext_t.sizeofMcontext_t());
@@ -1039,6 +1044,8 @@ public class SignalTest {
                 break;
             case MIPS_64_EL__LINUX__GNU_ABI_64:
             case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -1057,6 +1064,8 @@ public class SignalTest {
     public void testSizeOfSigaction() throws Exception {
         switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
             case AARCH64__LINUX__GNU:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -1067,6 +1076,10 @@ public class SignalTest {
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
                 Assertions.assertEquals(140, Signal.Sigaction.sizeofSigaction());
+                break;
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
+                Assertions.assertEquals(144, Signal.Sigaction.sizeofSigaction());
                 break;
             case X86_64__FREE_BSD__BSD:
                 Assertions.assertEquals(32, Signal.Sigaction.sizeofSigaction());
@@ -1094,6 +1107,8 @@ public class SignalTest {
     public void testOffsetofSa_mask() throws Exception {
         switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
             case AARCH64__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case X86_64__LINUX__GNU:
@@ -1126,6 +1141,10 @@ public class SignalTest {
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -1161,6 +1180,10 @@ public class SignalTest {
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -1182,6 +1205,10 @@ public class SignalTest {
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -1214,6 +1241,8 @@ public class SignalTest {
     public void testOffsetOfSi_value() throws Exception {
         switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
             case AARCH64__LINUX__GNU:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -1223,6 +1252,8 @@ public class SignalTest {
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
                 Assertions.assertEquals(20, Signal.Siginfo_t.offsetofSi_value());
                 break;
             case X86_64__FREE_BSD__BSD:
@@ -1240,6 +1271,10 @@ public class SignalTest {
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -1258,6 +1293,8 @@ public class SignalTest {
     public void testAlignOfSigset_t() throws Exception {
         switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
             case AARCH64__LINUX__GNU:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -1267,6 +1304,8 @@ public class SignalTest {
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
                 Assertions.assertEquals(4, Signal.Sigset_t.alignofSigset_t());
                 break;
             case X86_64__FREE_BSD__BSD:
@@ -1350,6 +1389,10 @@ public class SignalTest {
             case MIPS_64__LINUX__GNU_ABI_64:
                 Assertions.assertEquals(768, Signal.Ucontext_t.sizeofUcontext_t());
                 break;
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
+                Assertions.assertEquals(744, Signal.Ucontext_t.sizeofUcontext_t());
+                break;
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
                 Assertions.assertEquals(1440, Signal.Ucontext_t.sizeofUcontext_t());
@@ -1381,6 +1424,8 @@ public class SignalTest {
                 break;
             case MIPS_64_EL__LINUX__GNU_ABI_64:
             case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -1416,6 +1461,10 @@ public class SignalTest {
             case X86_64__LINUX__GNU:
                 Assertions.assertEquals(40, Signal.Ucontext_t.offsetofUc_mcontext());
                 break;
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
+                Assertions.assertEquals(24, Signal.Ucontext_t.offsetofUc_mcontext());
+                break;
             case X86_64__FREE_BSD__BSD:
                 Assertions.assertEquals(16, Signal.Ucontext_t.offsetofUc_mcontext());
                 break;
@@ -1439,6 +1488,10 @@ public class SignalTest {
             case I386__LINUX__GNU:
                 Assertions.assertEquals(108, Signal.Ucontext_t.offsetofUc_sigmask());
                 break;
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
+                Assertions.assertEquals(616, Signal.Ucontext_t.offsetofUc_sigmask());
+                break;
             case MIPS_64_EL__LINUX__GNU_ABI_64:
             case MIPS_64__LINUX__GNU_ABI_64:
                 Assertions.assertEquals(640, Signal.Ucontext_t.offsetofUc_sigmask());
@@ -1461,6 +1514,8 @@ public class SignalTest {
     public void testOffsetofUc_stack() throws Exception {
         switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
             case AARCH64__LINUX__GNU:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -1470,6 +1525,8 @@ public class SignalTest {
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
                 Assertions.assertEquals(8, Signal.Ucontext_t.offsetofUc_stack());
                 break;
             case X86_64__FREE_BSD__BSD:

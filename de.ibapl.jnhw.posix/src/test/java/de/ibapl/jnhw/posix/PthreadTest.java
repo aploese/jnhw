@@ -266,6 +266,8 @@ public class PthreadTest {
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case I386__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+            case MIPS__LINUX__GNU:
                 Assertions.assertEquals(36, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
                 break;
             case MIPS_64_EL__LINUX__GNU_ABI_64:
