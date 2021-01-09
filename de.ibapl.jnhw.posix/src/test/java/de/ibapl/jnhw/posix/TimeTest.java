@@ -62,12 +62,7 @@ public class TimeTest {
     private final static long ONE_MINUTE = 60_000;
     private final static @Types.time_t
     long TIME_T__20191203_142044 = 1575382844;
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
-
-    @BeforeAll
-    public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
-    }
+    private final static MultiarchTupelBuilder multiarchTupelBuilder = new MultiarchTupelBuilder();
 
     public TimeTest() {
     }
@@ -699,11 +694,6 @@ public class TimeTest {
             Time.timer_delete(timerid);
         }
 
-        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-            Time.timer_delete(timerid);
-        });
-        assertEquals(Errno.EINVAL(), nee.errno);
-
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
         });
@@ -730,7 +720,7 @@ public class TimeTest {
             //FreeBSD crashes here with a SIGSEGV ...
             fail("Praceholder to gracefully fail the test - Remove this to see if the vm still crashes as of now:  FreeBSD 12.1-RELEASE-p10 and openjdk15-15.0.0+36.1_1");
         } else {
-            nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                 Time.timer_delete(timerid);
             });
             assertEquals(Errno.EINVAL(), nee.errno);
