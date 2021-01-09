@@ -54,12 +54,7 @@ public class AioTest {
 
     // just for vm in qemu...
     private final static long ONE_MINUTE = 60_000;
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
-
-    @BeforeAll
-    public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
-    }
+    private final static MultiarchTupelBuilder multiarchTupelBuilder = new MultiarchTupelBuilder();
 
     public AioTest() {
         super();

@@ -1045,6 +1045,9 @@ public class SignalTest {
             case X86_64__LINUX__GNU:
                 Assertions.assertEquals(8, Signal.Mcontext_t.alignofMcontext_t());
                 break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(16, Signal.Mcontext_t.alignofMcontext_t());
+                break;
             default:
                 Assertions.assertEquals(-1, Signal.Mcontext_t.alignofMcontext_t());
         }
@@ -1107,6 +1110,9 @@ public class SignalTest {
                 break;
             case S390_X__LINUX__GNU:
                 Assertions.assertEquals(24, Signal.Sigaction.offsetofSa_mask());
+                break;
+            case X86_64__FREE_BSD__BSD:
+                Assertions.assertEquals(12, Signal.Sigaction.offsetofSa_mask());
                 break;
             default:
                 Assertions.assertEquals(-1, Signal.Sigaction.offsetofSa_mask());
@@ -1352,7 +1358,7 @@ public class SignalTest {
                 Assertions.assertEquals(512, Signal.Ucontext_t.sizeofUcontext_t());
                 break;
             case X86_64__FREE_BSD__BSD:
-                Assertions.assertEquals(16, Signal.Ucontext_t.sizeofUcontext_t());
+                Assertions.assertEquals(880, Signal.Ucontext_t.sizeofUcontext_t());
                 break;
             case X86_64__LINUX__GNU:
                 Assertions.assertEquals(968, Signal.Ucontext_t.sizeofUcontext_t());

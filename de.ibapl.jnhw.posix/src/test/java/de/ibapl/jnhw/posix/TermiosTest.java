@@ -39,7 +39,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TermiosTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
+    private final static MultiarchTupelBuilder multiarchTupelBuilder = new MultiarchTupelBuilder();
 
     @Test
     public void CMSPAR() {
