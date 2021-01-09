@@ -751,6 +751,8 @@ public class AioTest {
     public void testSizeOfAiocb() throws Exception {
         switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
             case AARCH64__LINUX__GNU:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
@@ -788,6 +790,8 @@ public class AioTest {
     public void testOffsetOfAio_sigevent() throws Exception {
         switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
             case AARCH64__LINUX__GNU:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case MIPS_64__LINUX__GNU_ABI_64:
             case POWER_PC_64_LE__LINUX__GNU:
             case POWER_PC_64__LINUX__GNU:
             case S390_X__LINUX__GNU:

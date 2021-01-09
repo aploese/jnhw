@@ -929,41 +929,23 @@ public class TimeTest {
 
     @Test
     public void testTimer_t() throws Exception {
-        switch (multiarchTupelBuilder.getOS()) {
-            case FREE_BSD:
-            case MAC_OS_X:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    new Time.Timer_t(true);
-                });
+        Time.Timer_t timer_t = new Time.Timer_t(true);
+        switch (multiarchTupelBuilder.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals("0x00000000", timer_t.toString());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals("0x0000000000000000", timer_t.toString());
                 break;
             default:
-                Time.Timer_t timer_t = new Time.Timer_t(true);
-                switch (Defines.__SIZEOF_LONG__()) {
-                    case 4:
-                        Assertions.assertEquals("0x00000000", timer_t.toString());
-                        break;
-                    case 8:
-                        Assertions.assertEquals("0x0000000000000000", timer_t.toString());
-                        break;
-                    default:
-                        fail("Wordsize not supported");
-                }
+                fail("Wordsize not supported");
         }
     }
 
     @Test
     public void testItimerspec() throws Exception {
-        switch (multiarchTupelBuilder.getOS()) {
-            case FREE_BSD:
-            case MAC_OS_X:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    new Time.Itimerspec(true);
-                });
-                break;
-            default:
-                Time.Itimerspec itimerspec = new Time.Itimerspec(true);
-                Assertions.assertEquals("{it_value : {tv_sec : 0, tv_nsec : 0}, it_interval : {tv_sec : 0, tv_nsec : 0}}", itimerspec.toString());
-        }
+        Time.Itimerspec itimerspec = new Time.Itimerspec(true);
+        Assertions.assertEquals("{it_value : {tv_sec : 0, tv_nsec : 0}, it_interval : {tv_sec : 0, tv_nsec : 0}}", itimerspec.toString());
     }
 
     @Test
