@@ -19,31 +19,13 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.tests;
+package de.ibapl.jnhw.libloader;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import de.ibapl.jnhw.libloader.LoadResult;
-import de.ibapl.jnhw.libloader.NativeLibResolver;
-
-public class NativeLibLoaderTests {
-
-    protected static void doSystemLoad(String absoluteLibName) {
-        System.load(absoluteLibName);
-    }
-
-    final static String LIB_NON_EXISTANT = "non-existant";
-
-    @Test
-    public void testLoadNonExistingLib() {
-        LoadResult lr = NativeLibResolver.loadNativeLib(LIB_NON_EXISTANT, 0, NativeLibLoaderTests::doSystemLoad);
-        Assertions.assertFalse(lr.isLoaded());
-        System.out.println(lr.loadError);
-    }
-
+/**
+ *
+ * @author aploese
+ */
+public enum Endianess {
+    BIG, LITTLE
+    
 }

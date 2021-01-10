@@ -31,6 +31,8 @@ import org.junit.jupiter.api.Test;
  * @author aploese
  */
 public class PointerArray32Test {
+    
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
@@ -47,7 +49,7 @@ public class PointerArray32Test {
      */
     @Test
     public void testSizeofPointer() {
-        switch (new MultiarchTupelBuilder().getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(4, PointerArray32.sizeofPointer());
                 break;
@@ -61,7 +63,7 @@ public class PointerArray32Test {
 
     @Test
     public void testAlignofPointer() {
-        switch (new MultiarchTupelBuilder().getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(4, PointerArray32.alignofPointer());
                 break;

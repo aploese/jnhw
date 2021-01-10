@@ -62,7 +62,7 @@ public class TimeTest {
     private final static long ONE_MINUTE = 60_000;
     private final static @Types.time_t
     long TIME_T__20191203_142044 = 1575382844;
-    private final static MultiarchTupelBuilder multiarchTupelBuilder = new MultiarchTupelBuilder();
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public TimeTest() {
     }
@@ -141,7 +141,7 @@ public class TimeTest {
     @Test
     public void testClock_getcpuclockid() throws Exception {
         System.out.println("clock_getcpuclockid");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Time.clock_getcpuclockid(0, null);
             });
@@ -162,7 +162,7 @@ public class TimeTest {
     @Test
     public void testClock_getres() throws Exception {
         System.out.println("clock_getres");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Time.clock_getres(0, null);
@@ -186,7 +186,7 @@ public class TimeTest {
     @Test
     public void testClock_gettime() throws Exception {
         System.out.println("clock_gettime");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Time.clock_gettime(0, null);
@@ -212,7 +212,7 @@ public class TimeTest {
     @Test
     public void testClock_nanosleep() throws Exception {
         System.out.println("clock_nanosleep");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
@@ -252,7 +252,7 @@ public class TimeTest {
     public void testClock_settime() throws Exception {
         System.out.println("clock_settime");
 
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertFalse(Defined.defined(Time::CLOCK_REALTIME));
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Time.clock_settime(0, null);
@@ -320,7 +320,7 @@ public class TimeTest {
     @Test
     public void testDaylight() throws Exception {
         System.out.println("daylight");
-        if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Time.daylight();
             });
@@ -348,7 +348,7 @@ public class TimeTest {
     public void testGetdate() {
         System.out.println("getdate");
         String string = "Tue Dec  3 15:20:44 2019\n";
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case FREE_BSD:
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
@@ -618,7 +618,7 @@ public class TimeTest {
         assertEquals(9, tm.tm_hour());
         assertEquals(12, tm.tm_min());
         assertEquals(57, tm.tm_sec());
-        if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
             //TODO Free BSD bug ???
             assertEquals(0, tm.tm_wday());
             assertEquals("Sun Jan 27 09:12:57 2020\n", Time.asctime(tm));
@@ -662,7 +662,7 @@ public class TimeTest {
     @Test
     public void testTimer_create_delete() throws Exception {
         System.out.println("timer_create");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.timer_create(0, null, null);
@@ -716,7 +716,7 @@ public class TimeTest {
             Time.timer_delete(timerid);
         }
 
-        if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
             //FreeBSD crashes here with a SIGSEGV ...
             fail("Praceholder to gracefully fail the test - Remove this to see if the vm still crashes as of now:  FreeBSD 12.1-RELEASE-p10 and openjdk15-15.0.0+36.1_1");
         } else {
@@ -737,7 +737,7 @@ public class TimeTest {
     @Test
     public void testTimer_SIGEV_NONE() throws Exception {
         System.out.println("timer_create Signal");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
@@ -784,7 +784,7 @@ public class TimeTest {
     @Test
     public void testTimer() throws Throwable {
         System.out.println("timer_create");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
@@ -870,7 +870,7 @@ public class TimeTest {
                     NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                         Time.timer_settime(timerid, 0, null, null);
                     });
-                    if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
+                    if (MULTIARCHTUPEL_BUILDER.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
                         assertEquals(Errno.EFAULT(), nee.errno);
                     } else {
                         assertEquals(Errno.EINVAL(), nee.errno);
@@ -887,7 +887,7 @@ public class TimeTest {
      */
     @Test
     public void testTimezone() throws Exception {
-        Assumptions.assumeFalse(multiarchTupelBuilder.getOS() == OS.FREE_BSD);
+        Assumptions.assumeFalse(MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD);
         System.out.println("timezone");
         final long oldTimezone = Time.timezone();
         assertEquals(oldTimezone, Time.timezone());
@@ -930,7 +930,7 @@ public class TimeTest {
     @Test
     public void testTimer_t() throws Exception {
         Time.Timer_t timer_t = new Time.Timer_t(true);
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals("0x00000000", timer_t.toString());
                 break;
@@ -950,7 +950,7 @@ public class TimeTest {
 
     @Test
     public void testSizeOfItimerspec() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(16, Time.Itimerspec.sizeofItimerspec());
                 break;
@@ -958,13 +958,13 @@ public class TimeTest {
                 Assertions.assertEquals(32, Time.Itimerspec.sizeofItimerspec());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Time.Itimerspec.sizeofItimerspec());
         }
     }
 
     @Test
     public void testAlignOfItimerspec() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(4, Time.Itimerspec.alignofItimerspec());
                 break;
@@ -972,13 +972,13 @@ public class TimeTest {
                 Assertions.assertEquals(8, Time.Itimerspec.alignofItimerspec());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Time.Itimerspec.alignofItimerspec());
         }
     }
 
     @Test
     public void testSizeOfTimer_t() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(4, Time.Timer_t.sizeofTimer_t());
                 break;
@@ -986,13 +986,13 @@ public class TimeTest {
                 Assertions.assertEquals(8, Time.Timer_t.sizeofTimer_t());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Time.Timer_t.sizeofTimer_t());
         }
     }
 
     @Test
     public void testAlignOfTimer_t() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(4, Time.Timer_t.alignofTimer_t());
                 break;
@@ -1000,13 +1000,13 @@ public class TimeTest {
                 Assertions.assertEquals(8, Time.Timer_t.alignofTimer_t());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Time.Timer_t.alignofTimer_t());
         }
     }
 
     @Test
     public void testSizeOfTimespec() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(8, Time.Timespec.sizeofTimespec());
                 break;
@@ -1014,13 +1014,13 @@ public class TimeTest {
                 Assertions.assertEquals(16, Time.Timespec.sizeofTimespec());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Time.Timespec.sizeofTimespec());
         }
     }
 
     @Test
     public void testAlignOfTimespec() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(4, Time.Timespec.alignofTimespec());
                 break;
@@ -1028,13 +1028,13 @@ public class TimeTest {
                 Assertions.assertEquals(8, Time.Timespec.alignofTimespec());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Time.Timespec.alignofTimespec());
         }
     }
 
     @Test
     public void testSizeOfTm() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(44, Time.Tm.sizeofTm());
                 break;
@@ -1042,13 +1042,13 @@ public class TimeTest {
                 Assertions.assertEquals(56, Time.Tm.sizeofTm());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Time.Tm.sizeofTm());
         }
     }
 
     @Test
     public void testAlignOfTm() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(4, Time.Tm.alignofTm());
                 break;
@@ -1056,7 +1056,7 @@ public class TimeTest {
                 Assertions.assertEquals(8, Time.Tm.alignofTm());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Time.Tm.alignofTm());
         }
     }
 
@@ -1067,7 +1067,7 @@ public class TimeTest {
 
     @Test
     public void testOffsetOfIt_value() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(8, Time.Itimerspec.offsetofIt_value());
                 break;
@@ -1075,7 +1075,7 @@ public class TimeTest {
                 Assertions.assertEquals(16, Time.Itimerspec.offsetofIt_value());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Time.Itimerspec.offsetofIt_value());
         }
     }
 

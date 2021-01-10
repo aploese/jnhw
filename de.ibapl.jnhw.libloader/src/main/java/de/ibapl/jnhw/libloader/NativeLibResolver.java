@@ -27,9 +27,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -142,7 +141,7 @@ public final class NativeLibResolver {
     private final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
 
     private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER;
-    private final static Set<MultiarchInfo> MULTIARCH_INFO;
+    private final static Collection<MultiarchInfo> MULTIARCH_INFO;
     private final static OS RUNNING_ON_OS;
     private final static File NATIVE_TEMP_DIR;
 
@@ -152,33 +151,31 @@ public final class NativeLibResolver {
      * we are on.
      */
     static {
-        MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-        Set<MultiarchInfo> multiarchInfo = EnumSet.noneOf(MultiarchInfo.class);
-        OS os = null;
+        MultiarchTupelBuilder mtb = null;
         try {
-            multiarchInfo = MULTIARCH_TUPEL_BUILDER.guessMultiarch();
-            Iterator<MultiarchInfo> iter = multiarchInfo.iterator();
-            if (iter.hasNext()) {
-                os = iter.next().getOS();
-            } else {
-                os = null;
-            }
+            mtb = new MultiarchTupelBuilder();
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
-                    "Unknown exception sys properties: \n" + MULTIARCH_TUPEL_BUILDER.listSystemProperties(), t);
+                    "Unknown exception sys properties: \n" + MultiarchTupelBuilder.listSystemProperties(), t);
         }
-        RUNNING_ON_OS = os;
-        MULTIARCH_INFO = multiarchInfo;
-
+        if (mtb == null) {
+            MULTIARCH_TUPEL_BUILDER = null;
+            RUNNING_ON_OS = null;
+            MULTIARCH_INFO = Collections.EMPTY_SET;
+        } else {
+            MULTIARCH_TUPEL_BUILDER = mtb;
+            RUNNING_ON_OS = MULTIARCH_TUPEL_BUILDER.getOS();
+            MULTIARCH_INFO = MULTIARCH_TUPEL_BUILDER.getMultiarchs();
+        }
         File nativeTemDir = null;
         try {
             nativeTemDir = File.createTempFile("jnhw-native-loader", "lib-dir");
-            nativeTemDir.delete();
+            nativeTemDir.delete(); //delete the file in order to create the dir....
             nativeTemDir.mkdir();
             nativeTemDir.deleteOnExit();
         } catch (IOException ioe) {
             LOG.log(Level.SEVERE,
-                    "Can't create tempDir sys properties: \n" + MULTIARCH_TUPEL_BUILDER.listSystemProperties(), ioe);
+                    "Can't create tempDir sys properties: \n" + MultiarchTupelBuilder.listSystemProperties(), ioe);
         }
         NATIVE_TEMP_DIR = nativeTemDir;
     }
@@ -317,12 +314,8 @@ public final class NativeLibResolver {
         return loadFromResource(libName, System.mapLibraryName(libName), consumer);
     }
 
-    public static OS getOS() {
+    protected static OS getOS() {
         return RUNNING_ON_OS;
-    }
-
-    public static Iterable<MultiarchInfo> getMultiArchInfos() {
-        return MULTIARCH_INFO::iterator;
     }
 
 }

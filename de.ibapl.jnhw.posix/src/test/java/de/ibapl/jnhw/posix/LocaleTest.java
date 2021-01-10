@@ -38,11 +38,10 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class LocaleTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
         LibJnhwPosixTestLoader.touch();
     }
 
@@ -61,7 +60,7 @@ public class LocaleTest {
     @Test
     public void testUnwrapLC_GLOBAL_LOCALE() throws Exception {
         System.out.println("testUnwrapLC_GLOBAL_LOCALE");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE());
             });
@@ -79,7 +78,7 @@ public class LocaleTest {
     @Test
     public void testLocale_t() throws Exception {
         System.out.println("testLocale_t");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 nativeLocale_t(0);
             });
@@ -190,7 +189,7 @@ public class LocaleTest {
 
     @Test
     public void testSizeOfLconv() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(56, Locale.Lconv.sizeofLconv());
                 break;
@@ -198,13 +197,13 @@ public class LocaleTest {
                 Assertions.assertEquals(96, Locale.Lconv.sizeofLconv());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Locale.Lconv.sizeofLconv());
         }
     }
 
     @Test
     public void testAlignOfLconv() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(4, Locale.Lconv.alignofLconv());
                 break;
@@ -212,7 +211,7 @@ public class LocaleTest {
                 Assertions.assertEquals(8, Locale.Lconv.alignofLconv());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Locale.Lconv.alignofLconv());
         }
     }
 }

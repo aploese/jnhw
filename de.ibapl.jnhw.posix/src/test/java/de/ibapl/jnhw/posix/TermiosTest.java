@@ -39,11 +39,11 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TermiosTest {
 
-    private final static MultiarchTupelBuilder multiarchTupelBuilder = new MultiarchTupelBuilder();
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     @Test
     public void CMSPAR() {
-        switch (NativeLibResolver.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
                 if (Defined.defined(Defines::__mips__)) {
                     assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
@@ -58,13 +58,13 @@ public class TermiosTest {
                 assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
                 break;
             default:
-                fail("CMSPAR unknown on: " + NativeLibResolver.getOS());
+                fail("CMSPAR unknown on: " + MULTIARCHTUPEL_BUILDER.getOS());
         }
     }
 
     @Test
     public void PAREXT() {
-        switch (NativeLibResolver.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
             case FREE_BSD:
             case OPEN_BSD:
@@ -72,13 +72,13 @@ public class TermiosTest {
                 assertFalse(Defined.defined(Termios::PAREXT), "PAREXT");
                 break;
             default:
-                fail("PAREXT unknown on: " + NativeLibResolver.getOS());
+                fail("PAREXT unknown on: " + MULTIARCHTUPEL_BUILDER.getOS());
         }
     }
 
     @Test
     public void PARMRK() {
-        switch (NativeLibResolver.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
             case FREE_BSD:
             case OPEN_BSD:
@@ -86,14 +86,14 @@ public class TermiosTest {
                 assertTrue(Defined.defined(Termios::PARMRK), "PARMRK");
                 break;
             default:
-                fail("PARMRK unknown on: " + NativeLibResolver.getOS());
+                fail("PARMRK unknown on: " + MULTIARCHTUPEL_BUILDER.getOS());
         }
     }
 
     @Test
     public void structTermios_c_ispeed() throws Exception {
         Termios.StructTermios structTermios = new Termios.StructTermios();
-        switch (NativeLibResolver.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
                 try {
                 Termios._HAVE_STRUCT_TERMIOS_C_ISPEED();
@@ -130,7 +130,7 @@ public class TermiosTest {
     @Test
     public void structTermios_c_ospeed() throws Exception {
         Termios.StructTermios structTermios = new Termios.StructTermios();
-        switch (NativeLibResolver.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
                 try {
                 Termios._HAVE_STRUCT_TERMIOS_C_OSPEED();
@@ -177,24 +177,18 @@ public class TermiosTest {
 
     @Test
     public void testSizeOfTermios() throws Exception {
-        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
-            case AARCH64__LINUX__GNU:
-            case ARM__LINUX__GNU_EABI:
-            case ARM__LINUX__GNU_EABI_HF:
-            case I386__LINUX__GNU:
-            case POWER_PC_64_LE__LINUX__GNU:
-            case POWER_PC_64__LINUX__GNU:
-            case S390_X__LINUX__GNU:
-            case X86_64__LINUX__GNU:
-                Assertions.assertEquals(60, Termios.StructTermios.sizeofTermios());
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
+                    case MIPS:
+                    case MIPS_64:
+                        Assertions.assertEquals(52, Termios.StructTermios.sizeofTermios());
+                        break;
+                    default:
+                        Assertions.assertEquals(60, Termios.StructTermios.sizeofTermios());
+                }
                 break;
-            case MIPS_64_EL__LINUX__GNU_ABI_64:
-            case MIPS_64__LINUX__GNU_ABI_64:
-            case MIPS_EL__LINUX__GNU:
-            case MIPS__LINUX__GNU:
-                Assertions.assertEquals(52, Termios.StructTermios.sizeofTermios());
-                break;
-            case X86_64__FREE_BSD__BSD:
+            case FREE_BSD:
                 Assertions.assertEquals(44, Termios.StructTermios.sizeofTermios());
                 break;
             default:

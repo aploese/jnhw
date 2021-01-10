@@ -23,36 +23,46 @@ package de.ibapl.jnhw.libloader;
 
 /**
  * The Architecture used.
- * 
+ *
  * @author aploese
  */
 public enum Arch {
-    X86_64(WordSize._64_BIT, "x86_64"), 
-    X86(WordSize._32_BIT, "x86"), 
-    I386(WordSize._32_BIT, "i386"), 
-    ARM(WordSize._32_BIT, "arm"), 
-    AARCH64(WordSize._64_BIT, "aarch64"), 
-    MIPS_EL(WordSize._64_BIT, "mipsel"), 
-    MIPS(WordSize._32_BIT, "mips"), 
-    MIPS_64_EL(WordSize._64_BIT, "mips64el"), 
-    MIPS_64(WordSize._64_BIT, "mips64"),
-    POWER_PC_64(WordSize._64_BIT, "powerpc64"),
-    POWER_PC_64_LE(WordSize._64_BIT, "powerpc64le"),
-    S390_X(WordSize._64_BIT, "s390x"),
-    SPARC_64(WordSize._64_BIT, "sparc64");
+    X86_64(WordSize._64_BIT, "x86_64", "%s", null),
+    X86(WordSize._32_BIT, "x86", "%s", null),
+    I386(WordSize._32_BIT, "i386", "%s", null),
+    ARM(WordSize._32_BIT, "arm", "%s", null),
+    AARCH64(WordSize._64_BIT, "aarch64", "%s", null),
+    MIPS(WordSize._64_BIT, "mips", "%sel", "%s"),
+    MIPS_64(WordSize._64_BIT, "mips64", "%sel", "%s"),
+    POWER_PC_64(WordSize._64_BIT, "powerpc64", "%sle", "%s"),
+    S390_X(WordSize._64_BIT, "s390x", null, "%s"),
+    SPARC_64(WordSize._64_BIT, "sparc64", null, "%s");
 
     public final String archName;
+    public final String fmtLittleEndian;
+    public final String fmtBigEndian;
     public final WordSize wordSize;
-    
-    private Arch(WordSize wordSize, String archName) {
+
+    private Arch(WordSize wordSize, String archName, String fmtLittleEndian, String fmtBigEndian) {
         this.wordSize = wordSize;
         this.archName = archName;
+        this.fmtLittleEndian = fmtLittleEndian;
+        this.fmtBigEndian = fmtBigEndian;
     }
 
     @Override
     public String toString() {
         return archName;
     }
-    
-    
+
+    public String formatArchName(Endianess endianess) {
+        switch (endianess) {
+            case BIG:
+                return String.format(fmtBigEndian, archName);
+            case LITTLE:
+                return String.format(fmtLittleEndian, archName);
+            default:
+                throw new RuntimeException("Can*t handle endiuaness: " + endianess);
+        }
+    }
 }

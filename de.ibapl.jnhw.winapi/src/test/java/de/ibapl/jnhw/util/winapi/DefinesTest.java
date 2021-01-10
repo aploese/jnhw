@@ -54,12 +54,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
  */
 public class DefinesTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
-
-    @BeforeAll
-    public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
-    }
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public static void testDefines(Class clazz) throws Exception {
         System.out.println(clazz.getName() + " Defines: ");

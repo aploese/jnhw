@@ -35,12 +35,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class StringHeaderTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
-
-    @BeforeAll
-    public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
-    }
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public StringHeaderTest() {
     }
@@ -57,7 +52,7 @@ public class StringHeaderTest {
         final Locale.Locale_t oldLocale = Locale.uselocale(locale);
         try {
             assertEquals("Invalid argument", StringHeader.strerror(Errno.EINVAL()));
-            switch (multiarchTupelBuilder.getOS()) {
+            switch (MULTIARCHTUPEL_BUILDER.getOS()) {
                 case FREE_BSD:
                     assertEquals("No error: 0", StringHeader.strerror(0));
                     assertEquals("Unknown error: 2147483647", StringHeader.strerror(Integer.MAX_VALUE));
@@ -85,7 +80,7 @@ public class StringHeaderTest {
     @Test
     public void testStrerror_l() throws Exception {
         System.out.println("strerror_l");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case FREE_BSD:
             case MAC_OS_X:
                 assertThrows(NoSuchNativeMethodException.class, () -> {
@@ -113,7 +108,7 @@ public class StringHeaderTest {
         final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK(), "C", Locale.Locale_t.locale_t_0());
         final Locale.Locale_t oldLocale = Locale.uselocale(locale);
         try {
-            switch (multiarchTupelBuilder.getOS()) {
+            switch (MULTIARCHTUPEL_BUILDER.getOS()) {
                 case FREE_BSD:
                     assertEquals("Segmentation fault", StringHeader.strsignal(Signal.SIGSEGV()));
                     assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));

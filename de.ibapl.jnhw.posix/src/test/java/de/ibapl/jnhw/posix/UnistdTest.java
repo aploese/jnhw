@@ -280,20 +280,19 @@ public class UnistdTest {
             final int BYTES_TO_WRITE = 4;
             final int WRITE_OFFSET = 2;
             final int READ_OFFSET = 10;
-            
+
             ByteBuffer writeBuffer = ByteBuffer.wrap(this.writeBytes);
             writeBuffer.position(WRITE_OFFSET);
             writeBuffer = writeBuffer.slice();
             writeBuffer.limit(BYTES_TO_WRITE);
-            
-            byte[] readBackingArray = new byte[READ_OFFSET + BYTES_TO_WRITE];
 
+            byte[] readBackingArray = new byte[READ_OFFSET + BYTES_TO_WRITE];
 
             ByteBuffer readBuffer = ByteBuffer.wrap(readBackingArray);
             readBuffer.position(READ_OFFSET);
             readBuffer = readBuffer.slice();
             readBuffer.limit(BYTES_TO_WRITE);
-            
+
             int written = Unistd.write(writeFD.value, writeBuffer);
 
             int read = Unistd.read(readFD.value, readBuffer);

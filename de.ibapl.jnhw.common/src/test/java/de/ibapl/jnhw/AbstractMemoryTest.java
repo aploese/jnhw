@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 
 public class AbstractMemoryTest {
 
-    private final static MultiarchInfo multiarchInfo = new MultiarchTupelBuilder().guessMultiarch().iterator().next();
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
     private final int ALIGN8 = 1;
     private final int ALIGN16 = 2;
     private final int ALIGN32 = 4;
@@ -90,8 +90,8 @@ public class AbstractMemoryTest {
         Assertions.assertEquals(12, NativeMemoryAlignment.offsetOfS_i8_i64__4_i8());
         Assertions.assertEquals(16, NativeMemoryAlignment.offsetOfS_i8_i64__5_i64());
         Assertions.assertEquals(24, NativeMemoryAlignment.offsetOfS_i8_i64__6_i8());
-        switch (multiarchInfo) {
-            case I386__LINUX__GNU:
+        switch (MULTIARCH_TUPEL_BUILDER.getArch()) {
+            case I386:
                 Assertions.assertEquals(28, NativeMemoryAlignment.offsetOfS_i8_i64__7_i64());
                 Assertions.assertEquals(36, NativeMemoryAlignment.offsetOfS_i8_i64__8_i8());
                 Assertions.assertEquals(40, NativeMemoryAlignment.offsetOfS_i8_i64__9_i32());
@@ -114,7 +114,7 @@ public class AbstractMemoryTest {
     }
 
     public void testSizeOfS_i8_i64() {
-        switch (multiarchInfo.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(12, NativeMemoryAlignment.sizeOfS_i8_i64());
                 break;
@@ -122,7 +122,7 @@ public class AbstractMemoryTest {
                 Assertions.assertEquals(16, NativeMemoryAlignment.sizeOfS_i8_i64());
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize " + multiarchInfo.getWordSize());
+                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
         }
     }
 

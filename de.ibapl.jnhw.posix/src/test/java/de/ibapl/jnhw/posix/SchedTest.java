@@ -39,12 +39,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SchedTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
-
-    @BeforeAll
-    public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
-    }
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public SchedTest() {
     }
@@ -56,7 +51,7 @@ public class SchedTest {
     public void testSched_get_priority_max() throws Exception {
         System.out.println("sched_get_priority_max");
         int result = Sched.sched_get_priority_max(Sched.SCHED_OTHER());
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case FREE_BSD:
                 Assertions.assertEquals(103, result);
                 break;
@@ -78,7 +73,7 @@ public class SchedTest {
     public void testSched_get_priority_min() throws Exception {
         System.out.println("sched_get_priority_min");
         int result = Sched.sched_get_priority_min(Sched.SCHED_OTHER());
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case MAC_OS_X:
                 Assertions.assertEquals(15, result);
                 break;
@@ -93,7 +88,7 @@ public class SchedTest {
     @Test
     public void testSched_getscheduler() throws Exception {
         System.out.println("sched_getscheduler");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
@@ -112,7 +107,7 @@ public class SchedTest {
     @Test
     public void testSched_rr_get_interval() throws Exception {
         System.out.println("sched_rr_get_interval");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
@@ -126,7 +121,7 @@ public class SchedTest {
 
                 Time.Timespec interval = new Time.Timespec();
                 Sched.sched_rr_get_interval(Unistd.getpid(), interval);
-                switch (multiarchTupelBuilder.getOS()) {
+                switch (MULTIARCHTUPEL_BUILDER.getOS()) {
                     case LINUX:
                         if ((0L != interval.tv_nsec())
                                 && (8_000_000L != interval.tv_nsec())
@@ -150,7 +145,7 @@ public class SchedTest {
     @Test
     public void testSched_setgetparam() throws Exception {
         System.out.println("sched_setparam");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
@@ -187,7 +182,7 @@ public class SchedTest {
     @Test
     public void testSched_setscheduler() throws Exception {
         System.out.println("sched_setscheduler");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
@@ -201,7 +196,7 @@ public class SchedTest {
                             Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
                         });
                 Sched.Sched_param param = new Sched.Sched_param(true);
-                if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
                     //Any idea why this is so?
                     NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
                             () -> {
@@ -314,7 +309,7 @@ public class SchedTest {
 
     @Test
     public void testOffsetOfSched_ss_init_budget() throws Exception {
-        Assertions.assertThrows(NoSuchNativeTypeMemberException.class,  Sched.Sched_param::offsetofSched_ss_init_budget);
+        Assertions.assertThrows(NoSuchNativeTypeMemberException.class, Sched.Sched_param::offsetofSched_ss_init_budget);
     }
 
     @Test

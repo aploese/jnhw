@@ -33,12 +33,12 @@ public enum MultiarchInfo {
     ARM__LINUX__GNU_EABI_HF(WordSize._32_BIT, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI_HF),
     ARM__LINUX__GNU_EABI(WordSize._32_BIT, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI),
     AARCH64__LINUX__GNU(WordSize._64_BIT, Endianess.LITTLE, Arch.AARCH64, OS.LINUX, Abi.GNU),
-    MIPS_EL__LINUX__GNU(WordSize._32_BIT, Endianess.LITTLE, Arch.MIPS_EL, OS.LINUX, Abi.GNU),
+    MIPS_EL__LINUX__GNU(WordSize._32_BIT, Endianess.LITTLE, Arch.MIPS, OS.LINUX, Abi.GNU),
     MIPS__LINUX__GNU(WordSize._32_BIT, Endianess.BIG, Arch.MIPS, OS.LINUX, Abi.GNU),
-    MIPS_64_EL__LINUX__GNU_ABI_64(WordSize._64_BIT, Endianess.LITTLE, Arch.MIPS_64_EL, OS.LINUX, Abi.GNU_ABI_64),
+    MIPS_64_EL__LINUX__GNU_ABI_64(WordSize._64_BIT, Endianess.LITTLE, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
     MIPS_64__LINUX__GNU_ABI_64(WordSize._64_BIT, Endianess.BIG, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
     POWER_PC_64__LINUX__GNU(WordSize._64_BIT, Endianess.BIG, Arch.POWER_PC_64, OS.LINUX, Abi.GNU),
-    POWER_PC_64_LE__LINUX__GNU(WordSize._64_BIT, Endianess.LITTLE, Arch.POWER_PC_64_LE, OS.LINUX, Abi.GNU),
+    POWER_PC_64_LE__LINUX__GNU(WordSize._64_BIT, Endianess.LITTLE, Arch.POWER_PC_64, OS.LINUX, Abi.GNU),
     S390_X__LINUX__GNU(WordSize._64_BIT, Endianess.BIG, Arch.S390_X, OS.LINUX, Abi.GNU),
     SPARC_64__LINUX__GNU(WordSize._64_BIT, Endianess.BIG, Arch.SPARC_64, OS.LINUX, Abi.GNU),
     X86_64__WINDOWS__PE32_PLUS(WordSize._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.WINDOWS, Abi.PE32_PLUS),
@@ -56,10 +56,6 @@ public enum MultiarchInfo {
         this.endianess = endianess;
     }
 
-    public static enum Endianess {
-        BIG,
-        LITTLE;
-    }
 
 
     private final WordSize wordSize;
@@ -69,7 +65,7 @@ public enum MultiarchInfo {
     private final Abi abi;
 
     public String getTupelName() {
-        return String.format("%s-%s-%s", arch.archName, os.osName, abi.abiName);
+        return String.format("%s-%s-%s", arch.formatArchName(endianess), os.osName, abi.abiName);
     }
 
     public WordSize getWordSize() {

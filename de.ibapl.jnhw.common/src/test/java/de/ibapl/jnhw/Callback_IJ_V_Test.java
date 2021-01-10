@@ -37,14 +37,8 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
  */
 public class Callback_IJ_V_Test {
 
-    private static WordSize WORD_SIZE;
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
     private final static long CB_VALUE = 0xFEDCBA9876543210L;
-
-    @BeforeAll
-    public static void setUpClass() {
-        MultiarchInfo multiarchInfo = new MultiarchTupelBuilder().guessMultiarch().iterator().next();
-        WORD_SIZE = multiarchInfo.getWordSize();
-    }
 
     private class DummyCB extends Callback_IJ_V_Impl {
 
@@ -75,7 +69,7 @@ public class Callback_IJ_V_Test {
 
     @Test
     public void testAlignofIntptr_t() {
-        switch (WORD_SIZE) {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 assertEquals(4, Callback_IJ_V.alignofIntptr_t());
                 break;
@@ -83,13 +77,13 @@ public class Callback_IJ_V_Test {
                 assertEquals(8, Callback_IJ_V.alignofIntptr_t());
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
+                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
         }
     }
 
     @Test
     public void testSizeofIntptr_t() {
-        switch (WORD_SIZE) {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 assertEquals(4, Callback_IJ_V.sizeofIntptr_t());
                 break;
@@ -97,7 +91,7 @@ public class Callback_IJ_V_Test {
                 assertEquals(8, Callback_IJ_V.sizeofIntptr_t());
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
+                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
         }
     }
 
@@ -196,7 +190,7 @@ public class Callback_IJ_V_Test {
         assertEquals(getCallbackPtr(), callback);
         assertSame(Callback_IJ_V_Impl.find(getCallbackPtr()), callback);
         doCallTheCallback(CB_VALUE);
-        switch (WORD_SIZE) {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 assertTrue(ref.value instanceof Integer, "ref.value not Integer.class");
                 assertEquals((int) CB_VALUE, ref.value, String.format("ref mismatch for 32 bit - CB_VALUE = 0x%08x, value = 0x%04x ", CB_VALUE, ref.value));
@@ -205,7 +199,7 @@ public class Callback_IJ_V_Test {
                 assertEquals(CB_VALUE, ref.value);
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
+                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
         }
 
         callback = null;
@@ -264,7 +258,7 @@ public class Callback_IJ_V_Test {
 
         assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(CB_VALUE);
-        switch (WORD_SIZE) {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 assertEquals(Integer.valueOf((int) CB_VALUE), ref.value);
                 break;
@@ -272,7 +266,7 @@ public class Callback_IJ_V_Test {
                 assertEquals(Long.valueOf(CB_VALUE), ref.value);
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize " + WORD_SIZE);
+                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
         }
 
         callback = null;

@@ -54,7 +54,7 @@ public class AioTest {
 
     // just for vm in qemu...
     private final static long ONE_MINUTE = 60_000;
-    private final static MultiarchTupelBuilder multiarchTupelBuilder = new MultiarchTupelBuilder();
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public AioTest() {
         super();
@@ -66,7 +66,7 @@ public class AioTest {
     @Test
     public void testAio_cancel() throws Exception {
         System.out.println("aio_cancel");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Aio.aio_cancel(null);
@@ -97,7 +97,7 @@ public class AioTest {
     @Test
     public void testAio_error() throws Exception {
         System.out.println("aio_error");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Aio.aio_error(null);
@@ -108,7 +108,7 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
 
                 int result = Aio.aio_error(aiocb);
-                if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
                     assertEquals(Errno.EINVAL(), result);
                 } else {
                     assertEquals(0, result);
@@ -126,7 +126,7 @@ public class AioTest {
     @Test
     public void testAio_fsync() throws Exception {
         System.out.println("aio_fsync");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Aio.aio_fsync(0, null);
@@ -153,7 +153,7 @@ public class AioTest {
     @Test
     public void testAio_read_ByteBuffer() throws Exception {
         System.out.println("aio_read");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Aio.aio_read(null);
@@ -267,7 +267,7 @@ public class AioTest {
     @Test
     public void testAio_readEmpty() throws Exception {
         System.out.println("aio_read empty file");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Aio.aio_read(null);
@@ -359,7 +359,7 @@ public class AioTest {
     @Test
     public void testAio_return() throws Exception {
         System.out.println("aio_return");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Aio.aio_return(null);
@@ -384,7 +384,7 @@ public class AioTest {
     @Test
     public void testAio_suspend() throws Exception {
         System.out.println("aio_suspend");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Aio.aio_suspend(null, null);
@@ -417,7 +417,7 @@ public class AioTest {
     @Test
     public void testAio_write_ByteBuffer() throws Exception {
         System.out.println("aio_write");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Aio.aio_write(null);
@@ -510,7 +510,7 @@ public class AioTest {
     @Test
     public void testLio_listio() throws Exception {
         System.out.println("lio_listio");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Aio.lio_listio(0, null, null);
@@ -534,7 +534,7 @@ public class AioTest {
                     Aio.lio_listio(Aio.LIO_WAIT(), null, null);
                 });
 
-                if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
                     nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                         Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
                     });
@@ -551,7 +551,7 @@ public class AioTest {
     @Test
     public void testReadLio_listio() throws Exception {
         System.out.println("lio_listio");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Aio.lio_listio(0, null, null);
@@ -609,7 +609,7 @@ public class AioTest {
      */
     @Test
     public void testStructAiocb() throws Exception {
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
                     new Aio.Aiocb();
@@ -636,7 +636,7 @@ public class AioTest {
      */
     @Test
     public void testAiocbs() throws Exception {
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertFalse(Aio.HAVE_AIO_H());
                 break;
@@ -662,7 +662,7 @@ public class AioTest {
     @Test
     public void testAio_read_ByteBuffer_NativeRunnable() throws Exception {
         System.out.println("aio_read");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Aio.aio_read(null);
@@ -749,24 +749,20 @@ public class AioTest {
 
     @Test
     public void testSizeOfAiocb() throws Exception {
-        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
-            case AARCH64__LINUX__GNU:
-            case MIPS_64_EL__LINUX__GNU_ABI_64:
-            case MIPS_64__LINUX__GNU_ABI_64:
-            case POWER_PC_64_LE__LINUX__GNU:
-            case POWER_PC_64__LINUX__GNU:
-            case S390_X__LINUX__GNU:
-            case X86_64__LINUX__GNU:
-                Assertions.assertEquals(168, Aio.Aiocb.sizeofAiocb());
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _32_BIT:
+                        Assertions.assertEquals(144, Aio.Aiocb.sizeofAiocb());
+                        break;
+                    case _64_BIT:
+                        Assertions.assertEquals(168, Aio.Aiocb.sizeofAiocb());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Aio.Aiocb.sizeofAiocb());
+                }
                 break;
-            case ARM__LINUX__GNU_EABI:
-            case ARM__LINUX__GNU_EABI_HF:
-            case I386__LINUX__GNU:
-            case MIPS_EL__LINUX__GNU:
-            case MIPS__LINUX__GNU:
-                Assertions.assertEquals(144, Aio.Aiocb.sizeofAiocb());
-                break;
-            case X86_64__FREE_BSD__BSD:
+            case FREE_BSD:
                 Assertions.assertEquals(160, Aio.Aiocb.sizeofAiocb());
                 break;
             default:
@@ -776,7 +772,7 @@ public class AioTest {
 
     @Test
     public void testAlignOfAiocb() throws Exception {
-        switch (multiarchTupelBuilder.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals(4, Aio.Aiocb.alignofAiocb());
                 break;
@@ -784,30 +780,26 @@ public class AioTest {
                 Assertions.assertEquals(8, Aio.Aiocb.alignofAiocb());
                 break;
             default:
-                throw new RuntimeException("Unknown wordsize: " + multiarchTupelBuilder.getWordSize());
+                Assertions.assertEquals(-1, Aio.Aiocb.alignofAiocb());
         }
     }
 
     @Test
     public void testOffsetOfAio_sigevent() throws Exception {
-        switch (multiarchTupelBuilder.guessMultiarch().iterator().next()) {
-            case AARCH64__LINUX__GNU:
-            case MIPS_64_EL__LINUX__GNU_ABI_64:
-            case MIPS_64__LINUX__GNU_ABI_64:
-            case POWER_PC_64_LE__LINUX__GNU:
-            case POWER_PC_64__LINUX__GNU:
-            case S390_X__LINUX__GNU:
-            case X86_64__LINUX__GNU:
-                Assertions.assertEquals(32, Aio.Aiocb.offsetofAio_sigevent());
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _32_BIT:
+                        Assertions.assertEquals(20, Aio.Aiocb.offsetofAio_sigevent());
+                        break;
+                    case _64_BIT:
+                        Assertions.assertEquals(32, Aio.Aiocb.offsetofAio_sigevent());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Aio.Aiocb.offsetofAio_sigevent());
+                }
                 break;
-            case ARM__LINUX__GNU_EABI:
-            case ARM__LINUX__GNU_EABI_HF:
-            case I386__LINUX__GNU:
-            case MIPS_EL__LINUX__GNU:
-            case MIPS__LINUX__GNU:
-                Assertions.assertEquals(20, Aio.Aiocb.offsetofAio_sigevent());
-                break;
-            case X86_64__FREE_BSD__BSD:
+            case FREE_BSD:
                 Assertions.assertEquals(80, Aio.Aiocb.offsetofAio_sigevent());
                 break;
             default:
