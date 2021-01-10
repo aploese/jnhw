@@ -1037,6 +1037,7 @@ public class SignalTest {
                         Assertions.assertEquals(16, Signal.Mcontext_t.alignofMcontext_t());
                         break;
                     case ARM:
+                    case I386:
                         Assertions.assertEquals(4, Signal.Mcontext_t.alignofMcontext_t());
                         break;
                     case MIPS_64:
@@ -1250,6 +1251,7 @@ public class SignalTest {
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
                         Assertions.assertEquals(4, Signal.Sigset_t.alignofSigset_t());
+                        break;
                     case _64_BIT:
                         Assertions.assertEquals(8, Signal.Sigset_t.alignofSigset_t());
                         break;
