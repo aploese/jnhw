@@ -99,7 +99,7 @@ public class ProcessthreadsapiTest {
         long result = Synchapi.SleepEx(100, true);
         assertEquals(Winbase.WAIT_IO_COMPLETION(), result);
         
-        switch (WORD_SIZE) {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 assertEquals(-1, longRef.value);
                 assertEquals(42, intRef.value);
@@ -115,7 +115,7 @@ public class ProcessthreadsapiTest {
                 assertEquals(42, longRef.value);
                 break;
             default:
-                throw new RuntimeException("Cant handle wordsize " + WORD_SIZE);
+                throw new RuntimeException("Cant handle wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
         }
     }
 }
