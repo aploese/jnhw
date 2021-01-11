@@ -878,6 +878,9 @@ public class SignalTest {
 
     @Test
     public void testStructSiginfo_t() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Siginfo_t<>());
+        }
         Signal.Siginfo_t<OpaqueMemory32> siginfo_t = new Signal.Siginfo_t<>();
         Assertions.assertNotNull(siginfo_t.si_addr());
         Assertions.assertNotNull(siginfo_t.si_band());
@@ -891,6 +894,9 @@ public class SignalTest {
 
     @Test
     public void testStructSigevent_t() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Sigevent<>());
+        }
         Signal.Sigevent<OpaqueMemory32> sigevent = new Signal.Sigevent<>();
         Assertions.assertNotNull(sigevent.sigev_notify());
         Assertions.assertNotNull(sigevent.sigev_signo());
@@ -948,6 +954,9 @@ public class SignalTest {
 
     @Test
     public void testStructUcontext_t() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Ucontext_t());
+        }
         Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t(true);
         Assertions.assertNull(ucontext_t.uc_link((baseAddress, parent) -> {
             try {
@@ -964,6 +973,9 @@ public class SignalTest {
 
     @Test
     public void testStructMcontext_t() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Mcontext_t());
+        }
         Signal.Mcontext_t mcontext_t = new Signal.Mcontext_t();
         Assertions.assertNotNull(mcontext_t); //Opaque to us
     }
@@ -1036,6 +1048,9 @@ public class SignalTest {
             case FREE_BSD:
                 Assertions.assertEquals(800, Signal.Mcontext_t.sizeofMcontext_t());
                 break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Mcontext_t::sizeofMcontext_t);
+                break;
             default:
                 Assertions.assertEquals(-1, Signal.Mcontext_t.sizeofMcontext_t());
         }
@@ -1067,6 +1082,9 @@ public class SignalTest {
             case FREE_BSD:
                 Assertions.assertEquals(16, Signal.Mcontext_t.alignofMcontext_t());
                 break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Mcontext_t::alignofMcontext_t);
+                break;
             default:
                 Assertions.assertEquals(-1, Signal.Mcontext_t.alignofMcontext_t());
         }
@@ -1097,6 +1115,9 @@ public class SignalTest {
                 break;
             case FREE_BSD:
                 Assertions.assertEquals(32, Signal.Sigaction.sizeofSigaction());
+                break;
+            case OPEN_BSD:
+                Assertions.assertEquals(16, Signal.Sigaction.sizeofSigaction());
                 break;
             default:
                 Assertions.assertEquals(-1, Signal.Sigaction.sizeofSigaction());
@@ -1145,6 +1166,9 @@ public class SignalTest {
             case FREE_BSD:
                 Assertions.assertEquals(12, Signal.Sigaction.offsetofSa_mask());
                 break;
+            case OPEN_BSD:
+                Assertions.assertEquals(8, Signal.Sigaction.offsetofSa_mask());
+                break;
             default:
                 Assertions.assertEquals(-1, Signal.Sigaction.offsetofSa_mask());
         }
@@ -1159,6 +1183,9 @@ public class SignalTest {
             case FREE_BSD:
                 Assertions.assertEquals(80, Signal.Sigevent.sizeofSigevent());
                 break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::sizeofSigevent);
+                break;
             default:
                 Assertions.assertEquals(-1, Signal.Sigevent.sizeofSigevent());
         }
@@ -1166,12 +1193,22 @@ public class SignalTest {
 
     @Test
     public void testAlignOfSigevent() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
-            case _32_BIT:
-                Assertions.assertEquals(4, Signal.Sigevent.alignofSigevent());
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case FREE_BSD:
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _32_BIT:
+                        Assertions.assertEquals(4, Signal.Sigevent.alignofSigevent());
+                        break;
+                    case _64_BIT:
+                        Assertions.assertEquals(8, Signal.Sigevent.alignofSigevent());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Sigevent.alignofSigevent());
+                }
                 break;
-            case _64_BIT:
-                Assertions.assertEquals(8, Signal.Sigevent.alignofSigevent());
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::alignofSigevent);
                 break;
             default:
                 Assertions.assertEquals(-1, Signal.Sigevent.alignofSigevent());
@@ -1187,6 +1224,9 @@ public class SignalTest {
             case FREE_BSD:
                 Assertions.assertEquals(8, Signal.Sigevent.offsetofSigev_value());
                 break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::offsetofSigev_value);
+                break;
             default:
                 Assertions.assertEquals(-1, Signal.Sigevent.offsetofSigev_value());
         }
@@ -1200,6 +1240,9 @@ public class SignalTest {
                 break;
             case FREE_BSD:
                 Assertions.assertEquals(80, Signal.Siginfo_t.sizeofSiginfo_t());
+                break;
+            case OPEN_BSD:
+                Assertions.assertEquals(136, Signal.Siginfo_t.sizeofSiginfo_t());
                 break;
             default:
                 Assertions.assertEquals(-1, Signal.Siginfo_t.sizeofSiginfo_t());
@@ -1236,6 +1279,7 @@ public class SignalTest {
                 }
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 Assertions.assertEquals(32, Signal.Siginfo_t.offsetofSi_value());
                 break;
             default:
@@ -1251,6 +1295,9 @@ public class SignalTest {
                 break;
             case FREE_BSD:
                 Assertions.assertEquals(16, Signal.Sigset_t.sizeofSigset_t());
+                break;
+            case OPEN_BSD:
+                Assertions.assertEquals(4, Signal.Sigset_t.sizeofSigset_t());
                 break;
             default:
                 Assertions.assertEquals(-1, Signal.Sigset_t.sizeofSigset_t());
@@ -1273,6 +1320,7 @@ public class SignalTest {
                 }
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 Assertions.assertEquals(4, Signal.Sigset_t.alignofSigset_t());
                 break;
             default:
@@ -1373,6 +1421,9 @@ public class SignalTest {
             case FREE_BSD:
                 Assertions.assertEquals(880, Signal.Ucontext_t.sizeofUcontext_t());
                 break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::sizeofUcontext_t);
+                break;
             default:
                 Assertions.assertEquals(-1, Signal.Ucontext_t.sizeofUcontext_t());
         }
@@ -1403,6 +1454,9 @@ public class SignalTest {
                 break;
             case FREE_BSD:
                 Assertions.assertEquals(16, Signal.Ucontext_t.alignofUcontext_t());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::alignofUcontext_t);
                 break;
             default:
                 Assertions.assertEquals(-1, Signal.Ucontext_t.alignofUcontext_t());
@@ -1439,6 +1493,9 @@ public class SignalTest {
 
             case FREE_BSD:
                 Assertions.assertEquals(16, Signal.Ucontext_t.offsetofUc_mcontext());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::offsetofUc_mcontext);
                 break;
             default:
                 Assertions.assertEquals(-1, Signal.Ucontext_t.offsetofUc_mcontext());
@@ -1479,6 +1536,9 @@ public class SignalTest {
             case FREE_BSD:
                 Assertions.assertEquals(0, Signal.Ucontext_t.offsetofUc_sigmask());
                 break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::offsetofUc_sigmask);
+                break;
             default:
                 Assertions.assertEquals(-1, Signal.Ucontext_t.offsetofUc_sigmask());
         }
@@ -1501,6 +1561,9 @@ public class SignalTest {
                 break;
             case FREE_BSD:
                 Assertions.assertEquals(824, Signal.Ucontext_t.offsetofUc_stack());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::offsetofUc_stack);
                 break;
             default:
                 Assertions.assertEquals(-1, Signal.Ucontext_t.offsetofUc_stack());
