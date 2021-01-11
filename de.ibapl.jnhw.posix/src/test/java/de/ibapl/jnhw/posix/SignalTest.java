@@ -32,6 +32,7 @@ import de.ibapl.jnhw.NativeErrorException;
 import de.ibapl.jnhw.NativeFunctionPointer;
 import de.ibapl.jnhw.NoSuchNativeMethodException;
 import de.ibapl.jnhw.NoSuchNativeTypeException;
+import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
@@ -897,7 +898,11 @@ public class SignalTest {
     public void testStructSiginfo_t() throws Exception {
         Signal.Siginfo_t<OpaqueMemory32> siginfo_t = new Signal.Siginfo_t<>();
         Assertions.assertNotNull(siginfo_t.si_addr());
-        Assertions.assertNotNull(siginfo_t.si_band());
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> siginfo_t.si_band());
+        } else {
+            Assertions.assertNotNull(siginfo_t.si_band());
+        }
         Assertions.assertNotNull(siginfo_t.si_code());
         Assertions.assertNotNull(siginfo_t.si_errno());
         Assertions.assertNotNull(siginfo_t.si_pid());
