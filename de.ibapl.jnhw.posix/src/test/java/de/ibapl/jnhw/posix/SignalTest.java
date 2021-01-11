@@ -150,20 +150,21 @@ public class SignalTest {
     public void testPsiginfo() throws Exception {
         System.out.println("psiginfo");
         Signal.Siginfo_t pinfo = new Signal.Siginfo_t();
-        if (MULTIARCHTUPEL_BUILDER.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case FREE_BSD:
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo"));
+                break;
+            default:
+                System.err.print("psiginfo MSG >>>");
                 Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo");
-            });
-        } else {
-            System.err.print("psiginfo MSG >>>");
-            Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo");
-            System.err.println("<<< psiginfo MSG");
-            System.err.flush();
-            System.out.flush();
-            Signal.psiginfo(pinfo, null);
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Signal.psiginfo(null, "JNHW Test for Signal.psiginfo");
-            });
+                System.err.println("<<< psiginfo MSG");
+                System.err.flush();
+                System.out.flush();
+                Signal.psiginfo(pinfo, null);
+                Assertions.assertThrows(NullPointerException.class, () -> {
+                    Signal.psiginfo(null, "JNHW Test for Signal.psiginfo");
+                });
         }
         //TODO mark as not executing as expected but do not fail??
     }
@@ -384,15 +385,20 @@ public class SignalTest {
     public void testSighold_sigrelse() throws Exception {
         System.out.println("sighold");
         final int sig = Signal.SIGCHLD();
-        Signal.sighold(sig);
-        Signal.Sigset_t mask = new Signal.Sigset_t();
-        Signal.sigemptyset(mask);
-        Signal.sigprocmask(0, null, mask);
-        Assertions.assertTrue(Signal.sigismember(mask, sig), "Signal is not in mask");
-        System.out.println("sigrelse");
-        Signal.sigrelse(sig);
-        Signal.sigprocmask(0, null, mask);
-        Assertions.assertFalse(Signal.sigismember(mask, sig), "Signal is still in mask");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sighold(sig));
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigrelse(sig));
+        } else {
+            Signal.sighold(sig);
+            Signal.Sigset_t mask = new Signal.Sigset_t();
+            Signal.sigemptyset(mask);
+            Signal.sigprocmask(0, null, mask);
+            Assertions.assertTrue(Signal.sigismember(mask, sig), "Signal is not in mask");
+            System.out.println("sigrelse");
+            Signal.sigrelse(sig);
+            Signal.sigprocmask(0, null, mask);
+            Assertions.assertFalse(Signal.sigismember(mask, sig), "Signal is still in mask");
+        }
     }
 
     /**
@@ -664,10 +670,14 @@ public class SignalTest {
     @Test
     public void testSigset() throws Exception {
         System.out.println("sigset");
-        Callback_I_V result = Signal.sigset(Signal.SIGABRT(), null);
-        Assertions.assertEquals(Signal.SIG_DFL(), result);
-        result = Signal.sigset(Signal.SIGABRT(), result);
-        Assertions.assertTrue(NativeFunctionPointer.toNativeAddressHolder(result).isNULL(), "result.address ");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigset(Signal.SIGABRT(), null));
+        } else {
+            Callback_I_V result = Signal.sigset(Signal.SIGABRT(), null);
+            Assertions.assertEquals(Signal.SIG_DFL(), result);
+            result = Signal.sigset(Signal.SIGABRT(), result);
+            Assertions.assertTrue(NativeFunctionPointer.toNativeAddressHolder(result).isNULL(), "result.address ");
+        }
     }
 
     /**
@@ -878,9 +888,6 @@ public class SignalTest {
 
     @Test
     public void testStructSiginfo_t() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Siginfo_t<>());
-        }
         Signal.Siginfo_t<OpaqueMemory32> siginfo_t = new Signal.Siginfo_t<>();
         Assertions.assertNotNull(siginfo_t.si_addr());
         Assertions.assertNotNull(siginfo_t.si_band());
