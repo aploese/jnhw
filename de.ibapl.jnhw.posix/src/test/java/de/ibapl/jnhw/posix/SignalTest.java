@@ -895,68 +895,65 @@ public class SignalTest {
 
     @Test
     public void testStructSiginfo_t() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Siginfo_t<>());
-        } else {
-            Signal.Siginfo_t<OpaqueMemory32> siginfo_t = new Signal.Siginfo_t<>();
-            Assertions.assertNotNull(siginfo_t.si_addr());
-            Assertions.assertNotNull(siginfo_t.si_band());
-            Assertions.assertNotNull(siginfo_t.si_code());
-            Assertions.assertNotNull(siginfo_t.si_errno());
-            Assertions.assertNotNull(siginfo_t.si_pid());
-            Assertions.assertNotNull(siginfo_t.si_signo());
-            Assertions.assertNotNull(siginfo_t.si_status());
-            siginfo_t.si_value.sival_int(55);
-        }
+        Signal.Siginfo_t<OpaqueMemory32> siginfo_t = new Signal.Siginfo_t<>();
+        Assertions.assertNotNull(siginfo_t.si_addr());
+        Assertions.assertNotNull(siginfo_t.si_band());
+        Assertions.assertNotNull(siginfo_t.si_code());
+        Assertions.assertNotNull(siginfo_t.si_errno());
+        Assertions.assertNotNull(siginfo_t.si_pid());
+        Assertions.assertNotNull(siginfo_t.si_signo());
+        Assertions.assertNotNull(siginfo_t.si_status());
+        siginfo_t.si_value.sival_int(55);
     }
 
     @Test
     public void testStructSigevent_t() throws Exception {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Sigevent<>());
+        } else {
+            Signal.Sigevent<OpaqueMemory32> sigevent = new Signal.Sigevent<>();
+            Assertions.assertNotNull(sigevent.sigev_notify());
+            Assertions.assertNotNull(sigevent.sigev_signo());
+            sigevent.sigev_value.sival_int(66);
+
+            sigevent.sigev_notify(Signal.SIGEV_SIGNAL());
+            assertEquals(Signal.SIGEV_SIGNAL(), sigevent.sigev_notify());
+            sigevent.sigev_signo(Signal.SIGBUS());
+            assertEquals(Signal.SIGBUS(), sigevent.sigev_signo());
+
+            Callback__Sigval_int__V sigev_notify_functionLong = new Callback__Sigval_int__V(new NativeAddressHolder(44)) {
+                @Override
+                protected void callback(int value) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            };
+            sigevent.sigev_notify_function(sigev_notify_functionLong);
+            Assertions.assertSame(sigev_notify_functionLong, sigevent.sigev_notify_functionAsCallback__Sigval_int__V());
+
+            @SuppressWarnings("unchecked")
+            Callback_PtrAbstractNativeMemory_V<OpaqueMemory32> sigev_notify_functionPtr = new Callback_PtrAbstractNativeMemory_V<>(new NativeAddressHolder(44)) {
+                @Override
+                protected void callback(OpaqueMemory32 a) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            };
+            sigevent.sigev_notify_function(sigev_notify_functionPtr);
+            Assertions.assertSame(sigev_notify_functionPtr, sigevent.sigev_notify_functionAsCallback_PtrOpaqueMemory_V());
+
+            Callback_NativeRunnable sigev_notify_functionRunnable = Callback_NativeRunnable.INSTANCE;
+            sigevent.sigev_notify_function(sigev_notify_functionRunnable);
+            Assertions.assertSame(sigev_notify_functionRunnable, sigevent.sigev_notify_functionAsCallback_NativeRunnable());
+
+            Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
+            Pthread.pthread_attr_init(pthread_attr_t);
+            sigevent.sigev_notify_attributes(pthread_attr_t);
+            final Pthread.Pthread_attr_t pthread_attr_t1
+                    = sigevent.sigev_notify_attributes((baseAddress, parent) -> {
+                        return new Pthread.Pthread_attr_t(baseAddress);
+                    });
+            Assertions.assertSame(pthread_attr_t, pthread_attr_t1);
+            Pthread.pthread_attr_destroy(pthread_attr_t);
         }
-        Signal.Sigevent<OpaqueMemory32> sigevent = new Signal.Sigevent<>();
-        Assertions.assertNotNull(sigevent.sigev_notify());
-        Assertions.assertNotNull(sigevent.sigev_signo());
-        sigevent.sigev_value.sival_int(66);
-
-        sigevent.sigev_notify(Signal.SIGEV_SIGNAL());
-        assertEquals(Signal.SIGEV_SIGNAL(), sigevent.sigev_notify());
-        sigevent.sigev_signo(Signal.SIGBUS());
-        assertEquals(Signal.SIGBUS(), sigevent.sigev_signo());
-
-        Callback__Sigval_int__V sigev_notify_functionLong = new Callback__Sigval_int__V(new NativeAddressHolder(44)) {
-            @Override
-            protected void callback(int value) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        sigevent.sigev_notify_function(sigev_notify_functionLong);
-        Assertions.assertSame(sigev_notify_functionLong, sigevent.sigev_notify_functionAsCallback__Sigval_int__V());
-
-        @SuppressWarnings("unchecked")
-        Callback_PtrAbstractNativeMemory_V<OpaqueMemory32> sigev_notify_functionPtr = new Callback_PtrAbstractNativeMemory_V<>(new NativeAddressHolder(44)) {
-            @Override
-            protected void callback(OpaqueMemory32 a) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        sigevent.sigev_notify_function(sigev_notify_functionPtr);
-        Assertions.assertSame(sigev_notify_functionPtr, sigevent.sigev_notify_functionAsCallback_PtrOpaqueMemory_V());
-
-        Callback_NativeRunnable sigev_notify_functionRunnable = Callback_NativeRunnable.INSTANCE;
-        sigevent.sigev_notify_function(sigev_notify_functionRunnable);
-        Assertions.assertSame(sigev_notify_functionRunnable, sigevent.sigev_notify_functionAsCallback_NativeRunnable());
-
-        Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
-        Pthread.pthread_attr_init(pthread_attr_t);
-        sigevent.sigev_notify_attributes(pthread_attr_t);
-        final Pthread.Pthread_attr_t pthread_attr_t1
-                = sigevent.sigev_notify_attributes((baseAddress, parent) -> {
-                    return new Pthread.Pthread_attr_t(baseAddress);
-                });
-        Assertions.assertSame(pthread_attr_t, pthread_attr_t1);
-        Pthread.pthread_attr_destroy(pthread_attr_t);
     }
 
     @Test
