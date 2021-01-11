@@ -765,6 +765,11 @@ public class AioTest {
             case FREE_BSD:
                 Assertions.assertEquals(160, Aio.Aiocb.sizeofAiocb());
                 break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.Aiocb.sizeofAiocb();
+                });
+                break;
             default:
                 Assertions.assertEquals(-1, Aio.Aiocb.sizeofAiocb());
         }
@@ -772,12 +777,24 @@ public class AioTest {
 
     @Test
     public void testAlignOfAiocb() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
-            case _32_BIT:
-                Assertions.assertEquals(4, Aio.Aiocb.alignofAiocb());
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case FREE_BSD:
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _32_BIT:
+                        Assertions.assertEquals(4, Aio.Aiocb.alignofAiocb());
+                        break;
+                    case _64_BIT:
+                        Assertions.assertEquals(8, Aio.Aiocb.alignofAiocb());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Aio.Aiocb.alignofAiocb());
+                }
                 break;
-            case _64_BIT:
-                Assertions.assertEquals(8, Aio.Aiocb.alignofAiocb());
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.Aiocb.alignofAiocb();
+                });
                 break;
             default:
                 Assertions.assertEquals(-1, Aio.Aiocb.alignofAiocb());
@@ -801,6 +818,11 @@ public class AioTest {
                 break;
             case FREE_BSD:
                 Assertions.assertEquals(80, Aio.Aiocb.offsetofAio_sigevent());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.Aiocb.offsetofAio_sigevent();
+                });
                 break;
             default:
                 Assertions.assertEquals(-1, Aio.Aiocb.offsetofAio_sigevent());

@@ -35,6 +35,7 @@ import de.ibapl.jnhw.NoSuchNativeTypeException;
 import de.ibapl.jnhw.ObjectRef;
 import de.ibapl.jnhw.OpaqueMemory32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import java.lang.ref.Cleaner;
 import org.junit.jupiter.api.Assertions;
@@ -675,6 +676,9 @@ public class SignalTest {
     @Test
     public void testSigsuspend() throws Exception {
         System.out.println("sigsuspend");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
+        }
         final int SIG = Signal.SIGALRM();
 
         final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
@@ -713,6 +717,9 @@ public class SignalTest {
     @Test
     public void testSigtimedwait() throws Exception {
         System.out.println("sigtimedwait");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
+        }
         final int SIG = Signal.SIGALRM();
 
         final Signal.Sigset_t set = new Signal.Sigset_t();
@@ -763,7 +770,9 @@ public class SignalTest {
     @Test
     public void testSigwait() throws Exception {
         System.out.println("sigwait");
-
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
+        }
         final int SIG = Signal.SIGALRM();
 
         Signal.signal(SIG, Signal.SIG_DFL());
@@ -801,6 +810,10 @@ public class SignalTest {
     @Test
     public void testSigwaitinfo() throws Exception {
         System.out.println("sigwaitinfo");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
+        }
+
         final int SIG = Signal.SIGALRM();
 
         Signal.signal(SIG, Signal.SIG_DFL());
