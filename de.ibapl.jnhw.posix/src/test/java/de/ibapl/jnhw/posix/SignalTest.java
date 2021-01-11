@@ -410,8 +410,12 @@ public class SignalTest {
         final int sig = Signal.SIGCHLD();
         final var old = Signal.signal(sig, null);
         try {
-            Signal.sigignore(sig);
-            assertEquals(Signal.SIG_IGN(), Signal.signal(sig, null));
+            if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigignore(sig));
+            } else {
+                Signal.sigignore(sig);
+                assertEquals(Signal.SIG_IGN(), Signal.signal(sig, null));
+            }
         } finally {
             Signal.signal(sig, old);
         }
@@ -595,73 +599,76 @@ public class SignalTest {
     public void testSigqueue() throws Exception {
         System.out.println("sigqueue");
         final int SIG = Signal.SIGUSR2();
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigqueue(Unistd.getpid(), SIG, null));
+        } else {
 
-        final Signal.Sigaction act = new Signal.Sigaction();
-        act.sa_flags(Signal.SA_SIGINFO());
-        Signal.sigemptyset(act.sa_mask);
+            final Signal.Sigaction act = new Signal.Sigaction();
+            act.sa_flags(Signal.SA_SIGINFO());
+            Signal.sigemptyset(act.sa_mask);
 
-        final ObjectRef<Signal.Siginfo_t> siginfo_tRef = new ObjectRef<>(null);
-        final ObjectRef<Signal.Ucontext_t> opmRef = new ObjectRef<>(null);
+            final ObjectRef<Signal.Siginfo_t> siginfo_tRef = new ObjectRef<>(null);
+            final ObjectRef<Signal.Ucontext_t> opmRef = new ObjectRef<>(null);
 
-        Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl<>() {
+            Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl<>() {
 
-            @Override
-            protected void callback(int value, Signal.Siginfo_t a, Signal.Ucontext_t b) {
-                siginfo_tRef.value = a;
-                opmRef.value = b;
-            }
-
-            @Override
-            protected Signal.Siginfo_t wrapA(NativeAddressHolder address) {
-                return new Signal.Siginfo_t(address);
-            }
-
-            @Override
-            protected Signal.Ucontext_t wrapB(NativeAddressHolder address) {
-                try {
-                    return new Signal.Ucontext_t(address);
-                } catch (NoSuchNativeTypeException nste) {
-                    Assertions.fail(nste);
-                    throw new RuntimeException(nste);
+                @Override
+                protected void callback(int value, Signal.Siginfo_t a, Signal.Ucontext_t b) {
+                    siginfo_tRef.value = a;
+                    opmRef.value = b;
                 }
+
+                @Override
+                protected Signal.Siginfo_t wrapA(NativeAddressHolder address) {
+                    return new Signal.Siginfo_t(address);
+                }
+
+                @Override
+                protected Signal.Ucontext_t wrapB(NativeAddressHolder address) {
+                    try {
+                        return new Signal.Ucontext_t(address);
+                    } catch (NoSuchNativeTypeException nste) {
+                        Assertions.fail(nste);
+                        throw new RuntimeException(nste);
+                    }
+                }
+            };
+
+            act.sa_sigaction(sa_handler);
+
+            final Signal.Sigaction oact = new Signal.Sigaction();
+            final Signal.Sigaction actOut = new Signal.Sigaction();
+            Signal.sigaction(SIG, act, oact);
+
+            OpaqueMemory32 data = new OpaqueMemory32(128, true);
+
+            Signal.Sigval sigval = new Signal.Sigval();
+            sigval.sival_ptr(data);
+
+            Signal.sigqueue(Unistd.getpid(), SIG, sigval);
+
+            Thread.sleep(100);
+
+            System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef.value);
+            try {
+                Assertions.assertNotNull(siginfo_tRef.value);
+                Assertions.assertAll(
+                        () -> {
+                            Assertions.assertEquals(0, siginfo_tRef.value.si_errno(), "siginfo_tRef.value.si_errno()");
+                        },
+                        () -> {
+                            Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo(), "siginfo_tRef.value.si_signo()");
+                        },
+                        () -> {
+                            Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr((baseAddress, size) -> {
+                                return new OpaqueMemory32(baseAddress, data.sizeInBytes) {
+                                };
+                            }), "siginfo_tRef.value.si_value.sival_ptr()");
+                        });
+            } finally {
+                Signal.sigaction(SIG, oact, null);
             }
-        };
-
-        act.sa_sigaction(sa_handler);
-
-        final Signal.Sigaction oact = new Signal.Sigaction();
-        final Signal.Sigaction actOut = new Signal.Sigaction();
-        Signal.sigaction(SIG, act, oact);
-
-        OpaqueMemory32 data = new OpaqueMemory32(128, true);
-
-        Signal.Sigval sigval = new Signal.Sigval();
-        sigval.sival_ptr(data);
-
-        Signal.sigqueue(Unistd.getpid(), SIG, sigval);
-
-        Thread.sleep(100);
-
-        System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef.value);
-        try {
-            Assertions.assertNotNull(siginfo_tRef.value);
-            Assertions.assertAll(
-                    () -> {
-                        Assertions.assertEquals(0, siginfo_tRef.value.si_errno(), "siginfo_tRef.value.si_errno()");
-                    },
-                    () -> {
-                        Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo(), "siginfo_tRef.value.si_signo()");
-                    },
-                    () -> {
-                        Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr((baseAddress, size) -> {
-                            return new OpaqueMemory32(baseAddress, data.sizeInBytes) {
-                            };
-                        }), "siginfo_tRef.value.si_value.sival_ptr()");
-                    });
-        } finally {
-            Signal.sigaction(SIG, oact, null);
         }
-
     }
 
     /**
@@ -888,15 +895,19 @@ public class SignalTest {
 
     @Test
     public void testStructSiginfo_t() throws Exception {
-        Signal.Siginfo_t<OpaqueMemory32> siginfo_t = new Signal.Siginfo_t<>();
-        Assertions.assertNotNull(siginfo_t.si_addr());
-        Assertions.assertNotNull(siginfo_t.si_band());
-        Assertions.assertNotNull(siginfo_t.si_code());
-        Assertions.assertNotNull(siginfo_t.si_errno());
-        Assertions.assertNotNull(siginfo_t.si_pid());
-        Assertions.assertNotNull(siginfo_t.si_signo());
-        Assertions.assertNotNull(siginfo_t.si_status());
-        siginfo_t.si_value.sival_int(55);
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Siginfo_t<>());
+        } else {
+            Signal.Siginfo_t<OpaqueMemory32> siginfo_t = new Signal.Siginfo_t<>();
+            Assertions.assertNotNull(siginfo_t.si_addr());
+            Assertions.assertNotNull(siginfo_t.si_band());
+            Assertions.assertNotNull(siginfo_t.si_code());
+            Assertions.assertNotNull(siginfo_t.si_errno());
+            Assertions.assertNotNull(siginfo_t.si_pid());
+            Assertions.assertNotNull(siginfo_t.si_signo());
+            Assertions.assertNotNull(siginfo_t.si_status());
+            siginfo_t.si_value.sival_int(55);
+        }
     }
 
     @Test
@@ -963,28 +974,30 @@ public class SignalTest {
     public void testStructUcontext_t() throws Exception {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Ucontext_t());
+        } else {
+            Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t(true);
+            Assertions.assertNull(ucontext_t.uc_link((baseAddress, parent) -> {
+                try {
+                    return baseAddress.isNULL() ? null : new Signal.Ucontext_t(baseAddress);
+                } catch (NoSuchNativeTypeException nste) {
+                    Assertions.fail(nste);
+                    throw new RuntimeException(nste);
+                }
+            })); //Maybe fail sometimes....
+            Assertions.assertNotNull(ucontext_t.uc_mcontext);
+            Assertions.assertNotNull(ucontext_t.uc_sigmask);
+            Assertions.assertNotNull(ucontext_t.uc_stack);
         }
-        Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t(true);
-        Assertions.assertNull(ucontext_t.uc_link((baseAddress, parent) -> {
-            try {
-                return baseAddress.isNULL() ? null : new Signal.Ucontext_t(baseAddress);
-            } catch (NoSuchNativeTypeException nste) {
-                Assertions.fail(nste);
-                throw new RuntimeException(nste);
-            }
-        })); //Maybe fail sometimes....
-        Assertions.assertNotNull(ucontext_t.uc_mcontext);
-        Assertions.assertNotNull(ucontext_t.uc_sigmask);
-        Assertions.assertNotNull(ucontext_t.uc_stack);
     }
 
     @Test
     public void testStructMcontext_t() throws Exception {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Mcontext_t());
+        } else {
+            Signal.Mcontext_t mcontext_t = new Signal.Mcontext_t();
+            Assertions.assertNotNull(mcontext_t); //Opaque to us
         }
-        Signal.Mcontext_t mcontext_t = new Signal.Mcontext_t();
-        Assertions.assertNotNull(mcontext_t); //Opaque to us
     }
 
     @Test
