@@ -40,6 +40,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -625,6 +626,13 @@ public class TimeTest {
             assertEquals("Mon Jan 27 09:12:57 2020\n", Time.asctime(tm));
         }
 
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXStrptimeXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx");
+            for (byte b : result.getBytes()) {
+                System.err.println(String.format("%c  0x%02x", b, b));
+            }
+            System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXStrptimeXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx");
+        }
         assertEquals(expResult, result, "Expected pointer to String in buf");
 
         Assertions.assertThrows(NullPointerException.class, () -> {
