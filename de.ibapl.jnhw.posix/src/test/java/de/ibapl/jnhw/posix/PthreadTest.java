@@ -276,6 +276,7 @@ public class PthreadTest {
                 }
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 Assertions.assertEquals(8, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
                 break;
             default:

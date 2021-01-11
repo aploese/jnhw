@@ -25,7 +25,6 @@ import de.ibapl.jnhw.Defined;
 import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.NotDefinedException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.NativeLibResolver;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
 import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
@@ -189,6 +188,7 @@ public class TermiosTest {
                 }
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 Assertions.assertEquals(44, Termios.StructTermios.sizeofTermios());
                 break;
             default:

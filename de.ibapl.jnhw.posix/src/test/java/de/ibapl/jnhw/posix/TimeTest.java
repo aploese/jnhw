@@ -33,7 +33,6 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V_Impl;
-import de.ibapl.jnhw.util.posix.Defines;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -46,7 +45,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.opentest4j.MultipleFailuresError;
@@ -978,12 +976,22 @@ public class TimeTest {
 
     @Test
     public void testSizeOfTimer_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
-            case _32_BIT:
-                Assertions.assertEquals(4, Time.Timer_t.sizeofTimer_t());
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+            case FREE_BSD:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _32_BIT:
+                        Assertions.assertEquals(4, Time.Timer_t.sizeofTimer_t());
+                        break;
+                    case _64_BIT:
+                        Assertions.assertEquals(8, Time.Timer_t.sizeofTimer_t());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Time.Timer_t.sizeofTimer_t());
+                }
                 break;
-            case _64_BIT:
-                Assertions.assertEquals(8, Time.Timer_t.sizeofTimer_t());
+            case OPEN_BSD:
+                Assertions.assertEquals(4, Time.Timer_t.sizeofTimer_t());
                 break;
             default:
                 Assertions.assertEquals(-1, Time.Timer_t.sizeofTimer_t());
@@ -992,12 +1000,22 @@ public class TimeTest {
 
     @Test
     public void testAlignOfTimer_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
-            case _32_BIT:
-                Assertions.assertEquals(4, Time.Timer_t.alignofTimer_t());
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+            case FREE_BSD:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _32_BIT:
+                        Assertions.assertEquals(4, Time.Timer_t.alignofTimer_t());
+                        break;
+                    case _64_BIT:
+                        Assertions.assertEquals(8, Time.Timer_t.alignofTimer_t());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Time.Timer_t.alignofTimer_t());
+                }
                 break;
-            case _64_BIT:
-                Assertions.assertEquals(8, Time.Timer_t.alignofTimer_t());
+            case OPEN_BSD:
+                Assertions.assertEquals(4, Time.Timer_t.alignofTimer_t());
                 break;
             default:
                 Assertions.assertEquals(-1, Time.Timer_t.alignofTimer_t());
