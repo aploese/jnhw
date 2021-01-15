@@ -159,7 +159,7 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObject
 /*
  * Class:     de_ibapl_jnhw_winapi_Synchapi
  * Method:    WaitForMultipleObjectsEx_ArgsOK
- * Signature: (ILde/ibapl/jnhw/PointerArray;ZJZ)J
+ * Signature: (ILde/ibapl/jnhw/common/memory/PointerArray32;ZJZ)J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjectsEx_1ArgsOK
   (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jobject lpHandles, jboolean bWaitAll, jlong dwMilliseconds, jboolean bAlertable) {

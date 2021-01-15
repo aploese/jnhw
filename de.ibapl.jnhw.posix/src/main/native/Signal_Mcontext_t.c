@@ -34,10 +34,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Mcontext_t
-     * Method:    sizeofMcontext_t
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Mcontext_1t_sizeofMcontext_1t
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Mcontext_1t_sizeof
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct mcontext_t");
@@ -50,10 +50,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Mcontext_t
-     * Method:    alignofMcontext_t
+     * Method:    alignof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Mcontext_1t_alignofMcontext_1t
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Mcontext_1t_alignof
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct mcontext_t");

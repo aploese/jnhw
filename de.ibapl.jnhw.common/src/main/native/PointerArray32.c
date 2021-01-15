@@ -22,48 +22,48 @@
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
 
-#include "de_ibapl_jnhw_PointerArray32.h"
+#include "de_ibapl_jnhw_common_memory_PointerArray32.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*
- * Class:     de_ibapl_jnhw_PointerArray32
+ * Class:     de_ibapl_jnhw_common_memory_PointerArray32
  * Method:    get0
- * Signature: (I)Lde/ibapl/jnhw/NativeAddressHolder;
+ * Signature: (I)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_PointerArray32_get0
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_memory_PointerArray32_get0
     (JNIEnv *env, jobject pointerArray, jint index) {
         return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)*(UNWRAP_OPAQUE_MEM_TO_VOID_PTR_PTR(pointerArray) + index));
     }
 
     /*
-     * Class:     de_ibapl_jnhw_PointerArray32
+     * Class:     de_ibapl_jnhw_common_memory_PointerArray32
      * Method:    set0
-     * Signature: (ILde/ibapl/jnhw/OpaqueMemory;)V
+     * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_PointerArray32_set0
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_PointerArray32_set0
     (JNIEnv *env, jobject pointerArray, jint index, jobject opaqueMemory) {
         *(UNWRAP_OPAQUE_MEM_TO_VOID_PTR_PTR(pointerArray) + index) = UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_PointerArray32
+     * Class:     de_ibapl_jnhw_common_memory_PointerArray32
      * Method:    sizeofPointer
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_PointerArray32_sizeofPointer
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_PointerArray32_sizeofPointer
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return sizeof (void*);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_PointerArray32
+     * Class:     de_ibapl_jnhw_common_memory_PointerArray32
      * Method:    alignofPointer
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_PointerArray32_alignofPointer
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_PointerArray32_alignofPointer
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return __alignof__ (void*);
     }

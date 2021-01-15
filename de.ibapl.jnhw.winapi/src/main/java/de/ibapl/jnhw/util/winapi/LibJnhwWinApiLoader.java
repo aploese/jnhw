@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.util.winapi;
 
-import de.ibapl.jnhw.LibJnhwCommonLoader;
+import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;

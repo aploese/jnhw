@@ -21,8 +21,9 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -69,7 +70,7 @@ public abstract class WinDef {
      * typedef BYTE far *LPBYTE;
      * </p>
      */
-    public static class LPBYTE extends OpaqueMemory32 {
+    public static class LPBYTE extends Struct32 {
 
         int bufferEnd;
 

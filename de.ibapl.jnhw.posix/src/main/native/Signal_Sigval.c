@@ -34,7 +34,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigval
      * Method:    sival_ptr
-     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
+     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr
     (__attribute__ ((unused)) JNIEnv *env, jobject unionSigval) {
@@ -43,20 +43,20 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigval
-     * Method:    sizeofSigval
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sizeofSigval
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (union sigval);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigval
-     * Method:    alignofSigval
+     * Method:    alignof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_alignofSigval
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_alignof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return __alignof__ (union sigval);
     }
@@ -84,7 +84,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigval
      * Method:    sival_ptr0
-     * Signature: (Lde/ibapl/jnhw/OpaqueMemory32;)V
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr0
     (JNIEnv *env, jobject unionSigval, jobject sival_ptr) {

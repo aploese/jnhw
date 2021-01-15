@@ -21,15 +21,17 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_NativeRunnable;
-import de.ibapl.jnhw.Callback_PtrAbstractNativeMemory_V_Impl;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NativeRunnable;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeException;
-import de.ibapl.jnhw.ObjectRef;
-import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.common.callbacks.Callback_NativeRunnable;
+import de.ibapl.jnhw.common.callbacks.Callback_PtrAbstractNativeMemory_V_Impl;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.callbacks.NativeRunnable;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.memory.Memory32Heap;
+import de.ibapl.jnhw.common.references.ObjectRef;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V_Impl;
@@ -282,7 +284,7 @@ public class AioTest {
                 final ObjectRef<Object> intRef = new ObjectRef<>(null);
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
 
-                final Aio.Aiocb<OpaqueMemory32> aiocb = new Aio.Aiocb<>();
+                final Aio.Aiocb<Struct32> aiocb = new Aio.Aiocb<>();
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
@@ -433,7 +435,7 @@ public class AioTest {
                 final ObjectRef<Object> intRef = new ObjectRef<>(null);
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
 
-                final Aio.Aiocb<OpaqueMemory32> aiocb = new Aio.Aiocb();
+                final Aio.Aiocb<Struct32> aiocb = new Aio.Aiocb();
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
                 aioBuffer.put(HELLO_WORLD.getBytes());
@@ -753,25 +755,25 @@ public class AioTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(144, Aio.Aiocb.sizeofAiocb());
+                        Assertions.assertEquals(144, Aio.Aiocb.sizeof());
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(168, Aio.Aiocb.sizeofAiocb());
+                        Assertions.assertEquals(168, Aio.Aiocb.sizeof());
                         break;
                     default:
-                        Assertions.assertEquals(-1, Aio.Aiocb.sizeofAiocb());
+                        Assertions.assertEquals(-1, Aio.Aiocb.sizeof());
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(160, Aio.Aiocb.sizeofAiocb());
+                Assertions.assertEquals(160, Aio.Aiocb.sizeof());
                 break;
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.Aiocb.sizeofAiocb();
+                    Aio.Aiocb.sizeof();
                 });
                 break;
             default:
-                Assertions.assertEquals(-1, Aio.Aiocb.sizeofAiocb());
+                Assertions.assertEquals(-1, Aio.Aiocb.sizeof());
         }
     }
 
@@ -782,22 +784,22 @@ public class AioTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(4, Aio.Aiocb.alignofAiocb());
+                        Assertions.assertEquals(4, Aio.Aiocb.alignof());
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(8, Aio.Aiocb.alignofAiocb());
+                        Assertions.assertEquals(8, Aio.Aiocb.alignof());
                         break;
                     default:
-                        Assertions.assertEquals(-1, Aio.Aiocb.alignofAiocb());
+                        Assertions.assertEquals(-1, Aio.Aiocb.alignof());
                 }
                 break;
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.Aiocb.alignofAiocb();
+                    Aio.Aiocb.alignof();
                 });
                 break;
             default:
-                Assertions.assertEquals(-1, Aio.Aiocb.alignofAiocb());
+                Assertions.assertEquals(-1, Aio.Aiocb.alignof());
         }
     }
 
@@ -807,25 +809,25 @@ public class AioTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(20, Aio.Aiocb.offsetofAio_sigevent());
+                        Assertions.assertEquals(20, Aio.Aiocb.offsetof_Aio_sigevent());
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(32, Aio.Aiocb.offsetofAio_sigevent());
+                        Assertions.assertEquals(32, Aio.Aiocb.offsetof_Aio_sigevent());
                         break;
                     default:
-                        Assertions.assertEquals(-1, Aio.Aiocb.offsetofAio_sigevent());
+                        Assertions.assertEquals(-1, Aio.Aiocb.offsetof_Aio_sigevent());
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(80, Aio.Aiocb.offsetofAio_sigevent());
+                Assertions.assertEquals(80, Aio.Aiocb.offsetof_Aio_sigevent());
                 break;
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.Aiocb.offsetofAio_sigevent();
+                    Aio.Aiocb.offsetof_Aio_sigevent();
                 });
                 break;
             default:
-                Assertions.assertEquals(-1, Aio.Aiocb.offsetofAio_sigevent());
+                Assertions.assertEquals(-1, Aio.Aiocb.offsetof_Aio_sigevent());
         }
     }
 

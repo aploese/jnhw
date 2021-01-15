@@ -178,9 +178,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    read
-     * Signature: (ILde/ibapl/jnhw/OpaqueMemory32;II)I
+     * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory32;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_OpaqueMemory32_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject opaqueMemory, jint off, jint nByte) {
         if (opaqueMemory == NULL) {
             throw_NullPointerException(env, "buf is null");
@@ -201,9 +201,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    read
-     * Signature: (ILde/ibapl/jnhw/OpaqueMemory64;JJ)J
+     * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory64;JJ)J
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_OpaqueMemory64_2JJ
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_common_memory_OpaqueMemory64_2JJ
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject opaqueMemory, jlong off, jlong nByte) {
         if (opaqueMemory == NULL) {
             throw_NullPointerException(env, "buf is null");
@@ -227,9 +227,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    read
-     * Signature: (ILde/ibapl/jnhw/ByteRef;)I
+     * Signature: (ILde/ibapl/jnhw/common/references/ByteRef;)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_ByteRef_2
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_common_references_ByteRef_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject byteRef) {
         jbyte _valueRef;
         //result can't be larger then int beacuase nByte is int, so do the conversation
@@ -324,9 +324,9 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    write
-     * Signature: (ILde/ibapl/jnhw/OpaqueMemory32;II)I
+     * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory32;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_OpaqueMemory32_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject buf, jint off, jint nByte) {
         if (buf == NULL) {
             throw_NullPointerException(env, "buf is null");
@@ -349,9 +349,9 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    write
-     * Signature: (ILde/ibapl/jnhw/OpaqueMemory64;JJ)J
+     * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory64;JJ)J
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_OpaqueMemory64_2JJ
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_common_memory_OpaqueMemory64_2JJ
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject buf, jlong off, jlong nByte) {
         if (buf == NULL) {
             throw_NullPointerException(env, "buf is null");
@@ -463,7 +463,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    pipe
-     * Signature: (Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/IntRef;)V
+     * Signature: (Lde/ibapl/jnhw/common/references/IntRef;Lde/ibapl/jnhw/common/references/IntRef;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_pipe
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject read_fd_ref, jobject write_fd_ref) {

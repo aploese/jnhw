@@ -21,14 +21,13 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -299,22 +298,22 @@ public class SchedTest {
 
     @Test
     public void testSizeOfSchedparam() throws Exception {
-        Assertions.assertEquals(4, Sched.Sched_param.sizeofSched_param());
+        Assertions.assertEquals(4, Sched.Sched_param.sizeof());
     }
 
     @Test
     public void testAlignOfSchedparam() throws Exception {
-        Assertions.assertEquals(4, Sched.Sched_param.alignofSched_param());
+        Assertions.assertEquals(4, Sched.Sched_param.alignof());
     }
 
     @Test
     public void testOffsetOfSched_ss_init_budget() throws Exception {
-        Assertions.assertThrows(NoSuchNativeTypeMemberException.class, Sched.Sched_param::offsetofSched_ss_init_budget);
+        Assertions.assertThrows(NoSuchNativeTypeMemberException.class, Sched.Sched_param::offsetof_Sched_ss_init_budget);
     }
 
     @Test
     public void testOffsetOfSched_ss_repl_period() throws Exception {
-        Assertions.assertThrows(NoSuchNativeTypeMemberException.class, Sched.Sched_param::offsetofSched_ss_repl_period);
+        Assertions.assertThrows(NoSuchNativeTypeMemberException.class, Sched.Sched_param::offsetof_Sched_ss_repl_period);
     }
 
 }

@@ -22,7 +22,7 @@
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
 
-#include "de_ibapl_jnhw_AbstractNativeMemory.h"
+#include "de_ibapl_jnhw_common_memory_AbstractNativeMemory.h"
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,21 +33,21 @@ extern "C" {
 #endif
 
 /*
- * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Class:     de_ibapl_jnhw_common_memory_AbstractNativeMemory
  * Method:    ENOMEM
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_ENOMEM
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_ENOMEM
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return ENOMEM;
     }
 
 /*
- * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Class:     de_ibapl_jnhw_common_memory_AbstractNativeMemory
  * Method:    malloc
  * Signature: (I)J
  */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_malloc__I
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_malloc__I
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint sizeInBytes) {
         if (sizeInBytes < 0) {
             throw_IllegalArgumentException(env, "sizeInBytes is negative!");
@@ -61,11 +61,11 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_malloc__I
     }
 
 /*
- * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Class:     de_ibapl_jnhw_common_memory_AbstractNativeMemory
  * Method:    malloc
  * Signature: (J)J
  */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_malloc__J
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_malloc__J
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong sizeInBytes) {
         if (sizeInBytes < 0) {
             throw_IllegalArgumentException(env, "sizeInBytes is negative!");
@@ -87,11 +87,11 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_malloc__J
     }
 
 /*
- * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Class:     de_ibapl_jnhw_common_memory_AbstractNativeMemory
  * Method:    calloc
  * Signature: (II)J
  */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_calloc__II
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_calloc__II
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nelem, jint elsize) {
         if (nelem < 0) {
             throw_IllegalArgumentException(env, "nelem is negative!");
@@ -109,11 +109,11 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_calloc__II
     }
 
 /*
- * Class:     de_ibapl_jnhw_AbstractNativeMemory
+ * Class:     de_ibapl_jnhw_common_memory_AbstractNativeMemory
  * Method:    calloc
  * Signature: (JJ)J
  */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_AbstractNativeMemory_calloc__JJ
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_calloc__JJ
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong nelem, jlong elsize) {
         if (nelem < 0) {
             throw_IllegalArgumentException(env, "nelem is negative!");

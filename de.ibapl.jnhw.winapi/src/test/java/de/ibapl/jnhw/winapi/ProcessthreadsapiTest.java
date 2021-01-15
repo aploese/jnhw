@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Callback_IJ_V;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LongRef;
+import de.ibapl.jnhw.common.callbacks.Callback_IJ_V;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,7 +48,7 @@ public class ProcessthreadsapiTest {
      */
     @Test
     public void test__QueueUserAPC__CanUse__Callback_IJ_V() {
-        assertEquals(Callback_IJ_V.sizeofIntptr_t(), BaseTsd.sizeofULONG_PTR());
+        assertEquals(Callback_IJ_V.sizeofIntptr_t(), BaseTsd.sizeof());
     }
 
     /**

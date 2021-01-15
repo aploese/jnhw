@@ -45,11 +45,11 @@ public class PollTest {
 
     @Test
     public void testSizeOfPollFd() throws Exception {
-        Assertions.assertEquals(8, Poll.PollFd.sizeofPollFd());
+        Assertions.assertEquals(8, Poll.PollFd.sizeof());
     }
 
     @Test
     public void testAlignOfPollFd() throws Exception {
-        Assertions.assertEquals(4, Poll.PollFd.alignofPollFd());
+        Assertions.assertEquals(4, Poll.PollFd.alignof());
     }
 }

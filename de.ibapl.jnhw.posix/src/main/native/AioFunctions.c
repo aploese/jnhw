@@ -37,6 +37,8 @@ extern "C" {
 #include <errno.h>
 #include <unistd.h>
 
+  JNHW_ASSERT__ssize_t__IS__int64_t__OR__int32_t
+
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
      * Method:    aio_cancel

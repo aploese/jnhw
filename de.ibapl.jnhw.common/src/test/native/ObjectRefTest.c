@@ -21,18 +21,18 @@
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
-#include "de_ibapl_jnhw_ObjectRefTest.h"
+#include "de_ibapl_jnhw_common_test_references_ObjectRefTest.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_ObjectRefTest
+     * Class:     de_ibapl_jnhw_common_test_references_ObjectRefTest
      * Method:    testNative
-     * Signature: (Lde/ibapl/jnhw/ObjectRef;Ljava/lang/Object;)Ljava/lang/Object;
+     * Signature: (Lde/ibapl/jnhw/common/references/ObjectRef;Ljava/lang/Object;)Ljava/lang/Object;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_ObjectRefTest_testNative
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_references_ObjectRefTest_testNative
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject objectRef, jobject newValue) {
         jobject result = GET_OBJECT_REF_VALUE(objectRef);
         SET_OBJECT_REF_VALUE(objectRef, newValue);

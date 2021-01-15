@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.it.hello_world;
 
-import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 //Import only the needed define from the wrapper of processenv.h
 import static de.ibapl.jnhw.winapi.Winbase.STD_OUTPUT_HANDLE;
 //Import only the needed method from the wrapper of processenv.h

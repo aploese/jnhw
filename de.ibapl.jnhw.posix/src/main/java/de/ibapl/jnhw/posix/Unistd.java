@@ -21,15 +21,16 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.ByteRef;
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory32;
-import de.ibapl.jnhw.OpaqueMemory64;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.OpaqueMemory64;
+import de.ibapl.jnhw.common.references.ByteRef;
+import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.posix.sys.Types.gid_t;
 import de.ibapl.jnhw.posix.sys.Types.off64_t;
 import de.ibapl.jnhw.posix.sys.Types.off_t;
@@ -38,10 +39,8 @@ import de.ibapl.jnhw.posix.sys.Types.size_t;
 import de.ibapl.jnhw.posix.sys.Types.ssize_t;
 import de.ibapl.jnhw.posix.sys.Types.uid_t;
 import de.ibapl.jnhw.posix.sys.Types.useconds_t;
-import de.ibapl.jnhw.util.ByteBufferUtils;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 
 /**
  * Wrapper around the {@code <stdio.h>} header.

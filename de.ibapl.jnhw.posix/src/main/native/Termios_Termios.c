@@ -29,23 +29,25 @@ extern "C" {
 #ifdef _POSIX_VERSION    
 #include <termios.h>
 
+JNHW_ASSERT__tcflag_t__IS__uint32_t
+JNHW_ASSERT__cc_t__IS__uint8_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
-     * Method:    sizeofTermios
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_sizeofTermios
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct termios);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
-     * Method:    alignofTermios
+     * Method:    alignof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_alignofTermios
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_alignof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return __alignof__ (struct termios);
     }
@@ -141,7 +143,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "index must be >= 0");
             return -1;
         }
-        return (signed char) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cc[index];
+        return (int8_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cc[index];
     }
 
     /*
@@ -155,7 +157,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "index must be >= 0");
             return;
         }
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cc[index] = (unsigned char) value;
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_cc[index] = (uint8_t) value;
     }
 
     /*
@@ -166,7 +168,7 @@ extern "C" {
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1line__
 #if defined(__linux__)
     (JNIEnv *env, jobject structTermios) {
-        return (signed char) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line;
+        return (int8_t) (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios) {
         throw_NoSuchNativeTypeMemberException(env, "termios", "c_line");
@@ -182,7 +184,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024StructTermios_c_1line__B
 #if defined(__linux__)
     (JNIEnv *env, jobject structTermios, jbyte value) {
-        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line = (unsigned char) value;
+        (UNWRAP_STRUCT_TERMIOS_PTR(structTermios))->c_line = (uint8_t) value;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jobject structTermios, __attribute__ ((unused)) jbyte value) {
         throw_NoSuchNativeTypeMemberException(env, "termios", "c_line");

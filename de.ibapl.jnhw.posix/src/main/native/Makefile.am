@@ -54,7 +54,6 @@ libjnhw_posix_la_LIBADD = \
 libjnhw_posix_la_SOURCES = \
  jnhw-posix-jni.c
 
-
 libaio_la_SOURCES = \
  AioDefines.c \
  AioFunctions.c \
@@ -123,7 +122,11 @@ libstring_la_SOURCES = \
  StringHeaderFunctions.c
 
 libsystypes_la_SOURCES = \
- TypesDefines.c
+ TypesDefines.c \
+ Types_Pid_t.c \
+ Types_Off_t.c \
+ Types_Size_t.c \
+ Types_Ssize_t.c
 
 libsysstat_la_SOURCES = \
  StatDefines.c \
@@ -132,6 +135,9 @@ libsysstat_la_SOURCES = \
 libtermios_la_SOURCES = \
  TermiosDefines.c \
  TermiosFunctions.c \
+ Termios_Cc_t.c \
+ Termios_Speed_t.c \
+ Termios_Tcflag_t.c \
  Termios_Termios.c
 
 libtime_la_SOURCES = \

@@ -142,7 +142,6 @@ public final class NativeLibResolver {
 
     private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER;
     private final static Collection<MultiarchInfo> MULTIARCH_INFO;
-    private final static OS RUNNING_ON_OS;
     private final static File NATIVE_TEMP_DIR;
 
     /**
@@ -160,11 +159,9 @@ public final class NativeLibResolver {
         }
         if (mtb == null) {
             MULTIARCH_TUPEL_BUILDER = null;
-            RUNNING_ON_OS = null;
             MULTIARCH_INFO = Collections.EMPTY_SET;
         } else {
             MULTIARCH_TUPEL_BUILDER = mtb;
-            RUNNING_ON_OS = MULTIARCH_TUPEL_BUILDER.getOS();
             MULTIARCH_INFO = MULTIARCH_TUPEL_BUILDER.getMultiarchs();
         }
         File nativeTemDir = null;
@@ -200,7 +197,7 @@ public final class NativeLibResolver {
     public static synchronized LoadResult loadNativeLib(final String libName, int libToolInterfaceVersion,
             Consumer<String> consumer) {
         String[] javaLibraryPath = System.getProperty("java.library.path").split(":");
-        String formattedLibName = RUNNING_ON_OS.formatLibName(libName, libToolInterfaceVersion);
+        String formattedLibName = getOS().formatLibName(libName, libToolInterfaceVersion);
         for (String javaLibraryPathElement : javaLibraryPath) {
             final String absLibName = javaLibraryPathElement + "/" + formattedLibName;
             if (new File(absLibName).exists()) {
@@ -314,8 +311,20 @@ public final class NativeLibResolver {
         return loadFromResource(libName, System.mapLibraryName(libName), consumer);
     }
 
-    protected static OS getOS() {
-        return RUNNING_ON_OS;
+    public static OS getOS() {
+        return MULTIARCH_TUPEL_BUILDER.getOS();
+    }
+
+    public static Arch getArch() {
+        return MULTIARCH_TUPEL_BUILDER.getArch();
+    }
+
+    public static WordSize getWordSize() {
+        return MULTIARCH_TUPEL_BUILDER.getWordSize();
+    }
+
+    public static Endianess getEndianess() {
+        return MULTIARCH_TUPEL_BUILDER.getEndianess();
     }
 
 }

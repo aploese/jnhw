@@ -62,7 +62,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Time
      * Method:    asctime_r
-     * Signature: (Lde/ibapl/jnhw/posix/Time$Tm;Lde/ibapl/jnhw/OpaqueMemory32;)Ljava/lang/String;
+     * Signature: (Lde/ibapl/jnhw/posix/Time$Tm;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;)Ljava/lang/String;
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_asctime_1r
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject structTm, jobject buf) {
@@ -218,7 +218,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Time
      * Method:    ctime_r
-     * Signature: (JLde/ibapl/jnhw/OpaqueMemory32;)Ljava/lang/String;
+     * Signature: (JLde/ibapl/jnhw/common/memory/OpaqueMemory32;)Ljava/lang/String;
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_ctime_1r
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong clock, jobject buf) {

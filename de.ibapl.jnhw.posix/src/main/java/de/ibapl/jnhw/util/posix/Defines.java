@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.util.posix;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.NotDefinedException;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
 
 /**
  * get the defines with gcc: create an empty file c.c run

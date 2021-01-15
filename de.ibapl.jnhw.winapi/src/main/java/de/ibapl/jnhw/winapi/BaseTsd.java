@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Include;
+import de.ibapl.jnhw.common.annotations.Include;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -48,8 +48,10 @@ public abstract class BaseTsd {
     public static final native boolean HAVE_BASETSD_H();
 
     
-    public final static native int sizeofULONG_PTR();
+    public final static native int sizeof();
 
+    public final static native int alignof();
+    
     /**
      * Wrapper for
      * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#ulong_ptr">ULONG_PTR</a>.<p>

@@ -21,15 +21,18 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeException;
-import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory32;
-import de.ibapl.jnhw.PointerArray32;
+import de.ibapl.jnhw.common.annotations.AlignOf;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.PointerArray32;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -288,7 +291,7 @@ public class Aio {
      * aiocb}</a>.
      *
      */
-    public static final class Aiocb<T extends OpaqueMemory32> extends OpaqueMemory32 {
+    public static final class Aiocb<T extends OpaqueMemory32> extends Struct32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -303,16 +306,18 @@ public class Aio {
          *
          * @return the native value sizeof(struct aiocb).
          */
-        public static native int sizeofAiocb() throws NoSuchNativeTypeException;
+        @SizeOf
+        public static native int sizeof() throws NoSuchNativeTypeException;
 
         /**
          * Get the alignment of struct lconv natively.
          *
          * @return the native value __alignof__(struct lconv).
          */
-        public static native int alignofAiocb() throws NoSuchNativeTypeException;
+        @AlignOf
+        public static native int alignof() throws NoSuchNativeTypeException;
 
-        public static native int offsetofAio_sigevent() throws NoSuchNativeTypeException;
+        public static native int offsetof_Aio_sigevent() throws NoSuchNativeTypeException;
 
         /**
          * The signal number and value.
@@ -325,14 +330,14 @@ public class Aio {
 
         @SuppressWarnings("unchecked")
         public Aiocb(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
-            super(owner, offset, sizeofAiocb());
-            aio_sigevent = new Sigevent(this, offsetofAio_sigevent());
+            super(owner, offset, sizeof());
+            aio_sigevent = new Sigevent(this, offsetof_Aio_sigevent());
         }
 
         @SuppressWarnings("unchecked")
         public Aiocb() throws NoSuchNativeTypeException {
-            super(sizeofAiocb(), true);
-            aio_sigevent = new Sigevent(this, offsetofAio_sigevent());
+            super(sizeof(), true);
+            aio_sigevent = new Sigevent(this, offsetof_Aio_sigevent());
         }
 
         /**
@@ -342,8 +347,8 @@ public class Aio {
          */
         @SuppressWarnings("unchecked")
         public Aiocb(NativeAddressHolder address) throws NoSuchNativeTypeException {
-            super(address, sizeofAiocb());
-            aio_sigevent = new Sigevent(this, offsetofAio_sigevent());
+            super(address, sizeof());
+            aio_sigevent = new Sigevent(this, offsetof_Aio_sigevent());
         }
 
         /**

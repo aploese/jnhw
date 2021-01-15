@@ -30,6 +30,10 @@ extern "C" {
 #include <poll.h>
 #include <errno.h>
 
+#include <assert.h>
+
+JNHW_ASSERT__nfds_t__IS__uint64_t__OR__uint32_t
+
     /*
      * Class:     de_ibapl_jnhw_posix_Poll
      * Method:    poll

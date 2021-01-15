@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "de_ibapl_jnhw_Callback_IJ_V.h"
+#include "de_ibapl_jnhw_common_callbacks_Callback_IJ_V.h"
 
 
 #include "jnhw-common.h"
@@ -32,21 +32,21 @@ extern "C" {
 #endif
 
 /*
- * Class:     de_ibapl_jnhw_Callback_IJ_V
+ * Class:     de_ibapl_jnhw_common_memory_Callback_IJ_V
  * Method:    sizeofIntptr_t
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_Callback_1IJ_1V_sizeofIntptr_1t
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_callbacks_Callback_1IJ_1V_sizeofIntptr_1t
   (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
     return sizeof(intptr_t);
 }
 
 /*
- * Class:     de_ibapl_jnhw_Callback_IJ_V
+ * Class:     de_ibapl_jnhw_common_callbacks_Callback_IJ_V
  * Method:    alignofIntptr_t
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_Callback_1IJ_1V_alignofIntptr_1t
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_callbacks_Callback_1IJ_1V_alignofIntptr_1t
   (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
     return __alignof__(intptr_t);
 }

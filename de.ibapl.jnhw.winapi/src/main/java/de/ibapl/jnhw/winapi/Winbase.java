@@ -21,11 +21,12 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -849,7 +850,7 @@ public abstract class Winbase {
      * COMMTIMEOUTS}</a>.
      *
      */
-    public final static class COMMTIMEOUTS extends OpaqueMemory32 {
+    public final static class COMMTIMEOUTS extends Struct32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -859,10 +860,12 @@ public abstract class Winbase {
             LibJnhwWinApiLoader.touch();
         }
 
-        public final static native int sizeofCOMMTIMEOUTS();
+        public final static native int sizeof();
+
+        public final static native int alignof();
 
         public COMMTIMEOUTS(boolean clearMemory) {
-            super(sizeofCOMMTIMEOUTS(), clearMemory);
+            super(sizeof(), clearMemory);
         }
 
         /**
@@ -932,7 +935,7 @@ public abstract class Winbase {
      * COMSTAT}</a>.
      *
      */
-    public static class COMSTAT extends OpaqueMemory32 {
+    public static class COMSTAT extends Struct32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -942,10 +945,12 @@ public abstract class Winbase {
             LibJnhwWinApiLoader.touch();
         }
 
-        public final static native int sizeofCOMSTAT();
+        public final static native int sizeof();
+
+        public final static native int alignof();
 
         public COMSTAT(boolean clearMemory) {
-            super(sizeofCOMSTAT(), clearMemory);
+            super(sizeof(), clearMemory);
         }
 
         /**
@@ -1009,7 +1014,7 @@ public abstract class Winbase {
      * DCB}</a>.
      *
      */
-    public final static class DCB extends OpaqueMemory32 {
+    public final static class DCB extends Struct32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -1020,12 +1025,14 @@ public abstract class Winbase {
         }
 
         public DCB(boolean clearMemory) {
-            super(sizeofDCB(), clearMemory);
+            super(sizeof(), clearMemory);
             //set the current size explicitly.
-            DCBlength(sizeofDCB());
+            DCBlength(sizeof());
         }
 
-        public final static native int sizeofDCB();
+        public final static native int sizeof();
+
+        public final static native int alignof();
 
         /**
          * @param DCBlength the value of DCBlength to be set natively.

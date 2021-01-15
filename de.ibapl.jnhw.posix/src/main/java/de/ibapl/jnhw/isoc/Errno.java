@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.isoc;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**

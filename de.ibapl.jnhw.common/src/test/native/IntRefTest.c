@@ -21,18 +21,18 @@
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
-#include "de_ibapl_jnhw_IntRefTest.h"
+#include "de_ibapl_jnhw_common_test_references_IntRefTest.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_IntRefTest
+     * Class:     de_ibapl_jnhw_common_test_references_IntRefTest
      * Method:    testNative
-     * Signature: (Lde/ibapl/jnhw/IntRef;I)I
+     * Signature: (Lde/ibapl/jnhw/common/references/IntRef;I)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_IntRefTest_testNative
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_references_IntRefTest_testNative
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject intRef, jint newValue) {
         jint result = GET_INT_REF_VALUE(intRef);
         SET_INT_REF_VALUE(intRef, newValue);

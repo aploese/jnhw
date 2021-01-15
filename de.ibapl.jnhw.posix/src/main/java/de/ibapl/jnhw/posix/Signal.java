@@ -21,20 +21,23 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
-import de.ibapl.jnhw.Callback_I_V;
-import de.ibapl.jnhw.Callback_NativeRunnable;
-import de.ibapl.jnhw.Callback_PtrAbstractNativeMemory_V;
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NativeFunctionPointer;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeException;
-import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.common.annotations.AlignOf;
+import de.ibapl.jnhw.common.callbacks.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.callbacks.Callback_I_V;
+import de.ibapl.jnhw.common.callbacks.Callback_NativeRunnable;
+import de.ibapl.jnhw.common.callbacks.Callback_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
 import de.ibapl.jnhw.posix.sys.Types.size_t;
@@ -59,7 +62,7 @@ public class Signal {
      *
      * @author aploese
      */
-    public static final class Mcontext_t extends OpaqueMemory32 {
+    public static final class Mcontext_t extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -73,20 +76,22 @@ public class Signal {
          *
          * @return the native value sizeof(struct mcontext_t).
          */
-        public static native int sizeofMcontext_t() throws NoSuchNativeTypeException;
+        @SizeOf
+        public static native int sizeof() throws NoSuchNativeTypeException;
 
-        public static native int alignofMcontext_t() throws NoSuchNativeTypeException;
+        @AlignOf
+        public static native int alignof() throws NoSuchNativeTypeException;
 
         public Mcontext_t() throws NoSuchNativeTypeException {
-            super(sizeofMcontext_t(), false);
+            super(sizeof(), false);
         }
 
         public Mcontext_t(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
-            super(owner, offset, sizeofMcontext_t());
+            super(owner, offset, sizeof());
         }
 
         public Mcontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, sizeofMcontext_t());
+            super(baseAddress, sizeof());
         }
 
     }
@@ -100,7 +105,7 @@ public class Signal {
 
     public final static native boolean HAVE_SIGNAL_H();
 
-    public static final class Sigset_t extends OpaqueMemory32 {
+    public static final class Sigset_t extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -114,16 +119,18 @@ public class Signal {
          *
          * @return the native value sizeof(struct sigset_t).
          */
-        public static native int sizeofSigset_t();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofSigset_t();
+        @AlignOf
+        public static native int alignof();
 
         public Sigset_t() {
-            super(sizeofSigset_t(), false);
+            super(sizeof(), false);
         }
 
         public Sigset_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeofSigset_t());
+            super(owner, offset, sizeof());
         }
 
         private boolean maybeDoFormatBeforeFirst(StringBuilder sb, boolean first) {
@@ -134,7 +141,7 @@ public class Signal {
         }
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             StringBuilder sb = new StringBuilder();
             boolean isFirst = true;
             sb.append("[");
@@ -269,7 +276,7 @@ public class Signal {
      * sigval}</a>.
      *
      */
-    public static final class Sigval<T extends OpaqueMemory32> extends OpaqueMemory32 {
+    public static final class Sigval<T extends OpaqueMemory32> extends Struct32 {
 
         private native NativeAddressHolder sival_ptr();
 
@@ -285,20 +292,22 @@ public class Signal {
          *
          * @return the native value sizeof(struct sigval).
          */
-        public static native int sizeofSigval();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofSigval();
+        @AlignOf
+        public static native int alignof();
 
         public Sigval() {
-            super(sizeofSigval(), false);
+            super(sizeof(), false);
         }
 
         public Sigval(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeofSigval());
+            super(owner, offset, sizeof());
         }
 
         public Sigval(NativeAddressHolder baseAddress) {
-            super(baseAddress, sizeofSigval());
+            super(baseAddress, sizeof());
         }
 
         private T sival_ptr;
@@ -358,7 +367,7 @@ public class Signal {
         }
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             return String.format("{sival_int : %d, sival_ptr : %s}", sival_int(), sival_ptr());
         }
 
@@ -372,7 +381,7 @@ public class Signal {
      * JavaCallback class ???
      *
      */
-    public static final class Sigevent<T extends OpaqueMemory32> extends OpaqueMemory32 {
+    public static final class Sigevent<T extends OpaqueMemory32> extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -381,16 +390,18 @@ public class Signal {
             LibJnhwPosixLoader.touch();
         }
 
-        public static native int offsetofSigev_value() throws NoSuchNativeTypeException;
+        public static native int offsetof_Sigev_value() throws NoSuchNativeTypeException;
 
         /**
          * Get the real size of struct sigevent natively.
          *
          * @return the native value sizeof(struct sigevent).
          */
-        public static native int sizeofSigevent() throws NoSuchNativeTypeException;
+        @SizeOf
+        public static native int sizeof() throws NoSuchNativeTypeException;
 
-        public static native int alignofSigevent() throws NoSuchNativeTypeException;
+        @AlignOf
+        public static native int alignof() throws NoSuchNativeTypeException;
 
         /**
          * Signal value.
@@ -404,20 +415,20 @@ public class Signal {
 
         @SuppressWarnings("unchecked")
         public Sigevent() throws NoSuchNativeTypeException {
-            super(sizeofSigevent(), true);
-            sigev_value = new Sigval(this, offsetofSigev_value());
+            super(sizeof(), true);
+            sigev_value = new Sigval(this, offsetof_Sigev_value());
         }
 
         @SuppressWarnings("unchecked")
         public Sigevent(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, sizeofSigevent());
-            sigev_value = new Sigval(this, offsetofSigev_value());
+            super(baseAddress, sizeof());
+            sigev_value = new Sigval(this, offsetof_Sigev_value());
         }
 
         @SuppressWarnings("unchecked")
         Sigevent(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
-            super(owner, offset, sizeofSigevent());
-            sigev_value = new Sigval(this, offsetofSigev_value());
+            super(owner, offset, sizeof());
+            sigev_value = new Sigval(this, offsetof_Sigev_value());
         }
 
         /**
@@ -526,7 +537,7 @@ public class Signal {
         }
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             try {
                 return String.format("{sigev_notify : %d, sigev_signo : %d, sigev_notify_attributes : %s, sigev_notify_function : %s, sigev_value : %s}", sigev_notify(), sigev_signo(), sigev_notify_attributes((baseAddress, parent) -> {
                     if (baseAddress.isNULL()) {
@@ -912,7 +923,7 @@ public class Signal {
      *
      * @param <T>
      */
-    public static class Sigaction<T extends OpaqueMemory32> extends OpaqueMemory32 {
+    public static class Sigaction<T extends OpaqueMemory32> extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -926,15 +937,17 @@ public class Signal {
          *
          * @return the native value sizeof(struct sigaction).
          */
-        public static native int sizeofSigaction();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofSigaction();
+        @AlignOf
+        public static native int alignof();
 
-        public static native int offsetofSa_mask();
+        public static native int offsetof_Sa_mask();
 
         protected Sigaction() {
-            super(sizeofSigaction(), false);
-            sa_mask = new Sigset_t(this, offsetofSa_mask());
+            super(sizeof(), false);
+            sa_mask = new Sigset_t(this, offsetof_Sa_mask());
         }
 
         /**
@@ -1173,7 +1186,7 @@ public class Signal {
      * ucontext_t}</a>.
      *
      */
-    public static class Ucontext_t extends OpaqueMemory32 {
+    public static class Ucontext_t extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -1187,32 +1200,34 @@ public class Signal {
          *
          * @return the native value sizeof(struct ucontext_t).
          */
-        public static native int sizeofUcontext_t() throws NoSuchNativeTypeException;
+        @SizeOf
+        public static native int sizeof() throws NoSuchNativeTypeException;
 
-        public static native int alignofUcontext_t() throws NoSuchNativeTypeException;
+        @AlignOf
+        public static native int alignof() throws NoSuchNativeTypeException;
 
-        public static native int offsetofUc_sigmask() throws NoSuchNativeTypeException;
+        public static native int offsetof_Uc_sigmask() throws NoSuchNativeTypeException;
 
-        public static native int offsetofUc_stack() throws NoSuchNativeTypeException;
+        public static native int offsetof_Uc_stack() throws NoSuchNativeTypeException;
 
-        public static native int offsetofUc_mcontext() throws NoSuchNativeTypeException;
+        public static native int offsetof_Uc_mcontext() throws NoSuchNativeTypeException;
 
         public Ucontext_t() throws NoSuchNativeTypeException {
             this(false);
         }
 
         public Ucontext_t(boolean clearMem) throws NoSuchNativeTypeException {
-            super(sizeofUcontext_t(), clearMem);
-            uc_sigmask = new Sigset_t(this, offsetofUc_sigmask());
-            uc_stack = new Stack_t(this, offsetofUc_stack());
-            uc_mcontext = new Mcontext_t(this, offsetofUc_mcontext());
+            super(sizeof(), clearMem);
+            uc_sigmask = new Sigset_t(this, offsetof_Uc_sigmask());
+            uc_stack = new Stack_t(this, offsetof_Uc_stack());
+            uc_mcontext = new Mcontext_t(this, offsetof_Uc_mcontext());
         }
 
         public Ucontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, sizeofUcontext_t());
-            uc_sigmask = new Sigset_t(this, offsetofUc_sigmask());
-            uc_stack = new Stack_t(this, offsetofUc_stack());
-            uc_mcontext = new Mcontext_t(this, offsetofUc_mcontext());
+            super(baseAddress, sizeof());
+            uc_sigmask = new Sigset_t(this, offsetof_Uc_sigmask());
+            uc_stack = new Stack_t(this, offsetof_Uc_stack());
+            uc_mcontext = new Mcontext_t(this, offsetof_Uc_mcontext());
         }
 
         /**
@@ -1264,7 +1279,7 @@ public class Signal {
      * stack_t}</a>.
      *
      */
-    public static class Stack_t<T extends OpaqueMemory32> extends OpaqueMemory32 {
+    public static class Stack_t<T extends OpaqueMemory32> extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -1278,16 +1293,18 @@ public class Signal {
          *
          * @return the native value sizeof(struct stack_t).
          */
-        public static native int sizeofStack_t();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofStack_t();
+        @AlignOf
+        public static native int alignof();
 
         private Stack_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeofStack_t());
+            super(owner, offset, sizeof());
         }
 
         public Stack_t() {
-            super(sizeofStack_t(), false);
+            super(sizeof(), false);
         }
 
         /**
@@ -1351,7 +1368,7 @@ public class Signal {
      * siginfo_t}</a>.
      *
      */
-    public static class Siginfo_t<T extends OpaqueMemory32> extends OpaqueMemory32 {
+    public static class Siginfo_t<T extends OpaqueMemory32> extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -1365,16 +1382,18 @@ public class Signal {
          *
          * @return the native value sizeof(struct siginfo_t).
          */
-        public static native int sizeofSiginfo_t();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofSiginfo_t();
+        @AlignOf
+        public static native int alignof();
 
-        public static native int offsetofSi_value();
+        public static native int offsetof_Si_value();
 
         @SuppressWarnings("unchecked")
         public Siginfo_t() {
-            super(sizeofSiginfo_t(), false);
-            si_value = new Sigval(this, offsetofSi_value());
+            super(sizeof(), false);
+            si_value = new Sigval(this, offsetof_Si_value());
         }
 
         /**
@@ -1384,8 +1403,8 @@ public class Signal {
          */
         @SuppressWarnings("unchecked")
         public Siginfo_t(NativeAddressHolder address) {
-            super(address, sizeofSiginfo_t());
-            si_value = new Sigval(this, offsetofSi_value());
+            super(address, sizeof());
+            si_value = new Sigval(this, offsetof_Si_value());
         }
 
         /**
@@ -1461,7 +1480,7 @@ public class Signal {
         public final Sigval<T> si_value;
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             try {
                 return String.format("{si_addr : %d, si_band : %d, si_code : %d, si_errno : %d, si_pid : %d, si_signo : %d, si_status : %d, si_value : %s}", si_addr(), si_band(), si_code(), si_errno(), si_pid(), si_signo(), si_status(), si_value);
             } catch (NoSuchNativeTypeMemberException nstme) {

@@ -52,12 +52,22 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_set0
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winnt_ArrayOfHandle
- * Method:    sizeofHANDLE
+ * Method:    sizeof
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_sizeofHANDLE
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_sizeof
   (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
     return sizeof(HANDLE);
+  }
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Winnt_ArrayOfHandle
+ * Method:    alignof
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_alignof
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    return alignof(HANDLE);
   }
 
 #ifdef __cplusplus

@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "de_ibapl_jnhw_Callback_NativeRunnable.h"
+#include "de_ibapl_jnhw_common_callbacks_Callback_NativeRunnable.h"
 
 #include "jnhw-common.h"
 
@@ -34,16 +34,16 @@ extern "C" {
     static jmethodID callback_ID;
 
     /*
-     * Class:     de_ibapl_jnhw_Callback_NativeRunnable
+     * Class:     de_ibapl_jnhw_common_callbacks_Callback_NativeRunnable
      * Method:    initNative
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1NativeRunnable_initNative
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callbacks_Callback_1NativeRunnable_initNative
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         if ((*env)->GetJavaVM(env, &jvm)) {
             return;
         }
-        jclass NativeRunnable_Class = (*env)->FindClass(env, "de/ibapl/jnhw/NativeRunnable");
+        jclass NativeRunnable_Class = (*env)->FindClass(env, "de/ibapl/jnhw/common/callbacks/NativeRunnable");
         if (NativeRunnable_Class == NULL) {
             return;
         }
@@ -62,11 +62,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_Callback_NativeRunnable
+     * Class:     de_ibapl_jnhw_common_callbacks_Callback_NativeRunnable
      * Method:    aquire
-     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
+     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_Callback_1NativeRunnable_aquire
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callbacks_Callback_1NativeRunnable_aquire
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return CREATE_NATIVE_ADDRESS_HOLDER(&_jnhw_callback_NativeRunnable_V__);
     }

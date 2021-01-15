@@ -21,7 +21,7 @@
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
-#include "de_ibapl_jnhw_NativeRunnableTest.h"
+#include "de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,31 +31,31 @@ extern "C" {
     static _callback callbackPtr = NULL;
 
     /*
-     * Class:     de_ibapl_jnhw_NativeRunnableTest
+     * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
      * Method:    getCallbackPtr
-     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_NativeRunnableTest_getCallbackPtr
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_getCallbackPtr
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return CREATE_NATIVE_FUNCTION_POINTER(callbackPtr);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_NativeRunnableTest
+     * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
      * Method:    setCallback
-     * Signature: (Lde/ibapl/jnhw/NativeFunctionPointer;)V
+     * Signature: (Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_NativeRunnableTest_setCallback
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_setCallback
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
         callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(void*), callback);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_NativeRunnableTest
+     * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
      * Method:    doCallTheCallback
-     * Signature: (Lde/ibapl/jnhw/NativeRunnable;)V
+     * Signature: (Lde/ibapl/jnhw/common/callbacks/NativeRunnable;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_NativeRunnableTest_doCallTheCallback
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_doCallTheCallback
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject a) {
         //TODO deattachCurrentThread?
         callbackPtr(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(a));
@@ -63,11 +63,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_NativeRunnableTest
+     * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
      * Method:    doCallRunnable
      * Signature: (Ljava/lang/Runnable;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_NativeRunnableTest_doCallRunnable
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_doCallRunnable
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject runnable) {
         //TODO deattachCurrentThread?
         callbackPtr(&runnable);
@@ -75,14 +75,14 @@ extern "C" {
     }
 
         /*
-     * Class:     de_ibapl_jnhw_NativeRunnableTest
+     * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
      * Method:    doCallTheWrongCallbackPtr
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_NativeRunnableTest_doCallTheWrongCallbackPtr
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_doCallTheWrongCallbackPtr
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         //TODO deattachCurrentThread?
-        callbackPtr(&Java_de_ibapl_jnhw_NativeRunnableTest_doCallTheWrongCallbackPtr);
+        callbackPtr(&Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_doCallTheWrongCallbackPtr);
         //TODO attachCurrentThread?
     }
 

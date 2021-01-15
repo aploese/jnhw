@@ -24,6 +24,12 @@ module de.ibapl.jnhw.common {
 
 	requires transitive de.ibapl.jnhw.libloader;
 	
-	exports de.ibapl.jnhw;
-	exports de.ibapl.jnhw.util;
+	exports de.ibapl.jnhw.common;
+	exports de.ibapl.jnhw.common.annotations;
+	exports de.ibapl.jnhw.common.callbacks;
+	exports de.ibapl.jnhw.common.datatypes;
+	exports de.ibapl.jnhw.common.exceptions;
+	exports de.ibapl.jnhw.common.memory;
+	exports de.ibapl.jnhw.common.references;
+	exports de.ibapl.jnhw.common.util;
 }

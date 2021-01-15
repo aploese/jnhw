@@ -21,18 +21,18 @@
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
-#include "de_ibapl_jnhw_LongRefTest.h"
+#include "de_ibapl_jnhw_common_test_references_LongRefTest.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_LongRefTest
+     * Class:     de_ibapl_jnhw_common_test_references_LongRefTest
      * Method:    testNative
-     * Signature: (Lde/ibapl/jnhw/LongRef;J)J
+     * Signature: (Lde/ibapl/jnhw/common/references/LongRef;J)J
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_LongRefTest_testNative
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_references_LongRefTest_testNative
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject longRef, jlong newValue) {
         jlong result = GET_LONG_REF_VALUE(longRef);
         SET_LONG_REF_VALUE(longRef, newValue);

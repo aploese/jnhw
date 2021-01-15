@@ -21,7 +21,7 @@
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
-#include "de_ibapl_jnhw_Callback_PtrAbstractNativeMemory_V_Test.h"
+#include "de_ibapl_jnhw_common_test_callbacks_Callback_PtrAbstractNativeMemory_V_Test.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,31 +31,31 @@ extern "C" {
     static _callback callbackPtr = NULL;
 
     /*
-     * Class:     de_ibapl_jnhw_Callback_PtrAbstractNativeMemory_V_Test
+     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_PtrAbstractNativeMemory_V_Test
      * Method:    getCallbackPtr
-     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_Callback_1PtrAbstractNativeMemory_1V_1Test_getCallbackPtr
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1PtrAbstractNativeMemory_1V_1Test_getCallbackPtr
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return CREATE_NATIVE_FUNCTION_POINTER(callbackPtr);
     }
     
     /*
-     * Class:     de_ibapl_jnhw_Callback_PtrAbstractNativeMemory_V_Test
+     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_PtrAbstractNativeMemory_V_Test
      * Method:    setCallback
-     * Signature: (Lde/ibapl/jnhw/NativeFunctionPointer;)V
+     * Signature: (Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1PtrAbstractNativeMemory_1V_1Test_setCallback
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1PtrAbstractNativeMemory_1V_1Test_setCallback
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
         callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(void*), callback);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_Callback_PtrAbstractNativeMemory_V_Test
+     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_PtrAbstractNativeMemory_V_Test
      * Method:    doCallTheCallback
-     * Signature: (Lde/ibapl/jnhw/Callback_PtrAbstractNativeMemory_V_Test/A;)V
+     * Signature: (Lde/ibapl/jnhw/common/callbacks/Callback_PtrAbstractNativeMemory_V_Test/A;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1PtrAbstractNativeMemory_1V_1Test_doCallTheCallback
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1PtrAbstractNativeMemory_1V_1Test_doCallTheCallback
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject a) {
         //TODO deattachCurrentThread?
         callbackPtr(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(a));

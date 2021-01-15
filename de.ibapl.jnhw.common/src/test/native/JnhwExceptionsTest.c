@@ -21,118 +21,118 @@
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
-#include "de_ibapl_jnhw_JnhwExceptionsTest.h"
+#include "de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwNativeErrorException
      * Signature: (I)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwNativeErrorException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwNativeErrorException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint errorNumber) {
         throw_NativeErrorException(env, errorNumber);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwNotDefinedException
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwNotDefinedException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwNotDefinedException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         throw_NotDefinedException(env, "TEST_DEFINE");
     }
 
     /*
-     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwNoSuchNativeMethodException
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwNoSuchNativeMethodException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwNoSuchNativeMethodException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         throw_NoSuchNativeMethodException(env, "a_native_method");
     }
 
     /*
-     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwNoSuchNativeTypeException
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwNoSuchNativeTypeException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwNoSuchNativeTypeException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         throw_NoSuchNativeTypeException(env, "a_type");
     }
 
     /*
-     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwNoSuchNativeTypeMemberException
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwNoSuchNativeTypeMemberException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwNoSuchNativeTypeMemberException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         throw_NoSuchNativeTypeMemberException(env, "a_type", "a_member");
     }
 
     /*
-     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwNullPointerException
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwNullPointerException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwNullPointerException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         throw_NullPointerException(env, "arg0");
     }
 
     /*
-     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwArrayIndexOutOfBoundsException
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwArrayIndexOutOfBoundsException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwArrayIndexOutOfBoundsException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         throw_ArrayIndexOutOfBoundsException(env, "arg_array_index");
     }
 
     /*
-     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwIndexOutOfBoundsException
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwIndexOutOfBoundsException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwIndexOutOfBoundsException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         throw_IndexOutOfBoundsException(env, "arg_index");
     }
 
     /*
-     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwIllegalArgumentException
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwIllegalArgumentException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwIllegalArgumentException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         throw_IllegalArgumentException(env, "arg_illegal");
     }
 
     /*
-     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwRuntimeException
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwRuntimeException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwRuntimeException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         throw_RuntimeException(env, "runtime %d", 42);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_JnhwExceptionsTest
+     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwException
      * Signature: (Ljava/lang/String;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_JnhwExceptionsTest_throwException
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jstring className) {
         const char* _className = (*env)->GetStringUTFChars(env, className, NULL);
         throw_Exception(env, _className, "rte %d", 42);

@@ -9,15 +9,20 @@ include_HEADERS = jnhw-common.h JnhwExceptions.h
 
 lib_LTLIBRARIES = libjnhw-common.la
 
-libjnhw_common_la_SOURCES = \
- jnhw-common.c \
- JnhwExceptions.c \
- AbstractNativeMemory.c \
- AbstractNativeMemory_MemoryCleaner.c \
- AbstractNativeMemory_NativeMemoryAlignment.c \
- OpaqueMemory32.c \
- OpaqueMemory64.c \
- PointerArray32.c \
+noinst_LTLIBRARIES = \
+ libexceptions.la \
+ libmemory.la \
+ libcallbacks.la
+ 
+libjnhw_common_la_LIBADD = \
+ libexceptions.la \
+ libmemory.la \
+ libcallbacks.la
+
+libexceptions_la_SOURCES = \
+ JnhwExceptions.c
+
+libcallbacks_la_SOURCES = \
  Callback_I_V_Impl.c \
  Callback_J_V_Impl.c \
  Callback_IJ_V.c \
@@ -28,6 +33,25 @@ libjnhw_common_la_SOURCES = \
  Callback_NativeRunnable.c \
  NativeRunnable.c
 
+libmemory_la_SOURCES = \
+ AbstractNativeMemory.c \
+ AbstractNativeMemory_MemoryCleaner.c \
+ AbstractNativeMemory_NativeMemoryAlignment.c \
+ OpaqueMemory32.c \
+ OpaqueMemory64.c \
+ PointerArray32.c \
+ NativeIntNumber.c \
+ Int8_t.c \
+ Int16_t.c \
+ Int32_t.c \
+ Int64_t.c \
+ Uint8_t.c \
+ Uint16_t.c \
+ Uint32_t.c \
+ Uint64_t.c
+
+libjnhw_common_la_SOURCES = \
+ jnhw-common.c
 
 #hook into make all
 all-local: $(LIB_JNHW_COMMON_RES_NAME)

@@ -22,7 +22,7 @@
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
 
-#include "de_ibapl_jnhw_OpaqueMemory32.h"
+#include "de_ibapl_jnhw_common_memory_OpaqueMemory32.h"
 #include <string.h>
 
 #ifdef __cplusplus
@@ -30,11 +30,11 @@ extern "C" {
 #endif
 
 /*
- * Class:     de_ibapl_jnhw_OpaqueMemory32
+ * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
  * Method:    copy
- * Signature: ([BILde/ibapl/jnhw/OpaqueMemory32;II)V
+ * Signature: ([BILde/ibapl/jnhw/common/memory/OpaqueMemory32;II)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory32_copy___3BILde_ibapl_jnhw_OpaqueMemory32_2II
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_copy___3BILde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jbyteArray src, jint srcPos, jobject dest, jint destPos, jint len) {
         if (outOfBoundsByteArray(env, srcPos, len, src)) {
             throw_ArrayIndexOutOfBoundsException(env, "Source ArrayIndex!");
@@ -48,11 +48,11 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory32_copy___3BILde_ibapl_jnh
     }
 
 /*
- * Class:     de_ibapl_jnhw_OpaqueMemory32
+ * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
  * Method:    copy
- * Signature: (Lde/ibapl/jnhw/OpaqueMemory32;I[BII)V
+ * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;I[BII)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory32_copy__Lde_ibapl_jnhw_OpaqueMemory32_2I_3BII
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_copy__Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2I_3BII
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject src, jint srcPos, jbyteArray dest, jint destPos, jint len) {
         if (outOfBoundsOpaqueMemory32(env, srcPos, len, src)) {
             throw_IndexOutOfBoundsException(env, "Source index outside of opaque memory!");
@@ -66,11 +66,11 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory32_copy__Lde_ibapl_jnhw_Op
     }
 
 /*
- * Class:     de_ibapl_jnhw_OpaqueMemory32
+ * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
  * Method:    getByte
- * Signature: (Lde/ibapl/jnhw/OpaqueMemory32;I)B
+ * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;I)B
  */
-JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_OpaqueMemory32_getByte
+JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_getByte
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject opaqueMemory, jint index) {
         if (outOfBoundsOpaqueMemory32(env, index, 1, opaqueMemory)) {
             throw_IndexOutOfBoundsException(env, "Index outside of allocated memory!");
@@ -80,11 +80,11 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_OpaqueMemory32_getByte
     }
 
 /*
- * Class:     de_ibapl_jnhw_OpaqueMemory32
+ * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
  * Method:    setByte
- * Signature: (Lde/ibapl/jnhw/OpaqueMemory32;IB)V
+ * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;IB)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory32_setByte
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_setByte
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject opaqueMemory, jint index, jbyte value) {
         if (outOfBoundsOpaqueMemory32(env, index, 1, opaqueMemory)) {
             throw_IndexOutOfBoundsException(env, "Index outside of allocated memory!");
@@ -94,11 +94,11 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory32_setByte
     }
 
 /*
- * Class:     de_ibapl_jnhw_OpaqueMemory32
+ * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
  * Method:    memset
- * Signature: (Lde/ibapl/jnhw/OpaqueMemory32;B)V
+ * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;B)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_OpaqueMemory32_memset
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_memset
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject opaqueMemory32, jbyte byteToSet) {
         memset(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory32), byteToSet, (uint32_t) SIZE_OF_OPAQUE_MEM_32(opaqueMemory32));
     }

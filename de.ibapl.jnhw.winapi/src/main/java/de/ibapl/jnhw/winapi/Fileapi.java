@@ -21,13 +21,13 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.ByteRef;
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.OpaqueMemory32;
-import de.ibapl.jnhw.OpaqueMemory64;
-import de.ibapl.jnhw.util.ByteBufferUtils;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.OpaqueMemory64;
+import de.ibapl.jnhw.common.references.ByteRef;
+import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;

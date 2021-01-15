@@ -21,18 +21,18 @@
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
-#include "de_ibapl_jnhw_ShortRefTest.h"
+#include "de_ibapl_jnhw_common_test_references_ShortRefTest.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_ShortRefTest
+     * Class:     de_ibapl_jnhw_common_test_references_ShortRefTest
      * Method:    testNative
-     * Signature: (Lde/ibapl/jnhw/ShortRef;S)S
+     * Signature: (Lde/ibapl/jnhw/common/references/ShortRef;S)S
      */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_ShortRefTest_testNative
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_common_test_references_ShortRefTest_testNative
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject shortRef, jshort newValue) {
         jshort result = GET_SHORT_REF_VALUE(shortRef);
         SET_SHORT_REF_VALUE(shortRef, newValue);

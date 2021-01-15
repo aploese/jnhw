@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.util.winapi;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.NotDefinedException;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.winapi.BaseTsd;

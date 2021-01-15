@@ -26,6 +26,23 @@ extern "C" {
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_sys_Types.h"
 
+/*
+off_t
+off64_t
+mode_t
+ssize_t
+size_t
+useconds_t
+gid_t
+pid_t
+pthread_t
+pthread_attr_t
+clock_t
+time_t
+clockid_t
+timer_t
+uid_t
+*/
     /*
      * Class:     de_ibapl_jnhw_posix_sys_Types
      * Method:    HAVE_SYS_TYPES_H

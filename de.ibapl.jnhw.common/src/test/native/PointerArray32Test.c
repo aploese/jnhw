@@ -21,21 +21,21 @@
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
-#include "de_ibapl_jnhw_PointerArray32Test.h"
+#include "de_ibapl_jnhw_common_test_memory_PointerArray32Test.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*
- * Class:     de_ibapl_jnhw_PointerArray32Test
+ * Class:     de_ibapl_jnhw_common_test_memory_PointerArray32Test
  * Method:    getCachedReferencesLength
- * Signature: (Lde/ibapl/jnhw/PointerArray32;)I
+ * Signature: (Lde/ibapl/jnhw/common/memory/PointerArray32;)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_PointerArray32Test_getCachedReferencesLength
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_PointerArray32Test_getCachedReferencesLength
   (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject pointerArray) {
-    if (de_ibapl_jnhw_PointerArray32_cachedReferences_ID == NULL) {
-        throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "de_ibapl_jnhw_PointerArray32_cachedReferences_ID is NULL!");
+    if (de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID == NULL) {
+        throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID is NULL!");
         return -1;
     }
     return LENGTH_OF_POINTER_ARRAY_32(pointerArray);

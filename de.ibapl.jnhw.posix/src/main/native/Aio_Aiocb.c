@@ -36,12 +36,29 @@ extern "C" {
     //for offsetof
 #include <stddef.h>
 
+JNHW_ASSERT__off_t__IS__int64_t__OR__int32_t
+JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
+
+#if defined(__LP64__)
+  #if __SIZEOF_POINTER__ != 8
+    #error __hppa__ and __SIZEOF_POINTER__ != 8
+  #endif
+#elif defined(__ILP32__)
+  #if __SIZEOF_POINTER__ != 4
+    #error __hppa__ and __SIZEOF_POINTER__ != 4
+  #endif
+#else
+  #if __SIZEOF_POINTER__ != 4
+    #error __hppa__ and __SIZEOF_POINTER__ != 4
+  #endif
+#endif
+
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
-     * Method:    sizeofAiocb
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_sizeofAiocb
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_sizeof
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct aiocb");
@@ -54,10 +71,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
-     * Method:    alignofAiocb
+     * Method:    alignof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_alignofAiocb
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_alignof
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct aiocb");
@@ -71,10 +88,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
-     * Method:    offsetofAio_sigevent
+     * Method:    offsetof_Aio_sigevent
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_offsetofAio_1sigevent
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_offsetof_1Aio_1sigevent
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct aiocb");

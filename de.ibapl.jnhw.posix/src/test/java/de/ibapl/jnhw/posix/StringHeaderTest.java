@@ -21,10 +21,9 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 

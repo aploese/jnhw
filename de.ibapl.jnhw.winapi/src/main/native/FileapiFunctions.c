@@ -155,9 +155,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    ReadFile
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory32;II)I
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory32_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jint off, jint nNumberOfBytesToRead) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -184,9 +184,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    ReadFile
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory64;JI)I
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JI)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory64_2JI
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JI
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jlong off, jint nNumberOfBytesToRead) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -213,9 +213,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    ReadFile
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/ByteRef;)I
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/references/ByteRef;)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_0024HANDLE_2Lde_ibapl_jnhw_ByteRef_2
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_0024HANDLE_2Lde_ibapl_jnhw_common_references_ByteRef_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject byteRef) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -261,9 +261,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    ReadFile
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jint off, jint nNumberOfBytesToRead, jobject lpOverlapped) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -291,9 +291,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    ReadFile
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jlong off, jint nNumberOfBytesToRead, jobject lpOverlapped) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -405,9 +405,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    WriteFile
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory32;II)I
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory32_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jint off, jint nNumberOfBytesToWrite) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -434,9 +434,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    WriteFile
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory64;II)I
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory64;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory64_2JI
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JI
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jlong off, jint nNumberOfBytesToWrite) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -463,9 +463,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    WriteFile
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jint off, jint nNumberOfBytesToWrite, jobject lpOverlapped) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -493,9 +493,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    WriteFile
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jint off, jint nNumberOfBytesToWrite, jobject lpOverlapped) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -523,9 +523,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    ReadFileEx
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase$LPOVERLAPPED_COMPLETION_ROUTINE;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/references/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase$LPOVERLAPPED_COMPLETION_ROUTINE;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_00024LPOVERLAPPED_1COMPLETION_1ROUTINE_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_00024LPOVERLAPPED_1COMPLETION_1ROUTINE_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jint off, jint nNumberOfBytesToRead, jobject lpOverlapped, jobject lpCompletionRoutine) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -555,9 +555,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    ReadFileEx
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase$LPOVERLAPPED_COMPLETION_ROUTINE;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/references/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase$LPOVERLAPPED_COMPLETION_ROUTINE;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_00024LPOVERLAPPED_1COMPLETION_1ROUTINE_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_00024LPOVERLAPPED_1COMPLETION_1ROUTINE_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jlong off, jint nNumberOfBytesToRead, jobject lpOverlapped, jobject lpCompletionRoutine) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -599,9 +599,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    WriteFileEx
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase$LPOVERLAPPED_COMPLETION_ROUTINE;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/references/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase$LPOVERLAPPED_COMPLETION_ROUTINE;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_00024LPOVERLAPPED_1COMPLETION_1ROUTINE_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_00024LPOVERLAPPED_1COMPLETION_1ROUTINE_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jint off, jint nNumberOfBytesToWrite, jobject lpOverlapped, jobject lpCompletionRoutine) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");
@@ -631,9 +631,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Fileapi
      * Method:    WriteFileEx 
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase$LPOVERLAPPED_COMPLETION_ROUTINE;)V
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase$LPOVERLAPPED_COMPLETION_ROUTINE;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_00024LPOVERLAPPED_1COMPLETION_1ROUTINE_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__Lde_ibapl_jnhw_winapi_Winnt_00024HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_00024LPOVERLAPPED_1COMPLETION_1ROUTINE_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpBuffer, jlong off, jint nNumberOfBytesToWrite, jobject lpOverlapped, jobject lpCompletionRoutine) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null.");

@@ -21,7 +21,7 @@
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
-#include "de_ibapl_jnhw_Callback_J_V_Test.h"
+#include "de_ibapl_jnhw_common_test_callbacks_Callback_J_V_Test.h"
 
 //First go for windows.h because mingw has a pthread.h too...
 #ifdef HAVE_WINDOWS_H
@@ -42,21 +42,21 @@ extern "C" {
     static _callback_J_V callbackPtr = NULL;
 
     /*
-     * Class:     de_ibapl_jnhw_Callback_J_V_Tests
+     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_J_V_Tests
      * Method:    setCallback
-     * Signature: (Lde/ibapl/jnhw/NativeCallback;)V
+     * Signature: (Lde/ibapl/jnhw/common/callbacks/Callback_J_V;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1J_1V_1Test_setCallback
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1J_1V_1Test_setCallback
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
         callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int64_t), callback);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_Callback_J_V_Tests
+     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_J_V_Tests
      * Method:    getCallbackPtr
-     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_Callback_1J_1V_1Test_getCallbackPtr
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1J_1V_1Test_getCallbackPtr
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return CREATE_NATIVE_FUNCTION_POINTER(callbackPtr);
     }
@@ -77,11 +77,11 @@ extern "C" {
     
     
     /*
-     * Class:     de_ibapl_jnhw_Callback_J_V_Tests
+     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_J_V_Tests
      * Method:    doCallTheCallback
      * Signature: (J)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_Callback_1J_1V_1Test_doCallTheCallback
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1J_1V_1Test_doCallTheCallback
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong value) {
 #ifdef HAVE_WINDOWS_H
         HANDLE hThread;

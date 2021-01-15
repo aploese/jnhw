@@ -21,15 +21,18 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LongRef;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeException;
-import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.common.annotations.AlignOf;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.references.LongRef;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.posix.sys.Types.clock_t;
@@ -291,7 +294,7 @@ public class Time {
      *
      * @return Upon successful completion, a pointer to a struct tm.
      *
-     * @throws de.ibapl.jnhw.NativeErrorException returns the getdate_err error
+     * @throws de.ibapl.jnhw.common.exceptions.NativeErrorException returns the getdate_err error
      * codes.
      * @throws NoSuchNativeMethodException if the method getdate is not available natively.
      */
@@ -537,7 +540,7 @@ public class Time {
      * itimerspec}</a>.
      *
      */
-    public static class Itimerspec extends OpaqueMemory32 {
+    public static class Itimerspec extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -551,18 +554,20 @@ public class Time {
          *
          * @return the native value sizeof(struct itimerspec).
          */
-        public static native int sizeofItimerspec();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofItimerspec();
+        @AlignOf
+        public static native int alignof();
 
-        public static native int offsetofIt_interval();
+        public static native int offsetof_It_interval();
 
-        public static native int offsetofIt_value();
+        public static native int offsetof_It_value();
 
         public Itimerspec(boolean clearMem) throws NoSuchNativeTypeException {
-            super(sizeofItimerspec(), clearMem);
-            it_interval = new Timespec(this, offsetofIt_interval());
-            it_value = new Timespec(this, offsetofIt_value());
+            super(sizeof(), clearMem);
+            it_interval = new Timespec(this, offsetof_It_interval());
+            it_value = new Timespec(this, offsetof_It_value());
         }
 
         public Itimerspec() throws NoSuchNativeTypeException {
@@ -615,8 +620,8 @@ public class Time {
         }
 
         @Override
-        public String toString() {
-            return String.format("{it_value : %s, it_interval : %s}", it_value, it_interval);
+        public String nativeToString() {
+            return String.format("{it_value : %s, it_interval : %s}", it_value == null ? null : it_value.nativeToString(), it_interval == null ? null : it_interval.nativeToString());
         }
 
     }
@@ -626,7 +631,7 @@ public class Time {
      * timespec}</a>.
      *
      */
-    public static class Timespec extends OpaqueMemory32 {
+    public static class Timespec extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -640,20 +645,26 @@ public class Time {
          *
          * @return the native value sizeof(struct timespec).
          */
-        public static native int sizeofTimespec();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofTimespec();
+        @AlignOf
+        public static native int alignof();
 
         public Timespec() {
-            super(sizeofTimespec(), false);
+            super(sizeof(), false);
         }
 
         public Timespec(OpaqueMemory32 parent, int offset) {
-            super(parent, offset, sizeofTimespec());
+            super(parent, offset, sizeof());
+        }
+
+        public Timespec(OpaqueMemory32 parent, OpaqueMemory32 prev ) {
+            this(parent, OpaqueMemory32.calcNextOffset(parent, prev, alignof()));
         }
 
         public Timespec(boolean cleanMem) {
-            super(sizeofTimespec(), cleanMem);
+            super(sizeof(), cleanMem);
         }
 
         /**
@@ -694,7 +705,7 @@ public class Time {
         public native void tv_nsec(long tv_nsec);
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             return String.format("{tv_sec : %d, tv_nsec : %d}", tv_sec(), tv_nsec());
         }
 
@@ -731,7 +742,7 @@ public class Time {
      * tm}</a>.
      *
      */
-    public static class Tm extends OpaqueMemory32 {
+    public static class Tm extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -745,9 +756,11 @@ public class Time {
          *
          * @return the native value sizeof(struct tm).
          */
-        public static native int sizeofTm();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofTm();
+        @AlignOf
+        public static native int alignof();
 
         /**
          * To be called only from native code ...
@@ -760,11 +773,11 @@ public class Time {
         }
 
         public Tm() {
-            super(sizeofTm(), false);
+            super(sizeof(), false);
         }
 
         public Tm(boolean clearMem) {
-            super(sizeofTm(), clearMem);
+            super(sizeof(), clearMem);
         }
 
         /**
@@ -930,7 +943,7 @@ public class Time {
         public native void tm_isdst(int tm_isdst);
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             StringBuilder sb = new StringBuilder();
             sb.append("{tm_year : ").append(tm_year());
             sb.append(", tm_yday : ").append(tm_yday());
@@ -953,7 +966,7 @@ public class Time {
      * @author aploese
      */
     @Types.timer_t
-    public static final class Timer_t extends OpaqueMemory32 {
+    public static final class Timer_t extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -967,20 +980,22 @@ public class Time {
          *
          * @return the native value sizeof(timer_t).
          */
-        public static native int sizeofTimer_t();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofTimer_t();
-
+        @AlignOf
+        public static native int alignof();
+        
         public Timer_t() throws NoSuchNativeTypeException {
-            super(sizeofTimer_t(), false);
+            super(sizeof(), false);
         }
 
         public Timer_t(boolean cleanMem) throws NoSuchNativeTypeException {
-            super(sizeofTimer_t(), cleanMem);
+            super(sizeof(), cleanMem);
         }
 
         @Override
-        public native String toString();
+        public native String nativeToString();
 
     }
 

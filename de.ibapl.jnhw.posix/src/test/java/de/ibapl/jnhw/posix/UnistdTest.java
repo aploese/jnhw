@@ -21,13 +21,15 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.ByteRef;
-import de.ibapl.jnhw.Defined;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.OpaqueMemory32;
-import de.ibapl.jnhw.OpaqueMemory64;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.memory.Memory32Heap;
+import de.ibapl.jnhw.common.memory.Memory64Heap;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.OpaqueMemory64;
+import de.ibapl.jnhw.common.references.ByteRef;
+import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.util.posix.Defines;
 import java.io.File;
@@ -388,7 +390,7 @@ public class UnistdTest {
     public void testReadOpaqueMemory() throws Exception {
         writeData();
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDONLY());
-        OpaqueMemory32 om = new OpaqueMemory32(TEST_DATA.length, true);
+        Memory32Heap om = new Memory32Heap(TEST_DATA.length, true);
         long read = Unistd.read(fd, om, POS, LEN);
         Assertions.assertEquals(LEN, read);
         byte[] result = OpaqueMemory32.toBytes(om);
@@ -440,7 +442,7 @@ public class UnistdTest {
     @Test
     public void testWriteOpaqueMemory32() throws Exception {
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_WRONLY(), Stat.S_IRUSR() | Stat.S_IWUSR());
-        OpaqueMemory32 om = new OpaqueMemory32(TEST_DATA.length, true);
+        Memory32Heap om = new Memory32Heap(TEST_DATA.length, true);
         OpaqueMemory32.copy(TEST_DATA, 0, om, 0, TEST_DATA.length);
         Unistd.write(fd, om, POS, LEN);
         byte[] data = readData();
@@ -450,7 +452,7 @@ public class UnistdTest {
     @Test
     public void testWriteOpaqueMemory64() throws Exception {
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_WRONLY(), Stat.S_IRUSR() | Stat.S_IWUSR());
-        OpaqueMemory64 om = new OpaqueMemory64(TEST_DATA.length, true);
+        Memory64Heap om = new Memory64Heap(TEST_DATA.length, true);
         OpaqueMemory64.copy(TEST_DATA, 0, om, 0, TEST_DATA.length);
         Unistd.write(fd, om, POS, LEN);
         byte[] data = readData();
@@ -589,7 +591,7 @@ public class UnistdTest {
     @Test
     public void testWriteReadOpaqueMemory32_10MB() throws Exception {
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_RDWR());
-        OpaqueMemory32 mem = new OpaqueMemory32(10_000_000, false);
+        Memory32Heap mem = new Memory32Heap(10_000_000, false);
         long written = Unistd.write(fd, mem);
         Assertions.assertEquals(mem.sizeInBytes, written);
         Unistd.lseek(fd, 0, Unistd.SEEK_SET());
@@ -606,7 +608,7 @@ public class UnistdTest {
     @Test
     public void testWriteReadOpaqueMemory64_10MB() throws Exception {
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT() | Fcntl.O_RDWR());
-        OpaqueMemory64 mem = new OpaqueMemory64(10_000_000, false);
+        Memory64Heap mem = new Memory64Heap(10_000_000, false);
         long written = Unistd.write(fd, mem);
         Assertions.assertEquals(mem.sizeInBytes, written);
         Unistd.lseek(fd, 0, Unistd.SEEK_SET());

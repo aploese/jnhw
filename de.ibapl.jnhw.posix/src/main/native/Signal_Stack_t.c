@@ -34,20 +34,20 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
-     * Method:    sizeofStack_t
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_sizeofStack_1t
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (stack_t);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
-     * Method:    alignofStack_t
+     * Method:    alignof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_alignofStack_1t
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_alignof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return __alignof__ (stack_t);
     }
@@ -55,7 +55,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
      * Method:    ss_sp0
-     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
+     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp0
     (JNIEnv *env, jobject structStack_t) {
@@ -117,7 +117,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
      * Method:    ss_sp
-     * Signature: (Lde/ibapl/jnhw/OpaqueMemory32;)V
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp
     (JNIEnv *env, jobject structStack_t, jobject ss_sp) {

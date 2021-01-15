@@ -332,7 +332,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    signal
-     * Signature: (ILde/ibapl/jnhw/Callback_I_V;)Lde/ibapl/jnhw/Callback_I_V;
+     * Signature: (ILde/ibapl/jnhw/common/callbacks/Callback_I_V;)Lde/ibapl/jnhw/common/callbacks/Callback_I_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig, jobject func) {
@@ -444,7 +444,7 @@ extern "C" {
         /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    sigset
-     * Signature: (ILde/ibapl/jnhw/Callback_I_V;)Lde/ibapl/jnhw/Callback_I_V;
+     * Signature: (ILde/ibapl/jnhw/common/callbacks/Callback_I_V;)Lde/ibapl/jnhw/common/callbacks/Callback_I_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_sigset
 #if defined(__OpenBSD__)

@@ -21,10 +21,11 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Callback_I_I_PtrAbstractNativeMemory_V_Impl;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.common.callbacks.Callback_I_I_PtrAbstractNativeMemory_V_Impl;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -52,7 +53,7 @@ public class Minwinbase {
      * OVERLAPPED}</a>.
      *
      */
-    public final static class OVERLAPPED extends OpaqueMemory32 {
+    public final static class OVERLAPPED extends Struct32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -67,9 +68,9 @@ public class Minwinbase {
          *
          * @return the native value sizeof(struct OVERLAPPED).
          */
-        public final static native int sizeofOVERLAPPED();
+        public final static native int sizeof();
 
-        public final static native int alignofOVERLAPPED();
+        public final static native int alignof();
 
         /**
          * The status code for the I/O request. When the request is issued, the
@@ -108,11 +109,11 @@ public class Minwinbase {
 
         public OVERLAPPED() {
             //always clean field Pointer must be zero!
-            super(sizeofOVERLAPPED(), true);
+            super(sizeof(), true);
         }
 
         public OVERLAPPED(NativeAddressHolder addressHolder) {
-            super(addressHolder, sizeofOVERLAPPED());
+            super(addressHolder, sizeof());
         }
 
     }
@@ -129,7 +130,7 @@ public class Minwinbase {
      * SECURITY_ATTRIBUTES}</a>.
      *
      */
-    public static class SECURITY_ATTRIBUTES extends OpaqueMemory32 {
+    public static class SECURITY_ATTRIBUTES extends Struct32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -144,9 +145,9 @@ public class Minwinbase {
          *
          * @return the native value sizeof(struct SECURITY_ATTRIBUTES).
          */
-        public final static native int sizeofSECURITY_ATTRIBUTES();
+        public final static native int sizeof();
 
-        public final static native int alignofSECURITY_ATTRIBUTES();
+        public final static native int alignof();
 
         /**
          * @return the native value of nLength;
@@ -160,7 +161,7 @@ public class Minwinbase {
         public native boolean bInheritHandle();
 
         public SECURITY_ATTRIBUTES() {
-            super(sizeofSECURITY_ATTRIBUTES(), true);
+            super(sizeof(), true);
         }
 
     };

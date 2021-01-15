@@ -21,13 +21,16 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.common.annotations.AlignOf;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
@@ -197,7 +200,7 @@ public class Pthread {
      * @author aploese
      */
     @Types.pthread_attr_t
-    public static final class Pthread_attr_t extends OpaqueMemory32 {
+    public static final class Pthread_attr_t extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -211,20 +214,22 @@ public class Pthread {
          *
          * @return the native value sizeof(struct pthread_attr_t).
          */
-        public static native int sizeofPthread_attr_t();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofPthread_attr_t();
+        @AlignOf
+        public static native int alignof();
 
         public Pthread_attr_t() {
-            super(sizeofPthread_attr_t(), false);
+            super(sizeof(), false);
         }
 
         public Pthread_attr_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeofPthread_attr_t());
+            super(owner, offset, sizeof());
         }
 
         public Pthread_attr_t(NativeAddressHolder baseAddress) {
-            super(baseAddress, sizeofPthread_attr_t());
+            super(baseAddress, sizeof());
         }
 
     }
@@ -236,7 +241,7 @@ public class Pthread {
      * @author aploese
      */
     @Types.pthread_t
-    public static final class Pthread_t extends OpaqueMemory32 {
+    public static final class Pthread_t extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -250,24 +255,26 @@ public class Pthread {
          *
          * @return the native value sizeof(struct pthread_t).
          */
-        public static native int sizeofPthread_t();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofPthread_t();
+        @AlignOf
+        public static native int alignof();
 
         public Pthread_t() {
-            super(sizeofPthread_t(), false);
+            super(sizeof(), false);
         }
 
         public Pthread_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeofPthread_t());
+            super(owner, offset, sizeof());
         }
 
         public Pthread_t(NativeAddressHolder baseAddress) {
-            super(baseAddress, sizeofPthread_t());
+            super(baseAddress, sizeof());
         }
 
         @Override
-        public native String toString();
+        public native String nativeToString();
 
     }
 }

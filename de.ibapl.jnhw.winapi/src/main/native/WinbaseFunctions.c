@@ -84,7 +84,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EscapeCommFunction
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    GetCommModemStatus
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/IntRef;)V
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/references/IntRef;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommModemStatus
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpModemStat) {

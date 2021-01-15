@@ -33,40 +33,40 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
-     * Method:    sizeofItimerspec
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_sizeofItimerspec
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_sizeof
         (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct itimerspec);
         }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
-     * Method:    alignofItimerspec
+     * Method:    alignof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_alignofItimerspec
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_alignof
         (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return __alignof__ (struct itimerspec);
         }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
-     * Method:    offsetofIt_interval
+     * Method:    offsetof_It_interval
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_offsetofIt_1interval
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_offsetof_1It_1interval
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct itimerspec, it_interval);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
-     * Method:    offsetofIt_value
+     * Method:    offsetof_It_value
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_offsetofIt_1value
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_offsetof_1It_1value
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct itimerspec, it_value);
     }

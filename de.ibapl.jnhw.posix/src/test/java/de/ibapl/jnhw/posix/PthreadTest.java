@@ -21,16 +21,15 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.ObjectRef;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -258,29 +257,29 @@ public class PthreadTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getArch()) {
                     case AARCH64:
-                        Assertions.assertEquals(64, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+                        Assertions.assertEquals(64, Pthread.Pthread_attr_t.sizeof());
                         break;
                     case ARM:
                     case I386:
                     case MIPS:
-                        Assertions.assertEquals(36, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+                        Assertions.assertEquals(36, Pthread.Pthread_attr_t.sizeof());
                         break;
                     case MIPS_64:
                     case POWER_PC_64:
                     case S390_X:
                     case X86_64:
-                        Assertions.assertEquals(56, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+                        Assertions.assertEquals(56, Pthread.Pthread_attr_t.sizeof());
                         break;
                     default:
-                        Assertions.assertEquals(-1, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+                        Assertions.assertEquals(-1, Pthread.Pthread_attr_t.sizeof());
                 }
                 break;
             case FREE_BSD:
             case OPEN_BSD:
-                Assertions.assertEquals(8, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+                Assertions.assertEquals(8, Pthread.Pthread_attr_t.sizeof());
                 break;
             default:
-                Assertions.assertEquals(-1, Pthread.Pthread_attr_t.sizeofPthread_attr_t());
+                Assertions.assertEquals(-1, Pthread.Pthread_attr_t.sizeof());
         }
     }
 
@@ -288,13 +287,13 @@ public class PthreadTest {
     public void testAlignOfPthread_attr_t() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Pthread.Pthread_attr_t.alignofPthread_attr_t());
+                Assertions.assertEquals(4, Pthread.Pthread_attr_t.alignof());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Pthread.Pthread_attr_t.alignofPthread_attr_t());
+                Assertions.assertEquals(8, Pthread.Pthread_attr_t.alignof());
                 break;
             default:
-                Assertions.assertEquals(-1, Pthread.Pthread_attr_t.alignofPthread_attr_t());
+                Assertions.assertEquals(-1, Pthread.Pthread_attr_t.alignof());
         }
     }
 
@@ -302,13 +301,13 @@ public class PthreadTest {
     public void testSizeOfPthread_t() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Pthread.Pthread_t.sizeofPthread_t());
+                Assertions.assertEquals(4, Pthread.Pthread_t.sizeof());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Pthread.Pthread_t.sizeofPthread_t());
+                Assertions.assertEquals(8, Pthread.Pthread_t.sizeof());
                 break;
             default:
-                Assertions.assertEquals(-1, Pthread.Pthread_t.sizeofPthread_t());
+                Assertions.assertEquals(-1, Pthread.Pthread_t.sizeof());
         }
     }
 
@@ -316,13 +315,13 @@ public class PthreadTest {
     public void testAlignOfPthread_t() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Pthread.Pthread_t.alignofPthread_t());
+                Assertions.assertEquals(4, Pthread.Pthread_t.alignof());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Pthread.Pthread_t.alignofPthread_t());
+                Assertions.assertEquals(8, Pthread.Pthread_t.alignof());
                 break;
             default:
-                Assertions.assertEquals(-1, Pthread.Pthread_t.alignofPthread_t());
+                Assertions.assertEquals(-1, Pthread.Pthread_t.alignof());
         }
     }
 

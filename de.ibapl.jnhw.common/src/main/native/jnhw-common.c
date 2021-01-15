@@ -23,145 +23,145 @@
 #include "jnhw-common.h"
 
 //Important class names
-#define JNHW_CLASS_NAME_BYTE_REF   "de/ibapl/jnhw/ByteRef"
-#define JNHW_CLASS_NAME_SHORT_REF  "de/ibapl/jnhw/ShortRef"
-#define JNHW_CLASS_NAME_INT_REF    "de/ibapl/jnhw/IntRef"
-#define JNHW_CLASS_NAME_LONG_REF   "de/ibapl/jnhw/LongRef"
-#define JNHW_CLASS_NAME_OBJECT_REF "de/ibapl/jnhw/ObjectRef"
+#define JNHW_CLASS_NAME_BYTE_REF   "de/ibapl/jnhw/common/references/ByteRef"
+#define JNHW_CLASS_NAME_SHORT_REF  "de/ibapl/jnhw/common/references/ShortRef"
+#define JNHW_CLASS_NAME_INT_REF    "de/ibapl/jnhw/common/references/IntRef"
+#define JNHW_CLASS_NAME_LONG_REF   "de/ibapl/jnhw/common/references/LongRef"
+#define JNHW_CLASS_NAME_OBJECT_REF "de/ibapl/jnhw/common/references/ObjectRef"
 
-#define JNHW_CLASS_NAME_NATIVE_FUNCTION_POINTER "de/ibapl/jnhw/NativeFunctionPointer"
+#define JNHW_CLASS_NAME_NATIVE_FUNCTION_POINTER "de/ibapl/jnhw/common/memory/NativeFunctionPointer"
 
-#define JNHW_CLASS_NAME_ABSTRACT_NATIVE_MEMORY "de/ibapl/jnhw/AbstractNativeMemory"
-#define JNHW_CLASS_NAME_OPAQUE_MEMORY_32 "de/ibapl/jnhw/OpaqueMemory32"
-#define JNHW_CLASS_NAME_OPAQUE_MEMORY_64 "de/ibapl/jnhw/OpaqueMemory64"
-#define JNHW_CLASS_NAME_STRUCT_ARRAY_32 "de/ibapl/jnhw/StructArray32"
-#define JNHW_CLASS_NAME_POINTER_ARRAY_32 "de/ibapl/jnhw/PointerArray32"
+#define JNHW_CLASS_NAME_ABSTRACT_NATIVE_MEMORY "de/ibapl/jnhw/common/memory/AbstractNativeMemory"
+#define JNHW_CLASS_NAME_OPAQUE_MEMORY_32 "de/ibapl/jnhw/common/memory/OpaqueMemory32"
+#define JNHW_CLASS_NAME_OPAQUE_MEMORY_64 "de/ibapl/jnhw/common/memory/OpaqueMemory64"
+#define JNHW_CLASS_NAME_STRUCT_ARRAY_32 "de/ibapl/jnhw/common/memory/StructArray32"
+#define JNHW_CLASS_NAME_POINTER_ARRAY_32 "de/ibapl/jnhw/common/memory/PointerArray32"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    JNIEXPORT jfieldID de_ibapl_jnhw_ByteRef_value_ID = NULL;
-    JNIEXPORT jfieldID de_ibapl_jnhw_ShortRef_value_ID = NULL;
-    JNIEXPORT jfieldID de_ibapl_jnhw_IntRef_value_ID = NULL;
-    JNIEXPORT jfieldID de_ibapl_jnhw_LongRef_value_ID = NULL;
-    JNIEXPORT jfieldID de_ibapl_jnhw_ObjectRef_value_ID = NULL;
-    JNIEXPORT jfieldID de_ibapl_jnhw_AbstractNativeMemory_baseAddress_ID = NULL;
-    JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory32_sizeInBytes_ID = NULL;
-    JNIEXPORT jfieldID de_ibapl_jnhw_OpaqueMemory64_sizeInBytes_ID = NULL;
-    JNIEXPORT jmethodID de_ibapl_jnhw_StructArray32_length_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_common_references_ByteRef_value_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_common_references_ShortRef_value_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_common_references_IntRef_value_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_common_references_LongRef_value_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_common_references_ObjectRef_value_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_common_memory_AbstractNativeMemory_baseAddress_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_common_memory_OpaqueMemory32_sizeInBytes_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_common_memory_OpaqueMemory64_sizeInBytes_ID = NULL;
+    JNIEXPORT jmethodID de_ibapl_jnhw_common_memory_StructArray32_length_ID = NULL;
 
-    JNIEXPORT jclass de_ibapl_jnhw_NativeAddressHolder_Class = NULL;
-    JNIEXPORT jfieldID de_ibapl_jnhw_NativeAddressHolder_address_ID = NULL;
-    JNIEXPORT jmethodID de_ibapl_jnhw_NativeAddressHolder_init_ID = NULL;
+    JNIEXPORT jclass de_ibapl_jnhw_common_memory_NativeAddressHolder_Class = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID = NULL;
+    JNIEXPORT jmethodID de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID = NULL;
 
-    JNIEXPORT jclass de_ibapl_jnhw_NativeFunctionPointer_Class = NULL;
-    JNIEXPORT jfieldID de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = NULL;
-    JNIEXPORT jmethodID de_ibapl_jnhw_NativeFunctionPointer_init_ID = NULL;
+    JNIEXPORT jclass de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID = NULL;
+    JNIEXPORT jmethodID de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID = NULL;
 
-    JNIEXPORT jfieldID de_ibapl_jnhw_PointerArray32_cachedReferences_ID = NULL;
+    JNIEXPORT jfieldID de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID = NULL;
 
     static jboolean JNICALL jnhw_common_init(JNIEnv *env) {
         if (initExceptions(env) == JNI_FALSE) {
             return JNI_FALSE;
         }
-        if (de_ibapl_jnhw_ByteRef_value_ID == NULL) {
-            de_ibapl_jnhw_ByteRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_BYTE_REF, "value", "B");
-            if (de_ibapl_jnhw_ByteRef_value_ID == NULL) {
+        if (de_ibapl_jnhw_common_references_ByteRef_value_ID == NULL) {
+            de_ibapl_jnhw_common_references_ByteRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_BYTE_REF, "value", "B");
+            if (de_ibapl_jnhw_common_references_ByteRef_value_ID == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_ShortRef_value_ID == NULL) {
-            de_ibapl_jnhw_ShortRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_SHORT_REF, "value", "S");
-            if (de_ibapl_jnhw_ShortRef_value_ID == NULL) {
+        if (de_ibapl_jnhw_common_references_ShortRef_value_ID == NULL) {
+            de_ibapl_jnhw_common_references_ShortRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_SHORT_REF, "value", "S");
+            if (de_ibapl_jnhw_common_references_ShortRef_value_ID == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_IntRef_value_ID == NULL) {
-            de_ibapl_jnhw_IntRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_INT_REF, "value", "I");
-            if (de_ibapl_jnhw_IntRef_value_ID == NULL) {
+        if (de_ibapl_jnhw_common_references_IntRef_value_ID == NULL) {
+            de_ibapl_jnhw_common_references_IntRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_INT_REF, "value", "I");
+            if (de_ibapl_jnhw_common_references_IntRef_value_ID == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_LongRef_value_ID == NULL) {
-            de_ibapl_jnhw_LongRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_LONG_REF, "value", "J");
-            if (de_ibapl_jnhw_LongRef_value_ID == NULL) {
+        if (de_ibapl_jnhw_common_references_LongRef_value_ID == NULL) {
+            de_ibapl_jnhw_common_references_LongRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_LONG_REF, "value", "J");
+            if (de_ibapl_jnhw_common_references_LongRef_value_ID == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_ObjectRef_value_ID == NULL) {
-            de_ibapl_jnhw_ObjectRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_OBJECT_REF, "value", "Ljava/lang/Object;");
-            if (de_ibapl_jnhw_ObjectRef_value_ID == NULL) {
+        if (de_ibapl_jnhw_common_references_ObjectRef_value_ID == NULL) {
+            de_ibapl_jnhw_common_references_ObjectRef_value_ID = getFieldId(env, JNHW_CLASS_NAME_OBJECT_REF, "value", "Ljava/lang/Object;");
+            if (de_ibapl_jnhw_common_references_ObjectRef_value_ID == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_AbstractNativeMemory_baseAddress_ID == NULL) {
-            de_ibapl_jnhw_AbstractNativeMemory_baseAddress_ID = getFieldId(env, JNHW_CLASS_NAME_ABSTRACT_NATIVE_MEMORY, "baseAddress", "J");
-            if (de_ibapl_jnhw_AbstractNativeMemory_baseAddress_ID == NULL) {
+        if (de_ibapl_jnhw_common_memory_AbstractNativeMemory_baseAddress_ID == NULL) {
+            de_ibapl_jnhw_common_memory_AbstractNativeMemory_baseAddress_ID = getFieldId(env, JNHW_CLASS_NAME_ABSTRACT_NATIVE_MEMORY, "baseAddress", "J");
+            if (de_ibapl_jnhw_common_memory_AbstractNativeMemory_baseAddress_ID == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_OpaqueMemory32_sizeInBytes_ID == NULL) {
-            de_ibapl_jnhw_OpaqueMemory32_sizeInBytes_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY_32, "sizeInBytes", "I");
-            if (de_ibapl_jnhw_OpaqueMemory32_sizeInBytes_ID == NULL) {
+        if (de_ibapl_jnhw_common_memory_OpaqueMemory32_sizeInBytes_ID == NULL) {
+            de_ibapl_jnhw_common_memory_OpaqueMemory32_sizeInBytes_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY_32, "sizeInBytes", "I");
+            if (de_ibapl_jnhw_common_memory_OpaqueMemory32_sizeInBytes_ID == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_OpaqueMemory64_sizeInBytes_ID == NULL) {
-            de_ibapl_jnhw_OpaqueMemory64_sizeInBytes_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY_64, "sizeInBytes", "J");
-            if (de_ibapl_jnhw_OpaqueMemory64_sizeInBytes_ID == NULL) {
+        if (de_ibapl_jnhw_common_memory_OpaqueMemory64_sizeInBytes_ID == NULL) {
+            de_ibapl_jnhw_common_memory_OpaqueMemory64_sizeInBytes_ID = getFieldId(env, JNHW_CLASS_NAME_OPAQUE_MEMORY_64, "sizeInBytes", "J");
+            if (de_ibapl_jnhw_common_memory_OpaqueMemory64_sizeInBytes_ID == NULL) {
                 return JNI_FALSE;
             }
         }
         //TODO use array ???
-        if (de_ibapl_jnhw_StructArray32_length_ID == NULL) {
-            de_ibapl_jnhw_StructArray32_length_ID = getMethodId(env, JNHW_CLASS_NAME_STRUCT_ARRAY_32, "length", "()I");
-            if (de_ibapl_jnhw_StructArray32_length_ID == NULL) {
+        if (de_ibapl_jnhw_common_memory_StructArray32_length_ID == NULL) {
+            de_ibapl_jnhw_common_memory_StructArray32_length_ID = getMethodId(env, JNHW_CLASS_NAME_STRUCT_ARRAY_32, "length", "()I");
+            if (de_ibapl_jnhw_common_memory_StructArray32_length_ID == NULL) {
                 return JNI_FALSE;
             }
         }
 
-        if (de_ibapl_jnhw_PointerArray32_cachedReferences_ID == NULL) {
-            de_ibapl_jnhw_PointerArray32_cachedReferences_ID = getFieldId(env, JNHW_CLASS_NAME_POINTER_ARRAY_32, "cachedReferences", "[Lde/ibapl/jnhw/OpaqueMemory32;");
-            if (de_ibapl_jnhw_PointerArray32_cachedReferences_ID == NULL) {
+        if (de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID == NULL) {
+            de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID = getFieldId(env, JNHW_CLASS_NAME_POINTER_ARRAY_32, "cachedReferences", "[Lde/ibapl/jnhw/common/memory/OpaqueMemory32;");
+            if (de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID == NULL) {
                 return JNI_FALSE;
             }
         }
 
-        if (de_ibapl_jnhw_NativeAddressHolder_Class == NULL) {
-            de_ibapl_jnhw_NativeAddressHolder_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_NATIVE_ADDRESS_HOLDER);
-            if (de_ibapl_jnhw_NativeAddressHolder_Class == NULL) {
+        if (de_ibapl_jnhw_common_memory_NativeAddressHolder_Class == NULL) {
+            de_ibapl_jnhw_common_memory_NativeAddressHolder_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_NATIVE_ADDRESS_HOLDER);
+            if (de_ibapl_jnhw_common_memory_NativeAddressHolder_Class == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_NativeAddressHolder_init_ID == NULL) {
-            de_ibapl_jnhw_NativeAddressHolder_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_NativeAddressHolder_Class, "<init>", "(J)V");
-            if (de_ibapl_jnhw_NativeAddressHolder_init_ID == NULL) {
+        if (de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID == NULL) {
+            de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_common_memory_NativeAddressHolder_Class, "<init>", "(J)V");
+            if (de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_NativeAddressHolder_address_ID == NULL) {
-            de_ibapl_jnhw_NativeAddressHolder_address_ID = getFieldIdOfClassRef(env, de_ibapl_jnhw_NativeAddressHolder_Class, "address", "J");
-            if (de_ibapl_jnhw_NativeAddressHolder_address_ID == NULL) {
+        if (de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID == NULL) {
+            de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID = getFieldIdOfClassRef(env, de_ibapl_jnhw_common_memory_NativeAddressHolder_Class, "address", "J");
+            if (de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID == NULL) {
                 return JNI_FALSE;
             }
         }
 
-        if (de_ibapl_jnhw_NativeFunctionPointer_Class == NULL) {
-            de_ibapl_jnhw_NativeFunctionPointer_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_NATIVE_FUNCTION_POINTER);
-            if (de_ibapl_jnhw_NativeFunctionPointer_Class == NULL) {
+        if (de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class == NULL) {
+            de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_NATIVE_FUNCTION_POINTER);
+            if (de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_NativeFunctionPointer_init_ID == NULL) {
-            de_ibapl_jnhw_NativeFunctionPointer_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_NativeFunctionPointer_Class, "<init>", "(J)V");
-            if (de_ibapl_jnhw_NativeFunctionPointer_init_ID == NULL) {
+        if (de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID == NULL) {
+            de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class, "<init>", "(J)V");
+            if (de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID == NULL) {
-            de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = getFieldIdOfClassRef(env, de_ibapl_jnhw_NativeFunctionPointer_Class, "nativeAddress", "J");
-            if (de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID == NULL) {
+        if (de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID == NULL) {
+            de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID = getFieldIdOfClassRef(env, de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class, "nativeAddress", "J");
+            if (de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID == NULL) {
                 return JNI_FALSE;
             }
         }
@@ -172,25 +172,25 @@ extern "C" {
     static void JNICALL jnhw_common_release(JNIEnv *env) {
         releaseExceptions(env);
 
-        de_ibapl_jnhw_ByteRef_value_ID = NULL;
-        de_ibapl_jnhw_ShortRef_value_ID = NULL;
-        de_ibapl_jnhw_IntRef_value_ID = NULL;
-        de_ibapl_jnhw_LongRef_value_ID = NULL;
-        de_ibapl_jnhw_ObjectRef_value_ID = NULL;
-        de_ibapl_jnhw_AbstractNativeMemory_baseAddress_ID = NULL;
-        de_ibapl_jnhw_OpaqueMemory32_sizeInBytes_ID = NULL;
-        de_ibapl_jnhw_OpaqueMemory64_sizeInBytes_ID = NULL;
-        de_ibapl_jnhw_StructArray32_length_ID = NULL;
+        de_ibapl_jnhw_common_references_ByteRef_value_ID = NULL;
+        de_ibapl_jnhw_common_references_ShortRef_value_ID = NULL;
+        de_ibapl_jnhw_common_references_IntRef_value_ID = NULL;
+        de_ibapl_jnhw_common_references_LongRef_value_ID = NULL;
+        de_ibapl_jnhw_common_references_ObjectRef_value_ID = NULL;
+        de_ibapl_jnhw_common_memory_AbstractNativeMemory_baseAddress_ID = NULL;
+        de_ibapl_jnhw_common_memory_OpaqueMemory32_sizeInBytes_ID = NULL;
+        de_ibapl_jnhw_common_memory_OpaqueMemory64_sizeInBytes_ID = NULL;
+        de_ibapl_jnhw_common_memory_StructArray32_length_ID = NULL;
         
-        deleteGlobalRef(env, &de_ibapl_jnhw_NativeAddressHolder_Class);
-        de_ibapl_jnhw_NativeAddressHolder_address_ID = NULL;
-        de_ibapl_jnhw_NativeAddressHolder_init_ID = NULL;
+        deleteGlobalRef(env, &de_ibapl_jnhw_common_memory_NativeAddressHolder_Class);
+        de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID = NULL;
+        de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID = NULL;
 
-        deleteGlobalRef(env, &de_ibapl_jnhw_NativeFunctionPointer_Class);
-        de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID = NULL;
-        de_ibapl_jnhw_NativeFunctionPointer_init_ID = NULL;
+        deleteGlobalRef(env, &de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class);
+        de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID = NULL;
+        de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID = NULL;
 
-        de_ibapl_jnhw_PointerArray32_cachedReferences_ID = NULL;
+        de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID = NULL;
     }
 
     JNIEXPORT jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className) {

@@ -67,6 +67,7 @@
 #include <unistd.h>
 #endif
 
+#include "jnhw-posix-datatypes.h"
 
 #ifndef _jnhw_posix_H
 #define _jnhw_posix_H

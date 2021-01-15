@@ -21,13 +21,16 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.common.annotations.AlignOf;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
@@ -55,7 +58,7 @@ public class Sched {
      * sched_param}</a>.
      *
      */
-    public static class Sched_param extends OpaqueMemory32 {
+    public static class Sched_param extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -69,30 +72,32 @@ public class Sched {
          *
          * @return the native value sizeof(struct sched_param).
          */
-        public static native int sizeofSched_param();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int alignofSched_param();
+        @AlignOf
+        public static native int alignof();
 
-        public static native int offsetofSched_ss_init_budget() throws NoSuchNativeTypeMemberException;
+        public static native int offsetof_Sched_ss_init_budget() throws NoSuchNativeTypeMemberException;
 
-        public static native int offsetofSched_ss_repl_period() throws NoSuchNativeTypeMemberException;
+        public static native int offsetof_Sched_ss_repl_period() throws NoSuchNativeTypeMemberException;
 
         public Sched_param() {
             this(false);
         }
         
         public Sched_param(final boolean clearMem) {
-            super(sizeofSched_param(), clearMem);
+            super(sizeof(), clearMem);
             Time.Timespec t;
             try {
-                t = new Time.Timespec(this, offsetofSched_ss_init_budget());
+                t = new Time.Timespec(this, offsetof_Sched_ss_init_budget());
             } catch (NoSuchNativeTypeMemberException nstme) {
                 t = null;
             }
             sched_ss_init_budget = t;
 
             try {
-                t = new Time.Timespec(this, offsetofSched_ss_repl_period());
+                t = new Time.Timespec(this, offsetof_Sched_ss_repl_period());
             } catch (NoSuchNativeTypeMemberException nstme) {
                 t = null;
             }

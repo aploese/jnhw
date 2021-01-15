@@ -198,10 +198,12 @@ libsysstat_la_LIBADD =
 am_libsysstat_la_OBJECTS = StatDefines.lo StatFunctions.lo
 libsysstat_la_OBJECTS = $(am_libsysstat_la_OBJECTS)
 libsystypes_la_LIBADD =
-am_libsystypes_la_OBJECTS = TypesDefines.lo
+am_libsystypes_la_OBJECTS = TypesDefines.lo Types_Pid_t.lo \
+	Types_Off_t.lo Types_Size_t.lo Types_Ssize_t.lo
 libsystypes_la_OBJECTS = $(am_libsystypes_la_OBJECTS)
 libtermios_la_LIBADD =
 am_libtermios_la_OBJECTS = TermiosDefines.lo TermiosFunctions.lo \
+	Termios_Cc_t.lo Termios_Speed_t.lo Termios_Tcflag_t.lo \
 	Termios_Termios.lo
 libtermios_la_OBJECTS = $(am_libtermios_la_OBJECTS)
 libtime_la_LIBADD =
@@ -258,11 +260,15 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/StringHeaderDefines.Plo \
 	./$(DEPDIR)/StringHeaderFunctions.Plo \
 	./$(DEPDIR)/TermiosDefines.Plo \
-	./$(DEPDIR)/TermiosFunctions.Plo \
+	./$(DEPDIR)/TermiosFunctions.Plo ./$(DEPDIR)/Termios_Cc_t.Plo \
+	./$(DEPDIR)/Termios_Speed_t.Plo \
+	./$(DEPDIR)/Termios_Tcflag_t.Plo \
 	./$(DEPDIR)/Termios_Termios.Plo ./$(DEPDIR)/TimeDefines.Plo \
 	./$(DEPDIR)/TimeFunctions.Plo ./$(DEPDIR)/Time_Itimerspec.Plo \
 	./$(DEPDIR)/Time_Timer_t.Plo ./$(DEPDIR)/Time_Timespec.Plo \
 	./$(DEPDIR)/Time_Tm.Plo ./$(DEPDIR)/TypesDefines.Plo \
+	./$(DEPDIR)/Types_Off_t.Plo ./$(DEPDIR)/Types_Pid_t.Plo \
+	./$(DEPDIR)/Types_Size_t.Plo ./$(DEPDIR)/Types_Ssize_t.Plo \
 	./$(DEPDIR)/UnistdDefines.Plo ./$(DEPDIR)/UnistdFunctions.Plo \
 	./$(DEPDIR)/jnhw-posix-jni.Plo
 am__mv = mv -f
@@ -588,7 +594,11 @@ libstring_la_SOURCES = \
  StringHeaderFunctions.c
 
 libsystypes_la_SOURCES = \
- TypesDefines.c
+ TypesDefines.c \
+ Types_Pid_t.c \
+ Types_Off_t.c \
+ Types_Size_t.c \
+ Types_Ssize_t.c
 
 libsysstat_la_SOURCES = \
  StatDefines.c \
@@ -597,6 +607,9 @@ libsysstat_la_SOURCES = \
 libtermios_la_SOURCES = \
  TermiosDefines.c \
  TermiosFunctions.c \
+ Termios_Cc_t.c \
+ Termios_Speed_t.c \
+ Termios_Tcflag_t.c \
  Termios_Termios.c
 
 libtime_la_SOURCES = \
@@ -799,6 +812,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Cc_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Speed_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Tcflag_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Termios.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeFunctions.Plo@am__quote@ # am--include-marker
@@ -807,6 +823,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Timespec.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Tm.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TypesDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Off_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Pid_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Size_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Ssize_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-posix-jni.Plo@am__quote@ # am--include-marker
@@ -1015,6 +1035,9 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
+	-rm -f ./$(DEPDIR)/Termios_Cc_t.Plo
+	-rm -f ./$(DEPDIR)/Termios_Speed_t.Plo
+	-rm -f ./$(DEPDIR)/Termios_Tcflag_t.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
@@ -1023,6 +1046,10 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Time_Timespec.Plo
 	-rm -f ./$(DEPDIR)/Time_Tm.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
+	-rm -f ./$(DEPDIR)/Types_Off_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Pid_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Size_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Ssize_t.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo
@@ -1116,6 +1143,9 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
+	-rm -f ./$(DEPDIR)/Termios_Cc_t.Plo
+	-rm -f ./$(DEPDIR)/Termios_Speed_t.Plo
+	-rm -f ./$(DEPDIR)/Termios_Tcflag_t.Plo
 	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
@@ -1124,6 +1154,10 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Time_Timespec.Plo
 	-rm -f ./$(DEPDIR)/Time_Tm.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
+	-rm -f ./$(DEPDIR)/Types_Off_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Pid_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Size_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Ssize_t.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo

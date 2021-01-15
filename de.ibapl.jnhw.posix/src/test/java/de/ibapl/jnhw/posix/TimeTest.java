@@ -21,14 +21,15 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Defined;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LongRef;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeException;
-import de.ibapl.jnhw.ObjectRef;
-import de.ibapl.jnhw.OpaqueMemory32;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.references.LongRef;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.memory.Memory32Heap;
+import de.ibapl.jnhw.common.references.ObjectRef;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -106,7 +107,7 @@ public class TimeTest {
         tm.tm_isdst(0);
 
         final int BUF_SIZE = 26;
-        OpaqueMemory32 buf = new OpaqueMemory32(BUF_SIZE, true);
+        Memory32Heap buf = new Memory32Heap(BUF_SIZE, true);
         String result = Time.asctime_r(tm, buf);
         assertEquals("Wed Dec  3 08:17:07 2019\n", result);
         byte[] raw = OpaqueMemory32.toBytes(buf);
@@ -120,7 +121,7 @@ public class TimeTest {
         });
         //Test that there at least 26 bytes available in the buffer.
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Time.asctime_r(tm, new OpaqueMemory32(25, true));
+            Time.asctime_r(tm, new Memory32Heap(25, true));
         });
     }
 
@@ -295,7 +296,7 @@ public class TimeTest {
     public void testCtime_r() throws Exception {
         System.out.println("ctime_r  @" + ZoneId.systemDefault());
         final long clock = TIME_T__20191203_142044;
-        OpaqueMemory32 buf = new OpaqueMemory32(32, true);
+        Memory32Heap buf = new Memory32Heap(32, true);
         String result = Time.ctime_r(clock, buf);
 
         assertEquals(getCtimeFormated(clock), result);
@@ -309,7 +310,7 @@ public class TimeTest {
         });
         //Test that there at least 26 bytes available in the buffer.
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Time.ctime_r(clock, new OpaqueMemory32(25, true));
+            Time.ctime_r(clock, new Memory32Heap(25, true));
         });
     }
 
@@ -938,10 +939,10 @@ public class TimeTest {
         Time.Timer_t timer_t = new Time.Timer_t(true);
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals("0x00000000", timer_t.toString());
+                Assertions.assertEquals("0x00000000", timer_t.nativeToString());
                 break;
             case _64_BIT:
-                Assertions.assertEquals("0x0000000000000000", timer_t.toString());
+                Assertions.assertEquals("0x0000000000000000", timer_t.nativeToString());
                 break;
             default:
                 fail("Wordsize not supported");
@@ -951,20 +952,20 @@ public class TimeTest {
     @Test
     public void testItimerspec() throws Exception {
         Time.Itimerspec itimerspec = new Time.Itimerspec(true);
-        Assertions.assertEquals("{it_value : {tv_sec : 0, tv_nsec : 0}, it_interval : {tv_sec : 0, tv_nsec : 0}}", itimerspec.toString());
+        Assertions.assertEquals("{it_value : {tv_sec : 0, tv_nsec : 0}, it_interval : {tv_sec : 0, tv_nsec : 0}}", itimerspec.nativeToString());
     }
 
     @Test
     public void testSizeOfItimerspec() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(16, Time.Itimerspec.sizeofItimerspec());
+                Assertions.assertEquals(16, Time.Itimerspec.sizeof());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(32, Time.Itimerspec.sizeofItimerspec());
+                Assertions.assertEquals(32, Time.Itimerspec.sizeof());
                 break;
             default:
-                Assertions.assertEquals(-1, Time.Itimerspec.sizeofItimerspec());
+                Assertions.assertEquals(-1, Time.Itimerspec.sizeof());
         }
     }
 
@@ -972,13 +973,13 @@ public class TimeTest {
     public void testAlignOfItimerspec() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Time.Itimerspec.alignofItimerspec());
+                Assertions.assertEquals(4, Time.Itimerspec.alignof());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Time.Itimerspec.alignofItimerspec());
+                Assertions.assertEquals(8, Time.Itimerspec.alignof());
                 break;
             default:
-                Assertions.assertEquals(-1, Time.Itimerspec.alignofItimerspec());
+                Assertions.assertEquals(-1, Time.Itimerspec.alignof());
         }
     }
 
@@ -989,20 +990,20 @@ public class TimeTest {
             case FREE_BSD:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(4, Time.Timer_t.sizeofTimer_t());
+                        Assertions.assertEquals(4, Time.Timer_t.sizeof());
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(8, Time.Timer_t.sizeofTimer_t());
+                        Assertions.assertEquals(8, Time.Timer_t.sizeof());
                         break;
                     default:
-                        Assertions.assertEquals(-1, Time.Timer_t.sizeofTimer_t());
+                        Assertions.assertEquals(-1, Time.Timer_t.sizeof());
                 }
                 break;
             case OPEN_BSD:
-                Assertions.assertEquals(4, Time.Timer_t.sizeofTimer_t());
+                Assertions.assertEquals(4, Time.Timer_t.sizeof());
                 break;
             default:
-                Assertions.assertEquals(-1, Time.Timer_t.sizeofTimer_t());
+                Assertions.assertEquals(-1, Time.Timer_t.sizeof());
         }
     }
 
@@ -1013,20 +1014,20 @@ public class TimeTest {
             case FREE_BSD:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(4, Time.Timer_t.alignofTimer_t());
+                        Assertions.assertEquals(4, Time.Timer_t.alignof());
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(8, Time.Timer_t.alignofTimer_t());
+                        Assertions.assertEquals(8, Time.Timer_t.alignof());
                         break;
                     default:
-                        Assertions.assertEquals(-1, Time.Timer_t.alignofTimer_t());
+                        Assertions.assertEquals(-1, Time.Timer_t.alignof());
                 }
                 break;
             case OPEN_BSD:
-                Assertions.assertEquals(4, Time.Timer_t.alignofTimer_t());
+                Assertions.assertEquals(4, Time.Timer_t.alignof());
                 break;
             default:
-                Assertions.assertEquals(-1, Time.Timer_t.alignofTimer_t());
+                Assertions.assertEquals(-1, Time.Timer_t.alignof());
         }
     }
 
@@ -1034,13 +1035,13 @@ public class TimeTest {
     public void testSizeOfTimespec() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(8, Time.Timespec.sizeofTimespec());
+                Assertions.assertEquals(8, Time.Timespec.sizeof());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(16, Time.Timespec.sizeofTimespec());
+                Assertions.assertEquals(16, Time.Timespec.sizeof());
                 break;
             default:
-                Assertions.assertEquals(-1, Time.Timespec.sizeofTimespec());
+                Assertions.assertEquals(-1, Time.Timespec.sizeof());
         }
     }
 
@@ -1048,13 +1049,13 @@ public class TimeTest {
     public void testAlignOfTimespec() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Time.Timespec.alignofTimespec());
+                Assertions.assertEquals(4, Time.Timespec.alignof());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Time.Timespec.alignofTimespec());
+                Assertions.assertEquals(8, Time.Timespec.alignof());
                 break;
             default:
-                Assertions.assertEquals(-1, Time.Timespec.alignofTimespec());
+                Assertions.assertEquals(-1, Time.Timespec.alignof());
         }
     }
 
@@ -1062,13 +1063,13 @@ public class TimeTest {
     public void testSizeOfTm() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(44, Time.Tm.sizeofTm());
+                Assertions.assertEquals(44, Time.Tm.sizeof());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(56, Time.Tm.sizeofTm());
+                Assertions.assertEquals(56, Time.Tm.sizeof());
                 break;
             default:
-                Assertions.assertEquals(-1, Time.Tm.sizeofTm());
+                Assertions.assertEquals(-1, Time.Tm.sizeof());
         }
     }
 
@@ -1076,32 +1077,32 @@ public class TimeTest {
     public void testAlignOfTm() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Time.Tm.alignofTm());
+                Assertions.assertEquals(4, Time.Tm.alignof());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Time.Tm.alignofTm());
+                Assertions.assertEquals(8, Time.Tm.alignof());
                 break;
             default:
-                Assertions.assertEquals(-1, Time.Tm.alignofTm());
+                Assertions.assertEquals(-1, Time.Tm.alignof());
         }
     }
 
     @Test
     public void testOffsetOfIt_interval() throws Exception {
-        Assertions.assertEquals(0, Time.Itimerspec.offsetofIt_interval());
+        Assertions.assertEquals(0, Time.Itimerspec.offsetof_It_interval());
     }
 
     @Test
     public void testOffsetOfIt_value() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(8, Time.Itimerspec.offsetofIt_value());
+                Assertions.assertEquals(8, Time.Itimerspec.offsetof_It_value());
                 break;
             case _64_BIT:
-                Assertions.assertEquals(16, Time.Itimerspec.offsetofIt_value());
+                Assertions.assertEquals(16, Time.Itimerspec.offsetof_It_value());
                 break;
             default:
-                Assertions.assertEquals(-1, Time.Itimerspec.offsetofIt_value());
+                Assertions.assertEquals(-1, Time.Itimerspec.offsetof_It_value());
         }
     }
 
