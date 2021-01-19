@@ -240,7 +240,7 @@ public class UnistdTest {
     @Test
     public void testLseek() throws Exception {
         if (Defines.__SIZEOF_LONG__() == 4) {
-            IndexOutOfBoundsException ioobe = Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+            IllegalArgumentException iae = Assertions.assertThrows(IllegalArgumentException.class, () -> {
                 Unistd.lseek(-1, 1L + Integer.MAX_VALUE, Unistd.SEEK_SET());
             });
         } else if (Defines.__SIZEOF_LONG__() == 8) {

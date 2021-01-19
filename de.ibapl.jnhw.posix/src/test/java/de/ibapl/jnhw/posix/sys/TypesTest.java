@@ -22,6 +22,8 @@
 package de.ibapl.jnhw.posix.sys;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.util.Defined;
+import de.ibapl.jnhw.util.posix.Defines;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,7 +37,7 @@ public class TypesTest {
     public TypesTest() {
     }
 
-        @Test
+    @Test
     public void testClock_t() {
         Assertions.assertFalse(Types.Clock_t.unsigned());
         Types.Clock_t instance = new Types.Clock_t(true);
@@ -62,7 +64,6 @@ public class TypesTest {
         }
     }
 
-
     @Test
     public void testMode_t() {
         Assertions.assertTrue(Types.Mode_t.unsigned());
@@ -72,15 +73,19 @@ public class TypesTest {
             assertEquals(BaseDataTypes.uint16_t, instance.getBaseDataType());
             assertThrows(IllegalArgumentException.class, () -> instance.setValue(0x8070));
             assertThrows(IllegalArgumentException.class, () -> instance.setValue(0x00008070));
-            instance.setValue((short)0x8070);
-            assertEquals((short)0x8070, instance.getValue());
+            instance.setValue((short) 0x8070);
+            assertEquals((short) 0x8070, instance.getValue());
             assertEquals(Integer.toUnsignedString(0x8070), instance.nativeToString());
             assertEquals("8070", instance.nativeToHexString());
             //Test MAX_UINT16 + 1
             assertThrows(IllegalArgumentException.class, () -> instance.setValue(0x00010000));
             assertThrows(IllegalArgumentException.class, () -> instance.setValue(-1));
         } else if (Types.Mode_t.sizeof() == 4) {
-            Assertions.assertEquals(8, Types.Size_t.alignof()); //on x86_64_linux alignment is 8 instead of the expected 4...
+            if (Defined.defined(Defines::__LP64__)) {
+                Assertions.assertEquals(8, Types.Size_t.alignof());
+            } else {
+                Assertions.assertEquals(4, Types.Size_t.alignof());
+            }
             assertEquals(BaseDataTypes.uint32_t, instance.getBaseDataType());
             instance.setValue(0x80706050);
             assertEquals(0x80706050, instance.getValue());
@@ -91,7 +96,7 @@ public class TypesTest {
             assertEquals(-1, instance.getValue());
             assertEquals("4294967295", instance.nativeToString());
             assertEquals("ffffffff", instance.nativeToHexString());
-    } else {
+        } else {
             fail();
         }
     }
@@ -163,7 +168,7 @@ public class TypesTest {
             assertEquals(-1, instance.getValue());
             assertEquals("18446744073709551615", instance.nativeToString());
             assertEquals("ffffffffffffffff", instance.nativeToHexString());
-    } else {
+        } else {
             fail();
         }
     }
