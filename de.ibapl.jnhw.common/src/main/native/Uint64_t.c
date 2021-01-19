@@ -77,9 +77,9 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_Uint64_1t_nativeToStr
         char buf[128] = {0};
 #if defined(__LP64__)
   #if defined(__OpenBSD__)
-        snprintf(buf, sizeof (buf) - 1, "%llu", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, nativeIntNumber));
+        snprintf(buf, sizeof (buf) - 1, "%llu", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
   #else
-        snprintf(buf, sizeof (buf) - 1, "%lu", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, nativeIntNumber));
+        snprintf(buf, sizeof (buf) - 1, "%lu", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
   #endif
 #else
         snprintf(buf, sizeof (buf) - 1, "%llu", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
