@@ -218,7 +218,7 @@ JNHW_ASSERT__uid_t__IS__uint32_t
 #if defined(_JNHW__size_t__IS__uint32_t)
         if ((nByte > UINT32_MAX) || (nByte < 0)) {
             throw_IllegalArgumentException(env, "nByte outside size_t(uint32_t)");
-            return;
+            return -1;
         }
 #elif defined(_JNHW__size_t__IS__uint64_t)
 #else
@@ -372,7 +372,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
 #if defined(_JNHW__size_t__IS__uint32_t)
         if ((nByte > UINT32_MAX) || (nByte < 0)) {
             throw_IllegalArgumentException(env, "nByte outside size_t(uint32_t)");
-            return;
+            return -1;
         }
 #elif defined(_JNHW__size_t__IS__uint64_t)
 #else
@@ -439,7 +439,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
 #if defined(_JNHW__off_t__IS__int32_t)
         if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
             throw_IllegalArgumentException(env, "offset outside off_t(int32_t)");
-            return;
+            return -1;
         }
 #elif defined(_JNHW__off_t__IS__int64_t)
 #else
