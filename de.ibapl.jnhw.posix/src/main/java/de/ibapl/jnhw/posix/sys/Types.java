@@ -25,9 +25,7 @@ import de.ibapl.jnhw.common.annotations.AlignOf;
 import de.ibapl.jnhw.common.annotations.Include;
 import de.ibapl.jnhw.common.annotations.SizeOf;
 import de.ibapl.jnhw.common.annotations.Unsigned;
-import de.ibapl.jnhw.common.annotations.int8_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
-import de.ibapl.jnhw.common.datatypes.Native;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
@@ -72,6 +70,7 @@ public class Types {
     public static class Off_t extends NativeIntNumber {
 
         public final static BaseDataTypes dataType;
+
         /**
          * Make sure the native lib is loaded ... this class is static, so we
          * have to
@@ -132,8 +131,54 @@ public class Types {
      * @author aploese
      */
     @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
     public static @interface mode_t {
+    }
+
+    @mode_t
+    public static class Mode_t extends NativeIntNumber {
+
+        public final static BaseDataTypes dataType;
+
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
+        static {
+            LibJnhwPosixLoader.touch();
+            //First we must load the native lib...
+            dataType = getIntegerType(sizeof(), unsigned());
+        }
+
+        @SizeOf
+        public final static native int sizeof();
+
+        @AlignOf
+        public final static native int alignof();
+
+        @Unsigned
+        public final static native boolean unsigned();
+
+        public Mode_t(boolean clearMem) {
+            super(sizeof(), clearMem);
+        }
+
+        public Mode_t(OpaqueMemory32 owner, int offset) {
+            super(owner, offset, sizeof());
+        }
+
+        public native @mode_t
+        int getValue();
+
+        public native void setValue(@mode_t int value);
+
+        @Override
+        public native String nativeToString();
+
+        @Override
+        public BaseDataTypes getBaseDataType() {
+            return dataType;
+        }
     }
 
     /**
@@ -151,6 +196,7 @@ public class Types {
     public static class Ssize_t extends NativeIntNumber {
 
         public final static BaseDataTypes dataType;
+
         /**
          * Make sure the native lib is loaded ... this class is static, so we
          * have to
@@ -160,7 +206,6 @@ public class Types {
             //First we must load the native lib...
             dataType = getIntegerType(sizeof(), unsigned());
         }
-
 
         @SizeOf
         public final static native int sizeof();
@@ -208,6 +253,7 @@ public class Types {
     public static class Size_t extends NativeIntNumber {
 
         public final static BaseDataTypes dataType;
+
         /**
          * Make sure the native lib is loaded ... this class is static, so we
          * have to
@@ -286,6 +332,7 @@ public class Types {
     public static class Pid_t extends NativeIntNumber {
 
         public final static BaseDataTypes dataType;
+
         /**
          * Make sure the native lib is loaded ... this class is static, so we
          * have to
@@ -295,7 +342,6 @@ public class Types {
             //First we must load the native lib...
             dataType = getIntegerType(sizeof(), unsigned());
         }
-
 
         @SizeOf
         public final static native int sizeof();
@@ -359,8 +405,55 @@ public class Types {
      * @author aploese
      */
     @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
     public static @interface clock_t {
+    }
+
+    @clock_t
+    public static class Clock_t extends NativeIntNumber {
+
+        public final static BaseDataTypes dataType;
+
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
+        static {
+            LibJnhwPosixLoader.touch();
+            //First we must load the native lib...
+            dataType = getIntegerType(sizeof(), unsigned());
+        }
+
+        @SizeOf
+        public final static native int sizeof();
+
+        @AlignOf
+        public final static native int alignof();
+
+        @Unsigned
+        public final static native boolean unsigned();
+
+        public Clock_t(boolean clearMem) {
+            super(sizeof(), clearMem);
+        }
+
+        public Clock_t(OpaqueMemory32 owner, int offset) {
+            super(owner, offset, sizeof());
+        }
+
+        public native @clock_t
+        long getValue();
+
+        public native void setValue(@clock_t long value);
+
+        @Override
+        public native String nativeToString();
+
+        @Override
+        public BaseDataTypes getBaseDataType() {
+            return dataType;
+        }
+
     }
 
     /**
@@ -370,8 +463,55 @@ public class Types {
      * @author aploese
      */
     @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
     public static @interface time_t {
+    }
+
+    @time_t
+    public static class Time_t extends NativeIntNumber {
+
+        public final static BaseDataTypes dataType;
+
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
+        static {
+            LibJnhwPosixLoader.touch();
+            //First we must load the native lib...
+            dataType = getIntegerType(sizeof(), unsigned());
+        }
+
+        @SizeOf
+        public final static native int sizeof();
+
+        @AlignOf
+        public final static native int alignof();
+
+        @Unsigned
+        public final static native boolean unsigned();
+
+        public Time_t(boolean clearMem) {
+            super(sizeof(), clearMem);
+        }
+
+        public Time_t(OpaqueMemory32 owner, int offset) {
+            super(owner, offset, sizeof());
+        }
+
+        public native @time_t
+        long getValue();
+
+        public native void setValue(@time_t long value);
+
+        @Override
+        public native String nativeToString();
+
+        @Override
+        public BaseDataTypes getBaseDataType() {
+            return dataType;
+        }
+
     }
 
     /**
@@ -403,8 +543,54 @@ public class Types {
      * @author aploese
      */
     @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
     public static @interface uid_t {
+    }
+
+    @uid_t
+    public static class Uid_t extends NativeIntNumber {
+
+        public final static BaseDataTypes dataType;
+
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
+        static {
+            LibJnhwPosixLoader.touch();
+            //First we must load the native lib...
+            dataType = getIntegerType(sizeof(), unsigned());
+        }
+
+        @SizeOf
+        public final static native int sizeof();
+
+        @AlignOf
+        public final static native int alignof();
+
+        @Unsigned
+        public final static native boolean unsigned();
+
+        public Uid_t(boolean clearMem) {
+            super(sizeof(), clearMem);
+        }
+
+        public Uid_t(OpaqueMemory32 owner, int offset) {
+            super(owner, offset, sizeof());
+        }
+
+        public native @uid_t
+        int getValue();
+
+        public native void setValue(@uid_t int value);
+
+        @Override
+        public native String nativeToString();
+
+        @Override
+        public BaseDataTypes getBaseDataType() {
+            return dataType;
+        }
     }
 
 }

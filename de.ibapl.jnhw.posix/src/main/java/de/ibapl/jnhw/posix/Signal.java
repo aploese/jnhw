@@ -40,6 +40,7 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
+import de.ibapl.jnhw.posix.sys.Types.uid_t;
 import de.ibapl.jnhw.posix.sys.Types.size_t;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
@@ -1436,7 +1437,7 @@ public class Signal {
         public final native int si_errno();
 
         /**
-         * Sending process ID.uid_t si_uid Real user ID of sending process.
+         * Sending process ID.pid_t si_pid Sending process ID..
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
          * siginfo_t}</a>.
          *
@@ -1444,6 +1445,16 @@ public class Signal {
          */
         public final native @pid_t
         int si_pid();
+
+        /**
+         * Sending process ID.uid_t si_uid Real user ID of sending process.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
+         * siginfo_t}</a>.
+         *
+         * @return the native value of si_pid.
+         */
+        public final native @uid_t
+        int si_uid();
 
         /**
          * Address of faulting instruction.

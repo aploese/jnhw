@@ -907,6 +907,7 @@ public class SignalTest {
         Assertions.assertNotNull(siginfo_t.si_code());
         Assertions.assertNotNull(siginfo_t.si_errno());
         Assertions.assertNotNull(siginfo_t.si_pid());
+        Assertions.assertNotNull(siginfo_t.si_uid());
         Assertions.assertNotNull(siginfo_t.si_signo());
         Assertions.assertNotNull(siginfo_t.si_status());
         siginfo_t.si_value.sival_int(55);

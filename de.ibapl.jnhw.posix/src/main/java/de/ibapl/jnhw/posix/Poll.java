@@ -25,7 +25,6 @@ import de.ibapl.jnhw.common.annotations.AlignOf;
 import de.ibapl.jnhw.common.annotations.Define;
 import de.ibapl.jnhw.common.annotations.Include;
 import de.ibapl.jnhw.common.annotations.SizeOf;
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;

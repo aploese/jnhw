@@ -42,6 +42,8 @@
 extern "C" {
 #endif
 
+JNHW_ASSERT__uid_t__IS__uint32_t
+
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd_JnhwPrimitiveArrayCritical
      * Method:    read
@@ -213,11 +215,16 @@ extern "C" {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
-#if defined(_LP64)
-        const ssize_t result = read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) + off, (uint64_t) nByte);
+#if defined(_JNHW__size_t__IS__uint32_t)
+        if ((nByte > UINT32_MAX) || (nByte < 0)) {
+            throw_IllegalArgumentException(env, "nByte outside size_t(uint32_t)");
+            return;
+        }
+#elif defined(_JNHW__size_t__IS__uint64_t)
 #else
-        const ssize_t result = read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) + off, (uint32_t) nByte);
-#endif
+#error expected size_t uint32_t or uint64_t
+#endif 
+        const ssize_t result = read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) + off, (size_t) nByte);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -362,12 +369,16 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
-
-#if defined(_LP64)
-        const ssize_t result = write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf) + off, (uint64_t) nByte);
+#if defined(_JNHW__size_t__IS__uint32_t)
+        if ((nByte > UINT32_MAX) || (nByte < 0)) {
+            throw_IllegalArgumentException(env, "nByte outside size_t(uint32_t)");
+            return;
+        }
+#elif defined(_JNHW__size_t__IS__uint64_t)
 #else
-        const ssize_t result = write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf) + off, (uint32_t) nByte);
-#endif
+#error expected size_t uint32_t or uint64_t
+#endif 
+        const ssize_t result = write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf) + off, (size_t) nByte);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -425,15 +436,16 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_lseek__IJI
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jlong offset, jint whence) {
-#if defined(__LP64__)
-        const off_t result = lseek(fd, offset, whence);
-#else
+#if defined(_JNHW__off_t__IS__int32_t)
         if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
-            throw_IndexOutOfBoundsException(env, "In this native implementation offset is only an integer with the size of jint");
-            return -1;
+            throw_IllegalArgumentException(env, "offset outside off_t(int32_t)");
+            return;
         }
-        const off_t result = lseek(fd, (int32_t) offset, whence);
-#endif
+#elif defined(_JNHW__off_t__IS__int64_t)
+#else
+#error expected off_t is int32_t or int64_t
+#endif 
+        const off_t result = lseek(fd, (off_t)offset, whence);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }

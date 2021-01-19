@@ -32,6 +32,8 @@ extern "C" {
 #include <errno.h>
 #include <stdio.h>
 
+JNHW_ASSERT__pid_t__IS__int32_t
+
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    kill

@@ -123,10 +123,14 @@ libstring_la_SOURCES = \
 
 libsystypes_la_SOURCES = \
  TypesDefines.c \
- Types_Pid_t.c \
+ Types_Clock_t.c \
+ Types_Mode_t.c \
  Types_Off_t.c \
+ Types_Pid_t.c \
  Types_Size_t.c \
- Types_Ssize_t.c
+ Types_Ssize_t.c \
+ Types_Time_t.c \
+ Types_Uid_t.c
 
 libsysstat_la_SOURCES = \
  StatDefines.c \

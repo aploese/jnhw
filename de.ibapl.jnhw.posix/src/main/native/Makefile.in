@@ -198,8 +198,9 @@ libsysstat_la_LIBADD =
 am_libsysstat_la_OBJECTS = StatDefines.lo StatFunctions.lo
 libsysstat_la_OBJECTS = $(am_libsysstat_la_OBJECTS)
 libsystypes_la_LIBADD =
-am_libsystypes_la_OBJECTS = TypesDefines.lo Types_Pid_t.lo \
-	Types_Off_t.lo Types_Size_t.lo Types_Ssize_t.lo
+am_libsystypes_la_OBJECTS = TypesDefines.lo Types_Clock_t.lo \
+	Types_Mode_t.lo Types_Off_t.lo Types_Pid_t.lo Types_Size_t.lo \
+	Types_Ssize_t.lo Types_Time_t.lo Types_Uid_t.lo
 libsystypes_la_OBJECTS = $(am_libsystypes_la_OBJECTS)
 libtermios_la_LIBADD =
 am_libtermios_la_OBJECTS = TermiosDefines.lo TermiosFunctions.lo \
@@ -267,8 +268,10 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/TimeFunctions.Plo ./$(DEPDIR)/Time_Itimerspec.Plo \
 	./$(DEPDIR)/Time_Timer_t.Plo ./$(DEPDIR)/Time_Timespec.Plo \
 	./$(DEPDIR)/Time_Tm.Plo ./$(DEPDIR)/TypesDefines.Plo \
+	./$(DEPDIR)/Types_Clock_t.Plo ./$(DEPDIR)/Types_Mode_t.Plo \
 	./$(DEPDIR)/Types_Off_t.Plo ./$(DEPDIR)/Types_Pid_t.Plo \
 	./$(DEPDIR)/Types_Size_t.Plo ./$(DEPDIR)/Types_Ssize_t.Plo \
+	./$(DEPDIR)/Types_Time_t.Plo ./$(DEPDIR)/Types_Uid_t.Plo \
 	./$(DEPDIR)/UnistdDefines.Plo ./$(DEPDIR)/UnistdFunctions.Plo \
 	./$(DEPDIR)/jnhw-posix-jni.Plo
 am__mv = mv -f
@@ -595,10 +598,14 @@ libstring_la_SOURCES = \
 
 libsystypes_la_SOURCES = \
  TypesDefines.c \
- Types_Pid_t.c \
+ Types_Clock_t.c \
+ Types_Mode_t.c \
  Types_Off_t.c \
+ Types_Pid_t.c \
  Types_Size_t.c \
- Types_Ssize_t.c
+ Types_Ssize_t.c \
+ Types_Time_t.c \
+ Types_Uid_t.c
 
 libsysstat_la_SOURCES = \
  StatDefines.c \
@@ -823,10 +830,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Timespec.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Tm.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TypesDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Clock_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Mode_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Off_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Pid_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Size_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Ssize_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Time_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Uid_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-posix-jni.Plo@am__quote@ # am--include-marker
@@ -1046,10 +1057,14 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Time_Timespec.Plo
 	-rm -f ./$(DEPDIR)/Time_Tm.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
+	-rm -f ./$(DEPDIR)/Types_Clock_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Mode_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Off_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Pid_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Size_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Ssize_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Time_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Uid_t.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo
@@ -1154,10 +1169,14 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Time_Timespec.Plo
 	-rm -f ./$(DEPDIR)/Time_Tm.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
+	-rm -f ./$(DEPDIR)/Types_Clock_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Mode_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Off_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Pid_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Size_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Ssize_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Time_t.Plo
+	-rm -f ./$(DEPDIR)/Types_Uid_t.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo

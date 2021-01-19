@@ -31,6 +31,7 @@ extern "C" {
 #include <signal.h>
 #include <stdint.h>
 
+JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
@@ -83,15 +84,16 @@ extern "C" {
             throw_IndexOutOfBoundsException(env, "In ss_size < 0");
             return;
         }
-#if defined(__LP64__)
-        (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint64_t) ss_size;
-#else
-        if (ss_size > INT32_MAX) {
-            throw_IndexOutOfBoundsException(env, "In this native implementation ss_size is only an integer with the size of jint");
+#if defined(_JNHW__size_t__IS__uint32_t)
+        if ((ss_size > UINT32_MAX) || (ss_size < 0)) {
+            throw_IllegalArgumentException(env, "ss_size outside size_t(uint32_t)");
             return;
         }
-        (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint32_t) ss_size;
-#endif
+#elif defined(_JNHW__size_t__IS__uint64_t)
+#else
+#error expected size_t uint32_t or uint64_t
+#endif 
+        (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (size_t) ss_size;
     }
 
     /*

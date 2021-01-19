@@ -34,6 +34,8 @@
 extern "C" {
 #endif
 
+JNHW_ASSERT__mode_t__IS__uint16_t__OR__uint32_t
+
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
      * Method:    fcntl
@@ -114,15 +116,16 @@ extern "C" {
             return -1;
         }
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
-#if defined(__APPLE__) || defined(__FreeBSD__)
-        if ((mode > INT16_MAX) || (mode < INT16_MIN)) {
-            throw_IllegalArgumentException(env, "mode outside short int");
-            return -1;
+#if defined(_JNHW__mode_t__IS__uint16_t)
+        if ((mode > UINT16_MAX) || (mode < 0)) {
+            throw_IllegalArgumentException(env, "value outside mode_t(uint16_t)");
+            return;
         }
-        const int result = creat(_path, (uint16_t) mode);
+#elif defined(_JNHW__mode_t__IS__uint32_t)
 #else
-        const int result = creat(_path, (uint32_t) mode);
-#endif
+#error expected mode_t uint16_t or uint32_t
+#endif 
+        const int result = creat(_path, (mode_t) mode);
         (*env)->ReleaseStringUTFChars(env, path, _path);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
@@ -360,25 +363,23 @@ extern "C" {
         throw_NoSuchNativeMethodException(env, "posix_fadvise");
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fildes, jlong offset, jlong len, jint advice) {
-#if defined(__LP64__)
-        const int result = posix_fadvise(fildes, offset, len, advice);
-        if (result) {
-            throw_NativeErrorException(env, result);
-        }
-#else
+#if defined(_JNHW__off_t__IS__int32_t)
         if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
-            throw_IndexOutOfBoundsException(env, "In this native implementation offset is only an integer with the size of jint");
+            throw_IllegalArgumentException(env, "offset outside off_t(int32_t)");
             return;
         }
         if ((len > INT32_MAX) || (len < INT32_MIN)) {
-            throw_IndexOutOfBoundsException(env, "In this native implementation len is only an integer with the size of jint");
+            throw_IllegalArgumentException(env, "len outside off_t(int32_t)");
             return;
         }
-        const int result = posix_fadvise(fildes, (int32_t) offset, (int32_t) len, advice);
+#elif defined(_JNHW__off_t__IS__int64_t)
+#else
+#error expected off_t is int32_t or int64_t
+#endif 
+        const int result = posix_fadvise(fildes, (off_t)offset, (off_t)len, advice);
         if (result) {
             throw_NativeErrorException(env, result);
         }
-#endif
 #endif
     }
 
@@ -411,25 +412,23 @@ extern "C" {
         throw_NoSuchNativeMethodException(env, "posix_fallocate");
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fildes, jlong offset, jlong len) {
-#if defined(__LP64__)
-        const int result = posix_fallocate(fildes, offset, len);
-        if (result) {
-            throw_NativeErrorException(env, result);
-        }
-#else
+#if defined(_JNHW__off_t__IS__int32_t)
         if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
-            throw_IndexOutOfBoundsException(env, "In this native implementation offset is only an integer with the size of jint");
+            throw_IllegalArgumentException(env, "offset outside off_t(int32_t)");
             return;
         }
         if ((len > INT32_MAX) || (len < INT32_MIN)) {
-            throw_IndexOutOfBoundsException(env, "In this native implementation len is only an integer with the size of jint");
+            throw_IllegalArgumentException(env, "len outside off_t(int32_t)");
             return;
         }
-        const int result = posix_fallocate(fildes, (int32_t) offset, (int32_t) len);
+#elif defined(_JNHW__off_t__IS__int64_t)
+#else
+#error expected off_t is int32_t or int64_t
+#endif 
+        const int result = posix_fallocate(fildes, (off_t) offset, (off_t) len);
         if (result) {
             throw_NativeErrorException(env, result);
         }
-#endif
 #endif
     }
 

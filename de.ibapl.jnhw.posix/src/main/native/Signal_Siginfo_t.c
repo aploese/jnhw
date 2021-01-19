@@ -32,6 +32,9 @@ extern "C" {
 //for offsetof
 #include <stddef.h>
 
+JNHW_ASSERT__pid_t__IS__int32_t
+JNHW_ASSERT__uid_t__IS__uint32_t
+
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
      * Method:    sizeof
@@ -100,6 +103,16 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1pid
     (JNIEnv *env, jobject structSiginfo_t) {
         return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_pid;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    si_uid
+     * Signature: ()I;
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1uid
+    (JNIEnv *env, jobject structSiginfo_t) {
+        return (int32_t)(UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_uid;
     }
 
     /*
