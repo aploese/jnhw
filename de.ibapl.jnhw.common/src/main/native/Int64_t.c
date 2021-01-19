@@ -76,7 +76,11 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_Int64_1t_nativeToStri
     (JNIEnv *env, jobject jnhw_int64_t) {
         char buf[128] = {0};
 #if defined(__LP64__)
-        snprintf(buf, sizeof (buf) - 1, "%ld", *UNWRAP_OPAQUE_MEM_TO(int64_t*, jnhw_int64_t));
+  #if defined(__OpenBSD__)
+        snprintf(buf, sizeof (buf) - 1, "%lld", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, nativeIntNumber));
+  #else
+        snprintf(buf, sizeof (buf) - 1, "%ld", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, nativeIntNumber));
+  #endif
 #else
         snprintf(buf, sizeof (buf) - 1, "%lld", *UNWRAP_OPAQUE_MEM_TO(int64_t*, jnhw_int64_t));
 #endif
