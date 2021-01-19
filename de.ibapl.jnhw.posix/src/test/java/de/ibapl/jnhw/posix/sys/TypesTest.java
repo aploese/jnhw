@@ -31,10 +31,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author aploese
  */
 public class TypesTest {
-    
+
     public TypesTest() {
     }
-    
+
     @Test
     public void testPid_t() {
         Assertions.assertEquals(4, Types.Pid_t.sizeof());
@@ -45,11 +45,13 @@ public class TypesTest {
         assertEquals(0x80706050, instance.getValue());
         assertEquals(Integer.toString(0x80706050), instance.nativeToString());
     }
-    
+
     @Test
     public void testOff_t() {
         Assertions.assertFalse(Types.Off_t.unsigned());
         Types.Off_t instance = new Types.Off_t(true);
+        instance.setValue(-1);
+        assertEquals(-1L, instance.getValue());
         if (Types.Off_t.sizeof() == 4) {
             Assertions.assertEquals(4, Types.Off_t.alignof());
             assertEquals(BaseDataTypes.int32_t, instance.getBaseDataType());
@@ -57,8 +59,9 @@ public class TypesTest {
             assertEquals(0x80706050, instance.getValue());
             assertEquals(Integer.toString(0x80706050), instance.nativeToString());
             assertEquals("80706050", instance.nativeToHexString());
-            fail("missing test too small too big");
-        } else if (Types.Off_t.sizeof() == 8){
+            assertThrows(IllegalArgumentException.class, () -> instance.setValue(1L + Integer.MAX_VALUE));
+            assertThrows(IllegalArgumentException.class, () -> instance.setValue((long) Integer.MIN_VALUE - 1L));
+        } else if (Types.Off_t.sizeof() == 8) {
             Assertions.assertEquals(8, Types.Off_t.alignof());
             assertEquals(BaseDataTypes.int64_t, instance.getBaseDataType());
             instance.setValue(0x8070605040302010L);
@@ -69,7 +72,7 @@ public class TypesTest {
             fail();
         }
     }
-    
+
     @Test
     public void testSize_t() {
         Assertions.assertTrue(Types.Size_t.unsigned());
@@ -77,27 +80,38 @@ public class TypesTest {
         if (Types.Off_t.sizeof() == 4) {
             Assertions.assertEquals(4, Types.Size_t.alignof());
             assertEquals(BaseDataTypes.uint32_t, instance.getBaseDataType());
-            instance.setValue(0x80706050);
-            assertEquals(0x80706050, instance.getValue());
+            assertThrows(IllegalArgumentException.class, () -> instance.setValue(0x80706050));
+            assertThrows(IllegalArgumentException.class, () -> instance.setValue(0x0000000080706050));
+            instance.setValue(0x80706050L);
+            assertEquals(0x80706050L, instance.getValue());
             assertEquals(Integer.toUnsignedString(0x80706050), instance.nativeToString());
             assertEquals("80706050", instance.nativeToHexString());
-            fail("missing test too small too big");
-        } else if (Types.Off_t.sizeof() == 8){
+            //Test MAX_UINT32 + 1
+            assertThrows(IllegalArgumentException.class, () -> instance.setValue(0x0000000100000000L));
+            assertThrows(IllegalArgumentException.class, () -> instance.setValue(-1));
+        } else if (Types.Off_t.sizeof() == 8) {
             Assertions.assertEquals(8, Types.Size_t.alignof());
             assertEquals(BaseDataTypes.uint64_t, instance.getBaseDataType());
             instance.setValue(0x8070605040302010L);
             assertEquals(0x8070605040302010L, instance.getValue());
             assertEquals(Long.toUnsignedString(0x8070605040302010L), instance.nativeToString());
             assertEquals("8070605040302010", instance.nativeToHexString());
-        } else {
+            //This is unsigned so this is really 
+            instance.setValue(-1L);
+            assertEquals(-1, instance.getValue());
+            assertEquals("18446744073709551615", instance.nativeToString());
+            assertEquals("ffffffffffffffff", instance.nativeToHexString());
+    } else {
             fail();
         }
     }
-    
+
     @Test
     public void testSsize_t() {
         Assertions.assertFalse(Types.Ssize_t.unsigned());
         Types.Ssize_t instance = new Types.Ssize_t(true);
+        instance.setValue(-1);
+        assertEquals(-1L, instance.getValue());
         if (Types.Ssize_t.sizeof() == 4) {
             Assertions.assertEquals(4, Types.Ssize_t.alignof());
             assertEquals(BaseDataTypes.int32_t, instance.getBaseDataType());
@@ -105,8 +119,9 @@ public class TypesTest {
             assertEquals(0x80706050, instance.getValue());
             assertEquals(Integer.toString(0x80706050), instance.nativeToString());
             assertEquals("80706050", instance.nativeToHexString());
-            fail("missing test too small too big");
-        } else if (Types.Ssize_t.sizeof() == 8){
+            assertThrows(IllegalArgumentException.class, () -> instance.setValue(1L + Integer.MAX_VALUE));
+            assertThrows(IllegalArgumentException.class, () -> instance.setValue((long) Integer.MIN_VALUE - 1L));
+        } else if (Types.Ssize_t.sizeof() == 8) {
             Assertions.assertEquals(8, Types.Ssize_t.alignof());
             assertEquals(BaseDataTypes.int64_t, instance.getBaseDataType());
             instance.setValue(0x8070605040302010L);
@@ -117,6 +132,5 @@ public class TypesTest {
             fail();
         }
     }
-    
 
 }

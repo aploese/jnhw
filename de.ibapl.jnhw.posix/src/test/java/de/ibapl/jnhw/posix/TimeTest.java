@@ -41,13 +41,13 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatterBuilder;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.opentest4j.MultipleFailuresError;
 
@@ -874,14 +874,10 @@ public class TimeTest {
 
                     assertEquals(0, count);
 
-                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    NullPointerException nee = Assertions.assertThrows(NullPointerException.class, () -> {
                         Time.timer_settime(timerid, 0, null, null);
                     });
-                    if (MULTIARCHTUPEL_BUILDER.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
-                        assertEquals(Errno.EFAULT(), nee.errno);
-                    } else {
-                        assertEquals(Errno.EINVAL(), nee.errno);
-                    }
+                    assertEquals("value is NULL", nee.getMessage());
                 } finally {
                     System.out.println("timer_delete");
                     Time.timer_delete(timerid);

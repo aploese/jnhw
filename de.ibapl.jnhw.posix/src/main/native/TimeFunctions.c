@@ -706,7 +706,11 @@ extern "C" {
             throw_NullPointerException(env, "timerid is NULL");
             return;
         }
-        if (timer_settime(*UNWRAP_TIMER_T_PTR(timerid), flags, UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(value), UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(ovalue))) {
+        if (value == NULL) {
+            throw_NullPointerException(env, "value is NULL");
+            return;
+        }
+        if (timer_settime(*UNWRAP_TIMER_T_PTR(timerid), flags, UNWRAP_STRUCT_ITIMERSPEC_T_PTR(value), UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(ovalue))) {
             throw_NativeErrorException(env, errno);
         }
 #endif

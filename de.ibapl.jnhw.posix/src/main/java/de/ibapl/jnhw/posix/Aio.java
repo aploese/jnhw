@@ -499,7 +499,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory32 aio_buf, int off, int aio_nbytes) throws NoSuchNativeTypeException {
+        public void aio_buf(OpaqueMemory32 aio_buf, int off, @Types.size_t int aio_nbytes) throws NoSuchNativeTypeException {
             if (aio_buf == null) {
                 aio_bufOpaqueMemory(null, 0, 0);
             } else {

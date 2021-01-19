@@ -160,15 +160,16 @@ JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
         throw_NoSuchNativeTypeException(env, "struct aiocb");
 #else
     (JNIEnv *env, jobject structAiocb, jlong aio_offset) {
-#if defined(__LP64__)
-        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = aio_offset;
-#else
+#if defined(_JNHW__off_t__IS__int32_t)
         if ((aio_offset > INT32_MAX) || (aio_offset < INT32_MIN)) {
-            throw_IndexOutOfBoundsException(env, "In this native implementation aio_offset is only an integer with the size of jint");
+            throw_IllegalArgumentException(env, "aio_offset outside off_t(int32_t)");
             return;
         }
-        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = (int32_t) aio_offset;
-#endif
+#elif defined(_JNHW__off_t__IS__int64_t)
+#else
+#error expected off_t is int32_t or int64_t
+#endif 
+        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = (off_t)aio_offset;
 #endif
     }
 
