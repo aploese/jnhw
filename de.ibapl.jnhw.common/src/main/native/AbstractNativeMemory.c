@@ -57,7 +57,8 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_ma
         if (result == NULL) {
             throw_NativeErrorException(env, errno);
         }
-        return (intptr_t) result;
+        //on 32bit it must not be negative
+        return (int64_t)(uintptr_t) result;
     }
 
 /*
@@ -83,7 +84,8 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_ma
         if (result == NULL) {
             throw_NativeErrorException(env, errno);
         }
-        return (intptr_t) result;
+        //on 32bit it must not be negative
+        return (int64_t)(uintptr_t) result;
     }
 
 /*
@@ -105,7 +107,8 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_ca
         if (result == NULL) {
             throw_NativeErrorException(env, errno);
         }
-        return (intptr_t) result;
+        //on 32bit it must not be negative
+        return (int64_t)(uintptr_t) result;
     }
 
 /*
@@ -139,7 +142,8 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_ca
         if (result == NULL) {
             throw_NativeErrorException(env, errno);
         }
-        return (intptr_t) result;
+        //on 32bit it must not be negative
+        return (int64_t)(uintptr_t) result;
     }
 
 

@@ -99,7 +99,7 @@ extern "C" {
      * Using GetIntField for 32bit addresses will fail on BIG_ENDIAN...
      * 
      */
-#define UNWRAP_OPAQUE_MEM_TO(destType, opaqueMemory) ((destType)((intptr_t)(*env)->GetLongField(env, opaqueMemory, de_ibapl_jnhw_common_memory_AbstractNativeMemory_baseAddress_ID)))
+#define UNWRAP_OPAQUE_MEM_TO(destType, opaqueMemory) ((destType)((uintptr_t)(*env)->GetLongField(env, opaqueMemory, de_ibapl_jnhw_common_memory_AbstractNativeMemory_baseAddress_ID)))
 
     /**
      * Unwarap the baseAddress given opaqueMemory(jobject) of an OpaqueMemory instance and cast these baseAddress to given type.
