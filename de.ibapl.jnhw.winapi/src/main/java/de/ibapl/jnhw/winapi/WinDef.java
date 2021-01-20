@@ -21,7 +21,9 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.common.annotations.AlignOf;
 import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
@@ -71,6 +73,19 @@ public abstract class WinDef {
      * </p>
      */
     public static class LPBYTE extends Struct32 {
+
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
+        static {
+            LibJnhwWinApiLoader.touch();
+        }
+
+        @SizeOf
+        public final static native int sizeof();
+        @AlignOf
+        public final static native int alignof();
 
         int bufferEnd;
 

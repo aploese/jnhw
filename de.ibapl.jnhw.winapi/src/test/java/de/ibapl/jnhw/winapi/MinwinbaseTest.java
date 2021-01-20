@@ -22,38 +22,43 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-/**
- *
- * @author aploese
- */
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class BaseTsdTest {
-
+public class MinwinbaseTest {
+    
     private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
-    public BaseTsdTest() {
-    }
-
-    /**
-     * Test of sizeofULONG_PTR.
-     */
     @Test
-    public void testULONG_PTR() {
-        System.out.println("test ULONG_PTR");
+    public void testOVERLAPPED() {
+        System.out.println("test OVERLAPPED");
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                assertEquals(4, BaseTsd.sizeof_ULONG_PTR());
-                assertEquals(4, BaseTsd.alignof_ULONG_PTR());
+                assertEquals(4, Minwinbase.OVERLAPPED.sizeof());
+                assertEquals(4, Minwinbase.OVERLAPPED.alignof());
                 break;
             case _64_BIT:
-                assertEquals(8, BaseTsd.sizeof_ULONG_PTR());
-                assertEquals(8, BaseTsd.alignof_ULONG_PTR());
+                assertEquals(8, Minwinbase.OVERLAPPED.sizeof());
+                assertEquals(8, Minwinbase.OVERLAPPED.alignof());
+                break;
+            default:
+                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+        }
+    }
+
+    @Test
+    public void testSECURITY_ATTRIBUTES() {
+        System.out.println("test SECURITY_ATTRIBUTES");
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                assertEquals(4, Minwinbase.SECURITY_ATTRIBUTES.sizeof());
+                assertEquals(4, Minwinbase.SECURITY_ATTRIBUTES.alignof());
+                break;
+            case _64_BIT:
+                assertEquals(8, Minwinbase.SECURITY_ATTRIBUTES.sizeof());
+                assertEquals(8, Minwinbase.SECURITY_ATTRIBUTES.alignof());
                 break;
             default:
                 throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());

@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class WinregTests {
+public class WinregTest {
 
     @Test
     public void testRegOpenKey() throws Exception {

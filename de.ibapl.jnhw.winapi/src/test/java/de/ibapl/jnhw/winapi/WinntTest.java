@@ -22,13 +22,51 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.nio.charset.Charset;
 import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class WinntTests {
+public class WinntTest {
+
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
+
+    @Test
+    public void testLPWSTR() {
+        System.out.println("test LPWSTR");
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                assertEquals(4, Winnt.LPWSTR.sizeof());
+                assertEquals(4, Winnt.LPWSTR.alignof());
+                break;
+            case _64_BIT:
+                assertEquals(8, Winnt.LPWSTR.sizeof());
+                assertEquals(8, Winnt.LPWSTR.alignof());
+                break;
+            default:
+                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+        }
+    }
+
+    @Test
+    public void testPHANDLE() {
+        System.out.println("test PHANDLE");
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                assertEquals(4, Winnt.PHANDLE.sizeof());
+                assertEquals(4, Winnt.PHANDLE.alignof());
+                break;
+            case _64_BIT:
+                assertEquals(8, Winnt.PHANDLE.sizeof());
+                assertEquals(8, Winnt.PHANDLE.alignof());
+                break;
+            default:
+                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+        }
+    }
 
     @Test
     public void testMAXDWORD() throws Exception {

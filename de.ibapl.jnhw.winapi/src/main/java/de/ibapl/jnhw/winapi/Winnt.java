@@ -21,8 +21,10 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.common.annotations.AlignOf;
 import de.ibapl.jnhw.common.annotations.Define;
 import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.callbacks.Callback_IJ_V_Impl;
 import de.ibapl.jnhw.common.memory.Struct32;
@@ -517,8 +519,9 @@ public final class Winnt {
          */
         private native void set0(int i, HANDLE element);
 
-        public static native int sizeof();
-
+        @SizeOf
+        public final static native int sizeof();
+        @AlignOf
         public final static native int alignof();
 
         public ArrayOfHandle(int length, boolean clearMem) {
@@ -578,6 +581,11 @@ public final class Winnt {
         static {
             LibJnhwWinApiLoader.touch();
         }
+
+        @SizeOf
+        public final static native int sizeof();
+        @AlignOf
+        public final static native int alignof();
 
         public final static int SIZE_OF_WCHAR = 2;
 
@@ -655,17 +663,20 @@ public final class Winnt {
             LibJnhwWinApiLoader.touch();
         }
 
-        public final static native int sizeofHANDLE();
+        @SizeOf
+        public final static native int sizeof();
+        @AlignOf
+        public final static native int alignof();
 
         HANDLE cachedHandle;
 
         protected PHANDLE(CreateHandler handler) {
-            super(sizeofHANDLE(), true);
+            super(sizeof(), true);
             cachedHandle = handler.create(getHandleValue());
         }
 
         protected PHANDLE(HANDLE handle) {
-            super(sizeofHANDLE(), false);
+            super(sizeof(), false);
             setHandleValue(handle.value);
             cachedHandle = handle;
         }

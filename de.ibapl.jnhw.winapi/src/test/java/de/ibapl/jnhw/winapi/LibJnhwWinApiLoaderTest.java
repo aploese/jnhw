@@ -21,17 +21,16 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.libloader.LoadState;
+import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledOnOs;
 
-@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class HandleapiTests {
+public class LibJnhwWinApiLoaderTest {
 
     @Test
-    public void testDefines() throws Exception {
-        Winnt.HANDLE h = Handleapi.INVALID_HANDLE_VALUE();
-        Assertions.assertNotEquals(h, new Winnt.HANDLE(0));
+    public void testLibWinApiIsLoaded() throws Exception {
+        Assertions.assertEquals(LoadState.SUCCESS, LibJnhwWinApiLoader.touch());
     }
 
 }

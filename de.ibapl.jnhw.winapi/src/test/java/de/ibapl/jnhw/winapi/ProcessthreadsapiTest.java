@@ -48,7 +48,7 @@ public class ProcessthreadsapiTest {
      */
     @Test
     public void test__QueueUserAPC__CanUse__Callback_IJ_V() {
-        assertEquals(Callback_IJ_V.sizeofIntptr_t(), BaseTsd.sizeof());
+        assertEquals(Callback_IJ_V.sizeofIntptr_t(), BaseTsd.sizeof_ULONG_PTR());
     }
 
     /**

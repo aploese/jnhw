@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class SynchapiTests {
+public class SynchapiTest {
 
     @Test
     public void testWaitForSingleTimeout() throws Exception {

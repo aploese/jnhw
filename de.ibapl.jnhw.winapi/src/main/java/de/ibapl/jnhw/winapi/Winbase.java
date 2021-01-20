@@ -21,8 +21,10 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.common.annotations.AlignOf;
 import de.ibapl.jnhw.common.annotations.Define;
 import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
@@ -860,8 +862,9 @@ public abstract class Winbase {
             LibJnhwWinApiLoader.touch();
         }
 
+        @SizeOf
         public final static native int sizeof();
-
+        @AlignOf
         public final static native int alignof();
 
         public COMMTIMEOUTS(boolean clearMemory) {
@@ -945,8 +948,9 @@ public abstract class Winbase {
             LibJnhwWinApiLoader.touch();
         }
 
+        @SizeOf
         public final static native int sizeof();
-
+        @AlignOf
         public final static native int alignof();
 
         public COMSTAT(boolean clearMemory) {
@@ -1030,8 +1034,9 @@ public abstract class Winbase {
             DCBlength(sizeof());
         }
 
+        @SizeOf
         public final static native int sizeof();
-
+        @AlignOf
         public final static native int alignof();
 
         /**

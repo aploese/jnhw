@@ -21,9 +21,17 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class WinbaseTests {
+public class HandleapiTest {
+
+    @Test
+    public void testDefines() throws Exception {
+        Winnt.HANDLE h = Handleapi.INVALID_HANDLE_VALUE();
+        Assertions.assertNotEquals(h, new Winnt.HANDLE(0));
+    }
 
 }

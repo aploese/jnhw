@@ -48,9 +48,9 @@ public abstract class BaseTsd {
     public static final native boolean HAVE_BASETSD_H();
 
     
-    public final static native int sizeof();
+    public final static native int sizeof_ULONG_PTR();
 
-    public final static native int alignof();
+    public final static native int alignof_ULONG_PTR();
     
     /**
      * Wrapper for
@@ -60,8 +60,6 @@ public abstract class BaseTsd {
     @Retention(RetentionPolicy.SOURCE)
     @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
     public static @interface ULONG_PTR {
-
-
     }
 
 }
