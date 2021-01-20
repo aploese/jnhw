@@ -82,10 +82,12 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
     }
 
     public static int calcNextOffset(OpaqueMemory32 parent, OpaqueMemory32 prev, int alignAt) {
+        System.err.println("calcNextOffset parent: " + parent + " prev: " + prev + " alignAt: " + alignAt );
         if (parent != prev.memoryOwner) {
             throw new RuntimeException("Parent is not prev.memoryOwner");
         }
         int reminder = (int) ((prev.baseAddress + prev.sizeInBytes) % alignAt);
+        System.err.println("Reminder: " + reminder);
         if (reminder == 0) {
             return (int) (prev.baseAddress - parent.baseAddress) + prev.sizeInBytes;
         } else {
