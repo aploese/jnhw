@@ -135,11 +135,11 @@ extern "C" {
 #define SET_OBJECT_REF_VALUE(valueRef, value) (*env)->SetObjectField(env, valueRef, de_ibapl_jnhw_common_references_ObjectRef_value_ID, value)
 
 //#define UNWRAP_NATIVE_FUNCTION_POINTER(nativeFunctionPointer)(void*)(intptr_t)(*env)->GetLongField(env, nativeFunctionPointer, de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID)
-#define UNWRAP_NATIVE_FUNCTION_POINTER_TO(destType, nativeFunctionPointer)(destType)(intptr_t)(*env)->GetLongField(env, nativeFunctionPointer, de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID)
-#define CREATE_NATIVE_FUNCTION_POINTER(value) (*env)->NewObject(env, de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class, de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID, (jlong) (intptr_t) value)
+#define UNWRAP_NATIVE_FUNCTION_POINTER_TO(destType, nativeFunctionPointer)(destType)(uintptr_t)(*env)->GetLongField(env, nativeFunctionPointer, de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID)
+#define CREATE_NATIVE_FUNCTION_POINTER(value) (*env)->NewObject(env, de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class, de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID, (jlong) (uintptr_t) value)
     
-#define UNWRAP_NATIVE_ADDRESS_HOLDER_TO(destType, value) (destType)(intptr_t)(*env)->GetLongField(env, value, de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID)    
-#define CREATE_NATIVE_ADDRESS_HOLDER(value) (*env)->NewObject(env, de_ibapl_jnhw_common_memory_NativeAddressHolder_Class, de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID, (jlong) (intptr_t) value)
+#define UNWRAP_NATIVE_ADDRESS_HOLDER_TO(destType, value) (destType)(uintptr_t)(*env)->GetLongField(env, value, de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID)    
+#define CREATE_NATIVE_ADDRESS_HOLDER(value) (*env)->NewObject(env, de_ibapl_jnhw_common_memory_NativeAddressHolder_Class, de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID, (jlong) (uintptr_t) value)
 
 #ifdef __cplusplus
 }

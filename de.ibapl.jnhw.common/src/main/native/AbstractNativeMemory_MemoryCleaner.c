@@ -37,7 +37,7 @@ extern "C" {
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024MemoryCleaner_free
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong baseAddress) {
-        free((void*) (intptr_t) baseAddress);
+        free((void*) (uintptr_t) baseAddress);
     }
 
 

@@ -38,7 +38,7 @@
 extern "C" {
 #endif
 
-    typedef void (*_callback_IJ_V)(intptr_t);
+    typedef void (*_callback_IJ_V)(uintptr_t);
     static _callback_IJ_V callbackPtr = NULL;
 
     /*
@@ -48,7 +48,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1IJ_1V_1Test_setCallback
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
-        callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(intptr_t), callback);
+        callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(uintptr_t), callback);
     }
 
     /*
@@ -63,12 +63,12 @@ extern "C" {
 
 #ifdef HAVE_WINDOWS_H
     DWORD WINAPI thr_fn_IJ(LPVOID args) {
-            callbackPtr((intptr_t) *((jlong*)args));
+            callbackPtr((uintptr_t) *((jlong*)args));
             return 0;
     }
 #elif defined HAVE_PTHREAD_H
     void * thr_fn_IJ(void *args) {
-            callbackPtr((intptr_t) *((jlong*)args));
+            callbackPtr((uintptr_t) *((jlong*)args));
             return NULL;
     }
 #else
