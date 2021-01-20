@@ -103,6 +103,7 @@
   #define _JNHW__speed_t__IS__uint32_t 1
   #define _JNHW__tcflag_t__IS__uint32_t 1
   #define _JNHW__cc_t__IS__uint8_t 1
+  #define _JNHW__nfds_t__IS__uint32_t 1
 
 
   //JNHW_ASSERT_DATA_TYPES(off64_t, int64_t)
@@ -117,7 +118,6 @@
     #define _JNHW__clock_t__IS__int32_t 1
     #define _JNHW__time_t__IS__int64_t 1
     #define _JNHW__timer_t__IS__uint64_t 1
-    #define _JNHW__nfds_t__IS__uint64_t 1
   #endif
 #elif defined(__OpenBSD__)
   #define _JNHW__mode_t__IS__uint32_t 1
@@ -266,7 +266,7 @@
   #error nfds_t
 #endif
 
-#if !defined(__JNHW_TEST_POSIX_DATATYPES)
+#if defined(__JNHW_TEST_POSIX_DATATYPES)
 
 #include <sys/types.h>
 JNHW_ASSERT__mode_t__IS__uint16_t__OR__uint32_t
@@ -283,11 +283,9 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
 JNHW_ASSERT__timer_t__IS__uint64_t__OR__int32_t__OR__uint32_t
 
 #include <poll.h>
-
-JNHW_ASSERT__nfsd_t__IS__uint64_t__OR__uint32_t
+JNHW_ASSERT__nfds_t__IS__uint64_t__OR__uint32_t
 
 #include <termios.h>
-
 JNHW_ASSERT__speed_t__IS__uint32_t
 JNHW_ASSERT__tcflag_t__IS__uint32_t
 JNHW_ASSERT__cc_t__IS__uint8_t
