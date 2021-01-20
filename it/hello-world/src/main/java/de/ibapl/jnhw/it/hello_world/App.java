@@ -33,7 +33,7 @@ public class App
     public static void main( String[] args ) throws Exception
     {
         MultiarchTupelBuilder mtb =  new MultiarchTupelBuilder();
-        if (mtb.getOs() == OS.WINDOWS) {
+        if (mtb.getOS()== OS.WINDOWS) {
             Windows.sayHello();
         } else {
             Posix.sayHello();

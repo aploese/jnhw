@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.libloader;
 
 /**
- *
+ * The wordsize to use.
  * @author aploese
  */
 public enum WordSize {

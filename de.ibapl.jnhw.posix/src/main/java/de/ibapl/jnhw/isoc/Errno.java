@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.isoc;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -77,7 +77,6 @@ public abstract class Errno {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h
      * - system error numbers</a>.
      *
-     * @author aploese
      */
     public final static native int errno();
 
@@ -88,7 +87,6 @@ public abstract class Errno {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html">errno.h
      * - system error numbers</a>.
      *
-     * @author aploese
      */
     public final static native void errno(int value);
 

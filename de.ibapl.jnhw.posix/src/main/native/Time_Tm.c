@@ -31,12 +31,22 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Tm
-     * Method:    sizeofTm
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Tm_sizeofTm
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Tm_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct tm);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time_Tm
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Tm_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct tm);
     }
 
     /*

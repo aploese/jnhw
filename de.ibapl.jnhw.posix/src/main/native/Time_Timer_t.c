@@ -35,28 +35,36 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Timer_t
-     * Method:    sizeofTimer_t
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_sizeofTimer_1t
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (timer_t);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Timer_t
-     * Method:    toString
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (timer_t);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time_Timer_t
+     * Method:    nativeToString
      * Signature: ()Ljava/lang/String;
      */
-    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_toString
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timer_1t_nativeToString
     (JNIEnv *env, jobject timer) {
-        char buf[1024] = {0};
-#if __SIZEOF_LONG__ == 8
+        char buf[128] = {0};
+#if defined(__LP64__)
         snprintf(buf, sizeof (buf) - 1, "0x%016lx", (uintptr_t) *UNWRAP_TIMER_T_PTR(timer));
-#elif __SIZEOF_LONG__ == 4
-        snprintf(buf, sizeof (buf) - 1, "0x%08x", (uintptr_t) *UNWRAP_TIMER_T_PTR(timer));
 #else
-#error Unknown Wordsize
+        snprintf(buf, sizeof (buf) - 1, "0x%08x", (uintptr_t) *UNWRAP_TIMER_T_PTR(timer));
 #endif
         return (*env)->NewStringUTF(env, buf);
     }

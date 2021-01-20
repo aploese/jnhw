@@ -35,12 +35,22 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_attr_t
-     * Method:    sizeofPthread_attr_t
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1attr_1t_sizeofPthread_1attr_1t
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1attr_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (pthread_attr_t);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_attr_t
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1attr_1t_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (pthread_attr_t);
     }
 
 #endif

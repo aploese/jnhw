@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -55,7 +55,7 @@ public abstract class Handleapi {
      *
      * @param hObject a valid handle to an open object.
      *
-     * @throws NullPointerException if hObject is {@code null].
+     * @throws NullPointerException if hObject is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.

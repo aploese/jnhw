@@ -21,34 +21,35 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_I_V_Impl;
-import de.ibapl.jnhw.Defined;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LongRef;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeException;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.references.LongRef;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.memory.Memory32Heap;
+import de.ibapl.jnhw.common.references.ObjectRef;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
-import de.ibapl.jnhw.util.posix.Defines;
+import de.ibapl.jnhw.posix.sys.Types;
+import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V_Impl;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.util.Date;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.opentest4j.MultipleFailuresError;
 
 /**
  *
@@ -57,12 +58,11 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TimeTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
-
-    @BeforeAll
-    public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
-    }
+    // just for vm in qemu...
+    private final static long ONE_MINUTE = 60_000;
+    private final static @Types.time_t
+    long TIME_T__20191203_142044 = 1575382844;
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public TimeTest() {
     }
@@ -73,7 +73,7 @@ public class TimeTest {
     @Test
     public void testAsctime() {
         System.out.println("asctime");
-        Time.Tm tm = new Time.Tm();
+        Time.Tm tm = new Time.Tm(true);
         tm.tm_year(119);
         tm.tm_mon(11);
         tm.tm_mday(3);
@@ -96,7 +96,7 @@ public class TimeTest {
     @Test
     public void testAsctime_r() {
         System.out.println("asctime_r");
-        Time.Tm tm = new Time.Tm();
+        Time.Tm tm = new Time.Tm(true);
         tm.tm_year(119);
         tm.tm_mon(11);
         tm.tm_mday(3);
@@ -106,11 +106,11 @@ public class TimeTest {
         tm.tm_sec(7);
         tm.tm_isdst(0);
 
-        OpaqueMemory buf = new OpaqueMemory(26, true);
+        final int BUF_SIZE = 26;
+        Memory32Heap buf = new Memory32Heap(BUF_SIZE, true);
         String result = Time.asctime_r(tm, buf);
         assertEquals("Wed Dec  3 08:17:07 2019\n", result);
-        byte[] raw = new byte[buf.sizeInBytes];
-        OpaqueMemory.copy(buf, 0, raw, 0, raw.length);
+        byte[] raw = OpaqueMemory32.toBytes(buf);
         assertArrayEquals("Wed Dec  3 08:17:07 2019\n\0".getBytes(), raw);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -121,7 +121,7 @@ public class TimeTest {
         });
         //Test that there at least 26 bytes available in the buffer.
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Time.asctime_r(tm, new OpaqueMemory(25, true));
+            Time.asctime_r(tm, new Memory32Heap(25, true));
         });
     }
 
@@ -141,7 +141,7 @@ public class TimeTest {
     @Test
     public void testClock_getcpuclockid() throws Exception {
         System.out.println("clock_getcpuclockid");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Time.clock_getcpuclockid(0, null);
             });
@@ -162,7 +162,7 @@ public class TimeTest {
     @Test
     public void testClock_getres() throws Exception {
         System.out.println("clock_getres");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Time.clock_getres(0, null);
@@ -186,7 +186,7 @@ public class TimeTest {
     @Test
     public void testClock_gettime() throws Exception {
         System.out.println("clock_gettime");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Time.clock_gettime(0, null);
@@ -212,7 +212,7 @@ public class TimeTest {
     @Test
     public void testClock_nanosleep() throws Exception {
         System.out.println("clock_nanosleep");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
@@ -231,7 +231,7 @@ public class TimeTest {
                 Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
                 long end = System.nanoTime();
 
-                Assertions.assertTrue(end - start < 12_000_000, "max 12ms but was " + (end - start) + "ns");
+                Assertions.assertTrue(end - start < 13_000_000, "max 13ms but was " + (end - start) + "ns");
                 Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
 
                 rqtp.tv_nsec(0);
@@ -252,7 +252,7 @@ public class TimeTest {
     public void testClock_settime() throws Exception {
         System.out.println("clock_settime");
 
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertFalse(Defined.defined(Time::CLOCK_REALTIME));
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Time.clock_settime(0, null);
@@ -274,7 +274,7 @@ public class TimeTest {
     private String getCtimeFormated(long clock) {
         ZonedDateTime zdt = Instant.ofEpochMilli(clock * 1000L).atZone(ZoneOffset.systemDefault());
         DateTimeFormatterBuilder dtfb = new DateTimeFormatterBuilder();
-        dtfb.appendPattern("E LLL  d H:m:s y\n");
+        dtfb.appendPattern("E LLL  d HH:mm:ss y\n");
         return dtfb.toFormatter(java.util.Locale.ROOT).format(zdt);
     }
 
@@ -283,8 +283,8 @@ public class TimeTest {
      */
     @Test
     public void testCtime() {
-        System.out.println("ctime  @" + ZoneOffset.systemDefault());
-        final long clock = 1575382844;
+        System.out.println("ctime  @" + ZoneId.systemDefault());
+        final long clock = TIME_T__20191203_142044;
         String result = Time.ctime(clock);
         assertEquals(getCtimeFormated(clock), result);
     }
@@ -294,15 +294,15 @@ public class TimeTest {
      */
     @Test
     public void testCtime_r() throws Exception {
-        System.out.println("ctime_r  @" + ZoneOffset.systemDefault());
-        final long clock = 1575382844;
-        OpaqueMemory buf = new OpaqueMemory(26, true);
+        System.out.println("ctime_r  @" + ZoneId.systemDefault());
+        final long clock = TIME_T__20191203_142044;
+        Memory32Heap buf = new Memory32Heap(32, true);
         String result = Time.ctime_r(clock, buf);
-        
+
         assertEquals(getCtimeFormated(clock), result);
 
-        byte[] raw = new byte[buf.sizeInBytes];
-        OpaqueMemory.copy(buf, 0, raw, 0, raw.length);
+        byte[] raw = new byte[result.length() + 1];
+        OpaqueMemory32.copy(buf, 0, raw, 0, raw.length);
         assertArrayEquals((getCtimeFormated(clock) + "\0").getBytes(), raw);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -310,7 +310,7 @@ public class TimeTest {
         });
         //Test that there at least 26 bytes available in the buffer.
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Time.ctime_r(clock, new OpaqueMemory(25, true));
+            Time.ctime_r(clock, new Memory32Heap(25, true));
         });
     }
 
@@ -320,7 +320,7 @@ public class TimeTest {
     @Test
     public void testDaylight() throws Exception {
         System.out.println("daylight");
-        if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Time.daylight();
             });
@@ -336,10 +336,8 @@ public class TimeTest {
     @Test
     public void testDifftime() {
         System.out.println("difftime");
-        long time1 = 0L;
-        long time0 = 1L;
-        double expResult = -1.0;
-        double result = Time.difftime(time1, time0);
+        double expResult = TIME_T__20191203_142044;
+        double result = Time.difftime(TIME_T__20191203_142044, 0L);
         assertEquals(expResult, result, 0.0);
     }
 
@@ -350,7 +348,7 @@ public class TimeTest {
     public void testGetdate() {
         System.out.println("getdate");
         String string = "Tue Dec  3 15:20:44 2019\n";
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case FREE_BSD:
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
@@ -371,17 +369,10 @@ public class TimeTest {
     @Test
     public void testGmtime() {
         System.out.println("gmtime");
-        long timer = 1575382844;
+        final Instant instant = Instant.now();
+        final long timer = instant.getEpochSecond();
         Time.Tm result = Time.gmtime(timer);
-
-        assertEquals(119, result.tm_year(), "Year");
-        assertEquals(336, result.tm_yday(), "DayOfYear");
-        assertEquals(11, result.tm_mon(), "MonthValue");
-        assertEquals(3, result.tm_mday(), "DayOfMonth");
-        assertEquals(2, result.tm_wday(), "DayOfWeek");
-        assertEquals(14, result.tm_hour(), "Hour");
-        assertEquals(20, result.tm_min(), "Minute");
-        assertEquals(44, result.tm_sec(), "Second");
+        assertTm(instant, result, ZoneOffset.UTC);
     }
 
     /**
@@ -390,18 +381,11 @@ public class TimeTest {
     @Test
     public void testGmtime_r() throws Exception {
         System.out.println("gmtime_r");
-        long timer = 1575382844;
+        final Instant instant = Instant.now();
+        final long timer = instant.getEpochSecond();
         Time.Tm tm = new Time.Tm();
         Time.Tm result = Time.gmtime_r(timer, tm);
-
-        assertEquals(119, result.tm_year(), "Year");
-        assertEquals(336, result.tm_yday(), "DayOfYear");
-        assertEquals(11, result.tm_mon(), "MonthValue");
-        assertEquals(3, result.tm_mday(), "DayOfMonth");
-        assertEquals(2, result.tm_wday(), "DayOfWeek");
-        assertEquals(14, result.tm_hour(), "Hour");
-        assertEquals(20, result.tm_min(), "Minute");
-        assertEquals(44, result.tm_sec(), "Second");
+        assertTm(instant, result, ZoneOffset.UTC);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.gmtime_r(timer, null);
@@ -415,24 +399,47 @@ public class TimeTest {
     @Test
     public void testLocaltime() throws Exception {
         System.out.println("localtime");
-        final LocalDateTime ldt = LocalDateTime.now();
-        long timer = new Date().getTime() / 1000;
-        Time.Tm result = Time.localtime(timer);
+        final Instant instant = Instant.now();
+        final long timer = instant.getEpochSecond();
+
+        final Time.Tm result = Time.localtime(timer);
         Assertions.assertNotNull(result);
         System.out.println("time: " + timer + " localtime: " + result);
-        assertEquals(ldt.getYear(), result.tm_year() + 1900, "Year");
-        assertEquals(ldt.getDayOfYear(), result.tm_yday() + 1, "DayOfYear");
-        assertEquals(ldt.getMonthValue(), result.tm_mon() + 1, "MonthValue");
-        assertEquals(ldt.getDayOfMonth(), result.tm_mday(), "DayOfMonth");
-        if (ldt.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            //Sunday java = 7; posix = 0
-            assertEquals(0, result.tm_wday(), "DayOfWeek SUNDAY -> 0(sun)");
-        } else {
-            assertEquals(ldt.getDayOfWeek().getValue(), result.tm_wday(), "DayOfWeek MONDAY to SATURDAY -> 1(mon) to 6(sat)");
-        }
-        assertEquals(ldt.getHour(), result.tm_hour(), "Hour");
-        assertEquals(ldt.getMinute(), result.tm_min(), "Minute");
-        assertEquals(ldt.getSecond(), result.tm_sec(), "Second");
+        assertTm(instant, result, ZoneId.systemDefault());
+    }
+
+    private void assertTm(final Instant instant, final Time.Tm tm, ZoneId zoneId) throws MultipleFailuresError {
+        final LocalDateTime ldt = LocalDateTime.ofInstant(instant, zoneId);
+        Assertions.assertAll("testLocaltime",
+                () -> {
+                    assertEquals(ldt.getYear(), tm.tm_year() + 1900, "Year");
+                },
+                () -> {
+                    assertEquals(ldt.getDayOfYear(), tm.tm_yday() + 1, "DayOfYear");
+                },
+                () -> {
+                    assertEquals(ldt.getMonthValue(), tm.tm_mon() + 1, "MonthValue");
+                },
+                () -> {
+                    assertEquals(ldt.getDayOfMonth(), tm.tm_mday(), "DayOfMonth");
+                },
+                () -> {
+                    if (ldt.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                        //Sunday java = 7; posix = 0
+                        assertEquals(0, tm.tm_wday(), "DayOfWeek SUNDAY -> 0(sun)");
+                    } else {
+                        assertEquals(ldt.getDayOfWeek().getValue(), tm.tm_wday(), "DayOfWeek MONDAY to SATURDAY -> 1(mon) to 6(sat)");
+                    }
+                },
+                () -> {
+                    assertEquals(ldt.getHour(), tm.tm_hour(), "Hour");
+                },
+                () -> {
+                    assertEquals(ldt.getMinute(), tm.tm_min(), "Minute");
+                },
+                () -> {
+                    assertEquals(ldt.getSecond(), tm.tm_sec(), "Second");
+                });
     }
 
     /**
@@ -441,28 +448,17 @@ public class TimeTest {
     @Test
     public void testLocaltime_r() throws Exception {
         System.out.println("localtime_r");
-        final LocalDateTime ldt = LocalDateTime.now();
-        long timer = System.currentTimeMillis() / 1000;
-        Time.Tm tm = new Time.Tm();
+        final Instant instant = Instant.now();
+        final long timer = instant.getEpochSecond();
+        final Time.Tm tm = new Time.Tm();
 
-        Time.Tm result = Time.localtime_r(timer, tm);
+        final Time.Tm result = Time.localtime_r(timer, tm);
         Assertions.assertNotNull(result);
         Assertions.assertEquals(tm, result);
 
         System.out.println("time: " + timer + " localtime: " + result);
-        assertEquals(ldt.getYear(), result.tm_year() + 1900, "Year");
-        assertEquals(ldt.getDayOfYear(), result.tm_yday() + 1, "DayOfYear");
-        assertEquals(ldt.getMonthValue(), result.tm_mon() + 1, "MonthValue");
-        assertEquals(ldt.getDayOfMonth(), result.tm_mday(), "DayOfMonth");
-        if (ldt.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            //Sunday java = 7; posix = 0
-            assertEquals(0, result.tm_wday(), "DayOfWeek SUNDAY -> 0(sun)");
-        } else {
-            assertEquals(ldt.getDayOfWeek().getValue(), result.tm_wday(), "DayOfWeek MONDAY to SATURDAY -> 1(mon) to 6(sat)");
-        }
-        assertEquals(ldt.getHour(), result.tm_hour(), "Hour");
-        assertEquals(ldt.getMinute(), result.tm_min(), "Minute");
-        assertEquals(ldt.getSecond(), result.tm_sec(), "Second");
+
+        assertTm(instant, result, ZoneId.systemDefault());
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.localtime_r(timer, null);
@@ -478,7 +474,7 @@ public class TimeTest {
         long timer = System.currentTimeMillis() / 1000;
         Time.Tm tm = Time.localtime(timer);
         long result = Time.mktime(tm);
-        assertEquals(timer, result);
+        assertEquals(timer, result);//may fail too if Time.localtime is broken
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.mktime(null);
@@ -516,8 +512,8 @@ public class TimeTest {
             Time.nanosleep(rqtp, rmtp);
             long end = System.nanoTime();
 
-            Assertions.assertTrue(end - start < 11_000_000, "max 10ms but was " + (end - start) + "ns");
-            Assertions.assertTrue(end - start > 9_000_000, "min 8ms");
+            Assertions.assertTrue(end - start < 13_000_000, "max 13ms but was " + (end - start) + "ns");
+            Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
         } catch (NativeErrorException nee) {
             fail(Errno.getErrnoSymbol(nee.errno));
             Assertions.assertTrue(rmtp.tv_sec() <= rqtp.tv_sec(), "tv_sec");
@@ -546,7 +542,7 @@ public class TimeTest {
         System.out.println("strftime");
         long maxsize = 1024;
         String format = "%Y-%m-%d %H:%M:%S";
-        Time.Tm timeptr = new Time.Tm();
+        Time.Tm timeptr = new Time.Tm(true);
         timeptr.tm_year(2020 - 1900);
         timeptr.tm_mon(1);
         timeptr.tm_mday(19);
@@ -575,7 +571,7 @@ public class TimeTest {
         System.out.println("strftime_l");
         long maxsize = 256;
         String format = "%Y-%m-%d %H:%M:%S";
-        Time.Tm timeptr = new Time.Tm();
+        Time.Tm timeptr = new Time.Tm(true);
         timeptr.tm_year(2020 - 1900);
         timeptr.tm_mon(1);
         timeptr.tm_mday(19);
@@ -616,14 +612,13 @@ public class TimeTest {
         String expResult = "\nJNHW";
 
         String result = Time.strptime(buf, format, tm);
-        assertEquals(expResult, result);
         assertEquals(2020 - 1900, tm.tm_year());
         assertEquals(0, tm.tm_mon());
         assertEquals(27, tm.tm_mday());
         assertEquals(9, tm.tm_hour());
         assertEquals(12, tm.tm_min());
         assertEquals(57, tm.tm_sec());
-        if (multiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
             //TODO Free BSD bug ???
             assertEquals(0, tm.tm_wday());
             assertEquals("Sun Jan 27 09:12:57 2020\n", Time.asctime(tm));
@@ -631,6 +626,15 @@ public class TimeTest {
             assertEquals(1, tm.tm_wday());
             assertEquals("Mon Jan 27 09:12:57 2020\n", Time.asctime(tm));
         }
+
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXStrptimeXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx");
+            for (byte b : result.getBytes()) {
+                System.err.println(String.format("%c  0x%02x", b, b));
+            }
+            System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXStrptimeXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx");
+        }
+        assertEquals(expResult, result, "Expected pointer to String in buf");
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.strptime(null, format, tm);
@@ -665,7 +669,7 @@ public class TimeTest {
     @Test
     public void testTimer_create_delete() throws Exception {
         System.out.println("timer_create");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.timer_create(0, null, null);
@@ -673,8 +677,7 @@ public class TimeTest {
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.timer_delete(null);
                 });
-                break;
-            case FREE_BSD:
+                return;
             case MAC_OS_X:
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
@@ -686,58 +689,53 @@ public class TimeTest {
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.timer_delete(null);
                 });
-                break;
-            default:
-
-                final Time.Timer_t timerid = new Time.Timer_t(true);
-
-                Time.timer_create(Time.CLOCK_MONOTONIC(), null, timerid);
-                try {
-                    System.out.println("timerid: " + timerid);
-                } finally {
-                    Time.timer_delete(timerid);
-                }
-
-                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    Time.timer_delete(timerid);
-                });
-                assertEquals(Errno.EINVAL(), nee.errno);
-
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
-                });
-
-                Signal.Sigevent evp = new Signal.Sigevent();
-                Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
-                Pthread.pthread_attr_init(attr);
-                evp.sigev_notify_attributes(attr);
-
-                //Setup for signal delivery
-                evp.sigev_notify(Signal.SIGEV_SIGNAL());
-                evp.sigev_signo(Signal.SIGCHLD());
-                evp.sigev_value.sival_ptr(timerid);
-
-                Time.timer_create(Time.CLOCK_MONOTONIC(), evp, timerid);
-
-                try {
-                    System.out.println("timerid: " + timerid);
-                } finally {
-                    Time.timer_delete(timerid);
-                }
-
-                //TODO want crash test...
-//        if (multiarchTupelBuilder.getOS() != OS.FREE_BSD) {
-                //FreeBSD crashes here with a SIGSEGV ...
-                nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    Time.timer_delete(timerid);
-                });
-                assertEquals(Errno.EINVAL(), nee.errno);
-//        }
-
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Time.timer_delete(null);
-                });
+                return;
         }
+
+        final Time.Timer_t timerid = new Time.Timer_t(true);
+
+        Time.timer_create(Time.CLOCK_MONOTONIC(), null, timerid);
+        try {
+            System.out.println("timerid: " + timerid);
+        } finally {
+            Time.timer_delete(timerid);
+        }
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
+        });
+
+        Signal.Sigevent evp = new Signal.Sigevent();
+        Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
+        Pthread.pthread_attr_init(attr);
+        evp.sigev_notify_attributes(attr);
+
+        //Setup for signal delivery
+        evp.sigev_notify(Signal.SIGEV_SIGNAL());
+        evp.sigev_signo(Signal.SIGCHLD());
+        evp.sigev_value.sival_ptr(timerid);
+
+        Time.timer_create(Time.CLOCK_MONOTONIC(), evp, timerid);
+
+        try {
+            System.out.println("timerid: " + timerid);
+        } finally {
+            Time.timer_delete(timerid);
+        }
+
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
+            //FreeBSD crashes here with a SIGSEGV ...
+            fail("Praceholder to gracefully fail the test - Remove this to see if the vm still crashes as of now:  FreeBSD 12.1-RELEASE-p10 and openjdk15-15.0.0+36.1_1");
+        } else {
+            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                Time.timer_delete(timerid);
+            });
+            assertEquals(Errno.EINVAL(), nee.errno);
+        }
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.timer_delete(null);
+        });
     }
 
     /**
@@ -746,7 +744,7 @@ public class TimeTest {
     @Test
     public void testTimer_SIGEV_NONE() throws Exception {
         System.out.println("timer_create Signal");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
@@ -791,9 +789,9 @@ public class TimeTest {
      * Test of timer_* methods, of class Time.
      */
     @Test
-    public void testTimer() throws Exception {
+    public void testTimer() throws Throwable {
         System.out.println("timer_create");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
@@ -808,7 +806,7 @@ public class TimeTest {
                 break;
             default:
 
-                final IntRef intRef = new IntRef(0);
+                final ObjectRef<Object> intRef = new ObjectRef<>(null);
                 Time.Timer_t timerid = new Time.Timer_t();
 
                 //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
@@ -818,17 +816,26 @@ public class TimeTest {
         parm.sched_priority(0); //TODO Was 255 but got EINVAL
         Pthread.pthread_attr_setschedparam(attr, parm);
                  */
-                Signal.Sigevent<OpaqueMemory> evp = new Signal.Sigevent<>();
+                Signal.Sigevent<OpaqueMemory32> evp = new Signal.Sigevent<>();
                 //evp.sigev_notify_attributes(attr);
                 evp.sigev_notify(Signal.SIGEV_THREAD());
-                evp.sigev_value.sival_int(42);
-                evp.sigev_notify_function(new Callback_I_V_Impl() {
+                evp.sigev_value.sival_int(0x12345678);
+                assertEquals(0x12345678, evp.sigev_value.sival_int());
+                evp.sigev_notify_function(new Callback__Sigval_int__V_Impl() {
 
                     @Override
                     protected void callback(int sigval) {
-                        synchronized (intRef) {
-                            intRef.value = sigval;
-                            intRef.notifyAll();
+                        try {
+                            synchronized (intRef) {
+                                intRef.value = (int) sigval;
+                                intRef.notifyAll();
+                            }
+                        } catch (Exception ex) {
+                            synchronized (intRef) {
+                                intRef.value = ex;
+                                intRef.notifyAll();
+                            }
+                            throw ex;
                         }
                     }
 
@@ -851,10 +858,15 @@ public class TimeTest {
 
 //TODO 2s will be splitted...            assertEquals(value, itimerspec);
                     synchronized (intRef) {
-                        if (intRef.value == 0) {
-                            intRef.wait();
+                        if (intRef.value == null) {
+                            intRef.wait(ONE_MINUTE);
                         }
-                        assertEquals(42, intRef.value);
+                        Assertions.assertNotNull(intRef.value);
+                        if (intRef.value instanceof Throwable) {
+                            fail("in callback", (Exception) intRef.value);
+                        } else {
+                            assertEquals(0x12345678, intRef.value);
+                        }
                     }
 
                     System.out.println("timer_getoverrun");
@@ -862,14 +874,10 @@ public class TimeTest {
 
                     assertEquals(0, count);
 
-                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    NullPointerException nee = Assertions.assertThrows(NullPointerException.class, () -> {
                         Time.timer_settime(timerid, 0, null, null);
                     });
-                    if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
-                        assertEquals(Errno.EFAULT(), nee.errno);
-                    } else {
-                        assertEquals(Errno.EINVAL(), nee.errno);
-                    }
+                    assertEquals("value is NULL", nee.getMessage());
                 } finally {
                     System.out.println("timer_delete");
                     Time.timer_delete(timerid);
@@ -882,7 +890,7 @@ public class TimeTest {
      */
     @Test
     public void testTimezone() throws Exception {
-        Assumptions.assumeFalse(multiarchTupelBuilder.getOS() == OS.FREE_BSD);
+        Assumptions.assumeFalse(MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD);
         System.out.println("timezone");
         final long oldTimezone = Time.timezone();
         assertEquals(oldTimezone, Time.timezone());
@@ -924,40 +932,173 @@ public class TimeTest {
 
     @Test
     public void testTimer_t() throws Exception {
-        switch (multiarchTupelBuilder.getOS()) {
-            case FREE_BSD:
-            case MAC_OS_X:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    new Time.Timer_t(true);
-                });
+        Time.Timer_t timer_t = new Time.Timer_t(true);
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals("0x00000000", timer_t.nativeToString());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals("0x0000000000000000", timer_t.nativeToString());
                 break;
             default:
-                Time.Timer_t timer_t = new Time.Timer_t(true);
-                switch (Defines.__SIZEOF_LONG__()) {
-                    case 4:
-                        Assertions.assertEquals("0x00000000", timer_t.toString());
-                        break;
-                    case 8:
-                        Assertions.assertEquals("0x0000000000000000", timer_t.toString());
-                        break;
-                    default:
-                        fail("Wordsize not supported");
-                }
+                fail("Wordsize not supported");
         }
     }
 
     @Test
     public void testItimerspec() throws Exception {
-        switch (multiarchTupelBuilder.getOS()) {
-            case FREE_BSD:
-            case MAC_OS_X:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    new Time.Itimerspec(true);
-                });
+        Time.Itimerspec itimerspec = new Time.Itimerspec(true);
+        Assertions.assertEquals("{it_value : {tv_sec : 0, tv_nsec : 0}, it_interval : {tv_sec : 0, tv_nsec : 0}}", itimerspec.nativeToString());
+    }
+
+    @Test
+    public void testSizeOfItimerspec() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(16, Time.Itimerspec.sizeof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(32, Time.Itimerspec.sizeof());
                 break;
             default:
-                Time.Itimerspec itimerspec = new Time.Itimerspec(true);
-                Assertions.assertEquals("{it_value : {tv_sec : 0, tv_nsec : 0}, it_interval : {tv_sec : 0, tv_nsec : 0}}", itimerspec.toString());
+                Assertions.assertEquals(-1, Time.Itimerspec.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfItimerspec() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Time.Itimerspec.alignof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Time.Itimerspec.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Time.Itimerspec.alignof());
+        }
+    }
+
+    @Test
+    public void testSizeOfTimer_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+            case FREE_BSD:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _32_BIT:
+                        Assertions.assertEquals(4, Time.Timer_t.sizeof());
+                        break;
+                    case _64_BIT:
+                        Assertions.assertEquals(8, Time.Timer_t.sizeof());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Time.Timer_t.sizeof());
+                }
+                break;
+            case OPEN_BSD:
+                Assertions.assertEquals(4, Time.Timer_t.sizeof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Time.Timer_t.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfTimer_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+            case FREE_BSD:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _32_BIT:
+                        Assertions.assertEquals(4, Time.Timer_t.alignof());
+                        break;
+                    case _64_BIT:
+                        Assertions.assertEquals(8, Time.Timer_t.alignof());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Time.Timer_t.alignof());
+                }
+                break;
+            case OPEN_BSD:
+                Assertions.assertEquals(4, Time.Timer_t.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Time.Timer_t.alignof());
+        }
+    }
+
+    @Test
+    public void testSizeOfTimespec() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(8, Time.Timespec.sizeof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(16, Time.Timespec.sizeof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Time.Timespec.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfTimespec() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Time.Timespec.alignof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Time.Timespec.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Time.Timespec.alignof());
+        }
+    }
+
+    @Test
+    public void testSizeOfTm() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(44, Time.Tm.sizeof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(56, Time.Tm.sizeof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Time.Tm.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfTm() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Time.Tm.alignof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Time.Tm.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Time.Tm.alignof());
+        }
+    }
+
+    @Test
+    public void testOffsetOfIt_interval() throws Exception {
+        Assertions.assertEquals(0, Time.Itimerspec.offsetof_It_interval());
+    }
+
+    @Test
+    public void testOffsetOfIt_value() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(8, Time.Itimerspec.offsetof_It_value());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(16, Time.Itimerspec.offsetof_It_value());
+                break;
+            default:
+                Assertions.assertEquals(-1, Time.Itimerspec.offsetof_It_value());
         }
     }
 

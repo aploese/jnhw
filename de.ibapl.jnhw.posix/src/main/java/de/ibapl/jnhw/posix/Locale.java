@@ -21,12 +21,14 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.common.annotations.AlignOf;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -62,6 +64,7 @@ public class Locale {
      * <b>POSIX:</b> XXX
      *
      * @return the native symbolic constant of LC_ALL_MASK.
+     * @throws NotDefinedException if LC_ALL_MASK is not defined natively.
      */
     @Define()
     public final static native int LC_ALL_MASK() throws NotDefinedException;
@@ -262,7 +265,7 @@ public class Locale {
      * lconv}</a>.
      *
      */
-    public static final class Lconv extends OpaqueMemory {
+    public static final class Lconv extends Struct32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -277,10 +280,19 @@ public class Locale {
          *
          * @return the native value sizeof(struct lconv).
          */
-        public static native int sizeofLconv();
+        @SizeOf
+        public static native int sizeof();
+
+        /**
+         * Get the alignment of struct lconv natively.
+         *
+         * @return the native value __alignof__(struct lconv).
+         */
+        @AlignOf
+        public static native int alignof();
 
         public Lconv() {
-            super(sizeofLconv(), false);
+            super(sizeof(), false);
         }
 
         /**
@@ -293,7 +305,8 @@ public class Locale {
             super(addressHolder, size);
         }
 
-        public String toString() {
+        @Override
+        public String nativeToString() {
             StringBuilder sb = new StringBuilder();
             sb.append("{currency_symbol : \"").append(currency_symbol());
             sb.append("\", decimal_point : \"").append(decimal_point());

@@ -21,12 +21,8 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LongRef;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.ObjectRef;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -55,7 +51,7 @@ public final class Ioapiset {
      *
      * @param hFile a handle to the file, named pipe, or communications device.
      *
-     * @throws NullPointerException if hFile is {@code null].
+     * @throws NullPointerException if hFile is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -70,7 +66,7 @@ public final class Ioapiset {
      * @param lpOverlapped a pointer to an {@link OVERLAPPED} data structure
      * that contains the data used for asynchronous I/O.
      *
-     * @throws NullPointerException if hFile or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpOverlapped is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -93,7 +89,7 @@ public final class Ioapiset {
      *
      * @return lpNumberOfBytesTransferred of the native call.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -119,7 +115,7 @@ public final class Ioapiset {
      * GetLastError function returns ERROR_IO_INCOMPLETE.
      * @return lpNumberOfBytesTransferred of the native call.
      *
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
      * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
      *

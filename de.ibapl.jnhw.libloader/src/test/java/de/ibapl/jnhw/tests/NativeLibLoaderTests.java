@@ -37,22 +37,6 @@ public class NativeLibLoaderTests {
         System.load(absoluteLibName);
     }
 
-    @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-    }
-
-    @AfterAll
-    public static void tearDownAfterClass() throws Exception {
-    }
-
-    @BeforeEach
-    public void setUp() throws Exception {
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-    }
-
     final static String LIB_NON_EXISTANT = "non-existant";
 
     @Test
@@ -60,11 +44,6 @@ public class NativeLibLoaderTests {
         LoadResult lr = NativeLibResolver.loadNativeLib(LIB_NON_EXISTANT, 0, NativeLibLoaderTests::doSystemLoad);
         Assertions.assertFalse(lr.isLoaded());
         System.out.println(lr.loadError);
-    }
-
-    @Test
-    public void testClear() throws Exception {
-        NativeLibResolver.getOS();
     }
 
 }

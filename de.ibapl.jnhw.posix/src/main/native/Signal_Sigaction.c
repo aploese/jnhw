@@ -35,20 +35,30 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
-     * Method:    sizeofSigaction
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sizeofSigaction
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct sigaction);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
-     * Method:    _sa_mask_Offset
+     * Method:    alignof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction__1sa_1mask_1Offset
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct sigaction);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
+     * Method:    offsetof_Sa_mask
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_offsetof_1Sa_1mask
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct sigaction, sa_mask);
     }
@@ -76,7 +86,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
      * Method:    sa_handler
-     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler
     (JNIEnv *env, jobject structSigaction) {
@@ -86,9 +96,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
      * Method:    sa_handler0
-     * Signature: (Lde/ibapl/jnhw/Callback_I_V;)V
+     * Signature: (Lde/ibapl/jnhw/common/callbacks/Callback_I_V;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler0__Lde_ibapl_jnhw_Callback_1I_1V_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler0__Lde_ibapl_jnhw_common_callbacks_Callback_1I_1V_2
     (JNIEnv *env, jobject structSigaction, jobject value) {
         (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_handler = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (jint), value);
     }
@@ -96,9 +106,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
      * Method:    sa_sigaction0
-     * Signature: (Lde/ibapl/jnhw/Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;)V
+     * Signature: (Lde/ibapl/jnhw/common/callbacks/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction0__Lde_ibapl_jnhw_Callback_1I_1PtrOpaqueMemory_1PtrOpaqueMemory_1V_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction0__Lde_ibapl_jnhw_common_callbacks_Callback_1I_1PtrAbstractNativeMemory_1PtrAbstractNativeMemory_1V_2
     (JNIEnv *env, jobject structSigaction, jobject value) {
         (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (jint, siginfo_t *, void *), value);
     }
@@ -106,7 +116,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
      * Method:    sa_sigaction
-     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction
     (JNIEnv *env, jobject structSigaction) {

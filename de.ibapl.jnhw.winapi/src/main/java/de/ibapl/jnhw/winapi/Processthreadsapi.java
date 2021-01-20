@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import de.ibapl.jnhw.winapi.Winnt.PAPCFUNC;
@@ -58,8 +58,8 @@ public abstract class Processthreadsapi {
      * @param dwData A single value that is passed to the APC function pointed
      * to by the pfnAPC parameter.
      *
-     * @throws NullPointerException if pfnAPC is {@code null].
-     * @throws NullPointerException if hThread is {@code null].
+     * @throws NullPointerException if pfnAPC is {@code null}.
+     * @throws NullPointerException if hThread is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.

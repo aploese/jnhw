@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.IntRef;
+import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
 import de.ibapl.jnhw.winapi.WinDef.PHKEY;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;

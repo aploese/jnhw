@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -58,7 +58,7 @@ public class StringHeader {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strerror_l.html">strerror,
      * strerror_l, strerror_r - get error message string</a>.
      *
-     * @throws NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method strerror_l is not available natively.
      */
     public final static native String strerror_l(int errnum, Locale.Locale_t locale) throws NoSuchNativeMethodException;
 

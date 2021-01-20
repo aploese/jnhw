@@ -67,6 +67,7 @@
 #include <unistd.h>
 #endif
 
+#include "jnhw-posix-datatypes.h"
 
 #ifndef _jnhw_posix_H
 #define _jnhw_posix_H
@@ -142,8 +143,20 @@ extern "C" {
 
 #define UNWRAP_STRUCT_SCHED_PARAM_PTR(value)UNWRAP_OPAQUE_MEM_TO(struct sched_param*, value)
 
-#define LENGTH_OF_AIOCBS(aiocbs) LENGTH_OF_POINTER_ARRAY(aiocbs) 
+#define LENGTH_OF_AIOCBS(aiocbs) LENGTH_OF_POINTER_ARRAY_32(aiocbs) 
     
+
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+//Convert a jlong to (long int *) the pointer must be shifted by sizeof(long int) 
+#define __jlong2long_PTR(value) ((long int *) &value) + 1
+//Convert a jlong to (long int *)
+#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define __jlong2long_PTR(value) (long int *) &value
+
+#else
+#error "Can't handle byte order"
+#endif
+
 #ifdef __cplusplus
 }
 #endif

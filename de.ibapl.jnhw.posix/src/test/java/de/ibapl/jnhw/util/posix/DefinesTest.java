@@ -21,10 +21,9 @@
  */
 package de.ibapl.jnhw.util.posix;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Defined;
-import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.linux.sys.Eventfd;
@@ -59,12 +58,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
  */
 public class DefinesTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
-
-    @BeforeAll
-    public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
-    }
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public static void testDefines(Class clazz) throws Exception {
         System.out.println(clazz.getName() + " Defines: >>>");
@@ -85,7 +79,7 @@ public class DefinesTest {
                         }
                     }
                     if (found) {
-                    System.out.println(String.format("\t%-30s ... is not defined", m.getName()));
+                        System.out.println(String.format("\t%-30s ... is not defined", m.getName()));
                     } else {
                         Assertions.fail("Name: " + m.getName() + " throws NotDefinedException but don't declare it" + ite.getTargetException());
                     }
@@ -203,6 +197,11 @@ public class DefinesTest {
     }
 
     @Test
+    public void testDefines() throws Exception {
+        testDefines(Defines.class);
+    }
+
+    @Test
     @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testUnistdDefines() throws Exception {
         testDefines(Unistd.class);
@@ -210,7 +209,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_AIO_H() throws Exception {
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case WINDOWS:
                 Assertions.assertFalse(Aio.HAVE_AIO_H(), "expected not to have aio.h");
@@ -227,7 +226,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_FCNTL_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Fcntl.HAVE_FCNTL_H(), "expected not to have fcntl.h");
         } else {
             Assertions.assertTrue(Fcntl.HAVE_FCNTL_H(), "expected to have fcntl.h");
@@ -236,7 +235,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_LOCALE_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Locale.HAVE_LOCALE_H(), "expected not to have locale.h");
         } else {
             Assertions.assertTrue(Locale.HAVE_LOCALE_H(), "expected to have locale.h");
@@ -245,7 +244,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_POLL_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Poll.HAVE_POLL_H(), "not expected to have poll.h");
         } else {
             Assertions.assertTrue(Poll.HAVE_POLL_H(), "expected to have poll.h");
@@ -254,7 +253,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_PTHREAD_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Pthread.HAVE_PTHREAD_H(), "not expected to have pthread.h");
         } else {
             Assertions.assertTrue(Pthread.HAVE_PTHREAD_H(), "expected to have pthread.h");
@@ -263,7 +262,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_SCHED_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Sched.HAVE_SCHED_H(), "not expected to have sched.h");
         } else {
             Assertions.assertTrue(Sched.HAVE_SCHED_H(), "expected to have sched.h");
@@ -272,7 +271,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_SIGNAL_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Signal.HAVE_SIGNAL_H(), "not expected to have signal.h");
         } else {
             Assertions.assertTrue(Signal.HAVE_SIGNAL_H(), "expected to have signal.h");
@@ -287,7 +286,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_STRING_H() {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(StringHeader.HAVE_STRING_H(), "not expected to have string.h");
         } else {
             assertTrue(StringHeader.HAVE_STRING_H(), "expected to have string.h");
@@ -296,7 +295,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_SYS_EVENTFD_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.LINUX) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.LINUX) {
             Assertions.assertTrue(Eventfd.HAVE_SYS_EVENTFD_H(), "expected to have sys/eventfd.h");
         } else {
             Assertions.assertFalse(Eventfd.HAVE_SYS_EVENTFD_H(), "not expected to have sys/eventfd.h");
@@ -305,7 +304,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_SYS_IOCTL_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             assertFalse(Ioctl.HAVE_SYS_IOCTL_H(), "not expected to have sys/ioctl.h");
         } else {
             assertTrue(Ioctl.HAVE_SYS_IOCTL_H(), "expected to have sys/ioctl.h");
@@ -324,7 +323,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_TERMIOS_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             assertFalse(Termios.HAVE_TERMIOS_H(), "not expected to have termios.h");
         } else {
             assertTrue(Termios.HAVE_TERMIOS_H(), "expected to have termios.h");
@@ -333,7 +332,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_TIME_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             assertFalse(Time.HAVE_TIME_H(), "not expected to have time.h");
         } else {
             assertTrue(Time.HAVE_TIME_H(), "expected to have time.h");
@@ -351,7 +350,7 @@ public class DefinesTest {
     @Test
     public void test_LARGEFILE64_SOURCE() throws Exception {
         System.out.println("_LARGEFILE64_SOURCE");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
                 switch (Defines.__SIZEOF_LONG__()) {
                     case 4:
@@ -375,7 +374,7 @@ public class DefinesTest {
                 assertThrows(NotDefinedException.class, Defines::_LARGEFILE64_SOURCE);
                 break;
             default:
-                fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
+                fail("No testcase for OS: " + MULTIARCHTUPEL_BUILDER.getOS());
         }
     }
 
@@ -385,7 +384,7 @@ public class DefinesTest {
     @Test
     public void test_LARGEFILE_SOURCE() throws Exception {
         System.out.println("_LARGEFILE_SOURCE");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
                 switch (Defines.__SIZEOF_LONG__()) {
                     case 4:
@@ -409,7 +408,7 @@ public class DefinesTest {
                 assertThrows(NotDefinedException.class, Defines::_LARGEFILE_SOURCE);
                 break;
             default:
-                fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
+                fail("No testcase for OS: " + MULTIARCHTUPEL_BUILDER.getOS());
         }
     }
 
@@ -428,7 +427,7 @@ public class DefinesTest {
     @Test
     public void test_POSIX_C_SOURCE() throws Exception {
         System.out.println("_POSIX_C_SOURCE");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
             case FREE_BSD:
             case OPEN_BSD:
@@ -439,7 +438,7 @@ public class DefinesTest {
                 assertThrows(NotDefinedException.class, Defines::_POSIX_C_SOURCE);
                 break;
             default:
-                fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
+                fail("No testcase for OS: " + MULTIARCHTUPEL_BUILDER.getOS());
         }
     }
 
@@ -449,7 +448,7 @@ public class DefinesTest {
     @Test
     public void test_XOPEN_SOURCE() throws Exception {
         System.out.println("_XOPEN_SOURCE");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
             case FREE_BSD:
             case OPEN_BSD:
@@ -460,7 +459,7 @@ public class DefinesTest {
                 assertThrows(NotDefinedException.class, Defines::_XOPEN_SOURCE);
                 break;
             default:
-                fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
+                fail("No testcase for OS: " + MULTIARCHTUPEL_BUILDER.getOS());
         }
     }
 
@@ -470,7 +469,7 @@ public class DefinesTest {
     @Test
     public void test_XOPEN_SOURCE_EXTENDED() throws Exception {
         System.out.println("_XOPEN_SOURCE_EXTENDED");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
             case FREE_BSD:
             case OPEN_BSD:
@@ -481,7 +480,7 @@ public class DefinesTest {
                 assertThrows(NotDefinedException.class, Defines::_XOPEN_SOURCE_EXTENDED);
                 break;
             default:
-                fail("No testcase for OS: " + multiarchTupelBuilder.getOS());
+                fail("No testcase for OS: " + MULTIARCHTUPEL_BUILDER.getOS());
         }
     }
 
@@ -491,7 +490,7 @@ public class DefinesTest {
     @Test
     public void test__APPLE__() {
         System.out.println("__APPLE__");
-        assertEquals(multiarchTupelBuilder.getOS() == OS.MAC_OS_X, Defined.defined(Defines::__APPLE__));
+        assertEquals(MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X, Defined.defined(Defines::__APPLE__));
     }
 
     /**
@@ -500,7 +499,7 @@ public class DefinesTest {
     @Test
     public void test__FreeBSD__() {
         System.out.println("__FreeBSD__");
-        assertEquals(multiarchTupelBuilder.getOS() == OS.FREE_BSD, Defined.defined(Defines::__FreeBSD__));
+        assertEquals(MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD, Defined.defined(Defines::__FreeBSD__));
     }
 
     /**
@@ -509,17 +508,15 @@ public class DefinesTest {
     @Test
     public void test__WORDSIZE() throws Exception {
         System.out.println("__WORDSIZE");
-        for (MultiarchInfo mi : new MultiarchTupelBuilder().guessMultiarch()) {
-            switch (mi.getOS()) {
-                case OPEN_BSD:
-                case WINDOWS:
-                    assertThrows(NotDefinedException.class, () -> {
-                        Defines.__WORDSIZE();
-                    });
-                    break;
-                default:
-                    assertEquals(mi.getWordSize().sizeInBit, Defines.__WORDSIZE(), "wordsize");
-            }
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+            case WINDOWS:
+                assertThrows(NotDefinedException.class, () -> {
+                    Defines.__WORDSIZE();
+                });
+                break;
+            default:
+                assertEquals(MULTIARCHTUPEL_BUILDER.getWordSize().sizeInBit, Defines.__WORDSIZE(), "wordsize");
         }
     }
 
@@ -529,7 +526,49 @@ public class DefinesTest {
     @Test
     public void test__linux__() {
         System.out.println("__linux__");
-        assertEquals(multiarchTupelBuilder.getOS() == OS.LINUX, Defined.defined(Defines::__linux__));
+        assertEquals(MULTIARCHTUPEL_BUILDER.getOS() == OS.LINUX, Defined.defined(Defines::__linux__));
+    }
+
+    @Test
+    public void test__ORDER_LITTLE_ENDIAN__() throws Exception {
+        System.out.println("__ORDER_LITTLE_ENDIAN__");
+        assertEquals(1234, Defines.__ORDER_LITTLE_ENDIAN__());
+    }
+
+    @Test
+    public void test__ORDER_BIG_ENDIAN__() throws Exception {
+        System.out.println("__ORDER_BIG_ENDIAN__");
+        assertEquals(4321, Defines.__ORDER_BIG_ENDIAN__());
+    }
+
+    @Test
+    public void test__ORDER_PDP_ENDIAN__() throws Exception {
+        System.out.println("__ORDER_PDP_ENDIAN__");
+        assertEquals(3412, Defines.__ORDER_PDP_ENDIAN__());
+    }
+
+    @Test
+    public void test__BYTE_ORDER__() throws Exception {
+        System.out.println("__BYTE_ORDER__");
+        assertEquals(1234, Defines.__ORDER_LITTLE_ENDIAN__());
+        switch (MULTIARCHTUPEL_BUILDER.getEndianess()) {
+            case BIG:
+                assertEquals(Defines.__ORDER_BIG_ENDIAN__(), Defines.__BYTE_ORDER__());
+                break;
+            case LITTLE:
+                assertEquals(Defines.__ORDER_LITTLE_ENDIAN__(), Defines.__BYTE_ORDER__());
+                break;
+        }
+    }
+
+    @Test
+    public void test__GNU_LIBRARY__() throws Exception {
+        if (Defined.defined(Defines::__GNU_LIBRARY__)) {
+            assertTrue(Defined.defined(Defines::__GLIBC__), "__GLIBC__");
+            assertTrue(Defined.defined(Defines::__GLIBC__), "__GLIBC__");
+            assertEquals(MULTIARCHTUPEL_BUILDER.getWordSize().sizeInBit, Defines.__WORDSIZE());
+            //assertEquals(new MultiarchTupelBuilder().getWordSize().sizeInBit, Defines.__TIMESIZE());
+        }
     }
 
 }

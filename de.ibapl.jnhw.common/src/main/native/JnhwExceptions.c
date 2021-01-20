@@ -24,11 +24,11 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#define NATIVE_ERROR_EXCEPTION "de/ibapl/jnhw/NativeErrorException"
-#define NOT_DEFINED_EXCEPTION "de/ibapl/jnhw/NotDefinedException"
-#define NO_SUCH_NATIVE_METHOD_EXCEPTION "de/ibapl/jnhw/NoSuchNativeMethodException"
-#define NO_SUCH_NATIVE_TYPE_EXCEPTION "de/ibapl/jnhw/NoSuchNativeTypeException"
-#define NO_SUCH_NATIVE_TYPE_MEMBER_EXCEPTION "de/ibapl/jnhw/NoSuchNativeTypeMemberException"
+#define NATIVE_ERROR_EXCEPTION "de/ibapl/jnhw/common/exceptions/NativeErrorException"
+#define NOT_DEFINED_EXCEPTION "de/ibapl/jnhw/common/exceptions/NotDefinedException"
+#define NO_SUCH_NATIVE_METHOD_EXCEPTION "de/ibapl/jnhw/common/exceptions/NoSuchNativeMethodException"
+#define NO_SUCH_NATIVE_TYPE_EXCEPTION "de/ibapl/jnhw/common/exceptions/NoSuchNativeTypeException"
+#define NO_SUCH_NATIVE_TYPE_MEMBER_EXCEPTION "de/ibapl/jnhw/common/exceptions/NoSuchNativeTypeMemberException"
 #define NULL_POINTER_EXCEPTION "java/lang/NullPointerException"
 #define ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/ArrayIndexOutOfBoundsException"
 #define INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/IndexOutOfBoundsException"

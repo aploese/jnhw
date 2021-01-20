@@ -33,30 +33,40 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
-     * Method:    sizeof_itimerspec
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_sizeof_1itimerspec
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_sizeof
         (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct itimerspec);
         }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
-     * Method:    offsetof_it_interval
+     * Method:    alignof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_offsetof_1it_1interval
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_alignof
+        (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct itimerspec);
+        }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
+     * Method:    offsetof_It_interval
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_offsetof_1It_1interval
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct itimerspec, it_interval);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
-     * Method:    offsetof_it_value
+     * Method:    offsetof_It_value
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_offsetof_1it_1value
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_offsetof_1It_1value
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct itimerspec, it_value);
     }

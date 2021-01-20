@@ -14,6 +14,8 @@ mvn clean compile test-compile || exit 1
 # "mipsisa64r6-linux-gnuabi64"
 # "mips64-linux-gnuabin32"\
 # "mips64el-linux-gnuabin32"\
+#sparc is not tested...
+# "sparc64-linux-gnu"
 
 for d in\
  "aarch64-linux-gnu"\

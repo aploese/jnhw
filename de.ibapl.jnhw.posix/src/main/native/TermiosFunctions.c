@@ -30,7 +30,8 @@ extern "C" {
 #include <termios.h>
 #include <errno.h>
 
-
+JNHW_ASSERT__speed_t__IS__uint32_t
+JNHW_ASSERT__pid_t__IS__int32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
@@ -71,10 +72,6 @@ extern "C" {
             throw_NullPointerException(env, "structTermios");
             return;
         }
-        if (speed < 0) {
-            throw_IllegalArgumentException(env, "speed must be >= 0");
-            return;
-        }
         if (cfsetispeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), (uint32_t) speed)) {
             throw_NativeErrorException(env, errno);
         }
@@ -89,10 +86,6 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject structTermios, jint speed) {
         if (structTermios == NULL) {
             throw_NullPointerException(env, "structTermios");
-            return;
-        }
-        if (speed < 0) {
-            throw_IllegalArgumentException(env, "speed must be >= 0");
             return;
         }
         if (cfsetospeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), (uint32_t) speed)) {
@@ -203,10 +196,6 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject structTermios, jint speed) {
         if (structTermios == NULL) {
             throw_NullPointerException(env, "structTermios");
-            return;
-        }
-        if (speed < 0) {
-            throw_IllegalArgumentException(env, "speed must be >= 0");
             return;
         }
         if (cfsetspeed(UNWRAP_STRUCT_TERMIOS_PTR(structTermios), (uint32_t) speed)) {

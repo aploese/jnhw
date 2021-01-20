@@ -21,12 +21,12 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LongRef;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.ObjectRef;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.references.LongRef;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.references.ObjectRef;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,7 +53,7 @@ public class IoAPITest {
         final Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         IntRef lpNumberOfBytesTransferred = new IntRef();
         LongRef lpCompletionKey = new LongRef();
-        ObjectRef<NativeAddressHolder> lpOverlapped = new ObjectRef();
+        ObjectRef<NativeAddressHolder> lpOverlapped = new ObjectRef<>();
         final int dwNumberOfBytesTransferred = 42;
         long dwMilliseconds = 5000;
         new Thread(() -> {
@@ -71,7 +71,7 @@ public class IoAPITest {
         lpCompletionKey.value = 0;
         assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.value);
         lpNumberOfBytesTransferred.value = 0;
-        assertTrue(OpaqueMemory.isSameAddress(lpOverlapped.value, overlapped));
+        assertTrue(OpaqueMemory32.isSameAddress(lpOverlapped.value, overlapped));
         lpOverlapped.value = null;
 
         IoAPI.PostQueuedCompletionStatus(completionPort, dwNumberOfBytesTransferred, COMPLETION_KEY, null);

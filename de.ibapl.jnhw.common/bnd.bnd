@@ -1,3 +1,9 @@
 Export-Package: \
-	de.ibapl.jnhw.util,\
-	de.ibapl.jnhw
+	de.ibapl.jnhw.common,\
+	de.ibapl.jnhw.common.annotations,\
+	de.ibapl.jnhw.common.callbacks,\
+	de.ibapl.jnhw.common.datatypes, \
+	de.ibapl.jnhw.common.exceptions,\
+	de.ibapl.jnhw.common.memory,\
+	de.ibapl.jnhw.common.references,\
+	de.ibapl.jnhw.common.util,\

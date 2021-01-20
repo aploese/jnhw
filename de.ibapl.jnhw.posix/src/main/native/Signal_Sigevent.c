@@ -36,10 +36,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
-     * Method:    _sigev_value_Offset
+     * Method:    offsetof_Sigev_value
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent__1sigev_1value_1Offset
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_offsetof_1Sigev_1value
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct sigevent");
@@ -52,10 +52,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
-     * Method:    sizeofSigevent
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sizeofSigevent
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sizeof
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         throw_NoSuchNativeTypeException(env, "struct sigevent");
@@ -63,6 +63,22 @@ extern "C" {
 #else
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct sigevent);
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_alignof
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        throw_NoSuchNativeTypeException(env, "struct sigevent");
+        return -1;
+#else
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct sigevent);
 #endif
     }
 
@@ -131,7 +147,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
      * Method:    sigev_notify_attributes
-     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
+     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1attributes
  #if defined(__OpenBSD__)
@@ -162,7 +178,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
      * Method:    sigev_notify_function
-     * Signature: ()Lde/ibapl/jnhw/NativeFunctionPointer;
+     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function
 #if defined(__OpenBSD__)
@@ -178,9 +194,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
      * Method:    sigev_notify_function0
-     * Signature: (Lde/ibapl/jnhw/NativeFunctionPointer;)V
+     * Signature: (Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function0__Lde_ibapl_jnhw_NativeFunctionPointer_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function0__Lde_ibapl_jnhw_common_memory_NativeFunctionPointer_2
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jobject structSigevent, __attribute__ ((unused)) jobject value) {
         throw_NoSuchNativeTypeException(env, "struct sigevent");

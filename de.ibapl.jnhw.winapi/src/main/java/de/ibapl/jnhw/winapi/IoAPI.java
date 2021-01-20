@@ -21,16 +21,15 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LongRef;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.ObjectRef;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.references.LongRef;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import java.nio.ByteBuffer;
 
 /**
  * Wrapper around the
@@ -67,7 +66,7 @@ public final class IoAPI {
      *
      * @return
      *
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -90,7 +89,7 @@ public final class IoAPI {
      * operation was started.
      * @param dwMilliseconds The number of milliseconds that the caller is
      * willing to wait for a completion packet to appear at the completion port.
-     * @throws NullPointerException if hFile or lpBuffer is {@code null].
+     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.

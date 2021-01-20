@@ -21,11 +21,13 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -36,12 +38,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SchedTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
-
-    @BeforeAll
-    public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
-    }
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public SchedTest() {
     }
@@ -53,7 +50,10 @@ public class SchedTest {
     public void testSched_get_priority_max() throws Exception {
         System.out.println("sched_get_priority_max");
         int result = Sched.sched_get_priority_max(Sched.SCHED_OTHER());
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case FREE_BSD:
+                Assertions.assertEquals(103, result);
+                break;
             case OPEN_BSD:
                 Assertions.assertEquals(31, result);
                 break;
@@ -61,7 +61,7 @@ public class SchedTest {
                 Assertions.assertEquals(47, result);
                 break;
             default:
-                Assertions.assertEquals(0, result);
+                Assertions.assertEquals(0, result, "I dont know wthat to expect so assume 0 for Sched.sched_get_priority_max(Sched.SCHED_OTHER())");
         }
     }
 
@@ -72,7 +72,7 @@ public class SchedTest {
     public void testSched_get_priority_min() throws Exception {
         System.out.println("sched_get_priority_min");
         int result = Sched.sched_get_priority_min(Sched.SCHED_OTHER());
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case MAC_OS_X:
                 Assertions.assertEquals(15, result);
                 break;
@@ -87,7 +87,7 @@ public class SchedTest {
     @Test
     public void testSched_getscheduler() throws Exception {
         System.out.println("sched_getscheduler");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
@@ -106,7 +106,7 @@ public class SchedTest {
     @Test
     public void testSched_rr_get_interval() throws Exception {
         System.out.println("sched_rr_get_interval");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
@@ -120,11 +120,20 @@ public class SchedTest {
 
                 Time.Timespec interval = new Time.Timespec();
                 Sched.sched_rr_get_interval(Unistd.getpid(), interval);
-
-//TODO On LINUX sometimes its 0 and sometimes its 8000000 or even 4000000
-                Assertions.assertTrue((0L == interval.tv_nsec()) || (8_000_000L == interval.tv_nsec() || (4_000_000L == interval.tv_nsec())), "interval.tv_nsec() 0 or 8000000 but was: " + interval.tv_nsec());
-                //Assertions.assertEquals(0L, interval.tv_nsec());
-                //Assertions.assertEquals(8_000_000L, interval.tv_nsec());
+                switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+                    case LINUX:
+                        if ((0L != interval.tv_nsec())
+                                && (8_000_000L != interval.tv_nsec())
+                                && (4_000_000L != interval.tv_nsec())) {
+                            Assertions.fail("interval.tv_nsec() is :" + interval.tv_nsec());
+                        }
+                        break;
+                    case FREE_BSD:
+                        Assertions.assertEquals(94_000_000L, interval.tv_nsec(), "interval.tv_nsec()");
+                        break;
+                    default:
+                        Assertions.assertEquals(0L, interval.tv_nsec(), "I dont know what to expect ... so just assume 0 for interval.tv_nsec()");
+                }
                 Assertions.assertEquals(0, interval.tv_sec());
         }
     }
@@ -135,23 +144,27 @@ public class SchedTest {
     @Test
     public void testSched_setgetparam() throws Exception {
         System.out.println("sched_setparam");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Sched.sched_setparam(Unistd.getpid(), null);
-                });
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Sched.sched_getparam(Unistd.getpid(), null);
-                });
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> {
+                            Sched.sched_setparam(Unistd.getpid(), null);
+                        });
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> {
+                            Sched.sched_getparam(Unistd.getpid(), null);
+                        });
                 break;
             default:
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Sched.sched_setparam(Unistd.getpid(), null);
-                });
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Sched.sched_getparam(Unistd.getpid(), null);
-                });
+                Assertions.assertThrows(NullPointerException.class,
+                        () -> {
+                            Sched.sched_setparam(Unistd.getpid(), null);
+                        });
+                Assertions.assertThrows(NullPointerException.class,
+                        () -> {
+                            Sched.sched_getparam(Unistd.getpid(), null);
+                        });
                 Sched.Sched_param param = new Sched.Sched_param();
                 param.sched_priority(0);
                 Sched.Sched_param param1 = new Sched.Sched_param();
@@ -168,21 +181,33 @@ public class SchedTest {
     @Test
     public void testSched_setscheduler() throws Exception {
         System.out.println("sched_setscheduler");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
-                });
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> {
+                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
+                        });
                 break;
             default:
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
-                });
+                Assertions.assertThrows(NullPointerException.class,
+                        () -> {
+                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
+                        });
                 Sched.Sched_param param = new Sched.Sched_param(true);
-                int result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
-                result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
-                Assertions.assertEquals(Sched.SCHED_OTHER(), result);
+                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
+                    //Any idea why this is so?
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
+                            () -> {
+                                Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
+                            });
+                    assertEquals(Errno.EPERM(), nee.errno, Errno.getErrnoSymbol(nee.errno));
+                } else {
+                    int result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
+                    Assertions.assertEquals(Sched.SCHED_OTHER(), result);
+                    result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
+                    Assertions.assertEquals(Sched.SCHED_OTHER(), result);
+                }
         }
     }
 
@@ -269,6 +294,26 @@ public class SchedTest {
         } catch (NoSuchNativeTypeMemberException nstme) {
         }
         Assertions.assertEquals(0, memberSum);
+    }
+
+    @Test
+    public void testSizeOfSchedparam() throws Exception {
+        Assertions.assertEquals(4, Sched.Sched_param.sizeof());
+    }
+
+    @Test
+    public void testAlignOfSchedparam() throws Exception {
+        Assertions.assertEquals(4, Sched.Sched_param.alignof());
+    }
+
+    @Test
+    public void testOffsetOfSched_ss_init_budget() throws Exception {
+        Assertions.assertThrows(NoSuchNativeTypeMemberException.class, Sched.Sched_param::offsetof_Sched_ss_init_budget);
+    }
+
+    @Test
+    public void testOffsetOfSched_ss_repl_period() throws Exception {
+        Assertions.assertThrows(NoSuchNativeTypeMemberException.class, Sched.Sched_param::offsetof_Sched_ss_repl_period);
     }
 
 }

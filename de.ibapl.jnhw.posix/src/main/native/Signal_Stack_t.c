@@ -31,21 +31,32 @@ extern "C" {
 #include <signal.h>
 #include <stdint.h>
 
+JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
-     * Method:    sizeofStack_t
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_sizeofStack_1t
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (stack_t);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (stack_t);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
      * Method:    ss_sp0
-     * Signature: ()Lde/ibapl/jnhw/NativeAddressHolder;
+     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp0
     (JNIEnv *env, jobject structStack_t) {
@@ -73,17 +84,16 @@ extern "C" {
             throw_IndexOutOfBoundsException(env, "In ss_size < 0");
             return;
         }
-#if __SIZEOF_LONG__ == 8
-        (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint64_t) ss_size;
-#elif __SIZEOF_LONG__ == 4
-        if (ss_size > INT32_MAX) {
-            throw_IndexOutOfBoundsException(env, "In this native implementation ss_size is only an integer with the size of jint");
+#if defined(_JNHW__size_t__IS__uint32_t)
+        if ((ss_size > UINT32_MAX) || (ss_size < 0)) {
+            throw_IllegalArgumentException(env, "ss_size outside size_t(uint32_t)");
             return;
         }
-        (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (uint32_t) ss_size;
+#elif defined(_JNHW__size_t__IS__uint64_t)
 #else
-#error Unknown Wordsize
-#endif
+#error expected size_t uint32_t or uint64_t
+#endif 
+        (UNWRAP_STACK_T_PTR(structStack_t))->ss_size = (size_t) ss_size;
     }
 
     /*
@@ -109,7 +119,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
      * Method:    ss_sp
-     * Signature: (Lde/ibapl/jnhw/OpaqueMemory;)V
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp
     (JNIEnv *env, jobject structStack_t, jobject ss_sp) {

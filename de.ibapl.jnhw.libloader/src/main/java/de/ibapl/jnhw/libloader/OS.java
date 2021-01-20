@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.libloader;
 
 /**
- * The os with the libname template.
+ * The operating system with the libname template.
  * @author aploese
  */
 public enum OS {

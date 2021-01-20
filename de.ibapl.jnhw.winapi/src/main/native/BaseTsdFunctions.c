@@ -31,12 +31,22 @@ extern "C" {
 
 /*
  * Class:     de_ibapl_jnhw_winapi_BaseTsd
- * Method:    sizeofULONG_PTR
+ * Method:    sizeof
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_BaseTsd_sizeofULONG_1PTR
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_BaseTsd_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (ULONG_PTR);
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_BaseTsd
+ * Method:    alignof
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_BaseTsd_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return alignof (ULONG_PTR);
     }
 
 

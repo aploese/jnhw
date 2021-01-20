@@ -21,10 +21,10 @@
  */
 package de.ibapl.jnhw.linux.sys;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.LongRef;
-import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.references.LongRef;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

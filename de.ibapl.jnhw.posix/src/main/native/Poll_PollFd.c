@@ -31,14 +31,32 @@ extern "C" {
 #include <errno.h>
 #include <unistd.h>
 
+#include <assert.h>
+
+static_assert(sizeof(((struct pollfd *)0)->events ) ==  sizeof(jshort), "pollfd.events not jlong size");
+static_assert(sizeof(((struct pollfd *)0)->revents ) ==  sizeof(jshort), "pollfd.revents not jlong size");
+static_assert(sizeof(((struct pollfd *)0)->fd ) ==  sizeof(jint), "pollfd.fd not jlong size");
+static_assert((typeof(((struct pollfd *)0)->events ))-1 < 0, "Not signed");
+
+ 
     /*
      * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
-     * Method:    sizeofPollFd
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_sizeofPollFd
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct pollfd);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct pollfd);
     }
 
     /*

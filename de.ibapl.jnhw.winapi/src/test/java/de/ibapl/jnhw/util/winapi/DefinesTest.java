@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.util.winapi;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.NotDefinedException;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.winapi.BaseTsd;
@@ -54,12 +54,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
  */
 public class DefinesTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
-
-    @BeforeAll
-    public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
-    }
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public static void testDefines(Class clazz) throws Exception {
         System.out.println(clazz.getName() + " Defines: ");
@@ -184,7 +179,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_ERRHANDLINGAPI_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Errhandlingapi.HAVE_ERRHANDLINGAPI_H(), "expected to have errhandlingapi.h");
         } else {
             Assertions.assertFalse(Errhandlingapi.HAVE_ERRHANDLINGAPI_H(), "expected not to have errhandlingapi.h");
@@ -193,7 +188,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_BASETSD_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(BaseTsd.HAVE_BASETSD_H(), "expected to have BaseTsd.h");
         } else {
             Assertions.assertFalse(BaseTsd.HAVE_BASETSD_H(), "expected not to have BaseTsd.h");
@@ -202,7 +197,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_FILEAPI_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Fileapi.HAVE_FILEAPI_H(), "expected to have fileapi.h");
         } else {
             Assertions.assertFalse(Fileapi.HAVE_FILEAPI_H(), "expected not to have fileapi.h");
@@ -211,7 +206,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_HANDLEAPI_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Handleapi.HAVE_HANDLEAPI_H(), "expected to have handleapi.h");
         } else {
             Assertions.assertFalse(Handleapi.HAVE_HANDLEAPI_H(), "expected not to have handleapi.h");
@@ -220,7 +215,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_IOAPI_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(IoAPI.HAVE_IOAPI_H(), "expected to have IoAPI.h");
         } else {
             Assertions.assertFalse(IoAPI.HAVE_IOAPI_H(), "expected not to have IoAPI.h");
@@ -229,7 +224,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_IOAPISET_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Ioapiset.HAVE_IOAPISET_H(), "expected to have ioapiset.h");
         } else {
             Assertions.assertFalse(Ioapiset.HAVE_IOAPISET_H(), "expected not to have ioapiset.h");
@@ -238,7 +233,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_MINWINBASE_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Minwinbase.HAVE_MINWINBASE_H(), "expected to have minwinbase.h");
         } else {
             Assertions.assertFalse(Minwinbase.HAVE_MINWINBASE_H(), "expected not to have minwinbase.h");
@@ -247,7 +242,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_WINDEF_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(WinDef.HAVE_WINDEF_H(), "expected to have WinDef.h");
         } else {
             Assertions.assertFalse(WinDef.HAVE_WINDEF_H(), "expected not to have WinDef.h");
@@ -256,7 +251,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_PROCESSENV_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(ProcessEnv.HAVE_PROCESSENV_H(), "expected to have processenv.h");
         } else {
             Assertions.assertFalse(ProcessEnv.HAVE_PROCESSENV_H(), "expected not to have processenv.h");
@@ -265,7 +260,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_PROCESSTHREADSAPI_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Processthreadsapi.HAVE_PROCESSTHREADSAPI_H(), "expected to have processthreadsapi.h");
         } else {
             Assertions.assertFalse(Processthreadsapi.HAVE_PROCESSTHREADSAPI_H(), "expected not to have processthreadsapi.h");
@@ -274,7 +269,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_SYNCHAPI_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Synchapi.HAVE_SYNCHAPI_H(), "expected to have synchapi.h");
         } else {
             Assertions.assertFalse(Synchapi.HAVE_SYNCHAPI_H(), "expected not to have synchapi.h");
@@ -283,7 +278,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_WINBASE_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Winbase.HAVE_WINBASE_H(), "expected to have winbase.h");
         } else {
             Assertions.assertFalse(Winbase.HAVE_WINBASE_H(), "expected not to have winbase.h");
@@ -292,7 +287,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_WINERROR_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Winerror.HAVE_WINERROR_H(), "expected to have winerror.h");
         } else {
             Assertions.assertFalse(Winerror.HAVE_WINERROR_H(), "expected not to have winerror.h");
@@ -301,7 +296,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_WINNT_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Winnt.HAVE_WINNT_H(), "expected to have winnt.h");
         } else {
             Assertions.assertFalse(Winnt.HAVE_WINNT_H(), "expected not to have winnt.h");
@@ -310,7 +305,7 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_WINREG_H() throws Exception {
-        if (multiarchTupelBuilder.getOS() == OS.WINDOWS) {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(Winreg.HAVE_WINREG_H(), "expected to have winreg.h");
         } else {
             Assertions.assertFalse(Winreg.HAVE_WINREG_H(), "expected not to have winreg.h");

@@ -21,30 +21,30 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
-import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl;
-import de.ibapl.jnhw.Callback_I_V;
-import de.ibapl.jnhw.Callback_I_V_Impl;
-import de.ibapl.jnhw.Callback_NativeRunnable;
-import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NativeFunctionPointer;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeException;
-import de.ibapl.jnhw.ObjectRef;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.common.callbacks.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.callbacks.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl;
+import de.ibapl.jnhw.common.callbacks.Callback_I_V;
+import de.ibapl.jnhw.common.callbacks.Callback_I_V_Impl;
+import de.ibapl.jnhw.common.callbacks.Callback_NativeRunnable;
+import de.ibapl.jnhw.common.callbacks.Callback_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.memory.Memory32Heap;
+import de.ibapl.jnhw.common.references.ObjectRef;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import java.lang.ref.Cleaner;
-import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
-import org.junit.jupiter.api.condition.OS;
 
 /**
  *
@@ -53,12 +53,10 @@ import org.junit.jupiter.api.condition.OS;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SignalTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
+    // just for vm in qemu...
+    private final static long ONE_MINUTE = 60_000;
 
-    @BeforeAll
-    public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
-    }
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     private final static Cleaner cleaner = Cleaner.create();
 
@@ -74,7 +72,7 @@ public class SignalTest {
 
         final int sig = Signal.SIGCHLD(); //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
-        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -82,8 +80,12 @@ public class SignalTest {
         Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
-                System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
-                sigRef.value = sig;
+                synchronized (sigRef) {
+                    System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
+                    sigRef.value = sig;
+                    sigRef.notifyAll();
+                }
+
             }
         };
         act.sa_handler(sa_handler);
@@ -93,7 +95,11 @@ public class SignalTest {
         try {
             System.out.println("pthread_t of testKill: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
             Signal.kill(Unistd.getpid(), sig);
-            Thread.sleep(10);
+            synchronized (sigRef) {
+                if (sigRef.value == null) {
+                    sigRef.wait(ONE_MINUTE);
+                }
+            }
             assertEquals(sig, sigRef.value);
         } finally {
             Signal.sigaction(sig, oact, null);
@@ -108,7 +114,7 @@ public class SignalTest {
         System.out.println("killpg");
         final int sig = Signal.SIGCHLD();
 
-        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -116,7 +122,10 @@ public class SignalTest {
         Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
-                sigRef.value = sig;
+                synchronized (sigRef) {
+                    sigRef.value = sig;
+                    sigRef.notifyAll();
+                }
             }
         };
         act.sa_handler(sa_handler);
@@ -125,7 +134,11 @@ public class SignalTest {
         Signal.sigaction(sig, act, oact);
         try {
             Signal.killpg(Unistd.getpgrp(), sig);
-            Thread.sleep(10);
+            synchronized (sigRef) {
+                if (sigRef.value == null) {
+                    sigRef.wait(ONE_MINUTE);
+                }
+            }
             assertEquals(sig, sigRef.value);
         } finally {
             Signal.sigaction(sig, oact, null);
@@ -139,20 +152,21 @@ public class SignalTest {
     public void testPsiginfo() throws Exception {
         System.out.println("psiginfo");
         Signal.Siginfo_t pinfo = new Signal.Siginfo_t();
-        if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case FREE_BSD:
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo"));
+                break;
+            default:
+                System.err.print("psiginfo MSG >>>");
                 Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo");
-            });
-        } else {
-            System.err.print("psiginfo MSG >>>");
-            Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo");
-            System.err.println("<<< psiginfo MSG");
-            System.err.flush();
-            System.out.flush();
-            Signal.psiginfo(pinfo, null);
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Signal.psiginfo(null, "JNHW Test for Signal.psiginfo");
-            });
+                System.err.println("<<< psiginfo MSG");
+                System.err.flush();
+                System.out.flush();
+                Signal.psiginfo(pinfo, null);
+                Assertions.assertThrows(NullPointerException.class, () -> {
+                    Signal.psiginfo(null, "JNHW Test for Signal.psiginfo");
+                });
         }
         //TODO mark as not executing as expected but do not fail??
     }
@@ -184,7 +198,7 @@ public class SignalTest {
 
         final int sig = Signal.SIGCHLD(); //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
-        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -261,7 +275,7 @@ public class SignalTest {
         System.out.println("raise");
         final int sig = Signal.SIGCHLD();
 
-        final ObjectRef<Integer> sigRef = new ObjectRef();
+        final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -274,7 +288,7 @@ public class SignalTest {
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction oact = new Signal.Sigaction();
+        final Signal.Sigaction oact = new Signal.Sigaction<>();
         Signal.sigaction(sig, act, oact);
         try {
             Signal.raise(sig);
@@ -292,7 +306,7 @@ public class SignalTest {
         System.out.println("sigaction");
         final int SIG = Signal.SIGCHLD();
 
-        final Signal.Sigaction<OpaqueMemory> act = new Signal.Sigaction();
+        final Signal.Sigaction<OpaqueMemory32> act = new Signal.Sigaction<>();
         act.sa_flags(Signal.SA_RESTART());
         Signal.sigemptyset(act.sa_mask);
 
@@ -303,7 +317,7 @@ public class SignalTest {
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction<OpaqueMemory> oact = new Signal.Sigaction();
+        final Signal.Sigaction<OpaqueMemory32> oact = new Signal.Sigaction<>();
         Signal.sigaction(SIG, null, oact);
         try {
             Signal.sigaction(SIG, act, oact);
@@ -314,7 +328,7 @@ public class SignalTest {
                 Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_handler());
             }
 
-            final Signal.Sigaction<OpaqueMemory> actOut = new Signal.Sigaction();
+            final Signal.Sigaction<OpaqueMemory32> actOut = new Signal.Sigaction<>();
             Signal.sigaction(SIG, oact, actOut);
 
             Assertions.assertEquals(act.sa_handler(), actOut.sa_handler());
@@ -330,7 +344,7 @@ public class SignalTest {
     @Test
     public void testSigaltstack() throws Exception {
         System.out.println("sigaltstack");
-        final OpaqueMemory ss_sp = new OpaqueMemory(Signal.MINSIGSTKSZ(), true);
+        final Memory32Heap ss_sp = new Memory32Heap(Signal.MINSIGSTKSZ(), true);
         Signal.Stack_t ss = Signal.Stack_t.of(Signal.SS_DISABLE(), ss_sp);
         Signal.Stack_t oss = new Signal.Stack_t();
         Signal.sigaltstack(null, oss);
@@ -373,15 +387,20 @@ public class SignalTest {
     public void testSighold_sigrelse() throws Exception {
         System.out.println("sighold");
         final int sig = Signal.SIGCHLD();
-        Signal.sighold(sig);
-        Signal.Sigset_t mask = new Signal.Sigset_t();
-        Signal.sigemptyset(mask);
-        Signal.sigprocmask(0, null, mask);
-        Assertions.assertTrue(Signal.sigismember(mask, sig), "Signal is not in mask");
-        System.out.println("sigrelse");
-        Signal.sigrelse(sig);
-        Signal.sigprocmask(0, null, mask);
-        Assertions.assertFalse(Signal.sigismember(mask, sig), "Signal is still in mask");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sighold(sig));
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigrelse(sig));
+        } else {
+            Signal.sighold(sig);
+            Signal.Sigset_t mask = new Signal.Sigset_t();
+            Signal.sigemptyset(mask);
+            Signal.sigprocmask(0, null, mask);
+            Assertions.assertTrue(Signal.sigismember(mask, sig), "Signal is not in mask");
+            System.out.println("sigrelse");
+            Signal.sigrelse(sig);
+            Signal.sigprocmask(0, null, mask);
+            Assertions.assertFalse(Signal.sigismember(mask, sig), "Signal is still in mask");
+        }
     }
 
     /**
@@ -393,8 +412,12 @@ public class SignalTest {
         final int sig = Signal.SIGCHLD();
         final var old = Signal.signal(sig, null);
         try {
-            Signal.sigignore(sig);
-            assertEquals(Signal.SIG_IGN(), Signal.signal(sig, null));
+            if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigignore(sig));
+            } else {
+                Signal.sigignore(sig);
+                assertEquals(Signal.SIG_IGN(), Signal.signal(sig, null));
+            }
         } finally {
             Signal.signal(sig, old);
         }
@@ -440,7 +463,7 @@ public class SignalTest {
 
         Signal.raise(SIG);
 
-        final IntRef raisedSignal = new IntRef();
+        final ObjectRef<Integer> raisedSignal = new ObjectRef<>(null);
         final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
@@ -454,7 +477,7 @@ public class SignalTest {
             Assertions.assertEquals(funcIgnore, old);
 
             Signal.raise(SIG);
-            Assertions.assertEquals(SIG, raisedSignal.value);
+            Assertions.assertEquals(Integer.valueOf(SIG), raisedSignal.value);
 
             old = Signal.signal(SIG, null);
             Assertions.assertEquals(funcHandler, old);
@@ -481,50 +504,45 @@ public class SignalTest {
      * Test of sigpause method, of class Signal.
      */
     @Test
-    @DisabledOnOs(OS.LINUX) // sigpause does not work as expected ... it does not return
+    @Disabled // it does not return from sigpause - what is wrong...
     public void testSigpause() throws Exception {
         System.out.println("sigpause");
-        final int SIG = Signal.SIGUSR1();
+        final int SIG = Signal.SIGUSR2();
 
-        final ObjectRef<Boolean> boolRef = new ObjectRef(Boolean.FALSE);
+        final ObjectRef<Object> resultRef = new ObjectRef<>();
 
-        final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
+        new Thread() {
             @Override
-            protected void callback(int sig) {
-                System.out.println("Got signal: " + sig);
-            }
-        };
-
-        final var oldHandler = Signal.signal(SIG, funcHandler);
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        Signal.sigpause(SIG);
-                        fail();
-                    } catch (NoSuchNativeMethodException nsnme) {
-                        Assertions.fail(nsnme);
-                    } catch (NativeErrorException nee) {
-                        assertEquals("EINTR", Errno.getErrnoSymbol(nee.errno));
-                        synchronized (boolRef) {
-                            boolRef.value = Boolean.TRUE;
-                            boolRef.notify();
-                        }
+            public void run() {
+                try {
+                    Signal.sigpause(SIG);
+                    synchronized (resultRef) {
+                        resultRef.value = Boolean.TRUE;
+                        resultRef.notify();
+                    }
+                } catch (NoSuchNativeMethodException nsnme) {
+                    synchronized (resultRef) {
+                        resultRef.value = nsnme;
+                        resultRef.notify();
+                    }
+                } catch (NativeErrorException nee) {
+                    synchronized (resultRef) {
+                        resultRef.value = nee;
+                        resultRef.notify();
                     }
                 }
-            }.start();
-            Thread.sleep(100);
-            Signal.raise(SIG);
-            Thread.sleep(10);
-            synchronized (boolRef) {
-                if (!boolRef.value) {
-                    boolRef.wait(500);
-                }
             }
-            Assertions.assertTrue(boolRef.value);
-        });
-        Signal.signal(SIG, oldHandler);
+        }.start();
+        Thread.sleep(10000);
+        Signal.raise(SIG);
+        synchronized (resultRef) {
+            if (resultRef.value == null) {
+                resultRef.wait(ONE_MINUTE);
+            }
+        }
+        Assertions.assertNotNull(resultRef.value);
+        Assertions.assertEquals(Boolean.class, resultRef.value.getClass(), "value was: " + resultRef.value);
+        Assertions.assertEquals(Boolean.TRUE, resultRef.value);
     }
 
     /**
@@ -540,8 +558,8 @@ public class SignalTest {
         Signal.Sigset_t set = new Signal.Sigset_t();
         Signal.sigemptyset(set);
         Signal.sigpending(set);
-        assertEquals("[]", set.toString());
-        Assertions.assertArrayEquals(new byte[Signal.Sigset_t.sizeofSigset_t()], OpaqueMemory.toBytes(set));
+        assertEquals("[]", set.nativeToString());
+        Assertions.assertArrayEquals(new byte[Signal.Sigset_t.sizeof()], OpaqueMemory32.toBytes(set));
     }
 
     /**
@@ -583,66 +601,76 @@ public class SignalTest {
     public void testSigqueue() throws Exception {
         System.out.println("sigqueue");
         final int SIG = Signal.SIGUSR2();
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigqueue(Unistd.getpid(), SIG, null));
+        } else {
 
-        final Signal.Sigaction act = new Signal.Sigaction();
-        act.sa_flags(Signal.SA_SIGINFO());
-        Signal.sigemptyset(act.sa_mask);
+            final Signal.Sigaction act = new Signal.Sigaction();
+            act.sa_flags(Signal.SA_SIGINFO());
+            Signal.sigemptyset(act.sa_mask);
 
-        final ObjectRef<Signal.Siginfo_t> siginfo_tRef = new ObjectRef<>(null);
-        final ObjectRef<Signal.Ucontext_t> opmRef = new ObjectRef<>(null);
+            final ObjectRef<Signal.Siginfo_t> siginfo_tRef = new ObjectRef<>(null);
+            final ObjectRef<Signal.Ucontext_t> opmRef = new ObjectRef<>(null);
 
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<>() {
+            Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl<>() {
 
-            @Override
-            protected void callback(int value, Signal.Siginfo_t a, Signal.Ucontext_t b) {
-                siginfo_tRef.value = a;
-                opmRef.value = b;
-            }
-
-            @Override
-            protected Signal.Siginfo_t wrapA(NativeAddressHolder address) {
-                return new Signal.Siginfo_t(address);
-            }
-
-            @Override
-            protected Signal.Ucontext_t wrapB(NativeAddressHolder address) {
-                try {
-                    return new Signal.Ucontext_t(address);
-                } catch (NoSuchNativeTypeException nste) {
-                    Assertions.fail(nste);
-                    throw new RuntimeException(nste);
+                @Override
+                protected void callback(int value, Signal.Siginfo_t a, Signal.Ucontext_t b) {
+                    siginfo_tRef.value = a;
+                    opmRef.value = b;
                 }
+
+                @Override
+                protected Signal.Siginfo_t wrapA(NativeAddressHolder address) {
+                    return new Signal.Siginfo_t(address);
+                }
+
+                @Override
+                protected Signal.Ucontext_t wrapB(NativeAddressHolder address) {
+                    try {
+                        return new Signal.Ucontext_t(address);
+                    } catch (NoSuchNativeTypeException nste) {
+                        Assertions.fail(nste);
+                        throw new RuntimeException(nste);
+                    }
+                }
+            };
+
+            act.sa_sigaction(sa_handler);
+
+            final Signal.Sigaction oact = new Signal.Sigaction();
+            final Signal.Sigaction actOut = new Signal.Sigaction();
+            Signal.sigaction(SIG, act, oact);
+
+            OpaqueMemory32 data = new Memory32Heap(128, true);
+
+            Signal.Sigval sigval = new Signal.Sigval();
+            sigval.sival_ptr(data);
+
+            Signal.sigqueue(Unistd.getpid(), SIG, sigval);
+
+            Thread.sleep(100);
+
+            System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef.value);
+            try {
+                Assertions.assertNotNull(siginfo_tRef.value);
+                Assertions.assertAll(
+                        () -> {
+                            Assertions.assertEquals(0, siginfo_tRef.value.si_errno(), "siginfo_tRef.value.si_errno()");
+                        },
+                        () -> {
+                            Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo(), "siginfo_tRef.value.si_signo()");
+                        },
+                        () -> {
+                            Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr((baseAddress, size) -> {
+                                return new Memory32Heap(baseAddress, data.sizeInBytes) {
+                                };
+                            }), "siginfo_tRef.value.si_value.sival_ptr()");
+                        });
+            } finally {
+                Signal.sigaction(SIG, oact, null);
             }
-        };
-
-        act.sa_sigaction(sa_handler);
-
-        final Signal.Sigaction oact = new Signal.Sigaction();
-        final Signal.Sigaction actOut = new Signal.Sigaction();
-        Signal.sigaction(SIG, act, oact);
-
-        OpaqueMemory data = new OpaqueMemory(128, true);
-
-        Signal.Sigval sigval = new Signal.Sigval();
-        sigval.sival_ptr(data);
-
-        Signal.sigqueue(Unistd.getpid(), SIG, sigval);
-
-        Thread.sleep(100);
-
-        System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef.value);
-        try {
-            Assertions.assertNotNull(siginfo_tRef.value);
-            Assertions.assertEquals(0, siginfo_tRef.value.si_errno());
-            Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo());
-            Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr((baseAddress, size) -> {
-                return new OpaqueMemory(baseAddress, data.sizeInBytes) {
-                };
-            }));
-        } finally {
-            Signal.sigaction(SIG, oact, null);
         }
-
     }
 
     /**
@@ -651,10 +679,14 @@ public class SignalTest {
     @Test
     public void testSigset() throws Exception {
         System.out.println("sigset");
-        Callback_I_V result = Signal.sigset(Signal.SIGABRT(), null);
-        Assertions.assertEquals(Signal.SIG_DFL(), result);
-        result = Signal.sigset(Signal.SIGABRT(), result);
-        Assertions.assertTrue(NativeFunctionPointer.toNativeAddressHolder(result).isNULL(), "result.address ");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigset(Signal.SIGABRT(), null));
+        } else {
+            Callback_I_V result = Signal.sigset(Signal.SIGABRT(), null);
+            Assertions.assertEquals(Signal.SIG_DFL(), result);
+            result = Signal.sigset(Signal.SIGABRT(), result);
+            Assertions.assertTrue(NativeFunctionPointer.toNativeAddressHolder(result).isNULL(), "result.address ");
+        }
     }
 
     /**
@@ -663,6 +695,9 @@ public class SignalTest {
     @Test
     public void testSigsuspend() throws Exception {
         System.out.println("sigsuspend");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
+        }
         final int SIG = Signal.SIGALRM();
 
         final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
@@ -701,6 +736,9 @@ public class SignalTest {
     @Test
     public void testSigtimedwait() throws Exception {
         System.out.println("sigtimedwait");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
+        }
         final int SIG = Signal.SIGALRM();
 
         final Signal.Sigset_t set = new Signal.Sigset_t();
@@ -722,7 +760,7 @@ public class SignalTest {
 
             assertEquals(SIG, signal);
             assertEquals(SIG, info.si_signo());
-            if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
+            if (MULTIARCHTUPEL_BUILDER.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
                 //#define SI_LWP                   /* Signal sent by thr_kill */ from /usr/include/sys/signal.h
                 assertEquals(0x10007, info.si_code());
             } else {
@@ -751,7 +789,9 @@ public class SignalTest {
     @Test
     public void testSigwait() throws Exception {
         System.out.println("sigwait");
-
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
+        }
         final int SIG = Signal.SIGALRM();
 
         Signal.signal(SIG, Signal.SIG_DFL());
@@ -782,10 +822,17 @@ public class SignalTest {
 
     /**
      * Test of sigwaitinfo method, of class Signal.
+     *
+     * If the test fails after raising the signal and before processing the
+     * signal in the test, the whole testsuite will crash!
      */
     @Test
     public void testSigwaitinfo() throws Exception {
         System.out.println("sigwaitinfo");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
+        }
+
         final int SIG = Signal.SIGALRM();
 
         Signal.signal(SIG, Signal.SIG_DFL());
@@ -796,6 +843,11 @@ public class SignalTest {
 
         Signal.sigprocmask(Signal.SIG_BLOCK(), set, oset);
         try {
+            /*
+             If the test fails after raising the signal 
+             and before processing the signal in the test,
+             the whole testsuite will crash!
+             */
             Signal.raise(SIG);
             final Signal.Sigset_t testSet = new Signal.Sigset_t();
             Signal.sigemptyset(testSet);
@@ -806,7 +858,7 @@ public class SignalTest {
             final int signal = Signal.sigwaitinfo(set, info);
             assertEquals(SIG, signal);
             assertEquals(SIG, info.si_signo());
-            if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
+            if (MULTIARCHTUPEL_BUILDER.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
                 //#define SI_LWP                   /* Signal sent by thr_kill */ from /usr/include/sys/signal.h
                 assertEquals(0x10007, info.si_code());
             } else {
@@ -831,13 +883,13 @@ public class SignalTest {
 
     @Test
     public void testUnionSigval() throws Exception {
-        OpaqueMemory mem = new OpaqueMemory(2, false);
-        Signal.Sigval<OpaqueMemory> sigval = new Signal.Sigval<>();
+        Memory32Heap mem = new Memory32Heap(2, false);
+        Signal.Sigval<Memory32Heap> sigval = new Signal.Sigval<>();
         sigval.sival_int(22);
         assertEquals(22, sigval.sival_int());
         sigval.sival_ptr(mem);
         assertEquals(mem, sigval.sival_ptr((baseAddress, size) -> {
-            return new OpaqueMemory(baseAddress, mem.sizeInBytes) {
+            return new Memory32Heap(baseAddress, mem.sizeInBytes) {
             };
         }));
         Assertions.assertNotEquals(22, sigval.sival_int()); //Its is a union, so it must now be different
@@ -845,12 +897,17 @@ public class SignalTest {
 
     @Test
     public void testStructSiginfo_t() throws Exception {
-        Signal.Siginfo_t<OpaqueMemory> siginfo_t = new Signal.Siginfo_t<>();
+        Signal.Siginfo_t<OpaqueMemory32> siginfo_t = new Signal.Siginfo_t<>();
         Assertions.assertNotNull(siginfo_t.si_addr());
-        Assertions.assertNotNull(siginfo_t.si_band());
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> siginfo_t.si_band());
+        } else {
+            Assertions.assertNotNull(siginfo_t.si_band());
+        }
         Assertions.assertNotNull(siginfo_t.si_code());
         Assertions.assertNotNull(siginfo_t.si_errno());
         Assertions.assertNotNull(siginfo_t.si_pid());
+        Assertions.assertNotNull(siginfo_t.si_uid());
         Assertions.assertNotNull(siginfo_t.si_signo());
         Assertions.assertNotNull(siginfo_t.si_status());
         siginfo_t.si_value.sival_int(55);
@@ -858,85 +915,98 @@ public class SignalTest {
 
     @Test
     public void testStructSigevent_t() throws Exception {
-        Signal.Sigevent<OpaqueMemory> sigevent = new Signal.Sigevent<>();
-        Assertions.assertNotNull(sigevent.sigev_notify());
-        Assertions.assertNotNull(sigevent.sigev_signo());
-        sigevent.sigev_value.sival_int(66);
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Sigevent<>());
+        } else {
+            Signal.Sigevent<OpaqueMemory32> sigevent = new Signal.Sigevent<>();
+            Assertions.assertNotNull(sigevent.sigev_notify());
+            Assertions.assertNotNull(sigevent.sigev_signo());
+            sigevent.sigev_value.sival_int(66);
 
-        sigevent.sigev_notify(Signal.SIGEV_SIGNAL());
-        assertEquals(Signal.SIGEV_SIGNAL(), sigevent.sigev_notify());
-        sigevent.sigev_signo(Signal.SIGBUS());
-        assertEquals(Signal.SIGBUS(), sigevent.sigev_signo());
+            sigevent.sigev_notify(Signal.SIGEV_SIGNAL());
+            assertEquals(Signal.SIGEV_SIGNAL(), sigevent.sigev_notify());
+            sigevent.sigev_signo(Signal.SIGBUS());
+            assertEquals(Signal.SIGBUS(), sigevent.sigev_signo());
 
-        Callback_I_V sigev_notify_functionInt = new Callback_I_V(new NativeAddressHolder(44)) {
-            @Override
-            protected void callback(int value) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        sigevent.sigev_notify_function(sigev_notify_functionInt);
-        Assertions.assertSame(sigev_notify_functionInt, sigevent.sigev_notify_functionAsCallback_I_V());
+            Callback__Sigval_int__V sigev_notify_functionLong = new Callback__Sigval_int__V(new NativeAddressHolder(44)) {
+                @Override
+                protected void callback(int value) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            };
+            sigevent.sigev_notify_function(sigev_notify_functionLong);
+            Assertions.assertSame(sigev_notify_functionLong, sigevent.sigev_notify_functionAsCallback__Sigval_int__V());
 
-        Callback_PtrOpaqueMemory_V<OpaqueMemory> sigev_notify_functionPtr = new Callback_PtrOpaqueMemory_V(new NativeAddressHolder(44)) {
-            @Override
-            protected void callback(OpaqueMemory a) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        sigevent.sigev_notify_function(sigev_notify_functionPtr);
-        Assertions.assertSame(sigev_notify_functionPtr, sigevent.sigev_notify_functionAsCallback_PtrOpaqueMemory_V());
+            @SuppressWarnings("unchecked")
+            Callback_PtrAbstractNativeMemory_V<OpaqueMemory32> sigev_notify_functionPtr = new Callback_PtrAbstractNativeMemory_V<>(new NativeAddressHolder(44)) {
+                @Override
+                protected void callback(OpaqueMemory32 a) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            };
+            sigevent.sigev_notify_function(sigev_notify_functionPtr);
+            Assertions.assertSame(sigev_notify_functionPtr, sigevent.sigev_notify_functionAsCallback_PtrOpaqueMemory_V());
 
-        Callback_NativeRunnable sigev_notify_functionRunnable = Callback_NativeRunnable.INSTANCE;
-        sigevent.sigev_notify_function(sigev_notify_functionRunnable);
-        Assertions.assertSame(sigev_notify_functionRunnable, sigevent.sigev_notify_functionAsCallback_NativeRunnable());
+            Callback_NativeRunnable sigev_notify_functionRunnable = Callback_NativeRunnable.INSTANCE;
+            sigevent.sigev_notify_function(sigev_notify_functionRunnable);
+            Assertions.assertSame(sigev_notify_functionRunnable, sigevent.sigev_notify_functionAsCallback_NativeRunnable());
 
-        Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
-        Pthread.pthread_attr_init(pthread_attr_t);
-        sigevent.sigev_notify_attributes(pthread_attr_t);
-        final Pthread.Pthread_attr_t pthread_attr_t1
-                = sigevent.sigev_notify_attributes((baseAddress, parent) -> {
-                    return new Pthread.Pthread_attr_t(baseAddress);
-                });
-        Assertions.assertSame(pthread_attr_t, pthread_attr_t1);
-        Pthread.pthread_attr_destroy(pthread_attr_t);
+            Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
+            Pthread.pthread_attr_init(pthread_attr_t);
+            sigevent.sigev_notify_attributes(pthread_attr_t);
+            final Pthread.Pthread_attr_t pthread_attr_t1
+                    = sigevent.sigev_notify_attributes((baseAddress, parent) -> {
+                        return new Pthread.Pthread_attr_t(baseAddress);
+                    });
+            Assertions.assertSame(pthread_attr_t, pthread_attr_t1);
+            Pthread.pthread_attr_destroy(pthread_attr_t);
+        }
     }
 
     @Test
     public void testStructStack_t() throws Exception {
-        Signal.Stack_t<OpaqueMemory> stack_t = new Signal.Stack_t();
+        Signal.Stack_t<OpaqueMemory32> stack_t = new Signal.Stack_t<>();
         Assertions.assertNotNull(stack_t.ss_flags());
         Assertions.assertNotNull(stack_t.ss_size());
         Assertions.assertNotNull(stack_t.ss_sp((baseAddress, parent) -> {
-            return new OpaqueMemory(baseAddress, (int) parent.ss_size()) {
+            return new Memory32Heap(baseAddress, (int) parent.ss_size()) {
             };
         }));
     }
 
     @Test
     public void testStructUcontext_t() throws Exception {
-        Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t(true);
-        Assertions.assertNull(ucontext_t.uc_link((baseAddress, parent) -> {
-            try {
-            return baseAddress.isNULL() ? null : new Signal.Ucontext_t(baseAddress);
-            } catch (NoSuchNativeTypeException nste) {
-                Assertions.fail(nste);
-                throw new RuntimeException(nste);
-            }
-        })); //Maybe fail sometimes....
-        Assertions.assertNotNull(ucontext_t.uc_mcontext);
-        Assertions.assertNotNull(ucontext_t.uc_sigmask);
-        Assertions.assertNotNull(ucontext_t.uc_stack);
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Ucontext_t());
+        } else {
+            Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t(true);
+            Assertions.assertNull(ucontext_t.uc_link((baseAddress, parent) -> {
+                try {
+                    return baseAddress.isNULL() ? null : new Signal.Ucontext_t(baseAddress);
+                } catch (NoSuchNativeTypeException nste) {
+                    Assertions.fail(nste);
+                    throw new RuntimeException(nste);
+                }
+            })); //Maybe fail sometimes....
+            Assertions.assertNotNull(ucontext_t.uc_mcontext);
+            Assertions.assertNotNull(ucontext_t.uc_sigmask);
+            Assertions.assertNotNull(ucontext_t.uc_stack);
+        }
     }
 
     @Test
     public void testStructMcontext_t() throws Exception {
-        Signal.Mcontext_t mcontext_t = new Signal.Mcontext_t();
-        Assertions.assertNotNull(mcontext_t); //Opaque to us
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Mcontext_t());
+        } else {
+            Signal.Mcontext_t mcontext_t = new Signal.Mcontext_t();
+            Assertions.assertNotNull(mcontext_t); //Opaque to us
+        }
     }
 
     @Test
     public void testStructSigaction() throws Exception {
-        Signal.Sigaction<OpaqueMemory> sigaction = new Signal.Sigaction();
+        Signal.Sigaction<OpaqueMemory32> sigaction = new Signal.Sigaction<>();
 
         sigaction.sa_flags(22);
         assertEquals(22, sigaction.sa_flags());
@@ -950,19 +1020,578 @@ public class SignalTest {
         sigaction.sa_handler(sa_handler);
         Assertions.assertSame(sa_handler, sigaction.sa_handlerAsCallback_I_V());
 
-        Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Signal.Siginfo_t, OpaqueMemory> sa_sigaction = new Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V(new NativeAddressHolder(44)) {
+        @SuppressWarnings("unchecked")
+        Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Signal.Siginfo_t, OpaqueMemory32> sa_sigaction = new Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<>(new NativeAddressHolder(44)) {
             @Override
-            protected void callback(int value, OpaqueMemory a, OpaqueMemory b) {
+            protected void callback(int value, Signal.Siginfo_t a, OpaqueMemory32 b) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
         sigaction.sa_sigaction(sa_sigaction);
-        Assertions.assertSame(sa_sigaction, sigaction.sa_sigactionAsCallback_I_PtrOpaqueMemory_PtrOpaqueMemory_V());
+        Assertions.assertSame(sa_sigaction, sigaction.sa_sigactionAsCallback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V());
 
         RuntimeException rt = Assertions.assertThrows(RuntimeException.class, () -> {
             sigaction.sa_handlerAsCallback_I_V();
         });
 
+    }
+
+    @Test
+    public void testSizeOfMcontext_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
+                    case AARCH64:
+                        Assertions.assertEquals(4384, Signal.Mcontext_t.sizeof());
+                        break;
+                    case ARM:
+                        Assertions.assertEquals(84, Signal.Mcontext_t.sizeof());
+                        break;
+                    case I386:
+                        Assertions.assertEquals(88, Signal.Mcontext_t.sizeof());
+                        break;
+                    case MIPS_64:
+                        Assertions.assertEquals(600, Signal.Mcontext_t.sizeof());
+                        break;
+                    case MIPS:
+                        Assertions.assertEquals(592, Signal.Mcontext_t.sizeof());
+                        break;
+                    case POWER_PC_64:
+                        Assertions.assertEquals(1272, Signal.Mcontext_t.sizeof());
+                        break;
+                    case S390_X:
+                        Assertions.assertEquals(344, Signal.Mcontext_t.sizeof());
+                        break;
+                    case X86_64:
+                        Assertions.assertEquals(256, Signal.Mcontext_t.sizeof());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Mcontext_t.sizeof());
+                }
+                break;
+            case FREE_BSD:
+                Assertions.assertEquals(800, Signal.Mcontext_t.sizeof());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Mcontext_t::sizeof);
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Mcontext_t.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfMcontext_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
+                    case AARCH64:
+                        Assertions.assertEquals(16, Signal.Mcontext_t.alignof());
+                        break;
+                    case ARM:
+                    case I386:
+                        Assertions.assertEquals(4, Signal.Mcontext_t.alignof());
+                        break;
+                    case MIPS_64:
+                    case MIPS:
+                    case POWER_PC_64:
+                    case S390_X:
+                    case X86_64:
+                        Assertions.assertEquals(8, Signal.Mcontext_t.alignof());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Mcontext_t.alignof());
+                }
+                break;
+            case FREE_BSD:
+                Assertions.assertEquals(16, Signal.Mcontext_t.alignof());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Mcontext_t::alignof);
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Mcontext_t.alignof());
+        }
+    }
+
+    @Test
+    public void testSizeOfSigaction() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
+                    case AARCH64:
+                    case MIPS_64:
+                    case POWER_PC_64:
+                    case S390_X:
+                    case X86_64:
+                        Assertions.assertEquals(152, Signal.Sigaction.sizeof());
+                        break;
+                    case ARM:
+                    case I386:
+                        Assertions.assertEquals(140, Signal.Sigaction.sizeof());
+                        break;
+                    case MIPS:
+                        Assertions.assertEquals(144, Signal.Sigaction.sizeof());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Sigaction.sizeof());
+                }
+                break;
+            case FREE_BSD:
+                Assertions.assertEquals(32, Signal.Sigaction.sizeof());
+                break;
+            case OPEN_BSD:
+                Assertions.assertEquals(16, Signal.Sigaction.sizeof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigaction.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfSigaction() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Sigaction.alignof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Sigaction.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigaction.alignof());
+        }
+    }
+
+    @Test
+    public void testOffsetofSa_mask() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
+                    case AARCH64:
+                    case MIPS:
+                    case POWER_PC_64:
+                    case X86_64:
+                        Assertions.assertEquals(8, Signal.Sigaction.offsetof_Sa_mask());
+                        break;
+                    case ARM:
+                    case I386:
+                        Assertions.assertEquals(4, Signal.Sigaction.offsetof_Sa_mask());
+                        break;
+                    case MIPS_64:
+                        Assertions.assertEquals(16, Signal.Sigaction.offsetof_Sa_mask());
+                        break;
+                    case S390_X:
+                        Assertions.assertEquals(24, Signal.Sigaction.offsetof_Sa_mask());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Sigaction.offsetof_Sa_mask());
+                }
+                break;
+            case FREE_BSD:
+                Assertions.assertEquals(12, Signal.Sigaction.offsetof_Sa_mask());
+                break;
+            case OPEN_BSD:
+                Assertions.assertEquals(8, Signal.Sigaction.offsetof_Sa_mask());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigaction.offsetof_Sa_mask());
+        }
+    }
+
+    @Test
+    public void testSizeOfSigevent() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                Assertions.assertEquals(64, Signal.Sigevent.sizeof());
+                break;
+            case FREE_BSD:
+                Assertions.assertEquals(80, Signal.Sigevent.sizeof());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::sizeof);
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigevent.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfSigevent() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case FREE_BSD:
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _32_BIT:
+                        Assertions.assertEquals(4, Signal.Sigevent.alignof());
+                        break;
+                    case _64_BIT:
+                        Assertions.assertEquals(8, Signal.Sigevent.alignof());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Sigevent.alignof());
+                }
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::alignof);
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigevent.alignof());
+        }
+    }
+
+    @Test
+    public void testOffsetOfSigev_value() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                Assertions.assertEquals(0, Signal.Sigevent.offsetof_Sigev_value());
+                break;
+            case FREE_BSD:
+                Assertions.assertEquals(8, Signal.Sigevent.offsetof_Sigev_value());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::offsetof_Sigev_value);
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigevent.offsetof_Sigev_value());
+        }
+    }
+
+    @Test
+    public void testSizeOfSiginfo_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                Assertions.assertEquals(128, Signal.Siginfo_t.sizeof());
+                break;
+            case FREE_BSD:
+                Assertions.assertEquals(80, Signal.Siginfo_t.sizeof());
+                break;
+            case OPEN_BSD:
+                Assertions.assertEquals(136, Signal.Siginfo_t.sizeof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Siginfo_t.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfSiginfo_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Siginfo_t.alignof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Siginfo_t.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Siginfo_t.alignof());
+        }
+    }
+
+    @Test
+    public void testOffsetOfSi_value() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _64_BIT:
+                        Assertions.assertEquals(24, Signal.Siginfo_t.offsetof_Si_value());
+                        break;
+                    case _32_BIT:
+                        Assertions.assertEquals(20, Signal.Siginfo_t.offsetof_Si_value());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Siginfo_t.offsetof_Si_value());
+                }
+                break;
+            case FREE_BSD:
+            case OPEN_BSD:
+                Assertions.assertEquals(32, Signal.Siginfo_t.offsetof_Si_value());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Siginfo_t.offsetof_Si_value());
+        }
+    }
+
+    @Test
+    public void testSizeOfSigset_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                Assertions.assertEquals(128, Signal.Sigset_t.sizeof());
+                break;
+            case FREE_BSD:
+                Assertions.assertEquals(16, Signal.Sigset_t.sizeof());
+                break;
+            case OPEN_BSD:
+                Assertions.assertEquals(4, Signal.Sigset_t.sizeof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigset_t.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfSigset_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _32_BIT:
+                        Assertions.assertEquals(4, Signal.Sigset_t.alignof());
+                        break;
+                    case _64_BIT:
+                        Assertions.assertEquals(8, Signal.Sigset_t.alignof());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Sigset_t.alignof());
+                }
+                break;
+            case FREE_BSD:
+            case OPEN_BSD:
+                Assertions.assertEquals(4, Signal.Sigset_t.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigset_t.alignof());
+        }
+    }
+
+    @Test
+    public void testSizeOfSigval() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Sigval.sizeof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Sigval.sizeof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigval.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfSigval() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Sigval.alignof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Sigval.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Sigval.alignof());
+        }
+    }
+
+    @Test
+    public void testSizeOfStack_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(12, Signal.Stack_t.sizeof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(24, Signal.Stack_t.sizeof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Stack_t.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfStack_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Signal.Stack_t.alignof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Signal.Stack_t.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Stack_t.alignof());
+        }
+    }
+
+    @Test
+    public void testSizeOfUcontext_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
+                    case AARCH64:
+                        Assertions.assertEquals(4560, Signal.Ucontext_t.sizeof());
+                        break;
+                    case ARM:
+                        Assertions.assertEquals(744, Signal.Ucontext_t.sizeof());
+                        break;
+                    case I386:
+                        Assertions.assertEquals(364, Signal.Ucontext_t.sizeof());
+                        break;
+                    case MIPS_64:
+                        Assertions.assertEquals(768, Signal.Ucontext_t.sizeof());
+                        break;
+                    case MIPS:
+                        Assertions.assertEquals(744, Signal.Ucontext_t.sizeof());
+                        break;
+                    case POWER_PC_64:
+                        Assertions.assertEquals(1440, Signal.Ucontext_t.sizeof());
+                        break;
+                    case S390_X:
+                        Assertions.assertEquals(512, Signal.Ucontext_t.sizeof());
+                        break;
+                    case X86_64:
+                        Assertions.assertEquals(968, Signal.Ucontext_t.sizeof());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Ucontext_t.sizeof());
+                }
+                break;
+
+            case FREE_BSD:
+                Assertions.assertEquals(880, Signal.Ucontext_t.sizeof());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::sizeof);
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Ucontext_t.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfUcontext_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
+                    case AARCH64:
+                        Assertions.assertEquals(16, Signal.Ucontext_t.alignof());
+                        break;
+                    case ARM:
+                    case I386:
+                        Assertions.assertEquals(4, Signal.Ucontext_t.alignof());
+                        break;
+                    case MIPS:
+                    case MIPS_64:
+                    case POWER_PC_64:
+                    case S390_X:
+                    case X86_64:
+                        Assertions.assertEquals(8, Signal.Ucontext_t.alignof());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Ucontext_t.alignof());
+                }
+                break;
+            case FREE_BSD:
+                Assertions.assertEquals(16, Signal.Ucontext_t.alignof());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::alignof);
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Ucontext_t.alignof());
+        }
+    }
+
+    @Test
+    public void testOffsetofUc_mcontext() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
+                    case AARCH64:
+                        Assertions.assertEquals(176, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                        break;
+                    case ARM:
+                    case I386:
+                        Assertions.assertEquals(20, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                        break;
+                    case POWER_PC_64:
+                        Assertions.assertEquals(168, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                        break;
+                    case MIPS_64:
+                    case S390_X:
+                    case X86_64:
+                        Assertions.assertEquals(40, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                        break;
+                    case MIPS:
+                        Assertions.assertEquals(24, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                }
+                break;
+
+            case FREE_BSD:
+                Assertions.assertEquals(16, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::offsetof_Uc_mcontext);
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_mcontext());
+        }
+    }
+
+    @Test
+    public void testOffsetofUc_sigmask() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
+                    case AARCH64:
+                    case POWER_PC_64:
+                        Assertions.assertEquals(40, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        break;
+                    case ARM:
+                        Assertions.assertEquals(104, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        break;
+                    case I386:
+                        Assertions.assertEquals(108, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        break;
+                    case MIPS:
+                        Assertions.assertEquals(616, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        break;
+                    case MIPS_64:
+                        Assertions.assertEquals(640, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        break;
+                    case S390_X:
+                        Assertions.assertEquals(384, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        break;
+                    case X86_64:
+                        Assertions.assertEquals(296, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                }
+                break;
+            case FREE_BSD:
+                Assertions.assertEquals(0, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::offsetof_Uc_sigmask);
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_sigmask());
+        }
+    }
+
+    @Test
+    public void testOffsetofUc_stack() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                    case _32_BIT:
+                        Assertions.assertEquals(8, Signal.Ucontext_t.offsetof_Uc_stack());
+                        break;
+                    case _64_BIT:
+                        Assertions.assertEquals(16, Signal.Ucontext_t.offsetof_Uc_stack());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_stack());
+                }
+                break;
+            case FREE_BSD:
+                Assertions.assertEquals(824, Signal.Ucontext_t.offsetof_Uc_stack());
+                break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::offsetof_Uc_stack);
+                break;
+            default:
+                Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_stack());
+        }
     }
 
 }

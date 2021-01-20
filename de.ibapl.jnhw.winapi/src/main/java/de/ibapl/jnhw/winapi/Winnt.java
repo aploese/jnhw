@@ -21,11 +21,11 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.OpaqueMemory;
-import de.ibapl.jnhw.Callback_IJ_V_Impl;
-import de.ibapl.jnhw.NativeAddressHolder;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.callbacks.Callback_IJ_V_Impl;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.winapi.BaseTsd.ULONG_PTR;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 
@@ -486,8 +486,8 @@ public final class Winnt {
 
     }
 
-    public static class ArrayOfHandle extends OpaqueMemory {
-        
+    public static class ArrayOfHandle extends Struct32 {
+
         static {
             LibJnhwWinApiLoader.touch();
         }
@@ -517,10 +517,12 @@ public final class Winnt {
          */
         private native void set0(int i, HANDLE element);
 
-        public static native int sizeofHANDLE();
+        public static native int sizeof();
+
+        public final static native int alignof();
 
         public ArrayOfHandle(int length, boolean clearMem) {
-            super(length, sizeofHANDLE(), clearMem);
+            super(length, sizeof(), clearMem);
             this.length = length;
         }
 
@@ -534,7 +536,7 @@ public final class Winnt {
         }
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             StringBuilder sb = new StringBuilder();
             sb.append("[");
             for (int i = 0; i < length; i++) {
@@ -567,7 +569,7 @@ public final class Winnt {
      * of valid bytes in the buffer and must be set if the amount of valid bytes
      * changed.
      */
-    public static class LPWSTR extends OpaqueMemory {
+    public static class LPWSTR extends Struct32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -606,7 +608,7 @@ public final class Winnt {
 //        public void set(String value) {
 //            setString(baseAddress, value);
 //        }
-        private static native String getString(OpaqueMemory lpByte, int charLength);
+        private static native String getString(OpaqueMemory32 lpByte, int charLength);
 
         /**
          * return the NULL terminated string @baseaddress
@@ -618,7 +620,7 @@ public final class Winnt {
         }
 
         public void clear() {
-            OpaqueMemory.clear(this);
+            OpaqueMemory32.clear(this);
             bufferEnd = sizeInBytes / SIZE_OF_WCHAR;
         }
 
@@ -636,7 +638,7 @@ public final class Winnt {
      * typedef HANDLE *PHANDLE;
      * </p>
      */
-    public static class PHANDLE extends OpaqueMemory {
+    public static class PHANDLE extends Struct32 {
 
         @FunctionalInterface
         protected static interface CreateHandler {
@@ -696,7 +698,7 @@ public final class Winnt {
         }
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             return String.format("{value = 0x%08x}", getHandleValue());
         }
 

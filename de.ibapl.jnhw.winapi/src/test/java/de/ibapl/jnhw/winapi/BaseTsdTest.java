@@ -21,17 +21,9 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Callback_IJ_V;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.WordSize;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import de.ibapl.jnhw.winapi.BaseTsd;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,13 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class BaseTsdTest {
 
-    private static WordSize WORD_SIZE;
-
-    @BeforeAll
-    public static void setUpClass() {
-        MultiarchInfo multiarchInfo = new MultiarchTupelBuilder().guessMultiarch().iterator().next();
-        WORD_SIZE = multiarchInfo.getWordSize();
-    }
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public BaseTsdTest() {
     }
@@ -60,15 +46,15 @@ public class BaseTsdTest {
     @Test
     public void testULONG_PTR() {
         System.out.println("test ULONG_PTR");
-        switch (WORD_SIZE) {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                assertEquals(4, BaseTsd.sizeofULONG_PTR());
+                assertEquals(4, BaseTsd.sizeof());
                 break;
             case _64_BIT:
-                assertEquals(8, BaseTsd.sizeofULONG_PTR());
+                assertEquals(8, BaseTsd.sizeof());
                 break;
             default:
-                throw new RuntimeException("Can't handle Wordsize " + WORD_SIZE);
+                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
         }
     }
 

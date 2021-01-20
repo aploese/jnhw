@@ -48,9 +48,9 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    ioctl
-     * Signature: (IILde/ibapl/jnhw/IntRef;)I
+     * Signature: (IILde/ibapl/jnhw/common/references/IntRef;)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IILde_ibapl_jnhw_IntRef_2
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IILde_ibapl_jnhw_common_references_IntRef_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint request, jobject intRef) {
 
         const int _intRef = GET_INT_REF_VALUE(intRef);

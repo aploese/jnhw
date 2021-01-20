@@ -32,22 +32,35 @@ extern "C" {
 //for offsetof
 #include <stddef.h>
 
+JNHW_ASSERT__pid_t__IS__int32_t
+JNHW_ASSERT__uid_t__IS__uint32_t
+
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
-     * Method:    sizeofSiginfo_t
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_sizeofSiginfo_1t
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (siginfo_t);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
-     * Method:    _si_value_Offset
+     * Method:    alignof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t__1si_1value_1Offset
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (siginfo_t);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    offsetof_Si_value
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_offsetof_1Si_1value
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(siginfo_t, si_value);
     }
@@ -90,6 +103,16 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1pid
     (JNIEnv *env, jobject structSiginfo_t) {
         return (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_pid;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
+     * Method:    si_uid
+     * Signature: ()I;
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1uid
+    (JNIEnv *env, jobject structSiginfo_t) {
+        return (int32_t)(UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_uid;
     }
 
     /*

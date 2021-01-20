@@ -42,6 +42,8 @@
 extern "C" {
 #endif
 
+JNHW_ASSERT__uid_t__IS__uint32_t
+
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd_JnhwPrimitiveArrayCritical
      * Method:    read
@@ -178,15 +180,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    read
-     * Signature: (ILde/ibapl/jnhw/OpaqueMemory;II)I
+     * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory32;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_OpaqueMemory_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject opaqueMemory, jint off, jint nByte) {
         if (opaqueMemory == NULL) {
             throw_NullPointerException(env, "buf is null");
             return -1;
         }
-        if (outOfBoundsOpaqueMemory(env, off, nByte, opaqueMemory)) {
+        if (outOfBoundsOpaqueMemory32(env, off, nByte, opaqueMemory)) {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
@@ -201,9 +203,40 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    read
-     * Signature: (ILde/ibapl/jnhw/ByteRef;)I
+     * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory64;JJ)J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_ByteRef_2
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_common_memory_OpaqueMemory64_2JJ
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject opaqueMemory, jlong off, jlong nByte) {
+        if (opaqueMemory == NULL) {
+            throw_NullPointerException(env, "buf is null");
+            return -1;
+        }
+        if (outOfBoundsOpaqueMemory64(env, off, nByte, opaqueMemory)) {
+            throw_ArrayIndexOutOfBoundsException(env, "");
+            return -1;
+        }
+#if defined(_JNHW__size_t__IS__uint32_t)
+        if ((nByte > UINT32_MAX) || (nByte < 0)) {
+            throw_IllegalArgumentException(env, "nByte outside size_t(uint32_t)");
+            return -1;
+        }
+#elif defined(_JNHW__size_t__IS__uint64_t)
+#else
+#error expected size_t uint32_t or uint64_t
+#endif 
+        const ssize_t result = read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) + off, (size_t) nByte);
+        if (result == -1) {
+            throw_NativeErrorException(env, errno);
+        }
+        return (int64_t) result;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    read
+     * Signature: (ILde/ibapl/jnhw/common/references/ByteRef;)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_common_references_ByteRef_2
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject byteRef) {
         jbyte _valueRef;
         //result can't be larger then int beacuase nByte is int, so do the conversation
@@ -213,6 +246,22 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
         return result;
+    }
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    read
+ * Signature: (I)S
+ */
+JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd) {
+        uint8_t value;
+        //result can't be larger then int beacuase nByte is int, so do the conversation
+        const int result = (int) read(fd, &value, 1);
+        if (result == -1) {
+            throw_NativeErrorException(env, errno);
+        }
+        return (jshort)((result << 8) | value);
     }
 
     /*
@@ -282,16 +331,16 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    write
-     * Signature: (ILde/ibapl/jnhw/OpaqueMemory;II)I
+     * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory32;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_OpaqueMemory_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject buf, jint off, jint nByte) {
         if (buf == NULL) {
             throw_NullPointerException(env, "buf is null");
             return -1;
         }
 
-        if (outOfBoundsOpaqueMemory(env, off, nByte, buf)) {
+        if (outOfBoundsOpaqueMemory32(env, off, nByte, buf)) {
             throw_ArrayIndexOutOfBoundsException(env, "");
             return -1;
         }
@@ -302,6 +351,38 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
         return (int32_t) result;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    write
+     * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory64;JJ)J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_common_memory_OpaqueMemory64_2JJ
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject buf, jlong off, jlong nByte) {
+        if (buf == NULL) {
+            throw_NullPointerException(env, "buf is null");
+            return -1;
+        }
+
+        if (outOfBoundsOpaqueMemory64(env, off, nByte, buf)) {
+            throw_ArrayIndexOutOfBoundsException(env, "");
+            return -1;
+        }
+#if defined(_JNHW__size_t__IS__uint32_t)
+        if ((nByte > UINT32_MAX) || (nByte < 0)) {
+            throw_IllegalArgumentException(env, "nByte outside size_t(uint32_t)");
+            return -1;
+        }
+#elif defined(_JNHW__size_t__IS__uint64_t)
+#else
+#error expected size_t uint32_t or uint64_t
+#endif 
+        const ssize_t result = write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf) + off, (size_t) nByte);
+        if (result == -1) {
+            throw_NativeErrorException(env, errno);
+        }
+        return (int64_t) result;
     }
 
     /*
@@ -355,15 +436,16 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_lseek__IJI
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jlong offset, jint whence) {
-#if __SIZEOF_LONG__ == 8
-        const off_t result = lseek(fd, offset, whence);
-#elif __SIZEOF_LONG__ == 4
+#if defined(_JNHW__off_t__IS__int32_t)
         if ((offset > INT32_MAX) || (offset < INT32_MIN)) {
-            throw_IndexOutOfBoundsException(env, "In this native implementation offset is only an integer with the size of jint");
+            throw_IllegalArgumentException(env, "offset outside off_t(int32_t)");
             return -1;
         }
-        const off_t result = lseek(fd, (int32_t) offset, whence);
-#endif
+#elif defined(_JNHW__off_t__IS__int64_t)
+#else
+#error expected off_t is int32_t or int64_t
+#endif 
+        const off_t result = lseek(fd, (off_t)offset, whence);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -393,7 +475,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    pipe
-     * Signature: (Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/IntRef;)V
+     * Signature: (Lde/ibapl/jnhw/common/references/IntRef;Lde/ibapl/jnhw/common/references/IntRef;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_pipe
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject read_fd_ref, jobject write_fd_ref) {

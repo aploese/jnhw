@@ -32,6 +32,8 @@ extern "C" {
 #include <stdio.h>
 #include <unistd.h>
 
+JNHW_ASSERT__pid_t__IS__int32_t
+
     /*
      * Class:     de_ibapl_jnhw_posix_Sched
      * Method:    sched_get_priority_max

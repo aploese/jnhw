@@ -31,12 +31,22 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
-     * Method:    sizeofDCB
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_sizeofDCB
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (DCB);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return alignof (DCB);
     }
 
     /*

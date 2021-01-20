@@ -42,32 +42,33 @@ extern "C" {
 #include "JnhwExceptions.h"
 
 //globally important class names
-#define JNHW_CLASS_NAME_NATIVE_ADDRESS_HOLDER "de/ibapl/jnhw/NativeAddressHolder"
+#define JNHW_CLASS_NAME_NATIVE_ADDRESS_HOLDER "de/ibapl/jnhw/common/memory/NativeAddressHolder"
     
     //Cached
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_ByteRef_value_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_ShortRef_value_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_IntRef_value_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_LongRef_value_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_ObjectRef_value_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_references_ByteRef_value_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_references_ShortRef_value_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_references_IntRef_value_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_references_LongRef_value_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_references_ObjectRef_value_ID;
     
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_OpaqueMemory_baseAddress_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_AbstractNativeMemory_baseAddress_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_OpaqueMemory32_sizeInBytes_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_OpaqueMemory64_sizeInBytes_ID;
     
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_StructArray_length_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_memory_StructArray32_length_ID;
     
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_NativeAddressHolder_Class;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_NativeAddressHolder_address_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_NativeAddressHolder_init_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_memory_NativeAddressHolder_Class;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID;
     
     //TODO deprecated ...
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_NativeFunctionPointer_Class;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class;
     //TODO deprecated ...
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID;
     //TODO deprecated ...
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_NativeFunctionPointer_init_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID;
     
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_PointerArray_cachedReferences_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID;
 
     _JNHW_IMPORT_OR_EXPORT_ extern jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className);
     
@@ -88,15 +89,18 @@ extern "C" {
      */
     _JNHW_IMPORT_OR_EXPORT_ extern int outOfBoundsByteArray(JNIEnv *env, jint pos, jint len, jbyteArray array);
 
-    _JNHW_IMPORT_OR_EXPORT_ extern int outOfBoundsOpaqueMemory(JNIEnv *env, jint pos, jint len, jobject opaqueMemory);
+    _JNHW_IMPORT_OR_EXPORT_ extern int outOfBoundsOpaqueMemory32(JNIEnv *env, jint pos, jint len, jobject opaqueMemory32);
+    _JNHW_IMPORT_OR_EXPORT_ extern int outOfBoundsOpaqueMemory64(JNIEnv *env, jlong pos, jlong len, jobject opaqueMemory64);
 
 
 
     /**
      * Unwarap the baseAddress of given opaqueMemory(jobject) of an OpaqueMemory instance and cast these baseAddress to given type and put it in ().
+     * Using GetIntField for 32bit addresses will fail on BIG_ENDIAN...
      * 
      */
-#define UNWRAP_OPAQUE_MEM_TO(destType, opaqueMemory) ((destType)((intptr_t)(*env)->GetLongField(env, opaqueMemory, de_ibapl_jnhw_OpaqueMemory_baseAddress_ID)))
+#define UNWRAP_OPAQUE_MEM_TO(destType, opaqueMemory) ((destType)((intptr_t)(*env)->GetLongField(env, opaqueMemory, de_ibapl_jnhw_common_memory_AbstractNativeMemory_baseAddress_ID)))
+
     /**
      * Unwarap the baseAddress given opaqueMemory(jobject) of an OpaqueMemory instance and cast these baseAddress to given type.
      * If opaqueMemory == NULL return NULL, otherwise unwrap.
@@ -108,33 +112,34 @@ extern "C" {
 #define UNWRAP_OPAQUE_MEM_TO_VOID_PTR_OR_NULL(opaqueMemory) UNWRAP_OPAQUE_MEM_TO_OR_NULL(void*, opaqueMemory)
 #define UNWRAP_OPAQUE_MEM_TO_VOID_PTR_PTR(opaqueMemory) UNWRAP_OPAQUE_MEM_TO(void**, opaqueMemory)
 
-#define SIZE_OF_OPAQUE_MEM(opaqueMem) (*env)->GetIntField(env, opaqueMem, de_ibapl_jnhw_OpaqueMemory_sizeInBytes_ID)
+#define SIZE_OF_OPAQUE_MEM_32(opaqueMem) (*env)->GetIntField(env, opaqueMem, de_ibapl_jnhw_common_memory_OpaqueMemory32_sizeInBytes_ID)
+#define SIZE_OF_OPAQUE_MEM_64(opaqueMem) (*env)->GetLongField(env, opaqueMem, de_ibapl_jnhw_common_memory_OpaqueMemory64_sizeInBytes_ID)
 
-#define LENGTH_OF_STRUCTURE_ARRAY(structureArray) (int32_t)(*env)->CallIntMethod(env, structureArray, de_ibapl_jnhw_StructArray_length_ID)
+#define LENGTH_OF_STRUCTURE_ARRAY_32(structureArray) (int32_t)(*env)->CallIntMethod(env, structureArray, de_ibapl_jnhw_common_memory_StructArray32_length_ID)
 
-#define LENGTH_OF_POINTER_ARRAY(pointerArray) (*env)->GetArrayLength(env, (*env)->GetObjectField(env, pointerArray, de_ibapl_jnhw_PointerArray_cachedReferences_ID))
+#define LENGTH_OF_POINTER_ARRAY_32(pointerArray) (*env)->GetArrayLength(env, (*env)->GetObjectField(env, pointerArray, de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID))
 
-#define GET_BYTE_REF_VALUE(valueRef) (*env)->GetByteField(env, valueRef, de_ibapl_jnhw_ByteRef_value_ID)
-#define SET_BYTE_REF_VALUE(valueRef, value) (*env)->SetByteField(env, valueRef, de_ibapl_jnhw_ByteRef_value_ID, value)
+#define GET_BYTE_REF_VALUE(valueRef) (*env)->GetByteField(env, valueRef, de_ibapl_jnhw_common_references_ByteRef_value_ID)
+#define SET_BYTE_REF_VALUE(valueRef, value) (*env)->SetByteField(env, valueRef, de_ibapl_jnhw_common_references_ByteRef_value_ID, value)
 
-#define GET_SHORT_REF_VALUE(valueRef) (*env)->GetShortField(env, valueRef, de_ibapl_jnhw_ShortRef_value_ID)
-#define SET_SHORT_REF_VALUE(valueRef, value) (*env)->SetShortField(env, valueRef, de_ibapl_jnhw_ShortRef_value_ID, value)
+#define GET_SHORT_REF_VALUE(valueRef) (*env)->GetShortField(env, valueRef, de_ibapl_jnhw_common_references_ShortRef_value_ID)
+#define SET_SHORT_REF_VALUE(valueRef, value) (*env)->SetShortField(env, valueRef, de_ibapl_jnhw_common_references_ShortRef_value_ID, value)
 
-#define GET_INT_REF_VALUE(valueRef) (*env)->GetIntField(env, valueRef, de_ibapl_jnhw_IntRef_value_ID)
-#define SET_INT_REF_VALUE(valueRef, value) (*env)->SetIntField(env, valueRef, de_ibapl_jnhw_IntRef_value_ID, value)
+#define GET_INT_REF_VALUE(valueRef) (*env)->GetIntField(env, valueRef, de_ibapl_jnhw_common_references_IntRef_value_ID)
+#define SET_INT_REF_VALUE(valueRef, value) (*env)->SetIntField(env, valueRef, de_ibapl_jnhw_common_references_IntRef_value_ID, value)
 
-#define GET_LONG_REF_VALUE(valueRef) (*env)->GetLongField(env, valueRef, de_ibapl_jnhw_LongRef_value_ID)
-#define SET_LONG_REF_VALUE(valueRef, value) (*env)->SetLongField(env, valueRef, de_ibapl_jnhw_LongRef_value_ID, value)
+#define GET_LONG_REF_VALUE(valueRef) (*env)->GetLongField(env, valueRef, de_ibapl_jnhw_common_references_LongRef_value_ID)
+#define SET_LONG_REF_VALUE(valueRef, value) (*env)->SetLongField(env, valueRef, de_ibapl_jnhw_common_references_LongRef_value_ID, value)
 
-#define GET_OBJECT_REF_VALUE(valueRef) (*env)->GetObjectField(env, valueRef, de_ibapl_jnhw_ObjectRef_value_ID)
-#define SET_OBJECT_REF_VALUE(valueRef, value) (*env)->SetObjectField(env, valueRef, de_ibapl_jnhw_ObjectRef_value_ID, value)
+#define GET_OBJECT_REF_VALUE(valueRef) (*env)->GetObjectField(env, valueRef, de_ibapl_jnhw_common_references_ObjectRef_value_ID)
+#define SET_OBJECT_REF_VALUE(valueRef, value) (*env)->SetObjectField(env, valueRef, de_ibapl_jnhw_common_references_ObjectRef_value_ID, value)
 
 //#define UNWRAP_NATIVE_FUNCTION_POINTER(nativeFunctionPointer)(void*)(intptr_t)(*env)->GetLongField(env, nativeFunctionPointer, de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID)
-#define UNWRAP_NATIVE_FUNCTION_POINTER_TO(destType, nativeFunctionPointer)(destType)(intptr_t)(*env)->GetLongField(env, nativeFunctionPointer, de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID)
-#define CREATE_NATIVE_FUNCTION_POINTER(value) (*env)->NewObject(env, de_ibapl_jnhw_NativeFunctionPointer_Class, de_ibapl_jnhw_NativeFunctionPointer_init_ID, (jlong) (intptr_t) value)
+#define UNWRAP_NATIVE_FUNCTION_POINTER_TO(destType, nativeFunctionPointer)(destType)(intptr_t)(*env)->GetLongField(env, nativeFunctionPointer, de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID)
+#define CREATE_NATIVE_FUNCTION_POINTER(value) (*env)->NewObject(env, de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class, de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID, (jlong) (intptr_t) value)
     
-#define UNWRAP_NATIVE_ADDRESS_HOLDER_TO(destType, value) (destType)(intptr_t)(*env)->GetLongField(env, value, de_ibapl_jnhw_NativeAddressHolder_address_ID)    
-#define CREATE_NATIVE_ADDRESS_HOLDER(value) (*env)->NewObject(env, de_ibapl_jnhw_NativeAddressHolder_Class, de_ibapl_jnhw_NativeAddressHolder_init_ID, (jlong) (intptr_t) value)
+#define UNWRAP_NATIVE_ADDRESS_HOLDER_TO(destType, value) (destType)(intptr_t)(*env)->GetLongField(env, value, de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID)    
+#define CREATE_NATIVE_ADDRESS_HOLDER(value) (*env)->NewObject(env, de_ibapl_jnhw_common_memory_NativeAddressHolder_Class, de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID, (jlong) (intptr_t) value)
 
 #ifdef __cplusplus
 }

@@ -34,10 +34,20 @@ extern "C" {
 
 /*
      * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_t
-     * Method:    sizeofPthread_t
+     * Method:    alignof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_sizeofPthread_1t
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (pthread_t);
+    }
+
+/*
+     * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_t
+     * Method:    sizeof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (pthread_t);
     }
@@ -50,12 +60,10 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_toString
     (JNIEnv *env, jobject pthread) {
         char buf[1024] = {0};
-#if __SIZEOF_LONG__ == 4
-        snprintf(buf, sizeof (buf) - 1, "%d", (uintptr_t)*UNWRAP_PTHREAD_T_PTR(pthread));
-#elif __SIZEOF_LONG__ == 8
+#if defined(__LP64__)
         snprintf(buf, sizeof (buf) - 1, "%ld", (uintptr_t)*UNWRAP_PTHREAD_T_PTR(pthread));
 #else
-#error Wordize undefined
+        snprintf(buf, sizeof (buf) - 1, "%d", (uintptr_t)*UNWRAP_PTHREAD_T_PTR(pthread));
 #endif
         return (*env)->NewStringUTF(env, buf);
     }

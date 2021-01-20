@@ -32,7 +32,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Winnt_LPWSTR
      * Method:    getString
-     * Signature: (Lde/ibapl/jnhw/OpaqueMemory;I)Ljava/lang/String;
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory;I)Ljava/lang/String;
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024LPWSTR_getString
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject opaqueMem, jint len) {

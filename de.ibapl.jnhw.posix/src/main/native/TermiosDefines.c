@@ -407,7 +407,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B2500000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__)
+#if defined (__linux__) && !defined(__sparc__)
         return B2500000;
 #elif defined(B2500000)
 #error "B2500000 defined"
@@ -424,7 +424,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B3000000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__)
+#if defined (__linux__) && !defined(__sparc__)
         return B3000000;
 #elif defined(B3000000)
 #error "B3000000 defined"
@@ -441,7 +441,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B3500000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__)
+#if defined (__linux__) && !defined(__sparc__)
         return B3500000;
 #elif defined(B3500000)
 #error "B3500000 defined"
@@ -458,7 +458,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_B4000000
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__)
+#if defined (__linux__) && !defined(__sparc__)
         return B4000000;
 #elif defined(B4000000)
 #error "B4000000 defined"
@@ -555,7 +555,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_NOFLSH
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && defined(__PPC__))
+#if defined (__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && (defined(__powerpc__) || defined(__alpha__)))
         return (int32_t) NOFLSH;
 #else
         return NOFLSH;
@@ -579,7 +579,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CMSPAR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__linux__) && !defined(__mips__)
+#if defined(__linux__) //TODO raus... && !defined(__mips__)
         return CMSPAR;
 #elif defined(CMSPAR)
 #error "CMSPAR defined"

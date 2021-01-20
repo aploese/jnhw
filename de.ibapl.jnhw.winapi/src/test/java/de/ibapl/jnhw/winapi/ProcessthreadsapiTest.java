@@ -21,21 +21,14 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Callback_IJ_V;
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.LongRef;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.common.callbacks.Callback_IJ_V;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.WordSize;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import de.ibapl.jnhw.winapi.Winnt.PAPCFUNC;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import de.ibapl.jnhw.winapi.BaseTsd.ULONG_PTR;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 /**
@@ -45,13 +38,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class ProcessthreadsapiTest {
 
-    private static WordSize WORD_SIZE;
-
-    @BeforeAll
-    public static void setUpClass() {
-        MultiarchInfo multiarchInfo = new MultiarchTupelBuilder().guessMultiarch().iterator().next();
-        WORD_SIZE = multiarchInfo.getWordSize();
-    }
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public ProcessthreadsapiTest() {
     }
@@ -61,7 +48,7 @@ public class ProcessthreadsapiTest {
      */
     @Test
     public void test__QueueUserAPC__CanUse__Callback_IJ_V() {
-        assertEquals(Callback_IJ_V.sizeofIntptr_t(), BaseTsd.sizeofULONG_PTR());
+        assertEquals(Callback_IJ_V.sizeofIntptr_t(), BaseTsd.sizeof());
     }
 
     /**
@@ -112,7 +99,7 @@ public class ProcessthreadsapiTest {
         long result = Synchapi.SleepEx(100, true);
         assertEquals(Winbase.WAIT_IO_COMPLETION(), result);
         
-        switch (WORD_SIZE) {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 assertEquals(-1, longRef.value);
                 assertEquals(42, intRef.value);
@@ -128,7 +115,7 @@ public class ProcessthreadsapiTest {
                 assertEquals(42, longRef.value);
                 break;
             default:
-                throw new RuntimeException("Cant handle wordsize " + WORD_SIZE);
+                throw new RuntimeException("Cant handle wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
         }
     }
 }

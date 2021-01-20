@@ -21,8 +21,9 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -49,6 +50,30 @@ public class Stdio {
     }
 
     public final static native boolean HAVE_STDIO_H();
+
+    /**
+     * <b>POSIX:</b>seek relative to current position.
+     *
+     * @return the native symbolic constant of SEEK_CUR.
+     */
+    @Define
+    public static native int SEEK_CUR();
+
+    /**
+     * <b>POSIX:</b> Seek relative to end-of-file.
+     *
+     * @return the native symbolic constant of SEEK_END.
+     */
+    @Define
+    public static native int SEEK_END();
+
+    /**
+     * <b>POSIX:</b> Seek relative to start-of-file.
+     *
+     * @return the native symbolic constant of SEEK_SET.
+     */
+    @Define
+    public static native int SEEK_SET();
 
     /**
      * <b>POSIX:</b>

@@ -21,23 +21,28 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V;
-import de.ibapl.jnhw.Callback_I_V;
-import de.ibapl.jnhw.Callback_NativeRunnable;
-import de.ibapl.jnhw.Callback_PtrOpaqueMemory_V;
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NativeFunctionPointer;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeException;
-import de.ibapl.jnhw.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory;
+import de.ibapl.jnhw.common.annotations.AlignOf;
+import de.ibapl.jnhw.common.callbacks.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.callbacks.Callback_I_V;
+import de.ibapl.jnhw.common.callbacks.Callback_NativeRunnable;
+import de.ibapl.jnhw.common.callbacks.Callback_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types.pid_t;
+import de.ibapl.jnhw.posix.sys.Types.uid_t;
 import de.ibapl.jnhw.posix.sys.Types.size_t;
+import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -58,7 +63,7 @@ public class Signal {
      *
      * @author aploese
      */
-    public static final class Mcontext_t extends OpaqueMemory {
+    public static final class Mcontext_t extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -72,18 +77,22 @@ public class Signal {
          *
          * @return the native value sizeof(struct mcontext_t).
          */
-        public static native int sizeofMcontext_t() throws NoSuchNativeTypeException;
+        @SizeOf
+        public static native int sizeof() throws NoSuchNativeTypeException;
+
+        @AlignOf
+        public static native int alignof() throws NoSuchNativeTypeException;
 
         public Mcontext_t() throws NoSuchNativeTypeException {
-            super(sizeofMcontext_t(), false);
+            super(sizeof(), false);
         }
 
-        public Mcontext_t(OpaqueMemory owner, int offset) throws NoSuchNativeTypeException {
-            super(owner, offset, sizeofMcontext_t());
+        public Mcontext_t(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
+            super(owner, offset, sizeof());
         }
 
         public Mcontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, sizeofMcontext_t());
+            super(baseAddress, sizeof());
         }
 
     }
@@ -97,7 +106,7 @@ public class Signal {
 
     public final static native boolean HAVE_SIGNAL_H();
 
-    public static final class Sigset_t extends OpaqueMemory {
+    public static final class Sigset_t extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -111,14 +120,18 @@ public class Signal {
          *
          * @return the native value sizeof(struct sigset_t).
          */
-        public static native int sizeofSigset_t();
+        @SizeOf
+        public static native int sizeof();
+
+        @AlignOf
+        public static native int alignof();
 
         public Sigset_t() {
-            super(sizeofSigset_t(), false);
+            super(sizeof(), false);
         }
 
-        public Sigset_t(OpaqueMemory owner, int offset) {
-            super(owner, offset, sizeofSigset_t());
+        public Sigset_t(OpaqueMemory32 owner, int offset) {
+            super(owner, offset, sizeof());
         }
 
         private boolean maybeDoFormatBeforeFirst(StringBuilder sb, boolean first) {
@@ -129,7 +142,7 @@ public class Signal {
         }
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             StringBuilder sb = new StringBuilder();
             boolean isFirst = true;
             sb.append("[");
@@ -264,7 +277,7 @@ public class Signal {
      * sigval}</a>.
      *
      */
-    public static final class Sigval<T extends OpaqueMemory> extends OpaqueMemory {
+    public static final class Sigval<T extends OpaqueMemory32> extends Struct32 {
 
         private native NativeAddressHolder sival_ptr();
 
@@ -280,18 +293,22 @@ public class Signal {
          *
          * @return the native value sizeof(struct sigval).
          */
-        public static native int sizeofSigval();
+        @SizeOf
+        public static native int sizeof();
+
+        @AlignOf
+        public static native int alignof();
 
         public Sigval() {
-            super(sizeofSigval(), false);
+            super(sizeof(), false);
         }
 
-        public Sigval(OpaqueMemory owner, int offset) {
-            super(owner, offset, sizeofSigval());
+        public Sigval(OpaqueMemory32 owner, int offset) {
+            super(owner, offset, sizeof());
         }
 
         public Sigval(NativeAddressHolder baseAddress) {
-            super(baseAddress, sizeofSigval());
+            super(baseAddress, sizeof());
         }
 
         private T sival_ptr;
@@ -321,10 +338,10 @@ public class Signal {
          *
          * @return the native value of sival_ptr.
          */
-        public T sival_ptr(OpaqueMemoryProducer<T, Sigval<T>> producer) {
+        public T sival_ptr(OpaqueMemory32Producer<T, Sigval<T>> producer) {
             final NativeAddressHolder baseAddress = sival_ptr();
             if (sival_ptr != null) {
-                if (!OpaqueMemory.isSameAddress(baseAddress, sival_ptr)) {
+                if (!OpaqueMemory32.isSameAddress(baseAddress, sival_ptr)) {
                     sival_ptr = producer.produce(baseAddress, this);
                 }
                 return sival_ptr;
@@ -351,7 +368,7 @@ public class Signal {
         }
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             return String.format("{sival_int : %d, sival_ptr : %s}", sival_int(), sival_ptr());
         }
 
@@ -365,7 +382,7 @@ public class Signal {
      * JavaCallback class ???
      *
      */
-    public static final class Sigevent<T extends OpaqueMemory> extends OpaqueMemory {
+    public static final class Sigevent<T extends OpaqueMemory32> extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -374,14 +391,19 @@ public class Signal {
             LibJnhwPosixLoader.touch();
         }
 
-        public static native int _sigev_value_Offset() throws NoSuchNativeTypeException;
+        public static native int offsetof_Sigev_value() throws NoSuchNativeTypeException;
 
         /**
          * Get the real size of struct sigevent natively.
          *
          * @return the native value sizeof(struct sigevent).
          */
-        public static native int sizeofSigevent() throws NoSuchNativeTypeException;
+        @SizeOf
+        public static native int sizeof() throws NoSuchNativeTypeException;
+
+        @AlignOf
+        public static native int alignof() throws NoSuchNativeTypeException;
+
         /**
          * Signal value.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
@@ -392,19 +414,22 @@ public class Signal {
         private NativeFunctionPointer sigev_notify_function;
         Pthread.Pthread_attr_t sigev_notify_attributes;
 
+        @SuppressWarnings("unchecked")
         public Sigevent() throws NoSuchNativeTypeException {
-            super(sizeofSigevent(), true);
-            sigev_value = new Sigval(this, _sigev_value_Offset());
+            super(sizeof(), true);
+            sigev_value = new Sigval(this, offsetof_Sigev_value());
         }
 
+        @SuppressWarnings("unchecked")
         public Sigevent(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, sizeofSigevent());
-            sigev_value = new Sigval(this, _sigev_value_Offset());
+            super(baseAddress, sizeof());
+            sigev_value = new Sigval(this, offsetof_Sigev_value());
         }
 
-        Sigevent(OpaqueMemory owner, int offset) throws NoSuchNativeTypeException {
-            super(owner, offset, sizeofSigevent());
-            sigev_value = new Sigval(this, _sigev_value_Offset());
+        @SuppressWarnings("unchecked")
+        Sigevent(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
+            super(owner, offset, sizeof());
+            sigev_value = new Sigval(this, offsetof_Sigev_value());
         }
 
         /**
@@ -430,10 +455,10 @@ public class Signal {
 
         private native NativeAddressHolder sigev_notify_attributes() throws NoSuchNativeTypeException;
 
-        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemoryProducer<Pthread.Pthread_attr_t, Sigevent> producer) throws NoSuchNativeTypeException {
+        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemory32Producer<Pthread.Pthread_attr_t, Sigevent> producer) throws NoSuchNativeTypeException {
             final NativeAddressHolder baseAddress = sigev_notify_attributes();
             if (sigev_notify_attributes != null) {
-                if (!OpaqueMemory.isSameAddress(baseAddress, sigev_notify_attributes)) {
+                if (!OpaqueMemory32.isSameAddress(baseAddress, sigev_notify_attributes)) {
                     sigev_notify_attributes = producer.produce(baseAddress, this);
                 }
                 return sigev_notify_attributes;
@@ -456,12 +481,17 @@ public class Signal {
 
         private native void sigev_notify_function0(NativeFunctionPointer sigev_notify_function) throws NoSuchNativeTypeException;
 
-        public final void sigev_notify_function(Callback_I_V sigev_notify_function) throws NoSuchNativeTypeException {
+        /**
+         * Even if we can get away with an int we dont do this. BIG ENDIAN will acces the other half of the union sigval.sival_ptr for sigval.sival_int.
+         * @param sigev_notify_function
+         * @throws NoSuchNativeTypeException 
+         */
+        public final void sigev_notify_function(Callback__Sigval_int__V sigev_notify_function) throws NoSuchNativeTypeException {
             this.sigev_notify_function = sigev_notify_function;
             sigev_notify_function0(sigev_notify_function);
         }
 
-        public final void sigev_notify_function(Callback_PtrOpaqueMemory_V<T> sigev_notify_function) throws NoSuchNativeTypeException {
+        public final void sigev_notify_function(Callback_PtrAbstractNativeMemory_V<T> sigev_notify_function) throws NoSuchNativeTypeException {
             this.sigev_notify_function = sigev_notify_function;
             sigev_notify_function0(sigev_notify_function);
         }
@@ -471,22 +501,22 @@ public class Signal {
             sigev_notify_function0(sigev_notify_function);
         }
 
-        public final Callback_I_V sigev_notify_functionAsCallback_I_V() throws NoSuchNativeTypeException {
-            if (sigev_notify_function instanceof Callback_I_V) {
+        public final Callback__Sigval_int__V sigev_notify_functionAsCallback__Sigval_int__V() throws NoSuchNativeTypeException {
+            if (sigev_notify_function instanceof Callback__Sigval_int__V) {
                 if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
-                    return (Callback_I_V) sigev_notify_function;
+                    return (Callback__Sigval_int__V) sigev_notify_function;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
             } else {
-                throw new RuntimeException("cached sigev_notify_function is not the class Callback_I_V");
+                throw new RuntimeException("cached sigev_notify_function is not the class Callback__Sigval_int__V");
             }
         }
 
-        public final Callback_PtrOpaqueMemory_V sigev_notify_functionAsCallback_PtrOpaqueMemory_V() throws NoSuchNativeTypeException {
-            if (sigev_notify_function instanceof Callback_PtrOpaqueMemory_V) {
+        public final Callback_PtrAbstractNativeMemory_V sigev_notify_functionAsCallback_PtrOpaqueMemory_V() throws NoSuchNativeTypeException {
+            if (sigev_notify_function instanceof Callback_PtrAbstractNativeMemory_V) {
                 if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
-                    return (Callback_PtrOpaqueMemory_V) sigev_notify_function;
+                    return (Callback_PtrAbstractNativeMemory_V) sigev_notify_function;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
@@ -508,7 +538,7 @@ public class Signal {
         }
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             try {
                 return String.format("{sigev_notify : %d, sigev_signo : %d, sigev_notify_attributes : %s, sigev_notify_function : %s, sigev_value : %s}", sigev_notify(), sigev_signo(), sigev_notify_attributes((baseAddress, parent) -> {
                     if (baseAddress.isNULL()) {
@@ -564,6 +594,7 @@ public class Signal {
      * <b>POSIX:</b> Request that signal be held.
      *
      * @return the native symbolic constant of SIG_HOLD.
+     * @throws NotDefinedException if SIG_HOLD is not defined natively.
      */
     @Define()
     public final static Callback_I_V SIG_HOLD() throws NotDefinedException {
@@ -598,10 +629,9 @@ public class Signal {
      *
      *
      * @return the native symbolic constant of SIGEV_NONE.
-     * @throws de.ibapl.jnhw.NotDefinedException
+     * @throws NotDefinedException if SIGEV_NONE is not defined natively.
      */
     @Define()
-
     public final static native int SIGEV_NONE() throws NotDefinedException;
 
     /**
@@ -610,6 +640,7 @@ public class Signal {
      *
      *
      * @return the native symbolic constant of SIGEV_SIGNAL.
+     * @throws NotDefinedException if SIGEV_SIGNAL is not defined natively.
      */
     @Define()
     public final static native int SIGEV_SIGNAL() throws NotDefinedException;
@@ -619,12 +650,13 @@ public class Signal {
      * notification.
      *
      * @return the native symbolic constant of SIGEV_THREAD.
+     * @throws NotDefinedException if SIGEV_THREAD is not defined natively.
      */
     @Define()
     public final static native int SIGEV_THREAD() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Process abort signal.
      *
      * @return the native symbolic constant of SIGABRT.
@@ -633,7 +665,7 @@ public class Signal {
     public final static native int SIGABRT();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Alarm clock.
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Alarm clock.
      *
      * @return the native symbolic constant of SIGALRM.
      */
@@ -641,7 +673,7 @@ public class Signal {
     public final static native int SIGALRM();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Access to an undefined portion of a memory object.
      *
      *
@@ -652,7 +684,7 @@ public class Signal {
     public final static native int SIGBUS();
 
     /**
-     * <b>POSIX:</b><i>>Ignore the signal</i> Child process terminated, stopped,
+     * <b>POSIX:</b><i>Ignore the signal</i> Child process terminated, stopped,
      * or continued.
      *
      * @return the native symbolic constant of SIGCHLD.
@@ -661,7 +693,7 @@ public class Signal {
     public final static native int SIGCHLD();
 
     /**
-     * <b>POSIX:</b><i>>Continue the process, if it is stopped; otherwise,
+     * <b>POSIX:</b><i>Continue the process, if it is stopped; otherwise,
      * ignore the signal.</i> Continue executing , if stopped.
      *
      * @return the native symbolic constant of SIGCONT.
@@ -670,7 +702,7 @@ public class Signal {
     public final static native int SIGCONT();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Erroneous arithmetic operation.
      *
      *
@@ -681,7 +713,7 @@ public class Signal {
     public final static native int SIGFPE();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Hangup.
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Hangup.
      *
      * @return the native symbolic constant of SIGHUP.
      */
@@ -689,7 +721,7 @@ public class Signal {
     public final static native int SIGHUP();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Illegal instruction.
      *
      * @return the native symbolic constant of SIGILL.
@@ -698,7 +730,7 @@ public class Signal {
     public final static native int SIGILL();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Terminal
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Terminal
      * interrupt signal.
      *
      *
@@ -709,7 +741,7 @@ public class Signal {
     public final static native int SIGINT();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i>Kill(cannot be
+     * <b>POSIX:</b><i>Abnormal termination of the process</i>Kill(cannot be
      * caught or ignored).
      *
      * @return the native symbolic constant of SIGKILL.
@@ -718,7 +750,7 @@ public class Signal {
     public final static native int SIGKILL();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Write on a pipe
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Write on a pipe
      * with no one to read it.
      *
      * @return the native symbolic constant of SIGPIPE.
@@ -727,7 +759,7 @@ public class Signal {
     public final static native int SIGPIPE();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Terminal quit signal.
      *
      *
@@ -738,7 +770,7 @@ public class Signal {
     public final static native int SIGQUIT();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Invalid memory reference.
      *
      * @return the native symbolic constant of SIGSEGV.
@@ -747,7 +779,7 @@ public class Signal {
     public final static native int SIGSEGV();
 
     /**
-     * <b>POSIX:</b><i>>Stop the process</i> Stop executing(cannot be caught or
+     * <b>POSIX:</b><i>Stop the process</i> Stop executing(cannot be caught or
      * ignored).
      *
      * @return the native symbolic constant of SIGSTOP.
@@ -756,7 +788,7 @@ public class Signal {
     public final static native int SIGSTOP();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Termination
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Termination
      * signal.
      *
      * @return the native symbolic constant of SIGTERM.
@@ -765,7 +797,7 @@ public class Signal {
     public final static native int SIGTERM();
 
     /**
-     * <b>POSIX:</b><i>>Stop the process</i> Terminal stop signal.
+     * <b>POSIX:</b><i>Stop the process</i> Terminal stop signal.
      *
      *
      * @return the native symbolic constant of SIGTSTP.
@@ -775,7 +807,7 @@ public class Signal {
     public final static native int SIGTSTP();
 
     /**
-     * <b>POSIX:</b><i>>Stop the process</i> Background process attempting read.
+     * <b>POSIX:</b><i>Stop the process</i> Background process attempting read.
      *
      * @return the native symbolic constant of SIGTTIN.
      */
@@ -783,7 +815,7 @@ public class Signal {
     public final static native int SIGTTIN();
 
     /**
-     * <b>POSIX:</b><i>>Stop the process</i> Background process attempting
+     * <b>POSIX:</b><i>Stop the process</i> Background process attempting
      * write.
      *
      *
@@ -794,7 +826,7 @@ public class Signal {
     public final static native int SIGTTOU();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> User -defined
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> User -defined
      * signal 1.
      *
      *
@@ -805,7 +837,7 @@ public class Signal {
     public final static native int SIGUSR1();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> User -defined
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> User -defined
      * signal 2.
      *
      * @return the native symbolic constant of SIGUSR2.
@@ -814,16 +846,16 @@ public class Signal {
     public final static native int SIGUSR2();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Pollable event.
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Pollable event.
      *
      * @return the native symbolic constant of SIGPOLL.
-     * @throws NotDefinedException
+     * @throws NotDefinedException if SIGPOLL is not defined natively.
      */
     @Define()
     public final static native int SIGPOLL() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Profiling timer
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Profiling timer
      * expired.
      *
      * @return the native symbolic constant of SIGPROF.
@@ -832,7 +864,7 @@ public class Signal {
     public final static native int SIGPROF();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Bad system call.
      *
      * @return the native symbolic constant of SIGSYS.
@@ -841,7 +873,7 @@ public class Signal {
     public final static native int SIGSYS();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Trace /breakpoint trap.
      *
      * @return the native symbolic constant of SIGTRAP.
@@ -850,7 +882,7 @@ public class Signal {
     public final static native int SIGTRAP();
 
     /**
-     * <b>POSIX:</b><i>>Ignore the signal</i> High bandwidth data is available
+     * <b>POSIX:</b><i>Ignore the signal</i> High bandwidth data is available
      * at a socket.
      *
      * @return the native symbolic constant of SIGURG.
@@ -859,7 +891,7 @@ public class Signal {
     public final static native int SIGURG();
 
     /**
-     * <b>POSIX:</b><i>> Abnormal termination of the process</i> Virtual timer
+     * <b>POSIX:</b><i>Abnormal termination of the process</i> Virtual timer
      * expired.
      *
      * @return the native symbolic constant of SIGVTALRM.
@@ -868,7 +900,7 @@ public class Signal {
     public final static native int SIGVTALRM();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> CPU time limit exceeded.
      *
      * @return the native symbolic constant of SIGXCPU.
@@ -877,7 +909,7 @@ public class Signal {
     public final static native int SIGXCPU();
 
     /**
-     * <b>POSIX:</b><i>>Abnormal termination of the process with additional
+     * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> File size limit exceeded.
      *
      *
@@ -892,7 +924,7 @@ public class Signal {
      *
      * @param <T>
      */
-    public static class Sigaction<T extends OpaqueMemory> extends OpaqueMemory {
+    public static class Sigaction<T extends OpaqueMemory32> extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -906,13 +938,17 @@ public class Signal {
          *
          * @return the native value sizeof(struct sigaction).
          */
-        public static native int sizeofSigaction();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int _sa_mask_Offset();
+        @AlignOf
+        public static native int alignof();
+
+        public static native int offsetof_Sa_mask();
 
         protected Sigaction() {
-            super(sizeofSigaction(), false);
-            sa_mask = new Sigset_t(this, _sa_mask_Offset());
+            super(sizeof(), false);
+            sa_mask = new Sigset_t(this, offsetof_Sa_mask());
         }
 
         /**
@@ -1002,11 +1038,12 @@ public class Signal {
          * @return the native value of sa_sigaction if the cached value match
          * otherwise an exception is thrown.
          */
-        public final Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigactionAsCallback_I_PtrOpaqueMemory_PtrOpaqueMemory_V() {
+        @SuppressWarnings("unchecked")
+        public final Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Siginfo_t, T> sa_sigactionAsCallback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V() {
             final NativeFunctionPointer sa_sigaction = sa_sigaction();
-            if (cachedHandlerOrAction instanceof Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V) {
+            if (cachedHandlerOrAction instanceof Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V) {
                 if (NativeFunctionPointer.isSameAddress(sa_sigaction, cachedHandlerOrAction)) {
-                    return (Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V) cachedHandlerOrAction;
+                    return (Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V) cachedHandlerOrAction;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
@@ -1015,9 +1052,9 @@ public class Signal {
             }
         }
 
-        public final native <T extends OpaqueMemory> void sa_sigaction0(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigaction);
+        public final native <T extends OpaqueMemory32> void sa_sigaction0(Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Siginfo_t, T> sa_sigaction);
 
-        public final <T extends OpaqueMemory> void sa_sigaction(Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V<Siginfo_t, T> sa_sigaction) {
+        public final <T extends OpaqueMemory32> void sa_sigaction(Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Siginfo_t, T> sa_sigaction) {
             cachedHandlerOrAction = sa_sigaction;
             sa_sigaction0(sa_sigaction);
         }
@@ -1150,7 +1187,7 @@ public class Signal {
      * ucontext_t}</a>.
      *
      */
-    public static class Ucontext_t extends OpaqueMemory {
+    public static class Ucontext_t extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -1164,30 +1201,34 @@ public class Signal {
          *
          * @return the native value sizeof(struct ucontext_t).
          */
-        public static native int sizeofUcontext_t() throws NoSuchNativeTypeException;
+        @SizeOf
+        public static native int sizeof() throws NoSuchNativeTypeException;
 
-        public static native int _uc_sigmask_Offset() throws NoSuchNativeTypeException;
+        @AlignOf
+        public static native int alignof() throws NoSuchNativeTypeException;
 
-        public static native int _uc_stack_Offset() throws NoSuchNativeTypeException;
+        public static native int offsetof_Uc_sigmask() throws NoSuchNativeTypeException;
 
-        public static native int _uc_mcontext_Offset() throws NoSuchNativeTypeException;
+        public static native int offsetof_Uc_stack() throws NoSuchNativeTypeException;
+
+        public static native int offsetof_Uc_mcontext() throws NoSuchNativeTypeException;
 
         public Ucontext_t() throws NoSuchNativeTypeException {
             this(false);
         }
 
         public Ucontext_t(boolean clearMem) throws NoSuchNativeTypeException {
-            super(sizeofUcontext_t(), clearMem);
-            uc_sigmask = new Sigset_t(this, _uc_sigmask_Offset());
-            uc_stack = new Stack_t(this, _uc_stack_Offset());
-            uc_mcontext = new Mcontext_t(this, _uc_mcontext_Offset());
+            super(sizeof(), clearMem);
+            uc_sigmask = new Sigset_t(this, offsetof_Uc_sigmask());
+            uc_stack = new Stack_t(this, offsetof_Uc_stack());
+            uc_mcontext = new Mcontext_t(this, offsetof_Uc_mcontext());
         }
 
         public Ucontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, sizeofUcontext_t());
-            uc_sigmask = new Sigset_t(this, _uc_sigmask_Offset());
-            uc_stack = new Stack_t(this, _uc_stack_Offset());
-            uc_mcontext = new Mcontext_t(this, _uc_mcontext_Offset());
+            super(baseAddress, sizeof());
+            uc_sigmask = new Sigset_t(this, offsetof_Uc_sigmask());
+            uc_stack = new Stack_t(this, offsetof_Uc_stack());
+            uc_mcontext = new Mcontext_t(this, offsetof_Uc_mcontext());
         }
 
         /**
@@ -1205,7 +1246,7 @@ public class Signal {
          * ucontext_t}</a>.
          *
          */
-        public final Ucontext_t uc_link(OpaqueMemoryProducer<Ucontext_t, Ucontext_t> producer) throws NoSuchNativeTypeException {
+        public final Ucontext_t uc_link(OpaqueMemory32Producer<Ucontext_t, Ucontext_t> producer) throws NoSuchNativeTypeException {
             return producer.produce(uc_link0(), this);
         }
 
@@ -1239,7 +1280,7 @@ public class Signal {
      * stack_t}</a>.
      *
      */
-    public static class Stack_t<T extends OpaqueMemory> extends OpaqueMemory {
+    public static class Stack_t<T extends OpaqueMemory32> extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -1253,14 +1294,18 @@ public class Signal {
          *
          * @return the native value sizeof(struct stack_t).
          */
-        public static native int sizeofStack_t();
+        @SizeOf
+        public static native int sizeof();
 
-        private Stack_t(OpaqueMemory owner, int offset) {
-            super(owner, offset, sizeofStack_t());
+        @AlignOf
+        public static native int alignof();
+
+        private Stack_t(OpaqueMemory32 owner, int offset) {
+            super(owner, offset, sizeof());
         }
 
         public Stack_t() {
-            super(sizeofStack_t(), false);
+            super(sizeof(), false);
         }
 
         /**
@@ -1270,8 +1315,8 @@ public class Signal {
          * @param ss_sp
          * @return
          */
-        public static <T extends OpaqueMemory> Stack_t<T> of(int ss_flags, T ss_sp) {
-            Stack_t<T> result = new Stack_t();
+        public static <T extends OpaqueMemory32> Stack_t<T> of(int ss_flags, T ss_sp) {
+            Stack_t<T> result = new Stack_t<>();
             result.ss_flags(ss_flags);
             result.ss_sp(ss_sp);
             result.ss_size(ss_sp.sizeInBytes);
@@ -1292,7 +1337,7 @@ public class Signal {
          * @return the native value of ss_sp.
          */
         //TODO this is a Pointer
-        public final T ss_sp(OpaqueMemoryProducer<T, Stack_t<T>> producer) {
+        public final T ss_sp(OpaqueMemory32Producer<T, Stack_t<T>> producer) {
             return producer.produce(ss_sp0(), this);
         }
 
@@ -1324,7 +1369,7 @@ public class Signal {
      * siginfo_t}</a>.
      *
      */
-    public static class Siginfo_t<T extends OpaqueMemory> extends OpaqueMemory {
+    public static class Siginfo_t<T extends OpaqueMemory32> extends Struct32 {
 
         /**
          * Make sure the native lib is loaded
@@ -1338,24 +1383,29 @@ public class Signal {
          *
          * @return the native value sizeof(struct siginfo_t).
          */
-        public static native int sizeofSiginfo_t();
+        @SizeOf
+        public static native int sizeof();
 
-        public static native int _si_value_Offset();
+        @AlignOf
+        public static native int alignof();
 
+        public static native int offsetof_Si_value();
+
+        @SuppressWarnings("unchecked")
         public Siginfo_t() {
-            super(sizeofSiginfo_t(), false);
-            si_value = new Sigval(memoryOwner, _si_value_Offset());
+            super(sizeof(), false);
+            si_value = new Sigval(this, offsetof_Si_value());
         }
 
         /**
          * Create a wrapper around some unknown mem - it will NOT be freed
          *
-         * @param sival_ptrProducer
          * @param address
          */
+        @SuppressWarnings("unchecked")
         public Siginfo_t(NativeAddressHolder address) {
-            super(address, sizeofSiginfo_t());
-            si_value = new Sigval(this, _si_value_Offset());
+            super(address, sizeof());
+            si_value = new Sigval(this, offsetof_Si_value());
         }
 
         /**
@@ -1377,7 +1427,7 @@ public class Signal {
         public final native int si_code();
 
         /**
-         * If non -zero , an errno value associated with this signal , as
+         * If non-zero, an errno value associated with this signal, as
          * described in &lt;errno.h&gt;.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
          * siginfo_t}</a>.
@@ -1387,7 +1437,7 @@ public class Signal {
         public final native int si_errno();
 
         /**
-         * Sending process ID.uid_t si_uid Real user ID of sending process.
+         * Sending process ID.pid_t si_pid Sending process ID..
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
          * siginfo_t}</a>.
          *
@@ -1395,6 +1445,16 @@ public class Signal {
          */
         public final native @pid_t
         int si_pid();
+
+        /**
+         * Sending process ID.uid_t si_uid Real user ID of sending process.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
+         * siginfo_t}</a>.
+         *
+         * @return the native value of si_pid.
+         */
+        public final native @uid_t
+        int si_uid();
 
         /**
          * Address of faulting instruction.
@@ -1431,7 +1491,7 @@ public class Signal {
         public final Sigval<T> si_value;
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             try {
                 return String.format("{si_addr : %d, si_band : %d, si_code : %d, si_errno : %d, si_pid : %d, si_signo : %d, si_status : %d, si_value : %s}", si_addr(), si_band(), si_code(), si_errno(), si_pid(), si_signo(), si_status(), si_value);
             } catch (NoSuchNativeTypeMemberException nstme) {
@@ -1696,9 +1756,9 @@ public class Signal {
      * <b>POSIX:</b>{@link SIGPOLL} Data input available.
      *
      * @return the native symbolic constant of POLL_IN.
+     * @throws NotDefinedException if POLL_IN is not defined natively.
      */
     @Define()
-
     public final static native int POLL_IN() throws NotDefinedException;
 
     /**
@@ -1706,9 +1766,9 @@ public class Signal {
      *
      *
      * @return the native symbolic constant of POLL_OUT.
+     * @throws NotDefinedException if POLL_OUT is not defined natively.
      */
     @Define()
-
     public final static native int POLL_OUT() throws NotDefinedException;
 
     /**
@@ -1716,9 +1776,9 @@ public class Signal {
      *
      *
      * @return the native symbolic constant of POLL_MSG.
+     * @throws NotDefinedException if POLL_MSG is not defined natively.
      */
     @Define()
-
     public final static native int POLL_MSG() throws NotDefinedException;
 
     /**
@@ -1726,15 +1786,16 @@ public class Signal {
      *
      *
      * @return the native symbolic constant of POLL_ERR.
+     * @throws NotDefinedException if POLL_ERR is not defined natively.
      */
     @Define()
-
     public final static native int POLL_ERR() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b>{@link SIGPOLL} High priority input available.
      *
      * @return the native symbolic constant of POLL_PRI.
+     * @throws NotDefinedException if POLL_PRI is not defined natively.
      */
     @Define()
     public final static native int POLL_PRI() throws NotDefinedException;
@@ -1743,6 +1804,7 @@ public class Signal {
      * <b>POSIX:</b>{@link SIGPOLL} Device disconnected.
      *
      * @return the native symbolic constant of POLL_HUP.
+     * @throws NotDefinedException if POLL_HUP is not defined natively.
      */
     @Define()
     public final static native int POLL_HUP() throws NotDefinedException;
@@ -1778,6 +1840,7 @@ public class Signal {
      * request.
      *
      * @return the native symbolic constant of SI_ASYNCIO.
+     * @throws NotDefinedException if SI_ASYNCIO is not defined natively.
      */
     @Define()
     public final static native int SI_ASYNCIO() throws NotDefinedException;
@@ -1787,6 +1850,7 @@ public class Signal {
      * message.
      *
      * @return the native symbolic constant of SI_MESGQ.
+     * @throws NotDefinedException if SI_MESGQ is not defined natively.
      */
     @Define()
     public final static native int SI_MESGQ() throws NotDefinedException;
@@ -1826,7 +1890,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException
+     * @throws NoSuchNativeMethodException if the method psiginfo is not available natively.
      */
     public final static native void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -1849,6 +1913,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method pthread_kill is not available natively.
      */
     public final static native void pthread_kill(Pthread.Pthread_t thread, int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -1956,6 +2021,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sighold is not available natively.
      */
     public final static native void sighold(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -1967,6 +2033,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sigignore is not available natively.
      */
     public final static native void sigignore(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2014,6 +2081,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * is -1 and errno is other than EINTR.
+     * @throws NoSuchNativeMethodException if the method sigpause is not available natively.
      */
     public final static native void sigpause(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2047,7 +2115,8 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     */
+      * @throws NoSuchNativeMethodException if the method sigqueue is not available natively.
+    */
     public final static native void sigqueue(@pid_t int pid, int signo, Sigval value) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
@@ -2058,6 +2127,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sigrelse is not available natively.
      */
     public final static native void sigrelse(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2069,6 +2139,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sigset is not available natively.
      *///TODO args missing ....
     public final static native Callback_I_V sigset(int sig, Callback_I_V disp) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2091,6 +2162,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sigtimedwait is not available natively.
      */
     public final static native int sigtimedwait(Sigset_t set, Siginfo_t info,
             Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException;
@@ -2118,6 +2190,7 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method sigwaitinfo is not available natively.
      */
     public final static native int sigwaitinfo(Sigset_t set, Siginfo_t info) throws NativeErrorException, NoSuchNativeMethodException;
 }

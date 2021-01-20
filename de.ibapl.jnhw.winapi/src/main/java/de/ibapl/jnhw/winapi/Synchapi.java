@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeErrorException;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -80,7 +80,7 @@ public abstract class Synchapi {
      *
      * @param hEvent A handle to the object.
      *
-     * @throws NullPointerException if hHandle is {@code null].
+     * @throws NullPointerException if hHandle is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -93,7 +93,7 @@ public abstract class Synchapi {
      *
      * @param hEvent A handle to the object.
      *
-     * @throws NullPointerException if hHandle is {@code null].
+     * @throws NullPointerException if hHandle is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -117,7 +117,7 @@ public abstract class Synchapi {
      * values. (Note that WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is
      * defined as 0x00000080L.)
      *
-     * @throws NullPointerException if hHandle is {@code null].
+     * @throws NullPointerException if hHandle is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -156,7 +156,7 @@ public abstract class Synchapi {
      * values. (Note that WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is
      * defined as 0x00000080L.)
      *
-     * @throws NullPointerException if hHandle is {@code null].
+     * @throws NullPointerException if hHandle is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -180,7 +180,7 @@ public abstract class Synchapi {
      * @param dwMilliseconds the time-out interval, in milliseconds.
      * @return on succes one of WAIT_ABANDONED, WAIT_OBJECT_0 or WAIT_TIMEOUT.
      *
-     * @throws NullPointerException if hHandle is {@code null].
+     * @throws NullPointerException if hHandle is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -203,7 +203,7 @@ public abstract class Synchapi {
      *
      * @return on succes one of WAIT_ABANDONED, WAIT_OBJECT_0 or WAIT_TIMEOUT.
      *
-     * @throws NullPointerException if hHandle is {@code null].
+     * @throws NullPointerException if hHandle is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -218,6 +218,10 @@ public abstract class Synchapi {
      * suspended, in milliseconds.
      *
      * @param bAlertable enable/disable APC.
+     * @return The return value is zero if the specified time interval expired.
+     *
+     * The return value is WAIT_IO_COMPLETION if the function returned due to
+     * one or more I/O completion callback functions.
      *
      */
     public final static native long SleepEx(long dwMilliseconds, boolean bAlertable);

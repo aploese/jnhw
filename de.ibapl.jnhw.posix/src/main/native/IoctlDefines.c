@@ -52,7 +52,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_FIONREAD
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__linux__) && defined(__sh__) 
+        return (int32_t) FIONREAD;
+#else
         return FIONREAD;
+#endif        
     }
 
     /*
@@ -207,7 +211,11 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCGSOFTCAR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__) 
+#if defined(__sh__) 
+        return (int32_t) TIOCGSOFTCAR;
+#else
         return TIOCGSOFTCAR;
+#endif        
 #elif defined(TIOCGSOFTCAR)
 #error "TIOCGSOFTCAR defined"
 #else
@@ -224,7 +232,11 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCSSOFTCAR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__) 
+#if defined(__sparc__)
+        return (int32_t)TIOCSSOFTCAR;
+#else
         return TIOCSSOFTCAR;
+#endif
 #elif defined(TIOCSSOFTCAR)
 #error "TIOCSSOFTCAR defined"
 #else
@@ -270,7 +282,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMGET
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__linux__) && defined(__sh__) 
+        return (int32_t) TIOCMGET;
+#else
         return TIOCMGET;
+#endif        
     }
 
     /*
@@ -280,7 +296,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMSET
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__)
+#if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && defined(__sparc__))
         //Just force the conversation or check at runtime sizeof??
         return (int32_t) TIOCMSET;
 #else
@@ -295,7 +311,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMBIC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__)
+#if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && defined(__sparc__))
         //Just force the conversation or check at runtime sizeof??
         return (int32_t) TIOCMBIC;
 #else
@@ -310,7 +326,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCMBIS
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__)
+#if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && defined(__sparc__))
         //Just force the conversation or check at runtime sizeof??
         return (int32_t) TIOCMBIS;
 #else
@@ -325,7 +341,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_TIOCOUTQ
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__linux__) && defined(__sh__) 
+        return (int32_t) TIOCOUTQ;
+#else
         return TIOCOUTQ;
+#endif        
     }
 
 #ifdef __cplusplus

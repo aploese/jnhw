@@ -31,12 +31,22 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
-     * Method:    sizeofCOMSTAT
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_sizeofCOMSTAT
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (COMSTAT);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return alignof (COMSTAT);
     }
 
     /*

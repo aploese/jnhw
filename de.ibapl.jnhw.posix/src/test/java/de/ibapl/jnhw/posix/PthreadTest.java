@@ -21,16 +21,15 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.IntRef;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.ObjectRef;
+import de.ibapl.jnhw.common.references.IntRef;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -42,12 +41,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class PthreadTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
-
-    @BeforeAll
-    public static void setUpClass() {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
-    }
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public PthreadTest() {
     }
@@ -112,7 +106,7 @@ public class PthreadTest {
     @Test
     public void testPthread_getcpuclockid() throws Exception {
         System.out.println("pthread_getcpuclockid");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Pthread.pthread_getcpuclockid(null, null);
             });
@@ -210,7 +204,7 @@ public class PthreadTest {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Pthread.pthread_setschedparam(null, 0, param);
         });
-        if (multiarchTupelBuilder.getOS() == de.ibapl.jnhw.libloader.OS.LINUX) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == de.ibapl.jnhw.libloader.OS.LINUX) {
             //TODO Why??? EINVAL
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                 Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, param);
@@ -241,7 +235,7 @@ public class PthreadTest {
     @Test
     public void testPthread_setschedprio() throws Exception {
         System.out.println("pthread_setschedprio(");
-        switch (multiarchTupelBuilder.getOS()) {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case FREE_BSD:
             case OPEN_BSD:
             case MAC_OS_X:
@@ -256,4 +250,79 @@ public class PthreadTest {
                 Pthread.pthread_setschedprio(Pthread.pthread_self(), 0);
         }
     }
+
+    @Test
+    public void testSizeOfPthread_attr_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
+                    case AARCH64:
+                        Assertions.assertEquals(64, Pthread.Pthread_attr_t.sizeof());
+                        break;
+                    case ARM:
+                    case I386:
+                    case MIPS:
+                        Assertions.assertEquals(36, Pthread.Pthread_attr_t.sizeof());
+                        break;
+                    case MIPS_64:
+                    case POWER_PC_64:
+                    case S390_X:
+                    case X86_64:
+                        Assertions.assertEquals(56, Pthread.Pthread_attr_t.sizeof());
+                        break;
+                    default:
+                        Assertions.assertEquals(-1, Pthread.Pthread_attr_t.sizeof());
+                }
+                break;
+            case FREE_BSD:
+            case OPEN_BSD:
+                Assertions.assertEquals(8, Pthread.Pthread_attr_t.sizeof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Pthread.Pthread_attr_t.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfPthread_attr_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Pthread.Pthread_attr_t.alignof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Pthread.Pthread_attr_t.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Pthread.Pthread_attr_t.alignof());
+        }
+    }
+
+    @Test
+    public void testSizeOfPthread_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Pthread.Pthread_t.sizeof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Pthread.Pthread_t.sizeof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Pthread.Pthread_t.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfPthread_t() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Pthread.Pthread_t.alignof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Pthread.Pthread_t.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Pthread.Pthread_t.alignof());
+        }
+    }
+
 }

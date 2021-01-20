@@ -30,6 +30,10 @@ extern "C" {
 #include <poll.h>
 #include <errno.h>
 
+#include <assert.h>
+
+JNHW_ASSERT__nfds_t__IS__uint64_t__OR__uint32_t
+
     /*
      * Class:     de_ibapl_jnhw_posix_Poll
      * Method:    poll
@@ -41,7 +45,7 @@ extern "C" {
             throw_NullPointerException(env, "pollFd array");
             return -1;
         }
-        const int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFdArray), (uint32_t)LENGTH_OF_STRUCTURE_ARRAY(pollFdArray), timeout);
+        const int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFdArray), (uint32_t)LENGTH_OF_STRUCTURE_ARRAY_32(pollFdArray), timeout);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }

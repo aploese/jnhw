@@ -21,15 +21,18 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeAddressHolder;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
-import de.ibapl.jnhw.NoSuchNativeTypeException;
-import de.ibapl.jnhw.NotDefinedException;
-import de.ibapl.jnhw.OpaqueMemory;
-import de.ibapl.jnhw.PointerArray;
+import de.ibapl.jnhw.common.annotations.AlignOf;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.PointerArray32;
+import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -60,6 +63,7 @@ public class Aio {
      * operations could be canceled since they are already complete.
      *
      * @return the native symbolic constant of AIO_ALLDONE.
+     * @throws NotDefinedException if AIO_ALLDONE is not defined natively.
      */
     @Define()
     public final static native int AIO_ALLDONE() throws NotDefinedException;
@@ -69,6 +73,7 @@ public class Aio {
      * have been canceled.
      *
      * @return the native symbolic constant of AIO_CANCELED.
+     * @throws NotDefinedException if AIO_CANCELED is not defined natively.
      */
     @Define()
     public final static native int AIO_CANCELED() throws NotDefinedException;
@@ -79,6 +84,7 @@ public class Aio {
      *
      *
      * @return the native symbolic constant of AIO_NOTCANCELED.
+     * @throws NotDefinedException if AIO_NOTCANCELED is not defined natively.
      */
     @Define()
 
@@ -87,49 +93,54 @@ public class Aio {
     public final static native boolean HAVE_AIO_H();
 
     /**
-     * <b>POSIX:</b> A {@link lio_listio()} element operation option indicating
+     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element operation option indicating
      * that no transfer is requested.
      *
      * @return the native symbolic constant of LIO_NOP.
+     * @throws NotDefinedException if LIO_NOP is not defined natively.
      */
     @Define()
     public final static native int LIO_NOP() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> A {@link lio_listio()} synchronization operation indicating
-     * that * the calling thread is to continue execution while the lio_listio()
+     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} synchronization operation indicating
+     * that the calling thread is to continue execution while the lio_listio()
      * operation is being performed, and no notification is given when the
      * operation is complete.
      *
      * @return the native symbolic constant of LIO_NOWAIT.
+     * @throws NotDefinedException if LIO_NOWAIT is not defined natively.
      */
     @Define()
     public final static native int LIO_NOWAIT() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> A {@link lio_listio()} element operation option requesting
+     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element operation option requesting
      * a read.
      *
      * @return the native symbolic constant of LIO_READ.
+     * @throws NotDefinedException if LIO_READ is not defined natively.
      */
     @Define()
     public final static native int LIO_READ() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> A {@link lio_listio()} synchronization operation indicating
+     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} synchronization operation indicating
      * that the calling thread is to suspend until the lio_listio() operation is
      * complete.
      *
      * @return the native symbolic constant of LIO_WAIT.
+     * @throws NotDefinedException if LIO_WAIT is not defined natively.
      */
     @Define()
     public final static native int LIO_WAIT() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> A {@link lio_listio()} element operation option requesting
+     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element operation option requesting
      * a write.
      *
      * @return the native symbolic constant of LIO_WRITE.
+     * @throws NotDefinedException if LIO_WRITE is not defined natively.
      */
     @Define()
     public final static native int LIO_WRITE() throws NotDefinedException;
@@ -137,19 +148,19 @@ public class Aio {
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_cancel.html">aio_cancel
-     * - cancel an asynchronous I/O request</a>.
+     * - cancel an asynchronous I/O request</a>.On the native side the param fildes is taken from aiocb.aio_fildes.
      *
-     * On the native side the param fildes is taken from aiocb.aio_fildes.
      *
      * @param aiocbp points to the asynchronous I/O control block for a
      * particular request to be canceled. If aiocbp is NULL, then all
      * outstanding cancelable asynchronous I/O requests against fildes shall be
      * canceled.
-     * @return {@link AIO_CANCELED} on succcess or {@link AIO_NOTCANCELED} if
+     * @return {@link #AIO_CANCELED() } on succcess or {@link AIO_NOTCANCELED} if
      * not all outstanding operations cant be cancelled.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method aio_cancel is not available natively.
      */
     public final static native int aio_cancel(Aiocb aiocbp) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -169,6 +180,7 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method aio_cancel is not available natively.
      */
     public final static native int aio_cancel(int fildes) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -184,6 +196,7 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method aio_error is not available natively.
      */
     public final static native int aio_error(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -197,6 +210,7 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method aio_fsync is not available natively.
      */
     public final static native void aio_fsync(int op, Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -209,6 +223,7 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method aio_read is not available natively.
      */
     public final static native void aio_read(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -224,6 +239,7 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method aio_return is not available natively.
      */
     public final static native @Types.ssize_t
     long aio_return(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
@@ -238,6 +254,7 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method aio_suspend is not available natively.
      */
     public final static native void aio_suspend(Aiocbs list, Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -250,6 +267,7 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method aio_write is not available natively.
      */
     public final static native void aio_write(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -264,6 +282,7 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method lio_listio is not available natively.
      */
     public final static native void lio_listio(int mode, Aiocbs list, Sigevent sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -272,7 +291,7 @@ public class Aio {
      * aiocb}</a>.
      *
      */
-    public static final class Aiocb<T extends OpaqueMemory> extends OpaqueMemory {
+    public static final class Aiocb<T extends OpaqueMemory32> extends Struct32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -287,9 +306,18 @@ public class Aio {
          *
          * @return the native value sizeof(struct aiocb).
          */
-        public static native int sizeofAiocb() throws NoSuchNativeTypeException;
+        @SizeOf
+        public static native int sizeof() throws NoSuchNativeTypeException;
 
-        public static native int _aio_sigevent_value_Offset() throws NoSuchNativeTypeException;
+        /**
+         * Get the alignment of struct lconv natively.
+         *
+         * @return the native value __alignof__(struct lconv).
+         */
+        @AlignOf
+        public static native int alignof() throws NoSuchNativeTypeException;
+
+        public static native int offsetof_Aio_sigevent() throws NoSuchNativeTypeException;
 
         /**
          * The signal number and value.
@@ -300,14 +328,16 @@ public class Aio {
         public final Sigevent<T> aio_sigevent;
         private Object aio_buf;
 
-        public Aiocb(OpaqueMemory owner, int offset) throws NoSuchNativeTypeException {
-            super(owner, offset, sizeofAiocb());
-            aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
+        @SuppressWarnings("unchecked")
+        public Aiocb(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
+            super(owner, offset, sizeof());
+            aio_sigevent = new Sigevent(this, offsetof_Aio_sigevent());
         }
 
+        @SuppressWarnings("unchecked")
         public Aiocb() throws NoSuchNativeTypeException {
-            super(sizeofAiocb(), true);
-            aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
+            super(sizeof(), true);
+            aio_sigevent = new Sigevent(this, offsetof_Aio_sigevent());
         }
 
         /**
@@ -315,9 +345,10 @@ public class Aio {
          *
          * @param address
          */
+        @SuppressWarnings("unchecked")
         public Aiocb(NativeAddressHolder address) throws NoSuchNativeTypeException {
-            super(address, sizeofAiocb());
-            aio_sigevent = new Sigevent(this, _aio_sigevent_value_Offset());
+            super(address, sizeof());
+            aio_sigevent = new Sigevent(this, offsetof_Aio_sigevent());
         }
 
         /**
@@ -387,7 +418,7 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public OpaqueMemory aio_bufAsOpaqueMemory() throws NoSuchNativeTypeException {
+        public OpaqueMemory32 aio_bufAsOpaqueMemory() throws NoSuchNativeTypeException {
             final NativeAddressHolder result = aio_buf0();
             if (aio_buf == null) {
                 if (result.isNULL()) {
@@ -395,9 +426,9 @@ public class Aio {
                 } else {
                     throw new RuntimeException("aio_buf_ expected to be NULL, but was " + result.toString());
                 }
-            } else if (aio_buf instanceof OpaqueMemory) {
+            } else if (aio_buf instanceof OpaqueMemory32) {
                 //TODO result inside of allocated memory?
-                return (OpaqueMemory) aio_buf;
+                return (OpaqueMemory32) aio_buf;
             } else {
                 throw new RuntimeException("Actual class of aio_buf\"" + aio_buf.getClass() + "\" is not OpaqueMemory");
             }
@@ -417,7 +448,7 @@ public class Aio {
          * @param offset
          * @param length must not < 0
          */
-        private native void aio_bufOpaqueMemory(OpaqueMemory aio_buf, int offset, int length) throws NoSuchNativeTypeException;
+        private native void aio_bufOpaqueMemory(OpaqueMemory32 aio_buf, int offset, int length) throws NoSuchNativeTypeException;
 
         /**
          * The location of buffer.
@@ -446,7 +477,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory aio_buf) throws NoSuchNativeTypeException {
+        public void aio_buf(OpaqueMemory32 aio_buf) throws NoSuchNativeTypeException {
             if (aio_buf == null) {
                 aio_bufOpaqueMemory(null, 0, 0);
             } else {
@@ -468,7 +499,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory aio_buf, int off, int aio_nbytes) throws NoSuchNativeTypeException {
+        public void aio_buf(OpaqueMemory32 aio_buf, int off, @Types.size_t int aio_nbytes) throws NoSuchNativeTypeException {
             if (aio_buf == null) {
                 aio_bufOpaqueMemory(null, 0, 0);
             } else {
@@ -533,7 +564,7 @@ public class Aio {
      * aiocb}</a>.
      *
      */
-    public static final class Aiocbs extends PointerArray<Aiocb> {
+    public static final class Aiocbs extends PointerArray32<Aiocb> {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we

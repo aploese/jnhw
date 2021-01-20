@@ -31,12 +31,22 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
-     * Method:    sizeofOVERLAPPED
+     * Method:    sizeof
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_sizeofOVERLAPPED
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (OVERLAPPED);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return alignof (OVERLAPPED);
     }
 
     /*

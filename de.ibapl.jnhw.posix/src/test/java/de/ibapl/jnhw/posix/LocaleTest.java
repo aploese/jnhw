@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Assertions;
@@ -38,11 +38,10 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class LocaleTest {
 
-    private static MultiarchTupelBuilder multiarchTupelBuilder;
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
-        multiarchTupelBuilder = new MultiarchTupelBuilder();
         LibJnhwPosixTestLoader.touch();
     }
 
@@ -61,7 +60,7 @@ public class LocaleTest {
     @Test
     public void testUnwrapLC_GLOBAL_LOCALE() throws Exception {
         System.out.println("testUnwrapLC_GLOBAL_LOCALE");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE());
             });
@@ -79,14 +78,14 @@ public class LocaleTest {
     @Test
     public void testLocale_t() throws Exception {
         System.out.println("testLocale_t");
-        if (multiarchTupelBuilder.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 nativeLocale_t(0);
             });
 
         } else {
-        Assertions.assertEquals(0, nativeLocale_t(0));
-        Assertions.assertEquals(1, nativeLocale_t(1));
+            Assertions.assertEquals(0, nativeLocale_t(0));
+            Assertions.assertEquals(1, nativeLocale_t(1));
             Assertions.assertEquals(-1, nativeLocale_t(-1));
         }
     }
@@ -185,7 +184,34 @@ public class LocaleTest {
         Locale.Locale_t newloc = Locale.LC_GLOBAL_LOCALE();
         Locale.Locale_t result = Locale.uselocale(newloc);
         Assertions.assertNotNull(result);
-            Assertions.assertNotEquals(Locale.Locale_t.locale_t_0(), result);
+        Assertions.assertNotEquals(Locale.Locale_t.locale_t_0(), result);
     }
 
+    @Test
+    public void testSizeOfLconv() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(56, Locale.Lconv.sizeof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(96, Locale.Lconv.sizeof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Locale.Lconv.sizeof());
+        }
+    }
+
+    @Test
+    public void testAlignOfLconv() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals(4, Locale.Lconv.alignof());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals(8, Locale.Lconv.alignof());
+                break;
+            default:
+                Assertions.assertEquals(-1, Locale.Lconv.alignof());
+        }
+    }
 }

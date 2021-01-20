@@ -22,10 +22,27 @@
 package de.ibapl.jnhw.libloader;
 
 /**
- *
+ * Life phases of the loading procedure to avoid to load a lib multiple times.
+ * Essecially if a lib initializes a class during loading the native lib.
+ * 
  * @author aploese
  */
 public enum LoadState {
-    INIT, LOADING, SUCCESS, FAILURE
+    /**
+     * 
+     */
+    INIT, 
+    /**
+     * 
+     */
+    LOADING, 
+    /**
+     * 
+     */
+    SUCCESS, 
+    /**
+     * 
+     */
+    FAILURE
     
 }

@@ -21,11 +21,14 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.Define;
-import de.ibapl.jnhw.Include;
-import de.ibapl.jnhw.NativeErrorException;
-import de.ibapl.jnhw.OpaqueMemory;
-import de.ibapl.jnhw.StructArray;
+import de.ibapl.jnhw.common.annotations.AlignOf;
+import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.memory.StructArray32;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -178,7 +181,7 @@ public final class Poll {
      * pollfd}</a>.
      *
      */
-    public final static class PollFd extends OpaqueMemory {
+    public final static class PollFd extends Struct32 {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -193,14 +196,18 @@ public final class Poll {
          *
          * @return the native value sizeof(struct pollfd).
          */
-        public static native int sizeofPollFd();
+        @SizeOf
+        public static native int sizeof();
+        
+        @AlignOf
+        public static native int alignof();
 
-        public PollFd(OpaqueMemory owner, int offset) {
-            super(owner, offset, sizeofPollFd());
+        public PollFd(OpaqueMemory32 owner, int offset) {
+            super(owner, offset, sizeof());
         }
 
         public PollFd() {
-            super(sizeofPollFd(), false);
+            super(sizeof(), false);
         }
 
         /**
@@ -258,7 +265,7 @@ public final class Poll {
         public native void revents(short revents);
 
         @Override
-        public String toString() {
+        public String nativeToString() {
             StringBuilder sb = new StringBuilder();
             sb.append("{fd : ").append(fd());
             sb.append(", events : \"");
@@ -325,7 +332,7 @@ public final class Poll {
      * pollfd}</a>.
      *
      */
-    public static class PollFds extends StructArray<PollFd> {
+    public static class PollFds extends StructArray32<PollFd> {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -337,10 +344,20 @@ public final class Poll {
 
         public PollFds(int arraylength) {
             //get uninitialized mem we need to set this anyway ...
-            super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeofPollFd(), false);
+            super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof(), false);
         }
 
-        private static PollFd createAtOffset(OpaqueMemory parent, int offset) {
+        public PollFds(OpaqueMemory32 parent, int offset, int arraylength) {
+            //get uninitialized mem we need to set this anyway ...
+            super(parent, offset, new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof(), false);
+        }
+
+        public PollFds(OpaqueMemory32 parent, OpaqueMemory32 prev, int arraylength) {
+            //get uninitialized mem we need to set this anyway ...
+            this(parent, OpaqueMemory32.calcNextOffset(parent, prev, Poll.PollFd.alignof()), arraylength);
+        }
+
+        private static PollFd createAtOffset(OpaqueMemory32 parent, int offset) {
             return new PollFd(parent, offset);
         }
 

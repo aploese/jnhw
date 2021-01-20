@@ -54,7 +54,6 @@ libjnhw_posix_la_LIBADD = \
 libjnhw_posix_la_SOURCES = \
  jnhw-posix-jni.c
 
-
 libaio_la_SOURCES = \
  AioDefines.c \
  AioFunctions.c \
@@ -111,7 +110,8 @@ libsignal_la_SOURCES = \
  Signal_Sigval.c \
  Signal_Stack_t.c \
  Signal_Ucontext_t.c \
- Signal_Mcontext_t.c
+ Signal_Mcontext_t.c \
+ Callback__Sigval_int__V_Impl.c
 
 libstdio_la_SOURCES = \
  StdioDefines.c \
@@ -122,7 +122,15 @@ libstring_la_SOURCES = \
  StringHeaderFunctions.c
 
 libsystypes_la_SOURCES = \
- TypesDefines.c
+ TypesDefines.c \
+ Types_Clock_t.c \
+ Types_Mode_t.c \
+ Types_Off_t.c \
+ Types_Pid_t.c \
+ Types_Size_t.c \
+ Types_Ssize_t.c \
+ Types_Time_t.c \
+ Types_Uid_t.c
 
 libsysstat_la_SOURCES = \
  StatDefines.c \
@@ -131,6 +139,9 @@ libsysstat_la_SOURCES = \
 libtermios_la_SOURCES = \
  TermiosDefines.c \
  TermiosFunctions.c \
+ Termios_Cc_t.c \
+ Termios_Speed_t.c \
+ Termios_Tcflag_t.c \
  Termios_Termios.c
 
 libtime_la_SOURCES = \
