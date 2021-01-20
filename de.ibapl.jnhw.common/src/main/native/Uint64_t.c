@@ -81,6 +81,8 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_Uint64_1t_nativeToStr
   #else
         snprintf(buf, sizeof (buf) - 1, "%lu", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
   #endif
+#elif defined(__WIN64)
+        snprintf(buf, sizeof (buf) - 1, "%016I64u", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
 #else
         snprintf(buf, sizeof (buf) - 1, "%llu", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
 #endif
