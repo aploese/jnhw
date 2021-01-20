@@ -27,11 +27,13 @@ import de.ibapl.jnhw.util.posix.Defines;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
  *
  * @author aploese
  */
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TypesTest {
 
     public TypesTest() {

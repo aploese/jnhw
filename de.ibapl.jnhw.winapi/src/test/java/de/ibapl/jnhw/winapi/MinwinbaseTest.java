@@ -36,12 +36,10 @@ public class MinwinbaseTest {
         System.out.println("test OVERLAPPED");
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                assertEquals(4, Minwinbase.OVERLAPPED.sizeof());
-                assertEquals(4, Minwinbase.OVERLAPPED.alignof());
+                assertEquals(32, Minwinbase.OVERLAPPED.sizeof());
                 break;
             case _64_BIT:
-                assertEquals(8, Minwinbase.OVERLAPPED.sizeof());
-                assertEquals(8, Minwinbase.OVERLAPPED.alignof());
+                assertEquals(32, Minwinbase.OVERLAPPED.sizeof());
                 break;
             default:
                 throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
@@ -53,12 +51,10 @@ public class MinwinbaseTest {
         System.out.println("test SECURITY_ATTRIBUTES");
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                assertEquals(4, Minwinbase.SECURITY_ATTRIBUTES.sizeof());
-                assertEquals(4, Minwinbase.SECURITY_ATTRIBUTES.alignof());
+                assertEquals(24, Minwinbase.SECURITY_ATTRIBUTES.sizeof());
                 break;
             case _64_BIT:
-                assertEquals(8, Minwinbase.SECURITY_ATTRIBUTES.sizeof());
-                assertEquals(8, Minwinbase.SECURITY_ATTRIBUTES.alignof());
+                assertEquals(24, Minwinbase.SECURITY_ATTRIBUTES.sizeof());
                 break;
             default:
                 throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());

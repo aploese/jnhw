@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
@@ -81,11 +80,6 @@ public abstract class WinDef {
         static {
             LibJnhwWinApiLoader.touch();
         }
-
-        @SizeOf
-        public final static native int sizeof();
-        @AlignOf
-        public final static native int alignof();
 
         int bufferEnd;
 

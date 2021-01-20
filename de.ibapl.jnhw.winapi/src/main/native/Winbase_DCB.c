@@ -41,16 +41,6 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
-     * Method:    alignof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024DCB_alignof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return alignof (DCB);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winbase_DCB
      * Method:    DCBlength
      * Signature: (I)V
      */

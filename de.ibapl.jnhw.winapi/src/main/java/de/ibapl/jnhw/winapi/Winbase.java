@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
@@ -863,8 +862,6 @@ public abstract class Winbase {
 
         @SizeOf
         public final static native int sizeof();
-        @AlignOf
-        public final static native int alignof();
 
         public COMMTIMEOUTS(boolean clearMemory) {
             super(sizeof(), clearMemory);
@@ -949,8 +946,6 @@ public abstract class Winbase {
 
         @SizeOf
         public final static native int sizeof();
-        @AlignOf
-        public final static native int alignof();
 
         public COMSTAT(boolean clearMemory) {
             super(sizeof(), clearMemory);
@@ -1035,8 +1030,6 @@ public abstract class Winbase {
 
         @SizeOf
         public final static native int sizeof();
-        @AlignOf
-        public final static native int alignof();
 
         /**
          * @param DCBlength the value of DCBlength to be set natively.

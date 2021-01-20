@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.callbacks.Callback_I_I_PtrAbstractNativeMemory_V_Impl;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
@@ -71,8 +70,6 @@ public class Minwinbase {
          */
         @SizeOf
         public final static native int sizeof();
-        @AlignOf
-        public final static native int alignof();
 
         /**
          * The status code for the I/O request. When the request is issued, the
@@ -149,8 +146,6 @@ public class Minwinbase {
          */
         @SizeOf
         public final static native int sizeof();
-        @AlignOf
-        public final static native int alignof();
 
         /**
          * @return the native value of nLength;

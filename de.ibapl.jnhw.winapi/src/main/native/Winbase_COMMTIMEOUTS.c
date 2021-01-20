@@ -41,16 +41,6 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
-     * Method:    alignof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_alignof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return alignof (COMMTIMEOUTS);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
      * Method:    ReadIntervalTimeout
      * Signature: ()J
      */

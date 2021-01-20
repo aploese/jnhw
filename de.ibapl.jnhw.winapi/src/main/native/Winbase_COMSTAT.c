@@ -41,16 +41,6 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
-     * Method:    alignof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMSTAT_alignof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return alignof (COMSTAT);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winbase_COMSTAT
      * Method:    fCtsHold
      * Signature: ()Z
      */

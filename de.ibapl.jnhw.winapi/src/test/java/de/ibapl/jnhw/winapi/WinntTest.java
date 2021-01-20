@@ -40,11 +40,9 @@ public class WinntTest {
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 assertEquals(4, Winnt.LPWSTR.sizeof());
-                assertEquals(4, Winnt.LPWSTR.alignof());
                 break;
             case _64_BIT:
                 assertEquals(8, Winnt.LPWSTR.sizeof());
-                assertEquals(8, Winnt.LPWSTR.alignof());
                 break;
             default:
                 throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
@@ -57,11 +55,9 @@ public class WinntTest {
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 assertEquals(4, Winnt.PHANDLE.sizeof());
-                assertEquals(4, Winnt.PHANDLE.alignof());
                 break;
             case _64_BIT:
                 assertEquals(8, Winnt.PHANDLE.sizeof());
-                assertEquals(8, Winnt.PHANDLE.alignof());
                 break;
             default:
                 throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());

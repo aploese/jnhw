@@ -49,11 +49,9 @@ public class BaseTsdTest {
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 assertEquals(4, BaseTsd.sizeof_ULONG_PTR());
-                assertEquals(4, BaseTsd.alignof_ULONG_PTR());
                 break;
             case _64_BIT:
                 assertEquals(8, BaseTsd.sizeof_ULONG_PTR());
-                assertEquals(8, BaseTsd.alignof_ULONG_PTR());
                 break;
             default:
                 throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());

@@ -36,12 +36,10 @@ public class WinbaseTest {
         System.out.println("test COMMTIMEOUTS");
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                assertEquals(4, Winbase.COMMTIMEOUTS.sizeof());
-                assertEquals(4, Winbase.COMMTIMEOUTS.alignof());
+                assertEquals(20, Winbase.COMMTIMEOUTS.sizeof());
                 break;
             case _64_BIT:
-                assertEquals(8, Winbase.COMMTIMEOUTS.sizeof());
-                assertEquals(8, Winbase.COMMTIMEOUTS.alignof());
+                assertEquals(20, Winbase.COMMTIMEOUTS.sizeof());
                 break;
             default:
                 throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
@@ -53,12 +51,10 @@ public class WinbaseTest {
         System.out.println("test COMSTAT");
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                assertEquals(4, Winbase.COMSTAT.sizeof());
-                assertEquals(4, Winbase.COMSTAT.alignof());
+                assertEquals(12, Winbase.COMSTAT.sizeof());
                 break;
             case _64_BIT:
-                assertEquals(8, Winbase.COMSTAT.sizeof());
-                assertEquals(8, Winbase.COMSTAT.alignof());
+                assertEquals(12, Winbase.COMSTAT.sizeof());
                 break;
             default:
                 throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
@@ -70,12 +66,10 @@ public class WinbaseTest {
         System.out.println("test COMMTIMEOUTS");
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                assertEquals(4, Winbase.DCB.sizeof());
-                assertEquals(4, Winbase.DCB.alignof());
+                assertEquals(28, Winbase.DCB.sizeof());
                 break;
             case _64_BIT:
-                assertEquals(8, Winbase.DCB.sizeof());
-                assertEquals(8, Winbase.DCB.alignof());
+                assertEquals(28, Winbase.DCB.sizeof());
                 break;
             default:
                 throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());

@@ -21,31 +21,9 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinDefTest {
-
-        private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-
-    @Test
-    public void testLPBYTE() {
-        System.out.println("test LPBYTE");
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
-            case _32_BIT:
-                assertEquals(4, WinDef.LPBYTE.sizeof());
-                assertEquals(4, WinDef.LPBYTE.alignof());
-                break;
-            case _64_BIT:
-                assertEquals(8, WinDef.LPBYTE.sizeof());
-                assertEquals(8, WinDef.LPBYTE.alignof());
-                break;
-            default:
-                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
-        }
-    }
 
 }

@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
@@ -521,8 +520,6 @@ public final class Winnt {
 
         @SizeOf
         public final static native int sizeof();
-        @AlignOf
-        public final static native int alignof();
 
         public ArrayOfHandle(int length, boolean clearMem) {
             super(length, sizeof(), clearMem);
@@ -584,8 +581,6 @@ public final class Winnt {
 
         @SizeOf
         public final static native int sizeof();
-        @AlignOf
-        public final static native int alignof();
 
         public final static int SIZE_OF_WCHAR = 2;
 
@@ -665,8 +660,6 @@ public final class Winnt {
 
         @SizeOf
         public final static native int sizeof();
-        @AlignOf
-        public final static native int alignof();
 
         HANDLE cachedHandle;
 

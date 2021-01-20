@@ -50,8 +50,6 @@ public abstract class BaseTsd {
     
     public final static native int sizeof_ULONG_PTR();
 
-    public final static native int alignof_ULONG_PTR();
-    
     /**
      * Wrapper for
      * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#ulong_ptr">ULONG_PTR</a>.<p>
