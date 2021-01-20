@@ -99,7 +99,11 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Clock_1t_nativ
     (JNIEnv *env, jobject jnhw_clock_t) {
         char buf[128] = {0};
 #if defined(_JNHW__clock_t__IS__int32_t)
+#if defined(__FreeBSD__)
+        snprintf(buf, sizeof (buf) - 1, "%d", *UNWRAP_OPAQUE_MEM_TO(clock_t*, jnhw_clock_t));
+#else
         snprintf(buf, sizeof (buf) - 1, "%ld", *UNWRAP_OPAQUE_MEM_TO(clock_t*, jnhw_clock_t));
+#endif
 #elif defined(_JNHW__clock_t__IS__int64_t)
 #if defined(__OpenBSD__)
        snprintf(buf, sizeof (buf) - 1, "%lld", *UNWRAP_OPAQUE_MEM_TO(clock_t*, jnhw_clock_t));

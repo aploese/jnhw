@@ -119,7 +119,7 @@ JNHW_ASSERT__mode_t__IS__uint16_t__OR__uint32_t
 #if defined(_JNHW__mode_t__IS__uint16_t)
         if ((mode > UINT16_MAX) || (mode < 0)) {
             throw_IllegalArgumentException(env, "value outside mode_t(uint16_t)");
-            return;
+            return -1;
         }
 #elif defined(_JNHW__mode_t__IS__uint32_t)
 #else

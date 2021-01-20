@@ -22,10 +22,14 @@
 #include <stdint.h>
 #include <assert.h>
 
-#define JNHW_ASSERT_DATA_TYPES(t1, t2) \
- static_assert(sizeof(t1) == sizeof(t2), #t1 " sizeof not equals " #t2); \
- static_assert((0 < (t1)-1) == (0 < (t2)-1), #t1 " and " #t2 " sign mismatch "); 
-
+//FreeBSD does not define _ISO_C_SOURCE 2011 if POSIX is set bug??? - so do not test datatypes on compile time... 
+#if defined(__FreeBSD__) && !defined(__JNHW_TEST_POSIX_DATATYPES)
+  #define JNHW_ASSERT_DATA_TYPES(t1, t2)
+#else
+  #define JNHW_ASSERT_DATA_TYPES(t1, t2) \
+   static_assert(sizeof(t1) == sizeof(t2), #t1 " sizeof not equals " #t2); \
+   static_assert((0 < (t1)-1) == (0 < (t2)-1), #t1 " and " #t2 " sign mismatch ");
+#endif
 
 #if defined(__linux__)
  

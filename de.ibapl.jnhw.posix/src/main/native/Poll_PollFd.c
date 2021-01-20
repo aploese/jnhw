@@ -31,13 +31,15 @@ extern "C" {
 #include <errno.h>
 #include <unistd.h>
 
-#include <assert.h>
+//see jnhw-posix-datatypes.h why FreeBSD cant do this.
+#if !defined(__FreeBSD__)
+  #include <assert.h>
 
-static_assert(sizeof(((struct pollfd *)0)->events ) ==  sizeof(jshort), "pollfd.events not jlong size");
-static_assert(sizeof(((struct pollfd *)0)->revents ) ==  sizeof(jshort), "pollfd.revents not jlong size");
-static_assert(sizeof(((struct pollfd *)0)->fd ) ==  sizeof(jint), "pollfd.fd not jlong size");
-static_assert((typeof(((struct pollfd *)0)->events ))-1 < 0, "Not signed");
-
+  static_assert(sizeof(((struct pollfd *)0)->events ) ==  sizeof(jshort), "pollfd.events not jlong size");
+  static_assert(sizeof(((struct pollfd *)0)->revents ) ==  sizeof(jshort), "pollfd.revents not jlong size");
+  static_assert(sizeof(((struct pollfd *)0)->fd ) ==  sizeof(jint), "pollfd.fd not jlong size");
+  static_assert((typeof(((struct pollfd *)0)->events ))-1 < 0, "Not signed");
+#endif
  
     /*
      * Class:     de_ibapl_jnhw_posix_Poll_00024PollFd
