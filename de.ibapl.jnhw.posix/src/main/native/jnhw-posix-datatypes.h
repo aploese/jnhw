@@ -142,7 +142,7 @@
     #define _JNHW__clock_t__IS__int64_t 1
     #define _JNHW__time_t__IS__int64_t 1
     #define _JNHW__timer_t__IS__int32_t 1
-    #define _JNHW__nfds_t__IS__uint64_t 1
+    #define _JNHW__nfds_t__IS__uint32_t 1
   #endif
 #endif
 

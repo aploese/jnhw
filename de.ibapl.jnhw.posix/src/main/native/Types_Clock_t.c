@@ -101,7 +101,11 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Clock_1t_nativ
 #if defined(_JNHW__clock_t__IS__int32_t)
         snprintf(buf, sizeof (buf) - 1, "%ld", *UNWRAP_OPAQUE_MEM_TO(clock_t*, jnhw_clock_t));
 #elif defined(_JNHW__clock_t__IS__int64_t)
+#if defined(__OpenBSD__)
+       snprintf(buf, sizeof (buf) - 1, "%lld", *UNWRAP_OPAQUE_MEM_TO(clock_t*, jnhw_clock_t));
+#else
         snprintf(buf, sizeof (buf) - 1, "%ld", *UNWRAP_OPAQUE_MEM_TO(clock_t*, jnhw_clock_t));
+#endif
 #else
 #error expected clock_t is int32_t or int64_t
 #endif 
