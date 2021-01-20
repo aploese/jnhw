@@ -559,7 +559,7 @@ extern "C" {
         return (int32_t) NOFLSH;
 #else
         return NOFLSH;
-#endif        
+#endif
     }
 
     /*
@@ -579,7 +579,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_CMSPAR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__linux__) //TODO raus... && !defined(__mips__)
+#if defined(__linux__) && !defined(__mips__)
         return CMSPAR;
 #elif defined(CMSPAR)
 #error "CMSPAR defined"

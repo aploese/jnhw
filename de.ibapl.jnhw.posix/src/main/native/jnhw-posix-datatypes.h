@@ -32,10 +32,11 @@
 #endif
 
 #if defined(__linux__)
- 
-  #if !defined(__TIMESIZE)
-    #warning __TIMESIZE not defined
-  #endif
+
+//  glibc 2.28 does not define this ... later versions do.
+//  #if !defined(__TIMESIZE)
+//    #warning __TIMESIZE not defined
+//  #endif
 
   #if !defined(__WORDSIZE)
     #error __WORDSIZE not defined
