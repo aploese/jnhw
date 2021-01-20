@@ -28,10 +28,14 @@ import de.ibapl.jnhw.common.memory.Int64_t;
 import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.WordSize;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class OpaqueMemory32Test {
+
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     private class MemToTest extends OpaqueMemory32 {
 
@@ -59,6 +63,10 @@ public class OpaqueMemory32Test {
         @Override
         public String nativeToHexString() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+        
+        long getBaseAddress() {
+            return baseAddress;
         }
         
     }
@@ -255,6 +263,15 @@ public class OpaqueMemory32Test {
         Assertions.assertEquals(mem1.hashCode(), mem2.hashCode());
     }
 
+
+    @Test
+    public void testAddressOn32BitNotNegative() {
+        MemToTest parent = new MemToTest(48, true);
+        if (MULTIARCHTUPEL_BUILDER.getWordSize() == WordSize._32_BIT) {
+            Assertions.assertTrue(parent.getBaseAddress() > 0, "baseaddress is not positive");
+        }
+    }
+    
     @Test
     public void testCalcNextOffset() {
         OpaqueMemory32 parent = new MemToTest(48, true);
