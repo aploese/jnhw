@@ -34,6 +34,20 @@ import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
  */
 public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Native {
 
+    /**
+     * Get the offset of member to direct parent.
+     * 
+     * @param parent the direct parent of member.
+     * @param member the direct member of parent.
+     * @return the offset om menber in parent.
+     */
+    public static int offsetof(OpaqueMemory32 parent, OpaqueMemory32 member) {
+        if (member.memoryOwner != parent) {
+            throw new RuntimeException("member is no direct member of parent!");
+        }
+        return (int)(member.baseAddress - parent.baseAddress);
+    }
+
     @FunctionalInterface
     public static interface OpaqueMemory32Producer<T extends OpaqueMemory32, P extends AbstractNativeMemory> {
 
@@ -165,7 +179,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
             throw new IllegalArgumentException("negative size");
         }
         if (offset + sizeInBytes > owner.sizeInBytes) {
-            throw new IllegalArgumentException("end will be outside (after)) of owner");
+            throw new IllegalArgumentException(String.format("End will be outside (after)) of owner; owner.sizeInBytes=%d, offset=%d, sizeInBytes=%d", owner.sizeInBytes, offset, sizeInBytes));
         }
         this.sizeInBytes = sizeInBytes;
     }

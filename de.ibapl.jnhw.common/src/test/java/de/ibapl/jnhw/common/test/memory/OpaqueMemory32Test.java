@@ -259,20 +259,28 @@ public class OpaqueMemory32Test {
     public void testCalcNextOffset() {
         OpaqueMemory32 parent = new MemToTest(48, true);
         Int8_t value0 = new Int8_t(parent, 0);
+        Assertions.assertEquals(0, OpaqueMemory32.offsetof(parent, value0));
         value0.rawInt8_t((byte) 0x11);
         Int16_t value1 = new Int16_t(parent, OpaqueMemory32.calcNextOffset(parent, value0, Int16_t.alignof()));
+        Assertions.assertEquals(2, OpaqueMemory32.offsetof(parent, value1));
         value1.rawInt16_t((short) 0x2222);
         Int8_t value2 = new Int8_t(parent, OpaqueMemory32.calcNextOffset(parent, value1, Int8_t.alignof()));
+        Assertions.assertEquals(4, OpaqueMemory32.offsetof(parent, value2));
         value2.rawInt8_t((byte) 0x33);
         Int32_t value3 = new Int32_t(parent, OpaqueMemory32.calcNextOffset(parent, value2, Int32_t.alignof()));
+        Assertions.assertEquals(8, OpaqueMemory32.offsetof(parent, value3));
         value3.rawInt32_t(0x44444444);
         Int8_t value4 = new Int8_t(parent, OpaqueMemory32.calcNextOffset(parent, value3, Int8_t.alignof()));;
+        Assertions.assertEquals(12, OpaqueMemory32.offsetof(parent, value4));
         value4.rawInt8_t((byte) 0x55);
         Int64_t value5 = new Int64_t(parent, OpaqueMemory32.calcNextOffset(parent, value4, Int64_t.alignof()));
+        Assertions.assertEquals(16, OpaqueMemory32.offsetof(parent, value5));
         value5.rawInt64_t(0x6666666666666666L);
         Int8_t value6 = new Int8_t(parent, OpaqueMemory32.calcNextOffset(parent, value5, Int8_t.alignof()));
+        Assertions.assertEquals(24, OpaqueMemory32.offsetof(parent, value6));
         value6.rawInt8_t((byte) 0x77);
         Int64_t value7 = new Int64_t(parent, OpaqueMemory32.calcNextOffset(parent, value6, Int64_t.alignof()));
+        Assertions.assertEquals(32, OpaqueMemory32.offsetof(parent, value7));
         value7.rawInt64_t(0x8888888888888888L);
         String expected
                 = "11002222 33000000  44444444 55000000 |  \"\"3   DDDDU   \n"
