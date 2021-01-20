@@ -67,7 +67,7 @@
 #include <unistd.h>
 #endif
 
-#if SYS_TYPES_H && HAVE_POLL_H && HAVE_TERMIOS_H
+#if _POSIX_C_SOURCE
 #include "jnhw-posix-datatypes.h"
 #endif
 
