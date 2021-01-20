@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.annotations.AlignOf;
-import de.ibapl.jnhw.common.annotations.Include;
-import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.annotation.AlignOf;
+import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;

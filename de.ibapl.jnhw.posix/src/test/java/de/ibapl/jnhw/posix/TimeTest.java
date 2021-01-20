@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.annontation.posix.sys.types.time_t;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
@@ -60,7 +61,7 @@ public class TimeTest {
 
     // just for vm in qemu...
     private final static long ONE_MINUTE = 60_000;
-    private final static @Types.time_t
+    private final static @time_t
     long TIME_T__20191203_142044 = 1575382844;
     private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 

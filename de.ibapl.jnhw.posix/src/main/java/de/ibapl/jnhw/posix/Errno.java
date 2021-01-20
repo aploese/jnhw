@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotations.Define;
-import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exceptions.NotDefinedException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

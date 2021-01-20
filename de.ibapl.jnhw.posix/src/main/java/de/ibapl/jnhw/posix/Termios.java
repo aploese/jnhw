@@ -21,11 +21,13 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotations.AlignOf;
-import de.ibapl.jnhw.common.annotations.Define;
-import de.ibapl.jnhw.common.annotations.Include;
-import de.ibapl.jnhw.common.annotations.SizeOf;
-import de.ibapl.jnhw.common.annotations.Unsigned;
+import de.ibapl.jnhw.annontation.posix.termios.speed_t;
+import de.ibapl.jnhw.annontation.posix.termios.tcflag_t;
+import de.ibapl.jnhw.common.annotation.AlignOf;
+import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.annotation.SizeOf;
+import de.ibapl.jnhw.common.annotation.Unsigned;
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
@@ -33,7 +35,8 @@ import de.ibapl.jnhw.common.exceptions.NotDefinedException;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.posix.sys.Types.pid_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
+import de.ibapl.jnhw.annontation.posix.termios.cc_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -1363,41 +1366,8 @@ public final class Termios {
      */
     public final static native void tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException;
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code typedef
-     * cc_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-    @Unsigned
-    public static @interface cc_t {
-    }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code typedef
-     * speed_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-    @Unsigned
-    public static @interface speed_t {
-    }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code typedef
-     * tcflag_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-    @Unsigned
-    public static @interface tcflag_t {
-    }
 
     public static class Cc_t extends NativeIntNumber {
 

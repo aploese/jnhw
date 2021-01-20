@@ -21,10 +21,10 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotations.AlignOf;
-import de.ibapl.jnhw.common.annotations.Define;
-import de.ibapl.jnhw.common.annotations.Include;
-import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.annotation.AlignOf;
+import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.common.exceptions.NotDefinedException;

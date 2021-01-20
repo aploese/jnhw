@@ -22,9 +22,9 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.annotations.AlignOf;
-import de.ibapl.jnhw.common.annotations.SizeOf;
-import de.ibapl.jnhw.common.annotations.uint8_t;
+import de.ibapl.jnhw.common.annotation.AlignOf;
+import de.ibapl.jnhw.common.annotation.SizeOf;
+import de.ibapl.jnhw.common.annotation.uint8_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
 
 /**

@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.util.winapi;
 
-import de.ibapl.jnhw.common.annotations.Define;
+import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.exceptions.NotDefinedException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
@@ -32,10 +32,10 @@ import de.ibapl.jnhw.winapi.Handleapi;
 import de.ibapl.jnhw.winapi.IoAPI;
 import de.ibapl.jnhw.winapi.Ioapiset;
 import de.ibapl.jnhw.winapi.Minwinbase;
-import de.ibapl.jnhw.winapi.WinDef;
 import de.ibapl.jnhw.winapi.ProcessEnv;
 import de.ibapl.jnhw.winapi.Processthreadsapi;
 import de.ibapl.jnhw.winapi.Synchapi;
+import de.ibapl.jnhw.winapi.WinDef;
 import de.ibapl.jnhw.winapi.Winbase;
 import de.ibapl.jnhw.winapi.Winerror;
 import de.ibapl.jnhw.winapi.Winnt;
@@ -43,7 +43,6 @@ import de.ibapl.jnhw.winapi.Winreg;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 

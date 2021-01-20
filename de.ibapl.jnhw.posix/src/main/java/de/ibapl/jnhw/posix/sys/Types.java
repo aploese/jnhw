@@ -21,18 +21,22 @@
  */
 package de.ibapl.jnhw.posix.sys;
 
-import de.ibapl.jnhw.common.annotations.AlignOf;
-import de.ibapl.jnhw.common.annotations.Include;
-import de.ibapl.jnhw.common.annotations.SizeOf;
-import de.ibapl.jnhw.common.annotations.Unsigned;
+import de.ibapl.jnhw.annontation.posix.sys.types.clock_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.mode_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.uid_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.ssize_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.off_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.time_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
+import de.ibapl.jnhw.common.annotation.AlignOf;
+import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.annotation.SizeOf;
+import de.ibapl.jnhw.common.annotation.Unsigned;
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  * Wrapper around the {@code  <sys/stat.h>} header.
@@ -55,16 +59,6 @@ public class Types {
 
     public final static native boolean HAVE_SYS_TYPES_H();
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * off_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-    public static @interface off_t {
-    }
 
     @off_t
     public static class Off_t extends NativeIntNumber {
@@ -113,27 +107,7 @@ public class Types {
 
     }
 
-    /**
-     * <b>Linux:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * off_t}</a>, but 64 bit wide.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface off64_t {
-    }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * mode_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-    public static @interface mode_t {
-    }
 
     @mode_t
     public static class Mode_t extends NativeIntNumber {
@@ -181,16 +155,6 @@ public class Types {
         }
     }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * ssize_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-    public static @interface ssize_t {
-    }
 
     @ssize_t
     public static class Ssize_t extends NativeIntNumber {
@@ -238,16 +202,6 @@ public class Types {
         }
     }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * size_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-    public static @interface size_t {
-    }
 
     @size_t
     public static class Size_t extends NativeIntNumber {
@@ -295,38 +249,8 @@ public class Types {
         }
     }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * useconds_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface useconds_t {
-    }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * gid_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface gid_t {
-    }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * pid_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-    public static @interface pid_t {
-    }
 
     @pid_t
     public static class Pid_t extends NativeIntNumber {
@@ -374,40 +298,8 @@ public class Types {
         }
     }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * pthread_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.TYPE})
-    public static @interface pthread_t {
-    }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * pthread_attr_t Used to identify a thread attribute object.}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.TYPE})
-    public static @interface pthread_attr_t {
-    }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * clock_t}</a>.
-     *
-     * shall be an integer or real-floating type.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-    public static @interface clock_t {
-    }
 
     @clock_t
     public static class Clock_t extends NativeIntNumber {
@@ -456,16 +348,6 @@ public class Types {
 
     }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * time_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-    public static @interface time_t {
-    }
 
     @time_t
     public static class Time_t extends NativeIntNumber {
@@ -514,38 +396,8 @@ public class Types {
 
     }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * clockid_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface clockid_t {
-    }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * timer_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.TYPE})
-    public static @interface timer_t {
-    }
 
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">{@code typedef
-     * uid_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-    public static @interface uid_t {
-    }
 
     @uid_t
     public static class Uid_t extends NativeIntNumber {

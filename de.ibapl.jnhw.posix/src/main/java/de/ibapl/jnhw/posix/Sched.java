@@ -21,17 +21,16 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotations.AlignOf;
-import de.ibapl.jnhw.common.annotations.Define;
-import de.ibapl.jnhw.common.annotations.Include;
-import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
+import de.ibapl.jnhw.common.annotation.AlignOf;
+import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.common.exceptions.NotDefinedException;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -269,7 +268,7 @@ public class Sched {
      * indicates an error.
      * @throws NoSuchNativeMethodException if the method sched_getparam is not available natively.
      */
-    public final static native void sched_getparam(@Types.pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static native void sched_getparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -281,7 +280,7 @@ public class Sched {
      * indicates an error.
      * @throws NoSuchNativeMethodException if the method sched_getscheduler is not available natively.
      */
-    public final static native int sched_getscheduler(@Types.pid_t int pid) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static native int sched_getscheduler(@pid_t int pid) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -292,7 +291,7 @@ public class Sched {
      * indicates an error.
      * @throws NoSuchNativeMethodException if the method sched_rr_get_interval is not available natively.
      */
-    public final static native void sched_rr_get_interval(@Types.pid_t int pid, Time.Timespec interval) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static native void sched_rr_get_interval(@pid_t int pid, Time.Timespec interval) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -303,7 +302,7 @@ public class Sched {
      * indicates an error.
      * @throws NoSuchNativeMethodException if the method sched_setparam is not available natively.
      */
-    public final static native void sched_setparam(@Types.pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static native void sched_setparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -314,7 +313,7 @@ public class Sched {
      * indicates an error.
      * @throws NoSuchNativeMethodException if the method sched_setscheduler is not available natively.
      */
-    public final static native int sched_setscheduler(@Types.pid_t int pid, int policy, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static native int sched_setscheduler(@pid_t int pid, int policy, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>

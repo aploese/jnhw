@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 

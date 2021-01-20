@@ -21,15 +21,15 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotations.Define;
-import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exceptions.NotDefinedException;
 import de.ibapl.jnhw.posix.sys.Stat;
-import de.ibapl.jnhw.posix.sys.Types.mode_t;
-import de.ibapl.jnhw.posix.sys.Types.off64_t;
-import de.ibapl.jnhw.posix.sys.Types.off_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.mode_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.off64_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.off_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**

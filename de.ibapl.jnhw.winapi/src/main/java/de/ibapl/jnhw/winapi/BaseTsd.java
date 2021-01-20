@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.annotations.Include;
+import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -21,17 +21,19 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotations.AlignOf;
-import de.ibapl.jnhw.common.annotations.Define;
-import de.ibapl.jnhw.common.annotations.Include;
-import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.annontation.posix.sys.types.clockid_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.pthread_attr_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.pthread_t;
+import de.ibapl.jnhw.common.annotation.AlignOf;
+import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -175,7 +177,7 @@ public class Pthread {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_getcpuclockid.html">pthread_getcpuclockid
      * - access a thread CPU-time clock (ADVANCED REALTIME THREADS)</a>.
      */
-    public final static native void pthread_getcpuclockid(Pthread_t thread_id, @Types.clockid_t IntRef clock_id) throws NativeErrorException;
+    public final static native void pthread_getcpuclockid(Pthread_t thread_id, @clockid_t IntRef clock_id) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -199,7 +201,7 @@ public class Pthread {
      *
      * @author aploese
      */
-    @Types.pthread_attr_t
+    @pthread_attr_t
     public static final class Pthread_attr_t extends Struct32 {
 
         /**
@@ -240,7 +242,7 @@ public class Pthread {
      *
      * @author aploese
      */
-    @Types.pthread_t
+    @pthread_t
     public static final class Pthread_t extends Struct32 {
 
         /**

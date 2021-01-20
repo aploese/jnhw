@@ -21,10 +21,13 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotations.AlignOf;
-import de.ibapl.jnhw.common.annotations.Define;
-import de.ibapl.jnhw.common.annotations.Include;
-import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.annontation.posix.sys.types.off_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.ssize_t;
+import de.ibapl.jnhw.common.annotation.AlignOf;
+import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
@@ -241,7 +244,7 @@ public class Aio {
      * indicates an error.
      * @throws NoSuchNativeMethodException if the method aio_return is not available natively.
      */
-    public final static native @Types.ssize_t
+    public final static native @ssize_t
     long aio_return(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
@@ -376,7 +379,7 @@ public class Aio {
          *
          * @return the native value of aio_offset.
          */
-        public native @Types.off_t
+        public native @off_t
         long aio_offset() throws NoSuchNativeTypeException;
 
         /**
@@ -386,7 +389,7 @@ public class Aio {
          *
          * @param aio_offset the value of aio_offset to be set natively.
          */
-        public native void aio_offset(@Types.off_t long aio_offset) throws NoSuchNativeTypeException;
+        public native void aio_offset(@off_t long aio_offset) throws NoSuchNativeTypeException;
 
         public final native NativeAddressHolder aio_buf0() throws NoSuchNativeTypeException;
 
@@ -499,7 +502,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory32 aio_buf, int off, @Types.size_t int aio_nbytes) throws NoSuchNativeTypeException {
+        public void aio_buf(OpaqueMemory32 aio_buf, int off, @size_t int aio_nbytes) throws NoSuchNativeTypeException {
             if (aio_buf == null) {
                 aio_bufOpaqueMemory(null, 0, 0);
             } else {
@@ -518,7 +521,7 @@ public class Aio {
          *
          * @return the native value of aio_nbytes.
          */
-        public native @Types.size_t
+        public native @size_t
         long aio_nbytes() throws NoSuchNativeTypeException;
 
         /**

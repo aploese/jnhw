@@ -20,13 +20,10 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 /**
- * Very thin and safe wrapper classes around common used headers on a POSIX system
- * under the {@code sys} path.
+ * Annontations for datatypes of sys/types.h.
  *
- * See specs at:
- * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/">The Open Group
- * Base Specifications Issue 7, 2018 edition IEEE Std 1003.1-2017 (Revision of
- * IEEE Std 1003.1-2008) Copyright © 2001-2018 IEEE and The Open Group</a>.
+ * See types.h at:
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">sys/types.h
  *
  */
-package de.ibapl.jnhw.posix.sys;
+package de.ibapl.jnhw.annontation.posix.sys.types;

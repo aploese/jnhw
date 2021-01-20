@@ -1,6 +1,6 @@
 Export-Package: \
 	de.ibapl.jnhw.common,\
-	de.ibapl.jnhw.common.annotations,\
+	de.ibapl.jnhw.common.annotation,\
 	de.ibapl.jnhw.common.callbacks,\
 	de.ibapl.jnhw.common.datatypes, \
 	de.ibapl.jnhw.common.exceptions,\

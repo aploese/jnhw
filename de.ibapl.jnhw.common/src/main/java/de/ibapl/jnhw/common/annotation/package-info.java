@@ -23,4 +23,4 @@
  * Annontations used by JNHW.
  *
  */
-package de.ibapl.jnhw.common.annotations;
+package de.ibapl.jnhw.common.annotation;

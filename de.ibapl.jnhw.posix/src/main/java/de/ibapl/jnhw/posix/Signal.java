@@ -21,14 +21,14 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotations.AlignOf;
+import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.callbacks.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
 import de.ibapl.jnhw.common.callbacks.Callback_I_V;
 import de.ibapl.jnhw.common.callbacks.Callback_NativeRunnable;
 import de.ibapl.jnhw.common.callbacks.Callback_PtrAbstractNativeMemory_V;
-import de.ibapl.jnhw.common.annotations.Define;
-import de.ibapl.jnhw.common.annotations.Include;
-import de.ibapl.jnhw.common.annotations.SizeOf;
+import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
@@ -39,9 +39,9 @@ import de.ibapl.jnhw.common.exceptions.NotDefinedException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.Time.Timespec;
-import de.ibapl.jnhw.posix.sys.Types.pid_t;
-import de.ibapl.jnhw.posix.sys.Types.uid_t;
-import de.ibapl.jnhw.posix.sys.Types.size_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.uid_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
