@@ -128,7 +128,7 @@
    #define JNHW_FORMAT_STRING_size_t JNHW_FORMAT_STRING_uint32_t
 #elif defined(_JNHW__size_t__IS__uint64_t)
   #if defined(__OpenBSD__)
-//error if we use JNHW_FORMAT_STRING_uint64_t: format specifies type 'unsigned long long' but the argument has type 'size_t' (aka 'unsigned long')
+//error if we use JNHW_FORMAT_STRING_uint64_t, we will get: format specifies type 'unsigned long long' but the argument has type 'size_t' (aka 'unsigned long')
     #define JNHW_FORMAT_STRING_size_t "%lu"
   #else
     #define JNHW_FORMAT_STRING_size_t JNHW_FORMAT_STRING_uint64_t
@@ -141,10 +141,10 @@
    #define JNHW_FORMAT_STRING_ssize_t JNHW_FORMAT_STRING_int32_t
 #elif defined(_JNHW__ssize_t__IS__int64_t)
   #if defined(__OpenBSD__)
-//error if we use JNHW_FORMAT_STRING_uint64_t: format specifies type 'long long' but the argument has type 'ssize_t' (aka 'long')
-    #define JNHW_FORMAT_STRING_ssize_t "%lu"
+//error if we use JNHW_FORMAT_STRING_uint64_t, we will get: format specifies type 'long long' but the argument has type 'ssize_t' (aka 'long')
+    #define JNHW_FORMAT_STRING_ssize_t "%ld"
   #else
-    #define JNHW_FORMAT_STRING_ssize_t JNHW_FORMAT_STRING_uint64_t
+    #define JNHW_FORMAT_STRING_ssize_t JNHW_FORMAT_STRING_int64_t
   #endif
 #else
 #error expected ssize_t is int32_t or int64_t
