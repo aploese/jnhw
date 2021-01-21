@@ -43,7 +43,7 @@
   //force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
   #define __BSD_VISIBLE 1
   #define __EXT1_VISIBLE 1
-  //no 
+  //no
 
 #elif defined(__OpenBSD__)
   #define _POSIX_C_SOURCE 200809
@@ -95,12 +95,17 @@
 #endif
 
 #if defined(_JNHW__clock_t__IS__int32_t)
-   #define JNHW_FORMAT_STRING_clock_t JNHW_FORMAT_STRING_int32_t
+  #if defined(__linux__)
+//error if we use JNHW_FORMAT_STRING_int32_t, we will get: format ‘%d’ expects argument of type ‘int’, but argument 4 has type ‘clock_t’ {aka ‘long int’}
+    #define JNHW_FORMAT_STRING_clock_t "%ld"
+  #else
+    #define JNHW_FORMAT_STRING_clock_t JNHW_FORMAT_STRING_int32_t
+  #endif
 #elif defined(_JNHW__clock_t__IS__int64_t)
    #define JNHW_FORMAT_STRING_clock_t JNHW_FORMAT_STRING_int64_t
 #else
 #error expected clock_t is int32_t or int64_t
-#endif 
+#endif
 
 #if defined(_JNHW__mode_t__IS__uint16_t)
    #define JNHW_FORMAT_STRING_mode_t JNHW_FORMAT_STRING_uint16_t
@@ -111,18 +116,23 @@
 #endif
 
 #if defined(_JNHW__off_t__IS__int32_t)
-   #define JNHW_FORMAT_STRING_off_t JNHW_FORMAT_STRING_int32_t
+  #if defined(__linux__)
+//error if we use JNHW_FORMAT_STRING_int32_t, we will get: format ‘%d’ expects argument of type ‘int’, but argument 4 has type ‘off_t’ {aka ‘long int’}
+    #define JNHW_FORMAT_STRING_off_t "%ld"
+  #else
+    #define JNHW_FORMAT_STRING_off_t JNHW_FORMAT_STRING_int32_t
+  #endif
 #elif defined(_JNHW__off_t__IS__int64_t)
    #define JNHW_FORMAT_STRING_off_t JNHW_FORMAT_STRING_int64_t
 #else
 #error expected off_t is int32_t or int64_t
-#endif 
+#endif
 
 #if defined(_JNHW__pid_t__IS__int32_t)
   #define JNHW_FORMAT_STRING_pid_t JNHW_FORMAT_STRING_int32_t
 #else
 #error expected pid_t is int32_t
-#endif 
+#endif
 
 #if defined(_JNHW__size_t__IS__uint32_t)
    #define JNHW_FORMAT_STRING_size_t JNHW_FORMAT_STRING_uint32_t
@@ -135,7 +145,7 @@
   #endif
 #else
 #error expected size_t is uint32_t or uint64_t
-#endif 
+#endif
 
 #if defined(_JNHW__ssize_t__IS__int32_t)
    #define JNHW_FORMAT_STRING_ssize_t JNHW_FORMAT_STRING_int32_t
@@ -148,15 +158,20 @@
   #endif
 #else
 #error expected ssize_t is int32_t or int64_t
-#endif 
+#endif
 
 #if defined(_JNHW__time_t__IS__int32_t)
-   #define JNHW_FORMAT_STRING_time_t JNHW_FORMAT_STRING_int32_t
+  #if defined(__linux__)
+//error if we use JNHW_FORMAT_STRING_int32_t, we will get: format ‘%d’ expects argument of type ‘int’, but argument 4 has type ‘time_t’ {aka ‘long int’}
+    #define JNHW_FORMAT_STRING_time_t "%ld"
+  #else
+    #define JNHW_FORMAT_STRING_time_t JNHW_FORMAT_STRING_int32_t
+  #endif
 #elif defined(_JNHW__time_t__IS__int64_t)
    #define JNHW_FORMAT_STRING_time_t JNHW_FORMAT_STRING_int64_t
 #else
 #error expected time_t is int32_t or int64_t
-#endif 
+#endif
 
 #if defined(_JNHW__uid_t__IS__uint32_t)
   #define JNHW_FORMAT_STRING_uid_t JNHW_FORMAT_STRING_uint32_t
