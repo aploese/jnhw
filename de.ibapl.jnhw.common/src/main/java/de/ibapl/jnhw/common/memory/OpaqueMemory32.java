@@ -23,6 +23,7 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.Native;
 import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.util.JnhwFormater;
 
 /**
  *
@@ -36,7 +37,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
 
     /**
      * Get the offset of member to direct parent.
-     * 
+     *
      * @param parent the direct parent of member.
      * @param member the direct member of parent.
      * @return the offset om menber in parent.
@@ -45,7 +46,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
         if (member.memoryOwner != parent) {
             throw new RuntimeException("member is no direct member of parent!");
         }
-        return (int)(member.baseAddress - parent.baseAddress);
+        return (int) (member.baseAddress - parent.baseAddress);
     }
 
     @FunctionalInterface
@@ -255,7 +256,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
                 copy(mem, i * BLOCK_SIZE, block, 0, BLOCK_SIZE);
             }
             if (printAddress) {
-                sb.append(String.format("0x%016x: ", mem.baseAddress + BLOCK_SIZE * i));
+                sb.append(JnhwFormater.formatAddress(mem.baseAddress + BLOCK_SIZE * i)).append(": ");
             }
             for (int j = 0; j < BLOCK_SIZE; j++) {
                 ascii.append((char) block[j]);
@@ -295,7 +296,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
 
     @Override
     final public String toString() {
-        return String.format("{baseAddress : 0x%016x, sizeInBytes : %d, memoryOwner : %s}", baseAddress, sizeInBytes, memoryOwner == this ? "this" : memoryOwner);
+        return String.format("{baseAddress : %s, sizeInBytes : %d, memoryOwner : %s}", JnhwFormater.formatAddress(baseAddress), sizeInBytes, memoryOwner == this ? "this" : memoryOwner);
     }
 
 }

@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.common.memory;
 
+import de.ibapl.jnhw.common.util.JnhwFormater;
 import java.util.function.Function;
 
 /**
@@ -81,7 +82,7 @@ public class NativeFunctionPointer {
 
     @Override
     public String toString() {
-        return String.format("{nativeAddress : 0x%016x}", nativeAddress);
+        return "{nativeAddress : " + JnhwFormater.formatAddress(nativeAddress) + "}";
     }
 
     @FunctionalInterface

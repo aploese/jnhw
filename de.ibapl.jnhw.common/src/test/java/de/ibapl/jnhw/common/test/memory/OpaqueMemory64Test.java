@@ -24,12 +24,14 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
 import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.OpaqueMemory64;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class OpaqueMemory64Test {
+
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     private class MemToTest extends OpaqueMemory64 {
 
@@ -41,7 +43,7 @@ public class OpaqueMemory64Test {
             super(sizeInBytes, clearMem);
         }
 
-        MemToTest(long elements, long elementSizeInBytes,  boolean clearMem) throws NoSuchNativeMethodException {
+        MemToTest(long elements, long elementSizeInBytes, boolean clearMem) throws NoSuchNativeMethodException {
             super(elements, elementSizeInBytes, clearMem);
         }
 
@@ -58,9 +60,9 @@ public class OpaqueMemory64Test {
         public String nativeToHexString() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-        
+
     }
-    
+
     @Test
     public void testAllocateDirtyMem() throws Exception {
         OpaqueMemory64 mem = new MemToTest(1024L, false);
@@ -149,9 +151,9 @@ public class OpaqueMemory64Test {
                 OpaqueMemory64.copy(mem, 0, array, 8, 16);
             }, "Srcmem end outside destarray");
         }, () -> {
-            //exact fit    
+            //exact fit
             if (mem.sizeInBytes <= Integer.MAX_VALUE) {
-                OpaqueMemory64.copy(array, 0, mem, 0, (int)mem.sizeInBytes);
+                OpaqueMemory64.copy(array, 0, mem, 0, (int) mem.sizeInBytes);
             } else {
                 throw new RuntimeException("Cant execute test because mem.sizeInBytes > Integer.MAX_VALUE");
             }
@@ -185,8 +187,8 @@ public class OpaqueMemory64Test {
     @Test
     public void testGetSetByte() throws Exception {
         OpaqueMemory64 mem = new MemToTest(1024L, false);
-        OpaqueMemory64.setByte(mem, (long)67, (byte) 9);
-        Assertions.assertEquals((byte) 9, OpaqueMemory64.getByte(mem, (long)67));
+        OpaqueMemory64.setByte(mem, (long) 67, (byte) 9);
+        Assertions.assertEquals((byte) 9, OpaqueMemory64.getByte(mem, (long) 67));
     }
 
     @Test
@@ -242,9 +244,20 @@ public class OpaqueMemory64Test {
         OpaqueMemory64 mem = new MemToTest(new NativeAddressHolder(0x2aL), 8);
         OpaqueMemory64 mem1 = new MemToTest(new NativeAddressHolder(42L), 8);
         OpaqueMemory64 mem2 = new MemToTest(mem, 0, 8);
-        Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
-        Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());
-        Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : {baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}}", mem2.toString());
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
+                Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());
+                Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : {baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}}", mem2.toString());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
+                Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());
+                Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : {baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}}", mem2.toString());
+                break;
+            default:
+                throw new RuntimeException();
+        }
         Assertions.assertEquals(mem, mem1);
         Assertions.assertEquals(mem1, mem2);
         Assertions.assertEquals(mem, mem2);

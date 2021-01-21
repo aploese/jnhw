@@ -23,6 +23,7 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.util.JnhwFormater;
 import java.lang.ref.Cleaner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,13 +58,12 @@ public class AbstractNativeMemory {
         @Override
         public void run() {
             try {
-                // LOG.log(Level.FINEST, String.format("Finalize: try free memory @0x%016x size:
-                // %d", baseAddress, sizeInBytes));
+                //LOG.log(Level.FINEST, String.format("Finalize: try free memory @%s size: %d", JnhwFormater.formatAddress(baseAddress), sizeInBytes));
                 free(baseAddress);
-                // LOG.log(Level.FINEST, String.format("memory @0x%016x freed", baseAddress));
+                //LOG.log(Level.FINEST, String.format("memory @%s freed", JnhwFormater.formatAddress(baseAddress)));
             } catch (Throwable t) {
                 LOG.log(Level.SEVERE,
-                        String.format("Finalize: Memory Leak freeing memory @0x%016x failed", baseAddress), t);
+                        String.format("Finalize: Memory Leak freeing memory @%s failed", JnhwFormater.formatAddress(baseAddress)), t);
             }
 
         }
@@ -288,7 +288,7 @@ public class AbstractNativeMemory {
         public static native int sizeOfS_i8_i32();
 
         public static native int alignOfS_i8_i32();
-        
+
         public static native int offsetOfS_i8_i32__1_i16();
 
         public static native int offsetOfS_i8_i32__2_i8();
@@ -308,7 +308,7 @@ public class AbstractNativeMemory {
         public static native int sizeOfS_i8_i64();
 
         public static native int alignOfS_i8_i64();
-        
+
         public static native int offsetOfS_i8_i64__1_i16();
 
         public static native int offsetOfS_i8_i64__2_i8();
@@ -342,5 +342,5 @@ public class AbstractNativeMemory {
         public static native int allignOfI64();
 
     }
-    
+
 }

@@ -19,53 +19,40 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.memory;
+package de.ibapl.jnhw.common.test;
 
+import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.common.util.JnhwFormater;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  *
  * @author aploese
  */
-public final class NativeAddressHolder {
+public class JnhwFormaterTest {
 
-    final long address;
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
-    /**
-     * Called from native code and test classes only
-     *
-     * @param address
-     */
-    public NativeAddressHolder(long address) {
-        this.address = address;
+    public JnhwFormaterTest() {
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + (int) (this.address ^ (this.address >>> 32));
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
+    @Test
+    public void testFormatAddress() {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+            case _64_BIT:
+                assertEquals("0xfedcba9876543210", JnhwFormater.formatAddress(0xfedcba9876543210L));
+                break;
+            case _32_BIT:
+                assertEquals("0xfedcba98", JnhwFormater.formatAddress(0x00000000fedcba98));
+                assertEquals("(!)0xfedcba9876543210", JnhwFormater.formatAddress(0xfedcba9876543210L));
+                assertEquals("(!)0x0000009876543210", JnhwFormater.formatAddress(0x0000009876543210L));
+                break;
+            default:
+                throw new RuntimeException();
         }
-        if (!(obj instanceof NativeAddressHolder)) {
-            return false;
-        }
-        final NativeAddressHolder other = (NativeAddressHolder) obj;
-        return this.address == other.address;
-    }
-
-    public boolean isNULL() {
-        return address == 0L;
-    }
-
-    @Override
-    public String toString() {
-        return "{address : " + JnhwFormater.formatAddress(address)+ "}";
     }
 
 }

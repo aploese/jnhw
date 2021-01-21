@@ -29,6 +29,9 @@ import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exceptions.NativeErrorException;
 import de.ibapl.jnhw.common.exceptions.NotDefinedException;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.util.Defined;
+import de.ibapl.jnhw.common.util.JnhwFormater;
+import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -623,7 +626,7 @@ public class Locale {
 
         @Override
         public String toString() {
-            return String.format("{nativeValue : 0x%016x}", nativeValue);
+                return "{nativeValue : " + JnhwFormater.formatAddress(nativeValue)+ "}";
         }
 
 

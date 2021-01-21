@@ -19,53 +19,39 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.memory;
+package de.ibapl.jnhw.common.util;
 
-import de.ibapl.jnhw.common.util.JnhwFormater;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.WordSize;
 
 /**
  *
  * @author aploese
  */
-public final class NativeAddressHolder {
+public class JnhwFormater {
 
-    final long address;
+    private final static WordSize WORD_SIZE = new MultiarchTupelBuilder().getWordSize();
 
     /**
-     * Called from native code and test classes only
+     * formats an Address accorfing to 32 or 64 bit
      *
      * @param address
+     * @return
      */
-    public NativeAddressHolder(long address) {
-        this.address = address;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + (int) (this.address ^ (this.address >>> 32));
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
+    public static String formatAddress(long address) {
+        switch (WORD_SIZE) {
+            case _64_BIT:
+                return String.format("0x%016x", address);
+            case _32_BIT:
+                if (address >>> 32 == 0) {
+                    return String.format("0x%08x", address);
+                } else {
+                    //Error?? on 32 bit we got the upper 32 set?? 
+                    return String.format("(!)0x%016x", address);
+                }
+            default:
+                throw new RuntimeException("UnknownWordsize");
         }
-        if (!(obj instanceof NativeAddressHolder)) {
-            return false;
-        }
-        final NativeAddressHolder other = (NativeAddressHolder) obj;
-        return this.address == other.address;
-    }
 
-    public boolean isNULL() {
-        return address == 0L;
     }
-
-    @Override
-    public String toString() {
-        return "{address : " + JnhwFormater.formatAddress(address)+ "}";
-    }
-
 }

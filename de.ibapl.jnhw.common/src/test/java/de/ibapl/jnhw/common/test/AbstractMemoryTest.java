@@ -22,7 +22,6 @@
 package de.ibapl.jnhw.common.test;
 
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory.NativeMemoryAlignment;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

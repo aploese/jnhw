@@ -47,7 +47,7 @@ public class OpaqueMemory32Test {
             super(sizeInBytes, clearMem);
         }
 
-        MemToTest(int elements, int elementSizeInBytes,  boolean clearMem) {
+        MemToTest(int elements, int elementSizeInBytes, boolean clearMem) {
             super(elements, elementSizeInBytes, clearMem);
         }
 
@@ -64,13 +64,13 @@ public class OpaqueMemory32Test {
         public String nativeToHexString() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-        
+
         long getBaseAddress() {
             return baseAddress;
         }
-        
+
     }
-    
+
     @Test
     public void testAllocateDirtyMem() throws Exception {
         OpaqueMemory32 mem = new MemToTest(1024, false);
@@ -252,9 +252,20 @@ public class OpaqueMemory32Test {
         OpaqueMemory32 mem = new MemToTest(new NativeAddressHolder(0x2aL), 8);
         OpaqueMemory32 mem1 = new MemToTest(new NativeAddressHolder(42L), 8);
         OpaqueMemory32 mem2 = new MemToTest(mem, 0, 8);
-        Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
-        Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());
-        Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : {baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}}", mem2.toString());
+        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
+                Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());
+                Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : {baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}}", mem2.toString());
+                break;
+            case _64_BIT:
+                Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
+                Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());
+                Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : {baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}}", mem2.toString());
+                break;
+            default:
+                throw new RuntimeException();
+        }
         Assertions.assertEquals(mem, mem1);
         Assertions.assertEquals(mem1, mem2);
         Assertions.assertEquals(mem, mem2);
@@ -263,7 +274,6 @@ public class OpaqueMemory32Test {
         Assertions.assertEquals(mem1.hashCode(), mem2.hashCode());
     }
 
-
     @Test
     public void testAddressOn32BitNotNegative() {
         MemToTest parent = new MemToTest(48, true);
@@ -271,7 +281,7 @@ public class OpaqueMemory32Test {
             Assertions.assertTrue(parent.getBaseAddress() > 0, "baseaddress is not positive");
         }
     }
-    
+
     @Test
     public void testCalcNextOffset() {
         OpaqueMemory32 parent = new MemToTest(48, true);
