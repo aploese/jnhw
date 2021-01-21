@@ -63,7 +63,7 @@ public final class NativeAddressHolder {
 
     @Override
     public String toString() {
-        return String.format("{address : 0x%08x}", address);
+        return String.format("{address : 0x%016x}", address);
     }
 
 }

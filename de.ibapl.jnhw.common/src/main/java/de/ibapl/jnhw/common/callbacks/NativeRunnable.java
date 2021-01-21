@@ -49,8 +49,8 @@ public abstract class NativeRunnable extends OpaqueMemory32 {
             @Override
             public String nativeToHexString() {
                 switch (sizeInBytes) {
-                    case 4: return String.format("%04x",baseAddress);
-                    case 8: return String.format("%08x",baseAddress);
+                    case 4: return String.format("%08x",baseAddress);
+                    case 8: return String.format("%016x",baseAddress);
                     default:
                         throw new RuntimeException("Cant handle sizeInBytes: " + sizeInBytes);
             }

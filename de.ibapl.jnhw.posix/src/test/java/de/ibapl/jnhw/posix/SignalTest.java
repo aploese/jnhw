@@ -1441,7 +1441,6 @@ public class SignalTest {
                         Assertions.assertEquals(-1, Signal.Ucontext_t.sizeof());
                 }
                 break;
-
             case FREE_BSD:
                 Assertions.assertEquals(880, Signal.Ucontext_t.sizeof());
                 break;
@@ -1462,15 +1461,15 @@ public class SignalTest {
                         Assertions.assertEquals(16, Signal.Ucontext_t.alignof());
                         break;
                     case ARM:
-                    case I386:
-                        Assertions.assertEquals(4, Signal.Ucontext_t.alignof());
-                        break;
                     case MIPS:
                     case MIPS_64:
                     case POWER_PC_64:
                     case S390_X:
                     case X86_64:
                         Assertions.assertEquals(8, Signal.Ucontext_t.alignof());
+                        break;
+                    case I386:
+                        Assertions.assertEquals(4, Signal.Ucontext_t.alignof());
                         break;
                     default:
                         Assertions.assertEquals(-1, Signal.Ucontext_t.alignof());

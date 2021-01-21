@@ -81,7 +81,7 @@ public class NativeFunctionPointer {
 
     @Override
     public String toString() {
-        return String.format("{nativeAddress : 0x%08x}", nativeAddress);
+        return String.format("{nativeAddress : 0x%016x}", nativeAddress);
     }
 
     @FunctionalInterface

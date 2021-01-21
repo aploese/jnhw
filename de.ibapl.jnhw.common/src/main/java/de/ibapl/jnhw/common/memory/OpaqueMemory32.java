@@ -255,7 +255,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
                 copy(mem, i * BLOCK_SIZE, block, 0, BLOCK_SIZE);
             }
             if (printAddress) {
-                sb.append(String.format("0x%08x: ", mem.baseAddress + BLOCK_SIZE * i));
+                sb.append(String.format("0x%016x: ", mem.baseAddress + BLOCK_SIZE * i));
             }
             for (int j = 0; j < BLOCK_SIZE; j++) {
                 ascii.append((char) block[j]);
@@ -295,7 +295,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
 
     @Override
     final public String toString() {
-        return String.format("{baseAddress : 0x%08x, sizeInBytes : %d, memoryOwner : %s}", baseAddress, sizeInBytes, memoryOwner == this ? "this" : memoryOwner);
+        return String.format("{baseAddress : 0x%016x, sizeInBytes : %d, memoryOwner : %s}", baseAddress, sizeInBytes, memoryOwner == this ? "this" : memoryOwner);
     }
 
 }

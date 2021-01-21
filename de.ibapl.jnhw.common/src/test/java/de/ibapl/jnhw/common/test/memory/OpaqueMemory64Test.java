@@ -242,9 +242,9 @@ public class OpaqueMemory64Test {
         OpaqueMemory64 mem = new MemToTest(new NativeAddressHolder(0x2aL), 8);
         OpaqueMemory64 mem1 = new MemToTest(new NativeAddressHolder(42L), 8);
         OpaqueMemory64 mem2 = new MemToTest(mem, 0, 8);
-        Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
-        Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());
-        Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : {baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}}", mem2.toString());
+        Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
+        Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());
+        Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : {baseAddress : 0x000000000000002a, sizeInBytes : 8, memoryOwner : null}}", mem2.toString());
         Assertions.assertEquals(mem, mem1);
         Assertions.assertEquals(mem1, mem2);
         Assertions.assertEquals(mem, mem2);
