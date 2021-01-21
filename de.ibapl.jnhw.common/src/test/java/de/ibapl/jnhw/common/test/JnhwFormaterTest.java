@@ -46,7 +46,7 @@ public class JnhwFormaterTest {
                 assertEquals("0xfedcba9876543210", JnhwFormater.formatAddress(0xfedcba9876543210L));
                 break;
             case _32_BIT:
-                assertEquals("0xfedcba98", JnhwFormater.formatAddress(0x00000000fedcba98));
+                assertEquals("0xfedcba98", JnhwFormater.formatAddress(0x00000000fedcba98L));
                 assertEquals("(!)0xfedcba9876543210", JnhwFormater.formatAddress(0xfedcba9876543210L));
                 assertEquals("(!)0x0000009876543210", JnhwFormater.formatAddress(0x0000009876543210L));
                 break;
