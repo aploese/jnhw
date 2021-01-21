@@ -623,7 +623,7 @@ public class Locale {
 
         @Override
         public String toString() {
-            return "{nativeValue : " + nativeValue + "}";
+            return String.format("{nativeValue : 0x%016x}", nativeValue);
         }
 
 
