@@ -92,6 +92,46 @@ extern "C" {
     _JNHW_IMPORT_OR_EXPORT_ extern int outOfBoundsOpaqueMemory32(JNIEnv *env, jint pos, jint len, jobject opaqueMemory32);
     _JNHW_IMPORT_OR_EXPORT_ extern int outOfBoundsOpaqueMemory64(JNIEnv *env, jlong pos, jlong len, jobject opaqueMemory64);
 
+//Its funny how the differnt archs ans OSses have different datatypes so a long int is not equals to long long on 64 bit...
+
+#define JNHW_FORMAT_STRING_int8_t "%d"
+#define JNHW_FORMAT_STRING_uint8_t "%u"
+#define JNHW_FORMAT_STRING_HEX_int8_t "%02x"
+#define JNHW_FORMAT_STRING_HEX_uint8_t "%02x"
+
+#define JNHW_FORMAT_STRING_int16_t "%d"
+#define JNHW_FORMAT_STRING_uint16_t "%u"
+#define JNHW_FORMAT_STRING_HEX_int16_t "%04x"
+#define JNHW_FORMAT_STRING_HEX_uint16_t "%04x"
+
+#define JNHW_FORMAT_STRING_int32_t "%d"
+#define JNHW_FORMAT_STRING_uint32_t "%u"
+#define JNHW_FORMAT_STRING_HEX_int32_t "%08x"
+#define JNHW_FORMAT_STRING_HEX_uint32_t "%08x"
+
+#if defined(__LP64__) 
+  #if defined(__OpenBSD__)
+    #define JNHW_FORMAT_STRING_int64_t "%lld"
+    #define JNHW_FORMAT_STRING_uint64_t "%llu"
+    #define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
+    #define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
+  #else
+    #define JNHW_FORMAT_STRING_int64_t "%ld"
+    #define JNHW_FORMAT_STRING_uint64_t "%lu"
+    #define JNHW_FORMAT_STRING_HEX_int64_t "%016lx"
+    #define JNHW_FORMAT_STRING_HEX_uint64_t "%016lx"
+  #endif
+#elif defined(__WIN64)
+  #define JNHW_FORMAT_STRING_int64_t "%lld"
+  #define JNHW_FORMAT_STRING_uint64_t "%llu"
+  #define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
+  #define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
+#else
+  #define JNHW_FORMAT_STRING_int64_t "%lld"
+  #define JNHW_FORMAT_STRING_uint64_t "%llu"
+  #define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
+  #define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
+#endif
 
 
     /**

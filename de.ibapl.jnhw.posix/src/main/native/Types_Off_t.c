@@ -98,17 +98,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Off_1t_setValue
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Off_1t_nativeToString
     (JNIEnv *env, jobject jnhw_off_t) {
         char buf[128] = {0};
-#if defined(_JNHW__off_t__IS__int32_t)
-        snprintf(buf, sizeof (buf) - 1, "%ld", *UNWRAP_OPAQUE_MEM_TO(off_t*, jnhw_off_t));
-#elif defined(_JNHW__off_t__IS__int64_t)
-#if defined(__OpenBSD__)
-       snprintf(buf, sizeof (buf) - 1, "%lld", *UNWRAP_OPAQUE_MEM_TO(off_t*, jnhw_off_t));
-#else
-        snprintf(buf, sizeof (buf) - 1, "%ld", *UNWRAP_OPAQUE_MEM_TO(off_t*, jnhw_off_t));
-#endif
-#else
-#error expected off_t is int32_t or int64_t
-#endif 
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_off_t, *UNWRAP_OPAQUE_MEM_TO(off_t*, jnhw_off_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

@@ -24,6 +24,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#if _POSIX_C_SOURCE
 
     jclass de_ibapl_jnhw_posix_Locale_Locale_t_Class = NULL;
     jfieldID de_ibapl_jnhw_posix_Locale_Locale_t_nativeValue_ID = NULL;
@@ -31,6 +32,7 @@ extern "C" {
 
     jclass de_ibapl_jnhw_posix_Time_Tm_Class = NULL;
     jmethodID de_ibapl_jnhw_posix_Time_Tm_init_ID = NULL;
+#endif
 
     JNIEXPORT jint JNICALL
     JNI_OnLoad(JavaVM *jvm, __attribute__ ((unused)) void *reserved) {
@@ -38,6 +40,7 @@ extern "C" {
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
             return JNI_ERR;
         }
+#if _POSIX_C_SOURCE
 
         if (de_ibapl_jnhw_posix_Locale_Locale_t_Class == NULL) {
             de_ibapl_jnhw_posix_Locale_Locale_t_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_LOCALE_T);
@@ -64,7 +67,7 @@ extern "C" {
                 return JNI_ERR;
             }
         }
-
+#endif
         return JNI_VERSION_10;
     }
 
@@ -73,7 +76,7 @@ extern "C" {
         JNIEnv *env;
 
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
-
+#if _POSIX_C_SOURCE
             deleteGlobalRef(env, &de_ibapl_jnhw_posix_Locale_Locale_t_Class);
             de_ibapl_jnhw_posix_Locale_Locale_t_Class = NULL;
             de_ibapl_jnhw_posix_Locale_Locale_t_nativeValue_ID = NULL;
@@ -82,6 +85,7 @@ extern "C" {
             deleteGlobalRef(env, &de_ibapl_jnhw_posix_Time_Tm_Class);
             de_ibapl_jnhw_posix_Time_Tm_Class = NULL;
             de_ibapl_jnhw_posix_Time_Tm_init_ID = NULL;
+#endif
         }
 
     }

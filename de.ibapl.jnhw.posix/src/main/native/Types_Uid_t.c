@@ -89,7 +89,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Uid_1t_setValue
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Uid_1t_nativeToString
     (JNIEnv *env, jobject jnhw_uid_t) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, "%u", *UNWRAP_OPAQUE_MEM_TO(uid_t*, jnhw_uid_t));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uid_t, *UNWRAP_OPAQUE_MEM_TO(uid_t*, jnhw_uid_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

@@ -35,7 +35,7 @@ extern "C" {
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt8ToHexString
     (JNIEnv *env, jobject nativeIntNumber) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, "%02x", 0x00FF & *UNWRAP_OPAQUE_MEM_TO(uint8_t*, nativeIntNumber));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint8_t, 0x00FF & *UNWRAP_OPAQUE_MEM_TO(uint8_t*, nativeIntNumber));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -48,7 +48,7 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativ
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt16ToHexString
     (JNIEnv *env, jobject nativeIntNumber) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, "%04x", 0x0000FFFF & *UNWRAP_OPAQUE_MEM_TO(uint16_t*, nativeIntNumber));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint16_t, 0x0000FFFF & *UNWRAP_OPAQUE_MEM_TO(uint16_t*, nativeIntNumber));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -60,7 +60,7 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativ
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt32ToHexString
     (JNIEnv *env, jobject nativeIntNumber) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, "%08x", *UNWRAP_OPAQUE_MEM_TO(uint32_t*, nativeIntNumber));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint32_t, *UNWRAP_OPAQUE_MEM_TO(uint32_t*, nativeIntNumber));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -73,17 +73,7 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativ
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt64ToHexString
     (JNIEnv *env, jobject nativeIntNumber) {
         char buf[128] = {0};
-#if defined(__LP64__) 
-  #if defined(__OpenBSD__)
-        snprintf(buf, sizeof (buf) - 1, "%016llx", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, nativeIntNumber));
-  #else
-        snprintf(buf, sizeof (buf) - 1, "%016lx", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, nativeIntNumber));
-  #endif
-#elif defined(__WIN64)
-        snprintf(buf, sizeof (buf) - 1, "%016I64x", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, nativeIntNumber));
-#else
-        snprintf(buf, sizeof (buf) - 1, "%016llx", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, nativeIntNumber));
-#endif
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint64_t, *UNWRAP_OPAQUE_MEM_TO(uint64_t*, nativeIntNumber));
         return (*env)->NewStringUTF(env, buf);
     }
 

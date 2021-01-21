@@ -98,13 +98,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_setValue
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_nativeToString
     (JNIEnv *env, jobject jnhw_size_t) {
         char buf[128] = {0};
-#if defined(_JNHW__size_t__IS__uint32_t)
-        snprintf(buf, sizeof (buf) - 1, "%u", *UNWRAP_OPAQUE_MEM_TO(size_t*, jnhw_size_t));
-#elif defined(_JNHW__size_t__IS__uint64_t)
-        snprintf(buf, sizeof (buf) - 1, "%lu", *UNWRAP_OPAQUE_MEM_TO(size_t*, jnhw_size_t));
-#else
-#error expected size_t is uint32_t or uint64_t
-#endif 
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_size_t, *UNWRAP_OPAQUE_MEM_TO(size_t*, jnhw_size_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

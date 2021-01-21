@@ -75,17 +75,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_Uint64_1t_rawUint64_1t__
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_Uint64_1t_nativeToString
     (JNIEnv *env, jobject jnhw_uint64_t) {
         char buf[128] = {0};
-#if defined(__LP64__)
-  #if defined(__OpenBSD__)
-        snprintf(buf, sizeof (buf) - 1, "%llu", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
-  #else
-        snprintf(buf, sizeof (buf) - 1, "%lu", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
-  #endif
-#elif defined(__WIN64)
-        snprintf(buf, sizeof (buf) - 1, "%016I64u", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
-#else
-        snprintf(buf, sizeof (buf) - 1, "%llu", *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
-#endif
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint64_t, *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

@@ -89,7 +89,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Tcflag_1t_setValue
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Tcflag_1t_nativeToString
     (JNIEnv *env, jobject jnhw_tcflag_t) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, "0x%04x", *UNWRAP_OPAQUE_MEM_TO(tcflag_t*, jnhw_tcflag_t));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_tcflag_t, *UNWRAP_OPAQUE_MEM_TO(tcflag_t*, jnhw_tcflag_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

@@ -19,40 +19,46 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#ifndef _ljnhw_posix_H
-#define _ljnhw_posix_H
+#ifndef _jnhw_posix_H
+#define _jnhw_posix_H
 
-
-#if  defined(__linux__)
-#define _GNU_SOURCE
 
 #if defined(_LP64)
 //64 bit
 
 #else
 //32 bit
+#if defined(_ILP32)
+#endif
 
 #endif
+
+#if  defined(__linux__)
+  #define _GNU_SOURCE
+
 #elif defined(__FreeBSD__)
-#define _POSIX_C_SOURCE 200809
-#define _XOPEN_SOURCE 700
-#define _XOPEN_SOURCE_EXTENDED 1
-//force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
-#define __BSD_VISIBLE 1
-#define __EXT1_VISIBLE 1
-//no 
+  #define _POSIX_C_SOURCE 200809
+  #define _XOPEN_SOURCE 700
+  #define _XOPEN_SOURCE_EXTENDED 1
+  //force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
+  #define __BSD_VISIBLE 1
+  #define __EXT1_VISIBLE 1
+  //no 
+
 #elif defined(__OpenBSD__)
-#define _POSIX_C_SOURCE 200809
-#define _XOPEN_SOURCE 700
-#define _XOPEN_SOURCE_EXTENDED 1
-//force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
-#define _BSD_SOURCE 1
+  #define _POSIX_C_SOURCE 200809
+  #define _XOPEN_SOURCE 700
+  #define _XOPEN_SOURCE_EXTENDED 1
+  //force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
+  #define _BSD_SOURCE 1
+
 #elif defined(__APPLE__)
-#define _POSIX_C_SOURCE 200809
-#define _XOPEN_SOURCE 700
-#define _XOPEN_SOURCE_EXTENDED 1
-#define _DARWIN_C_SOURCE 1
+  #define _POSIX_C_SOURCE 200809
+  #define _XOPEN_SOURCE 700
+  #define _XOPEN_SOURCE_EXTENDED 1
+  #define _DARWIN_C_SOURCE 1
 #endif
+
 
 //#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
 //#define _LARGEFILE64_SOURCE
@@ -69,10 +75,85 @@
 
 #if _POSIX_C_SOURCE
 #include "jnhw-posix-datatypes.h"
+
+#if defined(_JNHW__cc_t__IS__uint8_t)
+  #define JNHW_FORMAT_STRING_cc_t JNHW_FORMAT_STRING_uint8_t
+#else
+#error expected cc_t is uint8_t
 #endif
 
-#ifndef _jnhw_posix_H
-#define _jnhw_posix_H
+#if defined(_JNHW__speed_t__IS__uint32_t)
+  #define JNHW_FORMAT_STRING_speed_t JNHW_FORMAT_STRING_uint32_t
+#else
+#error expected speed_t is int32_t
+#endif
+
+#if defined(_JNHW__tcflag_t__IS__uint32_t)
+  #define JNHW_FORMAT_STRING_tcflag_t JNHW_FORMAT_STRING_uint32_t
+#else
+#error expected tcflag_t is uint32_t
+#endif
+
+#if defined(_JNHW__clock_t__IS__int32_t)
+   #define JNHW_FORMAT_STRING_clock_t JNHW_FORMAT_STRING_int32_t
+#elif defined(_JNHW__clock_t__IS__int64_t)
+   #define JNHW_FORMAT_STRING_clock_t JNHW_FORMAT_STRING_int64_t
+#else
+#error expected clock_t is int32_t or int64_t
+#endif 
+
+#if defined(_JNHW__mode_t__IS__uint16_t)
+   #define JNHW_FORMAT_STRING_mode_t JNHW_FORMAT_STRING_uint16_t
+#elif defined(_JNHW__mode_t__IS__uint32_t)
+   #define JNHW_FORMAT_STRING_mode_t JNHW_FORMAT_STRING_uint32_t
+#else
+#error expected mode_t is uint16_t or uint32_t
+#endif
+
+#if defined(_JNHW__off_t__IS__int32_t)
+   #define JNHW_FORMAT_STRING_off_t JNHW_FORMAT_STRING_int32_t
+#elif defined(_JNHW__off_t__IS__int64_t)
+   #define JNHW_FORMAT_STRING_off_t JNHW_FORMAT_STRING_int64_t
+#else
+#error expected off_t is int32_t or int64_t
+#endif 
+
+#if defined(_JNHW__pid_t__IS__int32_t)
+  #define JNHW_FORMAT_STRING_pid_t JNHW_FORMAT_STRING_int32_t
+#else
+#error expected pid_t is int32_t
+#endif 
+
+#if defined(_JNHW__size_t__IS__uint32_t)
+   #define JNHW_FORMAT_STRING_size_t JNHW_FORMAT_STRING_uint32_t
+#elif defined(_JNHW__size_t__IS__uint64_t)
+   #define JNHW_FORMAT_STRING_size_t JNHW_FORMAT_STRING_uint64_t
+#else
+#error expected size_t is uint32_t or uint64_t
+#endif 
+
+#if defined(_JNHW__ssize_t__IS__int32_t)
+   #define JNHW_FORMAT_STRING_ssize_t JNHW_FORMAT_STRING_int32_t
+#elif defined(_JNHW__ssize_t__IS__int64_t)
+   #define JNHW_FORMAT_STRING_ssize_t JNHW_FORMAT_STRING_int64_t
+#else
+#error expected ssize_t is int32_t or int64_t
+#endif 
+
+#if defined(_JNHW__time_t__IS__int32_t)
+   #define JNHW_FORMAT_STRING_time_t JNHW_FORMAT_STRING_int32_t
+#elif defined(_JNHW__time_t__IS__int64_t)
+   #define JNHW_FORMAT_STRING_time_t JNHW_FORMAT_STRING_int64_t
+#else
+#error expected time_t is int32_t or int64_t
+#endif 
+
+#if defined(_JNHW__uid_t__IS__uint32_t)
+  #define JNHW_FORMAT_STRING_uid_t JNHW_FORMAT_STRING_uint32_t
+#else
+#error expected uid_t is uint32_t
+#endif
+
 
 #ifdef __cplusplus
 extern "C" {

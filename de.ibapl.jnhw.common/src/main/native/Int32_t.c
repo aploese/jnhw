@@ -75,7 +75,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_Int32_1t_rawInt32_1t__I
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_Int32_1t_nativeToString
     (JNIEnv *env, jobject jnhw_int32_t) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, "%d", *UNWRAP_OPAQUE_MEM_TO(int32_t*, jnhw_int32_t));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_int32_t, *UNWRAP_OPAQUE_MEM_TO(int32_t*, jnhw_int32_t));
         return (*env)->NewStringUTF(env, buf);
     }
 
