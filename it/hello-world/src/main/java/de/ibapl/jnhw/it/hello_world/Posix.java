@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.it.hello_world;
 
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 //Import only the needed define from the wrapper of posix's unistd.h.h
 import static de.ibapl.jnhw.posix.Unistd.STDOUT_FILENO;
 //Import only the needed method from the wrapper of iso c's unistd.h.h

@@ -24,8 +24,8 @@ package de.ibapl.jnhw.unix.sys;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.references.IntRef;
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
-import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**

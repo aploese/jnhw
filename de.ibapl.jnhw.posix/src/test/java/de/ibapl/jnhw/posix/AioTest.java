@@ -21,16 +21,14 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.callbacks.Callback_NativeRunnable;
-import de.ibapl.jnhw.common.callbacks.Callback_PtrAbstractNativeMemory_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_NativeRunnable;
+import de.ibapl.jnhw.common.callback.Callback_PtrAbstractNativeMemory_V_Impl;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
-import de.ibapl.jnhw.common.callbacks.NativeRunnable;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.memory.Memory32Heap;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.callback.NativeRunnable;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.references.ObjectRef;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
@@ -43,7 +41,6 @@ import java.nio.ByteBuffer;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 

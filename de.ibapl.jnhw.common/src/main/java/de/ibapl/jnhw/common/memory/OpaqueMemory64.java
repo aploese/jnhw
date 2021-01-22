@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.Native;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 
 /**

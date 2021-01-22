@@ -223,7 +223,7 @@ JNHW_ASSERT__pid_t__IS__int32_t
             throw_NullPointerException(env, "set is null");
             return;
         }
-        if (sigdelset(UNWRAP_OPAQUE_MEM_TO(sigset_t*, set), signo)) {
+        if (sigdelset(UNWRAP_ABSTRACT_MEM_TO(sigset_t*, set), signo)) {
             throw_NativeErrorException(env, errno);
         }
         return;
@@ -240,7 +240,7 @@ JNHW_ASSERT__pid_t__IS__int32_t
             throw_NullPointerException(env, "set is null");
             return;
         }
-        if (sigemptyset(UNWRAP_OPAQUE_MEM_TO(sigset_t*, set))) {
+        if (sigemptyset(UNWRAP_ABSTRACT_MEM_TO(sigset_t*, set))) {
             throw_NativeErrorException(env, errno);
         }
         return;
@@ -257,7 +257,7 @@ JNHW_ASSERT__pid_t__IS__int32_t
             throw_NullPointerException(env, "set is null");
             return;
         }
-        if (sigfillset(UNWRAP_OPAQUE_MEM_TO(sigset_t*, set))) {
+        if (sigfillset(UNWRAP_ABSTRACT_MEM_TO(sigset_t*, set))) {
             throw_NativeErrorException(env, errno);
         }
         return;
@@ -320,7 +320,7 @@ JNHW_ASSERT__pid_t__IS__int32_t
             throw_NullPointerException(env, "set is null");
             return JNI_FALSE;
         }
-        const int result = sigismember(UNWRAP_OPAQUE_MEM_TO(sigset_t*, set), signo);
+        const int result = sigismember(UNWRAP_ABSTRACT_MEM_TO(sigset_t*, set), signo);
         if (result == 0) {
             return JNI_FALSE;
         } else if (result == 1) {
@@ -334,7 +334,7 @@ JNHW_ASSERT__pid_t__IS__int32_t
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    signal
-     * Signature: (ILde/ibapl/jnhw/common/callbacks/Callback_I_V;)Lde/ibapl/jnhw/common/callbacks/Callback_I_V;
+     * Signature: (ILde/ibapl/jnhw/common/callnative/CallNative_I_V;)Lde/ibapl/jnhw/common/callnative/CallNative_I_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig, jobject func) {
@@ -348,7 +348,7 @@ JNHW_ASSERT__pid_t__IS__int32_t
             throw_NativeErrorException(env, errno);
             return NULL;
         }
-        return CREATE_NATIVE_FUNCTION_POINTER(result);
+        return CREATE_CALL_NATIVE_I_V(result);
     }
 
     /*
@@ -446,7 +446,7 @@ JNHW_ASSERT__pid_t__IS__int32_t
         /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    sigset
-     * Signature: (ILde/ibapl/jnhw/common/callbacks/Callback_I_V;)Lde/ibapl/jnhw/common/callbacks/Callback_I_V;
+     * Signature: (ILde/ibapl/jnhw/common/callnative/CallNative_I_V;)Lde/ibapl/jnhw/common/callnative/CallNative_I_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_sigset
 #if defined(__OpenBSD__)
@@ -465,7 +465,7 @@ JNHW_ASSERT__pid_t__IS__int32_t
             throw_NativeErrorException(env, errno);
             return NULL;
         }
-        return CREATE_NATIVE_FUNCTION_POINTER(result);
+        return CREATE_CALL_NATIVE_I_V(result);
 #endif
     }
 

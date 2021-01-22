@@ -68,7 +68,7 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_unsig
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_getValue
     (JNIEnv *env, jobject jnhw_size_t) {
-        return (int64_t) *UNWRAP_OPAQUE_MEM_TO(size_t*, jnhw_size_t);
+        return (int64_t) *UNWRAP_ABSTRACT_MEM_TO(size_t*, jnhw_size_t);
     }
 
 /*
@@ -87,7 +87,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_setValue
 #else
 #error expected size_t uint32_t or uint64_t
 #endif 
-        *UNWRAP_OPAQUE_MEM_TO(size_t*, jnhw_size_t) = (size_t)value;
+        *UNWRAP_ABSTRACT_MEM_TO(size_t*, jnhw_size_t) = (size_t)value;
     }
 
 /*
@@ -98,7 +98,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_setValue
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_nativeToString
     (JNIEnv *env, jobject jnhw_size_t) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_size_t, *UNWRAP_OPAQUE_MEM_TO(size_t*, jnhw_size_t));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_size_t, *UNWRAP_ABSTRACT_MEM_TO(size_t*, jnhw_size_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

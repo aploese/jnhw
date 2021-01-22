@@ -123,7 +123,7 @@ JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp
     (JNIEnv *env, jobject structStack_t, jobject ss_sp) {
-        (UNWRAP_STACK_T_PTR(structStack_t))->ss_sp = UNWRAP_OPAQUE_MEM_TO_VOID_PTR_OR_NULL(ss_sp);
+        (UNWRAP_STACK_T_PTR(structStack_t))->ss_sp = UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_OR_NULL(ss_sp);
     }
 
 

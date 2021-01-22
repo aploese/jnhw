@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;

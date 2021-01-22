@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "de_ibapl_jnhw_common_callbacks_Callback_J_V_Impl.h"
+#include "de_ibapl_jnhw_common_callback_Callback_J_V_Impl.h"
 
 
 #include "jnhw-common.h"
@@ -39,11 +39,11 @@ extern "C" {
     static jmethodID trampoline_ID;
 
     /*
-     * Class:     de_ibapl_jnhw_common_callbacks_Callback_J_V_Impl
+     * Class:     de_ibapl_jnhw_common_callback_Callback_J_V_Impl
      * Method:    initNative
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callbacks_Callback_1J_1V_1Impl_initNative
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1J_1V_1Impl_initNative
     (JNIEnv *env, jclass clazz) {
         if ((*env)->GetJavaVM(env, &jvm)) {
             return;
@@ -83,11 +83,11 @@ extern "C" {
     TRAMPOLINE(7)
 
 /*
- * Class:     de_ibapl_jnhw_common_callbacks_Callback_J_V_Impl
+ * Class:     de_ibapl_jnhw_common_callback_Callback_J_V_Impl
  * Method:    getNativeAddress
  * Signature: (I)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callbacks_Callback_1J_1V_1Impl_getNativeAddress
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1J_1V_1Impl_getNativeAddress
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
         switch (index) {
 #define TRAMPOLINE_CASE(index) case index: return CREATE_NATIVE_ADDRESS_HOLDER(&_jnhw_trampoline_J_V__ ## index);
@@ -106,11 +106,11 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callbacks_Callback_1J_1V_1Im
     }
 
     /*
-     * Class:     de_ibapl_jnhw_common_callbacks_Callback_J_V_Impl
+     * Class:     de_ibapl_jnhw_common_callback_Callback_J_V_Impl
      * Method:    MAX_CALL_BACKS
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_callbacks_Callback_1J_1V_1Impl_MAX_1CALL_1BACKS
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1J_1V_1Impl_MAX_1CALL_1BACKS
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return MAX_CALL_BACKS;
     }

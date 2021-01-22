@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.common.test.callbacks;
 
-import de.ibapl.jnhw.common.callbacks.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
-import de.ibapl.jnhw.common.callbacks.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.callback.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
@@ -31,6 +31,7 @@ import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory64;
+import de.ibapl.jnhw.common.nativecall.CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
 import static org.junit.jupiter.api.Assertions.*;
@@ -79,7 +80,7 @@ public class Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test {
     public Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test() {
     }
 
-    private static native NativeFunctionPointer getCallbackPtr();
+    private static native CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V getCallbackPtr();
 
     private static native void setCallback(Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<A, B> callback);
 
@@ -204,6 +205,17 @@ public class Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test {
         assertEquals(getCallbackPtr(), callback);
         assertSame(Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl.find(getCallbackPtr()), callback);
         doCallTheCallback(42, a, b);
+        assertEquals(42, intref.value);
+        assertEquals(a, refA.value);
+        assertEquals(b, refB.value);
+        assertNotSame(a, refA.value);
+        assertNotSame(b, refB.value);
+
+        intref.value = -1;
+        refA.value = null;
+        refB.value = null;
+
+        getCallbackPtr().call(42, a, b);
         assertEquals(42, intref.value);
         assertEquals(a, refA.value);
         assertEquals(b, refB.value);

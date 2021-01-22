@@ -35,7 +35,7 @@ extern "C" {
  */
 JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_memory_PointerArray32_get0
     (JNIEnv *env, jobject pointerArray, jint index) {
-        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)*(UNWRAP_OPAQUE_MEM_TO_VOID_PTR_PTR(pointerArray) + index));
+        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)*(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_PTR(pointerArray) + index));
     }
 
     /*
@@ -45,7 +45,7 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_memory_PointerArray32_get0
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_PointerArray32_set0
     (JNIEnv *env, jobject pointerArray, jint index, jobject opaqueMemory) {
-        *(UNWRAP_OPAQUE_MEM_TO_VOID_PTR_PTR(pointerArray) + index) = UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory);
+        *(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_PTR(pointerArray) + index) = UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(opaqueMemory);
     }
 
     /*

@@ -29,7 +29,7 @@ import java.util.function.Function;
  * @author aploese
  */
 public class NativeFunctionPointer {
-
+    
     public static boolean isSameAddress(NativeFunctionPointer ptr1, NativeFunctionPointer ptr2) {
         return (ptr1 == ptr2) || (ptr1 != null && ptr1.nativeAddress == ptr2.nativeAddress);
     }
@@ -55,7 +55,7 @@ public class NativeFunctionPointer {
         this.nativeAddress = src.address;
     }
 
-    private NativeFunctionPointer(long nativeAddress) {
+    protected NativeFunctionPointer(long nativeAddress) {
         this.nativeAddress = nativeAddress;
     }
 

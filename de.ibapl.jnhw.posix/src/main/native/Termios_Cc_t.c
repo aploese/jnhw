@@ -68,7 +68,7 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_unsigned
  */
 JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_getValue
     (JNIEnv *env, jobject jnhw_cc_t) {
-        return (int8_t) *UNWRAP_OPAQUE_MEM_TO(cc_t*, jnhw_cc_t);
+        return (int8_t) *UNWRAP_ABSTRACT_MEM_TO(cc_t*, jnhw_cc_t);
     }
 
 /*
@@ -78,7 +78,7 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_getValue
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_setValue
     (JNIEnv *env, jobject jnhw_cc_t, jbyte value) {
-        *UNWRAP_OPAQUE_MEM_TO(cc_t*, jnhw_cc_t) = (uint8_t) value;
+        *UNWRAP_ABSTRACT_MEM_TO(cc_t*, jnhw_cc_t) = (uint8_t) value;
     }
 
 /*
@@ -89,7 +89,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_setValue
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_nativeToString
     (JNIEnv *env, jobject jnhw_cc_t) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_cc_t, *UNWRAP_OPAQUE_MEM_TO(cc_t*, jnhw_cc_t));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_cc_t, *UNWRAP_ABSTRACT_MEM_TO(cc_t*, jnhw_cc_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

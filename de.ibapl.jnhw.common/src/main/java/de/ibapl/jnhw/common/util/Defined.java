@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.util;
 
-import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.exception.NotDefinedException;
 
 /**
  *

@@ -54,7 +54,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_alignof
  */
 JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_rawUint16_1t__
     (JNIEnv *env, jobject jnhw_uint16_t) {
-        return (int16_t)*UNWRAP_OPAQUE_MEM_TO(uint16_t*, jnhw_uint16_t);
+        return (int16_t)*UNWRAP_ABSTRACT_MEM_TO(uint16_t*, jnhw_uint16_t);
     }
 
 /*
@@ -64,7 +64,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_rawUint16_1t
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_rawUint16_1t__S
     (JNIEnv *env, jobject jnhw_uint16_t, jshort value) {
-        *UNWRAP_OPAQUE_MEM_TO(uint16_t*, jnhw_uint16_t) = (uint16_t)value;
+        *UNWRAP_ABSTRACT_MEM_TO(uint16_t*, jnhw_uint16_t) = (uint16_t)value;
     }
 
 /*
@@ -75,7 +75,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_rawUint16_1t__
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_nativeToString
     (JNIEnv *env, jobject jnhw_uint16_t) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint16_t, *UNWRAP_OPAQUE_MEM_TO(uint16_t*, jnhw_uint16_t));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint16_t, *UNWRAP_ABSTRACT_MEM_TO(uint16_t*, jnhw_uint16_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

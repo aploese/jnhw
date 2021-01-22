@@ -149,7 +149,7 @@ extern "C" {
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjects_1ArgsOK
   (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jobject lpHandles, jboolean bWaitAll, jlong dwMilliseconds) {
-        DWORD result = WaitForMultipleObjects((uint32_t)nCount, UNWRAP_OPAQUE_MEM_TO(const HANDLE *, lpHandles), bWaitAll, (uint32_t) dwMilliseconds);
+        DWORD result = WaitForMultipleObjects((uint32_t)nCount, UNWRAP_ABSTRACT_MEM_TO(const HANDLE *, lpHandles), bWaitAll, (uint32_t) dwMilliseconds);
         if (result == WAIT_FAILED) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
@@ -163,7 +163,7 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObject
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjectsEx_1ArgsOK
   (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jobject lpHandles, jboolean bWaitAll, jlong dwMilliseconds, jboolean bAlertable) {
-        DWORD result = WaitForMultipleObjectsEx((uint32_t)nCount, UNWRAP_OPAQUE_MEM_TO(const HANDLE *, lpHandles), bWaitAll, (uint32_t) dwMilliseconds, bAlertable);
+        DWORD result = WaitForMultipleObjectsEx((uint32_t)nCount, UNWRAP_ABSTRACT_MEM_TO(const HANDLE *, lpHandles), bWaitAll, (uint32_t) dwMilliseconds, bAlertable);
         if (result == WAIT_FAILED) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }

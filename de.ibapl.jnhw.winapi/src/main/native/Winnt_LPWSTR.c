@@ -46,7 +46,7 @@ extern "C" {
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024LPWSTR_getString
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject opaqueMem, jint len) {
-        return (*env)->NewString(env, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMem), len);
+        return (*env)->NewString(env, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(opaqueMem), len);
     }
 
 

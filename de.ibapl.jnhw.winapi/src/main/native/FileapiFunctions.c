@@ -173,7 +173,7 @@ extern "C" {
         }
 
         DWORD lpNumberOfBytesRead;
-        if (ReadFile(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, &lpNumberOfBytesRead, NULL)) {
+        if (ReadFile(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, &lpNumberOfBytesRead, NULL)) {
             return (int32_t) lpNumberOfBytesRead;
         } else {
             throw_NativeErrorException(env, (int32_t) GetLastError());
@@ -202,7 +202,7 @@ extern "C" {
         }
 
         DWORD lpNumberOfBytesRead;
-        if (ReadFile(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, &lpNumberOfBytesRead, NULL)) {
+        if (ReadFile(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, &lpNumberOfBytesRead, NULL)) {
             return (int32_t) lpNumberOfBytesRead;
         } else {
             throw_NativeErrorException(env, (int32_t) GetLastError());
@@ -281,7 +281,7 @@ extern "C" {
             throw_NullPointerException(env, "lpOverlapped is null.");
             return;
         }
-        if (!ReadFile(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, NULL, UNWRAP_LPOVERLAPPED(lpOverlapped))) {
+        if (!ReadFile(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, NULL, UNWRAP_LPOVERLAPPED(lpOverlapped))) {
             if (GetLastError() != ERROR_IO_PENDING) {
                 throw_NativeErrorException(env, (int32_t) GetLastError());
             }
@@ -311,7 +311,7 @@ extern "C" {
             throw_NullPointerException(env, "lpOverlapped is null.");
             return;
         }
-        if (!ReadFile(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, NULL, UNWRAP_LPOVERLAPPED(lpOverlapped))) {
+        if (!ReadFile(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, NULL, UNWRAP_LPOVERLAPPED(lpOverlapped))) {
             if (GetLastError() != ERROR_IO_PENDING) {
                 throw_NativeErrorException(env, (int32_t) GetLastError());
             }
@@ -423,7 +423,7 @@ extern "C" {
         }
 
         DWORD lpNumberOfBytesRead;
-        if (WriteFile(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, &lpNumberOfBytesRead, NULL)) {
+        if (WriteFile(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, &lpNumberOfBytesRead, NULL)) {
             return (int32_t) lpNumberOfBytesRead;
         } else {
             throw_NativeErrorException(env, (int32_t) GetLastError());
@@ -452,7 +452,7 @@ extern "C" {
         }
 
         DWORD lpNumberOfBytesRead;
-        if (WriteFile(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, &lpNumberOfBytesRead, NULL)) {
+        if (WriteFile(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, &lpNumberOfBytesRead, NULL)) {
             return (int32_t) lpNumberOfBytesRead;
         } else {
             throw_NativeErrorException(env, (int32_t) GetLastError());
@@ -483,7 +483,7 @@ extern "C" {
             throw_NullPointerException(env, "lpOverlapped is null.");
             return;
         }
-        if (!WriteFile(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, NULL, UNWRAP_LPOVERLAPPED(lpOverlapped))) {
+        if (!WriteFile(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, NULL, UNWRAP_LPOVERLAPPED(lpOverlapped))) {
             if (GetLastError() != ERROR_IO_PENDING) {
                 throw_NativeErrorException(env, (int32_t) GetLastError());
             }
@@ -513,7 +513,7 @@ extern "C" {
             throw_NullPointerException(env, "lpOverlapped is null.");
             return;
         }
-        if (!WriteFile(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, NULL, UNWRAP_LPOVERLAPPED(lpOverlapped))) {
+        if (!WriteFile(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, NULL, UNWRAP_LPOVERLAPPED(lpOverlapped))) {
             if (GetLastError() != ERROR_IO_PENDING) {
                 throw_NativeErrorException(env, (int32_t) GetLastError());
             }
@@ -547,7 +547,7 @@ extern "C" {
             throw_NullPointerException(env, "lpCompletionRoutine is null.");
             return;
         }
-        if (!ReadFileEx(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
+        if (!ReadFileEx(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
@@ -579,7 +579,7 @@ extern "C" {
             throw_NullPointerException(env, "lpCompletionRoutine is null.");
             return;
         }
-        if (!ReadFileEx(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
+        if (!ReadFileEx(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToRead, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
@@ -623,7 +623,7 @@ extern "C" {
             throw_NullPointerException(env, "lpCompletionRoutine is null.");
             return;
         }
-        if (!WriteFileEx(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
+        if (!WriteFileEx(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
@@ -655,7 +655,7 @@ extern "C" {
             throw_NullPointerException(env, "lpCompletionRoutine is null.");
             return;
         }
-        if (!WriteFileEx(UNWRAP_HANDLE(hFile), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
+        if (!WriteFileEx(UNWRAP_HANDLE(hFile), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(lpBuffer) + off, (uint32_t) nNumberOfBytesToWrite, UNWRAP_LPOVERLAPPED(lpOverlapped), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine))) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }

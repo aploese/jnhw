@@ -21,11 +21,13 @@
  */
 package de.ibapl.jnhw.common.test.callbacks;
 
-import de.ibapl.jnhw.common.callbacks.Callback_J_V;
-import de.ibapl.jnhw.common.callbacks.Callback_J_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_J_V;
+import de.ibapl.jnhw.common.callback.Callback_J_V_Impl;
 import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.nativecall.CallNative_IJ_V;
+import de.ibapl.jnhw.common.nativecall.CallNative_J_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,7 +57,7 @@ public class Callback_J_V_Test {
     public Callback_J_V_Test() {
     }
     
-    private static native NativeFunctionPointer getCallbackPtr();
+    private static native CallNative_J_V getCallbackPtr();
     
     private static native void setCallback(Callback_J_V callback);
     
@@ -184,6 +186,10 @@ public class Callback_J_V_Test {
         doCallTheCallback(42);
         assertEquals(42, longRef.value);
         
+        longRef.value = -1;
+        getCallbackPtr().call(42);
+        assertEquals(42, longRef.value);
+
         callback = null;
         
         System.runFinalization();

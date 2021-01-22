@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

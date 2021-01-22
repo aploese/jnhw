@@ -84,7 +84,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
             throw_IllegalArgumentException(env, "buf is too small 26 bytes are the minimum");
             return NULL;
         }
-        const char *result = asctime_r(UNWRAP_STRUCT_TM_PTR(structTm), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
+        const char *result = asctime_r(UNWRAP_STRUCT_TM_PTR(structTm), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(buf));
         if (result == NULL) {
             return NULL;
         } else {
@@ -232,13 +232,13 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
             return NULL;
         }
 #if defined(_JNHW__time_t__IS__int64_t)
-        const char *result = ctime_r((int64_t *) & clock, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
+        const char *result = ctime_r((int64_t *) & clock, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(buf));
 #elif defined(_JNHW__time_t__IS__int32_t)
         if ((clock > INT32_MAX) || (clock < INT32_MIN)) {
             throw_IllegalArgumentException(env, "clock outside time_t(int32_t)");
             return NULL;
         } 
-        const char *result = ctime_r(__jlong2long_PTR(clock), UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf));
+        const char *result = ctime_r(__jlong2long_PTR(clock), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(buf));
 #else
 #error expected time_t is int32_t or int64_t
 #endif

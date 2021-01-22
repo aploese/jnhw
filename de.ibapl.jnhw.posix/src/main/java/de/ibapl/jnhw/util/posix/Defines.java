@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.exception.NotDefinedException;
 
 /**
  * get the defines with gcc: create an empty file c.c run

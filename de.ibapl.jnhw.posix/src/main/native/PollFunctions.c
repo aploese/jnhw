@@ -45,7 +45,7 @@ JNHW_ASSERT__nfds_t__IS__uint64_t__OR__uint32_t
             throw_NullPointerException(env, "pollFd array");
             return -1;
         }
-        const int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFdArray), (uint32_t)LENGTH_OF_STRUCTURE_ARRAY_32(pollFdArray), timeout);
+        const int result = poll(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(pollFdArray), (uint32_t)LENGTH_OF_STRUCTURE_ARRAY_32(pollFdArray), timeout);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -63,7 +63,7 @@ JNHW_ASSERT__nfds_t__IS__uint64_t__OR__uint32_t
             throw_NullPointerException(env, "pollFd array");
             return -1;
         }
-        const int result = poll(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(pollFd), 1, timeout);
+        const int result = poll(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(pollFd), 1, timeout);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }

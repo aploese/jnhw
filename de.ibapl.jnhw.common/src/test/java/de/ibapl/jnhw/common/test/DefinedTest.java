@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.test;
 
-import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.util.Defined;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;

@@ -54,11 +54,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_IJ_V_Tests
      * Method:    getCallbackPtr
-     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
+     * Signature: ()Lde/ibapl/jnhw/common/nativecall/CallNative_IJ_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1IJ_1V_1Test_getCallbackPtr
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return CREATE_NATIVE_FUNCTION_POINTER(callbackPtr);
+        return CREATE_CALL_NATIVE_IJ_V(callbackPtr);
     }
 
 #ifdef HAVE_WINDOWS_H

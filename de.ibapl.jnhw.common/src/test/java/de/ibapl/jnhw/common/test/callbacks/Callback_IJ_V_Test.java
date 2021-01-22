@@ -21,11 +21,12 @@
  */
 package de.ibapl.jnhw.common.test.callbacks;
 
-import de.ibapl.jnhw.common.callbacks.Callback_IJ_V;
-import de.ibapl.jnhw.common.callbacks.Callback_IJ_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_IJ_V;
+import de.ibapl.jnhw.common.callback.Callback_IJ_V_Impl;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.nativecall.CallNative_IJ_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
 
@@ -34,6 +35,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.WordSize;
 
 /**
  *
@@ -65,7 +67,7 @@ public class Callback_IJ_V_Test {
     public Callback_IJ_V_Test() {
     }
 
-    private static native NativeFunctionPointer getCallbackPtr();
+    private static native CallNative_IJ_V getCallbackPtr();
 
     private static native void setCallback(Callback_IJ_V callback);
 
@@ -273,6 +275,24 @@ public class Callback_IJ_V_Test {
                 throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
         }
 
+        ref.value = -1;
+        getCallbackPtr().call(CB_VALUE);
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                assertEquals(Integer.valueOf((int) CB_VALUE), ref.value);
+                break;
+            case _64_BIT:
+                assertEquals(Long.valueOf(CB_VALUE), ref.value);
+                break;
+            default:
+                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+        }
+        if (MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT) {
+            ref.value = -1;
+            assertThrows(IllegalArgumentException.class, ()->getCallbackPtr().call(-1L - Integer.MIN_VALUE));
+            assertThrows(IllegalArgumentException.class, ()->getCallbackPtr().call(1L + Integer.MAX_VALUE));
+        }
+        
         callback = null;
 
         System.runFinalization();

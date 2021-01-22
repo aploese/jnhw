@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import java.lang.ref.Cleaner;
 import java.util.logging.Level;

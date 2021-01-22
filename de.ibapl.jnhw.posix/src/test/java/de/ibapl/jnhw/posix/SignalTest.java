@@ -21,21 +21,22 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.callbacks.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
-import de.ibapl.jnhw.common.callbacks.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl;
-import de.ibapl.jnhw.common.callbacks.Callback_I_V;
-import de.ibapl.jnhw.common.callbacks.Callback_I_V_Impl;
-import de.ibapl.jnhw.common.callbacks.Callback_NativeRunnable;
-import de.ibapl.jnhw.common.callbacks.Callback_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.callback.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.callback.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_I_V;
+import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_NativeRunnable;
+import de.ibapl.jnhw.common.callback.Callback_PtrAbstractNativeMemory_V;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.nativepointer.FunctionPointer_I_V;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
@@ -682,7 +683,7 @@ public class SignalTest {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigset(Signal.SIGABRT(), null));
         } else {
-            Callback_I_V result = Signal.sigset(Signal.SIGABRT(), null);
+            FunctionPointer_I_V result = Signal.sigset(Signal.SIGABRT(), null);
             Assertions.assertEquals(Signal.SIG_DFL(), result);
             result = Signal.sigset(Signal.SIGABRT(), result);
             Assertions.assertTrue(NativeFunctionPointer.toNativeAddressHolder(result).isNULL(), "result.address ");

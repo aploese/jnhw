@@ -24,7 +24,7 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import org.junit.jupiter.api.Test;

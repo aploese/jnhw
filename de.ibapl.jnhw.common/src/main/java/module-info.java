@@ -20,16 +20,18 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 module de.ibapl.jnhw.common {
-	requires transitive java.logging;
+    requires transitive java.logging;
 
-	requires transitive de.ibapl.jnhw.libloader;
-	
-	exports de.ibapl.jnhw.common;
-	exports de.ibapl.jnhw.common.annotation;
-	exports de.ibapl.jnhw.common.callbacks;
-	exports de.ibapl.jnhw.common.datatypes;
-	exports de.ibapl.jnhw.common.exceptions;
-	exports de.ibapl.jnhw.common.memory;
-	exports de.ibapl.jnhw.common.references;
-	exports de.ibapl.jnhw.common.util;
+    requires transitive de.ibapl.jnhw.libloader;
+
+    exports de.ibapl.jnhw.common;
+    exports de.ibapl.jnhw.common.annotation;
+    exports de.ibapl.jnhw.common.nativepointer;
+    exports de.ibapl.jnhw.common.nativecall;
+    exports de.ibapl.jnhw.common.callback;
+    exports de.ibapl.jnhw.common.datatypes;
+    exports de.ibapl.jnhw.common.exception;
+    exports de.ibapl.jnhw.common.memory;
+    exports de.ibapl.jnhw.common.references;
+    exports de.ibapl.jnhw.common.util;
 }

@@ -22,26 +22,28 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.annotation.AlignOf;
-import de.ibapl.jnhw.common.callbacks.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
-import de.ibapl.jnhw.common.callbacks.Callback_I_V;
-import de.ibapl.jnhw.common.callbacks.Callback_NativeRunnable;
-import de.ibapl.jnhw.common.callbacks.Callback_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.callback.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.callback.Callback_NativeRunnable;
+import de.ibapl.jnhw.common.callback.Callback_PtrAbstractNativeMemory_V;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
+import de.ibapl.jnhw.common.callback.Callback_I_V;
+import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPointer_I_V;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
@@ -521,7 +523,7 @@ public class Signal {
                     throw new RuntimeException("TODO not the same address");
                 }
             } else {
-                throw new RuntimeException("cached sigev_notify_function is not the class Callback_I_V");
+                throw new RuntimeException("cached sigev_notify_function is not the class Callback_PtrAbstractNativeMemory_V");
             }
         }
 
@@ -533,7 +535,7 @@ public class Signal {
                     throw new RuntimeException("TODO not the same address");
                 }
             } else {
-                throw new RuntimeException("cached sigev_notify_function is not the class Callback_I_V");
+                throw new RuntimeException("cached sigev_notify_function is not the class Callback_NativeRunnable");
             }
         }
 
@@ -553,7 +555,6 @@ public class Signal {
         }
     }
 
-    private final static native NativeAddressHolder SIG_DFL0();
 
     /**
      *
@@ -562,16 +563,7 @@ public class Signal {
      * @return the native symbolic constant of SIG_DFL.
      */
     @Define()
-    public final static Callback_I_V SIG_DFL() {
-        return new Callback_I_V(SIG_DFL0()) {
-            @Override
-            protected void callback(int value) {
-                throw new UnsupportedOperationException("symbolic constant  SIG_DFL");
-            }
-        };
-    }
-
-    public final static native NativeAddressHolder SIG_ERR0();
+    public final static native FunctionPointer_I_V SIG_DFL();
 
     /**
      * <b>POSIX:</b> Return value from signal() in case of error.
@@ -579,16 +571,7 @@ public class Signal {
      * @return the native symbolic constant of SIG_ERR.
      */
     @Define()
-    public final static Callback_I_V SIG_ERR() {
-        return new Callback_I_V(SIG_ERR0()) {
-            @Override
-            protected void callback(int value) {
-                throw new UnsupportedOperationException("symbolic constant  SIG_ERR");
-            }
-        };
-    }
-
-    private final static native NativeAddressHolder SIG_HOLD0() throws NotDefinedException;
+    public final static native FunctionPointer_I_V SIG_ERR();
 
     /**
      * <b>POSIX:</b> Request that signal be held.
@@ -597,16 +580,7 @@ public class Signal {
      * @throws NotDefinedException if SIG_HOLD is not defined natively.
      */
     @Define()
-    public final static Callback_I_V SIG_HOLD() throws NotDefinedException {
-        return new Callback_I_V(SIG_HOLD0()) {
-            @Override
-            protected void callback(int value) {
-                throw new UnsupportedOperationException("symbolic constant  SIG_HOLD");
-            }
-        };
-    }
-
-    private final static native NativeAddressHolder SIG_IGN0();
+    public final static native FunctionPointer_I_V SIG_HOLD() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> Request that signal be ignored.
@@ -614,14 +588,7 @@ public class Signal {
      * @return the native symbolic constant of SIG_IGN.
      */
     @Define()
-    public final static Callback_I_V SIG_IGN() {
-        return new Callback_I_V(SIG_IGN0()) {
-            @Override
-            protected void callback(int value) {
-                throw new UnsupportedOperationException("symbolic constant  SIG_IGN");
-            }
-        };
-    }
+    public final static native FunctionPointer_I_V SIG_IGN();
 
     /**
      * <b>POSIX:</b> No asynchronous notification is delivered when the event of
@@ -1012,9 +979,9 @@ public class Signal {
             }
         }
 
-        public final native void sa_handler0(Callback_I_V sa_handler);
+        public final native void sa_handler0(FunctionPointer_I_V sa_handler);
 
-        public final void sa_handler(Callback_I_V sa_handler) {
+        public final void sa_handler(FunctionPointer_I_V sa_handler) {
             cachedHandlerOrAction = sa_handler;
             sa_handler0(sa_handler);
         }
@@ -2071,7 +2038,7 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native Callback_I_V signal(int sig, Callback_I_V func) throws NativeErrorException;
+    public final static native CallNative_I_V signal(int sig, FunctionPointer_I_V func) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2141,7 +2108,7 @@ public class Signal {
      * indicates an error.
      * @throws NoSuchNativeMethodException if the method sigset is not available natively.
      *///TODO args missing ....
-    public final static native Callback_I_V sigset(int sig, Callback_I_V disp) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static native CallNative_I_V sigset(int sig, FunctionPointer_I_V disp) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>

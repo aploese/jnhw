@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.callbacks.Callback_IJ_V;
+import de.ibapl.jnhw.common.callback.Callback_IJ_V;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;

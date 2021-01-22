@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Assertions;

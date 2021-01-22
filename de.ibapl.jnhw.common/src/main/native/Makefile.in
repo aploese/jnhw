@@ -148,11 +148,17 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+libcallnative_la_LIBADD =
+am_libcallnative_la_OBJECTS = CallNative_I_V.lo CallNative_J_V.lo \
+	CallNative_IJ_V.lo CallNative_I_I_PtrAbstractNativeMemory_V.lo \
+	CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V.lo \
+	CallNative_PtrAbstractNativeMemory_V.lo
+libcallnative_la_OBJECTS = $(am_libcallnative_la_OBJECTS)
 libexceptions_la_LIBADD =
 am_libexceptions_la_OBJECTS = JnhwExceptions.lo
 libexceptions_la_OBJECTS = $(am_libexceptions_la_OBJECTS)
 libjnhw_common_la_DEPENDENCIES = libexceptions.la libmemory.la \
-	libcallbacks.la
+	libcallbacks.la libcallnative.la
 am_libjnhw_common_la_OBJECTS = jnhw-common.lo
 libjnhw_common_la_OBJECTS = $(am_libjnhw_common_la_OBJECTS)
 libmemory_la_LIBADD =
@@ -181,6 +187,11 @@ am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AbstractNativeMemory.Plo \
 	./$(DEPDIR)/AbstractNativeMemory_MemoryCleaner.Plo \
 	./$(DEPDIR)/AbstractNativeMemory_NativeMemoryAlignment.Plo \
+	./$(DEPDIR)/CallNative_IJ_V.Plo \
+	./$(DEPDIR)/CallNative_I_I_PtrAbstractNativeMemory_V.Plo \
+	./$(DEPDIR)/CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V.Plo \
+	./$(DEPDIR)/CallNative_I_V.Plo ./$(DEPDIR)/CallNative_J_V.Plo \
+	./$(DEPDIR)/CallNative_PtrAbstractNativeMemory_V.Plo \
 	./$(DEPDIR)/Callback_IJ_V.Plo \
 	./$(DEPDIR)/Callback_IJ_V_Impl.Plo \
 	./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Impl.Plo \
@@ -216,10 +227,12 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libcallbacks_la_SOURCES) $(libexceptions_la_SOURCES) \
-	$(libjnhw_common_la_SOURCES) $(libmemory_la_SOURCES)
-DIST_SOURCES = $(libcallbacks_la_SOURCES) $(libexceptions_la_SOURCES) \
-	$(libjnhw_common_la_SOURCES) $(libmemory_la_SOURCES)
+SOURCES = $(libcallbacks_la_SOURCES) $(libcallnative_la_SOURCES) \
+	$(libexceptions_la_SOURCES) $(libjnhw_common_la_SOURCES) \
+	$(libmemory_la_SOURCES)
+DIST_SOURCES = $(libcallbacks_la_SOURCES) $(libcallnative_la_SOURCES) \
+	$(libexceptions_la_SOURCES) $(libjnhw_common_la_SOURCES) \
+	$(libmemory_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -390,12 +403,14 @@ lib_LTLIBRARIES = libjnhw-common.la
 noinst_LTLIBRARIES = \
  libexceptions.la \
  libmemory.la \
- libcallbacks.la
+ libcallbacks.la \
+ libcallnative.la
 
 libjnhw_common_la_LIBADD = \
  libexceptions.la \
  libmemory.la \
- libcallbacks.la
+ libcallbacks.la \
+ libcallnative.la
 
 libexceptions_la_SOURCES = \
  JnhwExceptions.c
@@ -410,6 +425,14 @@ libcallbacks_la_SOURCES = \
  Callback_PtrAbstractNativeMemory_V_Impl.c \
  Callback_NativeRunnable.c \
  NativeRunnable.c
+
+libcallnative_la_SOURCES = \
+ CallNative_I_V.c \
+ CallNative_J_V.c \
+ CallNative_IJ_V.c \
+ CallNative_I_I_PtrAbstractNativeMemory_V.c \
+ CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V.c \
+ CallNative_PtrAbstractNativeMemory_V.c
 
 libmemory_la_SOURCES = \
  AbstractNativeMemory.c \
@@ -514,6 +537,9 @@ clean-noinstLTLIBRARIES:
 libcallbacks.la: $(libcallbacks_la_OBJECTS) $(libcallbacks_la_DEPENDENCIES) $(EXTRA_libcallbacks_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libcallbacks_la_OBJECTS) $(libcallbacks_la_LIBADD) $(LIBS)
 
+libcallnative.la: $(libcallnative_la_OBJECTS) $(libcallnative_la_DEPENDENCIES) $(EXTRA_libcallnative_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libcallnative_la_OBJECTS) $(libcallnative_la_LIBADD) $(LIBS)
+
 libexceptions.la: $(libexceptions_la_OBJECTS) $(libexceptions_la_DEPENDENCIES) $(EXTRA_libexceptions_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libexceptions_la_OBJECTS) $(libexceptions_la_LIBADD) $(LIBS)
 
@@ -532,6 +558,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbstractNativeMemory.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbstractNativeMemory_MemoryCleaner.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbstractNativeMemory_NativeMemoryAlignment.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CallNative_IJ_V.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CallNative_I_I_PtrAbstractNativeMemory_V.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CallNative_I_V.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CallNative_J_V.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CallNative_PtrAbstractNativeMemory_V.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_IJ_V.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_IJ_V_Impl.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Impl.Plo@am__quote@ # am--include-marker
@@ -739,6 +771,12 @@ distclean: distclean-am
 		-rm -f ./$(DEPDIR)/AbstractNativeMemory.Plo
 	-rm -f ./$(DEPDIR)/AbstractNativeMemory_MemoryCleaner.Plo
 	-rm -f ./$(DEPDIR)/AbstractNativeMemory_NativeMemoryAlignment.Plo
+	-rm -f ./$(DEPDIR)/CallNative_IJ_V.Plo
+	-rm -f ./$(DEPDIR)/CallNative_I_I_PtrAbstractNativeMemory_V.Plo
+	-rm -f ./$(DEPDIR)/CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V.Plo
+	-rm -f ./$(DEPDIR)/CallNative_I_V.Plo
+	-rm -f ./$(DEPDIR)/CallNative_J_V.Plo
+	-rm -f ./$(DEPDIR)/CallNative_PtrAbstractNativeMemory_V.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Impl.Plo
@@ -810,6 +848,12 @@ maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/AbstractNativeMemory.Plo
 	-rm -f ./$(DEPDIR)/AbstractNativeMemory_MemoryCleaner.Plo
 	-rm -f ./$(DEPDIR)/AbstractNativeMemory_NativeMemoryAlignment.Plo
+	-rm -f ./$(DEPDIR)/CallNative_IJ_V.Plo
+	-rm -f ./$(DEPDIR)/CallNative_I_I_PtrAbstractNativeMemory_V.Plo
+	-rm -f ./$(DEPDIR)/CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V.Plo
+	-rm -f ./$(DEPDIR)/CallNative_I_V.Plo
+	-rm -f ./$(DEPDIR)/CallNative_J_V.Plo
+	-rm -f ./$(DEPDIR)/CallNative_PtrAbstractNativeMemory_V.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Impl.Plo

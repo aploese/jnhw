@@ -22,8 +22,8 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;

@@ -69,7 +69,7 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Speed_1t_unsign
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Speed_1t_getValue
     (JNIEnv *env, jobject jnhw_speed_t) {
-        return (int32_t) *UNWRAP_OPAQUE_MEM_TO(speed_t*, jnhw_speed_t);
+        return (int32_t) *UNWRAP_ABSTRACT_MEM_TO(speed_t*, jnhw_speed_t);
     }
 
 /*
@@ -79,7 +79,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Speed_1t_getValue
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Speed_1t_setValue
     (JNIEnv *env, jobject jnhw_speed_t, jint value) {
-        *UNWRAP_OPAQUE_MEM_TO(speed_t*, jnhw_speed_t) = (uint32_t) value;
+        *UNWRAP_ABSTRACT_MEM_TO(speed_t*, jnhw_speed_t) = (uint32_t) value;
     }
 
 /*
@@ -90,7 +90,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Speed_1t_setValue
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Speed_1t_nativeToString
     (JNIEnv *env, jobject jnhw_speed_t) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_speed_t, *UNWRAP_OPAQUE_MEM_TO(speed_t*, jnhw_speed_t));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_speed_t, *UNWRAP_ABSTRACT_MEM_TO(speed_t*, jnhw_speed_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

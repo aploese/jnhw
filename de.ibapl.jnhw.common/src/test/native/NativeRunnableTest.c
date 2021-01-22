@@ -58,7 +58,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_doCallTheCallback
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject a) {
         //TODO deattachCurrentThread?
-        callbackPtr(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(a));
+        callbackPtr(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(a));
         //TODO attachCurrentThread?
     }
 

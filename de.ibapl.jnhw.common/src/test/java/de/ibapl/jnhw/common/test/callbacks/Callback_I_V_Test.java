@@ -21,11 +21,12 @@
  */
 package de.ibapl.jnhw.common.test.callbacks;
 
-import de.ibapl.jnhw.common.callbacks.Callback_I_V;
-import de.ibapl.jnhw.common.callbacks.Callback_I_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_I_V;
+import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,13 +56,18 @@ public class Callback_I_V_Test {
     public Callback_I_V_Test() {
     }
     
-    private static native NativeFunctionPointer getCallbackPtr();
+    private static native CallNative_I_V getCallbackPtr();
     
     private static native void setCallback(Callback_I_V callback);
     
     private static native void doCallTheCallback(int value);
 
-    /**
+    @Test
+    public void testCallNative_I_V() {
+        CallNative_I_V cniv = getCallbackPtr();
+        assertSame(CallNative_I_V.class, cniv.getClass());
+    }
+        /**
      * Test of MAX_INT_CONSUMER_CALLBACKS method, of class
      * IntConsumerCallbackFactory.
      */
@@ -123,6 +129,8 @@ public class Callback_I_V_Test {
             protected void callback(int value) {
                 if (!t.equals(Thread.currentThread())) {
                     intref.value = value;
+                } else {
+                    intref.value = -value;
                 }
             }
             
@@ -133,8 +141,14 @@ public class Callback_I_V_Test {
         
         assertEquals(getCallbackPtr(), callback);
         assertSame(Callback_I_V_Impl.find(getCallbackPtr()), callback);
+        
+        intref.value = 0;
         doCallTheCallback(42);
         assertEquals(42, intref.value);
+        
+        intref.value = 0;
+        getCallbackPtr().call(42);
+        assertEquals(-42, intref.value);
         
         callback = null;
         
@@ -149,6 +163,12 @@ public class Callback_I_V_Test {
         intref.value = -1;
         doCallTheCallback(84);
         assertEquals(-1, intref.value);
+        
+        intref.value = -1;
+        //The logs shoud show: Unassigned callback for trampoline(0, 84)
+        getCallbackPtr().call(84);
+        assertEquals(-1, intref.value);
+
     }
 
     /**
@@ -184,6 +204,11 @@ public class Callback_I_V_Test {
         doCallTheCallback(42);
         assertEquals(42, intref.value);
         
+        
+        intref.value = 0;
+        getCallbackPtr().call(42);
+        assertEquals(42, intref.value);
+
         callback = null;
         
         System.runFinalization();

@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "de_ibapl_jnhw_common_callbacks_NativeRunnable.h"
+#include "de_ibapl_jnhw_common_callback_NativeRunnable.h"
 
 #include "jnhw-common.h"
 
@@ -30,31 +30,31 @@ extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_common_callbacks_NativeRunnable
+     * Class:     de_ibapl_jnhw_common_callback_NativeRunnable
      * Method:    aquireObjectRef
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callbacks_NativeRunnable_aquireObjectRef
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callback_NativeRunnable_aquireObjectRef
     (JNIEnv *env, jobject self) {
-        *UNWRAP_OPAQUE_MEM_TO(jobject*, self) = (*env)->NewGlobalRef(env, self);
+        *UNWRAP_ABSTRACT_MEM_TO(jobject*, self) = (*env)->NewGlobalRef(env, self);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_common_callbacks_NativeRunnable
+     * Class:     de_ibapl_jnhw_common_callback_NativeRunnable
      * Method:    releaseObjectRef
      * Signature: ()V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callbacks_NativeRunnable_releaseObjectRef
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callback_NativeRunnable_releaseObjectRef
     (JNIEnv *env, jobject self) {
-        (*env)->DeleteGlobalRef(env, *UNWRAP_OPAQUE_MEM_TO(jobject*, self));
+        (*env)->DeleteGlobalRef(env, *UNWRAP_ABSTRACT_MEM_TO(jobject*, self));
     }
 
     /*
-     * Class:     de_ibapl_jnhw_common_callbacks_NativeRunnable
+     * Class:     de_ibapl_jnhw_common_callback_NativeRunnable
      * Method:    sizeOf_ObjectRef
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_callbacks_NativeRunnable_sizeOf_1ObjectRef
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_callback_NativeRunnable_sizeOf_1ObjectRef
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return sizeof (jweak);
     }

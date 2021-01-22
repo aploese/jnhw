@@ -47,30 +47,30 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
-     * Method:    SIG_DFL0
-     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+     * Method:    SIG_DFL
+     * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPointer_I_V;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1DFL0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1DFL
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)SIG_DFL);
+        return CREATE_NATIVE_FUNCTION_POINTER((uintptr_t)SIG_DFL);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
-     * Method:    SIG_ERR0
-     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+     * Method:    SIG_ERR
+     * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPointer_I_V;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1ERR0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1ERR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)SIG_ERR);
+        return CREATE_NATIVE_FUNCTION_POINTER((uintptr_t)SIG_ERR);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
-     * Method:    SIG_HOLD0
-     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+     * Method:    SIG_HOLD
+     * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPointer_I_V;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1HOLD0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1HOLD
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if defined(SIG_HOLD)
@@ -79,18 +79,18 @@ extern "C" {
         throw_NotDefinedException(env, "SIG_HOLD");
         return 0;
 #else
-        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)SIG_HOLD);
+        return CREATE_NATIVE_FUNCTION_POINTER((uintptr_t)SIG_HOLD);
 #endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
-     * Method:    SIG_IGN0
-     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+     * Method:    SIG_IGN
+     * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPointer_I_V;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1IGN0
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_SIG_1IGN
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)SIG_IGN);
+        return CREATE_NATIVE_FUNCTION_POINTER((uintptr_t)SIG_IGN);
     }
 
     /*

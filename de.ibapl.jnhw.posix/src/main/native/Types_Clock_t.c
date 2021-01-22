@@ -68,7 +68,7 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Clock_1t_unsi
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Clock_1t_getValue
     (JNIEnv *env, jobject jnhw_clock_t) {
-        return (int64_t) *UNWRAP_OPAQUE_MEM_TO(clock_t*, jnhw_clock_t);
+        return (int64_t) *UNWRAP_ABSTRACT_MEM_TO(clock_t*, jnhw_clock_t);
     }
 
 /*
@@ -87,7 +87,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Clock_1t_setValue
 #else
 #error expected clock_t is int32_t or int64_t
 #endif 
-        *UNWRAP_OPAQUE_MEM_TO(clock_t*, jnhw_clock_t) = (clock_t)value;
+        *UNWRAP_ABSTRACT_MEM_TO(clock_t*, jnhw_clock_t) = (clock_t)value;
     }
 
 /*
@@ -98,7 +98,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Clock_1t_setValue
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Clock_1t_nativeToString
     (JNIEnv *env, jobject jnhw_clock_t) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_clock_t, *UNWRAP_OPAQUE_MEM_TO(clock_t*, jnhw_clock_t));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_clock_t, *UNWRAP_ABSTRACT_MEM_TO(clock_t*, jnhw_clock_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

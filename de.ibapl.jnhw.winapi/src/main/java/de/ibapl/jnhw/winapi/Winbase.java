@@ -24,7 +24,7 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;

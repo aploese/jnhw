@@ -21,11 +21,11 @@
  */
 package de.ibapl.jnhw.common.test.exceptions;
 
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

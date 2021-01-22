@@ -12,12 +12,14 @@ lib_LTLIBRARIES = libjnhw-common.la
 noinst_LTLIBRARIES = \
  libexceptions.la \
  libmemory.la \
- libcallbacks.la
+ libcallbacks.la \
+ libcallnative.la
  
 libjnhw_common_la_LIBADD = \
  libexceptions.la \
  libmemory.la \
- libcallbacks.la
+ libcallbacks.la \
+ libcallnative.la
 
 libexceptions_la_SOURCES = \
  JnhwExceptions.c
@@ -32,6 +34,14 @@ libcallbacks_la_SOURCES = \
  Callback_PtrAbstractNativeMemory_V_Impl.c \
  Callback_NativeRunnable.c \
  NativeRunnable.c
+
+libcallnative_la_SOURCES = \
+ CallNative_I_V.c \
+ CallNative_J_V.c \
+ CallNative_IJ_V.c \
+ CallNative_I_I_PtrAbstractNativeMemory_V.c \
+ CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V.c \
+ CallNative_PtrAbstractNativeMemory_V.c
 
 libmemory_la_SOURCES = \
  AbstractNativeMemory.c \

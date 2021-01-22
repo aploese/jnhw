@@ -21,11 +21,10 @@
  */
 package de.ibapl.jnhw.common.test.callbacks;
 
-import de.ibapl.jnhw.common.callbacks.Callback_NativeRunnable;
+import de.ibapl.jnhw.common.callback.Callback_NativeRunnable;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.callbacks.NativeRunnable;
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.callback.NativeRunnable;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;

@@ -68,7 +68,7 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Mode_1t_unsig
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Mode_1t_getValue
     (JNIEnv *env, jobject jnhw_mode_t) {
-        return (int32_t) *UNWRAP_OPAQUE_MEM_TO(mode_t*, jnhw_mode_t);
+        return (int32_t) *UNWRAP_ABSTRACT_MEM_TO(mode_t*, jnhw_mode_t);
     }
 
 /*
@@ -87,7 +87,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Mode_1t_setValue
 #else
 #error expected mode_t uint16_t or uint32_t
 #endif 
-        *UNWRAP_OPAQUE_MEM_TO(mode_t*, jnhw_mode_t) = (mode_t)value;
+        *UNWRAP_ABSTRACT_MEM_TO(mode_t*, jnhw_mode_t) = (mode_t)value;
     }
 
 /*
@@ -98,7 +98,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Mode_1t_setValue
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Mode_1t_nativeToString
     (JNIEnv *env, jobject jnhw_mode_t) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_mode_t, *UNWRAP_OPAQUE_MEM_TO(mode_t*, jnhw_mode_t));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_mode_t, *UNWRAP_ABSTRACT_MEM_TO(mode_t*, jnhw_mode_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

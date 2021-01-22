@@ -29,9 +29,9 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.annotation.Unsigned;
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.exceptions.NotDefinedException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
@@ -1662,14 +1662,14 @@ public final class Termios {
                     sb.append("CMSPAR ");
                     c_cflag &= ~CMSPAR();
                 }
-            } catch (de.ibapl.jnhw.common.exceptions.NotDefinedException nde) {
+            } catch (de.ibapl.jnhw.common.exception.NotDefinedException nde) {
             }
             try {
                 if ((PAREXT() & c_cflag) == PAREXT()) {
                     sb.append("PAREXT ");
                     c_cflag &= ~PAREXT();
                 }
-            } catch (de.ibapl.jnhw.common.exceptions.NotDefinedException nde) {
+            } catch (de.ibapl.jnhw.common.exception.NotDefinedException nde) {
             }
             if (c_cflag != 0) {
                 sb.append(String.format("0x%08x", c_cflag));

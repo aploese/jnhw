@@ -88,7 +88,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr0
     (JNIEnv *env, jobject unionSigval, jobject sival_ptr) {
-        (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_ptr = UNWRAP_OPAQUE_MEM_TO_VOID_PTR_OR_NULL(sival_ptr);
+        (UNWRAP_UNION_SIGVAL_PTR(unionSigval))->sival_ptr = UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_OR_NULL(sival_ptr);
     }
 
 #ifdef __cplusplus

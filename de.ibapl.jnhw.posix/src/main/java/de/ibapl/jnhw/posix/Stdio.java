@@ -23,7 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

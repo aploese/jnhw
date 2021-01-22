@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.util.posix;
 
-import de.ibapl.jnhw.common.callbacks.Callback_I_V;
+import de.ibapl.jnhw.common.callback.Callback_I_V;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.callbacks.NativeCallToJava;
+import de.ibapl.jnhw.common.callback.NativeCallToJava;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import java.lang.ref.WeakReference;
 import java.util.logging.Level;

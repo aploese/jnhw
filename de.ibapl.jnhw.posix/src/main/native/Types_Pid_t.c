@@ -68,7 +68,7 @@ JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Pid_1t_unsign
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Pid_1t_getValue
     (JNIEnv *env, jobject jnhw_pid_t) {
-        return (int32_t) *UNWRAP_OPAQUE_MEM_TO(pid_t*, jnhw_pid_t);
+        return (int32_t) *UNWRAP_ABSTRACT_MEM_TO(pid_t*, jnhw_pid_t);
     }
 
 /*
@@ -78,7 +78,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Pid_1t_getValue
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Pid_1t_setValue
     (JNIEnv *env, jobject jnhw_pid_t, jint value) {
-        *UNWRAP_OPAQUE_MEM_TO(pid_t*, jnhw_pid_t) = value;
+        *UNWRAP_ABSTRACT_MEM_TO(pid_t*, jnhw_pid_t) = value;
     }
 
 /*
@@ -89,7 +89,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Pid_1t_setValue
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Pid_1t_nativeToString
     (JNIEnv *env, jobject jnhw_pid_t) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_pid_t, *UNWRAP_OPAQUE_MEM_TO(pid_t*, jnhw_pid_t));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_pid_t, *UNWRAP_ABSTRACT_MEM_TO(pid_t*, jnhw_pid_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

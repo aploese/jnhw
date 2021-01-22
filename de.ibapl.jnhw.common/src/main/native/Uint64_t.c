@@ -54,7 +54,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_Uint64_1t_alignof
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_Uint64_1t_rawUint64_1t__
     (JNIEnv *env, jobject jnhw_uint64_t) {
-        return (int64_t)*UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t);
+        return (int64_t)*UNWRAP_ABSTRACT_MEM_TO(uint64_t*, jnhw_uint64_t);
     }
 
 /*
@@ -64,7 +64,7 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_Uint64_1t_rawUint64_1t_
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_Uint64_1t_rawUint64_1t__J
     (JNIEnv *env, jobject jnhw_uint64_t, jlong value) {
-        *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t) = (uint64_t)value;
+        *UNWRAP_ABSTRACT_MEM_TO(uint64_t*, jnhw_uint64_t) = (uint64_t)value;
     }
 
 /*
@@ -75,7 +75,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_Uint64_1t_rawUint64_1t__
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_Uint64_1t_nativeToString
     (JNIEnv *env, jobject jnhw_uint64_t) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint64_t, *UNWRAP_OPAQUE_MEM_TO(uint64_t*, jnhw_uint64_t));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint64_t, *UNWRAP_ABSTRACT_MEM_TO(uint64_t*, jnhw_uint64_t));
         return (*env)->NewStringUTF(env, buf);
     }
 

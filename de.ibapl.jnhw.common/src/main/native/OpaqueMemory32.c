@@ -44,7 +44,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_copy___3B
             throw_IndexOutOfBoundsException(env, "Index outside of destinated opaque memory!");
             return;
         }
-        (*env)->GetByteArrayRegion(env, src, srcPos, len, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(dest) + destPos);
+        (*env)->GetByteArrayRegion(env, src, srcPos, len, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(dest) + destPos);
     }
 
 /*
@@ -62,7 +62,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_copy__Lde
             throw_ArrayIndexOutOfBoundsException(env, "Destination ArrayIndex!");
             return;
         }
-        (*env)->SetByteArrayRegion(env, dest, destPos, len, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(src) + srcPos);
+        (*env)->SetByteArrayRegion(env, dest, destPos, len, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(src) + srcPos);
     }
 
 /*
@@ -76,7 +76,7 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_getByte
             throw_IndexOutOfBoundsException(env, "Index outside of allocated memory!");
             return 0;
         }
-        return *(UNWRAP_OPAQUE_MEM_TO(jbyte*, opaqueMemory) + index);
+        return *(UNWRAP_ABSTRACT_MEM_TO(jbyte*, opaqueMemory) + index);
     }
 
 /*
@@ -90,7 +90,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_setByte
             throw_IndexOutOfBoundsException(env, "Index outside of allocated memory!");
             return;
         }
-        *(UNWRAP_OPAQUE_MEM_TO(jbyte*, opaqueMemory) + index) = value;
+        *(UNWRAP_ABSTRACT_MEM_TO(jbyte*, opaqueMemory) + index) = value;
     }
 
 /*
@@ -100,7 +100,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_setByte
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_memset
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject opaqueMemory32, jbyte byteToSet) {
-        memset(UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory32), byteToSet, (uint32_t) SIZE_OF_OPAQUE_MEM_32(opaqueMemory32));
+        memset(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(opaqueMemory32), byteToSet, (uint32_t) SIZE_OF_OPAQUE_MEM_32(opaqueMemory32));
     }
 
 

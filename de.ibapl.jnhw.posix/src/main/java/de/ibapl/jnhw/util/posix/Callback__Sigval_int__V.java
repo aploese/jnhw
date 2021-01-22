@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.util.posix;
 
-import de.ibapl.jnhw.common.callbacks.Callback_I_V;
+import de.ibapl.jnhw.common.callback.Callback_I_V;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import java.util.function.Function;
 

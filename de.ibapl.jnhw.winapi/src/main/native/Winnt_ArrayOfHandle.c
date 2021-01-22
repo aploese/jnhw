@@ -37,7 +37,7 @@ extern "C" {
  */
 JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_get0
   (__attribute__ ((unused)) JNIEnv *env, jobject this, jint i) {
-    return CREATE_HANDLE(*(UNWRAP_OPAQUE_MEM_TO(HANDLE *, this)+ i));
+    return CREATE_HANDLE(*(UNWRAP_ABSTRACT_MEM_TO(HANDLE *, this)+ i));
   }
 
 /*
@@ -47,7 +47,7 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_get
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_set0
   (__attribute__ ((unused)) JNIEnv *env, jobject this, jint i, jobject element) {
-    *(UNWRAP_OPAQUE_MEM_TO(HANDLE *, this) + i) = UNWRAP_HANDLE_OR_NULL(element);
+    *(UNWRAP_ABSTRACT_MEM_TO(HANDLE *, this) + i) = UNWRAP_HANDLE_OR_NULL(element);
   }
 
 /*

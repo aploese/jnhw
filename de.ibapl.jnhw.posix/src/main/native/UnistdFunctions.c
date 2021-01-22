@@ -193,7 +193,7 @@ JNHW_ASSERT__uid_t__IS__uint32_t
             return -1;
         }
         //result can't be larger then int beacuase nByte is int, so do the conversation
-        const ssize_t result = read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) + off, (uint32_t) nByte);
+        const ssize_t result = read(fd, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(opaqueMemory) + off, (uint32_t) nByte);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -224,7 +224,7 @@ JNHW_ASSERT__uid_t__IS__uint32_t
 #else
 #error expected size_t uint32_t or uint64_t
 #endif 
-        const ssize_t result = read(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(opaqueMemory) + off, (size_t) nByte);
+        const ssize_t result = read(fd, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(opaqueMemory) + off, (size_t) nByte);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -346,7 +346,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
         }
 
         //result can't be larger then int beacuase nByte is int, so do the conversation
-        const ssize_t result = write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf) + off, (uint32_t) nByte);
+        const ssize_t result = write(fd, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(buf) + off, (uint32_t) nByte);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -378,7 +378,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
 #else
 #error expected size_t uint32_t or uint64_t
 #endif 
-        const ssize_t result = write(fd, UNWRAP_OPAQUE_MEM_TO_VOID_PTR(buf) + off, (size_t) nByte);
+        const ssize_t result = write(fd, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(buf) + off, (size_t) nByte);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }

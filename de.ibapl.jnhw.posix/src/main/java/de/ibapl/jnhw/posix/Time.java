@@ -28,9 +28,9 @@ import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.exceptions.NativeErrorException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeMethodException;
-import de.ibapl.jnhw.common.exceptions.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
@@ -295,7 +295,7 @@ public class Time {
      *
      * @return Upon successful completion, a pointer to a struct tm.
      *
-     * @throws de.ibapl.jnhw.common.exceptions.NativeErrorException returns the getdate_err error
+     * @throws de.ibapl.jnhw.common.exception.NativeErrorException returns the getdate_err error
      * codes.
      * @throws NoSuchNativeMethodException if the method getdate is not available natively.
      */

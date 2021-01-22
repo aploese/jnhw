@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.callbacks.Callback_I_I_PtrAbstractNativeMemory_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_I_I_PtrAbstractNativeMemory_V_Impl;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;

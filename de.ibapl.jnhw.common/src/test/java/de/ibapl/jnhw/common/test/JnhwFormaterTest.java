@@ -21,8 +21,6 @@
  */
 package de.ibapl.jnhw.common.test;
 
-import de.ibapl.jnhw.common.exceptions.NotDefinedException;
-import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,8 +45,8 @@ public class JnhwFormaterTest {
                 break;
             case _32_BIT:
                 assertEquals("0xfedcba98", JnhwFormater.formatAddress(0x00000000fedcba98L));
-                assertEquals("(!)0xfedcba9876543210", JnhwFormater.formatAddress(0xfedcba9876543210L));
-                assertEquals("(!)0x0000009876543210", JnhwFormater.formatAddress(0x0000009876543210L));
+                assertEquals("0x(!>>>)fedcba9(<<<!)876543210", JnhwFormater.formatAddress(0xfedcba9876543210L));
+                assertEquals("0x(!>>>)0000009(<<<!)876543210", JnhwFormater.formatAddress(0x0000009876543210L));
                 break;
             default:
                 throw new RuntimeException();
