@@ -32,18 +32,18 @@ import java.util.logging.Logger;
 /**
  *
  * @author aploese
- * @param <A>
+ * @param <C>
  */
 @SuppressWarnings("unchecked")
-public abstract class Callback_PtrAbstractNativeMemory_V_Impl<A extends AbstractNativeMemory> extends Callback_PtrAbstractNativeMemory_V<A> implements NativeCallToJava {
+public abstract class Callback_I_I_Mem_V_Impl<C extends AbstractNativeMemory> extends Callback_I_I_Mem_V<C> implements NativeCallToJava {
 
-    private final static Logger LOG = Logger.getLogger("d.i.j.c.Callback_PtrOpaqueMemory_V_Impl");
+    private final static Logger LOG = Logger.getLogger("d.i.j.c.Callback_I_I_Mem_V_Impl");
 
-    private static final WeakReference<Callback_PtrAbstractNativeMemory_V_Impl> refs[];
+    private static final WeakReference<Callback_I_I_Mem_V_Impl> refs[];
 
-    public static Callback_PtrAbstractNativeMemory_V_Impl find(NativeFunctionPointer callbackPtr) {
-        for (WeakReference<Callback_PtrAbstractNativeMemory_V_Impl> wr : refs) {
-            Callback_PtrAbstractNativeMemory_V_Impl cb = wr.get();
+    public static Callback_I_I_Mem_V_Impl find(NativeFunctionPointer callbackPtr) {
+        for (WeakReference<Callback_I_I_Mem_V_Impl> wr : refs) {
+            Callback_I_I_Mem_V_Impl cb = wr.get();
             if (cb != null) {
                 if (cb.equals(callbackPtr)) {
                     return cb;
@@ -75,7 +75,7 @@ public abstract class Callback_PtrAbstractNativeMemory_V_Impl<A extends Abstract
      */
     public static int callbacksAvailable() {
         int result = 0;
-        for (WeakReference<Callback_PtrAbstractNativeMemory_V_Impl> ref : refs) {
+        for (WeakReference<Callback_I_I_Mem_V_Impl> ref : refs) {
             if (ref.get() == null) {
                 result++;
             }
@@ -83,33 +83,34 @@ public abstract class Callback_PtrAbstractNativeMemory_V_Impl<A extends Abstract
         return result;
     }
 
-    public Callback_PtrAbstractNativeMemory_V_Impl() {
-        super(Callback_PtrAbstractNativeMemory_V_Impl::aquire);
+    public Callback_I_I_Mem_V_Impl() {
+        super(Callback_I_I_Mem_V_Impl::aquire);
     }
 
     @SuppressWarnings("unused")
-    private static void trampoline(final int index, final NativeAddressHolder a) {
+    private static void trampoline(final int index, final int a, int b, final NativeAddressHolder c) {
         try {
-            final Callback_PtrAbstractNativeMemory_V_Impl ref = refs[index].get();
+            final Callback_I_I_Mem_V_Impl ref = refs[index].get();
             if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, %s)", index, a));
+                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, %d, %d, %s)", index, a, b, c));
             } else {
-                ref.callback(ref.wrapA(a));
+                ref.callback(a, b, ref.wrapC(c));
             }
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline(%d, %s)", index, a), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline(%d, %d, %d, %s)", index, a, b, c), t);
         }
     }
 
     private static native NativeAddressHolder getNativeAddress(final int index);
 
     /**
-     * TODO make arg of type Callback_PtrOpaqueMemory_V<?>
+     * TODO make arg of type
+     * Callback_I_PtrOpaqueMemory_PtrOpaqueMemory_V_Impl<?, ?>
      *
      * @param cb
      * @return
      */
-    private static synchronized NativeAddressHolder aquire(Callback_PtrAbstractNativeMemory_V<?> cb) {
+    private static synchronized NativeAddressHolder aquire(Callback_I_I_Mem_V<?> cb) {
         for (int i = 0; i < refs.length; i++) {
             if (refs[i].get() == null) {
                 refs[i] = new WeakReference(cb);
@@ -122,7 +123,6 @@ public abstract class Callback_PtrAbstractNativeMemory_V_Impl<A extends Abstract
 
     public static native int MAX_CALL_BACKS();
 
-    //TODO Test ex in cb
-    protected abstract A wrapA(NativeAddressHolder address);
+    protected abstract C wrapC(NativeAddressHolder address);
 
 }

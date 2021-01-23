@@ -33,9 +33,9 @@
 #define JNHW_CLASS_NAME_CALL_NATIVE_I_V "de/ibapl/jnhw/common/nativecall/CallNative_I_V"
 #define JNHW_CLASS_NAME_CALL_NATIVE_J_V "de/ibapl/jnhw/common/nativecall/CallNative_J_V"
 #define JNHW_CLASS_NAME_CALL_NATIVE_IJ_V "de/ibapl/jnhw/common/nativecall/CallNative_IJ_V"
-#define JNHW_CLASS_NAME_CALL_NATIVE_I_I_PTR_ABSTRACT_NATIVE_MEMORY_V "de/ibapl/jnhw/common/nativecall/CallNative_I_I_PtrAbstractNativeMemory_V"
-#define JNHW_CLASS_NAME_CALL_NATIVE_I_PTR_ABSTRACT_NATIVE_MEMORY_PTR_ABSTRACT_NATIVE_MEMORY_V "de/ibapl/jnhw/common/nativecall/CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V"
-#define JNHW_CLASS_NAME_CALL_NATIVE_PTR_ABSTRACT_NATIVE_MEMORY_V "de/ibapl/jnhw/common/nativecall/CallNative_PtrAbstractNativeMemory_V"
+#define JNHW_CLASS_NAME_CALL_NATIVE_I_I_MEM_V "de/ibapl/jnhw/common/nativecall/CallNative_I_I_Mem_V"
+#define JNHW_CLASS_NAME_CALL_NATIVE_I_MEM_MEM_V "de/ibapl/jnhw/common/nativecall/CallNative_I_Mem_Mem_V"
+#define JNHW_CLASS_NAME_CALL_NATIVE_MEM_V "de/ibapl/jnhw/common/nativecall/CallNative_Mem_V"
 
 #define JNHW_CLASS_NAME_ABSTRACT_NATIVE_MEMORY "de/ibapl/jnhw/common/memory/AbstractNativeMemory"
 #define JNHW_CLASS_NAME_OPAQUE_MEMORY_32 "de/ibapl/jnhw/common/memory/OpaqueMemory32"
@@ -65,18 +65,18 @@ extern "C" {
     JNIEXPORT jclass de_ibapl_jnhw_common_nativecall_CallNative_I_V_Class = NULL;
     JNIEXPORT jclass de_ibapl_jnhw_common_nativecall_CallNative_J_V_Class = NULL;
     JNIEXPORT jclass de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_Class = NULL;
-    JNIEXPORT jclass de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_Class = NULL;
-    JNIEXPORT jclass de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Class = NULL;
-    JNIEXPORT jclass de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_Class = NULL;
+    JNIEXPORT jclass de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_Class = NULL;
+    JNIEXPORT jclass de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_Class = NULL;
+    JNIEXPORT jclass de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_Class = NULL;
 
     JNIEXPORT jfieldID de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_V_init_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_common_nativecall_CallNative_J_V_init_ID = NULL;
     JNIEXPORT jmethodID de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_init_ID = NULL;
-    JNIEXPORT jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_init_ID = NULL;
-    JNIEXPORT jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_init_ID = NULL;
-    JNIEXPORT jmethodID de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_init_ID = NULL;
+    JNIEXPORT jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_init_ID = NULL;
+    JNIEXPORT jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_init_ID = NULL;
+    JNIEXPORT jmethodID de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_init_ID = NULL;
 
     JNIEXPORT jfieldID de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID = NULL;
 
@@ -224,41 +224,41 @@ extern "C" {
             }
         }
 
-        if (de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_Class == NULL) {
-            de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_CALL_NATIVE_I_I_PTR_ABSTRACT_NATIVE_MEMORY_V);
-            if (de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_Class == NULL) {
+        if (de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_Class == NULL) {
+            de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_CALL_NATIVE_I_I_MEM_V);
+            if (de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_Class == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_init_ID == NULL) {
-            de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_Class, "<init>", "(J)V");
-            if (de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_init_ID == NULL) {
-                return JNI_FALSE;
-            }
-        }
-
-        if (de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Class == NULL) {
-            de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_CALL_NATIVE_I_PTR_ABSTRACT_NATIVE_MEMORY_PTR_ABSTRACT_NATIVE_MEMORY_V);
-            if (de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Class == NULL) {
-                return JNI_FALSE;
-            }
-        }
-        if (de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_init_ID == NULL) {
-            de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Class, "<init>", "(J)V");
-            if (de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_init_ID == NULL) {
+        if (de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_init_ID == NULL) {
+            de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_Class, "<init>", "(J)V");
+            if (de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_init_ID == NULL) {
                 return JNI_FALSE;
             }
         }
 
-        if (de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_Class == NULL) {
-            de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_CALL_NATIVE_PTR_ABSTRACT_NATIVE_MEMORY_V);
-            if (de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_Class == NULL) {
+        if (de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_Class == NULL) {
+            de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_CALL_NATIVE_I_MEM_MEM_V);
+            if (de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_Class == NULL) {
                 return JNI_FALSE;
             }
         }
-        if (de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_init_ID == NULL) {
-            de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_Class, "<init>", "(J)V");
-            if (de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_init_ID == NULL) {
+        if (de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_init_ID == NULL) {
+            de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_Class, "<init>", "(J)V");
+            if (de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_init_ID == NULL) {
+                return JNI_FALSE;
+            }
+        }
+
+        if (de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_Class == NULL) {
+            de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_CALL_NATIVE_MEM_V);
+            if (de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_Class == NULL) {
+                return JNI_FALSE;
+            }
+        }
+        if (de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_init_ID == NULL) {
+            de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_Class, "<init>", "(J)V");
+            if (de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_init_ID == NULL) {
                 return JNI_FALSE;
             }
         }
@@ -293,12 +293,12 @@ extern "C" {
         de_ibapl_jnhw_common_nativecall_CallNative_J_V_init_ID = NULL;
         deleteGlobalRef(env, &de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_Class);
         de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_init_ID = NULL;
-        deleteGlobalRef(env, &de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_Class);
-        de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_init_ID = NULL;
-        deleteGlobalRef(env, &de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Class);
-        de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_init_ID = NULL;
-        deleteGlobalRef(env, &de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_Class);
-        de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_init_ID = NULL;
+        deleteGlobalRef(env, &de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_Class);
+        de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_init_ID = NULL;
+        deleteGlobalRef(env, &de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_Class);
+        de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_init_ID = NULL;
+        deleteGlobalRef(env, &de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_Class);
+        de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_init_ID = NULL;
 
         de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID = NULL;
     }

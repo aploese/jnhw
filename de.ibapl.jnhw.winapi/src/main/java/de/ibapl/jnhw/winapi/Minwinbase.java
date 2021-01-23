@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.callback.Callback_I_I_PtrAbstractNativeMemory_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_I_I_Mem_V_Impl;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
@@ -117,7 +117,7 @@ public class Minwinbase {
 
     }
 
-    public abstract static class LPOVERLAPPED_COMPLETION_ROUTINE extends Callback_I_I_PtrAbstractNativeMemory_V_Impl<OVERLAPPED> {
+    public abstract static class LPOVERLAPPED_COMPLETION_ROUTINE extends Callback_I_I_Mem_V_Impl<OVERLAPPED> {
 
         @Override
         protected abstract void callback(int dwErrorCode, int dwNumberOfBytesTransfered, OVERLAPPED lpOverlapped);

@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.callback;
 
-import de.ibapl.jnhw.common.nativepointer.FunctionPointer_J_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_J_V;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import java.util.function.Function;
 
@@ -29,7 +29,7 @@ import java.util.function.Function;
  *
  * @author aploese
  */
-public abstract class Callback_J_V extends FunctionPointer_J_V {
+public abstract class Callback_J_V extends FunctionPtr_J_V {
 
     protected <T extends Callback_J_V> Callback_J_V(Function<T, NativeAddressHolder> producer) {
         super(producer);

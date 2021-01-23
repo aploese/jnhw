@@ -28,7 +28,7 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
-import de.ibapl.jnhw.common.nativepointer.FunctionPointer_I_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.posix.Errno;
 import de.ibapl.jnhw.posix.Signal;
 

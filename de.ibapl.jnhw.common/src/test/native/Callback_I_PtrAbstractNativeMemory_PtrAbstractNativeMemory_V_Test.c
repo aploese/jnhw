@@ -21,7 +21,7 @@
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
-#include "de_ibapl_jnhw_common_test_callbacks_Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.h"
+#include "de_ibapl_jnhw_common_test_callbacks_Callback_I_Mem_Mem_V_Test.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,31 +31,31 @@ extern "C" {
     static _callback callbackPtr = NULL;
 
     /*
-     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test
+     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_Mem_Mem_V_Test
      * Method:    getCallbackPtr
-     * Signature: ()Lde/ibapl/jnhw/common/nativecall/CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
+     * Signature: ()Lde/ibapl/jnhw/common/nativecall/CallNative_I_Mem_Mem_V;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1PtrAbstractNativeMemory_1PtrAbstractNativeMemory_1V_1Test_getCallbackPtr
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1Mem_1Mem_1V_1Test_getCallbackPtr
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return CREATE_CALL_NATIVE_I_PTR_ABSTRACT_NATIVE_MEMORY_PTR_ABSTRACT_NATIVE_MEMORY_V(callbackPtr);
+        return CREATE_CALL_NATIVE_I_MEM_MEM_V(callbackPtr);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test
+     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_Mem_Mem_V_Test
      * Method:    setCallback
      * Signature: (Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1PtrAbstractNativeMemory_1PtrAbstractNativeMemory_1V_1Test_setCallback
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1Mem_1Mem_1V_1Test_setCallback
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
         callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t, void*, void*), callback);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test
+     * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_Mem_Mem_V_Test
      * Method:    doCallTheCallback
-     * Signature: (ILde/ibapl/jnhw/common/callbacks/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test/A;Lde/ibapl/jnhw/common/callbacks/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test/B;)V
+     * Signature: (ILde/ibapl/jnhw/common/callbacks/Callback_I_Mem_Mem_V_Test/A;Lde/ibapl/jnhw/common/callbacks/Callback_I_Mem_Mem_V_Test/B;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1PtrAbstractNativeMemory_1PtrAbstractNativeMemory_1V_1Test_doCallTheCallback
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1Mem_1Mem_1V_1Test_doCallTheCallback
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jint value, jobject a, jobject b) {
         callbackPtr(value, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(a), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(b));
     }

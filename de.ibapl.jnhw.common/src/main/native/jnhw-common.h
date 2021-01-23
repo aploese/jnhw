@@ -66,9 +66,9 @@ extern "C" {
     _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_I_V_Class;
     _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_J_V_Class;
     _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_Class;
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_Class;
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Class;
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_Class;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_Class;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_Class;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_Class;
 
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID;
 
@@ -77,9 +77,9 @@ extern "C" {
     _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_V_init_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_J_V_init_ID;
     _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_init_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_init_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_init_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_init_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_init_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_init_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_init_ID;
     
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID;
 
@@ -193,9 +193,9 @@ extern "C" {
 #define CREATE_CALL_NATIVE_I_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_I_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_I_V_init_ID, (jlong) (uintptr_t) value)
 #define CREATE_CALL_NATIVE_J_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_J_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_J_V_init_ID, (jlong) (uintptr_t) value)
 #define CREATE_CALL_NATIVE_IJ_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_init_ID, (jlong) (uintptr_t) value)
-#define CREATE_CALL_NATIVE_I_I_PTR_ABSTRACT_NATIVE_MEMORY_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_I_I_PtrAbstractNativeMemory_V_init_ID, (jlong) (uintptr_t) value)
-#define CREATE_CALL_NATIVE_I_PTR_ABSTRACT_NATIVE_MEMORY_PTR_ABSTRACT_NATIVE_MEMORY_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_init_ID, (jlong) (uintptr_t) value)
-#define CREATE_CALL_NATIVE_PTR_ABSTRACT_NATIVE_MEMORY_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V_init_ID, (jlong) (uintptr_t) value)
+#define CREATE_CALL_NATIVE_I_I_MEM_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_init_ID, (jlong) (uintptr_t) value)
+#define CREATE_CALL_NATIVE_I_MEM_MEM_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_init_ID, (jlong) (uintptr_t) value)
+#define CREATE_CALL_NATIVE_MEM_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_init_ID, (jlong) (uintptr_t) value)
     
 #define UNWRAP_NATIVE_ADDRESS_HOLDER_TO(destType, value) (destType)(uintptr_t)(*env)->GetLongField(env, value, de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID)    
 #define CREATE_NATIVE_ADDRESS_HOLDER(value) (*env)->NewObject(env, de_ibapl_jnhw_common_memory_NativeAddressHolder_Class, de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID, (jlong) (uintptr_t) value)

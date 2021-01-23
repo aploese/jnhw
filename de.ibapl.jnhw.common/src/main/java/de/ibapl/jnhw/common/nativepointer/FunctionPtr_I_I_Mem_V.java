@@ -19,34 +19,29 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.callback;
+package de.ibapl.jnhw.common.nativepointer;
 
-import de.ibapl.jnhw.common.nativepointer.FunctionPointer_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import java.util.function.Function;
 
 /**
  *
  * @author aploese
  */
-public abstract class Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<A extends AbstractNativeMemory, B extends AbstractNativeMemory> extends FunctionPointer_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V {
+public class FunctionPtr_I_I_Mem_V extends NativeFunctionPointer {
 
-    public <T extends Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<A, B>> Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V(Function<T, NativeAddressHolder> producer) {
+    protected <T extends FunctionPtr_I_I_Mem_V> FunctionPtr_I_I_Mem_V(Function<T, NativeAddressHolder> producer) {
         super(producer);
     }
 
-    public Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V(NativeAddressHolder src) {
+    public FunctionPtr_I_I_Mem_V(NativeAddressHolder src) {
         super(src);
     }
 
-    /**
-     * this will be called from the native code.
-     *
-     * @param value
-     * @param a
-     * @param b
-     */
-    protected abstract void callback(int value, A a, B b);
+    protected FunctionPtr_I_I_Mem_V(long nativeAddress) {
+        super(nativeAddress);
+    }
 
+    
 }

@@ -29,17 +29,17 @@ import java.util.function.Function;
  *
  * @author aploese
  */
-public class FunctionPointer_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V extends NativeFunctionPointer {
+public class FunctionPtr_I_V extends NativeFunctionPointer {
 
-    protected <T extends FunctionPointer_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V> FunctionPointer_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V(Function<T, NativeAddressHolder> producer) {
+    protected <T extends FunctionPtr_I_V> FunctionPtr_I_V(Function<T, NativeAddressHolder> producer) {
         super(producer);
     }
 
-    public FunctionPointer_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V(NativeAddressHolder src) {
+    public FunctionPtr_I_V(NativeAddressHolder src) {
         super(src);
     }
 
-    protected FunctionPointer_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V(long nativeAddress) {
+    protected FunctionPtr_I_V(long nativeAddress) {
         super(nativeAddress);
     }
 

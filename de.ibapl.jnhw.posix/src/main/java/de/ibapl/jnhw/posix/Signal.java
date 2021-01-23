@@ -22,9 +22,9 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.annotation.AlignOf;
-import de.ibapl.jnhw.common.callback.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.callback.Callback_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.callback.Callback_NativeRunnable;
-import de.ibapl.jnhw.common.callback.Callback_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.callback.Callback_Mem_V;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
@@ -43,7 +43,7 @@ import de.ibapl.jnhw.annontation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
 import de.ibapl.jnhw.common.callback.Callback_I_V;
 import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
-import de.ibapl.jnhw.common.nativepointer.FunctionPointer_I_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
@@ -493,7 +493,7 @@ public class Signal {
             sigev_notify_function0(sigev_notify_function);
         }
 
-        public final void sigev_notify_function(Callback_PtrAbstractNativeMemory_V<T> sigev_notify_function) throws NoSuchNativeTypeException {
+        public final void sigev_notify_function(Callback_Mem_V<T> sigev_notify_function) throws NoSuchNativeTypeException {
             this.sigev_notify_function = sigev_notify_function;
             sigev_notify_function0(sigev_notify_function);
         }
@@ -515,10 +515,10 @@ public class Signal {
             }
         }
 
-        public final Callback_PtrAbstractNativeMemory_V sigev_notify_functionAsCallback_PtrOpaqueMemory_V() throws NoSuchNativeTypeException {
-            if (sigev_notify_function instanceof Callback_PtrAbstractNativeMemory_V) {
+        public final Callback_Mem_V sigev_notify_functionAsCallback_PtrOpaqueMemory_V() throws NoSuchNativeTypeException {
+            if (sigev_notify_function instanceof Callback_Mem_V) {
                 if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
-                    return (Callback_PtrAbstractNativeMemory_V) sigev_notify_function;
+                    return (Callback_Mem_V) sigev_notify_function;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
@@ -563,7 +563,7 @@ public class Signal {
      * @return the native symbolic constant of SIG_DFL.
      */
     @Define()
-    public final static native FunctionPointer_I_V SIG_DFL();
+    public final static native FunctionPtr_I_V SIG_DFL();
 
     /**
      * <b>POSIX:</b> Return value from signal() in case of error.
@@ -571,7 +571,7 @@ public class Signal {
      * @return the native symbolic constant of SIG_ERR.
      */
     @Define()
-    public final static native FunctionPointer_I_V SIG_ERR();
+    public final static native FunctionPtr_I_V SIG_ERR();
 
     /**
      * <b>POSIX:</b> Request that signal be held.
@@ -580,7 +580,7 @@ public class Signal {
      * @throws NotDefinedException if SIG_HOLD is not defined natively.
      */
     @Define()
-    public final static native FunctionPointer_I_V SIG_HOLD() throws NotDefinedException;
+    public final static native FunctionPtr_I_V SIG_HOLD() throws NotDefinedException;
 
     /**
      * <b>POSIX:</b> Request that signal be ignored.
@@ -588,7 +588,7 @@ public class Signal {
      * @return the native symbolic constant of SIG_IGN.
      */
     @Define()
-    public final static native FunctionPointer_I_V SIG_IGN();
+    public final static native FunctionPtr_I_V SIG_IGN();
 
     /**
      * <b>POSIX:</b> No asynchronous notification is delivered when the event of
@@ -979,9 +979,9 @@ public class Signal {
             }
         }
 
-        public final native void sa_handler0(FunctionPointer_I_V sa_handler);
+        public final native void sa_handler0(FunctionPtr_I_V sa_handler);
 
-        public final void sa_handler(FunctionPointer_I_V sa_handler) {
+        public final void sa_handler(FunctionPtr_I_V sa_handler) {
             cachedHandlerOrAction = sa_handler;
             sa_handler0(sa_handler);
         }
@@ -1006,11 +1006,11 @@ public class Signal {
          * otherwise an exception is thrown.
          */
         @SuppressWarnings("unchecked")
-        public final Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Siginfo_t, T> sa_sigactionAsCallback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V() {
+        public final Callback_I_Mem_Mem_V<Siginfo_t, T> sa_sigactionAsCallback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V() {
             final NativeFunctionPointer sa_sigaction = sa_sigaction();
-            if (cachedHandlerOrAction instanceof Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V) {
+            if (cachedHandlerOrAction instanceof Callback_I_Mem_Mem_V) {
                 if (NativeFunctionPointer.isSameAddress(sa_sigaction, cachedHandlerOrAction)) {
-                    return (Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V) cachedHandlerOrAction;
+                    return (Callback_I_Mem_Mem_V) cachedHandlerOrAction;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
@@ -1019,9 +1019,9 @@ public class Signal {
             }
         }
 
-        public final native <T extends OpaqueMemory32> void sa_sigaction0(Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Siginfo_t, T> sa_sigaction);
+        public final native <T extends OpaqueMemory32> void sa_sigaction0(Callback_I_Mem_Mem_V<Siginfo_t, T> sa_sigaction);
 
-        public final <T extends OpaqueMemory32> void sa_sigaction(Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Siginfo_t, T> sa_sigaction) {
+        public final <T extends OpaqueMemory32> void sa_sigaction(Callback_I_Mem_Mem_V<Siginfo_t, T> sa_sigaction) {
             cachedHandlerOrAction = sa_sigaction;
             sa_sigaction0(sa_sigaction);
         }
@@ -2038,7 +2038,7 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native CallNative_I_V signal(int sig, FunctionPointer_I_V func) throws NativeErrorException;
+    public final static native CallNative_I_V signal(int sig, FunctionPtr_I_V func) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2108,7 +2108,7 @@ public class Signal {
      * indicates an error.
      * @throws NoSuchNativeMethodException if the method sigset is not available natively.
      *///TODO args missing ....
-    public final static native CallNative_I_V sigset(int sig, FunctionPointer_I_V disp) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static native CallNative_I_V sigset(int sig, FunctionPtr_I_V disp) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>

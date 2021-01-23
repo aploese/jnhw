@@ -19,28 +19,32 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V.h"
+package de.ibapl.jnhw.common.callback;
 
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_Mem_V;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import java.util.function.Function;
 
-#include "jnhw-common.h"
-
-#include <stdlib.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/*
- * Class:     de_ibapl_jnhw_common_nativecall_CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V
- * Method:    call
- * Signature: (ILde/ibapl/jnhw/common/memory/AbstractNativeMemory;Lde/ibapl/jnhw/common/memory/AbstractNativeMemory;)V
+/**
+ *
+ * @author aploese
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1I_1PtrAbstractNativeMemory_1PtrAbstractNativeMemory_1V_call
-  (JNIEnv *env, jobject this, jint a, jobject b, jobject c) {
-     (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t, void*, void*), this))(a, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(b), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(c));
-}
+public abstract class Callback_Mem_V<A extends AbstractNativeMemory> extends FunctionPtr_Mem_V {
 
-#ifdef __cplusplus
+    public <T extends Callback_Mem_V<A>> Callback_Mem_V(Function<T, NativeAddressHolder> producer) {
+        super(producer);
+    }
+
+    public Callback_Mem_V(NativeAddressHolder src) {
+        super(src);
+    }
+
+    /**
+     * this will be called from the native code.
+     *
+     * @param a
+     */
+    protected abstract void callback(A a);
+
 }
-#endif

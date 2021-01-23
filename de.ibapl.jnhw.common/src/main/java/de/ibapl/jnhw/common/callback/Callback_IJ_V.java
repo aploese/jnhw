@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.callback;
 
-import de.ibapl.jnhw.common.nativepointer.FunctionPointer_IJ_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_IJ_V;
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import java.util.function.Function;
@@ -30,7 +30,7 @@ import java.util.function.Function;
  *
  * @author aploese
  */
-public abstract class Callback_IJ_V extends FunctionPointer_IJ_V {
+public abstract class Callback_IJ_V extends FunctionPtr_IJ_V {
 
     /**
      * Make sure the native lib is loaded

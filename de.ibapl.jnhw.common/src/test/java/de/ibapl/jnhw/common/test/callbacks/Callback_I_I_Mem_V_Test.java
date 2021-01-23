@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.common.test.callbacks;
 
-import de.ibapl.jnhw.common.callback.Callback_I_I_PtrAbstractNativeMemory_V;
-import de.ibapl.jnhw.common.callback.Callback_I_I_PtrAbstractNativeMemory_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_I_I_Mem_V;
+import de.ibapl.jnhw.common.callback.Callback_I_I_Mem_V_Impl;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
@@ -30,7 +30,7 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.nativecall.CallNative_I_I_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.nativecall.CallNative_I_I_Mem_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,7 +41,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author aploese
  */
-public class Callback_I_I_PtrAbstractNativeMemory_V_Test {
+public class Callback_I_I_Mem_V_Test {
 
     static class C extends Memory32Heap {
 
@@ -62,16 +62,16 @@ public class Callback_I_I_PtrAbstractNativeMemory_V_Test {
         LibJnhwCommonTestLoader.touch();
     }
 
-    public Callback_I_I_PtrAbstractNativeMemory_V_Test() {
+    public Callback_I_I_Mem_V_Test() {
     }
 
-    private static native CallNative_I_I_PtrAbstractNativeMemory_V getCallbackPtr();
+    private static native CallNative_I_I_Mem_V getCallbackPtr();
 
-    private static native void setCallback(Callback_I_I_PtrAbstractNativeMemory_V<C> callback);
+    private static native void setCallback(Callback_I_I_Mem_V<C> callback);
 
     private static native void doCallTheCallback(int a, int b, C c);
 
-    private class DummyCB extends Callback_I_I_PtrAbstractNativeMemory_V_Impl<OpaqueMemory32> {
+    private class DummyCB extends Callback_I_I_Mem_V_Impl<OpaqueMemory32> {
 
         @Override
         protected void callback(int a, int b, OpaqueMemory32 c) {
@@ -92,12 +92,12 @@ public class Callback_I_I_PtrAbstractNativeMemory_V_Test {
     @Test
     public void testMAX_CALL_BACKS() {
         System.out.println("MAX_CALL_BACKS");
-        int maxCB = Callback_I_I_PtrAbstractNativeMemory_V_Impl.MAX_CALL_BACKS();
+        int maxCB = Callback_I_I_Mem_V_Impl.MAX_CALL_BACKS();
         assertEquals(8, maxCB);
-        Callback_I_I_PtrAbstractNativeMemory_V_Impl[] cbs = new Callback_I_I_PtrAbstractNativeMemory_V_Impl[maxCB];
+        Callback_I_I_Mem_V_Impl[] cbs = new Callback_I_I_Mem_V_Impl[maxCB];
         for (int i = 0; i < cbs.length; i++) {
             cbs[i] = new DummyCB();
-            assertEquals(maxCB - (i + 1), Callback_I_I_PtrAbstractNativeMemory_V_Impl.callbacksAvailable());
+            assertEquals(maxCB - (i + 1), Callback_I_I_Mem_V_Impl.callbacksAvailable());
         }
 
         RuntimeException re = assertThrows(RuntimeException.class, () -> {
@@ -110,13 +110,13 @@ public class Callback_I_I_PtrAbstractNativeMemory_V_Test {
         System.runFinalization();
         System.gc();
 
-        assertEquals(maxCB, Callback_I_I_PtrAbstractNativeMemory_V_Impl.callbacksAvailable());
+        assertEquals(maxCB, Callback_I_I_Mem_V_Impl.callbacksAvailable());
     }
 
     @Test
     public void testNativeFunctionPointer() {
         @SuppressWarnings("unchecked")
-        final Callback_I_I_PtrAbstractNativeMemory_V<C> testPtr = new Callback_I_I_PtrAbstractNativeMemory_V(new NativeAddressHolder(121)) {
+        final Callback_I_I_Mem_V<C> testPtr = new Callback_I_I_Mem_V(new NativeAddressHolder(121)) {
             @Override
             protected void callback(int a, int b, AbstractNativeMemory c) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -136,7 +136,7 @@ public class Callback_I_I_PtrAbstractNativeMemory_V_Test {
         final IntRef refB = new IntRef();
         final ObjectRef<C> refC = new ObjectRef<>();
         C c = new C();
-        Callback_I_I_PtrAbstractNativeMemory_V_Impl<C> callback = new Callback_I_I_PtrAbstractNativeMemory_V_Impl<>() {
+        Callback_I_I_Mem_V_Impl<C> callback = new Callback_I_I_Mem_V_Impl<>() {
 
             @Override
             protected void callback(int a, int b, C c) {
@@ -156,7 +156,7 @@ public class Callback_I_I_PtrAbstractNativeMemory_V_Test {
         setCallback(callback);
 
         assertEquals(getCallbackPtr(), callback);
-        assertSame(Callback_I_I_PtrAbstractNativeMemory_V_Impl.find(getCallbackPtr()), callback);
+        assertSame(Callback_I_I_Mem_V_Impl.find(getCallbackPtr()), callback);
         doCallTheCallback(42, 84, c);
         assertEquals(42, refA.value);
         assertEquals(84, refB.value);
@@ -178,7 +178,7 @@ public class Callback_I_I_PtrAbstractNativeMemory_V_Test {
         System.runFinalization();
         System.gc();
 
-        assertEquals(Callback_I_I_PtrAbstractNativeMemory_V_Impl.MAX_CALL_BACKS(), Callback_I_I_PtrAbstractNativeMemory_V_Impl.callbacksAvailable());
+        assertEquals(Callback_I_I_Mem_V_Impl.MAX_CALL_BACKS(), Callback_I_I_Mem_V_Impl.callbacksAvailable());
         //it is still callable, but its is only logged...
         assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
@@ -205,13 +205,13 @@ public class Callback_I_I_PtrAbstractNativeMemory_V_Test {
         C c = new C();
 
         @SuppressWarnings("unchecked")
-        final Callback_I_I_PtrAbstractNativeMemory_V<C> NULL_PTR = new Callback_I_I_PtrAbstractNativeMemory_V(new NativeAddressHolder(0)) {
+        final Callback_I_I_Mem_V<C> NULL_PTR = new Callback_I_I_Mem_V(new NativeAddressHolder(0)) {
             @Override
             protected void callback(int a, int b, AbstractNativeMemory c) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
-        Callback_I_I_PtrAbstractNativeMemory_V_Impl<C> callback = new Callback_I_I_PtrAbstractNativeMemory_V_Impl<>() {
+        Callback_I_I_Mem_V_Impl<C> callback = new Callback_I_I_Mem_V_Impl<>() {
 
             @Override
             protected void callback(int a, int b, C c) {

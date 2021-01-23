@@ -21,12 +21,12 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.callback.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;
-import de.ibapl.jnhw.common.callback.Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_I_Mem_Mem_V;
+import de.ibapl.jnhw.common.callback.Callback_I_Mem_Mem_V_Impl;
 import de.ibapl.jnhw.common.callback.Callback_I_V;
 import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
 import de.ibapl.jnhw.common.callback.Callback_NativeRunnable;
-import de.ibapl.jnhw.common.callback.Callback_PtrAbstractNativeMemory_V;
+import de.ibapl.jnhw.common.callback.Callback_Mem_V;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
@@ -36,7 +36,7 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.nativepointer.FunctionPointer_I_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
@@ -613,7 +613,7 @@ public class SignalTest {
             final ObjectRef<Signal.Siginfo_t> siginfo_tRef = new ObjectRef<>(null);
             final ObjectRef<Signal.Ucontext_t> opmRef = new ObjectRef<>(null);
 
-            Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl<>() {
+            Callback_I_Mem_Mem_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_Mem_Mem_V_Impl<>() {
 
                 @Override
                 protected void callback(int value, Signal.Siginfo_t a, Signal.Ucontext_t b) {
@@ -683,7 +683,7 @@ public class SignalTest {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigset(Signal.SIGABRT(), null));
         } else {
-            FunctionPointer_I_V result = Signal.sigset(Signal.SIGABRT(), null);
+            FunctionPtr_I_V result = Signal.sigset(Signal.SIGABRT(), null);
             Assertions.assertEquals(Signal.SIG_DFL(), result);
             result = Signal.sigset(Signal.SIGABRT(), result);
             Assertions.assertTrue(NativeFunctionPointer.toNativeAddressHolder(result).isNULL(), "result.address ");
@@ -939,7 +939,7 @@ public class SignalTest {
             Assertions.assertSame(sigev_notify_functionLong, sigevent.sigev_notify_functionAsCallback__Sigval_int__V());
 
             @SuppressWarnings("unchecked")
-            Callback_PtrAbstractNativeMemory_V<OpaqueMemory32> sigev_notify_functionPtr = new Callback_PtrAbstractNativeMemory_V<>(new NativeAddressHolder(44)) {
+            Callback_Mem_V<OpaqueMemory32> sigev_notify_functionPtr = new Callback_Mem_V<>(new NativeAddressHolder(44)) {
                 @Override
                 protected void callback(OpaqueMemory32 a) {
                     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -1022,7 +1022,7 @@ public class SignalTest {
         Assertions.assertSame(sa_handler, sigaction.sa_handlerAsCallback_I_V());
 
         @SuppressWarnings("unchecked")
-        Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<Signal.Siginfo_t, OpaqueMemory32> sa_sigaction = new Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V<>(new NativeAddressHolder(44)) {
+        Callback_I_Mem_Mem_V<Signal.Siginfo_t, OpaqueMemory32> sa_sigaction = new Callback_I_Mem_Mem_V<>(new NativeAddressHolder(44)) {
             @Override
             protected void callback(int value, Signal.Siginfo_t a, OpaqueMemory32 b) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

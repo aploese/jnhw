@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.callback.Callback_NativeRunnable;
-import de.ibapl.jnhw.common.callback.Callback_PtrAbstractNativeMemory_V_Impl;
+import de.ibapl.jnhw.common.callback.Callback_Mem_V_Impl;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.callback.NativeRunnable;
@@ -186,7 +186,7 @@ public class AioTest {
                 System.out.println("aio_read Pthread_t: " + Pthread.pthread_self());
                 System.out.println("aio_read currentThread: " + Thread.currentThread());
 
-                aiocb.aio_sigevent.sigev_notify_function(new Callback_PtrAbstractNativeMemory_V_Impl<Aio.Aiocb>() {
+                aiocb.aio_sigevent.sigev_notify_function(new Callback_Mem_V_Impl<Aio.Aiocb>() {
 
                     @Override
                     @SuppressWarnings("unchecked")

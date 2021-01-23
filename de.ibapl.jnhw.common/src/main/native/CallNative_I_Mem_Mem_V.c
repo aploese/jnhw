@@ -19,29 +19,28 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.nativepointer;
+#define _JNHW_COMMON_IMPLEMENTATION_ 1
+#include "de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V.h"
 
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import java.util.function.Function;
 
-/**
- *
- * @author aploese
+#include "jnhw-common.h"
+
+#include <stdlib.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*
+ * Class:     de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V
+ * Method:    call
+ * Signature: (ILde/ibapl/jnhw/common/memory/AbstractNativeMemory;Lde/ibapl/jnhw/common/memory/AbstractNativeMemory;)V
  */
-public class FunctionPointer_I_V extends NativeFunctionPointer {
-
-    protected <T extends FunctionPointer_I_V> FunctionPointer_I_V(Function<T, NativeAddressHolder> producer) {
-        super(producer);
-    }
-
-    public FunctionPointer_I_V(NativeAddressHolder src) {
-        super(src);
-    }
-
-    protected FunctionPointer_I_V(long nativeAddress) {
-        super(nativeAddress);
-    }
-
-    
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1I_1Mem_1Mem_1V_call
+  (JNIEnv *env, jobject this, jint a, jobject b, jobject c) {
+     (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t, void*, void*), this))(a, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(b), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(c));
 }
+
+#ifdef __cplusplus
+}
+#endif

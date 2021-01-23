@@ -29,9 +29,9 @@ libcallbacks_la_SOURCES = \
  Callback_J_V_Impl.c \
  Callback_IJ_V.c \
  Callback_IJ_V_Impl.c \
- Callback_I_I_PtrAbstractNativeMemory_V_Impl.c \
- Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Impl.c \
- Callback_PtrAbstractNativeMemory_V_Impl.c \
+ Callback_I_I_Mem_V_Impl.c \
+ Callback_I_Mem_Mem_V_Impl.c \
+ Callback_Mem_V_Impl.c \
  Callback_NativeRunnable.c \
  NativeRunnable.c
 
@@ -39,9 +39,9 @@ libcallnative_la_SOURCES = \
  CallNative_I_V.c \
  CallNative_J_V.c \
  CallNative_IJ_V.c \
- CallNative_I_I_PtrAbstractNativeMemory_V.c \
- CallNative_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V.c \
- CallNative_PtrAbstractNativeMemory_V.c
+ CallNative_I_I_Mem_V.c \
+ CallNative_I_Mem_Mem_V.c \
+ CallNative_Mem_V.c
 
 libmemory_la_SOURCES = \
  AbstractNativeMemory.c \

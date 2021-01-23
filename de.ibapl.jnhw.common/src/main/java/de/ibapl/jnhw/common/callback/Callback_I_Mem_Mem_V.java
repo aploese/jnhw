@@ -19,28 +19,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V.h"
+package de.ibapl.jnhw.common.callback;
 
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_Mem_Mem_V;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import java.util.function.Function;
 
-#include "jnhw-common.h"
-
-#include <stdlib.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/*
- * Class:     de_ibapl_jnhw_common_nativecall_CallNative_PtrAbstractNativeMemory_V
- * Method:    call
- * Signature: (Lde/ibapl/jnhw/common/memory/AbstractNativeMemory;)V
+/**
+ *
+ * @author aploese
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1PtrAbstractNativeMemory_1V_call
-  (JNIEnv *env, jobject this, jobject a) {
-     (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(void*), this))(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(a));
-}
+public abstract class Callback_I_Mem_Mem_V<A extends AbstractNativeMemory, B extends AbstractNativeMemory> extends FunctionPtr_I_Mem_Mem_V {
 
-#ifdef __cplusplus
+    public <T extends Callback_I_Mem_Mem_V<A, B>> Callback_I_Mem_Mem_V(Function<T, NativeAddressHolder> producer) {
+        super(producer);
+    }
+
+    public Callback_I_Mem_Mem_V(NativeAddressHolder src) {
+        super(src);
+    }
+
+    /**
+     * this will be called from the native code.
+     *
+     * @param value
+     * @param a
+     * @param b
+     */
+    protected abstract void callback(int value, A a, B b);
+
 }
-#endif

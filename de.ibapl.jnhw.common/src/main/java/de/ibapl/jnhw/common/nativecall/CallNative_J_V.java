@@ -23,13 +23,13 @@ package de.ibapl.jnhw.common.nativecall;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.nativepointer.FunctionPointer_I_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 
 /**
  * Call a native function pointer.
  * @author aploese
  */
-public class CallNative_J_V extends FunctionPointer_I_V {
+public class CallNative_J_V extends FunctionPtr_I_V {
 
     static {
         LibJnhwCommonLoader.touch();
