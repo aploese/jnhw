@@ -77,7 +77,7 @@ AX_PTHREAD(, [AC_MSG_ERROR([libpthread is required])])
 AC_SEARCH_LIBS([timer_create],[rt])
 
 # Checks for header files.
-AC_CHECK_HEADERS([aio.h errno.h fcntl.h locale.h poll.h pthread.h sys/ioctl.h sys/eventfd.h sys/types.h sys/stat.h sched.h signal.h stdlib.h stdint.h stdio.h string.h termios.h time.h unistd.h ])
+AC_CHECK_HEADERS([aio.h errno.h fcntl.h locale.h poll.h pthread.h sys/ioctl.h sys/eventfd.h sys/types.h sys/stat.h sched.h signal.h stdlib.h stdint.h stdio.h string.h termios.h time.h ucontext.h unistd.h ])
 
 # Checks for typedefs, structures, and compiler characteristics.
 

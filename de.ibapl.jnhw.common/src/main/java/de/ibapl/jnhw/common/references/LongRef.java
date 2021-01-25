@@ -32,7 +32,7 @@ public class LongRef {
     /**
      * the int int64_t or uint64_t.
      */
-    public long value;
+    public volatile long value;
 
     public LongRef(long value) {
         this.value = value;

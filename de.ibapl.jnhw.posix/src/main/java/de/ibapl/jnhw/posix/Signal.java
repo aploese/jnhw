@@ -42,8 +42,12 @@ import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
 import de.ibapl.jnhw.common.callback.Callback_I_V;
+import de.ibapl.jnhw.common.nativecall.CallNative_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
+import de.ibapl.jnhw.common.util.JnhwFormater;
+import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
@@ -136,140 +140,173 @@ public class Signal {
             super(owner, offset, sizeof());
         }
 
-        private boolean maybeDoFormatBeforeFirst(StringBuilder sb, boolean first) {
-            if (!first) {
+        private void maybeDoFormatBeforeFirst(StringBuilder sb, boolean first, final String indent) {
+            if (first) {
+                sb.append(indent);
+            } else {
                 sb.append(", ");
+                sb.append(indent);
             }
-            return false;
         }
 
         @Override
-        public String nativeToString() {
-            StringBuilder sb = new StringBuilder();
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
             boolean isFirst = true;
+            final String INDENT = indentPrefix + indent;
+            final boolean doIndent = INDENT.length() > 0;
             sb.append("[");
+            if (doIndent) {
+                sb.append("\n").append(INDENT);
+            }
             try {
                 if ((Signal.sigismember(this, Signal.SIGABRT()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGABRT");
                 }
                 if ((Signal.sigismember(this, Signal.SIGALRM()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGALRM");
                 }
                 if ((Signal.sigismember(this, Signal.SIGBUS()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGBUS");
                 }
                 if ((Signal.sigismember(this, Signal.SIGCHLD()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGCHLD");
                 }
                 if ((Signal.sigismember(this, Signal.SIGCONT()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGCONT");
                 }
                 if ((Signal.sigismember(this, Signal.SIGFPE()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGFPE");
                 }
                 if ((Signal.sigismember(this, Signal.SIGHUP()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGHUP");
                 }
                 if ((Signal.sigismember(this, Signal.SIGILL()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGILL");
                 }
                 if ((Signal.sigismember(this, Signal.SIGINT()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGINT");
                 }
                 if ((Signal.sigismember(this, Signal.SIGKILL()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGKILL");
                 }
                 if ((Signal.sigismember(this, Signal.SIGPIPE()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGPIPE");
                 }
                 try {
                     if ((Signal.sigismember(this, Signal.SIGPOLL()))) {
-                        isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                        maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                        isFirst = false;
                         sb.append("SIGPOLL");
                     }
                 } catch (NotDefinedException ex) {
                     //no-op
                 }
                 if ((Signal.sigismember(this, Signal.SIGPROF()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGPROF");
                 }
                 if ((Signal.sigismember(this, Signal.SIGQUIT()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGQUIT");
                 }
                 if ((Signal.sigismember(this, Signal.SIGSEGV()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGSEGV");
                 }
                 if ((Signal.sigismember(this, Signal.SIGSTOP()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGSTOP");
                 }
                 if ((Signal.sigismember(this, Signal.SIGSYS()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGSYS");
                 }
                 if ((Signal.sigismember(this, Signal.SIGTERM()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGTERM");
                 }
                 if ((Signal.sigismember(this, Signal.SIGTRAP()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGTRAP");
                 }
                 if ((Signal.sigismember(this, Signal.SIGTSTP()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGTSTP");
                 }
                 if ((Signal.sigismember(this, Signal.SIGTTIN()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGTTIN");
                 }
                 if ((Signal.sigismember(this, Signal.SIGTTOU()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGTTOU");
                 }
                 if ((Signal.sigismember(this, Signal.SIGURG()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGURG");
                 }
                 if ((Signal.sigismember(this, Signal.SIGUSR1()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGUSR1");
                 }
                 if ((Signal.sigismember(this, Signal.SIGUSR2()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGUSR2");
                 }
                 if ((Signal.sigismember(this, Signal.SIGVTALRM()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGVTALRM");
                 }
                 if ((Signal.sigismember(this, Signal.SIGXCPU()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGXCPU");
                 }
                 if ((Signal.sigismember(this, Signal.SIGXFSZ()))) {
-                    isFirst = maybeDoFormatBeforeFirst(sb, isFirst);
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
                     sb.append("SIGXFSZ");
                 }
             } catch (NativeErrorException nee) {
                 throw new RuntimeException(nee);
             }
             sb.append("]");
-            return sb.toString();
         }
 
     }
@@ -367,6 +404,11 @@ public class Signal {
         public final void sival_ptr(T sival_ptr) {
             this.sival_ptr = sival_ptr;
             sival_ptr0(sival_ptr);
+        }
+
+        @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
         }
 
         @Override
@@ -484,9 +526,12 @@ public class Signal {
         private native void sigev_notify_function0(NativeFunctionPointer sigev_notify_function) throws NoSuchNativeTypeException;
 
         /**
-         * Even if we can get away with an int we dont do this. BIG ENDIAN will acces the other half of the union sigval.sival_ptr for sigval.sival_int.
+         * Even if we can get away with an int we dont do this. BIG ENDIAN will
+         * acces the other half of the union sigval.sival_ptr for
+         * sigval.sival_int.
+         *
          * @param sigev_notify_function
-         * @throws NoSuchNativeTypeException 
+         * @throws NoSuchNativeTypeException
          */
         public final void sigev_notify_function(Callback__Sigval_int__V sigev_notify_function) throws NoSuchNativeTypeException {
             this.sigev_notify_function = sigev_notify_function;
@@ -523,7 +568,7 @@ public class Signal {
                     throw new RuntimeException("TODO not the same address");
                 }
             } else {
-                throw new RuntimeException("cached sigev_notify_function is not the class Callback_PtrAbstractNativeMemory_V");
+                throw new RuntimeException("cached sigev_notify_function is not the class Callback_Mem_V");
             }
         }
 
@@ -537,6 +582,11 @@ public class Signal {
             } else {
                 throw new RuntimeException("cached sigev_notify_function is not the class Callback_NativeRunnable");
             }
+        }
+
+        @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
         }
 
         @Override
@@ -554,7 +604,6 @@ public class Signal {
             }
         }
     }
-
 
     /**
      *
@@ -660,8 +709,8 @@ public class Signal {
     public final static native int SIGCHLD();
 
     /**
-     * <b>POSIX:</b><i>Continue the process, if it is stopped; otherwise,
-     * ignore the signal.</i> Continue executing , if stopped.
+     * <b>POSIX:</b><i>Continue the process, if it is stopped; otherwise, ignore
+     * the signal.</i> Continue executing , if stopped.
      *
      * @return the native symbolic constant of SIGCONT.
      */
@@ -782,8 +831,7 @@ public class Signal {
     public final static native int SIGTTIN();
 
     /**
-     * <b>POSIX:</b><i>Stop the process</i> Background process attempting
-     * write.
+     * <b>POSIX:</b><i>Stop the process</i> Background process attempting write.
      *
      *
      * @return the native symbolic constant of SIGTTOU.
@@ -849,8 +897,8 @@ public class Signal {
     public final static native int SIGTRAP();
 
     /**
-     * <b>POSIX:</b><i>Ignore the signal</i> High bandwidth data is available
-     * at a socket.
+     * <b>POSIX:</b><i>Ignore the signal</i> High bandwidth data is available at
+     * a socket.
      *
      * @return the native symbolic constant of SIGURG.
      */
@@ -913,7 +961,7 @@ public class Signal {
 
         public static native int offsetof_Sa_mask();
 
-        protected Sigaction() {
+        public Sigaction() {
             super(sizeof(), false);
             sa_mask = new Sigset_t(this, offsetof_Sa_mask());
         }
@@ -954,7 +1002,7 @@ public class Signal {
          *
          * @return the native value of sa_handler.
          */
-        public final native NativeFunctionPointer sa_handler();
+        public final native CallNative_I_V sa_handler();
 
         /**
          * Pointer to a signal-catching function or one of the SIG_IGN or
@@ -993,7 +1041,7 @@ public class Signal {
          *
          * @return the native value of sa_sigaction.
          */
-        public final native NativeFunctionPointer sa_sigaction();
+        public final native CallNative_I_Mem_Mem_V sa_sigaction();
 
         /**
          * Pointer to a signal-catching function
@@ -1006,7 +1054,7 @@ public class Signal {
          * otherwise an exception is thrown.
          */
         @SuppressWarnings("unchecked")
-        public final Callback_I_Mem_Mem_V<Siginfo_t, T> sa_sigactionAsCallback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V() {
+        public final Callback_I_Mem_Mem_V<Siginfo_t, T> sa_sigactionAsCallback_I_Mem_Mem_V() {
             final NativeFunctionPointer sa_sigaction = sa_sigaction();
             if (cachedHandlerOrAction instanceof Callback_I_Mem_Mem_V) {
                 if (NativeFunctionPointer.isSameAddress(sa_sigaction, cachedHandlerOrAction)) {
@@ -1019,12 +1067,23 @@ public class Signal {
             }
         }
 
-        public final native <T extends OpaqueMemory32> void sa_sigaction0(Callback_I_Mem_Mem_V<Siginfo_t, T> sa_sigaction);
+        public final native <T extends OpaqueMemory32> void sa_sigaction0(FunctionPtr_I_Mem_Mem_V<Siginfo_t, T> sa_sigaction);
 
-        public final <T extends OpaqueMemory32> void sa_sigaction(Callback_I_Mem_Mem_V<Siginfo_t, T> sa_sigaction) {
+        public final <T extends OpaqueMemory32> void sa_sigaction(FunctionPtr_I_Mem_Mem_V<Siginfo_t, T> sa_sigaction) {
             cachedHandlerOrAction = sa_sigaction;
             sa_sigaction0(sa_sigaction);
         }
+        
+        @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            jsb.appendFunctionPtrMember("sa_handler", sa_handler());
+            jsb.appendStruct32Member("sa_mask", sa_mask);
+            jsb.appendHexIntMember("sa_flags", sa_flags());
+            jsb.appendFunctionPtrMember("sa_sigaction", sa_sigaction());
+            jsb.close();
+        }
+
     }
 
     /**
@@ -1240,6 +1299,20 @@ public class Signal {
          */
         public final Mcontext_t uc_mcontext;
 
+        @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            try {
+                jsb.appendNativeAddressHolderMember("uc_link: ", uc_link0());
+            } catch (NoSuchNativeTypeException nsnte) {
+                //noop...
+            }
+            jsb.appendStruct32Member("uc_sigmask", uc_sigmask);
+            jsb.appendStruct32Member("uc_stack", uc_stack);
+            jsb.appendStruct32Member("uc_mcontext", uc_mcontext);
+            jsb.close();
+        }
+
     }
 
     /**
@@ -1329,6 +1402,15 @@ public class Signal {
 
         private native void ss_sp(T ss_sp);
 
+        @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            jsb.appendNativeAddressHolderMember("ss_sp", ss_sp0());
+            jsb.appendLongMember("ss_size", ss_size());
+            jsb.appendHexIntMember("ss_flags", ss_flags());
+            jsb.close();
+        }
+
     }
 
     /**
@@ -1394,8 +1476,8 @@ public class Signal {
         public final native int si_code();
 
         /**
-         * If non-zero, an errno value associated with this signal, as
-         * described in &lt;errno.h&gt;.
+         * If non-zero, an errno value associated with this signal, as described
+         * in &lt;errno.h&gt;.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
          * siginfo_t}</a>.
          *
@@ -1456,6 +1538,11 @@ public class Signal {
          *
          */
         public final Sigval<T> si_value;
+
+        @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
 
         @Override
         public String nativeToString() {
@@ -1857,7 +1944,8 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method psiginfo is not available natively.
+     * @throws NoSuchNativeMethodException if the method psiginfo is not
+     * available natively.
      */
     public final static native void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -1880,7 +1968,8 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method pthread_kill is not available natively.
+     * @throws NoSuchNativeMethodException if the method pthread_kill is not
+     * available natively.
      */
     public final static native void pthread_kill(Pthread.Pthread_t thread, int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -1988,7 +2077,8 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method sighold is not available natively.
+     * @throws NoSuchNativeMethodException if the method sighold is not
+     * available natively.
      */
     public final static native void sighold(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2000,7 +2090,8 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method sigignore is not available natively.
+     * @throws NoSuchNativeMethodException if the method sigignore is not
+     * available natively.
      */
     public final static native void sigignore(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2048,7 +2139,8 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * is -1 and errno is other than EINTR.
-     * @throws NoSuchNativeMethodException if the method sigpause is not available natively.
+     * @throws NoSuchNativeMethodException if the method sigpause is not
+     * available natively.
      */
     public final static native void sigpause(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2082,8 +2174,9 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-      * @throws NoSuchNativeMethodException if the method sigqueue is not available natively.
-    */
+     * @throws NoSuchNativeMethodException if the method sigqueue is not
+     * available natively.
+     */
     public final static native void sigqueue(@pid_t int pid, int signo, Sigval value) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
@@ -2094,7 +2187,8 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method sigrelse is not available natively.
+     * @throws NoSuchNativeMethodException if the method sigrelse is not
+     * available natively.
      */
     public final static native void sigrelse(int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2106,7 +2200,8 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method sigset is not available natively.
+     * @throws NoSuchNativeMethodException if the method sigset is not available
+     * natively.
      *///TODO args missing ....
     public final static native CallNative_I_V sigset(int sig, FunctionPtr_I_V disp) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -2129,7 +2224,8 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method sigtimedwait is not available natively.
+     * @throws NoSuchNativeMethodException if the method sigtimedwait is not
+     * available natively.
      */
     public final static native int sigtimedwait(Sigset_t set, Siginfo_t info,
             Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException;
@@ -2157,7 +2253,8 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method sigwaitinfo is not available natively.
+     * @throws NoSuchNativeMethodException if the method sigwaitinfo is not
+     * available natively.
      */
     public final static native int sigwaitinfo(Sigset_t set, Siginfo_t info) throws NativeErrorException, NoSuchNativeMethodException;
 }

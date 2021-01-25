@@ -61,6 +61,11 @@ public class Uint8_t extends NativeIntNumber {
     public native void rawUint8_t(@uint8_t byte value);
 
     @Override
+    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        sb.append(nativeToString());
+    }
+
+    @Override
     public native String nativeToString();
 
     @Override

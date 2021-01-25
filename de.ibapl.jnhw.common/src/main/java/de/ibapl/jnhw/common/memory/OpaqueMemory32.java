@@ -238,12 +238,25 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
     }
 
     @Override
-    public String nativeToString() {
-        return printMemory(this, true);
+    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        //Ignore indent and indentPrefix
+        printMemory(sb, this, true);
     }
 
-    public static String printMemory(final OpaqueMemory32 mem, final boolean printAddress) {
+    @Override
+    public String nativeToString() {
         StringBuilder sb = new StringBuilder();
+        nativeToString(sb, "", "");
+        return sb.toString();
+    }
+
+    public final static String printMemory(final OpaqueMemory32 mem, final boolean printAddress) {
+        StringBuilder sb = new StringBuilder();
+        printMemory(sb, mem, printAddress);
+        return sb.toString();
+    }
+
+    public final static void printMemory(StringBuilder sb, final OpaqueMemory32 mem, final boolean printAddress) {
         StringBuilder ascii = new StringBuilder();
         final int BLOCK_SIZE = 16;
         final int BLOCK_REMINDER = mem.sizeInBytes % BLOCK_SIZE;
@@ -291,7 +304,6 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
                 sb.append('\n');
             }
         }
-        return sb.toString();
     }
 
     @Override

@@ -19,11 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-/**
- * Annontations for datatypes of poll.h.
- *
- * See types.h at:
- * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">poll.h
- *
- */
-package de.ibapl.jnhw.anontation.posix.poll;
+module de.ibapl.jnhw.it.posix_signal {
+    requires de.ibapl.jnhw.posix;
+
+}

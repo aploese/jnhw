@@ -23,8 +23,8 @@ package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
 import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.posix.Signal;
 
 /**
@@ -43,10 +43,21 @@ public class SimpleSignalHandler extends Callback_I_V_Impl {
         this.handlerInSameThread = handlerInSameThread;
     }
 
-    private void setup() throws NativeErrorException, InterruptedException {
+    private void setup() throws NativeErrorException, InterruptedException, NotDefinedException {
         if (handlerInSameThread) {
             originalHandler = Signal.signal(signal, this);
             System.err.println("Signalhandler for signal: " + signal + " set! in thread: " + Thread.currentThread());
+            if (Signal.SIG_DFL().equals(originalHandler)) {
+                System.out.println("Old signal handler of SIG is SIG_DFL!");
+            } else if (Signal.SIG_ERR().equals(originalHandler)) {
+                System.out.println("Old signal handler of SIG is SIG_ERR!");
+            } else if (Signal.SIG_IGN().equals(originalHandler)) {
+                System.out.println("Old signal handler of SIG is SIG_IGN!");
+            } else if (Signal.SIG_HOLD().equals(originalHandler)) {
+                System.out.println("Old signal handler of SIG is SIG_HOLD!");
+            } else {
+                System.out.println("Old signal handler of SIG is " + originalHandler);
+            }
         } else {
             final Object lock = new Object();
             new Thread(() -> {
@@ -83,7 +94,7 @@ public class SimpleSignalHandler extends Callback_I_V_Impl {
         System.err.println("Signal: " + value + " caught! in thread: " + Thread.currentThread());
     }
 
-    void raise() throws NativeErrorException, InterruptedException {
+    void raise() throws NativeErrorException, InterruptedException, NotDefinedException {
         try {
             setup();
 

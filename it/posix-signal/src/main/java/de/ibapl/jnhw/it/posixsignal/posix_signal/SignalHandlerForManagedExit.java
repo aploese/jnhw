@@ -21,23 +21,48 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
+import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
 import de.ibapl.jnhw.posix.Signal;
 
 /**
  *
  * @author aploese
  */
-public class SignalUnhandled {
-    
-    void raise() throws NativeErrorException {
+public class SignalHandlerForManagedExit extends Callback_I_V_Impl {
+
+    final int signal;
+    CallNative_I_V originalHandler;
+    boolean done;
+
+    SignalHandlerForManagedExit(final int signal) {
+        this.signal = signal;
+    }
+
+    private void setup() throws NativeErrorException, InterruptedException {
+        originalHandler = Signal.signal(signal, this);
+        System.err.println("Signalhandler for signal: " + signal + " set! in thread: " + Thread.currentThread());
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            //This will never be called
+            //This will be called.
             System.err.println("End from ShutdownHook");
         }));
-        System.out.println("Will raise SIGSEGV");
-        Signal.raise(Signal.SIGSEGV());
-        System.out.println("SIGSEGV raised");
     }
-    
+
+    @Override
+    protected void callback(int value) {
+        System.err.println("Signal: " + value + " caught! in thread: " + Thread.currentThread() + " will gracefully exit with result: " + signal);
+        System.exit(signal);
+    }
+
+    void raise() throws NativeErrorException, InterruptedException {
+        setup();
+
+        System.out.println("Will raise signal: " + signal + " in thread: " + Thread.currentThread());
+        Signal.raise(signal);
+        System.out.println("Signal: " + signal + " raised! in thread: " + Thread.currentThread());
+        Signal.signal(signal, originalHandler);
+        System.err.println("Signalhandler for signal: " + signal + " removed!");
+    }
+
 }

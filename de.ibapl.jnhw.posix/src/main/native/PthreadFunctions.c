@@ -269,6 +269,60 @@ extern "C" {
         }
     }
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    pthread_cancel
+     * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1cancel
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject thread) {
+        if (thread == NULL) {
+            throw_NullPointerException(env, "thread is null");
+            return;
+        }
+        if (pthread_cancel(*UNWRAP_PTHREAD_T_PTR(thread))) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    pthread_testcancel
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1testcancel
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        pthread_testcancel();
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    pthread_setcancelstate
+     * Signature: (I)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1setcancelstate
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint state) {
+        int oldstate;
+        if (pthread_setcancelstate(state, &oldstate)) {
+            throw_NativeErrorException(env, errno);
+        }
+        return oldstate;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    pthread_setcanceltype
+     * Signature: (I)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1setcanceltype
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint type) {
+        int oldtype;
+        if (pthread_setcanceltype(type, &oldtype)) {
+            throw_NativeErrorException(env, errno);
+        }
+        return oldtype;
+    }
+
 #endif
 #ifdef __cplusplus
 }

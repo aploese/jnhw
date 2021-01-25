@@ -19,38 +19,35 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.nativecall;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_Mem_Mem_V;
+#include "jnhw-posix.h"
+#include "de_ibapl_jnhw_x_open_Ucontext.h"
 
-/**
- * Call a native function pointer.
- * @author aploese
- */
-public class CallNative_I_Mem_Mem_V<A extends AbstractNativeMemory, B extends AbstractNativeMemory> extends FunctionPtr_I_Mem_Mem_V<A, B> {
-
-    static {
-        LibJnhwCommonLoader.touch();
-    }
-    
-    /**
-     * Called from native code...
-     * @param nativeAddress 
+    /*
+     * Class:     de_ibapl_jnhw_x_open_Ucontext
+     * Method:    HAVE_UCONTEXT_H
+     * Signature: ()Z
      */
-    private CallNative_I_Mem_Mem_V(long nativeAddress) {
-        super(nativeAddress);
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_HAVE_1UCONTEXT_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#ifdef HAVE_UCONTEXT_H
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
     }
-    
-    public CallNative_I_Mem_Mem_V(NativeAddressHolder nativeAddressHolder) {
-        super(nativeAddressHolder);
-    }
-    
-    /**
-     * call the native function. 
-     * @param value 
-     */
-    public native void call(int value, A a, B b);
+
+#if HAVE_UCONTEXT_H
+#include <ucontext.h>
+#endif
+
+#ifdef _POSIX_VERSION
+
+#endif
+
+#ifdef __cplusplus
 }
+#endif

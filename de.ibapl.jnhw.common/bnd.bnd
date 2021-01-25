@@ -1,11 +1,11 @@
 Export-Package: \
 	de.ibapl.jnhw.common,\
 	de.ibapl.jnhw.common.annotation,\
-        de.ibapl.jnhw.common.nativepointer,\
-        de.ibapl.jnhw.common.nativecall,\
 	de.ibapl.jnhw.common.callback,\
 	de.ibapl.jnhw.common.datatypes,\
 	de.ibapl.jnhw.common.exception,\
 	de.ibapl.jnhw.common.memory,\
+        de.ibapl.jnhw.common.nativecall,\
+        de.ibapl.jnhw.common.nativepointer,\
 	de.ibapl.jnhw.common.references,\
-	de.ibapl.jnhw.common.util,\
+	de.ibapl.jnhw.common.util

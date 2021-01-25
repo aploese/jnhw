@@ -62,6 +62,11 @@ public class Int64_t extends NativeIntNumber {
     public native void rawInt64_t(@int64_t long value);
 
     @Override
+    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        sb.append(nativeToString());
+    }
+
+    @Override
     public native String nativeToString();
 
     @Override

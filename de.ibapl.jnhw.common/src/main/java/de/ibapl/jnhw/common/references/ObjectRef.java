@@ -28,7 +28,7 @@ package de.ibapl.jnhw.common.references;
  */
 public class ObjectRef<T> {
 
-    public T value;
+    public volatile T value;
 
     public ObjectRef() {
 

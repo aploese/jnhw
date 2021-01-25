@@ -61,6 +61,11 @@ public class Uint16_t extends NativeIntNumber {
     public native void rawUint16_t(@uint16_t short value);
 
     @Override
+    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        sb.append(nativeToString());
+    }
+
+    @Override
     public native String nativeToString();
 
     @Override

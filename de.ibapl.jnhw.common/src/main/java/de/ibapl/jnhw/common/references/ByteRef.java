@@ -33,7 +33,7 @@ public class ByteRef {
     /**
      * the int8_t or uint8_t value.
      */
-    public byte value;
+    public volatile byte value;
 
     public ByteRef() {
     }

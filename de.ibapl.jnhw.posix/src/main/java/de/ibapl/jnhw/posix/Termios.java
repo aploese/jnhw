@@ -37,11 +37,8 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annontation.posix.termios.cc_t;
+import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  * Wrapper around the {@code <termios.h>} header.
@@ -1366,9 +1363,6 @@ public final class Termios {
      */
     public final static native void tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException;
 
-
-
-
     public static class Cc_t extends NativeIntNumber {
 
         /**
@@ -1401,13 +1395,19 @@ public final class Termios {
 
         public native void setValue(@cc_t byte value);
 
+        @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
+
         /**
          * This is a control character, maybe not printable
-         * @return 
+         *
+         * @return
          */
         @Override
         public String nativeToString() {
-            return String.valueOf((char)getValue());
+            return String.valueOf((char) getValue());
         }
 
         @Override
@@ -1585,6 +1585,11 @@ public final class Termios {
         public native void setValue(@speed_t int value);
 
         @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
+
+        @Override
         public String nativeToString() {
             return speed_tToString(getValue());
         }
@@ -1596,7 +1601,7 @@ public final class Termios {
 
         @Override
         public String nativeToHexString() {
-            return  nativeInt32ToHexString();
+            return nativeInt32ToHexString();
         }
 
     }
@@ -1950,6 +1955,11 @@ public final class Termios {
 
         public native void setValue(@tcflag_t int value);
 
+        @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
+
         /**
          * the native value as hex string.
          *
@@ -2178,41 +2188,33 @@ public final class Termios {
             }
         }
 
-
         static public void c_cc2String(StringBuilder sb, int index, byte c_cc) {
             sb.append(String.format(", c_cc[%s] = 0x%02x", toCcName(index), c_cc));
         }
 
         @Override
-        public String nativeToString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("{c_iflag = \"");
-            Tcflag_t.c_iflag2String(sb, c_iflag());
-            sb.append("\", c_oflag = \"");
-            Tcflag_t.c_oflag2String(sb, c_oflag());
-            sb.append("\", c_cflag = \"");
-            Tcflag_t.c_cflag2String(sb, c_cflag());
-            sb.append("\", c_lflag = \"");
-            Tcflag_t.c_lflag2String(sb, c_lflag());
-            sb.append("\"");
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            jsb.appendMember("c_iflag", "[", (sbu)->Tcflag_t.c_iflag2String(sbu, c_iflag()), "]");
+            jsb.appendMember("c_oflag", "[", (sbu)->Tcflag_t.c_oflag2String(sb, c_oflag()), "]");
+            jsb.appendMember("c_cflag", "[", (sbu)->Tcflag_t.c_cflag2String(sb, c_cflag()), "]");
+            jsb.appendMember("c_lflag", "[", (sbu)->Tcflag_t.c_lflag2String(sb, c_lflag()), "]");
             try {
-                sb.append(String.format(", c_line = 0x%02x", c_line()));
+                jsb.appendHexByteMember("c_line", c_line());
             } catch (NoSuchNativeTypeMemberException nstme) {
             }
             try {
-                sb.append(String.format(", c_ispeed = 0x%08x", c_ispeed()));
+                jsb.appendHexIntMember("c_ispeed", c_ispeed());
             } catch (NoSuchNativeTypeMemberException nstme) {
             }
             try {
-                sb.append(String.format(", c_ospeed = 0x%08x", c_ospeed()));
+                jsb.appendHexIntMember("c_ospeed", c_ospeed());
             } catch (NoSuchNativeTypeMemberException nstme) {
             }
             for (int i = 0; i < NCCS(); i++) {
                 c_cc2String(sb, i, c_cc(i));
             }
-            sb.append("}");
-            return sb.toString();
-
+            jsb.close();
         }
     }
 

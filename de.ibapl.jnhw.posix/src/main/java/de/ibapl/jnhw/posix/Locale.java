@@ -31,6 +31,7 @@ import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.common.util.JnhwFormater;
+import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
@@ -309,34 +310,33 @@ public class Locale {
         }
 
         @Override
-        public String nativeToString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("{currency_symbol : \"").append(currency_symbol());
-            sb.append("\", decimal_point : \"").append(decimal_point());
-            sb.append("\", frac_digits : ").append(frac_digits());
-            sb.append(", grouping : \"").append(grouping());
-            sb.append("\", int_curr_symbol : \"").append(int_curr_symbol());
-            sb.append("\", int_frac_digits : ").append(int_frac_digits());
-            sb.append(", int_n_cs_precedes : ").append(int_n_cs_precedes());
-            sb.append(", int_n_sep_by_space : ").append(int_n_sep_by_space());
-            sb.append(", int_n_sign_posn : ").append(int_n_sign_posn());
-            sb.append(", int_p_cs_precedes : ").append(int_p_cs_precedes());
-            sb.append(", int_p_sep_by_space :").append(int_p_sep_by_space());
-            sb.append(", int_p_sign_posn : ").append(int_p_sign_posn());
-            sb.append("\", mon_decimal_point : \"").append(mon_decimal_point());
-            sb.append("\", mon_grouping : \"").append(mon_grouping());
-            sb.append("\", mon_thousands_sep : \"").append(mon_thousands_sep());
-            sb.append("\", n_cs_precedes : ").append(n_cs_precedes());
-            sb.append(", n_sep_by_space : ").append(n_sep_by_space());
-            sb.append(", n_sign_posn : ").append(n_sign_posn());
-            sb.append(", negative_sign : \"").append(negative_sign());
-            sb.append("\", p_cs_precedes : ").append(p_cs_precedes());
-            sb.append(", p_sep_by_space : ").append(p_sep_by_space());
-            sb.append(", p_sign_posn : ").append(p_sign_posn());
-            sb.append(", positive_sign : \"").append(positive_sign());
-            sb.append("\", thousands_sep : \"").append(thousands_sep());
-            sb.append("\"}");
-            return sb.toString();
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            jsb.appendStringMember("currency_symbol", currency_symbol());
+            jsb.appendStringMember("decimal_point", decimal_point());
+            jsb.appendShortMember("frac_digits", frac_digits());
+            jsb.appendStringMember("grouping", grouping());
+            jsb.appendStringMember("int_curr_symbol", int_curr_symbol());
+            jsb.appendShortMember("int_frac_digits", int_frac_digits());
+            jsb.appendShortMember("int_n_cs_precedes", int_n_cs_precedes());
+            jsb.appendShortMember("int_n_sep_by_space", int_n_sep_by_space());
+            jsb.appendShortMember("int_n_sign_posn", int_n_sign_posn());
+            jsb.appendShortMember("int_p_cs_precedes", int_p_cs_precedes());
+            jsb.appendShortMember("int_p_sep_by_space", int_p_sep_by_space());
+            jsb.appendShortMember("int_p_sign_posn", int_p_sign_posn());
+            jsb.appendStringMember("mon_decimal_point", mon_decimal_point());
+            jsb.appendStringMember("mon_grouping", mon_grouping());
+            jsb.appendStringMember("mon_thousands_sep", mon_thousands_sep());
+            jsb.appendShortMember("n_cs_precedes", n_cs_precedes());
+            jsb.appendShortMember("n_sep_by_space", n_sep_by_space());
+            jsb.appendShortMember("n_sign_posn", n_sign_posn());
+            jsb.appendStringMember("negative_sign", negative_sign());
+            jsb.appendShortMember("p_cs_precedes", p_cs_precedes());
+            jsb.appendShortMember("p_sep_by_space", p_sep_by_space());
+            jsb.appendShortMember("p_sign_posn", p_sign_posn());
+            jsb.appendStringMember("positive_sign", positive_sign());
+            jsb.appendStringMember("thousands_sep", thousands_sep());
+            jsb.close();
         }
 
         /**
@@ -578,6 +578,7 @@ public class Locale {
          * @return the native value of thousands_sep.
          */
         public final native String thousands_sep();
+
     }
 
     /**

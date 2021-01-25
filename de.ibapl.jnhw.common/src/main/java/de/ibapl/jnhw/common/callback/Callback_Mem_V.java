@@ -30,7 +30,7 @@ import java.util.function.Function;
  *
  * @author aploese
  */
-public abstract class Callback_Mem_V<A extends AbstractNativeMemory> extends FunctionPtr_Mem_V {
+public abstract class Callback_Mem_V<A extends AbstractNativeMemory> extends FunctionPtr_Mem_V<A> {
 
     public <T extends Callback_Mem_V<A>> Callback_Mem_V(Function<T, NativeAddressHolder> producer) {
         super(producer);

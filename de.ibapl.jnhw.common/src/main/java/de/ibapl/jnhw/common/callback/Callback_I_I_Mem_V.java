@@ -31,7 +31,7 @@ import java.util.function.Function;
  * @author aploese
  * @param <C>
  */
-public abstract class Callback_I_I_Mem_V<C extends AbstractNativeMemory> extends FunctionPtr_I_I_Mem_V {
+public abstract class Callback_I_I_Mem_V<C extends AbstractNativeMemory> extends FunctionPtr_I_I_Mem_V<C> {
 
     public <T extends Callback_I_I_Mem_V<C>> Callback_I_I_Mem_V(Function<T, NativeAddressHolder> producer) {
         super(producer);

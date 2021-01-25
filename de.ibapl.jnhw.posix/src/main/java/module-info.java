@@ -53,10 +53,15 @@ module de.ibapl.jnhw.posix {
 
     requires transitive de.ibapl.jnhw.common;
 
+    exports de.ibapl.jnhw.annontation.posix.poll;
+    exports de.ibapl.jnhw.annontation.posix.sys.types;
+    exports de.ibapl.jnhw.annontation.posix.termios;
     exports de.ibapl.jnhw.isoc;
-    exports de.ibapl.jnhw.util.posix;
-    exports de.ibapl.jnhw.unix.sys;
-    exports de.ibapl.jnhw.posix;
     exports de.ibapl.jnhw.linux.sys;
+    exports de.ibapl.jnhw.posix;
+    exports de.ibapl.jnhw.posix.sys;
+    exports de.ibapl.jnhw.unix.sys;
+    exports de.ibapl.jnhw.util.posix;
+    exports de.ibapl.jnhw.x_open;
 
 }

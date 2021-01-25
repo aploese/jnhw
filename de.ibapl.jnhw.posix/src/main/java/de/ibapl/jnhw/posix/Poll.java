@@ -29,11 +29,8 @@ import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.StructArray32;
+import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  * Wrapper around the {@code <poll.h>} header.
@@ -255,15 +252,12 @@ public final class Poll {
         public native void revents(short revents);
 
         @Override
-        public String nativeToString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("{fd : ").append(fd());
-            sb.append(", events : \"");
-            event2String(sb, events());
-            sb.append("\", revents :\"");
-            event2String(sb, revents());
-            sb.append("\"}");
-            return sb.toString();
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            jsb.appendIntMember("fd", fd());
+            jsb.appendMember("events", "[", (sbu)->event2String(sbu, events()),"]");
+            jsb.appendMember("revents", "[", (sbu)->event2String(sbu, revents()),"]");
+            jsb.close();
         }
 
         private static void event2String(StringBuilder sb, short event) {

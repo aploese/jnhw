@@ -29,6 +29,8 @@ public interface Native {
 
     BaseDataTypes getBaseDataType();
 
+    void nativeToString(StringBuilder sb, String indentPrefix, String indent);
+    
     String nativeToString();
     
     String nativeToHexString();

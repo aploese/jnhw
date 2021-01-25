@@ -42,7 +42,6 @@ public class Struct32 extends OpaqueMemory32 {
         super(elements, elementSizeInBytes, clearMem);
     }
 
-    
     public Struct32(OpaqueMemory32 owner, int offset, int elements, int elementSizeInBytes) {
         super(owner, offset, elements, elementSizeInBytes);
     }
@@ -59,7 +58,6 @@ public class Struct32 extends OpaqueMemory32 {
         super(owner, offset, sizeInBytes);
     }
 
-    
     @Override
     public final BaseDataTypes getBaseDataType() {
         return BaseDataTypes.struct;
@@ -77,5 +75,5 @@ public class Struct32 extends OpaqueMemory32 {
             return sb.toString();
         }
     }
-    
+
 }

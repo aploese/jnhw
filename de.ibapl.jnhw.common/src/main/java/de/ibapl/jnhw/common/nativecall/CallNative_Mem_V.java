@@ -24,13 +24,13 @@ package de.ibapl.jnhw.common.nativecall;
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_Mem_V;
 
 /**
  * Call a native function pointer.
  * @author aploese
  */
-public class CallNative_Mem_V<A extends AbstractNativeMemory> extends FunctionPtr_I_V {
+public class CallNative_Mem_V<A extends AbstractNativeMemory> extends FunctionPtr_Mem_V<A> {
 
     static {
         LibJnhwCommonLoader.touch();

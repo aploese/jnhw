@@ -62,6 +62,11 @@ public class Uint32_t extends NativeIntNumber {
     public native void rawUint32_t(@uint32_t int value);
 
     @Override
+    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        sb.append(nativeToString());
+    }
+
+    @Override
     public native String nativeToString();
 
     @Override

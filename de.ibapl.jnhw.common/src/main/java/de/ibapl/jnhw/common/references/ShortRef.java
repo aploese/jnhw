@@ -32,7 +32,7 @@ public class ShortRef {
     /**
      * the int int16_t or uint16_t.
      */
-    public short value;
+    public volatile short value;
 
     public ShortRef() {
     }

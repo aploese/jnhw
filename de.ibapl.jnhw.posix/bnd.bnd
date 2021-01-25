@@ -1,9 +1,11 @@
 Export-Package: \
-	de.ibapl.jnhw.annontation.posix.sys.types,\
 	de.ibapl.jnhw.annontation.posix.poll,\
+	de.ibapl.jnhw.annontation.posix.sys.types,\
 	de.ibapl.jnhw.annontation.posix.termios,\
         de.ibapl.jnhw.isoc,\
-	de.ibapl.jnhw.util.posix,\
-	de.ibapl.jnhw.unix.sys,\
+	de.ibapl.jnhw.linux.sys,\
 	de.ibapl.jnhw.posix,\
-	de.ibapl.jnhw.linux.sys
+	de.ibapl.jnhw.posix,sys,\
+	de.ibapl.jnhw.unix.sys,\
+	de.ibapl.jnhw.util.posix,\
+	de.ibapl.jnhw.x_open

@@ -1029,7 +1029,7 @@ public class SignalTest {
             }
         };
         sigaction.sa_sigaction(sa_sigaction);
-        Assertions.assertSame(sa_sigaction, sigaction.sa_sigactionAsCallback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V());
+        Assertions.assertSame(sa_sigaction, sigaction.sa_sigactionAsCallback_I_Mem_Mem_V());
 
         RuntimeException rt = Assertions.assertThrows(RuntimeException.class, () -> {
             sigaction.sa_handlerAsCallback_I_V();

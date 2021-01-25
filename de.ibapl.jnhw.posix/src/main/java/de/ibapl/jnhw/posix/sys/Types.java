@@ -59,7 +59,6 @@ public class Types {
 
     public final static native boolean HAVE_SYS_TYPES_H();
 
-
     @off_t
     public static class Off_t extends NativeIntNumber {
 
@@ -98,6 +97,11 @@ public class Types {
         public native void setValue(@off_t long value);
 
         @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
+
+        @Override
         public native String nativeToString();
 
         @Override
@@ -106,8 +110,6 @@ public class Types {
         }
 
     }
-
-
 
     @mode_t
     public static class Mode_t extends NativeIntNumber {
@@ -147,6 +149,11 @@ public class Types {
         public native void setValue(@mode_t int value);
 
         @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
+
+        @Override
         public native String nativeToString();
 
         @Override
@@ -154,7 +161,6 @@ public class Types {
             return dataType;
         }
     }
-
 
     @ssize_t
     public static class Ssize_t extends NativeIntNumber {
@@ -194,6 +200,11 @@ public class Types {
         public native void setValue(@ssize_t long value);
 
         @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
+
+        @Override
         public native String nativeToString();
 
         @Override
@@ -201,7 +212,6 @@ public class Types {
             return dataType;
         }
     }
-
 
     @size_t
     public static class Size_t extends NativeIntNumber {
@@ -241,6 +251,11 @@ public class Types {
         public native void setValue(@pid_t long value);
 
         @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
+
+        @Override
         public native String nativeToString();
 
         @Override
@@ -248,9 +263,6 @@ public class Types {
             return dataType;
         }
     }
-
-
-
 
     @pid_t
     public static class Pid_t extends NativeIntNumber {
@@ -298,9 +310,6 @@ public class Types {
         }
     }
 
-
-
-
     @clock_t
     public static class Clock_t extends NativeIntNumber {
 
@@ -339,6 +348,11 @@ public class Types {
         public native void setValue(@clock_t long value);
 
         @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
+
+        @Override
         public native String nativeToString();
 
         @Override
@@ -347,7 +361,6 @@ public class Types {
         }
 
     }
-
 
     @time_t
     public static class Time_t extends NativeIntNumber {
@@ -387,6 +400,11 @@ public class Types {
         public native void setValue(@time_t long value);
 
         @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
+
+        @Override
         public native String nativeToString();
 
         @Override
@@ -395,9 +413,6 @@ public class Types {
         }
 
     }
-
-
-
 
     @uid_t
     public static class Uid_t extends NativeIntNumber {
@@ -435,6 +450,11 @@ public class Types {
         int getValue();
 
         public native void setValue(@uid_t int value);
+
+        @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
 
         @Override
         public native String nativeToString();

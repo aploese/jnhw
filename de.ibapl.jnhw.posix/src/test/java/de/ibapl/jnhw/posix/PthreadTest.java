@@ -27,10 +27,13 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -325,4 +328,61 @@ public class PthreadTest {
         }
     }
 
+    @Test
+    @Disabled //It looks, that running this test will screw up the system internally - later tests will hang.
+    //TODO What is going on?
+    public void testPthread_t_Cancel() throws Exception {
+        System.out.println("Start testPthread_t_Cancel");
+        Pthread.Pthread_t me = Pthread.pthread_self();
+
+        int oldCancelstate = Pthread.pthread_setcancelstate(Pthread.PTHREAD_CANCEL_DISABLE());
+        Pthread.pthread_setcancelstate(oldCancelstate);
+        Assertions.assertEquals(Pthread.PTHREAD_CANCEL_ENABLE(), oldCancelstate);
+
+        int oldCanceltype = Pthread.pthread_setcanceltype(Pthread.PTHREAD_CANCEL_ASYNCHRONOUS());
+        Pthread.pthread_setcanceltype(oldCanceltype);
+        Assertions.assertEquals(Pthread.PTHREAD_CANCEL_DEFERRED(), oldCanceltype);
+
+        Assertions.assertThrows(NullPointerException.class, ()->Pthread.pthread_cancel(null));
+        
+        
+        final ObjectRef<Pthread.Pthread_t> objectRef = new ObjectRef();
+        final IntRef intRef = new IntRef(1000);
+        Thread t2 = new Thread(() -> {
+            try {
+                Pthread.pthread_testcancel();
+
+                objectRef.value = Pthread.pthread_self();
+                synchronized (objectRef) {
+                    objectRef.notifyAll();
+                }
+                while (intRef.value-- > 0) {
+                    System.err.println("LOOPING in testPthread_t_Cancel()");
+                    Thread.sleep(200);
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PthreadTest.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NativeErrorException ex) {
+                Logger.getLogger(PthreadTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.err.println("LOOPING STOPPED WITHOUT CANCEL!");
+        });
+        t2.start();
+        
+        //Id we remove this at least on linux x86_64 the following test will hang...?
+        Thread.sleep(1);
+        
+        if (objectRef.value == null) {
+            synchronized (objectRef) {
+                objectRef.wait();
+            }
+        }
+        
+        Pthread.pthread_cancel(objectRef.value);
+        final int value = intRef.value;
+        Thread.sleep(1000);
+        Assertions.assertEquals(value, intRef.value);
+
+        System.out.println("testPthread_t_Cancel - finished");
+    }
 }

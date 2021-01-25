@@ -34,13 +34,13 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
-import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.annontation.posix.sys.types.clock_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.clockid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.time_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.timer_t;
+import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.util.Objects;
 
@@ -219,7 +219,8 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method clock_nanosleep is not available natively.
+     * @throws NoSuchNativeMethodException if the method clock_nanosleep is not
+     * available natively.
      */
     public final static native void clock_nanosleep(@clockid_t int clock_id, int flags, Timespec rqtp, Timespec rmtp) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -270,7 +271,8 @@ public class Time {
      * timezone, tzname, tzset - set timezone conversion information</a>.
      *
      * @return the native value of daylight.
-     * @throws NoSuchNativeMethodException if the method daylight is not available natively.
+     * @throws NoSuchNativeMethodException if the method daylight is not
+     * available natively.
      */
     public final static native int daylight() throws NoSuchNativeMethodException;
 
@@ -295,9 +297,10 @@ public class Time {
      *
      * @return Upon successful completion, a pointer to a struct tm.
      *
-     * @throws de.ibapl.jnhw.common.exception.NativeErrorException returns the getdate_err error
-     * codes.
-     * @throws NoSuchNativeMethodException if the method getdate is not available natively.
+     * @throws de.ibapl.jnhw.common.exception.NativeErrorException returns the
+     * getdate_err error codes.
+     * @throws NoSuchNativeMethodException if the method getdate is not
+     * available natively.
      */
     public final static native Tm getdate(String string) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -456,7 +459,8 @@ public class Time {
      * @throws NullPointerException if
      * {@code ((evp != null) && (evp.sigev_notify_attributes == null))}
      * otherwise we will get a SIGSEV.
-     * @throws NoSuchNativeMethodException if the method timer_create is not available natively.
+     * @throws NoSuchNativeMethodException if the method timer_create is not
+     * available natively.
      */
     public final static native void timer_create(@clockid_t int clockid, Sigevent evp, Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -468,7 +472,8 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method timer_delete is not available natively.
+     * @throws NoSuchNativeMethodException if the method timer_delete is not
+     * available natively.
      */
     public final static native void timer_delete(Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -480,7 +485,8 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method timer_getoverrun is not available natively.
+     * @throws NoSuchNativeMethodException if the method timer_getoverrun is not
+     * available natively.
      */
     public final static native int timer_getoverrun(Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -492,7 +498,8 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method timer_gettime is not available natively.
+     * @throws NoSuchNativeMethodException if the method timer_gettime is not
+     * available natively.
      */
     public final static native void timer_gettime(Timer_t timerid, Itimerspec value) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -513,7 +520,8 @@ public class Time {
      * timezone, tzname, tzset - set timezone conversion information</a>.
      *
      * @return the native value of timezone.
-     * @throws NoSuchNativeMethodException if the method timezone is not available natively.
+     * @throws NoSuchNativeMethodException if the method timezone is not
+     * available natively.
      */
     public final static native long timezone() throws NoSuchNativeMethodException;
 
@@ -576,8 +584,7 @@ public class Time {
         }
 
         /**
-         * Timer period.
-         * After the timer expires after it_value, it will fire
+         * Timer period. After the timer expires after it_value, it will fire
          * periodically with the it_interval value.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/time.h.html">{@code structure
          * itimerspec}</a>.
@@ -660,7 +667,7 @@ public class Time {
             super(parent, offset, sizeof());
         }
 
-        public Timespec(OpaqueMemory32 parent, OpaqueMemory32 prev ) {
+        public Timespec(OpaqueMemory32 parent, OpaqueMemory32 prev) {
             this(parent, OpaqueMemory32.calcNextOffset(parent, prev, alignof()));
         }
 
@@ -944,22 +951,22 @@ public class Time {
         public native void tm_isdst(int tm_isdst);
 
         @Override
-        public String nativeToString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("{tm_year : ").append(tm_year());
-            sb.append(", tm_yday : ").append(tm_yday());
-            sb.append(", tm_mon : ").append(tm_mon());
-            sb.append(", tm_mday : ").append(tm_mday());
-            sb.append(", tm_wday : ").append(tm_wday());
-            sb.append(", tm_hour : ").append(tm_hour());
-            sb.append(", tm_min : ").append(tm_min());
-            sb.append(", tm_sec : ").append(tm_sec());
-            sb.append(", tm_isdst : ").append(tm_isdst());
-            sb.append("}");
-            return sb.toString();
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            jsb.appendIntMember("tm_year", tm_year());
+            jsb.appendIntMember("tm_yday", tm_yday());
+            jsb.appendIntMember("tm_mon", tm_mon());
+            jsb.appendIntMember("tm_mday", tm_mday());
+            jsb.appendIntMember("tm_wday", tm_wday());
+            jsb.appendIntMember("tm_hour", tm_hour());
+            jsb.appendIntMember("tm_min", tm_min());
+            jsb.appendIntMember("tm_sec", tm_sec());
+            jsb.appendIntMember("tm_isdst", tm_isdst());
+            jsb.close();
         }
 
     }
+
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html">{@code typedef
      * pthread_t}</a>.
@@ -986,13 +993,18 @@ public class Time {
 
         @AlignOf
         public static native int alignof();
-        
+
         public Timer_t() throws NoSuchNativeTypeException {
             super(sizeof(), false);
         }
 
         public Timer_t(boolean cleanMem) throws NoSuchNativeTypeException {
             super(sizeof(), cleanMem);
+        }
+
+        @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
         }
 
         @Override

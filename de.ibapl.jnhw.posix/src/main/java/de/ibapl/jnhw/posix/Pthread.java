@@ -76,6 +76,38 @@ public class Pthread {
     private static native void pthread_self0(Pthread_t result);
 
     /**
+     * <b>POSIX.TPS:</b>
+     *
+     * @return the native symbolic constant of PTHREAD_CANCEL_DISABLE.
+     */
+    @Define
+    public final static native int PTHREAD_CANCEL_DISABLE();
+
+    /**
+     * <b>POSIX.TPS:</b>
+     *
+     * @return the native symbolic constant of PTHREAD_CANCEL_ENABLE.
+     */
+    @Define
+    public final static native int PTHREAD_CANCEL_ENABLE();
+
+    /**
+     * <b>POSIX.TPS:</b>
+     *
+     * @return the native symbolic constant of PTHREAD_CANCEL_DEFERRED.
+     */
+    @Define
+    public final static native int PTHREAD_CANCEL_DEFERRED();
+
+    /**
+     * <b>POSIX.TPS:</b>
+     *
+     * @return the native symbolic constant of PTHREAD_CANCEL_ASYNCHRONOUS.
+     */
+    @Define
+    public final static native int PTHREAD_CANCEL_ASYNCHRONOUS();
+
+    /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_self.html">pthread_self
      * - get the calling thread ID</a>.
@@ -118,7 +150,7 @@ public class Pthread {
      */
     public final static native void pthread_attr_getschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException;
 
-        /**
+    /**
      * <b>POSIX.TPS:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_setinheritsched.html">pthread_attr_getinheritsched,
      * pthread_attr_setinheritsched - get and set the inheritsched attribute
@@ -129,7 +161,7 @@ public class Pthread {
      */
     public final static native void pthread_attr_setinheritsched(Pthread_attr_t attr, int inheritsched) throws NativeErrorException;
 
-        /**
+    /**
      * <b>POSIX.TPS:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_setschedparam.html">pthread_attr_getschedparam,
      * pthread_attr_setschedparam - get and set the schedparam attribute</a>.
@@ -139,7 +171,7 @@ public class Pthread {
      */
     public final static native void pthread_attr_setschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException;
 
-        /**
+    /**
      * <b>POSIX.TPS:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_getschedparam.html">pthread_getschedparam,
      * pthread_setschedparam - dynamic thread scheduling parameters access
@@ -150,7 +182,7 @@ public class Pthread {
      */
     public final static native void pthread_getschedparam(Pthread_t thread, IntRef policy, Sched.Sched_param param) throws NativeErrorException;
 
-            /**
+    /**
      * <b>POSIX.TPS:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_setschedparam.html">pthread_getschedparam,
      * pthread_setschedparam - dynamic thread scheduling parameters access
@@ -168,7 +200,8 @@ public class Pthread {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method pthread_setschedprio is not available natively.
+     * @throws NoSuchNativeMethodException if the method pthread_setschedprio is
+     * not available natively.
      */
     public final static native void pthread_setschedprio(Pthread_t thread, int prio) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -276,7 +309,63 @@ public class Pthread {
         }
 
         @Override
+        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+            sb.append(nativeToString());
+        }
+
+        @Override
         public native String nativeToString();
 
     }
+
+    /**
+     * <b>POSIX.TPS:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_cancel.html">pthread_cancel
+     * - cancel execution of a thread</a>.
+     * 
+     * TEST CRASHES
+     * 
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    final static native void pthread_cancel(Pthread_t thread) throws NativeErrorException;
+
+    /**
+     * <b>POSIX.TPS:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_testcancel.html">pthread_setcancelstate,
+     * pthread_setcanceltype, pthread_testcancel - set cancelability state</a>.
+     * 
+     * TEST CRASHES
+     * 
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    final static native void pthread_testcancel() throws NativeErrorException;
+
+    /**
+     * <b>POSIX.TPS:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_setcancelstate.html">pthread_setcancelstate,
+     * pthread_setcanceltype, pthread_testcancel - set cancelability state</a>.
+     * 
+     * TEST CRASHES
+     * 
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     * @return oldstate - the 2. argument int *oldstate.
+     */
+    final static native int pthread_setcancelstate(int state) throws NativeErrorException;
+
+    /**
+     * <b>POSIX.TPS:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_setcanceltype.html">pthread_setcancelstate,
+     * pthread_setcanceltype, pthread_testcancel - set cancelability state</a>.
+     * 
+     * TEST CRASHES
+     * 
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     * @return oldtype - the 2. argument int *oldtype.
+     */
+    final static native int pthread_setcanceltype(int type) throws NativeErrorException;
+
 }

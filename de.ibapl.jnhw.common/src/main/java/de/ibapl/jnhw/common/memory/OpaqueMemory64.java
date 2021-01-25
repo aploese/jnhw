@@ -23,6 +23,7 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.Native;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import static de.ibapl.jnhw.common.memory.OpaqueMemory32.printMemory;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 
 /**
@@ -142,12 +143,24 @@ public abstract class OpaqueMemory64 extends AbstractNativeMemory implements  Na
         return false;
     }
 
-    public String nativeToString() {
-        return printMemory(this, true);
+    @Override
+    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        printMemory(sb, this, true);
     }
-    
-    public static String printMemory(final OpaqueMemory64 mem,final  boolean printAddress) {
+    @Override
+    public String nativeToString() {
         StringBuilder sb = new StringBuilder();
+        nativeToString(sb, "", "");
+        return sb.toString();
+    }
+
+    public final static String printMemory(final OpaqueMemory64 mem, final boolean printAddress) {
+        StringBuilder sb = new StringBuilder();
+        printMemory(sb, mem, printAddress);
+        return sb.toString();
+    }
+
+    public static void printMemory(StringBuilder sb, final OpaqueMemory64 mem,final  boolean printAddress) {
         StringBuilder ascii = new StringBuilder();
         final int BLOCK_SIZE = 16;
         final int BLOCK_REMINDER = (int)(mem.sizeInBytes % BLOCK_SIZE);
@@ -195,7 +208,6 @@ public abstract class OpaqueMemory64 extends AbstractNativeMemory implements  Na
                 sb.append('\n');
             }
         }
-        return sb.toString();
     }
 
     @Override

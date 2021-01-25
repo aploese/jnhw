@@ -86,17 +86,17 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
      * Method:    sa_handler
-     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
+     * Signature: ()LLde/ibapl/jnhw/common/callnative/CallNative_I_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler
     (JNIEnv *env, jobject structSigaction) {
-        return CREATE_NATIVE_FUNCTION_POINTER((intptr_t) (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_handler);
+        return CREATE_CALL_NATIVE_I_V((uintptr_t) (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_handler);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
      * Method:    sa_handler0
-     * Signature: (Lde/ibapl/jnhw/common/nativepointer/FunctionPointer_I_V;)V
+     * Signature: (Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler0
     (JNIEnv *env, jobject structSigaction, jobject value) {
@@ -106,7 +106,7 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
      * Method:    sa_sigaction0
-     * Signature: (Lde/ibapl/jnhw/common/callbacks/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V;)V
+     * Signature: (Lde/ibapl/jnhw/common/callbacks/Callback_I_Mem_Mem_V;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction0
     (JNIEnv *env, jobject structSigaction, jobject value) {
@@ -116,11 +116,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
      * Method:    sa_sigaction
-     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
+     * Signature: ()Lde/ibapl/jnhw/common/nativecall/CallNative_I_MEM_MEM_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction
     (JNIEnv *env, jobject structSigaction) {
-        return CREATE_NATIVE_FUNCTION_POINTER((intptr_t) (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction);
+        return CREATE_CALL_NATIVE_I_MEM_MEM_V((uintptr_t) (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction);
     }
 
 #endif    

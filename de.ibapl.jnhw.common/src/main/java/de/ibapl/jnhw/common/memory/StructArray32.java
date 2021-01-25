@@ -77,20 +77,27 @@ public abstract class StructArray32<T extends OpaqueMemory32> extends OpaqueMemo
     }
 
     @Override
-    public String nativeToString() {
-        StringBuilder sb = new StringBuilder();
+    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        final String INDENT = indentPrefix + indent;
+        final boolean doIndent = INDENT.length() > 0;
         sb.append("[");
+        if (doIndent) {
+            sb.append("\n").append(INDENT);
+        }
         boolean first = true;
         for (T element : elements) {
             if (first) {
                 first = false;
             } else {
-                sb.append(", ");
+                if (doIndent) {
+                    sb.append(",\n").append(INDENT);
+                } else {
+                    sb.append(", ");
+                }
             }
             sb.append(element);
         }
         sb.append("]");
-        return sb.toString();
     }
 
     @Override

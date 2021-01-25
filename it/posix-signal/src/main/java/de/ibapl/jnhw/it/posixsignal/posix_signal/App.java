@@ -46,6 +46,8 @@ public class App {
                     System.out.println("\t 3 for simple SIGSEGV handler (in new thread)");
                     System.out.println("\t 4 force a SIGSEGV in native code");
                     System.out.println("\t 5 call current SIGSEGV handler");
+                    System.out.println("\t 6 for manged exit");
+                    System.out.println("\t 7 for advanced exit");
                 }
                 printMsg = true;
                 char input = (char) System.in.read();
@@ -67,6 +69,12 @@ public class App {
                         break;
                     case '5':
                         new CallOriginalSigSegVHandler().raise();
+                        break;
+                    case '6':
+                        new SignalHandlerForManagedExit(Signal.SIGSEGV()).raise();
+                        break;
+                    case '7':
+                        new AdvancedSignalHandler().raise();
                         break;
                     case '\n':
                         printMsg = false;

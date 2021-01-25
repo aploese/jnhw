@@ -32,7 +32,7 @@ public class IntRef {
     /**
      * the int int32_t or uint32_t.
      */
-    public int value;
+    public volatile int value;
 
     public IntRef() {
 

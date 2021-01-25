@@ -158,7 +158,7 @@ libjnhw_posix_la_DEPENDENCIES = libaio.la liberrno.la libeventfd.la \
 	libfcntl.la libioclt.la liblocale.la libpoll.la libpthread.la \
 	libsched.la libsignal.la libstdio.la libstring.la \
 	libsysstat.la libsystypes.la libtermios.la libtime.la \
-	libunistd.la libposixutils.la \
+	libucontext.la libunistd.la libposixutils.la \
 	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 am_libjnhw_posix_la_OBJECTS = jnhw-posix-jni.lo
 libjnhw_posix_la_OBJECTS = $(am_libjnhw_posix_la_OBJECTS)
@@ -211,6 +211,9 @@ libtime_la_LIBADD =
 am_libtime_la_OBJECTS = TimeDefines.lo TimeFunctions.lo \
 	Time_Itimerspec.lo Time_Timer_t.lo Time_Timespec.lo Time_Tm.lo
 libtime_la_OBJECTS = $(am_libtime_la_OBJECTS)
+libucontext_la_LIBADD =
+am_libucontext_la_OBJECTS = UcontextDefines.lo UcontextFunctions.lo
+libucontext_la_OBJECTS = $(am_libucontext_la_OBJECTS)
 libunistd_la_LIBADD =
 am_libunistd_la_OBJECTS = UnistdDefines.lo UnistdFunctions.lo
 libunistd_la_OBJECTS = $(am_libunistd_la_OBJECTS)
@@ -272,6 +275,8 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/Types_Off_t.Plo ./$(DEPDIR)/Types_Pid_t.Plo \
 	./$(DEPDIR)/Types_Size_t.Plo ./$(DEPDIR)/Types_Ssize_t.Plo \
 	./$(DEPDIR)/Types_Time_t.Plo ./$(DEPDIR)/Types_Uid_t.Plo \
+	./$(DEPDIR)/UcontextDefines.Plo \
+	./$(DEPDIR)/UcontextFunctions.Plo \
 	./$(DEPDIR)/UnistdDefines.Plo ./$(DEPDIR)/UnistdFunctions.Plo \
 	./$(DEPDIR)/jnhw-posix-jni.Plo
 am__mv = mv -f
@@ -302,7 +307,7 @@ SOURCES = $(libaio_la_SOURCES) $(liberrno_la_SOURCES) \
 	$(libstdio_la_SOURCES) $(libstring_la_SOURCES) \
 	$(libsysstat_la_SOURCES) $(libsystypes_la_SOURCES) \
 	$(libtermios_la_SOURCES) $(libtime_la_SOURCES) \
-	$(libunistd_la_SOURCES)
+	$(libucontext_la_SOURCES) $(libunistd_la_SOURCES)
 DIST_SOURCES = $(libaio_la_SOURCES) $(liberrno_la_SOURCES) \
 	$(libeventfd_la_SOURCES) $(libfcntl_la_SOURCES) \
 	$(libioclt_la_SOURCES) $(libjnhw_posix_la_SOURCES) \
@@ -312,7 +317,7 @@ DIST_SOURCES = $(libaio_la_SOURCES) $(liberrno_la_SOURCES) \
 	$(libstdio_la_SOURCES) $(libstring_la_SOURCES) \
 	$(libsysstat_la_SOURCES) $(libsystypes_la_SOURCES) \
 	$(libtermios_la_SOURCES) $(libtime_la_SOURCES) \
-	$(libunistd_la_SOURCES)
+	$(libucontext_la_SOURCES) $(libunistd_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -502,6 +507,7 @@ noinst_LTLIBRARIES = \
  libsystypes.la \
  libtermios.la \
  libtime.la \
+ libucontext.la \
  libunistd.la \
  libposixutils.la
 
@@ -522,6 +528,7 @@ libjnhw_posix_la_LIBADD = \
  libsystypes.la \
  libtermios.la \
  libtime.la \
+ libucontext.la \
  libunistd.la \
  libposixutils.la \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
@@ -626,6 +633,10 @@ libtime_la_SOURCES = \
  Time_Timer_t.c \
  Time_Timespec.c \
  Time_Tm.c
+
+libucontext_la_SOURCES = \
+ UcontextDefines.c \
+ UcontextFunctions.c
 
 libunistd_la_SOURCES = \
  UnistdDefines.c \
@@ -765,6 +776,9 @@ libtermios.la: $(libtermios_la_OBJECTS) $(libtermios_la_DEPENDENCIES) $(EXTRA_li
 libtime.la: $(libtime_la_OBJECTS) $(libtime_la_DEPENDENCIES) $(EXTRA_libtime_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libtime_la_OBJECTS) $(libtime_la_LIBADD) $(LIBS)
 
+libucontext.la: $(libucontext_la_OBJECTS) $(libucontext_la_DEPENDENCIES) $(EXTRA_libucontext_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libucontext_la_OBJECTS) $(libucontext_la_LIBADD) $(LIBS)
+
 libunistd.la: $(libunistd_la_OBJECTS) $(libunistd_la_DEPENDENCIES) $(EXTRA_libunistd_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libunistd_la_OBJECTS) $(libunistd_la_LIBADD) $(LIBS)
 
@@ -838,6 +852,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Ssize_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Time_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Uid_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-posix-jni.Plo@am__quote@ # am--include-marker
@@ -1065,6 +1081,8 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Types_Ssize_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Time_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Uid_t.Plo
+	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
+	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo
@@ -1177,6 +1195,8 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Types_Ssize_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Time_t.Plo
 	-rm -f ./$(DEPDIR)/Types_Uid_t.Plo
+	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
+	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo

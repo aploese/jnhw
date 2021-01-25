@@ -42,6 +42,7 @@ import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.unix.sys.Ioctl;
+import de.ibapl.jnhw.x_open.Ucontext;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
@@ -207,6 +208,12 @@ public class DefinesTest {
     }
 
     @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testUcontext() throws Exception {
+        testDefines(Ucontext.class);
+    }
+
+    @Test
     public void testDefines() throws Exception {
         testDefines(Defines.class);
     }
@@ -346,6 +353,15 @@ public class DefinesTest {
             assertFalse(Time.HAVE_TIME_H(), "not expected to have time.h");
         } else {
             assertTrue(Time.HAVE_TIME_H(), "expected to have time.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_UCONTEXT_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            assertFalse(Ucontext.HAVE_UCONTEXT_H(), "not expected to have ucontext.h");
+        } else {
+            assertTrue(Ucontext.HAVE_UCONTEXT_H(), "expected to have ucontext.h");
         }
     }
 

@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.common.nativepointer;
 
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import java.util.function.Function;
@@ -29,7 +30,7 @@ import java.util.function.Function;
  *
  * @author aploese
  */
-public class FunctionPtr_I_I_Mem_V extends NativeFunctionPointer {
+public class FunctionPtr_I_I_Mem_V<C extends AbstractNativeMemory> extends NativeFunctionPointer {
 
     protected <T extends FunctionPtr_I_I_Mem_V> FunctionPtr_I_I_Mem_V(Function<T, NativeAddressHolder> producer) {
         super(producer);

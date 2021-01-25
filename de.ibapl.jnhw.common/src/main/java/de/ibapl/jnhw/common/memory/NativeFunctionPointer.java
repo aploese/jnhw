@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.util.JnhwFormater;
+import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import java.util.function.Function;
 
 /**
@@ -83,6 +84,12 @@ public class NativeFunctionPointer {
     @Override
     public String toString() {
         return "{nativeAddress : " + JnhwFormater.formatAddress(nativeAddress) + "}";
+    }
+
+    public void nativeToString(StringBuilder sb, String INDENT_PREFIX, String INDENT) {
+        JsonStringBuilder jsb = new JsonStringBuilder(sb, INDENT_PREFIX, INDENT);
+        jsb.appendAddressMember("nativeAddress", nativeAddress);
+        jsb.close();
     }
 
     @FunctionalInterface

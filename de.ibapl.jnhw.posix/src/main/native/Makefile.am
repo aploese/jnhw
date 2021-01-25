@@ -27,6 +27,7 @@ noinst_LTLIBRARIES = \
  libsystypes.la \
  libtermios.la \
  libtime.la \
+ libucontext.la \
  libunistd.la \
  libposixutils.la
 
@@ -47,6 +48,7 @@ libjnhw_posix_la_LIBADD = \
  libsystypes.la \
  libtermios.la \
  libtime.la \
+ libucontext.la \
  libunistd.la \
  libposixutils.la \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
@@ -152,9 +154,14 @@ libtime_la_SOURCES = \
  Time_Timespec.c \
  Time_Tm.c
 
+libucontext_la_SOURCES = \
+ UcontextDefines.c \
+ UcontextFunctions.c
+
 libunistd_la_SOURCES = \
  UnistdDefines.c \
  UnistdFunctions.c
+
 
 #hook into make all
 all-local: $(LIB_JNHW_POSIX_RES_NAME)
