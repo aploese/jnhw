@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.WordSize;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  *
@@ -44,7 +45,21 @@ import de.ibapl.jnhw.libloader.WordSize;
 public class Callback_IJ_V_Test {
 
     private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-    private final static long CB_VALUE = 0xFEDCBA9876543210L;
+    private final static long CB_VALUE;
+
+    static {
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                CB_VALUE = 0x00000000FEDCBA98L;
+                break;
+            case _64_BIT:
+                CB_VALUE = 0xFEDCBA9876543210L;
+                break;
+            default:
+                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+        }
+
+    }
 
     private class DummyCB extends Callback_IJ_V_Impl {
 
@@ -108,6 +123,11 @@ public class Callback_IJ_V_Test {
     @Test
     public void testMAX_CALL_BACKS() {
         System.out.println("MAX_CALL_BACKS");
+
+        //Cleanup
+        System.runFinalization();
+        System.gc();
+
         int maxCB = Callback_IJ_V_Impl.MAX_CALL_BACKS();
         assertEquals(8, maxCB);
         Callback_IJ_V[] cbs = new Callback_IJ_V[maxCB];
@@ -276,6 +296,11 @@ public class Callback_IJ_V_Test {
         }
 
         ref.value = -1;
+        
+        if (MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT) {
+            assertThrows(IllegalArgumentException.class, ()->getCallbackPtr().call(CB_VALUE));
+        }
+        
         getCallbackPtr().call(CB_VALUE);
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
@@ -289,10 +314,10 @@ public class Callback_IJ_V_Test {
         }
         if (MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT) {
             ref.value = -1;
-            assertThrows(IllegalArgumentException.class, ()->getCallbackPtr().call(-1L - Integer.MIN_VALUE));
-            assertThrows(IllegalArgumentException.class, ()->getCallbackPtr().call(1L + Integer.MAX_VALUE));
+            assertThrows(IllegalArgumentException.class, () -> getCallbackPtr().call(-1L - Integer.MIN_VALUE));
+            assertThrows(IllegalArgumentException.class, () -> getCallbackPtr().call(1L + Integer.MAX_VALUE));
         }
-        
+
         callback = null;
 
         System.runFinalization();

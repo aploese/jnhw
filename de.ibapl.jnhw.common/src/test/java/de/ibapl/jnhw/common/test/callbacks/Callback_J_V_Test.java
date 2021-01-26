@@ -26,12 +26,12 @@ import de.ibapl.jnhw.common.callback.Callback_J_V_Impl;
 import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.nativecall.CallNative_IJ_V;
 import de.ibapl.jnhw.common.nativecall.CallNative_J_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -54,6 +54,12 @@ public class Callback_J_V_Test {
         LibJnhwCommonTestLoader.touch();
     }
     
+    @BeforeEach
+    public void setUpBefore() throws Exception {
+        System.runFinalization();
+        System.gc();
+    }
+
     public Callback_J_V_Test() {
     }
     

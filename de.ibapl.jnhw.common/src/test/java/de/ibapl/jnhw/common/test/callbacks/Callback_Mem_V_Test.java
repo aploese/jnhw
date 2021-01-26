@@ -33,6 +33,7 @@ import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -58,6 +59,12 @@ public class Callback_Mem_V_Test {
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
         LibJnhwCommonTestLoader.touch();
+    }
+
+    @BeforeEach
+    public void setUpBefore() throws Exception {
+        System.runFinalization();
+        System.gc();
     }
 
     public Callback_Mem_V_Test() {
