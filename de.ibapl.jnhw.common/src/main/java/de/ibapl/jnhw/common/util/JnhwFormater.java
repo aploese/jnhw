@@ -48,7 +48,7 @@ public class JnhwFormater {
                     return String.format("0x%08x", address);
                 } else {
                     //Error?? on 32 bit we got the upper 32 set?? 
-                    return String.format("0x(!>>>)%08x(<<<!)0x%08x", upper32 >>> 32, address &0x00000000FFFFFFFFL);
+                    return String.format("0x(!>>>)%08x(<<<!)%08x", upper32 >>> 32, address &0x00000000FFFFFFFFL);
                 }
             default:
                 throw new RuntimeException("UnknownWordsize");

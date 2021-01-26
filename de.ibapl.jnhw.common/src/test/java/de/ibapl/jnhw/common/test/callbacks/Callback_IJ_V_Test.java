@@ -50,7 +50,7 @@ public class Callback_IJ_V_Test {
     static {
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                CB_VALUE = 0x00000000FEDCBA98L;
+                CB_VALUE = 0xFEDCBA98;
                 break;
             case _64_BIT:
                 CB_VALUE = 0xFEDCBA9876543210L;
@@ -296,11 +296,7 @@ public class Callback_IJ_V_Test {
         }
 
         ref.value = -1;
-        
-        if (MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT) {
-            assertThrows(IllegalArgumentException.class, ()->getCallbackPtr().call(CB_VALUE));
-        }
-        
+
         getCallbackPtr().call(CB_VALUE);
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
@@ -314,7 +310,7 @@ public class Callback_IJ_V_Test {
         }
         if (MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT) {
             ref.value = -1;
-            assertThrows(IllegalArgumentException.class, () -> getCallbackPtr().call(-1L - Integer.MIN_VALUE));
+            assertThrows(IllegalArgumentException.class, () -> getCallbackPtr().call((long)Integer.MIN_VALUE - 1L));
             assertThrows(IllegalArgumentException.class, () -> getCallbackPtr().call(1L + Integer.MAX_VALUE));
         }
 

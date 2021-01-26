@@ -50,7 +50,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1IJ_1V_ca
     } else if (value < INT32_MIN) {
         throw_IllegalArgumentException(env, "value < INT32_MIN!");
     } else {
-        (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t), this))(value);
+        (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t), this))((int32_t)value);
     }
 #endif
 }
