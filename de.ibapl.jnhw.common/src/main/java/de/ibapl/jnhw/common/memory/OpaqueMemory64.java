@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.datatypes.Native;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import static de.ibapl.jnhw.common.memory.OpaqueMemory32.printMemory;
 import de.ibapl.jnhw.common.util.JnhwFormater;
+import java.io.IOException;
 
 /**
  *
@@ -34,12 +35,12 @@ import de.ibapl.jnhw.common.util.JnhwFormater;
  *
  * @author aploese
  */
-public abstract class OpaqueMemory64 extends AbstractNativeMemory implements  Native {
+public abstract class OpaqueMemory64 extends AbstractNativeMemory implements Native {
 
     public static void clear(OpaqueMemory64 mem) {
         memset(mem, (byte) 0);
     }
-    
+
     public static native void copy(byte[] src, int srcPos, OpaqueMemory64 dest, long destPos, int length);
 
     public static native void copy(OpaqueMemory64 src, long srcPos, byte[] dest, int destPos, int length);
@@ -86,7 +87,7 @@ public abstract class OpaqueMemory64 extends AbstractNativeMemory implements  Na
      * @param elementSizeInBytes
      * @param clearMem
      */
-    protected OpaqueMemory64(long elements, long elementSizeInBytes, boolean clearMem) throws NoSuchNativeMethodException  {
+    protected OpaqueMemory64(long elements, long elementSizeInBytes, boolean clearMem) throws NoSuchNativeMethodException {
         super(elements, elementSizeInBytes, clearMem);
         this.sizeInBytes = elementSizeInBytes * elements;
     }
@@ -144,26 +145,35 @@ public abstract class OpaqueMemory64 extends AbstractNativeMemory implements  Na
     }
 
     @Override
-    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
         printMemory(sb, this, true);
     }
+
     @Override
     public String nativeToString() {
         StringBuilder sb = new StringBuilder();
-        nativeToString(sb, "", "");
+        try {
+            nativeToString(sb, "", "");
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
         return sb.toString();
     }
 
     public final static String printMemory(final OpaqueMemory64 mem, final boolean printAddress) {
         StringBuilder sb = new StringBuilder();
-        printMemory(sb, mem, printAddress);
+        try {
+            printMemory(sb, mem, printAddress);
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
         return sb.toString();
     }
 
-    public static void printMemory(StringBuilder sb, final OpaqueMemory64 mem,final  boolean printAddress) {
+    public static void printMemory(Appendable sb, final OpaqueMemory64 mem, final boolean printAddress) throws IOException {
         StringBuilder ascii = new StringBuilder();
         final int BLOCK_SIZE = 16;
-        final int BLOCK_REMINDER = (int)(mem.sizeInBytes % BLOCK_SIZE);
+        final int BLOCK_REMINDER = (int) (mem.sizeInBytes % BLOCK_SIZE);
         final long BLOCK_COUNT = mem.sizeInBytes / BLOCK_SIZE + (BLOCK_REMINDER == 0 ? 0 : 1);
         byte[] block = new byte[BLOCK_SIZE];
         for (long i = 0; i < BLOCK_COUNT; i++) {

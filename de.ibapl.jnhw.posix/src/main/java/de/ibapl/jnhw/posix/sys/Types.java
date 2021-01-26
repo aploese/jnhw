@@ -37,6 +37,7 @@ import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.io.IOException;
 
 /**
  * Wrapper around the {@code  <sys/stat.h>} header.
@@ -97,7 +98,7 @@ public class Types {
         public native void setValue(@off_t long value);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 
@@ -149,7 +150,7 @@ public class Types {
         public native void setValue(@mode_t int value);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 
@@ -200,7 +201,7 @@ public class Types {
         public native void setValue(@ssize_t long value);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 
@@ -251,7 +252,7 @@ public class Types {
         public native void setValue(@pid_t long value);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 
@@ -348,7 +349,7 @@ public class Types {
         public native void setValue(@clock_t long value);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 
@@ -400,7 +401,7 @@ public class Types {
         public native void setValue(@time_t long value);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 
@@ -452,7 +453,7 @@ public class Types {
         public native void setValue(@uid_t int value);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 

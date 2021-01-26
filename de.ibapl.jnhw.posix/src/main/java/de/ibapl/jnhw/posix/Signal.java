@@ -46,10 +46,10 @@ import de.ibapl.jnhw.common.nativecall.CallNative_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
-import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.io.IOException;
 
 /**
  * Wrapper around the {@code <signal.h>} header.
@@ -140,7 +140,7 @@ public class Signal {
             super(owner, offset, sizeof());
         }
 
-        private void maybeDoFormatBeforeFirst(StringBuilder sb, boolean first, final String indent) {
+        private void maybeDoFormatBeforeFirst(Appendable sb, boolean first, final String indent) throws IOException {
             if (first) {
                 sb.append(indent);
             } else {
@@ -150,7 +150,7 @@ public class Signal {
         }
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             boolean isFirst = true;
             final String INDENT = indentPrefix + indent;
             final boolean doIndent = INDENT.length() > 0;
@@ -407,7 +407,7 @@ public class Signal {
         }
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 
@@ -585,7 +585,7 @@ public class Signal {
         }
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 
@@ -1073,9 +1073,9 @@ public class Signal {
             cachedHandlerOrAction = sa_sigaction;
             sa_sigaction0(sa_sigaction);
         }
-        
+
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             jsb.appendFunctionPtrMember("sa_handler", sa_handler());
             jsb.appendStruct32Member("sa_mask", sa_mask);
@@ -1300,7 +1300,7 @@ public class Signal {
         public final Mcontext_t uc_mcontext;
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             try {
                 jsb.appendNativeAddressHolderMember("uc_link: ", uc_link0());
@@ -1403,7 +1403,7 @@ public class Signal {
         private native void ss_sp(T ss_sp);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             jsb.appendNativeAddressHolderMember("ss_sp", ss_sp0());
             jsb.appendLongMember("ss_size", ss_size());
@@ -1540,22 +1540,19 @@ public class Signal {
         public final Sigval<T> si_value;
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
-            sb.append(nativeToString());
-        }
-
-        @Override
-        public String nativeToString() {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            jsb.appendAddressMember("si_addr", si_addr());
             try {
-                return String.format("{si_addr : %d, si_band : %d, si_code : %d, si_errno : %d, si_pid : %d, si_signo : %d, si_status : %d, si_value : %s}", si_addr(), si_band(), si_code(), si_errno(), si_pid(), si_signo(), si_status(), si_value);
-            } catch (NoSuchNativeTypeMemberException nstme) {
-                if ("si_band".equals(nstme.memberName)) {
-                    return String.format("{si_addr : %d, si_code : %d, si_errno : %d, si_pid : %d, si_signo : %d, si_status : %d, si_value : %s}", si_addr(), si_code(), si_errno(), si_pid(), si_signo(), si_status(), si_value);
-                } else {
-                    throw new RuntimeException(nstme);
-                }
+                jsb.appendHexLongMember("si_band", si_band());
+            } catch (NoSuchNativeTypeMemberException nsntme) {
             }
-
+            jsb.appendHexIntMember("si_code", si_code());
+            jsb.appendIntMember("si_errno", si_errno());
+            jsb.appendIntMember("si_pid", si_pid());
+            jsb.appendIntMember("si_signo", si_signo());
+            jsb.appendHexIntMember("si_status", si_status());
+            jsb.appendStruct32Member("si_value", si_value);
         }
 
     }

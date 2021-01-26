@@ -139,7 +139,7 @@ public class PointerArray32Test {
         OpaqueMemory32 element1 = new Memory32Heap(1, true);
         instance.set(1, element1);
         String result = instance.nativeToString();
-        Assertions.assertEquals("[null, " + element1 + ", null, null, null, null]", result);
+        Assertions.assertEquals("[null, " + element1.nativeToString() + ", null, null, null, null]", result);
     }
 
     @Test

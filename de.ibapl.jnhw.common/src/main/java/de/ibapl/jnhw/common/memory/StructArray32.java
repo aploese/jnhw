@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import java.io.IOException;
 
 /**
  *
@@ -77,7 +78,7 @@ public abstract class StructArray32<T extends OpaqueMemory32> extends OpaqueMemo
     }
 
     @Override
-    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
         final String INDENT = indentPrefix + indent;
         final boolean doIndent = INDENT.length() > 0;
         sb.append("[");
@@ -95,7 +96,11 @@ public abstract class StructArray32<T extends OpaqueMemory32> extends OpaqueMemo
                     sb.append(", ");
                 }
             }
-            sb.append(element);
+            if (element == null) {
+                sb.append("null");
+            } else {
+                element.nativeToString(sb, INDENT, indent);
+            }
         }
         sb.append("]");
     }

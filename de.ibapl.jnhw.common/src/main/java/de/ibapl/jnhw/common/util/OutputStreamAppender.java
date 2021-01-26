@@ -19,25 +19,51 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.it.posixsignal.posix_signal;
+package de.ibapl.jnhw.common.util;
 
-import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.posix.Signal;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  *
  * @author aploese
  */
-public class SignalUnhandled {
-    
-    void raise() throws NativeErrorException {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            //This will never be called
-            System.err.println("End from ShutdownHook");
-        }));
-        System.out.println("Will raise SIGSEGV");
-        Signal.raise(Signal.SIGSEGV());
-        System.out.println("SIGSEGV raised");
+public class OutputStreamAppender implements Appendable {
+
+    final OutputStream os;
+
+    public OutputStreamAppender(OutputStream os) {
+        this.os = os;
     }
-    
+
+    @Override
+    public Appendable append(CharSequence csq) throws IOException {
+        if (csq instanceof String) {
+            os.write(((String) csq).getBytes());
+        } else {
+            append(csq, 0, csq.length());
+        }
+        return this;
+    }
+
+    @Override
+    public Appendable append(CharSequence csq, int start, int end) throws IOException {
+        byte[] val = new byte[csq.length()];
+        for (int i = start; i < end; i++) {
+            val[i] = (byte) csq.charAt(i);
+        }
+        os.write(val);
+        return this;
+    }
+
+    @Override
+    public Appendable append(char c) throws IOException {
+        os.write(c);
+        return this;
+    }
+
+    public void flush() throws IOException {
+        os.flush();
+    }
+
 }

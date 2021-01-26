@@ -26,13 +26,13 @@ import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.annotation.uint8_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import java.io.IOException;
 
 /**
  *
  * @author aploese
  */
 public class Uint8_t extends NativeIntNumber {
-
 
     /**
      * Make sure the native lib is loaded.
@@ -61,7 +61,7 @@ public class Uint8_t extends NativeIntNumber {
     public native void rawUint8_t(@uint8_t byte value);
 
     @Override
-    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
         sb.append(nativeToString());
     }
 

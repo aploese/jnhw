@@ -42,6 +42,7 @@ import de.ibapl.jnhw.annontation.posix.sys.types.time_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.timer_t;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -951,7 +952,7 @@ public class Time {
         public native void tm_isdst(int tm_isdst);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             jsb.appendIntMember("tm_year", tm_year());
             jsb.appendIntMember("tm_yday", tm_yday());
@@ -1003,7 +1004,7 @@ public class Time {
         }
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 

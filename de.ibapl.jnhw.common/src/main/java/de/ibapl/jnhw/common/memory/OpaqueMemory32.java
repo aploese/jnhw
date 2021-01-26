@@ -24,6 +24,7 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.datatypes.Native;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.JnhwFormater;
+import java.io.IOException;
 
 /**
  *
@@ -238,7 +239,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
     }
 
     @Override
-    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
         //Ignore indent and indentPrefix
         printMemory(sb, this, true);
     }
@@ -246,17 +247,25 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
     @Override
     public String nativeToString() {
         StringBuilder sb = new StringBuilder();
-        nativeToString(sb, "", "");
+        try {
+            nativeToString(sb, "", "");
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
         return sb.toString();
     }
 
     public final static String printMemory(final OpaqueMemory32 mem, final boolean printAddress) {
         StringBuilder sb = new StringBuilder();
-        printMemory(sb, mem, printAddress);
+        try {
+            printMemory(sb, mem, printAddress);
+        } catch (IOException ioe) {
+            throw  new RuntimeException(ioe);
+        } 
         return sb.toString();
     }
 
-    public final static void printMemory(StringBuilder sb, final OpaqueMemory32 mem, final boolean printAddress) {
+    public final static void printMemory(Appendable sb, final OpaqueMemory32 mem, final boolean printAddress) throws IOException {
         StringBuilder ascii = new StringBuilder();
         final int BLOCK_SIZE = 16;
         final int BLOCK_REMINDER = mem.sizeInBytes % BLOCK_SIZE;

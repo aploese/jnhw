@@ -19,6 +19,7 @@
     <modules>
         <module>hello-world</module>
         <module>posix-signal</module>
+        <module>posix-graceful-exit-sigsegv</module>
     </modules>
 
 </project>

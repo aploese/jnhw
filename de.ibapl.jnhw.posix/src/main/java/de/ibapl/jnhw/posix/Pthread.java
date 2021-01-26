@@ -35,6 +35,7 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.io.IOException;
 
 /**
  * Wrapper around the {@code <pthread.h>} header.
@@ -309,7 +310,7 @@ public class Pthread {
         }
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 

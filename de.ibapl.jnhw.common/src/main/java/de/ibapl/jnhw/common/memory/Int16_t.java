@@ -26,6 +26,7 @@ import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import java.io.IOException;
 
 /**
  *
@@ -61,7 +62,7 @@ public class Int16_t extends NativeIntNumber {
     public native void rawInt16_t(@int16_t short value);
     
     @Override
-    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException{
         sb.append(nativeToString());
     }
 

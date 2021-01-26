@@ -24,6 +24,8 @@ package de.ibapl.jnhw.it.posixsignal.posix_signal;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.Signal;
+import de.ibapl.jnhw.it.posixsignal.posix_signal.SignalHandler.ThreadingModel;
+import de.ibapl.jnhw.it.posixsignal.posix_signal.SignalHandler.SignalAction;
 
 /**
  *
@@ -31,67 +33,142 @@ import de.ibapl.jnhw.posix.Signal;
  */
 public class App {
 
+    public final static int SIGNAL_TO_RAISE = Signal.SIGSEGV();
+
     public static void main(String[] args) throws Exception {
+
         MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
         if (mtb.getOS() == OS.WINDOWS) {
             throw new RuntimeException("No POSIX system!");
-        } else {
-            boolean printMsg = true;
-            do {
-                if (printMsg) {
-                    System.out.println("Choose ");
-                    System.out.println("\t 0 exit ");
-                    System.out.println("\t 1 for unhandled exception SIGSEGV");
-                    System.out.println("\t 2 for simple SIGSEGV handler (in same thread)");
-                    System.out.println("\t 3 for simple SIGSEGV handler (in new thread)");
-                    System.out.println("\t 4 force a SIGSEGV in native code");
-                    System.out.println("\t 5 call current SIGSEGV handler");
-                    System.out.println("\t 6 for manged exit");
-                    System.out.println("\t 7 for advanced exit");
-                }
-                printMsg = true;
-                char input = (char) System.in.read();
-                switch (input) {
-                    case '0':
-                        System.exit(0);
-                        break;
-                    case '1':
-                        new SignalUnhandled().raise();
-                        break;
-                    case '2':
-                        new SimpleSignalHandler(Signal.SIGSEGV(), true).raise();
-                        break;
-                    case '3':
-                        new SimpleSignalHandler(Signal.SIGSEGV(), false).raise();
-                        break;
-                    case '4':
-                        new NativeSementationFaultHandler().raise();
-                        break;
-                    case '5':
-                        new CallOriginalSigSegVHandler().raise();
-                        break;
-                    case '6':
-                        new SignalHandlerForManagedExit(Signal.SIGSEGV()).raise();
-                        break;
-                    case '7':
-                        new AdvancedSignalHandler().raise();
-                        break;
-                    case '\n':
-                        printMsg = false;
-                        break;
-                    default:
-                        System.out.println("Wrong input");
-
-                }
-                //Free Callbacks
-                while (SimpleSignalHandler.callbacksAvailable() == 0) {
-                    System.out.println("No Callabacks of " + SimpleSignalHandler.MAX_CALL_BACKS() + " left. Will try to free resources!");
-                    System.runFinalization();
-                    System.gc();
-                    System.out.println("Now we have " + SimpleSignalHandler.callbacksAvailable() + " callbacks.");
-                }
-            } while (true);
         }
-    }
+        //set a shutdown hook
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.err.println("***********************************************************");
+            System.err.println("*                                                         *");
+            System.err.println("*                 End from ShutdownHook!                  *");
+            System.err.println("*                                                         *");
+            System.err.println("***********************************************************");
+        }));
 
+        do {
+            char input;
+            if (args.length == 3) {
+                input = args[0].charAt(0);
+            } else {
+                System.out.println("Choose signal handler");
+                System.out.println("\t 0: signal unhandled");
+                System.out.println("\t 1: sigaction.sa_sigaction signal handler print msg");
+                System.out.println("\t 2: sigaction.sa_sigaction signal handler print msg and System.exit(signal)");
+                System.out.println("\t 3: sigaction.sa_sigaction signal handler print msg call old handler");
+                System.out.println("\t 4: signal(int, (void*)(int)) signal handler print msg");
+                System.out.println("\t 5: signal(int, (void*)(int)) signal handler print msg and System.exit(signal)");
+                System.out.println("\t 6: signal(int, (void*)(int)) signal handler print msg call old handler");
+                System.out.println("\t 7: exit");
+                input = (char) System.in.read();
+            }
+            SignalHandler signalHandler = null;
+            switch (input) {
+                case '0':
+                    signalHandler = new NoSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG);
+                    break;
+                case '1':
+                    signalHandler = new SigactionSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG);
+                    break;
+                case '2':
+                    signalHandler = new SigactionSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG_AND_SYSTEM_EXIT);
+                    break;
+                case '3':
+                    signalHandler = new SigactionSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG_AND_CALL_OLD_HANDLER);
+                    break;
+                case '4':
+                    signalHandler = new SimpleSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG);
+                    break;
+                case '5':
+                    signalHandler = new SimpleSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG_AND_SYSTEM_EXIT);
+                    break;
+                case '6':
+                    signalHandler = new SimpleSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG_AND_CALL_OLD_HANDLER);
+                    break;
+                case '7':
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Wrong input for signal handler");
+                    continue;
+            }
+            if (args.length != 3) {
+                System.in.read(); //read '\n'
+            }
+
+            if (args.length == 3) {
+                input = args[1].charAt(0);
+            } else {
+                System.out.println("Choose threading model");
+                System.out.println("\t 0: setup in thread main, signal in thread main");
+                System.out.println("\t 1: setup in thread main, signal in thread 1");
+                System.out.println("\t 2: setup in thread 1, signal in thread main");
+                System.out.println("\t 3: setup in thread 1, signal in thread 1");
+                System.out.println("\t 4: setup in thread 1, signal in thread 2");
+                System.out.println("\t 5: exit");
+                input = (char) System.in.read();
+            }
+            switch (input) {
+                case '0':
+                    signalHandler.setThreadingModel(ThreadingModel.SETUP_IN_THREAD_MAIN__SIGNAL_IN_THREAD_MAIN);
+                    break;
+                case '1':
+                    signalHandler.setThreadingModel(ThreadingModel.SETUP_IN_THREAD_MAIN__SIGNAL_IN_THREAD_1);
+                    break;
+                case '2':
+                    signalHandler.setThreadingModel(ThreadingModel.SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_MAIN);
+                    break;
+                case '3':
+                    signalHandler.setThreadingModel(ThreadingModel.SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_1);
+                    break;
+                case '4':
+                    signalHandler.setThreadingModel(ThreadingModel.SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_2);
+                    break;
+                case '5':
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Wrong input for threading model");
+                    continue;
+            }
+            if (args.length != 3) {
+                System.in.read(); //read '\n'
+            }
+
+            if (args.length == 3) {
+                input = args[2].charAt(0);
+            } else {
+                System.out.println("Choose signal source");
+                System.out.println("\t 0: raise signal");
+                System.out.println("\t 1: force signal in native code the signal will reoccur forever");
+                System.out.println("\t 2: exit");
+                input = (char) System.in.read();
+            }
+            switch (input) {
+                case '0':
+                    signalHandler.raiseSignal();
+                    break;
+                case '1':
+                    signalHandler.forceSignal();
+                    break;
+                case '2':
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Wrong input for threading model");
+                    continue;
+            }
+            if (args.length != 3) {
+                System.in.read(); //read '\n'
+            } else {
+                args = new String[0];
+            }
+            System.runFinalization();
+            System.gc();
+        } while (true);
+    }
 }

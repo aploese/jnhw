@@ -39,6 +39,7 @@ import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annontation.posix.termios.cc_t;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.io.IOException;
 
 /**
  * Wrapper around the {@code <termios.h>} header.
@@ -1396,7 +1397,7 @@ public final class Termios {
         public native void setValue(@cc_t byte value);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 
@@ -1585,7 +1586,7 @@ public final class Termios {
         public native void setValue(@speed_t int value);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 
@@ -1617,7 +1618,7 @@ public final class Termios {
             LibJnhwPosixLoader.touch();
         }
 
-        static public void c_cflag2String(StringBuilder sb, int c_cflag) {
+        static public void c_cflag2String(Appendable sb, int c_cflag) throws IOException {
             if ((CSIZE() & c_cflag) == CS5()) {
                 sb.append("CS5 ");
                 c_cflag &= ~CS5();
@@ -1681,7 +1682,7 @@ public final class Termios {
             }
         }
 
-        static public void c_iflag2String(StringBuilder sb, int c_iflag) {
+        static public void c_iflag2String(Appendable sb, int c_iflag) throws IOException {
             if ((BRKINT() & c_iflag) == BRKINT()) {
                 sb.append("BRKINT ");
                 c_iflag &= ~BRKINT();
@@ -1739,7 +1740,7 @@ public final class Termios {
             }
         }
 
-        static public void c_lflag2String(StringBuilder sb, int c_lflag) {
+        static public void c_lflag2String(Appendable sb, int c_lflag) throws IOException {
             if ((ECHO() & c_lflag) == ECHO()) {
                 sb.append("ECHO ");
                 c_lflag &= ~ECHO();
@@ -1781,7 +1782,7 @@ public final class Termios {
             }
         }
 
-        static public void c_oflag2String(StringBuilder sb, int c_oflag) {
+        static public void c_oflag2String(Appendable sb, int c_oflag) throws IOException {
             if ((OPOST() & c_oflag) == OPOST()) {
                 sb.append("OPOST ");
                 c_oflag &= ~OPOST();
@@ -1956,7 +1957,7 @@ public final class Termios {
         public native void setValue(@tcflag_t int value);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
         }
 
@@ -2188,17 +2189,17 @@ public final class Termios {
             }
         }
 
-        static public void c_cc2String(StringBuilder sb, int index, byte c_cc) {
+        static public void c_cc2String(Appendable sb, int index, byte c_cc) throws IOException {
             sb.append(String.format(", c_cc[%s] = 0x%02x", toCcName(index), c_cc));
         }
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            jsb.appendMember("c_iflag", "[", (sbu)->Tcflag_t.c_iflag2String(sbu, c_iflag()), "]");
-            jsb.appendMember("c_oflag", "[", (sbu)->Tcflag_t.c_oflag2String(sb, c_oflag()), "]");
-            jsb.appendMember("c_cflag", "[", (sbu)->Tcflag_t.c_cflag2String(sb, c_cflag()), "]");
-            jsb.appendMember("c_lflag", "[", (sbu)->Tcflag_t.c_lflag2String(sb, c_lflag()), "]");
+            jsb.appendMember("c_iflag", "[", (sbu) -> Tcflag_t.c_iflag2String(sbu, c_iflag()), "]");
+            jsb.appendMember("c_oflag", "[", (sbu) -> Tcflag_t.c_oflag2String(sb, c_oflag()), "]");
+            jsb.appendMember("c_cflag", "[", (sbu) -> Tcflag_t.c_cflag2String(sb, c_cflag()), "]");
+            jsb.appendMember("c_lflag", "[", (sbu) -> Tcflag_t.c_lflag2String(sb, c_lflag()), "]");
             try {
                 jsb.appendHexByteMember("c_line", c_line());
             } catch (NoSuchNativeTypeMemberException nstme) {

@@ -29,11 +29,10 @@ import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
-import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.io.IOException;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -310,7 +309,7 @@ public class Locale {
         }
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             jsb.appendStringMember("currency_symbol", currency_symbol());
             jsb.appendStringMember("decimal_point", decimal_point());

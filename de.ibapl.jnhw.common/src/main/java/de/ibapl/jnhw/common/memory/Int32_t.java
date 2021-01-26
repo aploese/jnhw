@@ -26,6 +26,7 @@ import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import java.io.IOException;
 
 /**
  *
@@ -33,7 +34,6 @@ import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
  */
 @int32_t
 public class Int32_t extends NativeIntNumber {
-
 
     /**
      * Make sure the native lib is loaded.
@@ -62,7 +62,7 @@ public class Int32_t extends NativeIntNumber {
     public native void rawInt32_t(@int32_t int value);
 
     @Override
-    public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
         sb.append(nativeToString());
     }
 

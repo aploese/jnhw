@@ -24,8 +24,7 @@ package de.ibapl.jnhw.common.util;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
-import java.util.function.Consumer;
+import java.io.IOException;
 
 /**
  *
@@ -33,7 +32,12 @@ import java.util.function.Consumer;
  */
 public class JsonStringBuilder {
 
-    public void close() {
+    @FunctionalInterface
+    public interface Appender {
+        void appendTo(Appendable sb) throws IOException;
+    }
+
+    public void close() throws IOException {
         switch (state) {
             case EMPTY:
                 if (compact) {
@@ -59,13 +63,13 @@ public class JsonStringBuilder {
         FILLING,
         CLOSED;
     }
-    private final StringBuilder sb;
+    private final Appendable sb;
     private final String INDENT_PREFIX;
     private final String INDENT;
     private final boolean compact;
     private State state = State.EMPTY;
 
-    public JsonStringBuilder(StringBuilder sb, String indentPrefix, String indent) {
+    public JsonStringBuilder(Appendable sb, String indentPrefix, String indent) {
         this.sb = sb;
         this.INDENT = indent;
         this.INDENT_PREFIX = indentPrefix + indent;
@@ -76,7 +80,7 @@ public class JsonStringBuilder {
         this(new StringBuilder(), indentPrefix, indent);
     }
 
-    private void appendMemberName(String name) {
+    private void appendMemberName(String name) throws IOException {
         switch (state) {
             case EMPTY:
                 if (compact) {
@@ -103,72 +107,76 @@ public class JsonStringBuilder {
 
     public String toString() {
         if (state != State.CLOSED) {
-            close();
+            try {
+                close();
+            } catch (IOException ioe) {
+                throw new RuntimeException(ioe);
+            }
         }
         return sb.toString();
     }
 
-    public void appendAddressMember(String name, long value) {
+    public void appendAddressMember(String name, long value) throws IOException {
         appendMemberName(name);
         sb.append(JnhwFormater.formatAddress(value));
     }
 
-    public void appendCharMember(String name, char value) {
+    public void appendCharMember(String name, char value) throws IOException {
         appendMemberName(name);
         sb.append('"').append(value).append('"');
     }
 
-    public void appendByteMember(String name, byte value) {
+    public void appendByteMember(String name, byte value) throws IOException {
         appendMemberName(name);
-        sb.append(value);
+        sb.append(Byte.toString(value));
     }
 
-    public void appendHexByteMember(String name, byte value) {
+    public void appendHexByteMember(String name, byte value) throws IOException {
         appendMemberName(name);
         sb.append(String.format("0x%02x", value));
     }
 
-    public void appendShortMember(String name, short value) {
+    public void appendShortMember(String name, short value) throws IOException {
         appendMemberName(name);
-        sb.append(value);
+        sb.append(Short.toString(value));
     }
 
-    public void appendHexShortMember(String name, short value) {
+    public void appendHexShortMember(String name, short value) throws IOException {
         appendMemberName(name);
         sb.append(String.format("0x%04x", value));
     }
 
-    public void appendIntMember(String name, int value) {
+    public void appendIntMember(String name, int value) throws IOException {
         appendMemberName(name);
-        sb.append(value);
+        sb.append(Integer.toString(value));
     }
 
-    public void appendHexIntMember(String name, int value) {
+    public void appendHexIntMember(String name, int value) throws IOException {
         appendMemberName(name);
         sb.append(String.format("0x%08x", value));
     }
 
-    public void appendLongMember(String name, long value) {
+    public void appendLongMember(String name, long value) throws IOException {
         appendMemberName(name);
-        sb.append(value);
+        sb.append(Long.toString(value));
     }
 
-    public void appendHexLongMember(String name, long value) {
+    public void appendHexLongMember(String name, long value) throws IOException {
         appendMemberName(name);
         sb.append(String.format("0x%016x", value));
     }
 
-    public void appendStringMember(String name, String value) {
+    public void appendStringMember(String name, String value) throws IOException {
         appendMemberName(name);
         sb.append('\"').append(value).append('\"');
     }
 
-    public void appendNativeAddressHolderMember(String name, NativeAddressHolder value) {
+    public void appendNativeAddressHolderMember(String name, NativeAddressHolder value) throws IOException {
         appendMemberName(name);
         sb.append(value.toString());
     }
 
-    public void appendStruct32Member(String name, Struct32 value) {
+    public void appendStruct32Member(String name, Struct32 value) throws IOException {
         appendMemberName(name);
         if (value == null) {
             sb.append("null");
@@ -177,14 +185,14 @@ public class JsonStringBuilder {
         }
     }
 
-    public void appendMember(String name, String valuePrefix, Consumer<StringBuilder> valueConsumer, String valuePostfix) {
+    public void appendMember(String name, String valuePrefix, Appender valueAppender, String valuePostfix) throws IOException {
         appendMemberName(name);
         sb.append(valuePrefix);
-        valueConsumer.accept(sb);
+        valueAppender.appendTo(sb);
         sb.append(valuePostfix);
     }
 
-    public void appendFunctionPtrMember(String name, NativeFunctionPointer value) {
+    public void appendFunctionPtrMember(String name, NativeFunctionPointer value) throws IOException {
         appendMemberName(name);
         if (value == null) {
             sb.append("null");

@@ -19,22 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.datatypes;
+module de.ibapl.jnhw.it.posix_signal {
+    requires de.ibapl.jnhw.posix;
 
-import java.io.IOException;
-
-/**
- *
- * @author aploese
- */
-public interface Native {
-
-    BaseDataTypes getBaseDataType();
-
-    void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException;
-    
-    String nativeToString();
-    
-    String nativeToHexString();
-    
 }

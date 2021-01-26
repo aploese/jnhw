@@ -31,6 +31,7 @@ import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.StructArray32;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.io.IOException;
 
 /**
  * Wrapper around the {@code <poll.h>} header.
@@ -252,7 +253,7 @@ public final class Poll {
         public native void revents(short revents);
 
         @Override
-        public void nativeToString(StringBuilder sb, String indentPrefix, String indent) {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             jsb.appendIntMember("fd", fd());
             jsb.appendMember("events", "[", (sbu)->event2String(sbu, events()),"]");
@@ -260,7 +261,7 @@ public final class Poll {
             jsb.close();
         }
 
-        private static void event2String(StringBuilder sb, short event) {
+        private static void event2String(Appendable sb, short event) throws IOException {
             if ((POLLIN() & event) == POLLIN()) {
                 sb.append("POLLIN ");
                 event &= ~POLLIN();

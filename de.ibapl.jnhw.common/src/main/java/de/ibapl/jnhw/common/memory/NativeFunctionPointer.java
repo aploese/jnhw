@@ -23,6 +23,7 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import java.io.IOException;
 import java.util.function.Function;
 
 /**
@@ -86,7 +87,7 @@ public class NativeFunctionPointer {
         return "{nativeAddress : " + JnhwFormater.formatAddress(nativeAddress) + "}";
     }
 
-    public void nativeToString(StringBuilder sb, String INDENT_PREFIX, String INDENT) {
+    public void nativeToString(Appendable sb, String INDENT_PREFIX, String INDENT) throws IOException {
         JsonStringBuilder jsb = new JsonStringBuilder(sb, INDENT_PREFIX, INDENT);
         jsb.appendAddressMember("nativeAddress", nativeAddress);
         jsb.close();

@@ -21,9 +21,8 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
+import de.ibapl.jnhw.common.callback.Callback_I_V;
 import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
-import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
 import de.ibapl.jnhw.posix.Signal;
 
@@ -31,22 +30,38 @@ import de.ibapl.jnhw.posix.Signal;
  *
  * @author aploese
  */
-public class SimpleSignalHandler extends Callback_I_V_Impl {
+public class SimpleSignalHandler extends SignalHandler {
 
-    final int signal;
-    final boolean handlerInSameThread;
-    CallNative_I_V originalHandler;
-    boolean done;
-
-    SimpleSignalHandler(final int signal, boolean handlerInSameThread) {
-        this.signal = signal;
-        this.handlerInSameThread = handlerInSameThread;
+    public SimpleSignalHandler(int signalToRaise, SignalAction signalAction) {
+        super(signalToRaise, signalAction);
     }
 
-    private void setup() throws NativeErrorException, InterruptedException, NotDefinedException {
-        if (handlerInSameThread) {
-            originalHandler = Signal.signal(signal, this);
-            System.err.println("Signalhandler for signal: " + signal + " set! in thread: " + Thread.currentThread());
+    private CallNative_I_V originalHandler;
+    private Callback_I_V callback_I_V = new Callback_I_V_Impl() {
+        @Override
+        protected void callback(int value) {
+            System.out.print("\n\n********Caught Signal " + value + " in thread: " + Thread.currentThread() + "\n");
+            switch (signalAction) {
+                case PRINT_MSG:
+                    break;
+                case PRINT_MSG_AND_SYSTEM_EXIT:
+                    System.exit(value);
+                    break;
+                case PRINT_MSG_AND_CALL_OLD_HANDLER:
+                    originalHandler.call(value);
+                    break;
+                default:
+                    thrownInHandler = new RuntimeException("Can't handle signalAction: " + signalAction);
+            }
+            signalHandled = true;
+        }
+    };
+
+    @Override
+    protected void doSetupHandler() {
+        System.out.println("Simple handler for signal " + signalToRaise + " in thread: " + Thread.currentThread());
+        try {
+            originalHandler = Signal.signal(signalToRaise, callback_I_V);
             if (Signal.SIG_DFL().equals(originalHandler)) {
                 System.out.println("Old signal handler of SIG is SIG_DFL!");
             } else if (Signal.SIG_ERR().equals(originalHandler)) {
@@ -58,53 +73,18 @@ public class SimpleSignalHandler extends Callback_I_V_Impl {
             } else {
                 System.out.println("Old signal handler of SIG is " + originalHandler);
             }
-        } else {
-            final Object lock = new Object();
-            new Thread(() -> {
-                try {
-                    originalHandler = Signal.signal(signal, SimpleSignalHandler.this);
-                    synchronized (lock) {
-                        lock.notifyAll();
-                    }
-                    System.err.println("Signalhandler for signal: " + signal + " set! in thread: " + Thread.currentThread());
-                    while (!done) {
-                        Thread.sleep(100);
-                    }
-                } catch (NativeErrorException nee) {
-                    System.err.println(nee);
-                    synchronized (lock) {
-                        lock.notifyAll();
-                    }
-                    throw new RuntimeException(nee);
-                } catch (Throwable t) {
-                    System.err.println(t);
-                    throw new RuntimeException(t);
-                }
-
-            }).start();
-            synchronized (lock) {
-                lock.wait();
-            }
+        } catch (Throwable t) {
+            thrownInSetupHandler = t;
         }
-        System.err.println("Return from Init of signal : " + signal + " in thread: " + Thread.currentThread());
     }
 
     @Override
-    protected void callback(int value) {
-        System.err.println("Signal: " + value + " caught! in thread: " + Thread.currentThread());
-    }
-
-    void raise() throws NativeErrorException, InterruptedException, NotDefinedException {
+    protected void doRestoreHandler() {
+        System.out.println("restore simple handler for signal " + signalToRaise + " in thread: " + Thread.currentThread());
         try {
-            setup();
-
-            System.out.println("Will raise signal: " + signal + " in thread: " + Thread.currentThread());
-            Signal.raise(signal);
-            System.out.println("Signal: " + signal + " raised! in thread: " + Thread.currentThread());
-            Signal.signal(signal, originalHandler);
-            System.err.println("Signalhandler for signal: " + signal + " removed!");
-        } finally {
-            done = true;
+            Signal.signal(signalToRaise, originalHandler);
+        } catch (Throwable t) {
+            thrownInRestoreHandler = t;
         }
     }
 

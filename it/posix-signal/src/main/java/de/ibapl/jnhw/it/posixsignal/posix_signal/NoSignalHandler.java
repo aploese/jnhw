@@ -19,22 +19,26 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.datatypes;
-
-import java.io.IOException;
+package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
 /**
  *
  * @author aploese
  */
-public interface Native {
+public class NoSignalHandler extends SignalHandler {
 
-    BaseDataTypes getBaseDataType();
+    public NoSignalHandler(int signalToRaise, SignalAction signalAction) {
+        super(signalToRaise, signalAction);
+    }
+    
+    @Override
+    protected void doSetupHandler() {
+        System.out.println("No handler for signal " + signalToRaise + " in thread: " + Thread.currentThread() );
+        signalHandled = true;
+    }
 
-    void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException;
-    
-    String nativeToString();
-    
-    String nativeToHexString();
+    @Override
+    protected void doRestoreHandler() {
+    }
     
 }
