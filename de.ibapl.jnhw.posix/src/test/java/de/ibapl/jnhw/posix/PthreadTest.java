@@ -132,12 +132,15 @@ public class PthreadTest {
     public void testPthread_t() {
         Pthread.Pthread_t pthread_t = new Pthread.Pthread_t();
         Assertions.assertNotNull(pthread_t.toString());
+        Assertions.assertNotNull(pthread_t.nativeToString());
     }
 
     @Test
     public void testPthread_attr_t() {
         Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
         Pthread.pthread_attr_init(pthread_attr_t);
+        Assertions.assertNotNull(pthread_attr_t.toString());
+        Assertions.assertNotNull(pthread_attr_t.nativeToString());
         Pthread.pthread_attr_destroy(pthread_attr_t);
     }
 

@@ -21,8 +21,11 @@
  */
 package de.ibapl.jnhw.it.hello_world_async_io;
 
+import de.ibapl.jnhw.common.memory.Memory32Heap;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import java.io.File;
 
 /**
  * Hello world!
@@ -32,11 +35,15 @@ public class App
 {
     public static void main( String[] args ) throws Exception
     {
+        String STRING_TO_WRITE = "\n\t\tHello World! - AIO from POSIX\n\n";
+        final OpaqueMemory32 aioBuffer = Memory32Heap.of(STRING_TO_WRITE.getBytes());
+        final File file = File.createTempFile("JNHW-Win-aio", "txt");
+
         MultiarchTupelBuilder mtb =  new MultiarchTupelBuilder();
         if (mtb.getOS()== OS.WINDOWS) {
-            Windows.sayHello();
+            Windows.aio(file, aioBuffer, true);
         } else {
-            Posix.sayHello(true);
+            new Posix(true).aio(file, aioBuffer);
         }
     }
 }

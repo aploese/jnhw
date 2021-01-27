@@ -37,60 +37,137 @@ import de.ibapl.jnhw.posix.Fcntl;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.posix.StringHeader;
-//Import only the needed define from the wrapper of posix's unistd.h.h
-import static de.ibapl.jnhw.posix.Unistd.STDOUT_FILENO;
+import de.ibapl.jnhw.posix.Unistd;
+import java.io.File;
 //Import only the needed method from the wrapper of iso c's unistd.h.h
 import java.io.IOException;
 
 public class Posix {
 
-    public static void sayHello(final boolean debug) throws NativeErrorException, NoSuchNativeMethodException, NoSuchNativeTypeException, NotDefinedException, IOException, InterruptedException {
-        String STRING_TO_WRITE = "\n\t\tHello World! - AIO from POSIX\n\n";
+    final boolean isDebug;
+    long transmitted;
+    final Aio.Aiocb<NativeRunnable> aiocb;
 
-        final ObjectRef objRef = new ObjectRef<>(null);
+    final ObjectRef objRef = new ObjectRef<>(null);
 
-        final Aio.Aiocb<NativeRunnable> aiocb = new Aio.Aiocb();
-        aiocb.aio_fildes(STDOUT_FILENO());
-        final OpaqueMemory32 aioBuffer = Memory32Heap.of(STRING_TO_WRITE.getBytes());
+    //This is the callback to be called from the native side.
+    final NativeRunnable callback = new NativeRunnable() {
 
-        aiocb.aio_buf(aioBuffer);
-
-        aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD());
-
-        aiocb.aio_sigevent.sigev_notify_function(Callback_NativeRunnable.INSTANCE);
-        NativeRunnable callback = new NativeRunnable() {
-
-            @Override
-            @SuppressWarnings("unchecked")
-            protected void callback() {
-                try {
-                    int errno = Aio.aio_error(aiocb);
-                    if (errno == 0) {
-                        if (debug) {
-                            System.out.println("Wrote " + Aio.aio_return(aiocb) + " bytes!");
-                            System.out.flush();
-                        }
-                    } else {
-                        System.err.print("Got errno from aio_write: " + Errno.getErrnoSymbol(errno) + ", " + StringHeader.strerror(errno));
-                        System.err.flush();
-                    }
-                } catch (NativeErrorException nee) {
-                    System.err.print("Got errno within callback: " + Errno.getErrnoSymbol(nee.errno) + ", " + StringHeader.strerror(nee.errno));
-                    System.err.flush();
-                } catch (NoSuchNativeMethodException nsnme) {
-                    System.err.print("NoSuchNativeMethodException within callback: " + nsnme);
-                    System.err.flush();
+        @Override
+        @SuppressWarnings("unchecked")
+        protected void callback() {
+            debugThread("Enter callback");
+            try {
+                int errno = Aio.aio_error(aiocb);
+                if (errno == 0) {
+                    transmitted = Aio.aio_return(aiocb);
+                    debugThread("Read/Wrote " + transmitted + " bytes!");
+                } else {
+                    debugThread("Got errno from aio_read or aio_write: " + Errno.getErrnoSymbol(errno) + ", " + StringHeader.strerror(errno));
                 }
-                synchronized (objRef) {
-                    objRef.value = aiocb;
-                    objRef.notify();
-                }
+            } catch (NativeErrorException nee) {
+                debug("Got errno within callback: " + Errno.getErrnoSymbol(nee.errno) + ", " + StringHeader.strerror(nee.errno));
+            } catch (NoSuchNativeMethodException nsnme) {
+                debug("NoSuchNativeMethodException within callback: " + nsnme);
             }
+            synchronized (objRef) {
+                objRef.value = aiocb;
+                objRef.notify();
+            }
+            debugThread("Leave callback");
+        }
 
-        };
+    };
+
+    public Posix(boolean isDebug) {
+        this.isDebug = isDebug;
+        try {
+            aiocb = new Aio.Aiocb<>();
+        } catch (NoSuchNativeTypeException nsnte) {
+            throw new RuntimeException(nsnte);
+        }
+    }
+
+    public void aio(File file, OpaqueMemory32 aioBuffer) throws NativeErrorException, NoSuchNativeMethodException, NoSuchNativeTypeException, NotDefinedException, IOException, InterruptedException {
+        debugThread("Write/Read in thread: ");
+
+        aiocb.aio_fildes(Fcntl.open(file.getAbsolutePath(), Fcntl.O_RDWR()));
+        aiocb.aio_buf(aioBuffer);
+        aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD());
+        aiocb.aio_sigevent.sigev_notify_function(Callback_NativeRunnable.INSTANCE);
         aiocb.aio_sigevent.sigev_value.sival_ptr(callback);
 
-        if (debug) {
+        debugAiocb(aioBuffer);
+
+        debug("Will now write");
+
+        Aio.aio_write(aiocb);
+
+        debug("...written");
+
+        //force data write
+        //Aio.aio_fsync(Fcntl.O_DSYNC(), aiocb); // enabling this 9 bytes will be reported in callback. and the call back is called twice,
+        //Wait debug is slow, so we are here before the callback finishes...
+        if (objRef.value == null) {
+            synchronized (objRef) {
+                debug("Wait for write callback to finish!");
+                objRef.wait(1000);
+            }
+        }
+
+        if (objRef.value != aiocb) {
+            throw new RuntimeException("Excpected handler was called!");
+        } else {
+            debug("Data written");
+        }
+
+        objRef.value = null;
+        OpaqueMemory32.clear(aioBuffer);
+
+        debug("Will now read");
+
+        Aio.aio_read(aiocb);
+
+        debug("...read");
+
+        //force data read
+        //Aio.aio_fsync(Fcntl.O_DSYNC(), aiocb);
+        //Wait debug is slow, so we are here before the callback finishes...
+        if (objRef.value == null) {
+            synchronized (objRef) {
+                debug("Wait for read callback to finish!");
+                objRef.wait(100);
+            }
+        }
+
+        if (objRef.value != aiocb) {
+            throw new RuntimeException("Excpected handler was called! " + objRef.value);
+        } else {
+            debug("Data read");
+        }
+
+        //Close the handle
+        Unistd.close(aiocb.aio_fildes());
+
+        printBuffer(aioBuffer);
+    }
+
+    private void debug(String msg) {
+        if (isDebug) {
+        System.out.println(msg);
+        System.out.flush();
+        }
+    }
+    
+    private void debugThread(String msg) {
+        if (isDebug) {
+        System.out.append(msg).append(" thread: ").append(Thread.currentThread().toString()).append(" pthread_t: ").println(Pthread.pthread_self().nativeToString());
+        System.out.flush();
+        }    }
+
+    private void debugAiocb(OpaqueMemory32 aioBuffer) {
+        if (isDebug) {
+        try {
             OutputStreamAppender osa = new OutputStreamAppender(System.out);
             osa.append("data to write:>>>\n");
             aioBuffer.nativeToString(osa, "", " ");
@@ -107,37 +184,20 @@ public class Posix {
             osa.append("native callback same address as aiocb.aio_sigevent.sigev_notify_function: ");
             Callback_NativeRunnable.INSTANCE.nativeToString(osa, "", " ");
             osa.append("\n");
-        }
-        if (debug) {
-            System.out.println("Will now write");
             System.out.flush();
+        } catch (IOException | NoSuchNativeTypeException e) {
+            throw new RuntimeException(e);
         }
-
-        Aio.aio_write(aiocb);
-        
-        if (debug) {
-            System.out.println("...written");
-            System.out.flush();
-        }
-
-        //force data write
-        Aio.aio_fsync(Fcntl.O_DSYNC(), aiocb);
-        //Wait debug is slow, so we are here before the callback finishes...
-        if (objRef.value == null) {
-            synchronized (objRef) {
-                if (debug) {
-                    System.out.println("Wait for callback to finish!");
-                }
-                objRef.wait(100);
-            }
-        }
-
-        if (objRef.value != aiocb) {
-            throw new RuntimeException("Excpected handler was called!");
-        } else {
-            if (debug) {
-                System.out.println("Data written");
-            }
         }
     }
+
+    private void printBuffer(OpaqueMemory32 aioBuffer) {
+        StringBuilder sb = new StringBuilder(aioBuffer.sizeInBytes);
+        for (int i = 0; i < aioBuffer.sizeInBytes; i++) {
+            sb.append((char) OpaqueMemory32.getByte(aioBuffer, i));
+        }
+
+        System.out.println(sb.toString());
+    }
+
 }

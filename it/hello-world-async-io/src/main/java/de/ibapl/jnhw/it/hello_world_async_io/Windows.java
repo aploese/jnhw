@@ -45,11 +45,7 @@ import java.io.IOException;
 
 public class Windows {
 
-    public static void sayHello() throws NativeErrorException, IOException {
-        String STRING_TO_WRITE = "\n\t\tHello World! - AIO from Windows Completition Port\n\n";
-        final OpaqueMemory32 aioBuffer = Memory32Heap.of(STRING_TO_WRITE.getBytes());
-
-        File file = File.createTempFile("JNHW-Win-aio", "txt");
+    public static void aio(File file, OpaqueMemory32 aioBuffer, final boolean debug) throws NativeErrorException, IOException {
 
         Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
                 Winnt.GENERIC_WRITE(),

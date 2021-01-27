@@ -501,7 +501,7 @@ public class Signal {
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            JsonStringBuilder jsb = new JsonStringBuilder(indentPrefix, indent);
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             jsb.appendIntMember("sival_int", sival_int());
             jsb.appendNativeAddressHolderMember("sival_ptr", sival_ptr());
             jsb.close();
