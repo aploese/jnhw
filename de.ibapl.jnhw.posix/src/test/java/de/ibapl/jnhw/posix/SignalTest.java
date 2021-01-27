@@ -686,7 +686,7 @@ public class SignalTest {
             FunctionPtr_I_V result = Signal.sigset(Signal.SIGABRT(), null);
             Assertions.assertEquals(Signal.SIG_DFL(), result);
             result = Signal.sigset(Signal.SIGABRT(), result);
-            Assertions.assertTrue(NativeFunctionPointer.toNativeAddressHolder(result).isNULL(), "result.address ");
+            Assertions.assertEquals(NativeAddressHolder.NULL, NativeFunctionPointer.toNativeAddressHolder(result), "result.address ");
         }
     }
 

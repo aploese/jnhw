@@ -18,6 +18,7 @@
 
     <modules>
         <module>hello-world</module>
+        <module>hello-world-async-io</module>
         <module>posix-signal</module>
         <module>posix-graceful-exit-sigsegv</module>
     </modules>

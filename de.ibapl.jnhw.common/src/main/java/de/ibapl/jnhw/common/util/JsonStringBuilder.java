@@ -25,6 +25,10 @@ import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.Struct32;
 import java.io.IOException;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.IntFunction;
+import java.util.function.Supplier;
 
 /**
  *
@@ -116,6 +120,12 @@ public class JsonStringBuilder {
         return sb.toString();
     }
 
+    
+    public void appendIntMember(String name, int value, IntFunction<String> valueFormatter) throws IOException {
+        appendMemberName(name);
+        sb.append(valueFormatter.apply(value));
+    }
+    
     public void appendAddressMember(String name, long value) throws IOException {
         appendMemberName(name);
         sb.append(JnhwFormater.formatAddress(value));
@@ -131,6 +141,11 @@ public class JsonStringBuilder {
         sb.append(Byte.toString(value));
     }
 
+    public void appendUnsignedByteMember(String name, byte value) throws IOException {
+        appendMemberName(name);
+        sb.append(Integer.toUnsignedString(value));
+    }
+
     public void appendHexByteMember(String name, byte value) throws IOException {
         appendMemberName(name);
         sb.append(String.format("0x%02x", value));
@@ -139,6 +154,11 @@ public class JsonStringBuilder {
     public void appendShortMember(String name, short value) throws IOException {
         appendMemberName(name);
         sb.append(Short.toString(value));
+    }
+
+    public void appendUnsignedShortMember(String name, short value) throws IOException {
+        appendMemberName(name);
+        sb.append(Integer.toUnsignedString(value));
     }
 
     public void appendHexShortMember(String name, short value) throws IOException {
@@ -151,6 +171,11 @@ public class JsonStringBuilder {
         sb.append(Integer.toString(value));
     }
 
+    public void appendUnsignedIntMember(String name, int value) throws IOException {
+        appendMemberName(name);
+        sb.append(Integer.toUnsignedString(value));
+    }
+
     public void appendHexIntMember(String name, int value) throws IOException {
         appendMemberName(name);
         sb.append(String.format("0x%08x", value));
@@ -159,6 +184,11 @@ public class JsonStringBuilder {
     public void appendLongMember(String name, long value) throws IOException {
         appendMemberName(name);
         sb.append(Long.toString(value));
+    }
+
+    public void appendUnsignedLongMember(String name, long value) throws IOException {
+        appendMemberName(name);
+        sb.append(Long.toUnsignedString(value));
     }
 
     public void appendHexLongMember(String name, long value) throws IOException {

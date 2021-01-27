@@ -37,6 +37,12 @@ public class Memory32Heap extends OpaqueMemory32 {
         super(nativeAddress, sizeInBytes);
     }
 
+    public static Memory32Heap of(byte[] bytes) {
+        final Memory32Heap result = new Memory32Heap(bytes.length, false);
+        OpaqueMemory32.copy(bytes, 0, result, 0, bytes.length);
+        return result;
+    }
+
     @Override
     public BaseDataTypes getBaseDataType() {
         return BaseDataTypes.intptr_t;

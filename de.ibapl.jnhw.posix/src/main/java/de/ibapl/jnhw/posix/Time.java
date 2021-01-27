@@ -629,8 +629,11 @@ public class Time {
         }
 
         @Override
-        public String nativeToString() {
-            return String.format("{it_value : %s, it_interval : %s}", it_value == null ? null : it_value.nativeToString(), it_interval == null ? null : it_interval.nativeToString());
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            jsb.appendStruct32Member("it_value", it_value);
+            jsb.appendStruct32Member("it_interval", it_interval);
+            jsb.close();
         }
 
     }
@@ -714,8 +717,11 @@ public class Time {
         public native void tv_nsec(long tv_nsec);
 
         @Override
-        public String nativeToString() {
-            return String.format("{tv_sec : %d, tv_nsec : %d}", tv_sec(), tv_nsec());
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            jsb.appendLongMember("tv_sec", tv_sec());
+            jsb.appendLongMember("tv_nsec", tv_nsec());
+            jsb.close();
         }
 
         @Override

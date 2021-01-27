@@ -78,7 +78,7 @@ public class IoAPITest {
         IoAPI.GetQueuedCompletionStatus(completionPort, lpNumberOfBytesTransferred, lpCompletionKey, lpOverlapped, dwMilliseconds);
         assertEquals(COMPLETION_KEY, lpCompletionKey.value);
         assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.value);
-        assertTrue(lpOverlapped.value.isNULL());
+        assertEquals(NativeAddressHolder.NULL, lpOverlapped.value);
     }
 
 }

@@ -616,6 +616,8 @@ public class AioTest {
                 break;
             default:
                 Aio.Aiocb aiocb = new Aio.Aiocb();
+                System.out.println("aiocb : " + aiocb.nativeToString());
+                assertEquals(NativeAddressHolder.NULL, aiocb.aio_buf0());
 
                 ByteBuffer buf = ByteBuffer.allocateDirect(128);
                 buf.position(16);
@@ -623,10 +625,13 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
                 assertEquals(-1, aiocb.aio_fildes());
                 aiocb.aio_buf(buf);
+                Assertions.assertNotEquals(NativeAddressHolder.NULL, aiocb.aio_buf0());
                 assertEquals(0, aiocb.aio_offset());
                 assertEquals(48, aiocb.aio_nbytes());
                 aiocb.aio_offset(8);
                 assertEquals(8, aiocb.aio_offset());
+
+                System.out.println("aiocb : " + aiocb.nativeToString());
         }
     }
 

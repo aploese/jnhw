@@ -63,6 +63,99 @@ import java.io.IOException;
 @Include("#include <signal.h>")
 public class Signal {
 
+    public static String sigNumber2String(int signalNumber) {
+        if (Signal.SIGABRT() == signalNumber) {
+            return "SIGABRT";
+        }
+        if (SIGALRM() == signalNumber) {
+            return "SIGALRM";
+        }
+        if (SIGBUS() == signalNumber) {
+            return "SIGBUS";
+        }
+        if (SIGCHLD() == signalNumber) {
+            return "SIGCHLD";
+        }
+        if (SIGCONT() == signalNumber) {
+            return "SIGCONT";
+        }
+        if (SIGFPE() == signalNumber) {
+            return "SIGFPE";
+        }
+        if (SIGHUP() == signalNumber) {
+            return "SIGHUP";
+        }
+        if (SIGILL() == signalNumber) {
+            return "SIGILL";
+        }
+        if (SIGINT() == signalNumber) {
+            return "SIGINT";
+        }
+        if (SIGKILL() == signalNumber) {
+            return "SIGKILL";
+        }
+        if (SIGPIPE() == signalNumber) {
+            return "SIGPIPE";
+        }
+        try {
+            if (SIGPOLL() == signalNumber) {
+                return "SIGPOLL";
+            }
+        } catch (NotDefinedException ex) {
+            //no-op
+        }
+        if (SIGPROF() == signalNumber) {
+            return "SIGPROF";
+        }
+        if (SIGQUIT() == signalNumber) {
+            return "SIGQUIT";
+        }
+        if (SIGSEGV() == signalNumber) {
+            return "SIGSEGV";
+        }
+        if (SIGSTOP() == signalNumber) {
+            return "SIGSTOP";
+        }
+        if (SIGSYS() == signalNumber) {
+            return "SIGSYS";
+        }
+        if (SIGTERM() == signalNumber) {
+            return "SIGTERM";
+        }
+        if (SIGTRAP() == signalNumber) {
+            return "SIGTRAP";
+        }
+        if (SIGTSTP() == signalNumber) {
+            return "SIGTSTP";
+        }
+        if (SIGTTIN() == signalNumber) {
+            return "SIGTTIN";
+        }
+        if (SIGTTOU() == signalNumber) {
+            return "SIGTTOU";
+        }
+        if (SIGURG() == signalNumber) {
+            return "SIGURG";
+        }
+        if (SIGUSR1() == signalNumber) {
+            return "SIGUSR1";
+        }
+        if (SIGUSR2() == signalNumber) {
+            return "SIGUSR2";
+        }
+        if (SIGVTALRM() == signalNumber) {
+            return "SIGVTALRM";
+        }
+        if (SIGXCPU() == signalNumber) {
+            return "SIGXCPU";
+        }
+        if (SIGXFSZ() == signalNumber) {
+            return "SIGXFSZ";
+        } else {
+            return Integer.toString(signalNumber);
+        }
+    }
+
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code typedef
      * mcontext_t}</a>.
@@ -408,12 +501,10 @@ public class Signal {
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
-        }
-
-        @Override
-        public String nativeToString() {
-            return String.format("{sival_int : %d, sival_ptr : %s}", sival_int(), sival_ptr());
+            JsonStringBuilder jsb = new JsonStringBuilder(indentPrefix, indent);
+            jsb.appendIntMember("sival_int", sival_int());
+            jsb.appendNativeAddressHolderMember("sival_ptr", sival_ptr());
+            jsb.close();
         }
 
     }
@@ -500,15 +591,15 @@ public class Signal {
         private native NativeAddressHolder sigev_notify_attributes() throws NoSuchNativeTypeException;
 
         public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemory32Producer<Pthread.Pthread_attr_t, Sigevent> producer) throws NoSuchNativeTypeException {
-            final NativeAddressHolder baseAddress = sigev_notify_attributes();
+            final NativeAddressHolder sigev_notify_attributesAddress = sigev_notify_attributes();
             if (sigev_notify_attributes != null) {
-                if (!OpaqueMemory32.isSameAddress(baseAddress, sigev_notify_attributes)) {
-                    sigev_notify_attributes = producer.produce(baseAddress, this);
+                if (!OpaqueMemory32.isSameAddress(sigev_notify_attributesAddress, sigev_notify_attributes)) {
+                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, this);
                 }
                 return sigev_notify_attributes;
             } else {
-                if (!baseAddress.isNULL()) {
-                    sigev_notify_attributes = producer.produce(baseAddress, this);
+                if (!sigev_notify_attributesAddress.isNULL()) {
+                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, this);
                 }
                 return sigev_notify_attributes;
             }
@@ -584,25 +675,39 @@ public class Signal {
             }
         }
 
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
+        public static String sigev_notify2String(int value) {
+            try {
+                if (value == Signal.SIGEV_NONE()) {
+                    return "SIGEV_NONE";
+                }
+                if (value == Signal.SIGEV_SIGNAL()) {
+                    return "SIGEV_SIGNAL";
+                } else if (value == Signal.SIGEV_THREAD()) {
+                    return "SIGEV_THREAD";
+                } else {
+                    return String.format("0x%08x", value);
+                }
+            } catch (NotDefinedException ex) {
+                throw new RuntimeException(ex);
+            }
         }
 
         @Override
-        public String nativeToString() {
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             try {
-                return String.format("{sigev_notify : %d, sigev_signo : %d, sigev_notify_attributes : %s, sigev_notify_function : %s, sigev_value : %s}", sigev_notify(), sigev_signo(), sigev_notify_attributes((baseAddress, parent) -> {
-                    if (baseAddress.isNULL()) {
-                        return null;
-                    } else {
-                        return new Pthread.Pthread_attr_t(baseAddress);
-                    }
-                }), sigev_notify_function(), sigev_value);
+                jsb.appendIntMember("sigev_notify", sigev_notify(), (value) -> sigev_notify2String(value));
+                jsb.appendIntMember("sigev_signo", sigev_signo(), (value) -> Signal.sigNumber2String(value));
+                //We do not dereference the pointer - just the memory address will do nicely.
+                jsb.appendNativeAddressHolderMember("sigev_notify_attributes", sigev_notify_attributes());
+                jsb.appendFunctionPtrMember("sigev_notify_function", sigev_notify_function);
+                jsb.appendStruct32Member("sigev_value", sigev_value);
             } catch (NoSuchNativeTypeException nste) {
                 throw new RuntimeException(nste);
             }
+            jsb.close();
         }
+
     }
 
     /**
@@ -1550,7 +1655,7 @@ public class Signal {
             jsb.appendHexIntMember("si_code", si_code());
             jsb.appendIntMember("si_errno", si_errno());
             jsb.appendIntMember("si_pid", si_pid());
-            jsb.appendIntMember("si_signo", si_signo());
+            jsb.appendIntMember("si_signo", si_signo(), (value) -> Signal.sigNumber2String(value));
             jsb.appendHexIntMember("si_status", si_status());
             jsb.appendStruct32Member("si_value", si_value);
         }

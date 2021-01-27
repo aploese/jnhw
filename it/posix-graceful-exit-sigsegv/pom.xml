@@ -13,7 +13,7 @@
     <artifactId>posix-graceful-exit-sigsegev</artifactId>
     <version>2.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>POSIX graceful exit SIGSEGV</name>
+    <name>JNHW-Example: POSIX graceful exit SIGSEGV</name>
 
     <dependencies>
         <dependency>
@@ -34,7 +34,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>de.ibapl.jnhw.it.posixsignal.posix_signal.App</mainClass>
+                            <mainClass>de.ibapl.jnhw.it.posixsignal.posix_graceful_exit_sigsegv.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

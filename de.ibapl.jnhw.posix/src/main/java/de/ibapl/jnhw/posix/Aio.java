@@ -36,10 +36,12 @@ import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.PointerArray32;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
@@ -96,8 +98,8 @@ public class Aio {
     public final static native boolean HAVE_AIO_H();
 
     /**
-     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element operation option indicating
-     * that no transfer is requested.
+     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element
+     * operation option indicating that no transfer is requested.
      *
      * @return the native symbolic constant of LIO_NOP.
      * @throws NotDefinedException if LIO_NOP is not defined natively.
@@ -106,10 +108,10 @@ public class Aio {
     public final static native int LIO_NOP() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} synchronization operation indicating
-     * that the calling thread is to continue execution while the lio_listio()
-     * operation is being performed, and no notification is given when the
-     * operation is complete.
+     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)}
+     * synchronization operation indicating that the calling thread is to
+     * continue execution while the lio_listio() operation is being performed,
+     * and no notification is given when the operation is complete.
      *
      * @return the native symbolic constant of LIO_NOWAIT.
      * @throws NotDefinedException if LIO_NOWAIT is not defined natively.
@@ -118,8 +120,8 @@ public class Aio {
     public final static native int LIO_NOWAIT() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element operation option requesting
-     * a read.
+     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element
+     * operation option requesting a read.
      *
      * @return the native symbolic constant of LIO_READ.
      * @throws NotDefinedException if LIO_READ is not defined natively.
@@ -128,9 +130,9 @@ public class Aio {
     public final static native int LIO_READ() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} synchronization operation indicating
-     * that the calling thread is to suspend until the lio_listio() operation is
-     * complete.
+     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)}
+     * synchronization operation indicating that the calling thread is to
+     * suspend until the lio_listio() operation is complete.
      *
      * @return the native symbolic constant of LIO_WAIT.
      * @throws NotDefinedException if LIO_WAIT is not defined natively.
@@ -139,8 +141,8 @@ public class Aio {
     public final static native int LIO_WAIT() throws NotDefinedException;
 
     /**
-     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element operation option requesting
-     * a write.
+     * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element
+     * operation option requesting a write.
      *
      * @return the native symbolic constant of LIO_WRITE.
      * @throws NotDefinedException if LIO_WRITE is not defined natively.
@@ -151,19 +153,21 @@ public class Aio {
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_cancel.html">aio_cancel
-     * - cancel an asynchronous I/O request</a>.On the native side the param fildes is taken from aiocb.aio_fildes.
+     * - cancel an asynchronous I/O request</a>.On the native side the param
+     * fildes is taken from aiocb.aio_fildes.
      *
      *
      * @param aiocbp points to the asynchronous I/O control block for a
      * particular request to be canceled. If aiocbp is NULL, then all
      * outstanding cancelable asynchronous I/O requests against fildes shall be
      * canceled.
-     * @return {@link #AIO_CANCELED() } on succcess or {@link AIO_NOTCANCELED} if
-     * not all outstanding operations cant be cancelled.
+     * @return {@link #AIO_CANCELED() } on succcess or {@link AIO_NOTCANCELED}
+     * if not all outstanding operations cant be cancelled.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method aio_cancel is not available natively.
+     * @throws NoSuchNativeMethodException if the method aio_cancel is not
+     * available natively.
      */
     public final static native int aio_cancel(Aiocb aiocbp) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -183,7 +187,8 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method aio_cancel is not available natively.
+     * @throws NoSuchNativeMethodException if the method aio_cancel is not
+     * available natively.
      */
     public final static native int aio_cancel(int fildes) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -199,7 +204,8 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method aio_error is not available natively.
+     * @throws NoSuchNativeMethodException if the method aio_error is not
+     * available natively.
      */
     public final static native int aio_error(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -213,7 +219,8 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method aio_fsync is not available natively.
+     * @throws NoSuchNativeMethodException if the method aio_fsync is not
+     * available natively.
      */
     public final static native void aio_fsync(int op, Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -226,7 +233,8 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method aio_read is not available natively.
+     * @throws NoSuchNativeMethodException if the method aio_read is not
+     * available natively.
      */
     public final static native void aio_read(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -242,7 +250,8 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method aio_return is not available natively.
+     * @throws NoSuchNativeMethodException if the method aio_return is not
+     * available natively.
      */
     public final static native @ssize_t
     long aio_return(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
@@ -257,7 +266,8 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method aio_suspend is not available natively.
+     * @throws NoSuchNativeMethodException if the method aio_suspend is not
+     * available natively.
      */
     public final static native void aio_suspend(Aiocbs list, Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -270,7 +280,8 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method aio_write is not available natively.
+     * @throws NoSuchNativeMethodException if the method aio_write is not
+     * available natively.
      */
     public final static native void aio_write(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -285,7 +296,8 @@ public class Aio {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method lio_listio is not available natively.
+     * @throws NoSuchNativeMethodException if the method lio_listio is not
+     * available natively.
      */
     public final static native void lio_listio(int mode, Aiocbs list, Sigevent sig) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -559,6 +571,23 @@ public class Aio {
          * @param aio_lio_opcode the value of aio_lio_opcode to be set natively.
          */
         public native void aio_lio_opcode(int aio_lio_opcode) throws NoSuchNativeTypeException;
+
+        @Override
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            try {
+                jsb.appendIntMember("aio_fildes", aio_fildes());
+                jsb.appendUnsignedLongMember("aio_offset", aio_offset());
+                jsb.appendNativeAddressHolderMember("aio_buf", aio_buf0());
+                jsb.appendUnsignedLongMember("aio_nbytes", aio_nbytes());
+                jsb.appendIntMember("aio_reqprio", aio_reqprio());
+                jsb.appendStruct32Member("aio_sigevent", aio_sigevent);
+                jsb.appendHexIntMember("aio_lio_opcode", aio_lio_opcode());
+                jsb.close();
+            } catch (NoSuchNativeTypeException nsnte) {
+                throw new RuntimeException(nsnte);
+            }
+        }
 
     }
 
