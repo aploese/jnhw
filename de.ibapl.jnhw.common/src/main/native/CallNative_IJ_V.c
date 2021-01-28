@@ -40,7 +40,7 @@ extern "C" {
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1IJ_1V_call
   (JNIEnv *env, jobject this, jlong value) {
-#if defined(__LP64__) 
+#if defined(__LP64__) || defined(_WIN64)
     static_assert(sizeof(intptr_t) == 8, "sizeof(intptr_t) != 8)");
     (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int64_t), this))(value);
 #else

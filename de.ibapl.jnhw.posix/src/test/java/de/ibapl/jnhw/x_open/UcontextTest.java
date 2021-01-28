@@ -25,11 +25,13 @@ import de.ibapl.jnhw.posix.Signal;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
  *
  * @author aploese
  */
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class UcontextTest {
     
     public UcontextTest() {

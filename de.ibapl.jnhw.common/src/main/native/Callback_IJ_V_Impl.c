@@ -53,7 +53,7 @@ extern "C" {
         if (Callback_Class == NULL) {
             return;
         }
-#if defined(__LP64__)
+#if defined(__LP64__) || defined(_WIN64)
         static_assert(sizeof(intptr_t) == 8, "sizeof(intptr_t) != 8)");
         trampoline_ID = getStaticMethodIdOfClassRef(env, Callback_Class, "trampoline", "(IJ)V");
 #else
