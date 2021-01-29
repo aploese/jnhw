@@ -37,13 +37,13 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_winapi_IoAPI
- * Method:    CreateIoCompletionPort
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winnt/HANDLE;JI)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_CreateIoCompletionPort
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject FileHandle, jobject ExistingCompletionPort, jlong CompletionKey, jint NumberOfConcurrentThreads) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_IoAPI
+     * Method:    CreateIoCompletionPort
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winnt/HANDLE;JI)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_CreateIoCompletionPort
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject FileHandle, jobject ExistingCompletionPort, jlong CompletionKey, jint NumberOfConcurrentThreads) {
         if (FileHandle == NULL) {
             throw_NullPointerException(env, "FileHandle is null.");
             return NULL;
@@ -61,15 +61,15 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_CreateIoCompletionPort
         }
         return CREATE_HANDLE(result);
     
-}
+    }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_IoAPI
- * Method:    GetQueuedCompletionStatus
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_GetQueuedCompletionStatus
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject CompletionPort, jobject lpNumberOfBytesTransferred, jobject lpCompletionKey, jobject lpOverlapped, jlong dwMilliseconds) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_IoAPI
+     * Method:    GetQueuedCompletionStatus
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;J)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_GetQueuedCompletionStatus
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject CompletionPort, jobject lpNumberOfBytesTransferred, jobject lpCompletionKey, jobject lpOverlapped, jlong dwMilliseconds) {
         if (CompletionPort == NULL) {
             throw_NullPointerException(env, "CompletionPort is null.");
             return;
@@ -100,15 +100,15 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_GetQueuedCompletionStatus
         SET_INT_REF_VALUE(lpNumberOfBytesTransferred, (int32_t)_lpNumberOfBytesTransferred);
         SET_LONG_REF_VALUE(lpCompletionKey, (int64_t)_lpCompletionKey);//ULONG_PTR: On ix68 its 32 bit long and on x64 ist 64 bit long
         SET_OBJECT_REF_VALUE(lpOverlapped, CREATE_NATIVE_ADDRESS_HOLDER(_lpOverlapped));
-}
+    }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_IoAPI
- * Method:    PostQueuedCompletionStatus
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;IJLde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_PostQueuedCompletionStatus
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject CompletionPort, jint dwNumberOfBytesTransferred, jlong dwCompletionKey, jobject lpOverlapped) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_IoAPI
+     * Method:    PostQueuedCompletionStatus
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;IJLde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_PostQueuedCompletionStatus
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject CompletionPort, jint dwNumberOfBytesTransferred, jlong dwCompletionKey, jobject lpOverlapped) {
         if (CompletionPort == NULL) {
             throw_NullPointerException(env, "CompletionPort is null.");
             return;
@@ -126,7 +126,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_PostQueuedCompletionStatu
 #endif            
             throw_NativeErrorException(env, (int32_t)GetLastError());
         }
-}
+    }
 
 #ifdef __cplusplus
 }

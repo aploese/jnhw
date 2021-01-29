@@ -39,15 +39,15 @@ extern "C" {
         return (int32_t)GetLastError();
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Errhandlingapi
- * Method:    SetLastError
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Errhandlingapi_SetLastError
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint dwErrCode) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Errhandlingapi
+     * Method:    SetLastError
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Errhandlingapi_SetLastError
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint dwErrCode) {
         SetLastError((uint32_t)dwErrCode);
-   }
+    }
 
 #ifdef __cplusplus
 }

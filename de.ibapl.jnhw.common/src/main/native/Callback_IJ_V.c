@@ -31,25 +31,25 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_Callback_IJ_V
- * Method:    sizeofIntptr_t
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1IJ_1V_sizeofIntptr_1t
-  (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-    return sizeof(intptr_t);
-}
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_Callback_IJ_V
+     * Method:    sizeofIntptr_t
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1IJ_1V_sizeofIntptr_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof(intptr_t);
+    }
 
-/*
- * Class:     de_ibapl_jnhw_common_callback_Callback_IJ_V
- * Method:    alignofIntptr_t
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1IJ_1V_alignofIntptr_1t
-  (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-    return __alignof__(intptr_t);
-}
+    /*
+     * Class:     de_ibapl_jnhw_common_callback_Callback_IJ_V
+     * Method:    alignofIntptr_t
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1IJ_1V_alignofIntptr_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return __alignof__(intptr_t);
+    }
 
 
 #ifdef __cplusplus

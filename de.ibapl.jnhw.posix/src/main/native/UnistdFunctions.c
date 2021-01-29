@@ -43,6 +43,7 @@ extern "C" {
 #endif
 
 JNHW_ASSERT__uid_t__IS__uint32_t
+JNHW_ASSERT__gid_t__IS__uint32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd_JnhwPrimitiveArrayCritical
@@ -248,12 +249,12 @@ JNHW_ASSERT__uid_t__IS__uint32_t
         return result;
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    read
- * Signature: (I)S
- */
-JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    read
+     * Signature: (I)S
+     */
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd) {
         uint8_t value;
         //result can't be larger then int beacuase nByte is int, so do the conversation
@@ -530,12 +531,72 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    setreuid
+     * Signature: (II)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setreuid
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint ruid, int euid) {
+        if (!setreuid((uid_t)ruid, (uid_t)euid)) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    getuid
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getuid
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int) getuid();
+        return (int32_t) getuid();
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    setgid
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setgid
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint gid) {
+        if (!setuid((gid_t)gid)) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    setegid
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setegid
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint gid) {
+        if (!setegid((gid_t)gid)) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    setregid
+     * Signature: (II)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setregid
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint rgid, int egid) {
+        if (!setregid((gid_t)rgid, (gid_t)egid)) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    setuid
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setuid
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint uid) {
+        if (!setuid((uid_t)uid)) {
+            throw_NativeErrorException(env, errno);
+        }
     }
 
     /*
@@ -545,7 +606,19 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_geteuid
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int) geteuid();
+        return (int32_t) geteuid();
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    seteuid
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_seteuid
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint uid) {
+        if (!seteuid((uid_t)uid)) {
+            throw_NativeErrorException(env, errno);
+        }
     }
 
     /*
@@ -555,7 +628,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getgid
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int) getgid();
+        return (int32_t) getgid();
     }
 
     /*
@@ -565,7 +638,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getpgrp
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int) getpgrp();
+        return (int32_t) getpgrp();
     }
 
     /*
@@ -575,7 +648,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getegid
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int) getegid();
+        return (int32_t) getegid();
     }
 
 

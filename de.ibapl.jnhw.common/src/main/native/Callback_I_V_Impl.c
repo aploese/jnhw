@@ -82,12 +82,12 @@ extern "C" {
     TRAMPOLINE(6)
     TRAMPOLINE(7)
 
-/*
- * Class:     de_ibapl_jnhw_common_callback_Callback_I_V_Impl
- * Method:    getNativeAddress
- * Signature: (I)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1I_1V_1Impl_getNativeAddress
+    /*
+     * Class:     de_ibapl_jnhw_common_callback_Callback_I_V_Impl
+     * Method:    getNativeAddress
+     * Signature: (I)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1I_1V_1Impl_getNativeAddress
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
         switch (index) {
 #define TRAMPOLINE_CASE(index) case index: return CREATE_NATIVE_ADDRESS_HOLDER(&_jnhw_trampoline_I_V__ ## index);

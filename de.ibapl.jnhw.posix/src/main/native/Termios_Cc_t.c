@@ -31,66 +31,54 @@ extern "C" {
 
 JNHW_ASSERT__cc_t__IS__uint8_t
 
-/*
- * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
- * Method:    sizeof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_sizeof
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
+     * Method:    sizeof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (cc_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_alignof
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_alignof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return __alignof__ (cc_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
- * Method:    unsigned
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_unsigned
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
+     * Method:    unsigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_unsigned
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return (0 < (cc_t)-1);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
- * Method:    getValue
- * Signature: ()B
- */
-JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_getValue
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
+     * Method:    getValue
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_getValue
     (JNIEnv *env, jobject jnhw_cc_t) {
         return (int8_t) *UNWRAP_ABSTRACT_MEM_TO(cc_t*, jnhw_cc_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
- * Method:    setValue
- * Signature: (B)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_setValue
+    /*
+     * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
+     * Method:    setValue
+     * Signature: (B)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_setValue
     (JNIEnv *env, jobject jnhw_cc_t, jbyte value) {
         *UNWRAP_ABSTRACT_MEM_TO(cc_t*, jnhw_cc_t) = (uint8_t) value;
-    }
-
-/*
- * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
- * Method:    nativeToString
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_nativeToString
-    (JNIEnv *env, jobject jnhw_cc_t) {
-        char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_cc_t, *UNWRAP_ABSTRACT_MEM_TO(cc_t*, jnhw_cc_t));
-        return (*env)->NewStringUTF(env, buf);
     }
 
 #endif

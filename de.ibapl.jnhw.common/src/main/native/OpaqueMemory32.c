@@ -29,12 +29,12 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
- * Method:    copy
- * Signature: ([BILde/ibapl/jnhw/common/memory/OpaqueMemory32;II)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_copy___3BILde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
+     * Method:    copy
+     * Signature: ([BILde/ibapl/jnhw/common/memory/OpaqueMemory32;II)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_copy___3BILde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jbyteArray src, jint srcPos, jobject dest, jint destPos, jint len) {
         if (outOfBoundsByteArray(env, srcPos, len, src)) {
             throw_ArrayIndexOutOfBoundsException(env, "Source ArrayIndex!");
@@ -47,12 +47,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_copy___3B
         (*env)->GetByteArrayRegion(env, src, srcPos, len, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(dest) + destPos);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
- * Method:    copy
- * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;I[BII)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_copy__Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2I_3BII
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
+     * Method:    copy
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;I[BII)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_copy__Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2I_3BII
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject src, jint srcPos, jbyteArray dest, jint destPos, jint len) {
         if (outOfBoundsOpaqueMemory32(env, srcPos, len, src)) {
             throw_IndexOutOfBoundsException(env, "Source index outside of opaque memory!");
@@ -65,12 +65,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_copy__Lde
         (*env)->SetByteArrayRegion(env, dest, destPos, len, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(src) + srcPos);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
- * Method:    getByte
- * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;I)B
- */
-JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_getByte
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
+     * Method:    getByte
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;I)B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_getByte
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject opaqueMemory, jint index) {
         if (outOfBoundsOpaqueMemory32(env, index, 1, opaqueMemory)) {
             throw_IndexOutOfBoundsException(env, "Index outside of allocated memory!");
@@ -79,12 +79,12 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_getByte
         return *(UNWRAP_ABSTRACT_MEM_TO(jbyte*, opaqueMemory) + index);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
- * Method:    setByte
- * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;IB)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_setByte
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
+     * Method:    setByte
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;IB)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_setByte
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject opaqueMemory, jint index, jbyte value) {
         if (outOfBoundsOpaqueMemory32(env, index, 1, opaqueMemory)) {
             throw_IndexOutOfBoundsException(env, "Index outside of allocated memory!");
@@ -93,12 +93,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_setByte
         *(UNWRAP_ABSTRACT_MEM_TO(jbyte*, opaqueMemory) + index) = value;
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
- * Method:    memset
- * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;B)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_memset
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory32
+     * Method:    memset
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;B)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory32_memset
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject opaqueMemory32, jbyte byteToSet) {
         memset(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(opaqueMemory32), byteToSet, (uint32_t) SIZE_OF_OPAQUE_MEM_32(opaqueMemory32));
     }

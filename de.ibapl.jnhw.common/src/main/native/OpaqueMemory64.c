@@ -29,12 +29,12 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory64
- * Method:    copy
- * Signature: ([BILde/ibapl/jnhw/common/memory/OpaqueMemory64;JI)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_copy___3BILde_ibapl_jnhw_common_memory_OpaqueMemory64_2JI
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory64
+     * Method:    copy
+     * Signature: ([BILde/ibapl/jnhw/common/memory/OpaqueMemory64;JI)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_copy___3BILde_ibapl_jnhw_common_memory_OpaqueMemory64_2JI
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jbyteArray src, jint srcPos, jobject dest, jlong destPos, jint len) {
         if (outOfBoundsByteArray(env, srcPos, len, src)) {
             throw_ArrayIndexOutOfBoundsException(env, "Source ArrayIndex!");
@@ -47,12 +47,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_copy___3B
         (*env)->GetByteArrayRegion(env, src, srcPos, len, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(dest) + destPos);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory64
- * Method:    copy
- * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory64;J[BII)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_copy__Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2J_3BII
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory64
+     * Method:    copy
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory64;J[BII)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_copy__Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2J_3BII
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject src, jlong srcPos, jbyteArray dest, jint destPos, jint len) {
         if (outOfBoundsOpaqueMemory64(env, srcPos, len, src)) {
             throw_IndexOutOfBoundsException(env, "Source index outside of opaque memory!");
@@ -65,12 +65,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_copy__Lde
         (*env)->SetByteArrayRegion(env, dest, destPos, len, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(src) + srcPos);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory64
- * Method:    getByte
- * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory64;J)B
- */
-JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_getByte
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory64
+     * Method:    getByte
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory64;J)B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_getByte
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject opaqueMemory, jlong index) {
         if (outOfBoundsOpaqueMemory64(env, index, 1, opaqueMemory)) {
             throw_IndexOutOfBoundsException(env, "Index outside of allocated memory!");
@@ -79,12 +79,12 @@ JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_getByte
         return *(UNWRAP_ABSTRACT_MEM_TO(jbyte*, opaqueMemory) + index);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory64
- * Method:    setByte
- * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JB)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_setByte
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory64
+     * Method:    setByte
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JB)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_setByte
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject opaqueMemory, jlong index, jbyte value) {
         if (outOfBoundsOpaqueMemory64(env, index, 1, opaqueMemory)) {
             throw_IndexOutOfBoundsException(env, "Index outside of allocated memory!");
@@ -93,12 +93,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_setByte
         *(UNWRAP_ABSTRACT_MEM_TO(jbyte*, opaqueMemory) + index) = value;
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory64
- * Method:    memset
- * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory64;B)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_memset
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_OpaqueMemory64
+     * Method:    memset
+     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory64;B)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_OpaqueMemory64_memset
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject opaqueMemory64, jbyte byteToSet) {
         memset(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(opaqueMemory64), byteToSet, (uint32_t) SIZE_OF_OPAQUE_MEM_64(opaqueMemory64));
     }

@@ -40,6 +40,33 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Stdio
+     * Method:    getchar
+     * Signature: ()C
+     */
+    JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_posix_Stdio_getchar
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        int result = getchar();
+        if (result == EOF) {
+            throw_NativeErrorException(env, errno);
+        }
+        return (jchar)result;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Stdio
+     * Method:    putchar
+     * Signature: (C)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Stdio_putchar
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jchar c) {
+        int result = putchar(c);
+        if (result == EOF) {
+            throw_NativeErrorException(env, errno);
+        }
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Stdio
      * Method:    remove
      * Signature: (Ljava/lang/String)V
      */

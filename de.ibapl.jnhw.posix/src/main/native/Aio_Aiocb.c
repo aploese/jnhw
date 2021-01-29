@@ -232,7 +232,7 @@ JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
      * Method:    aio_nbytes
      * Signature: ()J
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1nbytes__
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1nbytes
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb) {
         throw_NoSuchNativeTypeException(env, "struct aiocb");

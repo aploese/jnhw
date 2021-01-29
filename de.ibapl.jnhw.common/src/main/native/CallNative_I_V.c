@@ -31,15 +31,15 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_common_nativecall_CallNative_I_V
- * Method:    call
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1I_1V_call
-  (JNIEnv *env, jobject this, jint value) {
-     (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t), this))(value);
-}
+    /*
+     * Class:     de_ibapl_jnhw_common_nativecall_CallNative_I_V
+     * Method:    call
+     * Signature: (I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1I_1V_call
+    (JNIEnv *env, jobject this, jint value) {
+       (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t), this))(value);
+    }
 
 #ifdef __cplusplus
 }

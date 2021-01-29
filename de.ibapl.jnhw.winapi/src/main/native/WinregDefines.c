@@ -22,19 +22,19 @@
 #include "jnhw-winapi.h"
 #include "de_ibapl_jnhw_winapi_Winreg.h"
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winreg
- * Method:    HAVE_WINREG_H
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HAVE_1WINREG_1H
-(__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winreg
+     * Method:    HAVE_WINREG_H
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winreg_HAVE_1WINREG_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_WINREG_H
-    return JNI_TRUE;
+        return JNI_TRUE;
 #else
-    return JNI_FALSE;
+        return JNI_FALSE;
 #endif
-}
+    }
 
 #ifdef HAVE_WINREG_H
 #include <winreg.h>

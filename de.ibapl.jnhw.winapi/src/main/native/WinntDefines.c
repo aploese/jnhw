@@ -22,19 +22,19 @@
 #include "jnhw-winapi.h"
 #include "de_ibapl_jnhw_winapi_Winnt.h"
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winnt
- * Method:    HAVE_WINNT_H
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winnt_HAVE_1WINNT_1H
-(__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt
+     * Method:    HAVE_WINNT_H
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winnt_HAVE_1WINNT_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_WINNT_H
-    return JNI_TRUE;
+        return JNI_TRUE;
 #else
-    return JNI_FALSE;
+        return JNI_FALSE;
 #endif
-}
+    }
 
 #ifdef HAVE_WINNT_H
 #include <winnt.h>

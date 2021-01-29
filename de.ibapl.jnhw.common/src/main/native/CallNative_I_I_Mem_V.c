@@ -31,15 +31,15 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V
- * Method:    call
- * Signature: (IILde/ibapl/jnhw/common/memory/AbstractNativeMemory;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1I_1I_1Mem_1V_call
-  (JNIEnv *env, jobject this, jint a, jint b, jobject c) {
-     (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t, int32_t, void*), this))(a, b, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(c));
-}
+    /*
+     * Class:     de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V
+     * Method:    call
+     * Signature: (IILde/ibapl/jnhw/common/memory/AbstractNativeMemory;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1I_1I_1Mem_1V_call
+    (JNIEnv *env, jobject this, jint a, jint b, jobject c) {
+       (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t, int32_t, void*), this))(a, b, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(c));
+    }
 
 #ifdef __cplusplus
 }

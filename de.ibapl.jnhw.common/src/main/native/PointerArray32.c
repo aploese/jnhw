@@ -28,12 +28,12 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_PointerArray32
- * Method:    get0
- * Signature: (I)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_memory_PointerArray32_get0
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_PointerArray32
+     * Method:    get0
+     * Signature: (I)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_memory_PointerArray32_get0
     (JNIEnv *env, jobject pointerArray, jint index) {
         return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)*(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_PTR(pointerArray) + index));
     }

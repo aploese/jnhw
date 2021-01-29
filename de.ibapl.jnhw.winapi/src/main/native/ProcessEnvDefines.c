@@ -26,19 +26,19 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_winapi_ProcessEnv
- * Method:    HAVE_PROCESSENV_H
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_HAVE_1PROCESSENV_1H(
-		__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_ProcessEnv
+     * Method:    HAVE_PROCESSENV_H
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_HAVE_1PROCESSENV_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_PROCESSENV_H
-    return JNI_TRUE;
+        return JNI_TRUE;
 #else
 	return JNI_FALSE;
 #endif
-}
+    }
 
 #ifdef HAVE_PROCESSENV_H
 #include <processenv.h>

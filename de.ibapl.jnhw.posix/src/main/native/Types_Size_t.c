@@ -31,52 +31,52 @@ extern "C" {
 
 JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
- * Method:    sizeof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_sizeof
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
+     * Method:    sizeof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (size_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_alignof
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_alignof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return __alignof__ (size_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
- * Method:    unsigned
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_unsigned
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
+     * Method:    unsigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_unsigned
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return (0 < (size_t)-1);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
- * Method:    getValue
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_getValue
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
+     * Method:    getValue
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_getValue
     (JNIEnv *env, jobject jnhw_size_t) {
         return (int64_t) *UNWRAP_ABSTRACT_MEM_TO(size_t*, jnhw_size_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
- * Method:    setValue
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_setValue
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
+     * Method:    setValue
+     * Signature: (J)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_setValue
     (JNIEnv *env, jobject jnhw_size_t, jlong value) {
 #if defined(_JNHW__size_t__IS__uint32_t)
         if ((value > UINT32_MAX) || (value < 0)) {
@@ -90,12 +90,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_setValue
         *UNWRAP_ABSTRACT_MEM_TO(size_t*, jnhw_size_t) = (size_t)value;
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
- * Method:    nativeToString
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_nativeToString
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Size_t
+     * Method:    nativeToString
+     * Signature: ()Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Size_1t_nativeToString
     (JNIEnv *env, jobject jnhw_size_t) {
         char buf[128] = {0};
         snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_size_t, *UNWRAP_ABSTRACT_MEM_TO(size_t*, jnhw_size_t));

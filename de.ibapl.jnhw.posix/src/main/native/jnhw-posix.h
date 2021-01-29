@@ -76,24 +76,6 @@
 #if _POSIX_C_SOURCE
 #include "jnhw-posix-datatypes.h"
 
-#if defined(_JNHW__cc_t__IS__uint8_t)
-  #define JNHW_FORMAT_STRING_cc_t JNHW_FORMAT_STRING_uint8_t
-#else
-#error expected cc_t is uint8_t
-#endif
-
-#if defined(_JNHW__speed_t__IS__uint32_t)
-  #define JNHW_FORMAT_STRING_speed_t JNHW_FORMAT_STRING_uint32_t
-#else
-#error expected speed_t is int32_t
-#endif
-
-#if defined(_JNHW__tcflag_t__IS__uint32_t)
-  #define JNHW_FORMAT_STRING_tcflag_t JNHW_FORMAT_STRING_uint32_t
-#else
-#error expected tcflag_t is uint32_t
-#endif
-
 #if defined(_JNHW__clock_t__IS__int32_t)
   #if defined(__linux__)
 //error if we use JNHW_FORMAT_STRING_int32_t, we will get: format ‘%d’ expects argument of type ‘int’, but argument 4 has type ‘clock_t’ {aka ‘long int’}

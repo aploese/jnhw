@@ -196,7 +196,7 @@ extern "C" {
      * Method:    sigev_notify_function0
      * Signature: (Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function0__Lde_ibapl_jnhw_common_memory_NativeFunctionPointer_2
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function0
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jobject structSigevent, __attribute__ ((unused)) jobject value) {
         throw_NoSuchNativeTypeException(env, "struct sigevent");

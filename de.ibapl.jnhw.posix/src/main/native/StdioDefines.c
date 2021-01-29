@@ -67,6 +67,16 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Stdio
+     * Method:    EOF
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Stdio_EOF
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return EOF;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Stdio
      * Method:    SEEK_END
      * Signature: ()I
      */

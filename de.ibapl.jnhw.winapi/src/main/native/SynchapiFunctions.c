@@ -142,33 +142,33 @@ extern "C" {
         return SleepEx((uint32_t)dwMilliseconds, bAlertable);
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Synchapi
- * Method:    WaitForMultipleObjects_ArgsOK
- * Signature: (ILde/ibapl/jnhw/PointerArray;ZJ)J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjects_1ArgsOK
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jobject lpHandles, jboolean bWaitAll, jlong dwMilliseconds) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Synchapi
+     * Method:    WaitForMultipleObjects_ArgsOK
+     * Signature: (ILde/ibapl/jnhw/PointerArray;ZJ)J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjects_1ArgsOK
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jobject lpHandles, jboolean bWaitAll, jlong dwMilliseconds) {
         DWORD result = WaitForMultipleObjects((uint32_t)nCount, UNWRAP_ABSTRACT_MEM_TO(const HANDLE *, lpHandles), bWaitAll, (uint32_t) dwMilliseconds);
         if (result == WAIT_FAILED) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
         return result;
-}
+    }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Synchapi
- * Method:    WaitForMultipleObjectsEx_ArgsOK
- * Signature: (ILde/ibapl/jnhw/common/memory/PointerArray32;ZJZ)J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjectsEx_1ArgsOK
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jobject lpHandles, jboolean bWaitAll, jlong dwMilliseconds, jboolean bAlertable) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Synchapi
+     * Method:    WaitForMultipleObjectsEx_ArgsOK
+     * Signature: (ILde/ibapl/jnhw/common/memory/PointerArray32;ZJZ)J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjectsEx_1ArgsOK
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jobject lpHandles, jboolean bWaitAll, jlong dwMilliseconds, jboolean bAlertable) {
         DWORD result = WaitForMultipleObjectsEx((uint32_t)nCount, UNWRAP_ABSTRACT_MEM_TO(const HANDLE *, lpHandles), bWaitAll, (uint32_t) dwMilliseconds, bAlertable);
         if (result == WAIT_FAILED) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
         return result;
-}
+    }
 
 #endif
 #ifdef __cplusplus

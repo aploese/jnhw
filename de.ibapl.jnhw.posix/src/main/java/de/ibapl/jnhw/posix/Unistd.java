@@ -140,6 +140,7 @@ public final class Unistd {
      *
      * @return the native symbolic constant of _POSIX_VERSION.
      */
+    @Define
     public static native int _POSIX_VERSION();
 
     /**
@@ -167,6 +168,16 @@ public final class Unistd {
 
     /**
      * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getgid.html">getgid
+     * - get the real group ID</a>.
+     *
+     * @return the real group ID
+     */
+    public final native static @gid_t
+    int getgid();
+
+    /**
+     * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getegid.html">getegid
      * - get the effective group ID</a>.
      */
@@ -175,24 +186,50 @@ public final class Unistd {
 
     /**
      * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setgid.html">setgid
+     * - set group ID</a>.
+     * 
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final native static void setgid(@gid_t int gid) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setegid.html">setegid
+     * - set effective user ID</a>.
+     * 
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final native static void setegid(@gid_t int gid) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setregid.html">setregid - set real and effective group IDs</a>.
+     * 
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final native static void setregid(@gid_t int rgid, @gid_t int egid) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/geteuid.html">geteuid
      * - get the effective user ID</a>.
      */
     public final native static @uid_t
     int geteuid();
-    //TODO java doc + gid APUE page 256ff
-
-    public final native static void seteuid(@uid_t int uid);
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getgid.html">getgid
-     * - get the real group ID</a>.
-     *
-     * @return the real group ID
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/seteuid.html">seteuid
+     * - set effective user ID</a>.
+     * 
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
      */
-    public final native static @gid_t
-    int getgid();
+    public final native static void seteuid(@uid_t int uid) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -218,7 +255,14 @@ public final class Unistd {
     public final native static @pid_t
     int getppid();
 
-    public final native static void setreuid(@uid_t int uid);
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setreuid.html">setreuid - set real and effective user IDs</a>.
+     * 
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final native static void setreuid(@uid_t int ruid, @uid_t int euid) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -228,7 +272,15 @@ public final class Unistd {
     public final native static @uid_t
     int getuid();
 
-    public final native static void setuid(@uid_t int uid);
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setuid.html">setuid
+     * - set user ID</a>.
+     * 
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final native static void setuid(@uid_t int uid) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>

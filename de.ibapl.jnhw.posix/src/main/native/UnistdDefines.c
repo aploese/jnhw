@@ -150,7 +150,7 @@ extern "C" {
      * Method:    _POSIX_VERSION
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Unistd__1POSIX_1VERSION
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd__1POSIX_1VERSION
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return _POSIX_VERSION;
     }

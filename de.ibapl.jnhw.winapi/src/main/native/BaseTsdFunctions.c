@@ -29,12 +29,12 @@ extern "C" {
 #ifdef HAVE_BASETSD_H
 #include <basetsd.h>
 
-/*
- * Class:     de_ibapl_jnhw_winapi_BaseTsd
- * Method:    sizeof_ULONG_PTR
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_BaseTsd_sizeof_1ULONG_1PTR
+    /*
+     * Class:     de_ibapl_jnhw_winapi_BaseTsd
+     * Method:    sizeof_ULONG_PTR
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_BaseTsd_sizeof_1ULONG_1PTR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (ULONG_PTR);
     }

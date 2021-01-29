@@ -31,15 +31,15 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V
- * Method:    call
- * Signature: (ILde/ibapl/jnhw/common/memory/AbstractNativeMemory;Lde/ibapl/jnhw/common/memory/AbstractNativeMemory;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1I_1Mem_1Mem_1V_call
-  (JNIEnv *env, jobject this, jint a, jobject b, jobject c) {
-     (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t, void*, void*), this))(a, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(b), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(c));
-}
+    /*
+     * Class:     de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V
+     * Method:    call
+     * Signature: (ILde/ibapl/jnhw/common/memory/AbstractNativeMemory;Lde/ibapl/jnhw/common/memory/AbstractNativeMemory;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1I_1Mem_1Mem_1V_call
+    (JNIEnv *env, jobject this, jint a, jobject b, jobject c) {
+       (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t, void*, void*), this))(a, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(b), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(c));
+    }
 
 #ifdef __cplusplus
 }

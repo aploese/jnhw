@@ -29,12 +29,12 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    ClearCommBreak
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommBreak
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    ClearCommBreak
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommBreak
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
@@ -45,12 +45,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommBreak
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    ClearCommError
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Winbase/COMSTAT;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommError
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    ClearCommError
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Winbase/COMSTAT;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommError
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpErrors, jobject lpCOMSTAT) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
@@ -65,12 +65,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommError
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    EscapeCommFunction
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EscapeCommFunction
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    EscapeCommFunction
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EscapeCommFunction
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jint dwFunc) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
@@ -81,12 +81,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EscapeCommFunction
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    GetCommModemStatus
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/references/IntRef;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommModemStatus
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    GetCommModemStatus
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/common/references/IntRef;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommModemStatus
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpModemStat) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
@@ -99,12 +99,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommModemStatus
         SET_INT_REF_VALUE(lpModemStat, (int32_t)_lpModemStat);
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    GetCommState
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommState
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    GetCommState
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommState
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpDCB) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
@@ -119,12 +119,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommState
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    GetCommTimeouts
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommTimeouts
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    GetCommTimeouts
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommTimeouts
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpCOMMTIMEOUTS) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
@@ -139,12 +139,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommTimeouts
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    SetCommBreak
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommBreak
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SetCommBreak
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommBreak
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
@@ -155,12 +155,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommBreak
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    SetCommState
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommState
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SetCommState
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommState
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpDCB) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
@@ -175,12 +175,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommState
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    SetCommTimeouts
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommTimeouts
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SetCommTimeouts
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommTimeouts
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpCOMMTIMEOUTS) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
@@ -195,13 +195,13 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommTimeouts
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    SetFileCompletionNotificationModes
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;B)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetFileCompletionNotificationModes
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jbyte uFlags) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    SetFileCompletionNotificationModes
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;B)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetFileCompletionNotificationModes
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jbyte uFlags) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
             return;
@@ -209,15 +209,15 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetFileCompletionNotifi
         if (!SetFileCompletionNotificationModes(UNWRAP_HANDLE(hFile), (uint8_t)uFlags)) {
             throw_NativeErrorException(env, (int32_t)GetLastError());
         }
-}
+    }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase
- * Method:    BindIoCompletionCallback
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase/LPOVERLAPPED_COMPLETION_ROUTINE;I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_BindIoCompletionCallback
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject Function, jint Flags) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winbase
+     * Method:    BindIoCompletionCallback
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase/LPOVERLAPPED_COMPLETION_ROUTINE;I)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_BindIoCompletionCallback
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject Function, jint Flags) {
         if (hFile == NULL) {
             throw_NullPointerException(env, "hFile is null");
             return;
@@ -229,7 +229,7 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_BindIoCompletionCallbac
         if (!BindIoCompletionCallback(UNWRAP_HANDLE(hFile), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(Function), (uint32_t)Flags)) {
             throw_NativeErrorException(env, (int32_t)GetLastError());
         }
-}
+    }
 
 
 #ifdef __cplusplus

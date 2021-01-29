@@ -27,52 +27,52 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_Int8_t
- * Method:    sizeof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_Int8_1t_sizeof
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_Int8_t
+     * Method:    sizeof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_Int8_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (int8_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_Int8_t
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_Int8_1t_alignof
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_Int8_t
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_Int8_1t_alignof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return __alignof__ (int8_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_Int8_t
- * Method:    rawInt8_t
- * Signature: ()B
- */
-JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_Int8_1t_rawInt8_1t__
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_Int8_t
+     * Method:    rawInt8_t
+     * Signature: ()B
+     */
+    JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_Int8_1t_rawInt8_1t__
     (JNIEnv *env, jobject jnhw_int8_t) {
         return *UNWRAP_ABSTRACT_MEM_TO(int8_t*, jnhw_int8_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_Int8_t
- * Method:    rawInt8_t
- * Signature: (B)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_Int8_1t_rawInt8_1t__B
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_Int8_t
+     * Method:    rawInt8_t
+     * Signature: (B)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_Int8_1t_rawInt8_1t__B
     (JNIEnv *env, jobject jnhw_int8_t, jbyte value) {
         *UNWRAP_ABSTRACT_MEM_TO(int8_t*, jnhw_int8_t) = value;
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_Int8_t
- * Method:    nativeToString
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_Int8_1t_nativeToString
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_Int8_t
+     * Method:    nativeToString
+     * Signature: ()Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_Int8_1t_nativeToString
     (JNIEnv *env, jobject jnhw_int8_t) {
         char buf[128] = {0};
         snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_int8_t, *UNWRAP_ABSTRACT_MEM_TO(int8_t*, jnhw_int8_t));

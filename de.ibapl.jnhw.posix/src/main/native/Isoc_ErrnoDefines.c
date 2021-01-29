@@ -21,19 +21,19 @@
  */
 #include "jnhw-posix.h"
 
-/*
- * Class:     de_ibapl_jnhw_isoc_Errno
- * Method:    HAVE_ERRNO_H
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_isoc_Errno_HAVE_1ERRNO_1H
-(__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    /*
+     * Class:     de_ibapl_jnhw_isoc_Errno
+     * Method:    HAVE_ERRNO_H
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_isoc_Errno_HAVE_1ERRNO_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_ERRNO_H
-    return JNI_TRUE;
+        return JNI_TRUE;
 #else
-    return JNI_FALSE;
+        return JNI_FALSE;
 #endif
-}
+    }
 
 
 #ifdef HAVE_ERRNO_H

@@ -30,35 +30,35 @@ extern "C" {
 #endif
 
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winnt_ArrayOfHandle
- * Method:    get0
- * Signature: (I)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_get0
-  (__attribute__ ((unused)) JNIEnv *env, jobject this, jint i) {
-    return CREATE_HANDLE(*(UNWRAP_ABSTRACT_MEM_TO(HANDLE *, this)+ i));
-  }
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt_ArrayOfHandle
+     * Method:    get0
+     * Signature: (I)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_get0
+    (__attribute__ ((unused)) JNIEnv *env, jobject this, jint i) {
+        return CREATE_HANDLE(*(UNWRAP_ABSTRACT_MEM_TO(HANDLE *, this)+ i));
+    }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winnt_ArrayOfHandle
- * Method:    set0
- * Signature: (ILde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_set0
-  (__attribute__ ((unused)) JNIEnv *env, jobject this, jint i, jobject element) {
-    *(UNWRAP_ABSTRACT_MEM_TO(HANDLE *, this) + i) = UNWRAP_HANDLE_OR_NULL(element);
-  }
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt_ArrayOfHandle
+     * Method:    set0
+     * Signature: (ILde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_set0
+    (__attribute__ ((unused)) JNIEnv *env, jobject this, jint i, jobject element) {
+        *(UNWRAP_ABSTRACT_MEM_TO(HANDLE *, this) + i) = UNWRAP_HANDLE_OR_NULL(element);
+    }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winnt_ArrayOfHandle
- * Method:    sizeof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_sizeof
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return sizeof(HANDLE);
-  }
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt_ArrayOfHandle
+     * Method:    sizeof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_sizeof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return sizeof(HANDLE);
+    }
 
 #ifdef __cplusplus
 }

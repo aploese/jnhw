@@ -59,6 +59,15 @@ public class Stdio {
     @Define
     public static native int SEEK_CUR();
 
+    
+    /**
+     * <b>POSIX:</b>End-of-file return value.
+     *
+     * @return the native EOF.
+     */
+    @Define
+    public static native int EOF();
+    
     /**
      * <b>POSIX:</b> Seek relative to end-of-file.
      *
@@ -74,6 +83,24 @@ public class Stdio {
      */
     @Define
     public static native int SEEK_SET();
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getchar.html">getchar - get a byte from a stdin stream</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static native char getchar() throws NativeErrorException ;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/putchar.html">putchar - put a byte on a stdout stream</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public static native void putchar(char c) throws NativeErrorException;      
 
     /**
      * <b>POSIX:</b>

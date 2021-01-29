@@ -27,52 +27,52 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_Uint16_t
- * Method:    sizeof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_sizeof
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_Uint16_t
+     * Method:    sizeof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (uint16_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_Uint16_t
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_alignof
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_Uint16_t
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_alignof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return __alignof__ (uint16_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_Uint16_t
- * Method:    rawUint16_t
- * Signature: ()S
- */
-JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_rawUint16_1t__
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_Uint16_t
+     * Method:    rawUint16_t
+     * Signature: ()S
+     */
+    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_rawUint16_1t__
     (JNIEnv *env, jobject jnhw_uint16_t) {
         return (int16_t)*UNWRAP_ABSTRACT_MEM_TO(uint16_t*, jnhw_uint16_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_Uint16_t
- * Method:    rawUint16_t
- * Signature: (S)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_rawUint16_1t__S
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_Uint16_t
+     * Method:    rawUint16_t
+     * Signature: (S)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_rawUint16_1t__S
     (JNIEnv *env, jobject jnhw_uint16_t, jshort value) {
         *UNWRAP_ABSTRACT_MEM_TO(uint16_t*, jnhw_uint16_t) = (uint16_t)value;
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_Uint16_t
- * Method:    nativeToString
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_nativeToString
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_Uint16_t
+     * Method:    nativeToString
+     * Signature: ()Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_Uint16_1t_nativeToString
     (JNIEnv *env, jobject jnhw_uint16_t) {
         char buf[128] = {0};
         snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint16_t, *UNWRAP_ABSTRACT_MEM_TO(uint16_t*, jnhw_uint16_t));

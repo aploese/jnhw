@@ -27,19 +27,19 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_common_test_memory_PointerArray32Test
- * Method:    getCachedReferencesLength
- * Signature: (Lde/ibapl/jnhw/common/memory/PointerArray32;)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_PointerArray32Test_getCachedReferencesLength
-  (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject pointerArray) {
-    if (de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID == NULL) {
-        throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID is NULL!");
-        return -1;
+    /*
+     * Class:     de_ibapl_jnhw_common_test_memory_PointerArray32Test
+     * Method:    getCachedReferencesLength
+     * Signature: (Lde/ibapl/jnhw/common/memory/PointerArray32;)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_PointerArray32Test_getCachedReferencesLength
+    (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject pointerArray) {
+        if (de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID == NULL) {
+            throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID is NULL!");
+            return -1;
+        }
+        return LENGTH_OF_POINTER_ARRAY_32(pointerArray);
     }
-    return LENGTH_OF_POINTER_ARRAY_32(pointerArray);
-}
 
 #ifdef __cplusplus
 }

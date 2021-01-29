@@ -29,35 +29,35 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
- * Method:    sizeof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_sizeof
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return sizeof(HANDLE);
-}
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
+     * Method:    sizeof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_sizeof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return sizeof(HANDLE);
+    }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
- * Method:    getHandleValue
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_getHandleValue
-  (__attribute__ ((unused)) JNIEnv *env, jobject this) {
-    return (intptr_t) *(UNWRAP_PHANDLE(this));
-}
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
+     * Method:    getHandleValue
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_getHandleValue
+    (__attribute__ ((unused)) JNIEnv *env, jobject this) {
+        return (intptr_t) *(UNWRAP_PHANDLE(this));
+    }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
- * Method:    setHandleValue
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_setHandleValue
-  (JNIEnv *env, jobject this, jlong value) {
-    *(UNWRAP_PHANDLE(this)) = (HANDLE) (intptr_t) value;
-}
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Winnt_PHANDLE
+     * Method:    setHandleValue
+     * Signature: (J)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_setHandleValue
+    (JNIEnv *env, jobject this, jlong value) {
+        *(UNWRAP_PHANDLE(this)) = (HANDLE) (intptr_t) value;
+    }
 
 #ifdef __cplusplus
 }

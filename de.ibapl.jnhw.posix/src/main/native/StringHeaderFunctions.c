@@ -33,33 +33,33 @@ extern "C" {
 #include <errno.h>
 
 
-/*
- * Class:     de_ibapl_jnhw_posix_StringHeader
- * Method:    strerror
- * Signature: (I)Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_StringHeader_strerror
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint errnum) {
+    /*
+     * Class:     de_ibapl_jnhw_posix_StringHeader
+     * Method:    strerror
+     * Signature: (I)Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_StringHeader_strerror
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint errnum) {
         const char *result = strerror(errnum);
         if (result == NULL) {
             return NULL;
         } else {
             return (*env)->NewStringUTF(env, result);
         }
-}
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_StringHeader
- * Method:    strerror_l
- * Signature: (ILde/ibapl/jnhw/posix/Locale/Locale_t;)Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_StringHeader_strerror_1l
+    /*
+     * Class:     de_ibapl_jnhw_posix_StringHeader
+     * Method:    strerror_l
+     * Signature: (ILde/ibapl/jnhw/posix/Locale/Locale_t;)Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_StringHeader_strerror_1l
 #if defined(__APPLE__) || defined(__FreeBSD__)
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint errnum, __attribute__ ((unused)) jobject locale) {
-    throw_NoSuchNativeMethodException(env, "strerror_l");
-    return NULL;
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint errnum, __attribute__ ((unused)) jobject locale) {
+        throw_NoSuchNativeMethodException(env, "strerror_l");
+        return NULL;
 #else
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint errnum, jobject locale) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint errnum, jobject locale) {
         if (locale == NULL) {
             throw_NullPointerException(env, "locale is NULL");
             return NULL;
@@ -71,22 +71,22 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_StringHeader_strerror_1l
             return (*env)->NewStringUTF(env, result);
         }
 #endif
-}
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_StringHeader
- * Method:    strsignal
- * Signature: (I)Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_StringHeader_strsignal
-  (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint signum) {
+    /*
+     * Class:     de_ibapl_jnhw_posix_StringHeader
+     * Method:    strsignal
+     * Signature: (I)Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_StringHeader_strsignal
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint signum) {
         const char *result = strsignal(signum);
         if (result == NULL) {
             return NULL;
         } else {
             return (*env)->NewStringUTF(env, result);
         }
-}
+    }
 
 #endif
 #ifdef __cplusplus

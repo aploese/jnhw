@@ -44,65 +44,65 @@ extern "C" {
 #include <pthread.h>
 
 
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    PTHREAD_EXPLICIT_SCHED
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1EXPLICIT_1SCHED
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    PTHREAD_EXPLICIT_SCHED
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1EXPLICIT_1SCHED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return PTHREAD_EXPLICIT_SCHED;
-}
+        return PTHREAD_EXPLICIT_SCHED;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    PTHREAD_INHERIT_SCHED
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1INHERIT_1SCHED
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    PTHREAD_INHERIT_SCHED
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1INHERIT_1SCHED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return PTHREAD_INHERIT_SCHED;
-}
+        return PTHREAD_INHERIT_SCHED;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    PTHREAD_CANCEL_DISABLE
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1DISABLE
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    PTHREAD_CANCEL_DISABLE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1DISABLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return PTHREAD_CANCEL_DISABLE;
-}
+        return PTHREAD_CANCEL_DISABLE;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    PTHREAD_CANCEL_ENABLE
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1ENABLE
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    PTHREAD_CANCEL_ENABLE
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1ENABLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return PTHREAD_CANCEL_ENABLE;
-}
+        return PTHREAD_CANCEL_ENABLE;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    PTHREAD_CANCEL_DEFERRED
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1DEFERRED
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    PTHREAD_CANCEL_DEFERRED
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1DEFERRED
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return PTHREAD_CANCEL_DEFERRED;
-}
+        return PTHREAD_CANCEL_DEFERRED;
+    }
 
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    PTHREAD_CANCEL_ASYNCHRONOUS
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1ASYNCHRONOUS
+    /*
+     * Class:     de_ibapl_jnhw_posix_Pthread
+     * Method:    PTHREAD_CANCEL_ASYNCHRONOUS
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1ASYNCHRONOUS
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    return PTHREAD_CANCEL_ASYNCHRONOUS;
-}
+        return PTHREAD_CANCEL_ASYNCHRONOUS;
+    }
 
 #endif
 #ifdef __cplusplus

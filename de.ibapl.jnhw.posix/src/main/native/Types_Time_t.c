@@ -31,52 +31,52 @@ extern "C" {
 
 JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
- * Method:    sizeof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_sizeof
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
+     * Method:    sizeof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (time_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_alignof
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_alignof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return __alignof__ (time_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
- * Method:    unsigned
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_unsigned
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
+     * Method:    unsigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_unsigned
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return (0 < (time_t)-1);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
- * Method:    getValue
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_getValue
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
+     * Method:    getValue
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_getValue
     (JNIEnv *env, jobject jnhw_time_t) {
         return (int64_t) *UNWRAP_ABSTRACT_MEM_TO(time_t*, jnhw_time_t);
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
- * Method:    setValue
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_setValue
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
+     * Method:    setValue
+     * Signature: (J)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_setValue
     (JNIEnv *env, jobject jnhw_time_t, jlong value) {
 #if defined(_JNHW__time_t__IS__int32_t)
         if ((value > INT32_MAX) || (value < INT32_MIN)) {
@@ -90,12 +90,12 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_setValue
         *UNWRAP_ABSTRACT_MEM_TO(time_t*, jnhw_time_t) = (time_t)value;
     }
 
-/*
- * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
- * Method:    nativeToString
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_nativeToString
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
+     * Method:    nativeToString
+     * Signature: ()Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_nativeToString
     (JNIEnv *env, jobject jnhw_time_t) {
         char buf[128] = {0};
         snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_time_t, *UNWRAP_ABSTRACT_MEM_TO(time_t*, jnhw_time_t));

@@ -26,19 +26,19 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
- * Method:    HAVE_PROCESSTHREADSAPI_H
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_HAVE_1PROCESSTHREADSAPI_1H(
-		__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
+     * Method:    HAVE_PROCESSTHREADSAPI_H
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_HAVE_1PROCESSTHREADSAPI_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_PROCESSTHREADSAPI_H
     return JNI_TRUE;
 #else
 	return JNI_FALSE;
 #endif
-}
+    }
 
 #ifdef HAVE_PROCESSTHREADSAPI_H
 #include <processthreadsapi.h>

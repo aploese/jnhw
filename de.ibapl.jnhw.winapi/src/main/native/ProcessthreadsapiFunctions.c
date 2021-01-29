@@ -29,13 +29,13 @@ extern "C" {
 #ifdef HAVE_PROCESSTHREADSAPI_H
 #include <processthreadsapi.h>
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
- * Method:    QueueUserAPC
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/PAPCFUNC;Lde/ibapl/jnhw/winapi/Winnt/HANDLE;J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_QueueUserAPC(
-JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pfnAPC, jobject hThread, jlong dwData) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
+     * Method:    QueueUserAPC
+     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/PAPCFUNC;Lde/ibapl/jnhw/winapi/Winnt/HANDLE;J)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_QueueUserAPC
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pfnAPC, jobject hThread, jlong dwData) {
         if (pfnAPC == NULL) {
             throw_NullPointerException(env, "pfnAPC is null!");
             return;
@@ -62,13 +62,13 @@ JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pfnAPC, jobject hThr
     }
 
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
- * Method:    GetCurrentThread
- * Signature: ()Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_GetCurrentThread(
-JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
+     * Method:    GetCurrentThread
+     * Signature: ()Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+     */
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_GetCurrentThread
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return CREATE_HANDLE(GetCurrentThread());
     }
 

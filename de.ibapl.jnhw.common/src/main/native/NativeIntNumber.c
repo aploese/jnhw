@@ -27,12 +27,12 @@
 extern "C" {
 #endif
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_NativeIntNumber
- * Method:    nativeInt8ToHexString
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt8ToHexString
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_NativeIntNumber
+     * Method:    nativeInt8ToHexString
+     * Signature: ()Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt8ToHexString
     (JNIEnv *env, jobject nativeIntNumber) {
         char buf[128] = {0};
         snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint8_t, 0x00FF & *UNWRAP_ABSTRACT_MEM_TO(uint8_t*, nativeIntNumber));
@@ -40,24 +40,24 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativ
     }
 
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_NativeIntNumber
- * Method:    nativeInt16ToHexString
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt16ToHexString
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_NativeIntNumber
+     * Method:    nativeInt16ToHexString
+     * Signature: ()Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt16ToHexString
     (JNIEnv *env, jobject nativeIntNumber) {
         char buf[128] = {0};
         snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint16_t, 0x0000FFFF & *UNWRAP_ABSTRACT_MEM_TO(uint16_t*, nativeIntNumber));
         return (*env)->NewStringUTF(env, buf);
     }
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_NativeIntNumber
- * Method:    nativeInt32ToHexString
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt32ToHexString
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_NativeIntNumber
+     * Method:    nativeInt32ToHexString
+     * Signature: ()Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt32ToHexString
     (JNIEnv *env, jobject nativeIntNumber) {
         char buf[128] = {0};
         snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint32_t, *UNWRAP_ABSTRACT_MEM_TO(uint32_t*, nativeIntNumber));
@@ -65,12 +65,12 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativ
     }
 
 
-/*
- * Class:     de_ibapl_jnhw_common_memory_NativeIntNumber
- * Method:    nativeInt64ToHexString
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt64ToHexString
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_NativeIntNumber
+     * Method:    nativeInt64ToHexString
+     * Signature: ()Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_NativeIntNumber_nativeInt64ToHexString
     (JNIEnv *env, jobject nativeIntNumber) {
         char buf[128] = {0};
         snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint64_t, *UNWRAP_ABSTRACT_MEM_TO(uint64_t*, nativeIntNumber));

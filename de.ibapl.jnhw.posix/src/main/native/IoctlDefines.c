@@ -21,19 +21,19 @@
  */
 #include "jnhw-posix.h"
 
-/*
- * Class:     de_ibapl_jnhw_unix_sys_Ioctl
- * Method:    HAVE_SYS_IOCTL_H
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_HAVE_1SYS_1IOCTL_1H
-(__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    /*
+     * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+     * Method:    HAVE_SYS_IOCTL_H
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_HAVE_1SYS_1IOCTL_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #ifdef HAVE_SYS_IOCTL_H
-    return JNI_TRUE;
+        return JNI_TRUE;
 #else
-    return JNI_FALSE;
+        return JNI_FALSE;
 #endif
-}
+    }
 
 
 #ifdef HAVE_SYS_IOCTL_H
