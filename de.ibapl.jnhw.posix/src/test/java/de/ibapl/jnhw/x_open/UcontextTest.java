@@ -21,6 +21,9 @@
  */
 package de.ibapl.jnhw.x_open;
 
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.Signal;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,44 +36,54 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
  */
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class UcontextTest {
-    
+
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
+
     public UcontextTest() {
     }
-    
+
     /**
      * Test of getcontext method, of class Ucontext.
      */
     @Test
     public void testGetcontext() throws Exception {
-        assertThrows(NullPointerException.class, ()->Ucontext.getcontext(null));
-        Signal.Ucontext_t ucp = new Signal.Ucontext_t();
-        Ucontext.getcontext(ucp);
-        StringBuilder sb = new StringBuilder();
-        ucp.nativeToString(sb, "", " ");
-        System.out.println("ucontext:" + sb.toString());
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.getcontext(null));
+        } else {
+            assertThrows(NullPointerException.class, () -> Ucontext.getcontext(null));
+            Signal.Ucontext_t ucp = new Signal.Ucontext_t();
+            Ucontext.getcontext(ucp);
+            StringBuilder sb = new StringBuilder();
+            ucp.nativeToString(sb, "", " ");
+            System.out.println("ucontext:" + sb.toString());
+        }
     }
 
     private volatile int count;
+
     /**
      * Test of setcontext method, of class Ucontext.
      */
     @Test
     @Disabled
     public void testSetcontext() throws Exception {
-        System.out.println("setcontext");
-        assertThrows(NullPointerException.class, ()->Ucontext.setcontext(null));
-        Signal.Ucontext_t ucp = new Signal.Ucontext_t();
-        count = 0;
-        Ucontext.getcontext(ucp);
-        count++;
-        System.out.println("IN testGetcontext");
-        if (count < 10) {
-            System.out.println("will loop");
-            Ucontext.setcontext(ucp);
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.setcontext(null));
         } else {
-            System.out.println("stop loop");
+            assertThrows(NullPointerException.class, () -> Ucontext.setcontext(null));
+            Signal.Ucontext_t ucp = new Signal.Ucontext_t();
+            count = 0;
+            Ucontext.getcontext(ucp);
+            count++;
+            System.out.println("IN testGetcontext");
+            if (count < 10) {
+                System.out.println("will loop");
+                Ucontext.setcontext(ucp);
+            } else {
+                System.out.println("stop loop");
+            }
+            assertEquals(10, count);
         }
-        assertEquals(10, count);
     }
 
     /**
@@ -79,12 +92,16 @@ public class UcontextTest {
     @Test
     @Disabled
     public void testSwapcontext() throws Exception {
-        fail("The test case is a prototype.");
-        System.out.println("swapcontext");
-        Signal.Ucontext_t oucp = null;
-        Signal.Ucontext_t ucp = null;
-        int expResult = 0;
-        Ucontext.swapcontext(oucp, ucp);
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
+            assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.swapcontext(null, null));
+        } else {
+            fail("The test will crash the jvm - so stop here!");
+            System.out.println("swapcontext");
+            Signal.Ucontext_t oucp = null;
+            Signal.Ucontext_t ucp = null;
+            int expResult = 0;
+            Ucontext.swapcontext(oucp, ucp);
+        }
     }
-    
+
 }
