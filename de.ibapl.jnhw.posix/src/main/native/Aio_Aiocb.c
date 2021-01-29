@@ -182,6 +182,7 @@ JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jobject structAiocb) {
         throw_NoSuchNativeTypeException(env, "struct aiocb");
+        return NULL;
 #else
     (JNIEnv *env, jobject structAiocb) {
        return CREATE_NATIVE_ADDRESS_HOLDER((UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_buf);

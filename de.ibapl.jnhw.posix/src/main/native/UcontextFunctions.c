@@ -41,6 +41,10 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Ucontext_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_getcontext
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject ucp) {
+        throw_NoSuchNativeMethodException(env, "getcontext");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject ucp) {
         if (ucp == NULL) {
             throw_NullPointerException(env, "ucp is NULL");
@@ -49,6 +53,7 @@ extern "C" {
         if (getcontext(UNWRAP_STRUCT_UCONTEXT_T_PTR(ucp))) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
     /*
@@ -57,6 +62,10 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Ucontext_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_setcontext
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject ucp) {
+        throw_NoSuchNativeMethodException(env, "setcontext");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject ucp) {
         if (ucp == NULL) {
             throw_NullPointerException(env, "ucp is NULL");
@@ -65,6 +74,7 @@ extern "C" {
         if (setcontext(UNWRAP_STRUCT_UCONTEXT_T_PTR(ucp))) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
     /*
@@ -73,6 +83,10 @@ extern "C" {
      * Signature: (Lde/ibapl/jnhw/posix/Signal/Ucontext_t;Lde/ibapl/jnhw/posix/Signal/Ucontext_t;)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_swapcontext
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject oucp, __attribute__ ((unused)) jobject ucp) {
+        throw_NoSuchNativeMethodException(env, "swapcontext");
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject oucp, jobject ucp) {
         if (oucp == NULL) {
             throw_NullPointerException(env, "oucp is NULL");
@@ -85,6 +99,7 @@ extern "C" {
         if (swapcontext(UNWRAP_STRUCT_UCONTEXT_T_PTR(oucp), UNWRAP_STRUCT_UCONTEXT_T_PTR(ucp))) {
             throw_NativeErrorException(env, errno);
         }
+#endif
     }
 
 #ifdef __cplusplus
