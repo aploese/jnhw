@@ -297,7 +297,6 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_STDIO_H() {
-        System.out.println("HAVE_STDIO_H");
         assertTrue(Stdio.HAVE_STDIO_H(), "expected to have stdio.h");
     }
 
@@ -378,7 +377,6 @@ public class DefinesTest {
      */
     @Test
     public void test_LARGEFILE64_SOURCE() throws Exception {
-        System.out.println("_LARGEFILE64_SOURCE");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
                 switch (Defines.__SIZEOF_LONG__()) {
@@ -412,7 +410,6 @@ public class DefinesTest {
      */
     @Test
     public void test_LARGEFILE_SOURCE() throws Exception {
-        System.out.println("_LARGEFILE_SOURCE");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
                 switch (Defines.__SIZEOF_LONG__()) {
@@ -446,7 +443,6 @@ public class DefinesTest {
      */
     @Test
     public void test_FILE_OFFSET_BITS() throws Exception {
-        System.out.println("_FILE_OFFSET_BITS");
         assertFalse(Defined.defined(Defines::_FILE_OFFSET_BITS));
     }
 
@@ -455,7 +451,6 @@ public class DefinesTest {
      */
     @Test
     public void test_POSIX_C_SOURCE() throws Exception {
-        System.out.println("_POSIX_C_SOURCE");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
             case FREE_BSD:
@@ -476,7 +471,6 @@ public class DefinesTest {
      */
     @Test
     public void test_XOPEN_SOURCE() throws Exception {
-        System.out.println("_XOPEN_SOURCE");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
             case FREE_BSD:
@@ -497,7 +491,6 @@ public class DefinesTest {
      */
     @Test
     public void test_XOPEN_SOURCE_EXTENDED() throws Exception {
-        System.out.println("_XOPEN_SOURCE_EXTENDED");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
             case FREE_BSD:
@@ -518,7 +511,6 @@ public class DefinesTest {
      */
     @Test
     public void test__APPLE__() {
-        System.out.println("__APPLE__");
         assertEquals(MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X, Defined.defined(Defines::__APPLE__));
     }
 
@@ -527,7 +519,6 @@ public class DefinesTest {
      */
     @Test
     public void test__FreeBSD__() {
-        System.out.println("__FreeBSD__");
         assertEquals(MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD, Defined.defined(Defines::__FreeBSD__));
     }
 
@@ -536,7 +527,6 @@ public class DefinesTest {
      */
     @Test
     public void test__WORDSIZE() throws Exception {
-        System.out.println("__WORDSIZE");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case WINDOWS:
@@ -554,31 +544,26 @@ public class DefinesTest {
      */
     @Test
     public void test__linux__() {
-        System.out.println("__linux__");
         assertEquals(MULTIARCHTUPEL_BUILDER.getOS() == OS.LINUX, Defined.defined(Defines::__linux__));
     }
 
     @Test
     public void test__ORDER_LITTLE_ENDIAN__() throws Exception {
-        System.out.println("__ORDER_LITTLE_ENDIAN__");
         assertEquals(1234, Defines.__ORDER_LITTLE_ENDIAN__());
     }
 
     @Test
     public void test__ORDER_BIG_ENDIAN__() throws Exception {
-        System.out.println("__ORDER_BIG_ENDIAN__");
         assertEquals(4321, Defines.__ORDER_BIG_ENDIAN__());
     }
 
     @Test
     public void test__ORDER_PDP_ENDIAN__() throws Exception {
-        System.out.println("__ORDER_PDP_ENDIAN__");
         assertEquals(3412, Defines.__ORDER_PDP_ENDIAN__());
     }
 
     @Test
     public void test__BYTE_ORDER__() throws Exception {
-        System.out.println("__BYTE_ORDER__");
         assertEquals(1234, Defines.__ORDER_LITTLE_ENDIAN__());
         switch (MULTIARCHTUPEL_BUILDER.getEndianess()) {
             case BIG:
