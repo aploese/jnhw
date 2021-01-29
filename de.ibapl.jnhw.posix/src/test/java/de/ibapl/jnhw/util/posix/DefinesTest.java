@@ -68,13 +68,13 @@ public class DefinesTest {
                 final Define define = m.getAnnotation(Define.class);
                 if (define != null) {
                     Class retType = m.getReturnType();
-                    if (Long.class.equals(retType) || long.class.equals(retType)){
+                    if (Long.class.equals(retType) || long.class.equals(retType)) {
                         System.out.println(String.format("\t%-30s = 0x%2$016x | %2$d", m.getName(), m.invoke(clazz)));
-                    } else if (Integer.class.equals(retType) || int.class.equals(retType)){
+                    } else if (Integer.class.equals(retType) || int.class.equals(retType)) {
                         System.out.println(String.format("\t%-30s = 0x%2$08x | %2$d", m.getName(), m.invoke(clazz)));
-                    } else if (Short.class.equals(retType) || short.class.equals(retType)){
+                    } else if (Short.class.equals(retType) || short.class.equals(retType)) {
                         System.out.println(String.format("\t%-30s = 0x%2$04x | %2$d", m.getName(), m.invoke(clazz)));
-                    } else if (Byte.class.equals(retType) || byte.class.equals(retType)){
+                    } else if (Byte.class.equals(retType) || byte.class.equals(retType)) {
                         System.out.println(String.format("\t%-30s = 0x%2$02x | %2$d", m.getName(), m.invoke(clazz)));
                     } else {
                         System.out.println(String.format("\t%-30s = \"%s\"", m.getName(), m.invoke(clazz)));
@@ -358,10 +358,13 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_UCONTEXT_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            assertFalse(Ucontext.HAVE_UCONTEXT_H(), "not expected to have ucontext.h");
-        } else {
-            assertTrue(Ucontext.HAVE_UCONTEXT_H(), "expected to have ucontext.h");
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case WINDOWS:
+            case OPEN_BSD:
+                assertFalse(Ucontext.HAVE_UCONTEXT_H(), "not expected to have ucontext.h");
+                break;
+            default:
+                assertTrue(Ucontext.HAVE_UCONTEXT_H(), "expected to have ucontext.h");
         }
     }
 
