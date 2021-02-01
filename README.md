@@ -5,14 +5,14 @@ and a helper to resolve a native lib by name and libtool version.
 
 Unlike JNR or JNA
 * all macro constants are natively resolved.
-* all structures will be natively allocated and its filed natively accessed. [see: StructTermios in Termios.java](./de.ibapl.jnhw.posix/src/main/java/de/ibapl/jnhw/posix/Termios.java) and the jni bindings [Termios_Termios.c](de.ibapl.jnhw.posix/src/main/native/Termios_Termios.c) and [TermiosDefines.c](de.ibapl.jnhw.posix/src/main/native/TermiosDefines.c) and [TermiosFunctions.c](de.ibapl.jnhw.posix/src/main/native/TermiosFunctions.c) . Struct termios varies over the OS and even on Linux on different architectures like (i.e. mips is different from the rest).  
-* different sizes, alignments and offset of struct members are handled natively like stuct mcontext_t [see: Tests testAlignOfMcontext_t testSizeOfMcontext_t in SignalTest.java](./de.ibapl.jnhw.posix/src/test/java/de/ibapl/jnhw/posix/SignalTest.java).
+* all structures will be natively allocated and its filed natively accessed. [StructTermios in Termios.java](./de.ibapl.jnhw.posix/src/main/java/de/ibapl/jnhw/posix/Termios.java) and the jni bindings [Termios_Termios.c](de.ibapl.jnhw.posix/src/main/native/Termios_Termios.c) and [TermiosDefines.c](de.ibapl.jnhw.posix/src/main/native/TermiosDefines.c) and [TermiosFunctions.c](de.ibapl.jnhw.posix/src/main/native/TermiosFunctions.c) . Struct termios varies over the OS and even on Linux on different architectures like (i.e. mips is different from the rest).  
+* different sizes, alignments and offset of struct members are handled natively like stuct mcontext_t [Tests testAlignOfMcontext_t testSizeOfMcontext_t in SignalTest.java](./de.ibapl.jnhw.posix/src/test/java/de/ibapl/jnhw/posix/SignalTest.java).
 * it uses not sun.misc.Unsafe but allocate the memory by itself.
-* callbacks from and calls of native functions are supported [see:  Callback_I_V_Impl.java](de.ibapl.jnhw.common/src/main/java/de/ibapl/jnhw/common/callback/Callback_I_V_Impl.java),
-  and its counterpart [see:  CallNative_J_V.java](de.ibapl.jnhw.common/src/main/java/de/ibapl/jnhw/common/nativecall/CallNative_J_V.java),
-  and their common ancestor [see:  FunctionPtr_I_V.java](de.ibapl.jnhw.common/src/main/java/de/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V.java).
+* callbacks from and calls of native functions are supported [Callback_I_V_Impl.java](de.ibapl.jnhw.common/src/main/java/de/ibapl/jnhw/common/callback/Callback_I_V_Impl.java),
+  and its counterpart [CallNative_J_V.java](de.ibapl.jnhw.common/src/main/java/de/ibapl/jnhw/common/nativecall/CallNative_J_V.java),
+  and their common ancestor [FunctionPtr_I_V.java](de.ibapl.jnhw.common/src/main/java/de/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V.java).
 
-A running "real life" comparison can be found here: [see: JNHW-Example: Compare JNHW, JNR, JNA](./it/jnhw-jna-jnr/src/main/java/de/ibapl/jnhw/it/jnhw_jna_jnr/).
+A running "real life" comparison can be found here: [JNHW-Example: Compare JNHW, JNR, JNA](./it/jnhw-jna-jnr/src/main/java/de/ibapl/jnhw/it/jnhw_jna_jnr/).
 
 Add this dependency for POSIX.
 
