@@ -21,6 +21,7 @@
         <module>hello-world-async-io</module>
         <module>posix-signal</module>
         <module>posix-graceful-exit-sigsegv</module>
+        <module>jnhw-jna-jnr</module>
     </modules>
     
     <!-- do compile/pack the examples, but do not install or deploy them-->

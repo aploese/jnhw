@@ -3,9 +3,12 @@
 JNI Header Wrapper a lightweight alternative to JNA or JNR
 and a helper to resolve a native lib by name and libtool version.
 
-Unlike JNR 
+Unlike JNR or JNA
 * all macro constants be natively resolved.
 * all structures will be natively allocated and its filed natively accessed. [see: StructTermios in Termios.java](./de.ibapl.jnhw.posix/src/main/java/de/ibapl/jnhw/posix/Termios.java) and the jni bindings [Termios_Termios.c](de.ibapl.jnhw.posix/src/main/native/Termios_Termios.c) and [TermiosDefines.c](de.ibapl.jnhw.posix/src/main/native/TermiosDefines.c) and [TermiosFunctions.c](de.ibapl.jnhw.posix/src/main/native/TermiosFunctions.c) . Struct termios varies over the OS and even on Linux on different architectures like (i.e. mips is different from the rest).  
+* different sizes, alignments and offset of struct members are handled natively like stuct mcontext_t [see: Tests testAlignOfMcontext_t testSizeOfMcontext_t in SignalTest.java](./de.ibapl.jnhw.posix/src/test/java/de/ibapl/jnhw/posix/SignalTest.java).
+
+A running "real life" comparison can be found here: [see: JNHW-Example: Compare JNHW, JNR, JNA](./it/jnhw-jna-jnr/src/main/java/de/ibapl/jnhw/it/jnhw_jna_jnr/).
 
 Add this dependency for POSIX.
 
