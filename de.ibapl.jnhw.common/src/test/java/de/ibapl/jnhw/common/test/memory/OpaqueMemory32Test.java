@@ -327,7 +327,7 @@ public class OpaqueMemory32Test {
         String expected
                 = "11002222 33000000  44444444 55000000 |  \"\"3   DDDDU   \n"
                 + "66666666 66666666  77000000 00000000 | ffffffffw       \n"
-                + "66666666 66666666  77000000 00000000 | ffffffffw       ";
+                + "88888888 88888888  00000000 00000000 | ﾈﾈﾈﾈﾈﾈﾈﾈ        ";
 
         Assertions.assertEquals(expected, OpaqueMemory32.printMemory(parent, false));
         byte[] result = OpaqueMemory32.toBytes(parent);

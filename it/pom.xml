@@ -22,6 +22,7 @@
         <module>posix-signal</module>
         <module>posix-graceful-exit-sigsegv</module>
         <module>jnhw-jna-jnr</module>
+        <module>fun-with-memory-and-function-pointers</module>
     </modules>
     
     <!-- do compile/pack the examples, but do not install or deploy them-->

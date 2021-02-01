@@ -269,38 +269,45 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
         StringBuilder ascii = new StringBuilder();
         final int BLOCK_SIZE = 16;
         final int BLOCK_REMINDER = mem.sizeInBytes % BLOCK_SIZE;
+        assert BLOCK_REMINDER >= 0;
         final int BLOCK_COUNT = mem.sizeInBytes / BLOCK_SIZE + (BLOCK_REMINDER == 0 ? 0 : 1);
         byte[] block = new byte[BLOCK_SIZE];
         for (int i = 0; i < BLOCK_COUNT; i++) {
-            if (i == BLOCK_COUNT - 1) {
+            int currentBlockSize;
+            if ((i == BLOCK_COUNT - 1) && (BLOCK_REMINDER > 0)) {
                 copy(mem, mem.sizeInBytes - BLOCK_REMINDER, block, 0, BLOCK_REMINDER);
+                currentBlockSize = BLOCK_SIZE - BLOCK_REMINDER;
             } else {
                 copy(mem, i * BLOCK_SIZE, block, 0, BLOCK_SIZE);
+                currentBlockSize = BLOCK_SIZE;
             }
             if (printAddress) {
                 sb.append(JnhwFormater.formatAddress(mem.baseAddress + BLOCK_SIZE * i)).append(": ");
             }
+            
             for (int j = 0; j < BLOCK_SIZE; j++) {
-                ascii.append((char) block[j]);
                 switch (j) {
                     case 4:
                     case 12:
-                        if (j < mem.sizeInBytes) {
+                        if (j < currentBlockSize) {
                             sb.append(String.format(" %02x", block[j]));
+                            ascii.append((char) block[j]);
                         } else {
                             sb.append("   ");
                         }
                         break;
                     case 8:
-                        if (j < mem.sizeInBytes) {
+                        if (j < currentBlockSize) {
                             sb.append(String.format("  %02x", block[j]));
+                            ascii.append((char) block[j]);
                         } else {
                             sb.append("    ");
                         }
                         break;
                     default:
-                        if (j < mem.sizeInBytes) {
+                        if (j < currentBlockSize) {
                             sb.append(String.format("%02x", block[j]));
+                            ascii.append((char) block[j]);
                         } else {
                             sb.append("  ");
                         }
