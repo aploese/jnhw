@@ -6,8 +6,8 @@ and a helper to resolve a native lib by name and libtool version.
 Unlike JNR or JNA
 * all macro constants are natively resolved.
 * all structures will be natively allocated and its filed natively accessed. [StructTermios in Termios.java](./de.ibapl.jnhw.posix/src/main/java/de/ibapl/jnhw/posix/Termios.java) and the jni bindings [Termios_Termios.c](de.ibapl.jnhw.posix/src/main/native/Termios_Termios.c) and [TermiosDefines.c](de.ibapl.jnhw.posix/src/main/native/TermiosDefines.c) and [TermiosFunctions.c](de.ibapl.jnhw.posix/src/main/native/TermiosFunctions.c) . Struct termios varies over the OS and even on Linux on different architectures like (i.e. mips is different from the rest).  
-* different sizes, alignments and offset of struct members are handled natively like stuct mcontext_t [Tests testAlignOfMcontext_t testSizeOfMcontext_t in SignalTest.java](./de.ibapl.jnhw.posix/src/test/java/de/ibapl/jnhw/posix/SignalTest.java).
-  [Example struct, union, function pointer](.it/fun-with-memory-and-function-pointers/).
+* different sizes, alignments and offset of struct members are handled natively like stuct mcontext_t [Tests testAlignOfMcontext_t testSizeOfMcontext_t in SignalTest.java](./de.ibapl.jnhw.posix/src/test/java/de/ibapl/jnhw/posix/SignalTest.java).  
+  [Example struct, union, function pointer](./it/fun-with-memory-and-function-pointers/src/main/java/de/ibapl/jnhw/it/fun_with_memory_and_function_pointers/).
 * it does not use sun.misc.Unsafe but allocate the memory by itself.
 * callbacks from and calls of native functions are supported [Callback_I_V_Impl.java](de.ibapl.jnhw.common/src/main/java/de/ibapl/jnhw/common/callback/Callback_I_V_Impl.java),
   and its counterpart [CallNative_J_V.java](de.ibapl.jnhw.common/src/main/java/de/ibapl/jnhw/common/nativecall/CallNative_J_V.java),
