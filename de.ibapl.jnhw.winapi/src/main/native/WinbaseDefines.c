@@ -51,10 +51,10 @@ extern "C" {
             return;
         }
 
-        if (JnhwSetStaticIntField(env, clazz, "FILE_SKIP_SET_EVENT_ON_HANDLE", FILE_SKIP_SET_EVENT_ON_HANDLE)) {
+        if (JnhwSetStaticByteField(env, clazz, "FILE_SKIP_SET_EVENT_ON_HANDLE", FILE_SKIP_SET_EVENT_ON_HANDLE)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "FILE_SKIP_COMPLETION_PORT_ON_SUCCESS", FILE_SKIP_COMPLETION_PORT_ON_SUCCESS)) {
+        if (JnhwSetStaticByteField(env, clazz, "FILE_SKIP_COMPLETION_PORT_ON_SUCCESS", FILE_SKIP_COMPLETION_PORT_ON_SUCCESS)) {
             return;
         }
         if (JnhwSetStaticIntField(env, clazz, "STD_INPUT_HANDLE", (int32_t) STD_INPUT_HANDLE)) {
@@ -159,49 +159,49 @@ extern "C" {
         if (JnhwSetStaticIntField(env, clazz, "SECURITY_IMPERSONATION", SECURITY_IMPERSONATION)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "RTS_CONTROL_DISABLE", RTS_CONTROL_DISABLE)) {
+        if (JnhwSetStaticByteField(env, clazz, "RTS_CONTROL_DISABLE", RTS_CONTROL_DISABLE)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "RTS_CONTROL_ENABLE", RTS_CONTROL_ENABLE)) {
+        if (JnhwSetStaticByteField(env, clazz, "RTS_CONTROL_ENABLE", RTS_CONTROL_ENABLE)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "RTS_CONTROL_TOGGLE", RTS_CONTROL_TOGGLE)) {
+        if (JnhwSetStaticByteField(env, clazz, "RTS_CONTROL_TOGGLE", RTS_CONTROL_TOGGLE)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "RTS_CONTROL_HANDSHAKE", RTS_CONTROL_HANDSHAKE)) {
+        if (JnhwSetStaticByteField(env, clazz, "RTS_CONTROL_HANDSHAKE", RTS_CONTROL_HANDSHAKE)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "DTR_CONTROL_DISABLE", DTR_CONTROL_DISABLE)) {
+        if (JnhwSetStaticByteField(env, clazz, "DTR_CONTROL_DISABLE", DTR_CONTROL_DISABLE)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "DTR_CONTROL_ENABLE", DTR_CONTROL_ENABLE)) {
+        if (JnhwSetStaticByteField(env, clazz, "DTR_CONTROL_ENABLE", DTR_CONTROL_ENABLE)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "DTR_CONTROL_HANDSHAKE", DTR_CONTROL_HANDSHAKE)) {
+        if (JnhwSetStaticByteField(env, clazz, "DTR_CONTROL_HANDSHAKE", DTR_CONTROL_HANDSHAKE)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "NOPARITY", NOPARITY)) {
+        if (JnhwSetStaticByteField(env, clazz, "NOPARITY", NOPARITY)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "ODDPARITY", ODDPARITY)) {
+        if (JnhwSetStaticByteField(env, clazz, "ODDPARITY", ODDPARITY)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "EVENPARITY", EVENPARITY)) {
+        if (JnhwSetStaticByteField(env, clazz, "EVENPARITY", EVENPARITY)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "MARKPARITY", MARKPARITY)) {
+        if (JnhwSetStaticByteField(env, clazz, "MARKPARITY", MARKPARITY)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "SPACEPARITY", SPACEPARITY)) {
+        if (JnhwSetStaticByteField(env, clazz, "SPACEPARITY", SPACEPARITY)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "ONESTOPBIT", ONESTOPBIT)) {
+        if (JnhwSetStaticByteField(env, clazz, "ONESTOPBIT", ONESTOPBIT)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "ONE5STOPBITS", ONE5STOPBITS)) {
+        if (JnhwSetStaticByteField(env, clazz, "ONE5STOPBITS", ONE5STOPBITS)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "TWOSTOPBITS", TWOSTOPBITS)) {
+        if (JnhwSetStaticByteField(env, clazz, "TWOSTOPBITS", TWOSTOPBITS)) {
             return;
         }
         if (JnhwSetStaticIntField(env, clazz, "INFINITE", (int32_t) INFINITE)) {
@@ -243,19 +243,19 @@ extern "C" {
         if (JnhwSetStaticIntField(env, clazz, "MS_RLSD_ON", MS_RLSD_ON)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "CE_BREAK", CE_BREAK)) {
+        if (JnhwSetStaticByteField(env, clazz, "CE_BREAK", CE_BREAK)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "CE_FRAME", CE_FRAME)) {
+        if (JnhwSetStaticByteField(env, clazz, "CE_FRAME", CE_FRAME)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "CE_OVERRUN", CE_OVERRUN)) {
+        if (JnhwSetStaticByteField(env, clazz, "CE_OVERRUN", CE_OVERRUN)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "CE_RXOVER", CE_RXOVER)) {
+        if (JnhwSetStaticByteField(env, clazz, "CE_RXOVER", CE_RXOVER)) {
             return;
         }
-        if (JnhwSetStaticIntField(env, clazz, "CE_RXPARITY", CE_RXPARITY)) {
+        if (JnhwSetStaticByteField(env, clazz, "CE_RXPARITY", CE_RXPARITY)) {
             return;
         }
     }

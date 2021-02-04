@@ -280,7 +280,11 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_STDIO_H() {
-        assertTrue(Stdio.HAVE_STDIO_H, "expected to have stdio.h");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            assertFalse(Stdio.HAVE_STDIO_H, "not expected to have stdio.h");
+        } else {
+            assertTrue(Stdio.HAVE_STDIO_H, "expected to have stdio.h");
+        }
     }
 
     @Test
@@ -312,12 +316,20 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_SYS_STAT_H() throws Exception {
-        Assertions.assertTrue(Stat.HAVE_SYS_STAT_H, "expected to have sys/stat.h");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Stat.HAVE_SYS_STAT_H, "not expected to have sys/stat.h");
+        } else {
+            Assertions.assertTrue(Stat.HAVE_SYS_STAT_H, "expected to have sys/stat.h");
+        }
     }
 
     @Test
     public void test_HAVE_SYS_TYPES_H() throws Exception {
-        Assertions.assertTrue(Types.HAVE_SYS_TYPES_H, "expected to have sys/types.h");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Types.HAVE_SYS_TYPES_H, "not expected to have sys/types.h");
+        } else {
+            Assertions.assertTrue(Types.HAVE_SYS_TYPES_H, "expected to have sys/types.h");
+        }
     }
 
     @Test
@@ -352,7 +364,11 @@ public class DefinesTest {
 
     @Test
     public void test_HAVE_UNISTD_H() throws Exception {
-        Assertions.assertTrue(Unistd.HAVE_UNISTD_H, "expected to have unistd.h");
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Unistd.HAVE_UNISTD_H, "not expected to have unistd.h");
+        } else {
+            Assertions.assertTrue(Unistd.HAVE_UNISTD_H, "expected to have unistd.h");
+        }
     }
 
     /**
@@ -378,6 +394,7 @@ public class DefinesTest {
             case FREE_BSD:
             case OPEN_BSD:
             case MAC_OS_X:
+            case WINDOWS:
                 assertFalse(Defines._LARGEFILE64_SOURCE.isDefined());
                 break;
             default:

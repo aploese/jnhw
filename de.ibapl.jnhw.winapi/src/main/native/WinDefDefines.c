@@ -55,7 +55,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_WinDef_initFields
     (JNIEnv *env, jclass clazz) {
 
-        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_WINDEF_OR_MINWINDEF_H", JNI_TRUE)) {
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_WINDEF_H", JNI_TRUE)) {
             return;
         }
 

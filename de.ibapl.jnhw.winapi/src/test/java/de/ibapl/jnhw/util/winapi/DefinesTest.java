@@ -45,6 +45,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
@@ -64,19 +65,16 @@ public class DefinesTest {
             if (define != null) {
                 Class type = f.getType();
                 if (Long.class.equals(type) || long.class.equals(type)) {
-                    assertNotEquals(0, f.getLong(clazz));
                     System.out.println(String.format("\t%-30s = 0x%2$016x | %2$d", f.getName(), f.getLong(clazz)));
                 } else if (Integer.class.equals(type) || int.class.equals(type)) {
-                    assertNotEquals(0, f.getInt(clazz));
                     System.out.println(String.format("\t%-30s = 0x%2$08x | %2$d", f.getName(), f.getInt(clazz)));
                 } else if (Short.class.equals(type) || short.class.equals(type)) {
-                    assertNotEquals(0, f.getShort(clazz));
                     System.out.println(String.format("\t%-30s = 0x%2$04x | %2$d", f.getName(), f.getShort(clazz)));
                 } else if (Byte.class.equals(type) || byte.class.equals(type)) {
-                    assertNotEquals(0, f.getByte(clazz));
                     System.out.println(String.format("\t%-30s = 0x%2$02x | %2$d", f.getName(), f.getByte(clazz)));
                 } else if (IntDefine.class.equals(type)) {
                     IntDefine def = (IntDefine) f.get(clazz);
+                    assertNotNull(def, clazz.getName() + "#" + f.getName());
                     if (def.isDefined()) {
                         System.out.println(String.format("\t%-30s = 0x%2$08x | %2$d", f.getName(), def.get()));
                     } else {

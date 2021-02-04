@@ -52,34 +52,34 @@ extern "C" {
         }
 
 
-        if (JnhwSetStaticObjectField(env, clazz, dij_w_HANDLE__CSig, "HKEY_CLASSES_ROOT", CREATE_HANDLE(HKEY_CLASSES_ROOT))) {
+        if (JnhwSetStaticObjectField(env, clazz, dij_w_HKEY__CSig, "HKEY_CLASSES_ROOT", CREATE_HKEY(HKEY_CLASSES_ROOT))) {
             return;
         }
-        if (JnhwSetStaticObjectField(env, clazz, dij_w_HANDLE__CSig, "HKEY_CURRENT_USER", CREATE_HANDLE(HKEY_CURRENT_USER))) {
+        if (JnhwSetStaticObjectField(env, clazz, dij_w_HKEY__CSig, "HKEY_CURRENT_USER", CREATE_HKEY(HKEY_CURRENT_USER))) {
             return;
         }
-        if (JnhwSetStaticObjectField(env, clazz, dij_w_HANDLE__CSig, "HKEY_CURRENT_USER_LOCAL_SETTINGS", CREATE_HANDLE(HKEY_CURRENT_USER_LOCAL_SETTINGS))) {
+        if (JnhwSetStaticObjectField(env, clazz, dij_w_HKEY__CSig, "HKEY_CURRENT_USER_LOCAL_SETTINGS", CREATE_HKEY(HKEY_CURRENT_USER_LOCAL_SETTINGS))) {
             return;
         }
-        if (JnhwSetStaticObjectField(env, clazz, dij_w_HANDLE__CSig, "HKEY_LOCAL_MACHINE", CREATE_HANDLE(HKEY_LOCAL_MACHINE))) {
+        if (JnhwSetStaticObjectField(env, clazz, dij_w_HKEY__CSig, "HKEY_LOCAL_MACHINE", CREATE_HKEY(HKEY_LOCAL_MACHINE))) {
             return;
         }
-        if (JnhwSetStaticObjectField(env, clazz, dij_w_HANDLE__CSig, "HKEY_USERS", CREATE_HANDLE(HKEY_USERS))) {
+        if (JnhwSetStaticObjectField(env, clazz, dij_w_HKEY__CSig, "HKEY_USERS", CREATE_HKEY(HKEY_USERS))) {
             return;
         }
-        if (JnhwSetStaticObjectField(env, clazz, dij_w_HANDLE__CSig, "HKEY_PERFORMANCE_DATA", CREATE_HANDLE(HKEY_PERFORMANCE_DATA))) {
+        if (JnhwSetStaticObjectField(env, clazz, dij_w_HKEY__CSig, "HKEY_PERFORMANCE_DATA", CREATE_HKEY(HKEY_PERFORMANCE_DATA))) {
             return;
         }
-        if (JnhwSetStaticObjectField(env, clazz, dij_w_HANDLE__CSig, "HKEY_PERFORMANCE_TEXT", CREATE_HANDLE(HKEY_PERFORMANCE_TEXT))) {
+        if (JnhwSetStaticObjectField(env, clazz, dij_w_HKEY__CSig, "HKEY_PERFORMANCE_TEXT", CREATE_HKEY(HKEY_PERFORMANCE_TEXT))) {
             return;
         }
-        if (JnhwSetStaticObjectField(env, clazz, dij_w_HANDLE__CSig, "HKEY_PERFORMANCE_NLSTEXT", CREATE_HANDLE(HKEY_PERFORMANCE_NLSTEXT))) {
+        if (JnhwSetStaticObjectField(env, clazz, dij_w_HKEY__CSig, "HKEY_PERFORMANCE_NLSTEXT", CREATE_HKEY(HKEY_PERFORMANCE_NLSTEXT))) {
             return;
         }
-        if (JnhwSetStaticObjectField(env, clazz, dij_w_HANDLE__CSig, "HKEY_CURRENT_CONFIG", CREATE_HANDLE(HKEY_CURRENT_CONFIG))) {
+        if (JnhwSetStaticObjectField(env, clazz, dij_w_HKEY__CSig, "HKEY_CURRENT_CONFIG", CREATE_HKEY(HKEY_CURRENT_CONFIG))) {
             return;
         }
-        if (JnhwSetStaticObjectField(env, clazz, dij_w_HANDLE__CSig, "HKEY_DYN_DATA", CREATE_HANDLE(HKEY_DYN_DATA))) {
+        if (JnhwSetStaticObjectField(env, clazz, dij_w_HKEY__CSig, "HKEY_DYN_DATA", CREATE_HKEY(HKEY_DYN_DATA))) {
             return;
         }
     }

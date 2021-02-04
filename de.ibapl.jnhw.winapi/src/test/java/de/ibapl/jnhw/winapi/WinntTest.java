@@ -66,16 +66,7 @@ public class WinntTest {
 
     @Test
     public void testMAXDWORD() throws Exception {
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
-            case _32_BIT:
-                assertEquals(4, Winnt.MAXDWORD);
-                break;
-            case _64_BIT:
-                assertEquals(8, Winnt.MAXDWORD);
-                break;
-            default:
-                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
-        }
+        assertEquals(0x00000000FFFFFFFFL, Winnt.MAXDWORD);
     }
 
     @Test

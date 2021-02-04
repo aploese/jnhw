@@ -43,12 +43,20 @@ extern "C" {
 
 #define dij_w_HANDLE__CName "de/ibapl/jnhw/winapi/Winnt$HANDLE"
 #define dij_w_HANDLE__CSig CLASS_NAME_TO_SIGNATURE(dij_w_HANDLE__CName)    
+
+#define dij_w_HKEY__CName "de/ibapl/jnhw/winapi/WinDef$HKEY"
+#define dij_w_HKEY__CSig CLASS_NAME_TO_SIGNATURE(dij_w_HKEY__CName)    
+
 #define dij_w_LPWSTR__CName "de/ibapl/jnhw/winapi/Winnt$LPWSTR"
 #define dij_w_LPBYTE__CName "de/ibapl/jnhw/winapi/WinDef$LPBYTE"
 
     extern jclass dij_w_Winnt_HANDLE__GCR;
     extern jfieldID dij_w_Winnt_HANDLE_value__FID;
     extern jmethodID dij_w_Winnt_HANDLE_init__MID;
+
+    extern jclass dij_w_WinDef_HKEY__GCR;
+    extern jmethodID dij_w_WinDef_HKEY_init__MID;
+
     extern jfieldID dij_w_Winnt_LPWSTR_bufferEnd__FID;
     extern jfieldID dij_w_WinDef_LPBYTE_bufferEnd__FID;
 
@@ -56,6 +64,7 @@ extern "C" {
 #define UNWRAP_HANDLE(handle) (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), dij_w_Winnt_HANDLE_value__FID)   
 #define UNWRAP_HANDLE_OR_NULL(handle) (handle) == NULL ? NULL : UNWRAP_HANDLE(handle)
 #define CREATE_HANDLE(value) (*env)->NewObject(env, dij_w_Winnt_HANDLE__GCR, dij_w_Winnt_HANDLE_init__MID, (jlong) (uintptr_t) value)
+#define CREATE_HKEY(value) (*env)->NewObject(env, dij_w_WinDef_HKEY__GCR, dij_w_WinDef_HKEY_init__MID, (jlong) (uintptr_t) value)
 
 #define UNWRAP_PHANDLE(handle) UNWRAP_ABSTRACT_MEM_TO(PHANDLE, handle)
 

@@ -56,7 +56,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_initFields
     (JNIEnv *env, jclass clazz) {
 
-        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_IOAPI_OR_IOAPISET_H", JNI_TRUE)) {
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_IOAPI_H", JNI_TRUE)) {
             return;
         }
 
