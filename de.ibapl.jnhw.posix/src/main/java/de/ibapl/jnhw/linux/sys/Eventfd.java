@@ -42,39 +42,51 @@ public final class Eventfd {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_SYS_EVENTFD_H = false;
+        EFD_CLOEXEC = 0;
+        EFD_NONBLOCK = 0;
+        EFD_SEMAPHORE = 0;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <b>Linux:</b> Set the close-on-exec (FD_CLOEXEC) flag on the new file
      * descriptor.
      *
-     * @return the native symbolic constant of EFD_CLOEXEC.
      */
     @Define
-    public final static native int EFD_CLOEXEC();
+    public final static int EFD_CLOEXEC;
 
     /**
      * <b>Linux:</b> Set the O_NONBLOCK file status flag on the open file
      * description (see open(2)) referred to by the new file descriptor..
      *
-     * @return the native symbolic constant of EFD_NONBLOCK.
      */
     @Define
-    public final static native int EFD_NONBLOCK();
+    public final static int EFD_NONBLOCK;
 
     /**
      * <b>Linux:</b> Provide semaphore-like semantics for reads from the new
      * file descriptor.
      *
-     * @return the native symbolic constant of EFD_SEMAPHORE.
      */
     @Define
-    public final static native int EFD_SEMAPHORE();
+    public final static int EFD_SEMAPHORE;
 
-    public final static native boolean HAVE_SYS_EVENTFD_H();
+    public final static boolean HAVE_SYS_EVENTFD_H;
 
     /**
      * <b>Linux:</b> eventfd - create a file descriptor for event notification.
@@ -96,11 +108,14 @@ public final class Eventfd {
      * Additional glibc feature to make read from an eventfd simpler.
      *
      * @param fd a valid file descriptor from a call to {@code  eventfd}.
-     * @param value a 8 byte buffer to hold the readed value.
+     * @return the 2. parameter of the catice call value a 8 byte buffer to hold
+     * the readed value.
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void eventfd_read(int fd, @eventfd_t LongRef value) throws NativeErrorException;
+    public final static native @eventfd_t
+    long eventfd_read(int fd) throws NativeErrorException;
 
     /**
      * Additional glibc feature to make write to an eventfd simpler.

@@ -29,7 +29,7 @@ extern "C" {
 #ifdef _POSIX_VERSION    
 #include <sys/types.h>
 
-JNHW_ASSERT__pid_t__IS__int32_t
+    JNHW_ASSERT__pid_t__IS__int32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_sys_Types_Pid_t
@@ -58,7 +58,7 @@ JNHW_ASSERT__pid_t__IS__int32_t
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Pid_1t_unsigned
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (0 < (pid_t)-1);
+        return (0 < (pid_t) - 1);
     }
 
     /*

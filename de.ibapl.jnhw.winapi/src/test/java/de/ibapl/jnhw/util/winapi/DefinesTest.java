@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.util.winapi;
 
 import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
+import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.winapi.BaseTsd;
@@ -40,9 +40,11 @@ import de.ibapl.jnhw.winapi.Winbase;
 import de.ibapl.jnhw.winapi.Winerror;
 import de.ibapl.jnhw.winapi.Winnt;
 import de.ibapl.jnhw.winapi.Winreg;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
@@ -56,34 +58,36 @@ public class DefinesTest {
     private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public static void testDefines(Class clazz) throws Exception {
-        System.out.println(clazz.getName() + " Defines: ");
-        for (Method m : clazz.getMethods()) {
-            try {
-                final Define define = m.getAnnotation(Define.class);
-                if (define != null) {
-                    System.out.println("\t" + m.getName() + " = " + m.invoke(clazz));
-                }
-            } catch (InvocationTargetException ite) {
-                if (ite.getTargetException() instanceof NotDefinedException) {
-                    boolean found = false;
-                    for (Class<?> et : m.getExceptionTypes()) {
-                        if (et == NotDefinedException.class) {
-                            found = true;
-                            break;
-                        }
-                        if (found) {
-                            System.out.println("\t" + m.getName() + " NOT DEFINED!");
-                        } else {
-                            Assertions.fail("Name: " + m.getName() + " throws NotDefinedException but dont declare it" + ite.getTargetException());
-                        }
+        System.out.println(clazz.getName() + " Defines: >>>");
+        for (Field f : clazz.getFields()) {
+            final Define define = f.getAnnotation(Define.class);
+            if (define != null) {
+                Class type = f.getType();
+                if (Long.class.equals(type) || long.class.equals(type)) {
+                    assertNotEquals(0, f.getLong(clazz));
+                    System.out.println(String.format("\t%-30s = 0x%2$016x | %2$d", f.getName(), f.getLong(clazz)));
+                } else if (Integer.class.equals(type) || int.class.equals(type)) {
+                    assertNotEquals(0, f.getInt(clazz));
+                    System.out.println(String.format("\t%-30s = 0x%2$08x | %2$d", f.getName(), f.getInt(clazz)));
+                } else if (Short.class.equals(type) || short.class.equals(type)) {
+                    assertNotEquals(0, f.getShort(clazz));
+                    System.out.println(String.format("\t%-30s = 0x%2$04x | %2$d", f.getName(), f.getShort(clazz)));
+                } else if (Byte.class.equals(type) || byte.class.equals(type)) {
+                    assertNotEquals(0, f.getByte(clazz));
+                    System.out.println(String.format("\t%-30s = 0x%2$02x | %2$d", f.getName(), f.getByte(clazz)));
+                } else if (IntDefine.class.equals(type)) {
+                    IntDefine def = (IntDefine) f.get(clazz);
+                    if (def.isDefined()) {
+                        System.out.println(String.format("\t%-30s = 0x%2$08x | %2$d", f.getName(), def.get()));
+                    } else {
+                        System.out.println(String.format("\t%-30s ... is not defined", f.getName()));
                     }
                 } else {
-                    Assertions.fail("Name: " + m.getName() + " throws InvocationTargetException: " + ite.getTargetException());
+                    System.out.println(String.format("\t%-30s = \"%s\"", f.getName(), f.get(clazz)));
                 }
-            } catch (Throwable t) {
-                Assertions.fail("Name: " + m.getName() + " throws unknown exception: " + t);
             }
         }
+        System.out.println("<<< " + clazz.getName() + " Defines");
     }
 
     @Test
@@ -179,135 +183,135 @@ public class DefinesTest {
     @Test
     public void test_HAVE_ERRHANDLINGAPI_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Errhandlingapi.HAVE_ERRHANDLINGAPI_H(), "expected to have errhandlingapi.h");
+            Assertions.assertTrue(Errhandlingapi.HAVE_ERRHANDLINGAPI_H, "expected to have errhandlingapi.h");
         } else {
-            Assertions.assertFalse(Errhandlingapi.HAVE_ERRHANDLINGAPI_H(), "expected not to have errhandlingapi.h");
+            Assertions.assertFalse(Errhandlingapi.HAVE_ERRHANDLINGAPI_H, "expected not to have errhandlingapi.h");
         }
     }
 
     @Test
     public void test_HAVE_BASETSD_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(BaseTsd.HAVE_BASETSD_H(), "expected to have BaseTsd.h");
+            Assertions.assertTrue(BaseTsd.HAVE_BASETSD_H, "expected to have BaseTsd.h");
         } else {
-            Assertions.assertFalse(BaseTsd.HAVE_BASETSD_H(), "expected not to have BaseTsd.h");
+            Assertions.assertFalse(BaseTsd.HAVE_BASETSD_H, "expected not to have BaseTsd.h");
         }
     }
 
     @Test
     public void test_HAVE_FILEAPI_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Fileapi.HAVE_FILEAPI_H(), "expected to have fileapi.h");
+            Assertions.assertTrue(Fileapi.HAVE_FILEAPI_H, "expected to have fileapi.h");
         } else {
-            Assertions.assertFalse(Fileapi.HAVE_FILEAPI_H(), "expected not to have fileapi.h");
+            Assertions.assertFalse(Fileapi.HAVE_FILEAPI_H, "expected not to have fileapi.h");
         }
     }
 
     @Test
     public void test_HAVE_HANDLEAPI_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Handleapi.HAVE_HANDLEAPI_H(), "expected to have handleapi.h");
+            Assertions.assertTrue(Handleapi.HAVE_HANDLEAPI_H, "expected to have handleapi.h");
         } else {
-            Assertions.assertFalse(Handleapi.HAVE_HANDLEAPI_H(), "expected not to have handleapi.h");
+            Assertions.assertFalse(Handleapi.HAVE_HANDLEAPI_H, "expected not to have handleapi.h");
         }
     }
 
     @Test
     public void test_HAVE_IOAPI_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(IoAPI.HAVE_IOAPI_H(), "expected to have IoAPI.h");
+            Assertions.assertTrue(IoAPI.HAVE_IOAPI_H, "expected to have IoAPI.h");
         } else {
-            Assertions.assertFalse(IoAPI.HAVE_IOAPI_H(), "expected not to have IoAPI.h");
+            Assertions.assertFalse(IoAPI.HAVE_IOAPI_H, "expected not to have IoAPI.h");
         }
     }
 
     @Test
     public void test_HAVE_IOAPISET_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Ioapiset.HAVE_IOAPISET_H(), "expected to have ioapiset.h");
+            Assertions.assertTrue(Ioapiset.HAVE_IOAPISET_H, "expected to have ioapiset.h");
         } else {
-            Assertions.assertFalse(Ioapiset.HAVE_IOAPISET_H(), "expected not to have ioapiset.h");
+            Assertions.assertFalse(Ioapiset.HAVE_IOAPISET_H, "expected not to have ioapiset.h");
         }
     }
 
     @Test
     public void test_HAVE_MINWINBASE_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Minwinbase.HAVE_MINWINBASE_H(), "expected to have minwinbase.h");
+            Assertions.assertTrue(Minwinbase.HAVE_MINWINBASE_H, "expected to have minwinbase.h");
         } else {
-            Assertions.assertFalse(Minwinbase.HAVE_MINWINBASE_H(), "expected not to have minwinbase.h");
+            Assertions.assertFalse(Minwinbase.HAVE_MINWINBASE_H, "expected not to have minwinbase.h");
         }
     }
 
     @Test
     public void test_HAVE_WINDEF_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(WinDef.HAVE_WINDEF_H(), "expected to have WinDef.h");
+            Assertions.assertTrue(WinDef.HAVE_WINDEF_H, "expected to have WinDef.h");
         } else {
-            Assertions.assertFalse(WinDef.HAVE_WINDEF_H(), "expected not to have WinDef.h");
+            Assertions.assertFalse(WinDef.HAVE_WINDEF_H, "expected not to have WinDef.h");
         }
     }
 
     @Test
     public void test_HAVE_PROCESSENV_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(ProcessEnv.HAVE_PROCESSENV_H(), "expected to have processenv.h");
+            Assertions.assertTrue(ProcessEnv.HAVE_PROCESSENV_H, "expected to have processenv.h");
         } else {
-            Assertions.assertFalse(ProcessEnv.HAVE_PROCESSENV_H(), "expected not to have processenv.h");
+            Assertions.assertFalse(ProcessEnv.HAVE_PROCESSENV_H, "expected not to have processenv.h");
         }
     }
 
     @Test
     public void test_HAVE_PROCESSTHREADSAPI_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Processthreadsapi.HAVE_PROCESSTHREADSAPI_H(), "expected to have processthreadsapi.h");
+            Assertions.assertTrue(Processthreadsapi.HAVE_PROCESSTHREADSAPI_H, "expected to have processthreadsapi.h");
         } else {
-            Assertions.assertFalse(Processthreadsapi.HAVE_PROCESSTHREADSAPI_H(), "expected not to have processthreadsapi.h");
+            Assertions.assertFalse(Processthreadsapi.HAVE_PROCESSTHREADSAPI_H, "expected not to have processthreadsapi.h");
         }
     }
 
     @Test
     public void test_HAVE_SYNCHAPI_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Synchapi.HAVE_SYNCHAPI_H(), "expected to have synchapi.h");
+            Assertions.assertTrue(Synchapi.HAVE_SYNCHAPI_H, "expected to have synchapi.h");
         } else {
-            Assertions.assertFalse(Synchapi.HAVE_SYNCHAPI_H(), "expected not to have synchapi.h");
+            Assertions.assertFalse(Synchapi.HAVE_SYNCHAPI_H, "expected not to have synchapi.h");
         }
     }
 
     @Test
     public void test_HAVE_WINBASE_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Winbase.HAVE_WINBASE_H(), "expected to have winbase.h");
+            Assertions.assertTrue(Winbase.HAVE_WINBASE_H, "expected to have winbase.h");
         } else {
-            Assertions.assertFalse(Winbase.HAVE_WINBASE_H(), "expected not to have winbase.h");
+            Assertions.assertFalse(Winbase.HAVE_WINBASE_H, "expected not to have winbase.h");
         }
     }
 
     @Test
     public void test_HAVE_WINERROR_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Winerror.HAVE_WINERROR_H(), "expected to have winerror.h");
+            Assertions.assertTrue(Winerror.HAVE_WINERROR_H, "expected to have winerror.h");
         } else {
-            Assertions.assertFalse(Winerror.HAVE_WINERROR_H(), "expected not to have winerror.h");
+            Assertions.assertFalse(Winerror.HAVE_WINERROR_H, "expected not to have winerror.h");
         }
     }
 
     @Test
     public void test_HAVE_WINNT_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Winnt.HAVE_WINNT_H(), "expected to have winnt.h");
+            Assertions.assertTrue(Winnt.HAVE_WINNT_H, "expected to have winnt.h");
         } else {
-            Assertions.assertFalse(Winnt.HAVE_WINNT_H(), "expected not to have winnt.h");
+            Assertions.assertFalse(Winnt.HAVE_WINNT_H, "expected not to have winnt.h");
         }
     }
 
     @Test
     public void test_HAVE_WINREG_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Winreg.HAVE_WINREG_H(), "expected to have winreg.h");
+            Assertions.assertTrue(Winreg.HAVE_WINREG_H, "expected to have winreg.h");
         } else {
-            Assertions.assertFalse(Winreg.HAVE_WINREG_H(), "expected not to have winreg.h");
+            Assertions.assertFalse(Winreg.HAVE_WINREG_H, "expected not to have winreg.h");
         }
     }
 

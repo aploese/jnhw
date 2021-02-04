@@ -46,8 +46,13 @@ public final class IoAPI {
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_IOAPI_H = false;
+
+        initFields();
     }
 
+    private static native void initFields();
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/fileio/createiocompletionport">CreateIoCompletionPort</a>
@@ -110,12 +115,12 @@ public final class IoAPI {
      * lpCompletionKey parameter of the GetQueuedCompletionStatus function.
      * @param lpOverlapped The value to be returned through the lpOverlapped
      * parameter of the GetQueuedCompletionStatus function.
-     * 
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
     public static native void PostQueuedCompletionStatus(HANDLE CompletionPort, int dwNumberOfBytesTransferred, @BaseTsd.ULONG_PTR long dwCompletionKey, OVERLAPPED lpOverlapped) throws NativeErrorException;
 
-    public final static native boolean HAVE_IOAPI_H();
+    public final static boolean HAVE_IOAPI_H;
 
 }

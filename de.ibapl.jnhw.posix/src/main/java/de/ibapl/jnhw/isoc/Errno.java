@@ -39,36 +39,46 @@ public abstract class Errno {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+        EDOM = 0;
+        EILSEQ = 0;
+        ERANGE = 0;
+        HAVE_ERRNO_H = false;
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * ISOC,POSIX: Mathematics argument out of domain of function.
      *
-     * @return the native symbolic constant of EDOM.
      */
     @Define
-    public final static native int EDOM();
+    public final static int EDOM;
 
     /**
      * ISOC,POSIX: Illegal byte sequence.
      *
-     * @return the native symbolic constant of EILSEQ,
      */
     @Define
-    public final static native int EILSEQ();
+    public final static int EILSEQ;
 
     /**
      * ISOC,POSIX: Result too large.
      *
-     * @return the native symbolic constant of ERANGE.
      */
     @Define
-    public final static native int ERANGE();
+    public final static int ERANGE;
 
-    public final static native boolean HAVE_ERRNO_H();
+    public final static boolean HAVE_ERRNO_H;
 
     /**
      * Read access to {@code errno}.

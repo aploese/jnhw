@@ -35,7 +35,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_memory_PointerArray32_get0
     (JNIEnv *env, jobject pointerArray, jint index) {
-        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t)*(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_PTR(pointerArray) + index));
+        return CREATE_NativeAddressHolder((intptr_t)*(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_PTR(pointerArray) + index));
     }
 
     /*

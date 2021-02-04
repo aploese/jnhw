@@ -33,8 +33,6 @@ extern "C" {
     //Cached Exceptions
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NativeErrorException(JNIEnv* env, int errorNumber);
 
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName);
-
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NoSuchNativeMethodException(JNIEnv* env, const char* methodName);
 
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NoSuchNativeTypeMemberException(JNIEnv* env, const char* type, const char* member);

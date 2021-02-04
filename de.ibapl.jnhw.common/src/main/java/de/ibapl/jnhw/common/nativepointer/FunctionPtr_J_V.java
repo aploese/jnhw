@@ -43,5 +43,4 @@ public class FunctionPtr_J_V extends NativeFunctionPointer {
         super(nativeAddress);
     }
 
-    
 }

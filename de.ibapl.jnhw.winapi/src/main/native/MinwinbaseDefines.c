@@ -26,23 +26,32 @@
 extern "C" {
 #endif
 
+#ifndef HAVE_MINWINBASE_H
+
     /*
      * Class:     de_ibapl_jnhw_winapi_Minwinbase
-     * Method:    HAVE_MINWINBASE_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_HAVE_1MINWINBASE_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_MINWINBASE_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-#ifdef HAVE_MINWINBASE_H
+#else
 #include <minwinbase.h>
 
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Minwinbase
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_MINWINBASE_H", JNI_TRUE)) {
+            return;
+        }
+
+    }
 
 #endif
 #ifdef __cplusplus

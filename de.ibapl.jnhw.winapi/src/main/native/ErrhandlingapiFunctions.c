@@ -36,7 +36,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Errhandlingapi_GetLastError
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int32_t)GetLastError();
+        return (int32_t) GetLastError();
     }
 
     /*
@@ -46,7 +46,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Errhandlingapi_SetLastError
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint dwErrCode) {
-        SetLastError((uint32_t)dwErrCode);
+        SetLastError((uint32_t) dwErrCode);
     }
 
 #ifdef __cplusplus

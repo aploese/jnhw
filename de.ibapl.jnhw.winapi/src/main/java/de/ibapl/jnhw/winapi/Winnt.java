@@ -43,78 +43,126 @@ public final class Winnt {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_WINNT_H = false;
+
+        FILE_SHARE_DELETE = 0;
+        FILE_SHARE_READ = 0;
+        FILE_SHARE_WRITE = 0;
+
+        GENERIC_ALL = 0;
+        GENERIC_EXECUTE = 0;
+        GENERIC_READ = 0;
+        GENERIC_WRITE = 0;
+
+        KEY_ALL_ACCESS = 0;
+        KEY_CREATE_LINK = 0;
+        KEY_CREATE_SUB_KEY = 0;
+        KEY_ENUMERATE_SUB_KEYS = 0;
+        KEY_EXECUTE = 0;
+        KEY_NOTIFY = 0;
+        KEY_QUERY_VALUE = 0;
+        KEY_READ = 0;
+        KEY_SET_VALUE = 0;
+
+        MAXDWORD = 0;
+
+        REG_BINARY = 0;
+        REG_CREATED_NEW_KEY = 0;
+        REG_DWORD = 0;
+        REG_DWORD_BIG_ENDIAN = 0;
+        REG_DWORD_LITTLE_ENDIAN = 0;
+        REG_EXPAND_SZ = 0;
+        REG_FULL_RESOURCE_DESCRIPTOR = 0;
+        REG_LINK = 0;
+        REG_MULTI_SZ = 0;
+        REG_NONE = 0;
+        REG_OPENED_EXISTING_KEY = 0;
+        REG_OPTION_BACKUP_RESTORE = 0;
+        REG_OPTION_CREATE_LINK = 0;
+        REG_OPTION_NON_VOLATILE = 0;
+        REG_OPTION_OPEN_LINK = 0;
+        REG_OPTION_VOLATILE = 0;
+        REG_QWORD = 0;
+        REG_QWORD_LITTLE_ENDIAN = 0;
+        REG_RESOURCE_LIST = 0;
+        REG_RESOURCE_REQUIREMENTS_LIST = 0;
+        REG_SZ = 0;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">FILE_SHARE_DELETE</a>
      * Enables subsequent open operations on a file or device to request delete
      * access.
      *
-     * @return the native symbolic constant of FILE_SHARE_DELETE.
      */
     @Define
-    public final static native int FILE_SHARE_DELETE();
+    public final static int FILE_SHARE_DELETE;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">FILE_SHARE_READ</a>
      * Enables subsequent open operations on a file or device to request read
      * access.
      *
-     * @return the native symbolic constant of FILE_SHARE_READ.
      */
     @Define
-    public final static native int FILE_SHARE_READ();
+    public final static int FILE_SHARE_READ;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">FILE_SHARE_WRITE</a>
      * Enables subsequent open operations on a file or device to request write
      * access.
      *
-     * @return the native symbolic constant of FILE_SHARE_WRITE.
      */
     @Define
-    public final static native int FILE_SHARE_WRITE();
+    public final static int FILE_SHARE_WRITE;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/generic-access-rights/">GENERIC_ALL</a>
      * All possible access rights
      *
-     * @return the native symbolic constant of GENERIC_ALL.
      */
     @Define
-    public final static native int GENERIC_ALL();
+    public final static int GENERIC_ALL;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/generic-access-rights/">GENERIC_EXECUTE</a>
      * Execute access
      *
-     * @return the native symbolic constant of GENERIC_EXECUTE.
      */
     @Define
-    public final static native int GENERIC_EXECUTE();
+    public final static int GENERIC_EXECUTE;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/generic-access-rights/">GENERIC_READ</a>
      * Read access
      *
-     * @return the native symbolic constant of GENERIC_READ.
      */
     @Define
-    public final static native int GENERIC_READ();
+    public final static int GENERIC_READ;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/generic-access-rights/">GENERIC_WRITE</a>
      * Write access
      *
-     * @return the native symbolic constant of GENERIC_WRITE.
      */
     @Define
-    public final static native int GENERIC_WRITE();
+    public final static int GENERIC_WRITE;
 
-    public final static native boolean HAVE_WINNT_H();
+    public final static boolean HAVE_WINNT_H;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_ALL_ACCESS</a>
@@ -122,152 +170,138 @@ public final class Winnt {
      * KEY_CREATE_SUB_KEY, KEY_ENUMERATE_SUB_KEYS, KEY_NOTIFY, and
      * KEY_CREATE_LINK access rights.
      *
-     * @return the native symbolic constant of KEY_ALL_ACCESS.
      */
     @Define
-    public final static native int KEY_ALL_ACCESS();
+    public final static int KEY_ALL_ACCESS;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_CREATE_LINK</a>
      * Reserved for system use.
      *
-     * @return the native symbolic constant of KEY_CREATE_LINK.
      */
     @Define
-    public final static native int KEY_CREATE_LINK();
+    public final static int KEY_CREATE_LINK;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_CREATE_SUB_KEY</a>
      * Required to create a subkey of a registry key.
      *
-     * @return the native symbolic constant of KEY_CREATE_SUB_KEY.
      */
     @Define
-    public final static native int KEY_CREATE_SUB_KEY();
+    public final static int KEY_CREATE_SUB_KEY;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_ENUMERATE_SUB_KEYS</a>
      * Required to enumerate the subkeys of a registry key.
      *
-     * @return the native symbolic constant of KEY_ENUMERATE_SUB_KEYS.
      */
     @Define
-    public final static native int KEY_ENUMERATE_SUB_KEYS();
+    public final static int KEY_ENUMERATE_SUB_KEYS;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_EXECUTE</a>
      * Equivalent to KEY_READ.
      *
-     * @return the native symbolic constant of KEY_EXECUTE.
      */
     @Define
-    public final static native int KEY_EXECUTE();
+    public final static int KEY_EXECUTE;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_NOTIFY</a>
      * Required to request change notifications for a registry key or for
      * subkeys of a registry key.
      *
-     * @return the native symbolic constant of KEY_NOTIFY.
      */
     @Define
-    public final static native int KEY_NOTIFY();
+    public final static int KEY_NOTIFY;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_QUERY_VALUE</a>
      * Required to query the values of a registry key.
      *
-     * @return the native symbolic constant of KEY_QUERY_VALUE.
      */
     @Define
-    public final static native int KEY_QUERY_VALUE();
+    public final static int KEY_QUERY_VALUE;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_READ</a>
      * Combines the STANDARD_RIGHTS_READ, KEY_QUERY_VALUE,
      * KEY_ENUMERATE_SUB_KEYS, and KEY_NOTIFY values.
      *
-     * @return the native symbolic constant of KEY_READ.
      */
     @Define
-    public final static native int KEY_READ();
+    public final static int KEY_READ;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_SET_VALUE</a>
      * ombines the STANDARD_RIGHTS_WRITE, KEY_SET_VALUE, and KEY_CREATE_SUB_KEY
      * access rights.
      *
-     * @return the native symbolic constant of KEY_SET_VALUE.
      */
     @Define
-    public final static native int KEY_SET_VALUE();
+    public final static int KEY_SET_VALUE;
 
+    /**
+     * unsigned long int so to preserve the signess use javas long
+     */
     @Define
-    public final static native long MAXDWORD();
+    public final static long MAXDWORD;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_BINARY</a>
      * Binary data in any form.
      *
-     * @return the native symbolic constant of REG_BINARY.
      */
     @Define
-    public final static native int REG_BINARY();
+    public final static int REG_BINARY;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_CREATED_NEW_KEY</a>
      * The key did not exist and was created.
      *
-     * @return the native symbolic constant of REG_CREATED_NEW_KEY.
      */
     @Define
-    public final static native int REG_CREATED_NEW_KEY();
+    public final static int REG_CREATED_NEW_KEY;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_BINARY</a>
      * A 32-bit number.
      *
-     * @return the native symbolic constant of REG_BINARY.
      */
     @Define
-    public final static native int REG_DWORD();
+    public final static int REG_DWORD;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_DWORD_BIG_ENDIAN</a>
      * A 32-bit number in big-endian format.
      *
-     * @return the native symbolic constant of REG_DWORD_BIG_ENDIAN.
      */
     @Define
-    public final static native int REG_DWORD_BIG_ENDIAN();
+    public final static int REG_DWORD_BIG_ENDIAN;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_DWORD_LITTLE_ENDIAN</a>
      * A 32-bit number in little-endian format.
      *
-     * @return the native symbolic constant of REG_DWORD_LITTLE_ENDIAN.
      */
     @Define
-    public final static native int REG_DWORD_LITTLE_ENDIAN();
+    public final static int REG_DWORD_LITTLE_ENDIAN;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_EXPAND_SZ</a>
      * A null-terminated string that contains unexpanded references to
      * environment variables (for example, "%PATH%").
      *
-     * @return the native symbolic constant of REG_EXPAND_SZ.
      */
     @Define
-    public final static native int REG_EXPAND_SZ();
+    public final static int REG_EXPAND_SZ;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">XXX</a>
      *
-     *
-     * @return the native symbolic constant of XXX.
      */
     @Define
-    public final static native int REG_FULL_RESOURCE_DESCRIPTOR();
+    public final static int REG_FULL_RESOURCE_DESCRIPTOR;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_LINK</a>
@@ -275,38 +309,34 @@ public final class Winnt {
      * symbolic link that was created by calling the RegCreateKeyEx function
      * with {@link REG_OPTION_CREATE_LINK}.
      *
-     * @return the native symbolic constant of REG_LINK.
      */
     @Define
-    public final static native int REG_LINK();
+    public final static int REG_LINK;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_MULTI_SZ</a>
      * A sequence of null-terminated strings, terminated by an empty string
      * (\0).
      *
-     * @return the native symbolic constant of REG_MULTI_SZ.
      */
     @Define
-    public final static native int REG_MULTI_SZ();
+    public final static int REG_MULTI_SZ;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_NONE</a>
      * No defined value type.
      *
-     * @return the native symbolic constant of REG_NONE.
      */
     @Define
-    public final static native int REG_NONE();
+    public final static int REG_NONE;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPENED_EXISTING_KEY</a>
      * The key existed and was simply opened without being changed.
      *
-     * @return the native symbolic constant of REG_OPENED_EXISTING_KEY.
      */
     @Define
-    public final static native int REG_OPENED_EXISTING_KEY();
+    public final static int REG_OPENED_EXISTING_KEY;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPTION_BACKUP_RESTORE</a>
@@ -314,93 +344,81 @@ public final class Winnt {
      * attempts to open the key with the access required to backup or restore
      * the key.The key is a symbolic link.
      *
-     * @return the native symbolic constant of REG_OPTION_BACKUP_RESTORE.
      */
     @Define
-    public final static native int REG_OPTION_BACKUP_RESTORE();
+    public final static int REG_OPTION_BACKUP_RESTORE;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPTION_CREATE_LINK</a>
      * This key is a symbolic link. The target path is assigned to the
      * L"SymbolicLinkValue" value of the key.
      *
-     * @return the native symbolic constant of REG_OPTION_CREATE_LINK.
      */
     @Define
-    public final static native int REG_OPTION_CREATE_LINK();
+    public final static int REG_OPTION_CREATE_LINK;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPTION_NON_VOLATILE</a>
      * This key is not volatile; this is the default.
      *
-     * @return the native symbolic constant of REG_OPTION_NON_VOLATILE.
      */
     @Define
-    public final static native int REG_OPTION_NON_VOLATILE();
+    public final static int REG_OPTION_NON_VOLATILE;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regopenkeyexw">REG_OPTION_OPEN_LINK</a>
      * The key is a symbolic link.
      *
-     * @return the native symbolic constant of REG_OPTION_OPEN_LINK.
      */
     @Define
-    public final static native int REG_OPTION_OPEN_LINK();
+    public final static int REG_OPTION_OPEN_LINK;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPTION_VOLATILE</a>
      * All keys created by the function are volatile.
      *
-     * @return the native symbolic constant of REG_OPTION_VOLATILE.
      */
     @Define
-    public final static native int REG_OPTION_VOLATILE();
+    public final static int REG_OPTION_VOLATILE;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_QWORD</a>
      * A 64-bit number.
      *
-     * @return the native symbolic constant of REG_QWORD.
      */
     @Define
-    public final static native int REG_QWORD();
+    public final static int REG_QWORD;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_QWORD_LITTLE_ENDIAN</a>
      * A 64-bit number in little-endian format.
      *
-     * @return the native symbolic constant of REG_QWORD_LITTLE_ENDIAN.
      */
     @Define
-    public final static native int REG_QWORD_LITTLE_ENDIAN();
+    public final static int REG_QWORD_LITTLE_ENDIAN;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">XXX</a>
      *
-     *
-     * @return the native symbolic constant of XXX.
      */
     @Define
-    public final static native int REG_RESOURCE_LIST();
+    public final static int REG_RESOURCE_LIST;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">XXX</a>
      *
-     *
-     * @return the native symbolic constant of XXX.
      */
     @Define
-    public final static native int REG_RESOURCE_REQUIREMENTS_LIST();
+    public final static int REG_RESOURCE_REQUIREMENTS_LIST;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_SZ</a>
      * A null-terminated string. This will be either a Unicode or an ANSI
      * string, depending on whether you use the Unicode or ANSI functions.
      *
-     * @return the native symbolic constant of REG_SZ.
      */
     @Define
-    public final static native int REG_SZ();
+    public final static int REG_SZ;
 
     /**
      * Wrapper for

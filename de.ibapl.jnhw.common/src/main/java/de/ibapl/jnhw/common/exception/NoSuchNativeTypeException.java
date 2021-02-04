@@ -29,13 +29,13 @@ package de.ibapl.jnhw.common.exception;
 public class NoSuchNativeTypeException extends Exception {
 
     private static final long serialVersionUID = 1L;
-    
+
     public NoSuchNativeTypeException() {
-        
+
     }
-    
+
     public NoSuchNativeTypeException(String typeName) {
         super(String.format("No such type %s", typeName));
     }
-    
+
 }

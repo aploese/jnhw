@@ -40,9 +40,12 @@ public class FunctionPtr_I_Mem_Mem_V<A extends AbstractNativeMemory, B extends A
         super(src);
     }
 
+    public FunctionPtr_I_Mem_Mem_V(NativeFunctionPointer src) {
+        super(src);
+    }
+
     protected FunctionPtr_I_Mem_Mem_V(long nativeAddress) {
         super(nativeAddress);
     }
 
-    
 }

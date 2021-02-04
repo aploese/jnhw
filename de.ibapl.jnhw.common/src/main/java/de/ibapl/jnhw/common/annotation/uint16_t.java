@@ -33,4 +33,5 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.SOURCE)
 @Target(value = {ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
 @Unsigned
-public @interface uint16_t {}
+public @interface uint16_t {
+}

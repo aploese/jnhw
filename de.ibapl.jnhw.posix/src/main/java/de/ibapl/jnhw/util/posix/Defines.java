@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
+import de.ibapl.jnhw.common.util.IntDefine;
 
 /**
  * get the defines with gcc: create an empty file c.c run
@@ -33,17 +33,91 @@ import de.ibapl.jnhw.common.exception.NotDefinedException;
  */
 public class Defines {
 
+    /**
+     * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
+     */
     static {
         LibJnhwPosixLoader.touch();
+
+        _BSD_SOURCE = IntDefine.UNDEFINED;
+        _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
+        _LARGEFILE64_SOURCE = IntDefine.UNDEFINED;
+        _LARGEFILE_SOURCE = IntDefine.UNDEFINED;
+        _POSIX_C_SOURCE = IntDefine.UNDEFINED;
+        _XOPEN_SOURCE = IntDefine.UNDEFINED;
+        _XOPEN_SOURCE_EXTENDED = IntDefine.UNDEFINED;
+
+        __aarch64__ = IntDefine.UNDEFINED;
+        __alpha__ = IntDefine.UNDEFINED;
+        __amd64__ = IntDefine.UNDEFINED;
+        __APPLE__ = IntDefine.UNDEFINED;
+        __arm__ = IntDefine.UNDEFINED;
+        __ARM_ARCH = IntDefine.UNDEFINED;
+
+        __BIGGEST_ALIGNMENT__ = 0;
+        __BYTE_ORDER__ = 0;
+
+        __FreeBSD__ = IntDefine.UNDEFINED;
+
+        __GLIBC_MINOR__ = IntDefine.UNDEFINED;
+        __GLIBC__ = IntDefine.UNDEFINED;
+        __GNU_LIBRARY__ = IntDefine.UNDEFINED;
+
+        __i386__ = IntDefine.UNDEFINED;
+        __i686__ = IntDefine.UNDEFINED;
+        __ILP32__ = IntDefine.UNDEFINED;
+
+        __linux__ = IntDefine.UNDEFINED;
+        __LP64__ = IntDefine.UNDEFINED;
+
+        __mips__ = IntDefine.UNDEFINED;
+        __mips64 = IntDefine.UNDEFINED;
+        __MIPSEB__ = IntDefine.UNDEFINED;
+        __MIPSEL__ = IntDefine.UNDEFINED;
+        __MIPS_ARCH = IntDefine.UNDEFINED;
+
+        __ORDER_BIG_ENDIAN__ = 0;
+        __ORDER_LITTLE_ENDIAN__ = 0;
+        __ORDER_PDP_ENDIAN__ = 0;
+        __OpenBSD__ = IntDefine.UNDEFINED;
+
+        __powerpc__ = IntDefine.UNDEFINED;
+        __powerpc64__ = IntDefine.UNDEFINED;
+
+        __riscv__ = IntDefine.UNDEFINED;
+
+        __SH4__ = IntDefine.UNDEFINED;
+        __SIZEOF_LONG__ = 0;
+        __SIZEOF_POINTER__ = 0;
+        __s390__ = IntDefine.UNDEFINED;
+        __s390x__ = IntDefine.UNDEFINED;
+        __sh__ = IntDefine.UNDEFINED;
+        __sparc64__ = IntDefine.UNDEFINED;
+        __sparc__ = IntDefine.UNDEFINED;
+
+        __TIMESIZE = IntDefine.UNDEFINED;
+
+        __WORDSIZE = IntDefine.UNDEFINED;
+
+        __x86_64__ = IntDefine.UNDEFINED;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * maybe defined in jnhw-posix.h
      *
-     * @throws NotDefinedException if _LARGEFILE_SOURCE is not defined natively.
      */
     @Define
-    public static native int _LARGEFILE_SOURCE() throws NotDefinedException;
+    public final static IntDefine _LARGEFILE_SOURCE;
 
     /**
      * maybe defined in jnhw-posix.h
@@ -55,33 +129,26 @@ public class Defines {
      *
      * time of the native code.
      *
-     * @throws NotDefinedException if _LARGEFILE64_SOURCE is not defined
-     * natively.
      */
     @Define
-    public static native int _LARGEFILE64_SOURCE() throws NotDefinedException;
+    public final static IntDefine _LARGEFILE64_SOURCE;
 
     /**
-     * @throws NotDefinedException if __APPLE__ is not defined natively.
      */
     @Define
-    public static native int __APPLE__() throws NotDefinedException;
+    public final static IntDefine __APPLE__;
 
     /**
-     *
-     * @return the major version at compile time
-     * @throws NotDefinedException if __FreeBSD__ is not defined natively.
+     * the major version at compile time
      */
     @Define
-    public static native int __FreeBSD__() throws NotDefinedException;
+    public final static IntDefine __FreeBSD__;
 
     /**
      *
-     * @return the major version at compile time
-     * @throws NotDefinedException if __OpenBSD__ is not defined natively.
      */
     @Define
-    public static native int __OpenBSD__() throws NotDefinedException;
+    public final static IntDefine __OpenBSD__;
 
     /**
      * Its defined at different places: glibc: bits/wordsize.h FreeBSD:
@@ -91,173 +158,158 @@ public class Defines {
      *
      * so we keep his here for the moment. _POSIX_C_SOURCE
      *
-     * @throws NotDefinedException if __WORDSIZE is not defined natively.
      */
     @Define
-    public static native int __WORDSIZE() throws NotDefinedException;
+    public final static IntDefine __WORDSIZE;
 
     /**
      * size of time_t glibc bits/timesize.h
      *
-     * @return
-     * @throws NotDefinedException
      */
     @Define
-    public static native int __TIMESIZE() throws NotDefinedException;
+    public final static IntDefine __TIMESIZE;
 
     @Define
-    public static native int __GNU_LIBRARY__() throws NotDefinedException;
+    public final static IntDefine __GNU_LIBRARY__;
 
     @Define
-    public static native int __GLIBC__() throws NotDefinedException;
+    public final static IntDefine __GLIBC__;
 
     @Define
-    public static native int __GLIBC_MINOR__() throws NotDefinedException;
+    public final static IntDefine __GLIBC_MINOR__;
 
     @Define
-    public static native int __SIZEOF_LONG__();
+    public final static int __SIZEOF_LONG__;
 
     @Define
-    public static native int __SIZEOF_POINTER__();
+    public final static int __SIZEOF_POINTER__;
 
     @Define
-    public static native int __LP64__() throws NotDefinedException;
+    public final static IntDefine __LP64__;
 
     @Define
-    public static native int __ILP32__() throws NotDefinedException;
+    public final static IntDefine __ILP32__;
 
     /**
      * The biggest alignemnt used. If sizeof(struct) is bigger than
      * {@code __BIGGEST_ALIGNMENT__} use an address that is a multiple of
      * {@code __BIGGEST_ALIGNMENT__} as {@code baseaddress}.
      *
-     * @return 
+     * @return
      */
     @Define
-    public static native int __BIGGEST_ALIGNMENT__();
+    public final static int __BIGGEST_ALIGNMENT__;
 
     @Define
-    public static native int __ORDER_LITTLE_ENDIAN__();
+    public final static int __ORDER_LITTLE_ENDIAN__;
 
     @Define
-    public static native int __ORDER_BIG_ENDIAN__();
+    public final static int __ORDER_BIG_ENDIAN__;
 
     @Define
-    public static native int __ORDER_PDP_ENDIAN__();
+    public final static int __ORDER_PDP_ENDIAN__;
 
     @Define
-    public static native int __BYTE_ORDER__();
+    public final static int __BYTE_ORDER__;
 
     /**
      * maybe defined in jnhw-posix.h
      *
-     * @throws NotDefinedException if _FILE_OFFSET_BITS is not defined natively.
      */
     @Define
-    public static native int _FILE_OFFSET_BITS() throws NotDefinedException;
+    public final static IntDefine _FILE_OFFSET_BITS;
 
-    /**
-     *
-     * @throws NotDefinedException if _BSD_SOURCE is not defined natively.
-     */
     @Define
-    public static native int _BSD_SOURCE() throws NotDefinedException;
+    public final static IntDefine _BSD_SOURCE;
 
     /**
      * maybe defined in jnhw-posix.h
      *
-     * @throws NotDefinedException if _POSIX_C_SOURCE is not defined natively.
      */
     @Define
-    public static native int _POSIX_C_SOURCE() throws NotDefinedException;
+    public final static IntDefine _POSIX_C_SOURCE;
 
     /**
      * maybe defined in jnhw-posix.h
      *
-     * @throws NotDefinedException if _XOPEN_SOURCE is not defined natively.
      */
     @Define
-    public static native int _XOPEN_SOURCE() throws NotDefinedException;
+    public final static IntDefine _XOPEN_SOURCE;
 
     /**
      * maybe defined in jnhw-posix.h
      *
-     * @throws NotDefinedException if _XOPEN_SOURCE_EXTENDED is not defined
-     * natively.
      */
     @Define
-    public static native int _XOPEN_SOURCE_EXTENDED() throws NotDefinedException;
-
-    /**
-     * @throws NotDefinedException if __linux__ is not defined natively.
-     */
-    @Define
-    public static native int __linux__() throws NotDefinedException;
+    public final static IntDefine _XOPEN_SOURCE_EXTENDED;
 
     @Define
-    public static native int __aarch64__() throws NotDefinedException;
+    public final static IntDefine __linux__;
 
     @Define
-    public static native int __alpha__() throws NotDefinedException;
+    public final static IntDefine __aarch64__;
 
     @Define
-    public static native int __arm__() throws NotDefinedException;
+    public final static IntDefine __alpha__;
 
     @Define
-    public static native int __ARM_ARCH() throws NotDefinedException;
+    public final static IntDefine __arm__;
 
     @Define
-    public static native int __powerpc__() throws NotDefinedException;
+    public final static IntDefine __ARM_ARCH;
 
     @Define
-    public static native int __powerpc64__() throws NotDefinedException;
+    public final static IntDefine __powerpc__;
 
     @Define
-    public static native int __mips__() throws NotDefinedException;
+    public final static IntDefine __powerpc64__;
 
     @Define
-    public static native int __mips64() throws NotDefinedException;
+    public final static IntDefine __mips__;
 
     @Define
-    public static native int __MIPS_ARCH() throws NotDefinedException;
+    public final static IntDefine __mips64;
 
     @Define
-    public static native int __MIPSEB__() throws NotDefinedException;
+    public final static IntDefine __MIPS_ARCH;
 
     @Define
-    public static native int __MIPSEL__() throws NotDefinedException;
+    public final static IntDefine __MIPSEB__;
 
     @Define
-    public static native int __riscv__() throws NotDefinedException;
+    public final static IntDefine __MIPSEL__;
 
     @Define
-    public static native int __s390__() throws NotDefinedException;
+    public final static IntDefine __riscv__;
 
     @Define
-    public static native int __s390x__() throws NotDefinedException;
+    public final static IntDefine __s390__;
 
     @Define
-    public static native int __sh__() throws NotDefinedException;
+    public final static IntDefine __s390x__;
 
     @Define
-    public static native int __SH4__() throws NotDefinedException;
+    public final static IntDefine __sh__;
 
     @Define
-    public static native int __sparc__() throws NotDefinedException;
+    public final static IntDefine __SH4__;
 
     @Define
-    public static native int __sparc64__() throws NotDefinedException;
+    public final static IntDefine __sparc__;
 
     @Define
-    public static native int __i386__() throws NotDefinedException;
+    public final static IntDefine __sparc64__;
 
     @Define
-    public static native int __i686__() throws NotDefinedException;
+    public final static IntDefine __i386__;
 
     @Define
-    public static native int __amd64__() throws NotDefinedException;
+    public final static IntDefine __i686__;
 
     @Define
-    public static native int __x86_64__() throws NotDefinedException;
+    public final static IntDefine __amd64__;
+
+    @Define
+    public final static IntDefine __x86_64__;
 
 }

@@ -51,62 +51,74 @@ public class Pthread {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_PTHREAD_H = false;
+        PTHREAD_CANCEL_ASYNCHRONOUS = 0;
+        PTHREAD_CANCEL_DEFERRED = 0;
+        PTHREAD_CANCEL_DISABLE = 0;
+        PTHREAD_CANCEL_ENABLE = 0;
+        PTHREAD_EXPLICIT_SCHED = 0;
+        PTHREAD_INHERIT_SCHED = 0;
+
+        initFields();
     }
 
-    /**
-     * <b>POSIX.TPS:</b>
-     *
-     * @return the native symbolic constant of PTHREAD_EXPLICIT_SCHED.
-     */
-    @Define
-    public final static native int PTHREAD_EXPLICIT_SCHED();
+    private static native void initFields();
 
     /**
      * <b>POSIX.TPS:</b>
      *
-     * @return the native symbolic constant of PTHREAD_INHERIT_SCHED.
      */
     @Define
-    public final static native int PTHREAD_INHERIT_SCHED();
+    public final static int PTHREAD_EXPLICIT_SCHED;
 
-    public final static native boolean HAVE_PTHREAD_H();
+    /**
+     * <b>POSIX.TPS:</b>
+     *
+     */
+    @Define
+    public final static int PTHREAD_INHERIT_SCHED;
+
+    public final static boolean HAVE_PTHREAD_H;
 
     private static native void pthread_self0(Pthread_t result);
 
     /**
      * <b>POSIX.TPS:</b>
      *
-     * @return the native symbolic constant of PTHREAD_CANCEL_DISABLE.
      */
     @Define
-    public final static native int PTHREAD_CANCEL_DISABLE();
+    public final static int PTHREAD_CANCEL_DISABLE;
 
     /**
      * <b>POSIX.TPS:</b>
      *
-     * @return the native symbolic constant of PTHREAD_CANCEL_ENABLE.
      */
     @Define
-    public final static native int PTHREAD_CANCEL_ENABLE();
+    public final static int PTHREAD_CANCEL_ENABLE;
 
     /**
      * <b>POSIX.TPS:</b>
      *
-     * @return the native symbolic constant of PTHREAD_CANCEL_DEFERRED.
      */
     @Define
-    public final static native int PTHREAD_CANCEL_DEFERRED();
+    public final static int PTHREAD_CANCEL_DEFERRED;
 
     /**
      * <b>POSIX.TPS:</b>
      *
-     * @return the native symbolic constant of PTHREAD_CANCEL_ASYNCHRONOUS.
      */
     @Define
-    public final static native int PTHREAD_CANCEL_ASYNCHRONOUS();
+    public final static int PTHREAD_CANCEL_ASYNCHRONOUS;
 
     /**
      * <b>POSIX:</b>
@@ -323,9 +335,9 @@ public class Pthread {
      * <b>POSIX.TPS:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_cancel.html">pthread_cancel
      * - cancel execution of a thread</a>.
-     * 
+     *
      * TEST CRASHES
-     * 
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
@@ -335,9 +347,9 @@ public class Pthread {
      * <b>POSIX.TPS:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_testcancel.html">pthread_setcancelstate,
      * pthread_setcanceltype, pthread_testcancel - set cancelability state</a>.
-     * 
+     *
      * TEST CRASHES
-     * 
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
@@ -347,9 +359,9 @@ public class Pthread {
      * <b>POSIX.TPS:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_setcancelstate.html">pthread_setcancelstate,
      * pthread_setcanceltype, pthread_testcancel - set cancelability state</a>.
-     * 
+     *
      * TEST CRASHES
-     * 
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      * @return oldstate - the 2. argument int *oldstate.
@@ -360,9 +372,9 @@ public class Pthread {
      * <b>POSIX.TPS:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_setcanceltype.html">pthread_setcancelstate,
      * pthread_setcanceltype, pthread_testcancel - set cancelability state</a>.
-     * 
+     *
      * TEST CRASHES
-     * 
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      * @return oldtype - the 2. argument int *oldtype.

@@ -30,7 +30,6 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -163,22 +162,15 @@ public class TimeTest {
     @Test
     public void testClock_getres() throws Exception {
         System.out.println("clock_getres");
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
-            Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Time.clock_getres(0, null);
-            });
-        } else {
 
-            Time.Timespec timespec = new Time.Timespec(true);
-            Time.clock_getres(Time.CLOCK_MONOTONIC(), timespec);
+        Time.Timespec timespec = new Time.Timespec(true);
+        Time.clock_getres(Time.CLOCK_MONOTONIC, timespec);
 
-            assertEquals(0, timespec.tv_sec());
-            //TODO virt env needs to be fixed
-            assertEquals(1, timespec.tv_nsec());
+        assertEquals(0, timespec.tv_sec());
+        //TODO virt env needs to be fixed
+        assertEquals(1, timespec.tv_nsec());
 
-            Time.clock_getres(Time.CLOCK_REALTIME(), null);
-        }
+        Time.clock_getres(Time.CLOCK_REALTIME, null);
     }
 
     /**
@@ -187,24 +179,17 @@ public class TimeTest {
     @Test
     public void testClock_gettime() throws Exception {
         System.out.println("clock_gettime");
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
-            Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Time.clock_gettime(0, null);
-            });
-        } else {
-            int clock_id = Time.CLOCK_MONOTONIC();
-            Time.Timespec timespec = new Time.Timespec(true);
-            Time.clock_gettime(clock_id, timespec);
+        int clock_id = Time.CLOCK_MONOTONIC;
+        Time.Timespec timespec = new Time.Timespec(true);
+        Time.clock_gettime(clock_id, timespec);
 
-            System.out.println("timespec: " + timespec);
-            Assertions.assertTrue(timespec.tv_sec() > 0, "timespec.tv_sec() > 0");
-            Assertions.assertTrue(timespec.tv_nsec() >= 0, "timespec.tv_nsec() >= 0");
+        System.out.println("timespec: " + timespec);
+        Assertions.assertTrue(timespec.tv_sec() > 0, "timespec.tv_sec() > 0");
+        Assertions.assertTrue(timespec.tv_nsec() >= 0, "timespec.tv_nsec() >= 0");
 
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Time.clock_gettime(Time.CLOCK_REALTIME(), null);
-            });
-        }
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Time.clock_gettime(Time.CLOCK_REALTIME, null);
+        });
     }
 
     /**
@@ -216,13 +201,12 @@ public class TimeTest {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
             case MAC_OS_X:
-                Assertions.assertFalse(Defined.defined(Time::CLOCK_MONOTONIC));
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.clock_nanosleep(0, 0, null, null);
                 });
                 break;
             default:
-                int clock_id = Time.CLOCK_MONOTONIC();
+                int clock_id = Time.CLOCK_MONOTONIC;
                 int flags = 0;
                 Time.Timespec rqtp = new Time.Timespec(true);
                 rqtp.tv_nsec(10_000_000L); //10ms
@@ -254,7 +238,6 @@ public class TimeTest {
         System.out.println("clock_settime");
 
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
-            Assertions.assertFalse(Defined.defined(Time::CLOCK_REALTIME));
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                 Time.clock_settime(0, null);
             });
@@ -262,12 +245,12 @@ public class TimeTest {
             Time.Timespec timespec = new Time.Timespec(true);
             //We should not habe the priveleges to set the CLOCK_REALTIME ... so a NativeErrorException with EPERM as errno should be thrown.
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                Time.clock_settime(Time.CLOCK_REALTIME(), timespec);
+                Time.clock_settime(Time.CLOCK_REALTIME, timespec);
             });
-            assertEquals(Errno.EPERM(), nee.errno, "EPERM expected but got " + Errno.getErrnoSymbol(nee.errno));
+            assertEquals(Errno.EPERM, nee.errno, "EPERM expected but got " + Errno.getErrnoSymbol(nee.errno));
 
             Assertions.assertThrows(NullPointerException.class, () -> {
-                Time.clock_settime(Time.CLOCK_REALTIME(), null);
+                Time.clock_settime(Time.CLOCK_REALTIME, null);
             });
         }
     }
@@ -579,7 +562,7 @@ public class TimeTest {
         timeptr.tm_hour(16);
         timeptr.tm_min(03);
         timeptr.tm_sec(47);
-        Locale.Locale_t locale = Locale.duplocale(Locale.LC_GLOBAL_LOCALE());
+        Locale.Locale_t locale = Locale.duplocale(Locale.LC_GLOBAL_LOCALE);
         try {
             String result = Time.strftime_l(maxsize, format, timeptr, locale);
             assertEquals("2020-02-19 16:03:47", result);
@@ -695,7 +678,7 @@ public class TimeTest {
 
         final Time.Timer_t timerid = new Time.Timer_t(true);
 
-        Time.timer_create(Time.CLOCK_MONOTONIC(), null, timerid);
+        Time.timer_create(Time.CLOCK_MONOTONIC, null, timerid);
         try {
             System.out.println("timerid: " + timerid);
         } finally {
@@ -703,7 +686,7 @@ public class TimeTest {
         }
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.timer_create(Time.CLOCK_MONOTONIC(), null, null);
+            Time.timer_create(Time.CLOCK_MONOTONIC, null, null);
         });
 
         Signal.Sigevent evp = new Signal.Sigevent();
@@ -712,11 +695,11 @@ public class TimeTest {
         evp.sigev_notify_attributes(attr);
 
         //Setup for signal delivery
-        evp.sigev_notify(Signal.SIGEV_SIGNAL());
-        evp.sigev_signo(Signal.SIGCHLD());
+        evp.sigev_notify(Signal.SIGEV_SIGNAL.get());
+        evp.sigev_signo(Signal.SIGCHLD);
         evp.sigev_value.sival_ptr(timerid);
 
-        Time.timer_create(Time.CLOCK_MONOTONIC(), evp, timerid);
+        Time.timer_create(Time.CLOCK_MONOTONIC, evp, timerid);
 
         try {
             System.out.println("timerid: " + timerid);
@@ -731,7 +714,7 @@ public class TimeTest {
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                 Time.timer_delete(timerid);
             });
-            assertEquals(Errno.EINVAL(), nee.errno);
+            assertEquals(Errno.EINVAL, nee.errno);
         }
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -767,9 +750,9 @@ public class TimeTest {
                 Time.Itimerspec trigger = new Time.Itimerspec(true);
                 Signal.Sigevent sev = new Signal.Sigevent();
 
-                sev.sigev_notify(Signal.SIGEV_NONE());
+                sev.sigev_notify(Signal.SIGEV_NONE.get());
 
-                Time.timer_create(Time.CLOCK_REALTIME(), sev, timerid);
+                Time.timer_create(Time.CLOCK_REALTIME, sev, timerid);
 
                 assertEquals(0, Time.timer_getoverrun(timerid));
 
@@ -819,7 +802,7 @@ public class TimeTest {
                  */
                 Signal.Sigevent<OpaqueMemory32> evp = new Signal.Sigevent<>();
                 //evp.sigev_notify_attributes(attr);
-                evp.sigev_notify(Signal.SIGEV_THREAD());
+                evp.sigev_notify(Signal.SIGEV_THREAD.get());
                 evp.sigev_value.sival_int(0x12345678);
                 assertEquals(0x12345678, evp.sigev_value.sival_int());
                 evp.sigev_notify_function(new Callback__Sigval_int__V_Impl() {
@@ -843,7 +826,7 @@ public class TimeTest {
                 });
 
                 System.out.println("evp: " + evp);
-                Time.timer_create(Time.CLOCK_REALTIME(), evp, timerid);
+                Time.timer_create(Time.CLOCK_REALTIME, evp, timerid);
                 try {
                     Time.Itimerspec value = new Time.Itimerspec(true);
 //          Time.Itimerspec ovalue = new Time.Itimerspec(true);

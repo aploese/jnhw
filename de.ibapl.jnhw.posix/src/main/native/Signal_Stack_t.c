@@ -31,7 +31,7 @@ extern "C" {
 #include <signal.h>
 #include <stdint.h>
 
-JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
+    JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Stack_t
@@ -60,7 +60,7 @@ JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Stack_1t_ss_1sp0
     (JNIEnv *env, jobject structStack_t) {
-        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t) (UNWRAP_STACK_T_PTR(structStack_t))->ss_sp);
+        return CREATE_NativeAddressHolder((intptr_t) (UNWRAP_STACK_T_PTR(structStack_t))->ss_sp);
     }
 
     /*

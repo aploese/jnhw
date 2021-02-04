@@ -26,121 +26,62 @@
 extern "C" {
 #endif
 
+    //We need the POSIX version ...    
+#if !defined(HAVE_POLL_H) || !defined(_POSIX_VERSION)
+
     /*
      * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    HAVE_POLL_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Poll_HAVE_1POLL_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_POLL_H) && defined(_POSIX_VERSION)
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-#ifdef _POSIX_VERSION
+#else
 #include <poll.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    POLLERR
-     * Signature: ()S
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLERR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLERR;
-    }
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_initFields
+    (JNIEnv *env, jclass clazz) {
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    POLLHUP
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLHUP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLHUP;
-    }
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_POLL_H", JNI_TRUE)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    POLLIN
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLIN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLIN;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    POLLNVAL
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLNVAL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLNVAL;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    POLLOUT
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLOUT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLOUT;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    POLLPRI
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLPRI
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLPRI;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    POLLRDBAND
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLRDBAND
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLRDBAND;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    POLLRDNORM
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLRDNORM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLRDNORM;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    POLLWRBAND
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLWRBAND
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLWRBAND;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    POLLWRNORM
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_POLLWRNORM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLWRNORM;
+        if (JnhwSetStaticShortField(env, clazz, "POLLERR", POLLERR)) {
+            return;
+        }
+        if (JnhwSetStaticShortField(env, clazz, "POLLHUP", POLLHUP)) {
+            return;
+        }
+        if (JnhwSetStaticShortField(env, clazz, "POLLIN", POLLIN)) {
+            return;
+        }
+        if (JnhwSetStaticShortField(env, clazz, "POLLNVAL", POLLNVAL)) {
+            return;
+        }
+        if (JnhwSetStaticShortField(env, clazz, "POLLOUT", POLLOUT)) {
+            return;
+        }
+        if (JnhwSetStaticShortField(env, clazz, "POLLPRI", POLLPRI)) {
+            return;
+        }
+        if (JnhwSetStaticShortField(env, clazz, "POLLRDBAND", POLLRDBAND)) {
+            return;
+        }
+        if (JnhwSetStaticShortField(env, clazz, "POLLRDNORM", POLLRDNORM)) {
+            return;
+        }
+        if (JnhwSetStaticShortField(env, clazz, "POLLWRBAND", POLLWRBAND)) {
+            return;
+        }
+        if (JnhwSetStaticShortField(env, clazz, "POLLWRNORM", POLLWRNORM)) {
+            return;
+        }
     }
 
 

@@ -29,7 +29,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinbaseTest {
 
-        private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     @Test
     public void testCOMMTIMEOUTS() {

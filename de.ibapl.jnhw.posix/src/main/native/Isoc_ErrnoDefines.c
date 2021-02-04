@@ -20,62 +20,54 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-
-    /*
-     * Class:     de_ibapl_jnhw_isoc_Errno
-     * Method:    HAVE_ERRNO_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_isoc_Errno_HAVE_1ERRNO_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_ERRNO_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
-    }
-
-
-#ifdef HAVE_ERRNO_H
-
 #include "de_ibapl_jnhw_isoc_Errno.h"
-#include <errno.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    /*
-     * Class:     de_ibapl_jnhw_isoc_Errno
-     * Method:    EDOM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_isoc_Errno_EDOM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EDOM;
-    }
+#ifndef HAVE_ERRNO_H
 
     /*
      * Class:     de_ibapl_jnhw_isoc_Errno
-     * Method:    ERANGE
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_isoc_Errno_ERANGE
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_isoc_Errno_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERANGE;
     }
+#else
+#include <errno.h>
 
     /*
      * Class:     de_ibapl_jnhw_isoc_Errno
-     * Method:    EILSEQ
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_isoc_Errno_EILSEQ
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EILSEQ;
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_isoc_Errno_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_ERRNO_H", JNI_TRUE)) {
+            return;
+        }
+
+        if (JnhwSetStaticIntField(env, clazz, "EDOM", EDOM)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERANGE", ERANGE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EILSEQ", EILSEQ)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EILSEQ", EILSEQ)) {
+            return;
+        }
     }
+
+
+#endif
 
 #ifdef __cplusplus
 }
-#endif
 #endif

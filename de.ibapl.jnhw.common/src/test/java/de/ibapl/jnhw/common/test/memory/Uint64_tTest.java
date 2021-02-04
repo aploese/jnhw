@@ -30,10 +30,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author aploese
  */
 public class Uint64_tTest {
-    
+
     public Uint64_tTest() {
     }
-    
+
     /**
      * Test of sizeofUint64_t method, of class Uint64_t.
      */

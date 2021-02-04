@@ -74,7 +74,7 @@ public class NativeRunnableTest {
             protected void callback() {
                 intRef.value = 42;
             }
-            
+
         };
         Callback_NativeRunnable callback_NativeRunnable = Callback_NativeRunnable.INSTANCE;
 
@@ -129,6 +129,7 @@ public class NativeRunnableTest {
         setCallback(callback_NativeRunnable);
 
         final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback_NativeRunnable);
+
         assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
         doCallRunnable(runnable);

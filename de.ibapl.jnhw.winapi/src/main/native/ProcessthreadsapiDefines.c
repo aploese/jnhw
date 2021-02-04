@@ -26,22 +26,33 @@
 extern "C" {
 #endif
 
+
+#ifndef HAVE_PROCESSTHREADSAPI_H
+
     /*
      * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
-     * Method:    HAVE_PROCESSTHREADSAPI_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_HAVE_1PROCESSTHREADSAPI_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_PROCESSTHREADSAPI_H
-    return JNI_TRUE;
-#else
-	return JNI_FALSE;
-#endif
     }
-
-#ifdef HAVE_PROCESSTHREADSAPI_H
+#else
 #include <processthreadsapi.h>
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_PROCESSTHREADSAPI_H", JNI_TRUE)) {
+            return;
+        }
+
+    }
 
 #endif
 #ifdef __cplusplus

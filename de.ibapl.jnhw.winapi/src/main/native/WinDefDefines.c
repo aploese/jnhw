@@ -35,22 +35,31 @@
 extern "C" {
 #endif
 
+#ifndef HAVE_WINDEF_OR_MINWINDEF_H
+
     /*
      * Class:     de_ibapl_jnhw_winapi_WinDef
-     * Method:    HAVE_WINDEF_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_WinDef_HAVE_1WINDEF_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_WinDef_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_WINDEF_OR_MINWINDEF_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
+#else
 
-#ifdef HAVE_WINDEF_OR_MINWINDEF_H
+    /*
+     * Class:     de_ibapl_jnhw_winapi_WinDef
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_WinDef_initFields
+    (JNIEnv *env, jclass clazz) {
 
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_WINDEF_OR_MINWINDEF_H", JNI_TRUE)) {
+            return;
+        }
+
+    }
 
 #endif
 #ifdef __cplusplus

@@ -37,12 +37,24 @@ public class Ucontext {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_UCONTEXT_H = false;
+
+        initFields();
     }
 
-    public final static native boolean HAVE_UCONTEXT_H();
+    private static native void initFields();
+
+    public final static boolean HAVE_UCONTEXT_H;
 
     /**
      * Get user context and store it in variable pointed to by UCP.

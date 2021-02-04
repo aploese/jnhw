@@ -36,7 +36,7 @@ public class WinregTest {
     public void testRegOpenKey() throws Exception {
         String testKeyStr = "HARDWARE\\DESCRIPTION\\System";
         PHKEY testKey = new PHKEY();
-        Winreg.RegOpenKeyExW(Winreg.HKEY_LOCAL_MACHINE(), testKeyStr, 0, Winnt.KEY_READ(), testKey);
+        Winreg.RegOpenKeyExW(Winreg.HKEY_LOCAL_MACHINE, testKeyStr, 0, Winnt.KEY_READ, testKey);
         Assertions.assertFalse(testKey.dereference().is_INVALID_HANDLE_VALUE(), "PHKEY is not valid");
         int dwIndex = 0;
         LPWSTR lpValueName = new LPWSTR(256, true);
@@ -45,11 +45,11 @@ public class WinregTest {
         boolean collecting = true;
         do {
             long result = Winreg.RegEnumValueW(testKey.dereference(), dwIndex, lpValueName, lpType, lpData);
-            if (result == Winerror.ERROR_SUCCESS()) {
+            if (result == Winerror.ERROR_SUCCESS) {
                 System.out.print("lpValueName: " + lpValueName.getString());
-                if (lpType.value == Winnt.REG_SZ()) {
+                if (lpType.value == Winnt.REG_SZ) {
                     System.out.println(" = " + LPWSTR.stringValueOfNullTerminated(lpData));
-                } else if (lpType.value == Winnt.REG_MULTI_SZ()) {
+                } else if (lpType.value == Winnt.REG_MULTI_SZ) {
                     System.out.println(" = " + LPWSTR.stringValueOfNullTerminated(lpData));
                 } else {
                     System.out.println(" ... Winnt.Reg*:" + lpType.value);
@@ -58,9 +58,9 @@ public class WinregTest {
                 //TODO test bufferEnd  =1 ...
                 lpData.resetBufferEnd();;
                 dwIndex++;
-            } else if (result == Winerror.ERROR_NO_MORE_ITEMS()) {
+            } else if (result == Winerror.ERROR_NO_MORE_ITEMS) {
                 collecting = false;
-            } else if (result == Winerror.ERROR_MORE_DATA()) {
+            } else if (result == Winerror.ERROR_MORE_DATA) {
                 lpData.resetBufferEnd();
 
             }

@@ -80,13 +80,13 @@ public class AioTest {
                     Aio.aio_cancel(aiocbp);
                 });
 
-                assertEquals(Errno.EBADF(), nee.errno);
+                assertEquals(Errno.EBADF, nee.errno);
 
                 nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                     Aio.aio_cancel(-1);
                 });
 
-                assertEquals(Errno.EBADF(), nee.errno);
+                assertEquals(Errno.EBADF, nee.errno);
         }
     }
 
@@ -108,7 +108,7 @@ public class AioTest {
 
                 int result = Aio.aio_error(aiocb);
                 if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
-                    assertEquals(Errno.EINVAL(), result);
+                    assertEquals(Errno.EINVAL, result);
                 } else {
                     assertEquals(0, result);
                 }
@@ -136,10 +136,10 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
 
                 NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    Aio.aio_fsync(Fcntl.O_SYNC(), aiocb);
+                    Aio.aio_fsync(Fcntl.O_SYNC, aiocb);
                 });
 
-                assertEquals(Errno.EBADF(), nee.errno);
+                assertEquals(Errno.EBADF, nee.errno);
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Aio.aio_fsync(0, null);
                 });
@@ -172,14 +172,14 @@ public class AioTest {
                 fw.close();
 
                 final Aio.Aiocb<Aio.Aiocb> aiocb = new Aio.Aiocb<>();
-                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
+                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
                 aioBuffer.clear();
                 aiocb.aio_buf(aioBuffer);
                 assertEquals(0, aioBuffer.position());
 
-                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD());
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD.get());
                 aiocb.aio_sigevent.sigev_value.sival_ptr(aiocb);
 
                 System.out.println("aio_read aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
@@ -282,14 +282,14 @@ public class AioTest {
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
 
                 final Aio.Aiocb<Struct32> aiocb = new Aio.Aiocb<>();
-                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
+                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
                 aioBuffer.clear();
                 aiocb.aio_buf(aioBuffer);
                 assertEquals(0, aioBuffer.position());
 
-                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD());
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD.get());
                 aiocb.aio_sigevent.sigev_value.sival_int(SIVAL_INT);
 
                 System.out.println("aio_read aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
@@ -329,7 +329,7 @@ public class AioTest {
                 assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
                 Aio.aio_read(aiocb);
                 errno = Aio.aio_error(aiocb);
-                assertEquals(Errno.EINPROGRESS(), errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                assertEquals(Errno.EINPROGRESS, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
 
                 synchronized (intRef) {
                     if (intRef.value == null) {
@@ -433,7 +433,7 @@ public class AioTest {
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
 
                 final Aio.Aiocb<Struct32> aiocb = new Aio.Aiocb();
-                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
+                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
                 aioBuffer.put(HELLO_WORLD.getBytes());
 
@@ -443,7 +443,7 @@ public class AioTest {
                 assertEquals(0, aioBuffer.position());
                 assertEquals(HELLO_WORLD.length(), aioBuffer.remaining());
 
-                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD());
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD.get());
                 aiocb.aio_sigevent.sigev_value.sival_int(SIVAL_INT);
 
                 System.out.println("aio_write aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
@@ -525,21 +525,21 @@ public class AioTest {
                 list.set(0, aiocb);
 
                 NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    Aio.lio_listio(Aio.LIO_WAIT(), list, null);
+                    Aio.lio_listio(Aio.LIO_WAIT.get(), list, null);
                 });
-                assertEquals(Errno.EIO(), nee.errno, Errno.getErrnoSymbol(nee.errno));
+                assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
 
                 Assertions.assertThrows(NullPointerException.class, () -> {
-                    Aio.lio_listio(Aio.LIO_WAIT(), null, null);
+                    Aio.lio_listio(Aio.LIO_WAIT.get(), null, null);
                 });
 
                 if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
                     nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                        Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
+                        Aio.lio_listio(Aio.LIO_NOWAIT.get(), list, null);
                     });
-                    assertEquals(Errno.EIO(), nee.errno, Errno.getErrnoSymbol(nee.errno));
+                    assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
                 } else {
-                    Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
+                    Aio.lio_listio(Aio.LIO_NOWAIT.get(), list, null);
                 }
         }
     }
@@ -570,8 +570,8 @@ public class AioTest {
                 fw.close();
 
                 final Aio.Aiocb<Aio.Aiocb> aiocb = new Aio.Aiocb();
-                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
-                aiocb.aio_lio_opcode(Aio.LIO_READ());
+                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
+                aiocb.aio_lio_opcode(Aio.LIO_READ.get());
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
                 aioBuffer.clear();
@@ -581,10 +581,10 @@ public class AioTest {
                 Aio.Aiocbs list = new Aio.Aiocbs(1);
                 list.set(0, aiocb);
 
-                Aio.lio_listio(Aio.LIO_NOWAIT(), list, null);
+                Aio.lio_listio(Aio.LIO_NOWAIT.get(), list, null);
                 int errno = Aio.aio_error(aiocb);
                 while (errno != 0) {
-                    assertEquals(Errno.EINPROGRESS(), errno, "Got errno from aio_error: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                    assertEquals(Errno.EINPROGRESS, errno, "Got errno from aio_error: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
                     Thread.sleep(1000);
                     errno = Aio.aio_error(aiocb);
                 }
@@ -642,7 +642,7 @@ public class AioTest {
     public void testAiocbs() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertFalse(Aio.HAVE_AIO_H());
+                Assertions.assertFalse(Aio.HAVE_AIO_H);
                 break;
             default:
                 Aio.Aiocbs aiocbs = new Aio.Aiocbs(1);
@@ -686,14 +686,14 @@ public class AioTest {
                 fw.close();
 
                 final Aio.Aiocb<NativeRunnable> aiocb = new Aio.Aiocb();
-                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR()));
+                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
                 aioBuffer.clear();
                 aiocb.aio_buf(aioBuffer);
                 assertEquals(0, aioBuffer.position());
 
-                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD());
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD.get());
 
                 System.out.println("aio_read aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
                 System.out.println("aio_read Pthread_t: " + Pthread.pthread_self());

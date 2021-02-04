@@ -19,48 +19,60 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+#include "jnhw-posix.h"
+#include "de_ibapl_jnhw_posix_sys_Types.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_sys_Types.h"
+    /*
+    off_t
+    off64_t
+    mode_t
+    ssize_t
+    size_t
+    useconds_t
+    gid_t
+    pid_t
+    pthread_t
+    pthread_attr_t
+    clock_t
+    time_t
+    clockid_t
+    timer_t
+    uid_t
+     */
 
-/*
-off_t
-off64_t
-mode_t
-ssize_t
-size_t
-useconds_t
-gid_t
-pid_t
-pthread_t
-pthread_attr_t
-clock_t
-time_t
-clockid_t
-timer_t
-uid_t
-*/
+    //We need the POSIX version ...    
+#if !defined(HAVE_SYS_TYPES_H) || !defined(_POSIX_VERSION)
+
     /*
      * Class:     de_ibapl_jnhw_posix_sys_Types
-     * Method:    HAVE_SYS_TYPES_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_HAVE_1SYS_1TYPES_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_SYS_TYPES_H
-        return JNI_TRUE;
+    }
 #else
-        return JNI_FALSE;
-#endif
+#include <sys/types.h>
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_sys_Types
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_SYS_TYPES_H", JNI_TRUE)) {
+            return;
+        }
+
     }
 
-#if HAVE_SYS_TYPES_H
-#include <sys/types.h>
 #endif
-
 #ifdef __cplusplus
 }
 #endif

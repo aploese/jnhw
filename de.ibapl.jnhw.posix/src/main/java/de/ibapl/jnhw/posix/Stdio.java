@@ -44,63 +44,77 @@ public class Stdio {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_STDIO_H = false;
+
+        EOF = 0;
+        SEEK_CUR = 0;
+        SEEK_END = 0;
+        SEEK_SET = 0;
+
+        initFields();
     }
 
-    public final static native boolean HAVE_STDIO_H();
+    private static native void initFields();
+
+    public final static boolean HAVE_STDIO_H;
 
     /**
      * <b>POSIX:</b>seek relative to current position.
      *
-     * @return the native symbolic constant of SEEK_CUR.
      */
     @Define
-    public static native int SEEK_CUR();
+    public static int SEEK_CUR;
 
-    
     /**
      * <b>POSIX:</b>End-of-file return value.
      *
-     * @return the native EOF.
      */
     @Define
-    public static native int EOF();
-    
+    public static int EOF;
+
     /**
      * <b>POSIX:</b> Seek relative to end-of-file.
      *
-     * @return the native symbolic constant of SEEK_END.
      */
     @Define
-    public static native int SEEK_END();
+    public static int SEEK_END;
 
     /**
      * <b>POSIX:</b> Seek relative to start-of-file.
      *
-     * @return the native symbolic constant of SEEK_SET.
      */
     @Define
-    public static native int SEEK_SET();
+    public static int SEEK_SET;
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getchar.html">getchar - get a byte from a stdin stream</a>.
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getchar.html">getchar
+     * - get a byte from a stdin stream</a>.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native char getchar() throws NativeErrorException ;
+    public static native char getchar() throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/putchar.html">putchar - put a byte on a stdout stream</a>.
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/putchar.html">putchar
+     * - put a byte on a stdout stream</a>.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void putchar(char c) throws NativeErrorException;      
+    public static native void putchar(char c) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>

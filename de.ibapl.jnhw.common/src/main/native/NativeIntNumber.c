@@ -39,7 +39,6 @@ extern "C" {
         return (*env)->NewStringUTF(env, buf);
     }
 
-
     /*
      * Class:     de_ibapl_jnhw_common_memory_NativeIntNumber
      * Method:    nativeInt16ToHexString
@@ -63,7 +62,6 @@ extern "C" {
         snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint32_t, *UNWRAP_ABSTRACT_MEM_TO(uint32_t*, nativeIntNumber));
         return (*env)->NewStringUTF(env, buf);
     }
-
 
     /*
      * Class:     de_ibapl_jnhw_common_memory_NativeIntNumber

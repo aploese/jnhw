@@ -42,8 +42,8 @@
 extern "C" {
 #endif
 
-JNHW_ASSERT__uid_t__IS__uint32_t
-JNHW_ASSERT__gid_t__IS__uint32_t
+    JNHW_ASSERT__uid_t__IS__uint32_t
+    JNHW_ASSERT__gid_t__IS__uint32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd_JnhwPrimitiveArrayCritical
@@ -262,7 +262,7 @@ JNHW_ASSERT__gid_t__IS__uint32_t
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
-        return (jshort)((result << 8) | value);
+        return (jshort) ((result << 8) | value);
     }
 
     /*
@@ -446,7 +446,7 @@ JNHW_ASSERT__gid_t__IS__uint32_t
 #else
 #error expected off_t is int32_t or int64_t
 #endif 
-        const off_t result = lseek(fd, (off_t)offset, whence);
+        const off_t result = lseek(fd, (off_t) offset, whence);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }
@@ -509,7 +509,7 @@ JNHW_ASSERT__gid_t__IS__uint32_t
         }
     }
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    getpid
      * Signature: ()I
@@ -536,7 +536,7 @@ JNHW_ASSERT__gid_t__IS__uint32_t
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setreuid
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint ruid, int euid) {
-        if (setreuid((uid_t)ruid, (uid_t)euid)) {
+        if (setreuid((uid_t) ruid, (uid_t) euid)) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -558,7 +558,7 @@ JNHW_ASSERT__gid_t__IS__uint32_t
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setgid
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint gid) {
-        if (setgid((gid_t)gid)) {
+        if (setgid((gid_t) gid)) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -570,7 +570,7 @@ JNHW_ASSERT__gid_t__IS__uint32_t
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setegid
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint gid) {
-        if (setegid((gid_t)gid)) {
+        if (setegid((gid_t) gid)) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -582,7 +582,7 @@ JNHW_ASSERT__gid_t__IS__uint32_t
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setregid
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint rgid, int egid) {
-        if (setregid((gid_t)rgid, (gid_t)egid)) {
+        if (setregid((gid_t) rgid, (gid_t) egid)) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -594,7 +594,7 @@ JNHW_ASSERT__gid_t__IS__uint32_t
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setuid
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint uid) {
-        if (setuid((uid_t)uid)) {
+        if (setuid((uid_t) uid)) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -616,7 +616,7 @@ JNHW_ASSERT__gid_t__IS__uint32_t
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_seteuid
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint uid) {
-        if (seteuid((uid_t)uid)) {
+        if (seteuid((uid_t) uid)) {
             throw_NativeErrorException(env, errno);
         }
     }

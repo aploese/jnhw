@@ -26,22 +26,33 @@
 extern "C" {
 #endif
 
+
+#ifndef HAVE_SYNCHAPI_H
+
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
-     * Method:    HAVE_SYNCHAPI_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_HAVE_1SYNCHAPI_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_SYNCHAPI_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-#ifdef HAVE_SYNCHAPI_H
+#else
 #include <synchapi.h>
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Synchapi
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_SYNCHAPI_H", JNI_TRUE)) {
+            return;
+        }
+
+    }
 
 #endif
 #ifdef __cplusplus

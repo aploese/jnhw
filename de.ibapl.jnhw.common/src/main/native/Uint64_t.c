@@ -64,7 +64,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_Uint64_1t_rawUint64_1t__J
     (JNIEnv *env, jobject jnhw_uint64_t, jlong value) {
-        *UNWRAP_ABSTRACT_MEM_TO(uint64_t*, jnhw_uint64_t) = (uint64_t)value;
+        *UNWRAP_ABSTRACT_MEM_TO(uint64_t*, jnhw_uint64_t) = (uint64_t) value;
     }
 
     /*

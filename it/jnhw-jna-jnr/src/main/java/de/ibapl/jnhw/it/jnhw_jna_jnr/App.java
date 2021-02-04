@@ -31,9 +31,9 @@ import de.ibapl.jnhw.libloader.OS;
  * its own memory, if its preallocates its memory - is quit fast. JNR is faster
  * in set/get because it uses the internal memory access from the jre.
  *
- * JNHW can handle structures that varies in size and alignment across OS and arch like
- * struct termios (on linux mips some struct members are absent) or stuct
- * mcontext_t which has different sizes and alignments.
+ * JNHW can handle structures that varies in size and alignment across OS and
+ * arch like struct termios (on linux mips some struct members are absent) or
+ * stuct mcontext_t which has different sizes and alignments.
  *
  */
 public class App {

@@ -29,7 +29,7 @@ extern "C" {
 #ifdef _POSIX_VERSION    
 #include <sys/types.h>
 
-JNHW_ASSERT__off_t__IS__int64_t__OR__int32_t
+    JNHW_ASSERT__off_t__IS__int64_t__OR__int32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_sys_Types_Off_t
@@ -58,7 +58,7 @@ JNHW_ASSERT__off_t__IS__int64_t__OR__int32_t
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Off_1t_unsigned
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (0 < (off_t)-1);
+        return (0 < (off_t) - 1);
     }
 
     /*
@@ -87,7 +87,7 @@ JNHW_ASSERT__off_t__IS__int64_t__OR__int32_t
 #else
 #error expected off_t is int32_t or int64_t
 #endif 
-        *UNWRAP_ABSTRACT_MEM_TO(off_t*, jnhw_off_t) = (off_t)value;
+        *UNWRAP_ABSTRACT_MEM_TO(off_t*, jnhw_off_t) = (off_t) value;
     }
 
     /*

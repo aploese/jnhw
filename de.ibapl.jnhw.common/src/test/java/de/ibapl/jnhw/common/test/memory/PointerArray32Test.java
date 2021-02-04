@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
  * @author aploese
  */
 public class PointerArray32Test {
-    
+
     private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     @BeforeAll

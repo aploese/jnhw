@@ -45,22 +45,21 @@ extern "C" {
             return;
         }
 #if defined(_WIN64)
-        if(QueueUserAPC(UNWRAP_NATIVE_FUNCTION_POINTER_TO(PAPCFUNC, pfnAPC), UNWRAP_HANDLE(hThread), (uint64_t)dwData)) {
+        if (QueueUserAPC(UNWRAP_NativeFunctionPointer_TO(PAPCFUNC, pfnAPC), UNWRAP_HANDLE(hThread), (uint64_t) dwData)) {
 #elif defined(_WIN32)
         if ((dwData > LONG_MAX) || (dwData < LONG_MAX)) {
             throw_IllegalArgumentException(env, "dwData out of bounds for 32 bit!");
             return;
         }
-        if(QueueUserAPC(UNWRAP_NATIVE_FUNCTION_POINTER_TO(PAPCFUNC, pfnAPC), UNWRAP_HANDLE(hThread), (uint32_t)dwData)) {
+        if (QueueUserAPC(UNWRAP_NativeFunctionPointer_TO(PAPCFUNC, pfnAPC), UNWRAP_HANDLE(hThread), (uint32_t) dwData)) {
 #else
 #error "no _WIN64 nor _WIN32 defined!"
 #endif            
             return;
         } else {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
-
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Processthreadsapi

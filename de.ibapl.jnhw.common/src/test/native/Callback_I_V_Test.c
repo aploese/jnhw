@@ -48,34 +48,37 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1V_1Test_setCallback
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
-        callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t), callback);
+        callbackPtr = UNWRAP_NativeFunctionPointer_TO(void (*)(int32_t), callback);
     }
 
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_V_Tests
      * Method:    getCallbackPtr
-     * Signature: ()Lde/ibapl/jnhw/common/nativecall/CallNative_I_V;
+     * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1V_1Test_getCallbackPtr
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return CREATE_CALL_NATIVE_I_V(callbackPtr);
+        return CREATE_FunctionPtr_I_V(callbackPtr);
     }
 
 #ifdef HAVE_WINDOWS_H
+
     DWORD WINAPI thr_fn_I(LPVOID args) {
-            callbackPtr(*((int32_t*)args));
-            return 0;
+        callbackPtr(*((int32_t*) args));
+        return 0;
     }
 #elif defined HAVE_PTHREAD_H
+
     void * thr_fn_I(void *args) {
-            callbackPtr(*((int32_t*)args));
-            return NULL;
+        callbackPtr(*((int32_t*) args));
+        return NULL;
     }
 #else
+
     error "Neither pthread.h for POSIX nor windows.h for windows are available ... giving up"
 #endif
-    
-    
+
+
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_V_Tests
      * Method:    doCallTheCallback
@@ -85,18 +88,17 @@ extern "C" {
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jint value) {
 #ifdef HAVE_WINDOWS_H
         HANDLE hThread;
-        DWORD   dwThreadId;
-        
-        hThread = CreateThread( 
-            NULL,           // default security attributes
-            0,              // use default stack size  
-            thr_fn_I,         // thread function name
-            &value,         // argument to thread function 
-            0,              // use default creation flags 
-            &dwThreadId);   // returns the thread identifier 
-          if (hThread == NULL) 
-        {
-           ExitProcess(3);
+        DWORD dwThreadId;
+
+        hThread = CreateThread(
+                NULL, // default security attributes
+                0, // use default stack size  
+                thr_fn_I, // thread function name
+                &value, // argument to thread function 
+                0, // use default creation flags 
+                &dwThreadId); // returns the thread identifier 
+        if (hThread == NULL) {
+            ExitProcess(3);
         }
         WaitForSingleObject(hThread, INFINITE);
         CloseHandle(hThread);
@@ -105,7 +107,7 @@ extern "C" {
         pthread_create(&thread, NULL, thr_fn_I, &value);
         pthread_join(thread, NULL);
 #else
-    error "Neither pthread.h for POSIX nor windows.h for windows are available ... giving up"
+        error "Neither pthread.h for POSIX nor windows.h for windows are available ... giving up"
 #endif
     }
 

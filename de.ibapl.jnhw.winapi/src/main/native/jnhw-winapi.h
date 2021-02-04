@@ -40,40 +40,41 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
-#define JNHW_CLASS_NAME_HANDLE "de/ibapl/jnhw/winapi/Winnt$HANDLE"
-#define JNHW_CLASS_NAME_LPWSTR "de/ibapl/jnhw/winapi/Winnt$LPWSTR"
-#define JNHW_CLASS_NAME_LPBYTE "de/ibapl/jnhw/winapi/WinDef$LPBYTE"
 
-     extern jclass de_ibapl_jnhw_winapi_Winnt_HANDLE_Class;
-     extern jfieldID de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID;
-     extern jmethodID de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID;
-     extern jfieldID de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID;
-     extern jfieldID de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID;
-     
+#define dij_w_HANDLE__CName "de/ibapl/jnhw/winapi/Winnt$HANDLE"
+#define dij_w_HANDLE__CSig CLASS_NAME_TO_SIGNATURE(dij_w_HANDLE__CName)    
+#define dij_w_LPWSTR__CName "de/ibapl/jnhw/winapi/Winnt$LPWSTR"
+#define dij_w_LPBYTE__CName "de/ibapl/jnhw/winapi/WinDef$LPBYTE"
 
-#define UNWRAP_HANDLE(handle) (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
+    extern jclass dij_w_Winnt_HANDLE__GCR;
+    extern jfieldID dij_w_Winnt_HANDLE_value__FID;
+    extern jmethodID dij_w_Winnt_HANDLE_init__MID;
+    extern jfieldID dij_w_Winnt_LPWSTR_bufferEnd__FID;
+    extern jfieldID dij_w_WinDef_LPBYTE_bufferEnd__FID;
+
+
+#define UNWRAP_HANDLE(handle) (HANDLE) (uintptr_t) (*env)->GetLongField(env, (handle), dij_w_Winnt_HANDLE_value__FID)   
 #define UNWRAP_HANDLE_OR_NULL(handle) (handle) == NULL ? NULL : UNWRAP_HANDLE(handle)
-#define CREATE_HANDLE(value) (*env)->NewObject(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID, (jlong) (uintptr_t) value)
+#define CREATE_HANDLE(value) (*env)->NewObject(env, dij_w_Winnt_HANDLE__GCR, dij_w_Winnt_HANDLE_init__MID, (jlong) (uintptr_t) value)
 
 #define UNWRAP_PHANDLE(handle) UNWRAP_ABSTRACT_MEM_TO(PHANDLE, handle)
 
-#define UNWRAP_HKEY(hKey) (HKEY) (uintptr_t) (*env)->GetLongField(env, (hKey), de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID)   
+#define UNWRAP_HKEY(hKey) (HKEY) (uintptr_t) (*env)->GetLongField(env, (hKey), dij_w_Winnt_HANDLE_value__FID)   
 
 #define UNWRAP_PHKEY(handle)  UNWRAP_ABSTRACT_MEM_TO(PHKEY, handle)   
-     
+
 #define UNWRAP_OVERLAPPED(overlapped) UNWRAP_ABSTRACT_MEM_TO(OVERLAPPED*, overlapped)
 #define UNWRAP_LPOVERLAPPED(lpOverlapped) UNWRAP_ABSTRACT_MEM_TO(LPOVERLAPPED, lpOverlapped)
 #define UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(LPOVERLAPPED, lpOverlapped)
-     
-//TODOO DWORD => unit32_t or uint64_t     
-#define UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine) UNWRAP_NATIVE_FUNCTION_POINTER_TO(LPOVERLAPPED_COMPLETION_ROUTINE, lpCompletionRoutine)
-     
+
+    //TODOO DWORD => unit32_t or uint64_t     
+#define UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(lpCompletionRoutine) UNWRAP_NativeFunctionPointer_TO(LPOVERLAPPED_COMPLETION_ROUTINE, lpCompletionRoutine)
+
 #define UNWRAP_SECURITY_ATTRIBUTES(securityAttributes) UNWRAP_ABSTRACT_MEM_TO(SECURITY_ATTRIBUTES*, securityAttributes)
 
 #define UNWRAP_LPSECURITY_ATTRIBUTES(lpSecurityAttributes) UNWRAP_ABSTRACT_MEM_TO(LPSECURITY_ATTRIBUTES, lpSecurityAttributes)
 #define UNWRAP_LPSECURITY_ATTRIBUTES_OR_NULL(lpSecurityAttributes) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(LPSECURITY_ATTRIBUTES, lpSecurityAttributes)
-        
+
 #define UNWRAP_LPCOMSTAT_OR_NULL(lpComstat) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(LPCOMSTAT, lpComstat)   
 
 #define UNWRAP_LPDCB(lpDCB) UNWRAP_ABSTRACT_MEM_TO(LPDCB, lpDCB)

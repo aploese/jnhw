@@ -27,6 +27,7 @@ import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,12 +49,12 @@ public class Callback_I_V_Test {
         }
 
     }
-    
+
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
         LibJnhwCommonTestLoader.touch();
     }
-    
+
     @BeforeEach
     public void setUpBefore() throws Exception {
         System.runFinalization();
@@ -62,19 +63,20 @@ public class Callback_I_V_Test {
 
     public Callback_I_V_Test() {
     }
-    
-    private static native CallNative_I_V getCallbackPtr();
-    
+
+    private static native FunctionPtr_I_V getCallbackPtr();
+
     private static native void setCallback(Callback_I_V callback);
-    
+
     private static native void doCallTheCallback(int value);
 
     @Test
     public void testCallNative_I_V() {
-        CallNative_I_V cniv = getCallbackPtr();
-        assertSame(CallNative_I_V.class, cniv.getClass());
+        FunctionPtr_I_V cniv = getCallbackPtr();
+        assertSame(FunctionPtr_I_V.class, cniv.getClass());
     }
-        /**
+
+    /**
      * Test of MAX_INT_CONSUMER_CALLBACKS method, of class
      * IntConsumerCallbackFactory.
      */
@@ -101,7 +103,7 @@ public class Callback_I_V_Test {
 
         assertEquals(maxCB, Callback_I_V_Impl.callbacksAvailable());
     }
-    
+
     @Test
     public void testNativeFunctionPointer() {
         final Callback_I_V testPtr = new Callback_I_V(new NativeAddressHolder(121)) {
@@ -131,7 +133,7 @@ public class Callback_I_V_Test {
         };
         final Thread t = Thread.currentThread();
         Callback_I_V_Impl callback = new Callback_I_V_Impl() {
-            
+
             @Override
             protected void callback(int value) {
                 if (!t.equals(Thread.currentThread())) {
@@ -140,25 +142,25 @@ public class Callback_I_V_Test {
                     intref.value = -value;
                 }
             }
-            
+
         };
         final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback);
-        
+
         setCallback(callback);
-        
+
         assertEquals(getCallbackPtr(), callback);
         assertSame(Callback_I_V_Impl.find(getCallbackPtr()), callback);
-        
+
         intref.value = 0;
         doCallTheCallback(42);
         assertEquals(42, intref.value);
-        
+
         intref.value = 0;
-        getCallbackPtr().call(42);
+        CallNative_I_V.wrap(getCallbackPtr()).call(42);
         assertEquals(-42, intref.value);
-        
+
         callback = null;
-        
+
         System.runFinalization();
         System.gc();
 
@@ -170,10 +172,10 @@ public class Callback_I_V_Test {
         intref.value = -1;
         doCallTheCallback(84);
         assertEquals(-1, intref.value);
-        
+
         intref.value = -1;
         //The logs shoud show: Unassigned callback for trampoline(0, 84)
-        getCallbackPtr().call(84);
+        CallNative_I_V.wrap(getCallbackPtr()).call(84);
         assertEquals(-1, intref.value);
 
     }
@@ -185,7 +187,7 @@ public class Callback_I_V_Test {
     public void testReleaseByGarbageCollectorAndCleanup() throws Exception {
         System.out.println("release");
         Cleaner CLEANER = Cleaner.create();
-        
+
         final IntRef intref = new IntRef();
         final Callback_I_V NULL_PTR = new Callback_I_V(new NativeAddressHolder(0)) {
             @Override
@@ -194,37 +196,36 @@ public class Callback_I_V_Test {
             }
         };
         Callback_I_V_Impl callback = new Callback_I_V_Impl() {
-            
+
             @Override
             protected void callback(int value) {
                 intref.value = value;
             }
-            
+
         };
         CLEANER.register(callback, () -> {
             setCallback(NULL_PTR);
         });
-        
+
         setCallback(callback);
-        
+
         assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(42);
         assertEquals(42, intref.value);
-        
-        
+
         intref.value = 0;
-        getCallbackPtr().call(42);
+        CallNative_I_V.wrap(getCallbackPtr()).call(42);
         assertEquals(42, intref.value);
 
         callback = null;
-        
+
         System.runFinalization();
         System.gc();
 
         //sleep here, to let the CLEANER do it cleanup....
         Thread.sleep(10);
-        
+
         assertEquals(getCallbackPtr(), NULL_PTR);
-        
+
     }
 }

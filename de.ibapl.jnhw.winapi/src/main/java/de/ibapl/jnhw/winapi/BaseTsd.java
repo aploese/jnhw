@@ -43,11 +43,16 @@ public abstract class BaseTsd {
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_BASETSD_H = false;
+
+        initFields();
     }
 
-    public static final native boolean HAVE_BASETSD_H();
+    private static native void initFields();
 
-    
+    public static final boolean HAVE_BASETSD_H;
+
     public final static native int sizeof_ULONG_PTR();
 
     /**

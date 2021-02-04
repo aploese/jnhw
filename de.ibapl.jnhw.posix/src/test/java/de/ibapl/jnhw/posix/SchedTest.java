@@ -49,7 +49,7 @@ public class SchedTest {
     @Test
     public void testSched_get_priority_max() throws Exception {
         System.out.println("sched_get_priority_max");
-        int result = Sched.sched_get_priority_max(Sched.SCHED_OTHER());
+        int result = Sched.sched_get_priority_max(Sched.SCHED_OTHER);
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case FREE_BSD:
                 Assertions.assertEquals(103, result);
@@ -71,7 +71,7 @@ public class SchedTest {
     @Test
     public void testSched_get_priority_min() throws Exception {
         System.out.println("sched_get_priority_min");
-        int result = Sched.sched_get_priority_min(Sched.SCHED_OTHER());
+        int result = Sched.sched_get_priority_min(Sched.SCHED_OTHER);
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case MAC_OS_X:
                 Assertions.assertEquals(15, result);
@@ -96,7 +96,7 @@ public class SchedTest {
                 break;
             default:
                 int result = Sched.sched_getscheduler(Unistd.getpid());
-                Assertions.assertEquals(Sched.SCHED_OTHER(), result);
+                Assertions.assertEquals(Sched.SCHED_OTHER, result);
         }
     }
 
@@ -186,27 +186,27 @@ public class SchedTest {
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
                         () -> {
-                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
+                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, null);
                         });
                 break;
             default:
                 Assertions.assertThrows(NullPointerException.class,
                         () -> {
-                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), null);
+                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, null);
                         });
                 Sched.Sched_param param = new Sched.Sched_param(true);
                 if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
                     //Any idea why this is so?
                     NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
                             () -> {
-                                Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
+                                Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, param);
                             });
-                    assertEquals(Errno.EPERM(), nee.errno, Errno.getErrnoSymbol(nee.errno));
+                    assertEquals(Errno.EPERM, nee.errno, Errno.getErrnoSymbol(nee.errno));
                 } else {
-                    int result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
-                    Assertions.assertEquals(Sched.SCHED_OTHER(), result);
-                    result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER(), param);
-                    Assertions.assertEquals(Sched.SCHED_OTHER(), result);
+                    int result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, param);
+                    Assertions.assertEquals(Sched.SCHED_OTHER, result);
+                    result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, param);
+                    Assertions.assertEquals(Sched.SCHED_OTHER, result);
                 }
         }
     }

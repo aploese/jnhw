@@ -30,7 +30,7 @@ public class HandleapiTest {
 
     @Test
     public void testDefines() throws Exception {
-        Winnt.HANDLE h = Handleapi.INVALID_HANDLE_VALUE();
+        Winnt.HANDLE h = Handleapi.INVALID_HANDLE_VALUE;
         Assertions.assertNotEquals(h, new Winnt.HANDLE(0));
     }
 

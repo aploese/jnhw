@@ -29,9 +29,9 @@ import static de.ibapl.jnhw.posix.Unistd.write;
 
 public class Posix {
 
-	public static void sayHello() throws NativeErrorException {
-		int bytesWritten = write(STDOUT_FILENO(), "Hello World! from POSIX\n".getBytes());
-                System.out.println("Bytes written: " + bytesWritten);
-	}
+    public static void sayHello() throws NativeErrorException {
+        int bytesWritten = write(STDOUT_FILENO, "Hello World! from POSIX\n".getBytes());
+        System.out.println("Bytes written: " + bytesWritten);
+    }
 
 }

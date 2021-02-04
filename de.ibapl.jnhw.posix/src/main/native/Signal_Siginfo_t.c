@@ -29,11 +29,11 @@ extern "C" {
 
 #ifdef _POSIX_VERSION
 #include <signal.h>
-//for offsetof
+    //for offsetof
 #include <stddef.h>
 
-JNHW_ASSERT__pid_t__IS__int32_t
-JNHW_ASSERT__uid_t__IS__uint32_t
+    JNHW_ASSERT__pid_t__IS__int32_t
+    JNHW_ASSERT__uid_t__IS__uint32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Siginfo_t
@@ -112,7 +112,7 @@ JNHW_ASSERT__uid_t__IS__uint32_t
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Siginfo_1t_si_1uid
     (JNIEnv *env, jobject structSiginfo_t) {
-        return (int32_t)(UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_uid;
+        return (int32_t) (UNWRAP_SIGINFO_T_PTR(structSiginfo_t))->si_uid;
     }
 
     /*

@@ -36,6 +36,10 @@ public class FunctionPtr_I_I_Mem_V<C extends AbstractNativeMemory> extends Nativ
         super(producer);
     }
 
+    public FunctionPtr_I_I_Mem_V(NativeFunctionPointer src) {
+        super(src);
+    }
+
     public FunctionPtr_I_I_Mem_V(NativeAddressHolder src) {
         super(src);
     }
@@ -44,5 +48,4 @@ public class FunctionPtr_I_I_Mem_V<C extends AbstractNativeMemory> extends Nativ
         super(nativeAddress);
     }
 
-    
 }

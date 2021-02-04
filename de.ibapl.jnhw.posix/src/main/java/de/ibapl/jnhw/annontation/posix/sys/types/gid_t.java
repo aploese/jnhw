@@ -34,4 +34,5 @@ import java.lang.annotation.Target;
  */
 @Retention(value = RetentionPolicy.SOURCE)
 @Target(value = {ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-public @interface gid_t {}
+public @interface gid_t {
+}

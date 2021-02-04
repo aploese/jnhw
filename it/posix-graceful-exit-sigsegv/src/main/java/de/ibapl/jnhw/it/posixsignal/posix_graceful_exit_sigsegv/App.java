@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.callback.Callback_I_V;
 import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.Signal;
@@ -69,7 +70,7 @@ public class App {
         };
 
         //comment this out, and you will get the default JVM style of saying goodby after a SIGSEGV
-        CallNative_I_V originalHandler = Signal.signal(Signal.SIGSEGV(), callback_I_V);
+        FunctionPtr_I_V originalHandler = Signal.signal(Signal.SIGSEGV, callback_I_V);
 
         //We will call a NULL pointer on the native side. So we will force a segmentation violation.
         NativeAddressHolder nah = new NativeAddressHolder(0L);

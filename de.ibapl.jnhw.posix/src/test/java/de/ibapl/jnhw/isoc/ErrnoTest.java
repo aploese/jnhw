@@ -31,10 +31,12 @@ public class ErrnoTest {
 
     @Test
     public void testErrno() throws Exception {
-        Errno.errno(Errno.ERANGE());
-        Assertions.assertEquals(Errno.ERANGE(), Errno.errno(), "Cant Set errno");
-        Errno.errno(Errno.EDOM());
-        Assertions.assertEquals(Errno.EDOM(), Errno.errno(), "Cant Set errno");
+        Assertions.assertTrue(Errno.HAVE_ERRNO_H);
+        Assertions.assertNotEquals(Errno.ERANGE, Errno.EILSEQ);
+        Errno.errno(Errno.ERANGE);
+        Assertions.assertEquals(Errno.ERANGE, Errno.errno(), "Cant Set errno");
+        Errno.errno(Errno.EDOM);
+        Assertions.assertEquals(Errno.EDOM, Errno.errno(), "Cant Set errno");
     }
 
 }

@@ -20,63 +20,51 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-
-    /*
-     * Class:     de_ibapl_jnhw_linux_sys_Eventfd
-     * Method:    HAVE_SYS_EVENTFD_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_HAVE_1SYS_1EVENTFD_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_SYS_EVENTFD_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
-    }
-
-
-#ifdef HAVE_SYS_EVENTFD_H
-
 #include "de_ibapl_jnhw_linux_sys_Eventfd.h"
-#include <sys/eventfd.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    /*
-     * Class:     de_ibapl_jnhw_linux_sys_Eventfd
-     * Method:    EFD_CLOEXEC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_EFD_1CLOEXEC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EFD_CLOEXEC;
-    }
+#ifndef HAVE_SYS_EVENTFD_H
 
     /*
      * Class:     de_ibapl_jnhw_linux_sys_Eventfd
-     * Method:    EFD_NONBLOCK
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_EFD_1NONBLOCK
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EFD_NONBLOCK;
     }
+#else
+#include <sys/eventfd.h>
 
     /*
      * Class:     de_ibapl_jnhw_linux_sys_Eventfd
-     * Method:    EFD_SEMAPHORE
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_EFD_1SEMAPHORE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EFD_SEMAPHORE;
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_linux_sys_Eventfd_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_SYS_EVENTFD_H", JNI_TRUE)) {
+            return;
+        }
+
+        if (JnhwSetStaticIntField(env, clazz, "EFD_CLOEXEC", EFD_CLOEXEC)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EFD_NONBLOCK", EFD_NONBLOCK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EFD_SEMAPHORE", EFD_SEMAPHORE)) {
+            return;
+        }
     }
+
+#endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif

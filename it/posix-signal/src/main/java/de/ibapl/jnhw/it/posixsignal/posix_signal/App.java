@@ -33,7 +33,7 @@ import de.ibapl.jnhw.it.posixsignal.posix_signal.SignalHandler.SignalAction;
  */
 public class App {
 
-    public final static int SIGNAL_TO_RAISE = Signal.SIGSEGV();
+    public final static int SIGNAL_TO_RAISE = Signal.SIGSEGV;
 
     public static void main(String[] args) throws Exception {
 

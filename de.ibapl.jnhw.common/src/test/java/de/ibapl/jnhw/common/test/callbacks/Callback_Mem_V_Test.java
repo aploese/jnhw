@@ -29,6 +29,7 @@ import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.nativecall.CallNative_Mem_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_Mem_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,7 +71,7 @@ public class Callback_Mem_V_Test {
     public Callback_Mem_V_Test() {
     }
 
-    private static native CallNative_Mem_V getCallbackPtr();
+    private static native FunctionPtr_Mem_V getCallbackPtr();
 
     private static native void setCallback(Callback_Mem_V<A> callback);
 
@@ -162,9 +163,9 @@ public class Callback_Mem_V_Test {
         doCallTheCallback(a);
         assertEquals(a, refA.value);
         assertNotSame(a, refA.value);
-        
+
         refA.value = null;
-        getCallbackPtr().call(a);
+        CallNative_Mem_V.wrap(getCallbackPtr()).call(a);
         assertEquals(a, refA.value);
         assertNotSame(a, refA.value);
 

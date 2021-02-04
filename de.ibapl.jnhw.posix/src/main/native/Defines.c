@@ -31,679 +31,285 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    _LARGEFILE_SOURCE
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1LARGEFILE_1SOURCE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_util_posix_Defines_initFields
+    (JNIEnv *env, jclass clazz) {
+
 #if defined(_LARGEFILE_SOURCE)
-        return _LARGEFILE_SOURCE;
-#else
-        throw_NotDefinedException(env, "_LARGEFILE_SOURCE");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "_LARGEFILE_SOURCE", _LARGEFILE_SOURCE)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    _LARGEFILE64_SOURCE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1LARGEFILE64_1SOURCE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(_LARGEFILE64_SOURCE)
-        return _LARGEFILE64_SOURCE;
-#else
-        throw_NotDefinedException(env, "_LARGEFILE64_SOURCE");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "_LARGEFILE64_SOURCE", _LARGEFILE64_SOURCE)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __APPLE__
-     * Signature: ()Z
-     * I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1APPLE_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__)
-        return __APPLE__;
-#else
-        throw_NotDefinedException(env, "__APPLE__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__APPLE__", __APPLE__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __FreeBSD__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1FreeBSD_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__FreeBSD__)
-        return __FreeBSD__;
-#else
-        throw_NotDefinedException(env, "__FreeBSD__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__FreeBSD__", __FreeBSD__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __OpenBSD__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1OpenBSD_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
-        return __OpenBSD__;
-#else
-        throw_NotDefinedException(env, "__OpenBSD__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__OpenBSD__", __OpenBSD__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __WORDSIZE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1WORDSIZE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__WIN32__) || defined(__OpenBSD__)
 #if defined(__WORDSIZE)
 #error "__WORDSIZE defined"
 #endif
-        throw_NotDefinedException(env, "__WORDSIZE");
-        return 0;
 #else
-        return __WORDSIZE;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__WORDSIZE", __WORDSIZE)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __TIMESIZE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1TIMESIZE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__TIMESIZE)
-        return __TIMESIZE;
-#else
-        throw_NotDefinedException(env, "__TIMESIZE");
-        return 0;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__TIMESIZE", __TIMESIZE)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __GNU_LIBRARY__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1GNU_1LIBRARY_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__GNU_LIBRARY__)
-        return __GNU_LIBRARY__;
-#else
-        throw_NotDefinedException(env, "__GNU_LIBRARY__");
-        return 0;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__GNU_LIBRARY__", __GNU_LIBRARY__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __GLIBC__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1GLIBC_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__GLIBC__)
-        return __GLIBC__;
-#else
-        throw_NotDefinedException(env, "__GLIBC__");
-        return 0;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__GLIBC__", __GLIBC__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __GLIBC_MINOR__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1GLIBC_1MINOR_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__GLIBC_MINOR__)
-        return __GLIBC_MINOR__;
-#else
-        throw_NotDefinedException(env, "__GLIBC_MINOR__");
-        return 0;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__GLIBC_MINOR__", __GLIBC_MINOR__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __SIZEOF_POINTER__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1SIZEOF_1POINTER_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __SIZEOF_POINTER__;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "__SIZEOF_POINTER__", __SIZEOF_POINTER__)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __SIZEOF_LONG__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1SIZEOF_1LONG_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __SIZEOF_LONG__;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "__SIZEOF_LONG__", __SIZEOF_LONG__)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __LP64__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1LP64_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__LP64__)
-        return __LP64__;
-#else
-        throw_NotDefinedException(env, "__LP64__");
-        return 0;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__LP64__", __LP64__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __ILP32__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1ILP32_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__ILP32__)
-        return __ILP32__;
-#else
-        throw_NotDefinedException(env, "__ILP32__");
-        return 0;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__ILP32__", __ILP32__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __BIGGEST_ALIGNMENT__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1BIGGEST_1ALIGNMENT_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __BIGGEST_ALIGNMENT__;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "__BIGGEST_ALIGNMENT__", __BIGGEST_ALIGNMENT__)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __ORDER_LITTLE_ENDIAN__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1ORDER_1LITTLE_1ENDIAN_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __ORDER_LITTLE_ENDIAN__;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "__ORDER_LITTLE_ENDIAN__", __ORDER_LITTLE_ENDIAN__)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __ORDER_BIG_ENDIAN__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1ORDER_1BIG_1ENDIAN_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __ORDER_BIG_ENDIAN__;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "__ORDER_BIG_ENDIAN__", __ORDER_BIG_ENDIAN__)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __ORDER_PDP_ENDIAN__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1ORDER_1PDP_1ENDIAN_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __ORDER_PDP_ENDIAN__;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "__ORDER_PDP_ENDIAN__", __ORDER_PDP_ENDIAN__)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __BYTE_ORDER__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1BYTE_1ORDER_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __BYTE_ORDER__;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "__BYTE_ORDER__", __BYTE_ORDER__)) {
+            return;
+        }
 
-
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    _FILE_OFFSET_BITS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1FILE_1OFFSET_1BITS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (_FILE_OFFSET_BITS)
         return _FILE_OFFSET_BITS;
-#else
-        throw_NotDefinedException(env, "_FILE_OFFSET_BITS");
-        return 0;
+        if (JnhwSetStaticIntDefineField(env, clazz, "_FILE_OFFSET_BITS", _FILE_OFFSET_BITS)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    _BSD_SOURCE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1BSD_1SOURCE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (_BSD_SOURCE)
-        return _BSD_SOURCE;
-#else
-        throw_NotDefinedException(env, "_BSD_SOURCE");
-        return 0;
+        if (JnhwSetStaticIntDefineField(env, clazz, "_BSD_SOURCE", _BSD_SOURCE)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    _POSIX_C_SOURCE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1POSIX_1C_1SOURCE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (_POSIX_C_SOURCE)
-        return _POSIX_C_SOURCE;
-#else
-        throw_NotDefinedException(env, "_POSIX_C_SOURCE");
-        return 0;
+        if (JnhwSetStaticIntDefineField(env, clazz, "_POSIX_C_SOURCE", _POSIX_C_SOURCE)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    _XOPEN_SOURCE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1XOPEN_1SOURCE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (_XOPEN_SOURCE)
-        return _XOPEN_SOURCE;
-#else
-        throw_NotDefinedException(env, "_XOPEN_SOURCE");
-        return 0;
+        if (JnhwSetStaticIntDefineField(env, clazz, "_XOPEN_SOURCE", _XOPEN_SOURCE)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    _XOPEN_SOURCE_EXTENDED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1XOPEN_1SOURCE_1EXTENDED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (_XOPEN_SOURCE_EXTENDED)
-        return _XOPEN_SOURCE_EXTENDED;
-#else
-        throw_NotDefinedException(env, "_XOPEN_SOURCE_EXTENDED");
-        return 0;
+        if (JnhwSetStaticIntDefineField(env, clazz, "_XOPEN_SOURCE_EXTENDED", _XOPEN_SOURCE_EXTENDED)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __linux__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1linux_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__linux__)
-        return __linux__;
-#else
-        throw_NotDefinedException(env, "__linux__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__linux__", __linux__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __aarch64__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1aarch64_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__aarch64__)
-        return __aarch64__;
-#else
-        throw_NotDefinedException(env, "__aarch64__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__aarch64__", __aarch64__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __alpha__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1alpha_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__alpha__)
-        return __alpha__;
-#else
-        throw_NotDefinedException(env, "__alpha__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__alpha__", __alpha__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __arm__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1arm_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__arm__)
-        return __arm__;
-#else
-        throw_NotDefinedException(env, "__arm__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__arm__", __arm__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __ARM_ARCH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1ARM_1ARCH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__ARM_ARCH)
-        return __ARM_ARCH;
-#else
-        throw_NotDefinedException(env, "__ARM_ARCH");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__ARM_ARCH", __ARM_ARCH)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __powerpc__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1powerpc_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__powerpc__)
-        return __powerpc__;
-#else
-        throw_NotDefinedException(env, "__powerpc__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__powerpc__", __powerpc__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __powerpc64__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1powerpc64_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__powerpc64__)
-        return __powerpc64__;
-#else
-        throw_NotDefinedException(env, "__powerpc64__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__powerpc64__", __powerpc64__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __mips__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1mips_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__mips__)
-        return __mips__;
-#else
-        throw_NotDefinedException(env, "__mips__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__mips__", __mips__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __mips64
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1mips64
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__mips64)
-        return __mips64;
-#else
-        throw_NotDefinedException(env, "__mips64");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__mips64", __mips64)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __MIPS_ARCH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1MIPS_1ARCH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__MIPS_ARCH)
-        return __MIPS_ARCH;
-#else
-        throw_NotDefinedException(env, "__MIPS_ARCH");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__MIPS_ARCH", __MIPS_ARCH)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __MIPSEB__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1MIPSEB_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__MIPSEB__)
-        return __MIPSEB__;
-#else
-        throw_NotDefinedException(env, "__MIPSEB__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__MIPSEB__", __MIPSEB__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __MIPSEL__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1MIPSEL_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__MIPSEL__)
-        return __MIPSEL__;
-#else
-        throw_NotDefinedException(env, "__MIPSEL__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__MIPSEL__", __MIPSEL__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __riscv__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1riscv_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined( __riscv__)
-        return  __riscv__;
-#else
-        throw_NotDefinedException(env, " __riscv__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__riscv__", __riscv__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __s390__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1s390_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__s390__)
-        return __s390__;
-#else
-        throw_NotDefinedException(env, "__s390__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__s390__", __s390__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __s390x__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1s390x_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__s390x__)
-        return __s390x__;
-#else
-        throw_NotDefinedException(env, "__s390x__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__s390x__", __s390x__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __sh__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1sh_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__sh__)
-        return __sh__;
-#else
-        throw_NotDefinedException(env, "__sh__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__sh__", __sh__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __SH4__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1SH4_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__SH4__)
-        return __SH4__;
-#else
-        throw_NotDefinedException(env, "__SH4__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__SH4__", __SH4__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __sparc__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1sparc_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__sparc__)
-        return __sparc__;
-#else
-        throw_NotDefinedException(env, "__sparc__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__sparc__", __sparc__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __sparc64__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1sparc64_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__sparc64__)
-        return __sparc64__;
-#else
-        throw_NotDefinedException(env, "__sparc64__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__sparc64__", __sparc64__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __i386__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1i386_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__i386__)
-        return __i386__;
-#else
-        throw_NotDefinedException(env, "__i386__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__i386__", __i386__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __i686__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1i686_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__i686__)
-        return __i686__;
-#else
-        throw_NotDefinedException(env, "__i686__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__i686__", __i686__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __amd64__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1amd64_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__amd64__)
-        return __amd64__;
-#else
-        throw_NotDefinedException(env, "__amd64__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__amd64__", __amd64__)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_Defines
-     * Method:    __x86_64__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_Defines__1_1x86_164_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__x86_64__)
-        return __x86_64__;
-#else
-        throw_NotDefinedException(env, "__x86_64__");
-        return -1;
+        if (JnhwSetStaticIntDefineField(env, clazz, "__x86_64__", __x86_64__)) {
+            return;
+        }
 #endif
     }
-
 #ifdef __cplusplus
 }
 #endif

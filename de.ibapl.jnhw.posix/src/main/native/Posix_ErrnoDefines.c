@@ -20,1686 +20,695 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-
-#ifdef _POSIX_VERSION
-
 #include "de_ibapl_jnhw_posix_Errno.h"
-#include <errno.h>
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EPERM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EPERM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPERM;
-    }
+    //We need the POSIX version ...    
+#if !defined(HAVE_ERRNO_H) || !defined(_POSIX_VERSION)
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOENT
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOENT
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Errno_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOENT;
     }
+#else
+#include <errno.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ESRCH
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESRCH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ESRCH;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EINTR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EINTR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EINTR;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EIO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EIO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EIO;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENXIO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENXIO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENXIO;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    E2BIG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_E2BIG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return E2BIG;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOEXEC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOEXEC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOEXEC;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EBADF
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADF
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EBADF;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ECHILD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECHILD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECHILD;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EAGAIN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EAGAIN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EAGAIN;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOMEM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOMEM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOMEM;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EACCES
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EACCES
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EACCES;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EFAULT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EFAULT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EFAULT;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOTBLK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTBLK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTBLK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EBUSY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBUSY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EBUSY;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EEXIST
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EEXIST
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EEXIST;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EXDEV
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EXDEV
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EXDEV;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENODEV
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENODEV
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENODEV;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOTDIR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTDIR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTDIR;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EISDIR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EISDIR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EISDIR;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EINVAL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EINVAL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EINVAL;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENFILE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENFILE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENFILE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EMFILE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EMFILE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EMFILE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOTTY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTTY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTTY;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ETXTBSY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ETXTBSY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ETXTBSY;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EFBIG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EFBIG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EFBIG;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOSPC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOSPC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOSPC;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ESPIPE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESPIPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ESPIPE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EROFS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EROFS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EROFS;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EMLINK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EMLINK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EMLINK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EPIPE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EPIPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPIPE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EDEADLK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EDEADLK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EDEADLK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENAMETOOLONG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENAMETOOLONG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENAMETOOLONG;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOLCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOLCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOLCK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOSYS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOSYS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOSYS;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOTEMPTY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTEMPTY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTEMPTY;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ELOOP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELOOP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ELOOP;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EWOULDBLOCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EWOULDBLOCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EWOULDBLOCK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOMSG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOMSG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOMSG;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EIDRM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EIDRM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EIDRM;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ECHRNG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECHRNG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Errno_initFields
+    (JNIEnv *env, jclass clazz) {
+        if (JnhwSetStaticIntField(env, clazz, "EPERM", EPERM)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOENT", ENOENT)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ESRCH", ESRCH)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EINTR", EINTR)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EIO", EIO)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENXIO", ENXIO)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "E2BIG", E2BIG)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOEXEC", ENOEXEC)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EBADF", EBADF)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ECHILD", ECHILD)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EAGAIN", EAGAIN)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOMEM", ENOMEM)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EACCES", EACCES)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EFAULT", EFAULT)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOTBLK", ENOTBLK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EBUSY", EBUSY)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EEXIST", EEXIST)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EXDEV", EXDEV)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENODEV", ENODEV)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOTDIR", ENOTDIR)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EISDIR", EISDIR)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EINVAL", EINVAL)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENFILE", ENFILE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EMFILE", EMFILE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOTTY", ENOTTY)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ETXTBSY", ETXTBSY)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EFBIG", EFBIG)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOSPC", ENOSPC)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ESPIPE", ESPIPE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EROFS", EROFS)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EMLINK", EMLINK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EPIPE", EPIPE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EDEADLK", EDEADLK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENAMETOOLONG", ENAMETOOLONG)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOLCK", ENOLCK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOSYS", ENOSYS)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOTEMPTY", ENOTEMPTY)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ELOOP", ELOOP)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EWOULDBLOCK", EWOULDBLOCK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOMSG", ENOMSG)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EIDRM", EIDRM)) {
+            return;
+        }
 #if defined (__linux__)
-        return ECHRNG;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ECHRNG", ECHRNG)) {
+            return;
+        }
 #elif defined(ECHRNG)
 #error "ECHRNG defined"
-#else
-        throw_NotDefinedException(env, "ECHRNG");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EL2NSYNC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL2NSYNC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+
 #if defined (__linux__)
-        return EL2NSYNC;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EL2NSYNC", EL2NSYNC)) {
+            return;
+        }
 #elif defined(EL2NSYNC)
 #error "EL2NSYNC defined"
-#else
-        throw_NotDefinedException(env, "EL2NSYNC");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EL3HLT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL3HLT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EL3HLT;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EL3HLT", EL3HLT)) {
+            return;
+        }
 #elif defined(EL3HLT)
 #error "EL3HLT defined"
-#else
-        throw_NotDefinedException(env, "EL3HLT");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EL3RST
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL3RST
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EL3RST;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EL3RST", EL3RST)) {
+            return;
+        }
 #elif defined(EL3RST)
 #error "EL3RST defined"
-#else
-        throw_NotDefinedException(env, "EL3RST");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ELNRNG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELNRNG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ELNRNG;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ELNRNG", ELNRNG)) {
+            return;
+        }
 #elif defined(ELNRNG)
 #error "ELNRNG defined"
-#else
-        throw_NotDefinedException(env, "ELNRNG");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EUNATCH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EUNATCH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EUNATCH;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EUNATCH", EUNATCH)) {
+            return;
+        }
 #elif defined(EUNATCH)
 #error "EUNATCH defined"
-#else
-        throw_NotDefinedException(env, "EUNATCH");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOCSI
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOCSI
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ENOCSI;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENOCSI", ENOCSI)) {
+            return;
+        }
 #elif defined(ENOCSI)
 #error "ENOCSI defined"
-#else
-        throw_NotDefinedException(env, "ENOCSI");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EL2HLT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EL2HLT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EL2HLT;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EL2HLT", EL2HLT)) {
+            return;
+        }
 #elif defined(EL2HLT)
 #error "EL2HLT defined"
-#else
-        throw_NotDefinedException(env, "EL2HLT");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EBADE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EBADE;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EBADE", EBADE)) {
+            return;
+        }
 #elif defined(EBADE)
 #error "EBADE defined"
-#else
-        throw_NotDefinedException(env, "EBADE");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EBADR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EBADR;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EBADR", EBADR)) {
+            return;
+        }
 #elif defined(EBADR)
 #error "EBADR defined"
-#else
-        throw_NotDefinedException(env, "EBADR");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EXFULL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EXFULL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EXFULL;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EXFULL", EXFULL)) {
+            return;
+        }
 #elif defined(EXFULL)
 #error "EXFULL defined"
-#else
-        throw_NotDefinedException(env, "EXFULL");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOANO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOANO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ENOANO;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENOANO", ENOANO)) {
+            return;
+        }
 #elif defined(ENOANO)
 #error "ENOANO defined"
-#else
-        throw_NotDefinedException(env, "ENOANO");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EBADRQC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADRQC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EBADRQC;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EBADRQC", EBADRQC)) {
+            return;
+        }
 #elif defined(EBADRQC)
 #error "EBADRQC defined"
-#else
-        throw_NotDefinedException(env, "EBADRQC");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EBADSLT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADSLT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EBADSLT;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EBADSLT", EBADSLT)) {
+            return;
+        }
 #elif defined(EBADSLT)
 #error "EBADSLT defined"
-#else
-        throw_NotDefinedException(env, "EBADSLT");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EDEADLOCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EDEADLOCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EDEADLOCK;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EDEADLOCK", EDEADLOCK)) {
+            return;
+        }
 #elif defined(EDEADLOCK)
 #error "EDEADLOCK defined"
-#else
-        throw_NotDefinedException(env, "EDEADLOCK");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EBFONT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBFONT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EBFONT;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EBFONT", EBFONT)) {
+            return;
+        }
 #elif defined(EBFONT)
 #error "EBFONT defined"
-#else
-        throw_NotDefinedException(env, "EBFONT");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOSTR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOSTR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__FreeBSD__) || defined(__OpenBSD__)
 #if defined(ENOSTR)
 #error "ENOSTR defined"
 #endif
-        throw_NotDefinedException(env, "ENOSTR");
-        return 0;
 #else
-        return ENOSTR;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENOSTR", ENOSTR)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENODATA
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENODATA
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__linux__) || defined(__APPLE__)
-        return ENODATA;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENODATA", ENODATA)) {
+            return;
+        }
 #elif defined(ENODATA)
 #error "ENODATA defined"
-#else
-        throw_NotDefinedException(env, "ENODATA");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ETIME
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ETIME
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__linux__) || defined(__APPLE__)
-        return ETIME;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ETIME", ETIME)) {
+            return;
+        }
 #elif defined(ETIME)
 #error "ETIME defined"
-#else
-        throw_NotDefinedException(env, "ETIME");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOSR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOSR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__linux__) || defined(__APPLE__)
-        return ENOSR;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENOSR", ENOSR)) {
+            return;
+        }
 #elif defined(ENOSR)
 #error "ENOSR defined"
-#else
-        throw_NotDefinedException(env, "ENOSR");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENONET
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENONET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ENONET;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENONET", ENONET)) {
+            return;
+        }
 #elif defined(ENONET)
 #error "ENONET defined"
-#else
-        throw_NotDefinedException(env, "ENONET");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOPKG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOPKG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ENOPKG;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENOPKG", ENOPKG)) {
+            return;
+        }
 #elif defined(ENOPKG)
 #error "ENOPKG defined"
-#else
-        throw_NotDefinedException(env, "ENOPKG");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EREMOTE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EREMOTE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EREMOTE;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "EREMOTE", EREMOTE)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOLINK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOLINK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__OpenBSD__)
 #if defined(ENOLINK)
 #error "ENOLINK defined"
-#else
-        throw_NotDefinedException(env, "ENOLINK");
-        return 0;
 #endif
 #else
-        return ENOLINK;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENOLINK", ENOLINK)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EADV
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EADV
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EADV;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EADV", EADV)) {
+            return;
+        }
 #elif defined(EADV)
 #error "EADV defined"
-#else
-        throw_NotDefinedException(env, "EADV");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ESRMNT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESRMNT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ESRMNT;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ESRMNT", ESRMNT)) {
+            return;
+        }
 #elif defined(ESRMNT)
 #error "ESRMNT defined"
-#else
-        throw_NotDefinedException(env, "ESRMNT");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ECOMM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECOMM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ECOMM;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ECOMM", ECOMM)) {
+            return;
+        }
 #elif defined(ECOMM)
 #error "ECOMM defined"
-#else
-        throw_NotDefinedException(env, "ECOMM");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EPROTO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EPROTO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPROTO;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "EPROTO", EPROTO)) {
+            return;
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EMULTIHOP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EMULTIHOP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__OpenBSD__)
 #if defined(EMULTIHOP)
 #error "EMULTIHOP defined"
-#else
-        throw_NotDefinedException(env, "EMULTIHOP");
-        return 0;
 #endif
 #else
-        return EMULTIHOP;
+            if (JnhwSetStaticIntDefineField(env, clazz, "EMULTIHOP", EMULTIHOP)) {
+                return;
+            }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EDOTDOT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EDOTDOT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EDOTDOT;
+            if (JnhwSetStaticIntDefineField(env, clazz, "EDOTDOT", EDOTDOT)) {
+                return;
+            }
 #elif defined(EDOTDOT)
 #error "EDOTDOT defined"
-#else
-        throw_NotDefinedException(env, "EDOTDOT");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EBADMSG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADMSG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EBADMSG;
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EOVERFLOW
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EOVERFLOW
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EOVERFLOW;
-    }
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EBADMSG", EBADMSG)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EOVERFLOW", EOVERFLOW)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOTUNIQ
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTUNIQ
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ENOTUNIQ;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENOTUNIQ", ENOTUNIQ)) {
+            return;
+        }
 #elif defined(ENOTUNIQ)
 #error "ENOTUNIQ defined"
-#else
-        throw_NotDefinedException(env, "ENOTUNIQ");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EBADFD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EBADFD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EBADFD;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EBADFD", EBADFD)) {
+            return;
+        }
 #elif defined(EBADFD)
 #error "EBADFD defined"
-#else
-        throw_NotDefinedException(env, "EBADFD");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EREMCHG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EREMCHG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EREMCHG;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EREMCHG", EREMCHG)) {
+            return;
+        }
 #elif defined(EREMCHG)
 #error "EREMCHG defined"
-#else
-        throw_NotDefinedException(env, "EREMCHG");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ELIBACC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBACC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ELIBACC;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ELIBACC", ELIBACC)) {
+            return;
+        }
 #elif defined(ELIBACC)
 #error "ELIBACC defined"
-#else
-        throw_NotDefinedException(env, "ELIBACC");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ELIBBAD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBBAD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ELIBBAD;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ELIBBAD", ELIBBAD)) {
+            return;
+        }
 #elif defined(ELIBBAD)
 #error "ELIBBAD defined"
-#else
-        throw_NotDefinedException(env, "ELIBBAD");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ELIBSCN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBSCN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ELIBSCN;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ELIBSCN", ELIBSCN)) {
+            return;
+        }
 #elif defined(ELIBSCN)
 #error "ELIBSCN defined"
-#else
-        throw_NotDefinedException(env, "ELIBSCN");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ELIBMAX
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBMAX
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ELIBMAX;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ELIBMAX", ELIBMAX)) {
+            return;
+        }
 #elif defined(ELIBMAX)
 #error "ELIBMAX defined"
-#else
-        throw_NotDefinedException(env, "ELIBMAX");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ELIBEXEC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ELIBEXEC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ELIBEXEC;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ELIBEXEC", ELIBEXEC)) {
+            return;
+        }
 #elif defined(ELIBEXEC)
 #error "ELIBEXEC defined"
-#else
-        throw_NotDefinedException(env, "ELIBEXEC");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ERESTART
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ERESTART
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ERESTART;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ERESTART", ERESTART)) {
+            return;
+        }
 #elif defined(ERESTART)
 #error "ERESTART defined"
-#else
-        throw_NotDefinedException(env, "ERESTART");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ESTRPIPE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESTRPIPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ESTRPIPE;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ESTRPIPE", ESTRPIPE)) {
+            return;
+        }
 #elif defined(ESTRPIPE)
 #error "ESTRPIPE defined"
-#else
-        throw_NotDefinedException(env, "ESTRPIPE");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EUSERS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EUSERS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EUSERS;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOTSOCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTSOCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTSOCK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EDESTADDRREQ
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EDESTADDRREQ
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EDESTADDRREQ;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EMSGSIZE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EMSGSIZE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EMSGSIZE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EPROTOTYPE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EPROTOTYPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPROTOTYPE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOPROTOOPT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOPROTOOPT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOPROTOOPT;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EPROTONOSUPPORT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EPROTONOSUPPORT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPROTONOSUPPORT;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ESOCKTNOSUPPORT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESOCKTNOSUPPORT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ESOCKTNOSUPPORT;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EOPNOTSUPP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EOPNOTSUPP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EOPNOTSUPP;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EPFNOSUPPORT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EPFNOSUPPORT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPFNOSUPPORT;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EAFNOSUPPORT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EAFNOSUPPORT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EAFNOSUPPORT;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EADDRINUSE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EADDRINUSE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EADDRINUSE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EADDRNOTAVAIL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EADDRNOTAVAIL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EADDRNOTAVAIL;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENETDOWN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENETDOWN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENETDOWN;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENETUNREACH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENETUNREACH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENETUNREACH;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENETRESET
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENETRESET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENETRESET;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ECONNABORTED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECONNABORTED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECONNABORTED;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ECONNRESET
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECONNRESET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECONNRESET;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOBUFS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOBUFS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOBUFS;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EISCONN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EISCONN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EISCONN;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOTCONN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTCONN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTCONN;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ESHUTDOWN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESHUTDOWN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ESHUTDOWN;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ETOOMANYREFS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ETOOMANYREFS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ETOOMANYREFS;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ETIMEDOUT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ETIMEDOUT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ETIMEDOUT;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ECONNREFUSED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECONNREFUSED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECONNREFUSED;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EHOSTDOWN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EHOSTDOWN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EHOSTDOWN;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EHOSTUNREACH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EHOSTUNREACH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EHOSTUNREACH;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EALREADY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EALREADY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EALREADY;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EINPROGRESS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EINPROGRESS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EINPROGRESS;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ESTALE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ESTALE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ESTALE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EUCLEAN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EUCLEAN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        if (JnhwSetStaticIntField(env, clazz, "EUSERS", EUSERS)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOTSOCK", ENOTSOCK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EDESTADDRREQ", EDESTADDRREQ)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EMSGSIZE", EMSGSIZE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EPROTOTYPE", EPROTOTYPE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOPROTOOPT", ENOPROTOOPT)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EPROTONOSUPPORT", EPROTONOSUPPORT)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ESOCKTNOSUPPORT", ESOCKTNOSUPPORT)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EOPNOTSUPP", EOPNOTSUPP)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EPFNOSUPPORT", EPFNOSUPPORT)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EAFNOSUPPORT", EAFNOSUPPORT)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EADDRINUSE", EADDRINUSE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EADDRNOTAVAIL", EADDRNOTAVAIL)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENETDOWN", ENETDOWN)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENETUNREACH", ENETUNREACH)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENETRESET", ENETRESET)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ECONNABORTED", ECONNABORTED)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ECONNRESET", ECONNRESET)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOBUFS", ENOBUFS)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EISCONN", EISCONN)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOTCONN", ENOTCONN)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ESHUTDOWN", ESHUTDOWN)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ETOOMANYREFS", ETOOMANYREFS)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ETIMEDOUT", ETIMEDOUT)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ECONNREFUSED", ECONNREFUSED)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EHOSTDOWN", EHOSTDOWN)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EHOSTUNREACH", EHOSTUNREACH)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EALREADY", EALREADY)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EINPROGRESS", EINPROGRESS)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ESTALE", ESTALE)) {
+            return;
+        }
 #if defined (__linux__)
-        return EUCLEAN;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EUCLEAN", EUCLEAN)) {
+            return;
+        }
 #elif defined(EUCLEAN)
 #error "EUCLEAN defined"
-#else
-        throw_NotDefinedException(env, "EUCLEAN");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOTNAM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTNAM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ENOTNAM;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENOTNAM", ENOTNAM)) {
+            return;
+        }
 #elif defined(ENOTNAM)
 #error "ENOTNAM defined"
-#else
-        throw_NotDefinedException(env, "ENOTNAM");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENAVAIL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENAVAIL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ENAVAIL;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENAVAIL", ENAVAIL)) {
+            return;
+        }
 #elif defined(ENAVAIL)
 #error "ENAVAIL defined"
-#else
-        throw_NotDefinedException(env, "ENAVAIL");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EISNAM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EISNAM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EISNAM;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EISNAM", EISNAM)) {
+            return;
+        }
 #elif defined(EISNAM)
 #error "EISNAM defined"
-#else
-        throw_NotDefinedException(env, "EISNAM");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EREMOTEIO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EREMOTEIO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EREMOTEIO;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EREMOTEIO", EREMOTEIO)) {
+            return;
+        }
 #elif defined(EREMOTEIO)
 #error "EREMOTEIO defined"
-#else
-        throw_NotDefinedException(env, "EREMOTEIO");
-        return 0;
 #endif
-    }
+        if (JnhwSetStaticIntField(env, clazz, "EDQUOT", EDQUOT)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EDQUOT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EDQUOT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EDQUOT;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOMEDIUM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOMEDIUM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__) || defined(__OpenBSD__)
-        return ENOMEDIUM;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENOMEDIUM", ENOMEDIUM)) {
+            return;
+        }
 #elif defined(ENOMEDIUM)
 #error "ENOMEDIUM defined"
-#else
-        throw_NotDefinedException(env, "ENOMEDIUM");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EMEDIUMTYPE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EMEDIUMTYPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__) || defined(__OpenBSD__)
-        return EMEDIUMTYPE;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EMEDIUMTYPE", EMEDIUMTYPE)) {
+            return;
+        }
 #elif defined(EMEDIUMTYPE)
 #error "EMEDIUMTYPE defined"
-#else
-        throw_NotDefinedException(env, "EMEDIUMTYPE");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ECANCELED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ECANCELED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECANCELED;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "ECANCELED", ECANCELED)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOKEY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOKEY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ENOKEY;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ENOKEY", ENOKEY)) {
+            return;
+        }
 #elif defined(ENOKEY)
 #error "ENOKEY defined"
-#else
-        throw_NotDefinedException(env, "ENOKEY");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EKEYEXPIRED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYEXPIRED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EKEYEXPIRED;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EKEYEXPIRED", EKEYEXPIRED)) {
+            return;
+        }
 #elif defined(EKEYEXPIRED)
 #error "EKEYEXPIRED defined"
-#else
-        throw_NotDefinedException(env, "EKEYEXPIRED");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EKEYREVOKED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYREVOKED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EKEYREVOKED;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EKEYREVOKED", EKEYREVOKED)) {
+            return;
+        }
 #elif defined(EKEYREVOKED)
 #error "EKEYREVOKED defined"
-#else
-        throw_NotDefinedException(env, "EKEYREVOKED");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EKEYREJECTED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EKEYREJECTED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EKEYREJECTED;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EKEYREJECTED", EKEYREJECTED)) {
+            return;
+        }
 #elif defined(EKEYREJECTED)
 #error "EKEYREJECTED defined"
-#else
-        throw_NotDefinedException(env, "EKEYREJECTED");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EOWNERDEAD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EOWNERDEAD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EOWNERDEAD;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "EOWNERDEAD", EOWNERDEAD)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ENOTRECOVERABLE", ENOTRECOVERABLE)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOTRECOVERABLE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTRECOVERABLE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTRECOVERABLE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ERFKILL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ERFKILL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return ERFKILL;
+        if (JnhwSetStaticIntDefineField(env, clazz, "ERFKILL", ERFKILL)) {
+            return;
+        }
 #elif defined(ERFKILL)
 #error "ERFKILL defined"
-#else
-        throw_NotDefinedException(env, "ERFKILL");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    EHWPOISON
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_EHWPOISON
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__linux__)
-        return EHWPOISON;
+        if (JnhwSetStaticIntDefineField(env, clazz, "EHWPOISON", EHWPOISON)) {
+            return;
+        }
 #elif defined(EHWPOISON)
 #error "EHWPOISON defined"
-#else
-        throw_NotDefinedException(env, "EHWPOISON");
-        return 0;
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Errno
-     * Method:    ENOTSUP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Errno_ENOTSUP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTSUP;
+        if (JnhwSetStaticIntField(env, clazz, "ENOTSUP", ENOTSUP)) {
+            return;
+        }
     }
 
 #ifdef __cplusplus

@@ -29,7 +29,7 @@ extern "C" {
 #ifdef _POSIX_VERSION    
 #include <termios.h>
 
-JNHW_ASSERT__cc_t__IS__uint8_t
+    JNHW_ASSERT__cc_t__IS__uint8_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios_Cc_t
@@ -58,7 +58,7 @@ JNHW_ASSERT__cc_t__IS__uint8_t
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Termios_00024Cc_1t_unsigned
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (0 < (cc_t)-1);
+        return (0 < (cc_t) - 1);
     }
 
     /*

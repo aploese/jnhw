@@ -35,10 +35,10 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
  */
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class ErrhandlingapiTest {
-    
+
     public ErrhandlingapiTest() {
     }
-    
+
     /**
      * Test of GetLastError method, of class Errhandlingapi.
      */
@@ -53,10 +53,10 @@ public class ErrhandlingapiTest {
      */
     @Test
     public void testSetLastError() {
-        Errhandlingapi.SetLastError(Winerror.ERROR_ACCESS_DENIED());
-        assertEquals(Winerror.ERROR_ACCESS_DENIED(), Errhandlingapi.GetLastError());
-        Errhandlingapi.SetLastError(Winerror.ERROR_SUCCESS());
-        assertEquals(Winerror.ERROR_SUCCESS(), Errhandlingapi.GetLastError());
+        Errhandlingapi.SetLastError(Winerror.ERROR_ACCESS_DENIED);
+        assertEquals(Winerror.ERROR_ACCESS_DENIED, Errhandlingapi.GetLastError());
+        Errhandlingapi.SetLastError(Winerror.ERROR_SUCCESS);
+        assertEquals(Winerror.ERROR_SUCCESS, Errhandlingapi.GetLastError());
     }
 
 }

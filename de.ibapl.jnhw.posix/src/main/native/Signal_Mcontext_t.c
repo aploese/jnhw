@@ -29,7 +29,7 @@ extern "C" {
 
 #ifdef _POSIX_VERSION
 #include <signal.h>
-//for offsetof
+    //for offsetof
 #include <stddef.h>
 
     /*
@@ -43,10 +43,10 @@ extern "C" {
         throw_NoSuchNativeTypeException(env, "struct mcontext_t");
         return -1;
 #else
-        (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (mcontext_t);
 #endif
-        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Mcontext_t
@@ -59,10 +59,10 @@ extern "C" {
         throw_NoSuchNativeTypeException(env, "struct mcontext_t");
         return -1;
 #else
-        (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return __alignof__ (mcontext_t);
 #endif
-        }
+    }
 
 #endif
 #ifdef __cplusplus

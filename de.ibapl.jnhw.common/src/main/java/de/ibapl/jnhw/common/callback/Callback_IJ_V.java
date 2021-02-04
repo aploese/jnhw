@@ -48,7 +48,7 @@ public abstract class Callback_IJ_V extends FunctionPtr_IJ_V {
     }
 
     public static native int sizeofIntptr_t();
-    
+
     public static native int alignofIntptr_t();
 
     /**

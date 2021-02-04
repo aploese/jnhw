@@ -62,11 +62,11 @@ public class LocaleTest {
         System.out.println("testUnwrapLC_GLOBAL_LOCALE");
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE());
+                testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE);
             });
 
         } else {
-            testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE());
+            testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE);
         }
     }
 
@@ -98,7 +98,7 @@ public class LocaleTest {
     @Test
     public void testDuplocale() throws Exception {
         System.out.println("duplocale");
-        Locale.Locale_t locobj = Locale.LC_GLOBAL_LOCALE();
+        Locale.Locale_t locobj = Locale.LC_GLOBAL_LOCALE;
         try {
             Locale.Locale_t result = Locale.duplocale(locobj);
             Assertions.assertNotNull(result);
@@ -126,7 +126,7 @@ public class LocaleTest {
     public void testNewlocale_LC_GLOBAL_LOCALE() {
         System.out.println("newlocale LC_GLOBAL_LOCALE");
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Locale.newlocale(Locale.LC_NUMERIC_MASK(), "", Locale.LC_GLOBAL_LOCALE());
+            Locale.newlocale(Locale.LC_NUMERIC_MASK, "", Locale.LC_GLOBAL_LOCALE);
         });
     }
 
@@ -137,11 +137,11 @@ public class LocaleTest {
     public void testNewlocale_null() {
         System.out.println("newlocale locale == null");
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Locale.newlocale(Locale.LC_NUMERIC_MASK(), null, Locale.LC_GLOBAL_LOCALE());
+            Locale.newlocale(Locale.LC_NUMERIC_MASK, null, Locale.LC_GLOBAL_LOCALE);
         });
         System.out.println("newlocale base == null");
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Locale.newlocale(Locale.LC_NUMERIC_MASK(), "", null);
+            Locale.newlocale(Locale.LC_NUMERIC_MASK, "", null);
         });
     }
 
@@ -153,7 +153,7 @@ public class LocaleTest {
     @Test
     public void testNewlocale_AND_Freelocale() throws Exception {
         System.out.println("newlocale");
-        final int category_mask = Locale.LC_NUMERIC_MASK();
+        final int category_mask = Locale.LC_NUMERIC_MASK;
         final String locale = "C";
         final Locale.Locale_t base = Locale.Locale_t.locale_t_0();
         final Locale.Locale_t result = Locale.newlocale(category_mask, locale, base);
@@ -181,7 +181,7 @@ public class LocaleTest {
     @Test
     public void testUselocale_AND_freelocale() throws Exception {
         System.out.println("uselocale");
-        Locale.Locale_t newloc = Locale.LC_GLOBAL_LOCALE();
+        Locale.Locale_t newloc = Locale.LC_GLOBAL_LOCALE;
         Locale.Locale_t result = Locale.uselocale(newloc);
         Assertions.assertNotNull(result);
         Assertions.assertNotEquals(Locale.Locale_t.locale_t_0(), result);

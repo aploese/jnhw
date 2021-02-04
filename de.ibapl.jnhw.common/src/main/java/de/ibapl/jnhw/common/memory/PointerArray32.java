@@ -30,7 +30,7 @@ import java.io.IOException;
  * @param <T>
  */
 public class PointerArray32<T extends OpaqueMemory32> extends OpaqueMemory32 {
-    
+
     public void set(int i, T element) {
         cachedReferences[i] = element;
         set0(i, element);

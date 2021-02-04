@@ -35,7 +35,6 @@ import java.io.IOException;
 @uint32_t
 public class Uint32_t extends NativeIntNumber {
 
-
     /**
      * Make sure the native lib is loaded.
      */

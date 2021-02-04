@@ -29,7 +29,6 @@ package de.ibapl.jnhw.common.references;
  */
 public class ByteRef {
 
-
     /**
      * the int8_t or uint8_t value.
      */

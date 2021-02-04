@@ -34,7 +34,6 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.posix.Time.Timespec;
@@ -42,11 +41,11 @@ import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
 import de.ibapl.jnhw.common.callback.Callback_I_V;
-import de.ibapl.jnhw.common.nativecall.CallNative_I_Mem_Mem_V;
-import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
+import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.io.IOException;
@@ -63,93 +62,184 @@ import java.io.IOException;
 @Include("#include <signal.h>")
 public class Signal {
 
+    /**
+     * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
+     */
+    static {
+        LibJnhwPosixLoader.touch();
+
+        HAVE_SIGNAL_H = false;
+
+        BUS_ADRALN = 0;
+        BUS_ADRERR = 0;
+        BUS_OBJERR = 0;
+
+        CLD_CONTINUED = 0;
+        CLD_DUMPED = 0;
+        CLD_EXITED = 0;
+        CLD_KILLED = 0;
+        CLD_STOPPED = 0;
+        CLD_TRAPPED = 0;
+
+        FPE_FLTDIV = 0;
+        FPE_FLTINV = 0;
+        FPE_FLTOVF = 0;
+        FPE_FLTRES = 0;
+        FPE_FLTSUB = 0;
+        FPE_FLTUND = 0;
+        FPE_INTDIV = 0;
+        FPE_INTOVF = 0;
+
+        ILL_BADSTK = 0;
+        ILL_COPROC = 0;
+        ILL_ILLADR = 0;
+        ILL_ILLOPC = 0;
+        ILL_ILLOPN = 0;
+        ILL_ILLTRP = 0;
+        ILL_PRVOPC = 0;
+        ILL_PRVREG = 0;
+
+        MINSIGSTKSZ = 0;
+
+        POLL_ERR = IntDefine.UNDEFINED;
+        POLL_HUP = IntDefine.UNDEFINED;
+        POLL_IN = IntDefine.UNDEFINED;
+        POLL_MSG = IntDefine.UNDEFINED;
+        POLL_OUT = IntDefine.UNDEFINED;
+        POLL_PRI = IntDefine.UNDEFINED;
+
+        SA_NOCLDSTOP = 0;
+        SA_NOCLDWAIT = 0;
+        SA_NODEFER = 0;
+        SA_ONSTACK = 0;
+        SA_RESETHAND = 0;
+        SA_RESTART = 0;
+        SA_SIGINFO = 0;
+
+        SEGV_ACCERR = 0;
+        SEGV_MAPERR = 0;
+
+        SIGABRT = 0;
+        SIGALRM = 0;
+        SIGBUS = 0;
+        SIGCHLD = 0;
+        SIGCONT = 0;
+
+        SIGEV_NONE = IntDefine.UNDEFINED;
+        SIGEV_SIGNAL = IntDefine.UNDEFINED;
+        SIGEV_THREAD = IntDefine.UNDEFINED;
+
+        SIGFPE = 0;
+        SIGHUP = 0;
+        SIGILL = 0;
+        SIGINT = 0;
+        SIGKILL = 0;
+        SIGPIPE = 0;
+        SIGPOLL = IntDefine.UNDEFINED;
+        SIGPROF = 0;
+        SIGQUIT = 0;
+        SIGSEGV = 0;
+        SIGSTKSZ = 0;
+        SIGSTOP = 0;
+        SIGSYS = 0;
+        SIGTERM = 0;
+        SIGTRAP = 0;
+        SIGTSTP = 0;
+        SIGTTIN = 0;
+        SIGTTOU = 0;
+        SIGURG = 0;
+        SIGUSR1 = 0;
+        SIGUSR2 = 0;
+        SIGVTALRM = 0;
+        SIGXCPU = 0;
+        SIGXFSZ = 0;
+        SIG_BLOCK = 0;
+        SIG_DFL = null;
+        SIG_ERR = null;
+        SIG_HOLD = ObjectDefine.UNDEFINED;
+        SIG_IGN = null;
+        SIG_SETMASK = 0;
+        SIG_UNBLOCK = 0;
+
+        SI_ASYNCIO = IntDefine.UNDEFINED;
+        SI_MESGQ = IntDefine.UNDEFINED;
+        SI_QUEUE = 0;
+        SI_TIMER = 0;
+        SI_USER = 0;
+
+        SS_DISABLE = 0;
+        SS_ONSTACK = 0;
+
+        TRAP_BRKPT = 0;
+        TRAP_TRACE = 0;
+
+        initFields();
+    }
+
+    private static native void initFields();
+
     public static String sigNumber2String(int signalNumber) {
-        if (Signal.SIGABRT() == signalNumber) {
+        if (Signal.SIGABRT == signalNumber) {
             return "SIGABRT";
-        }
-        if (SIGALRM() == signalNumber) {
+        } else if (SIGALRM == signalNumber) {
             return "SIGALRM";
-        }
-        if (SIGBUS() == signalNumber) {
+        } else if (SIGBUS == signalNumber) {
             return "SIGBUS";
-        }
-        if (SIGCHLD() == signalNumber) {
+        } else if (SIGCHLD == signalNumber) {
             return "SIGCHLD";
-        }
-        if (SIGCONT() == signalNumber) {
+        } else if (SIGCONT == signalNumber) {
             return "SIGCONT";
-        }
-        if (SIGFPE() == signalNumber) {
+        } else if (SIGFPE == signalNumber) {
             return "SIGFPE";
-        }
-        if (SIGHUP() == signalNumber) {
+        } else if (SIGHUP == signalNumber) {
             return "SIGHUP";
-        }
-        if (SIGILL() == signalNumber) {
+        } else if (SIGILL == signalNumber) {
             return "SIGILL";
-        }
-        if (SIGINT() == signalNumber) {
+        } else if (SIGINT == signalNumber) {
             return "SIGINT";
-        }
-        if (SIGKILL() == signalNumber) {
+        } else if (SIGKILL == signalNumber) {
             return "SIGKILL";
-        }
-        if (SIGPIPE() == signalNumber) {
+        } else if (SIGPIPE == signalNumber) {
             return "SIGPIPE";
-        }
-        try {
-            if (SIGPOLL() == signalNumber) {
-                return "SIGPOLL";
-            }
-        } catch (NotDefinedException ex) {
-            //no-op
-        }
-        if (SIGPROF() == signalNumber) {
+        } else if (SIGPOLL.isEqualsTo(signalNumber)) {
+            return "SIGPOLL";
+        } else if (SIGPROF == signalNumber) {
             return "SIGPROF";
-        }
-        if (SIGQUIT() == signalNumber) {
+        } else if (SIGQUIT == signalNumber) {
             return "SIGQUIT";
-        }
-        if (SIGSEGV() == signalNumber) {
+        } else if (SIGSEGV == signalNumber) {
             return "SIGSEGV";
-        }
-        if (SIGSTOP() == signalNumber) {
+        } else if (SIGSTOP == signalNumber) {
             return "SIGSTOP";
-        }
-        if (SIGSYS() == signalNumber) {
+        } else if (SIGSYS == signalNumber) {
             return "SIGSYS";
-        }
-        if (SIGTERM() == signalNumber) {
+        } else if (SIGTERM == signalNumber) {
             return "SIGTERM";
-        }
-        if (SIGTRAP() == signalNumber) {
+        } else if (SIGTRAP == signalNumber) {
             return "SIGTRAP";
-        }
-        if (SIGTSTP() == signalNumber) {
+        } else if (SIGTSTP == signalNumber) {
             return "SIGTSTP";
-        }
-        if (SIGTTIN() == signalNumber) {
+        } else if (SIGTTIN == signalNumber) {
             return "SIGTTIN";
-        }
-        if (SIGTTOU() == signalNumber) {
+        } else if (SIGTTOU == signalNumber) {
             return "SIGTTOU";
-        }
-        if (SIGURG() == signalNumber) {
+        } else if (SIGURG == signalNumber) {
             return "SIGURG";
-        }
-        if (SIGUSR1() == signalNumber) {
+        } else if (SIGUSR1 == signalNumber) {
             return "SIGUSR1";
-        }
-        if (SIGUSR2() == signalNumber) {
+        } else if (SIGUSR2 == signalNumber) {
             return "SIGUSR2";
-        }
-        if (SIGVTALRM() == signalNumber) {
+        } else if (SIGVTALRM == signalNumber) {
             return "SIGVTALRM";
-        }
-        if (SIGXCPU() == signalNumber) {
+        } else if (SIGXCPU == signalNumber) {
             return "SIGXCPU";
-        }
-        if (SIGXFSZ() == signalNumber) {
+        } else if (SIGXFSZ == signalNumber) {
             return "SIGXFSZ";
         } else {
             return Integer.toString(signalNumber);
@@ -196,14 +286,7 @@ public class Signal {
 
     }
 
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwPosixLoader.touch();
-    }
-
-    public final static native boolean HAVE_SIGNAL_H();
+    public final static boolean HAVE_SIGNAL_H;
 
     public static final class Sigset_t extends Struct32 {
 
@@ -252,146 +335,142 @@ public class Signal {
                 sb.append("\n").append(INDENT);
             }
             try {
-                if ((Signal.sigismember(this, Signal.SIGABRT()))) {
+                if ((Signal.sigismember(this, Signal.SIGABRT))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGABRT");
                 }
-                if ((Signal.sigismember(this, Signal.SIGALRM()))) {
+                if ((Signal.sigismember(this, Signal.SIGALRM))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGALRM");
                 }
-                if ((Signal.sigismember(this, Signal.SIGBUS()))) {
+                if ((Signal.sigismember(this, Signal.SIGBUS))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGBUS");
                 }
-                if ((Signal.sigismember(this, Signal.SIGCHLD()))) {
+                if ((Signal.sigismember(this, Signal.SIGCHLD))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGCHLD");
                 }
-                if ((Signal.sigismember(this, Signal.SIGCONT()))) {
+                if ((Signal.sigismember(this, Signal.SIGCONT))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGCONT");
                 }
-                if ((Signal.sigismember(this, Signal.SIGFPE()))) {
+                if ((Signal.sigismember(this, Signal.SIGFPE))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGFPE");
                 }
-                if ((Signal.sigismember(this, Signal.SIGHUP()))) {
+                if ((Signal.sigismember(this, Signal.SIGHUP))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGHUP");
                 }
-                if ((Signal.sigismember(this, Signal.SIGILL()))) {
+                if ((Signal.sigismember(this, Signal.SIGILL))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGILL");
                 }
-                if ((Signal.sigismember(this, Signal.SIGINT()))) {
+                if ((Signal.sigismember(this, Signal.SIGINT))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGINT");
                 }
-                if ((Signal.sigismember(this, Signal.SIGKILL()))) {
+                if ((Signal.sigismember(this, Signal.SIGKILL))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGKILL");
                 }
-                if ((Signal.sigismember(this, Signal.SIGPIPE()))) {
+                if ((Signal.sigismember(this, Signal.SIGPIPE))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGPIPE");
                 }
-                try {
-                    if ((Signal.sigismember(this, Signal.SIGPOLL()))) {
-                        maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
-                        isFirst = false;
-                        sb.append("SIGPOLL");
-                    }
-                } catch (NotDefinedException ex) {
-                    //no-op
+                if (Signal.SIGPOLL.isDefined() && Signal.sigismember(this, Signal.SIGPOLL.get())) {
+                    maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
+                    isFirst = false;
+                    sb.append("SIGPOLL");
                 }
-                if ((Signal.sigismember(this, Signal.SIGPROF()))) {
+                if ((Signal.sigismember(this, Signal.SIGPROF))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGPROF");
                 }
-                if ((Signal.sigismember(this, Signal.SIGQUIT()))) {
+                if ((Signal.sigismember(this, Signal.SIGQUIT))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGQUIT");
                 }
-                if ((Signal.sigismember(this, Signal.SIGSEGV()))) {
+                if ((Signal.sigismember(this, Signal.SIGSEGV))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGSEGV");
                 }
-                if ((Signal.sigismember(this, Signal.SIGSTOP()))) {
+                if ((Signal.sigismember(this, Signal.SIGSTOP))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGSTOP");
                 }
-                if ((Signal.sigismember(this, Signal.SIGSYS()))) {
+                if ((Signal.sigismember(this, Signal.SIGSYS))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGSYS");
                 }
-                if ((Signal.sigismember(this, Signal.SIGTERM()))) {
+                if ((Signal.sigismember(this, Signal.SIGTERM))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGTERM");
                 }
-                if ((Signal.sigismember(this, Signal.SIGTRAP()))) {
+                if ((Signal.sigismember(this, Signal.SIGTRAP))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGTRAP");
                 }
-                if ((Signal.sigismember(this, Signal.SIGTSTP()))) {
+                if ((Signal.sigismember(this, Signal.SIGTSTP))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGTSTP");
                 }
-                if ((Signal.sigismember(this, Signal.SIGTTIN()))) {
+                if ((Signal.sigismember(this, Signal.SIGTTIN))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGTTIN");
                 }
-                if ((Signal.sigismember(this, Signal.SIGTTOU()))) {
+                if ((Signal.sigismember(this, Signal.SIGTTOU))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGTTOU");
                 }
-                if ((Signal.sigismember(this, Signal.SIGURG()))) {
+                if ((Signal.sigismember(this, Signal.SIGURG))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGURG");
                 }
-                if ((Signal.sigismember(this, Signal.SIGUSR1()))) {
+                if ((Signal.sigismember(this, Signal.SIGUSR1))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGUSR1");
                 }
-                if ((Signal.sigismember(this, Signal.SIGUSR2()))) {
+                if ((Signal.sigismember(this, Signal.SIGUSR2))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGUSR2");
                 }
-                if ((Signal.sigismember(this, Signal.SIGVTALRM()))) {
+                if ((Signal.sigismember(this, Signal.SIGVTALRM))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGVTALRM");
                 }
-                if ((Signal.sigismember(this, Signal.SIGXCPU()))) {
+                if ((Signal.sigismember(this, Signal.SIGXCPU))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGXCPU");
                 }
-                if ((Signal.sigismember(this, Signal.SIGXFSZ()))) {
+                if ((Signal.sigismember(this, Signal.SIGXFSZ))) {
                     maybeDoFormatBeforeFirst(sb, isFirst, INDENT);
                     isFirst = false;
                     sb.append("SIGXFSZ");
@@ -676,19 +755,15 @@ public class Signal {
         }
 
         public static String sigev_notify2String(int value) {
-            try {
-                if (value == Signal.SIGEV_NONE()) {
-                    return "SIGEV_NONE";
-                }
-                if (value == Signal.SIGEV_SIGNAL()) {
-                    return "SIGEV_SIGNAL";
-                } else if (value == Signal.SIGEV_THREAD()) {
-                    return "SIGEV_THREAD";
-                } else {
-                    return String.format("0x%08x", value);
-                }
-            } catch (NotDefinedException ex) {
-                throw new RuntimeException(ex);
+            if (Signal.SIGEV_NONE.isEqualsTo(value)) {
+                return "SIGEV_NONE";
+            }
+            if (Signal.SIGEV_SIGNAL.isEqualsTo(value)) {
+                return "SIGEV_SIGNAL";
+            } else if (Signal.SIGEV_THREAD.isEqualsTo(value)) {
+                return "SIGEV_THREAD";
+            } else {
+                return String.format("0x%08x", value);
             }
         }
 
@@ -714,329 +789,276 @@ public class Signal {
      *
      * <b>POSIX:</b> Request for default signal handling.
      *
-     * @return the native symbolic constant of SIG_DFL.
      */
     @Define()
-    public final static native FunctionPtr_I_V SIG_DFL();
+    public final static FunctionPtr_I_V SIG_DFL;
 
     /**
      * <b>POSIX:</b> Return value from signal() in case of error.
      *
-     * @return the native symbolic constant of SIG_ERR.
      */
     @Define()
-    public final static native FunctionPtr_I_V SIG_ERR();
+    public final static FunctionPtr_I_V SIG_ERR;
 
     /**
      * <b>POSIX:</b> Request that signal be held.
      *
-     * @return the native symbolic constant of SIG_HOLD.
-     * @throws NotDefinedException if SIG_HOLD is not defined natively.
      */
     @Define()
-    public final static native FunctionPtr_I_V SIG_HOLD() throws NotDefinedException;
+    public final static ObjectDefine<FunctionPtr_I_V> SIG_HOLD;
 
     /**
      * <b>POSIX:</b> Request that signal be ignored.
      *
-     * @return the native symbolic constant of SIG_IGN.
      */
     @Define()
-    public final static native FunctionPtr_I_V SIG_IGN();
+    public final static FunctionPtr_I_V SIG_IGN;
 
     /**
      * <b>POSIX:</b> No asynchronous notification is delivered when the event of
      * interest occurs.
      *
-     *
-     * @return the native symbolic constant of SIGEV_NONE.
-     * @throws NotDefinedException if SIGEV_NONE is not defined natively.
      */
     @Define()
-    public final static native int SIGEV_NONE() throws NotDefinedException;
+    public final static IntDefine SIGEV_NONE;
 
     /**
      * <b>POSIX:</b> A queued signal , with an application -defined value, is
      * generated when the event of interest occurs.
      *
-     *
-     * @return the native symbolic constant of SIGEV_SIGNAL.
-     * @throws NotDefinedException if SIGEV_SIGNAL is not defined natively.
      */
     @Define()
-    public final static native int SIGEV_SIGNAL() throws NotDefinedException;
+    public final static IntDefine SIGEV_SIGNAL;
 
     /**
      * * <b>POSIX:</b> A notification function is called to perform
      * notification.
      *
-     * @return the native symbolic constant of SIGEV_THREAD.
-     * @throws NotDefinedException if SIGEV_THREAD is not defined natively.
      */
     @Define()
-    public final static native int SIGEV_THREAD() throws NotDefinedException;
+    public final static IntDefine SIGEV_THREAD;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Process abort signal.
      *
-     * @return the native symbolic constant of SIGABRT.
      */
     @Define()
-    public final static native int SIGABRT();
+    public final static int SIGABRT;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process</i> Alarm clock.
      *
-     * @return the native symbolic constant of SIGALRM.
      */
     @Define()
-    public final static native int SIGALRM();
+    public final static int SIGALRM;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Access to an undefined portion of a memory object.
      *
-     *
-     * @return the native symbolic constant of SIGBUS.
      */
     @Define()
-
-    public final static native int SIGBUS();
+    public final static int SIGBUS;
 
     /**
      * <b>POSIX:</b><i>Ignore the signal</i> Child process terminated, stopped,
      * or continued.
      *
-     * @return the native symbolic constant of SIGCHLD.
      */
     @Define()
-    public final static native int SIGCHLD();
+    public final static int SIGCHLD;
 
     /**
      * <b>POSIX:</b><i>Continue the process, if it is stopped; otherwise, ignore
      * the signal.</i> Continue executing , if stopped.
      *
-     * @return the native symbolic constant of SIGCONT.
      */
     @Define()
-    public final static native int SIGCONT();
+    public final static int SIGCONT;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Erroneous arithmetic operation.
      *
-     *
-     * @return the native symbolic constant of SIGFPE.
      */
     @Define()
-
-    public final static native int SIGFPE();
+    public final static int SIGFPE;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process</i> Hangup.
      *
-     * @return the native symbolic constant of SIGHUP.
      */
     @Define()
-    public final static native int SIGHUP();
+    public final static int SIGHUP;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Illegal instruction.
      *
-     * @return the native symbolic constant of SIGILL.
      */
     @Define()
-    public final static native int SIGILL();
+    public final static int SIGILL;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process</i> Terminal
      * interrupt signal.
      *
-     *
-     * @return the native symbolic constant of SIGINT.
      */
     @Define()
-
-    public final static native int SIGINT();
+    public final static int SIGINT;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process</i>Kill(cannot be
      * caught or ignored).
      *
-     * @return the native symbolic constant of SIGKILL.
      */
     @Define()
-    public final static native int SIGKILL();
+    public final static int SIGKILL;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process</i> Write on a pipe
      * with no one to read it.
      *
-     * @return the native symbolic constant of SIGPIPE.
      */
     @Define()
-    public final static native int SIGPIPE();
+    public final static int SIGPIPE;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Terminal quit signal.
      *
-     *
-     * @return the native symbolic constant of SIGQUIT.
      */
     @Define()
-
-    public final static native int SIGQUIT();
+    public final static int SIGQUIT;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Invalid memory reference.
      *
-     * @return the native symbolic constant of SIGSEGV.
      */
     @Define()
-    public final static native int SIGSEGV();
+    public final static int SIGSEGV;
 
     /**
      * <b>POSIX:</b><i>Stop the process</i> Stop executing(cannot be caught or
      * ignored).
      *
-     * @return the native symbolic constant of SIGSTOP.
      */
     @Define()
-    public final static native int SIGSTOP();
+    public final static int SIGSTOP;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process</i> Termination
      * signal.
      *
-     * @return the native symbolic constant of SIGTERM.
      */
     @Define()
-    public final static native int SIGTERM();
+    public final static int SIGTERM;
 
     /**
      * <b>POSIX:</b><i>Stop the process</i> Terminal stop signal.
      *
      *
-     * @return the native symbolic constant of SIGTSTP.
      */
     @Define()
-
-    public final static native int SIGTSTP();
+    public final static int SIGTSTP;
 
     /**
      * <b>POSIX:</b><i>Stop the process</i> Background process attempting read.
      *
-     * @return the native symbolic constant of SIGTTIN.
      */
     @Define()
-    public final static native int SIGTTIN();
+    public final static int SIGTTIN;
 
     /**
      * <b>POSIX:</b><i>Stop the process</i> Background process attempting write.
      *
      *
-     * @return the native symbolic constant of SIGTTOU.
      */
     @Define()
-
-    public final static native int SIGTTOU();
+    public final static int SIGTTOU;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process</i> User -defined
      * signal 1.
      *
      *
-     * @return the native symbolic constant of SIGUSR1.
      */
     @Define()
-
-    public final static native int SIGUSR1();
+    public final static int SIGUSR1;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process</i> User -defined
      * signal 2.
      *
-     * @return the native symbolic constant of SIGUSR2.
      */
     @Define()
-    public final static native int SIGUSR2();
+    public final static int SIGUSR2;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process</i> Pollable event.
      *
-     * @return the native symbolic constant of SIGPOLL.
-     * @throws NotDefinedException if SIGPOLL is not defined natively.
      */
     @Define()
-    public final static native int SIGPOLL() throws NotDefinedException;
+    public final static IntDefine SIGPOLL;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process</i> Profiling timer
      * expired.
      *
-     * @return the native symbolic constant of SIGPROF.
      */
     @Define()
-    public final static native int SIGPROF();
+    public final static int SIGPROF;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Bad system call.
      *
-     * @return the native symbolic constant of SIGSYS.
      */
     @Define()
-    public final static native int SIGSYS();
+    public final static int SIGSYS;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> Trace /breakpoint trap.
      *
-     * @return the native symbolic constant of SIGTRAP.
      */
     @Define()
-    public final static native int SIGTRAP();
+    public final static int SIGTRAP;
 
     /**
      * <b>POSIX:</b><i>Ignore the signal</i> High bandwidth data is available at
      * a socket.
      *
-     * @return the native symbolic constant of SIGURG.
      */
     @Define()
-    public final static native int SIGURG();
+    public final static int SIGURG;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process</i> Virtual timer
      * expired.
      *
-     * @return the native symbolic constant of SIGVTALRM.
      */
     @Define()
-    public final static native int SIGVTALRM();
+    public final static int SIGVTALRM;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> CPU time limit exceeded.
      *
-     * @return the native symbolic constant of SIGXCPU.
      */
     @Define()
-    public final static native int SIGXCPU();
+    public final static int SIGXCPU;
 
     /**
      * <b>POSIX:</b><i>Abnormal termination of the process with additional
      * actions</i> File size limit exceeded.
      *
      *
-     * @return the native symbolic constant of SIGXFSZ.
      */
     @Define()
-    public final static native int SIGXFSZ();
+    public final static int SIGXFSZ;
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
@@ -1107,7 +1129,7 @@ public class Signal {
          *
          * @return the native value of sa_handler.
          */
-        public final native CallNative_I_V sa_handler();
+        public final native FunctionPtr_I_V sa_handler();
 
         /**
          * Pointer to a signal-catching function or one of the SIG_IGN or
@@ -1146,7 +1168,7 @@ public class Signal {
          *
          * @return the native value of sa_sigaction.
          */
-        public final native CallNative_I_Mem_Mem_V sa_sigaction();
+        public final native FunctionPtr_I_Mem_Mem_V sa_sigaction();
 
         /**
          * Pointer to a signal-catching function
@@ -1195,123 +1217,108 @@ public class Signal {
      * <b>POSIX:</b> The resulting set is the union of the current set and the
      * signal set pointed to by the argument set.
      *
-     * @return the native symbolic constant of SIG_BLOCK.
      */
     @Define()
-    public final static native int SIG_BLOCK();
+    public final static int SIG_BLOCK;
 
     /**
      * <b>POSIX:</b> The resulting set is the intersection of the current set
      * and the complement of the signal set pointed to by the argument set.
      *
-     * @return the native symbolic constant of SIG_UNBLOCK.
      */
     @Define()
-    public final static native int SIG_UNBLOCK();
+    public final static int SIG_UNBLOCK;
 
     /**
      * <b>POSIX:</b> The resulting set is the signal set pointed to by the
      * argument set.
      *
-     * @return the native symbolic constant of SIG_SETMASK.
      */
     @Define()
-    public final static native int SIG_SETMASK();
+    public final static int SIG_SETMASK;
 
     /**
      * <b>POSIX:</b> Do not generate SIGCHLD when children stop or stopped
      * children continue
      *
      *
-     * @return the native symbolic constant of SA_NOCLDSTOP.
      */
     @Define()
-
-    public final static native int SA_NOCLDSTOP();
+    public final static int SA_NOCLDSTOP;
 
     /**
      * <b>POSIX:</b> Causes signal delivery to occur on an alternate stack.
      *
-     * @return the native symbolic constant of SA_ONSTACK.
      */
     @Define()
-    public final static native int SA_ONSTACK();
+    public final static int SA_ONSTACK;
 
     /**
      * <b>POSIX:</b> Causes signal dispositions to be set to SIG_DFL on entry to
      * signal handlers.
      *
-     * @return the native symbolic constant of SA_RESETHAND.
      */
     @Define()
-    public final static native int SA_RESETHAND();
+    public final static int SA_RESETHAND;
 
     /**
      * <b>POSIX:</b> Causes certain functions to become restartable.
      *
-     * @return the native symbolic constant of SA_RESTART.
      */
     @Define()
-    public final static native int SA_RESTART();
+    public final static int SA_RESTART;
 
     /**
      * <b>POSIX:</b> Causes extra information to be passed to signal handlers at
      * the time of receipt of a signal.
      *
-     * @return the native symbolic constant of SA_SIGINFO.
      */
     @Define()
-    public final static native int SA_SIGINFO();
+    public final static int SA_SIGINFO;
 
     /**
      * <b>POSIX:</b> Causes implementations not to create zombie processes or
      * status information on child termination. See sigaction.
      *
-     * @return the native symbolic constant of SA_NOCLDWAIT.
      */
     @Define()
-    public final static native int SA_NOCLDWAIT();
+    public final static int SA_NOCLDWAIT;
 
     /**
      * <b>POSIX:</b> Causes signal not to be automatically blocked on entry to
      * signal handler.
      *
-     * @return the native symbolic constant of SA_NODEFER.
      */
     @Define()
-    public final static native int SA_NODEFER();
+    public final static int SA_NODEFER;
 
     /**
      * <b>POSIX:</b> Process is executing on an alternate signal stack.
      *
-     * @return the native symbolic constant of SS_ONSTACK.
      */
     @Define()
-    public final static native int SS_ONSTACK();
+    public final static int SS_ONSTACK;
 
     /**
      * <b>POSIX:</b> Alternate signal stack is disabled.
      *
-     * @return the native symbolic constant of SS_DISABLE.
      */
     @Define()
-    public final static native int SS_DISABLE();
+    public final static int SS_DISABLE;
 
     /**
      * <b>POSIX:</b> Minimum stack size for a signal handler.
      *
-     * @return the native symbolic constant of MINSIGSTKSZ.
      */
     @Define()
-    public final static native int MINSIGSTKSZ();
+    public final static int MINSIGSTKSZ;
 
     /**
      * <b>POSIX:</b> Default size in bytes for the alternate signal stack.
      *
-     * @return the native symbolic constant of SIGSTKSZ.
      */
     @Define()
-    public final static native int SIGSTKSZ();
+    public final static int SIGSTKSZ;
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
@@ -1665,357 +1672,295 @@ public class Signal {
     /**
      * <b>POSIX:</b>{@link SIGILL} Illegal opcode.
      *
-     * @return the native symbolic constant of ILL_ILLOPC.
      */
     @Define()
-    public final static native int ILL_ILLOPC();
+    public final static int ILL_ILLOPC;
 
     /**
      * <b>POSIX:</b>{@link SIGILL} Illegal addressing mode.
      *
-     * @return the native symbolic constant of ILL_ILLOPN.
      */
     @Define()
-    public final static native int ILL_ILLOPN();
+    public final static int ILL_ILLOPN;
 
     /**
      * <b>POSIX:</b>{@link SIGILL} Illegal operand.
      *
-     * @return the native symbolic constant of ILL_ILLADR.
      */
     @Define()
-    public final static native int ILL_ILLADR();
+    public final static int ILL_ILLADR;
 
     /**
      * <b>POSIX:</b>{@link SIGILL} Illegal trap.
      *
-     * @return the native symbolic constant of ILL_ILLTRP.
      */
     @Define()
-    public final static native int ILL_ILLTRP();
+    public final static int ILL_ILLTRP;
 
     /**
      * <b>POSIX:</b>{@link SIGILL} Privileged opcode.
      *
-     * @return the native symbolic constant of ILL_PRVOPC.
      */
     @Define()
-    public final static native int ILL_PRVOPC();
+    public final static int ILL_PRVOPC;
 
     /**
      * <b>POSIX:</b>{@link SIGILL} Privileged register.
      *
-     * @return the native symbolic constant of ILL_PRVREG.
      */
     @Define()
-    public final static native int ILL_PRVREG();
+    public final static int ILL_PRVREG;
 
     /**
      * <b>POSIX:</b>{@link SIGILL} Coprocessor error.
      *
-     * @return the native symbolic constant of ILL_COPROC.
      */
     @Define()
-    public final static native int ILL_COPROC();
+    public final static int ILL_COPROC;
 
     /**
      * <b>POSIX:</b>{@link SIGILL} Internal stack error.
      *
-     * @return the native symbolic constant of ILL_BADSTK.
      */
     @Define()
-    public final static native int ILL_BADSTK();
+    public final static int ILL_BADSTK;
 
     /**
      * <b>POSIX:</b>{@link SIGFPE} Integer divide by zero.
      *
-     * @return the native symbolic constant of FPE_INTDIV.
      */
     @Define()
-    public final static native int FPE_INTDIV();
+    public final static int FPE_INTDIV;
 
     /**
      * <b>POSIX:</b>{@link SIGFPE} Integer overflow.
      *
-     * @return the native symbolic constant of FPE_INTOVF.
      */
     @Define()
-    public final static native int FPE_INTOVF();
+    public final static int FPE_INTOVF;
 
     /**
      * <b>POSIX:</b>{@link SIGFPE} Floating -point divide by zero.
      *
-     * @return the native symbolic constant of FPE_FLTDIV.
      */
     @Define()
-    public final static native int FPE_FLTDIV();
+    public final static int FPE_FLTDIV;
 
     /**
      * <b>POSIX:</b>{@link SIGFPE} Floating-point overflow.
      *
-     * @return the native symbolic constant of FPE_FLTOVF.
      */
     @Define()
-    public final static native int FPE_FLTOVF();
+    public final static int FPE_FLTOVF;
 
     /**
      * <b>POSIX:</b>{@link SIGFPE} Floating-point underflow.
      *
-     * @return the native symbolic constant of FPE_FLTUND.
      */
     @Define()
-    public final static native int FPE_FLTUND();
+    public final static int FPE_FLTUND;
 
     /**
      * <b>POSIX:</b>{@link SIGFPE} Floating-point inexact result.
      *
-     * @return the native symbolic constant of FPE_FLTRES.
      */
     @Define()
-    public final static native int FPE_FLTRES();
+    public final static int FPE_FLTRES;
 
     /**
      * <b>POSIX:</b>{@link SIGFPE} Invalid floating-point operation.
      *
-     * @return the native symbolic constant of FPE_FLTINV.
      */
     @Define()
-    public final static native int FPE_FLTINV();
+    public final static int FPE_FLTINV;
 
     /**
      * <b>POSIX:</b>{@link SIGFPE} Subscript out of range.
      *
-     * @return the native symbolic constant of FPE_FLTSUB.
      */
     @Define()
-    public final static native int FPE_FLTSUB();
+    public final static int FPE_FLTSUB;
 
     /**
      * <b>POSIX:</b>{@link SIGSEGV} Address not mapped to object.
      *
-     * @return the native symbolic constant of SEGV_MAPERR.
      */
     @Define()
-    public final static native int SEGV_MAPERR();
+    public final static int SEGV_MAPERR;
 
     /**
      * <b>POSIX:</b>{@link SIGSEGV} Invalid permissions for mapped object.
      *
-     * @return the native symbolic constant of SEGV_ACCERR.
      */
     @Define()
-    public final static native int SEGV_ACCERR();
+    public final static int SEGV_ACCERR;
 
     /**
      * <b>POSIX:</b>{@link SIGBUS} Invalid address alignment.
      *
-     * @return the native symbolic constant of BUS_ADRALN.
      */
     @Define()
-
-    public final static native int BUS_ADRALN();
+    public final static int BUS_ADRALN;
 
     /**
      * <b>POSIX:</b>{@link SIGBUS} Nonexistent physical address.
      *
-     * @return the native symbolic constant of BUS_ADRERR.
      */
     @Define()
-    public final static native int BUS_ADRERR();
+    public final static int BUS_ADRERR;
 
     /**
      * <b>POSIX:</b>{@link SIGBUS} Object-specific hardware error.
      *
      *
-     * @return the native symbolic constant of BUS_OBJERR.
      */
     @Define()
-
-    public final static native int BUS_OBJERR();
+    public final static int BUS_OBJERR;
 
     /**
      * <b>POSIX:</b>{@link SIGTRAP} Process breakpoint.
      *
-     * @return the native symbolic constant of TRAP_BRKPT.
      */
     @Define()
-
-    public final static native int TRAP_BRKPT();
+    public final static int TRAP_BRKPT;
 
     /**
      * <b>POSIX:</b>{@link SIGTRAP} Process trace trap.
      *
-     * @return the native symbolic constant of TRAP_TRACE.
      */
     @Define()
-    public final static native int TRAP_TRACE();
+    public final static int TRAP_TRACE;
 
     /**
      * <b>POSIX:</b>{@link SIGCHLD} Child has exited.
      *
-     * @return the native symbolic constant of CLD_EXITED.
      */
     @Define()
-
-    public final static native int CLD_EXITED();
+    public final static int CLD_EXITED;
 
     /**
      * <b>POSIX:</b>{@link SIGCHLD} Child has terminated abnormally and did not
      * create a core file.
      *
-     *
-     * @return the native symbolic constant of CLD_KILLED.
      */
     @Define()
-
-    public final static native int CLD_KILLED();
+    public final static int CLD_KILLED;
 
     /**
      * <b>POSIX:</b>{@link SIGCHLD} Child has terminated abnormally and created
      * a core file.
      *
-     *
-     * @return the native symbolic constant of CLD_DUMPED.
      */
     @Define()
-
-    public final static native int CLD_DUMPED();
+    public final static int CLD_DUMPED;
 
     /**
      * <b>POSIX:</b>{@link SIGCHLD} Traced child has trapped.
      *
-     *
-     * @return the native symbolic constant of CLD_TRAPPED.
      */
     @Define()
-
-    public final static native int CLD_TRAPPED();
+    public final static int CLD_TRAPPED;
 
     /**
      * <b>POSIX:</b>{@link SIGCHLD} Child has stopped.
      *
-     * @return the native symbolic constant of CLD_STOPPED.
      */
     @Define()
-
-    public final static native int CLD_STOPPED();
+    public final static int CLD_STOPPED;
 
     /**
      * <b>POSIX:</b>{@link SIGCHLD} Stopped child has continued.
      *
-     * @return the native symbolic constant of CLD_CONTINUED.
      */
     @Define()
-    public final static native int CLD_CONTINUED();
+    public final static int CLD_CONTINUED;
 
     /**
      * <b>POSIX:</b>{@link SIGPOLL} Data input available.
      *
-     * @return the native symbolic constant of POLL_IN.
-     * @throws NotDefinedException if POLL_IN is not defined natively.
      */
     @Define()
-    public final static native int POLL_IN() throws NotDefinedException;
+    public final static IntDefine POLL_IN;
 
     /**
      * <b>POSIX:</b>{@link SIGPOLL} Output buffers available.
      *
      *
-     * @return the native symbolic constant of POLL_OUT.
-     * @throws NotDefinedException if POLL_OUT is not defined natively.
      */
     @Define()
-    public final static native int POLL_OUT() throws NotDefinedException;
+    public final static IntDefine POLL_OUT;
 
     /**
      * <b>POSIX:</b>{@link SIGPOLL} Input message available.
      *
      *
-     * @return the native symbolic constant of POLL_MSG.
-     * @throws NotDefinedException if POLL_MSG is not defined natively.
      */
     @Define()
-    public final static native int POLL_MSG() throws NotDefinedException;
+    public final static IntDefine POLL_MSG;
 
     /**
      * <b>POSIX:</b>{@link SIGPOLL} I/O error.
      *
-     *
-     * @return the native symbolic constant of POLL_ERR.
-     * @throws NotDefinedException if POLL_ERR is not defined natively.
      */
     @Define()
-    public final static native int POLL_ERR() throws NotDefinedException;
+    public final static IntDefine POLL_ERR;
 
     /**
      * <b>POSIX:</b>{@link SIGPOLL} High priority input available.
      *
-     * @return the native symbolic constant of POLL_PRI.
-     * @throws NotDefinedException if POLL_PRI is not defined natively.
      */
     @Define()
-    public final static native int POLL_PRI() throws NotDefinedException;
+    public final static IntDefine POLL_PRI;
 
     /**
      * <b>POSIX:</b>{@link SIGPOLL} Device disconnected.
      *
-     * @return the native symbolic constant of POLL_HUP.
-     * @throws NotDefinedException if POLL_HUP is not defined natively.
      */
     @Define()
-    public final static native int POLL_HUP() throws NotDefinedException;
+    public final static IntDefine POLL_HUP;
 
     /**
      * <b>POSIX:</b> Signal sent by kill().
      *
-     * @return the native symbolic constant of SI_USER.
      */
     @Define()
-
-    public final static native int SI_USER();
+    public final static int SI_USER;
 
     /**
      * <b>POSIX:</b> Signal sent by sigqueue().
      *
-     * @return the native symbolic constant of SI_QUEUE.
      */
     @Define()
-    public final static native int SI_QUEUE();
+    public final static int SI_QUEUE;
 
     /**
      * <b>POSIX:</b> Signal generated by expiration of a timer set by
      * timer_settime().
      *
-     * @return the native symbolic constant of SI_TIMER.
      */
     @Define()
-    public final static native int SI_TIMER();
+    public final static int SI_TIMER;
 
     /**
      * <b>POSIX:</b> Signal generated by completion of an asynchronous I/O
      * request.
      *
-     * @return the native symbolic constant of SI_ASYNCIO.
-     * @throws NotDefinedException if SI_ASYNCIO is not defined natively.
      */
     @Define()
-    public final static native int SI_ASYNCIO() throws NotDefinedException;
+    public final static IntDefine SI_ASYNCIO;
 
     /**
      * <b>POSIX:</b> Signal generated by arrival of a message on an empty
      * message.
      *
-     * @return the native symbolic constant of SI_MESGQ.
-     * @throws NotDefinedException if SI_MESGQ is not defined natively.
      */
     @Define()
-    public final static native int SI_MESGQ() throws NotDefinedException;
+    public final static IntDefine SI_MESGQ;
 
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/kill.html">kill
      * - send a signal to a process or a group of processes</a>.
-     *
      *
      * @param pid the pid to which the signal is send.
      * @param sig the signal to send.
@@ -2231,7 +2176,7 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native CallNative_I_V signal(int sig, FunctionPtr_I_V func) throws NativeErrorException;
+    public final static native FunctionPtr_I_V signal(int sig, FunctionPtr_I_V func) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2305,7 +2250,7 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigset is not available
      * natively.
      *///TODO args missing ....
-    public final static native CallNative_I_V sigset(int sig, FunctionPtr_I_V disp) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static native FunctionPtr_I_V sigset(int sig, FunctionPtr_I_V disp) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>

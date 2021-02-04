@@ -29,7 +29,7 @@ extern "C" {
 
 #ifdef _POSIX_VERSION
 #include <signal.h>
-//for offsetof
+    //for offsetof
 #include <stddef.h>
 #include <stdint.h>
 
@@ -86,11 +86,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
      * Method:    sa_handler
-     * Signature: ()LLde/ibapl/jnhw/common/callnative/CallNative_I_V;
+     * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler
     (JNIEnv *env, jobject structSigaction) {
-        return CREATE_CALL_NATIVE_I_V((uintptr_t) (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_handler);
+        return CREATE_FunctionPtr_I_V((uintptr_t) (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_handler);
     }
 
     /*
@@ -100,7 +100,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler0
     (JNIEnv *env, jobject structSigaction, jobject value) {
-        (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_handler = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (jint), value);
+        (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_handler = UNWRAP_NativeFunctionPointer_TO(void (*) (jint), value);
     }
 
     /*
@@ -110,17 +110,17 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction0
     (JNIEnv *env, jobject structSigaction, jobject value) {
-        (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (jint, siginfo_t *, void *), value);
+        (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction = UNWRAP_NativeFunctionPointer_TO(void (*) (jint, siginfo_t *, void *), value);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
      * Method:    sa_sigaction
-     * Signature: ()Lde/ibapl/jnhw/common/nativecall/CallNative_I_MEM_MEM_V;
+     * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_Mem_Mem_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction
     (JNIEnv *env, jobject structSigaction) {
-        return CREATE_CALL_NATIVE_I_MEM_MEM_V((uintptr_t) (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction);
+        return CREATE_FunctionPtr_I_Mem_Mem_V((uintptr_t) (UNWRAP_STRUCT_SIGACTION_PTR(structSigaction))->sa_sigaction);
     }
 
 #endif    

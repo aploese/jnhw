@@ -23,5 +23,5 @@ module de.ibapl.jnhw.it.hello_world {
     requires de.ibapl.jnhw.posix;
     requires com.sun.jna;
     requires org.jnrproject.ffi;
-    
+
 }

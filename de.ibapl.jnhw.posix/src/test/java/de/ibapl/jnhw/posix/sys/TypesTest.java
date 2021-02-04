@@ -22,7 +22,6 @@
 package de.ibapl.jnhw.posix.sys;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
-import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.util.posix.Defines;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -83,7 +82,7 @@ public class TypesTest {
             assertThrows(IllegalArgumentException.class, () -> instance.setValue(0x00010000));
             assertThrows(IllegalArgumentException.class, () -> instance.setValue(-1));
         } else if (Types.Mode_t.sizeof() == 4) {
-            if (Defined.defined(Defines::__LP64__)) {
+            if (Defines.__LP64__.isDefined()) {
                 Assertions.assertEquals(8, Types.Size_t.alignof());
             } else {
                 Assertions.assertEquals(4, Types.Size_t.alignof());

@@ -32,7 +32,7 @@ extern "C" {
 #include <errno.h>
 #include <stdio.h>
 
-JNHW_ASSERT__pid_t__IS__int32_t
+    JNHW_ASSERT__pid_t__IS__int32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
@@ -110,7 +110,7 @@ JNHW_ASSERT__pid_t__IS__int32_t
         }
         errno = 0;
 #if defined(__APPLE__) || defined(__OpenBSD__)
-        psignal((uint32_t)signo, _message);
+        psignal((uint32_t) signo, _message);
 #else
         psignal(signo, _message);
 #endif
@@ -334,7 +334,7 @@ JNHW_ASSERT__pid_t__IS__int32_t
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    signal
-     * Signature: (ILde/ibapl/jnhw/common/callnative/CallNative_I_V;)Lde/ibapl/jnhw/common/callnative/CallNative_I_V;
+     * Signature: (ILde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;)Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint sig, jobject func) {
@@ -342,13 +342,13 @@ JNHW_ASSERT__pid_t__IS__int32_t
         if (func == NULL) {
             result = signal(sig, NULL);
         } else {
-            result = signal(sig, UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (jint), func));
+            result = signal(sig, UNWRAP_NativeFunctionPointer_TO(void (*) (jint), func));
         }
         if (result == SIG_ERR) {
             throw_NativeErrorException(env, errno);
             return NULL;
         }
-        return CREATE_CALL_NATIVE_I_V(result);
+        return CREATE_FunctionPtr_I_V(result);
     }
 
     /*
@@ -443,10 +443,10 @@ JNHW_ASSERT__pid_t__IS__int32_t
 #endif
     }
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    sigset
-     * Signature: (ILde/ibapl/jnhw/common/callnative/CallNative_I_V;)Lde/ibapl/jnhw/common/callnative/CallNative_I_V;
+     * Signature: (ILde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;)Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_sigset
 #if defined(__OpenBSD__)
@@ -459,13 +459,13 @@ JNHW_ASSERT__pid_t__IS__int32_t
         if (disp == NULL) {
             result = sigset(sig, NULL);
         } else {
-            result = sigset(sig, UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (jint), disp));
+            result = sigset(sig, UNWRAP_NativeFunctionPointer_TO(void (*) (jint), disp));
         }
         if (result == SIG_ERR) {
             throw_NativeErrorException(env, errno);
             return NULL;
         }
-        return CREATE_CALL_NATIVE_I_V(result);
+        return CREATE_FunctionPtr_I_V(result);
 #endif
     }
 

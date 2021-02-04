@@ -50,9 +50,9 @@ extern "C" {
                 UNWRAP_LPOVERLAPPED(lpOverlapped),
                 &lpNumberOfBytesTransferred,
                 bWait)) {
-            return (int32_t)lpNumberOfBytesTransferred;
+            return (int32_t) lpNumberOfBytesTransferred;
         } else {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
             return -1;
         }
     }
@@ -75,7 +75,7 @@ extern "C" {
 
         if (!CancelIoEx(UNWRAP_HANDLE(hFile),
                 UNWRAP_LPOVERLAPPED(lpOverlapped))) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 
@@ -91,7 +91,7 @@ extern "C" {
             return;
         }
         if (!CancelIo(UNWRAP_HANDLE(hFile))) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 

@@ -58,7 +58,7 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
         //on 32bit it must not be negative
-        return (int64_t)(uintptr_t) result;
+        return (int64_t) (uintptr_t) result;
     }
 
     /*
@@ -85,7 +85,7 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
         //on 32bit it must not be negative
-        return (int64_t)(uintptr_t) result;
+        return (int64_t) (uintptr_t) result;
     }
 
     /*
@@ -108,7 +108,7 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
         //on 32bit it must not be negative
-        return (int64_t)(uintptr_t) result;
+        return (int64_t) (uintptr_t) result;
     }
 
     /*
@@ -143,7 +143,7 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
         //on 32bit it must not be negative
-        return (int64_t)(uintptr_t) result;
+        return (int64_t) (uintptr_t) result;
     }
 
 

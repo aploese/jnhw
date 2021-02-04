@@ -39,12 +39,24 @@ public class StringHeader {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_STRING_H = false;
+
+        initFields();
     }
 
-    public final static native boolean HAVE_STRING_H();
+    private static native void initFields();
+
+    public final static boolean HAVE_STRING_H;
 
     /**
      * <b>POSIX:</b>
@@ -58,7 +70,8 @@ public class StringHeader {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strerror_l.html">strerror,
      * strerror_l, strerror_r - get error message string</a>.
      *
-     * @throws NoSuchNativeMethodException if the method strerror_l is not available natively.
+     * @throws NoSuchNativeMethodException if the method strerror_l is not
+     * available natively.
      */
     public final static native String strerror_l(int errnum, Locale.Locale_t locale) throws NoSuchNativeMethodException;
 

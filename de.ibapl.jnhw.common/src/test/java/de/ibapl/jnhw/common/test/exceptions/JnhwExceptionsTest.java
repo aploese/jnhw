@@ -25,7 +25,6 @@ import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -38,8 +37,6 @@ import org.junit.jupiter.api.Test;
 public class JnhwExceptionsTest {
 
     private static native void throwNativeErrorException(int errno) throws NativeErrorException;
-
-    private static native void throwNotDefinedException() throws NotDefinedException;
 
     private static native void throwNoSuchNativeMethodException() throws NoSuchNativeMethodException;
 
@@ -74,14 +71,6 @@ public class JnhwExceptionsTest {
         });
         Assertions.assertEquals(1, ex.errno);
         Assertions.assertEquals("Native error: 1", ex.getMessage());
-    }
-
-    @Test
-    public void testThrowNotDefinedException() {
-        var ex = Assertions.assertThrows(NotDefinedException.class, () -> {
-            throwNotDefinedException();
-        });
-        Assertions.assertEquals("TEST_DEFINE", ex.getMessage());
     }
 
     @Test

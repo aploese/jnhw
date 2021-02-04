@@ -22,7 +22,6 @@
 package de.ibapl.jnhw.it.hello_world_async_io;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.references.IntRef;
@@ -30,11 +29,6 @@ import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.winapi.Fileapi;
 //Import only the needed define from the wrapper of processenv.h
-import static de.ibapl.jnhw.winapi.Winbase.STD_OUTPUT_HANDLE;
-//Import only the needed method from the wrapper of processenv.h
-import static de.ibapl.jnhw.winapi.ProcessEnv.GetStdHandle;
-//Import only the needed method from the wrapper of fileapi.h
-import static de.ibapl.jnhw.winapi.Fileapi.WriteFile;
 import de.ibapl.jnhw.winapi.Handleapi;
 import de.ibapl.jnhw.winapi.IoAPI;
 import de.ibapl.jnhw.winapi.Minwinbase;
@@ -48,11 +42,11 @@ public class Windows {
     public static void aio(File file, OpaqueMemory32 aioBuffer, final boolean debug) throws NativeErrorException, IOException {
 
         Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
-                Winnt.GENERIC_WRITE(),
+                Winnt.GENERIC_WRITE,
                 0,
                 null,
-                Fileapi.OPEN_EXISTING(),
-                Winbase.FILE_FLAG_OVERLAPPED(),
+                Fileapi.OPEN_EXISTING,
+                Winbase.FILE_FLAG_OVERLAPPED,
                 null);
 
         final Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
@@ -77,11 +71,11 @@ public class Windows {
         Handleapi.CloseHandle(hFile);
 
         hFile = Fileapi.CreateFileW(file,
-                Winnt.GENERIC_READ(),
+                Winnt.GENERIC_READ,
                 0,
                 null,
-                Fileapi.OPEN_EXISTING(),
-                Winbase.FILE_FLAG_OVERLAPPED(),
+                Fileapi.OPEN_EXISTING,
+                Winbase.FILE_FLAG_OVERLAPPED,
                 null);
         hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
@@ -103,7 +97,7 @@ public class Windows {
         for (int i = 0; i < aioBuffer.sizeInBytes; i++) {
             sb.append((char) OpaqueMemory32.getByte(aioBuffer, i));
         }
-        
+
         System.out.println(sb.toString());
     }
 

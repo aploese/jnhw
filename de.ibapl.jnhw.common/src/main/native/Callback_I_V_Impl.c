@@ -52,7 +52,7 @@ extern "C" {
         if (Callback_Class == NULL) {
             return;
         }
-        trampoline_ID = getStaticMethodIdOfClassRef(env, Callback_Class, "trampoline", "(II)V");
+        trampoline_ID = (*env)->GetStaticMethodID(env, Callback_Class, "trampoline", "(II)V");
         if (trampoline_ID == NULL) {
             return;
         }
@@ -90,7 +90,7 @@ extern "C" {
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1I_1V_1Impl_getNativeAddress
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
         switch (index) {
-#define TRAMPOLINE_CASE(index) case index: return CREATE_NATIVE_ADDRESS_HOLDER(&_jnhw_trampoline_I_V__ ## index);
+#define TRAMPOLINE_CASE(index) case index: return CREATE_NativeAddressHolder(&_jnhw_trampoline_I_V__ ## index);
                 TRAMPOLINE_CASE(0);
                 TRAMPOLINE_CASE(1);
                 TRAMPOLINE_CASE(2);

@@ -34,4 +34,5 @@ import java.lang.annotation.Target;
  */
 @Retention(value = RetentionPolicy.SOURCE)
 @Target(value = {ElementType.TYPE})
-public @interface pthread_attr_t {}
+public @interface pthread_attr_t {
+}

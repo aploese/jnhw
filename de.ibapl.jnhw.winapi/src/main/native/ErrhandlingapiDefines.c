@@ -26,22 +26,33 @@
 extern "C" {
 #endif
 
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Errhandelingapi
-     * Method:    HAVE_ERRHANDLINGAPI_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Errhandlingapi_HAVE_1ERRHANDLINGAPI_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_ERRHANDLINGAPI_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
-    }
 
-#ifdef HAVE_ERRHANDLINGAPI_H
+#ifndef HAVE_ERRHANDLINGAPI_H
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Errhandlingapi
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Errhandlingapi_initFields
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    }
+#else    
 #include <errhandlingapi.h>
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Errhandlingapi
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Errhandlingapi_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_ERRHANDLINGAPI_H", JNI_TRUE)) {
+            return;
+        }
+
+    }
 
 
 #endif

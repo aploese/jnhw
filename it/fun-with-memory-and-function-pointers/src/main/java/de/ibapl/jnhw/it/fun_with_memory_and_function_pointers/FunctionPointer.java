@@ -46,21 +46,21 @@ public class FunctionPointer {
             }
         };
         System.out.println("cb: " + cb.toString());
-        
+
         //get the native address and encapsulate it in an NativeAddressHolder..
         NativeAddressHolder nah = NativeFunctionPointer.toNativeAddressHolder(cb);
         System.out.println("nah: " + nah.toString());
         CallNative_I_V cn = new CallNative_I_V(nah);
         System.out.println("cn: " + cn.toString());
-        
+
         System.out.println("Do the call!>>>");
         cn.call(42);
         System.out.println("<<<Done!");
-        
+
         //both can be interchangeable used ... in struct members or function calls
         FunctionPtr_I_V ptr_cb = cb;
         FunctionPtr_I_V ptr_cn = cn;
-        
+
     }
-    
+
 }

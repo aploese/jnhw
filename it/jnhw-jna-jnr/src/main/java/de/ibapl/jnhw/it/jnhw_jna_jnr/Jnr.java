@@ -53,7 +53,7 @@ public class Jnr {
     static jnr.ffi.Runtime runtime = jnr.ffi.Runtime.getRuntime(libc);
 
     public static void runFullTest(final int count) {
-        final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC();
+        final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC;
 
         for (int i = 0; i < count; i++) {
             Timespec timespec = new Timespec(runtime);
@@ -75,7 +75,7 @@ public class Jnr {
     }
 
     public static void clock_gettime(final int count) {
-        final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC();
+        final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC;
         final Timespec timespec = new Timespec(runtime);
         for (int i = 0; i < count; i++) {
             libc.clock_gettime(CLOCK_MONOTONIC, timespec);

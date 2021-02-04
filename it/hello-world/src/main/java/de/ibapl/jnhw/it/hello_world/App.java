@@ -28,12 +28,11 @@ import de.ibapl.jnhw.libloader.OS;
  * Hello world!
  *
  */
-public class App 
-{
-    public static void main( String[] args ) throws Exception
-    {
-        MultiarchTupelBuilder mtb =  new MultiarchTupelBuilder();
-        if (mtb.getOS()== OS.WINDOWS) {
+public class App {
+
+    public static void main(String[] args) throws Exception {
+        MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
+        if (mtb.getOS() == OS.WINDOWS) {
             Windows.sayHello();
         } else {
             Posix.sayHello();

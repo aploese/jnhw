@@ -25,7 +25,6 @@
 #include <stdarg.h>
 
 #define NATIVE_ERROR_EXCEPTION "de/ibapl/jnhw/common/exception/NativeErrorException"
-#define NOT_DEFINED_EXCEPTION "de/ibapl/jnhw/common/exception/NotDefinedException"
 #define NO_SUCH_NATIVE_METHOD_EXCEPTION "de/ibapl/jnhw/common/exception/NoSuchNativeMethodException"
 #define NO_SUCH_NATIVE_TYPE_EXCEPTION "de/ibapl/jnhw/common/exception/NoSuchNativeTypeException"
 #define NO_SUCH_NATIVE_TYPE_MEMBER_EXCEPTION "de/ibapl/jnhw/common/exception/NoSuchNativeTypeMemberException"
@@ -44,7 +43,6 @@ extern "C" {
     static jclass NativeErrorExceptionClass = NULL;
     static jmethodID NativeErrorException_Init_ID = NULL;
 
-    static jclass NotDefinedExceptionClass = NULL;
     static jclass NoSuchNativeMethodExceptionClass = NULL;
     static jclass NoSuchNativeTypeExceptionClass = NULL;
     static jclass NoSuchNativeTypeMemberExceptionClass = NULL;
@@ -63,14 +61,8 @@ extern "C" {
             }
         }
         if (NativeErrorException_Init_ID == NULL) {
-            NativeErrorException_Init_ID = getMethodIdOfClassRef(env, NativeErrorExceptionClass, "<init>", "(I)V");
+            NativeErrorException_Init_ID = (*env)->GetMethodID(env, NativeErrorExceptionClass, "<init>", "(I)V");
             if (NativeErrorException_Init_ID == NULL) {
-                return JNI_FALSE;
-            }
-        }
-        if (NotDefinedExceptionClass == NULL) {
-            NotDefinedExceptionClass = getGlobalClassRef(env, NOT_DEFINED_EXCEPTION);
-            if (NotDefinedExceptionClass == NULL) {
                 return JNI_FALSE;
             }
         }
@@ -80,7 +72,7 @@ extern "C" {
                 return JNI_FALSE;
             }
         }
-        
+
         if (NoSuchNativeTypeExceptionClass == NULL) {
             NoSuchNativeTypeExceptionClass = getGlobalClassRef(env, NO_SUCH_NATIVE_TYPE_EXCEPTION);
             if (NoSuchNativeTypeExceptionClass == NULL) {
@@ -96,7 +88,7 @@ extern "C" {
         }
 
         if (NoSuchNativeTypeMemberException_Init_ID == NULL) {
-            NoSuchNativeTypeMemberException_Init_ID = getMethodIdOfClassRef(env, NoSuchNativeTypeMemberExceptionClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
+            NoSuchNativeTypeMemberException_Init_ID = (*env)->GetMethodID(env, NoSuchNativeTypeMemberExceptionClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
             if (NoSuchNativeTypeMemberException_Init_ID == NULL) {
                 return JNI_FALSE;
             }
@@ -140,7 +132,6 @@ extern "C" {
 
     void releaseExceptions(JNIEnv* env) {
         deleteGlobalRef(env, &NativeErrorExceptionClass);
-        deleteGlobalRef(env, &NotDefinedExceptionClass);
         deleteGlobalRef(env, &NoSuchNativeMethodExceptionClass);
         deleteGlobalRef(env, &NoSuchNativeTypeExceptionClass);
         deleteGlobalRef(env, &NoSuchNativeTypeMemberExceptionClass);
@@ -149,10 +140,6 @@ extern "C" {
         deleteGlobalRef(env, &ArrayIndexOutOfBoundsExceptionClass);
         deleteGlobalRef(env, &IllegalArgumentExceptionClass);
         deleteGlobalRef(env, &RuntimeExceptionClass);
-    }
-
-    JNIEXPORT void JNICALL throw_NotDefinedException(JNIEnv* env, const char* defineName) {
-        (*env)->ThrowNew(env, NotDefinedExceptionClass, defineName);
     }
 
     JNIEXPORT void JNICALL throw_NoSuchNativeMethodException(JNIEnv* env, const char* methodName) {

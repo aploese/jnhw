@@ -43,7 +43,13 @@ public final class Ioapiset {
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_IOAPISET_H = false;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-cancelio">CancelIo</a>
@@ -89,7 +95,8 @@ public final class Ioapiset {
      *
      * @return lpNumberOfBytesTransferred of the native call.
      *
-     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is {@code null}.
+     * @throws NullPointerException if hFile or lpBuffer or lpOverlapped is
+     * {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -117,7 +124,8 @@ public final class Ioapiset {
      *
      * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
-     * @throws ArrayIndexOutOfBoundsException if pos and len are outside of lpBuffer.
+     * @throws ArrayIndexOutOfBoundsException if pos and len are outside of
+     * lpBuffer.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -128,6 +136,6 @@ public final class Ioapiset {
         return numberOfBytesTransferred;
     }
 
-    public final static native boolean HAVE_IOAPISET_H();
+    public final static boolean HAVE_IOAPISET_H;
 
 }

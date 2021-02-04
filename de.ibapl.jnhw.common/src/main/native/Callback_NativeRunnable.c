@@ -47,7 +47,7 @@ extern "C" {
         if (NativeRunnable_Class == NULL) {
             return;
         }
-        callback_ID = getMethodIdOfClassRef(env, NativeRunnable_Class, "callback", "()V");
+        callback_ID = (*env)->GetMethodID(env, NativeRunnable_Class, "callback", "()V");
         if (callback_ID == NULL) {
             return;
         }
@@ -57,7 +57,7 @@ extern "C" {
         JNIEnv *env;
         (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL);
         //Do not check with instanceof for NativeRunnable it may be to slow ...    
-        (*env)->CallVoidMethod(env, *(jobject*)ptr_a, callback_ID);
+        (*env)->CallVoidMethod(env, *(jobject*) ptr_a, callback_ID);
         (*jvm)->DetachCurrentThread(jvm);
     }
 
@@ -68,7 +68,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1NativeRunnable_aquire
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return CREATE_NATIVE_ADDRESS_HOLDER(&_jnhw_callback_NativeRunnable_V__);
+        return CREATE_NativeAddressHolder(&_jnhw_callback_NativeRunnable_V__);
     }
 
 #ifdef __cplusplus

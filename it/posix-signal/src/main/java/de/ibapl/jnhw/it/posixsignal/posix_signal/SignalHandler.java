@@ -59,7 +59,6 @@ public abstract class SignalHandler {
         this.signalAction = signalAction;
     }
 
-
     void raiseSignal() {
         signalHandled = false;
         switch (threadingModel) {
@@ -119,7 +118,7 @@ public abstract class SignalHandler {
     }
 
     void forceSignal() {
-        if (signalToRaise != Signal.SIGSEGV()) {
+        if (signalToRaise != Signal.SIGSEGV) {
             throw new IllegalStateException("Can only force SIGSEGEV!");
         }
 

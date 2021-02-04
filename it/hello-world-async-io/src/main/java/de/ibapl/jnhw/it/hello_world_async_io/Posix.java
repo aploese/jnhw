@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.callback.NativeRunnable;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.util.OutputStreamAppender;
@@ -87,12 +86,15 @@ public class Posix {
         }
     }
 
-    public void aio(File file, OpaqueMemory32 aioBuffer) throws NativeErrorException, NoSuchNativeMethodException, NoSuchNativeTypeException, NotDefinedException, IOException, InterruptedException {
+    public void aio(File file, OpaqueMemory32 aioBuffer) throws NativeErrorException, NoSuchNativeMethodException, NoSuchNativeTypeException, IOException, InterruptedException {
         debugThread("Write/Read in thread: ");
 
-        aiocb.aio_fildes(Fcntl.open(file.getAbsolutePath(), Fcntl.O_RDWR()));
+        aiocb.aio_fildes(Fcntl.open(file.getAbsolutePath(), Fcntl.O_RDWR));
         aiocb.aio_buf(aioBuffer);
-        aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD());
+        if (!Signal.SIGEV_THREAD.isDefined()) {
+            throw new RuntimeException("Not defined Signal.SIGEV_THREAD!");
+        }
+        aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD.get());
         aiocb.aio_sigevent.sigev_notify_function(Callback_NativeRunnable.INSTANCE);
         aiocb.aio_sigevent.sigev_value.sival_ptr(callback);
 
@@ -153,40 +155,41 @@ public class Posix {
 
     private void debug(String msg) {
         if (isDebug) {
-        System.out.println(msg);
-        System.out.flush();
+            System.out.println(msg);
+            System.out.flush();
         }
     }
-    
+
     private void debugThread(String msg) {
         if (isDebug) {
-        System.out.append(msg).append(" thread: ").append(Thread.currentThread().toString()).append(" pthread_t: ").println(Pthread.pthread_self().nativeToString());
-        System.out.flush();
-        }    }
+            System.out.append(msg).append(" thread: ").append(Thread.currentThread().toString()).append(" pthread_t: ").println(Pthread.pthread_self().nativeToString());
+            System.out.flush();
+        }
+    }
 
     private void debugAiocb(OpaqueMemory32 aioBuffer) {
         if (isDebug) {
-        try {
-            OutputStreamAppender osa = new OutputStreamAppender(System.out);
-            osa.append("data to write:>>>\n");
-            aioBuffer.nativeToString(osa, "", " ");
-            osa.append("<<<\n");
-            osa.append("aiocb : ");
-            aiocb.nativeToString(osa, "", " ");
-            osa.append("\n");
-            final Pthread.Pthread_attr_t sigev_notify_attributes = aiocb.aio_sigevent.sigev_notify_attributes((address, parent) -> new Pthread.Pthread_attr_t(address));
-            if (sigev_notify_attributes != null) {
-                osa.append("aiocb.aio_sigevent.sigev_notify_attributes : ");
-                sigev_notify_attributes.nativeToString(osa, "", " ");
+            try {
+                OutputStreamAppender osa = new OutputStreamAppender(System.out);
+                osa.append("data to write:>>>\n");
+                aioBuffer.nativeToString(osa, "", " ");
+                osa.append("<<<\n");
+                osa.append("aiocb : ");
+                aiocb.nativeToString(osa, "", " ");
                 osa.append("\n");
+                final Pthread.Pthread_attr_t sigev_notify_attributes = aiocb.aio_sigevent.sigev_notify_attributes((address, parent) -> new Pthread.Pthread_attr_t(address));
+                if (sigev_notify_attributes != null) {
+                    osa.append("aiocb.aio_sigevent.sigev_notify_attributes : ");
+                    sigev_notify_attributes.nativeToString(osa, "", " ");
+                    osa.append("\n");
+                }
+                osa.append("native callback same address as aiocb.aio_sigevent.sigev_notify_function: ");
+                Callback_NativeRunnable.INSTANCE.nativeToString(osa, "", " ");
+                osa.append("\n");
+                System.out.flush();
+            } catch (IOException | NoSuchNativeTypeException e) {
+                throw new RuntimeException(e);
             }
-            osa.append("native callback same address as aiocb.aio_sigevent.sigev_notify_function: ");
-            Callback_NativeRunnable.INSTANCE.nativeToString(osa, "", " ");
-            osa.append("\n");
-            System.out.flush();
-        } catch (IOException | NoSuchNativeTypeException e) {
-            throw new RuntimeException(e);
-        }
         }
     }
 

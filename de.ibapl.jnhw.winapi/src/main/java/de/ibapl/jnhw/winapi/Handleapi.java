@@ -40,14 +40,28 @@ public abstract class Handleapi {
     /**
      * cached instance.
      */
-    private static HANDLE INVALID_HANDLE_VALUE;
+    public final static HANDLE INVALID_HANDLE_VALUE;
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_HANDLEAPI_H = false;
+
+        INVALID_HANDLE_VALUE = null;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-closehandle">CloseHandle</a>
@@ -62,20 +76,6 @@ public abstract class Handleapi {
      */
     public final native static void CloseHandle(HANDLE hObject) throws NativeErrorException;
 
-    public final static native boolean HAVE_HANDLEAPI_H();
-
-    /**
-     *
-     * @return the native symbolic constant of INVALID_HANDLE_VALUE as singleton.
-     */
-    @Define
-    public final static HANDLE INVALID_HANDLE_VALUE() {
-        if (INVALID_HANDLE_VALUE == null) {
-            INVALID_HANDLE_VALUE = create_INVALID_HANDLE_VALUE();
-        }
-        return INVALID_HANDLE_VALUE;
-    }
-
-    private final static native HANDLE create_INVALID_HANDLE_VALUE();
+    public final static boolean HAVE_HANDLEAPI_H;
 
 }

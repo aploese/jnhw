@@ -25,11 +25,11 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.annontation.posix.sys.types.mode_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.off64_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.off_t;
+import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -50,263 +50,298 @@ public final class Fcntl {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_FCNTL_H = false;
+
+        AT_EACCESS = 0;
+        AT_FDCWD = 0;
+        AT_REMOVEDIR = 0;
+        AT_SYMLINK_FOLLOW = 0;
+        AT_SYMLINK_NOFOLLOW = 0;
+
+        FD_CLOEXEC = 0;
+
+        F_DUPFD = 0;
+        F_DUPFD_CLOEXEC = 0;
+        F_GETFD = 0;
+        F_GETFL = 0;
+        F_GETLK = 0;
+        F_GETOWN = 0;
+        F_RDLCK = 0;
+        F_SETFD = 0;
+        F_SETFL = 0;
+        F_SETLK = 0;
+        F_SETLKW = 0;
+        F_SETOWN = 0;
+        F_UNLCK = 0;
+        F_WRLCK = 0;
+
+        O_ACCMODE = 0;
+        O_APPEND = 0;
+        O_ASYNC = IntDefine.UNDEFINED;
+        O_CLOEXEC = 0;
+        O_CREAT = 0;
+        O_DIRECTORY = 0;
+        O_DSYNC = IntDefine.UNDEFINED;
+        O_EXCL = 0;
+        O_EXEC = IntDefine.UNDEFINED;
+        O_FSYNC = IntDefine.UNDEFINED;
+        O_LARGEFILE = IntDefine.UNDEFINED;
+        O_NOCTTY = 0;
+        O_NOFOLLOW = 0;
+        O_NONBLOCK = 0;
+        O_RDONLY = 0;
+        O_RDWR = 0;
+        O_RSYNC = IntDefine.UNDEFINED;
+        O_SEARCH = IntDefine.UNDEFINED;
+        O_SYNC = 0;
+        O_TRUNC = 0;
+        O_TTY_INIT = IntDefine.UNDEFINED;
+        O_WRONLY = 0;
+
+        POSIX_FADV_DONTNEED = IntDefine.UNDEFINED;
+        POSIX_FADV_NOREUSE = IntDefine.UNDEFINED;
+        POSIX_FADV_NORMAL = IntDefine.UNDEFINED;
+        POSIX_FADV_RANDOM = IntDefine.UNDEFINED;
+        POSIX_FADV_SEQUENTIAL = IntDefine.UNDEFINED;
+        POSIX_FADV_WILLNEED = IntDefine.UNDEFINED;
+
+        SEEK_CUR = 0;
+        SEEK_END = 0;
+        SEEK_SET = 0;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <b>POSIX:</b> Check access using effective user and group ID.
      *
-     * @return the native symbolic constant of AT_AT_EACCESS.
      */
     @Define
-    public final static native int AT_EACCESS();
+    public final static int AT_EACCESS;
 
     /**
      * <b>POSIX:</b> Use the current working directory to determine the target.
      * of relative file paths.
      *
-     * @return the native symbolic constant of AT_FDCWD.
      */
     @Define
-    public final static native int AT_FDCWD();
+    public final static int AT_FDCWD;
 
     /**
      * <b>POSIX:</b> Remove directory instead of file.
      *
-     * @return the native symbolic constant of AT_REMOVEDIR.
      */
     @Define
-    public final static native int AT_REMOVEDIR();
+    public final static int AT_REMOVEDIR;
 
     /**
      * <b>POSIX:</b> Follow symbolic link.
      *
-     * @return the native symbolic constant of AT_SYMLINK_FOLLOW.
      */
     @Define
-    public final static native int AT_SYMLINK_FOLLOW();
+    public final static int AT_SYMLINK_FOLLOW;
 
     /**
      * <b>POSIX:</b> Do not follow symbolic links.
      *
-     * @return the native symbolic constant of AT_SYMLINK_NOFOLLOW.
      */
     @Define
-    public final static native int AT_SYMLINK_NOFOLLOW();
+    public final static int AT_SYMLINK_NOFOLLOW;
 
     /**
      * <b>POSIX:</b> Close the file descriptor upon execution of an exec family
      * function.
      *
-     * @return the native symbolic constant of FD_CLOEXEC.
      */
     @Define
-    public final static native int FD_CLOEXEC();
+    public final static int FD_CLOEXEC;
 
     /**
      * <b>POSIX:</b> Duplicate file descriptor.
      *
-     * @return the native symbolic constant of F_DUPFD.
      */
     @Define
-    public final static native int F_DUPFD();
+    public final static int F_DUPFD;
 
     /**
      * <b>POSIX:</b> Duplicate file descriptor with the close-on-exec flag
      * FD_CLOEXEC set.
      *
-     * @return the native symbolic constant of F_DUPFD_CLOEXEC.
      */
     @Define
-    public final static native int F_DUPFD_CLOEXEC();
+    public final static int F_DUPFD_CLOEXEC;
 
     /**
      * <b>POSIX:</b> et file descriptor flags.
      *
-     * @return the native symbolic constant of F_GETFD.
      */
     @Define
-    public final static native int F_GETFD();
+    public final static int F_GETFD;
 
     /**
      * <b>POSIX:</b> Get file status flags and file access modes.
      *
-     * @return the native symbolic constant of F_GETFL.
      */
     @Define
-    public final static native int F_GETFL();
+    public final static int F_GETFL;
 
     /**
      * <b>POSIX:</b> Get record locking information.
      *
-     * @return the native symbolic constant of F_GETLK.
      */
     @Define
-    public final static native int F_GETLK();
+    public final static int F_GETLK;
 
     /**
      * <b>POSIX:</b> Get process or process group ID to receive SIGURG signals.
      *
-     * @return the native symbolic constant of F_GETOWN.
      */
     @Define
-    public final static native int F_GETOWN();
+    public final static int F_GETOWN;
 
     /**
      * <b>POSIX:</b> Shared or read lock.
      *
-     * @return the native symbolic constant of F_RDLCK.
      */
     @Define
-    public final static native int F_RDLCK();
+    public final static int F_RDLCK;
 
     /**
      * <b>POSIX:</b> Set file descriptor flags.
      *
-     * @return the native symbolic constant of F_SETFD.
      */
     @Define
-    public final static native int F_SETFD();
+    public final static int F_SETFD;
 
     /**
      * <b>POSIX:</b> Set file status flags.
      *
-     * @return the native symbolic constant of F_SETFL.
      */
     @Define
-    public final static native int F_SETFL();
+    public final static int F_SETFL;
 
     /**
      * <b>POSIX:</b> Set record locking information.
      *
-     * @return the native symbolic constant of F_SETLK.
      */
     @Define
-    public final static native int F_SETLK();
+    public final static int F_SETLK;
 
     /**
      * <b>POSIX:</b> Set record locking information; wait if blocked.
      *
-     * @return the native symbolic constant of F_SETLKW.
      */
     @Define
-    public final static native int F_SETLKW();
+    public final static int F_SETLKW;
 
     /**
      * <b>POSIX:</b> Set process or process group ID to receive SIGURG signals.
      *
-     * @return the native symbolic constant of F_SETOWN.
      */
     @Define
-    public final static native int F_SETOWN();
+    public final static int F_SETOWN;
 
     /**
      * <b>POSIX:</b> Unlock.
      *
-     * @return the native symbolic constant of F_UNLCK.
      */
     @Define
-    public final static native int F_UNLCK();
+    public final static int F_UNLCK;
 
     /**
      * <b>POSIX:</b> Exclusive or write lock.
      *
-     * @return the native symbolic constant of F_WRLCK.
      */
     @Define
-    public final static native int F_WRLCK();
+    public final static int F_WRLCK;
 
-    public final static native boolean HAVE_FCNTL_H();
+    public final static boolean HAVE_FCNTL_H;
 
     /**
      * <b>POSIX:</b> Mask for file access modes.
      *
-     * @return the native symbolic constant of O_ACCMODE.
      */
     @Define
-    public final static native int O_ACCMODE();
+    public final static int O_ACCMODE;
 
     /**
      * <b>POSIX:</b> Set append mode.
      *
-     * @return the native symbolic constant of O_APPEND.
      */
     @Define
-    public final static native int O_APPEND();
+    public final static int O_APPEND;
 
     /**
      * <b>Non POSIX:</b> Enable signal-driven I/O.
      *
-     * @return the native symbolic constant of .
-     * @throws NotDefinedException if O_ASYNC is not defined natively.
      */
     @Define
-    public final static native int O_ASYNC() throws NotDefinedException;
+    public final static IntDefine O_ASYNC;
 
     /**
      * <b>POSIX:</b> The FD_CLOEXEC flag associated with the new descriptor
      * shall be set to close the file descriptor upon execution of an exec
      * family function.
      *
-     * @return the native symbolic constant of O_CLOEXEC.
      */
     @Define
-    public final static native int O_CLOEXEC();
+    public final static int O_CLOEXEC;
 
     /**
      * <b>POSIX:</b> Create file if it does not exist.
      *
-     * @return the native symbolic constant of O_CREAT.
      */
     @Define
-    public final static native int O_CREAT();
+    public final static int O_CREAT;
 
     /**
      * <b>POSIX:</b> Fail if file is a non-directory file.
      *
-     * @return the native symbolic constant of O_DIRECTORY.
      */
     @Define
-    public final static native int O_DIRECTORY();
+    public final static int O_DIRECTORY;
 
     /**
      * <b>POSIX.SIO:</b> Write according to synchronized I/O data integrity
      * completion.
      *
-     * @return the native symbolic constant of O_DSYNC.
-     * @throws NotDefinedException if O_DSYNC is not defined natively.
      */
     @Define
-    public final static native int O_DSYNC() throws NotDefinedException;
+    public final static IntDefine O_DSYNC;
 
     /**
      * <b>POSIX:</b> Exclusive use flag.
      *
-     * @return the native symbolic constant of O_EXCL.
      */
     @Define
-    public final static native int O_EXCL();
+    public final static int O_EXCL;
 
     /**
      * <b>POSIX:</b> Open for execute only (non-directory files).The result is
      * unspecified if this flag is applied to a directory.
      *
-     * @return the native symbolic constant of O_EXEC.
-     * @throws NotDefinedException if O_EXEC is not defined natively.
      */
     @Define
-    public final static native int O_EXEC() throws NotDefinedException;
+    public final static IntDefine O_EXEC;
 
     /**
      * <b>Non POSIX:</b> enables synchronous writing for the file. .
      *
-     * @return the native symbolic constant of O_FSYNC.
-     * @throws NotDefinedException if O_FSYNC is not defined natively.
      */
     @Define
-    public final static native int O_FSYNC() throws NotDefinedException;
+    public final static IntDefine O_FSYNC;
 
     /**
      * <b>Linux:</b> (LFS) Allow files whose sizes cannot be represented in an
@@ -317,191 +352,159 @@ public final class Fcntl {
      * method of accessing large files on 32-bit systems (see
      * feature_test_macros(7)). .
      *
-     * @return the native symbolic constant of O_LARGEFILE.
-     * @throws NotDefinedException if O_LARGEFILE is not defined natively.
      */
     @Define
-    public final static native int O_LARGEFILE() throws NotDefinedException;
+    public final static IntDefine O_LARGEFILE;
 
     /**
      * <b>POSIX:</b> Do not assign controlling terminal.
      *
-     * @return the native symbolic constant of O_NOCTTY.
      */
     @Define
-    public final static native int O_NOCTTY();
+    public final static int O_NOCTTY;
 
     /**
      * <b>POSIX:</b> Do not follow symbolic links.
      *
-     * @return the native symbolic constant of O_NOFOLLOW.
      */
     @Define
-    public final static native int O_NOFOLLOW();
+    public final static int O_NOFOLLOW;
 
     /**
      * <b>POSIX:</b> Non-blocking mode.
      *
-     * @return the native symbolic constant of O_NONBLOCK.
-     * @throws NotDefinedException if O_NONBLOCK is not defined natively.
      */
     @Define
-    public final static native int O_NONBLOCK() throws NotDefinedException;
+    public final static int O_NONBLOCK;
 
     /**
      * <b>POSIX:</b> Open for reading only.
      *
-     * @return the native symbolic constant of O_RDONLY.
      */
     @Define
-    public final static native int O_RDONLY();
+    public final static int O_RDONLY;
 
     /**
      * <b>POSIX:</b> Open for reading and writing.
      *
-     * @return the native symbolic constant of O_RDWR.
      */
     @Define
-    public final static native int O_RDWR();
+    public final static int O_RDWR;
 
     /**
      * <b>POSIX.SIO:</b> Synchronized read I/O operations.
      *
-     * @return the native symbolic constant of O_RSYNC.
-     * @throws NotDefinedException if O_RSYNC is not defined natively.
      */
     @Define
-    public final static native int O_RSYNC() throws NotDefinedException;
+    public final static IntDefine O_RSYNC;
 
     /**
      * <b>POSIX:</b> Open directory for search only. The result is unspecified
      * if this flag is applied to a non-directory file.
      *
-     * @return the native symbolic constant of O_SEARCH.
-     * @throws NotDefinedException if O_SEARCH is not defined natively.
      */
     @Define
-    public final static native int O_SEARCH() throws NotDefinedException;
+    public final static IntDefine O_SEARCH;
 
     /**
      * <b>POSIX:</b> Write according to synchronized I/O file integrity
      * completion.
      *
-     * @return the native symbolic constant of O_SYNC.
      */
     @Define
-    public final static native int O_SYNC();
+    public final static int O_SYNC;
 
     /**
      * <b>POSIX:</b> Truncate flag.
      *
-     * @return the native symbolic constant of O_TRUNC.
      */
     @Define
-    public final static native int O_TRUNC();
+    public final static int O_TRUNC;
 
     /**
      * <b>POSIX:</b> Set the termios structure terminal parameters to a state
      * that provides conforming behavior.
      *
-     * @return the native symbolic constant of O_TTY_INIT.
-     * @throws NotDefinedException if O_TTY_INIT is not defined natively.
      */
     @Define
-    public final static native int O_TTY_INIT() throws NotDefinedException;
+    public final static IntDefine O_TTY_INIT;
 
     /**
      * <b>POSIX:</b> Open for writing only.
      *
-     * @return the native symbolic constant of O_WRONLY.
      */
     @Define
-    public final static native int O_WRONLY();
+    public final static int O_WRONLY;
 
     /**
      * <b>POSIX.ADV:</b> The application expects that it will not access the
      * specified data in the near future.
      *
-     * @return the native symbolic constant of POSIX_FADV_DONTNEED.
-     * @throws NotDefinedException if POSIX_FADV_DONTNEED is not defined natively.
      */
     @Define
-    public final static native int POSIX_FADV_DONTNEED() throws NotDefinedException;
+    public final static IntDefine POSIX_FADV_DONTNEED;
 
     /**
      * <b>POSIX.ADV:</b> The application expects to access the specified data
      * once and then not reuse it thereafter.
      *
-     * @return the native symbolic constant of POSIX_FADV_NOREUSE.
-     * @throws NotDefinedException if POSIX_FADV_NOREUSE is not defined natively.
      */
     @Define
-    public final static native int POSIX_FADV_NOREUSE() throws NotDefinedException;
+    public final static IntDefine POSIX_FADV_NOREUSE;
 
     /**
      * <b>POSIX.ADV:</b> The application has no advice to give on its behavior
      * with respect to the specified data.It is the default characteristic if no
      * advice is given for an open file.
      *
-     * @return the native symbolic constant of POSIX_FADV_NORMAL.
-     * @throws NotDefinedException if POSIX_FADV_NORMAL is not defined natively.
      */
     @Define
-    public final static native int POSIX_FADV_NORMAL() throws NotDefinedException;
+    public final static IntDefine POSIX_FADV_NORMAL;
 
     /**
      * <b>POSIX.ADV:</b> The application expects to access the specified data in
      * a random order.
      *
-     * @return the native symbolic constant of POSIX_FADV_RANDOM.
-     * @throws NotDefinedException if POSIX_FADV_RANDOM is not defined natively.
      */
     @Define
-    public final static native int POSIX_FADV_RANDOM() throws NotDefinedException;
+    public final static IntDefine POSIX_FADV_RANDOM;
 
     /**
      * <b>POSIX.ADV:</b> The application expects to access the specified data
      * sequentially from lower offsets to higher offsets.
      *
-     * @return the native symbolic constant of POSIX_FADV_SEQUENTIAL.
-     * @throws NotDefinedException if POSIX_FADV_SEQUENTIAL is not defined natively.
      */
     @Define
-    public final static native int POSIX_FADV_SEQUENTIAL() throws NotDefinedException;
+    public final static IntDefine POSIX_FADV_SEQUENTIAL;
 
     /**
      * <b>POSIX.ADV:</b> The application expects to access the specified data in
      * the near future.
      *
-     * @return the native symbolic constant of POSIX_FADV_WILLNEED.
-     * @throws NotDefinedException if POSIX_FADV_WILLNEED is not defined natively.
      */
     @Define
-    public final static native int POSIX_FADV_WILLNEED() throws NotDefinedException;
+    public final static IntDefine POSIX_FADV_WILLNEED;
 
     /**
      * <b>POSIX:</b> same as defined in stdio.h.
      *
-     * @return the native symbolic constant of SEEK_CUR.
      */
     @Define
-    public final static native int SEEK_CUR();
+    public final static int SEEK_CUR;
 
     /**
      * <b>POSIX:</b> same as defined in stdio.h.
      *
-     * @return the native symbolic constant of SEEK_END.
      */
     @Define
-    public final static native int SEEK_END();
+    public final static int SEEK_END;
 
     /**
      * <b>POSIX:</b> same as defined in stdio.h.
      *
-     * @return the native symbolic constant of SEEK_SET.
      */
     @Define
-    public final static native int SEEK_SET();
+    public final static int SEEK_SET;
 
     /**
      * <b>POSIX:</b>

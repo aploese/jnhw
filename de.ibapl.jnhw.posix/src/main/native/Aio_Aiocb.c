@@ -25,32 +25,32 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#if defined(_POSIX_VERSION) 
+#if defined(_POSIX_VERSION)
 #if defined(__OpenBSD__)
 #if defined(HAVE_AIO_H)
 #error OpenBSD and aio.h
 #endif
-#else    
+#else
 #include <aio.h>
 #endif
     //for offsetof
 #include <stddef.h>
 
-JNHW_ASSERT__off_t__IS__int64_t__OR__int32_t
-JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
+    JNHW_ASSERT__off_t__IS__int64_t__OR__int32_t
+    JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
 
 #if defined(__LP64__)
-  #if __SIZEOF_POINTER__ != 8
-    #error __hppa__ and __SIZEOF_POINTER__ != 8
-  #endif
+#if __SIZEOF_POINTER__ != 8
+#error __hppa__ and __SIZEOF_POINTER__ != 8
+#endif
 #elif defined(__ILP32__)
-  #if __SIZEOF_POINTER__ != 4
-    #error __hppa__ and __SIZEOF_POINTER__ != 4
-  #endif
+#if __SIZEOF_POINTER__ != 4
+#error __hppa__ and __SIZEOF_POINTER__ != 4
+#endif
 #else
-  #if __SIZEOF_POINTER__ != 4
-    #error __hppa__ and __SIZEOF_POINTER__ != 4
-  #endif
+#if __SIZEOF_POINTER__ != 4
+#error __hppa__ and __SIZEOF_POINTER__ != 4
+#endif
 #endif
 
     /*
@@ -84,7 +84,6 @@ JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
         return __alignof__ (struct aiocb);
 #endif
     }
-
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
@@ -168,8 +167,8 @@ JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
 #elif defined(_JNHW__off_t__IS__int64_t)
 #else
 #error expected off_t is int32_t or int64_t
-#endif 
-        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = (off_t)aio_offset;
+#endif
+        (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_offset = (off_t) aio_offset;
 #endif
     }
 
@@ -185,7 +184,7 @@ JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
         return NULL;
 #else
     (JNIEnv *env, jobject structAiocb) {
-       return CREATE_NATIVE_ADDRESS_HOLDER((UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_buf);
+        return CREATE_NativeAddressHolder((UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_buf);
 #endif
     }
 

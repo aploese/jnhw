@@ -26,70 +26,51 @@
 extern "C" {
 #endif
 
+    //We need the POSIX version ...    
+#if !defined(HAVE_SCHED_H) || !defined(_POSIX_VERSION)
+
     /*
      * Class:     de_ibapl_jnhw_posix_Sched
-     * Method:    HAVE_SCHED_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Sched_HAVE_1SCHED_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_SCHED_H) && defined(_POSIX_VERSION)
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-
-#ifdef _POSIX_VERSION
+#else
 #include <sched.h>
 
-
     /*
      * Class:     de_ibapl_jnhw_posix_Sched
-     * Method:    SCHED_FIFO
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_SCHED_1FIFO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SCHED_FIFO;
-    }
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_initFields
+    (JNIEnv *env, jclass clazz) {
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Sched
-     * Method:    SCHED_RR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_SCHED_1RR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SCHED_RR;
-    }
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_SCHED_H", JNI_TRUE)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Sched
-     * Method:    SCHED_SPORADIC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_SCHED_1SPORADIC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        if (JnhwSetStaticIntField(env, clazz, "SCHED_FIFO", SCHED_FIFO)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "SCHED_RR", SCHED_RR)) {
+            return;
+        }
+
 #if defined (__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__) 
-        throw_NotDefinedException(env, "SCHED_SPORADIC");
-        return 0;
 #elif not defined(SCHED_SPORADIC)
 #error "SCHED_SPORADIC not defined defined"
 #else
-        return SCHED_SPORADIC;
+        if (JnhwSetStaticIntDefineField(env, clazz, "SCHED_SPORADIC", SCHED_SPORADIC)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Sched
-     * Method:    SCHED_OTHER
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_SCHED_1OTHER
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SCHED_OTHER;
+        if (JnhwSetStaticIntField(env, clazz, "SCHED_OTHER", SCHED_OTHER)) {
+            return;
+        }
     }
 
 

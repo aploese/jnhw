@@ -32,10 +32,10 @@ import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.PointerArray32;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
@@ -58,54 +58,66 @@ public class Aio {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_AIO_H = false;
+
+        AIO_ALLDONE = IntDefine.UNDEFINED;
+        AIO_CANCELED = IntDefine.UNDEFINED;
+        AIO_NOTCANCELED = IntDefine.UNDEFINED;
+        LIO_NOP = IntDefine.UNDEFINED;
+        LIO_NOWAIT = IntDefine.UNDEFINED;
+        LIO_READ = IntDefine.UNDEFINED;
+        LIO_WAIT = IntDefine.UNDEFINED;
+        LIO_WRITE = IntDefine.UNDEFINED;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <b>POSIX:</b> A return value indicating that none of the requested
      * operations could be canceled since they are already complete.
      *
-     * @return the native symbolic constant of AIO_ALLDONE.
-     * @throws NotDefinedException if AIO_ALLDONE is not defined natively.
      */
     @Define()
-    public final static native int AIO_ALLDONE() throws NotDefinedException;
+    public final static IntDefine AIO_ALLDONE;
 
     /**
      * <b>POSIX:</b> A return value indicating that all requested operations
      * have been canceled.
      *
-     * @return the native symbolic constant of AIO_CANCELED.
-     * @throws NotDefinedException if AIO_CANCELED is not defined natively.
      */
     @Define()
-    public final static native int AIO_CANCELED() throws NotDefinedException;
+    public final static IntDefine AIO_CANCELED;
 
     /**
      * <b>POSIX:</b> A return value indicating that some of the requested
      * operations could not be canceled since they are in progress.
      *
-     *
-     * @return the native symbolic constant of AIO_NOTCANCELED.
-     * @throws NotDefinedException if AIO_NOTCANCELED is not defined natively.
      */
     @Define()
 
-    public final static native int AIO_NOTCANCELED() throws NotDefinedException;
+    public final static IntDefine AIO_NOTCANCELED;
 
-    public final static native boolean HAVE_AIO_H();
+    public final static boolean HAVE_AIO_H;
 
     /**
      * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element
      * operation option indicating that no transfer is requested.
      *
-     * @return the native symbolic constant of LIO_NOP.
-     * @throws NotDefinedException if LIO_NOP is not defined natively.
      */
     @Define()
-    public final static native int LIO_NOP() throws NotDefinedException;
+    public final static IntDefine LIO_NOP;
 
     /**
      * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)}
@@ -113,42 +125,34 @@ public class Aio {
      * continue execution while the lio_listio() operation is being performed,
      * and no notification is given when the operation is complete.
      *
-     * @return the native symbolic constant of LIO_NOWAIT.
-     * @throws NotDefinedException if LIO_NOWAIT is not defined natively.
      */
     @Define()
-    public final static native int LIO_NOWAIT() throws NotDefinedException;
+    public final static IntDefine LIO_NOWAIT;
 
     /**
      * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element
      * operation option requesting a read.
      *
-     * @return the native symbolic constant of LIO_READ.
-     * @throws NotDefinedException if LIO_READ is not defined natively.
      */
     @Define()
-    public final static native int LIO_READ() throws NotDefinedException;
+    public final static IntDefine LIO_READ;
 
     /**
      * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)}
      * synchronization operation indicating that the calling thread is to
      * suspend until the lio_listio() operation is complete.
      *
-     * @return the native symbolic constant of LIO_WAIT.
-     * @throws NotDefinedException if LIO_WAIT is not defined natively.
      */
     @Define()
-    public final static native int LIO_WAIT() throws NotDefinedException;
+    public final static IntDefine LIO_WAIT;
 
     /**
      * <b>POSIX:</b> A {@link #lio_listio(int, Aiocbs, Sigevent)} element
      * operation option requesting a write.
      *
-     * @return the native symbolic constant of LIO_WRITE.
-     * @throws NotDefinedException if LIO_WRITE is not defined natively.
      */
     @Define()
-    public final static native int LIO_WRITE() throws NotDefinedException;
+    public final static IntDefine LIO_WRITE;
 
     /**
      * <b>POSIX:</b>

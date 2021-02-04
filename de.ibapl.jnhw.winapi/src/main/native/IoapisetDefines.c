@@ -26,22 +26,33 @@
 extern "C" {
 #endif
 
+
+#ifndef HAVE_IOAPISET_H
+
     /*
      * Class:     de_ibapl_jnhw_winapi_Ioapiset
-     * Method:    HAVE_IOAPISET_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_HAVE_1IOAPISET_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_IOAPISET_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-#ifdef HAVE_IOAPISET_H
+#else
 #include <ioapiset.h>
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Ioapiset
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_IOAPISET_H", JNI_TRUE)) {
+            return;
+        }
+
+    }
 
 #endif
 #ifdef __cplusplus

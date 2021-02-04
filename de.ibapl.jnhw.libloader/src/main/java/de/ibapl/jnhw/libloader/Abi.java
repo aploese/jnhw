@@ -23,18 +23,18 @@ package de.ibapl.jnhw.libloader;
 
 /**
  * The Application Binary Interface used.
- * 
+ *
  * @author aploese
  */
 public enum Abi {
     /**
      * The GNU ABI
      */
-    GNU("gnu"), 
+    GNU("gnu"),
     /**
      * GNU EABI Hard Floatingpoint
      */
-    GNU_EABI_HF("gnueabihf"), 
+    GNU_EABI_HF("gnueabihf"),
     /**
      * GNU EABI Soft Floatingpoint
      */
@@ -46,14 +46,14 @@ public enum Abi {
     /**
      * The BSD ABI
      */
-    BSD("bsd"), 
+    BSD("bsd"),
     /**
      * Windows ABI on x86_64 (64 bit)
      */
-    PE32_PLUS("pe32+"), 
+    PE32_PLUS("pe32+"),
     /**
      * Windows ABI on x86 or i386 (32 bit)
-     * 
+     *
      */
     PE32("pe32");
 

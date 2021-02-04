@@ -31,12 +31,12 @@ import de.ibapl.jnhw.common.annotation.Unsigned;
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annontation.posix.termios.cc_t;
+import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.io.IOException;
@@ -58,1154 +58,1120 @@ public final class Termios {
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.UNDEFINED;
+        _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.UNDEFINED;
+
+        B0 = 0;
+
+        B1000000 = IntDefine.UNDEFINED;
+        B110 = 0;
+        B115200 = 0;
+        B1152000 = IntDefine.UNDEFINED;
+        B1200 = 0;
+        B134 = 0;
+        B150 = 0;
+        B1500000 = IntDefine.UNDEFINED;
+        B1800 = 0;
+        B19200 = 0;
+
+        B200 = 0;
+        B2000000 = IntDefine.UNDEFINED;
+        B230400 = 0;
+        B2400 = 0;
+        B2500000 = IntDefine.UNDEFINED;
+
+        B300 = 0;
+        B3000000 = IntDefine.UNDEFINED;
+        B3500000 = IntDefine.UNDEFINED;
+        B38400 = 0;
+
+        B4000000 = IntDefine.UNDEFINED;
+        B460800 = IntDefine.UNDEFINED;
+        B4800 = 0;
+
+        B50 = 0;
+        B500000 = IntDefine.UNDEFINED;
+        B57600 = 0;
+        B576000 = IntDefine.UNDEFINED;
+
+        B600 = 0;
+
+        B75 = 0;
+
+        B921600 = IntDefine.UNDEFINED;
+        B9600 = 0;
+
+        BRKINT = 0;
+        BS0 = IntDefine.UNDEFINED;
+        BS1 = IntDefine.UNDEFINED;
+        BSDLY = IntDefine.UNDEFINED;
+
+        CLOCAL = 0;
+        CMSPAR = IntDefine.UNDEFINED;
+        CR0 = IntDefine.UNDEFINED;
+        CR1 = IntDefine.UNDEFINED;
+        CR2 = IntDefine.UNDEFINED;
+        CR3 = IntDefine.UNDEFINED;
+        CRDLY = IntDefine.UNDEFINED;
+        CREAD = 0;
+        CRTSCTS = 0;
+        CS5 = 0;
+        CS6 = 0;
+        CS7 = 0;
+        CS8 = 0;
+        CSIZE = 0;
+        CSTOPB = 0;
+
+        ECHO = 0;
+        ECHOE = 0;
+        ECHOK = 0;
+        ECHONL = 0;
+
+        FF0 = IntDefine.UNDEFINED;
+        FF1 = IntDefine.UNDEFINED;
+        FFDLY = IntDefine.UNDEFINED;
+
+        HUPCL = 0;
+        HAVE_TERMIOS_H = false;
+
+        ICANON = 0;
+        ICRNL = 0;
+        IEXTEN = 0;
+        IGNBRK = 0;
+        IGNCR = 0;
+        IGNPAR = 0;
+        INLCR = 0;
+        INPCK = 0;
+        ISIG = 0;
+        ISTRIP = 0;
+        IXANY = 0;
+        IXOFF = 0;
+        IXON = 0;
+
+        NCCS = 0;
+        NL0 = IntDefine.UNDEFINED;
+        NL1 = IntDefine.UNDEFINED;
+        NLDLY = IntDefine.UNDEFINED;
+        NOFLSH = 0;
+
+        OCRNL = 0;
+        OFDEL = IntDefine.UNDEFINED;
+        OFILL = IntDefine.UNDEFINED;
+        ONLCR = 0;
+        ONLRET = 0;
+        ONOCR = 0;
+        OPOST = 0;
+
+        PARENB = 0;
+        PAREXT = IntDefine.UNDEFINED;
+        PARMRK = 0;
+        PARODD = 0;
+
+        TAB0 = IntDefine.UNDEFINED;
+        TAB1 = IntDefine.UNDEFINED;
+        TAB2 = IntDefine.UNDEFINED;
+        TAB3 = IntDefine.UNDEFINED;
+        TABDLY = IntDefine.UNDEFINED;
+        TCIFLUSH = 0;
+        TCIOFF = 0;
+        TCIOFLUSH = 0;
+        TCION = 0;
+        TCOFLUSH = 0;
+        TCOOFF = 0;
+        TCOON = 0;
+        TCSADRAIN = 0;
+        TCSAFLUSH = 0;
+        TCSANOW = 0;
+        TOSTOP = 0;
+
+        VEOF = 0;
+        VEOL = 0;
+        VERASE = 0;
+        VINTR = 0;
+        VKILL = 0;
+        VMIN = 0;
+        VQUIT = 0;
+        VSTART = 0;
+        VSTOP = 0;
+        VSUSP = 0;
+        VT0 = IntDefine.UNDEFINED;
+        VT1 = IntDefine.UNDEFINED;
+        VTDLY = IntDefine.UNDEFINED;
+        VTIME = 0;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> Hang up.
      *
-     * @return the native symbolic constant of BO.
      */
     @Define
-    public final static native @speed_t
-    int B0();
+    @speed_t
+    public final static int B0;
 
     /**
      * <b>Linux:</b> <i>Baud Rate Selection</i> 1000000 baud.
      *
-     * @return the native symbolic constant of B1000000.
-     * @throws NotDefinedException if B1000000 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B1000000() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B1000000;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 110 baud.
      *
-     * @return the native symbolic constant of B110.
      */
     @Define
-    public final static native @speed_t
-    int B110();
+    @speed_t
+    public final static int B110;
 
     /**
      * <b>Non POSIX:</b> <i>Baud Rate Selection</i> 115200 baud.
      *
-     * @return the native symbolic constant of B115200.
-     * @throws NotDefinedException if B115200 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B115200() throws NotDefinedException;
+    @speed_t
+    public final static int B115200;
 
     /**
      * <b>Linux:</b> <i>Baud Rate Selection</i> 1152000 baud.
      *
-     * @return the native symbolic constant of B1152000.
-     * @throws NotDefinedException if B1152000 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B1152000() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B1152000;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 1200 baud.
      *
-     * @return the native symbolic constant of B1200.
      */
     @Define
-    public final static native @speed_t
-    int B1200();
+    @speed_t
+    public final static int B1200;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 134.5 baud.
      *
-     * @return the native symbolic constant of B134.
      */
     @Define
-    public final static native @speed_t
-    int B134();
+    @speed_t
+    public final static int B134;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 150 baud.
      *
-     * @return the native symbolic constant of B150.
      */
     @Define
-    public final static native @speed_t
-    int B150();
+    @speed_t
+    public final static int B150;
 
     /**
      * <b>Linux:</b> <i>Baud Rate Selection</i> 1500000 baud.
      *
-     * @return the native symbolic constant of B1500000.
-     * @throws NotDefinedException if B1500000 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B1500000() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B1500000;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 1800 baud.
      *
-     * @return the native symbolic constant of B1800.
      */
     @Define
-    public final static native @speed_t
-    int B1800();
+    @speed_t
+    public final static int B1800;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 19200 baud.
      *
-     * @return the native symbolic constant of B19200.
      */
     @Define
-    public final static native @speed_t
-    int B19200();
+    @speed_t
+    public final static int B19200;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 200 baud.
      *
-     * @return the native symbolic constant of B200.
      */
     @Define
-    public final static native @speed_t
-    int B200();
+    @speed_t
+    public final static int B200;
 
     /**
      * <b>Linux:</b> <i>Baud Rate Selection</i> 2000000 baud.
      *
-     * @return the native symbolic constant of B2000000.
-     * @throws NotDefinedException if B2000000 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B2000000() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B2000000;
 
     /**
      * <b>Non POSIX:</b> <i>Baud Rate Selection</i> 230400 baud.
      *
-     * @return the native symbolic constant of B230400.
-     * @throws NotDefinedException if B230400 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B230400() throws NotDefinedException;
+    @speed_t
+    public final static int B230400;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 2400 baud.
      *
-     * @return the native symbolic constant of B2400.
      */
     @Define
-    public final static native @speed_t
-    int B2400();
+    @speed_t
+    public final static int B2400;
 
     /**
      * <b>Linux:</b> <i>Baud Rate Selection</i> 2500000 baud.
      *
-     * @return the native symbolic constant of B2500000.
-     * @throws NotDefinedException if B2500000 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B2500000() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B2500000;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 300 baud.
      *
-     * @return the native symbolic constant of B300.
      */
     @Define
-    public final static native @speed_t
-    int B300();
+    @speed_t
+    public final static int B300;
 
     /**
      * <b>Linux:</b> <i>Baud Rate Selection</i> 3000000 baud.
      *
-     * @return the native symbolic constant of B3000000.
-     * @throws NotDefinedException if B3000000 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B3000000() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B3000000;
 
     /**
      * <b>Linux:</b> <i>Baud Rate Selection</i> 3500000 baud.
      *
-     * @return the native symbolic constant of B3500000.
-     * @throws NotDefinedException if B3500000 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B3500000() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B3500000;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 38400 baud.
      *
-     * @return the native symbolic constant of B38400.
      */
     @Define
-    public final static native @speed_t
-    int B38400();
+    @speed_t
+    public final static int B38400;
 
     /**
      * <b>Linux:</b> <i>Baud Rate Selection</i> 4000000 baud.
      *
-     * @return the native symbolic constant of B4000000.
-     * @throws NotDefinedException if B4000000 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B4000000() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B4000000;
 
     /**
      * <b>Linux,FreeBSD:</b> <i>Baud Rate Selection</i> 460800 baud.
      *
-     * @return the native symbolic constant of B460800.
-     * @throws NotDefinedException if B460800 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B460800() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B460800;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 4800 baud.
      *
-     * @return the native symbolic constant of B4800.
      */
     @Define
-    public final static native @speed_t
-    int B4800();
+    @speed_t
+    public final static int B4800;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 50 baud.
      *
-     * @return the native symbolic constant of B50.
      */
     @Define
-    public final static native @speed_t
-    int B50();
+    @speed_t
+    public final static int B50;
 
     /**
      * <b>Linux:</b> <i>Baud Rate Selection</i> 500000 baud.
      *
-     * @return the native symbolic constant of B500000.
-     * @throws NotDefinedException if B500000 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B500000() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B500000;
 
     /**
      * <b>Non POSIX:</b> <i>Baud Rate Selection</i> 57600 baus
      *
-     * @return the native symbolic constant of B57600.
-     * @throws NotDefinedException if B57600 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B57600() throws NotDefinedException;
+    @speed_t
+    public final static int B57600;
 
     /**
      * <b>Linux:</b> <i>Baud Rate Selection</i> 576000 baud.
      *
-     * @return the native symbolic constant of B576000.
-     * @throws NotDefinedException if B576000 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B576000() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B576000;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 600 baud.
      *
-     * @return the native symbolic constant of B600.
      */
     @Define
-    public final static native @speed_t
-    int B600();
+    @speed_t
+    public final static int B600;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 75 baud.
      *
-     * @return the native symbolic constant of B75.
      */
     @Define
-    public final static native @speed_t
-    int B75();
+    @speed_t
+    public final static int B75;
 
     /**
      * <b>Linux,FreeBSD:</b> <i>Baud Rate Selection</i> 921600 baud.
      *
-     * @return the native symbolic constant of B921600.
-     * @throws NotDefinedException if B921600 is not defined natively.
      */
     @Define
-    public final static native @speed_t
-    int B921600() throws NotDefinedException;
+    @speed_t
+    public final static IntDefine B921600;
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> 9600 baud.
      *
-     * @return the native symbolic constant of B9600.
      */
     @Define
-    public final static native @speed_t
-    int B9600();
+    @speed_t
+    public final static int B9600;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Signal interrupt on break.
      *
-     * @return the native symbolic constant of BRKINT.
      */
     @Define
-    public final static native @tcflag_t
-    int BRKINT();
+    @tcflag_t
+    public final static int BRKINT;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Backspace-delay type 0.
      *
-     * @return the native symbolic constant of BS0.
-     * @throws NotDefinedException if BS0 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int BS0() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine BS0;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Backspace-delay type 1.
      *
-     * @return the native symbolic constant of BS1.
-     * @throws NotDefinedException if BS1 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int BS1() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine BS1;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select backspace delays:
      *
-     * @return the native symbolic constant of BSDLY.
-     * @throws NotDefinedException if BSDLY is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int BSDLY() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine BSDLY;
 
     /**
      * <b>POSIX:</b> <i>Control Modes</i> Ignore modem status lines.
      *
-     * @return the native symbolic constant of CLOCAL.
      */
     @Define
-    public final static native @tcflag_t
-    int CLOCAL();
+    @tcflag_t
+    public final static int CLOCAL;
 
     /**
      * <b>Linux:</b> <i>Control Modes</i> Use d "stick" (mark/space) parity
      * (supported on certain serial devices).
      *
-     * @return the native symbolic constant of CMSPAR.
-     * @throws NotDefinedException if CMSPAR is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int CMSPAR() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine CMSPAR;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 0.
      *
-     * @return the native symbolic constant of CR0.
-     * @throws NotDefinedException if CR0 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int CR0() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine CR0;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 1.
      *
-     * @return the native symbolic constant of CR1.
-     * @throws NotDefinedException if CR1 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int CR1() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine CR1;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 2.
      *
-     * @return the native symbolic constant of CR2.
-     * @throws NotDefinedException if CR2 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int CR2() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine CR2;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Carriage-return delay type 3.
      *
-     * @return the native symbolic constant of CR3.
-     * @throws NotDefinedException if CR3 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int CR3() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine CR3;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select carriage-return delays:
      *
-     * @return the native symbolic constant of CRDLY.
-     * @throws NotDefinedException if CRDLY is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int CRDLY() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine CRDLY;
 
     /**
      * <b>POSIX:</b> <i>Control Modes</i> Enable receiver.
      *
-     * @return the native symbolic constant of CREAD.
      */
     @Define
-    public final static native @tcflag_t
-    int CREAD();
+    @tcflag_t
+    public final static int CREAD;
 
     /**
      * <b>Non POSIX:</b> <i>Control Modes</i>
      *
-     * @return the native symbolic constant of .
      */
     @Define
-    public final static native @tcflag_t
-    int CRTSCTS();
+    @tcflag_t
+    public final static int CRTSCTS;
 
     /**
      * <b>POSIX:</b> <i>Control Modes</i> 5 bits.
      *
-     * @return the native symbolic constant of CS5.
      */
     @Define
-    public final static native @tcflag_t
-    int CS5();
+    @tcflag_t
+    public final static int CS5;
 
     /**
      * <b>POSIX:</b> <i>Control Modes</i> 6 bits.
      *
-     * @return the native symbolic constant of CS6.
      */
     @Define
-    public final static native @tcflag_t
-    int CS6();
+    @tcflag_t
+    public final static int CS6;
 
     /**
      * <b>POSIX:</b> <i>Control Modes</i> 7 bits.
      *
-     * @return the native symbolic constant of CS7.
      */
     @Define
-    public final static native @tcflag_t
-    int CS7();
+    @tcflag_t
+    public final static int CS7;
 
     /**
      * <b>POSIX:</b> <i>Control Modes</i> 8 bits.
      *
-     * @return the native symbolic constant of CS8.
      */
     @Define
-    public final static native @tcflag_t
-    int CS8();
+    @tcflag_t
+    public final static int CS8;
 
     /**
      * <b>POSIX:</b> <i>Control Modes</i> Character size:
      *
-     * @return the native symbolic constant of CSIZE.
      */
     @Define
-    public final static native @tcflag_t
-    int CSIZE();
+    @tcflag_t
+    public final static int CSIZE;
 
     /**
      * <b>POSIX:</b> <i>Control Modes</i> Send two stop bits, else one.
      *
-     * @return the native symbolic constant of CSTOPB.
      */
     @Define
-    public final static native @tcflag_t
-    int CSTOPB();
+    @tcflag_t
+    public final static int CSTOPB;
 
     /**
      * <b>POSIX:</b> <i>Local Modes</i> Enable echo.
      *
-     * @return the native symbolic constant of ECHO.
      */
     @Define
-    public final static native @tcflag_t
-    int ECHO();
+    @tcflag_t
+    public final static int ECHO;
 
     /**
      * <b>POSIX:</b> <i>Local Modes</i> Echo erase character as error-correcting
      * backspace.
      *
-     * @return the native symbolic constant of ECHOE.
      */
     @Define
-    public final static native @tcflag_t
-    int ECHOE();
+    @tcflag_t
+    public final static int ECHOE;
 
     /**
      * <b>POSIX:</b> <i>Local Modes</i> Echo KILL.
      *
-     * @return the native symbolic constant of ECHOK.
      */
     @Define
-    public final static native @tcflag_t
-    int ECHOK();
+    @tcflag_t
+    public final static int ECHOK;
 
     /**
      * <b>POSIX:</b> <i>Local Modes</i> Echo NL.
      *
-     * @return the native symbolic constant of ECHONL.
      */
     @Define
-    public final static native @tcflag_t
-    int ECHONL();
+    @tcflag_t
+    public final static int ECHONL;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Form-feed delay type 0.
      *
-     * @return the native symbolic constant of FF0.
-     * @throws NotDefinedException if FF0 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int FF0() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine FF0;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Form-feed delay type 1.
      *
-     * @return the native symbolic constant of FF1.
-     * @throws NotDefinedException if FF1 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int FF1() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine FF1;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select form-feed delays:
      *
-     * @return the native symbolic constant of FFDLY.
-     * @throws NotDefinedException if FFDLY is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int FFDLY() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine FFDLY;
 
-    public final static native boolean HAVE_TERMIOS_H();
+    public final static boolean HAVE_TERMIOS_H;
 
     /**
      * <b>POSIX:</b> <i>Control Modes</i> Hang up on last close.
      *
-     * @return the native symbolic constant of HUPCL.
      */
     @Define
-    public final static native @tcflag_t
-    int HUPCL();
+    @tcflag_t
+    public final static int HUPCL;
 
     /**
      * <b>POSIX:</b> <i>Local Modes</i> Canonical input (erase and kill
      * processing).
      *
-     * @return the native symbolic constant of ICANON.
      */
     @Define
-    public final static native @tcflag_t
-    int ICANON();
+    @tcflag_t
+    public final static int ICANON;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Map CR to NL on input.
      *
-     * @return the native symbolic constant of ICRNL.
      */
     @Define
-    public final static native @tcflag_t
-    int ICRNL();
+    @tcflag_t
+    public final static int ICRNL;
 
     /**
      * <b>POSIX:</b> <i>Local Modes</i> Enable extended input character
      * processing.
      *
-     * @return the native symbolic constant of IEXTEN.
      */
     @Define
-    public final static native @tcflag_t
-    int IEXTEN();
+    @tcflag_t
+    public final static int IEXTEN;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Ignore break condition.
      *
-     * @return the native symbolic constant of IGNBRK.
      */
     @Define
-    public final static native @tcflag_t
-    int IGNBRK();
+    @tcflag_t
+    public final static int IGNBRK;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Ignore CR.
      *
-     * @return the native symbolic constant of IGNCR.
      */
     @Define
-    public final static native @tcflag_t
-    int IGNCR();
+    @tcflag_t
+    public final static int IGNCR;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Ignore characters with parity errors.
      *
-     * @return the native symbolic constant of IGNPAR.
      */
     @Define
-    public final static native @tcflag_t
-    int IGNPAR();
+    @tcflag_t
+    public final static int IGNPAR;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Map NL to CR on input.
      *
-     * @return the native symbolic constant of INLCR.
      */
     @Define
-    public final static native @tcflag_t
-    int INLCR();
+    @tcflag_t
+    public final static int INLCR;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Enable input parity check.
      *
-     * @return the native symbolic constant of INPCK.
      */
     @Define
-    public final static native @tcflag_t
-    int INPCK();
+    @tcflag_t
+    public final static int INPCK;
 
     /**
      * <b>POSIX:</b> <i>Local Modes</i> Enable signals.
      *
-     * @return the native symbolic constant of ISIG.
      */
     @Define
-    public final static native @tcflag_t
-    int ISIG();
+    @tcflag_t
+    public final static int ISIG;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Strip character.
      *
-     * @return the native symbolic constant of ISTRIP.
      */
     @Define
-    public final static native @tcflag_t
-    int ISTRIP();
+    @tcflag_t
+    public final static int ISTRIP;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Enable any character to restart output.
      *
-     * @return the native symbolic constant of IXANY.
      */
     @Define
-    public final static native @tcflag_t
-    int IXANY();
+    @tcflag_t
+    public final static int IXANY;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Enable start/stop input control.
      *
-     * @return the native symbolic constant of IXOFF.
      */
     @Define
-    public final static native @tcflag_t
-    int IXOFF();
+    @tcflag_t
+    public final static int IXOFF;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Enable start/stop output control.
      *
-     * @return the native symbolic constant of IXON.
      */
     @Define
-    public final static native @tcflag_t
-    int IXON();
+    @tcflag_t
+    public final static int IXON;
 
     /**
      * <b>POSIX:</b> Size of the array c_cc for control characters.
      *
-     * @return the native symbolic constant of NCCS.
      */
     @Define
-    public final static native @tcflag_t
-    int NCCS();
+    @tcflag_t
+    public final static int NCCS;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Newline type 0.
      *
-     * @return the native symbolic constant of NL0.
-     * @throws NotDefinedException if NL0 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int NL0() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine NL0;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Newline type 1.
      *
-     * @return the native symbolic constant of NL1.
-     * @throws NotDefinedException if NL1 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int NL1() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine NL1;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select newline delays: {@code NL0}
      * or {@code NL1}
      *
-     * @return the native symbolic constant of NLDLY.
-     * @throws NotDefinedException if NLDLY is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int NLDLY() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine NLDLY;
 
     /**
      * <b>POSIX:</b> <i>Local Modes</i> Disable flush after interrupt or quit.
      *
-     * @return the native symbolic constant of NOFLSH.
      */
     @Define
-    public final static native @tcflag_t
-    int NOFLSH();
+    @tcflag_t
+    public final static int NOFLSH;
 
     /**
      * <b>POSIX,XSI:</b> <i>Output Modes</i> Map CR to NL on output.
      *
-     * @return the native symbolic constant of OCRNL.
      */
     @Define
-    public final static native @tcflag_t
-    int OCRNL();
+    @tcflag_t
+    public final static int OCRNL;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Fill is DEL.
      *
-     * @return the native symbolic constant of OFDEL.
-     * @throws NotDefinedException if OFDEL is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int OFDEL() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine OFDEL;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Use fill characters for delay.
      *
-     * @return the native symbolic constant of OFILL.
-     * @throws NotDefinedException if OFILL is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int OFILL() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine OFILL;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Map NL to CR-NL on output.
      *
-     * @return the native symbolic constant of ONLCR.
      */
     @Define
-    public final static native @tcflag_t
-    int ONLCR();
+    @tcflag_t
+    public final static int ONLCR;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> NL performs CR function.
      *
-     * @return the native symbolic constant of ONLRET.
      */
     @Define
-    public final static native @tcflag_t
-    int ONLRET();
+    @tcflag_t
+    public final static int ONLRET;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> No CR output at column 0.
      *
-     * @return the native symbolic constant of ONOCR.
      */
     @Define
-    public final static native @tcflag_t
-    int ONOCR();
+    @tcflag_t
+    public final static int ONOCR;
 
     /**
      * <b>POSIX:</b> <i>Output Modes</i> Post-process output.
      *
-     * @return the native symbolic constant of OPOST.
      */
     @Define
-    public final static native @tcflag_t
-    int OPOST();
+    @tcflag_t
+    public final static int OPOST;
 
     /**
      * <b>POSIX:</b> <i>Control Modes</i> Parity enable.
      *
-     * @return the native symbolic constant of PARENB.
      */
     @Define
-    public final static native @tcflag_t
-    int PARENB();
+    @tcflag_t
+    public final static int PARENB;
 
     /**
      * <b>???:</b> <i>Control Modes</i> ???Use d "stick" (mark/space) parity
      * (supported on certain serial devices).???
      *
-     * @return the native symbolic constant of PAREXT.
-     * @throws NotDefinedException if PAREXT is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int PAREXT() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine PAREXT;
 
     /**
      * <b>POSIX:</b> <i>Input Modes</i> Mark parity errors.
      *
-     * @return the native symbolic constant of .
-     * @throws NotDefinedException if PARMRK is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int PARMRK() throws NotDefinedException;
+    @tcflag_t
+    public final static int PARMRK;
 
     /**
      * <b>POSIX:</b> <i>Control Modes</i> Odd parity, else even.
      *
-     * @return the native symbolic constant of PARODD.
      */
     @Define
-    public final static native @tcflag_t
-    int PARODD();
+    @tcflag_t
+    public final static int PARODD;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Horizontal-tab delay type 0.
      *
-     * @return the native symbolic constant of TAB0.
-     * @throws NotDefinedException if TAB0 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int TAB0() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine TAB0;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Horizontal-tab delay type 1.
      *
-     * @return the native symbolic constant of TAB1.
-     * @throws NotDefinedException if TAB1 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int TAB1() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine TAB1;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Horizontal-tab delay type 2.
      *
-     * @return the native symbolic constant of TAB2.
-     * @throws NotDefinedException if TAB2 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int TAB2() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine TAB2;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Expand tabs to spaces.
      *
-     * @return the native symbolic constant of TAB3.
-     * @throws NotDefinedException if TAB3 is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int TAB3() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine TAB3;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select horizontal-tab delays:
      *
-     * @return the native symbolic constant of TABDLY.
-     * @throws NotDefinedException if TABDLY is not defined natively.
      */
     @Define
-    public final static native @tcflag_t
-    int TABDLY() throws NotDefinedException;
+    @tcflag_t
+    public final static IntDefine TABDLY;
 
     /**
      * <b>POSIX:</b> <i>Line Control</i> Flush pending input.
      *
-     * @return the native symbolic constant of TCIFLUSH.
      */
     @Define
-    public final static native @tcflag_t
-    int TCIFLUSH();
+    @tcflag_t
+    public final static int TCIFLUSH;
 
     /**
      * <b>POSIX:</b> <i>Line Control</i> Transmit a STOP character, intended to
      * suspend input data.
      *
-     * @return the native symbolic constant of TCIOFF.
      */
     @Define
-    public final static native @tcflag_t
-    int TCIOFF();
+    @tcflag_t
+    public final static int TCIOFF;
 
     /**
      * <b>POSIX:</b> <i>Line Control</i> Flush both pending input and
      * untransmitted output.
      *
-     * @return the native symbolic constant of TCIOFLUSH.
      */
     @Define
-    public final static native @tcflag_t
-    int TCIOFLUSH();
+    @tcflag_t
+    public final static int TCIOFLUSH;
 
     /**
      * <b>POSIX:</b> <i>Line Control</i> Transmit a START character, intended to
      * restart input data.
      *
-     * @return the native symbolic constant of TCION.
      */
     @Define
-    public final static native @tcflag_t
-    int TCION();
+    @tcflag_t
+    public final static int TCION;
 
     /**
      * <b>POSIX:</b> <i>Line Control</i> Flush untransmitted output.
      *
-     * @return the native symbolic constant of TCOFLUSH.
      */
     @Define
-    public final static native @tcflag_t
-    int TCOFLUSH();
+    @tcflag_t
+    public final static int TCOFLUSH;
 
     /**
      * <b>POSIX:</b> <i>Line Control</i> Suspend output.
      *
-     * @return the native symbolic constant of TCOOFF.
      */
     @Define
-    public final static native @tcflag_t
-    int TCOOFF();
+    @tcflag_t
+    public final static int TCOOFF;
 
     /**
      * <b>POSIX:</b> <i>Line Control</i> Restart output.
      *
-     * @return the native symbolic constant of TCOON.
      */
     @Define
-    public final static native @tcflag_t
-    int TCOON();
+    @tcflag_t
+    public final static int TCOON;
 
     /**
      * <b>POSIX:</b> <i>Attribute Selection</i> Change attributes when output
      * has drained; also flush pending input.
      *
-     * @return the native symbolic constant of TCSADRAIN.
      */
     @Define
-    public final static native @tcflag_t
-    int TCSADRAIN();
+    @tcflag_t
+    public final static int TCSADRAIN;
 
     /**
      * <b>POSIX:</b> <i>Attribute Selection</i> Change attributes when output
      * has drained.
      *
-     * @return the native symbolic constant of TCSAFLUSH.
      */
     @Define
-    public final static native @tcflag_t
-    int TCSAFLUSH();
+    @tcflag_t
+    public final static int TCSAFLUSH;
 
     /**
      * <b>POSIX:</b> <i>Attribute Selection</i> Change attributes immediately.
      *
-     * @return the native symbolic constant of TCSANOW.
      */
     @Define
-    public final static native @tcflag_t
-    int TCSANOW();
+    @tcflag_t
+    public final static int TCSANOW;
 
     /**
      * <b>POSIX:</b> <i>Local Modes</i> Send SIGTTOU for background output.
      *
-     * @return the native symbolic constant of TOSTOP.
      */
     @Define
-    public final static native @tcflag_t
-    int TOSTOP();
+    @tcflag_t
+    public final static int TOSTOP;
 
     /**
      * <b>POSIX:</b> EOF character in <b>Canonical Mode</b>.
      *
-     * @return the native symbolic constant of VEOF.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VEOF();
+    public final static int VEOF;
 
     /**
      * <b>POSIX:</b> EOL character in <b>Canonical Mode</b>.
      *
-     * @return the native symbolic constant of VEOL.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VEOL();
+    public final static int VEOL;
 
     /**
      * <b>POSIX:</b> ERASE character in <b>Canonical Mode</b>.
      *
-     * @return the native symbolic constant of VERASE.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VERASE();
+    public final static int VERASE;
 
     /**
      * <b>POSIX:</b> INTR character in <b>Canonical Mode</b> and
      * <b>Non-Canonical Mode</b>.
      *
-     * @return the native symbolic constant of VINTR.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VINTR();
+    public final static int VINTR;
 
     /**
      * <b>POSIX:</b> KILL character in <b>Canonical Mode</b>.
      *
-     * @return the native symbolic constant of VKILL.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VKILL();
+    public final static int VKILL;
 
     /**
      * <b>POSIX:</b> MIN value in <b>Non-Canonical Mode</b>.
      *
-     * @return the native symbolic constant of VMIN.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VMIN();
+    public final static int VMIN;
 
     /**
      * <b>POSIX:</b> QUIT character in <b>Canonical Mode</b> and
      * <b>Non-Canonical Mode</b>.
      *
-     * @return the native symbolic constant of VQUIT.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VQUIT();
+    public final static int VQUIT;
 
     /**
      * <b>POSIX:</b> START character in <b>Canonical Mode</b> and
      * <b>Non-Canonical Mode</b>.
      *
-     * @return the native symbolic constant of VSTART.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VSTART();
+    public final static int VSTART;
 
     /**
      * <b>POSIX:</b> STOP character in <b>Canonical Mode</b> and
      * <b>Non-Canonical Mode</b>.
      *
-     * @return the native symbolic constant of VSTOP.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VSTOP();
+    public final static int VSTOP;
 
     /**
      * <b>POSIX:</b> VSUSP character in <b>Canonical Mode</b> and
      * <b>Non-Canonical Mode</b>.
      *
-     * @return the native symbolic constant of VSUSP.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VSUSP();
+    public final static int VSUSP;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Vertical-tab delay type 0.
      *
-     * @return the native symbolic constant of VT0.
-     * @throws NotDefinedException if VT0 is not defined natively.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VT0() throws NotDefinedException;
+    public final static IntDefine VT0;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Vertical-tab delay type 1.
      *
-     * @return the native symbolic constant of VT1.
-     * @throws NotDefinedException if VT1 is not defined natively.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VT1() throws NotDefinedException;
+    public final static IntDefine VT1;
 
     /**
      * <b>POSIX.XSI:</b> <i>Output Modes</i> Select vertical-tab delays:
      *
-     * @return the native symbolic constant of VTDLY.
-     * @throws NotDefinedException if VTDLY is not defined natively.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VTDLY() throws NotDefinedException;
+    public final static IntDefine VTDLY;
 
     /**
      * <b>POSIX:</b> VTIME value in <b>Non-Canonical Mode</b>.
      *
-     * @return the native symbolic constant of VTIME.
      */
     @Define
     @cc_t
-    public final static native @tcflag_t
-    int VTIME();
+    public final static int VTIME;
 
     /**
      * <b>Linux:</b>
      *
-     * @return the native symbolic constant of .
-     * @throws NotDefinedException if _HAVE_STRUCT_TERMIOS_C_ISPEED is not
-     * defined natively.
      */
     @Define
-    public final static native int _HAVE_STRUCT_TERMIOS_C_ISPEED() throws NotDefinedException;
+    public final static IntDefine _HAVE_STRUCT_TERMIOS_C_ISPEED;
 
     /**
      * <b>Linux:</b>
      *
-     * @return the native symbolic constant of .
-     * @throws NotDefinedException if _HAVE_STRUCT_TERMIOS_C_OSPEED is not
-     * defined natively.
      */
     @Define
-    public final static native int _HAVE_STRUCT_TERMIOS_C_OSPEED() throws NotDefinedException;
+    public final static IntDefine _HAVE_STRUCT_TERMIOS_C_OSPEED;
 
     /**
      * <b>POSIX:</b>
@@ -1217,8 +1183,8 @@ public final class Termios {
      * @return Upon successful completion, cfgetispeed() shall return a value of
      * type speed_t representing the input speed.
      */
-    public final static native @speed_t
-    int cfgetispeed(StructTermios termios);
+    @speed_t
+    public final static native int cfgetispeed(StructTermios termios);
 
     /**
      * <b>POSIX:</b>
@@ -1230,8 +1196,8 @@ public final class Termios {
      * @return Upon successful completion, cfgetospeed() shall return a value of
      * type speed_t representing the output speed.
      */
-    public final static native @speed_t
-    int cfgetospeed(StructTermios termios);
+    @speed_t
+    public final static native int cfgetospeed(StructTermios termios);
 
     /**
      * <b>POSIX:</b>
@@ -1429,130 +1395,71 @@ public final class Termios {
     public static class Speed_t extends NativeIntNumber {
 
         static String speed_tToString(int speed_t) {
-            if (speed_t == B0()) {
+            if (speed_t == B0) {
                 return "0";
-            } else if (speed_t == B50()) {
+            } else if (speed_t == B50) {
                 return "50";
-            } else if (speed_t == B75()) {
+            } else if (speed_t == B75) {
                 return "75";
-            } else if (speed_t == B110()) {
+            } else if (speed_t == B110) {
                 return "110";
-            } else if (speed_t == B134()) {
+            } else if (speed_t == B134) {
                 return "134";
-            } else if (speed_t == B150()) {
+            } else if (speed_t == B150) {
                 return "150";
-            } else if (speed_t == B200()) {
+            } else if (speed_t == B200) {
                 return "200";
-            } else if (speed_t == B300()) {
+            } else if (speed_t == B300) {
                 return "300";
-            } else if (speed_t == B600()) {
+            } else if (speed_t == B600) {
                 return "600";
-            } else if (speed_t == B1200()) {
+            } else if (speed_t == B1200) {
                 return "1200";
-            } else if (speed_t == B1800()) {
+            } else if (speed_t == B1800) {
                 return "1800";
-            } else if (speed_t == B2400()) {
+            } else if (speed_t == B2400) {
                 return "2400";
-            } else if (speed_t == B4800()) {
+            } else if (speed_t == B4800) {
                 return "4800";
-            } else if (speed_t == B9600()) {
+            } else if (speed_t == B9600) {
                 return "9600";
-            } else if (speed_t == B19200()) {
+            } else if (speed_t == B19200) {
                 return "19200";
-            } else if (speed_t == B38400()) {
+            } else if (speed_t == B38400) {
                 return "38400";
+            } else if (speed_t == B57600) {
+                return "57600";
+            } else if (speed_t == B115200) {
+                return "115200";
+            } else if (speed_t == B230400) {
+                return "230400";
+            } else if (B460800.isEqualsTo(speed_t)) {
+                return "460800";
+            } else if (B500000.isEqualsTo(speed_t)) {
+                return "500000";
+            } else if (B576000.isEqualsTo(speed_t)) {
+                return "576000";
+            } else if (B921600.isEqualsTo(speed_t)) {
+                return "921600";
+            } else if (B1000000.isEqualsTo(speed_t)) {
+                return "1000000";
+            } else if (B1152000.isEqualsTo(speed_t)) {
+                return "1152000";
+            } else if (B1500000.isEqualsTo(speed_t)) {
+                return "1500000";
+            } else if (B2000000.isEqualsTo(speed_t)) {
+                return "2000000";
+            } else if (B2500000.isEqualsTo(speed_t)) {
+                return "2500000";
+            } else if (B3000000.isEqualsTo(speed_t)) {
+                return "3000000";
+            } else if (B3500000.isEqualsTo(speed_t)) {
+                return "3500000";
+            } else if (B4000000.isEqualsTo(speed_t)) {
+                return "4000000";
+            } else {
+                return "native speed id unknown to us: " + speed_t;
             }
-            try {
-                if (speed_t == B57600()) {
-                    return "57600";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B115200()) {
-                    return "115200";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B230400()) {
-                    return "230400";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B460800()) {
-                    return "460800";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B500000()) {
-                    return "500000";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B576000()) {
-                    return "576000";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B921600()) {
-                    return "921600";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B1000000()) {
-                    return "1000000";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B1152000()) {
-                    return "1152000";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B1500000()) {
-                    return "1500000";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B2000000()) {
-                    return "2000000";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B2500000()) {
-                    return "2500000";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B3000000()) {
-                    return "3000000";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B3500000()) {
-                    return "3500000";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            try {
-                if (speed_t == B4000000()) {
-                    return "4000000";
-                }
-            } catch (NotDefinedException nde) {
-            }
-            return "native speed id unknown to us: " + speed_t;
         }
 
         /**
@@ -1580,8 +1487,8 @@ public final class Termios {
             super(owner, offset, sizeof());
         }
 
-        public native @speed_t
-        int getValue();
+        @speed_t
+        public native int getValue();
 
         public native void setValue(@speed_t int value);
 
@@ -1619,63 +1526,61 @@ public final class Termios {
         }
 
         static public void c_cflag2String(Appendable sb, int c_cflag) throws IOException {
-            if ((CSIZE() & c_cflag) == CS5()) {
+            if ((CSIZE & c_cflag) == CS5) {
                 sb.append("CS5 ");
-                c_cflag &= ~CS5();
+                c_cflag &= ~CS5;
             }
-            if ((CSIZE() & c_cflag) == CS6()) {
+            if ((CSIZE & c_cflag) == CS6) {
                 sb.append("CS6 ");
-                c_cflag &= ~CS6();
+                c_cflag &= ~CS6;
             }
-            if ((CSIZE() & c_cflag) == CS7()) {
+            if ((CSIZE & c_cflag) == CS7) {
                 sb.append("CS7 ");
-                c_cflag &= ~CS7();
+                c_cflag &= ~CS7;
             }
-            if ((CSIZE() & c_cflag) == CS8()) {
+            if ((CSIZE & c_cflag) == CS8) {
                 sb.append("CS8 ");
-                c_cflag &= ~CS8();
+                c_cflag &= ~CS8;
             }
-            if ((CSTOPB() & c_cflag) == CSTOPB()) {
+            if ((CSTOPB & c_cflag) == CSTOPB) {
                 sb.append("CSTOPB ");
-                c_cflag &= ~CSTOPB();
+                c_cflag &= ~CSTOPB;
             }
-            if ((CREAD() & c_cflag) == CREAD()) {
+            if ((CREAD & c_cflag) == CREAD) {
                 sb.append("CREAD ");
-                c_cflag &= ~CREAD();
+                c_cflag &= ~CREAD;
             }
-            if ((PARENB() & c_cflag) == PARENB()) {
+            if ((PARENB & c_cflag) == PARENB) {
                 sb.append("PARENB ");
-                c_cflag &= ~PARENB();
+                c_cflag &= ~PARENB;
             }
-            if ((PARODD() & c_cflag) == PARODD()) {
+            if ((PARODD & c_cflag) == PARODD) {
                 sb.append("PARODD ");
-                c_cflag &= ~PARODD();
+                c_cflag &= ~PARODD;
             }
-            if ((HUPCL() & c_cflag) == HUPCL()) {
+            if ((HUPCL & c_cflag) == HUPCL) {
                 sb.append("HUPCL ");
-                c_cflag &= ~HUPCL();
+                c_cflag &= ~HUPCL;
             }
-            if ((CLOCAL() & c_cflag) == CLOCAL()) {
+            if ((CLOCAL & c_cflag) == CLOCAL) {
                 sb.append("CLOCAL ");
-                c_cflag &= ~CLOCAL();
+                c_cflag &= ~CLOCAL;
             }
-            if ((CRTSCTS() & c_cflag) == CRTSCTS()) {
+            if ((CRTSCTS & c_cflag) == CRTSCTS) {
                 sb.append("CRTSCTS ");
-                c_cflag &= ~CRTSCTS();
+                c_cflag &= ~CRTSCTS;
             }
-            try {
-                if ((CMSPAR() & c_cflag) == CMSPAR()) {
+            if (CMSPAR.isDefined()) {
+                if ((CMSPAR.get() & c_cflag) == CMSPAR.get()) {
                     sb.append("CMSPAR ");
-                    c_cflag &= ~CMSPAR();
+                    c_cflag &= ~CMSPAR.get();
                 }
-            } catch (de.ibapl.jnhw.common.exception.NotDefinedException nde) {
             }
-            try {
-                if ((PAREXT() & c_cflag) == PAREXT()) {
+            if (PAREXT.isDefined()) {
+                if ((PAREXT.get() & c_cflag) == PAREXT.get()) {
                     sb.append("PAREXT ");
-                    c_cflag &= ~PAREXT();
+                    c_cflag &= ~PAREXT.get();
                 }
-            } catch (de.ibapl.jnhw.common.exception.NotDefinedException nde) {
             }
             if (c_cflag != 0) {
                 sb.append(String.format("0x%08x", c_cflag));
@@ -1683,57 +1588,53 @@ public final class Termios {
         }
 
         static public void c_iflag2String(Appendable sb, int c_iflag) throws IOException {
-            if ((BRKINT() & c_iflag) == BRKINT()) {
+            if ((BRKINT & c_iflag) == BRKINT) {
                 sb.append("BRKINT ");
-                c_iflag &= ~BRKINT();
+                c_iflag &= ~BRKINT;
             }
-            if ((ICRNL() & c_iflag) == ICRNL()) {
+            if ((ICRNL & c_iflag) == ICRNL) {
                 sb.append("ICRNL ");
-                c_iflag &= ~ICRNL();
+                c_iflag &= ~ICRNL;
             }
-            if ((IGNBRK() & c_iflag) == IGNBRK()) {
+            if ((IGNBRK & c_iflag) == IGNBRK) {
                 sb.append("IGNBRK ");
-                c_iflag &= ~IGNBRK();
+                c_iflag &= ~IGNBRK;
             }
-            if ((IGNCR() & c_iflag) == IGNCR()) {
+            if ((IGNCR & c_iflag) == IGNCR) {
                 sb.append("IGNCR ");
-                c_iflag &= ~IGNCR();
+                c_iflag &= ~IGNCR;
             }
-            if ((IGNPAR() & c_iflag) == IGNPAR()) {
+            if ((IGNPAR & c_iflag) == IGNPAR) {
                 sb.append("IGNPAR ");
-                c_iflag &= ~IGNPAR();
+                c_iflag &= ~IGNPAR;
             }
-            if ((INLCR() & c_iflag) == INLCR()) {
+            if ((INLCR & c_iflag) == INLCR) {
                 sb.append("INLCR ");
-                c_iflag &= ~INLCR();
+                c_iflag &= ~INLCR;
             }
-            if ((INPCK() & c_iflag) == INPCK()) {
+            if ((INPCK & c_iflag) == INPCK) {
                 sb.append("INPCK ");
-                c_iflag &= ~INPCK();
+                c_iflag &= ~INPCK;
             }
-            if ((ISTRIP() & c_iflag) == ISTRIP()) {
+            if ((ISTRIP & c_iflag) == ISTRIP) {
                 sb.append("ISTRIP ");
-                c_iflag &= ~ISTRIP();
+                c_iflag &= ~ISTRIP;
             }
-            if ((IXANY() & c_iflag) == IXANY()) {
+            if ((IXANY & c_iflag) == IXANY) {
                 sb.append("IXANY ");
-                c_iflag &= ~IXANY();
+                c_iflag &= ~IXANY;
             }
-            if ((IXOFF() & c_iflag) == IXOFF()) {
+            if ((IXOFF & c_iflag) == IXOFF) {
                 sb.append("IXOFF ");
-                c_iflag &= ~IXOFF();
+                c_iflag &= ~IXOFF;
             }
-            if ((IXON() & c_iflag) == IXON()) {
+            if ((IXON & c_iflag) == IXON) {
                 sb.append("IXON ");
-                c_iflag &= ~IXON();
+                c_iflag &= ~IXON;
             }
-            try {
-                if ((PARMRK() & c_iflag) == PARMRK()) {
-                    sb.append("PARMRK ");
-                    c_iflag &= ~PARMRK();
-                }
-            } catch (NotDefinedException nde) {
-                //no-op PARMRK is not defined
+            if ((PARMRK & c_iflag) == PARMRK) {
+                sb.append("PARMRK ");
+                c_iflag &= ~PARMRK;
             }
             if (c_iflag != 0) {
                 sb.append(String.format("0x%08x", c_iflag));
@@ -1741,41 +1642,41 @@ public final class Termios {
         }
 
         static public void c_lflag2String(Appendable sb, int c_lflag) throws IOException {
-            if ((ECHO() & c_lflag) == ECHO()) {
+            if ((ECHO & c_lflag) == ECHO) {
                 sb.append("ECHO ");
-                c_lflag &= ~ECHO();
+                c_lflag &= ~ECHO;
             }
-            if ((ECHOE() & c_lflag) == ECHOE()) {
+            if ((ECHOE & c_lflag) == ECHOE) {
                 sb.append("ECHOE ");
-                c_lflag &= ~ECHOE();
+                c_lflag &= ~ECHOE;
             }
-            if ((ECHOK() & c_lflag) == ECHOK()) {
+            if ((ECHOK & c_lflag) == ECHOK) {
                 sb.append("ECHOK ");
-                c_lflag &= ~ECHOK();
+                c_lflag &= ~ECHOK;
             }
-            if ((ECHONL() & c_lflag) == ECHONL()) {
+            if ((ECHONL & c_lflag) == ECHONL) {
                 sb.append("ECHONL ");
-                c_lflag &= ~ECHONL();
+                c_lflag &= ~ECHONL;
             }
-            if ((ICANON() & c_lflag) == ICANON()) {
+            if ((ICANON & c_lflag) == ICANON) {
                 sb.append("ICANON ");
-                c_lflag &= ~ICANON();
+                c_lflag &= ~ICANON;
             }
-            if ((IEXTEN() & c_lflag) == IEXTEN()) {
+            if ((IEXTEN & c_lflag) == IEXTEN) {
                 sb.append("IEXTEN ");
-                c_lflag &= ~IEXTEN();
+                c_lflag &= ~IEXTEN;
             }
-            if ((ISIG() & c_lflag) == ISIG()) {
+            if ((ISIG & c_lflag) == ISIG) {
                 sb.append("ISIG ");
-                c_lflag &= ~ISIG();
+                c_lflag &= ~ISIG;
             }
-            if ((NOFLSH() & c_lflag) == NOFLSH()) {
+            if ((NOFLSH & c_lflag) == NOFLSH) {
                 sb.append("NOFLSH ");
-                c_lflag &= ~NOFLSH();
+                c_lflag &= ~NOFLSH;
             }
-            if ((TOSTOP() & c_lflag) == TOSTOP()) {
+            if ((TOSTOP & c_lflag) == TOSTOP) {
                 sb.append("TOSTOP ");
-                c_lflag &= ~TOSTOP();
+                c_lflag &= ~TOSTOP;
             }
             if (c_lflag != 0) {
                 sb.append(String.format("0x%08x", c_lflag));
@@ -1783,151 +1684,133 @@ public final class Termios {
         }
 
         static public void c_oflag2String(Appendable sb, int c_oflag) throws IOException {
-            if ((OPOST() & c_oflag) == OPOST()) {
+            if ((OPOST & c_oflag) == OPOST) {
                 sb.append("OPOST ");
-                c_oflag &= ~OPOST();
+                c_oflag &= ~OPOST;
             }
-            if ((ONLCR() & c_oflag) == ONLCR()) {
+            if ((ONLCR & c_oflag) == ONLCR) {
                 sb.append("ONLCR ");
-                c_oflag &= ~ONLCR();
+                c_oflag &= ~ONLCR;
             }
-            if ((OCRNL() & c_oflag) == OCRNL()) {
+            if ((OCRNL & c_oflag) == OCRNL) {
                 sb.append("OCRNL ");
-                c_oflag &= ~OCRNL();
+                c_oflag &= ~OCRNL;
             }
-            if ((ONOCR() & c_oflag) == ONOCR()) {
+            if ((ONOCR & c_oflag) == ONOCR) {
                 sb.append("ONOCR ");
-                c_oflag &= ~ONOCR();
+                c_oflag &= ~ONOCR;
             }
-            if ((ONLRET() & c_oflag) == ONLRET()) {
+            if ((ONLRET & c_oflag) == ONLRET) {
                 sb.append("ONLRET ");
-                c_oflag &= ~ONLRET();
+                c_oflag &= ~ONLRET;
             }
-            try {
-                if ((OFDEL() & c_oflag) == OFDEL()) {
+            if (OFDEL.isDefined()) {
+                if ((OFDEL.get() & c_oflag) == OFDEL.get()) {
                     sb.append("OFDEL ");
-                    c_oflag &= ~OFDEL();
+                    c_oflag &= ~OFDEL.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((OFILL() & c_oflag) == OFILL()) {
+            if (OFILL.isDefined()) {
+                if ((OFILL.get() & c_oflag) == OFILL.get()) {
                     sb.append("OFILL ");
-                    c_oflag &= ~OFILL();
+                    c_oflag &= ~OFILL.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((NLDLY() & c_oflag) == NL0()) {
+            if (NLDLY.isDefined() && NL0.isDefined()) {
+                if ((NLDLY.get() & c_oflag) == NL0.get()) {
                     sb.append("NL0 ");
-                    c_oflag &= ~NL0();
+                    c_oflag &= ~NL0.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((NLDLY() & c_oflag) == NL1()) {
+            if (NLDLY.isDefined() && NL1.isDefined()) {
+                if ((NLDLY.get() & c_oflag) == NL1.get()) {
                     sb.append("NL1 ");
-                    c_oflag &= ~NL1();
+                    c_oflag &= ~NL1.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((CRDLY() & c_oflag) == CR0()) {
+            if (CRDLY.isDefined() && CR0.isDefined()) {
+                if ((CRDLY.get() & c_oflag) == CR0.get()) {
                     sb.append("CR0 ");
-                    c_oflag &= ~CR0();
+                    c_oflag &= ~CR0.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((CRDLY() & c_oflag) == CR1()) {
+            if (CRDLY.isDefined() && CR1.isDefined()) {
+                if ((CRDLY.get() & c_oflag) == CR1.get()) {
                     sb.append("CR1 ");
-                    c_oflag &= ~CR1();
+                    c_oflag &= ~CR1.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((CRDLY() & c_oflag) == CR2()) {
+            if (CRDLY.isDefined() && CR2.isDefined()) {
+                if ((CRDLY.get() & c_oflag) == CR2.get()) {
                     sb.append("CR2 ");
-                    c_oflag &= ~CR2();
+                    c_oflag &= ~CR2.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((CRDLY() & c_oflag) == CR3()) {
+            if (CRDLY.isDefined() && CR3.isDefined()) {
+                if ((CRDLY.get() & c_oflag) == CR3.get()) {
                     sb.append("CR3 ");
-                    c_oflag &= ~CR3();
+                    c_oflag &= ~CR3.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((TABDLY() & c_oflag) == TAB0()) {
+            if (TABDLY.isDefined() && TAB0.isDefined()) {
+                if ((TABDLY.get() & c_oflag) == TAB0.get()) {
                     sb.append("TAB0 ");
-                    c_oflag &= ~TAB0();
+                    c_oflag &= ~TAB0.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((TABDLY() & c_oflag) == TAB1()) {
+            if (TABDLY.isDefined() && TAB1.isDefined()) {
+                if ((TABDLY.get() & c_oflag) == TAB1.get()) {
                     sb.append("TAB1 ");
-                    c_oflag &= ~TAB1();
+                    c_oflag &= ~TAB1.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((TABDLY() & c_oflag) == TAB2()) {
+            if (TABDLY.isDefined() && TAB2.isDefined()) {
+                if ((TABDLY.get() & c_oflag) == TAB2.get()) {
                     sb.append("TAB2 ");
-                    c_oflag &= ~TAB2();
+                    c_oflag &= ~TAB2.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((TABDLY() & c_oflag) == TAB3()) {
+            if (TABDLY.isDefined() && TAB3.isDefined()) {
+                if ((TABDLY.get() & c_oflag) == TAB3.get()) {
                     sb.append("TAB3 ");
-                    c_oflag &= ~TAB3();
+                    c_oflag &= ~TAB3.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((BSDLY() & c_oflag) == BS0()) {
+            if (BSDLY.isDefined() && BS0.isDefined()) {
+                if ((BSDLY.get() & c_oflag) == BS0.get()) {
                     sb.append("BS0 ");
-                    c_oflag &= ~BS0();
+                    c_oflag &= ~BS0.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((BSDLY() & c_oflag) == BS1()) {
+            if (BSDLY.isDefined() && BS1.isDefined()) {
+                if ((BSDLY.get() & c_oflag) == BS1.get()) {
                     sb.append("BS1 ");
-                    c_oflag &= ~BS1();
+                    c_oflag &= ~BS1.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((VTDLY() & c_oflag) == VT0()) {
+            if (VTDLY.isDefined() && VT0.isDefined()) {
+                if ((VTDLY.get() & c_oflag) == VT0.get()) {
                     sb.append("VT0 ");
-                    c_oflag &= ~VT0();
+                    c_oflag &= ~VT0.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((VTDLY() & c_oflag) == VT1()) {
+            if (VTDLY.isDefined() && VT1.isDefined()) {
+                if ((VTDLY.get() & c_oflag) == VT1.get()) {
                     sb.append("VT1 ");
-                    c_oflag &= ~VT1();
+                    c_oflag &= ~VT1.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((FFDLY() & c_oflag) == FF0()) {
+            if (FFDLY.isDefined() && FF0.isDefined()) {
+                if ((FFDLY.get() & c_oflag) == FF0.get()) {
                     sb.append("FF0 ");
-                    c_oflag &= ~FF0();
+                    c_oflag &= ~FF0.get();
                 }
-            } catch (NotDefinedException nde) {
             }
-            try {
-                if ((FFDLY() & c_oflag) == FF1()) {
+            if (FFDLY.isDefined() && FF1.isDefined()) {
+                if ((FFDLY.get() & c_oflag) == FF1.get()) {
                     sb.append("FF1 ");
-                    c_oflag &= ~FF1();
+                    c_oflag &= ~FF1.get();
                 }
-            } catch (NotDefinedException nde) {
             }
             if (c_oflag != 0) {
                 sb.append(String.format("0x%08x", c_oflag));
@@ -1951,8 +1834,8 @@ public final class Termios {
             super(owner, offset, sizeof());
         }
 
-        public native @tcflag_t
-        int getValue();
+        @tcflag_t
+        public native int getValue();
 
         public native void setValue(@tcflag_t int value);
 
@@ -2010,8 +1893,8 @@ public final class Termios {
          *
          * @return the native value of c_iflag.
          */
-        public native @tcflag_t
-        int c_iflag();
+        @tcflag_t
+        public native int c_iflag();
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -2027,8 +1910,8 @@ public final class Termios {
          *
          * @return native value of c_oflag.
          */
-        public native @tcflag_t
-        int c_oflag();
+        @tcflag_t
+        public native int c_oflag();
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -2044,8 +1927,8 @@ public final class Termios {
          *
          * @return native value of c_cflag.
          */
-        public native @tcflag_t
-        int c_cflag();
+        @tcflag_t
+        public native int c_cflag();
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -2061,8 +1944,8 @@ public final class Termios {
          *
          * @return native value of c_lflag.
          */
-        public native @tcflag_t
-        int c_lflag();
+        @tcflag_t
+        public native int c_lflag();
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -2118,8 +2001,8 @@ public final class Termios {
          * @throws NoSuchNativeTypeMemberException if c_ispeed does not *
          * exists.
          */
-        public native @speed_t
-        int c_ispeed() throws NoSuchNativeTypeMemberException;
+        @speed_t
+        public native int c_ispeed() throws NoSuchNativeTypeMemberException;
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -2139,8 +2022,8 @@ public final class Termios {
          * @throws NoSuchNativeTypeMemberException if c_ospeed does not *
          * exists.
          */
-        public native @speed_t
-        int c_ospeed() throws NoSuchNativeTypeMemberException;
+        @speed_t
+        public native int c_ospeed() throws NoSuchNativeTypeMemberException;
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -2162,27 +2045,27 @@ public final class Termios {
         }
 
         public static String toCcName(int value) {
-            if (VEOF() == value) {
+            if (VEOF == value) {
                 return "VEOF";
-            } else if (VEOL() == value) {
+            } else if (VEOL == value) {
                 return "VEOL";
-            } else if (VERASE() == value) {
+            } else if (VERASE == value) {
                 return "VERASE";
-            } else if (VINTR() == value) {
+            } else if (VINTR == value) {
                 return "VINTR";
-            } else if (VKILL() == value) {
+            } else if (VKILL == value) {
                 return "VKILL";
-            } else if (VMIN() == value) {
+            } else if (VMIN == value) {
                 return "VMIN";
-            } else if (VQUIT() == value) {
+            } else if (VQUIT == value) {
                 return "VQUIT";
-            } else if (VSTART() == value) {
+            } else if (VSTART == value) {
                 return "VSTART";
-            } else if (VSTOP() == value) {
+            } else if (VSTOP == value) {
                 return "VSTOP";
-            } else if (VSUSP() == value) {
+            } else if (VSUSP == value) {
                 return "VSUSP";
-            } else if (VTIME() == value) {
+            } else if (VTIME == value) {
                 return "VTIME";
             } else {
                 return String.valueOf(value);
@@ -2212,7 +2095,7 @@ public final class Termios {
                 jsb.appendHexIntMember("c_ospeed", c_ospeed());
             } catch (NoSuchNativeTypeMemberException nstme) {
             }
-            for (int i = 0; i < NCCS(); i++) {
+            for (int i = 0; i < NCCS; i++) {
                 c_cc2String(sb, i, c_cc(i));
             }
             jsb.close();

@@ -29,7 +29,7 @@ extern "C" {
 #ifdef _POSIX_VERSION    
 #include <sys/types.h>
 
-JNHW_ASSERT__mode_t__IS__uint16_t__OR__uint32_t
+    JNHW_ASSERT__mode_t__IS__uint16_t__OR__uint32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_sys_Types_Mode_t
@@ -58,7 +58,7 @@ JNHW_ASSERT__mode_t__IS__uint16_t__OR__uint32_t
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Mode_1t_unsigned
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (0 < (mode_t)-1);
+        return (0 < (mode_t) - 1);
     }
 
     /*
@@ -87,7 +87,7 @@ JNHW_ASSERT__mode_t__IS__uint16_t__OR__uint32_t
 #else
 #error expected mode_t uint16_t or uint32_t
 #endif 
-        *UNWRAP_ABSTRACT_MEM_TO(mode_t*, jnhw_mode_t) = (mode_t)value;
+        *UNWRAP_ABSTRACT_MEM_TO(mode_t*, jnhw_mode_t) = (mode_t) value;
     }
 
     /*

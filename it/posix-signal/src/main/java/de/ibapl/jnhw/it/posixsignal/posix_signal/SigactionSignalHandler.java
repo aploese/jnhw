@@ -24,6 +24,7 @@ package de.ibapl.jnhw.it.posixsignal.posix_signal;
 import de.ibapl.jnhw.common.callback.Callback_I_Mem_Mem_V_Impl;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.nativecall.CallNative_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.util.OutputStreamAppender;
 import de.ibapl.jnhw.posix.Signal;
 import java.io.IOException;
@@ -61,7 +62,7 @@ public class SigactionSignalHandler extends SignalHandler {
                         System.exit(value);
                         break;
                     case PRINT_MSG_AND_CALL_OLD_HANDLER:
-                        oact.sa_sigaction().call(value, siginfo, ucontext);
+                        CallNative_I_Mem_Mem_V.wrap(oact.sa_sigaction()).call(value, siginfo, ucontext);
                         break;
                     default:
                         thrownInHandler = new RuntimeException("Can't handle signalAction: " + signalAction);
@@ -96,7 +97,7 @@ public class SigactionSignalHandler extends SignalHandler {
         System.out.println("Sigaction handler for signal " + signalToRaise + " in thread: " + Thread.currentThread());
         try {
             OutputStreamAppender sb = new OutputStreamAppender(System.err);
-            act.sa_flags(Signal.SA_SIGINFO());
+            act.sa_flags(Signal.SA_SIGINFO);
             Signal.sigemptyset(act.sa_mask);
 
             act.sa_sigaction(sa_handler);

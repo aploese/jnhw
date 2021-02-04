@@ -28,11 +28,11 @@ extern "C" {
 
 #ifdef _POSIX_VERSION
 #include <pthread.h>
-//for offsetof
+    //for offsetof
 #include <stddef.h>
 #include <unistd.h>
 
-/*
+    /*
      * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_t
      * Method:    alignof
      * Signature: ()I
@@ -42,7 +42,7 @@ extern "C" {
         return __alignof__ (pthread_t);
     }
 
-/*
+    /*
      * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_t
      * Method:    sizeof
      * Signature: ()I
@@ -60,11 +60,11 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_nativeToString
     (JNIEnv *env, jobject pthread) {
         char buf[1024] = {0};
-static_assert(sizeof(pthread_t) == sizeof(uintptr_t), "sizeof(pthread_t) != sizeof(uintptr_t)");
+        static_assert(sizeof (pthread_t) == sizeof (uintptr_t), "sizeof(pthread_t) != sizeof(uintptr_t)");
 #if defined(__LP64__)
-        snprintf(buf, sizeof (buf) - 1, "0x%016lx", (uintptr_t)*UNWRAP_PTHREAD_T_PTR(pthread));
+        snprintf(buf, sizeof (buf) - 1, "0x%016lx", (uintptr_t) * UNWRAP_PTHREAD_T_PTR(pthread));
 #else
-        snprintf(buf, sizeof (buf) - 1, "0x%08x", (uintptr_t)*UNWRAP_PTHREAD_T_PTR(pthread));
+        snprintf(buf, sizeof (buf) - 1, "0x%08x", (uintptr_t) * UNWRAP_PTHREAD_T_PTR(pthread));
 #endif
         return (*env)->NewStringUTF(env, buf);
     }

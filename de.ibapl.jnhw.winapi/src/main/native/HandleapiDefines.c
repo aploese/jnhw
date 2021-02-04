@@ -26,31 +26,36 @@
 extern "C" {
 #endif
 
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Handeleapi
-     * Method:    HAVE_HANDLEAPI_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Handleapi_HAVE_1HANDLEAPI_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_HANDLEAPI_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
-    }
 
-#ifdef HAVE_HANDLEAPI_H
+#ifndef HAVE_HANDLEAPI_H
+
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Handleapi
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Handleapi_initFields
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    }
+#else
 #include <handleapi.h>
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Handleapi
-     * Method:    create_INVALID_HANDLE_VALUE
-     * Signature: ()Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Handleapi_create_1INVALID_1HANDLE_1VALUE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREATE_HANDLE(INVALID_HANDLE_VALUE);
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Handleapi_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_HANDLEAPI_H", JNI_TRUE)) {
+            return;
+        }
+
+        if (JnhwSetStaticObjectField(env, clazz, dij_w_HANDLE__CSig, "INVALID_HANDLE_VALUE", CREATE_HANDLE(INVALID_HANDLE_VALUE))) {
+            return;
+        }
+
     }
 
 

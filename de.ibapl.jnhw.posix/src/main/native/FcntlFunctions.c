@@ -34,7 +34,7 @@
 extern "C" {
 #endif
 
-JNHW_ASSERT__mode_t__IS__uint16_t__OR__uint32_t
+    JNHW_ASSERT__mode_t__IS__uint16_t__OR__uint32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
@@ -376,7 +376,7 @@ JNHW_ASSERT__mode_t__IS__uint16_t__OR__uint32_t
 #else
 #error expected off_t is int32_t or int64_t
 #endif 
-        const int result = posix_fadvise(fildes, (off_t)offset, (off_t)len, advice);
+        const int result = posix_fadvise(fildes, (off_t) offset, (off_t) len, advice);
         if (result) {
             throw_NativeErrorException(env, result);
         }

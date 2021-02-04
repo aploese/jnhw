@@ -150,15 +150,15 @@ extern "C" {
      * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1attributes
- #if defined(__OpenBSD__)
-   (JNIEnv *env, __attribute__ ((unused)) jobject structSigevent) {
+#if defined(__OpenBSD__)
+    (JNIEnv *env, __attribute__ ((unused)) jobject structSigevent) {
         throw_NoSuchNativeTypeException(env, "struct sigevent");
         return NULL;
 #else
-   (JNIEnv *env, jobject structSigevent) {
-        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t) (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_attributes);
+    (JNIEnv *env, jobject structSigevent) {
+        return CREATE_NativeAddressHolder((intptr_t) (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_attributes);
 #endif
-   }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
@@ -187,7 +187,7 @@ extern "C" {
         return NULL;
 #else
     (JNIEnv *env, jobject structSigevent) {
-        return CREATE_NATIVE_FUNCTION_POINTER((intptr_t) (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_function);
+        return CREATE_NativeFunctionPointer((intptr_t) (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_function);
 #endif
     }
 
@@ -202,7 +202,7 @@ extern "C" {
         throw_NoSuchNativeTypeException(env, "struct sigevent");
 #else
     (JNIEnv *env, jobject structSigevent, jobject value) {
-        (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_function = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*) (union sigval), value);
+        (UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent))->sigev_notify_function = UNWRAP_NativeFunctionPointer_TO(void (*) (union sigval), value);
 #endif
     }
 

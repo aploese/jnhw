@@ -27,171 +27,77 @@ extern "C" {
 #endif
 
 
+    //We need the POSIX version ...    
+#if !defined(HAVE_SYS_STAT_H) || !defined(_POSIX_VERSION)
+
     /*
      * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    HAVE_SYS_STAT_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_HAVE_1SYS_1STAT_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_SYS_STAT_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-#ifdef _POSIX_VERSION
+#else
 #include <sys/stat.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IRWXU
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IRWXU
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IRWXU;
-    }
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_initFields
+    (JNIEnv *env, jclass clazz) {
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IRUSR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IRUSR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IRUSR;
-    }
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_SYS_STAT_H", JNI_TRUE)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IWUSR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IWUSR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IWUSR;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IXUSR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IXUSR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IXUSR;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IRWXG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IRWXG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IRWXG;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IRGRP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IRGRP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IRGRP;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IWGRP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IWGRP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IWGRP;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IXGRP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IXGRP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IXGRP;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IRWXO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IRWXO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IRWXO;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IROTH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IROTH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IROTH;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IWOTH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IWOTH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IWOTH;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_IXOTH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1IXOTH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_IXOTH;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_ISUID
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1ISUID
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_ISUID;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_ISGID
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1ISGID
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_ISGID;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_Stat
-     * Method:    S_ISVTX
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_sys_Stat_S_1ISVTX
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return S_ISVTX;
+        if (JnhwSetStaticIntField(env, clazz, "S_IRWXU", S_IRWXU)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_IRUSR", S_IRUSR)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_IWUSR", S_IWUSR)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_IXUSR", S_IXUSR)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_IRWXG", S_IRWXG)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_IRGRP", S_IRGRP)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_IWGRP", S_IWGRP)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_IXGRP", S_IXGRP)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_IRWXO", S_IRWXO)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_IROTH", S_IROTH)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_IWOTH", S_IWOTH)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_IXOTH", S_IXOTH)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_ISUID", S_ISUID)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_ISGID", S_ISGID)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "S_ISVTX", S_ISVTX)) {
+            return;
+        }
     }
 
 #endif

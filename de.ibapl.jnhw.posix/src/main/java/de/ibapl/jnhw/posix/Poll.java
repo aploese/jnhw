@@ -47,93 +47,106 @@ public final class Poll {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_POLL_H = false;
+
+        POLLERR = 0;
+        POLLHUP = 0;
+        POLLIN = 0;
+        POLLNVAL = 0;
+        POLLOUT = 0;
+        POLLPRI = 0;
+        POLLRDBAND = 0;
+        POLLRDNORM = 0;
+        POLLWRBAND = 0;
+        POLLWRNORM = 0;
+
+        initFields();
     }
 
-    public final static native boolean HAVE_POLL_H();
+    private static native void initFields();
+
+    public final static boolean HAVE_POLL_H;
 
     /**
      * <b>POSIX:</b> An error has occurred (revents only).
      *
-     * @return the native symbolic constant of POLLERR.
      */
     @Define()
-    public final static native short POLLERR();
+    public final static short POLLERR;
 
     /**
      * <b>POSIX:</b> Device has been disconnected (revents only).
      *
-     * @return the native symbolic constant of POLLHUP.
      */
     @Define()
-    public final static native short POLLHUP();
+    public final static short POLLHUP;
 
     /**
      * <b>POSIX:</b> Data other than high-priority data may be read without
      * blocking.
      *
-     * @return the native symbolic constant of POLLIN.
      */
     @Define()
-    public final static native short POLLIN();
+    public final static short POLLIN;
 
     /**
      * <b>POSIX:</b> Invalid fd member (revents only).
      *
-     * @return the native symbolic constant of .POLLNVAL
      */
     @Define()
-    public final static native short POLLNVAL();
+    public final static short POLLNVAL;
 
     /**
      * <b>POSIX:</b> High priority data may be read without blocking.
      *
-     * @return the native symbolic constant of POLLOUT.
      */
     @Define()
-    public final static native short POLLOUT();
+    public final static short POLLOUT;
 
     /**
      * <b>POSIX:</b> High priority data may be read without blocking.
      *
-     * @return the native symbolic constant of POLLPRI.
      */
     @Define()
-    public final static native short POLLPRI();
+    public final static short POLLPRI;
 
     /**
      * <b>POSIX:</b> Normal data may be read without blocking.
      *
-     * @return the native symbolic constant of POLLRDBAND.
      */
     @Define()
-    public final static native short POLLRDBAND();
+    public final static short POLLRDBAND;
 
     /**
      * <b>POSIX:</b> Normal data may be read without blocking.
      *
-     * @return the native symbolic constant of POLLRDNORM.
      */
     @Define()
-    public final static native short POLLRDNORM();
+    public final static short POLLRDNORM;
 
     /**
      * <b>POSIX:</b> Priority data may be written.
      *
-     * @return the native symbolic constant of POLLWRBAND.
      */
     @Define()
-    public final static native short POLLWRBAND();
+    public final static short POLLWRBAND;
 
     /**
      * <b>POSIX:</b> Equivalent to POLLOUT.
      *
-     * @return the native symbolic constant of POLLWRNORM.
      */
     @Define()
-    public final static native short POLLWRNORM();
+    public final static short POLLWRNORM;
 
     /**
      * <b>POSIX:</b>
@@ -163,7 +176,6 @@ public final class Poll {
      */
     public final static native int poll(PollFd fd, int timeout) throws NativeErrorException;
 
-
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
      * pollfd}</a>.
@@ -186,7 +198,7 @@ public final class Poll {
          */
         @SizeOf
         public static native int sizeof();
-        
+
         @AlignOf
         public static native int alignof();
 
@@ -256,55 +268,55 @@ public final class Poll {
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             jsb.appendIntMember("fd", fd());
-            jsb.appendMember("events", "[", (sbu)->event2String(sbu, events()),"]");
-            jsb.appendMember("revents", "[", (sbu)->event2String(sbu, revents()),"]");
+            jsb.appendMember("events", "[", (sbu) -> event2String(sbu, events()), "]");
+            jsb.appendMember("revents", "[", (sbu) -> event2String(sbu, revents()), "]");
             jsb.close();
         }
 
         private static void event2String(Appendable sb, short event) throws IOException {
-            if ((POLLIN() & event) == POLLIN()) {
+            if ((POLLIN & event) == POLLIN) {
                 sb.append("POLLIN ");
-                event &= ~POLLIN();
+                event &= ~POLLIN;
             }
-            if ((POLLPRI() & event) == POLLPRI()) {
+            if ((POLLPRI & event) == POLLPRI) {
                 sb.append("POLLPRI ");
-                event &= ~POLLPRI();
+                event &= ~POLLPRI;
             }
-            if ((POLLOUT() & event) == POLLOUT()) {
+            if ((POLLOUT & event) == POLLOUT) {
                 sb.append("POLLOUT ");
-                event &= ~POLLOUT();
+                event &= ~POLLOUT;
             }
-            if ((POLLRDNORM() & event) == POLLRDNORM()) {
+            if ((POLLRDNORM & event) == POLLRDNORM) {
                 sb.append("POLLRDNORM ");
-                event &= ~POLLRDNORM();
+                event &= ~POLLRDNORM;
             }
-            if ((POLLRDBAND() & event) == POLLRDBAND()) {
+            if ((POLLRDBAND & event) == POLLRDBAND) {
                 sb.append("POLLRDBAND ");
-                event &= ~POLLRDBAND();
+                event &= ~POLLRDBAND;
             }
-            if ((POLLWRNORM() & event) == POLLWRNORM()) {
+            if ((POLLWRNORM & event) == POLLWRNORM) {
                 sb.append("POLLWRNORM ");
-                event &= ~POLLWRNORM();
+                event &= ~POLLWRNORM;
             }
-            if ((POLLWRBAND() & event) == POLLWRBAND()) {
+            if ((POLLWRBAND & event) == POLLWRBAND) {
                 sb.append("POLLWRBAND ");
-                event &= ~POLLWRBAND();
+                event &= ~POLLWRBAND;
             }
-            if ((POLLERR() & event) == POLLERR()) {
+            if ((POLLERR & event) == POLLERR) {
                 sb.append("POLLERR ");
-                event &= ~POLLERR();
+                event &= ~POLLERR;
             }
-            if ((POLLHUP() & event) == POLLHUP()) {
+            if ((POLLHUP & event) == POLLHUP) {
                 sb.append("POLLHUP ");
-                event &= ~POLLHUP();
+                event &= ~POLLHUP;
             }
-            if ((POLLIN() & event) == POLLIN()) {
+            if ((POLLIN & event) == POLLIN) {
                 sb.append("POLLIN ");
-                event &= ~POLLIN();
+                event &= ~POLLIN;
             }
-            if ((POLLNVAL() & event) == POLLNVAL()) {
+            if ((POLLNVAL & event) == POLLNVAL) {
                 sb.append("POLLNVAL ");
-                event &= ~POLLNVAL();
+                event &= ~POLLNVAL;
             }
             if (event != 0) {
                 sb.append(String.format("0x%04x", event));

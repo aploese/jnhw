@@ -28,7 +28,7 @@ extern "C" {
 
 #ifdef _POSIX_VERSION
 #include <time.h>
-//for offsetof
+    //for offsetof
 #include <stddef.h>
 
     /*
@@ -37,9 +37,9 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_sizeof
-        (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return sizeof (struct itimerspec);
-        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
@@ -47,9 +47,9 @@ extern "C" {
      * Signature: ()I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Itimerspec_alignof
-        (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return __alignof__ (struct itimerspec);
-        }
+    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time_Itimerspec
@@ -70,7 +70,7 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct itimerspec, it_value);
     }
-    
+
 #endif
 #ifdef __cplusplus
 }

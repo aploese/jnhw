@@ -35,7 +35,6 @@ extern "C" {
 
 #include <errno.h>
 
-
     /*
      * Class:     de_ibapl_jnhw_posix_Locale
      * Method:    duplocale
@@ -51,7 +50,7 @@ extern "C" {
         if (!result) {
             throw_NativeErrorException(env, errno);
         }
-        return CREATE_LOCALE_T(result);
+        return CREATE_Locale_t(result);
     }
 
     /*
@@ -82,9 +81,9 @@ extern "C" {
             return NULL;
         }
         jobject result = NULL;
-        jmethodID lconvInitID = (*env)->GetMethodID(env, lconvClass, "<init>", "(Lde/ibapl/jnhw/common/memory/NativeAddressHolder;I)V");
+        jmethodID lconvInitID = (*env)->GetMethodID(env, lconvClass, "<init>", "("dijc_m_NativeAddressHolder_CSig"I)V");
         if (lconvInitID != NULL) {
-            result = (*env)->NewObject(env, lconvClass, lconvInitID, CREATE_NATIVE_ADDRESS_HOLDER((intptr_t) lconv), sizeof (struct lconv));
+            result = (*env)->NewObject(env, lconvClass, lconvInitID, CREATE_NativeAddressHolder((intptr_t) lconv), sizeof (struct lconv));
         }
         (*env)->DeleteLocalRef(env, lconvClass);
         return result;
@@ -117,7 +116,7 @@ extern "C" {
             throw_NativeErrorException(env, errno);
             return NULL;
         }
-        return CREATE_LOCALE_T(result);
+        return CREATE_Locale_t(result);
     }
 
     /*
@@ -154,7 +153,7 @@ extern "C" {
         if (result == (locale_t) 0) {
             throw_NativeErrorException(env, errno);
         }
-        return CREATE_LOCALE_T(result);
+        return CREATE_Locale_t(result);
     }
 
 #endif

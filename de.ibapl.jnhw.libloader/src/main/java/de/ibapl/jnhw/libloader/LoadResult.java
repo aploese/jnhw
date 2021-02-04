@@ -25,6 +25,7 @@ import java.net.URL;
 
 /**
  * The result with some information on how the native lib was loaded.
+ *
  * @author aploese
  */
 public class LoadResult {

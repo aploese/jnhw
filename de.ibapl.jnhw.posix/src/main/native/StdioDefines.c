@@ -19,70 +19,52 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+#include "jnhw-posix.h"
+#include "de_ibapl_jnhw_posix_Stdio.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_Stdio.h"
+
+    //We need the POSIX version ...    
+#if !defined(HAVE_STDIO_H) || !defined(_POSIX_VERSION)
 
     /*
      * Class:     de_ibapl_jnhw_posix_Stdio
-     * Method:    HAVE_STDIO_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Stdio_HAVE_1STDIO_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Stdio_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_STDIO_H
-        return JNI_TRUE;
+    }
 #else
-        return JNI_FALSE;
-#endif
-    }
-
-#if HAVE_STDIO_H
 #include <stdio.h>
-#endif
-
-#ifdef _POSIX_VERSION
-    /*
-     * Class:     de_ibapl_jnhw_posix_Stdio
-     * Method:    SEEK_SET
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Stdio_SEEK_1SET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_SET;
-    }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Stdio
-     * Method:    SEEK_CUR
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Stdio_SEEK_1CUR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_CUR;
-    }
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Stdio_initFields
+    (JNIEnv *env, jclass clazz) {
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Stdio
-     * Method:    EOF
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Stdio_EOF
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EOF;
-    }
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_STDIO_H", JNI_TRUE)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Stdio
-     * Method:    SEEK_END
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Stdio_SEEK_1END
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_END;
+        if (JnhwSetStaticIntField(env, clazz, "SEEK_SET", SEEK_SET)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "SEEK_CUR", SEEK_CUR)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "EOF", EOF)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "SEEK_END", SEEK_END)) {
+            return;
+        }
     }
 
 #endif

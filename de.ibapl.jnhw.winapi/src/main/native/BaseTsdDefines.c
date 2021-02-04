@@ -26,23 +26,32 @@
 extern "C" {
 #endif
 
-    /*
-    * Class:     de_ibapl_jnhw_winapi_BaseTsd
-    * Method:    HAVE_BASETSD_H
-    * Signature: ()Z
-    */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_BaseTsd_HAVE_1BASETSD_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_BASETSD_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
-    }
+#ifndef HAVE_BASETSD_H
 
-#ifdef HAVE_BASETSD_H
+    /*
+     * Class:     de_ibapl_jnhw_winapi_BaseTsd
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_BaseTsd_initFields
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    }
+#else    
 #include <basetsd.h>
 
+    /*
+     * Class:     de_ibapl_jnhw_winapi_BaseTsd
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_BaseTsd_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_BASETSD_H", JNI_TRUE)) {
+            return;
+        }
+
+    }
 
 #endif
 #ifdef __cplusplus

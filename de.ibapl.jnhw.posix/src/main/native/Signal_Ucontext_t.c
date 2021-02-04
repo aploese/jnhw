@@ -140,7 +140,7 @@ extern "C" {
         return NULL;
 #else
     (JNIEnv *env, jobject structUcontext_t) {
-        return CREATE_NATIVE_ADDRESS_HOLDER((intptr_t) (UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t))->uc_link);
+        return CREATE_NativeAddressHolder((intptr_t) (UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t))->uc_link);
 #endif
     }
 

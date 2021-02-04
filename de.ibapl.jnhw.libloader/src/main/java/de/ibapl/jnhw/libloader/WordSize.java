@@ -23,6 +23,7 @@ package de.ibapl.jnhw.libloader;
 
 /**
  * The wordsize to use.
+ *
  * @author aploese
  */
 public enum WordSize {
@@ -32,5 +33,5 @@ public enum WordSize {
     private WordSize(int sizeInBit) {
         this.sizeInBit = sizeInBit;
     }
-    
+
 }

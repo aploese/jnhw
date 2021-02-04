@@ -28,10 +28,9 @@ extern "C" {
 
 #ifdef _POSIX_VERSION
 #include <pthread.h>
-//for offsetof
+    //for offsetof
 #include <stddef.h>
 #include <unistd.h>
-
 
     /*
      * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_attr_t

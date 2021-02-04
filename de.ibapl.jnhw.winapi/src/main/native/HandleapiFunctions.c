@@ -41,7 +41,7 @@ extern "C" {
             return;
         }
         if (!CloseHandle(UNWRAP_HANDLE(hObject))) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 

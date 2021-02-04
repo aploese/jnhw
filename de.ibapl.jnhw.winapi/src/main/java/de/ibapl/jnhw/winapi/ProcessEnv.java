@@ -41,7 +41,13 @@ public class ProcessEnv {
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_PROCESSENV_H = false;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/console/getstdhandle">GetStdHandle</a>
@@ -57,6 +63,6 @@ public class ProcessEnv {
      */
     public final static native HANDLE GetStdHandle(int nStdHandle) throws NativeErrorException;
 
-    public final static native boolean HAVE_PROCESSENV_H();
+    public final static boolean HAVE_PROCESSENV_H;
 
 }

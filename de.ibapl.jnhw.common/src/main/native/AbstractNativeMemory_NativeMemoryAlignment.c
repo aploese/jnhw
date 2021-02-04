@@ -32,64 +32,65 @@
 extern "C" {
 #endif
 
-struct s_i8 {
-    int8_t _0_i8;
-};
+    struct s_i8 {
+        int8_t _0_i8;
+    };
 
-struct s_3xi8 {
-    int8_t _0_i8;
-    int8_t _1_i8;
-    int8_t _2_i8;
-};
+    struct s_3xi8 {
+        int8_t _0_i8;
+        int8_t _1_i8;
+        int8_t _2_i8;
+    };
 
-struct s_2xsi8 {
-    struct s_i8 _0_si8;
-    struct s_i8 _1_si8;
-};
+    struct s_2xsi8 {
+        struct s_i8 _0_si8;
+        struct s_i8 _1_si8;
+    };
 
-struct s_si8_s3xi8 {
-    struct s_i8 _0_si8;
-    struct s_3xi8 _1_s3xi8;
-};
+    struct s_si8_s3xi8 {
+        struct s_i8 _0_si8;
+        struct s_3xi8 _1_s3xi8;
+    };
 
-struct s_s3xi8_si8 {
-    struct s_3xi8 _0_s3xi8;
-    struct s_i8 _1_si8;
-};
+    struct s_s3xi8_si8 {
+        struct s_3xi8 _0_s3xi8;
+        struct s_i8 _1_si8;
+    };
 
-struct s_i8_i16 {
-    int8_t _0_i8;
-    int16_t _1_i16;
-    int8_t _2_i8;
-};
+    struct s_i8_i16 {
+        int8_t _0_i8;
+        int16_t _1_i16;
+        int8_t _2_i8;
+    };
 
-struct s_i8_i32 {
-    int8_t _0_i8;
-    int16_t _1_i16;
-    int8_t _2_i8;
-    int32_t _3_i32;
-    int8_t _4_i8;
-    int32_t _5_i32;
-    int8_t _6_i8;
-    int16_t _7_i16;
-    int8_t _8_i8;
-};
+    struct s_i8_i32 {
+        int8_t _0_i8;
+        int16_t _1_i16;
+        int8_t _2_i8;
+        int32_t _3_i32;
+        int8_t _4_i8;
+        int32_t _5_i32;
+        int8_t _6_i8;
+        int16_t _7_i16;
+        int8_t _8_i8;
+    };
 
-struct s_i8_i64 {
-    int8_t _0_i8;
-    int16_t _1_i16;
-    int8_t _2_i8;
-    int32_t _3_i32;
-    int8_t _4_i8;
-    int64_t _5_i64;
-    int8_t _6_i8;
-    int64_t _7_i64;
-    int8_t _8_i8;
-    int32_t _9_i32;
-    int8_t _10_i8;
-    int16_t _11_i16;
-    int8_t _12_i8;
-};
+    struct s_i8_i64 {
+        int8_t _0_i8;
+        int16_t _1_i16;
+        int8_t _2_i8;
+        int32_t _3_i32;
+        int8_t _4_i8;
+        int64_t _5_i64;
+        int8_t _6_i8;
+        int64_t _7_i64;
+        int8_t _8_i8;
+        int32_t _9_i32;
+        int8_t _10_i8;
+        int16_t _11_i16;
+        int8_t _12_i8;
+    };
+
     /*
      * Class:     de_ibapl_jnhw_common_memory_AbstractNativeMemory_NativeMemoryAlignment
      * Method:    sizeOfS_i8
@@ -97,7 +98,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_sizeOfS_1i8
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof(struct s_i8);
+        return sizeof (struct s_i8);
     }
 
     /*
@@ -107,7 +108,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_sizeOfS_1s2xi8
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof(struct s_2xsi8);
+        return sizeof (struct s_2xsi8);
     }
 
     /*
@@ -117,7 +118,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_sizeOfS_13xi8
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof(struct s_3xi8);
+        return sizeof (struct s_3xi8);
     }
 
     /*
@@ -127,7 +128,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_sizeOfS_1si8_1s3xi8
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof(struct s_si8_s3xi8);
+        return sizeof (struct s_si8_s3xi8);
     }
 
     /*
@@ -137,7 +138,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_sizeOfS_1s3xi8_1si8
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof(struct s_s3xi8_si8);
+        return sizeof (struct s_s3xi8_si8);
     }
 
     /*
@@ -177,7 +178,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_sizeOfS_1i8_1i16
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof(struct s_i8_i16);
+        return sizeof (struct s_i8_i16);
     }
 
     /*
@@ -217,7 +218,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_sizeOfS_1i8_1i32
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof(struct s_i8_i32);
+        return sizeof (struct s_i8_i32);
     }
 
     /*
@@ -317,7 +318,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_sizeOfS_1i8_1i64
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof(struct s_i8_i64);
+        return sizeof (struct s_i8_i64);
     }
 
     /*
@@ -327,7 +328,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_alignOfS_1i8_1i64
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return __alignof__(struct s_i8_i64);
+        return __alignof__ (struct s_i8_i64);
     }
 
     /*
@@ -457,7 +458,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_allignOfI8
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return __alignof__(int8_t);
+        return __alignof__ (int8_t);
     }
 
     /*
@@ -467,7 +468,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_allignOfI16
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return __alignof__(int16_t);
+        return __alignof__ (int16_t);
     }
 
     /*
@@ -477,7 +478,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_allignOfI32
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return __alignof__(int32_t);
+        return __alignof__ (int32_t);
     }
 
     /*
@@ -487,7 +488,7 @@ struct s_i8_i64 {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_AbstractNativeMemory_00024NativeMemoryAlignment_allignOfI64
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return __alignof__(int64_t);
+        return __alignof__ (int64_t);
     }
 
 

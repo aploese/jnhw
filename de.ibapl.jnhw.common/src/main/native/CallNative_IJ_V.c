@@ -41,16 +41,16 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1IJ_1V_call
     (JNIEnv *env, jobject this, jlong value) {
 #if defined(__LP64__) || defined(_WIN64)
-static_assert(sizeof(intptr_t) == 8, "sizeof(intptr_t) != 8)");
-        (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int64_t), this))(value);
+        static_assert(sizeof (intptr_t) == 8, "sizeof(intptr_t) != 8)");
+        (UNWRAP_NativeFunctionPointer_TO(void (*)(int64_t), this))(value);
 #else
-static_assert(sizeof(intptr_t) == 4, "sizeof(intptr_t) != 4)");
+        static_assert(sizeof (intptr_t) == 4, "sizeof(intptr_t) != 4)");
         if (value > INT32_MAX) {
             throw_IllegalArgumentException(env, "value > INT32_MAX!");
         } else if (value < INT32_MIN) {
             throw_IllegalArgumentException(env, "value < INT32_MIN!");
         } else {
-            (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int32_t), this))((int32_t)value);
+            (UNWRAP_NativeFunctionPointer_TO(void (*)(int32_t), this))((int32_t) value);
         }
 #endif
     }

@@ -26,208 +26,87 @@
 extern "C" {
 #endif
 
+#ifndef HAVE_WINERROR_H
+
     /*
      * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    HAVE_WINERROR_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Winerror_HAVE_1WINERROR_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winerror_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_WINERROR_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-#ifdef HAVE_WINERROR_H
+#else
 #include <winerror.h>
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_SUCCESS
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1SUCCESS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_SUCCESS;
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winerror_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_WINERROR_H", JNI_TRUE)) {
+            return;
+        }
+
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_SUCCESS", ERROR_SUCCESS)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_FILE_NOT_FOUND", ERROR_FILE_NOT_FOUND)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_ACCESS_DENIED", ERROR_ACCESS_DENIED)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_GEN_FAILURE", ERROR_GEN_FAILURE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_INVALID_PARAMETER", ERROR_INVALID_PARAMETER)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_INVALID_HANDLE", ERROR_INVALID_HANDLE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_IO_PENDING", ERROR_IO_PENDING)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_NOACCESS", ERROR_NOACCESS)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_NO_MORE_ITEMS", ERROR_NO_MORE_ITEMS)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_MORE_DATA", ERROR_MORE_DATA)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_NOT_FOUND", ERROR_NOT_FOUND)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_SHARING_VIOLATION", ERROR_SHARING_VIOLATION)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_PROC_NOT_FOUND", ERROR_PROC_NOT_FOUND)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_ALREADY_EXISTS", ERROR_ALREADY_EXISTS)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_FILE_EXISTS", ERROR_FILE_EXISTS)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_PIPE_BUSY", ERROR_PIPE_BUSY)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "ERROR_IO_INCOMPLETE", ERROR_IO_INCOMPLETE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "WAIT_TIMEOUT", WAIT_TIMEOUT)) {
+            return;
+        }
     }
 
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_FILE_NOT_FOUND
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1FILE_1NOT_1FOUND
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_FILE_NOT_FOUND;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_ACCESS_DENIED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1ACCESS_1DENIED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_ACCESS_DENIED;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_GEN_FAILURE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1GEN_1FAILURE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_GEN_FAILURE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_INVALID_PARAMETER
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1INVALID_1PARAMETER
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_INVALID_PARAMETER;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_INVALID_HANDLE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1INVALID_1HANDLE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_INVALID_HANDLE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_IO_PENDING
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1IO_1PENDING
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_IO_PENDING;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_NOACCESS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1NOACCESS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_NOACCESS;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_NO_MORE_ITEMS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1NO_1MORE_1ITEMS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_NO_MORE_ITEMS;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_MORE_DATA
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1MORE_1DATA
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_MORE_DATA;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_NOT_FOUND
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1NOT_1FOUND
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_NOT_FOUND;
-    }
-
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_SHARING_VIOLATION
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1SHARING_1VIOLATION
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_SHARING_VIOLATION;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_PROC_NOT_FOUND
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1PROC_1NOT_1FOUND
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_PROC_NOT_FOUND;
-    }
-
-
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_ALREADY_EXISTS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1ALREADY_1EXISTS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_ALREADY_EXISTS;
-    }
-    
-            
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_FILE_EXISTS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1FILE_1EXISTS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_FILE_EXISTS;
-    }
-            
-            
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_PIPE_BUSY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1PIPE_1BUSY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_PIPE_BUSY;
-    }
-            
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    ERROR_IO_INCOMPLETE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_ERROR_1IO_1INCOMPLETE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERROR_IO_INCOMPLETE;
-    }
-            
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winerror
-     * Method:    WAIT_TIMEOUT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winerror_WAIT_1TIMEOUT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return WAIT_TIMEOUT;
-    }
-            
 #endif
 
 #ifdef __cplusplus

@@ -66,12 +66,21 @@ public class WinntTest {
 
     @Test
     public void testMAXDWORD() throws Exception {
-        Winnt.MAXDWORD();
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                assertEquals(4, Winnt.MAXDWORD);
+                break;
+            case _64_BIT:
+                assertEquals(8, Winnt.MAXDWORD);
+                break;
+            default:
+                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+        }
     }
 
     @Test
     public void test_INVALID_HANDLE_VALUE() throws Exception {
-        Winnt.HANDLE ivh = Handleapi.INVALID_HANDLE_VALUE();
+        Winnt.HANDLE ivh = Handleapi.INVALID_HANDLE_VALUE;
         Assertions.assertTrue(ivh.is_INVALID_HANDLE_VALUE());
     }
 
@@ -83,7 +92,7 @@ public class WinntTest {
         lpByte.bufferEnd = data.length;
         Assertions.assertEquals("HELLO WORLD!", Winnt.LPWSTR.stringValueOfNullTerminated(lpByte));
     }
-    
+
     @Test
     public void testArrayOfHandle() throws Exception {
         Winnt.ArrayOfHandle aoh = new Winnt.ArrayOfHandle(3, true);
@@ -95,5 +104,5 @@ public class WinntTest {
         Assertions.assertEquals(h1, aoh.get(1));
         Assertions.assertEquals(h2, aoh.get(2));
     }
-    
+
 }

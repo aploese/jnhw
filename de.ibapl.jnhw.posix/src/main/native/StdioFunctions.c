@@ -49,7 +49,7 @@ extern "C" {
         if (result == EOF) {
             throw_NativeErrorException(env, errno);
         }
-        return (jchar)result;
+        return (jchar) result;
     }
 
     /*

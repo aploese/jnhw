@@ -200,7 +200,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1setschedprio
 #if defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__) 
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject thread, __attribute__ ((unused)) jint prio) {
-    throw_NoSuchNativeMethodException(env, "pthread_setschedprio");
+        throw_NoSuchNativeMethodException(env, "pthread_setschedprio");
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject thread, jint prio) {
         if (thread == NULL) {

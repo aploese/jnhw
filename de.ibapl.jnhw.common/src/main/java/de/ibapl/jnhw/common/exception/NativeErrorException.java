@@ -24,27 +24,28 @@ package de.ibapl.jnhw.common.exception;
 /**
  * This exceptions is thrown if the jni native code detects an error. The error
  * number POSIX|ISO C call errno and Windows API call GetLastError() will be
- * stored in errno.
- * The value of errno is valid only if a called function sets the errno and flags the occurence of an error.
- * Once the call returns to the JVM the value of errno is uncertain, so this must be handled immediately after the call to that function. 
- * 
+ * stored in errno. The value of errno is valid only if a called function sets
+ * the errno and flags the occurence of an error. Once the call returns to the
+ * JVM the value of errno is uncertain, so this must be handled immediately
+ * after the call to that function.
+ *
  * @author aploese
  */
 public class NativeErrorException extends Exception {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4007403267388096526L;
-	public final int errno;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 4007403267388096526L;
+    public final int errno;
 
-	public NativeErrorException(int errno) {
-		super("Native error: " + errno);
-		this.errno = errno;
-	}
+    public NativeErrorException(int errno) {
+        super("Native error: " + errno);
+        this.errno = errno;
+    }
 
-	public NativeErrorException(int errno, String msg) {
-		super(msg);
-		this.errno = errno;
-	}
+    public NativeErrorException(int errno, String msg) {
+        super(msg);
+        this.errno = errno;
+    }
 }

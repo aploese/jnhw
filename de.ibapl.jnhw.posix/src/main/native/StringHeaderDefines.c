@@ -26,23 +26,33 @@
 extern "C" {
 #endif
 
+    //We need the POSIX version ...    
+#if !defined(HAVE_STRING_H) || !defined(_POSIX_VERSION)
+
     /*
      * Class:     de_ibapl_jnhw_posix_StringHeader
-     * Method:    HAVE_STRING_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_StringHeader_HAVE_1STRING_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_StringHeader_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_STRING_H) && defined(_POSIX_VERSION)
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-
-#ifdef _POSIX_VERSION
+#else
 #include <string.h>
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_StringHeader
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_StringHeader_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_STRING_H", JNI_TRUE)) {
+            return;
+        }
+
+    }
 
 #endif
 #ifdef __cplusplus

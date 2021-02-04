@@ -29,7 +29,7 @@ extern "C" {
 #ifdef _POSIX_VERSION    
 #include <sys/types.h>
 
-JNHW_ASSERT__uid_t__IS__uint32_t
+    JNHW_ASSERT__uid_t__IS__uint32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_sys_Types_Uid_t
@@ -58,7 +58,7 @@ JNHW_ASSERT__uid_t__IS__uint32_t
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Uid_1t_unsigned
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (0 < (uid_t)-1);
+        return (0 < (uid_t) - 1);
     }
 
     /*
@@ -78,7 +78,7 @@ JNHW_ASSERT__uid_t__IS__uint32_t
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Uid_1t_setValue
     (JNIEnv *env, jobject jnhw_uid_t, jint value) {
-        *UNWRAP_ABSTRACT_MEM_TO(uid_t*, jnhw_uid_t) = (uid_t)value;
+        *UNWRAP_ABSTRACT_MEM_TO(uid_t*, jnhw_uid_t) = (uid_t) value;
     }
 
     /*

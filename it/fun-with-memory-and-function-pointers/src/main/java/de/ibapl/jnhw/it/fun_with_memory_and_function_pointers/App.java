@@ -25,15 +25,14 @@ package de.ibapl.jnhw.it.fun_with_memory_and_function_pointers;
  * Hello world!
  *
  */
-public class App 
-{
-    public static void main( String[] args ) throws Exception
-    {
+public class App {
+
+    public static void main(String[] args) throws Exception {
         Struct.getMemory();
         Struct.onTheFlyStructure();
         Struct.onTheFlyUnion();
         Struct.printMemory();
-        
+
         FunctionPointer.call_I__V();
     }
 }

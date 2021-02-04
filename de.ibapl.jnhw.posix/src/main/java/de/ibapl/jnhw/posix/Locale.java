@@ -27,10 +27,11 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.io.IOException;
 
@@ -48,85 +49,102 @@ public class Locale {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_LOCALE_H = false;
+        LC_ALL = 0;
+        LC_ALL_MASK = 0;
+        LC_COLLATE = 0;
+        LC_COLLATE_MASK = 0;
+        LC_CTYPE = 0;
+        LC_CTYPE_MASK = 0;
+        LC_GLOBAL_LOCALE = null;
+        LC_MESSAGES = 0;
+        LC_MESSAGES_MASK = 0;
+        LC_MONETARY = 0;
+        LC_MONETARY_MASK = 0;
+        LC_NUMERIC = 0;
+        LC_NUMERIC_MASK = 0;
+        LC_TIME = 0;
+        LC_TIME_MASK = 0;
+
+        initFields();
     }
 
-    public final static native boolean HAVE_LOCALE_H();
+    private static native void initFields();
+
+    public final static boolean HAVE_LOCALE_H;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_ALL.
      */
-    @Define()
-    public final static native int LC_ALL();
+    @Define
+    public final static int LC_ALL;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_ALL_MASK.
-     * @throws NotDefinedException if LC_ALL_MASK is not defined natively.
      */
-    @Define()
-    public final static native int LC_ALL_MASK() throws NotDefinedException;
+    @Define
+    public final static int LC_ALL_MASK;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_COLLATE.
      */
-    @Define()
-    public final static native int LC_COLLATE();
+    @Define
+    public final static int LC_COLLATE;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_COLLATE_MASK.
      */
-    @Define()
-    public final static native int LC_COLLATE_MASK();
+    @Define
+    public final static int LC_COLLATE_MASK;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_CTYPE.
      */
-    @Define()
-    public final static native int LC_CTYPE();
+    @Define
+    public final static int LC_CTYPE;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_CTYPE_MASK.
      */
-    @Define()
-    public final static native int LC_CTYPE_MASK();
+    @Define
+    public final static int LC_CTYPE_MASK;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_GLOBAL_LOCALE.
      */
-    @Define()
-    public final static native Locale_t LC_GLOBAL_LOCALE();
+    @Define
+    public final static Locale_t LC_GLOBAL_LOCALE;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_MESSAGES.
      */
-    @Define()
-    public final static native int LC_MESSAGES();
+    @Define
+    public final static int LC_MESSAGES;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_MESSAGES_MASK.
      */
-    @Define()
-    public final static native int LC_MESSAGES_MASK();
+    @Define
+    public final static int LC_MESSAGES_MASK;
 
     /**
      * The LC_MONETARY category shall define the rules and symbols that are used
@@ -134,10 +152,9 @@ public class Locale {
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07_03_03">{@code LC_MONETARY}</a>.
      *
-     * @return the native symbolic constant of LC_MONETARY.
      */
-    @Define()
-    public final static native int LC_MONETARY();
+    @Define
+    public final static int LC_MONETARY;
 
     /**
      * The LC_MONETARY category shall define the rules and symbols that are used
@@ -145,42 +162,37 @@ public class Locale {
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07_03_03">{@code LC_MONETARY}</a>.
      *
-     * @return the native symbolic constant of LC_MONETARY_MASK.
      */
-    @Define()
-    public final static native int LC_MONETARY_MASK();
+    @Define
+    public final static int LC_MONETARY_MASK;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_NUMERIC.
      */
-    @Define()
-    public final static native int LC_NUMERIC();
+    @Define
+    public final static int LC_NUMERIC;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_NUMERIC_MASK.
      */
-    @Define()
-    public final static native int LC_NUMERIC_MASK();
+    @Define
+    public final static int LC_NUMERIC_MASK;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_TIME.
      */
-    @Define()
-    public final static native int LC_TIME();
+    @Define
+    public final static int LC_TIME;
 
     /**
      * <b>POSIX:</b> XXX
      *
-     * @return the native symbolic constant of LC_TIME_MASK.
      */
-    @Define()
-    public final static native int LC_TIME_MASK();
+    @Define
+    public final static int LC_TIME_MASK;
 
     /**
      * <b>POSIX:</b>
@@ -626,9 +638,8 @@ public class Locale {
 
         @Override
         public String toString() {
-                return "{nativeValue : " + JnhwFormater.formatAddress(nativeValue)+ "}";
+            return "{nativeValue : " + JnhwFormater.formatAddress(nativeValue) + "}";
         }
-
 
     }
 }

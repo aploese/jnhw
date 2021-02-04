@@ -39,13 +39,13 @@ extern "C" {
 #endif
 
 #ifdef ACCESSBRIDGE_ARCH_LEGACY
-typedef jobject JOBJECT64;
-typedef HWND ABHWND64;
+    typedef jobject JOBJECT64;
+    typedef HWND ABHWND64;
 #define ABHandleToLong
 #define ABLongToHandle
 #else
-typedef jlong JOBJECT64;
-typedef long ABHWND64;
+    typedef jlong JOBJECT64;
+    typedef long ABHWND64;
 #define ABHandleToLong HandleToLong
 #define ABLongToHandle LongToHandle
 #endif
@@ -598,7 +598,6 @@ typedef long ABHWND64;
 #define cAccessibleTextInterface (jlong) 32             // 1 << 6
 #define cAccessibleHypertextInterface (jlong) 64        // 1 << 7
 
-
     /**
      ******************************************************
      *  Accessibility information bundles
@@ -606,48 +605,48 @@ typedef long ABHWND64;
      */
 
     typedef struct AccessBridgeVersionInfoTag {
-        wchar_t VMversion[SHORT_STRING_SIZE];               // output of "java -version"
-        wchar_t bridgeJavaClassVersion[SHORT_STRING_SIZE];  // version of the AccessBridge.class
-        wchar_t bridgeJavaDLLVersion[SHORT_STRING_SIZE];    // version of JavaAccessBridge.dll
-        wchar_t bridgeWinDLLVersion[SHORT_STRING_SIZE];     // version of WindowsAccessBridge.dll
+        wchar_t VMversion[SHORT_STRING_SIZE]; // output of "java -version"
+        wchar_t bridgeJavaClassVersion[SHORT_STRING_SIZE]; // version of the AccessBridge.class
+        wchar_t bridgeJavaDLLVersion[SHORT_STRING_SIZE]; // version of JavaAccessBridge.dll
+        wchar_t bridgeWinDLLVersion[SHORT_STRING_SIZE]; // version of WindowsAccessBridge.dll
     } AccessBridgeVersionInfo;
 
-
     typedef struct AccessibleContextInfoTag {
-        wchar_t name[MAX_STRING_SIZE];          // the AccessibleName of the object
-        wchar_t description[MAX_STRING_SIZE];   // the AccessibleDescription of the object
+        wchar_t name[MAX_STRING_SIZE]; // the AccessibleName of the object
+        wchar_t description[MAX_STRING_SIZE]; // the AccessibleDescription of the object
 
-        wchar_t role[SHORT_STRING_SIZE];        // localized AccesibleRole string
-        wchar_t role_en_US[SHORT_STRING_SIZE];  // AccesibleRole string in the en_US locale
-        wchar_t states[SHORT_STRING_SIZE];      // localized AccesibleStateSet string (comma separated)
+        wchar_t role[SHORT_STRING_SIZE]; // localized AccesibleRole string
+        wchar_t role_en_US[SHORT_STRING_SIZE]; // AccesibleRole string in the en_US locale
+        wchar_t states[SHORT_STRING_SIZE]; // localized AccesibleStateSet string (comma separated)
         wchar_t states_en_US[SHORT_STRING_SIZE]; // AccesibleStateSet string in the en_US locale (comma separated)
 
-        jint indexInParent;                     // index of object in parent
-        jint childrenCount;                     // # of children, if any
+        jint indexInParent; // index of object in parent
+        jint childrenCount; // # of children, if any
 
-        jint x;                                 // screen coords in pixels
-        jint y;                                 // "
-        jint width;                             // pixel width of object
-        jint height;                            // pixel height of object
+        jint x; // screen coords in pixels
+        jint y; // "
+        jint width; // pixel width of object
+        jint height; // pixel height of object
 
-        BOOL accessibleComponent;               // flags for various additional
-        BOOL accessibleAction;                  //  Java Accessibility interfaces
-        BOOL accessibleSelection;               //  FALSE if this object doesn't
-        BOOL accessibleText;                    //  implement the additional interface
-                                                //  in question
+        BOOL accessibleComponent; // flags for various additional
+        BOOL accessibleAction; //  Java Accessibility interfaces
+        BOOL accessibleSelection; //  FALSE if this object doesn't
+        BOOL accessibleText; //  implement the additional interface
+        //  in question
 
         // BOOL accessibleValue;                // old BOOL indicating whether AccessibleValue is supported
-        BOOL accessibleInterfaces;              // new bitfield containing additional interface flags
+        BOOL accessibleInterfaces; // new bitfield containing additional interface flags
 
     } AccessibleContextInfo;
 
 
 
     // AccessibleText packages
+
     typedef struct AccessibleTextInfoTag {
-        jint charCount;                 // # of characters in this text object
-        jint caretIndex;                // index of caret
-        jint indexAtPoint;              // index at the passsed in point
+        jint charCount; // # of characters in this text object
+        jint caretIndex; // index of caret
+        jint indexAtPoint; // index at the passsed in point
     } AccessibleTextInfo;
 
     typedef struct AccessibleTextItemsInfoTag {
@@ -663,13 +662,14 @@ typedef long ABHWND64;
     } AccessibleTextSelectionInfo;
 
     typedef struct AccessibleTextRectInfoTag {
-        jint x;                     // bounding rect of char at index
-        jint y;                     // "
-        jint width;                 // "
-        jint height;                // "
+        jint x; // bounding rect of char at index
+        jint y; // "
+        jint width; // "
+        jint height; // "
     } AccessibleTextRectInfo;
 
     // standard attributes for text; note: tabstops are not supported
+
     typedef struct AccessibleTextAttributesInfoTag {
         BOOL bold;
         BOOL italic;
@@ -709,13 +709,10 @@ typedef long ABHWND64;
      *
      */
     typedef struct MemoryMappedFileCreatedPackageTag {
-//      HWND bridgeWindow;              // redundant, but easier to get to here...
-        ABHWND64 bridgeWindow;          // redundant, but easier to get to here...
+        //      HWND bridgeWindow;              // redundant, but easier to get to here...
+        ABHWND64 bridgeWindow; // redundant, but easier to get to here...
         char filename[cMemoryMappedNameSize];
     } MemoryMappedFileCreatedPackage;
-
-
-
 
     /**
      * sent when a new JavaVM attaches to the Bridge
@@ -750,7 +747,6 @@ typedef long ABHWND64;
         ABHWND64 bridgeWindow;
     } WindowsATDestroyedPackage;
 
-
     /**
      * sent by JVM Bridges in response to a WindowsATCreate
      * message; saying "howdy, welcome to the neighborhood"
@@ -770,7 +766,6 @@ typedef long ABHWND64;
         ABHWND64 bridgeWindow;
     } WindowsATPresentNotificationPackage;
 
-
     /**
      ******************************************************
      *  Core packages
@@ -783,7 +778,7 @@ typedef long ABHWND64;
     } ReleaseJavaObjectPackage;
 
     typedef struct GetAccessBridgeVersionPackageTag {
-        long vmID;                    // can't get VM info w/out a VM!
+        long vmID; // can't get VM info w/out a VM!
         AccessBridgeVersionInfo rVersionInfo;
     } GetAccessBridgeVersionPackage;
 
@@ -817,16 +812,16 @@ typedef long ABHWND64;
     } GetHWNDFromAccessibleContextPackage;
 
     /**
-******************************************************
-*  AccessibleContext packages
-******************************************************
-*/
+     ******************************************************
+     *  AccessibleContext packages
+     ******************************************************
+     */
 
     typedef struct GetAccessibleContextAtPackageTag {
         jint x;
         jint y;
         long vmID;
-        JOBJECT64 AccessibleContext;            // look within this AC
+        JOBJECT64 AccessibleContext; // look within this AC
         JOBJECT64 rAccessibleContext;
     } GetAccessibleContextAtPackage;
 
@@ -855,17 +850,18 @@ typedef long ABHWND64;
     } GetAccessibleParentFromContextPackage;
 
     /**
-******************************************************
-*  AccessibleTable packages
-******************************************************
-*/
+     ******************************************************
+     *  AccessibleTable packages
+     ******************************************************
+     */
 
 #define MAX_TABLE_SELECTIONS 64
 
     // table information
+
     typedef struct AccessibleTableInfoTag {
-        JOBJECT64 caption;  // AccesibleContext
-        JOBJECT64 summary;  // AccessibleContext
+        JOBJECT64 caption; // AccesibleContext
+        JOBJECT64 summary; // AccessibleContext
         jint rowCount;
         jint columnCount;
         JOBJECT64 accessibleContext;
@@ -879,13 +875,14 @@ typedef long ABHWND64;
     } GetAccessibleTableInfoPackage;
 
     // table cell information
+
     typedef struct AccessibleTableCellInfoTag {
-        JOBJECT64  accessibleContext;
-        jint     index;
-        jint     row;
-        jint     column;
-        jint     rowExtent;
-        jint     columnExtent;
+        JOBJECT64 accessibleContext;
+        jint index;
+        jint row;
+        jint column;
+        jint rowExtent;
+        jint columnExtent;
         jboolean isSelected;
     } AccessibleTableCellInfo;
 
@@ -963,7 +960,6 @@ typedef long ABHWND64;
         jint rSelections[MAX_TABLE_SELECTIONS];
     } GetAccessibleTableColumnSelectionsPackage;
 
-
     typedef struct GetAccessibleTableRowPackageTag {
         long vmID;
         JOBJECT64 accessibleTable;
@@ -999,7 +995,7 @@ typedef long ABHWND64;
     typedef struct AccessibleRelationInfoTag {
         wchar_t key[SHORT_STRING_SIZE];
         jint targetCount;
-        JOBJECT64 targets[MAX_RELATION_TARGETS];  // AccessibleContexts
+        JOBJECT64 targets[MAX_RELATION_TARGETS]; // AccessibleContexts
     } AccessibleRelationInfo;
 
     typedef struct AccessibleRelationSetInfoTag {
@@ -1022,69 +1018,77 @@ typedef long ABHWND64;
 #define MAX_HYPERLINKS          64      // maximum number of hyperlinks returned
 
     // hyperlink information
+
     typedef struct AccessibleHyperlinkInfoTag {
         wchar_t text[SHORT_STRING_SIZE]; // the hyperlink text
-        jint startIndex;        //index in the hypertext document where the link begins
-        jint endIndex;          //index in the hypertext document where the link ends
+        jint startIndex; //index in the hypertext document where the link begins
+        jint endIndex; //index in the hypertext document where the link ends
         JOBJECT64 accessibleHyperlink; // AccessibleHyperlink object
     } AccessibleHyperlinkInfo;
 
     // hypertext information
+
     typedef struct AccessibleHypertextInfoTag {
-        jint linkCount;         // number of hyperlinks
-        AccessibleHyperlinkInfo links[MAX_HYPERLINKS];  // the hyperlinks
+        jint linkCount; // number of hyperlinks
+        AccessibleHyperlinkInfo links[MAX_HYPERLINKS]; // the hyperlinks
         JOBJECT64 accessibleHypertext; // AccessibleHypertext object
     } AccessibleHypertextInfo;
 
     // struct for sending a message to get the hypertext for an AccessibleContext
+
     typedef struct GetAccessibleHypertextPackageTag {
-        long vmID;              // the virtual machine ID
+        long vmID; // the virtual machine ID
         JOBJECT64 accessibleContext; // AccessibleContext with hypertext
         AccessibleHypertextInfo rAccessibleHypertextInfo; // returned hypertext
     } GetAccessibleHypertextPackage;
 
     // struct for sending an message to activate a hyperlink
+
     typedef struct ActivateAccessibleHyperlinkPackageTag {
-        long vmID;              // the virtual machine ID
+        long vmID; // the virtual machine ID
         JOBJECT64 accessibleContext; // AccessibleContext containing the link
         JOBJECT64 accessibleHyperlink; // the link to activate
-        BOOL rResult;           // hyperlink activation return value
+        BOOL rResult; // hyperlink activation return value
     } ActivateAccessibleHyperlinkPackage;
 
     // struct for sending a message to get the number of hyperlinks in a component
+
     typedef struct GetAccessibleHyperlinkCountPackageTag {
-        long vmID;              // the virtual machine ID
-        JOBJECT64 accessibleContext;    // AccessibleContext containing AccessibleHypertext
-        jint rLinkCount;        // link count return value
+        long vmID; // the virtual machine ID
+        JOBJECT64 accessibleContext; // AccessibleContext containing AccessibleHypertext
+        jint rLinkCount; // link count return value
     } GetAccessibleHyperlinkCountPackage;
 
     // struct for sending a message to get the hypertext for an AccessibleContext
     // starting at a specified index in the document
+
     typedef struct GetAccessibleHypertextExtPackageTag {
-        long vmID;              // the virtual machine ID
+        long vmID; // the virtual machine ID
         JOBJECT64 accessibleContext; // AccessibleContext with hypertext
-        jint startIndex;        // start index in document
+        jint startIndex; // start index in document
         AccessibleHypertextInfo rAccessibleHypertextInfo; // returned hypertext
-        BOOL rSuccess;          // whether call succeeded
+        BOOL rSuccess; // whether call succeeded
     } GetAccessibleHypertextExtPackage;
 
     // struct for sending a message to get the nth hyperlink in a document;
     // maps to AccessibleHypertext.getLink
+
     typedef struct GetAccessibleHyperlinkPackageTag {
-        long vmID;              // the virtual machine ID
-        JOBJECT64 hypertext;    // AccessibleHypertext
-        jint linkIndex;         // hyperlink index
+        long vmID; // the virtual machine ID
+        JOBJECT64 hypertext; // AccessibleHypertext
+        jint linkIndex; // hyperlink index
         AccessibleHyperlinkInfo rAccessibleHyperlinkInfo; // returned hyperlink
     } GetAccessibleHyperlinkPackage;
 
     // struct for sending a message to get the index into an array
     // of hyperlinks that is associated with a character index in a
     // document; maps to AccessibleHypertext.getLinkIndex
+
     typedef struct GetAccessibleHypertextLinkIndexPackageTag {
-        long vmID;              // the virtual machine ID
-        JOBJECT64 hypertext;    // AccessibleHypertext
-        jint charIndex;         // character index in document
-        jint rLinkIndex;        // returned hyperlink index
+        long vmID; // the virtual machine ID
+        JOBJECT64 hypertext; // AccessibleHypertext
+        jint charIndex; // character index in document
+        jint rLinkIndex; // returned hyperlink index
     } GetAccessibleHypertextLinkIndexPackage;
 
     /**
@@ -1107,7 +1111,7 @@ typedef long ABHWND64;
 #define ACCESSIBLE_FKEY_KEYSTROKE               256  // F key pressed, character contains 1-24
 #define ACCESSIBLE_CONTROLCODE_KEYSTROKE        512  // Control code key pressed, character contains control code.
 
-// The supported control code keys are:
+    // The supported control code keys are:
 #define ACCESSIBLE_VK_BACK_SPACE    8
 #define ACCESSIBLE_VK_DELETE        127
 #define ACCESSIBLE_VK_DOWN          40
@@ -1125,98 +1129,109 @@ typedef long ABHWND64;
 #define ACCESSIBLE_VK_UP            38
 
     // a key binding associates with a component
+
     typedef struct AccessibleKeyBindingInfoTag {
-        jchar character;                // the key character
-        jint modifiers;                 // the key modifiers
+        jchar character; // the key character
+        jint modifiers; // the key modifiers
     } AccessibleKeyBindingInfo;
 
     // all of the key bindings associated with a component
+
     typedef struct AccessibleKeyBindingsTag {
-        int keyBindingsCount;   // number of key bindings
+        int keyBindingsCount; // number of key bindings
         AccessibleKeyBindingInfo keyBindingInfo[MAX_KEY_BINDINGS];
     } AccessibleKeyBindings;
 
     // struct to get the key bindings associated with a component
+
     typedef struct GetAccessibleKeyBindingsPackageTag {
-        long vmID;                                      // the virtual machine id
-        JOBJECT64 accessibleContext;                    // the component
-        AccessibleKeyBindings rAccessibleKeyBindings;   // the key bindings
+        long vmID; // the virtual machine id
+        JOBJECT64 accessibleContext; // the component
+        AccessibleKeyBindings rAccessibleKeyBindings; // the key bindings
     } GetAccessibleKeyBindingsPackage;
 
     /**
-******************************************************
-*  AccessibleIcon packages
-******************************************************
-*/
+     ******************************************************
+     *  AccessibleIcon packages
+     ******************************************************
+     */
 #define MAX_ICON_INFO 8
 
     // an icon assocated with a component
+
     typedef struct AccessibleIconInfoTag {
         wchar_t description[SHORT_STRING_SIZE]; // icon description
-        jint height;                            // icon height
-        jint width;                             // icon width
+        jint height; // icon height
+        jint width; // icon width
     } AccessibleIconInfo;
 
     // all of the icons associated with a component
+
     typedef struct AccessibleIconsTag {
-        jint iconsCount;                // number of icons
-        AccessibleIconInfo iconInfo[MAX_ICON_INFO];     // the icons
+        jint iconsCount; // number of icons
+        AccessibleIconInfo iconInfo[MAX_ICON_INFO]; // the icons
     } AccessibleIcons;
 
     // struct to get the icons associated with a component
+
     typedef struct GetAccessibleIconsPackageTag {
-        long vmID;                              // the virtual machine id
-        JOBJECT64 accessibleContext;            // the component
-        AccessibleIcons rAccessibleIcons;       // the icons
+        long vmID; // the virtual machine id
+        JOBJECT64 accessibleContext; // the component
+        AccessibleIcons rAccessibleIcons; // the icons
     } GetAccessibleIconsPackage;
 
 
     /**
-******************************************************
-*  AccessibleAction packages
-******************************************************
-*/
+     ******************************************************
+     *  AccessibleAction packages
+     ******************************************************
+     */
 #define MAX_ACTION_INFO 256
 #define MAX_ACTIONS_TO_DO 32
 
     // an action assocated with a component
+
     typedef struct AccessibleActionInfoTag {
-        wchar_t name[SHORT_STRING_SIZE];        // action name
+        wchar_t name[SHORT_STRING_SIZE]; // action name
     } AccessibleActionInfo;
 
     // all of the actions associated with a component
+
     typedef struct AccessibleActionsTag {
-        jint actionsCount;              // number of actions
-        AccessibleActionInfo actionInfo[MAX_ACTION_INFO];       // the action information
+        jint actionsCount; // number of actions
+        AccessibleActionInfo actionInfo[MAX_ACTION_INFO]; // the action information
     } AccessibleActions;
 
     // struct for requesting the actions associated with a component
+
     typedef struct GetAccessibleActionsPackageTag {
         long vmID;
-        JOBJECT64 accessibleContext;                                    // the component
-        AccessibleActions rAccessibleActions;           // the actions
+        JOBJECT64 accessibleContext; // the component
+        AccessibleActions rAccessibleActions; // the actions
     } GetAccessibleActionsPackage;
 
     // list of AccessibleActions to do
+
     typedef struct AccessibleActionsToDoTag {
-        jint actionsCount;                              // number of actions to do
-        AccessibleActionInfo actions[MAX_ACTIONS_TO_DO];// the accessible actions to do
+        jint actionsCount; // number of actions to do
+        AccessibleActionInfo actions[MAX_ACTIONS_TO_DO]; // the accessible actions to do
     } AccessibleActionsToDo;
 
     // struct for sending an message to do one or more actions
+
     typedef struct DoAccessibleActionsPackageTag {
-        long vmID;                         // the virtual machine ID
-        JOBJECT64 accessibleContext;       // component to do the action
+        long vmID; // the virtual machine ID
+        JOBJECT64 accessibleContext; // component to do the action
         AccessibleActionsToDo actionsToDo; // the accessible actions to do
-        BOOL rResult;                      // action return value
-        jint failure;                      // index of action that failed if rResult is FALSE
+        BOOL rResult; // action return value
+        jint failure; // index of action that failed if rResult is FALSE
     } DoAccessibleActionsPackage;
 
     /**
-******************************************************
-*  AccessibleText packages
-******************************************************
-*/
+     ******************************************************
+     *  AccessibleText packages
+     ******************************************************
+     */
 
     typedef struct GetAccessibleTextInfoPackageTag {
         long vmID;
@@ -1277,23 +1292,23 @@ typedef long ABHWND64;
     } GetAccessibleTextRangePackage;
 
     /**
-******************************************************
-*
-* Utility method packages
-******************************************************
-*/
+     ******************************************************
+     *
+     * Utility method packages
+     ******************************************************
+     */
 
     typedef struct SetTextContentsPackageTag {
         long vmID;
-        JOBJECT64 accessibleContext;    // the text field
-        wchar_t text[MAX_STRING_SIZE];  // the text
+        JOBJECT64 accessibleContext; // the text field
+        wchar_t text[MAX_STRING_SIZE]; // the text
         BOOL rResult;
     } SetTextContentsPackage;
 
     typedef struct GetParentWithRolePackageTag {
         long vmID;
         JOBJECT64 accessibleContext;
-        wchar_t role[SHORT_STRING_SIZE];  // one of Accessible Roles above
+        wchar_t role[SHORT_STRING_SIZE]; // one of Accessible Roles above
         JOBJECT64 rAccessibleContext;
     } GetParentWithRolePackage;
 
@@ -1306,7 +1321,7 @@ typedef long ABHWND64;
     typedef struct GetParentWithRoleElseRootPackageTag {
         long vmID;
         JOBJECT64 accessibleContext;
-        wchar_t role[SHORT_STRING_SIZE];  // one of Accessible Roles above
+        wchar_t role[SHORT_STRING_SIZE]; // one of Accessible Roles above
         JOBJECT64 rAccessibleContext;
     } GetParentWithRoleElseRootPackage;
 
@@ -1323,10 +1338,10 @@ typedef long ABHWND64;
     } GetActiveDescendentPackage;
 
     /**
-******************************************************
-*  AccessibleValue packages
-******************************************************
-*/
+     ******************************************************
+     *  AccessibleValue packages
+     ******************************************************
+     */
 
     typedef struct GetCurrentAccessibleValueFromContextPackageTag {
         long vmID;
@@ -1346,12 +1361,11 @@ typedef long ABHWND64;
         wchar_t rValue[SHORT_STRING_SIZE];
     } GetMinimumAccessibleValueFromContextPackage;
 
-
     /**
-******************************************************
-*  AccessibleSelection packages
-******************************************************
-*/
+     ******************************************************
+     *  AccessibleSelection packages
+     ******************************************************
+     */
 
     typedef struct AddAccessibleSelectionFromContextPackageTag {
         long vmID;
@@ -1395,12 +1409,11 @@ typedef long ABHWND64;
         JOBJECT64 AccessibleContext;
     } SelectAllAccessibleSelectionFromContextPackage;
 
-
     /**
-******************************************************
-*  Java Event Notification Registration packages
-******************************************************
-*/
+     ******************************************************
+     *  Java Event Notification Registration packages
+     ******************************************************
+     */
 
     typedef struct AddJavaEventNotificationPackageTag {
         jlong type;
@@ -1414,12 +1427,11 @@ typedef long ABHWND64;
         ABHWND64 DLLwindow;
     } RemoveJavaEventNotificationPackage;
 
-
     /**
-******************************************************
-*  Accessibility Event Notification Registration packages
-******************************************************
-*/
+     ******************************************************
+     *  Accessibility Event Notification Registration packages
+     ******************************************************
+     */
 
     typedef struct AddAccessibilityEventNotificationPackageTag {
         jlong type;
@@ -1433,12 +1445,11 @@ typedef long ABHWND64;
         ABHWND64 DLLwindow;
     } RemoveAccessibilityEventNotificationPackage;
 
-
     /**
-******************************************************
-*  Accessibility Property Change Event packages
-******************************************************
-*/
+     ******************************************************
+     *  Accessibility Property Change Event packages
+     ******************************************************
+     */
 
     typedef struct PropertyCaretChangePackageTag {
         long vmID;
@@ -1524,6 +1535,7 @@ typedef long ABHWND64;
     //
     // oldValue is currently unused
     //
+
     typedef struct PropertyTableModelChangePackageTag {
         long vmID;
         JOBJECT64 Event;
@@ -1534,10 +1546,10 @@ typedef long ABHWND64;
 
 
     /**
-******************************************************
-*  Property Change Event packages
-******************************************************
-*/
+     ******************************************************
+     *  Property Change Event packages
+     ******************************************************
+     */
 
     /*
       typedef struct PropertyChangePackageTag {
@@ -1548,7 +1560,7 @@ typedef long ABHWND64;
       char oldValue[SHORT_STRING_SIZE]; // PropertyChangeEvent().getOldValue().toString()
       char newValue[SHORT_STRING_SIZE]; // PropertyChangeEvent().getNewValue().toString()
       } PropertyChangePackage;
-    */
+     */
 
     /*
      * Java shutdown event package
@@ -1557,12 +1569,11 @@ typedef long ABHWND64;
         long vmID;
     } JavaShutdownPackage;
 
-
     /**
-******************************************************
-*  Focus Event packages
-******************************************************
-*/
+     ******************************************************
+     *  Focus Event packages
+     ******************************************************
+     */
 
     typedef struct FocusGainedPackageTag {
         long vmID;
@@ -1576,12 +1587,11 @@ typedef long ABHWND64;
         JOBJECT64 AccessibleContextSource;
     } FocusLostPackage;
 
-
     /**
-******************************************************
-*  Caret Event packages
-******************************************************
-*/
+     ******************************************************
+     *  Caret Event packages
+     ******************************************************
+     */
 
     typedef struct CaretUpdatePackageTag {
         long vmID;
@@ -1589,12 +1599,11 @@ typedef long ABHWND64;
         JOBJECT64 AccessibleContextSource;
     } CaretUpdatePackage;
 
-
     /**
-******************************************************
-*  Mouse Event packages
-******************************************************
-*/
+     ******************************************************
+     *  Mouse Event packages
+     ******************************************************
+     */
 
     typedef struct MouseClickedPackageTag {
         long vmID;
@@ -1626,12 +1635,11 @@ typedef long ABHWND64;
         JOBJECT64 AccessibleContextSource;
     } MouseReleasedPackage;
 
-
     /**
-******************************************************
-*  Menu/PopupMenu Event packages
-******************************************************
-*/
+     ******************************************************
+     *  Menu/PopupMenu Event packages
+     ******************************************************
+     */
 
     typedef struct MenuCanceledPackageTag {
         long vmID;
@@ -1650,7 +1658,6 @@ typedef long ABHWND64;
         JOBJECT64 Event;
         JOBJECT64 AccessibleContextSource;
     } MenuSelectedPackage;
-
 
     typedef struct PopupMenuCanceledPackageTag {
         long vmID;
@@ -1671,10 +1678,10 @@ typedef long ABHWND64;
     } PopupMenuWillBecomeVisiblePackage;
 
     /**
-******************************************************
-*  Additional methods for Teton
-******************************************************
-*/
+     ******************************************************
+     *  Additional methods for Teton
+     ******************************************************
+     */
 
     /**
      * Gets the AccessibleName for a component based upon the JAWS algorithm. Returns
@@ -1720,35 +1727,38 @@ typedef long ABHWND64;
     typedef struct GetTextAttributesInRangePackageTag {
         long vmID;
         AccessibleContext accessibleContext;
-        jint startIndex;        // start index (inclusive)
-        jint endIndex;          // end index (inclusive)
+        jint startIndex; // start index (inclusive)
+        jint endIndex; // end index (inclusive)
         AccessibleTextAttributesInfo attributes; // character attributes to match
-        short rLength;          // number of contiguous characters with matching attributes
+        short rLength; // number of contiguous characters with matching attributes
     } GetTextAttributesInRangePackage;
 
 #define MAX_VISIBLE_CHILDREN 256
 
     // visible children information
+
     typedef struct VisibleChildenInfoTag {
         int returnedChildrenCount; // number of children returned
         AccessibleContext children[MAX_VISIBLE_CHILDREN]; // the visible children
     } VisibleChildrenInfo;
 
     // struct for sending a message to get the number of visible children
+
     typedef struct GetVisibleChildrenCountPackageTag {
-        long vmID;              // the virtual machine ID
+        long vmID; // the virtual machine ID
         JOBJECT64 accessibleContext; // AccessibleContext of parent component
-        jint rChildrenCount;    // visible children count return value
+        jint rChildrenCount; // visible children count return value
     } GetVisibleChildrenCountPackage;
 
     // struct for sending a message to get the hypertext for an AccessibleContext
     // starting at a specified index in the document
+
     typedef struct GetVisibleChildrenPackageTag {
-        long vmID;              // the virtual machine ID
+        long vmID; // the virtual machine ID
         JOBJECT64 accessibleContext; // AccessibleContext of parent component
-        jint startIndex;        // start index for retrieving children
+        jint startIndex; // start index for retrieving children
         VisibleChildrenInfo rVisibleChildrenInfo; // returned info
-        BOOL rSuccess;          // whether call succeeded
+        BOOL rSuccess; // whether call succeeded
     } GetVisibleChildrenPackage;
 
     /**
@@ -1773,7 +1783,6 @@ typedef long ABHWND64;
      *  What is the type of this package
      */
     typedef enum PackageType {
-
         cMemoryMappedFileCreatedPackage = 0x11000,
 
         // many of these will go away...
@@ -1920,12 +1929,10 @@ typedef long ABHWND64;
 
     } PackageType;
 
-
     /**
      *  Union of all package contents
      */
     typedef union AllPackagesTag {
-
         // Initial Rendezvous packages
         MemoryMappedFileCreatedPackage memoryMappedFileCreatedPackage;
 
@@ -2050,12 +2057,10 @@ typedef long ABHWND64;
 
     } AllPackages;
 
-
     /**
      *  Union of all Java-initiated package contents
      */
     typedef union JavaInitiatedPackagesTag {
-
         // Initial Rendezvous packages
         JavaVMCreatedPackage javaVMCreatedPackage;
         JavaVMDestroyedPackage javaVMDestroyedPackage;
@@ -2096,12 +2101,10 @@ typedef long ABHWND64;
 
     } JavaInitiatedPackages;
 
-
     /**
      *  Union of all Windows-initiated package contents
      */
     typedef union WindowsInitiatedPackagesTag {
-
         // Initial Rendezvous packages
         MemoryMappedFileCreatedPackage memoryMappedFileCreatedPackage;
 

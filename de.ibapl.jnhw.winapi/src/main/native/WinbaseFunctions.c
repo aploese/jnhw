@@ -41,7 +41,7 @@ extern "C" {
             return;
         }
         if (!ClearCommBreak(UNWRAP_HANDLE(hFile))) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 
@@ -58,10 +58,10 @@ extern "C" {
         }
         DWORD _lpErrors;
         if (!ClearCommError(UNWRAP_HANDLE(hFile), lpErrors != NULL ? &_lpErrors : NULL, UNWRAP_LPCOMSTAT_OR_NULL(lpCOMSTAT))) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
         if (lpErrors != NULL) {
-            SET_INT_REF_VALUE(lpErrors, (int32_t)_lpErrors);
+            SET_INT_REF_VALUE(lpErrors, (int32_t) _lpErrors);
         }
     }
 
@@ -76,8 +76,8 @@ extern "C" {
             throw_NullPointerException(env, "hFile is null");
             return;
         }
-    if (!EscapeCommFunction(UNWRAP_HANDLE(hFile), (uint32_t)dwFunc)) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+        if (!EscapeCommFunction(UNWRAP_HANDLE(hFile), (uint32_t) dwFunc)) {
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 
@@ -94,9 +94,9 @@ extern "C" {
         }
         DWORD _lpModemStat;
         if (!GetCommModemStatus(UNWRAP_HANDLE(hFile), &_lpModemStat)) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
-        SET_INT_REF_VALUE(lpModemStat, (int32_t)_lpModemStat);
+        SET_INT_REF_VALUE(lpModemStat, (int32_t) _lpModemStat);
     }
 
     /*
@@ -115,7 +115,7 @@ extern "C" {
             return;
         }
         if (!GetCommState(UNWRAP_HANDLE(hFile), UNWRAP_LPDCB(lpDCB))) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 
@@ -135,7 +135,7 @@ extern "C" {
             return;
         }
         if (!GetCommTimeouts(UNWRAP_HANDLE(hFile), UNWRAP_LPCOMMTIMEOUTS(lpCOMMTIMEOUTS))) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 
@@ -151,7 +151,7 @@ extern "C" {
             return;
         }
         if (!SetCommBreak(UNWRAP_HANDLE(hFile))) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 
@@ -171,7 +171,7 @@ extern "C" {
             return;
         }
         if (!SetCommState(UNWRAP_HANDLE(hFile), UNWRAP_LPDCB(lpDCB))) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 
@@ -191,7 +191,7 @@ extern "C" {
             return;
         }
         if (!SetCommTimeouts(UNWRAP_HANDLE(hFile), UNWRAP_LPCOMMTIMEOUTS(lpCOMMTIMEOUTS))) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 
@@ -206,8 +206,8 @@ extern "C" {
             throw_NullPointerException(env, "hFile is null");
             return;
         }
-        if (!SetFileCompletionNotificationModes(UNWRAP_HANDLE(hFile), (uint8_t)uFlags)) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+        if (!SetFileCompletionNotificationModes(UNWRAP_HANDLE(hFile), (uint8_t) uFlags)) {
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 
@@ -226,8 +226,8 @@ extern "C" {
             throw_NullPointerException(env, "Function is null.");
             return;
         }
-        if (!BindIoCompletionCallback(UNWRAP_HANDLE(hFile), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(Function), (uint32_t)Flags)) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+        if (!BindIoCompletionCallback(UNWRAP_HANDLE(hFile), UNWRAP_LPOVERLAPPED_COMPLETION_ROUTINE(Function), (uint32_t) Flags)) {
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 

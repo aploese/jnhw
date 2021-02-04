@@ -23,14 +23,11 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
-import de.ibapl.jnhw.common.util.Defined;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
 import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
 import static de.ibapl.jnhw.posix.Termios.CS8;
-import static de.ibapl.jnhw.posix.Termios.VERASE;
 import de.ibapl.jnhw.util.posix.Defines;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,17 +43,17 @@ public class TermiosTest {
     public void CMSPAR() {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                if (Defined.defined(Defines::__mips__)) {
-                    assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
+                if (Defines.__mips__.isDefined()) {
+                    assertFalse(Termios.CMSPAR.isDefined(), "CMSPAR");
                     break;
                 } else {
-                    assertTrue(Defined.defined(Termios::CMSPAR), "CMSPAR");
+                    assertTrue(Termios.CMSPAR.isDefined(), "CMSPAR");
                 }
                 break;
             case FREE_BSD:
             case OPEN_BSD:
             case MAC_OS_X:
-                assertFalse(Defined.defined(Termios::CMSPAR), "CMSPAR");
+                assertFalse(Termios.CMSPAR.isDefined(), "CMSPAR");
                 break;
             default:
                 fail("CMSPAR unknown on: " + MULTIARCHTUPEL_BUILDER.getOS());
@@ -70,24 +67,10 @@ public class TermiosTest {
             case FREE_BSD:
             case OPEN_BSD:
             case MAC_OS_X:
-                assertFalse(Defined.defined(Termios::PAREXT), "PAREXT");
+                assertFalse(Termios.PAREXT.isDefined(), "PAREXT");
                 break;
             default:
                 fail("PAREXT unknown on: " + MULTIARCHTUPEL_BUILDER.getOS());
-        }
-    }
-
-    @Test
-    public void PARMRK() {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case LINUX:
-            case FREE_BSD:
-            case OPEN_BSD:
-            case MAC_OS_X:
-                assertTrue(Defined.defined(Termios::PARMRK), "PARMRK");
-                break;
-            default:
-                fail("PARMRK unknown on: " + MULTIARCHTUPEL_BUILDER.getOS());
         }
     }
 
@@ -96,16 +79,13 @@ public class TermiosTest {
         Termios.StructTermios structTermios = new Termios.StructTermios();
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                try {
-                Termios._HAVE_STRUCT_TERMIOS_C_ISPEED();
-                //Do the test
-            } catch (NotDefinedException nee) {
-                Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
-                    structTermios.c_ispeed();
-                });
-                return;
-            }
-            break;
+                if (!Termios._HAVE_STRUCT_TERMIOS_C_ISPEED.isDefined()) {
+                    Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                        structTermios.c_ispeed();
+                    });
+                    return;
+                }
+                break;
             case FREE_BSD:
                 //Do the test
                 break;
@@ -133,16 +113,13 @@ public class TermiosTest {
         Termios.StructTermios structTermios = new Termios.StructTermios();
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                try {
-                Termios._HAVE_STRUCT_TERMIOS_C_OSPEED();
-                //Do the test
-            } catch (NotDefinedException nee) {
-                Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
-                    structTermios.c_ospeed();
-                });
-                return;
-            }
-            break;
+                if (!Termios._HAVE_STRUCT_TERMIOS_C_OSPEED.isDefined()) {
+                    Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
+                        structTermios.c_ospeed();
+                    });
+                    return;
+                }
+                break;
             case FREE_BSD:
                 //Do the test
                 break;
@@ -170,8 +147,8 @@ public class TermiosTest {
         Termios.StructTermios termios = new Termios.StructTermios();
         Termios.StructTermios.clear(termios);
 
-        Termios.cfsetspeed(termios, Termios.B9600());
-        termios.c_cflag(CREAD() | CLOCAL() | CS8() | CRTSCTS());
+        Termios.cfsetspeed(termios, Termios.B9600);
+        termios.c_cflag(CREAD | CLOCAL | CS8 | CRTSCTS);
 
         assertFalse(termios.toString().isEmpty(), "Termios.StructTermios is empty");
     }
@@ -210,13 +187,13 @@ public class TermiosTest {
         assertTrue(Termios.Cc_t.unsigned());
         Termios.Cc_t instance = new Termios.Cc_t(true);
         assertEquals(BaseDataTypes.uint8_t, instance.getBaseDataType());
-        instance.setValue((byte)0x80);
-        assertEquals((byte)0x80, instance.getValue());
+        instance.setValue((byte) 0x80);
+        assertEquals((byte) 0x80, instance.getValue());
         assertEquals(0xFFFFFF80, instance.getValue());
-        assertEquals(String.valueOf((char)(byte)0x80), instance.nativeToString());
+        assertEquals(String.valueOf((char) (byte) 0x80), instance.nativeToString());
         assertEquals("80", instance.nativeToHexString());
     }
-    
+
     @Test
     public void testSpeed_t() {
         Assertions.assertEquals(4, Termios.Speed_t.sizeof());
@@ -229,10 +206,10 @@ public class TermiosTest {
         instance.setValue(0xFFFFFF80);
         assertEquals(0xFFFFFF80, instance.getValue());
         assertEquals("ffffff80", instance.nativeToHexString());
-        instance.setValue(Termios.B9600());
+        instance.setValue(Termios.B9600);
         assertEquals("9600", instance.nativeToString());
     }
-    
+
     @Test
     public void testTcflag_t() {
         Assertions.assertEquals(4, Termios.Tcflag_t.sizeof());

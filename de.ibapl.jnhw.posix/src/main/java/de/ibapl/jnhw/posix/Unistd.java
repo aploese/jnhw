@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.OpaqueMemory64;
 import de.ibapl.jnhw.common.references.ByteRef;
@@ -39,6 +38,7 @@ import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.ssize_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.useconds_t;
+import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.nio.ByteBuffer;
 
@@ -56,92 +56,102 @@ public final class Unistd {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_UNISTD_H = false;
+
+        SEEK_CUR = 0;
+        SEEK_DATA = IntDefine.UNDEFINED;
+        SEEK_END = 0;
+        SEEK_HOLE = IntDefine.UNDEFINED;
+        SEEK_SET = 0;
+        STDERR_FILENO = 0;
+        STDIN_FILENO = 0;
+        STDOUT_FILENO = 0;
+
+        initFields();
     }
 
-    public final static native boolean HAVE_UNISTD_H();
+    private static native void initFields();
+
+    public final static boolean HAVE_UNISTD_H;
 
     /**
      * <b>POSIX:</b>seek relative to current position. This must be the same
      * value as {@link de.ibapl.jnhw.posix.Stdio.SEEK_CUR()}.
      *
-     * @return the native symbolic constant of SEEK_CUR.
      */
     @Define
-    public static native int SEEK_CUR();
+    public static int SEEK_CUR;
 
     /**
      * <b>Linux,Apple:</b> Adjust the file offset to the next location in the
      * file greater than or equal to offset containing data.
      *
-     * @return the native symbolic constant of SEEK_DATA.
-     * @throws NotDefinedException if SEEK_DATA is not defined natively.
      */
     @Define
-    public static native int SEEK_DATA() throws NotDefinedException;
+    public static IntDefine SEEK_DATA;
 
     /**
      * <b>POSIX:</b> Seek relative to end-of-file. This must be the same value
      * as {@link de.ibapl.jnhw.posix.Stdio.SEEK_END}.
      *
-     * @return the native symbolic constant of SEEK_END.
      */
     @Define
-    public static native int SEEK_END();
+    public static int SEEK_END;
 
     /**
      * <b>POSIX:</b> Adjust the file offset to the next hole in the file greater
      * than or equal to offset.
      *
-     * @return the native symbolic constant of SEEK_HOLE.
-     * @throws NotDefinedException if SEEK_HOLE is not defined natively.
      */
     @Define
-    public static native int SEEK_HOLE() throws NotDefinedException;
+    public static IntDefine SEEK_HOLE;
 
     /**
      * <b>POSIX:</b> Seek relative to start-of-file. This must be the same value
      * as {@link de.ibapl.jnhw.posix.Stdio.SEEK_SET}.
      *
-     * @return the native symbolic constant of SEEK_SET.
      */
     @Define
-    public static native int SEEK_SET();
+    public static int SEEK_SET;
 
     /**
      * <b>POSIX:</b> File number of stderr; 2.
      *
-     * @return the native symbolic constant of STDERR_FILENO.
      */
     @Define
-    public final static native int STDERR_FILENO();
+    public final static int STDERR_FILENO;
 
     /**
      * <b>POSIX:</b> File number of stdin; 0.
      *
-     * @return the native symbolic constant of STDIN_FILENO.
      */
     @Define
-    public final static native int STDIN_FILENO();
+    public final static int STDIN_FILENO;
 
     /**
      * <b>POSIX:</b> File number of stdout; 1.
      *
-     * @return the native symbolic constant of STDOUT_FILENO.
      */
     @Define
-    public final static native int STDOUT_FILENO();
+    public final static int STDOUT_FILENO;
 
     /**
      * <b>POSIX:</b> Integer value indicating version of this standard
      * (C-language binding) to which the implementation conforms.
      *
-     * @return the native symbolic constant of _POSIX_VERSION.
      */
     @Define
-    public static native int _POSIX_VERSION();
+    public static int _POSIX_VERSION;
 
     /**
      * <b>POSIX:</b>
@@ -188,7 +198,7 @@ public final class Unistd {
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setgid.html">setgid
      * - set group ID</a>.
-     * 
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
@@ -198,7 +208,7 @@ public final class Unistd {
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setegid.html">setegid
      * - set effective user ID</a>.
-     * 
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
@@ -206,8 +216,9 @@ public final class Unistd {
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setregid.html">setregid - set real and effective group IDs</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setregid.html">setregid
+     * - set real and effective group IDs</a>.
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
@@ -225,7 +236,7 @@ public final class Unistd {
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/seteuid.html">seteuid
      * - set effective user ID</a>.
-     * 
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
@@ -257,8 +268,9 @@ public final class Unistd {
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setreuid.html">setreuid - set real and effective user IDs</a>.
-     * 
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setreuid.html">setreuid
+     * - set real and effective user IDs</a>.
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
@@ -276,7 +288,7 @@ public final class Unistd {
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setuid.html">setuid
      * - set user ID</a>.
-     * 
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */

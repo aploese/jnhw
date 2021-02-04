@@ -30,10 +30,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author aploese
  */
 public class Int32_tTest {
-    
+
     public Int32_tTest() {
     }
-    
+
     /**
      * Test of sizeofInt32_t method, of class Int32_t.
      */

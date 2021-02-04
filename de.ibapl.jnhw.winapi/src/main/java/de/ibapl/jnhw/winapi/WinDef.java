@@ -43,9 +43,15 @@ public abstract class WinDef {
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_WINDEF_H = false;
+
+        initFields();
     }
 
-    public static final native boolean HAVE_WINDEF_H();
+    private static native void initFields();
+
+    public static final boolean HAVE_WINDEF_H;
 
     /**
      * Wrapper for

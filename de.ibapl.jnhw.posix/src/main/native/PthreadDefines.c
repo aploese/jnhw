@@ -26,82 +26,50 @@
 extern "C" {
 #endif
 
+    //We need the POSIX version ...    
+#if !defined(HAVE_PTHREAD_H) || !defined(_POSIX_VERSION)
+
     /*
      * Class:     de_ibapl_jnhw_posix_Pthread
-     * Method:    HAVE_PTHREAD_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Pthread_HAVE_1PTHREAD_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_PTHREAD_H) && defined(_POSIX_VERSION)
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-#ifdef _POSIX_VERSION
+#else
 #include <pthread.h>
 
-
     /*
      * Class:     de_ibapl_jnhw_posix_Pthread
-     * Method:    PTHREAD_EXPLICIT_SCHED
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1EXPLICIT_1SCHED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_EXPLICIT_SCHED;
-    }
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_initFields
+    (JNIEnv *env, jclass clazz) {
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Pthread
-     * Method:    PTHREAD_INHERIT_SCHED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1INHERIT_1SCHED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_INHERIT_SCHED;
-    }
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_PTHREAD_H", JNI_TRUE)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Pthread
-     * Method:    PTHREAD_CANCEL_DISABLE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1DISABLE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_CANCEL_DISABLE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Pthread
-     * Method:    PTHREAD_CANCEL_ENABLE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1ENABLE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_CANCEL_ENABLE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Pthread
-     * Method:    PTHREAD_CANCEL_DEFERRED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1DEFERRED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_CANCEL_DEFERRED;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Pthread
-     * Method:    PTHREAD_CANCEL_ASYNCHRONOUS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_PTHREAD_1CANCEL_1ASYNCHRONOUS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_CANCEL_ASYNCHRONOUS;
+        if (JnhwSetStaticIntField(env, clazz, "PTHREAD_EXPLICIT_SCHED", PTHREAD_EXPLICIT_SCHED)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "PTHREAD_INHERIT_SCHED", PTHREAD_INHERIT_SCHED)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "PTHREAD_CANCEL_DISABLE", PTHREAD_CANCEL_DISABLE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "PTHREAD_CANCEL_ENABLE", PTHREAD_CANCEL_ENABLE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "PTHREAD_CANCEL_DEFERRED", PTHREAD_CANCEL_DEFERRED)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "PTHREAD_CANCEL_ASYNCHRONOUS", PTHREAD_CANCEL_ASYNCHRONOUS)) {
+            return;
+        }
     }
 
 #endif

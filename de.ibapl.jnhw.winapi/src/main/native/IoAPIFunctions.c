@@ -52,15 +52,15 @@ extern "C" {
             throw_IllegalArgumentException(env, "NumberOfConcurrentThreads < 0");
             return NULL;
         }
-        HANDLE _ExistingCompletionPort = ExistingCompletionPort != NULL ?  UNWRAP_HANDLE(ExistingCompletionPort) : NULL;
+        HANDLE _ExistingCompletionPort = ExistingCompletionPort != NULL ? UNWRAP_HANDLE(ExistingCompletionPort) : NULL;
         //ULONG_PTR: On ix68 its 32 bit long and on x64 ist 64 bit long
-        HANDLE result = CreateIoCompletionPort(UNWRAP_HANDLE(FileHandle), _ExistingCompletionPort, (ULONG_PTR)CompletionKey, (uint32_t)NumberOfConcurrentThreads);
-        if (result == NULL ) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+        HANDLE result = CreateIoCompletionPort(UNWRAP_HANDLE(FileHandle), _ExistingCompletionPort, (ULONG_PTR) CompletionKey, (uint32_t) NumberOfConcurrentThreads);
+        if (result == NULL) {
+            throw_NativeErrorException(env, (int32_t) GetLastError());
             return NULL;
         }
         return CREATE_HANDLE(result);
-    
+
     }
 
     /*
@@ -86,20 +86,20 @@ extern "C" {
             throw_NullPointerException(env, "lpOverlapped is null.");
             return;
         }
-        if ((dwMilliseconds < 0) && ((uint32_t)dwMilliseconds != INFINITE))  {
+        if ((dwMilliseconds < 0) && ((uint32_t) dwMilliseconds != INFINITE)) {
             throw_IllegalArgumentException(env, "dwMilliseconds < 0");
             return;
         }
         DWORD _lpNumberOfBytesTransferred;
         ULONG_PTR _lpCompletionKey; //ULONG_PTR: On ix68 its 32 bit long and on x64 ist 64 bit long
         LPOVERLAPPED _lpOverlapped;
-        if (!GetQueuedCompletionStatus(UNWRAP_HANDLE(CompletionPort),&_lpNumberOfBytesTransferred, &_lpCompletionKey, &_lpOverlapped, (uint32_t)dwMilliseconds)) {
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+        if (!GetQueuedCompletionStatus(UNWRAP_HANDLE(CompletionPort), &_lpNumberOfBytesTransferred, &_lpCompletionKey, &_lpOverlapped, (uint32_t) dwMilliseconds)) {
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
-        
-        SET_INT_REF_VALUE(lpNumberOfBytesTransferred, (int32_t)_lpNumberOfBytesTransferred);
-        SET_LONG_REF_VALUE(lpCompletionKey, (int64_t)_lpCompletionKey);//ULONG_PTR: On ix68 its 32 bit long and on x64 ist 64 bit long
-        SET_OBJECT_REF_VALUE(lpOverlapped, CREATE_NATIVE_ADDRESS_HOLDER(_lpOverlapped));
+
+        SET_INT_REF_VALUE(lpNumberOfBytesTransferred, (int32_t) _lpNumberOfBytesTransferred);
+        SET_LONG_REF_VALUE(lpCompletionKey, (int64_t) _lpCompletionKey); //ULONG_PTR: On ix68 its 32 bit long and on x64 ist 64 bit long
+        SET_OBJECT_REF_VALUE(lpOverlapped, CREATE_NativeAddressHolder(_lpOverlapped));
     }
 
     /*
@@ -114,17 +114,17 @@ extern "C" {
             return;
         }
 #if defined(_WIN64)
-       if (!PostQueuedCompletionStatus(UNWRAP_HANDLE(CompletionPort), (uint32_t) dwNumberOfBytesTransferred, (uint64_t)dwCompletionKey, UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped))) {
+        if (!PostQueuedCompletionStatus(UNWRAP_HANDLE(CompletionPort), (uint32_t) dwNumberOfBytesTransferred, (uint64_t) dwCompletionKey, UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped))) {
 #elif defined(_WIN32)
         if ((dwCompletionKey > LONG_MAX) || (dwCompletionKey < LONG_MAX)) {
             throw_IllegalArgumentException(env, "dwCompletionKey out of bounds for 32 bit!");
             return;
         }
-       if (!PostQueuedCompletionStatus(UNWRAP_HANDLE(CompletionPort), (uint32_t) dwNumberOfBytesTransferred, (uint32_t)dwCompletionKey, UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped))) {
+        if (!PostQueuedCompletionStatus(UNWRAP_HANDLE(CompletionPort), (uint32_t) dwNumberOfBytesTransferred, (uint32_t) dwCompletionKey, UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped))) {
 #else
 #error "no _WIN64 nor _WIN32 defined!"
 #endif            
-            throw_NativeErrorException(env, (int32_t)GetLastError());
+            throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 

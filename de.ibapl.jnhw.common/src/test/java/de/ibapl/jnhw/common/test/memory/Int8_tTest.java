@@ -30,10 +30,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author aploese
  */
 public class Int8_tTest {
-    
+
     public Int8_tTest() {
     }
-    
+
     /**
      * Test of sizeofInt8_t method, of class Int8_t.
      */
@@ -64,7 +64,7 @@ public class Int8_tTest {
     @Test
     public void testNativeToString() {
         Int8_t instance = new Int8_t(true);
-        instance.rawInt8_t((byte)-2);
+        instance.rawInt8_t((byte) -2);
         assertEquals("-2", instance.nativeToString());
         assertEquals("fe", instance.nativeToHexString());
     }

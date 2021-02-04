@@ -31,16 +31,15 @@ import java.io.File;
  * Hello world!
  *
  */
-public class App 
-{
-    public static void main( String[] args ) throws Exception
-    {
+public class App {
+
+    public static void main(String[] args) throws Exception {
         String STRING_TO_WRITE = "\n\t\tHello World! - AIO from POSIX\n\n";
         final OpaqueMemory32 aioBuffer = Memory32Heap.of(STRING_TO_WRITE.getBytes());
         final File file = File.createTempFile("JNHW-Win-aio", "txt");
 
-        MultiarchTupelBuilder mtb =  new MultiarchTupelBuilder();
-        if (mtb.getOS()== OS.WINDOWS) {
+        MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
+        if (mtb.getOS() == OS.WINDOWS) {
             Windows.aio(file, aioBuffer, true);
         } else {
             new Posix(true).aio(file, aioBuffer);

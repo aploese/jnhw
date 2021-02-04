@@ -54,11 +54,11 @@ extern "C" {
             return;
         }
 #if defined(__LP64__) || defined(_WIN64)
-        static_assert(sizeof(intptr_t) == 8, "sizeof(intptr_t) != 8)");
-        trampoline_ID = getStaticMethodIdOfClassRef(env, Callback_Class, "trampoline", "(IJ)V");
+        static_assert(sizeof (intptr_t) == 8, "sizeof(intptr_t) != 8)");
+        trampoline_ID = (*env)->GetStaticMethodID(env, Callback_Class, "trampoline", "(IJ)V");
 #else
-        static_assert(sizeof(intptr_t) == 4, "sizeof(intptr_t) != 4)");
-        trampoline_ID = getStaticMethodIdOfClassRef(env, Callback_Class, "trampoline", "(II)V");
+        static_assert(sizeof (intptr_t) == 4, "sizeof(intptr_t) != 4)");
+        trampoline_ID = (*env)->GetStaticMethodID(env, Callback_Class, "trampoline", "(II)V");
 #endif
         if (trampoline_ID == NULL) {
             return;
@@ -97,7 +97,7 @@ extern "C" {
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1IJ_1V_1Impl_getNativeAddress
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
         switch (index) {
-#define TRAMPOLINE_CASE(index) case index: return CREATE_NATIVE_ADDRESS_HOLDER(&_jnhw_trampoline_IJ_V__ ## index);
+#define TRAMPOLINE_CASE(index) case index: return CREATE_NativeAddressHolder(&_jnhw_trampoline_IJ_V__ ## index);
                 TRAMPOLINE_CASE(0);
                 TRAMPOLINE_CASE(1);
                 TRAMPOLINE_CASE(2);

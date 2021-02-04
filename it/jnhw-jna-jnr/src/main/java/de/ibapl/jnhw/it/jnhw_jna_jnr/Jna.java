@@ -31,7 +31,7 @@ import com.sun.jna.Structure;
  */
 public class Jna {
 
-    @Structure.FieldOrder({"tv_sec","tv_nsec"})
+    @Structure.FieldOrder({"tv_sec", "tv_nsec"})
     public static class Timespec extends Structure {
 
         public long tv_sec;
@@ -46,10 +46,10 @@ public class Jna {
         int errno();
     }
 
-    static LibC libc = (LibC)Native.load("c", LibC.class);
+    static LibC libc = (LibC) Native.load("c", LibC.class);
 
     public static void runFullTest(final int count) {
-        final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC();
+        final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC;
 
         for (int i = 0; i < count; i++) {
             Timespec timespec = new Timespec();
@@ -71,7 +71,7 @@ public class Jna {
     }
 
     public static void clock_gettime(final int count) {
-        final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC();
+        final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC;
         final Timespec timespec = new Timespec();
         for (int i = 0; i < count; i++) {
             libc.clock_gettime(CLOCK_MONOTONIC, timespec);

@@ -59,10 +59,28 @@ public class Time {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_TIME_H = false;
+        CLOCKS_PER_SEC = 0;
+        CLOCK_MONOTONIC = 0;
+        CLOCK_PROCESS_CPUTIME_ID = 0;
+        CLOCK_REALTIME = 0;
+        CLOCK_THREAD_CPUTIME_ID = 0;
+        TIMER_ABSTIME = 0;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <b>POSIX:</b> A number used to convert the value returned by the clock()
@@ -72,11 +90,10 @@ public class Time {
      * systems, and it should not be assumed that CLOCKS_PER_SEC is a
      * compile-time constant. .
      *
-     * @return the native symbol of CLOCKS_PER_SEC.
      */
     @Define()
-    public final static native @clock_t
-    int CLOCKS_PER_SEC();
+    @clock_t
+    public final static int CLOCKS_PER_SEC;
 
     /**
      * <b>POSIX:</b> The identifier for the system-wide monotonic clock, which
@@ -84,48 +101,43 @@ public class Time {
      * clock_settime() and which cannot have negative clock jumps.The maximum
      * possible clock jump shall be implementation-defined..
      *
-     * @return the native symbolic constant of CLOCK_MONOTONIC.
      */
     @Define()
-    public final static native int CLOCK_MONOTONIC();
+    public final static int CLOCK_MONOTONIC;
 
     /**
      * <b>POSIX:</b> The identifier of the CPU-time clock associated with the
      * process making a clock() or timer*() function call..
      *
-     * @return the native symbolic constant of CLOCK_PROCESS_CPUTIME_ID.
      */
     @Define()
-    public final static native int CLOCK_PROCESS_CPUTIME_ID();
+    public final static int CLOCK_PROCESS_CPUTIME_ID;
 
     /**
      * <b>POSIX:</b> The identifier of the system-wide clock measuring real
      * time.
      *
-     * @return the native symbolic constant of CLOCK_REALTIME.
      */
     @Define()
-    public final static native int CLOCK_REALTIME();
+    public final static int CLOCK_REALTIME;
 
     /**
      * <b>POSIX:</b> The identifier of the CPU-time clock associated with the
      * thread making a clock() or timer*() function call..
      *
-     * @return the native symbolic constant of CLOCK_THREAD_CPUTIME_ID.
      */
     @Define()
-    public final static native int CLOCK_THREAD_CPUTIME_ID();
+    public final static int CLOCK_THREAD_CPUTIME_ID;
 
-    public final static native boolean HAVE_TIME_H();
+    public final static boolean HAVE_TIME_H;
 
     /**
      * <b>POSIX:</b> Flag indicating time is absolute.For functions taking timer
      * objects, this refers to the clock associated with the timer.
      *
-     * @return the native symbolic constant of TIMER_ABSTIME.
      */
     @Define()
-    public final static native int TIMER_ABSTIME();
+    public final static int TIMER_ABSTIME;
 
     /**
      * <b>POSIX:</b>

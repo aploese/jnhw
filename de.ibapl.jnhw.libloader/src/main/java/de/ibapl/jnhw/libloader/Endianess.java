@@ -27,5 +27,5 @@ package de.ibapl.jnhw.libloader;
  */
 public enum Endianess {
     BIG, LITTLE
-    
+
 }

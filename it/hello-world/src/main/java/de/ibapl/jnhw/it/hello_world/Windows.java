@@ -31,9 +31,9 @@ import static de.ibapl.jnhw.winapi.Fileapi.WriteFile;
 
 public class Windows {
 
-	public static void sayHello() throws NativeErrorException {
-		int bytesWritten = WriteFile(GetStdHandle(STD_OUTPUT_HANDLE()), "Hello World! from WIN API\n".getBytes());
-                System.out.println("Bytes written: " + bytesWritten);
-	}
+    public static void sayHello() throws NativeErrorException {
+        int bytesWritten = WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), "Hello World! from WIN API\n".getBytes());
+        System.out.println("Bytes written: " + bytesWritten);
+    }
 
 }

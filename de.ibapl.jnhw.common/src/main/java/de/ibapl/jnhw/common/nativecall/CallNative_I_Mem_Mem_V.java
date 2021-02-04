@@ -24,10 +24,12 @@ package de.ibapl.jnhw.common.nativecall;
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_Mem_Mem_V;
 
 /**
  * Call a native function pointer.
+ *
  * @author aploese
  */
 public class CallNative_I_Mem_Mem_V<A extends AbstractNativeMemory, B extends AbstractNativeMemory> extends FunctionPtr_I_Mem_Mem_V<A, B> {
@@ -35,22 +37,31 @@ public class CallNative_I_Mem_Mem_V<A extends AbstractNativeMemory, B extends Ab
     static {
         LibJnhwCommonLoader.touch();
     }
-    
-    /**
-     * Called from native code...
-     * @param nativeAddress 
-     */
-    private CallNative_I_Mem_Mem_V(long nativeAddress) {
+
+    public static CallNative_I_Mem_Mem_V wrap(NativeFunctionPointer src) {
+        return new CallNative_I_Mem_Mem_V(src);
+    }
+
+    public static CallNative_I_Mem_Mem_V wrap(NativeAddressHolder src) {
+        return new CallNative_I_Mem_Mem_V(src);
+    }
+
+    protected CallNative_I_Mem_Mem_V(long nativeAddress) {
         super(nativeAddress);
     }
-    
-    public CallNative_I_Mem_Mem_V(NativeAddressHolder nativeAddressHolder) {
-        super(nativeAddressHolder);
+
+    public CallNative_I_Mem_Mem_V(NativeAddressHolder src) {
+        super(src);
     }
-    
+
+    public CallNative_I_Mem_Mem_V(NativeFunctionPointer src) {
+        super(src);
+    }
+
     /**
-     * call the native function. 
-     * @param value 
+     * call the native function.
+     *
+     * @param value
      */
     public native void call(int value, A a, B b);
 }

@@ -42,100 +42,50 @@ import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
 @Include("winreg.h")
 public abstract class Winreg {
 
-    private static HKEY HKEY_CLASSES_ROOT;
-    private static HKEY HKEY_CURRENT_CONFIG;
-    private static HKEY HKEY_CURRENT_USER;
-    private static HKEY HKEY_CURRENT_USER_LOCAL_SETTINGS;
-    private static HKEY HKEY_DYN_DATA;
-    private static HKEY HKEY_LOCAL_MACHINE;
-    private static HKEY HKEY_PERFORMANCE_DATA;
-    private static HKEY HKEY_PERFORMANCE_NLSTEXT;
-    private static HKEY HKEY_PERFORMANCE_TEXT;
-    private static HKEY HKEY_USERS;
-
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
-
-    public static native boolean HAVE_WINREG_H();
-
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CLASSES_ROOT</a>
      * Registry entries subordinate to this key define types (or classes) of
      * documents and the properties associated with those types.
      *
-     * @return the native symbolic constant of HKEY_CLASSES_ROOT.
      */
     @Define
-    public static HKEY HKEY_CLASSES_ROOT() {
-        if (HKEY_CLASSES_ROOT == null) {
-            HKEY_CLASSES_ROOT = create_HKEY_CLASSES_ROOT();
-        }
-        return HKEY_CLASSES_ROOT;
-    }
+    public final static HKEY HKEY_CLASSES_ROOT;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_CONFIG</a>
      * Registry entries subordinate to this key define types (or classes) of
      * documents and the properties associated with those types.
      *
-     * @return the native symbolic constant of HKEY_CURRENT_CONFIG.
      */
     @Define
-    public static HKEY HKEY_CURRENT_CONFIG() {
-        if (HKEY_CURRENT_CONFIG == null) {
-            HKEY_CURRENT_CONFIG = create_HKEY_CURRENT_CONFIG();
-        }
-        return HKEY_CURRENT_CONFIG;
-    }
+    public final static HKEY HKEY_CURRENT_CONFIG;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER</a>
      * Registry entries subordinate to this key define types (or classes) of
      * documents and the properties associated with those types.
      *
-     * @return the native symbolic constant of HKEY_CURRENT_USER.
      */
     @Define
-    public static HKEY HKEY_CURRENT_USER() {
-        if (HKEY_CURRENT_USER == null) {
-            HKEY_CURRENT_USER = create_HKEY_CURRENT_USER();
-        }
-        return HKEY_CURRENT_USER;
-    }
+    public final static HKEY HKEY_CURRENT_USER;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER_LOCAL_SETTINGS</a>
      * Registry entries subordinate to this key define preferences of the
      * current user that are local to the machine.
      *
-     * @return the native symbolic constant of HKEY_CURRENT_USER_LOCAL_SETTINGS.
      */
     @Define
-    public static HKEY HKEY_CURRENT_USER_LOCAL_SETTINGS() {
-        if (HKEY_CURRENT_USER_LOCAL_SETTINGS == null) {
-            HKEY_CURRENT_USER_LOCAL_SETTINGS = create_HKEY_CURRENT_USER_LOCAL_SETTINGS();
-        }
-        return HKEY_CURRENT_USER_LOCAL_SETTINGS;
-    }
+    public final static HKEY HKEY_CURRENT_USER_LOCAL_SETTINGS;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CLASSES_ROOT</a>
      * Registry entries subordinate to this key define types (or classes) of
      * documents and the properties associated with those types.
      *
-     * @return the native symbolic constant of HKEY_CLASSES_ROOT.
      */
     @Define
-    public static HKEY HKEY_DYN_DATA() {
-        if (HKEY_DYN_DATA == null) {
-            HKEY_DYN_DATA = create_HKEY_DYN_DATA();
-        }
-        return HKEY_DYN_DATA;
-    }
+    public final static HKEY HKEY_DYN_DATA;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_LOCAL_MACHINE</a>
@@ -143,30 +93,18 @@ public abstract class Winreg {
      * computer, including data about the bus type, system memory, and installed
      * hardware and software.
      *
-     * @return the native symbolic constant of HKEY_LOCAL_MACHINE.
      */
     @Define
-    public static HKEY HKEY_LOCAL_MACHINE() {
-        if (HKEY_LOCAL_MACHINE == null) {
-            HKEY_LOCAL_MACHINE = create_HKEY_LOCAL_MACHINE();
-        }
-        return HKEY_LOCAL_MACHINE;
-    }
+    public final static HKEY HKEY_LOCAL_MACHINE;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_DATA</a>
      * Registry entries subordinate to this key allow you to access performance
      * data.
      *
-     * @return the native symbolic constant of HKEY_PERFORMANCE_DATA.
      */
     @Define
-    public static HKEY HKEY_PERFORMANCE_DATA() {
-        if (HKEY_PERFORMANCE_DATA == null) {
-            HKEY_PERFORMANCE_DATA = create_HKEY_PERFORMANCE_DATA();
-        }
-        return HKEY_PERFORMANCE_DATA;
-    }
+    public final static HKEY HKEY_PERFORMANCE_DATA;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_NLSTEXT</a>
@@ -174,30 +112,18 @@ public abstract class Winreg {
      * describe counters in the local language of the area in which the computer
      * system is running.
      *
-     * @return the native symbolic constant of HKEY_PERFORMANCE_NLSTEXT.
      */
     @Define
-    public static HKEY HKEY_PERFORMANCE_NLSTEXT() {
-        if (HKEY_PERFORMANCE_NLSTEXT == null) {
-            HKEY_PERFORMANCE_NLSTEXT = create_HKEY_PERFORMANCE_NLSTEXT();
-        }
-        return HKEY_PERFORMANCE_NLSTEXT;
-    }
+    public final static HKEY HKEY_PERFORMANCE_NLSTEXT;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_TEXT</a>
      * Registry entries subordinate to this key reference the text strings that
      * describe counters in US English.
      *
-     * @return the native symbolic constant of HKEY_PERFORMANCE_TEXT.
      */
     @Define
-    public static HKEY HKEY_PERFORMANCE_TEXT() {
-        if (HKEY_PERFORMANCE_TEXT == null) {
-            HKEY_PERFORMANCE_TEXT = create_HKEY_PERFORMANCE_TEXT();
-        }
-        return HKEY_PERFORMANCE_TEXT;
-    }
+    public final static HKEY HKEY_PERFORMANCE_TEXT;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_USERS</a>
@@ -205,15 +131,41 @@ public abstract class Winreg {
      * configuration for new users on the local computer and the user
      * configuration for the current user.
      *
-     * @return the native symbolic constant of HKEY_USERS.
      */
     @Define
-    public static HKEY HKEY_USERS() {
-        if (HKEY_USERS == null) {
-            HKEY_USERS = create_HKEY_USERS();
-        }
-        return HKEY_USERS;
+    public final static HKEY HKEY_USERS;
+
+    /**
+     * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+
+        HAVE_WINREG_H = false;
+
+        HKEY_CLASSES_ROOT = null;
+        HKEY_CURRENT_CONFIG = null;
+        HKEY_CURRENT_USER = null;
+        HKEY_CURRENT_USER_LOCAL_SETTINGS = null;
+        HKEY_DYN_DATA = null;
+        HKEY_LOCAL_MACHINE = null;
+        HKEY_PERFORMANCE_DATA = null;
+        HKEY_PERFORMANCE_NLSTEXT = null;
+        HKEY_PERFORMANCE_TEXT = null;
+        HKEY_USERS = null;
+
+        initFields();
     }
+
+    private static native void initFields();
+
+    public static boolean HAVE_WINREG_H;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regclosekey">RegCloseKey</a>
@@ -255,7 +207,8 @@ public abstract class Winreg {
      * value.</li>
      * </ul>
      *
-     * @throws NullPointerException if hKey or lpValueName or lpType is {@code null}.
+     * @throws NullPointerException if hKey or lpValueName or lpType is
+     * {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -270,37 +223,20 @@ public abstract class Winreg {
      * @param hKey a handle to an open registry key.
      * @param lpSubKey the name of the registry subkey to be opened.
      * @param ulOptions specifies the option to apply when opening the key. Set
-     * this parameter to zero or the following: {@link Winnt#REG_OPTION_OPEN_LINK()}
+     * this parameter to zero or the following:
+     * {@link Winnt#REG_OPTION_OPEN_LINK()}
      * @param samDesired a mask that specifies the desired access rights to the
      * key to be opened. The function fails if the security descriptor of the
      * key does not permit the requested access for the calling process.
      * @param phkResult a pointer to a variable that receives a handle to the
      * opened key.
      *
-     * @throws NullPointerException if hKey or lpSubKey or phkResult is {@code null}.
+     * @throws NullPointerException if hKey or lpSubKey or phkResult is
+     * {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
     public final static native void RegOpenKeyExW(HKEY hKey, String lpSubKey, int ulOptions, int samDesired, PHKEY phkResult) throws NativeErrorException;
 
-    public static native HKEY create_HKEY_CLASSES_ROOT();
-
-    private static native HKEY create_HKEY_CURRENT_CONFIG();
-
-    private static native HKEY create_HKEY_CURRENT_USER();
-
-    private static native HKEY create_HKEY_CURRENT_USER_LOCAL_SETTINGS();
-
-    private static native HKEY create_HKEY_DYN_DATA();
-
-    private static native HKEY create_HKEY_LOCAL_MACHINE();
-
-    private static native HKEY create_HKEY_PERFORMANCE_DATA();
-
-    private static native HKEY create_HKEY_PERFORMANCE_NLSTEXT();
-
-    private static native HKEY create_HKEY_PERFORMANCE_TEXT();
-
-    private static native HKEY create_HKEY_USERS();
 }

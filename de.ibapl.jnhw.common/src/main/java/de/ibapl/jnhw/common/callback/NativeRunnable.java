@@ -41,20 +41,22 @@ public abstract class NativeRunnable extends OpaqueMemory32 {
         LibJnhwCommonLoader.touch();
     }
 
-            @Override
-            public BaseDataTypes getBaseDataType() {
-                return BaseDataTypes.function;
-            }
-            
-            @Override
-            public String nativeToHexString() {
-                switch (sizeInBytes) {
-                    case 4: return String.format("%08x",baseAddress);
-                    case 8: return String.format("%016x",baseAddress);
-                    default:
-                        throw new RuntimeException("Cant handle sizeInBytes: " + sizeInBytes);
-            }
-            }
+    @Override
+    public BaseDataTypes getBaseDataType() {
+        return BaseDataTypes.function;
+    }
+
+    @Override
+    public String nativeToHexString() {
+        switch (sizeInBytes) {
+            case 4:
+                return String.format("%08x", baseAddress);
+            case 8:
+                return String.format("%016x", baseAddress);
+            default:
+                throw new RuntimeException("Cant handle sizeInBytes: " + sizeInBytes);
+        }
+    }
 
     private native void aquireObjectRef();
 

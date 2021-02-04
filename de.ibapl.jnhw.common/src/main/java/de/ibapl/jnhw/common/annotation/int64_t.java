@@ -32,4 +32,5 @@ import java.lang.annotation.Target;
  */
 @Retention(value = RetentionPolicy.SOURCE)
 @Target(value = {ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-public @interface int64_t {}
+public @interface int64_t {
+}

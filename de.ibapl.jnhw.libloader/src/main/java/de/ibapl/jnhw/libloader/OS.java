@@ -23,6 +23,7 @@ package de.ibapl.jnhw.libloader;
 
 /**
  * The operating system with the libname template.
+ *
  * @author aploese
  */
 public enum OS {
@@ -48,9 +49,10 @@ public enum OS {
 
     /**
      * Format the libname with the given libToolInterfaceVersion for the OS.
+     *
      * @param libName
      * @param libToolInterfaceVersion
-     * @return 
+     * @return
      */
     public String formatLibName(String libName, int libToolInterfaceVersion) {
         return String.format(formatLibNameString, libName, libToolInterfaceVersion);

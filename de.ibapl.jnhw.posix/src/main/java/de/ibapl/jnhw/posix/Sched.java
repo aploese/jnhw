@@ -29,8 +29,8 @@ import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.exception.NotDefinedException;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -47,10 +47,27 @@ public class Sched {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwPosixLoader.touch();
+
+        HAVE_SCHED_H = false;
+
+        SCHED_FIFO = 0;
+        SCHED_OTHER = 0;
+        SCHED_RR = 0;
+        SCHED_SPORADIC = IntDefine.UNDEFINED;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sched.h.html">{@code structure
@@ -84,7 +101,7 @@ public class Sched {
         public Sched_param() {
             this(false);
         }
-        
+
         public Sched_param(final boolean clearMem) {
             super(sizeof(), clearMem);
             Time.Timespec t;
@@ -136,8 +153,8 @@ public class Sched {
          *
          * @return the native value of sched_ss_low_priority.
          *
-         * @throws NoSuchNativeTypeMemberException if sched_ss_low_priority does not
-         * exists.
+         * @throws NoSuchNativeTypeMemberException if sched_ss_low_priority does
+         * not exists.
          */
         public native int sched_ss_low_priority() throws NoSuchNativeTypeMemberException;
 
@@ -149,8 +166,8 @@ public class Sched {
          * @param sched_ss_low_priority the value of sched_ss_low_priority to be
          * set natively.
          *
-         * @throws NoSuchNativeTypeMemberException if sched_ss_low_priority does not
-         * exists.
+         * @throws NoSuchNativeTypeMemberException if sched_ss_low_priority does
+         * not exists.
          */
         public native void sched_ss_low_priority(int sched_ss_low_priority) throws NoSuchNativeTypeMemberException;
         /**
@@ -204,40 +221,35 @@ public class Sched {
 
     }
 
-    public final static native boolean HAVE_SCHED_H();
+    public final static boolean HAVE_SCHED_H;
 
     /**
      * <b>POSIX[PS|TPS]:</b> First in -first out(FIFO) scheduling policy.
      *
-     * @return the native symbol of SCHED_FIFO.
      */
     @Define
-    public final static native int SCHED_FIFO();
+    public final static int SCHED_FIFO;
 
     /**
      * <b>POSIX[PS|TPS]:</b> Round robin scheduling policy.
      *
-     * @return the native symbol of SCHED_RR.
      */
     @Define
-    public final static native int SCHED_RR();
+    public final static int SCHED_RR;
 
     /**
      * <b>POSIX[SS|TPS]:</b> Sporadic server scheduling policy.
      *
-     * @return the native symbol of SCHED_SPORADIC.
-     * @throws NotDefinedException if SCHED_SPORADIC is not defined natively.
      */
     @Define
-    public final static native int SCHED_SPORADIC() throws NotDefinedException;
+    public final static IntDefine SCHED_SPORADIC;
 
     /**
      * <b>POSIX[PS|TPS]:</b> Another scheduling policy.
      *
-     * @return the native symbol of SCHED_OTHER.
      */
     @Define
-    public final static native int SCHED_OTHER();
+    public final static int SCHED_OTHER;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -266,7 +278,8 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method sched_getparam is not available natively.
+     * @throws NoSuchNativeMethodException if the method sched_getparam is not
+     * available natively.
      */
     public final static native void sched_getparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -278,7 +291,8 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method sched_getscheduler is not available natively.
+     * @throws NoSuchNativeMethodException if the method sched_getscheduler is
+     * not available natively.
      */
     public final static native int sched_getscheduler(@pid_t int pid) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -289,7 +303,8 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method sched_rr_get_interval is not available natively.
+     * @throws NoSuchNativeMethodException if the method sched_rr_get_interval
+     * is not available natively.
      */
     public final static native void sched_rr_get_interval(@pid_t int pid, Time.Timespec interval) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -300,7 +315,8 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method sched_setparam is not available natively.
+     * @throws NoSuchNativeMethodException if the method sched_setparam is not
+     * available natively.
      */
     public final static native void sched_setparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 
@@ -311,7 +327,8 @@ public class Sched {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method sched_setscheduler is not available natively.
+     * @throws NoSuchNativeMethodException if the method sched_setscheduler is
+     * not available natively.
      */
     public final static native int sched_setscheduler(@pid_t int pid, int policy, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
 

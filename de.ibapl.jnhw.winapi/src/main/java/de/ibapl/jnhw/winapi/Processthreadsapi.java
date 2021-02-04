@@ -42,9 +42,15 @@ public abstract class Processthreadsapi {
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_PROCESSTHREADSAPI_H = false;
+
+        initFields();
     }
 
-    public static final native boolean HAVE_PROCESSTHREADSAPI_H();
+    private static native void initFields();
+
+    public static final boolean HAVE_PROCESSTHREADSAPI_H;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-queueuserapc">QueueUserAPC</a>
@@ -64,12 +70,12 @@ public abstract class Processthreadsapi {
      * indicates an error.
      */
     public final static native void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, @ULONG_PTR long dwData);
-    
-        /**
+
+    /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthread">GetCurrentThread</a>
      * Retrieves a pseudo handle for the calling thread.
      *
-     * @return  a pseudo handle for the current thread.
+     * @return a pseudo handle for the current thread.
      *
      */
     public final static native HANDLE GetCurrentThread();

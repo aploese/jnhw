@@ -33,11 +33,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_Mem_V_Test
      * Method:    getCallbackPtr
-     * Signature: ()Lde/ibapl/jnhw/common/nativecall/CallNative_Mem_V;
+     * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_Mem_V;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1Mem_1V_1Test_getCallbackPtr
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return CREATE_CALL_NATIVE_MEM_V(callbackPtr);
+        return CREATE_FunctionPtr_Mem_V(callbackPtr);
     }
 
     /*
@@ -47,7 +47,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1Mem_1V_1Test_setCallback
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
-        callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(void*), callback);
+        callbackPtr = UNWRAP_NativeFunctionPointer_TO(void (*)(void*), callback);
     }
 
     /*

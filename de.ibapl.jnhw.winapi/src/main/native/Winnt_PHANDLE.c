@@ -36,7 +36,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024PHANDLE_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return sizeof(HANDLE);
+        return sizeof (HANDLE);
     }
 
     /*

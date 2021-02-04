@@ -26,18 +26,18 @@
 extern "C" {
 #endif
 
-#if defined(_POSIX_VERSION) 
+#if defined(_POSIX_VERSION)
 #if defined(__OpenBSD__)
 #if defined(HAVE_AIO_H)
 #error OpenBSD and aio.h
 #endif
-#else    
+#else
 #include <aio.h>
 #endif
 #include <errno.h>
 #include <unistd.h>
 
-  JNHW_ASSERT__ssize_t__IS__int64_t__OR__int32_t
+    JNHW_ASSERT__ssize_t__IS__int64_t__OR__int32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Aio
@@ -242,7 +242,7 @@ extern "C" {
 #endif
     }
 
-#endif    
+#endif
 #ifdef __cplusplus
 }
 #endif

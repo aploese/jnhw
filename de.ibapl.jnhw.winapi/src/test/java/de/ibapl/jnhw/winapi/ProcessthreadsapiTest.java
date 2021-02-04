@@ -97,8 +97,8 @@ public class ProcessthreadsapiTest {
         Processthreadsapi.QueueUserAPC(pfnAPC, hThread, 42);
 
         long result = Synchapi.SleepEx(100, true);
-        assertEquals(Winbase.WAIT_IO_COMPLETION(), result);
-        
+        assertEquals(Winbase.WAIT_IO_COMPLETION, result);
+
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 assertEquals(-1, longRef.value);

@@ -26,7 +26,8 @@ import de.ibapl.jnhw.common.callback.Callback_J_V_Impl;
 import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.nativecall.CallNative_J_V;
+import de.ibapl.jnhw.common.nativecall.CallNative_IJ_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_J_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,12 +49,12 @@ public class Callback_J_V_Test {
         }
 
     }
-    
+
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
         LibJnhwCommonTestLoader.touch();
     }
-    
+
     @BeforeEach
     public void setUpBefore() throws Exception {
         System.runFinalization();
@@ -62,11 +63,11 @@ public class Callback_J_V_Test {
 
     public Callback_J_V_Test() {
     }
-    
-    private static native CallNative_J_V getCallbackPtr();
-    
+
+    private static native FunctionPtr_J_V getCallbackPtr();
+
     private static native void setCallback(Callback_J_V callback);
-    
+
     private static native void doCallTheCallback(long value);
 
     /**
@@ -96,7 +97,7 @@ public class Callback_J_V_Test {
 
         assertEquals(maxCB, Callback_J_V_Impl.callbacksAvailable());
     }
-    
+
     @Test
     public void testNativeFunctionPointer() {
         final Callback_J_V testPtr = new Callback_J_V(new NativeAddressHolder(121)) {
@@ -126,26 +127,26 @@ public class Callback_J_V_Test {
         };
         final Thread t = Thread.currentThread();
         Callback_J_V_Impl callback = new Callback_J_V_Impl() {
-            
+
             @Override
             protected void callback(long value) {
                 if (!t.equals(Thread.currentThread())) {
                     longRef.value = value;
                 }
             }
-            
+
         };
         final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback);
-        
+
         setCallback(callback);
-        
+
         assertEquals(getCallbackPtr(), callback);
         assertSame(Callback_J_V_Impl.find(getCallbackPtr()), callback);
         doCallTheCallback(42);
         assertEquals(42, longRef.value);
-        
+
         callback = null;
-        
+
         System.runFinalization();
         System.gc();
 
@@ -166,7 +167,7 @@ public class Callback_J_V_Test {
     public void testReleaseByGarbageCollectorAndCleanup() throws Exception {
         System.out.println("release");
         Cleaner CLEANER = Cleaner.create();
-        
+
         final LongRef longRef = new LongRef();
         final Callback_J_V NULL_PTR = new Callback_J_V(new NativeAddressHolder(0)) {
             @Override
@@ -175,36 +176,36 @@ public class Callback_J_V_Test {
             }
         };
         Callback_J_V_Impl callback = new Callback_J_V_Impl() {
-            
+
             @Override
             protected void callback(long value) {
                 longRef.value = value;
             }
-            
+
         };
         CLEANER.register(callback, () -> {
             setCallback(NULL_PTR);
         });
-        
+
         setCallback(callback);
-        
+
         assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(42);
         assertEquals(42, longRef.value);
-        
+
         longRef.value = -1;
-        getCallbackPtr().call(42);
+        CallNative_IJ_V.wrap(getCallbackPtr()).call(42);
         assertEquals(42, longRef.value);
 
         callback = null;
-        
+
         System.runFinalization();
         System.gc();
 
         //sleep here, to let the CLEANER do it cleanup....
         Thread.sleep(10);
-        
+
         assertEquals(getCallbackPtr(), NULL_PTR);
-        
+
     }
 }

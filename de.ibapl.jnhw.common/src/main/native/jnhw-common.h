@@ -30,6 +30,13 @@
 extern "C" {
 #endif
 
+    /**
+     * Structure for define names 
+     *  a class name:      JNWW_cN_X_L_name, where cN is the abbrevation for class name, X is the shorted package name without the last L ist the last part of the package name and name is the class name
+     *  a class signature: JNWW_cS_X_L_name, where cS is the abbrevation for class signature, X is the shorted package name without the last L ist the last part of the package name and name is the class name
+     * 
+     * 
+     */
 #ifdef _JNHW_COMMON_IMPLEMENTATION_
 #define _JNHW_IMPORT_OR_EXPORT_ JNIEXPORT
 
@@ -41,61 +48,85 @@ extern "C" {
 
 #include "JnhwExceptions.h"
 
-//globally important class names
-#define JNHW_CLASS_NAME_NATIVE_ADDRESS_HOLDER "de/ibapl/jnhw/common/memory/NativeAddressHolder"
-    
+#define STR(x) #x 
+#define CLASS_NAME_TO_SIGNATURE(className) "L"className";" 
+
+
+    //globally important class names
+#define dijc_m_NativeAddressHolder_CName "de/ibapl/jnhw/common/memory/NativeAddressHolder"
+#define dijc_m_NativeAddressHolder_CSig CLASS_NAME_TO_SIGNATURE(dijc_m_NativeAddressHolder_CName)
+
+#define dijc_m_NativeFunctionPointer_CName "de/ibapl/jnhw/common/memory/NativeFunctionPointer"
+#define dijc_m_NativeFunctionPointer_CSig CLASS_NAME_TO_SIGNATURE(dijc_m_NativeFunctionPointer_CName)
+
+#define dijc_np_FunctionPtr_I_V_CName "de/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V"
+#define dijc_np_FunctionPtr_I_V_CSig CLASS_NAME_TO_SIGNATURE(dijc_np_FunctionPtr_I_V_CName)
+
+#define dijc_np_FunctionPtr_J_V_CName "de/ibapl/jnhw/common/nativepointer/FunctionPtr_J_V"
+#define dijc_np_FunctionPtr_J_V_CSig CLASS_NAME_TO_SIGNATURE(dijc_np_FunctionPtr_J_V_CName)
+
+#define dijc_np_FunctionPtr_IJ_V_CName "de/ibapl/jnhw/common/nativepointer/FunctionPtr_IJ_V"
+#define dijc_np_FunctionPtr_IJ_V_CSig CLASS_NAME_TO_SIGNATURE(dijc_np_FunctionPtr_IJ_V_CName)
+
+#define dijc_np_FunctionPtr_I_I_Mem_V_CName "de/ibapl/jnhw/common/nativepointer/FunctionPtr_I_I_Mem_V"
+#define dijc_np_FunctionPtr_I_Mem_V_CSig CLASS_NAME_TO_SIGNATURE(dijc_np_FunctionPtr_I_Mem_V_CName)
+
+#define dijc_np_FunctionPtr_I_Mem_Mem_V_CName "de/ibapl/jnhw/common/nativepointer/FunctionPtr_I_Mem_Mem_V"
+#define dijc_np_FunctionPtr_Mem_Mem_V_CSig CLASS_NAME_TO_SIGNATURE(dijc_np_FunctionPtr_Mem_Mem_V_CName)
+
+#define dijc_np_FunctionPtr_Mem_V_CName "de/ibapl/jnhw/common/nativepointer/FunctionPtr_Mem_V"
+#define dijc_np_FunctionPtr_Mem_V_CSig CLASS_NAME_TO_SIGNATURE(dijc_np_FunctionPtr_Mem_V_CName)
+
+
+
     //Cached
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_references_ByteRef_value_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_references_ShortRef_value_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_references_IntRef_value_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_references_LongRef_value_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_references_ObjectRef_value_ID;
-    
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_AbstractNativeMemory_baseAddress_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_OpaqueMemory32_sizeInBytes_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_OpaqueMemory64_sizeInBytes_ID;
-    
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_memory_StructArray32_length_ID;
-    
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_memory_NativeAddressHolder_Class;
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID;
-    
-    //TODO deprecated ...
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class;
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_I_V_Class;
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_J_V_Class;
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_Class;
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_Class;
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_Class;
-    _JNHW_IMPORT_OR_EXPORT_ extern jclass de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_Class;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID dijc_r_ByteRef_value__FID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID dijc_r_ShortRef_value__FID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID dijc_r_IntRef_value__FID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID dijc_r_LongRef_value__FID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID dijc_r_ObjectRef_value__FID;
 
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID dijc_m_AbstractNativeMemory_baseAddress__FID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID dijc_m_OpaqueMemory32_sizeInBytes__FID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID dijc_m_OpaqueMemory64_sizeInBytes__FID;
+
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID dijc_m_StructArray32_length__MID;
+
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass dijc_m_NativeAddressHolder__GCR;
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID dijc_m_NativeAddressHolder_address__FID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID dijc_m_NativeAddressHolder_init__MID;
 
     //TODO deprecated ...
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_V_init_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_J_V_init_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_init_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_init_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_init_ID;
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_init_ID;
-    
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass dijc_m_NativeFunctionPointer__GCR;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass dijc_np_FunctionPtr_I_V__GCR;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass dijc_np_FunctionPtr_J_V__GCR;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass dijc_np_FunctionPtr_IJ_V__GCR;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass dijc_np_FunctionPtr_I_I_Mem_V__GCR;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass dijc_np_FunctionPtr_I_Mem_Mem_V__GCR;
+    _JNHW_IMPORT_OR_EXPORT_ extern jclass dijc_np_FunctionPtr_Mem_V__GCR;
+
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID dijc_m_NativeFunctionPointer_nativeAddress__FID;
+
+    //TODO deprecated ...
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID dijc_m_NativeFunctionPointer_init__MID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID dijc_np_FunctionPtr_I_V_init__MID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID dijc_np_FunctionPtr_J_V_init__MID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID dijc_np_FunctionPtr_IJ_V_init__MID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID dijc_np_FunctionPtr_I_I_Mem_V_init__MID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID dijc_np_FunctionPtr_I_Mem_Mem_V_init__MID;
+    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID dijc_np_FunctionPtr_Mem_V_init__MID;
+
+    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID dijc_m_PointerArray32_cachedReferences__FID;
+
 
     _JNHW_IMPORT_OR_EXPORT_ extern jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className);
-    
+
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL deleteGlobalRef(JNIEnv *env, jobject *classRef);
 
     _JNHW_IMPORT_OR_EXPORT_ extern jfieldID JNICALL getFieldId(JNIEnv *env, const char* className, const char* fieldName, const char* fieldType);
 
     _JNHW_IMPORT_OR_EXPORT_ extern jmethodID JNICALL getMethodId(JNIEnv *env, const char* className, const char* methodName, const char* methodSignature);
 
-    _JNHW_IMPORT_OR_EXPORT_ extern jfieldID JNICALL getFieldIdOfClassRef(JNIEnv *env, jclass clazz, const char* fieldName, const char* fieldType);
-
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID JNICALL getMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* methodName, const char* methodSignature);
-
-    _JNHW_IMPORT_OR_EXPORT_ extern jmethodID JNICALL getStaticMethodIdOfClassRef(JNIEnv *env, jclass clazz, const char* methodName, const char* methodSignature);
     /*
      * Returns true if the array slice defined by the given offset and length
      * is out of bounds.
@@ -105,7 +136,18 @@ extern "C" {
     _JNHW_IMPORT_OR_EXPORT_ extern int outOfBoundsOpaqueMemory32(JNIEnv *env, jint pos, jint len, jobject opaqueMemory32);
     _JNHW_IMPORT_OR_EXPORT_ extern int outOfBoundsOpaqueMemory64(JNIEnv *env, jlong pos, jlong len, jobject opaqueMemory64);
 
-//Its funny how the differnt archs ans OSses have different datatypes so a long int is not equals to long long on 64 bit...
+
+    _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticObjectField(JNIEnv *env, jclass clazz, const char * fieldClassSignature, const char * fieldName, jobject value);
+    _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticLongField(JNIEnv *env, jclass clazz, const char * fieldName, jlong value);
+    _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticIntField(JNIEnv *env, jclass clazz, const char * fieldName, jint value);
+    _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticShortField(JNIEnv *env, jclass clazz, const char * fieldName, jshort value);
+    _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticByteField(JNIEnv *env, jclass clazz, const char * fieldName, jbyte value);
+    _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticBooleanField(JNIEnv *env, jclass clazz, const char * fieldName, jboolean value);
+
+    _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticObjectDefineField(JNIEnv *env, jclass clazz, const char * fieldName, jobject value);
+    _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticIntDefineField(JNIEnv *env, jclass clazz, const char * fieldName, jint value);
+
+    //Its funny how the differnt archs ans OSses have different datatypes so a long int is not equals to long long on 64 bit...
 
 #define JNHW_FORMAT_STRING_int8_t "%d"
 #define JNHW_FORMAT_STRING_uint8_t "%u"
@@ -123,27 +165,27 @@ extern "C" {
 #define JNHW_FORMAT_STRING_HEX_uint32_t "%08x"
 
 #if defined(__LP64__) 
-  #if defined(__OpenBSD__)
-    #define JNHW_FORMAT_STRING_int64_t "%lld"
-    #define JNHW_FORMAT_STRING_uint64_t "%llu"
-    #define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
-    #define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
-  #else
-    #define JNHW_FORMAT_STRING_int64_t "%ld"
-    #define JNHW_FORMAT_STRING_uint64_t "%lu"
-    #define JNHW_FORMAT_STRING_HEX_int64_t "%016lx"
-    #define JNHW_FORMAT_STRING_HEX_uint64_t "%016lx"
-  #endif
-#elif defined(__WIN64)
-  #define JNHW_FORMAT_STRING_int64_t "%lld"
-  #define JNHW_FORMAT_STRING_uint64_t "%llu"
-  #define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
-  #define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
+#if defined(__OpenBSD__)
+#define JNHW_FORMAT_STRING_int64_t "%lld"
+#define JNHW_FORMAT_STRING_uint64_t "%llu"
+#define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
+#define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
 #else
-  #define JNHW_FORMAT_STRING_int64_t "%lld"
-  #define JNHW_FORMAT_STRING_uint64_t "%llu"
-  #define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
-  #define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
+#define JNHW_FORMAT_STRING_int64_t "%ld"
+#define JNHW_FORMAT_STRING_uint64_t "%lu"
+#define JNHW_FORMAT_STRING_HEX_int64_t "%016lx"
+#define JNHW_FORMAT_STRING_HEX_uint64_t "%016lx"
+#endif
+#elif defined(__WIN64)
+#define JNHW_FORMAT_STRING_int64_t "%lld"
+#define JNHW_FORMAT_STRING_uint64_t "%llu"
+#define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
+#define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
+#else
+#define JNHW_FORMAT_STRING_int64_t "%lld"
+#define JNHW_FORMAT_STRING_uint64_t "%llu"
+#define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
+#define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
 #endif
 
 
@@ -152,7 +194,7 @@ extern "C" {
      * Using GetIntField for 32bit addresses will fail on BIG_ENDIAN...
      * 
      */
-#define UNWRAP_ABSTRACT_MEM_TO(destType, abstractMemory) ((destType)((uintptr_t)(*env)->GetLongField(env, abstractMemory, de_ibapl_jnhw_common_memory_AbstractNativeMemory_baseAddress_ID)))
+#define UNWRAP_ABSTRACT_MEM_TO(destType, abstractMemory) ((destType)((uintptr_t)(*env)->GetLongField(env, abstractMemory, dijc_m_AbstractNativeMemory_baseAddress__FID)))
 
     /**
      * Unwarap the baseAddress given abstractMemory(jobject) of an OpaqueMemory instance and cast these baseAddress to given type.
@@ -165,40 +207,42 @@ extern "C" {
 #define UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_OR_NULL(abstractMemory) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(void*, abstractMemory)
 #define UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_PTR(abstractMemory) UNWRAP_ABSTRACT_MEM_TO(void**, abstractMemory)
 
-#define SIZE_OF_OPAQUE_MEM_32(opaqueMem) (*env)->GetIntField(env, opaqueMem, de_ibapl_jnhw_common_memory_OpaqueMemory32_sizeInBytes_ID)
-#define SIZE_OF_OPAQUE_MEM_64(opaqueMem) (*env)->GetLongField(env, opaqueMem, de_ibapl_jnhw_common_memory_OpaqueMemory64_sizeInBytes_ID)
+#define SIZE_OF_OPAQUE_MEM_32(opaqueMem) (*env)->GetIntField(env, opaqueMem, dijc_m_OpaqueMemory32_sizeInBytes__FID)
+#define SIZE_OF_OPAQUE_MEM_64(opaqueMem) (*env)->GetLongField(env, opaqueMem, dijc_m_OpaqueMemory64_sizeInBytes__FID)
 
-#define LENGTH_OF_STRUCTURE_ARRAY_32(structureArray) (int32_t)(*env)->CallIntMethod(env, structureArray, de_ibapl_jnhw_common_memory_StructArray32_length_ID)
+#define LENGTH_OF_STRUCTURE_ARRAY_32(structureArray) (int32_t)(*env)->CallIntMethod(env, structureArray, dijc_m_StructArray32_length__MID)
 
-#define LENGTH_OF_POINTER_ARRAY_32(pointerArray) (*env)->GetArrayLength(env, (*env)->GetObjectField(env, pointerArray, de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID))
+#define LENGTH_OF_POINTER_ARRAY_32(pointerArray) (*env)->GetArrayLength(env, (*env)->GetObjectField(env, pointerArray, dijc_m_PointerArray32_cachedReferences__FID))
 
-#define GET_BYTE_REF_VALUE(valueRef) (*env)->GetByteField(env, valueRef, de_ibapl_jnhw_common_references_ByteRef_value_ID)
-#define SET_BYTE_REF_VALUE(valueRef, value) (*env)->SetByteField(env, valueRef, de_ibapl_jnhw_common_references_ByteRef_value_ID, value)
+#define GET_BYTE_REF_VALUE(valueRef) (*env)->GetByteField(env, valueRef, dijc_r_ByteRef_value__FID)
+#define SET_BYTE_REF_VALUE(valueRef, value) (*env)->SetByteField(env, valueRef, dijc_r_ByteRef_value__FID, value)
 
-#define GET_SHORT_REF_VALUE(valueRef) (*env)->GetShortField(env, valueRef, de_ibapl_jnhw_common_references_ShortRef_value_ID)
-#define SET_SHORT_REF_VALUE(valueRef, value) (*env)->SetShortField(env, valueRef, de_ibapl_jnhw_common_references_ShortRef_value_ID, value)
+#define GET_SHORT_REF_VALUE(valueRef) (*env)->GetShortField(env, valueRef, dijc_r_ShortRef_value__FID)
+#define SET_SHORT_REF_VALUE(valueRef, value) (*env)->SetShortField(env, valueRef, dijc_r_ShortRef_value__FID, value)
 
-#define GET_INT_REF_VALUE(valueRef) (*env)->GetIntField(env, valueRef, de_ibapl_jnhw_common_references_IntRef_value_ID)
-#define SET_INT_REF_VALUE(valueRef, value) (*env)->SetIntField(env, valueRef, de_ibapl_jnhw_common_references_IntRef_value_ID, value)
+#define GET_INT_REF_VALUE(valueRef) (*env)->GetIntField(env, valueRef, dijc_r_IntRef_value__FID)
+#define SET_INT_REF_VALUE(valueRef, value) (*env)->SetIntField(env, valueRef, dijc_r_IntRef_value__FID, value)
 
-#define GET_LONG_REF_VALUE(valueRef) (*env)->GetLongField(env, valueRef, de_ibapl_jnhw_common_references_LongRef_value_ID)
-#define SET_LONG_REF_VALUE(valueRef, value) (*env)->SetLongField(env, valueRef, de_ibapl_jnhw_common_references_LongRef_value_ID, value)
+#define GET_LONG_REF_VALUE(valueRef) (*env)->GetLongField(env, valueRef, dijc_r_LongRef_value__FID)
+#define SET_LONG_REF_VALUE(valueRef, value) (*env)->SetLongField(env, valueRef, dijc_r_LongRef_value__FID, value)
 
-#define GET_OBJECT_REF_VALUE(valueRef) (*env)->GetObjectField(env, valueRef, de_ibapl_jnhw_common_references_ObjectRef_value_ID)
-#define SET_OBJECT_REF_VALUE(valueRef, value) (*env)->SetObjectField(env, valueRef, de_ibapl_jnhw_common_references_ObjectRef_value_ID, value)
+#define GET_OBJECT_REF_VALUE(valueRef) (*env)->GetObjectField(env, valueRef, dijc_r_ObjectRef_value__FID)
+#define SET_OBJECT_REF_VALUE(valueRef, value) (*env)->SetObjectField(env, valueRef, dijc_r_ObjectRef_value__FID, value)
 
-//#define UNWRAP_NATIVE_FUNCTION_POINTER(nativeFunctionPointer)(void*)(intptr_t)(*env)->GetLongField(env, nativeFunctionPointer, de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID)
-#define UNWRAP_NATIVE_FUNCTION_POINTER_TO(destType, nativeFunctionPointer)(destType)(uintptr_t)(*env)->GetLongField(env, nativeFunctionPointer, de_ibapl_jnhw_common_memory_NativeFunctionPointer_nativeAddress_ID)
-#define CREATE_NATIVE_FUNCTION_POINTER(value) (*env)->NewObject(env, de_ibapl_jnhw_common_memory_NativeFunctionPointer_Class, de_ibapl_jnhw_common_memory_NativeFunctionPointer_init_ID, (jlong) (uintptr_t) value)
-#define CREATE_CALL_NATIVE_I_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_I_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_I_V_init_ID, (jlong) (uintptr_t) value)
-#define CREATE_CALL_NATIVE_J_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_J_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_J_V_init_ID, (jlong) (uintptr_t) value)
-#define CREATE_CALL_NATIVE_IJ_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_IJ_V_init_ID, (jlong) (uintptr_t) value)
-#define CREATE_CALL_NATIVE_I_I_MEM_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_I_I_Mem_V_init_ID, (jlong) (uintptr_t) value)
-#define CREATE_CALL_NATIVE_I_MEM_MEM_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_I_Mem_Mem_V_init_ID, (jlong) (uintptr_t) value)
-#define CREATE_CALL_NATIVE_MEM_V(value) (*env)->NewObject(env, de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_Class, de_ibapl_jnhw_common_nativecall_CallNative_Mem_V_init_ID, (jlong) (uintptr_t) value)
-    
-#define UNWRAP_NATIVE_ADDRESS_HOLDER_TO(destType, value) (destType)(uintptr_t)(*env)->GetLongField(env, value, de_ibapl_jnhw_common_memory_NativeAddressHolder_address_ID)    
-#define CREATE_NATIVE_ADDRESS_HOLDER(value) (*env)->NewObject(env, de_ibapl_jnhw_common_memory_NativeAddressHolder_Class, de_ibapl_jnhw_common_memory_NativeAddressHolder_init_ID, (jlong) (uintptr_t) value)
+    //#define UNWRAP_NATIVE_FUNCTION_POINTER(nativeFunctionPointer)(void*)(intptr_t)(*env)->GetLongField(env, nativeFunctionPointer, de_ibapl_jnhw_NativeFunctionPointer_nativeAddress_ID)
+#define UNWRAP_NativeFunctionPointer_TO(destType, nativeFunctionPointer)(destType)(uintptr_t)(*env)->GetLongField(env, nativeFunctionPointer, dijc_m_NativeFunctionPointer_nativeAddress__FID)
+
+#define CREATE_NativeFunctionPointer(value) (*env)->NewObject(env, dijc_m_NativeFunctionPointer__GCR, dijc_m_NativeFunctionPointer_init__MID, (jlong) (uintptr_t) value)
+
+#define CREATE_FunctionPtr_I_V(value) (*env)->NewObject(env, dijc_np_FunctionPtr_I_V__GCR, dijc_np_FunctionPtr_I_V_init__MID, (jlong) (uintptr_t) value)
+#define CREATE_FunctionPtr_J_V(value) (*env)->NewObject(env, dijc_np_FunctionPtr_J_V__GCR, dijc_np_FunctionPtr_J_V_init__MID, (jlong) (uintptr_t) value)
+#define CREATE_FunctionPtr_IJ_V(value) (*env)->NewObject(env, dijc_np_FunctionPtr_IJ_V__GCR, dijc_np_FunctionPtr_IJ_V_init__MID, (jlong) (uintptr_t) value)
+#define CREATE_FunctionPtr_I_I_Mem_V(value) (*env)->NewObject(env, dijc_np_FunctionPtr_I_I_Mem_V__GCR, dijc_np_FunctionPtr_I_I_Mem_V_init__MID, (jlong) (uintptr_t) value)
+#define CREATE_FunctionPtr_I_Mem_Mem_V(value) (*env)->NewObject(env, dijc_np_FunctionPtr_I_Mem_Mem_V__GCR, dijc_np_FunctionPtr_I_Mem_Mem_V_init__MID, (jlong) (uintptr_t) value)
+#define CREATE_FunctionPtr_Mem_V(value) (*env)->NewObject(env, dijc_np_FunctionPtr_Mem_V__GCR, dijc_np_FunctionPtr_Mem_V_init__MID, (jlong) (uintptr_t) value)
+
+#define UNWRAP_NativeAddressHolder_TO(destType, value) (destType)(uintptr_t)(*env)->GetLongField(env, value, dijc_m_NativeAddressHolder_address__FID)    
+#define CREATE_NativeAddressHolder(value) (*env)->NewObject(env, dijc_m_NativeAddressHolder__GCR, dijc_m_NativeAddressHolder_init__MID, (jlong) (uintptr_t) value)
 
 #ifdef __cplusplus
 }

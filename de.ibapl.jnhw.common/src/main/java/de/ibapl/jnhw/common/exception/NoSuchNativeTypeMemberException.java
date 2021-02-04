@@ -38,11 +38,11 @@ public class NoSuchNativeTypeMemberException extends Exception {
         typeName = null;
         memberName = null;
     }
-    
+
     public NoSuchNativeTypeMemberException(String typeName, String memberName) {
         super(String.format("No such member %s.%s", typeName, memberName));
         this.typeName = typeName;
         this.memberName = memberName;
     }
-    
+
 }

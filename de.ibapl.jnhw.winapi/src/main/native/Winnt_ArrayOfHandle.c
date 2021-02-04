@@ -29,7 +29,6 @@
 extern "C" {
 #endif
 
-
     /*
      * Class:     de_ibapl_jnhw_winapi_Winnt_ArrayOfHandle
      * Method:    get0
@@ -37,7 +36,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_get0
     (__attribute__ ((unused)) JNIEnv *env, jobject this, jint i) {
-        return CREATE_HANDLE(*(UNWRAP_ABSTRACT_MEM_TO(HANDLE *, this)+ i));
+        return CREATE_HANDLE(*(UNWRAP_ABSTRACT_MEM_TO(HANDLE *, this) + i));
     }
 
     /*
@@ -57,7 +56,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024ArrayOfHandle_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return sizeof(HANDLE);
+        return sizeof (HANDLE);
     }
 
 #ifdef __cplusplus

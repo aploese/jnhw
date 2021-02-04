@@ -24,6 +24,7 @@ package de.ibapl.jnhw.it.posixsignal.posix_signal;
 import de.ibapl.jnhw.common.callback.Callback_I_V;
 import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
 import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.posix.Signal;
 
 /**
@@ -36,7 +37,7 @@ public class SimpleSignalHandler extends SignalHandler {
         super(signalToRaise, signalAction);
     }
 
-    private CallNative_I_V originalHandler;
+    private FunctionPtr_I_V originalHandler;
     private Callback_I_V callback_I_V = new Callback_I_V_Impl() {
         @Override
         protected void callback(int value) {
@@ -48,7 +49,7 @@ public class SimpleSignalHandler extends SignalHandler {
                     System.exit(value);
                     break;
                 case PRINT_MSG_AND_CALL_OLD_HANDLER:
-                    originalHandler.call(value);
+                    CallNative_I_V.wrap(originalHandler).call(value);
                     break;
                 default:
                     thrownInHandler = new RuntimeException("Can't handle signalAction: " + signalAction);
@@ -62,13 +63,13 @@ public class SimpleSignalHandler extends SignalHandler {
         System.out.println("Simple handler for signal " + signalToRaise + " in thread: " + Thread.currentThread());
         try {
             originalHandler = Signal.signal(signalToRaise, callback_I_V);
-            if (Signal.SIG_DFL().equals(originalHandler)) {
+            if (Signal.SIG_DFL.equals(originalHandler)) {
                 System.out.println("Old signal handler of SIG is SIG_DFL!");
-            } else if (Signal.SIG_ERR().equals(originalHandler)) {
+            } else if (Signal.SIG_ERR.equals(originalHandler)) {
                 System.out.println("Old signal handler of SIG is SIG_ERR!");
-            } else if (Signal.SIG_IGN().equals(originalHandler)) {
+            } else if (Signal.SIG_IGN.equals(originalHandler)) {
                 System.out.println("Old signal handler of SIG is SIG_IGN!");
-            } else if (Signal.SIG_HOLD().equals(originalHandler)) {
+            } else if (Signal.SIG_HOLD.equals(originalHandler)) {
                 System.out.println("Old signal handler of SIG is SIG_HOLD!");
             } else {
                 System.out.println("Old signal handler of SIG is " + originalHandler);

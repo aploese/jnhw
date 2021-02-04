@@ -47,10 +47,10 @@ public class StringHeaderTest {
         System.out.println("strerror");
 
         //Fallback to "C" locale so that the test can succeed on any machine
-        final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK(), "C", Locale.Locale_t.locale_t_0());
+        final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.locale_t_0());
         final Locale.Locale_t oldLocale = Locale.uselocale(locale);
         try {
-            assertEquals("Invalid argument", StringHeader.strerror(Errno.EINVAL()));
+            assertEquals("Invalid argument", StringHeader.strerror(Errno.EINVAL));
             switch (MULTIARCHTUPEL_BUILDER.getOS()) {
                 case FREE_BSD:
                     assertEquals("No error: 0", StringHeader.strerror(0));
@@ -83,16 +83,16 @@ public class StringHeaderTest {
             case FREE_BSD:
             case MAC_OS_X:
                 assertThrows(NoSuchNativeMethodException.class, () -> {
-                    StringHeader.strerror_l(Errno.EAGAIN(), null);
+                    StringHeader.strerror_l(Errno.EAGAIN, null);
                 });
                 break;
             default:
                 assertThrows(NullPointerException.class, () -> {
-                    StringHeader.strerror_l(Errno.EAGAIN(), null);
+                    StringHeader.strerror_l(Errno.EAGAIN, null);
                 });
                 //Use "C" locale so that the test can succeed on any machine
-                final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK(), "C", Locale.Locale_t.locale_t_0());
-                assertEquals("Resource temporarily unavailable", StringHeader.strerror_l(Errno.EAGAIN(), locale));
+                final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.locale_t_0());
+                assertEquals("Resource temporarily unavailable", StringHeader.strerror_l(Errno.EAGAIN, locale));
         }
     }
 
@@ -104,30 +104,30 @@ public class StringHeaderTest {
         System.out.println("strsignal");
 
         //Fallback to "C" locale so that the test can succeed on any machine
-        final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK(), "C", Locale.Locale_t.locale_t_0());
+        final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.locale_t_0());
         final Locale.Locale_t oldLocale = Locale.uselocale(locale);
         try {
             switch (MULTIARCHTUPEL_BUILDER.getOS()) {
                 case FREE_BSD:
-                    assertEquals("Segmentation fault", StringHeader.strsignal(Signal.SIGSEGV()));
+                    assertEquals("Segmentation fault", StringHeader.strsignal(Signal.SIGSEGV));
                     assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));
                     assertEquals("Unknown signal: 0", StringHeader.strsignal(0));
                     assertEquals("Unknown signal: -1", StringHeader.strsignal(-1));
                     break;
                 case OPEN_BSD:
-                    assertEquals("Segmentation fault", StringHeader.strsignal(Signal.SIGSEGV()));
+                    assertEquals("Segmentation fault", StringHeader.strsignal(Signal.SIGSEGV));
                     assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));
                     assertEquals("Signal 0", StringHeader.strsignal(0));
                     assertEquals("Unknown signal: 4294967295", StringHeader.strsignal(-1));
                     break;
                 case MAC_OS_X:
-                    assertEquals("Segmentation fault: 11", StringHeader.strsignal(Signal.SIGSEGV()));
+                    assertEquals("Segmentation fault: 11", StringHeader.strsignal(Signal.SIGSEGV));
                     assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));
                     assertEquals("Unknown signal: 0", StringHeader.strsignal(0));
                     assertEquals("Unknown signal: -1", StringHeader.strsignal(-1));
                     break;
                 default:
-                    assertEquals("Segmentation fault", StringHeader.strsignal(Signal.SIGSEGV()));
+                    assertEquals("Segmentation fault", StringHeader.strsignal(Signal.SIGSEGV));
                     assertEquals("Unknown signal 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));
                     assertEquals("Unknown signal 0", StringHeader.strsignal(0));
                     assertEquals("Unknown signal -1", StringHeader.strsignal(-1));

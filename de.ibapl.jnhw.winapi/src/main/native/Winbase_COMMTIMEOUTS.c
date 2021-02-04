@@ -46,7 +46,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadIntervalTimeout__
     (JNIEnv *env, jobject this) {
-         return (int64_t)(UNWRAP_COMMTIMEOUTS(this))->ReadIntervalTimeout;
+        return (int64_t) (UNWRAP_COMMTIMEOUTS(this))->ReadIntervalTimeout;
     }
 
     /*
@@ -59,7 +59,7 @@ extern "C" {
         if (readIntervalTimeout < 0) {
             throw_IllegalArgumentException(env, "readIntervalTimeout must not < 0");
         }
-        (UNWRAP_COMMTIMEOUTS(this))->ReadIntervalTimeout = (uint32_t)readIntervalTimeout;
+        (UNWRAP_COMMTIMEOUTS(this))->ReadIntervalTimeout = (uint32_t) readIntervalTimeout;
     }
 
     /*
@@ -69,7 +69,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadTotalTimeoutMultiplier__
     (JNIEnv *env, jobject this) {
-        return (int64_t)(UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutMultiplier;
+        return (int64_t) (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutMultiplier;
     }
 
     /*
@@ -82,7 +82,7 @@ extern "C" {
         if (readTotalTimeoutMultiplier < 0) {
             throw_IllegalArgumentException(env, "readTotalTimeoutMultiplier must not < 0");
         }
-        (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutMultiplier = (uint32_t)readTotalTimeoutMultiplier;
+        (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutMultiplier = (uint32_t) readTotalTimeoutMultiplier;
     }
 
     /*
@@ -92,7 +92,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadTotalTimeoutConstant__
     (JNIEnv *env, jobject this) {
-        return (int64_t)(UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutConstant;
+        return (int64_t) (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutConstant;
     }
 
     /*
@@ -105,7 +105,7 @@ extern "C" {
         if (readTotalTimeoutConstant < 0) {
             throw_IllegalArgumentException(env, "readTotalTimeoutConstant must not < 0");
         }
-        (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutConstant = (uint32_t)readTotalTimeoutConstant;
+        (UNWRAP_COMMTIMEOUTS(this))->ReadTotalTimeoutConstant = (uint32_t) readTotalTimeoutConstant;
     }
 
     /*
@@ -115,7 +115,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_WriteTotalTimeoutMultiplier__
     (JNIEnv *env, jobject this) {
-        return (int64_t)(UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutMultiplier;
+        return (int64_t) (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutMultiplier;
     }
 
     /*
@@ -128,7 +128,7 @@ extern "C" {
         if (writeTotalTimeoutMultiplier < 0) {
             throw_IllegalArgumentException(env, "writeTotalTimeoutMultiplier must not < 0");
         }
-        (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutMultiplier = (uint32_t)writeTotalTimeoutMultiplier;
+        (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutMultiplier = (uint32_t) writeTotalTimeoutMultiplier;
     }
 
     /*
@@ -138,7 +138,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_WriteTotalTimeoutConstant__
     (JNIEnv *env, jobject this) {
-        return (int64_t)(UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutConstant;
+        return (int64_t) (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutConstant;
     }
 
     /*
@@ -151,7 +151,7 @@ extern "C" {
         if (writeTotalTimeoutConstant < 0) {
             throw_IllegalArgumentException(env, "writeTotalTimeoutConstant must not < 0");
         }
-        (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutConstant = (uint32_t)writeTotalTimeoutConstant;
+        (UNWRAP_COMMTIMEOUTS(this))->WriteTotalTimeoutConstant = (uint32_t) writeTotalTimeoutConstant;
     }
 
 #ifdef __cplusplus

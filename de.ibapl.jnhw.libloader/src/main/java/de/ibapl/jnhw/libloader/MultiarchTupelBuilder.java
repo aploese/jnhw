@@ -36,27 +36,27 @@ import java.util.Set;
 public final class MultiarchTupelBuilder {
 
     private WordSize sun_arch_data_modelAsWordsize() {
-        switch(sun_arch_data_model) {
+        switch (sun_arch_data_model) {
             case "32":
                 return WordSize._32_BIT;
-            case "64": 
+            case "64":
                 return WordSize._64_BIT;
             default:
-                    throw new RuntimeException("Unknown WordSize" + sun_arch_data_model);
+                throw new RuntimeException("Unknown WordSize" + sun_arch_data_model);
         }
     }
 
     private Endianess sun_cpu_endianAsEndianess() {
-        switch(sun_cpu_endian) {
+        switch (sun_cpu_endian) {
             case "little":
                 return Endianess.LITTLE;
-            case "big": 
+            case "big":
                 return Endianess.BIG;
             default:
-                    throw new RuntimeException("Unknown endian" + sun_cpu_endian);
+                throw new RuntimeException("Unknown endian" + sun_cpu_endian);
         }
-    } 
-    
+    }
+
     public WordSize getWordSize() {
         return cachedMultiarchinfo.getWordSize();
     }
@@ -74,7 +74,7 @@ public final class MultiarchTupelBuilder {
     public final String sun_arch_data_model;
     public final String sun_cpu_endian;
     public final String sun_cpu_isalist;
-    private final MultiarchInfo cachedMultiarchinfo; 
+    private final MultiarchInfo cachedMultiarchinfo;
     private final Set<MultiarchInfo> multiarchinfos;
 
     public MultiarchTupelBuilder() {

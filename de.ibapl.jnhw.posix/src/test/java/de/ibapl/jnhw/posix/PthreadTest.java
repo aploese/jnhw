@@ -215,7 +215,7 @@ public class PthreadTest {
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                 Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, param);
             });
-            Assertions.assertEquals(Errno.EINVAL(), nee.errno);
+            Assertions.assertEquals(Errno.EINVAL, nee.errno);
         } else {
             Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, param);
         }
@@ -338,17 +338,16 @@ public class PthreadTest {
         System.out.println("Start testPthread_t_Cancel");
         Pthread.Pthread_t me = Pthread.pthread_self();
 
-        int oldCancelstate = Pthread.pthread_setcancelstate(Pthread.PTHREAD_CANCEL_DISABLE());
+        int oldCancelstate = Pthread.pthread_setcancelstate(Pthread.PTHREAD_CANCEL_DISABLE);
         Pthread.pthread_setcancelstate(oldCancelstate);
-        Assertions.assertEquals(Pthread.PTHREAD_CANCEL_ENABLE(), oldCancelstate);
+        Assertions.assertEquals(Pthread.PTHREAD_CANCEL_ENABLE, oldCancelstate);
 
-        int oldCanceltype = Pthread.pthread_setcanceltype(Pthread.PTHREAD_CANCEL_ASYNCHRONOUS());
+        int oldCanceltype = Pthread.pthread_setcanceltype(Pthread.PTHREAD_CANCEL_ASYNCHRONOUS);
         Pthread.pthread_setcanceltype(oldCanceltype);
-        Assertions.assertEquals(Pthread.PTHREAD_CANCEL_DEFERRED(), oldCanceltype);
+        Assertions.assertEquals(Pthread.PTHREAD_CANCEL_DEFERRED, oldCanceltype);
 
-        Assertions.assertThrows(NullPointerException.class, ()->Pthread.pthread_cancel(null));
-        
-        
+        Assertions.assertThrows(NullPointerException.class, () -> Pthread.pthread_cancel(null));
+
         final ObjectRef<Pthread.Pthread_t> objectRef = new ObjectRef();
         final IntRef intRef = new IntRef(1000);
         Thread t2 = new Thread(() -> {
@@ -371,16 +370,16 @@ public class PthreadTest {
             System.err.println("LOOPING STOPPED WITHOUT CANCEL!");
         });
         t2.start();
-        
+
         //Id we remove this at least on linux x86_64 the following test will hang...?
         Thread.sleep(1);
-        
+
         if (objectRef.value == null) {
             synchronized (objectRef) {
                 objectRef.wait();
             }
         }
-        
+
         Pthread.pthread_cancel(objectRef.value);
         final int value = intRef.value;
         Thread.sleep(1000);

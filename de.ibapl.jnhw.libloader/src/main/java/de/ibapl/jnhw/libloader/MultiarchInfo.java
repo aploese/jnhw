@@ -22,8 +22,9 @@
 package de.ibapl.jnhw.libloader;
 
 /**
- * Information on the current architecture, operating system and used application binary interface.
- * 
+ * Information on the current architecture, operating system and used
+ * application binary interface.
+ *
  * @author aploese
  */
 public enum MultiarchInfo {
@@ -55,8 +56,6 @@ public enum MultiarchInfo {
         this.wordSize = wordSize;
         this.endianess = endianess;
     }
-
-
 
     private final WordSize wordSize;
     private final Endianess endianess;

@@ -19,8 +19,6 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include <unistd.h>
-
 #include "jnhw-posix.h"
 #include "de_ibapl_jnhw_posix_Time.h"
 
@@ -28,82 +26,51 @@
 extern "C" {
 #endif
 
+    //We need the POSIX version ...    
+#if !defined(HAVE_TIME_H) || !defined(_POSIX_VERSION)
+
     /*
      * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    HAVE_TIME_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Time_HAVE_1TIME_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_TIME_H) && defined(_POSIX_VERSION)
-        return JNI_TRUE;
+    }
 #else
-        return JNI_FALSE;
-#endif
-    }
-
-
-#ifdef _POSIX_VERSION
 #include <time.h>
+#include <unistd.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    CLOCKS_PER_SEC
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_CLOCKS_1PER_1SEC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CLOCKS_PER_SEC;
-    }
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_initFields
+    (JNIEnv *env, jclass clazz) {
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    CLOCK_MONOTONIC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_CLOCK_1MONOTONIC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CLOCK_MONOTONIC;
-    }
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_TIME_H", JNI_TRUE)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    CLOCK_PROCESS_CPUTIME_ID
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_CLOCK_1PROCESS_1CPUTIME_1ID
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CLOCK_PROCESS_CPUTIME_ID;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    CLOCK_REALTIME
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_CLOCK_1REALTIME
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CLOCK_REALTIME;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    CLOCK_THREAD_CPUTIME_ID
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_CLOCK_1THREAD_1CPUTIME_1ID
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CLOCK_THREAD_CPUTIME_ID;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    TIMER_ABSTIME
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_TIMER_1ABSTIME
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIMER_ABSTIME;
+        if (JnhwSetStaticIntField(env, clazz, "CLOCKS_PER_SEC", CLOCKS_PER_SEC)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "CLOCK_MONOTONIC", CLOCK_MONOTONIC)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "CLOCK_PROCESS_CPUTIME_ID", CLOCK_PROCESS_CPUTIME_ID)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "CLOCK_REALTIME", CLOCK_REALTIME)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "CLOCK_THREAD_CPUTIME_ID", CLOCK_THREAD_CPUTIME_ID)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "TIMER_ABSTIME", TIMER_ABSTIME)) {
+            return;
+        }
     }
 
 #endif

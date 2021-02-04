@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.common.annotation;
 
 import java.lang.annotation.Documented;
-import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.FIELD;
 import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
@@ -33,10 +33,9 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Retention(RUNTIME)
-@Target({METHOD})
+@Target({FIELD})
 public @interface Define {
 
 //TODO    OS os();
-
 //TODO    Arch[] arch();
 }

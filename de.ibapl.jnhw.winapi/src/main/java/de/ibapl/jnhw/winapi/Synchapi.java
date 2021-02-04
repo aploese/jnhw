@@ -44,7 +44,13 @@ public abstract class Synchapi {
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_SYNCHAPI_H = false;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-createeventw">CreateEventW</a>
@@ -72,7 +78,7 @@ public abstract class Synchapi {
      */
     public final static native HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException;
 
-    public final static native boolean HAVE_SYNCHAPI_H();
+    public final static boolean HAVE_SYNCHAPI_H;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-resetevent">ResetEvent</a>

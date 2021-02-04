@@ -22,9 +22,9 @@
 package de.ibapl.jnhw.common.references;
 
 /**
- * A int reference holder.
- * This is used to pass a pointer to int32_t or uint32_t argument in and out of functions.
- * 
+ * A int reference holder. This is used to pass a pointer to int32_t or uint32_t
+ * argument in and out of functions.
+ *
  * @author aploese
  */
 public class IntRef {

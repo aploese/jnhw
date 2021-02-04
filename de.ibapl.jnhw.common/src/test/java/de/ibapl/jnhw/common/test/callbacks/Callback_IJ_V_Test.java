@@ -27,6 +27,7 @@ import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.nativecall.CallNative_IJ_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_IJ_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
 
@@ -36,7 +37,6 @@ import org.junit.jupiter.api.Test;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.WordSize;
-import org.junit.jupiter.api.BeforeEach;
 
 /**
  *
@@ -82,7 +82,7 @@ public class Callback_IJ_V_Test {
     public Callback_IJ_V_Test() {
     }
 
-    private static native CallNative_IJ_V getCallbackPtr();
+    private static native FunctionPtr_IJ_V getCallbackPtr();
 
     private static native void setCallback(Callback_IJ_V callback);
 
@@ -297,7 +297,7 @@ public class Callback_IJ_V_Test {
 
         ref.value = -1;
 
-        getCallbackPtr().call(CB_VALUE);
+        CallNative_IJ_V.wrap(getCallbackPtr()).call(CB_VALUE);
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 assertEquals(Integer.valueOf((int) CB_VALUE), ref.value);
@@ -310,8 +310,8 @@ public class Callback_IJ_V_Test {
         }
         if (MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT) {
             ref.value = -1;
-            assertThrows(IllegalArgumentException.class, () -> getCallbackPtr().call((long)Integer.MIN_VALUE - 1L));
-            assertThrows(IllegalArgumentException.class, () -> getCallbackPtr().call(1L + Integer.MAX_VALUE));
+            assertThrows(IllegalArgumentException.class, () -> CallNative_IJ_V.wrap(getCallbackPtr()).call((long) Integer.MIN_VALUE - 1L));
+            assertThrows(IllegalArgumentException.class, () -> CallNative_IJ_V.wrap(getCallbackPtr()).call(1L + Integer.MAX_VALUE));
         }
 
         callback = null;

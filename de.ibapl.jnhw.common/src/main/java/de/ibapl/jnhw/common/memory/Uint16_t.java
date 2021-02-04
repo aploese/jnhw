@@ -35,7 +35,6 @@ import java.io.IOException;
 @uint16_t
 public class Uint16_t extends NativeIntNumber {
 
-
     /**
      * Make sure the native lib is loaded.
      */
@@ -57,7 +56,8 @@ public class Uint16_t extends NativeIntNumber {
         super(owner, offset, sizeof());
     }
 
-    public native @uint16_t short rawUint16_t();
+    public native @uint16_t
+    short rawUint16_t();
 
     public native void rawUint16_t(@uint16_t short value);
 

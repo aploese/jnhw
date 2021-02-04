@@ -30,10 +30,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author aploese
  */
 public class Uint16_tTest {
-    
+
     public Uint16_tTest() {
     }
-    
+
     /**
      * Test of sizeofUInt16_t method, of class Uint16_t.
      */
@@ -64,9 +64,9 @@ public class Uint16_tTest {
     @Test
     public void testNativeToString() {
         Uint16_t instance = new Uint16_t(true);
-        instance.rawUint16_t((short)-2);
+        instance.rawUint16_t((short) -2);
         assertEquals(String.valueOf(0x0000FFFF & -2), instance.nativeToString());
-        assertEquals(String.valueOf(Short.toUnsignedInt((short)-2)), instance.nativeToString());
+        assertEquals(String.valueOf(Short.toUnsignedInt((short) -2)), instance.nativeToString());
         assertEquals("fffe", instance.nativeToHexString());
     }
 }

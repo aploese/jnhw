@@ -35,6 +35,10 @@ public class FunctionPtr_I_V extends NativeFunctionPointer {
         super(producer);
     }
 
+    public FunctionPtr_I_V(NativeFunctionPointer src) {
+        super(src);
+    }
+
     public FunctionPtr_I_V(NativeAddressHolder src) {
         super(src);
     }
@@ -43,5 +47,4 @@ public class FunctionPtr_I_V extends NativeFunctionPointer {
         super(nativeAddress);
     }
 
-    
 }

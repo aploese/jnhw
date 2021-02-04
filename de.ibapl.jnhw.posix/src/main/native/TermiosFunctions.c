@@ -30,8 +30,8 @@ extern "C" {
 #include <termios.h>
 #include <errno.h>
 
-JNHW_ASSERT__speed_t__IS__uint32_t
-JNHW_ASSERT__pid_t__IS__int32_t
+    JNHW_ASSERT__speed_t__IS__uint32_t
+    JNHW_ASSERT__pid_t__IS__int32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios

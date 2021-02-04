@@ -28,7 +28,7 @@ extern "C" {
 
 #ifdef _POSIX_VERSION
 #include <time.h>
-//for offsetof
+    //for offsetof
 #include <stddef.h>
 #include <unistd.h>
 #include <stdint.h>
@@ -62,9 +62,9 @@ extern "C" {
     (JNIEnv *env, jobject timer) {
         char buf[128] = {0};
 #if defined(__LP64__)
-        snprintf(buf, sizeof (buf) - 1, "0x%016lx", (uintptr_t) *UNWRAP_TIMER_T_PTR(timer));
+        snprintf(buf, sizeof (buf) - 1, "0x%016lx", (uintptr_t) * UNWRAP_TIMER_T_PTR(timer));
 #else
-        snprintf(buf, sizeof (buf) - 1, "0x%08x", (uintptr_t) *UNWRAP_TIMER_T_PTR(timer));
+        snprintf(buf, sizeof (buf) - 1, "0x%08x", (uintptr_t) * UNWRAP_TIMER_T_PTR(timer));
 #endif
         return (*env)->NewStringUTF(env, buf);
     }

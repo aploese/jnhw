@@ -26,179 +26,84 @@
 extern "C" {
 #endif
 
+    //We need the POSIX version ...    
+#if !defined(HAVE_LOCALE_H) || !defined(_POSIX_VERSION)
+
     /*
      * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    HAVE_LOCALE_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Locale_HAVE_1LOCALE_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Locale_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_LOCALE_H) && defined(_POSIX_VERSION)
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-
-#if defined(_POSIX_VERSION)
+#else    
 #include <locale.h>
-
 #if defined (__APPLE__) 
 #include <xlocale.h>
 #endif
 
     /*
      * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_ALL
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1ALL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_ALL;
-    }
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Locale_initFields
+    (JNIEnv *env, jclass clazz) {
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_ALL_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1ALL_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_ALL_MASK;
-    }
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_LOCALE_H", JNI_TRUE)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_COLLATE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1COLLATE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_COLLATE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_COLLATE_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1COLLATE_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_COLLATE_MASK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_CTYPE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1CTYPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_CTYPE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_CTYPE_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1CTYPE_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_CTYPE_MASK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_GLOBAL_LOCALE
-     * Signature: ()Lde/ibapl/jnhw/posix/Locale$Locale_t;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1GLOBAL_1LOCALE
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREATE_LOCALE_T(LC_GLOBAL_LOCALE);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_MESSAGES
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1MESSAGES
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_MESSAGES;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_MESSAGES_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1MESSAGES_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_MESSAGES_MASK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_MONETARY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1MONETARY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_MONETARY;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_MONETARY_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1MONETARY_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_MONETARY_MASK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_NUMERIC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1NUMERIC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_NUMERIC;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_NUMERIC_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1NUMERIC_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_NUMERIC_MASK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_TIME
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1TIME
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_TIME;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    LC_TIME_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Locale_LC_1TIME_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_TIME_MASK;
+        if (JnhwSetStaticIntField(env, clazz, "LC_ALL", LC_ALL)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_ALL_MASK", LC_ALL_MASK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_COLLATE", LC_COLLATE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_COLLATE_MASK", LC_COLLATE_MASK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_CTYPE", LC_CTYPE)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_CTYPE_MASK", LC_CTYPE_MASK)) {
+            return;
+        }
+        if (JnhwSetStaticObjectField(env, clazz, dij_p_Locale_t_CSig, "LC_GLOBAL_LOCALE", CREATE_Locale_t(LC_GLOBAL_LOCALE))) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_MESSAGES", LC_MESSAGES)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_MESSAGES_MASK", LC_MESSAGES_MASK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_MONETARY", LC_MONETARY)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_MONETARY_MASK", LC_MONETARY_MASK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_NUMERIC", LC_NUMERIC)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_NUMERIC_MASK", LC_NUMERIC_MASK)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_TIME", LC_TIME)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "LC_TIME_MASK", LC_TIME_MASK)) {
+            return;
+        }
     }
 
 #endif
+
 #ifdef __cplusplus
 }
 #endif

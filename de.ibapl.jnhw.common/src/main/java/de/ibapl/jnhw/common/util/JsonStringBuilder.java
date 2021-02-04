@@ -25,10 +25,7 @@ import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.Struct32;
 import java.io.IOException;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.IntFunction;
-import java.util.function.Supplier;
 
 /**
  *
@@ -38,6 +35,7 @@ public class JsonStringBuilder {
 
     @FunctionalInterface
     public interface Appender {
+
         void appendTo(Appendable sb) throws IOException;
     }
 
@@ -120,12 +118,11 @@ public class JsonStringBuilder {
         return sb.toString();
     }
 
-    
     public void appendIntMember(String name, int value, IntFunction<String> valueFormatter) throws IOException {
         appendMemberName(name);
         sb.append(valueFormatter.apply(value));
     }
-    
+
     public void appendAddressMember(String name, long value) throws IOException {
         appendMemberName(name);
         sb.append(JnhwFormater.formatAddress(value));

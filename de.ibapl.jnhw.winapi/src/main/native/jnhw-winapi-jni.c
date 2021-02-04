@@ -25,11 +25,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    jclass de_ibapl_jnhw_winapi_Winnt_HANDLE_Class = NULL;
-    jfieldID de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID = NULL;
-    jmethodID de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = NULL;
-    jfieldID de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID = NULL;
-    jfieldID de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID = NULL;
+    jclass dij_w_Winnt_HANDLE__GCR = NULL;
+    jfieldID dij_w_Winnt_HANDLE_value__FID = NULL;
+    jmethodID dij_w_Winnt_HANDLE_init__MID = NULL;
+    jfieldID dij_w_Winnt_LPWSTR_bufferEnd__FID = NULL;
+    jfieldID dij_w_WinDef_LPBYTE_bufferEnd__FID = NULL;
 
     JNIEXPORT jint JNICALL
     JNI_OnLoad(JavaVM *jvm, __attribute__ ((unused)) void *reserved) {
@@ -38,37 +38,37 @@ extern "C" {
             return JNI_ERR;
         }
 
-        if (de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID == NULL) {
-            de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID = getFieldId(env, JNHW_CLASS_NAME_LPWSTR, "bufferEnd", "I");
-            if (de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID == NULL) {
+        if (dij_w_Winnt_LPWSTR_bufferEnd__FID == NULL) {
+            dij_w_Winnt_LPWSTR_bufferEnd__FID = getFieldId(env, dij_w_LPWSTR__CName, "bufferEnd", "I");
+            if (dij_w_Winnt_LPWSTR_bufferEnd__FID == NULL) {
                 return JNI_ERR;
             }
         }
 
-        if (de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID == NULL) {
-            de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID = getFieldId(env, JNHW_CLASS_NAME_LPBYTE, "bufferEnd", "I");
-            if (de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID == NULL) {
+        if (dij_w_WinDef_LPBYTE_bufferEnd__FID == NULL) {
+            dij_w_WinDef_LPBYTE_bufferEnd__FID = getFieldId(env, dij_w_LPBYTE__CName, "bufferEnd", "I");
+            if (dij_w_WinDef_LPBYTE_bufferEnd__FID == NULL) {
                 return JNI_ERR;
             }
         }
 
-        if (de_ibapl_jnhw_winapi_Winnt_HANDLE_Class == NULL) {
-            de_ibapl_jnhw_winapi_Winnt_HANDLE_Class = getGlobalClassRef(env, JNHW_CLASS_NAME_HANDLE);
-            if (de_ibapl_jnhw_winapi_Winnt_HANDLE_Class == NULL) {
+        if (dij_w_Winnt_HANDLE__GCR == NULL) {
+            dij_w_Winnt_HANDLE__GCR = getGlobalClassRef(env, dij_w_HANDLE__CName);
+            if (dij_w_Winnt_HANDLE__GCR == NULL) {
                 return JNI_ERR;
             }
         }
 
-        if (de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID == NULL) {
-            de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID = getFieldIdOfClassRef(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, "value", "J");
-            if (de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID == NULL) {
+        if (dij_w_Winnt_HANDLE_value__FID == NULL) {
+            dij_w_Winnt_HANDLE_value__FID = (*env)->GetFieldID(env, dij_w_Winnt_HANDLE__GCR, "value", "J");
+            if (dij_w_Winnt_HANDLE_value__FID == NULL) {
                 return JNI_ERR;
             }
         }
 
-        if (de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID == NULL) {
-            de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = getMethodIdOfClassRef(env, de_ibapl_jnhw_winapi_Winnt_HANDLE_Class, "<init>", "(J)V");
-            if (de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID == NULL) {
+        if (dij_w_Winnt_HANDLE_init__MID == NULL) {
+            dij_w_Winnt_HANDLE_init__MID = (*env)->GetMethodID(env, dij_w_Winnt_HANDLE__GCR, "<init>", "(J)V");
+            if (dij_w_Winnt_HANDLE_init__MID == NULL) {
                 return JNI_ERR;
             }
         }
@@ -81,11 +81,11 @@ extern "C" {
         JNIEnv *env;
 
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
-            deleteGlobalRef(env, &de_ibapl_jnhw_winapi_Winnt_HANDLE_Class);
-            de_ibapl_jnhw_winapi_Winnt_HANDLE_value_ID = NULL;
-            de_ibapl_jnhw_winapi_Winnt_HANDLE_init_ID = NULL;
-            de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID = NULL;
-            de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID = NULL;
+            deleteGlobalRef(env, &dij_w_Winnt_HANDLE__GCR);
+            dij_w_Winnt_HANDLE_value__FID = NULL;
+            dij_w_Winnt_HANDLE_init__MID = NULL;
+            dij_w_Winnt_LPWSTR_bufferEnd__FID = NULL;
+            dij_w_WinDef_LPBYTE_bufferEnd__FID = NULL;
         }
     }
 

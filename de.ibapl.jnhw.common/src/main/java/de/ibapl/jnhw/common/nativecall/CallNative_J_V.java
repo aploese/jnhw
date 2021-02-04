@@ -23,10 +23,12 @@ package de.ibapl.jnhw.common.nativecall;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 
 /**
  * Call a native function pointer.
+ *
  * @author aploese
  */
 public class CallNative_J_V extends FunctionPtr_I_V {
@@ -34,22 +36,36 @@ public class CallNative_J_V extends FunctionPtr_I_V {
     static {
         LibJnhwCommonLoader.touch();
     }
-    
+
+    public static CallNative_J_V wrap(NativeFunctionPointer src) {
+        return new CallNative_J_V(src);
+    }
+
+    public static CallNative_J_V wrap(NativeAddressHolder src) {
+        return new CallNative_J_V(src);
+    }
+
     /**
      * Called from native code...
-     * @param nativeAddress 
+     *
+     * @param nativeAddress
      */
-    private CallNative_J_V(long nativeAddress) {
+    protected CallNative_J_V(long nativeAddress) {
         super(nativeAddress);
     }
-    
-    public CallNative_J_V(NativeAddressHolder nativeAddressHolder) {
-        super(nativeAddressHolder);
+
+    public CallNative_J_V(NativeFunctionPointer src) {
+        super(src);
     }
-    
+
+    public CallNative_J_V(NativeAddressHolder src) {
+        super(src);
+    }
+
     /**
-     * call the native function. 
-     * @param value 
+     * call the native function.
+     *
+     * @param value
      */
     public native void call(long value);
 }

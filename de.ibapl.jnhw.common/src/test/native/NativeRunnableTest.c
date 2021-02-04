@@ -37,7 +37,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_getCallbackPtr
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return CREATE_NATIVE_FUNCTION_POINTER(callbackPtr);
+        return CREATE_NativeFunctionPointer(callbackPtr);
     }
 
     /*
@@ -47,7 +47,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_setCallback
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
-        callbackPtr = UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(void*), callback);
+        callbackPtr = UNWRAP_NativeFunctionPointer_TO(void (*)(void*), callback);
     }
 
     /*
@@ -74,7 +74,7 @@ extern "C" {
         //TODO attachCurrentThread?
     }
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
      * Method:    doCallTheWrongCallbackPtr
      * Signature: ()V

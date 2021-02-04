@@ -29,13 +29,13 @@ package de.ibapl.jnhw.common.exception;
 public class NoSuchNativeMethodException extends Exception {
 
     private static final long serialVersionUID = 1L;
-    
+
     public NoSuchNativeMethodException() {
-        
+
     }
-    
+
     public NoSuchNativeMethodException(String methodName) {
         super(String.format("No such method %s", methodName));
     }
-    
+
 }

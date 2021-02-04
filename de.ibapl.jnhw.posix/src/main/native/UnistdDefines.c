@@ -19,140 +19,83 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+#include "jnhw-posix.h"
+#include "de_ibapl_jnhw_posix_Unistd.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_Unistd.h"
+    //We need the POSIX version ...    
+#if !defined(HAVE_UNISTD_H) || !defined(_POSIX_VERSION)
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    HAVE_UNISTD_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Unistd_HAVE_1UNISTD_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_UNISTD_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-#if HAVE_UNISTD_H
+#else
 #include <unistd.h>
-#endif
-
-#ifdef _POSIX_VERSION
-
 #include <stdio.h>
 #include <errno.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    SEEK_SET
-     * Signature: ()I
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_SEEK_1SET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_SET;
-    }
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_initFields
+    (JNIEnv *env, jclass clazz) {
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    SEEK_CUR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_SEEK_1CUR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_CUR;
-    }
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_UNISTD_H", JNI_TRUE)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    SEEK_END
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_SEEK_1END
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_END;
-    }
+        if (JnhwSetStaticIntField(env, clazz, "SEEK_SET", SEEK_SET)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "SEEK_CUR", SEEK_CUR)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "SEEK_END", SEEK_END)) {
+            return;
+        }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    SEEK_DATA
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_SEEK_1DATA
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(SEEK_DATA)
 #error "SEEK_DATA defined"
 #endif
-        throw_NotDefinedException(env, "SEEK_DATA");
-        return 0;
 #else
-        return SEEK_DATA;
+        if (JnhwSetStaticIntDefineField(env, clazz, "SEEK_DATA", SEEK_DATA)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    SEEK_HOLE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_SEEK_1HOLE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(SEEK_HOLE)
 #error "SEEK_HOLE defined"
 #endif
-        throw_NotDefinedException(env, "SEEK_HOLE");
-        return 0;
 #else
-        return SEEK_HOLE;
+        if (JnhwSetStaticIntDefineField(env, clazz, "SEEK_HOLE", SEEK_HOLE)) {
+            return;
+        }
 #endif
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    STDIN_FILENO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_STDIN_1FILENO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return STDIN_FILENO;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    STDOUT_FILENO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_STDOUT_1FILENO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return STDOUT_FILENO;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    STDERR_FILENO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_STDERR_1FILENO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return STDERR_FILENO;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    _POSIX_VERSION
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd__1POSIX_1VERSION
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return _POSIX_VERSION;
+        if (JnhwSetStaticIntField(env, clazz, "STDIN_FILENO", STDIN_FILENO)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "STDOUT_FILENO", STDOUT_FILENO)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "STDERR_FILENO", STDERR_FILENO)) {
+            return;
+        }
+        if (JnhwSetStaticIntField(env, clazz, "_POSIX_VERSION", _POSIX_VERSION)) {
+            return;
+        }
     }
 
 

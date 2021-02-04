@@ -35,17 +35,16 @@ import java.io.IOException;
 @int16_t
 public class Int16_t extends NativeIntNumber {
 
-
     /**
      * Make sure the native lib is loaded.
      */
     static {
         LibJnhwCommonLoader.touch();
     }
-    
+
     @SizeOf
     public static native int sizeof();
-    
+
     @AlignOf
     public static native int alignof();
 
@@ -57,12 +56,13 @@ public class Int16_t extends NativeIntNumber {
         super(owner, offset, sizeof());
     }
 
-    public native @int16_t short rawInt16_t();
+    public native @int16_t
+    short rawInt16_t();
 
     public native void rawInt16_t(@int16_t short value);
-    
+
     @Override
-    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException{
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
         sb.append(nativeToString());
     }
 

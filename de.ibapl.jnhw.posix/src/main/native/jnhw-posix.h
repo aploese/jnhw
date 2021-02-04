@@ -34,29 +34,29 @@
 #endif
 
 #if  defined(__linux__)
-  #define _GNU_SOURCE
+#define _GNU_SOURCE
 
 #elif defined(__FreeBSD__)
-  #define _POSIX_C_SOURCE 200809
-  #define _XOPEN_SOURCE 700
-  #define _XOPEN_SOURCE_EXTENDED 1
-  //force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
-  #define __BSD_VISIBLE 1
-  #define __EXT1_VISIBLE 1
-  //no
+#define _POSIX_C_SOURCE 200809
+#define _XOPEN_SOURCE 700
+#define _XOPEN_SOURCE_EXTENDED 1
+//force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
+#define __BSD_VISIBLE 1
+#define __EXT1_VISIBLE 1
+//no
 
 #elif defined(__OpenBSD__)
-  #define _POSIX_C_SOURCE 200809
-  #define _XOPEN_SOURCE 700
-  #define _XOPEN_SOURCE_EXTENDED 1
-  //force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
-  #define _BSD_SOURCE 1
+#define _POSIX_C_SOURCE 200809
+#define _XOPEN_SOURCE 700
+#define _XOPEN_SOURCE_EXTENDED 1
+//force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
+#define _BSD_SOURCE 1
 
 #elif defined(__APPLE__)
-  #define _POSIX_C_SOURCE 200809
-  #define _XOPEN_SOURCE 700
-  #define _XOPEN_SOURCE_EXTENDED 1
-  #define _DARWIN_C_SOURCE 1
+#define _POSIX_C_SOURCE 200809
+#define _XOPEN_SOURCE 700
+#define _XOPEN_SOURCE_EXTENDED 1
+#define _DARWIN_C_SOURCE 1
 #endif
 
 
@@ -77,86 +77,86 @@
 #include "jnhw-posix-datatypes.h"
 
 #if defined(_JNHW__clock_t__IS__int32_t)
-  #if defined(__linux__)
+#if defined(__linux__)
 //error if we use JNHW_FORMAT_STRING_int32_t, we will get: format ‘%d’ expects argument of type ‘int’, but argument 4 has type ‘clock_t’ {aka ‘long int’}
-    #define JNHW_FORMAT_STRING_clock_t "%ld"
-  #else
-    #define JNHW_FORMAT_STRING_clock_t JNHW_FORMAT_STRING_int32_t
-  #endif
+#define JNHW_FORMAT_STRING_clock_t "%ld"
+#else
+#define JNHW_FORMAT_STRING_clock_t JNHW_FORMAT_STRING_int32_t
+#endif
 #elif defined(_JNHW__clock_t__IS__int64_t)
-   #define JNHW_FORMAT_STRING_clock_t JNHW_FORMAT_STRING_int64_t
+#define JNHW_FORMAT_STRING_clock_t JNHW_FORMAT_STRING_int64_t
 #else
 #error expected clock_t is int32_t or int64_t
 #endif
 
 #if defined(_JNHW__mode_t__IS__uint16_t)
-   #define JNHW_FORMAT_STRING_mode_t JNHW_FORMAT_STRING_uint16_t
+#define JNHW_FORMAT_STRING_mode_t JNHW_FORMAT_STRING_uint16_t
 #elif defined(_JNHW__mode_t__IS__uint32_t)
-   #define JNHW_FORMAT_STRING_mode_t JNHW_FORMAT_STRING_uint32_t
+#define JNHW_FORMAT_STRING_mode_t JNHW_FORMAT_STRING_uint32_t
 #else
 #error expected mode_t is uint16_t or uint32_t
 #endif
 
 #if defined(_JNHW__off_t__IS__int32_t)
-  #if defined(__linux__)
+#if defined(__linux__)
 //error if we use JNHW_FORMAT_STRING_int32_t, we will get: format ‘%d’ expects argument of type ‘int’, but argument 4 has type ‘off_t’ {aka ‘long int’}
-    #define JNHW_FORMAT_STRING_off_t "%ld"
-  #else
-    #define JNHW_FORMAT_STRING_off_t JNHW_FORMAT_STRING_int32_t
-  #endif
+#define JNHW_FORMAT_STRING_off_t "%ld"
+#else
+#define JNHW_FORMAT_STRING_off_t JNHW_FORMAT_STRING_int32_t
+#endif
 #elif defined(_JNHW__off_t__IS__int64_t)
-   #define JNHW_FORMAT_STRING_off_t JNHW_FORMAT_STRING_int64_t
+#define JNHW_FORMAT_STRING_off_t JNHW_FORMAT_STRING_int64_t
 #else
 #error expected off_t is int32_t or int64_t
 #endif
 
 #if defined(_JNHW__pid_t__IS__int32_t)
-  #define JNHW_FORMAT_STRING_pid_t JNHW_FORMAT_STRING_int32_t
+#define JNHW_FORMAT_STRING_pid_t JNHW_FORMAT_STRING_int32_t
 #else
 #error expected pid_t is int32_t
 #endif
 
 #if defined(_JNHW__size_t__IS__uint32_t)
-   #define JNHW_FORMAT_STRING_size_t JNHW_FORMAT_STRING_uint32_t
+#define JNHW_FORMAT_STRING_size_t JNHW_FORMAT_STRING_uint32_t
 #elif defined(_JNHW__size_t__IS__uint64_t)
-  #if defined(__OpenBSD__)
+#if defined(__OpenBSD__)
 //error if we use JNHW_FORMAT_STRING_uint64_t, we will get: format specifies type 'unsigned long long' but the argument has type 'size_t' (aka 'unsigned long')
-    #define JNHW_FORMAT_STRING_size_t "%lu"
-  #else
-    #define JNHW_FORMAT_STRING_size_t JNHW_FORMAT_STRING_uint64_t
-  #endif
+#define JNHW_FORMAT_STRING_size_t "%lu"
+#else
+#define JNHW_FORMAT_STRING_size_t JNHW_FORMAT_STRING_uint64_t
+#endif
 #else
 #error expected size_t is uint32_t or uint64_t
 #endif
 
 #if defined(_JNHW__ssize_t__IS__int32_t)
-   #define JNHW_FORMAT_STRING_ssize_t JNHW_FORMAT_STRING_int32_t
+#define JNHW_FORMAT_STRING_ssize_t JNHW_FORMAT_STRING_int32_t
 #elif defined(_JNHW__ssize_t__IS__int64_t)
-  #if defined(__OpenBSD__)
+#if defined(__OpenBSD__)
 //error if we use JNHW_FORMAT_STRING_uint64_t, we will get: format specifies type 'long long' but the argument has type 'ssize_t' (aka 'long')
-    #define JNHW_FORMAT_STRING_ssize_t "%ld"
-  #else
-    #define JNHW_FORMAT_STRING_ssize_t JNHW_FORMAT_STRING_int64_t
-  #endif
+#define JNHW_FORMAT_STRING_ssize_t "%ld"
+#else
+#define JNHW_FORMAT_STRING_ssize_t JNHW_FORMAT_STRING_int64_t
+#endif
 #else
 #error expected ssize_t is int32_t or int64_t
 #endif
 
 #if defined(_JNHW__time_t__IS__int32_t)
-  #if defined(__linux__)
+#if defined(__linux__)
 //error if we use JNHW_FORMAT_STRING_int32_t, we will get: format ‘%d’ expects argument of type ‘int’, but argument 4 has type ‘time_t’ {aka ‘long int’}
-    #define JNHW_FORMAT_STRING_time_t "%ld"
-  #else
-    #define JNHW_FORMAT_STRING_time_t JNHW_FORMAT_STRING_int32_t
-  #endif
+#define JNHW_FORMAT_STRING_time_t "%ld"
+#else
+#define JNHW_FORMAT_STRING_time_t JNHW_FORMAT_STRING_int32_t
+#endif
 #elif defined(_JNHW__time_t__IS__int64_t)
-   #define JNHW_FORMAT_STRING_time_t JNHW_FORMAT_STRING_int64_t
+#define JNHW_FORMAT_STRING_time_t JNHW_FORMAT_STRING_int64_t
 #else
 #error expected time_t is int32_t or int64_t
 #endif
 
 #if defined(_JNHW__uid_t__IS__uint32_t)
-  #define JNHW_FORMAT_STRING_uid_t JNHW_FORMAT_STRING_uint32_t
+#define JNHW_FORMAT_STRING_uid_t JNHW_FORMAT_STRING_uint32_t
 #else
 #error expected uid_t is uint32_t
 #endif
@@ -166,18 +166,20 @@
 extern "C" {
 #endif
 
-#define JNHW_CLASS_NAME_LOCALE_T "de/ibapl/jnhw/posix/Locale$Locale_t"
-#define JNHW_CLASS_NAME_TIME_TM "de/ibapl/jnhw/posix/Time$Tm"
+#define dij_p_Locale_t_CName "de/ibapl/jnhw/posix/Locale$Locale_t"
+#define dij_p_Locale_t_CSig CLASS_NAME_TO_SIGNATURE(dij_p_Locale_t_CName)
 
-    extern jclass de_ibapl_jnhw_posix_Locale_Locale_t_Class;
-    extern jfieldID de_ibapl_jnhw_posix_Locale_Locale_t_nativeValue_ID;
-    extern jmethodID de_ibapl_jnhw_posix_Locale_Locale_t_init_ID;
+#define dij_p_Time_Tm_CName "de/ibapl/jnhw/posix/Time$Tm"
 
-    extern jclass de_ibapl_jnhw_posix_Time_Tm_Class;
-    extern jmethodID de_ibapl_jnhw_posix_Time_Tm_init_ID;
+    extern jclass dij_p_Locale_Locale_t__GCR;
+    extern jfieldID dij_p_Locale_Locale_t_nativeValue__FID;
+    extern jmethodID dij_p_Locale_Locale_t_init__MID;
 
-#define UNWRAP_LOCALE_T(Locale_tObject) (locale_t)(uintptr_t)(*env)->GetLongField(env, Locale_tObject, de_ibapl_jnhw_posix_Locale_Locale_t_nativeValue_ID)   
-#define CREATE_LOCALE_T(value) (*env)->NewObject(env, de_ibapl_jnhw_posix_Locale_Locale_t_Class, de_ibapl_jnhw_posix_Locale_Locale_t_init_ID, (jlong)((uintptr_t)value))
+    extern jclass dij_p_Time_Tm__GCR;
+    extern jmethodID dij_p_Time_Tm_init__MID;
+
+#define UNWRAP_LOCALE_T(Locale_tObject) (locale_t)(uintptr_t)(*env)->GetLongField(env, Locale_tObject, dij_p_Locale_Locale_t_nativeValue__FID)   
+#define CREATE_Locale_t(value) (*env)->NewObject(env, dij_p_Locale_Locale_t__GCR, dij_p_Locale_Locale_t_init__MID, (jlong)((uintptr_t)value))
 
 #define UNWRAP_STRUCT_TERMIOS_PTR(structTermios) UNWRAP_ABSTRACT_MEM_TO(struct termios*, structTermios)
 
@@ -191,7 +193,7 @@ extern "C" {
 #define UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(structTimespec) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(struct timespec*, structTimespec)
 
 #define UNWRAP_STRUCT_TM_PTR(structTm) UNWRAP_ABSTRACT_MEM_TO(struct tm*, structTm)
-#define WRAP_STATIC_STRUCT_TM(baseAddress) (*env)->NewObject(env, de_ibapl_jnhw_posix_Time_Tm_Class, de_ibapl_jnhw_posix_Time_Tm_init_ID, CREATE_NATIVE_ADDRESS_HOLDER(baseAddress), sizeof (struct tm))
+#define WRAP_STATIC_STRUCT_TM(baseAddress) (*env)->NewObject(env, dij_p_Time_Tm__GCR, dij_p_Time_Tm_init__MID, CREATE_NativeAddressHolder(baseAddress), sizeof (struct tm))
 
 #define UNWRAP_STRUCT_SIGACTION_PTR(structSigaction) UNWRAP_ABSTRACT_MEM_TO(struct sigaction*, structSigaction)
 #define UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(structSigaction) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(struct sigaction*, structSigaction)
@@ -201,9 +203,9 @@ extern "C" {
 
 #define UNWRAP_SIGINFO_T_PTR(structSiginfo_t) UNWRAP_ABSTRACT_MEM_TO(siginfo_t*, structSiginfo_t)
 #define UNWRAP_SIGINFO_T_PTR_OR_NULL(structSiginfo_t) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(siginfo_t*, structSiginfo_t)
-    
+
 #define UNWRAP_UNION_SIGVAL_PTR(unionSigval) UNWRAP_ABSTRACT_MEM_TO(union sigval*, unionSigval)
-    
+
 #define UNWRAP_STACK_T_PTR(structStack_t) UNWRAP_ABSTRACT_MEM_TO(stack_t*, structStack_t)
 #define UNWRAP_STACK_T_PTR_OR_NULL(structStack_t) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(stack_t*, structStack_t)
 #if defined (__FreeBSD__)
@@ -222,7 +224,7 @@ extern "C" {
 #define UNWRAP_SIGSET_T_PTR_OR_NULL(sigset) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(sigset_t*, sigset)
 
 #define UNWRAP_PTHREAD_T_PTR(pthread)UNWRAP_ABSTRACT_MEM_TO(pthread_t*, pthread)
-    
+
 #define UNWRAP_PTHREAD_ATTR_T_PTR(pthread_attr)UNWRAP_ABSTRACT_MEM_TO(pthread_attr_t*, pthread_attr)
 #define UNWRAP_PTHREAD_ATTR_T_PTR_OR_NULL(pthread_attr)UNWRAP_ABSTRACT_MEM_TO_OR_NULL(pthread_attr_t*, pthread_attr)
 
@@ -234,12 +236,11 @@ extern "C" {
 #define UNWRAP_STRUCT_SCHED_PARAM_PTR(value)UNWRAP_ABSTRACT_MEM_TO(struct sched_param*, value)
 
 #define LENGTH_OF_AIOCBS(aiocbs) LENGTH_OF_POINTER_ARRAY_32(aiocbs) 
-    
 
 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-//Convert a jlong to (long int *) the pointer must be shifted by sizeof(long int) 
+    //Convert a jlong to (long int *) the pointer must be shifted by sizeof(long int) 
 #define __jlong2long_PTR(value) ((long int *) &value) + 1
-//Convert a jlong to (long int *)
+    //Convert a jlong to (long int *)
 #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #define __jlong2long_PTR(value) (long int *) &value
 

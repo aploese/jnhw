@@ -39,16 +39,6 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
-     * Method:    throwNotDefinedException
-     * Signature: ()V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwNotDefinedException
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        throw_NotDefinedException(env, "TEST_DEFINE");
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwNoSuchNativeMethodException
      * Signature: ()V
      */

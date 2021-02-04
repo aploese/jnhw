@@ -19,55 +19,65 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.memory;
-
-import de.ibapl.jnhw.common.util.JnhwFormater;
+package de.ibapl.jnhw.common.util;
 
 /**
  *
  * @author aploese
  */
-public final class NativeAddressHolder {
+public abstract class IntDefine {
 
-    public final static NativeAddressHolder NULL = new NativeAddressHolder(0L);
-
-    final long address;
-
-    /**
-     * Called from native code and test classes only
-     *
-     * @param address
-     */
-    public NativeAddressHolder(long address) {
-        this.address = address;
+    //Called from native code
+    private static IntDefine toIntDefine(int value) {
+        return new IntDefined(value);
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + (int) (this.address ^ (this.address >>> 32));
-        return hash;
-    }
+    public final static IntDefine UNDEFINED = new IntDefine() {
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof NativeAddressHolder)) {
+        @Override
+        public boolean isDefined() {
             return false;
         }
-        final NativeAddressHolder other = (NativeAddressHolder) obj;
-        return this.address == other.address;
+
+        @Override
+        public int get() {
+            throw new RuntimeException("NOT Defined");
+        }
+
+        @Override
+        public boolean isEqualsTo(int value) {
+            return false;
+        }
+    };
+
+    final static class IntDefined extends IntDefine {
+
+        private final int value;
+
+        private IntDefined(int value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean isDefined() {
+            return true;
+        }
+
+        @Override
+        public int get() {
+            return value;
+        }
+
+        @Override
+        public boolean isEqualsTo(int value) {
+            return this.value == value;
+        }
     }
 
-    public boolean isNULL() {
-        return address == 0L;
-    }
+    public abstract boolean isDefined();
 
-    @Override
-    public String toString() {
-        return "{address : " + JnhwFormater.formatAddress(address) + "}";
-    }
+    public abstract int get();
+
+    public abstract boolean isEqualsTo(int value);
 
 }

@@ -19,38 +19,55 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.test;
-
-import de.ibapl.jnhw.common.exception.NotDefinedException;
-import de.ibapl.jnhw.common.util.Defined;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
+package de.ibapl.jnhw.common.util;
 
 /**
  *
  * @author aploese
  */
-public class DefinedTest {
-    
-    public DefinedTest() {
+public abstract class ObjectDefine<T> {
+
+    //Called from native code
+    private static ObjectDefine toObjectDefine(Object value) {
+        return new ObjectDefined(value);
     }
-    
-    static int Defined() throws NotDefinedException {
-        return 1;
+
+    public final static ObjectDefine UNDEFINED = new ObjectDefine() {
+
+        @Override
+        public boolean isDefined() {
+            return false;
+        }
+
+        @Override
+        public Object get() {
+            throw new RuntimeException("NOT Defined");
+        }
+
+    };
+
+    final static class ObjectDefined<T> extends ObjectDefine<T> {
+
+        private final T value;
+
+        private ObjectDefined(T value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean isDefined() {
+            return true;
+        }
+
+        @Override
+        public T get() {
+            return value;
+        }
+
     }
-    
-    static int NotDefined() throws NotDefinedException {
-        throw new NotDefinedException("Not defined");
-    }
-    
-    /**
-     * Test of defined method, of class Defined.
-     */
-    @Test
-    public void testDefined() {
-        System.out.println("defined");
-        assertTrue(Defined.defined(DefinedTest::Defined));
-        assertFalse(Defined.defined(DefinedTest::NotDefined));
-    }
-    
+
+    public abstract boolean isDefined();
+
+    public abstract T get();
+
 }

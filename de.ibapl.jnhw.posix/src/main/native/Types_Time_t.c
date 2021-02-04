@@ -29,7 +29,7 @@ extern "C" {
 #ifdef _POSIX_VERSION    
 #include <sys/types.h>
 
-JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
+    JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_sys_Types_Time_t
@@ -58,7 +58,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_Types_00024Time_1t_unsigned
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (0 < (time_t)-1);
+        return (0 < (time_t) - 1);
     }
 
     /*
@@ -87,7 +87,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
 #else
 #error expected time_t is int32_t or int64_t
 #endif 
-        *UNWRAP_ABSTRACT_MEM_TO(time_t*, jnhw_time_t) = (time_t)value;
+        *UNWRAP_ABSTRACT_MEM_TO(time_t*, jnhw_time_t) = (time_t) value;
     }
 
     /*

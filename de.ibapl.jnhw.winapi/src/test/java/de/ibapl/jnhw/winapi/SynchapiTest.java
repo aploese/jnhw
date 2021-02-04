@@ -35,7 +35,7 @@ public class SynchapiTest {
         final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
             long result = Synchapi.WaitForSingleObject(hEvent, 100);
-            Assertions.assertEquals(Winbase.WAIT_TIMEOUT(), result);
+            Assertions.assertEquals(Winbase.WAIT_TIMEOUT, result);
             return null;
         });
         Handleapi.CloseHandle(hEvent);
@@ -46,12 +46,12 @@ public class SynchapiTest {
         final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
             long result = Synchapi.WaitForSingleObjectEx(hEvent, 100, false);
-            Assertions.assertEquals(Winbase.WAIT_TIMEOUT(), result);
+            Assertions.assertEquals(Winbase.WAIT_TIMEOUT, result);
             return null;
         });
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
             long result = Synchapi.WaitForSingleObjectEx(hEvent, 100, true);
-            Assertions.assertEquals(Winbase.WAIT_TIMEOUT(), result);
+            Assertions.assertEquals(Winbase.WAIT_TIMEOUT, result);
             return null;
         });
         Handleapi.CloseHandle(hEvent);
@@ -71,7 +71,7 @@ public class SynchapiTest {
 
             }).start();
             long result = Synchapi.WaitForSingleObject(hEvent, 1000);
-            Assertions.assertEquals(Winbase.WAIT_OBJECT_0(), result);
+            Assertions.assertEquals(Winbase.WAIT_OBJECT_0, result);
             return null;
         });
         Handleapi.CloseHandle(hEvent);
@@ -95,7 +95,7 @@ public class SynchapiTest {
 
             }).start();
             long result = Synchapi.WaitForMultipleObjects(handles, false, 1000);
-            Assertions.assertEquals(Winbase.WAIT_OBJECT_0() +1, result);
+            Assertions.assertEquals(Winbase.WAIT_OBJECT_0 + 1, result);
             return result;
         });
         Handleapi.CloseHandle(hEvent1);
@@ -112,7 +112,7 @@ public class SynchapiTest {
 
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
             long result = Synchapi.WaitForMultipleObjects(handles, false, 100);
-            Assertions.assertEquals(Winbase.WAIT_TIMEOUT(), result);
+            Assertions.assertEquals(Winbase.WAIT_TIMEOUT, result);
             return result;
         });
         Handleapi.CloseHandle(hEvent1);
@@ -123,7 +123,9 @@ public class SynchapiTest {
     public void testSleepEx() throws Exception {
         Synchapi.SleepEx(10, false);
         Synchapi.SleepEx(10, true);
-        Assertions.assertThrows(IllegalArgumentException.class, ()-> {Synchapi.SleepEx(-10, true);});
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Synchapi.SleepEx(-10, true);
+        });
     }
 
 }

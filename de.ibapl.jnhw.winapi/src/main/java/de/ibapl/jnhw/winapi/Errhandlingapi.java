@@ -39,7 +39,13 @@ public abstract class Errhandlingapi {
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_ERRHANDLINGAPI_H = false;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror">GetLastError</a>
@@ -58,7 +64,7 @@ public abstract class Errhandlingapi {
      * others do not.
      */
     public final static native int GetLastError();
-    
+
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-setlasterror">GetLastError</a>
      * Sets the last-error code for the calling thread.
@@ -66,6 +72,6 @@ public abstract class Errhandlingapi {
      */
     public final static native void SetLastError(int dwErrCode);
 
-    public final static native boolean HAVE_ERRHANDLINGAPI_H();
+    public final static boolean HAVE_ERRHANDLINGAPI_H;
 
 }

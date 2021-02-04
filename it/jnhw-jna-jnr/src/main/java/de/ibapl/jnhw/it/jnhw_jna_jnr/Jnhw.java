@@ -32,7 +32,7 @@ import de.ibapl.jnhw.posix.Time;
 public class Jnhw {
 
     public static void runFullTest_HeapAllocated(final int count) throws NativeErrorException {
-        final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC();
+        final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
         final Memory32Heap heap = new Memory32Heap(Time.Timespec.sizeof(), false);
         for (int i = 0; i < count; i++) {
             final Time.Timespec timespec = new Time.Timespec(heap, 0);
@@ -44,7 +44,7 @@ public class Jnhw {
     }
 
     public static void runFullTest_DirectAllocation(final int count) throws NativeErrorException {
-        final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC();
+        final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
         for (int i = 0; i < count; i++) {
             final Time.Timespec timespec = new Time.Timespec();
             Time.clock_gettime(CLOCK_MONOTONIC, timespec);
@@ -55,10 +55,11 @@ public class Jnhw {
     }
 
     static volatile Time.Timespec ts;
-    
+
     /**
      * allocate memory in advance.
-     * @param count 
+     *
+     * @param count
      */
     public static void mem_HeapAllocated(final int count) {
         final Memory32Heap heap = new Memory32Heap(Time.Timespec.sizeof(), false);
@@ -74,7 +75,7 @@ public class Jnhw {
     }
 
     public static void clock_gettime(final int count) throws NativeErrorException {
-        final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC();
+        final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
         final Time.Timespec timespec = new Time.Timespec();
         for (int i = 0; i < count; i++) {
             Time.clock_gettime(CLOCK_MONOTONIC, timespec);

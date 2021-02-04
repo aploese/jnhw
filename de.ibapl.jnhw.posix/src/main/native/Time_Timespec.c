@@ -73,7 +73,7 @@ extern "C" {
             throw_IndexOutOfBoundsException(env, "In this native implementation tv_sec is only an integer with the size of jint");
             return;
         }
-        (UNWRAP_STRUCT_TIMESPEC_PTR(structTimespec))->tv_sec = (int32_t)tv_sec;
+        (UNWRAP_STRUCT_TIMESPEC_PTR(structTimespec))->tv_sec = (int32_t) tv_sec;
 #endif
     }
 
@@ -101,7 +101,7 @@ extern "C" {
             throw_IndexOutOfBoundsException(env, "In this native implementation tv_nsec is only an integer with the size of jint");
             return;
         }
-        (UNWRAP_STRUCT_TIMESPEC_PTR(structTimespec))->tv_nsec = (int32_t)tv_nsec;
+        (UNWRAP_STRUCT_TIMESPEC_PTR(structTimespec))->tv_nsec = (int32_t) tv_nsec;
 #endif
     }
 

@@ -32,7 +32,6 @@ extern "C" {
 #include <string.h>
 #include <errno.h>
 
-
     /*
      * Class:     de_ibapl_jnhw_posix_StringHeader
      * Method:    strerror

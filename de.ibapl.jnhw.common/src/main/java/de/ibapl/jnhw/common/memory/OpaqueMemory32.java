@@ -260,8 +260,8 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
         try {
             printMemory(sb, mem, printAddress);
         } catch (IOException ioe) {
-            throw  new RuntimeException(ioe);
-        } 
+            throw new RuntimeException(ioe);
+        }
         return sb.toString();
     }
 
@@ -284,7 +284,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
             if (printAddress) {
                 sb.append(JnhwFormater.formatAddress(mem.baseAddress + BLOCK_SIZE * i)).append(": ");
             }
-            
+
             for (int j = 0; j < BLOCK_SIZE; j++) {
                 switch (j) {
                     case 4:

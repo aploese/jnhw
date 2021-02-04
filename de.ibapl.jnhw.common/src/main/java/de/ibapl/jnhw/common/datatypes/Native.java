@@ -32,9 +32,9 @@ public interface Native {
     BaseDataTypes getBaseDataType();
 
     void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException;
-    
+
     String nativeToString();
-    
+
     String nativeToHexString();
-    
+
 }

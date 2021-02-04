@@ -44,9 +44,15 @@ public class Minwinbase {
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_MINWINBASE_H = false;
+
+        initFields();
     }
 
-    public final static native boolean HAVE_MINWINBASE_H();
+    private static native void initFields();
+
+    public final static boolean HAVE_MINWINBASE_H;
 
     /**
      * <b>WIN:</b> <a href="https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-overlapped">{@code structure

@@ -30,15 +30,15 @@ public class NoSignalHandler extends SignalHandler {
     public NoSignalHandler(int signalToRaise, SignalAction signalAction) {
         super(signalToRaise, signalAction);
     }
-    
+
     @Override
     protected void doSetupHandler() {
-        System.out.println("No handler for signal " + signalToRaise + " in thread: " + Thread.currentThread() );
+        System.out.println("No handler for signal " + signalToRaise + " in thread: " + Thread.currentThread());
         signalHandled = true;
     }
 
     @Override
     protected void doRestoreHandler() {
     }
-    
+
 }

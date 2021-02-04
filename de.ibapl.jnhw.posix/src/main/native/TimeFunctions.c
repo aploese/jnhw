@@ -40,11 +40,11 @@ extern "C" {
 #include <xlocale.h>
 #endif
 
-JNHW_ASSERT__clock_t__IS__int64_t__OR__int32_t
-JNHW_ASSERT__clockid_t__IS__int32_t
-JNHW_ASSERT__pid_t__IS__int32_t
-JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
-JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
+    JNHW_ASSERT__clock_t__IS__int64_t__OR__int32_t
+    JNHW_ASSERT__clockid_t__IS__int32_t
+    JNHW_ASSERT__pid_t__IS__int32_t
+    JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
+    JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
@@ -204,7 +204,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
         if ((clock > INT32_MAX) || (clock < INT32_MIN)) {
             throw_IllegalArgumentException(env, "clock outside time_t(int32_t)");
             return NULL;
-        } 
+        }
         const char *result = ctime(__jlong2long_PTR(clock));
 #else
 #error expected time_t is int32_t or int64_t
@@ -237,7 +237,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
         if ((clock > INT32_MAX) || (clock < INT32_MIN)) {
             throw_IllegalArgumentException(env, "clock outside time_t(int32_t)");
             return NULL;
-        } 
+        }
         const char *result = ctime_r(__jlong2long_PTR(clock), UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(buf));
 #else
 #error expected time_t is int32_t or int64_t
@@ -277,16 +277,16 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
         if ((time1 > INT32_MAX) || (time1 < INT32_MIN)) {
             throw_IllegalArgumentException(env, "time1 outside time_t(int32_t)");
             return 0;
-        } 
+        }
         if ((time0 > INT32_MAX) || (time0 < INT32_MIN)) {
             throw_IllegalArgumentException(env, "time0 outside time_t(int32_t)");
             return 0;
-        } 
+        }
 #elif defined(_JNHW__time_t__IS__int64_t)
 #else
 #error expected time_t is int32_t or int64_t
 #endif
-    return difftime((time_t) time1, (time_t) time0);
+        return difftime((time_t) time1, (time_t) time0);
     }
 
     /*
@@ -331,7 +331,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "timer outside time_t(int32_t)");
             return NULL;
-        } 
+        }
         const struct tm *tm = gmtime(__jlong2long_PTR(timer));
 #else
 #error expected time_t is int32_t or int64_t
@@ -362,7 +362,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "timer outside time_t(int32_t)");
             return NULL;
-        } 
+        }
         if (gmtime_r(__jlong2long_PTR(timer), _result)) {
 #else
 #error expected time_t is int32_t or int64_t
@@ -386,7 +386,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "timer outside time_t(int32_t)");
             return NULL;
-        } 
+        }
         const struct tm *result = localtime(__jlong2long_PTR(timer));
 #else
 #error expected time_t is int32_t or int64_t
@@ -416,7 +416,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "timer outside time_t(int32_t)");
             return NULL;
-        } 
+        }
         if (localtime_r(__jlong2long_PTR(timer), _result)) {
 #else
 #error expected time_t is int32_t or int64_t
@@ -493,7 +493,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
             (*env)->ReleaseStringUTFChars(env, format, _format);
             throw_IllegalArgumentException(env, "maxsize outside size_t(int32_t)");
             return NULL;
-        } 
+        }
         char* _result = malloc((uint32_t) maxsize);
         size_t count = strftime(_result, (uint32_t) maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr));
 #else
@@ -540,7 +540,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
             (*env)->ReleaseStringUTFChars(env, format, _format);
             throw_IllegalArgumentException(env, "maxsize outside size_t(int32_t)");
             return NULL;
-        } 
+        }
         char* _result = malloc((uint32_t) maxsize);
         size_t count = strftime_l(_result, (uint32_t) maxsize, _format, UNWRAP_STRUCT_TM_PTR(timeptr), UNWRAP_LOCALE_T(locale));
 #else
@@ -603,7 +603,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
             if ((__tloc > INT32_MAX) || (__tloc < INT32_MIN)) {
                 throw_IllegalArgumentException(env, "tloc outside time_t(int32_t)");
                 return 0;
-            } 
+            }
             time_t _tloc = (long int) __tloc;
 #else
 #error expected time_t is int32_t or int64_t
@@ -673,7 +673,7 @@ JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
         throw_NoSuchNativeMethodException(env, "timer_getoverrun");
         return -1;
 #else
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid){
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject timerid) {
         if (timerid == NULL) {
             throw_NullPointerException(env, "timerid is NULL");
             return -1;

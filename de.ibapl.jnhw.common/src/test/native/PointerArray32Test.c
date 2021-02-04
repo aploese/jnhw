@@ -34,8 +34,8 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_PointerArray32Test_getCachedReferencesLength
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject pointerArray) {
-        if (de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID == NULL) {
-            throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "de_ibapl_jnhw_common_memory_PointerArray32_cachedReferences_ID is NULL!");
+        if (dijc_m_PointerArray32_cachedReferences__FID == NULL) {
+            throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "dijc_memory_PointerArray32_cachedReferences_ID is NULL!");
             return -1;
         }
         return LENGTH_OF_POINTER_ARRAY_32(pointerArray);

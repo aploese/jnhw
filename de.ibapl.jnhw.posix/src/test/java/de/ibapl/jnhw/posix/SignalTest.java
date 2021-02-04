@@ -71,7 +71,7 @@ public class SignalTest {
     public void testKill() throws Exception {
         System.out.println("kill");
 
-        final int sig = Signal.SIGCHLD(); //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
+        final int sig = Signal.SIGCHLD; //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
         final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
@@ -113,7 +113,7 @@ public class SignalTest {
     @Test
     public void testKillpg() throws Exception {
         System.out.println("killpg");
-        final int sig = Signal.SIGCHLD();
+        final int sig = Signal.SIGCHLD;
 
         final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
@@ -179,13 +179,12 @@ public class SignalTest {
     @Test
     public void testPsignal() throws Exception {
         System.out.println("psignal");
-        Signal.SIGABRT();
         System.err.print("psignal MSG >>>");
-        Signal.psignal(Signal.SIGUSR1(), "Send SIGUSR1 to std err");
+        Signal.psignal(Signal.SIGUSR1, "Send SIGUSR1 to std err");
         System.err.println("<<< psignal MSG");
         System.err.flush();
         System.out.flush();
-        Signal.psignal(Signal.SIGUSR1(), null);
+        Signal.psignal(Signal.SIGUSR1, null);
         //TODO mark as not executing as expected but do not fail??
     }
 
@@ -197,7 +196,7 @@ public class SignalTest {
         System.out.println("pthread_kill");
         System.out.println("pthread_t of testPthread_kill: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
 
-        final int sig = Signal.SIGCHLD(); //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
+        final int sig = Signal.SIGCHLD; //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
         final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
@@ -251,20 +250,20 @@ public class SignalTest {
         try {
             //make sure SIGUSR1 is in signak mask; we want to set it
             System.err.println("current sigprocmask: " + oset);
-            Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1()));
+            Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1));
             Signal.Sigset_t set = new Signal.Sigset_t();
             Signal.sigemptyset(set);
-            Signal.sigaddset(set, Signal.SIGUSR1());
-            Signal.pthread_sigmask(Signal.SIG_BLOCK(), set, null);
+            Signal.sigaddset(set, Signal.SIGUSR1);
+            Signal.pthread_sigmask(Signal.SIG_BLOCK, set, null);
             //Test that SIGUSR1 was set
             final Signal.Sigset_t changedSet = new Signal.Sigset_t();
             Signal.sigemptyset(changedSet);
             Signal.pthread_sigmask(0, null, changedSet);
             System.err.println("current sigprocmask: " + changedSet.toString());
-            Assertions.assertTrue(Signal.sigismember(changedSet, Signal.SIGUSR1()));
+            Assertions.assertTrue(Signal.sigismember(changedSet, Signal.SIGUSR1));
         } finally {
             //restore old mask
-            Signal.pthread_sigmask(Signal.SIG_SETMASK(), oset, null);
+            Signal.pthread_sigmask(Signal.SIG_SETMASK, oset, null);
         }
     }
 
@@ -274,7 +273,7 @@ public class SignalTest {
     @Test
     public void testRaise() throws Exception {
         System.out.println("raise");
-        final int sig = Signal.SIGCHLD();
+        final int sig = Signal.SIGCHLD;
 
         final ObjectRef<Integer> sigRef = new ObjectRef<>();
         final Signal.Sigaction act = new Signal.Sigaction();
@@ -305,10 +304,10 @@ public class SignalTest {
     @Test
     public void testSigaction() throws Exception {
         System.out.println("sigaction");
-        final int SIG = Signal.SIGCHLD();
+        final int SIG = Signal.SIGCHLD;
 
         final Signal.Sigaction<OpaqueMemory32> act = new Signal.Sigaction<>();
-        act.sa_flags(Signal.SA_RESTART());
+        act.sa_flags(Signal.SA_RESTART);
         Signal.sigemptyset(act.sa_mask);
 
         Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
@@ -323,10 +322,10 @@ public class SignalTest {
         try {
             Signal.sigaction(SIG, act, oact);
             Signal.sigaction(SIG, act, null);
-            if ((oact.sa_flags() & Signal.SA_SIGINFO()) == Signal.SA_SIGINFO()) {
-                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_sigaction());
+            if ((oact.sa_flags() & Signal.SA_SIGINFO) == Signal.SA_SIGINFO) {
+                Assertions.assertEquals(Signal.SIG_DFL, oact.sa_sigaction());
             } else {
-                Assertions.assertEquals(Signal.SIG_DFL(), oact.sa_handler());
+                Assertions.assertEquals(Signal.SIG_DFL, oact.sa_handler());
             }
 
             final Signal.Sigaction<OpaqueMemory32> actOut = new Signal.Sigaction<>();
@@ -345,8 +344,8 @@ public class SignalTest {
     @Test
     public void testSigaltstack() throws Exception {
         System.out.println("sigaltstack");
-        final Memory32Heap ss_sp = new Memory32Heap(Signal.MINSIGSTKSZ(), true);
-        Signal.Stack_t ss = Signal.Stack_t.of(Signal.SS_DISABLE(), ss_sp);
+        final Memory32Heap ss_sp = new Memory32Heap(Signal.MINSIGSTKSZ, true);
+        Signal.Stack_t ss = Signal.Stack_t.of(Signal.SS_DISABLE, ss_sp);
         Signal.Stack_t oss = new Signal.Stack_t();
         Signal.sigaltstack(null, oss);
         try {
@@ -367,17 +366,17 @@ public class SignalTest {
         Signal.Sigset_t set = new Signal.Sigset_t();
 
         Signal.sigemptyset(set);
-        Assertions.assertFalse(Signal.sigismember(set, Signal.SIGKILL()));
-        Assertions.assertFalse(Signal.sigismember(set, Signal.SIGUSR1()));
-        Signal.sigaddset(set, Signal.SIGUSR1());
-        Assertions.assertTrue(Signal.sigismember(set, Signal.SIGUSR1()));
-        Signal.sigdelset(set, Signal.SIGUSR1());
-        Assertions.assertFalse(Signal.sigismember(set, Signal.SIGUSR1()));
+        Assertions.assertFalse(Signal.sigismember(set, Signal.SIGKILL));
+        Assertions.assertFalse(Signal.sigismember(set, Signal.SIGUSR1));
+        Signal.sigaddset(set, Signal.SIGUSR1);
+        Assertions.assertTrue(Signal.sigismember(set, Signal.SIGUSR1));
+        Signal.sigdelset(set, Signal.SIGUSR1);
+        Assertions.assertFalse(Signal.sigismember(set, Signal.SIGUSR1));
 
         Signal.sigemptyset(set);
         Signal.sigfillset(set);
-        Assertions.assertTrue(Signal.sigismember(set, Signal.SIGKILL()));
-        Assertions.assertTrue(Signal.sigismember(set, Signal.SIGABRT()));
+        Assertions.assertTrue(Signal.sigismember(set, Signal.SIGKILL));
+        Assertions.assertTrue(Signal.sigismember(set, Signal.SIGABRT));
 
     }
 
@@ -387,7 +386,7 @@ public class SignalTest {
     @Test
     public void testSighold_sigrelse() throws Exception {
         System.out.println("sighold");
-        final int sig = Signal.SIGCHLD();
+        final int sig = Signal.SIGCHLD;
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sighold(sig));
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigrelse(sig));
@@ -410,14 +409,14 @@ public class SignalTest {
     @Test
     public void testSigignore() throws Exception {
         System.out.println("sigignore");
-        final int sig = Signal.SIGCHLD();
+        final int sig = Signal.SIGCHLD;
         final var old = Signal.signal(sig, null);
         try {
             if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigignore(sig));
             } else {
                 Signal.sigignore(sig);
-                assertEquals(Signal.SIG_IGN(), Signal.signal(sig, null));
+                assertEquals(Signal.SIG_IGN, Signal.signal(sig, null));
             }
         } finally {
             Signal.signal(sig, old);
@@ -430,7 +429,7 @@ public class SignalTest {
     @Test
     public void testSiginterrupt() throws Exception {
         System.out.println("siginterrupt");
-        int sig = Signal.SIGCHLD();
+        int sig = Signal.SIGCHLD;
         Signal.Sigaction oact = new Signal.Sigaction();
         Signal.sigaction(sig, null, oact);
         try {
@@ -447,16 +446,16 @@ public class SignalTest {
     public void testSignal() throws Exception {
         System.out.println("signal");
 
-        final int SIG = Signal.SIGCHLD();
-        final var funcIgnore = Signal.SIG_IGN();
+        final int SIG = Signal.SIGCHLD;
+        final var funcIgnore = Signal.SIG_IGN;
         final var savedOld = Signal.signal(SIG, funcIgnore);
-        if (Signal.SIG_DFL().equals(savedOld)) {
+        if (Signal.SIG_DFL.equals(savedOld)) {
             System.out.println("Old signal handler of SIG is SIG_DFL!");
-        } else if (Signal.SIG_ERR().equals(savedOld)) {
+        } else if (Signal.SIG_ERR.equals(savedOld)) {
             System.out.println("Old signal handler of SIG is SIG_ERR!");
-        } else if (Signal.SIG_HOLD().equals(savedOld)) {
+        } else if (Signal.SIG_HOLD.equals(savedOld)) {
             System.out.println("Old signal handler of SIG is SIG_HOLD!");
-        } else if (Signal.SIG_IGN().equals(savedOld)) {
+        } else if (Signal.SIG_IGN.equals(savedOld)) {
             System.out.println("Old signal handler of SIG is SIG_IGN!");
         } else {
             System.out.println("Old signal handler of SIG is " + savedOld);
@@ -495,8 +494,8 @@ public class SignalTest {
     @Test
     public void testTryToIgnoreSignal_SIGTERM() throws Exception {
         NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-            var oldSignalHandler = Signal.signal(Signal.SIGSTOP(), Signal.SIG_IGN());
-            Signal.signal(Signal.SIGSTOP(), oldSignalHandler);
+            var oldSignalHandler = Signal.signal(Signal.SIGSTOP, Signal.SIG_IGN);
+            Signal.signal(Signal.SIGSTOP, oldSignalHandler);
         });
         assertEquals("EINVAL", Errno.getErrnoSymbol(nee.errno));
     }
@@ -508,7 +507,7 @@ public class SignalTest {
     @Disabled // it does not return from sigpause - what is wrong...
     public void testSigpause() throws Exception {
         System.out.println("sigpause");
-        final int SIG = Signal.SIGUSR2();
+        final int SIG = Signal.SIGUSR2;
 
         final ObjectRef<Object> resultRef = new ObjectRef<>();
 
@@ -578,20 +577,20 @@ public class SignalTest {
         try {
             //make sure SIGUSR1 is in signak mask; we want to set it
             System.err.println("current sigprocmask: " + oset);
-            Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1()));
+            Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1));
             Signal.Sigset_t set = new Signal.Sigset_t();
             Signal.sigemptyset(set);
-            Signal.sigaddset(set, Signal.SIGUSR1());
-            Signal.sigprocmask(Signal.SIG_BLOCK(), set, null);
+            Signal.sigaddset(set, Signal.SIGUSR1);
+            Signal.sigprocmask(Signal.SIG_BLOCK, set, null);
             //Test that SIGUSR1 was set
             final Signal.Sigset_t changedSet = new Signal.Sigset_t();
             Signal.sigemptyset(changedSet);
             Signal.sigprocmask(0, null, changedSet);
             System.err.println("current sigprocmask: " + changedSet.toString());
-            Assertions.assertTrue(Signal.sigismember(changedSet, Signal.SIGUSR1()));
+            Assertions.assertTrue(Signal.sigismember(changedSet, Signal.SIGUSR1));
         } finally {
             //restore old mask
-            Signal.sigprocmask(Signal.SIG_SETMASK(), oset, null);
+            Signal.sigprocmask(Signal.SIG_SETMASK, oset, null);
         }
     }
 
@@ -601,13 +600,13 @@ public class SignalTest {
     @Test
     public void testSigqueue() throws Exception {
         System.out.println("sigqueue");
-        final int SIG = Signal.SIGUSR2();
+        final int SIG = Signal.SIGUSR2;
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigqueue(Unistd.getpid(), SIG, null));
         } else {
 
             final Signal.Sigaction act = new Signal.Sigaction();
-            act.sa_flags(Signal.SA_SIGINFO());
+            act.sa_flags(Signal.SA_SIGINFO);
             Signal.sigemptyset(act.sa_mask);
 
             final ObjectRef<Signal.Siginfo_t> siginfo_tRef = new ObjectRef<>(null);
@@ -681,11 +680,11 @@ public class SignalTest {
     public void testSigset() throws Exception {
         System.out.println("sigset");
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigset(Signal.SIGABRT(), null));
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigset(Signal.SIGABRT, null));
         } else {
-            FunctionPtr_I_V result = Signal.sigset(Signal.SIGABRT(), null);
-            Assertions.assertEquals(Signal.SIG_DFL(), result);
-            result = Signal.sigset(Signal.SIGABRT(), result);
+            FunctionPtr_I_V result = Signal.sigset(Signal.SIGABRT, null);
+            Assertions.assertEquals(Signal.SIG_DFL, result);
+            result = Signal.sigset(Signal.SIGABRT, result);
             Assertions.assertEquals(NativeAddressHolder.NULL, NativeFunctionPointer.toNativeAddressHolder(result), "result.address ");
         }
     }
@@ -699,7 +698,7 @@ public class SignalTest {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
             Assertions.fail("OPEN BSD will crash during test SIGALRM??");
         }
-        final int SIG = Signal.SIGALRM();
+        final int SIG = Signal.SIGALRM;
 
         final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
             @Override
@@ -715,19 +714,19 @@ public class SignalTest {
 
         final var oact = new Signal.Sigset_t();
         Signal.sigemptyset(oact);
-        Signal.sigprocmask(Signal.SIG_BLOCK(), act, oact);
+        Signal.sigprocmask(Signal.SIG_BLOCK, act, oact);
 
         try {
             final Signal.Sigset_t sigmask = new Signal.Sigset_t();
             Signal.sigemptyset(sigmask);
-            Signal.sigaddset(sigmask, Signal.SIGUSR1());
+            Signal.sigaddset(sigmask, Signal.SIGUSR1);
 
             Signal.raise(SIG);
             Signal.sigsuspend(sigmask);
             Assertions.assertTrue(true, "Return from sigsuspend as expected");
         } finally {
             Signal.signal(SIG, oldHandler);
-            Signal.sigprocmask(Signal.SIG_SETMASK(), oact, null);
+            Signal.sigprocmask(Signal.SIG_SETMASK, oact, null);
         }
     }
 
@@ -740,7 +739,7 @@ public class SignalTest {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
             Assertions.fail("OPEN BSD will crash during test SIGALRM??");
         }
-        final int SIG = Signal.SIGALRM();
+        final int SIG = Signal.SIGALRM;
 
         final Signal.Sigset_t set = new Signal.Sigset_t();
         Signal.sigemptyset(set);
@@ -754,7 +753,7 @@ public class SignalTest {
         timeout.tv_nsec(0);
         timeout.tv_sec(10);
 
-        Signal.sigprocmask(Signal.SIG_BLOCK(), set, oset);
+        Signal.sigprocmask(Signal.SIG_BLOCK, set, oset);
         try {
             Signal.pthread_kill(Pthread.pthread_self(), SIG); //We need to fire in this thread ...
             int signal = Signal.sigtimedwait(set, info, timeout);
@@ -780,7 +779,7 @@ public class SignalTest {
 
         } finally {
             //Restore signal mask
-            Signal.sigprocmask(Signal.SIG_SETMASK(), oset, null);
+            Signal.sigprocmask(Signal.SIG_SETMASK, oset, null);
         }
     }
 
@@ -793,15 +792,15 @@ public class SignalTest {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
             Assertions.fail("OPEN BSD will crash during test SIGALRM??");
         }
-        final int SIG = Signal.SIGALRM();
+        final int SIG = Signal.SIGALRM;
 
-        Signal.signal(SIG, Signal.SIG_DFL());
+        Signal.signal(SIG, Signal.SIG_DFL);
         final Signal.Sigset_t set = new Signal.Sigset_t();
         Signal.sigemptyset(set);
         Signal.sigaddset(set, SIG);
         final Signal.Sigset_t oset = new Signal.Sigset_t();
 
-        Signal.sigprocmask(Signal.SIG_BLOCK(), set, oset);
+        Signal.sigprocmask(Signal.SIG_BLOCK, set, oset);
         try {
             Signal.raise(SIG);
             final Signal.Sigset_t testSet = new Signal.Sigset_t();
@@ -817,7 +816,7 @@ public class SignalTest {
             });
         } finally {
             //Restore signal mask
-            Signal.sigprocmask(Signal.SIG_SETMASK(), oset, null);
+            Signal.sigprocmask(Signal.SIG_SETMASK, oset, null);
         }
     }
 
@@ -834,18 +833,18 @@ public class SignalTest {
             Assertions.fail("OPEN BSD will crash during test SIGALRM??");
         }
 
-        final int SIG = Signal.SIGALRM();
+        final int SIG = Signal.SIGALRM;
 
-        Signal.signal(SIG, Signal.SIG_DFL());
+        Signal.signal(SIG, Signal.SIG_DFL);
         final Signal.Sigset_t set = new Signal.Sigset_t();
         Signal.sigemptyset(set);
         Signal.sigaddset(set, SIG);
         final Signal.Sigset_t oset = new Signal.Sigset_t();
 
-        Signal.sigprocmask(Signal.SIG_BLOCK(), set, oset);
+        Signal.sigprocmask(Signal.SIG_BLOCK, set, oset);
         try {
             /*
-             If the test fails after raising the signal 
+             If the test fails after raising the signal
              and before processing the signal in the test,
              the whole testsuite will crash!
              */
@@ -878,7 +877,7 @@ public class SignalTest {
             });
         } finally {
             //Restore signal mask
-            Signal.sigprocmask(Signal.SIG_SETMASK(), oset, null);
+            Signal.sigprocmask(Signal.SIG_SETMASK, oset, null);
         }
     }
 
@@ -924,10 +923,10 @@ public class SignalTest {
             Assertions.assertNotNull(sigevent.sigev_signo());
             sigevent.sigev_value.sival_int(66);
 
-            sigevent.sigev_notify(Signal.SIGEV_SIGNAL());
-            assertEquals(Signal.SIGEV_SIGNAL(), sigevent.sigev_notify());
-            sigevent.sigev_signo(Signal.SIGBUS());
-            assertEquals(Signal.SIGBUS(), sigevent.sigev_signo());
+            sigevent.sigev_notify(Signal.SIGEV_SIGNAL.get());
+            assertEquals(Signal.SIGEV_SIGNAL.get(), sigevent.sigev_notify());
+            sigevent.sigev_signo(Signal.SIGBUS);
+            assertEquals(Signal.SIGBUS, sigevent.sigev_signo());
 
             Callback__Sigval_int__V sigev_notify_functionLong = new Callback__Sigval_int__V(new NativeAddressHolder(44)) {
                 @Override

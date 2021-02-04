@@ -19,32 +19,39 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+#include "jnhw-posix.h"
+#include "de_ibapl_jnhw_x_open_Ucontext.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "jnhw-posix.h"
-#include "de_ibapl_jnhw_x_open_Ucontext.h"
+#ifndef HAVE_UCONTEXT_H
 
     /*
      * Class:     de_ibapl_jnhw_x_open_Ucontext
-     * Method:    HAVE_UCONTEXT_H
-     * Signature: ()Z
+     * Method:    initFields
+     * Signature: ()V
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_HAVE_1UCONTEXT_1H
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_initFields
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#ifdef HAVE_UCONTEXT_H
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
     }
-
-#if HAVE_UCONTEXT_H
+#else
 #include <ucontext.h>
-#endif
 
-#ifdef _POSIX_VERSION
+    /*
+     * Class:     de_ibapl_jnhw_x_open_Ucontext
+     * Method:    initFields
+     * Signature: ()V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_initFields
+    (JNIEnv *env, jclass clazz) {
+
+        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_UCONTEXT_H", JNI_TRUE)) {
+            return;
+        }
+
+    }
 
 #endif
 

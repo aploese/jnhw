@@ -40,157 +40,177 @@ public abstract class Winerror {
 
     /**
      * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
     static {
         LibJnhwWinApiLoader.touch();
+
+        HAVE_WINERROR_H = false;
+
+        ERROR_ACCESS_DENIED = 0;
+        ERROR_ALREADY_EXISTS = 0;
+
+        ERROR_FILE_EXISTS = 0;
+        ERROR_FILE_NOT_FOUND = 0;
+
+        ERROR_GEN_FAILURE = 0;
+
+        ERROR_INVALID_HANDLE = 0;
+        ERROR_INVALID_PARAMETER = 0;
+        ERROR_IO_INCOMPLETE = 0;
+        ERROR_IO_PENDING = 0;
+
+        ERROR_MORE_DATA = 0;
+
+        ERROR_NOACCESS = 0;
+        ERROR_NOT_FOUND = 0;
+        ERROR_NO_MORE_ITEMS = 0;
+
+        ERROR_PIPE_BUSY = 0;
+        ERROR_PROC_NOT_FOUND = 0;
+
+        ERROR_SHARING_VIOLATION = 0;
+        ERROR_SUCCESS = 0;
+
+        WAIT_TIMEOUT = 0;
+
+        initFields();
     }
+
+    private static native void initFields();
 
     /**
      * The operation completed successfully.
      *
-     * @return the native symbolic constant of ERROR_SUCCESS.
      */
     @Define
-    public final static native int ERROR_SUCCESS();
-
+    public final static int ERROR_SUCCESS;
 
     /**
      * Access is denied.
      *
-     * @return the native symbolic constant of ERROR_ACCESS_DENIED.
      */
     @Define
-    public final static native int ERROR_ACCESS_DENIED();
+    public final static int ERROR_ACCESS_DENIED;
 
     /**
      * Cannot create a file when that file already exists.
      *
-     * @return the native symbolic constant of ERROR_ALREADY_EXISTS.
      */
     @Define
-    public final static native int ERROR_ALREADY_EXISTS();
+    public final static int ERROR_ALREADY_EXISTS;
 
     /**
      * The file exists.
      *
-     * @return the native symbolic constant of ERROR_FILE_EXISTS.
      */
     @Define
-    public final static native int ERROR_FILE_EXISTS();
+    public final static int ERROR_FILE_EXISTS;
 
     /**
      * The system cannot find the file specified.
      *
-     * @return the native symbolic constant of ERROR_FILE_NOT_FOUND.
      */
     @Define
-    public final static native int ERROR_FILE_NOT_FOUND();
+    public final static int ERROR_FILE_NOT_FOUND;
 
     /**
      * The system cannot read from the specified device.
      *
-     * @return the native symbolic constant of ERROR_GEN_FAILURE.
      */
     @Define
-    public final static native int ERROR_GEN_FAILURE();
+    public final static int ERROR_GEN_FAILURE;
 
     /**
      * The handle is invalid.
      *
-     * @return the native symbolic constant of ERROR_INVALID_HANDLE.
      */
     @Define
-    public final static native int ERROR_INVALID_HANDLE();
+    public final static int ERROR_INVALID_HANDLE;
 
     /**
      * The specified network password is not correct.
      *
-     * @return the native symbolic constant of ERROR_INVALID_PARAMETER.
      */
     @Define
-    public final static native int ERROR_INVALID_PARAMETER();
+    public final static int ERROR_INVALID_PARAMETER;
 
     /**
      * Overlapped I/O event is not in a signaled state.
      *
-     * @return the native symbolic constant of ERROR_IO_INCOMPLETE.
      */
     @Define
-    public final static native int ERROR_IO_INCOMPLETE();
+    public final static int ERROR_IO_INCOMPLETE;
 
     /**
      * Overlapped I/O operation is in progress.
      *
-     * @return the native symbolic constant of ERROR_IO_PENDING.
      */
     @Define
-    public final static native int ERROR_IO_PENDING();
+    public final static int ERROR_IO_PENDING;
 
     /**
      * More data is available.
      *
-     * @return the native symbolic constant of ERROR_MORE_DATA.
      */
     @Define
-    public final static native int ERROR_MORE_DATA();
+    public final static int ERROR_MORE_DATA;
 
     /**
      * Invalid access to memory location.
      *
-     * @return the native symbolic constant of ERROR_NOACCESS.
      */
     @Define
-    public final static native int ERROR_NOACCESS();
+    public final static int ERROR_NOACCESS;
 
     /**
      * Element not found.
      *
-     * @return the native symbolic constant of ERROR_NOT_FOUND.
      */
     @Define
-    public final static native int ERROR_NOT_FOUND();
+    public final static int ERROR_NOT_FOUND;
 
     /**
      * No more data is available.
      *
-     * @return the native symbolic constant of ERROR_NO_MORE_ITEMS.
      */
     @Define
-    public final static native int ERROR_NO_MORE_ITEMS();
+    public final static int ERROR_NO_MORE_ITEMS;
 
     /**
      * All pipe instances are busy.
      *
-     * @return the native symbolic constant of ERROR_PIPE_BUSY.
      */
     @Define
-    public final static native int ERROR_PIPE_BUSY();
+    public final static int ERROR_PIPE_BUSY;
 
     /**
      * The process cannot access the file because it is being used by another
      * process.
      *
-     * @return the native symbolic constant of ERROR_SHARING_VIOLATION.
      */
     @Define
-    public final static native int ERROR_SHARING_VIOLATION();
-    
+    public final static int ERROR_SHARING_VIOLATION;
+
     /**
      * The wait operation timed out.
-     * 
-     * @return the native symbolic constant of WAIT_TIMEOUT.
+     *
      */
     @Define
-    public final static native int WAIT_TIMEOUT();
-        
+    public final static int WAIT_TIMEOUT;
+
     /**
      * The specified procedure could not be found.
      *
-     * @return the native symbolic constant of ERROR_PROC_NOT_FOUND.
      */
     @Define
-    public final static native int ERROR_PROC_NOT_FOUND();
+    public final static int ERROR_PROC_NOT_FOUND;
 
-    public final static native boolean HAVE_WINERROR_H();
+    public final static boolean HAVE_WINERROR_H;
 
 }

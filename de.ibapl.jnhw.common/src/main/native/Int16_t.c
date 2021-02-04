@@ -67,7 +67,6 @@ extern "C" {
         *UNWRAP_ABSTRACT_MEM_TO(int16_t*, jnhw_int16_t) = value;
     }
 
-
     /*
      * Class:     de_ibapl_jnhw_common_memory_Int16_t
      * Method:    nativeToString

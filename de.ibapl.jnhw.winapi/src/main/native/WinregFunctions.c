@@ -46,9 +46,9 @@ extern "C" {
         }
         //jobject lpccValueName, 
         //, jobject lpccData
-        DWORD lpcchValueName = (uint32_t) (*env)->GetIntField(env, lpValueName, de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID);
+        DWORD lpcchValueName = (uint32_t) (*env)->GetIntField(env, lpValueName, dij_w_Winnt_LPWSTR_bufferEnd__FID);
         DWORD _lpType;
-        DWORD lpccData = lpData != NULL ? (uint32_t) (*env)->GetIntField(env, lpData, de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID) : 0;
+        DWORD lpccData = lpData != NULL ? (uint32_t) (*env)->GetIntField(env, lpData, dij_w_WinDef_LPBYTE_bufferEnd__FID) : 0;
 
         LSTATUS result = RegEnumValueW(UNWRAP_HKEY(hKey),
                 (uint32_t) dwIndex,
@@ -59,12 +59,12 @@ extern "C" {
                 lpData == NULL ? NULL : UNWRAP_LPBYTE(lpData),
                 lpData == NULL ? NULL : &lpccData);
 
-        (*env)->SetIntField(env, lpValueName, de_ibapl_jnhw_winapi_Winnt_LPWSTR_bufferEnd_ID, (int32_t) lpcchValueName);
+        (*env)->SetIntField(env, lpValueName, dij_w_Winnt_LPWSTR_bufferEnd__FID, (int32_t) lpcchValueName);
         if (lpType != NULL) {
             SET_INT_REF_VALUE(lpType, (int32_t) _lpType);
         }
         if (lpData != NULL) {
-            (*env)->SetIntField(env, lpData, de_ibapl_jnhw_winapi_WinDef_LPBYTE_bufferEnd_ID, (int32_t) lpccData);
+            (*env)->SetIntField(env, lpData, dij_w_WinDef_LPBYTE_bufferEnd__FID, (int32_t) lpccData);
         }
 
         switch (result) {

@@ -38,7 +38,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1J_1V_call
     (JNIEnv *env, jobject this, jlong value) {
-       (UNWRAP_NATIVE_FUNCTION_POINTER_TO(void (*)(int64_t), this))(value);
+        (UNWRAP_NativeFunctionPointer_TO(void (*)(int64_t), this))(value);
     }
 
 #ifdef __cplusplus
