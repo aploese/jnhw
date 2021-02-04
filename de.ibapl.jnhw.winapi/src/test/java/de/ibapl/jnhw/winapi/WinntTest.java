@@ -67,6 +67,7 @@ public class WinntTest {
     @Test
     public void testMAXDWORD() throws Exception {
         assertEquals(0x00000000FFFFFFFFL, Winnt.MAXDWORD);
+        assertEquals(Long.MAX_VALUE, Winnt.MAXDWORD);
     }
 
     @Test
