@@ -26,7 +26,7 @@ import de.ibapl.jnhw.common.callback.Callback_J_V_Impl;
 import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.nativecall.CallNative_IJ_V;
+import de.ibapl.jnhw.common.nativecall.CallNative_J_V;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_J_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.ref.Cleaner;
@@ -194,7 +194,7 @@ public class Callback_J_V_Test {
         assertEquals(42, longRef.value);
 
         longRef.value = -1;
-        CallNative_IJ_V.wrap(getCallbackPtr()).call(42);
+        CallNative_J_V.wrap(getCallbackPtr()).call(42);
         assertEquals(42, longRef.value);
 
         callback = null;
