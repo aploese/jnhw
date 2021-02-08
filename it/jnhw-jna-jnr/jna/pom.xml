@@ -5,22 +5,17 @@
         <groupId>de.ibapl.jnhw.it</groupId>
         <artifactId>jnhw-it</artifactId>
         <version>2.0.0-SNAPSHOT</version>
-        <relativePath>../</relativePath>
+        <relativePath>../../</relativePath>
     </parent>
-    <artifactId>jnhw-jna-jnr</artifactId>
+    <artifactId>jna</artifactId>
     <packaging>jar</packaging>
-    <name>JNHW-Example: Compare JNHW, JNR, JNA</name>
+    <name>JNHW-Example: Size Of JNA</name>
 
     <dependencies>
         <dependency>
-            <groupId>de.ibapl.jnhw</groupId>
-            <artifactId>de.ibapl.jnhw.posix</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jnr</groupId>
-            <artifactId>jnr-ffi</artifactId>
-            <version>2.2.1</version>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>5.6.0</version>
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
@@ -33,13 +28,6 @@
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>de.ibapl.jnhw.it.jnhw_jna_jnr.App</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
             </plugin>
         </plugins>
     </build>

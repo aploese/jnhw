@@ -48,4 +48,27 @@ public class EventfdTest {
         Unistd.close(fd);
     }
 
+    @Test
+    public void testEventFD_0() throws Exception {
+        int fd = Eventfd.eventfd(1, 0);
+
+        Eventfd.eventfd_write(fd, 0);
+        long result = Eventfd.eventfd_read(fd);
+        Assertions.assertEquals(1, result);
+
+        Eventfd.eventfd_write(fd, 2);
+        result = Eventfd.eventfd_read(fd);
+        Assertions.assertEquals(2, result);
+
+        Eventfd.eventfd_write(fd, 2);
+        result = Eventfd.eventfd_read(fd);
+        Assertions.assertEquals(2, result);
+
+        Eventfd.eventfd_write(fd, 0);
+        result = Eventfd.eventfd_read(fd);
+        Assertions.assertEquals(1, result);
+
+        Unistd.close(fd);
+    }
+
 }
