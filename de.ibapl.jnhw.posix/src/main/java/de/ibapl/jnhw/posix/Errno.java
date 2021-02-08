@@ -1132,7 +1132,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
      */
     public final static String getErrnoSymbol(int errno) {
         for (Field f : Errno.class.getFields()) {
-            if (f.getAnnotation(Define.class) != IntDefine.UNDEFINED) {
+            if (f.getAnnotation(Define.class) != null) {
                 try {
                     Object res = (Object) f.get(Errno.class);
                     if (res instanceof Integer) {

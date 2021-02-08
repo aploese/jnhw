@@ -40,7 +40,7 @@ public abstract class StructArray32<T extends OpaqueMemory32> extends OpaqueMemo
 
     private final T[] elements;
 
-    public StructArray32(T[] array, ElementFactory<T> factory, int elementSizeInBytes, boolean clearMem) {
+    protected StructArray32(T[] array, ElementFactory<T> factory, int elementSizeInBytes, boolean clearMem) {
         super(array.length, elementSizeInBytes, clearMem);
         elements = array;
         for (int i = 0; i < array.length; i++) {
@@ -48,7 +48,7 @@ public abstract class StructArray32<T extends OpaqueMemory32> extends OpaqueMemo
         }
     }
 
-    public StructArray32(OpaqueMemory32 parent, int offset, T[] array, ElementFactory<T> factory, int elementSizeInBytes, boolean clearMem) {
+    protected StructArray32(OpaqueMemory32 parent, int offset, T[] array, ElementFactory<T> factory, int elementSizeInBytes, boolean clearMem) {
         super(parent, offset, array.length, elementSizeInBytes);
         elements = array;
         for (int i = 0; i < array.length; i++) {
@@ -56,7 +56,7 @@ public abstract class StructArray32<T extends OpaqueMemory32> extends OpaqueMemo
         }
     }
 
-    public StructArray32(OpaqueMemory64 parent, long offset, T[] array, ElementFactory<T> factory, int elementSizeInBytes, boolean clearMem) {
+    protected StructArray32(OpaqueMemory64 parent, long offset, T[] array, ElementFactory<T> factory, int elementSizeInBytes, boolean clearMem) {
         super(parent, offset, array.length, elementSizeInBytes);
         elements = array;
         for (int i = 0; i < array.length; i++) {

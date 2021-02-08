@@ -18,7 +18,7 @@
         <compile.target>11</compile.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-	
+
     <developers>
         <developer>
             <id>apl</id>
@@ -198,6 +198,11 @@
                     <groupId>biz.aQute.bnd</groupId>
                     <artifactId>bnd-testing-maven-plugin</artifactId>
                     <version>5.2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>4.2.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>

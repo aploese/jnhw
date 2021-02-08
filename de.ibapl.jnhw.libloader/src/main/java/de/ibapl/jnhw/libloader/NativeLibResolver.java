@@ -167,8 +167,13 @@ public final class NativeLibResolver {
         File nativeTemDir = null;
         try {
             nativeTemDir = File.createTempFile("jnhw-native-loader", "lib-dir");
-            nativeTemDir.delete(); //delete the file in order to create the dir....
-            nativeTemDir.mkdir();
+            //delete the file in order to create the dir....
+            if (!nativeTemDir.delete()) {
+                throw new RuntimeException("Could not delete file: " + nativeTemDir.getAbsolutePath());
+            }
+            if (!nativeTemDir.mkdir()) {
+                throw new RuntimeException("Could not creae dir: " + nativeTemDir.getAbsolutePath());
+            }
             nativeTemDir.deleteOnExit();
         } catch (IOException ioe) {
             LOG.log(Level.SEVERE,
@@ -270,7 +275,9 @@ public final class NativeLibResolver {
                 }
                 consumer.accept(classPathLibName);
                 LOG.log(Level.INFO, "Lib loaded via System.load(\"{0}\")", classPathLibName);
-                tmpLib.delete();
+                if (!tmpLib.delete()) {
+                    LOG.log(Level.INFO, "Could not dlete \"{0}\"", tmpLib);
+                }
                 return LoadResult.successFromTempCopy(mi, libName, formattedLibName, classPathLibURL,
                         tmpLib.getCanonicalPath());
             } catch (Throwable t) {

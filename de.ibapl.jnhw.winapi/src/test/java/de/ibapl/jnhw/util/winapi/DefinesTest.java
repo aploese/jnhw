@@ -61,8 +61,7 @@ public class DefinesTest {
     public static void testDefines(Class clazz) throws Exception {
         System.out.println(clazz.getName() + " Defines: >>>");
         for (Field f : clazz.getFields()) {
-            final Define define = f.getAnnotation(Define.class);
-            if (define != null) {
+            if (f.getAnnotation(Define.class) != null) {
                 Class type = f.getType();
                 if (Long.class.equals(type) || long.class.equals(type)) {
                     System.out.println(String.format("\t%-30s = 0x%2$016x | %2$d", f.getName(), f.getLong(clazz)));
