@@ -109,8 +109,8 @@ public class Posix {
         //force data write
         //Aio.aio_fsync(Fcntl.O_DSYNC(), aiocb); // enabling this 9 bytes will be reported in callback. and the call back is called twice,
         //Wait debug is slow, so we are here before the callback finishes...
-        if (objRef.value == null) {
-            synchronized (objRef) {
+        synchronized (objRef) {
+            if (objRef.value == null) {
                 debug("Wait for write callback to finish!");
                 objRef.wait(1000);
             }
@@ -134,8 +134,8 @@ public class Posix {
         //force data read
         //Aio.aio_fsync(Fcntl.O_DSYNC(), aiocb);
         //Wait debug is slow, so we are here before the callback finishes...
-        if (objRef.value == null) {
-            synchronized (objRef) {
+        synchronized (objRef) {
+            if (objRef.value == null) {
                 debug("Wait for read callback to finish!");
                 objRef.wait(100);
             }
