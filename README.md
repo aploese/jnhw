@@ -61,7 +61,7 @@ import static de.ibapl.jnhw.posix.Unistd.write;
 public class Posix {
 
 	public static void sayHello() throws NativeErrorException {
-		int bytesWritten = write(STDOUT_FILENO(), "Hello World! from POSIX\n".getBytes());
+		int bytesWritten = write(STDOUT_FILENO, "Hello World! from POSIX\n".getBytes());
                 System.out.println("Bytes written: " + bytesWritten);
 	}
 
@@ -84,7 +84,7 @@ import static de.ibapl.jnhw.winapi.Fileapi.WriteFile;
 public class Windows {
 
 	public static void sayHello() throws NativeErrorException {
-		int bytesWritten = WriteFile(GetStdHandle(STD_OUTPUT_HANDLE()), "Hello World! from WIN API\n".getBytes());
+		int bytesWritten = WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), "Hello World! from WIN API\n".getBytes());
                 System.out.println("Bytes written: " + bytesWritten);
 	}
 
