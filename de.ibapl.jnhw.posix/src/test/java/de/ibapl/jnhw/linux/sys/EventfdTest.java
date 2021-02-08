@@ -31,13 +31,13 @@ public class EventfdTest {
 
     @Test
     public void testEventFD() throws Exception {
-        int fd = Eventfd.eventfd(1, 0);
+        int fd = Eventfd.eventfd(42, 0);
 
-        Eventfd.eventfd_write(fd, 10);
         long result = Eventfd.eventfd_read(fd);
-        Assertions.assertEquals(11, result);
+        Assertions.assertEquals(42, result);
 
-        Eventfd.eventfd_write(fd, 55);
+        Eventfd.eventfd_write(fd, 25);
+        Eventfd.eventfd_write(fd, 30);
         result = Eventfd.eventfd_read(fd);
         Assertions.assertEquals(55, result);
 
@@ -50,9 +50,9 @@ public class EventfdTest {
 
     @Test
     public void testEventFD_0() throws Exception {
-        int fd = Eventfd.eventfd(1, 0);
+        int fd = Eventfd.eventfd(0, 0);
 
-        Eventfd.eventfd_write(fd, 0);
+        Eventfd.eventfd_write(fd, 1);
         long result = Eventfd.eventfd_read(fd);
         Assertions.assertEquals(1, result);
 
@@ -60,11 +60,11 @@ public class EventfdTest {
         result = Eventfd.eventfd_read(fd);
         Assertions.assertEquals(2, result);
 
-        Eventfd.eventfd_write(fd, 2);
+        Eventfd.eventfd_write(fd, 3);
         result = Eventfd.eventfd_read(fd);
-        Assertions.assertEquals(2, result);
+        Assertions.assertEquals(3, result);
 
-        Eventfd.eventfd_write(fd, 0);
+        Eventfd.eventfd_write(fd, 1);
         result = Eventfd.eventfd_read(fd);
         Assertions.assertEquals(1, result);
 
