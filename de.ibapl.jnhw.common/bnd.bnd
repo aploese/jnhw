@@ -1,3 +1,4 @@
+-noimportjava: true
 Export-Package: \
 	de.ibapl.jnhw.common,\
 	de.ibapl.jnhw.common.annotation,\

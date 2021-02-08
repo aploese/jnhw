@@ -1,3 +1,4 @@
+-noimportjava: true
 Export-Package: \
 	de.ibapl.jnhw.annontation.posix.poll,\
 	de.ibapl.jnhw.annontation.posix.sys.types,\

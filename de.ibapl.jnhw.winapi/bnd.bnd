@@ -1,3 +1,4 @@
+-noimportjava: true
 Export-Package: \
 	de.ibapl.jnhw.winapi,\
 	de.ibapl.jnhw.util.winapi
