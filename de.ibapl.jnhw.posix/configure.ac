@@ -58,10 +58,10 @@ AC_SUBST(JNHW_RESOURCES_DIR)
 JNHW_TEST_RESOURCES_DIR="\$(top_builddir)/src/test/resources/lib/\$(JNHW_MULTIARCH_TUPEL)"
 AC_SUBST(JNHW_TEST_RESOURCES_DIR)
 
-JNI_HEADER_DIR="\$(top_builddir)/target/generated-sources/include"
+JNI_HEADER_DIR="\$(top_builddir)/src/main/native/include"
 AC_SUBST(JNI_HEADER_DIR)
 
-JNI_TEST_HEADER_DIR="\$(top_builddir)/target/generated-test-sources/include"
+JNI_TEST_HEADER_DIR="\$(top_builddir)/src/test/native/include"
 AC_SUBST(JNI_TEST_HEADER_DIR)
 
 #get path of jnhw-common.h - The Quick and Dirty way....

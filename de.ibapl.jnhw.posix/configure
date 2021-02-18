@@ -13235,10 +13235,10 @@ JNHW_RESOURCES_DIR="\$(top_builddir)/src/main/resources/lib/\$(JNHW_MULTIARCH_TU
 JNHW_TEST_RESOURCES_DIR="\$(top_builddir)/src/test/resources/lib/\$(JNHW_MULTIARCH_TUPEL)"
 
 
-JNI_HEADER_DIR="\$(top_builddir)/target/generated-sources/include"
+JNI_HEADER_DIR="\$(top_builddir)/src/main/native/include"
 
 
-JNI_TEST_HEADER_DIR="\$(top_builddir)/target/generated-test-sources/include"
+JNI_TEST_HEADER_DIR="\$(top_builddir)/src/test/native/include"
 
 
 #get path of jnhw-common.h - The Quick and Dirty way....

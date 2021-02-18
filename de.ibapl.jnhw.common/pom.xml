@@ -43,7 +43,7 @@
                         <configuration>
                             <compilerArgs>
                                 <arg>-h</arg>
-                                <arg>${project.build.directory}/generated-sources/include/</arg>
+                                <arg>${basedir}/src/main/native/include/</arg>
                             </compilerArgs>
                         </configuration>
                     </execution>
@@ -56,7 +56,7 @@
                         <configuration>
                             <compilerArgs>
                                 <arg>-h</arg>
-                                <arg>${project.build.directory}/generated-test-sources/include/</arg>
+                                <arg>${basedir}/src/test/native/include/</arg>
                             </compilerArgs>
                         </configuration>
                     </execution>
