@@ -34,6 +34,7 @@ for d in\
 do
 export CC=$d-gcc
   $CC --version || exit 1
+  $CC -dD -dI -E test.c > test_pre_out_$CC.txt
   ./configure --host=$d || exit 1
   make clean || exit 1
   make || exit 1
