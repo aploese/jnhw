@@ -201,7 +201,7 @@ public final class NativeLibResolver {
      */
     public static synchronized LoadResult loadNativeLib(final String libName, int libToolInterfaceVersion,
             Consumer<String> consumer) {
-        String[] javaLibraryPath = System.getProperty("java.library.path").split(":");
+        String[] javaLibraryPath = System.getProperty("java.library.path").split(getOS() == OS.WINDOWS ? ";" : ":");
         String formattedLibName = getOS().formatLibName(libName, libToolInterfaceVersion);
         for (String javaLibraryPathElement : javaLibraryPath) {
             final String absLibName = javaLibraryPathElement + "/" + formattedLibName;
