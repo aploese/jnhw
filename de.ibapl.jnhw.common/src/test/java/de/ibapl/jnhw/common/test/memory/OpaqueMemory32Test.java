@@ -283,22 +283,24 @@ public class OpaqueMemory32Test {
         Assertions.assertEquals(24, AbstractNativeMemory.offsetof(struct.seventh));
         struct.seventh((byte) 0x77);
 
+        String expected = null;
         switch (BaseDataType.ALIGN_OF_POINTER) {
             case AT_8:
                 Assertions.assertEquals(32, AbstractNativeMemory.offsetof(struct.eighth));
+                expected = "11002222 33000000  44444444 55000000 |  \"\"3   DDDDU   \n"
+                        + "66666666 66666666  77000000 00000000 | ffffffffw       \n"
+                        + "88888888 88888888  00000000 00000000 | ﾈﾈﾈﾈﾈﾈﾈﾈ        ";
                 break;
             case AT_4:
-                Assertions.assertEquals(32, AbstractNativeMemory.offsetof(struct.eighth));
+                Assertions.assertEquals(28, AbstractNativeMemory.offsetof(struct.eighth));
+                expected = "11002222 33000000  44444444 55000000 |  \"\"3   DDDDU   \n"
+                        + "66666666 66666666  77000000 88888888 | ffffffffw   ﾈﾈﾈﾈ\n"
+                        + "88888888 00000000  00000000 00000000 | ﾈﾈﾈﾈ            ";
                 break;
             default:
                 Assertions.fail();
         }
         struct.eighth(0x8888888888888888L);
-
-        String expected
-                = "11002222 33000000  44444444 55000000 |  \"\"3   DDDDU   \n"
-                + "66666666 66666666  77000000 00000000 | ffffffffw       \n"
-                + "88888888 88888888  00000000 00000000 | ﾈﾈﾈﾈﾈﾈﾈﾈ        ";
 
         Assertions.assertEquals(expected, OpaqueMemory32.printMemory(struct, false));
         byte[] result = OpaqueMemory32.toBytes(struct);
@@ -338,30 +340,62 @@ public class OpaqueMemory32Test {
         Assertions.assertEquals(0x00, result[26]);
         Assertions.assertEquals(0x00, result[27]);
 
-        Assertions.assertEquals(0x00, result[28]);
-        Assertions.assertEquals(0x00, result[29]);
-        Assertions.assertEquals(0x00, result[30]);
-        Assertions.assertEquals(0x00, result[31]);
+        switch (BaseDataType.ALIGN_OF_POINTER) {
+            case AT_8:
+                Assertions.assertEquals(0x00, result[28]);
+                Assertions.assertEquals(0x00, result[29]);
+                Assertions.assertEquals(0x00, result[30]);
+                Assertions.assertEquals(0x00, result[31]);
 
-        Assertions.assertEquals((byte) 0x88, result[32]);
-        Assertions.assertEquals((byte) 0x88, result[33]);
-        Assertions.assertEquals((byte) 0x88, result[34]);
-        Assertions.assertEquals((byte) 0x88, result[35]);
+                Assertions.assertEquals((byte) 0x88, result[32]);
+                Assertions.assertEquals((byte) 0x88, result[33]);
+                Assertions.assertEquals((byte) 0x88, result[34]);
+                Assertions.assertEquals((byte) 0x88, result[35]);
 
-        Assertions.assertEquals((byte) 0x88, result[36]);
-        Assertions.assertEquals((byte) 0x88, result[37]);
-        Assertions.assertEquals((byte) 0x88, result[38]);
-        Assertions.assertEquals((byte) 0x88, result[39]);
+                Assertions.assertEquals((byte) 0x88, result[36]);
+                Assertions.assertEquals((byte) 0x88, result[37]);
+                Assertions.assertEquals((byte) 0x88, result[38]);
+                Assertions.assertEquals((byte) 0x88, result[39]);
 
-        Assertions.assertEquals(0x00, result[40]);
-        Assertions.assertEquals(0x00, result[41]);
-        Assertions.assertEquals(0x00, result[42]);
-        Assertions.assertEquals(0x00, result[43]);
+                Assertions.assertEquals(0x00, result[40]);
+                Assertions.assertEquals(0x00, result[41]);
+                Assertions.assertEquals(0x00, result[42]);
+                Assertions.assertEquals(0x00, result[43]);
 
-        Assertions.assertEquals(0x00, result[44]);
-        Assertions.assertEquals(0x00, result[45]);
-        Assertions.assertEquals(0x00, result[46]);
-        Assertions.assertEquals(0x00, result[47]);
+                Assertions.assertEquals(0x00, result[44]);
+                Assertions.assertEquals(0x00, result[45]);
+                Assertions.assertEquals(0x00, result[46]);
+                Assertions.assertEquals(0x00, result[47]);
+                break;
+            case AT_4:
+                Assertions.assertEquals((byte) 0x88, result[28]);
+                Assertions.assertEquals((byte) 0x88, result[29]);
+                Assertions.assertEquals((byte) 0x88, result[30]);
+                Assertions.assertEquals((byte) 0x88, result[31]);
+
+                Assertions.assertEquals((byte) 0x88, result[32]);
+                Assertions.assertEquals((byte) 0x88, result[33]);
+                Assertions.assertEquals((byte) 0x88, result[34]);
+                Assertions.assertEquals((byte) 0x88, result[35]);
+
+                Assertions.assertEquals(0x00, result[36]);
+                Assertions.assertEquals(0x00, result[37]);
+                Assertions.assertEquals(0x00, result[38]);
+                Assertions.assertEquals(0x00, result[39]);
+
+                Assertions.assertEquals(0x00, result[40]);
+                Assertions.assertEquals(0x00, result[41]);
+                Assertions.assertEquals(0x00, result[42]);
+                Assertions.assertEquals(0x00, result[43]);
+
+                Assertions.assertEquals(0x00, result[44]);
+                Assertions.assertEquals(0x00, result[45]);
+                Assertions.assertEquals(0x00, result[46]);
+                Assertions.assertEquals(0x00, result[47]);
+                break;
+            default:
+                Assertions.fail();
+        }
 
     }
 
