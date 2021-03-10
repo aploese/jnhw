@@ -30,13 +30,13 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 public class StdStructLayoutFactory implements StructLayoutFactory {
 
     private long nextOffset;
-    private Alignment structAlignment;
+    private Alignment structAlignment = Alignment.AT_1;
 
     protected long calcNextOffset(Alignment currentAlignment, long currentSizeInBytes) {
-        if ((structAlignment == null) || (currentAlignment.alignof > structAlignment.alignof)) {
+        if ((currentAlignment.alignof > structAlignment.alignof) && (currentAlignment.alignof <= BaseDataType.ALIGN_OF_POINTER.alignof)) {
             structAlignment = currentAlignment;
-
         }
+
         final int intAlignment = Alignment.calcElementAlignmentInStruct(structAlignment, currentAlignment);
         final int reminder = (int) Long.remainderUnsigned(nextOffset, intAlignment);
         final long offset = (reminder == 0) ? nextOffset : nextOffset + intAlignment - reminder;
