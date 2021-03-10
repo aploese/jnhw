@@ -52,7 +52,7 @@ public class TypesTest {
             instance.setFromSignedLong(0x80706050);
             assertEquals(0x80706050, instance.getAsSignedLong());
             assertEquals(Integer.toString(0x80706050), instance.nativeToString());
-            assertEquals("80706050", instance.nativeToHexString());
+            assertEquals("0x80706050", instance.nativeToHexString());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(1L + Integer.MAX_VALUE));
             assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
         } else if (PosixDataType.clock_t.baseDataType.SIZE_OF == 8) {
@@ -79,7 +79,7 @@ public class TypesTest {
             instance.setFromUnsignedInt((short) 0x8070);
             assertEquals((short) 0x8070, instance.getAsUnsignedInt());
             assertEquals(Integer.toUnsignedString(0x8070), instance.nativeToString());
-            assertEquals("8070", instance.nativeToHexString());
+            assertEquals("0x8070", instance.nativeToHexString());
             //Test MAX_UINT16 + 1
             assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x00010000));
             assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(-1));
@@ -151,7 +151,7 @@ public class TypesTest {
             instance.setFromUnsignedLong(0x80706050L);
             assertEquals(0x80706050L, instance.getAsUnsignedLong());
             assertEquals(Integer.toUnsignedString(0x80706050), instance.nativeToString());
-            assertEquals("80706050", instance.nativeToHexString());
+            assertEquals("0x80706050", instance.nativeToHexString());
             //Test MAX_UINT32 + 1
             assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(0x0000000100000000L));
             assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
@@ -184,7 +184,7 @@ public class TypesTest {
             instance.setFromSignedLong(0x80706050);
             assertEquals(0x80706050, instance.getAsSignedLong());
             assertEquals(Integer.toString(0x80706050), instance.nativeToString());
-            assertEquals("80706050", instance.nativeToHexString());
+            assertEquals("0x80706050", instance.nativeToHexString());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(1L + Integer.MAX_VALUE));
             assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
         } else if (PosixDataType.ssize_t.baseDataType.SIZE_OF == 8) {
@@ -211,7 +211,7 @@ public class TypesTest {
             instance.setFromSignedLong(0x80706050);
             assertEquals(0x80706050, instance.getAsSignedLong());
             assertEquals(Integer.toString(0x80706050), instance.nativeToString());
-            assertEquals("80706050", instance.nativeToHexString());
+            assertEquals("0x80706050", instance.nativeToHexString());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(1L + Integer.MAX_VALUE));
             assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
         } else if (PosixDataType.time_t.baseDataType.SIZE_OF == 8) {
