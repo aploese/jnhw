@@ -61,8 +61,8 @@ public class TimeTest {
 
     // just for vm in qemu...
     private final static long ONE_MINUTE = 60_000;
-    private final static @time_t
-    long TIME_T__20191203_142044 = 1575382844;
+    @time_t
+    private final static long TIME_T__20191203_142044 = 1575382844;
     private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public TimeTest() {

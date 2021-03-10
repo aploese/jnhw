@@ -139,6 +139,42 @@ public interface MemoryAccessor {
 
     abstract String uint32_t_nativeToString(OpaqueMemory32 mem, long offset);
 
+    /**
+     * access the native long (signed long) datatype. It m,ay be 32 or 64bis
+     *
+     * @param mem
+     * @param offset
+     * @return
+     */
+    abstract long signed_long(OpaqueMemory32 mem, long offset);
+
+    /**
+     * access the native long (signed long) datatype. It m,ay be 32 or 64bis
+     *
+     * @param mem
+     * @param offset
+     * @return
+     */
+    abstract void signed_long(OpaqueMemory32 mem, long offset, @uint64_t long value);
+
+    /**
+     * access the native unsigned long datatype. It m,ay be 32 or 64bis
+     *
+     * @param mem
+     * @param offset
+     * @return
+     */
+    abstract long unsigned_long(OpaqueMemory32 mem, long offset);
+
+    /**
+     * access the native unsigned long datatype. It m,ay be 32 or 64bis
+     *
+     * @param mem
+     * @param offset
+     * @return
+     */
+    abstract void unsigned_long(OpaqueMemory32 mem, long offset, @uint64_t long value);
+
     @uint64_t
     abstract long uint64_t(OpaqueMemory32 mem, long offset);
 

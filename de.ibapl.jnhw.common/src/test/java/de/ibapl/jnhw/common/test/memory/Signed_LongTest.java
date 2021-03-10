@@ -33,30 +33,44 @@ import de.ibapl.jnhw.common.memory.Signed_Long;
  *
  * @author aploese
  */
-public class AsSignedLongTest {
+public class Signed_LongTest {
 
-    public AsSignedLongTest() {
+    public Signed_LongTest() {
     }
 
     @Test
+
     public void testNative() {
         Int64_t int64_t = new Int64_t(null, 0, null);
-        AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, int64_t, 0, SET_MEM_TO_0);
+        Signed_Long instance = new Signed_Long(int64_t, 0, SET_MEM_TO_0);
         long input = 0x08070605040302010L;
         int64_t.int64_t(input);
-        assertEquals(input & 0x00000000ffffffffL, instance.getAsSignedLong());
-        instance.setFromSignedLong(-33);
-        assertEquals(-33, instance.getAsSignedLong());
-        assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(input));
-        assertThrows(IllegalArgumentException.class, () -> new AsSignedLong(BaseDataType.uint8_t, null, 0, null));
+        if (BaseDataType.SIZE_OF_LONG == 8) {
+            assertEquals(input, instance.signed_long());
+        } else {
+            assertEquals(input & 0x00000000ffffffffL, instance.signed_long());
+        }
+        instance.signed_long(-33);
+        assertEquals(-33, instance.signed_long());
+        if (BaseDataType.SIZE_OF_LONG == 8) {
+            instance.signed_long(input);
+            assertEquals(input, instance.signed_long());
+        } else {
+            assertThrows(IllegalArgumentException.class, () -> instance.signed_long(input));
+        }
     }
 
     @Test
     public void testNativeToString() {
         Int64_t int64_t = new Int64_t(null, 0, null);
-        AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, int64_t, 0, SET_MEM_TO_0);
+        Signed_Long instance = new Signed_Long(int64_t, 0, SET_MEM_TO_0);
         int64_t.int64_t(0xfffffffffffffffeL);
-        assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
-        assertEquals("0xfffffffe", instance.nativeToHexString());
+        if (BaseDataType.SIZE_OF_LONG == 8) {
+            assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
+            assertEquals("0xfffffffffffffffe", instance.nativeToHexString());
+        } else {
+            assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
+            assertEquals("0xfffffffe", instance.nativeToHexString());
+        }
     }
 }

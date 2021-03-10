@@ -29,7 +29,7 @@ import java.util.logging.Level;
  *
  * @author aploese
  */
-class UnsafeMemoryAccessor implements MemoryAccessor {
+abstract class UnsafeMemoryAccessor implements MemoryAccessor {
 
     final sun.misc.Unsafe unsafe;
 

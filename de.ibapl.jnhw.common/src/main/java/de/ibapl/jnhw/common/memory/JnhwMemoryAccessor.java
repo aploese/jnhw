@@ -419,6 +419,34 @@ class JnhwMemoryAccessor implements MemoryAccessor {
         }
     }
 
+    private native long signed_long0(long address);
+
+    private native void signed_long0(long address, long value);
+
+    private native long unsigned_long0(long address);
+
+    private native void unsigned_long0(long address, long value);
+
+    @Override
+    public long signed_long(OpaqueMemory32 mem, long offset) {
+        return signed_long0(mem.baseAddress + offset);
+    }
+
+    @Override
+    public void signed_long(OpaqueMemory32 mem, long offset, long value) {
+        signed_long0(mem.baseAddress + offset, value);
+    }
+
+    @Override
+    public long unsigned_long(OpaqueMemory32 mem, long offset) {
+        return unsigned_long0(mem.baseAddress + offset);
+    }
+
+    @Override
+    public void unsigned_long(OpaqueMemory32 mem, long offset, long value) {
+        unsigned_long0(mem.baseAddress + offset, value);
+    }
+
     class JnhwMemoryCleaner implements Runnable {
 
         final long baseAddress;

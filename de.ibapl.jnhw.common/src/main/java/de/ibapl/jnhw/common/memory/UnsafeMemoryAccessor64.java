@@ -19,22 +19,32 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-module de.ibapl.jnhw.common.test {
-    requires transitive java.logging;
+package de.ibapl.jnhw.common.memory;
 
-    requires java.base;
+/**
+ *
+ * @author aploese
+ */
+class UnsafeMemoryAccessor64 extends UnsafeMemoryAccessor {
 
-    requires org.junit.jupiter.api;
-    requires org.junit.jupiter.engine;
+    @Override
+    public long signed_long(OpaqueMemory32 mem, long offset) {
+        return unsafe.getLong(mem.baseAddress + offset);
+    }
 
-    requires de.ibapl.jnhw.common;
+    @Override
+    public void signed_long(OpaqueMemory32 mem, long offset, long value) {
+        unsafe.putLong(mem.baseAddress + offset, value);
+    }
 
-    exports de.ibapl.jnhw.common.test;
-    exports de.ibapl.jnhw.common.test.callbacks;
-    exports de.ibapl.jnhw.common.test.datatypes;
-    exports de.ibapl.jnhw.common.test.exceptions;
-    exports de.ibapl.jnhw.common.test.memory;
-    exports de.ibapl.jnhw.common.test.memory.layout;
-    exports de.ibapl.jnhw.common.test.references;
+    @Override
+    public long unsigned_long(OpaqueMemory32 mem, long offset) {
+        return unsafe.getLong(mem.baseAddress + offset);
+    }
+
+    @Override
+    public void unsigned_long(OpaqueMemory32 mem, long offset, long value) {
+        unsafe.putLong(mem.baseAddress + offset, value);
+    }
 
 }

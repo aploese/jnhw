@@ -171,8 +171,8 @@ public class Time {
      *
      * @return the processor time used by the process.
      */
-    public final static native @clock_t
-    long clock();
+    @clock_t
+    public final static native long clock();
 
     /**
      * <b>POSIX:</b>
@@ -471,8 +471,8 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native @time_t
-    long time(@time_t LongRef tloc) throws NativeErrorException;
+    @time_t
+    public final static native long time(@time_t LongRef tloc) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -760,7 +760,7 @@ public class Time {
          * @return the native value of tv_nsec.
          */
         public long tv_nsec() {
-            return ACCESSOR_TIME_T.time_t(this, LAYOUT.tv_nsec);
+            return MEM_ACCESS.signed_long(this, LAYOUT.tv_nsec);
         }
 
         /**
@@ -771,7 +771,7 @@ public class Time {
          * @param tv_nsec the value of tv_nsec to be set natively.
          */
         public void tv_nsec(long tv_nsec) {
-            ACCESSOR_TIME_T.time_t(this, LAYOUT.tv_nsec, tv_nsec);
+            MEM_ACCESS.signed_long(this, LAYOUT.tv_nsec, tv_nsec);
         }
 
         @Override

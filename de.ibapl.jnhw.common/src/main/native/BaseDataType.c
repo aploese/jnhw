@@ -48,6 +48,26 @@ extern "C" {
         return __alignof__ (void*);
     }
 
+    /*
+     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
+     * Method:    getSizeOfLong0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOfLong0
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof (long);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
+     * Method:    getAlignOfLong0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlignOfLong0
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return __alignof__ (long);
+    }
+
 #ifdef __cplusplus
 }
 #endif

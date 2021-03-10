@@ -27,36 +27,52 @@ import de.ibapl.jnhw.common.memory.Uint64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.Unsigned_Long;
 
 /**
  *
  * @author aploese
  */
-public class AsUnsignedLongTest {
+public class Unsigned_LongTest {
 
-    public AsUnsignedLongTest() {
+    public Unsigned_LongTest() {
     }
 
     @Test
     public void testNative() {
         Uint64_t uint64_t = new Uint64_t(null, 0, null);
-        AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, uint64_t, 0, SET_MEM_TO_0);
+        Unsigned_Long instance = new Unsigned_Long(uint64_t, 0, SET_MEM_TO_0);
         final long input = 0x08070605040302010L;
         uint64_t.uint64_t(input);
-        assertEquals(input & 0x00000000ffffffffL, instance.getAsUnsignedLong());
-        instance.setFromUnsignedLong(33);
-        assertEquals(33, instance.getAsUnsignedLong());
-        assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(input));
-        assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
-        assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, null, 0, null));
+        if (BaseDataType.SIZE_OF_LONG == 8) {
+            assertEquals(input, instance.unsigned_long());
+        } else {
+            assertEquals(input & 0x00000000ffffffffL, instance.unsigned_long());
+        }
+        instance.unsigned_long(33);
+        assertEquals(33, instance.unsigned_long());
+        if (BaseDataType.SIZE_OF_LONG == 8) {
+            instance.unsigned_long(input);
+            assertEquals(input, instance.unsigned_long());
+            instance.unsigned_long(-1);
+            assertEquals(-1, instance.unsigned_long());
+        } else {
+            assertThrows(IllegalArgumentException.class, () -> instance.unsigned_long(input));
+            assertThrows(IllegalArgumentException.class, () -> instance.unsigned_long(-1));
+        }
     }
 
     @Test
     public void testNativeToString() {
         Uint64_t uint64_t = new Uint64_t(null, 0, null);
-        AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, uint64_t, 0, SET_MEM_TO_0);
+        Unsigned_Long instance = new Unsigned_Long(uint64_t, 0, SET_MEM_TO_0);
         uint64_t.uint64_t(0xfffffffffffffffeL);
-        assertEquals(Long.toString(0xfffffffeL), instance.nativeToString());
-        assertEquals("0xfffffffe", instance.nativeToHexString());
+        if (BaseDataType.SIZE_OF_LONG == 8) {
+            assertEquals(Long.toUnsignedString(0xfffffffffffffffeL), instance.nativeToString());
+            assertEquals("0xfffffffffffffffe", instance.nativeToHexString());
+        } else {
+            assertEquals(Long.toString(0xfffffffeL), instance.nativeToString());
+            assertEquals("0xfffffffe", instance.nativeToHexString());
+        }
     }
 }

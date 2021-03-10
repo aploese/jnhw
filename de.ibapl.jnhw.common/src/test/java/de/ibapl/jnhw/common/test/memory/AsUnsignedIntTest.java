@@ -55,8 +55,8 @@ public class AsUnsignedIntTest {
     @Test
     public void testNativeToString() {
         Uint64_t uint64_t = new Uint64_t(null, 0, null);
-        uint64_t.uint64_t(0xfffffffffffffffeL);
         AsUnsignedInt instance = new AsUnsignedInt(BaseDataType.uint16_t, uint64_t, 0, SET_MEM_TO_0);
+        uint64_t.uint64_t(0xfffffffffffffffeL);
         assertEquals(Integer.toString(0xfffe), instance.nativeToString());
         assertEquals("0xfffe", instance.nativeToHexString());
     }

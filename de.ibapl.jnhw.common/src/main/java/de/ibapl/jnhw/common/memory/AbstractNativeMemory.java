@@ -21,7 +21,10 @@
  */
 package de.ibapl.jnhw.common.memory;
 
+import de.ibapl.jnhw.common.LibJnhwCommonLoader;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import java.lang.ref.Cleaner;
 import java.util.logging.Logger;
 
@@ -83,9 +86,20 @@ public abstract class AbstractNativeMemory {
 
     private static MemoryAccessor getMemoryAccessor() {
         try {
-            return new UnsafeMemoryAccessor();
+            switch (NativeLibResolver.getWordSize()) {
+                case _32_BIT:
+                    return new UnsafeMemoryAccessor32();
+                case _64_BIT:
+                    return new UnsafeMemoryAccessor64();
+                default:
+                    throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
+            }
         } catch (Exception ex) {
-            return new JnhwMemoryAccessor();
+            if (ex instanceof IllegalStateException) {
+                throw ex;
+            } else {
+                return new JnhwMemoryAccessor();
+            }
         }
 
     }

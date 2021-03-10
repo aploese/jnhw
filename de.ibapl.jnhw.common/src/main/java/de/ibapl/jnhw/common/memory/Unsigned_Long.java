@@ -21,14 +21,44 @@
  */
 package de.ibapl.jnhw.common.memory;
 
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import java.io.IOException;
+
 /**
+ * teh datatype unsigned long
  *
  * @author aploese
  */
-public abstract class NativeIntNumber extends OpaqueMemory32 {
+public class Unsigned_Long extends NativeIntNumber {
 
-    protected NativeIntNumber(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
-        super(owner, offset, sizeInBytes, setMem);
+    private final BaseDataType dataType;
+
+    public Unsigned_Long(AbstractNativeMemory owner, long offset, Byte setMem) {
+        super(owner, offset, BaseDataType.SIZE_OF_LONG, setMem);
+        dataType = BaseDataType.getUnsigned_Long_Mapping();
+    }
+
+    public long unsigned_long() {
+        return MEM_ACCESS.unsigned_long(this, 0);
+    }
+
+    public void unsigned_long(long value) {
+        MEM_ACCESS.unsigned_long(this, 0, value);
+    }
+
+    @Override
+    public String nativeToHexString() {
+        return MEM_ACCESS.getUnsignedLongOf_AsHex(this, 0, sizeInBytes);
+    }
+
+    @Override
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+        sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(this, 0, sizeInBytes));
+    }
+
+    @Override
+    public BaseDataType getBaseDataType() {
+        return dataType;
     }
 
 }

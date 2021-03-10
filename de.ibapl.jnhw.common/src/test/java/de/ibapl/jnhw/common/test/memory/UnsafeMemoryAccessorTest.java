@@ -22,41 +22,39 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.AsSignedInt;
-import de.ibapl.jnhw.common.memory.Int32_t;
-import de.ibapl.jnhw.common.memory.Int64_t;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
 
 /**
  *
  * @author aploese
  */
-public class AsSignedIntTest {
+public class UnsafeMemoryAccessorTest {
 
-    public AsSignedIntTest() {
+    public UnsafeMemoryAccessorTest() {
     }
 
     @Test
-    public void testNative() {
-        Int32_t int32_t = new Int32_t(null, 0, null);
-        AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, int32_t, 0, SET_MEM_TO_0);
-        int input = 0x040302010;
-        int32_t.int32_t(input);
-        assertEquals(input & 0x0000ffff, instance.getAsSignedInt());
-        instance.setFromSignedInt(-33);
-        assertEquals(-33, instance.getAsSignedInt());
-        assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedInt(input));
-        assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, null, 0, null));
+    public void testSizes() {
+        //We rely on this to figure out 32 or 64 for long
+        switch (NativeLibResolver.getWordSize()) {
+            case _32_BIT:
+                assertEquals(4, BaseDataType.SIZE_OF_LONG);
+                assertEquals(Alignment.AT_4, BaseDataType.ALIGN_OF_LONG);
+                assertEquals(4, BaseDataType.SIZE_OF_POINTER);
+                assertEquals(Alignment.AT_4, BaseDataType.ALIGN_OF_POINTER);
+                break;
+            case _64_BIT:
+                assertEquals(8, BaseDataType.SIZE_OF_LONG);
+                assertEquals(Alignment.AT_8, BaseDataType.ALIGN_OF_LONG);
+                assertEquals(8, BaseDataType.SIZE_OF_POINTER);
+                assertEquals(Alignment.AT_8, BaseDataType.ALIGN_OF_POINTER);
+                break;
+            default:
+                fail();
+        }
     }
 
-    @Test
-    public void testNativeToString() {
-        Int64_t int64_t = new Int64_t(null, 0, null);
-        AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, int64_t, 0, SET_MEM_TO_0);
-        int64_t.int64_t(0xfffffffffffffffeL);
-        assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
-        assertEquals("0xfffe", instance.nativeToHexString());
-    }
 }

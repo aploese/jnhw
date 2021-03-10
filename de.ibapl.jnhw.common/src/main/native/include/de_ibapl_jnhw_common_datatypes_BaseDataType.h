@@ -23,6 +23,22 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeO
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlignOfPointer0
   (JNIEnv *, jclass);
 
+/*
+ * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
+ * Method:    getSizeOfLong0
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOfLong0
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
+ * Method:    getAlignOfLong0
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlignOfLong0
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif

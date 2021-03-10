@@ -48,6 +48,28 @@ public enum BaseDataType {
      */
     pointer(getAlignOfPointer(), getSizeOfPointer());
 
+    public static BaseDataType getSigned_Long_Mapping() {
+        switch (SIZE_OF_LONG) {
+            case 4:
+                return int32_t;
+            case 8:
+                return int64_t;
+            default:
+                throw new RuntimeException("Unexpected size of long");
+        }
+    }
+
+    public static BaseDataType getUnsigned_Long_Mapping() {
+        switch (SIZE_OF_LONG) {
+            case 4:
+                return uint32_t;
+            case 8:
+                return uint64_t;
+            default:
+                throw new RuntimeException("Unexpected size of long");
+        }
+    }
+
     private BaseDataType(boolean unsigned, int sizeof) {
         this.UNSIGNED = unsigned;
         this.ALIGN_OF = Alignment.fromAlignof(sizeof);
@@ -66,12 +88,16 @@ public enum BaseDataType {
 
     public final static int SIZE_OF_POINTER;
     public final static Alignment ALIGN_OF_POINTER;
+    public final static int SIZE_OF_LONG;
+    public final static Alignment ALIGN_OF_LONG;
 
     static {
         // This get called after the Constructor of BaseDataType...
         LibJnhwCommonLoader.touch();
         SIZE_OF_POINTER = getSizeOfPointer();
         ALIGN_OF_POINTER = getAlignOfPointer();
+        SIZE_OF_LONG = getSizeOfLong();
+        ALIGN_OF_LONG = getAlignOfLong();
     }
 
     private final static native int getSizeOfPointer0();
@@ -88,6 +114,22 @@ public enum BaseDataType {
         // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
         LibJnhwCommonLoader.touch();
         return Alignment.fromAlignof(getAlignOfPointer0());
+    }
+
+    private final static native int getSizeOfLong0();
+
+    private final static native int getAlignOfLong0();
+
+    private final static int getSizeOfLong() {
+        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
+        LibJnhwCommonLoader.touch();
+        return getSizeOfLong0();
+    }
+
+    private final static Alignment getAlignOfLong() {
+        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
+        LibJnhwCommonLoader.touch();
+        return Alignment.fromAlignof(getAlignOfLong0());
     }
 
 }
