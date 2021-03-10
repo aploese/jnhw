@@ -24,6 +24,8 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.memory.Uint8_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
  *
@@ -35,20 +37,19 @@ public class Uint8_tTest {
     }
 
     /**
-     * Test of sizeofUint8_t method, of class Uint8_t.
+     * Test of sizeofInt8_t method, of class Uint8_t.
      */
     @Test
     public void testSizeofUint8_t() {
-        assertEquals(1, Uint8_t.sizeof());
+        assertEquals(1, Uint8_t.DATA_TYPE.SIZE_OF);
     }
 
     /**
-     * Test of alignofUint8_t method, of class Uint8_t.
+     * Test of alignofInt8_t method, of class Uint8_t.
      */
     @Test
     public void testAlignofUint8_t() {
-        Uint8_t.alignof();
-        assertEquals(1, Uint8_t.alignof());
+        assertEquals(Alignment.AT_1, Uint8_t.DATA_TYPE.ALIGN_OF);
     }
 
     /**
@@ -56,18 +57,21 @@ public class Uint8_tTest {
      */
     @Test
     public void testRawUint8_t() {
-        Uint8_t instance = new Uint8_t(true);
+        Uint8_t instance = new Uint8_t(null, 0, SET_MEM_TO_0);
         byte expResult = 0x10;
-        instance.rawUint8_t(expResult);
-        assertEquals(expResult, instance.rawUint8_t());
+        instance.uint8_t(expResult);
+        assertEquals(expResult, instance.uint8_t());
+        instance.uint8_t((byte) -1);
+        assertEquals(0x00ff, instance.uint8_t_AsShort());
+        assertThrows(IllegalArgumentException.class, () -> instance.uint8_t_FromShort((short) -1));
     }
 
     @Test
     public void testNativeToString() {
-        Uint8_t instance = new Uint8_t(true);
-        instance.rawUint8_t((byte) -2);
+        Uint8_t instance = new Uint8_t(null, 0, SET_MEM_TO_0);
+        instance.uint8_t((byte) -2);
         assertEquals(String.valueOf(0x00FF & -2), instance.nativeToString());
         assertEquals(String.valueOf(Byte.toUnsignedInt((byte) -2)), instance.nativeToString());
-        assertEquals("fe", instance.nativeToHexString());
+        assertEquals("0xfe", instance.nativeToHexString());
     }
 }

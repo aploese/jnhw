@@ -23,6 +23,7 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -135,6 +136,48 @@ public final class Ioapiset {
         lpBuffer.position(lpBuffer.position() + numberOfBytesTransferred);
         return numberOfBytesTransferred;
     }
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-deviceiocontrol">DeviceIoControl</a>
+     * Sends a control code directly to a specified device driver, causing the
+     * corresponding device to perform the corresponding operation.
+     *
+     * @return the value of lpBytesReturned.
+     *
+     * @throws NullPointerException if hDevice or lpInBuffer or lpOutBuffer is
+     * {@code null}.
+     *
+     * @throws ArrayIndexOutOfBoundsException if nInBufferOffset or
+     * nInBufferSize or nOutBufferOffset are nOutBufferSize outside of
+     * lpInBuffer resp lpOutBuffer.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public native int DeviceIoControl(HANDLE hDevice, int dwIoControlCode, OpaqueMemory32 lpInBuffer,
+            int nInBufferOffset,
+            int nInBufferSize,
+            OpaqueMemory32 lpOutBuffer,
+            int nOutBufferOffset,
+            int nOutBufferSize,
+            OVERLAPPED lpOverlapped
+    ) throws NativeErrorException;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-deviceiocontrol">DeviceIoControl</a>
+     * Sends a control code directly to a specified device driver, causing the
+     * corresponding device to perform the corresponding operation.
+     *
+     * @return the value of lpBytesReturned.
+     *
+     * @throws NullPointerException if hDevice or lpInBuffer or lpOutBuffer is
+     * {@code null}.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public native int DeviceIoControl(HANDLE hDevice, int dwIoControlCode, ByteBuffer lpInBuffer, ByteBuffer lpOutBuffer, OVERLAPPED lpOverlapped
+    ) throws NativeErrorException;
 
     public final static boolean HAVE_IOAPISET_H;
 

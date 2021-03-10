@@ -29,6 +29,7 @@ import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
@@ -98,22 +99,23 @@ public class Sched {
 
         public static native int offsetof_Sched_ss_repl_period() throws NoSuchNativeTypeMemberException;
 
-        public Sched_param() {
-            this(false);
+        public Sched_param(Byte setMem) {
+            this(null, 0, setMem);
         }
 
-        public Sched_param(final boolean clearMem) {
-            super(sizeof(), clearMem);
+        public Sched_param(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, sizeof(), setMem);
+
             Time.Timespec t;
             try {
-                t = new Time.Timespec(this, offsetof_Sched_ss_init_budget());
+                t = new Time.Timespec(this, offsetof_Sched_ss_init_budget(), MEM_UNINITIALIZED);//mem is already initialized by parent
             } catch (NoSuchNativeTypeMemberException nstme) {
                 t = null;
             }
             sched_ss_init_budget = t;
 
             try {
-                t = new Time.Timespec(this, offsetof_Sched_ss_repl_period());
+                t = new Time.Timespec(this, offsetof_Sched_ss_repl_period(), MEM_UNINITIALIZED);//mem is already initialized by parent
             } catch (NoSuchNativeTypeMemberException nstme) {
                 t = null;
             }

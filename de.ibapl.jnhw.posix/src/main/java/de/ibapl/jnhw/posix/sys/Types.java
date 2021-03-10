@@ -29,15 +29,15 @@ import de.ibapl.jnhw.annontation.posix.sys.types.ssize_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.off_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.time_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.annotation.SizeOf;
-import de.ibapl.jnhw.common.annotation.Unsigned;
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
-import de.ibapl.jnhw.common.memory.NativeIntNumber;
+import de.ibapl.jnhw.common.memory.AsSignedLong;
+import de.ibapl.jnhw.common.memory.AsUnsignedInt;
+import de.ibapl.jnhw.common.memory.AsUnsignedLong;
+import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import java.io.IOException;
+import de.ibapl.jnhw.util.posix.PosixDataType;
 
 /**
  * Wrapper around the {@code  <sys/stat.h>} header.
@@ -73,408 +73,72 @@ public class Types {
     public final static boolean HAVE_SYS_TYPES_H;
 
     @off_t
-    public static class Off_t extends NativeIntNumber {
+    public static class Off_t extends AsSignedLong {
 
-        public final static BaseDataTypes dataType;
-
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-            //First we must load the native lib...
-            dataType = getIntegerType(sizeof(), unsigned());
-        }
-
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
-
-        @Unsigned
-        public final static native boolean unsigned();
-
-        public Off_t(boolean clearMem) {
-            super(sizeof(), clearMem);
-        }
-
-        public Off_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
-        }
-
-        public native @off_t
-        long getValue();
-
-        public native void setValue(@off_t long value);
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
-        }
-
-        @Override
-        public native String nativeToString();
-
-        @Override
-        public BaseDataTypes getBaseDataType() {
-            return dataType;
+        public Off_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+            super(PosixDataType.off_t.baseDataType, owner, offset, setMem);
         }
 
     }
 
     @mode_t
-    public static class Mode_t extends NativeIntNumber {
+    public static class Mode_t extends AsUnsignedInt {
 
-        public final static BaseDataTypes dataType;
-
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-            //First we must load the native lib...
-            dataType = getIntegerType(sizeof(), unsigned());
+        public Mode_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+            super(PosixDataType.mode_t.baseDataType, owner, offset, setMem);
         }
 
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
-
-        @Unsigned
-        public final static native boolean unsigned();
-
-        public Mode_t(boolean clearMem) {
-            super(sizeof(), clearMem);
-        }
-
-        public Mode_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
-        }
-
-        public native @mode_t
-        int getValue();
-
-        public native void setValue(@mode_t int value);
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
-        }
-
-        @Override
-        public native String nativeToString();
-
-        @Override
-        public BaseDataTypes getBaseDataType() {
-            return dataType;
-        }
     }
 
     @ssize_t
-    public static class Ssize_t extends NativeIntNumber {
+    public static class Ssize_t extends AsSignedLong {
 
-        public final static BaseDataTypes dataType;
-
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-            //First we must load the native lib...
-            dataType = getIntegerType(sizeof(), unsigned());
+        public Ssize_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+            super(PosixDataType.ssize_t.baseDataType, owner, offset, setMem);
         }
 
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
-
-        @Unsigned
-        public final static native boolean unsigned();
-
-        public Ssize_t(boolean clearMem) {
-            super(sizeof(), clearMem);
-        }
-
-        public Ssize_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
-        }
-
-        public native @ssize_t
-        long getValue();
-
-        public native void setValue(@ssize_t long value);
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
-        }
-
-        @Override
-        public native String nativeToString();
-
-        @Override
-        public BaseDataTypes getBaseDataType() {
-            return dataType;
-        }
     }
 
     @size_t
-    public static class Size_t extends NativeIntNumber {
+    public static class Size_t extends AsUnsignedLong {
 
-        public final static BaseDataTypes dataType;
-
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-            //First we must load the native lib...
-            dataType = getIntegerType(sizeof(), unsigned());
-        }
-
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
-
-        @Unsigned
-        public final static native boolean unsigned();
-
-        public Size_t(boolean clearMem) {
-            super(sizeof(), clearMem);
-        }
-
-        public Size_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
-        }
-
-        public native @size_t
-        long getValue();
-
-        public native void setValue(@pid_t long value);
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
-        }
-
-        @Override
-        public native String nativeToString();
-
-        @Override
-        public BaseDataTypes getBaseDataType() {
-            return dataType;
+        public Size_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+            super(PosixDataType.size_t.baseDataType, owner, offset, setMem);
         }
     }
 
     @pid_t
-    public static class Pid_t extends NativeIntNumber {
+    public static class Pid_t extends Int32_t {
 
-        public final static BaseDataTypes dataType;
-
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-            //First we must load the native lib...
-            dataType = getIntegerType(sizeof(), unsigned());
+        public Pid_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+            super(owner, offset, setMem);
         }
 
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
-
-        @Unsigned
-        public final static native boolean unsigned();
-
-        public Pid_t(boolean clearMem) {
-            super(sizeof(), clearMem);
-        }
-
-        public Pid_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
-        }
-
-        public native @pid_t
-        int getValue();
-
-        public native void setValue(@pid_t int value);
-
-        @Override
-        public native String nativeToString();
-
-        @Override
-        public BaseDataTypes getBaseDataType() {
-            return dataType;
-        }
     }
 
     @clock_t
-    public static class Clock_t extends NativeIntNumber {
+    public static class Clock_t extends AsSignedLong {
 
-        public final static BaseDataTypes dataType;
-
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-            //First we must load the native lib...
-            dataType = getIntegerType(sizeof(), unsigned());
-        }
-
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
-
-        @Unsigned
-        public final static native boolean unsigned();
-
-        public Clock_t(boolean clearMem) {
-            super(sizeof(), clearMem);
-        }
-
-        public Clock_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
-        }
-
-        public native @clock_t
-        long getValue();
-
-        public native void setValue(@clock_t long value);
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
-        }
-
-        @Override
-        public native String nativeToString();
-
-        @Override
-        public BaseDataTypes getBaseDataType() {
-            return dataType;
+        public Clock_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+            super(PosixDataType.clock_t.baseDataType, owner, offset, setMem);
         }
 
     }
 
     @time_t
-    public static class Time_t extends NativeIntNumber {
+    public static class Time_t extends AsSignedLong {
 
-        public final static BaseDataTypes dataType;
-
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-            //First we must load the native lib...
-            dataType = getIntegerType(sizeof(), unsigned());
-        }
-
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
-
-        @Unsigned
-        public final static native boolean unsigned();
-
-        public Time_t(boolean clearMem) {
-            super(sizeof(), clearMem);
-        }
-
-        public Time_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
-        }
-
-        public native @time_t
-        long getValue();
-
-        public native void setValue(@time_t long value);
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
-        }
-
-        @Override
-        public native String nativeToString();
-
-        @Override
-        public BaseDataTypes getBaseDataType() {
-            return dataType;
+        public Time_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+            super(PosixDataType.time_t.baseDataType, owner, offset, setMem);
         }
 
     }
 
     @uid_t
-    public static class Uid_t extends NativeIntNumber {
+    public static class Uid_t extends Uint32_t {
 
-        public final static BaseDataTypes dataType;
-
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-            //First we must load the native lib...
-            dataType = getIntegerType(sizeof(), unsigned());
-        }
-
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
-
-        @Unsigned
-        public final static native boolean unsigned();
-
-        public Uid_t(boolean clearMem) {
-            super(sizeof(), clearMem);
-        }
-
-        public Uid_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
-        }
-
-        public native @uid_t
-        int getValue();
-
-        public native void setValue(@uid_t int value);
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
-        }
-
-        @Override
-        public native String nativeToString();
-
-        @Override
-        public BaseDataTypes getBaseDataType() {
-            return dataType;
+        public Uid_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+            super(owner, offset, setMem);
         }
     }
 

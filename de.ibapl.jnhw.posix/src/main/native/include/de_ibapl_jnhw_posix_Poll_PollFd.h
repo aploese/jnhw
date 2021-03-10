@@ -9,67 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Poll_PollFd
- * Method:    sizeof
- * Signature: ()I
+ * Method:    native2Layout
+ * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/posix/Poll/PollFd/Layout;
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_sizeof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Poll_PollFd
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_alignof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Poll_PollFd
- * Method:    events
- * Signature: ()S
- */
-JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Poll_PollFd
- * Method:    events
- * Signature: (S)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_events__S
-  (JNIEnv *, jobject, jshort);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Poll_PollFd
- * Method:    fd
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Poll_PollFd
- * Method:    fd
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_fd__I
-  (JNIEnv *, jobject, jint);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Poll_PollFd
- * Method:    revents
- * Signature: ()S
- */
-JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Poll_PollFd
- * Method:    revents
- * Signature: (S)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_revents__S
-  (JNIEnv *, jobject, jshort);
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_native2Layout
+  (JNIEnv *, jclass, jclass);
 
 #ifdef __cplusplus
 }

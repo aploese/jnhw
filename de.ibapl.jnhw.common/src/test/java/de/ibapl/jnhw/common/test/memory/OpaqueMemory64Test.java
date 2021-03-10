@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.common.test.memory;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
-import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
@@ -39,20 +39,12 @@ public class OpaqueMemory64Test {
             super(baseAddress, sizeInBytes);
         }
 
-        MemToTest(long sizeInBytes, boolean clearMem) throws NoSuchNativeMethodException {
-            super(sizeInBytes, clearMem);
-        }
-
-        MemToTest(long elements, long elementSizeInBytes, boolean clearMem) throws NoSuchNativeMethodException {
-            super(elements, elementSizeInBytes, clearMem);
-        }
-
-        MemToTest(OpaqueMemory64 mem, long offset, long sizeInBytes) {
-            super(mem, offset, sizeInBytes);
+        MemToTest(OpaqueMemory64 mem, long offset, long sizeInBytes, Byte setMem) {
+            super(mem, offset, sizeInBytes, setMem);
         }
 
         @Override
-        public BaseDataTypes getBaseDataType() {
+        public BaseDataType getBaseDataType() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -65,9 +57,9 @@ public class OpaqueMemory64Test {
 
     @Test
     public void testAllocateDirtyMem() throws Exception {
-        OpaqueMemory64 mem = new MemToTest(1024L, false);
+        OpaqueMemory64 mem = new MemToTest(null, 0L, 1024L, null);
         Assertions.assertEquals(1024, mem.sizeInBytes);
-        Assertions.assertEquals(mem, mem.memoryOwner);
+        Assertions.assertEquals(mem, mem.parent);
         mem = null;
         System.gc();
         Thread.sleep(1000);
@@ -76,31 +68,9 @@ public class OpaqueMemory64Test {
 
     @Test
     public void testAllocateCleanMem() throws Exception {
-        OpaqueMemory64 mem = new MemToTest(1024L, true);
+        OpaqueMemory64 mem = new MemToTest(null, 0L, 1024L, SET_MEM_TO_0);
         Assertions.assertEquals(1024, mem.sizeInBytes);
-        Assertions.assertEquals(mem, mem.memoryOwner);
-        mem = null;
-        System.gc();
-        Thread.sleep(1000);
-        System.gc();
-    }
-
-    @Test
-    public void testCAllocateDirtyMem() throws Exception {
-        OpaqueMemory64 mem = new MemToTest(2L, 512L, false);
-        Assertions.assertEquals(1024, mem.sizeInBytes);
-        Assertions.assertEquals(mem, mem.memoryOwner);
-        mem = null;
-        System.gc();
-        Thread.sleep(1000);
-        System.gc();
-    }
-
-    @Test
-    public void testCAllocateCleanMem() throws Exception {
-        OpaqueMemory64 mem = new MemToTest(2L, 512L, true);
-        Assertions.assertEquals(1024, mem.sizeInBytes);
-        Assertions.assertEquals(mem, mem.memoryOwner);
+        Assertions.assertEquals(mem, mem.parent);
         mem = null;
         System.gc();
         Thread.sleep(1000);
@@ -111,7 +81,7 @@ public class OpaqueMemory64Test {
 
     @Test
     public void testCopy() throws Exception {
-        OpaqueMemory64 mem = new MemToTest(1024L, false);
+        OpaqueMemory64 mem = new MemToTest(null, 0L, 1024L, null);
         final long MEM_POS = 753;
         OpaqueMemory64.copy(HELLO_WORLD, 0, mem, MEM_POS, HELLO_WORLD.length);
         byte[] received = new byte[HELLO_WORLD.length];
@@ -122,7 +92,7 @@ public class OpaqueMemory64Test {
     @Test
     public void testCopyIndex() throws Exception {
         final byte[] array = new byte[16];
-        final OpaqueMemory64 mem = new MemToTest(array.length, false);
+        final OpaqueMemory64 mem = new MemToTest(null, 0L, array.length, null);
         Assertions.assertAll(() -> {
             //exact fit
             OpaqueMemory64.copy(mem, 0, array, 0, array.length);
@@ -139,15 +109,15 @@ public class OpaqueMemory64Test {
                 OpaqueMemory64.copy(mem, 8, array, 0, 16);
             }, "Destarray end outside srcmem");
         }, () -> {
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 OpaqueMemory64.copy(mem, 0, array, -1, 1);
             }, "Srcmem start outside destarray");
         }, () -> {
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 OpaqueMemory64.copy(mem, 0, array, 22, 1);
             }, "Srcmem start outside destarray");
         }, () -> {
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 OpaqueMemory64.copy(mem, 0, array, 8, 16);
             }, "Srcmem end outside destarray");
         }, () -> {
@@ -155,18 +125,18 @@ public class OpaqueMemory64Test {
             if (mem.sizeInBytes <= Integer.MAX_VALUE) {
                 OpaqueMemory64.copy(array, 0, mem, 0, (int) mem.sizeInBytes);
             } else {
-                throw new RuntimeException("Cant execute test because mem.sizeInBytes > Integer.MAX_VALUE");
+                throw new RuntimeException("Can't execute test because mem.sizeInBytes > Integer.MAX_VALUE");
             }
         }, () -> {
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 OpaqueMemory64.copy(array, -1, mem, 0, 1);
             }, "Destmem start outside srcarray");
         }, () -> {
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 OpaqueMemory64.copy(array, 22, mem, 0, 1);
             }, "Destmem start outside srcarray");
         }, () -> {
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 OpaqueMemory64.copy(array, 8, mem, 0, 16);
             }, "Destmem end outside srcarray");
         }, () -> {
@@ -186,14 +156,14 @@ public class OpaqueMemory64Test {
 
     @Test
     public void testGetSetByte() throws Exception {
-        OpaqueMemory64 mem = new MemToTest(1024L, false);
-        OpaqueMemory64.setByte(mem, (long) 67, (byte) 9);
-        Assertions.assertEquals((byte) 9, OpaqueMemory64.getByte(mem, (long) 67));
+        OpaqueMemory64 mem = new MemToTest(null, 0L, 1024L, null);
+        OpaqueMemory64.setByte(mem, 67, (byte) 9);
+        Assertions.assertEquals((byte) 9, OpaqueMemory64.getByte(mem, 67));
     }
 
     @Test
     public void testSetGetIndex() throws Exception {
-        final OpaqueMemory64 mem = new MemToTest(16L, false);
+        final OpaqueMemory64 mem = new MemToTest(null, 0L, 16L, null);
         Assertions.assertAll(() -> {
             //Exact fit
             OpaqueMemory64.getByte(mem, 0);
@@ -208,22 +178,22 @@ public class OpaqueMemory64Test {
             });
         }, () -> {
             //Exact fit
-            OpaqueMemory64.setByte(mem, 0, (byte) 0);
-            OpaqueMemory64.setByte(mem, 15, (byte) 0);
+            OpaqueMemory64.setByte(mem, 0, SET_MEM_TO_0);
+            OpaqueMemory64.setByte(mem, 15, SET_MEM_TO_0);
         }, () -> {
             Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-                OpaqueMemory64.setByte(mem, -11, (byte) 0);
+                OpaqueMemory64.setByte(mem, -11, SET_MEM_TO_0);
             });
         }, () -> {
             Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-                OpaqueMemory64.setByte(mem, 33, (byte) 0);
+                OpaqueMemory64.setByte(mem, 33, SET_MEM_TO_0);
             });
         });
     }
 
     @Test
     public void testClear() throws Exception {
-        OpaqueMemory64 mem = new MemToTest(1024, false);
+        OpaqueMemory64 mem = new MemToTest(null, 0L, 1024, null);
         OpaqueMemory64.clear(mem);
         for (int i = 0; i < mem.sizeInBytes; i++) {
             Assertions.assertEquals(0, OpaqueMemory64.getByte(mem, i));
@@ -232,7 +202,7 @@ public class OpaqueMemory64Test {
 
     @Test
     public void testSetMem() throws Exception {
-        OpaqueMemory64 mem = new MemToTest(1024, true);
+        OpaqueMemory64 mem = new MemToTest(null, 0L, 1024, SET_MEM_TO_0);
         OpaqueMemory64.memset(mem, (byte) 42);
         for (int i = 0; i < mem.sizeInBytes; i++) {
             Assertions.assertEquals(42, OpaqueMemory64.getByte(mem, i));
@@ -243,7 +213,7 @@ public class OpaqueMemory64Test {
     public void testEquals() throws Exception {
         OpaqueMemory64 mem = new MemToTest(new NativeAddressHolder(0x2aL), 8);
         OpaqueMemory64 mem1 = new MemToTest(new NativeAddressHolder(42L), 8);
-        OpaqueMemory64 mem2 = new MemToTest(mem, 0, 8);
+        OpaqueMemory64 mem2 = new MemToTest(mem, 0, 8, null);
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());

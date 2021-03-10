@@ -24,6 +24,8 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.memory.Int8_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
  *
@@ -39,7 +41,7 @@ public class Int8_tTest {
      */
     @Test
     public void testSizeofInt8_t() {
-        assertEquals(1, Int8_t.sizeof());
+        assertEquals(1, Int8_t.DATA_TYPE.SIZE_OF);
     }
 
     /**
@@ -47,7 +49,7 @@ public class Int8_tTest {
      */
     @Test
     public void testAlignofInt8_t() {
-        assertEquals(1, Int8_t.alignof());
+        assertEquals(Alignment.AT_1, Int8_t.DATA_TYPE.ALIGN_OF);
     }
 
     /**
@@ -55,17 +57,17 @@ public class Int8_tTest {
      */
     @Test
     public void testRawInt8_t() {
-        Int8_t instance = new Int8_t(true);
+        Int8_t instance = new Int8_t(null, 0, SET_MEM_TO_0);
         byte expResult = 0x10;
-        instance.rawInt8_t(expResult);
-        assertEquals(expResult, instance.rawInt8_t());
+        instance.int8_t(expResult);
+        assertEquals(expResult, instance.int8_t());
     }
 
     @Test
     public void testNativeToString() {
-        Int8_t instance = new Int8_t(true);
-        instance.rawInt8_t((byte) -2);
+        Int8_t instance = new Int8_t(null, 0, SET_MEM_TO_0);
+        instance.int8_t((byte) -2);
         assertEquals("-2", instance.nativeToString());
-        assertEquals("fe", instance.nativeToHexString());
+        assertEquals("0xfe", instance.nativeToHexString());
     }
 }

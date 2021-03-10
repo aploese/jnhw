@@ -36,7 +36,7 @@ extern "C" {
 #include <signal.h>
 #include <stdlib.h>
 
-#if defined (__APPLE__) 
+#if defined (__APPLE__)
 #include <xlocale.h>
 #endif
 
@@ -291,10 +291,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    getdate
-     * Signature: (Ljava/lang/String;)Lde/ibapl/jnhw/posix/Time$Tm;
+     * Method:    getdate0
+     * Signature: (Ljava/lang/String;)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_getdate
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_getdate0
 #if defined(__FreeBSD__) || defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jstring string) {
         throw_NoSuchNativeMethodException(env, "getdate");
@@ -310,7 +310,7 @@ extern "C" {
         (*env)->ReleaseStringUTFChars(env, string, _string);
 
         if (tm) {
-            return WRAP_STATIC_STRUCT_TM(tm);
+            return CREATE_NativeAddressHolder(tm);
         } else {
             throw_NativeErrorException(env, getdate_err);
             return NULL;
@@ -320,10 +320,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    gmtime
-     * Signature: (J)Lde/ibapl/jnhw/posix/Time$Tm;
+     * Method:    gmtime0
+     * Signature: (J)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime0
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
 #if defined(_JNHW__time_t__IS__int64_t)
         const struct tm *tm = gmtime((int64_t *) & timer);
@@ -337,7 +337,7 @@ extern "C" {
 #error expected time_t is int32_t or int64_t
 #endif
         if (tm) {
-            return WRAP_STATIC_STRUCT_TM(tm);
+            return CREATE_NativeAddressHolder(tm);
         } else {
             throw_NativeErrorException(env, errno);
             return NULL;
@@ -375,10 +375,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
-     * Method:    localtime
-     * Signature: (J)Lde/ibapl/jnhw/posix/Time$Tm;
+     * Method:    localtime0
+     * Signature: (J)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_localtime
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_localtime0
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
 #if defined(_JNHW__time_t__IS__int64_t)
         const struct tm *result = localtime((int64_t *) & timer);
@@ -392,7 +392,7 @@ extern "C" {
 #error expected time_t is int32_t or int64_t
 #endif
         if (result) {
-            return WRAP_STATIC_STRUCT_TM(result);
+            return CREATE_NativeAddressHolder(result);
         } else {
             return NULL;
         }

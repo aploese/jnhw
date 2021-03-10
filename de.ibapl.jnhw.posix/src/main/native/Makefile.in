@@ -160,14 +160,15 @@ libjnhw_posix_la_DEPENDENCIES = libaio.la liberrno.la libeventfd.la \
 	libsysstat.la libsystypes.la libtermios.la libtime.la \
 	libucontext.la libunistd.la libposixutils.la \
 	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
-am_libjnhw_posix_la_OBJECTS = jnhw-posix-jni.lo
+am_libjnhw_posix_la_OBJECTS = PosixDataType.lo jnhw-posix-jni.lo
 libjnhw_posix_la_OBJECTS = $(am_libjnhw_posix_la_OBJECTS)
 liblocale_la_LIBADD =
 am_liblocale_la_OBJECTS = LocaleDefines.lo LocaleFunctions.lo \
 	Locale_Lconv.lo
 liblocale_la_OBJECTS = $(am_liblocale_la_OBJECTS)
 libpoll_la_LIBADD =
-am_libpoll_la_OBJECTS = PollDefines.lo PollFunctions.lo Poll_PollFd.lo
+am_libpoll_la_OBJECTS = PollDefines.lo PollFunctions.lo \
+	PollStructures.lo
 libpoll_la_OBJECTS = $(am_libpoll_la_OBJECTS)
 libposixutils_la_LIBADD =
 am_libposixutils_la_OBJECTS = Defines.lo
@@ -198,18 +199,15 @@ libsysstat_la_LIBADD =
 am_libsysstat_la_OBJECTS = StatDefines.lo StatFunctions.lo
 libsysstat_la_OBJECTS = $(am_libsysstat_la_OBJECTS)
 libsystypes_la_LIBADD =
-am_libsystypes_la_OBJECTS = TypesDefines.lo Types_Clock_t.lo \
-	Types_Mode_t.lo Types_Off_t.lo Types_Pid_t.lo Types_Size_t.lo \
-	Types_Ssize_t.lo Types_Time_t.lo Types_Uid_t.lo
+am_libsystypes_la_OBJECTS = TypesDefines.lo
 libsystypes_la_OBJECTS = $(am_libsystypes_la_OBJECTS)
 libtermios_la_LIBADD =
 am_libtermios_la_OBJECTS = TermiosDefines.lo TermiosFunctions.lo \
-	Termios_Cc_t.lo Termios_Speed_t.lo Termios_Tcflag_t.lo \
-	Termios_Termios.lo
+	TermiosStructures.lo
 libtermios_la_OBJECTS = $(am_libtermios_la_OBJECTS)
 libtime_la_LIBADD =
 am_libtime_la_OBJECTS = TimeDefines.lo TimeFunctions.lo \
-	Time_Itimerspec.lo Time_Timer_t.lo Time_Timespec.lo Time_Tm.lo
+	TimeStructures.lo
 libtime_la_OBJECTS = $(am_libtime_la_OBJECTS)
 libucontext_la_LIBADD =
 am_libucontext_la_OBJECTS = UcontextDefines.lo UcontextFunctions.lo
@@ -243,7 +241,8 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
 	./$(DEPDIR)/LocaleDefines.Plo ./$(DEPDIR)/LocaleFunctions.Plo \
 	./$(DEPDIR)/Locale_Lconv.Plo ./$(DEPDIR)/PollDefines.Plo \
-	./$(DEPDIR)/PollFunctions.Plo ./$(DEPDIR)/Poll_PollFd.Plo \
+	./$(DEPDIR)/PollFunctions.Plo ./$(DEPDIR)/PollStructures.Plo \
+	./$(DEPDIR)/PosixDataType.Plo \
 	./$(DEPDIR)/Posix_ErrnoDefines.Plo \
 	./$(DEPDIR)/PthreadDefines.Plo \
 	./$(DEPDIR)/PthreadFunctions.Plo \
@@ -264,18 +263,10 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/StringHeaderDefines.Plo \
 	./$(DEPDIR)/StringHeaderFunctions.Plo \
 	./$(DEPDIR)/TermiosDefines.Plo \
-	./$(DEPDIR)/TermiosFunctions.Plo ./$(DEPDIR)/Termios_Cc_t.Plo \
-	./$(DEPDIR)/Termios_Speed_t.Plo \
-	./$(DEPDIR)/Termios_Tcflag_t.Plo \
-	./$(DEPDIR)/Termios_Termios.Plo ./$(DEPDIR)/TimeDefines.Plo \
-	./$(DEPDIR)/TimeFunctions.Plo ./$(DEPDIR)/Time_Itimerspec.Plo \
-	./$(DEPDIR)/Time_Timer_t.Plo ./$(DEPDIR)/Time_Timespec.Plo \
-	./$(DEPDIR)/Time_Tm.Plo ./$(DEPDIR)/TypesDefines.Plo \
-	./$(DEPDIR)/Types_Clock_t.Plo ./$(DEPDIR)/Types_Mode_t.Plo \
-	./$(DEPDIR)/Types_Off_t.Plo ./$(DEPDIR)/Types_Pid_t.Plo \
-	./$(DEPDIR)/Types_Size_t.Plo ./$(DEPDIR)/Types_Ssize_t.Plo \
-	./$(DEPDIR)/Types_Time_t.Plo ./$(DEPDIR)/Types_Uid_t.Plo \
-	./$(DEPDIR)/UcontextDefines.Plo \
+	./$(DEPDIR)/TermiosFunctions.Plo \
+	./$(DEPDIR)/TermiosStructures.Plo ./$(DEPDIR)/TimeDefines.Plo \
+	./$(DEPDIR)/TimeFunctions.Plo ./$(DEPDIR)/TimeStructures.Plo \
+	./$(DEPDIR)/TypesDefines.Plo ./$(DEPDIR)/UcontextDefines.Plo \
 	./$(DEPDIR)/UcontextFunctions.Plo \
 	./$(DEPDIR)/UnistdDefines.Plo ./$(DEPDIR)/UnistdFunctions.Plo \
 	./$(DEPDIR)/jnhw-posix-jni.Plo
@@ -534,6 +525,7 @@ libjnhw_posix_la_LIBADD = \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libjnhw_posix_la_SOURCES = \
+ PosixDataType.c \
  jnhw-posix-jni.c
 
 libaio_la_SOURCES = \
@@ -561,12 +553,12 @@ libioclt_la_SOURCES = \
 liblocale_la_SOURCES = \
  LocaleDefines.c \
  LocaleFunctions.c \
- Locale_Lconv.c 
+ Locale_Lconv.c
 
 libpoll_la_SOURCES = \
  PollDefines.c \
  PollFunctions.c \
- Poll_PollFd.c 
+ PollStructures.c
 
 libposixutils_la_SOURCES = \
  Defines.c
@@ -604,15 +596,7 @@ libstring_la_SOURCES = \
  StringHeaderFunctions.c
 
 libsystypes_la_SOURCES = \
- TypesDefines.c \
- Types_Clock_t.c \
- Types_Mode_t.c \
- Types_Off_t.c \
- Types_Pid_t.c \
- Types_Size_t.c \
- Types_Ssize_t.c \
- Types_Time_t.c \
- Types_Uid_t.c
+ TypesDefines.c
 
 libsysstat_la_SOURCES = \
  StatDefines.c \
@@ -621,18 +605,12 @@ libsysstat_la_SOURCES = \
 libtermios_la_SOURCES = \
  TermiosDefines.c \
  TermiosFunctions.c \
- Termios_Cc_t.c \
- Termios_Speed_t.c \
- Termios_Tcflag_t.c \
- Termios_Termios.c
+ TermiosStructures.c
 
 libtime_la_SOURCES = \
  TimeDefines.c \
  TimeFunctions.c \
- Time_Itimerspec.c \
- Time_Timer_t.c \
- Time_Timespec.c \
- Time_Tm.c
+ TimeStructures.c
 
 libucontext_la_SOURCES = \
  UcontextDefines.c \
@@ -806,7 +784,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Locale_Lconv.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Poll_PollFd.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollStructures.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PosixDataType.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadFunctions.Plo@am__quote@ # am--include-marker
@@ -833,25 +812,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Cc_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Speed_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Tcflag_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Termios_Termios.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Itimerspec.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Timer_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Timespec.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Time_Tm.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TypesDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Clock_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Mode_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Off_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Pid_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Size_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Ssize_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Time_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Types_Uid_t.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdDefines.Plo@am__quote@ # am--include-marker
@@ -1035,7 +1000,8 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Locale_Lconv.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
-	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
+	-rm -f ./$(DEPDIR)/PollStructures.Plo
+	-rm -f ./$(DEPDIR)/PosixDataType.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
@@ -1062,25 +1028,11 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
-	-rm -f ./$(DEPDIR)/Termios_Cc_t.Plo
-	-rm -f ./$(DEPDIR)/Termios_Speed_t.Plo
-	-rm -f ./$(DEPDIR)/Termios_Tcflag_t.Plo
-	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
+	-rm -f ./$(DEPDIR)/TermiosStructures.Plo
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
-	-rm -f ./$(DEPDIR)/Time_Itimerspec.Plo
-	-rm -f ./$(DEPDIR)/Time_Timer_t.Plo
-	-rm -f ./$(DEPDIR)/Time_Timespec.Plo
-	-rm -f ./$(DEPDIR)/Time_Tm.Plo
+	-rm -f ./$(DEPDIR)/TimeStructures.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
-	-rm -f ./$(DEPDIR)/Types_Clock_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Mode_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Off_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Pid_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Size_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Ssize_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Time_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Uid_t.Plo
 	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
@@ -1149,7 +1101,8 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Locale_Lconv.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
-	-rm -f ./$(DEPDIR)/Poll_PollFd.Plo
+	-rm -f ./$(DEPDIR)/PollStructures.Plo
+	-rm -f ./$(DEPDIR)/PosixDataType.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
@@ -1176,25 +1129,11 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
-	-rm -f ./$(DEPDIR)/Termios_Cc_t.Plo
-	-rm -f ./$(DEPDIR)/Termios_Speed_t.Plo
-	-rm -f ./$(DEPDIR)/Termios_Tcflag_t.Plo
-	-rm -f ./$(DEPDIR)/Termios_Termios.Plo
+	-rm -f ./$(DEPDIR)/TermiosStructures.Plo
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
-	-rm -f ./$(DEPDIR)/Time_Itimerspec.Plo
-	-rm -f ./$(DEPDIR)/Time_Timer_t.Plo
-	-rm -f ./$(DEPDIR)/Time_Timespec.Plo
-	-rm -f ./$(DEPDIR)/Time_Tm.Plo
+	-rm -f ./$(DEPDIR)/TimeStructures.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
-	-rm -f ./$(DEPDIR)/Types_Clock_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Mode_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Off_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Pid_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Size_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Ssize_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Time_t.Plo
-	-rm -f ./$(DEPDIR)/Types_Uid_t.Plo
 	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo

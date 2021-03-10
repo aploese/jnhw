@@ -28,6 +28,7 @@ import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.nativecall.CallNative_Mem_V;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_Mem_V;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
@@ -52,7 +53,7 @@ public class Callback_Mem_V_Test {
         }
 
         public A() {
-            super(SIZE_OF, true);
+            super((OpaqueMemory32) null, 0, SIZE_OF, SET_MEM_TO_0);
         }
 
     }

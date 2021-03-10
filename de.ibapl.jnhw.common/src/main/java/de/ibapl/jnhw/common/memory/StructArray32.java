@@ -21,43 +21,39 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 /**
  *
  * @author aploese
  * @param <T>
  */
-public abstract class StructArray32<T extends OpaqueMemory32> extends OpaqueMemory32 {
+public abstract class StructArray32<T extends OpaqueMemory32> extends OpaqueMemory32 implements Iterable<T> {
 
     @FunctionalInterface
     protected interface ElementFactory<T extends OpaqueMemory32> {
 
-        T create(StructArray32<T> parent, int offset);
+        T create(StructArray32<T> parent, long offset);
 
     }
 
     private final T[] elements;
 
-    protected StructArray32(T[] array, ElementFactory<T> factory, int elementSizeInBytes, boolean clearMem) {
-        super(array.length, elementSizeInBytes, clearMem);
+    protected StructArray32(T[] array, ElementFactory<T> factory, int elementSizeInBytes, Byte setMem) {
+        super((OpaqueMemory32) null, 0, array.length * elementSizeInBytes, setMem);
         elements = array;
         for (int i = 0; i < array.length; i++) {
             elements[i] = factory.create(this, elementSizeInBytes * i);
         }
     }
 
-    protected StructArray32(OpaqueMemory32 parent, int offset, T[] array, ElementFactory<T> factory, int elementSizeInBytes, boolean clearMem) {
-        super(parent, offset, array.length, elementSizeInBytes);
-        elements = array;
-        for (int i = 0; i < array.length; i++) {
-            elements[i] = factory.create(this, elementSizeInBytes * i);
-        }
-    }
-
-    protected StructArray32(OpaqueMemory64 parent, long offset, T[] array, ElementFactory<T> factory, int elementSizeInBytes, boolean clearMem) {
-        super(parent, offset, array.length, elementSizeInBytes);
+    protected StructArray32(AbstractNativeMemory parent, long offset, T[] array, ElementFactory<T> factory, int elementSizeInBytes, Byte setMem) {
+        super(parent, offset, array.length * elementSizeInBytes, setMem);
         elements = array;
         for (int i = 0; i < array.length; i++) {
             elements[i] = factory.create(this, elementSizeInBytes * i);
@@ -102,6 +98,9 @@ public abstract class StructArray32<T extends OpaqueMemory32> extends OpaqueMemo
                 element.nativeToString(sb, INDENT, indent);
             }
         }
+        if (doIndent) {
+            sb.append("\n").append(INDENT);
+        }
         sb.append("]");
     }
 
@@ -119,8 +118,23 @@ public abstract class StructArray32<T extends OpaqueMemory32> extends OpaqueMemo
     }
 
     @Override
-    public BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.array;
+    public BaseDataType getBaseDataType() {
+        return BaseDataType.array;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return Arrays.asList(elements).iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super T> action) {
+        Arrays.asList(elements).forEach(action);
+    }
+
+    @Override
+    public Spliterator<T> spliterator() {
+        return Arrays.asList(elements).spliterator();
     }
 
 }

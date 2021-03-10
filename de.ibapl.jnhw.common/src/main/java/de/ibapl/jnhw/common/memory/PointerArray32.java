@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 
 /**
@@ -33,26 +33,12 @@ public class PointerArray32<T extends OpaqueMemory32> extends OpaqueMemory32 {
 
     public void set(int i, T element) {
         cachedReferences[i] = element;
-        set0(i, element);
+        MEM_ACCESS.uintptr_t_AtIndex(this, 0, i, element);
     }
 
-    /**
-     *
-     * @param i the index must be in range.
-     * @return
-     */
-    private native NativeAddressHolder get0(int i);
-
-    /**
-     *
-     * @param i the index must be in range.
-     * @param element
-     */
-    private native void set0(int i, T element);
-
     @Override
-    public BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.array;
+    public BaseDataType getBaseDataType() {
+        return BaseDataType.array;
     }
 
     @Override
@@ -76,23 +62,23 @@ public class PointerArray32<T extends OpaqueMemory32> extends OpaqueMemory32 {
 
     private final OpaqueMemory32[] cachedReferences;
 
-    public static native int sizeofPointer();
+    public PointerArray32(int arrayLength, Byte setMem) {
+        this(arrayLength, null, 0, setMem);
+    }
 
-    public static native int alignofPointer();
-
-    public PointerArray32(int length, boolean clearMem) {
-        super(length, sizeofPointer(), clearMem);
-        cachedReferences = new OpaqueMemory32[length];
+    public PointerArray32(int arrayLength, OpaqueMemory32 parent, long offset, Byte setMem) {
+        super(parent, offset, arrayLength * BaseDataType.uintptr_t.SIZE_OF, setMem);
+        cachedReferences = new OpaqueMemory32[arrayLength];
     }
 
     public final T get(int index, ElementProducer<T> p) {
         @SuppressWarnings("unchecked")
         final T ref = (T) cachedReferences[index];
-        final NativeAddressHolder elementBaseAddress = get0(index);
-        if (OpaqueMemory32.isSameAddress(elementBaseAddress, ref)) {
+        final long elementBaseAddress = MEM_ACCESS.uintptr_t_AtIndex(this, 0, index);
+        if (ref == null ? elementBaseAddress == 0 : elementBaseAddress == ref.baseAddress) {
             return ref;
         } else {
-            final T newRef = p.produce(elementBaseAddress, index, ref);
+            final T newRef = p.produce(new NativeAddressHolder(elementBaseAddress), index, ref);
             cachedReferences[index] = newRef;
             return newRef;
         }

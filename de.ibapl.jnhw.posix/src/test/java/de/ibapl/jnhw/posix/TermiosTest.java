@@ -21,14 +21,17 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
 import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
 import static de.ibapl.jnhw.posix.Termios.CS8;
 import de.ibapl.jnhw.util.posix.Defines;
+import de.ibapl.jnhw.util.posix.PosixDataType;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -160,68 +163,68 @@ public class TermiosTest {
                 switch (MULTIARCHTUPEL_BUILDER.getArch()) {
                     case MIPS:
                     case MIPS_64:
-                        Assertions.assertEquals(52, Termios.StructTermios.sizeof());
+                        Assertions.assertEquals(52, Termios.StructTermios.LAYOUT.getSizeof());
                         break;
                     default:
-                        Assertions.assertEquals(60, Termios.StructTermios.sizeof());
+                        Assertions.assertEquals(60, Termios.StructTermios.LAYOUT.getSizeof());
                 }
                 break;
             case FREE_BSD:
             case OPEN_BSD:
-                Assertions.assertEquals(44, Termios.StructTermios.sizeof());
+                Assertions.assertEquals(44, Termios.StructTermios.LAYOUT.getSizeof());
                 break;
             default:
-                Assertions.assertEquals(-1, Termios.StructTermios.sizeof());
+                Assertions.assertEquals(-1, Termios.StructTermios.LAYOUT.getSizeof());
         }
     }
 
     @Test
     public void testAlignOfTermios() throws Exception {
-        Assertions.assertEquals(4, Termios.StructTermios.alignof());
+        Assertions.assertEquals(Alignment.AT_4, Termios.StructTermios.LAYOUT.getAlignment());
     }
 
     @Test
     public void testCc_t() {
-        Assertions.assertEquals(1, Termios.Cc_t.sizeof());
-        Assertions.assertEquals(1, Termios.Cc_t.alignof());
-        assertTrue(Termios.Cc_t.unsigned());
-        Termios.Cc_t instance = new Termios.Cc_t(true);
-        assertEquals(BaseDataTypes.uint8_t, instance.getBaseDataType());
-        instance.setValue((byte) 0x80);
-        assertEquals((byte) 0x80, instance.getValue());
-        assertEquals(0xFFFFFF80, instance.getValue());
+        Assertions.assertEquals(1, PosixDataType.cc_t.baseDataType.SIZE_OF);
+        Assertions.assertEquals(Alignment.AT_1, PosixDataType.cc_t.baseDataType.ALIGN_OF);
+        assertTrue(PosixDataType.cc_t.baseDataType.UNSIGNED);
+        Termios.Cc_t instance = new Termios.Cc_t(null, 0, SET_MEM_TO_0);
+        assertEquals(BaseDataType.uint8_t, instance.getBaseDataType());
+        instance.uint8_t((byte) 0x80);
+        assertEquals((byte) 0x80, instance.uint8_t());
+        assertEquals(0xFFFFFF80, instance.uint8_t());
         assertEquals(String.valueOf((char) (byte) 0x80), instance.nativeToString());
-        assertEquals("80", instance.nativeToHexString());
+        assertEquals("0x80", instance.nativeToHexString());
     }
 
     @Test
     public void testSpeed_t() {
-        Assertions.assertEquals(4, Termios.Speed_t.sizeof());
-        Assertions.assertEquals(4, Termios.Speed_t.alignof());
-        assertTrue(Termios.Speed_t.unsigned());
-        Termios.Speed_t instance = new Termios.Speed_t(true);
-        assertEquals(BaseDataTypes.uint32_t, instance.getBaseDataType());
-        instance.setValue(0x80706050);
-        assertEquals(0x80706050, instance.getValue());
-        instance.setValue(0xFFFFFF80);
-        assertEquals(0xFFFFFF80, instance.getValue());
-        assertEquals("ffffff80", instance.nativeToHexString());
-        instance.setValue(Termios.B9600);
+        Assertions.assertEquals(4, PosixDataType.speed_t.baseDataType.SIZE_OF);
+        Assertions.assertEquals(Alignment.AT_4, PosixDataType.speed_t.baseDataType.ALIGN_OF);
+        assertTrue(PosixDataType.speed_t.baseDataType.UNSIGNED);
+        Termios.Speed_t instance = new Termios.Speed_t(null, 0, SET_MEM_TO_0);
+        assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
+        instance.uint32_t(0x80706050);
+        assertEquals(0x80706050, instance.uint32_t());
+        instance.uint32_t(0xFFFFFF80);
+        assertEquals(0xFFFFFF80, instance.uint32_t());
+        assertEquals("0xffffff80", instance.nativeToHexString());
+        instance.uint32_t(Termios.B9600);
         assertEquals("9600", instance.nativeToString());
     }
 
     @Test
     public void testTcflag_t() {
-        Assertions.assertEquals(4, Termios.Tcflag_t.sizeof());
-        Assertions.assertEquals(4, Termios.Tcflag_t.alignof());
-        Assertions.assertTrue(Termios.Tcflag_t.unsigned());
-        Termios.Tcflag_t instance = new Termios.Tcflag_t(true);
-        assertEquals(BaseDataTypes.uint32_t, instance.getBaseDataType());
-        instance.setValue(0x80706050);
-        assertEquals(0x80706050, instance.getValue());
-        instance.setValue(0xFFFFFF80);
-        assertEquals(0xFFFFFF80, instance.getValue());
-        assertEquals("ffffff80", instance.nativeToHexString());
+        Assertions.assertEquals(4, PosixDataType.tcflag_t.baseDataType.SIZE_OF);
+        Assertions.assertEquals(Alignment.AT_4, PosixDataType.tcflag_t.baseDataType.ALIGN_OF);
+        Assertions.assertTrue(PosixDataType.tcflag_t.baseDataType.UNSIGNED);
+        Termios.Tcflag_t instance = new Termios.Tcflag_t(null, 0, SET_MEM_TO_0);
+        assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
+        instance.uint32_t(0x80706050);
+        assertEquals(0x80706050, instance.uint32_t());
+        instance.uint32_t(0xFFFFFF80);
+        assertEquals(0xFFFFFF80, instance.uint32_t());
+        assertEquals("0xffffff80", instance.nativeToHexString());
         assertEquals(instance.nativeToHexString(), instance.nativeToString());
     }
 

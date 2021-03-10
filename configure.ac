@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([jnhw], [2.0.0], [aploese@gmx.de])
+AC_INIT([jnhw], [3.0.0], [aploese@gmx.de])
 #to be repeaded in subprojects
 AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE

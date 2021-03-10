@@ -26,9 +26,11 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.StructArray32;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.io.IOException;
@@ -183,31 +185,53 @@ public final class Poll {
      */
     public final static class PollFd extends Struct32 {
 
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
+        public static class Layout extends StructLayout {
+
+            public final long fd;
+            public final long events;
+            public final long revents;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                fd = -1;
+                events = -1;
+                revents = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
         }
 
-        /**
-         * Get the real size of struct pollfd natively.
-         *
-         * @return the native value sizeof(struct pollfd).
-         */
-        @SizeOf
-        public static native int sizeof();
+        private static native Layout native2Layout(Class<Layout> layoutClass);
 
-        @AlignOf
-        public static native int alignof();
+        public final static Layout LAYOUT;
 
-        public PollFd(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
+        static {
+            LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
+        }
+
+        public PollFd(AbstractNativeMemory owner, long offset) {
+            this(owner, offset, null);
         }
 
         public PollFd() {
-            super(sizeof(), false);
+            this(null, 0, null);
+        }
+
+        public PollFd(AbstractNativeMemory parent, long offset, Byte setMem) {
+            super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
         /**
@@ -217,7 +241,9 @@ public final class Poll {
          *
          * @return the native value of events;
          */
-        public native short events();
+        public short events() {
+            return MEM_ACCESS.uint16_t(this, LAYOUT.events);
+        }
 
         /**
          * The input event flags.
@@ -226,7 +252,9 @@ public final class Poll {
          *
          * @param events the value of events to be set natively.
          */
-        public native void events(short events);
+        public void events(short events) {
+            MEM_ACCESS.uint16_t(this, LAYOUT.events, events);
+        }
 
         /**
          * The file descriptor being polled.
@@ -235,7 +263,9 @@ public final class Poll {
          *
          * @return the native value of fd;
          */
-        public native int fd();
+        public int fd() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.fd);
+        }
 
         /**
          * The file descriptor being polled.
@@ -244,7 +274,9 @@ public final class Poll {
          *
          * @param fd the value of fd to be set natively.
          */
-        public native void fd(int fd);
+        public void fd(int fd) {
+            MEM_ACCESS.int32_t(this, LAYOUT.fd, fd);
+        }
 
         /**
          * The output event flags.
@@ -253,7 +285,9 @@ public final class Poll {
          *
          * @return the native value of revents;
          */
-        public native short revents();
+        public short revents() {
+            return MEM_ACCESS.uint16_t(this, LAYOUT.revents);
+        }
 
         /**
          * The output event flags.
@@ -262,7 +296,9 @@ public final class Poll {
          *
          * @param revents the value of revents to be set natively.
          */
-        public native void revents(short revents);
+        public void revents(short revents) {
+            MEM_ACCESS.uint16_t(this, LAYOUT.revents, revents);
+        }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
@@ -341,20 +377,15 @@ public final class Poll {
 
         public PollFds(int arraylength) {
             //get uninitialized mem we need to set this anyway ...
-            super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof(), false);
+            super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.LAYOUT.sizeof, MEM_UNINITIALIZED);
         }
 
-        public PollFds(OpaqueMemory32 parent, int offset, int arraylength) {
+        public PollFds(AbstractNativeMemory parent, long offset, int arraylength) {
             //get uninitialized mem we need to set this anyway ...
-            super(parent, offset, new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof(), false);
+            super(parent, offset, new PollFd[arraylength], PollFds::createAtOffset, PollFd.LAYOUT.sizeof, MEM_UNINITIALIZED);
         }
 
-        public PollFds(OpaqueMemory32 parent, OpaqueMemory32 prev, int arraylength) {
-            //get uninitialized mem we need to set this anyway ...
-            this(parent, OpaqueMemory32.calcNextOffset(parent, prev, Poll.PollFd.alignof()), arraylength);
-        }
-
-        private static PollFd createAtOffset(OpaqueMemory32 parent, int offset) {
+        private static PollFd createAtOffset(AbstractNativeMemory parent, long offset) {
             return new PollFd(parent, offset);
         }
 

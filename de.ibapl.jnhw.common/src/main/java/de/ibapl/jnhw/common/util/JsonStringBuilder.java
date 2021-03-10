@@ -24,6 +24,7 @@ package de.ibapl.jnhw.common.util;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.memory.StructArray32;
 import java.io.IOException;
 import java.util.function.IntFunction;
 
@@ -209,6 +210,15 @@ public class JsonStringBuilder {
             sb.append("null");
         } else {
             value.nativeToString(sb, INDENT_PREFIX, INDENT);
+        }
+    }
+
+    public void appendStructArray32Member(String name, StructArray32<?> array) throws IOException {
+        appendMemberName(name);
+        if (array == null) {
+            sb.append("null");
+        } else {
+            array.nativeToString(sb, INDENT_PREFIX, INDENT);
         }
     }
 

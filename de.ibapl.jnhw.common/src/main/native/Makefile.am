@@ -4,7 +4,7 @@ AM_LDFLAGS = -z noexecstack -no-undefined -static-libgcc -version-info @JNHW_VER
 
 LIB_JNHW_COMMON_NAME=@JNHW_LIB_PREFIX@jnhw-common@JNHW_LIBTOOL_LIB_SUFFIX@
 LIB_JNHW_COMMON_RES_NAME=@JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-common@JNHW_LIB_SUFFIX@
- 
+
 include_HEADERS = jnhw-common.h JnhwExceptions.h
 
 lib_LTLIBRARIES = libjnhw-common.la
@@ -14,7 +14,7 @@ noinst_LTLIBRARIES = \
  libmemory.la \
  libcallbacks.la \
  libcallnative.la
- 
+
 libjnhw_common_la_LIBADD = \
  libexceptions.la \
  libmemory.la \
@@ -44,21 +44,8 @@ libcallnative_la_SOURCES = \
  CallNative_Mem_V.c
 
 libmemory_la_SOURCES = \
- AbstractNativeMemory.c \
- AbstractNativeMemory_MemoryCleaner.c \
- AbstractNativeMemory_NativeMemoryAlignment.c \
- OpaqueMemory32.c \
- OpaqueMemory64.c \
- PointerArray32.c \
- NativeIntNumber.c \
- Int8_t.c \
- Int16_t.c \
- Int32_t.c \
- Int64_t.c \
- Uint8_t.c \
- Uint16_t.c \
- Uint32_t.c \
- Uint64_t.c
+ BaseDataType.c \
+ JnhwMemoryAccessor.c
 
 libjnhw_common_la_SOURCES = \
  jnhw-common.c

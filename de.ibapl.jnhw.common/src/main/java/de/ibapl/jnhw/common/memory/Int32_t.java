@@ -22,10 +22,7 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.annotation.int32_t;
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.annotation.AlignOf;
-import de.ibapl.jnhw.common.annotation.SizeOf;
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 
 /**
@@ -35,48 +32,33 @@ import java.io.IOException;
 @int32_t
 public class Int32_t extends NativeIntNumber {
 
-    /**
-     * Make sure the native lib is loaded.
-     */
-    static {
-        LibJnhwCommonLoader.touch();
+    public final static BaseDataType DATA_TYPE = BaseDataType.int32_t;
+
+    public Int32_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+        super(owner, offset, 4, setMem);
     }
 
-    @SizeOf
-    public static native int sizeof();
-
-    @AlignOf
-    public static native int alignof();
-
-    public Int32_t(boolean clearMem) {
-        super(sizeof(), clearMem);
+    public int int32_t() {
+        return MEM_ACCESS.int32_t(this, 0);
     }
 
-    public Int32_t(OpaqueMemory32 owner, int offset) {
-        super(owner, offset, sizeof());
-    }
-
-    public native @int32_t
-    int rawInt32_t();
-
-    public native void rawInt32_t(@int32_t int value);
-
-    @Override
-    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(nativeToString());
-    }
-
-    @Override
-    public native String nativeToString();
-
-    @Override
-    public BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.int32_t;
+    public void int32_t(int value) {
+        MEM_ACCESS.int32_t(this, 0, value);
     }
 
     @Override
     public String nativeToHexString() {
-        return nativeInt32ToHexString();
+        return MEM_ACCESS.int32_t_AsHex(this, 0);
+    }
+
+    @Override
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+        sb.append(MEM_ACCESS.int32_t_nativeToString(this, 0));
+    }
+
+    @Override
+    public BaseDataType getBaseDataType() {
+        return DATA_TYPE;
     }
 
 }

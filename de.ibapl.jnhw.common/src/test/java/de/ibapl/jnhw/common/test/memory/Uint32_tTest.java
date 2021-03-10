@@ -24,6 +24,9 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
  *
@@ -39,7 +42,7 @@ public class Uint32_tTest {
      */
     @Test
     public void testSizeofInt32_t() {
-        assertEquals(4, Uint32_t.sizeof());
+        assertEquals(4, Uint32_t.DATA_TYPE.SIZE_OF);
     }
 
     /**
@@ -47,7 +50,7 @@ public class Uint32_tTest {
      */
     @Test
     public void testAlignofUint32_t() {
-        assertEquals(4, Uint32_t.alignof());
+        assertEquals(Alignment.AT_4, Uint32_t.DATA_TYPE.ALIGN_OF);
     }
 
     /**
@@ -55,18 +58,21 @@ public class Uint32_tTest {
      */
     @Test
     public void testRawUint32_t() {
-        Uint32_t instance = new Uint32_t(true);
+        Uint32_t instance = new Uint32_t(null, 0, SET_MEM_TO_0);
         int expResult = 0x40302010;
-        instance.rawUint32_t(expResult);
-        assertEquals(expResult, instance.rawUint32_t());
+        instance.uint32_t(expResult);
+        assertEquals(expResult, instance.uint32_t());
+        instance.uint32_t(-1);
+        assertEquals(0x00000000ffffffffL, instance.uint32_t_AsLong());
+        assertThrows(IllegalArgumentException.class, () -> instance.uint32_t_FromLong(-1L));
     }
 
     @Test
     public void testNativeToString() {
-        Uint32_t instance = new Uint32_t(true);
-        instance.rawUint32_t(-2);
+        Uint32_t instance = new Uint32_t(null, 0, SET_MEM_TO_0);
+        instance.uint32_t(-2);
         assertEquals(String.valueOf(0x00000000FFFFFFFFL & -2), instance.nativeToString());
         assertEquals(Integer.toUnsignedString(-2), instance.nativeToString());
-        assertEquals("fffffffe", instance.nativeToHexString());
+        assertEquals("0xfffffffe", instance.nativeToHexString());
     }
 }

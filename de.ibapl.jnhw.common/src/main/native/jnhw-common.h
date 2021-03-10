@@ -31,11 +31,11 @@ extern "C" {
 #endif
 
     /**
-     * Structure for define names 
+     * Structure for define names
      *  a class name:      JNWW_cN_X_L_name, where cN is the abbrevation for class name, X is the shorted package name without the last L ist the last part of the package name and name is the class name
      *  a class signature: JNWW_cS_X_L_name, where cS is the abbrevation for class signature, X is the shorted package name without the last L ist the last part of the package name and name is the class name
-     * 
-     * 
+     *
+     *
      */
 #ifdef _JNHW_COMMON_IMPLEMENTATION_
 #define _JNHW_IMPORT_OR_EXPORT_ JNIEXPORT
@@ -44,12 +44,12 @@ extern "C" {
 
 #else
 #define _JNHW_IMPORT_OR_EXPORT_ JNIIMPORT
-#endif   
+#endif
 
 #include "JnhwExceptions.h"
 
-#define STR(x) #x 
-#define CLASS_NAME_TO_SIGNATURE(className) "L"className";" 
+#define STR(x) #x
+#define CLASS_NAME_TO_SIGNATURE(className) "L"className";"
 
 
     //globally important class names
@@ -136,6 +136,21 @@ extern "C" {
     _JNHW_IMPORT_OR_EXPORT_ extern int outOfBoundsOpaqueMemory32(JNIEnv *env, jint pos, jint len, jobject opaqueMemory32);
     _JNHW_IMPORT_OR_EXPORT_ extern int outOfBoundsOpaqueMemory64(JNIEnv *env, jlong pos, jlong len, jobject opaqueMemory64);
 
+    /**
+     * call Fieldlayout.int8_t(offset) from the native side.
+     *
+     * @param env
+     * @param clazzFL
+     * @param dataTypeName the name of a static methos that represents a fatatype i.e. "int8_t"
+     * @param fieldName
+     * @param value
+     * @return
+     */
+    _JNHW_IMPORT_OR_EXPORT_ extern jobject JNICALL JnhwCreateFieldLayout(JNIEnv *env, jclass clazzFL, const char * dataTypeName, jlong offset);
+    _JNHW_IMPORT_OR_EXPORT_ extern jobject JnhwCreateStructLayout(JNIEnv *env, jclass structLayoutClass, int64_t sizeInBytes, int32_t alingmentInBytes);
+
+    _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetLongField(JNIEnv *env, jclass clazz, const char * fieldName, jlong value);
+
 
     _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticObjectField(JNIEnv *env, jclass clazz, const char * fieldClassSignature, const char * fieldName, jobject value);
     _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticLongField(JNIEnv *env, jclass clazz, const char * fieldName, jlong value);
@@ -151,55 +166,54 @@ extern "C" {
 
 #define JNHW_FORMAT_STRING_int8_t "%d"
 #define JNHW_FORMAT_STRING_uint8_t "%u"
-#define JNHW_FORMAT_STRING_HEX_int8_t "%02x"
-#define JNHW_FORMAT_STRING_HEX_uint8_t "%02x"
+#define JNHW_FORMAT_STRING_HEX_int8_t "0x%02x"
+#define JNHW_FORMAT_STRING_HEX_uint8_t "0x%02x"
 
 #define JNHW_FORMAT_STRING_int16_t "%d"
 #define JNHW_FORMAT_STRING_uint16_t "%u"
-#define JNHW_FORMAT_STRING_HEX_int16_t "%04x"
-#define JNHW_FORMAT_STRING_HEX_uint16_t "%04x"
+#define JNHW_FORMAT_STRING_HEX_int16_t "0x%04x"
+#define JNHW_FORMAT_STRING_HEX_uint16_t "0x%04x"
 
 #define JNHW_FORMAT_STRING_int32_t "%d"
 #define JNHW_FORMAT_STRING_uint32_t "%u"
-#define JNHW_FORMAT_STRING_HEX_int32_t "%08x"
-#define JNHW_FORMAT_STRING_HEX_uint32_t "%08x"
+#define JNHW_FORMAT_STRING_HEX_int32_t "0x%08x"
+#define JNHW_FORMAT_STRING_HEX_uint32_t "0x%08x"
 
-#if defined(__LP64__) 
+#if defined(__LP64__)
 #if defined(__OpenBSD__)
 #define JNHW_FORMAT_STRING_int64_t "%lld"
 #define JNHW_FORMAT_STRING_uint64_t "%llu"
-#define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
-#define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
+#define JNHW_FORMAT_STRING_HEX_int64_t "0x%016llx"
+#define JNHW_FORMAT_STRING_HEX_uint64_t "0x%016llx"
 #else
 #define JNHW_FORMAT_STRING_int64_t "%ld"
 #define JNHW_FORMAT_STRING_uint64_t "%lu"
-#define JNHW_FORMAT_STRING_HEX_int64_t "%016lx"
-#define JNHW_FORMAT_STRING_HEX_uint64_t "%016lx"
+#define JNHW_FORMAT_STRING_HEX_int64_t "0x%016lx"
+#define JNHW_FORMAT_STRING_HEX_uint64_t "0x%016lx"
 #endif
 #elif defined(__WIN64)
 #define JNHW_FORMAT_STRING_int64_t "%lld"
 #define JNHW_FORMAT_STRING_uint64_t "%llu"
-#define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
-#define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
+#define JNHW_FORMAT_STRING_HEX_int64_t "0x%016llx"
+#define JNHW_FORMAT_STRING_HEX_uint64_t "0x%016llx"
 #else
 #define JNHW_FORMAT_STRING_int64_t "%lld"
 #define JNHW_FORMAT_STRING_uint64_t "%llu"
-#define JNHW_FORMAT_STRING_HEX_int64_t "%016llx"
-#define JNHW_FORMAT_STRING_HEX_uint64_t "%016llx"
+#define JNHW_FORMAT_STRING_HEX_int64_t "0x%016llx"
+#define JNHW_FORMAT_STRING_HEX_uint64_t "0x%016llx"
 #endif
-
 
     /**
      * Unwarap the baseAddress of given opaqueMemory(jobject) of an OpaqueMemory instance and cast these baseAddress to given type and put it in ().
      * Using GetIntField for 32bit addresses will fail on BIG_ENDIAN...
-     * 
+     *
      */
 #define UNWRAP_ABSTRACT_MEM_TO(destType, abstractMemory) ((destType)((uintptr_t)(*env)->GetLongField(env, abstractMemory, dijc_m_AbstractNativeMemory_baseAddress__FID)))
 
     /**
      * Unwarap the baseAddress given abstractMemory(jobject) of an OpaqueMemory instance and cast these baseAddress to given type.
      * If abstractMemory == NULL return NULL, otherwise unwrap.
-     * 
+     *
      */
 #define UNWRAP_ABSTRACT_MEM_TO_OR_NULL(destType, abstractMemory) abstractMemory == NULL ? (destType)NULL : UNWRAP_ABSTRACT_MEM_TO(destType, abstractMemory)
 
@@ -241,7 +255,7 @@ extern "C" {
 #define CREATE_FunctionPtr_I_Mem_Mem_V(value) (*env)->NewObject(env, dijc_np_FunctionPtr_I_Mem_Mem_V__GCR, dijc_np_FunctionPtr_I_Mem_Mem_V_init__MID, (jlong) (uintptr_t) value)
 #define CREATE_FunctionPtr_Mem_V(value) (*env)->NewObject(env, dijc_np_FunctionPtr_Mem_V__GCR, dijc_np_FunctionPtr_Mem_V_init__MID, (jlong) (uintptr_t) value)
 
-#define UNWRAP_NativeAddressHolder_TO(destType, value) (destType)(uintptr_t)(*env)->GetLongField(env, value, dijc_m_NativeAddressHolder_address__FID)    
+#define UNWRAP_NativeAddressHolder_TO(destType, value) (destType)(uintptr_t)(*env)->GetLongField(env, value, dijc_m_NativeAddressHolder_address__FID)
 #define CREATE_NativeAddressHolder(value) (*env)->NewObject(env, dijc_m_NativeAddressHolder__GCR, dijc_m_NativeAddressHolder_init__MID, (jlong) (uintptr_t) value)
 
 #ifdef __cplusplus

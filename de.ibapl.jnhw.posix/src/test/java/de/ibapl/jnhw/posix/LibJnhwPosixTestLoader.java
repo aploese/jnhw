@@ -34,7 +34,7 @@ public final class LibJnhwPosixTestLoader {
 
     public final static String LIB_JNHW_POSIX_TEST = "jnhw-posix-test";
     private static LoadResult LIB_JNHW_POSIX_TEST_LOAD_RESULT;
-    public final static int LIB_JNHW_POSIX_TEST_VERSION = 1;
+    public final static int LIB_JNHW_POSIX_TEST_VERSION = 3;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
 

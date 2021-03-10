@@ -540,7 +540,7 @@ public final class Winnt {
         public final static native int sizeof();
 
         public ArrayOfHandle(int length, boolean clearMem) {
-            super(length, sizeof(), clearMem);
+            super((OpaqueMemory32) null, 0, length * sizeof(), clearMem ? (byte) 0 : null);
             this.length = length;
         }
 
@@ -621,7 +621,7 @@ public final class Winnt {
          * @param clearMemory
          */
         public LPWSTR(int elementLength, boolean clearMemory) {
-            super(elementLength, SIZE_OF_WCHAR, clearMemory);
+            super((OpaqueMemory32) null, 0, elementLength * SIZE_OF_WCHAR, clearMemory ? (byte) 0 : null);
             bufferEnd = elementLength;
         }
 
@@ -682,12 +682,12 @@ public final class Winnt {
         HANDLE cachedHandle;
 
         protected PHANDLE(CreateHandler handler) {
-            super(sizeof(), true);
+            super((OpaqueMemory32) null, 0, sizeof(), SET_MEM_TO_0);
             cachedHandle = handler.create(getHandleValue());
         }
 
         protected PHANDLE(HANDLE handle) {
-            super(sizeof(), false);
+            super((OpaqueMemory32) null, 0, sizeof(), null);
             setHandleValue(handle.value);
             cachedHandle = handle;
         }

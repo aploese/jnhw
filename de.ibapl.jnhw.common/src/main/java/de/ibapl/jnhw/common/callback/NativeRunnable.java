@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.common.callback;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import java.util.logging.Logger;
 
@@ -42,8 +42,8 @@ public abstract class NativeRunnable extends OpaqueMemory32 {
     }
 
     @Override
-    public BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.function;
+    public BaseDataType getBaseDataType() {
+        return BaseDataType.function;
     }
 
     @Override
@@ -70,7 +70,7 @@ public abstract class NativeRunnable extends OpaqueMemory32 {
     public static native int sizeOf_ObjectRef();
 
     public NativeRunnable() {
-        super(sizeOf_ObjectRef(), false);
+        super((OpaqueMemory32) null, 0, sizeOf_ObjectRef(), null);
         aquireObjectRef();
     }
 

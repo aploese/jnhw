@@ -21,13 +21,18 @@
  */
 package de.ibapl.jnhw.common.test.memory;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
 import de.ibapl.jnhw.common.memory.Int16_t;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Int64_t;
 import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.test.memory.layout.SimpeStructureOnTheFlyImpl;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.WordSize;
 import org.junit.jupiter.api.Assertions;
@@ -43,20 +48,12 @@ public class OpaqueMemory32Test {
             super(baseAddress, sizeInBytes);
         }
 
-        MemToTest(int sizeInBytes, boolean clearMem) {
-            super(sizeInBytes, clearMem);
-        }
-
-        MemToTest(int elements, int elementSizeInBytes, boolean clearMem) {
-            super(elements, elementSizeInBytes, clearMem);
-        }
-
-        MemToTest(OpaqueMemory32 mem, int offset, int sizeInBytes) {
-            super(mem, offset, sizeInBytes);
+        MemToTest(OpaqueMemory32 mem, int offset, int sizeInBytes, Byte setMem) {
+            super(mem, offset, sizeInBytes, setMem);
         }
 
         @Override
-        public BaseDataTypes getBaseDataType() {
+        public BaseDataType getBaseDataType() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -73,9 +70,9 @@ public class OpaqueMemory32Test {
 
     @Test
     public void testAllocateDirtyMem() throws Exception {
-        OpaqueMemory32 mem = new MemToTest(1024, false);
+        OpaqueMemory32 mem = new MemToTest(null, 0, 1024, null);
         Assertions.assertEquals(1024, mem.sizeInBytes);
-        Assertions.assertEquals(mem, mem.memoryOwner);
+        Assertions.assertEquals(mem, mem.parent);
         mem = null;
         System.gc();
         Thread.sleep(1000);
@@ -84,31 +81,9 @@ public class OpaqueMemory32Test {
 
     @Test
     public void testAllocateCleanMem() throws Exception {
-        OpaqueMemory32 mem = new MemToTest(1024, true);
+        OpaqueMemory32 mem = new MemToTest(null, 0, 1024, SET_MEM_TO_0);
         Assertions.assertEquals(1024, mem.sizeInBytes);
-        Assertions.assertEquals(mem, mem.memoryOwner);
-        mem = null;
-        System.gc();
-        Thread.sleep(1000);
-        System.gc();
-    }
-
-    @Test
-    public void testCAllocateDirtyMem() throws Exception {
-        OpaqueMemory32 mem = new MemToTest(2, 512, false);
-        Assertions.assertEquals(1024, mem.sizeInBytes);
-        Assertions.assertEquals(mem, mem.memoryOwner);
-        mem = null;
-        System.gc();
-        Thread.sleep(1000);
-        System.gc();
-    }
-
-    @Test
-    public void testCAllocateCleanMem() throws Exception {
-        OpaqueMemory32 mem = new MemToTest(2, 512, true);
-        Assertions.assertEquals(1024, mem.sizeInBytes);
-        Assertions.assertEquals(mem, mem.memoryOwner);
+        Assertions.assertEquals(mem, mem.parent);
         mem = null;
         System.gc();
         Thread.sleep(1000);
@@ -119,7 +94,7 @@ public class OpaqueMemory32Test {
 
     @Test
     public void testCopy() throws Exception {
-        OpaqueMemory32 mem = new MemToTest(1024, false);
+        OpaqueMemory32 mem = new MemToTest(null, 0, 1024, null);
         final int MEM_POS = 753;
         OpaqueMemory32.copy(HELLO_WORLD, 0, mem, MEM_POS, HELLO_WORLD.length);
         byte[] received = new byte[HELLO_WORLD.length];
@@ -130,26 +105,26 @@ public class OpaqueMemory32Test {
     @Test
     public void testCopyIndex() throws Exception {
         final byte[] array = new byte[16];
-        final OpaqueMemory32 mem = new MemToTest(array.length, false);
+        final OpaqueMemory32 mem = new MemToTest(null, 0, array.length, null);
         Assertions.assertAll(() -> {
             //exact fit
             OpaqueMemory32.copy(mem, 0, array, 0, array.length);
         }, () -> {
             Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 OpaqueMemory32.copy(mem, -1, array, 0, 1);
-            }, "Destarray start outside srcmem");
+            }, "srcPos == -1");
         }, () -> {
             Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 OpaqueMemory32.copy(mem, 22, array, 0, 1);
-            }, "Destarray start outside srcmem");
+            }, "srcPos > src.sizeInBytes");
         }, () -> {
             Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 OpaqueMemory32.copy(mem, 8, array, 0, 16);
-            }, "Destarray end outside srcmem");
+            }, "srcPos + len > src.sizeInBytes");
         }, () -> {
             Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
                 OpaqueMemory32.copy(mem, 0, array, -1, 1);
-            }, "Srcmem start outside destarray");
+            }, "destPos == -1");
         }, () -> {
             Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
                 OpaqueMemory32.copy(mem, 0, array, 22, 1);
@@ -159,7 +134,7 @@ public class OpaqueMemory32Test {
                 OpaqueMemory32.copy(mem, 0, array, 8, 16);
             }, "Srcmem end outside destarray");
         }, () -> {
-            //exact fit    
+            //exact fit
             if (mem.sizeInBytes <= Integer.MAX_VALUE) {
                 OpaqueMemory32.copy(array, 0, mem, 0, (int) mem.sizeInBytes);
             } else {
@@ -194,14 +169,14 @@ public class OpaqueMemory32Test {
 
     @Test
     public void testGetSetByte() throws Exception {
-        OpaqueMemory32 mem = new MemToTest(1024, false);
+        OpaqueMemory32 mem = new MemToTest(null, 0, 1024, null);
         OpaqueMemory32.setByte(mem, 67, (byte) 9);
         Assertions.assertEquals((byte) 9, OpaqueMemory32.getByte(mem, 67));
     }
 
     @Test
     public void testSetGetIndex() throws Exception {
-        final OpaqueMemory32 mem = new MemToTest(16, false);
+        final OpaqueMemory32 mem = new MemToTest(null, 0, 16, null);
         Assertions.assertAll(() -> {
             //Exact fit
             OpaqueMemory32.getByte(mem, 0);
@@ -216,22 +191,22 @@ public class OpaqueMemory32Test {
             });
         }, () -> {
             //Exact fit
-            OpaqueMemory32.setByte(mem, 0, (byte) 0);
-            OpaqueMemory32.setByte(mem, 15, (byte) 0);
+            OpaqueMemory32.setByte(mem, 0, SET_MEM_TO_0);
+            OpaqueMemory32.setByte(mem, 15, SET_MEM_TO_0);
         }, () -> {
             Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-                OpaqueMemory32.setByte(mem, -11, (byte) 0);
+                OpaqueMemory32.setByte(mem, -11, SET_MEM_TO_0);
             });
         }, () -> {
             Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-                OpaqueMemory32.setByte(mem, 33, (byte) 0);
+                OpaqueMemory32.setByte(mem, 33, SET_MEM_TO_0);
             });
         });
     }
 
     @Test
     public void testClear() throws Exception {
-        OpaqueMemory32 mem = new MemToTest(1024, false);
+        OpaqueMemory32 mem = new MemToTest(null, 0, 1024, null);
         OpaqueMemory32.clear(mem);
         for (int i = 0; i < mem.sizeInBytes; i++) {
             Assertions.assertEquals(0, OpaqueMemory32.getByte(mem, i));
@@ -240,7 +215,7 @@ public class OpaqueMemory32Test {
 
     @Test
     public void testSetMem() throws Exception {
-        OpaqueMemory32 mem = new MemToTest(1024, true);
+        OpaqueMemory32 mem = new MemToTest(null, 0, 1024, SET_MEM_TO_0);
         OpaqueMemory32.memset(mem, (byte) 42);
         for (int i = 0; i < mem.sizeInBytes; i++) {
             Assertions.assertEquals(42, OpaqueMemory32.getByte(mem, i));
@@ -251,7 +226,7 @@ public class OpaqueMemory32Test {
     public void testEquals() throws Exception {
         OpaqueMemory32 mem = new MemToTest(new NativeAddressHolder(0x2aL), 8);
         OpaqueMemory32 mem1 = new MemToTest(new NativeAddressHolder(42L), 8);
-        OpaqueMemory32 mem2 = new MemToTest(mem, 0, 8);
+        OpaqueMemory32 mem2 = new MemToTest(mem, 0, 8, null);
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
                 Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
@@ -276,7 +251,7 @@ public class OpaqueMemory32Test {
 
     @Test
     public void testAddressOn32BitNotNegative() {
-        MemToTest parent = new MemToTest(48, true);
+        MemToTest parent = new MemToTest(null, 0, 48, SET_MEM_TO_0);
         if (MULTIARCHTUPEL_BUILDER.getWordSize() == WordSize._32_BIT) {
             Assertions.assertTrue(parent.getBaseAddress() > 0, "baseaddress is not positive");
         }
@@ -284,53 +259,39 @@ public class OpaqueMemory32Test {
 
     @Test
     public void testCalcNextOffset() {
-        OpaqueMemory32 parent = new MemToTest(48, true);
-        Int8_t value0 = new Int8_t(parent, 0);
-        Assertions.assertEquals(0, OpaqueMemory32.offsetof(parent, value0));
-        value0.rawInt8_t((byte) 0x11);
+        SimpeStructureOnTheFlyImpl struct = new SimpeStructureOnTheFlyImpl(null, 0, 48, SET_MEM_TO_0);
 
-        Assertions.assertEquals(2, OpaqueMemory32.calcNextOffset(parent, value0, Int16_t.alignof()));
-        Int16_t value1 = new Int16_t(parent, OpaqueMemory32.calcNextOffset(parent, value0, Int16_t.alignof()));
-        Assertions.assertEquals(2, OpaqueMemory32.offsetof(parent, value1));
-        value1.rawInt16_t((short) 0x2222);
+        Assertions.assertEquals(0, AbstractNativeMemory.offsetof(struct.first));
+        struct.first((byte) 0x11);
 
-        Assertions.assertEquals(4, OpaqueMemory32.calcNextOffset(parent, value1, Int8_t.alignof()));
-        Int8_t value2 = new Int8_t(parent, OpaqueMemory32.calcNextOffset(parent, value1, Int8_t.alignof()));
-        Assertions.assertEquals(4, OpaqueMemory32.offsetof(parent, value2));
-        value2.rawInt8_t((byte) 0x33);
+        Assertions.assertEquals(2, AbstractNativeMemory.offsetof(struct.second));
+        struct.second((short) 0x2222);
 
-        Assertions.assertEquals(8, OpaqueMemory32.calcNextOffset(parent, value2, Int32_t.alignof()));
-        Int32_t value3 = new Int32_t(parent, OpaqueMemory32.calcNextOffset(parent, value2, Int32_t.alignof()));
-        Assertions.assertEquals(8, OpaqueMemory32.offsetof(parent, value3));
-        value3.rawInt32_t(0x44444444);
+        Assertions.assertEquals(4, AbstractNativeMemory.offsetof(struct.third));
+        struct.third((byte) 0x33);
 
-        Assertions.assertEquals(12, OpaqueMemory32.calcNextOffset(parent, value3, Int8_t.alignof()));
-        Int8_t value4 = new Int8_t(parent, OpaqueMemory32.calcNextOffset(parent, value3, Int8_t.alignof()));;
-        Assertions.assertEquals(12, OpaqueMemory32.offsetof(parent, value4));
-        value4.rawInt8_t((byte) 0x55);
+        Assertions.assertEquals(8, AbstractNativeMemory.offsetof(struct.forth));
+        struct.forth(0x44444444);
 
-        Assertions.assertEquals(16, OpaqueMemory32.calcNextOffset(parent, value4, Int64_t.alignof()));
-        Int64_t value5 = new Int64_t(parent, OpaqueMemory32.calcNextOffset(parent, value4, Int64_t.alignof()));
-        Assertions.assertEquals(16, OpaqueMemory32.offsetof(parent, value5));
-        value5.rawInt64_t(0x6666666666666666L);
+        Assertions.assertEquals(12, AbstractNativeMemory.offsetof(struct.fifth));
+        struct.fifth((byte) 0x55);
 
-        Assertions.assertEquals(24, OpaqueMemory32.calcNextOffset(parent, value5, Int8_t.alignof()));
-        Int8_t value6 = new Int8_t(parent, OpaqueMemory32.calcNextOffset(parent, value5, Int8_t.alignof()));
-        Assertions.assertEquals(24, OpaqueMemory32.offsetof(parent, value6));
-        value6.rawInt8_t((byte) 0x77);
+        Assertions.assertEquals(16, AbstractNativeMemory.offsetof(struct.sixth));
+        struct.sixth(0x6666666666666666L);
 
-        Assertions.assertEquals(32, OpaqueMemory32.calcNextOffset(parent, value6, Int64_t.alignof()));
-        Int64_t value7 = new Int64_t(parent, OpaqueMemory32.calcNextOffset(parent, value6, Int64_t.alignof()));
-        Assertions.assertEquals(32, OpaqueMemory32.offsetof(parent, value7));
-        value7.rawInt64_t(0x8888888888888888L);
+        Assertions.assertEquals(24, AbstractNativeMemory.offsetof(struct.seventh));
+        struct.seventh((byte) 0x77);
+
+        Assertions.assertEquals(32, AbstractNativeMemory.offsetof(struct.eighth));
+        struct.eighth(0x8888888888888888L);
 
         String expected
                 = "11002222 33000000  44444444 55000000 |  \"\"3   DDDDU   \n"
                 + "66666666 66666666  77000000 00000000 | ffffffffw       \n"
                 + "88888888 88888888  00000000 00000000 | ﾈﾈﾈﾈﾈﾈﾈﾈ        ";
 
-        Assertions.assertEquals(expected, OpaqueMemory32.printMemory(parent, false));
-        byte[] result = OpaqueMemory32.toBytes(parent);
+        Assertions.assertEquals(expected, OpaqueMemory32.printMemory(struct, false));
+        byte[] result = OpaqueMemory32.toBytes(struct);
 
         Assertions.assertEquals(0x11, result[0]);
         Assertions.assertEquals(0x00, result[1]);

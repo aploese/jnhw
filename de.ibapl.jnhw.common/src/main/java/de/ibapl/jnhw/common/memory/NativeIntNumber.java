@@ -21,64 +21,14 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
-
 /**
  *
  * @author aploese
  */
 public abstract class NativeIntNumber extends OpaqueMemory32 {
 
-    public static BaseDataTypes getIntegerType(int sizeInBytes, boolean unsigned) {
-        switch (sizeInBytes) {
-            case 1:
-                return unsigned ? BaseDataTypes.uint8_t : BaseDataTypes.int8_t;
-            case 2:
-                return unsigned ? BaseDataTypes.uint16_t : BaseDataTypes.int16_t;
-            case 4:
-                return unsigned ? BaseDataTypes.uint32_t : BaseDataTypes.int32_t;
-            case 8:
-                return unsigned ? BaseDataTypes.uint64_t : BaseDataTypes.int64_t;
-            default:
-                throw new RuntimeException("Can't handle sizeof value: " + sizeInBytes);
-        }
-
-    }
-
-    public NativeIntNumber(int sizeInBytes, boolean clearMem) {
-        super(sizeInBytes, clearMem);
-    }
-
-    public NativeIntNumber(OpaqueMemory32 owner, int offset, int sizeInBytes) {
-        super(owner, offset, sizeInBytes);
-    }
-
-    protected native String nativeInt8ToHexString();
-
-    protected native String nativeInt16ToHexString();
-
-    protected native String nativeInt32ToHexString();
-
-    protected native String nativeInt64ToHexString();
-
-    @Override
-    public String nativeToHexString() {
-        switch (getBaseDataType()) {
-            case int8_t:
-            case uint8_t:
-                return nativeInt8ToHexString();
-            case int16_t:
-            case uint16_t:
-                return nativeInt16ToHexString();
-            case int32_t:
-            case uint32_t:
-                return nativeInt32ToHexString();
-            case int64_t:
-            case uint64_t:
-                return nativeInt64ToHexString();
-            default:
-                throw new RuntimeException("Cant handle baseDataType of: " + getBaseDataType());
-        }
+    protected NativeIntNumber(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+        super(owner, offset, sizeInBytes, null);
     }
 
 }

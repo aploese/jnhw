@@ -39,7 +39,6 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
-import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -349,13 +348,16 @@ public class Aio {
 
         @SuppressWarnings("unchecked")
         public Aiocb(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
-            super(owner, offset, sizeof());
-            aio_sigevent = new Sigevent(this, offsetof_Aio_sigevent());
+            this(owner, offset, null);
         }
 
         @SuppressWarnings("unchecked")
         public Aiocb() throws NoSuchNativeTypeException {
-            super(sizeof(), true);
+            this(null, 0, SET_MEM_TO_0);
+        }
+
+        public Aiocb(OpaqueMemory32 parent, int offset, Byte setMem) throws NoSuchNativeTypeException {
+            super(parent, offset, sizeof(), setMem);
             aio_sigevent = new Sigevent(this, offsetof_Aio_sigevent());
         }
 
@@ -520,8 +522,20 @@ public class Aio {
          */
         public void aio_buf(OpaqueMemory32 aio_buf, int off, @size_t int aio_nbytes) throws NoSuchNativeTypeException {
             if (aio_buf == null) {
+                if (off != 0) {
+                    throw new IllegalArgumentException("off must be 0");
+                }
+                if (aio_nbytes != 0) {
+                    throw new IllegalArgumentException("aio_nbytes must be 0");
+                }
                 aio_bufOpaqueMemory(null, 0, 0);
             } else {
+                if ((off < 0) || (off >= aio_buf.sizeInBytes)) {
+                    throw new IllegalArgumentException("off not in range");
+                }
+                if ((aio_nbytes < 0) || (aio_nbytes >= aio_buf.sizeInBytes)) {
+                    throw new IllegalArgumentException("aio_nbytes not in range");
+                }
                 aio_bufOpaqueMemory(aio_buf, off, aio_nbytes);
             }
             this.aio_buf = aio_buf;
@@ -610,9 +624,12 @@ public class Aio {
             LibJnhwPosixLoader.touch();
         }
 
-        public Aiocbs(int arraylength) throws NoSuchNativeTypeException {
-            //get initialized mem
-            super(arraylength, true);
+        public Aiocbs(int arraylength, Byte setMem) throws NoSuchNativeTypeException {
+            this(arraylength, null, 0, setMem);
+        }
+
+        public Aiocbs(int arrayLength, OpaqueMemory32 parent, int offset, Byte setMem) throws NoSuchNativeTypeException {
+            super(arrayLength, parent, offset, setMem);
         }
 
     }

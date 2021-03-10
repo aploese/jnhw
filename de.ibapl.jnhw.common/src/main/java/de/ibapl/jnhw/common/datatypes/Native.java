@@ -29,7 +29,7 @@ import java.io.IOException;
  */
 public interface Native {
 
-    BaseDataTypes getBaseDataType();
+    BaseDataType getBaseDataType();
 
     void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException;
 

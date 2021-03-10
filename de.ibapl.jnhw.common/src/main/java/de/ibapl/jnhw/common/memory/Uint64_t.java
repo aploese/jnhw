@@ -22,10 +22,7 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.annotation.uint64_t;
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.annotation.AlignOf;
-import de.ibapl.jnhw.common.annotation.SizeOf;
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 
 /**
@@ -35,48 +32,34 @@ import java.io.IOException;
 @uint64_t
 public class Uint64_t extends NativeIntNumber {
 
-    /**
-     * Make sure the native lib is loaded.
-     */
-    static {
-        LibJnhwCommonLoader.touch();
+    public final static BaseDataType DATA_TYPE = BaseDataType.uint64_t;
+
+    public Uint64_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+        super(owner, offset, 8, setMem);
     }
 
-    @SizeOf
-    public static native int sizeof();
-
-    @AlignOf
-    public static native int alignof();
-
-    public Uint64_t(boolean clearMem) {
-        super(sizeof(), clearMem);
+    @uint64_t
+    public long uint64_t() {
+        return MEM_ACCESS.uint64_t(this, 0);
     }
 
-    public Uint64_t(OpaqueMemory32 owner, int offset) {
-        super(owner, offset, sizeof());
-    }
-
-    public native @uint64_t
-    long rawUint64_t();
-
-    public native void rawUint64_t(@uint64_t long value);
-
-    @Override
-    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(nativeToString());
-    }
-
-    @Override
-    public native String nativeToString();
-
-    @Override
-    public BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.uint64_t;
+    public void uint64_t(@uint64_t long value) {
+        MEM_ACCESS.uint64_t(this, 0, value);
     }
 
     @Override
     public String nativeToHexString() {
-        return nativeInt64ToHexString();
+        return MEM_ACCESS.uint64_t_AsHex(this, 0);
+    }
+
+    @Override
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+        sb.append(MEM_ACCESS.uint64_t_nativeToString(this, 0));
+    }
+
+    @Override
+    public BaseDataType getBaseDataType() {
+        return DATA_TYPE;
     }
 
 }

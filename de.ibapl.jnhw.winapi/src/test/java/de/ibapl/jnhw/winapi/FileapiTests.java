@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.Memory64Heap;
 import de.ibapl.jnhw.common.references.IntRef;
@@ -398,7 +399,7 @@ public class FileapiTests {
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
 
-        Memory32Heap opaqueMemory = new Memory32Heap(64, true);
+        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SET_MEM_TO_0);
         OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
         Fileapi.WriteFile(hFile, opaqueMemory, overlapped);
         long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE);
@@ -452,7 +453,7 @@ public class FileapiTests {
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
 
-        Memory64Heap opaqueMemory = new Memory64Heap(64, true);
+        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SET_MEM_TO_0);
         OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
         Fileapi.WriteFile(hFile, opaqueMemory, 0, (int) opaqueMemory.sizeInBytes, overlapped);
         long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE);
@@ -506,7 +507,7 @@ public class FileapiTests {
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
 
-        Memory32Heap opaqueMemory = new Memory32Heap(64, true);
+        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SET_MEM_TO_0);
         OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
 
         Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE overlappedCompletionRoutine = new Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE() {
@@ -579,7 +580,7 @@ public class FileapiTests {
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
 
-        Memory64Heap opaqueMemory = new Memory64Heap(64, true);
+        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SET_MEM_TO_0);
         OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
 
         Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE overlappedCompletionRoutine = new Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE() {
@@ -653,7 +654,7 @@ public class FileapiTests {
         final long COMPLETION_KEY = 24;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        Memory32Heap opaqueMemory = new Memory32Heap(64, true);
+        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SET_MEM_TO_0);
         OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
 
         IntRef lpNumberOfBytesTransferred = new IntRef();
@@ -718,7 +719,7 @@ public class FileapiTests {
         final long COMPLETION_KEY = 24;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        Memory64Heap opaqueMemory = new Memory64Heap(64, true);
+        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SET_MEM_TO_0);
         OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
 
         IntRef lpNumberOfBytesTransferred = new IntRef();
@@ -779,7 +780,7 @@ public class FileapiTests {
                 Fileapi.OPEN_EXISTING,
                 0,
                 null);
-        Memory32Heap opaqueMemory = new Memory32Heap(64, true);
+        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SET_MEM_TO_0);
         OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
         int bytesWritten = Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length);
         Handleapi.CloseHandle(hFile);
@@ -817,7 +818,7 @@ public class FileapiTests {
                 Fileapi.OPEN_EXISTING,
                 0,
                 null);
-        Memory64Heap opaqueMemory = new Memory64Heap(64, true);
+        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SET_MEM_TO_0);
         OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
         int bytesWritten = Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length);
         Handleapi.CloseHandle(hFile);

@@ -6,7 +6,7 @@ AM_CC = @PTHREAD_CC@
 
 LIB_JNHW_POSIX_TEST_NAME=@JNHW_LIB_PREFIX@jnhw-posix-test@JNHW_LIBTOOL_LIB_SUFFIX@
 LIB_JNHW_POSIX_TEST_RES_NAME=@JNHW_TEST_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix-test@JNHW_LIB_SUFFIX@
- 
+
 lib_LTLIBRARIES = libjnhw-posix-test.la
 
 noinst_LTLIBRARIES = libtests.la
@@ -18,7 +18,8 @@ libtests.la \
 
 
 libtests_la_SOURCES = \
- LocaleTest.c
+ LocaleTest.c \
+ IoctlTest.c
 
 #hook into make all
 all-local: $(LIB_JNHW_POSIX_TEST_RES_NAME)

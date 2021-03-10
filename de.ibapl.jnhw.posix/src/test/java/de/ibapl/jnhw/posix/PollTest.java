@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -45,11 +46,11 @@ public class PollTest {
 
     @Test
     public void testSizeOfPollFd() throws Exception {
-        Assertions.assertEquals(8, Poll.PollFd.sizeof());
+        Assertions.assertEquals(8, Poll.PollFd.LAYOUT.sizeof);
     }
 
     @Test
     public void testAlignOfPollFd() throws Exception {
-        Assertions.assertEquals(4, Poll.PollFd.alignof());
+        Assertions.assertEquals(Alignment.AT_4, Poll.PollFd.LAYOUT.alignment);
     }
 }

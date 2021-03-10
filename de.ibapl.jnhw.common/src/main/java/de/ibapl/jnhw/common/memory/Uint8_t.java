@@ -21,11 +21,8 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.annotation.AlignOf;
-import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.annotation.uint8_t;
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 
 /**
@@ -34,48 +31,43 @@ import java.io.IOException;
  */
 public class Uint8_t extends NativeIntNumber {
 
-    /**
-     * Make sure the native lib is loaded.
-     */
-    static {
-        LibJnhwCommonLoader.touch();
+    public final static BaseDataType DATA_TYPE = BaseDataType.uint8_t;
+
+    public Uint8_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+        super(owner, offset, 1, setMem);
     }
 
-    @SizeOf
-    public static native int sizeof();
-
-    @AlignOf
-    public static native int alignof();
-
-    public Uint8_t(boolean clearMem) {
-        super(sizeof(), clearMem);
+    @uint8_t
+    public byte uint8_t() {
+        return MEM_ACCESS.uint8_t(this, 0);
     }
 
-    public Uint8_t(OpaqueMemory32 owner, int offset) {
-        super(owner, offset, sizeof());
+    @uint8_t
+    public short uint8_t_AsShort() {
+        return MEM_ACCESS.uint8_t_AsShort(this, 0);
     }
 
-    public native @uint8_t
-    byte rawUint8_t();
-
-    public native void rawUint8_t(@uint8_t byte value);
-
-    @Override
-    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(nativeToString());
+    public void uint8_t(@uint8_t byte value) {
+        MEM_ACCESS.uint8_t(this, 0, value);
     }
 
-    @Override
-    public native String nativeToString();
-
-    @Override
-    public BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.uint8_t;
+    public void uint8_t_FromShort(@uint8_t short value) {
+        MEM_ACCESS.uint8_t_FromShort(this, 0, value);
     }
 
     @Override
     public String nativeToHexString() {
-        return nativeInt8ToHexString();
+        return MEM_ACCESS.uint8_t_AsHex(this, 0);
+    }
+
+    @Override
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+        sb.append(MEM_ACCESS.uint8_t_nativeToString(this, 0));
+    }
+
+    @Override
+    public BaseDataType getBaseDataType() {
+        return DATA_TYPE;
     }
 
 }

@@ -21,7 +21,8 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
  *
@@ -29,8 +30,8 @@ import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
  */
 public class Memory32Heap extends OpaqueMemory32 {
 
-    public Memory32Heap(int sizeInBytes, boolean clearMem) {
-        super(sizeInBytes, clearMem);
+    public Memory32Heap(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+        super(owner, offset, sizeInBytes, setMem);
     }
 
     public Memory32Heap(NativeAddressHolder nativeAddress, int sizeInBytes) {
@@ -38,14 +39,14 @@ public class Memory32Heap extends OpaqueMemory32 {
     }
 
     public static Memory32Heap of(byte[] bytes) {
-        final Memory32Heap result = new Memory32Heap(bytes.length, false);
+        final Memory32Heap result = new Memory32Heap((OpaqueMemory32) null, 0, bytes.length, null);
         OpaqueMemory32.copy(bytes, 0, result, 0, bytes.length);
         return result;
     }
 
     @Override
-    public BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.intptr_t;
+    public BaseDataType getBaseDataType() {
+        return BaseDataType.intptr_t;
     }
 
     @Override
@@ -59,6 +60,13 @@ public class Memory32Heap extends OpaqueMemory32 {
             }
             return sb.toString();
         }
+    }
+
+    public long nextOffset(AbstractNativeMemory fieldOnTheFly, Alignment fieldAlignment) {
+        if (fieldOnTheFly.parent != this) {
+            throw new IllegalArgumentException("Im not the parent of: " + fieldOnTheFly);
+        }
+        return AbstractNativeMemory.calcOffsetForAlignemt(this, fieldAlignment, fieldOnTheFly.getOffset() + fieldOnTheFly.getSizeInBytes());
     }
 
 }

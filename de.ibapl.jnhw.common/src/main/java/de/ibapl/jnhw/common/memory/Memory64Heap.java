@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 
 /**
@@ -30,8 +30,8 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
  */
 public class Memory64Heap extends OpaqueMemory64 {
 
-    public Memory64Heap(long sizeInBytes, boolean clearMem) throws NoSuchNativeMethodException {
-        super(sizeInBytes, clearMem);
+    public Memory64Heap(OpaqueMemory64 owner, long offset, long sizeInBytes, Byte setMem) {
+        super(owner, offset, sizeInBytes, setMem);
     }
 
     public Memory64Heap(NativeAddressHolder nativeAddress, long sizeInBytes) throws NoSuchNativeMethodException {
@@ -39,8 +39,8 @@ public class Memory64Heap extends OpaqueMemory64 {
     }
 
     @Override
-    public BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.intptr_t;
+    public BaseDataType getBaseDataType() {
+        return BaseDataType.intptr_t;
     }
 
     @Override

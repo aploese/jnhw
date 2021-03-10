@@ -51,7 +51,7 @@ extern "C" {
             return;
         }
 
-#if defined(__linux__) && defined(__sh__) 
+#if defined(__linux__) && defined(__sh__)
         if (JnhwSetStaticIntField(env, clazz, "FIONREAD", (int32_t) FIONREAD)) {
             return;
         }
@@ -59,7 +59,7 @@ extern "C" {
         if (JnhwSetStaticIntField(env, clazz, "FIONREAD", FIONREAD)) {
             return;
         }
-#endif        
+#endif
 
         if (JnhwSetStaticIntField(env, clazz, "TIOCM_LE", TIOCM_LE)) {
             return;
@@ -95,7 +95,7 @@ extern "C" {
             return;
         }
 
-#if defined (__linux__) 
+#if defined (__linux__)
         if (JnhwSetStaticIntDefineField(env, clazz, "TIOCMIWAIT", TIOCMIWAIT)) {
             return;
         }
@@ -104,7 +104,7 @@ extern "C" {
 #else
 #endif
 
-#if defined (__linux__) 
+#if defined (__linux__)
         if (JnhwSetStaticIntDefineField(env, clazz, "TIOCGICOUNT", TIOCGICOUNT)) {
             return;
         }
@@ -113,8 +113,8 @@ extern "C" {
 #else
 #endif
 
-#if defined (__linux__) 
-#if defined(__sh__) 
+#if defined (__linux__)
+#if defined(__sh__)
         if (JnhwSetStaticIntDefineField(env, clazz, "TIOCGSOFTCAR", (int32_t) TIOCGSOFTCAR)) {
             return;
         }
@@ -122,13 +122,13 @@ extern "C" {
         if (JnhwSetStaticIntDefineField(env, clazz, "TIOCGSOFTCAR", TIOCGSOFTCAR)) {
             return;
         }
-#endif        
+#endif
 #elif defined(TIOCGSOFTCAR)
 #error "TIOCGSOFTCAR defined"
 #else
 #endif
 
-#if defined (__linux__) 
+#if defined (__linux__)
 #if defined(__sparc__)
         if (JnhwSetStaticIntDefineField(env, clazz, "TIOCSSOFTCAR", (int32_t) TIOCSSOFTCAR)) {
             return;
@@ -153,7 +153,7 @@ extern "C" {
             return;
         }
 
-#if defined(__linux__) && defined(__sh__) 
+#if defined(__linux__) && defined(__sh__)
         if (JnhwSetStaticIntField(env, clazz, "TIOCMGET", (int32_t) TIOCMGET)) {
             return;
         }
@@ -161,7 +161,7 @@ extern "C" {
         if (JnhwSetStaticIntField(env, clazz, "TIOCMGET", TIOCMGET)) {
             return;
         }
-#endif        
+#endif
 
 #if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && defined(__sparc__))
         //Just force the conversation or check at runtime sizeof??
@@ -196,7 +196,7 @@ extern "C" {
         }
 #endif
 
-#if defined(__linux__) && defined(__sh__) 
+#if defined(__linux__) && defined(__sh__)
         if (JnhwSetStaticIntField(env, clazz, "TIOCOUTQ", (int32_t) TIOCOUTQ)) {
             return;
         }
@@ -204,10 +204,191 @@ extern "C" {
         if (JnhwSetStaticIntField(env, clazz, "TIOCOUTQ", TIOCOUTQ)) {
             return;
         }
-#endif        
+#endif
+
+#if defined (__OpenBSD__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "IOCPARM_MASK", IOCPARM_MASK)) {
+            return;
+        }
+#elif defined(IOCPARM_MASK)
+#error "IOCPARM_MASK defined"
+#endif
+
+#if defined (__OpenBSD__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "IOCPARM_MAX", IOCPARM_MAX)) {
+            return;
+        }
+#elif defined(IOCPARM_MAX)
+#error "IOCPARM_MAX defined"
+#endif
+
+#if defined (__OpenBSD__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "IOC_VOID", IOC_VOID)) {
+            return;
+        }
+#elif defined(IOC_VOID)
+#error "IOC_VOID defined"
+#endif
+
+        if (JnhwSetStaticIntField(env, clazz, "IOC_OUT", (int32_t) IOC_OUT)) {
+            return;
+        }
+
+        if (JnhwSetStaticIntField(env, clazz, "IOC_IN", IOC_IN)) {
+            return;
+        }
+
+        if (JnhwSetStaticIntField(env, clazz, "IOC_INOUT", (int32_t) IOC_INOUT)) {
+            return;
+        }
+
+#if defined (__OpenBSD__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "IOC_DIRMASK", IOC_DIRMASK)) {
+            return;
+        }
+#elif defined(IOC_DIRMASK)
+#error "IOC_DIRMASK defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_NRBITS", _IOC_NRBITS)) {
+            return;
+        }
+#elif defined(_IOC_NRBITS)
+#error "_IOC_NRBITS defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_TYPEBITS", _IOC_TYPEBITS)) {
+            return;
+        }
+#elif defined(_IOC_TYPEBITS)
+#error "_IOC_TYPEBITS defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_SIZEBITS", _IOC_SIZEBITS)) {
+            return;
+        }
+#elif defined(_IOC_SIZEBITS)
+#error "_IOC_SIZEBITS defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_DIRBITS", _IOC_DIRBITS)) {
+            return;
+        }
+#elif defined(_IOC_DIRBITS)
+#error "_IOC_DIRBITS defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_NRMASK", _IOC_NRMASK)) {
+            return;
+        }
+#elif defined(_IOC_NRMASK)
+#error "_IOC_NRMASK defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_TYPEMASK", _IOC_TYPEMASK)) {
+            return;
+        }
+#elif defined(_IOC_TYPEMASK)
+#error "_IOC_TYPEMASK defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_SIZEMASK", _IOC_SIZEMASK)) {
+            return;
+        }
+#elif defined(_IOC_SIZEMASK)
+#error "_IOC_SIZEMASK defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_DIRMASK", _IOC_DIRMASK)) {
+            return;
+        }
+#elif defined(_IOC_DIRMASK)
+#error "_IOC_DIRMASK defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_NRSHIFT", _IOC_NRSHIFT)) {
+            return;
+        }
+#elif defined(_IOC_NRSHIFT)
+#error "_IOC_NRSHIFT defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_TYPESHIFT", _IOC_TYPESHIFT)) {
+            return;
+        }
+#elif defined(_IOC_TYPESHIFT)
+#error "_IOC_TYPESHIFT defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_SIZESHIFT", _IOC_SIZESHIFT)) {
+            return;
+        }
+#elif defined(_IOC_SIZESHIFT)
+#error "_IOC_SIZESHIFT defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_DIRSHIFT", _IOC_DIRSHIFT)) {
+            return;
+        }
+#elif defined(_IOC_DIRSHIFT)
+#error "_IOC_DIRSHIFT defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_NONE", _IOC_NONE)) {
+            return;
+        }
+#elif defined(_IOC_NONE)
+#error "_IOC_NONE defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_READ", _IOC_READ)) {
+            return;
+        }
+#elif defined(_IOC_READ)
+#error "_IOC_READ defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "_IOC_WRITE", _IOC_WRITE)) {
+            return;
+        }
+#elif defined(_IOC_WRITE)
+#error "_IOC_WRITE defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "IOCSIZE_MASK", IOCSIZE_MASK)) {
+            return;
+        }
+#elif defined(IOCSIZE_MASK)
+#error "IOCSIZE_MASK defined"
+#endif
+
+#if defined (__linux__)
+        if (JnhwSetStaticIntDefineField(env, clazz, "IOCSIZE_SHIFT", IOCSIZE_SHIFT)) {
+            return;
+        }
+#elif defined(IOCSIZE_SHIFT)
+#error "IOCSIZE_SHIFT defined"
+#endif
     }
 
 #endif
+
 #ifdef __cplusplus
 }
 #endif

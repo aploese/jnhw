@@ -21,10 +21,8 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
@@ -40,8 +38,11 @@ import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.time_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.timer_t;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -301,6 +302,8 @@ public class Time {
      */
     public final static native double difftime(@time_t long time1, @time_t long time0);
 
+    private static native NativeAddressHolder getdate0(String string) throws NativeErrorException, NoSuchNativeMethodException;
+
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getdate.html">getdate
@@ -315,7 +318,11 @@ public class Time {
      * @throws NoSuchNativeMethodException if the method getdate is not
      * available natively.
      */
-    public final static native Tm getdate(String string) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static Tm getdate(String string) throws NativeErrorException, NoSuchNativeMethodException {
+        return new Tm(getdate0(string));
+    }
+
+    private static native NativeAddressHolder gmtime0(@time_t long timer);
 
     /**
      * <b>POSIX:</b>
@@ -327,7 +334,9 @@ public class Time {
      *
      * @return
      */
-    public final static native Tm gmtime(@time_t long timer);
+    public final static Tm gmtime(@time_t long timer) {
+        return new Tm(gmtime0(timer));
+    }
 
     /**
      * <b>POSIX:</b>
@@ -344,6 +353,8 @@ public class Time {
      */
     public final static native Tm gmtime_r(@time_t long timer, Tm result) throws NativeErrorException;
 
+    private static native NativeAddressHolder localtime0(@time_t long timer) throws NativeErrorException;
+
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/localtime.html">localtime,
@@ -357,7 +368,9 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native Tm localtime(@time_t long timer) throws NativeErrorException;
+    public final static Tm localtime(@time_t long timer) throws NativeErrorException {
+        return new Tm(localtime0(timer));
+    }
 
     /**
      * <b>POSIX:</b>
@@ -386,8 +399,8 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native @time_t
-    long mktime(Tm timeptr) throws NativeErrorException;
+    @time_t
+    public final static native long mktime(Tm timeptr) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -564,36 +577,52 @@ public class Time {
      */
     public static class Itimerspec extends Struct32 {
 
+        public static class Layout extends StructLayout {
+
+            public final long it_interval;
+            public final long it_value;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                it_interval = -1;
+                it_value = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
+
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        /**
-         * Get the real size of struct itimerspec natively.
-         *
-         * @return the native value sizeof(struct itimerspec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public static native int offsetof_It_interval();
-
-        public static native int offsetof_It_value();
-
-        public Itimerspec(boolean clearMem) throws NoSuchNativeTypeException {
-            super(sizeof(), clearMem);
-            it_interval = new Timespec(this, offsetof_It_interval());
-            it_value = new Timespec(this, offsetof_It_value());
+        public Itimerspec(Byte setMem) throws NoSuchNativeTypeException {
+            this(null, 0, setMem);
         }
 
-        public Itimerspec() throws NoSuchNativeTypeException {
-            this(true);
+        public Itimerspec(OpaqueMemory32 owner, int offset, Byte setMem) throws NoSuchNativeTypeException {
+            super((OpaqueMemory32) owner, 0, LAYOUT.sizeof, setMem);
+            it_interval = new Timespec(this, LAYOUT.it_interval, MEM_UNINITIALIZED);//mem is already initialized by parent
+            it_value = new Timespec(this, LAYOUT.it_value, MEM_UNINITIALIZED);//mem is already initialized by parent
         }
 
         /**
@@ -655,40 +684,49 @@ public class Time {
      * timespec}</a>.
      *
      */
-    public static class Timespec extends Struct32 {
+    public static class Timespec extends PosixStruct32 {
 
-        /**
-         * Make sure the native lib is loaded
-         */
+        public static class Layout extends StructLayout {
+
+            public final long tv_sec;
+            public final long tv_nsec;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                tv_sec = -1;
+                tv_nsec = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
+
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Timespec() {
-            super(sizeof(), false);
+        public Timespec(OpaqueMemory32 parent, long offset, Byte setMem) {
+            super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
-        public Timespec(OpaqueMemory32 parent, int offset) {
-            super(parent, offset, sizeof());
-        }
-
-        public Timespec(OpaqueMemory32 parent, OpaqueMemory32 prev) {
-            this(parent, OpaqueMemory32.calcNextOffset(parent, prev, alignof()));
-        }
-
-        public Timespec(boolean cleanMem) {
-            super(sizeof(), cleanMem);
+        public Timespec(Byte setMem) {
+            this(null, 0, setMem);
         }
 
         /**
@@ -698,8 +736,10 @@ public class Time {
          *
          * @return the native value of tv_sec.
          */
-        public native @time_t
-        long tv_sec();
+        @time_t
+        public long tv_sec() {
+            return ACCESSOR_TIME_T.time_t(this, LAYOUT.tv_sec);
+        }
 
         /**
          * Seconds.
@@ -708,7 +748,9 @@ public class Time {
          *
          * @param tv_sec the value of tv_sec to be set natively.
          */
-        public native void tv_sec(@time_t long tv_sec);
+        public void tv_sec(@time_t long tv_sec) {
+            ACCESSOR_TIME_T.time_t(this, LAYOUT.tv_sec, tv_sec);
+        }
 
         /**
          * Nanoseconds.
@@ -717,7 +759,9 @@ public class Time {
          *
          * @return the native value of tv_nsec.
          */
-        public native long tv_nsec();
+        public long tv_nsec() {
+            return ACCESSOR_TIME_T.time_t(this, LAYOUT.tv_nsec);
+        }
 
         /**
          * Nanoseconds.
@@ -726,7 +770,9 @@ public class Time {
          *
          * @param tv_nsec the value of tv_nsec to be set natively.
          */
-        public native void tv_nsec(long tv_nsec);
+        public void tv_nsec(long tv_nsec) {
+            ACCESSOR_TIME_T.time_t(this, LAYOUT.tv_nsec, tv_nsec);
+        }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
@@ -771,40 +817,65 @@ public class Time {
      */
     public static class Tm extends Struct32 {
 
-        /**
-         * Make sure the native lib is loaded
-         */
+        public static class Layout extends StructLayout {
+
+            public final long tm_sec;
+            public final long tm_min;
+            public final long tm_hour;
+            public final long tm_mday;
+            public final long tm_mon;
+            public final long tm_year;
+            public final long tm_wday;
+            public final long tm_yday;
+            public final long tm_isdst;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                tm_sec = -1;
+                tm_min = -1;
+                tm_hour = -1;
+                tm_mday = -1;
+                tm_mon = -1;
+                tm_year = -1;
+                tm_wday = -1;
+                tm_yday = -1;
+                tm_isdst = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
+
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        /**
-         * Get the real size of struct tm natively.
-         *
-         * @return the native value sizeof(struct tm).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        /**
-         * To be called only from native code ...
-         *
-         * @param addressHolder
-         */
-        @SuppressWarnings("unused")
-        private Tm(NativeAddressHolder addressHolder, int sizeof) {
-            super(addressHolder, sizeof);
+        public Tm(NativeAddressHolder addressHolder) {
+            super(addressHolder, LAYOUT.sizeof);
         }
 
-        public Tm() {
-            super(sizeof(), false);
+        public Tm(Byte setMem) {
+            this(null, 0, setMem);
         }
 
-        public Tm(boolean clearMem) {
-            super(sizeof(), clearMem);
+        public Tm(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
         /**
@@ -814,7 +885,9 @@ public class Time {
          *
          * @return the native value of tm_sec.
          */
-        public native int tm_sec();
+        public int tm_sec() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.tm_sec);
+        }
 
         /**
          * Minutes [0,59].
@@ -823,7 +896,9 @@ public class Time {
          *
          * @return the native value of tm_min.
          */
-        public native int tm_min();
+        public int tm_min() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.tm_min);
+        }
 
         /**
          * Hour [0,23].
@@ -832,7 +907,9 @@ public class Time {
          *
          * @return the native value of tm_hour.
          */
-        public native int tm_hour();
+        public int tm_hour() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.tm_hour);
+        }
 
         /**
          * Day of month [1,31].
@@ -841,7 +918,9 @@ public class Time {
          *
          * @return the native value of tm_mday.
          */
-        public native int tm_mday();
+        public int tm_mday() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.tm_mday);
+        }
 
         /**
          * Month of year [0,11].
@@ -850,7 +929,9 @@ public class Time {
          *
          * @return the native value of tm_mon.
          */
-        public native int tm_mon();
+        public int tm_mon() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.tm_mon);
+        }
 
         /**
          * Years since 1900.
@@ -859,7 +940,9 @@ public class Time {
          *
          * @return the native value of tm_year.
          */
-        public native int tm_year();
+        public int tm_year() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.tm_year);
+        }
 
         /**
          * Day of week [0,6] (Sunday = 0 ).
@@ -868,7 +951,9 @@ public class Time {
          *
          * @return the native value of tm_wday.
          */
-        public native int tm_wday();
+        public int tm_wday() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.tm_wday);
+        }
 
         /**
          * Day of year [0,365].
@@ -877,7 +962,9 @@ public class Time {
          *
          * @return the native value of tm_yday.
          */
-        public native int tm_yday();
+        public int tm_yday() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.tm_yday);
+        }
 
         /**
          * Daylight Savings flag.
@@ -886,7 +973,9 @@ public class Time {
          *
          * @return the native value of tm_isdst.
          */
-        public native int tm_isdst();
+        public int tm_isdst() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.tm_isdst);
+        }
 
         /**
          * Seconds [0,60].
@@ -895,7 +984,9 @@ public class Time {
          *
          * @param tm_sec the value of tm_sec to be set natively.
          */
-        public native void tm_sec(int tm_sec);
+        public void tm_sec(int tm_sec) {
+            MEM_ACCESS.int32_t(this, LAYOUT.tm_sec, tm_sec);
+        }
 
         /**
          * Minutes [0,59].
@@ -904,7 +995,9 @@ public class Time {
          *
          * @param tm_min the value of tm_min to be set natively.
          */
-        public native void tm_min(int tm_min);
+        public void tm_min(int tm_min) {
+            MEM_ACCESS.int32_t(this, LAYOUT.tm_min, tm_min);
+        }
 
         /**
          * Hour [0,23].
@@ -913,7 +1006,9 @@ public class Time {
          *
          * @param tm_hour the value of tm_hour to be set natively.
          */
-        public native void tm_hour(int tm_hour);
+        public void tm_hour(int tm_hour) {
+            MEM_ACCESS.int32_t(this, LAYOUT.tm_hour, tm_hour);
+        }
 
         /**
          * Day of month [1,31].
@@ -922,7 +1017,9 @@ public class Time {
          *
          * @param tm_mday the value of tm_mday to be set natively.
          */
-        public native void tm_mday(int tm_mday);
+        public void tm_mday(int tm_mday) {
+            MEM_ACCESS.int32_t(this, LAYOUT.tm_mday, tm_mday);
+        }
 
         /**
          * Month of year [0,11].
@@ -931,7 +1028,9 @@ public class Time {
          *
          * @param tm_mon the value of tm_mon to be set natively.
          */
-        public native void tm_mon(int tm_mon);
+        public void tm_mon(int tm_mon) {
+            MEM_ACCESS.int32_t(this, LAYOUT.tm_mon, tm_mon);
+        }
 
         /**
          * Years since 1900.
@@ -940,7 +1039,9 @@ public class Time {
          *
          * @param tm_year the value of tm_year to be set natively.
          */
-        public native void tm_year(int tm_year);
+        public void tm_year(int tm_year) {
+            MEM_ACCESS.int32_t(this, LAYOUT.tm_year, tm_year);
+        }
 
         /**
          * Day of week [0,6] (Sunday = 0 ).
@@ -949,7 +1050,9 @@ public class Time {
          *
          * @param tm_wday the value of tm_wday to be set natively.
          */
-        public native void tm_wday(int tm_wday);
+        public void tm_wday(int tm_wday) {
+            MEM_ACCESS.int32_t(this, LAYOUT.tm_wday, tm_wday);
+        }
 
         /**
          * Day of year [0,365].
@@ -958,7 +1061,9 @@ public class Time {
          *
          * @param tm_yday the value of tm_yday to be set natively.
          */
-        public native void tm_yday(int tm_yday);
+        public void tm_yday(int tm_yday) {
+            MEM_ACCESS.int32_t(this, LAYOUT.tm_yday, tm_yday);
+        }
 
         /**
          * Daylight Savings flag.
@@ -967,7 +1072,9 @@ public class Time {
          *
          * @param tm_isdst the value of tm_isdst to be set natively.
          */
-        public native void tm_isdst(int tm_isdst);
+        public void tm_isdst(int tm_isdst) {
+            MEM_ACCESS.int32_t(this, LAYOUT.tm_isdst, tm_isdst);
+        }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
@@ -995,30 +1102,46 @@ public class Time {
     @timer_t
     public static final class Timer_t extends Struct32 {
 
+        public static class Layout extends StructLayout {
+
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
+
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        /**
-         * Get the real size of timer_t natively.
-         *
-         * @return the native value sizeof(timer_t).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Timer_t() throws NoSuchNativeTypeException {
-            super(sizeof(), false);
+        public Timer_t(Byte setMem) {
+            this(null, 0, setMem);
         }
 
-        public Timer_t(boolean cleanMem) throws NoSuchNativeTypeException {
-            super(sizeof(), cleanMem);
+        public Timer_t(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
         @Override
@@ -1027,7 +1150,16 @@ public class Time {
         }
 
         @Override
-        public native String nativeToString();
+        public String nativeToString() {
+            switch (LAYOUT.sizeof) {
+                case 4:
+                    return MEM_ACCESS.uint32_t_AsHex(this, 0);
+                case 8:
+                    return MEM_ACCESS.uint64_t_AsHex(this, 0);
+                default:
+                    throw new RuntimeException("cant handle Time_t antiveToString current size: " + LAYOUT.sizeof);
+            }
+        }
 
     }
 

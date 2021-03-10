@@ -30,8 +30,6 @@ extern "C" {
     jfieldID dij_p_Locale_Locale_t_nativeValue__FID = NULL;
     jmethodID dij_p_Locale_Locale_t_init__MID = NULL;
 
-    jclass dij_p_Time_Tm__GCR = NULL;
-    jmethodID dij_p_Time_Tm_init__MID = NULL;
 #endif
 
     JNIEXPORT jint JNICALL
@@ -57,16 +55,6 @@ extern "C" {
             }
         }
 
-        if (dij_p_Time_Tm__GCR == NULL) {
-            dij_p_Time_Tm__GCR = getGlobalClassRef(env, dij_p_Time_Tm_CName);
-            if (dij_p_Time_Tm__GCR == NULL) {
-                return JNI_ERR;
-            }
-            dij_p_Time_Tm_init__MID = (*env)->GetMethodID(env, dij_p_Time_Tm__GCR, "<init>", "(Lde/ibapl/jnhw/common/memory/NativeAddressHolder;I)V");
-            if (dij_p_Time_Tm_init__MID == NULL) {
-                return JNI_ERR;
-            }
-        }
 #endif
         return JNI_VERSION_10;
     }
@@ -82,9 +70,6 @@ extern "C" {
             dij_p_Locale_Locale_t_nativeValue__FID = NULL;
             dij_p_Locale_Locale_t_init__MID = NULL;
 
-            deleteGlobalRef(env, &dij_p_Time_Tm__GCR);
-            dij_p_Time_Tm__GCR = NULL;
-            dij_p_Time_Tm_init__MID = NULL;
 #endif
         }
 

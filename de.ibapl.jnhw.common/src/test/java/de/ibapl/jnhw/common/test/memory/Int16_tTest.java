@@ -24,6 +24,8 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.memory.Int16_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
  *
@@ -39,7 +41,7 @@ public class Int16_tTest {
      */
     @Test
     public void testSizeofInt16_t() {
-        assertEquals(2, Int16_t.sizeof());
+        assertEquals(2, Int16_t.DATA_TYPE.SIZE_OF);
     }
 
     /**
@@ -47,7 +49,7 @@ public class Int16_tTest {
      */
     @Test
     public void testAlignofInt16_t() {
-        assertEquals(2, Int16_t.alignof());
+        assertEquals(Alignment.AT_2, Int16_t.DATA_TYPE.ALIGN_OF);
     }
 
     /**
@@ -55,17 +57,17 @@ public class Int16_tTest {
      */
     @Test
     public void testRawInt16_t() {
-        Int16_t instance = new Int16_t(true);
+        Int16_t instance = new Int16_t(null, 0, SET_MEM_TO_0);
         short expResult = 0x2010;
-        instance.rawInt16_t(expResult);
-        assertEquals(expResult, instance.rawInt16_t());
+        instance.int16_t(expResult);
+        assertEquals(expResult, instance.int16_t());
     }
 
     @Test
     public void testNativeToString() {
-        Int16_t instance = new Int16_t(true);
-        instance.rawInt16_t((short) -2);
+        Int16_t instance = new Int16_t(null, 0, SET_MEM_TO_0);
+        instance.int16_t((short) -2);
         assertEquals("-2", instance.nativeToString());
-        assertEquals("fffe", instance.nativeToHexString());
+        assertEquals("0xfffe", instance.nativeToHexString());
     }
 }

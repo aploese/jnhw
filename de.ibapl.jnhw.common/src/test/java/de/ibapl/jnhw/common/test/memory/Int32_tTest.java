@@ -21,9 +21,12 @@
  */
 package de.ibapl.jnhw.common.test.memory;
 
+import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
  *
@@ -39,7 +42,7 @@ public class Int32_tTest {
      */
     @Test
     public void testSizeofInt32_t() {
-        assertEquals(4, Int32_t.sizeof());
+        assertEquals(4, Int32_t.DATA_TYPE.SIZE_OF);
     }
 
     /**
@@ -47,25 +50,25 @@ public class Int32_tTest {
      */
     @Test
     public void testAlignofInt32_t() {
-        assertEquals(4, Int32_t.alignof());
+        assertEquals(Alignment.AT_4, Int32_t.DATA_TYPE.ALIGN_OF);
     }
 
     /**
      * Test of rawInt32_t method, of class Int32_t.
      */
     @Test
-    public void testRawInt32_t() {
-        Int32_t instance = new Int32_t(true);
+    public void testInt32_t() {
+        Int32_t instance = new Int32_t(null, 0, SET_MEM_TO_0);
         int expResult = 0x40302010;
-        instance.rawInt32_t(expResult);
-        assertEquals(expResult, instance.rawInt32_t());
+        instance.int32_t(expResult);
+        assertEquals(expResult, instance.int32_t());
     }
 
     @Test
     public void testNativeToString() {
-        Int32_t instance = new Int32_t(true);
-        instance.rawInt32_t(-2);
+        Int32_t instance = new Int32_t(null, 0, SET_MEM_TO_0);
+        instance.int32_t(-2);
         assertEquals("-2", instance.nativeToString());
-        assertEquals("fffffffe", instance.nativeToHexString());
+        assertEquals("0xfffffffe", instance.nativeToHexString());
     }
 }

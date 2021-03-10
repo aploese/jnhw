@@ -27,11 +27,10 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
-import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.io.IOException;
 
@@ -307,7 +306,11 @@ public class Locale {
         public static native int alignof();
 
         public Lconv() {
-            super(sizeof(), false);
+            this(null, 0, null);
+        }
+
+        public Lconv(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, sizeof(), setMem);
         }
 
         /**

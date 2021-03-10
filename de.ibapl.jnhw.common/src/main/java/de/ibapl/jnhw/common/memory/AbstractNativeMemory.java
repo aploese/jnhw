@@ -21,71 +21,80 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.util.JnhwFormater;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import java.lang.ref.Cleaner;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
  * @author aploese
+ * @TODO how to reallocate mem???
  */
-public class AbstractNativeMemory {
+public abstract class AbstractNativeMemory {
+
+    public static final Byte SET_MEM_TO_0 = 0;
+    public static final Byte SET_MEM_TO_0xFF = (byte) 0xff;
+    public static final Byte MEM_UNINITIALIZED = null;
+
+    protected final static Cleaner CLEANER = Cleaner.create();
+
+    protected final static MemoryAccessor MEM_ACCESS = getMemoryAccessor();
 
     /**
-     * Make sure the native lib is loaded. Subclasses in common do not need to
-     * call this again....
+     * Get the size in bytes if instance. Wrap instance.getSizeInBytes() - so
+     * the namespace of instanes of AbstractNativeMemory is not pollutet.
+     *
+     * @param instance the instance.
+     * @return the instance.getSizeInBytes() .
      */
-    static {
-        LibJnhwCommonLoader.touch();
+    public static long getSizeInBytes(AbstractNativeMemory instance) {
+        return instance.getSizeInBytes();
     }
 
-    static class MemoryCleaner implements Runnable {
-
-        static {
-            LibJnhwCommonLoader.touch();
-        }
-        final long baseAddress;
-
-        MemoryCleaner(final long baseAddress) {
-            this.baseAddress = baseAddress;
-        }
-
-        private static native void free(long baseAddress);
-
-        @Override
-        public void run() {
-            try {
-                //LOG.log(Level.FINEST, String.format("Finalize: try free memory @%s size: %d", JnhwFormater.formatAddress(baseAddress), sizeInBytes));
-                free(baseAddress);
-                //LOG.log(Level.FINEST, String.format("memory @%s freed", JnhwFormater.formatAddress(baseAddress)));
-            } catch (Throwable t) {
-                LOG.log(Level.SEVERE,
-                        String.format("Finalize: Memory Leak freeing memory @%s failed", JnhwFormater.formatAddress(baseAddress)), t);
-            }
-
-        }
+    /**
+     * Get the offset of member to direct parent.
+     *
+     * @param member the direct member of parent.
+     * @return the offset om menber in its parent.
+     */
+    public static long offsetof(AbstractNativeMemory member) {
+        return member.getOffset();
     }
 
-    private static final Cleaner CLEANER = Cleaner.create();
+    /**
+     * Neede for calculating baseaddress of onTheFly
+     * <pre> {@code
+     *  int8_t data0;
+     *  struct onTheFly {
+     *   int64_t first
+     *  };
+     * }</pre>
+     *
+     * @param mem the mem to put datat0 and onTheFly
+     * @param structAlignment the alignment of onTheFly here ist will be 8 byte
+     * from int64_t
+     * @param startOffset the offset in mem where you intend to place onTheFly
+     * @return the aligned offset
+     */
+    public static long calcOffsetForAlignemt(final AbstractNativeMemory mem, final Alignment structAlignment, final long startOffset) {
+        final int reminder = (int) Long.remainderUnsigned(mem.baseAddress + startOffset, structAlignment.alignof);
+        return (reminder == 0) ? startOffset : startOffset + structAlignment.alignof - reminder;
+    }
 
-    // get value of define from errno.
-    public static final native int ENOMEM();
+    private static MemoryAccessor getMemoryAccessor() {
+        try {
+            return new UnsafeMemoryAccessor();
+        } catch (Exception ex) {
+            return new JnhwMemoryAccessor();
+        }
+
+    }
 
     protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
 
     protected final long baseAddress;
-    public final AbstractNativeMemory memoryOwner;
 
-    private static native long malloc(int sizeInBytes) throws NativeErrorException;
-
-    private static native long malloc(long sizeInBytes) throws NativeErrorException;
-
-    private static native long calloc(int elements, int elementSizeInBytes) throws NativeErrorException;
-
-    private static native long calloc(long elements, long elementSizeInBytes) throws NativeErrorException;
+    public final AbstractNativeMemory parent;
 
     /**
      * test if adresses are the same. If either nativeAddress or om is null and
@@ -114,233 +123,42 @@ public class AbstractNativeMemory {
      */
     protected AbstractNativeMemory(NativeAddressHolder addressHolder) {
         this.baseAddress = addressHolder.address;
-        memoryOwner = null;
+        parent = null;
     }
 
     /**
      * Creates a new memory which will be freed at the end of life.
      *
      * @param sizeInBytes
-     * @param clearMem
      */
-    public AbstractNativeMemory(int sizeInBytes, boolean clearMem) {
-        try {
-            if (clearMem) {
-                baseAddress = calloc(1, sizeInBytes);
-            } else {
-                baseAddress = malloc(sizeInBytes);
+    public AbstractNativeMemory(AbstractNativeMemory parent, long offset, long sizeInBytes) {
+        if (parent == null) {
+            if (offset != 0) {
+                throw new IllegalArgumentException("offset must == 0");
             }
-        } catch (NativeErrorException nee) {
-            if (nee.errno == ENOMEM()) {
-                throw new OutOfMemoryError("Can't allocate " + sizeInBytes + " bytes ENOMEM");
-            } else {
-                throw new RuntimeException("Can't allocate " + sizeInBytes + " bytes ");
+            this.baseAddress = MEM_ACCESS.allocateMemory(this, sizeInBytes);
+            this.parent = this;
+        } else {
+            if (offset < 0) {
+                throw new IllegalArgumentException("start outside (before) mem area");
             }
+            this.baseAddress = parent.baseAddress + offset;
+            this.parent = parent;
+
         }
-        memoryOwner = this;
-        CLEANER.register(this, new MemoryCleaner(baseAddress));
     }
 
     /**
-     * Creates a new memory which will be freed at the end of life. On 32 bit
-     * systems only uint32_t sizes are possible.
+     * calc the offset
      *
-     * @param sizeInBytes
-     * @param clearMem
+     * @return
      */
-    public AbstractNativeMemory(long sizeInBytes, boolean clearMem) {
-        try {
-            if (clearMem) {
-                baseAddress = calloc(1, sizeInBytes);
-            } else {
-                baseAddress = malloc(sizeInBytes);
-            }
-        } catch (NativeErrorException nee) {
-            if (nee.errno == ENOMEM()) {
-                throw new OutOfMemoryError("Can't allocate " + sizeInBytes + " bytes ENOMEM");
-            } else {
-                throw new RuntimeException("Can't allocate " + sizeInBytes + " bytes ");
-            }
+    protected final long getOffset() {
+        if (parent == null) {
+            throw new RuntimeException("memory Owner is null");
         }
-        memoryOwner = this;
-        CLEANER.register(this, new MemoryCleaner(baseAddress));
+        return baseAddress - parent.baseAddress;
     }
 
-    /**
-     * Creates a new memory which will be freed at the end of life.
-     *
-     * @param nelem
-     * @param elsize
-     * @param clearMem
-     */
-    public AbstractNativeMemory(int nelem, int elsize, boolean clearMem) {
-        if (nelem < 0) {
-            throw new IllegalArgumentException("nelem < 0");
-        }
-        if (elsize < 0) {
-            throw new IllegalArgumentException("elsize < 0");
-        }
-        int sizeInBytes = elsize * nelem;
-        try {
-            if (clearMem) {
-                baseAddress = calloc(nelem, elsize);
-            } else {
-                baseAddress = malloc(sizeInBytes);
-            }
-        } catch (NativeErrorException nee) {
-            if (nee.errno == ENOMEM()) {
-                throw new OutOfMemoryError("Can't allocate " + sizeInBytes + " bytes ENOMEM");
-            } else {
-                throw new RuntimeException("Can't allocate " + sizeInBytes + " bytes ");
-            }
-        }
-        memoryOwner = this;
-        CLEANER.register(this, new MemoryCleaner(baseAddress));
-    }
-
-    /**
-     * Creates a new memory which will be freed at the end of life. On 32 bit
-     * systems only uint32_t sizes are possible.
-     *
-     * @param nelem
-     * @param elsize
-     * @param clearMem
-     */
-    public AbstractNativeMemory(long nelem, long elsize, boolean clearMem) {
-        if (nelem < 0) {
-            throw new IllegalArgumentException("nelem < 0");
-        }
-        if (elsize < 0) {
-            throw new IllegalArgumentException("elsize < 0");
-        }
-        long sizeInBytes = elsize * nelem;
-        try {
-            if (clearMem) {
-                baseAddress = calloc(nelem, elsize);
-            } else {
-                baseAddress = malloc(sizeInBytes);
-            }
-        } catch (NativeErrorException nee) {
-            if (nee.errno == ENOMEM()) {
-                throw new OutOfMemoryError("Can't allocate " + sizeInBytes + " bytes ENOMEM");
-            } else {
-                throw new RuntimeException("Can't allocate " + sizeInBytes + " bytes ");
-            }
-        }
-        memoryOwner = this;
-        CLEANER.register(this, new MemoryCleaner(baseAddress));
-    }
-
-    /**
-     * @param owner
-     * @param offset
-     */
-    public AbstractNativeMemory(AbstractNativeMemory owner, long offset) {
-        if (offset < 0) {
-            throw new IllegalArgumentException("start outside (before) mem area");
-        }
-        this.baseAddress = owner.baseAddress + offset;
-        this.memoryOwner = owner;
-    }
-
-    /**
-     * @param owner
-     * @param offset
-     */
-    public AbstractNativeMemory(AbstractNativeMemory owner, int offset) {
-        if (offset < 0) {
-            throw new IllegalArgumentException("start outside (before) mem area");
-        }
-        this.baseAddress = owner.baseAddress + offset;
-        this.memoryOwner = owner;
-    }
-
-    public static class NativeMemoryAlignment {
-
-        static {
-            LibJnhwCommonLoader.touch();
-        }
-
-        public static native int sizeOfS_i8();
-
-        public static native int sizeOfS_s2xi8();
-
-        public static native int sizeOfS_3xi8();
-
-        public static native int sizeOfS_si8_s3xi8();
-
-        public static native int sizeOfS_s3xi8_si8();
-
-        public static native int offsetOfS_s2xi8__1_si8();
-
-        public static native int offsetOfS_si8_s3xi8__1_s3xi8();
-
-        public static native int offsetOfS_s3xi8_si8__1_si8();
-
-        public static native int sizeOfS_i8_i16();
-
-        public static native int alignOfS_i8_i16();
-
-        public static native int offsetOfS_i8_i16__1_i16();
-
-        public static native int offsetOfS_i8_i16__2_i8();
-
-        public static native int sizeOfS_i8_i32();
-
-        public static native int alignOfS_i8_i32();
-
-        public static native int offsetOfS_i8_i32__1_i16();
-
-        public static native int offsetOfS_i8_i32__2_i8();
-
-        public static native int offsetOfS_i8_i32__3_i32();
-
-        public static native int offsetOfS_i8_i32__4_i8();
-
-        public static native int offsetOfS_i8_i32__5_i32();
-
-        public static native int offsetOfS_i8_i32__6_i8();
-
-        public static native int offsetOfS_i8_i32__7_i16();
-
-        public static native int offsetOfS_i8_i32__8_i8();
-
-        public static native int sizeOfS_i8_i64();
-
-        public static native int alignOfS_i8_i64();
-
-        public static native int offsetOfS_i8_i64__1_i16();
-
-        public static native int offsetOfS_i8_i64__2_i8();
-
-        public static native int offsetOfS_i8_i64__3_i32();
-
-        public static native int offsetOfS_i8_i64__4_i8();
-
-        public static native int offsetOfS_i8_i64__5_i64();
-
-        public static native int offsetOfS_i8_i64__6_i8();
-
-        public static native int offsetOfS_i8_i64__7_i64();
-
-        public static native int offsetOfS_i8_i64__8_i8();
-
-        public static native int offsetOfS_i8_i64__9_i32();
-
-        public static native int offsetOfS_i8_i64__10_i8();
-
-        public static native int offsetOfS_i8_i64__11_i16();
-
-        public static native int offsetOfS_i8_i64__12_i8();
-
-        public static native int allignOfI8();
-
-        public static native int allignOfI16();
-
-        public static native int allignOfI32();
-
-        public static native int allignOfI64();
-
-    }
-
+    protected abstract long getSizeInBytes();
 }

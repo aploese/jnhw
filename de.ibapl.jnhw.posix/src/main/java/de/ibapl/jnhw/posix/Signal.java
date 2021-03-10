@@ -273,11 +273,15 @@ public class Signal {
         public static native int alignof() throws NoSuchNativeTypeException;
 
         public Mcontext_t() throws NoSuchNativeTypeException {
-            super(sizeof(), false);
+            this(null, 0, null);
         }
 
         public Mcontext_t(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
-            super(owner, offset, sizeof());
+            this(owner, offset, null);
+        }
+
+        public Mcontext_t(OpaqueMemory32 owner, int offset, Byte setMem) throws NoSuchNativeTypeException {
+            super(owner, offset, sizeof(), setMem);
         }
 
         public Mcontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
@@ -309,11 +313,15 @@ public class Signal {
         public static native int alignof();
 
         public Sigset_t() {
-            super(sizeof(), false);
+            this(null, 0, null);
         }
 
         public Sigset_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
+            this(owner, offset, null);
+        }
+
+        public Sigset_t(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, sizeof(), setMem);
         }
 
         private void maybeDoFormatBeforeFirst(Appendable sb, boolean first, final String indent) throws IOException {
@@ -511,11 +519,15 @@ public class Signal {
         public static native int alignof();
 
         public Sigval() {
-            super(sizeof(), false);
+            this(null, 0, null);
         }
 
         public Sigval(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
+            this(owner, offset, null);
+        }
+
+        public Sigval(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, sizeof(), setMem);
         }
 
         public Sigval(NativeAddressHolder baseAddress) {
@@ -630,8 +642,7 @@ public class Signal {
 
         @SuppressWarnings("unchecked")
         public Sigevent() throws NoSuchNativeTypeException {
-            super(sizeof(), true);
-            sigev_value = new Sigval(this, offsetof_Sigev_value());
+            this(null, 0, SET_MEM_TO_0);
         }
 
         @SuppressWarnings("unchecked")
@@ -642,7 +653,11 @@ public class Signal {
 
         @SuppressWarnings("unchecked")
         Sigevent(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
-            super(owner, offset, sizeof());
+            this(owner, offset, null);
+        }
+
+        public Sigevent(OpaqueMemory32 parent, int offset, Byte setMem) throws NoSuchNativeTypeException {
+            super(parent, offset, sizeof(), setMem);
             sigev_value = new Sigval(this, offsetof_Sigev_value());
         }
 
@@ -1089,7 +1104,11 @@ public class Signal {
         public static native int offsetof_Sa_mask();
 
         public Sigaction() {
-            super(sizeof(), false);
+            this(null, 0, null);
+        }
+
+        public Sigaction(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, sizeof(), setMem);
             sa_mask = new Sigset_t(this, offsetof_Sa_mask());
         }
 
@@ -1351,12 +1370,12 @@ public class Signal {
 
         public static native int offsetof_Uc_mcontext() throws NoSuchNativeTypeException;
 
-        public Ucontext_t() throws NoSuchNativeTypeException {
-            this(false);
+        public Ucontext_t(Byte setMem) throws NoSuchNativeTypeException {
+            this(null, 0, setMem);
         }
 
-        public Ucontext_t(boolean clearMem) throws NoSuchNativeTypeException {
-            super(sizeof(), clearMem);
+        public Ucontext_t(OpaqueMemory32 parent, int offset, Byte setMem) throws NoSuchNativeTypeException {
+            super(parent, offset, sizeof(), setMem);
             uc_sigmask = new Sigset_t(this, offsetof_Uc_sigmask());
             uc_stack = new Stack_t(this, offsetof_Uc_stack());
             uc_mcontext = new Mcontext_t(this, offsetof_Uc_mcontext());
@@ -1453,11 +1472,15 @@ public class Signal {
         public static native int alignof();
 
         private Stack_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
+            this(owner, offset, null);
         }
 
         public Stack_t() {
-            super(sizeof(), false);
+            this(null, 0, null);
+        }
+
+        public Stack_t(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, sizeof(), setMem);
         }
 
         /**
@@ -1554,7 +1577,11 @@ public class Signal {
 
         @SuppressWarnings("unchecked")
         public Siginfo_t() {
-            super(sizeof(), false);
+            this(null, 0, null);
+        }
+
+        public Siginfo_t(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, sizeof(), setMem);
             si_value = new Sigval(this, offsetof_Si_value());
         }
 

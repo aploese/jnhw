@@ -30,6 +30,8 @@ import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
 
 /**
  *
@@ -118,7 +120,7 @@ public class SchedTest {
                     Sched.sched_rr_get_interval(Unistd.getpid(), null);
                 });
 
-                Time.Timespec interval = new Time.Timespec();
+                Time.Timespec interval = new Time.Timespec(MEM_UNINITIALIZED);
                 Sched.sched_rr_get_interval(Unistd.getpid(), interval);
                 switch (MULTIARCHTUPEL_BUILDER.getOS()) {
                     case LINUX:
@@ -165,9 +167,9 @@ public class SchedTest {
                         () -> {
                             Sched.sched_getparam(Unistd.getpid(), null);
                         });
-                Sched.Sched_param param = new Sched.Sched_param();
+                Sched.Sched_param param = new Sched.Sched_param(MEM_UNINITIALIZED);
                 param.sched_priority(0);
-                Sched.Sched_param param1 = new Sched.Sched_param();
+                Sched.Sched_param param1 = new Sched.Sched_param(MEM_UNINITIALIZED);
 
                 Sched.sched_setparam(Unistd.getpid(), param);
                 Sched.sched_getparam(Unistd.getpid(), param1);
@@ -194,7 +196,7 @@ public class SchedTest {
                         () -> {
                             Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, null);
                         });
-                Sched.Sched_param param = new Sched.Sched_param(true);
+                Sched.Sched_param param = new Sched.Sched_param(SET_MEM_TO_0);
                 if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
                     //Any idea why this is so?
                     NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
@@ -227,7 +229,7 @@ public class SchedTest {
     public void teststruct_sched_param() throws Exception {
         System.out.println("struct sched_param");
         int memberSum = 0;
-        Sched.Sched_param sched_param = new Sched.Sched_param();
+        Sched.Sched_param sched_param = new Sched.Sched_param(MEM_UNINITIALIZED);
         sched_param.sched_priority(1);
         memberSum += sched_param.sched_priority();
         try {

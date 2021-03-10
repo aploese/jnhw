@@ -22,10 +22,7 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.annotation.uint16_t;
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.annotation.AlignOf;
-import de.ibapl.jnhw.common.annotation.SizeOf;
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 
 /**
@@ -35,48 +32,42 @@ import java.io.IOException;
 @uint16_t
 public class Uint16_t extends NativeIntNumber {
 
-    /**
-     * Make sure the native lib is loaded.
-     */
-    static {
-        LibJnhwCommonLoader.touch();
+    public final static BaseDataType DATA_TYPE = BaseDataType.uint16_t;
+
+    public Uint16_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+        super(owner, offset, 2, setMem);
     }
 
-    @SizeOf
-    public static native int sizeof();
-
-    @AlignOf
-    public static native int alignof();
-
-    public Uint16_t(boolean clearMem) {
-        super(sizeof(), clearMem);
+    @uint16_t
+    public short uint16_t() {
+        return MEM_ACCESS.uint16_t(this, 0);
     }
 
-    public Uint16_t(OpaqueMemory32 owner, int offset) {
-        super(owner, offset, sizeof());
+    @uint16_t
+    public int uint16_t_AsInt() {
+        return MEM_ACCESS.uint16_t_AsInt(this, 0);
     }
 
-    public native @uint16_t
-    short rawUint16_t();
-
-    public native void rawUint16_t(@uint16_t short value);
-
-    @Override
-    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(nativeToString());
+    public void uint16_t(@uint16_t short value) {
+        MEM_ACCESS.uint16_t(this, 0, value);
     }
 
-    @Override
-    public native String nativeToString();
-
-    @Override
-    public BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.uint16_t;
+    public void uint16_t_FromInt(@uint16_t int value) {
+        MEM_ACCESS.uint16_t_FromInt(this, 0, value);
     }
 
     @Override
     public String nativeToHexString() {
-        return nativeInt16ToHexString();
+        return MEM_ACCESS.uint16_t_AsHex(this, 0);
     }
 
+    @Override
+    public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+        sb.append(MEM_ACCESS.uint16_t_nativeToString(this, 0));
+    }
+
+    @Override
+    public BaseDataType getBaseDataType() {
+        return DATA_TYPE;
+    }
 }

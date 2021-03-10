@@ -169,16 +169,12 @@ extern "C" {
 #define dij_p_Locale_t_CName "de/ibapl/jnhw/posix/Locale$Locale_t"
 #define dij_p_Locale_t_CSig CLASS_NAME_TO_SIGNATURE(dij_p_Locale_t_CName)
 
-#define dij_p_Time_Tm_CName "de/ibapl/jnhw/posix/Time$Tm"
 
     extern jclass dij_p_Locale_Locale_t__GCR;
     extern jfieldID dij_p_Locale_Locale_t_nativeValue__FID;
     extern jmethodID dij_p_Locale_Locale_t_init__MID;
 
-    extern jclass dij_p_Time_Tm__GCR;
-    extern jmethodID dij_p_Time_Tm_init__MID;
-
-#define UNWRAP_LOCALE_T(Locale_tObject) (locale_t)(uintptr_t)(*env)->GetLongField(env, Locale_tObject, dij_p_Locale_Locale_t_nativeValue__FID)   
+#define UNWRAP_LOCALE_T(Locale_tObject) (locale_t)(uintptr_t)(*env)->GetLongField(env, Locale_tObject, dij_p_Locale_Locale_t_nativeValue__FID)
 #define CREATE_Locale_t(value) (*env)->NewObject(env, dij_p_Locale_Locale_t__GCR, dij_p_Locale_Locale_t_init__MID, (jlong)((uintptr_t)value))
 
 #define UNWRAP_STRUCT_TERMIOS_PTR(structTermios) UNWRAP_ABSTRACT_MEM_TO(struct termios*, structTermios)
@@ -193,7 +189,6 @@ extern "C" {
 #define UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(structTimespec) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(struct timespec*, structTimespec)
 
 #define UNWRAP_STRUCT_TM_PTR(structTm) UNWRAP_ABSTRACT_MEM_TO(struct tm*, structTm)
-#define WRAP_STATIC_STRUCT_TM(baseAddress) (*env)->NewObject(env, dij_p_Time_Tm__GCR, dij_p_Time_Tm_init__MID, CREATE_NativeAddressHolder(baseAddress), sizeof (struct tm))
 
 #define UNWRAP_STRUCT_SIGACTION_PTR(structSigaction) UNWRAP_ABSTRACT_MEM_TO(struct sigaction*, structSigaction)
 #define UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(structSigaction) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(struct sigaction*, structSigaction)
@@ -235,10 +230,10 @@ extern "C" {
 
 #define UNWRAP_STRUCT_SCHED_PARAM_PTR(value)UNWRAP_ABSTRACT_MEM_TO(struct sched_param*, value)
 
-#define LENGTH_OF_AIOCBS(aiocbs) LENGTH_OF_POINTER_ARRAY_32(aiocbs) 
+#define LENGTH_OF_AIOCBS(aiocbs) LENGTH_OF_POINTER_ARRAY_32(aiocbs)
 
 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-    //Convert a jlong to (long int *) the pointer must be shifted by sizeof(long int) 
+    //Convert a jlong to (long int *) the pointer must be shifted by sizeof(long int)
 #define __jlong2long_PTR(value) ((long int *) &value) + 1
     //Convert a jlong to (long int *)
 #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__

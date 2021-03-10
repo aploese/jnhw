@@ -22,10 +22,7 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.annotation.int16_t;
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.annotation.AlignOf;
-import de.ibapl.jnhw.common.annotation.SizeOf;
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 
 /**
@@ -35,48 +32,33 @@ import java.io.IOException;
 @int16_t
 public class Int16_t extends NativeIntNumber {
 
-    /**
-     * Make sure the native lib is loaded.
-     */
-    static {
-        LibJnhwCommonLoader.touch();
+    public final static BaseDataType DATA_TYPE = BaseDataType.int16_t;
+
+    public Int16_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+        super(owner, offset, 2, setMem);
     }
 
-    @SizeOf
-    public static native int sizeof();
-
-    @AlignOf
-    public static native int alignof();
-
-    public Int16_t(boolean clearMem) {
-        super(sizeof(), clearMem);
+    @int16_t
+    public short int16_t() {
+        return MEM_ACCESS.int16_t(this, 0);
     }
 
-    public Int16_t(OpaqueMemory32 owner, int offset) {
-        super(owner, offset, sizeof());
+    public void int16_t(@int16_t short value) {
+        MEM_ACCESS.int16_t(this, 0, value);
     }
 
-    public native @int16_t
-    short rawInt16_t();
-
-    public native void rawInt16_t(@int16_t short value);
+    public String nativeToHexString() {
+        return MEM_ACCESS.int16_t_AsHex(this, 0);
+    }
 
     @Override
     public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(nativeToString());
+        sb.append(MEM_ACCESS.int16_t_nativeToString(this, 0));
     }
 
     @Override
-    public native String nativeToString();
-
-    @Override
-    public BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.int16_t;
-    }
-
-    @Override
-    public String nativeToHexString() {
-        return nativeInt16ToHexString();
+    public BaseDataType getBaseDataType() {
+        return DATA_TYPE;
     }
 
 }

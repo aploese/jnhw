@@ -17,6 +17,78 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_initFields
 
 /*
  * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+ * Method:    _IOC
+ * Signature: (ICII)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl__1IOC
+  (JNIEnv *, jclass, jint, jchar, jint, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+ * Method:    _IO
+ * Signature: (CI)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl__1IO
+  (JNIEnv *, jclass, jchar, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+ * Method:    _IOC_DIR
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl__1IOC_1DIR
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+ * Method:    _IOC_TYPE
+ * Signature: (I)C
+ */
+JNIEXPORT jchar JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl__1IOC_1TYPE
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+ * Method:    _IOC_NR
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl__1IOC_1NR
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+ * Method:    _IOC_SIZE
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl__1IOC_1SIZE
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+ * Method:    IOCPARM_LEN
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_IOCPARM_1LEN
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+ * Method:    IOCBASECMD
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_IOCBASECMD
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+ * Method:    IOCGROUP
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_IOCGROUP
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_unix_sys_Ioctl
  * Method:    ioctl
  * Signature: (II)I
  */
@@ -29,6 +101,14 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__II
  * Signature: (IILde/ibapl/jnhw/common/references/IntRef;)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IILde_ibapl_jnhw_common_references_IntRef_2
+  (JNIEnv *, jclass, jint, jint, jobject);
+
+/*
+ * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+ * Method:    ioctl
+ * Signature: (IILde/ibapl/jnhw/common/memory/OpaqueMemory32;)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IILde_ibapl_jnhw_common_memory_OpaqueMemory32_2
   (JNIEnv *, jclass, jint, jint, jobject);
 
 #ifdef __cplusplus

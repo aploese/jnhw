@@ -55,7 +55,7 @@ public class Callback_I_Mem_Mem_V_Test {
         }
 
         public A() {
-            super(SIZE_OF, true);
+            super((OpaqueMemory32) null, 0, SIZE_OF, SET_MEM_TO_0);
         }
 
     }
@@ -69,7 +69,7 @@ public class Callback_I_Mem_Mem_V_Test {
         }
 
         public B() {
-            super(SIZE_OF, true);
+            super((OpaqueMemory32) null, 0, SIZE_OF, SET_MEM_TO_0);
         }
 
     }

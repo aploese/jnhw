@@ -27,11 +27,8 @@ import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
-import de.ibapl.jnhw.common.annotation.Unsigned;
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
@@ -40,6 +37,10 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.io.IOException;
+import de.ibapl.jnhw.common.memory.Uint8_t;
+import de.ibapl.jnhw.common.memory.Uint32_t;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.memory.layout.StructLayout;
 
 /**
  * Wrapper around the {@code <termios.h>} header.
@@ -1330,41 +1331,11 @@ public final class Termios {
      */
     public final static native void tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException;
 
-    public static class Cc_t extends NativeIntNumber {
+    @cc_t
+    public static class Cc_t extends Uint8_t {
 
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-        }
-
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
-
-        @Unsigned
-        public final static native boolean unsigned();
-
-        public Cc_t(boolean clearMem) {
-            super(sizeof(), clearMem);
-        }
-
-        public Cc_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
-        }
-
-        public native @cc_t
-        byte getValue();
-
-        public native void setValue(@cc_t byte value);
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
+        public Cc_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+            super(owner, offset, setMem);
         }
 
         /**
@@ -1374,25 +1345,16 @@ public final class Termios {
          */
         @Override
         public String nativeToString() {
-            return String.valueOf((char) getValue());
+            return String.valueOf((char) uint8_t());
         }
 
-        @Override
-        public BaseDataTypes getBaseDataType() {
-            return BaseDataTypes.uint8_t;
-        }
-
-        @Override
-        public String nativeToHexString() {
-            return nativeInt8ToHexString();
-        }
     }
 
     /**
      * speed_t takes only symbolic constants, so the sign is of no relevance...
      */
     @speed_t
-    public static class Speed_t extends NativeIntNumber {
+    public static class Speed_t extends Uint32_t {
 
         static String speed_tToString(int speed_t) {
             if (speed_t == B0) {
@@ -1462,60 +1424,19 @@ public final class Termios {
             }
         }
 
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-        }
-
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
-
-        @Unsigned
-        public final static native boolean unsigned();
-
-        public Speed_t(boolean clearMem) {
-            super(sizeof(), clearMem);
-        }
-
-        public Speed_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
-        }
-
-        @speed_t
-        public native int getValue();
-
-        public native void setValue(@speed_t int value);
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
+        public Speed_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+            super(owner, offset, setMem);
         }
 
         @Override
         public String nativeToString() {
-            return speed_tToString(getValue());
-        }
-
-        @Override
-        public BaseDataTypes getBaseDataType() {
-            return BaseDataTypes.uint32_t;
-        }
-
-        @Override
-        public String nativeToHexString() {
-            return nativeInt32ToHexString();
+            return speed_tToString(uint32_t());
         }
 
     }
 
     @tcflag_t
-    public static class Tcflag_t extends NativeIntNumber {
+    public static class Tcflag_t extends Uint32_t {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -1817,31 +1738,8 @@ public final class Termios {
             }
         }
 
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
-
-        @Unsigned
-        public final static native boolean unsigned();
-
-        public Tcflag_t(boolean clearMem) {
-            super(sizeof(), clearMem);
-        }
-
-        public Tcflag_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
-        }
-
-        @tcflag_t
-        public native int getValue();
-
-        public native void setValue(@tcflag_t int value);
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
+        public Tcflag_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+            super(owner, offset, setMem);
         }
 
         /**
@@ -1854,15 +1752,6 @@ public final class Termios {
             return nativeToHexString();
         }
 
-        @Override
-        public String nativeToHexString() {
-            return nativeInt32ToHexString();
-        }
-
-        @Override
-        public BaseDataTypes getBaseDataType() {
-            return BaseDataTypes.uint32_t;
-        }
     }
 
     /**
@@ -1873,19 +1762,55 @@ public final class Termios {
      */
     public final static class StructTermios extends Struct32 {
 
+        public static class Layout extends StructLayout {
+
+            public final long c_iflag;
+            public final long c_oflag;
+            public final long c_cflag;
+            public final long c_lflag;
+            public final long c_cc;
+            public final long c_line;
+            public final long c_ispeed;
+            public final long c_ospeed;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                c_iflag = -1;
+                c_oflag = -1;
+                c_cflag = -1;
+                c_lflag = -1;
+                c_cc = -1;
+                c_line = -1;
+                c_ispeed = -1;
+                c_ospeed = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
+
         /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
+         * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
-
-        @SizeOf
-        public final static native int sizeof();
-
-        @AlignOf
-        public final static native int alignof();
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1894,7 +1819,9 @@ public final class Termios {
          * @return the native value of c_iflag.
          */
         @tcflag_t
-        public native int c_iflag();
+        public int c_iflag() {
+            return MEM_ACCESS.uint32_t(this, LAYOUT.c_iflag);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1902,7 +1829,9 @@ public final class Termios {
          *
          * @param value the value of c_iflag to be set natively.
          */
-        public native void c_iflag(@tcflag_t int value);
+        public void c_iflag(@tcflag_t int value) {
+            MEM_ACCESS.uint32_t(this, LAYOUT.c_iflag, value);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1911,7 +1840,9 @@ public final class Termios {
          * @return native value of c_oflag.
          */
         @tcflag_t
-        public native int c_oflag();
+        public int c_oflag() {
+            return MEM_ACCESS.uint32_t(this, LAYOUT.c_oflag);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1919,7 +1850,9 @@ public final class Termios {
          *
          * @param value the value of c_oflag to be set natively.
          */
-        public native void c_oflag(@tcflag_t int value);
+        public void c_oflag(@tcflag_t int value) {
+            MEM_ACCESS.uint32_t(this, LAYOUT.c_oflag, value);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1928,7 +1861,9 @@ public final class Termios {
          * @return native value of c_cflag.
          */
         @tcflag_t
-        public native int c_cflag();
+        public int c_cflag() {
+            return MEM_ACCESS.uint32_t(this, LAYOUT.c_cflag);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1936,7 +1871,9 @@ public final class Termios {
          *
          * @param value the value of c_cflag to be set natively.
          */
-        public native void c_cflag(@tcflag_t int value);
+        public void c_cflag(@tcflag_t int value) {
+            MEM_ACCESS.uint32_t(this, LAYOUT.c_cflag, value);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1945,7 +1882,9 @@ public final class Termios {
          * @return native value of c_lflag.
          */
         @tcflag_t
-        public native int c_lflag();
+        public int c_lflag() {
+            return MEM_ACCESS.uint32_t(this, LAYOUT.c_lflag);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1953,7 +1892,9 @@ public final class Termios {
          *
          * @param value the value of c_lflag to be set natively.
          */
-        public native void c_lflag(@tcflag_t int value);
+        public void c_lflag(@tcflag_t int value) {
+            MEM_ACCESS.uint32_t(this, LAYOUT.c_lflag, value);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1962,8 +1903,13 @@ public final class Termios {
          * @param index the index.
          * @return native value of c_cx[index].
          */
-        public native @cc_t
-        byte c_cc(int index);
+        @cc_t
+        public byte c_cc(int index) {
+            if ((index < 0) || (index >= NCCS)) {
+                throw new ArrayIndexOutOfBoundsException(index);
+            }
+            return MEM_ACCESS.uint8_t(this, LAYOUT.c_cc + index);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1972,7 +1918,12 @@ public final class Termios {
          * @param index the index.
          * @param value the value of c_cx[index] to be set natively.
          */
-        public native void c_cc(int index, @cc_t byte value);
+        public void c_cc(int index, @cc_t byte value) {
+            if ((index < 0) || (index >= NCCS)) {
+                throw new ArrayIndexOutOfBoundsException(index);
+            }
+            MEM_ACCESS.uint8_t(this, LAYOUT.c_cc + index, value);
+        }
 
         /**
          * <b>Linux:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1981,8 +1932,10 @@ public final class Termios {
          * @return native value of c_line.
          * @throws NoSuchNativeTypeMemberException if c_line does not exists
          */
-        public native @cc_t
-        byte c_line() throws NoSuchNativeTypeMemberException;
+        @cc_t
+        public byte c_line() throws NoSuchNativeTypeMemberException {
+            return MEM_ACCESS.uint8_t(this, LAYOUT.c_line);
+        }
 
         /**
          * <b>Linux:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -1991,7 +1944,9 @@ public final class Termios {
          * @param value the value of c_line to be set natively.
          * @throws NoSuchNativeTypeMemberException if c_line does not * exists.
          */
-        public native void c_line(@cc_t byte value) throws NoSuchNativeTypeMemberException;
+        public void c_line(@cc_t byte value) throws NoSuchNativeTypeMemberException {
+            MEM_ACCESS.uint8_t(this, LAYOUT.c_line, value);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -2002,7 +1957,12 @@ public final class Termios {
          * exists.
          */
         @speed_t
-        public native int c_ispeed() throws NoSuchNativeTypeMemberException;
+        public int c_ispeed() throws NoSuchNativeTypeMemberException {
+            if (LAYOUT.c_ispeed == -1) {
+                throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
+            }
+            return MEM_ACCESS.uint32_t(this, LAYOUT.c_ispeed);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -2012,7 +1972,12 @@ public final class Termios {
          * @throws NoSuchNativeTypeMemberException if c_ispeed does not *
          * exists.
          */
-        public native void c_ispeed(@speed_t int value) throws NoSuchNativeTypeMemberException;
+        public void c_ispeed(@speed_t int value) throws NoSuchNativeTypeMemberException {
+            if (LAYOUT.c_ispeed == -1) {
+                throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
+            }
+            MEM_ACCESS.uint32_t(this, LAYOUT.c_ispeed, value);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -2023,7 +1988,12 @@ public final class Termios {
          * exists.
          */
         @speed_t
-        public native int c_ospeed() throws NoSuchNativeTypeMemberException;
+        public int c_ospeed() throws NoSuchNativeTypeMemberException {
+            if (LAYOUT.c_ospeed == -1) {
+                throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
+            }
+            return MEM_ACCESS.uint32_t(this, LAYOUT.c_ospeed);
+        }
 
         /**
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">{@code structure
@@ -2033,15 +2003,20 @@ public final class Termios {
          * @throws NoSuchNativeTypeMemberException if c_ospeed does not *
          * exists.
          */
-        public native void c_ospeed(@speed_t int value) throws NoSuchNativeTypeMemberException;
+        public void c_ospeed(@speed_t int value) throws NoSuchNativeTypeMemberException {
+            if (LAYOUT.c_ospeed == -1) {
+                throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
+            }
+            MEM_ACCESS.uint32_t(this, LAYOUT.c_ospeed, value);
+        }
 
         public StructTermios() {
             // get unitialized mem
-            super(sizeof(), false);
+            this(null, 0, null);
         }
 
-        public StructTermios(OpaqueMemory32 owner, OpaqueMemory32 prev) {
-            super(owner, OpaqueMemory32.calcNextOffset(owner, prev, alignof()), sizeof());
+        public StructTermios(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
         public static String toCcName(int value) {

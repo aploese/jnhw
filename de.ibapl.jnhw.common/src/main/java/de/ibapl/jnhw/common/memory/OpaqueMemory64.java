@@ -22,8 +22,6 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.Native;
-import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import static de.ibapl.jnhw.common.memory.OpaqueMemory32.printMemory;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import java.io.IOException;
 
@@ -38,18 +36,41 @@ import java.io.IOException;
 public abstract class OpaqueMemory64 extends AbstractNativeMemory implements Native {
 
     public static void clear(OpaqueMemory64 mem) {
-        memset(mem, (byte) 0);
+        memset(mem, SET_MEM_TO_0);
     }
 
-    public static native void copy(byte[] src, int srcPos, OpaqueMemory64 dest, long destPos, int length);
+    public static void copy(byte[] src, int srcPos, OpaqueMemory64 dest, long destPos, int length) {
+        MEM_ACCESS.copyMemory64(src, srcPos, dest, destPos, length);
+    }
 
-    public static native void copy(OpaqueMemory64 src, long srcPos, byte[] dest, int destPos, int length);
+    public static void copy(OpaqueMemory64 src, long srcPos, byte[] dest, int destPos, int length) {
+        MEM_ACCESS.copyMemory64(src, srcPos, dest, destPos, length);
 
-    public static native void memset(OpaqueMemory64 mem, byte c);
+    }
 
-    public static native byte getByte(OpaqueMemory64 opaqueMemory, long index);
+    public static void memset(OpaqueMemory64 mem, byte c) {
+        MEM_ACCESS.setMemory64(mem, c);
+    }
 
-    public static native void setByte(OpaqueMemory64 opaqueMemory, long index, byte value);
+    public static byte getByte(OpaqueMemory64 mem, long index) {
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("index < 0");
+        }
+        if (index >= mem.sizeInBytes) {
+            throw new IndexOutOfBoundsException("index > mem.sizeInBytes");
+        }
+        return MEM_ACCESS.int8_t(mem, index);
+    }
+
+    public static void setByte(OpaqueMemory64 mem, long index, byte value) {
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("index < 0");
+        }
+        if (index >= mem.sizeInBytes) {
+            throw new IndexOutOfBoundsException("index > mem.sizeInBytes");
+        }
+        MEM_ACCESS.int8_t(mem, index, value);
+    }
 
     public static byte[] toBytes(OpaqueMemory64 mem, long pos, int size) {
         final byte[] result = new byte[size];
@@ -70,46 +91,15 @@ public abstract class OpaqueMemory64 extends AbstractNativeMemory implements Nat
         this.sizeInBytes = sizeInBytes;
     }
 
-    /**
-     * Creates a new memory which will be freed at the end of life.
-     *
-     * @param sizeInBytes
-     * @param clearMem
-     */
-    protected OpaqueMemory64(long sizeInBytes, boolean clearMem) throws NoSuchNativeMethodException {
-        super(sizeInBytes, clearMem);
-        this.sizeInBytes = sizeInBytes;
-    }
-
-    /**
-     *
-     * @param elements
-     * @param elementSizeInBytes
-     * @param clearMem
-     */
-    protected OpaqueMemory64(long elements, long elementSizeInBytes, boolean clearMem) throws NoSuchNativeMethodException {
-        super(elements, elementSizeInBytes, clearMem);
-        this.sizeInBytes = elementSizeInBytes * elements;
-    }
-
-    /**
-     *
-     * @param owner
-     * @param offset
-     * @param sizeInBytes
-     */
-    protected OpaqueMemory64(OpaqueMemory64 owner, long offset, long sizeInBytes) {
-        super(owner, offset);
-        if (sizeInBytes < 0) {
-            throw new IllegalArgumentException("negative size");
-        }
-        if (offset < 0) {
-            throw new IllegalArgumentException("start outside (before) mem area");
-        }
-        if (offset + sizeInBytes > owner.sizeInBytes) {
-            throw new IllegalArgumentException("end will be outside (after)) of owner");
+    protected OpaqueMemory64(OpaqueMemory64 owner, long offset, long sizeInBytes, Byte setMem) {
+        super(owner, offset, sizeInBytes);
+        if ((owner != null) && (offset + sizeInBytes > owner.sizeInBytes)) {
+            throw new IndexOutOfBoundsException("end will be outside (after)) of owner");
         }
         this.sizeInBytes = sizeInBytes;
+        if (setMem != null) {
+            memset(this, setMem);
+        }
     }
 
     @Override
@@ -222,7 +212,12 @@ public abstract class OpaqueMemory64 extends AbstractNativeMemory implements Nat
 
     @Override
     final public String toString() {
-        return String.format("{baseAddress : %s, sizeInBytes : %d, memoryOwner : %s}", JnhwFormater.formatAddress(baseAddress), sizeInBytes, memoryOwner == this ? "this" : memoryOwner);
+        return String.format("{baseAddress : %s, sizeInBytes : %d, memoryOwner : %s}", JnhwFormater.formatAddress(baseAddress), sizeInBytes, parent == this ? "this" : parent);
+    }
+
+    @Override
+    protected final long getSizeInBytes() {
+        return sizeInBytes;
     }
 
 }

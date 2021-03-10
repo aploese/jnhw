@@ -23,6 +23,8 @@ package de.ibapl.jnhw.it.jnhw_jna_jnr;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.posix.Time;
 
 /**
@@ -33,9 +35,9 @@ public class Jnhw {
 
     public static void runFullTest_HeapAllocated(final int count) throws NativeErrorException {
         final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
-        final Memory32Heap heap = new Memory32Heap(Time.Timespec.sizeof(), false);
+        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, Time.Timespec.LAYOUT.sizeof, MEM_UNINITIALIZED);
         for (int i = 0; i < count; i++) {
-            final Time.Timespec timespec = new Time.Timespec(heap, 0);
+            final Time.Timespec timespec = new Time.Timespec(heap, 0, MEM_UNINITIALIZED);
             Time.clock_gettime(CLOCK_MONOTONIC, timespec);
             final long val = timespec.tv_sec();
             timespec.tv_sec(timespec.tv_nsec());
@@ -46,7 +48,7 @@ public class Jnhw {
     public static void runFullTest_DirectAllocation(final int count) throws NativeErrorException {
         final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
         for (int i = 0; i < count; i++) {
-            final Time.Timespec timespec = new Time.Timespec();
+            final Time.Timespec timespec = new Time.Timespec(MEM_UNINITIALIZED);
             Time.clock_gettime(CLOCK_MONOTONIC, timespec);
             final long val = timespec.tv_sec();
             timespec.tv_sec(timespec.tv_nsec());
@@ -62,21 +64,21 @@ public class Jnhw {
      * @param count
      */
     public static void mem_HeapAllocated(final int count) {
-        final Memory32Heap heap = new Memory32Heap(Time.Timespec.sizeof(), false);
+        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, Time.Timespec.LAYOUT.sizeof, null);
         for (int i = 0; i < count; i++) {
-            ts = new Time.Timespec(heap, 0);
+            ts = new Time.Timespec(heap, 0, MEM_UNINITIALIZED);
         }
     }
 
     public static void mem_DirectAllocation(final int count) {
         for (int i = 0; i < count; i++) {
-            ts = new Time.Timespec();
+            ts = new Time.Timespec(MEM_UNINITIALIZED);
         }
     }
 
     public static void clock_gettime(final int count) throws NativeErrorException {
         final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
-        final Time.Timespec timespec = new Time.Timespec();
+        final Time.Timespec timespec = new Time.Timespec(MEM_UNINITIALIZED);
         for (int i = 0; i < count; i++) {
             Time.clock_gettime(CLOCK_MONOTONIC, timespec);
         }
@@ -85,14 +87,15 @@ public class Jnhw {
     static volatile long val;
 
     public static void get(final int count) {
-        final Time.Timespec timespec = new Time.Timespec();
+        final Time.Timespec timespec = new Time.Timespec(MEM_UNINITIALIZED);
         for (int i = 0; i < count; i++) {
-            val = timespec.tv_sec() + timespec.tv_nsec();
+            val = timespec.tv_sec();
+            val = timespec.tv_nsec();
         }
     }
 
     public static void set(final int count) {
-        final Time.Timespec timespec = new Time.Timespec();
+        final Time.Timespec timespec = new Time.Timespec(MEM_UNINITIALIZED);
         for (int i = 0; i < count; i++) {
             timespec.tv_sec(val);
             timespec.tv_nsec(val);

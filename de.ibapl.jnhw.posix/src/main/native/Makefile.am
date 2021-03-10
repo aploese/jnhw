@@ -54,13 +54,14 @@ libjnhw_posix_la_LIBADD = \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libjnhw_posix_la_SOURCES = \
+ PosixDataType.c \
  jnhw-posix-jni.c
 
 libaio_la_SOURCES = \
  AioDefines.c \
  AioFunctions.c \
  Aio_Aiocb.c
-  
+
 liberrno_la_SOURCES = \
  Isoc_ErrnoDefines.c \
  Isoc_ErrnoFunctions.c \
@@ -81,12 +82,12 @@ libioclt_la_SOURCES = \
 liblocale_la_SOURCES = \
  LocaleDefines.c \
  LocaleFunctions.c \
- Locale_Lconv.c 
+ Locale_Lconv.c
 
 libpoll_la_SOURCES = \
  PollDefines.c \
  PollFunctions.c \
- Poll_PollFd.c 
+ PollStructures.c
 
 libposixutils_la_SOURCES = \
  Defines.c
@@ -124,15 +125,7 @@ libstring_la_SOURCES = \
  StringHeaderFunctions.c
 
 libsystypes_la_SOURCES = \
- TypesDefines.c \
- Types_Clock_t.c \
- Types_Mode_t.c \
- Types_Off_t.c \
- Types_Pid_t.c \
- Types_Size_t.c \
- Types_Ssize_t.c \
- Types_Time_t.c \
- Types_Uid_t.c
+ TypesDefines.c
 
 libsysstat_la_SOURCES = \
  StatDefines.c \
@@ -141,18 +134,12 @@ libsysstat_la_SOURCES = \
 libtermios_la_SOURCES = \
  TermiosDefines.c \
  TermiosFunctions.c \
- Termios_Cc_t.c \
- Termios_Speed_t.c \
- Termios_Tcflag_t.c \
- Termios_Termios.c
+ TermiosStructures.c
 
 libtime_la_SOURCES = \
  TimeDefines.c \
  TimeFunctions.c \
- Time_Itimerspec.c \
- Time_Timer_t.c \
- Time_Timespec.c \
- Time_Tm.c
+ TimeStructures.c
 
 libucontext_la_SOURCES = \
  UcontextDefines.c \

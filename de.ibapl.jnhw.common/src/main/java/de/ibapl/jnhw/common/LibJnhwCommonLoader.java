@@ -32,7 +32,7 @@ import de.ibapl.jnhw.libloader.NativeLibResolver;
 public final class LibJnhwCommonLoader {
 
     public final static String LIB_JNHW_COMMON = "jnhw-common";
-    public final static int LIB_JNHW_COMMON_VERSION = 1;
+    public final static int LIB_JNHW_COMMON_VERSION = 3;
     private static LoadResult LIB_JNHW_COMMON_LOAD_RESULT;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;

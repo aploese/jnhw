@@ -87,7 +87,8 @@ public class Jnr {
     public static void get(final int count) {
         final Timespec timespec = new Timespec(runtime);
         for (int i = 0; i < count; i++) {
-            val = timespec.tv_sec.longValue() + timespec.tv_nsec.longValue();
+            val = timespec.tv_sec.longValue();
+            val = timespec.tv_nsec.longValue();
         }
     }
 

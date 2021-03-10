@@ -269,15 +269,19 @@ public class Pthread {
         public static native int alignof();
 
         public Pthread_attr_t() {
-            super(sizeof(), false);
+            this(null, 0, null);
         }
 
         public Pthread_attr_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
+            this(owner, offset, null);
         }
 
         public Pthread_attr_t(NativeAddressHolder baseAddress) {
             super(baseAddress, sizeof());
+        }
+
+        public Pthread_attr_t(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, sizeof(), setMem);
         }
 
     }
@@ -310,11 +314,15 @@ public class Pthread {
         public static native int alignof();
 
         public Pthread_t() {
-            super(sizeof(), false);
+            this(null, 0, null);
         }
 
         public Pthread_t(OpaqueMemory32 owner, int offset) {
-            super(owner, offset, sizeof());
+            this(owner, offset, null);
+        }
+
+        public Pthread_t(OpaqueMemory32 parent, int offset, Byte setMem) {
+            super(parent, offset, sizeof(), setMem);
         }
 
         public Pthread_t(NativeAddressHolder baseAddress) {

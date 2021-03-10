@@ -93,6 +93,31 @@ extern "C" {
 
     JNIEXPORT jfieldID dijc_m_PointerArray32_cachedReferences__FID = NULL;
 
+    _JNHW_IMPORT_OR_EXPORT_ jobject JnhwCreateFieldLayout(JNIEnv *env, jclass clazzFL, const char * dataTypeName, jlong offset) {
+        jmethodID mId = (*env)->GetStaticMethodID(env, clazzFL, dataTypeName, "(J)Lde/ibapl/jnhw/common/memory/layout/FieldLayout;");
+        if (mId == NULL) {
+            return NULL;
+        }
+        return (*env)->CallStaticObjectMethod(env, clazzFL, mId, offset);
+    }
+
+    _JNHW_IMPORT_OR_EXPORT_ jobject JnhwCreateStructLayout(JNIEnv *env, jclass structLayoutClass, int64_t sizeInBytes, int32_t alingmentInBytes) {
+        jmethodID mId = (*env)->GetMethodID(env, structLayoutClass, "<init>", "(JI)V");
+        if (mId == NULL) {
+            return NULL;
+        }
+        return (*env)->NewObject(env, structLayoutClass, mId, sizeInBytes, alingmentInBytes);
+    }
+
+    JNIEXPORT jboolean JnhwSetLongField(JNIEnv *env, jobject object, const char * fieldName, jlong value) {
+        jfieldID fid = (*env)->GetFieldID(env, (*env)->GetObjectClass(env, object), fieldName, "J");
+        if (fid == NULL) {
+            return JNI_TRUE;
+        }
+        (*env)->SetLongField(env, object, fid, value);
+        return JNI_FALSE;
+    }
+
     JNIEXPORT jboolean JnhwSetStaticObjectField(JNIEnv *env, jclass clazz, const char * fieldClassSignature, const char * fieldName, jobject value) {
         jfieldID fid = (*env)->GetStaticFieldID(env, clazz, fieldName, fieldClassSignature);
         if (fid == NULL) {

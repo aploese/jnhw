@@ -54,7 +54,7 @@ public class Callback_I_I_Mem_V_Test {
         }
 
         public C() {
-            super(SIZE_OF, true);
+            super((OpaqueMemory32) null, 0, SIZE_OF, SET_MEM_TO_0);
         }
 
     }

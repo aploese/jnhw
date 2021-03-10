@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.ibapl.jnhw</groupId>
     <artifactId>jnhw</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <inceptionYear>2019</inceptionYear>
     <name>JNHW</name>
@@ -61,6 +61,7 @@
         <module>de.ibapl.jnhw.libloader</module>
         <module>de.ibapl.jnhw.common</module>
         <module>de.ibapl.jnhw.posix</module>
+        <module>de.ibapl.jnhw.syscall.linux</module>
         <module>de.ibapl.jnhw.winapi</module>
         <module>it</module>
     </modules>
@@ -302,6 +303,12 @@
                                 <exclude>de.ibapl.jnhw.winapi/config.h</exclude>
                                 <exclude>de.ibapl.jnhw.winapi/src/main/native/include/*.h</exclude>
                                 <exclude>de.ibapl.jnhw.winapi/src/test/native/include/*.h</exclude>
+
+                                <exclude>de.ibapl.jnhw.syscall.linux/config.h</exclude>
+                                <exclude>de.ibapl.jnhw.syscall.linux/src/main/native/include/*.h</exclude>
+                                <exclude>de.ibapl.jnhw.syscall.linux/src/test/native/include/*.h</exclude>
+                                <exclude>de.ibapl.jnhw.syscall.linux/src/main/linux-source/**</exclude>
+
                             </excludes>
                         </configuration>
                     </execution>

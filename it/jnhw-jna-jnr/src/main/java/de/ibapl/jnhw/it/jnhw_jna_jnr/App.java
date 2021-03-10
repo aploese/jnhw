@@ -40,77 +40,80 @@ public class App {
 
     final static int ROUNDS = 10_000_000;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
+        try {
+            MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
+            if (mtb.getOS() == OS.WINDOWS) {
+                throw new RuntimeException();
+            }
 
-        MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
-        if (mtb.getOS() == OS.WINDOWS) {
-            throw new RuntimeException();
+            System.out.println();
+            System.out.println();
+
+            long start = System.nanoTime();
+            //Preallocate native memory in a heap
+            Jnhw.runFullTest_HeapAllocated(ROUNDS);
+            //Allocate new native memory in each loop
+            //Jnhw.runFullTest_DirectAllocation(ROUNDS);
+            printResult("JNHW runFullTest", start);
+            start = System.nanoTime();
+            Jnr.runFullTest(ROUNDS);
+            printResult("JNR  runFullTest", start);
+            start = System.nanoTime();
+            Jna.runFullTest(ROUNDS);
+            printResult("JNA  runFullTest", start);
+            System.out.println();
+
+            start = System.nanoTime();
+            Jnhw.clock_gettime(ROUNDS);
+            printResult("JNHW clock_gettime", start);
+            start = System.nanoTime();
+            Jnr.clock_gettime(ROUNDS);
+            printResult("JNR  clock_gettime", start);
+            start = System.nanoTime();
+            Jna.clock_gettime(ROUNDS);
+            printResult("JNA  clock_gettime", start);
+            System.out.println();
+
+            start = System.nanoTime();
+            //Preallocate native memory in a heap
+            Jnhw.mem_HeapAllocated(ROUNDS);
+            //Allocate new native memory in each loop
+            //Jnhw.mem_DirectAllocation(ROUNDS);
+            printResult("JNHW mem", start);
+            start = System.nanoTime();
+            Jnr.mem(ROUNDS);
+            printResult("JNR  mem", start);
+            start = System.nanoTime();
+            Jna.mem(ROUNDS);
+            printResult("JNA  mem", start);
+            System.out.println();
+
+            start = System.nanoTime();
+            Jnhw.get(ROUNDS);
+            printResult("JNHW get", start);
+            start = System.nanoTime();
+            Jnr.get(ROUNDS);
+            printResult("JNR  get", start);
+            start = System.nanoTime();
+            Jna.get(ROUNDS);
+            printResult("JNA  get", start);
+            System.out.println();
+
+            start = System.nanoTime();
+            Jnhw.set(ROUNDS);
+            printResult("JNHW set", start);
+            start = System.nanoTime();
+            Jnr.set(ROUNDS);
+            printResult("JNR  set", start);
+            start = System.nanoTime();
+            Jna.set(ROUNDS);
+            printResult("JNA  set", start);
+            System.out.println();
+        } catch (Exception e) {
+            System.err.println("Ex: " + e);
+            System.exit(1);
         }
-
-        System.out.println();
-        System.out.println();
-
-        long start = System.nanoTime();
-        //Preallocate native memory in a heap
-        Jnhw.runFullTest_HeapAllocated(ROUNDS);
-        //Allocate new native memory in each loop
-        //Jnhw.runFullTest_DirectAllocation(ROUNDS);
-        printResult("JNHW runFullTest", start);
-        start = System.nanoTime();
-        Jnr.runFullTest(ROUNDS);
-        printResult("JNR  runFullTest", start);
-        start = System.nanoTime();
-        Jna.runFullTest(ROUNDS);
-        printResult("JNA  runFullTest", start);
-        System.out.println();
-
-        start = System.nanoTime();
-        Jnhw.clock_gettime(ROUNDS);
-        printResult("JNHW clock_gettime", start);
-        start = System.nanoTime();
-        Jnr.clock_gettime(ROUNDS);
-        printResult("JNR  clock_gettime", start);
-        start = System.nanoTime();
-        Jna.clock_gettime(ROUNDS);
-        printResult("JNA  clock_gettime", start);
-        System.out.println();
-
-        start = System.nanoTime();
-        //Preallocate native memory in a heap
-        Jnhw.mem_HeapAllocated(ROUNDS);
-        //Allocate new native memory in each loop
-        //Jnhw.mem_DirectAllocation(ROUNDS);
-        printResult("JNHW mem", start);
-        start = System.nanoTime();
-        Jnr.mem(ROUNDS);
-        printResult("JNR  mem", start);
-        start = System.nanoTime();
-        Jna.mem(ROUNDS);
-        printResult("JNA  mem", start);
-        System.out.println();
-
-        start = System.nanoTime();
-        Jnhw.get(ROUNDS);
-        printResult("JNHW get", start);
-        start = System.nanoTime();
-        Jnr.get(ROUNDS);
-        printResult("JNR  get", start);
-        start = System.nanoTime();
-        Jna.get(ROUNDS);
-        printResult("JNA  get", start);
-        System.out.println();
-
-        start = System.nanoTime();
-        Jnhw.set(ROUNDS);
-        printResult("JNHW set", start);
-        start = System.nanoTime();
-        Jnr.set(ROUNDS);
-        printResult("JNR  set", start);
-        start = System.nanoTime();
-        Jna.set(ROUNDS);
-        printResult("JNA  set", start);
-        System.out.println();
-
     }
 
     private static void printResult(String prefix, long start) {

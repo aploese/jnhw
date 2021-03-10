@@ -34,8 +34,8 @@ public class Jna {
     @Structure.FieldOrder({"tv_sec", "tv_nsec"})
     public static class Timespec extends Structure {
 
-        public long tv_sec;
-        public long tv_nsec;
+        public volatile long tv_sec;
+        public volatile long tv_nsec;
 
     }
 
@@ -83,7 +83,8 @@ public class Jna {
     public static void get(final int count) {
         final Timespec timespec = new Timespec();
         for (int i = 0; i < count; i++) {
-            val = timespec.tv_sec + timespec.tv_nsec;
+            val = timespec.tv_sec;
+            val = timespec.tv_nsec;
         }
     }
 

@@ -113,18 +113,18 @@ JNIEXPORT jdouble JNICALL Java_de_ibapl_jnhw_posix_Time_difftime
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
- * Method:    getdate
- * Signature: (Ljava/lang/String;)Lde/ibapl/jnhw/posix/Time/Tm;
+ * Method:    getdate0
+ * Signature: (Ljava/lang/String;)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_getdate
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_getdate0
   (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
- * Method:    gmtime
- * Signature: (J)Lde/ibapl/jnhw/posix/Time/Tm;
+ * Method:    gmtime0
+ * Signature: (J)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime0
   (JNIEnv *, jclass, jlong);
 
 /*
@@ -137,10 +137,10 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime_1r
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
- * Method:    localtime
- * Signature: (J)Lde/ibapl/jnhw/posix/Time/Tm;
+ * Method:    localtime0
+ * Signature: (J)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_localtime
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_localtime0
   (JNIEnv *, jclass, jlong);
 
 /*

@@ -9,51 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Time_Timespec
- * Method:    sizeof
- * Signature: ()I
+ * Method:    native2Layout
+ * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/posix/Time/Timespec/Layout;
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timespec_sizeof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Time_Timespec
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timespec_alignof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Time_Timespec
- * Method:    tv_sec
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timespec_tv_1sec__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Time_Timespec
- * Method:    tv_sec
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timespec_tv_1sec__J
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Time_Timespec
- * Method:    tv_nsec
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timespec_tv_1nsec__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Time_Timespec
- * Method:    tv_nsec
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timespec_tv_1nsec__J
-  (JNIEnv *, jobject, jlong);
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_00024Timespec_native2Layout
+  (JNIEnv *, jclass, jclass);
 
 #ifdef __cplusplus
 }

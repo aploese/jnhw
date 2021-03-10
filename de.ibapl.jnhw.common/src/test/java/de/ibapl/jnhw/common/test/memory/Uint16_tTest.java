@@ -24,6 +24,8 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.memory.Uint16_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
  *
@@ -39,7 +41,7 @@ public class Uint16_tTest {
      */
     @Test
     public void testSizeofUInt16_t() {
-        assertEquals(2, Uint16_t.sizeof());
+        assertEquals(2, Uint16_t.DATA_TYPE.SIZE_OF);
     }
 
     /**
@@ -47,7 +49,7 @@ public class Uint16_tTest {
      */
     @Test
     public void testAlignofUInt16_t() {
-        assertEquals(2, Uint16_t.alignof());
+        assertEquals(Alignment.AT_2, Uint16_t.DATA_TYPE.ALIGN_OF);
     }
 
     /**
@@ -55,18 +57,21 @@ public class Uint16_tTest {
      */
     @Test
     public void testRawUint16_t() {
-        Uint16_t instance = new Uint16_t(true);
+        Uint16_t instance = new Uint16_t(null, 0, SET_MEM_TO_0);
         short expResult = 0x2010;
-        instance.rawUint16_t(expResult);
-        assertEquals(expResult, instance.rawUint16_t());
+        instance.uint16_t(expResult);
+        assertEquals(expResult, instance.uint16_t());
+        instance.uint16_t((short) -1);
+        assertEquals(0x0000ffff, instance.uint16_t_AsInt());
+        assertThrows(IllegalArgumentException.class, () -> instance.uint16_t_FromInt(-1));
     }
 
     @Test
     public void testNativeToString() {
-        Uint16_t instance = new Uint16_t(true);
-        instance.rawUint16_t((short) -2);
+        Uint16_t instance = new Uint16_t(null, 0, SET_MEM_TO_0);
+        instance.uint16_t((short) -2);
         assertEquals(String.valueOf(0x0000FFFF & -2), instance.nativeToString());
         assertEquals(String.valueOf(Short.toUnsignedInt((short) -2)), instance.nativeToString());
-        assertEquals("fffe", instance.nativeToHexString());
+        assertEquals("0xfffe", instance.nativeToHexString());
     }
 }

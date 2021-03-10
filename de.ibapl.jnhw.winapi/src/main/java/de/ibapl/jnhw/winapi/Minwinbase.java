@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.callback.Callback_I_I_Mem_V_Impl;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -114,7 +115,7 @@ public class Minwinbase {
 
         public OVERLAPPED() {
             //always clean field Pointer must be zero!
-            super(sizeof(), true);
+            super((OpaqueMemory32) null, 0, sizeof(), SET_MEM_TO_0);
         }
 
         public OVERLAPPED(NativeAddressHolder addressHolder) {
@@ -165,7 +166,7 @@ public class Minwinbase {
         public native boolean bInheritHandle();
 
         public SECURITY_ATTRIBUTES() {
-            super(sizeof(), true);
+            super((OpaqueMemory32) null, 0, sizeof(), SET_MEM_TO_0);
         }
 
     };

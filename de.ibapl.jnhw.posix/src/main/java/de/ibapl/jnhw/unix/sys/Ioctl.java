@@ -25,7 +25,9 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -75,6 +77,34 @@ public final class Ioctl {
         TIOCOUTQ = 0;
         TIOCSBRK = 0;
         TIOCSSOFTCAR = IntDefine.UNDEFINED;
+
+        IOCPARM_MASK = IntDefine.UNDEFINED;
+        IOCPARM_MAX = IntDefine.UNDEFINED;
+        IOC_VOID = IntDefine.UNDEFINED;
+        IOC_OUT = 0;
+        IOC_IN = 0;
+        IOC_INOUT = 0;
+        IOC_DIRMASK = IntDefine.UNDEFINED;
+
+        _IOC_NRBITS = IntDefine.UNDEFINED;
+        _IOC_TYPEBITS = IntDefine.UNDEFINED;
+        _IOC_SIZEBITS = IntDefine.UNDEFINED;
+        _IOC_DIRBITS = IntDefine.UNDEFINED;
+        _IOC_NRMASK = IntDefine.UNDEFINED;
+        _IOC_TYPEMASK = IntDefine.UNDEFINED;
+        _IOC_SIZEMASK = IntDefine.UNDEFINED;
+        _IOC_DIRMASK = IntDefine.UNDEFINED;
+        _IOC_NRSHIFT = IntDefine.UNDEFINED;
+        _IOC_TYPESHIFT = IntDefine.UNDEFINED;
+        _IOC_SIZESHIFT = IntDefine.UNDEFINED;
+        _IOC_DIRSHIFT = IntDefine.UNDEFINED;
+
+        _IOC_NONE = IntDefine.UNDEFINED;
+        _IOC_READ = IntDefine.UNDEFINED;
+        _IOC_WRITE = IntDefine.UNDEFINED;
+
+        IOCSIZE_MASK = IntDefine.UNDEFINED;
+        IOCSIZE_SHIFT = IntDefine.UNDEFINED;
 
         initFields();
     }
@@ -208,7 +238,6 @@ public final class Ioctl {
     /**
      * <b>Non POSIX:</b> RNG (ring).
      *
-     * @return the native symbolic constant of TIOCM_RNG.
      */
     @Define
     public final static int TIOCM_RNG;
@@ -248,6 +277,55 @@ public final class Ioctl {
     @Define
     public final static int TIOCSBRK;
 
+    @Define
+    public final static IntDefine IOCPARM_MASK;
+    @Define
+    public final static IntDefine IOCPARM_MAX;
+    @Define
+    public final static IntDefine IOC_VOID;
+    @Define
+    public final static int IOC_OUT;
+    @Define
+    public final static int IOC_IN;
+    @Define
+    public final static int IOC_INOUT;
+    @Define
+    public final static IntDefine IOC_DIRMASK;
+
+    @Define
+    public final static IntDefine _IOC_NRBITS;
+    @Define
+    public final static IntDefine _IOC_TYPEBITS;
+    @Define
+    public final static IntDefine _IOC_SIZEBITS;
+    @Define
+    public final static IntDefine _IOC_DIRBITS;
+    @Define
+    public final static IntDefine _IOC_NRMASK;
+    @Define
+    public final static IntDefine _IOC_TYPEMASK;
+    @Define
+    public final static IntDefine _IOC_SIZEMASK;
+    @Define
+    public final static IntDefine _IOC_DIRMASK;
+    @Define
+    public final static IntDefine _IOC_NRSHIFT;
+    @Define
+    public final static IntDefine _IOC_TYPESHIFT;
+    @Define
+    public final static IntDefine _IOC_SIZESHIFT;
+    @Define
+    public final static IntDefine _IOC_DIRSHIFT;
+
+    @Define
+    public final static IntDefine _IOC_READ;
+
+    @Define
+    public final static IntDefine _IOC_WRITE;
+
+    @Define
+    public final static IntDefine _IOC_NONE;
+
     /**
      * <b>Linux:</b> ("Set software carrier flag") Set the CLOCAL flag in the
      * termios structure when *argp is nonzero, and clear it otherwise.
@@ -255,6 +333,95 @@ public final class Ioctl {
      */
     @Define
     public final static IntDefine TIOCSSOFTCAR;
+
+    public final static native int _IOC(int dir, char type, int nr, int size);
+
+    /*
+ * Used to create numbers.
+ *
+ * NOTE: _IOW means userland is writing and kernel is reading. _IOR
+ * means userland is reading and kernel is writing.
+     */
+    public final static native int _IO(char type, int nr);
+
+    /**
+     * Fallback to calc ioctl use calculated siste instead of natice type
+     *
+     * @param type
+     * @param nr
+     * @param size
+     * @return
+     */
+    public final static int _IOR(char type, int nr, int size) {
+        switch (NativeLibResolver.getOS()) {
+            case LINUX:
+                return _IOC(_IOC_READ.get(), type, nr, size);
+            case OPEN_BSD:
+                return _IOC(IOC_OUT, type, nr, size);
+            default:
+                throw new RuntimeException("OS not implememented :" + NativeLibResolver.getOS());
+        }
+    }
+
+    /**
+     * Fallback to calc ioctl use calculated siste instead of natice type
+     *
+     * @param type
+     * @param nr
+     * @param size
+     * @return
+     */
+    public final static int _IOW(char type, int nr, int size) {
+        switch (NativeLibResolver.getOS()) {
+            case LINUX:
+                return _IOC(_IOC_WRITE.get(), type, nr, size);
+            case OPEN_BSD:
+                return _IOC(IOC_IN, type, nr, size);
+            default:
+                throw new RuntimeException("OS not implememented :" + NativeLibResolver.getOS());
+        }
+    }
+
+    /**
+     * Fallback to calc ioctl use calculated siste instead of natice type
+     *
+     * @param type
+     * @param nr
+     * @param size
+     * @return
+     */
+    public final static int _IOWR(char type, int nr, int size) {
+        switch (NativeLibResolver.getOS()) {
+            case LINUX:
+                return _IOC(_IOC_READ.get() | _IOC_WRITE.get(), type, nr, size);
+            case OPEN_BSD:
+                return _IOC(IOC_INOUT, type, nr, size);
+            default:
+                throw new RuntimeException("OS not implememented :" + NativeLibResolver.getOS());
+        }
+    }
+
+
+    /* used to decode ioctl numbers.. */
+    public final static native int _IOC_DIR(int nr) throws NoSuchMethodException;
+
+    public final static native char _IOC_TYPE(int nr) throws NoSuchMethodException;
+
+    public final static native int _IOC_NR(int nr) throws NoSuchMethodException;
+
+    public final static native int _IOC_SIZE(int nr) throws NoSuchMethodException;
+
+    public final static native int IOCPARM_LEN(int x) throws NoSuchMethodException;
+
+    public final static native int IOCBASECMD(int x) throws NoSuchMethodException;
+
+    public final static native int IOCGROUP(int x) throws NoSuchMethodException;
+
+    /* ...and for the drivers/sound files... */
+    @Define
+    public final static IntDefine IOCSIZE_MASK;
+    @Define
+    public final static IntDefine IOCSIZE_SHIFT;
 
     /**
      * The {@code  ioctl()} system call manipulates the underlying device
@@ -291,6 +458,8 @@ public final class Ioctl {
      * indicates an error.
      */
     public final static native int ioctl(int fd, int request, IntRef value) throws NativeErrorException;
+
+    public final static native int ioctl(int fd, int request, OpaqueMemory32 value) throws NativeErrorException;
 
     private Ioctl() {
 

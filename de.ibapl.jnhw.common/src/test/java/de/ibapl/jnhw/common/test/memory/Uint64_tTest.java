@@ -24,6 +24,8 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
  *
@@ -39,7 +41,7 @@ public class Uint64_tTest {
      */
     @Test
     public void testSizeofUint64_t() {
-        assertEquals(8, Uint64_t.sizeof());
+        assertEquals(8, Uint64_t.DATA_TYPE.SIZE_OF);
     }
 
     /**
@@ -47,7 +49,7 @@ public class Uint64_tTest {
      */
     @Test
     public void testAlignofUint64_t() {
-        assertEquals(8, Uint64_t.alignof());
+        assertEquals(Alignment.AT_8, Uint64_t.DATA_TYPE.ALIGN_OF);
     }
 
     /**
@@ -55,17 +57,17 @@ public class Uint64_tTest {
      */
     @Test
     public void testRawUint64_t() {
-        Uint64_t instance = new Uint64_t(true);
+        Uint64_t instance = new Uint64_t(null, 0, SET_MEM_TO_0);
         long expResult = 0x08070605040302010L;
-        instance.rawUint64_t(expResult);
-        assertEquals(expResult, instance.rawUint64_t());
+        instance.uint64_t(expResult);
+        assertEquals(expResult, instance.uint64_t());
     }
 
     @Test
     public void testNativeToString() {
-        Uint64_t instance = new Uint64_t(true);
-        instance.rawUint64_t(-2);
+        Uint64_t instance = new Uint64_t(null, 0, SET_MEM_TO_0);
+        instance.uint64_t(-2);
         assertEquals(Long.toUnsignedString(-2), instance.nativeToString());
-        assertEquals("fffffffffffffffe", instance.nativeToHexString());
+        assertEquals("0xfffffffffffffffe", instance.nativeToHexString());
     }
 }

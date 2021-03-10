@@ -22,10 +22,7 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.annotation.int64_t;
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.annotation.AlignOf;
-import de.ibapl.jnhw.common.annotation.SizeOf;
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 
 /**
@@ -35,48 +32,33 @@ import java.io.IOException;
 @int64_t
 public class Int64_t extends NativeIntNumber {
 
-    /**
-     * Make sure the native lib is loaded.
-     */
-    static {
-        LibJnhwCommonLoader.touch();
+    public final static BaseDataType DATA_TYPE = BaseDataType.int64_t;
+
+    public Int64_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+        super(owner, offset, 8, setMem);
     }
 
-    @SizeOf
-    public static native int sizeof();
-
-    @AlignOf
-    public static native int alignof();
-
-    public Int64_t(boolean clearMem) {
-        super(sizeof(), clearMem);
+    @int64_t
+    public long int64_t() {
+        return MEM_ACCESS.int64_t(this, 0);
     }
 
-    public Int64_t(OpaqueMemory32 owner, int offset) {
-        super(owner, offset, sizeof());
+    public void int64_t(@int64_t long value) {
+        MEM_ACCESS.int64_t(this, 0, value);
     }
 
-    public native @int64_t
-    long rawInt64_t();
-
-    public native void rawInt64_t(@int64_t long value);
+    public String nativeToHexString() {
+        return MEM_ACCESS.int64_t_AsHex(this, 0);
+    }
 
     @Override
     public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(nativeToString());
+        sb.append(MEM_ACCESS.int64_t_nativeToString(this, 0));
     }
 
     @Override
-    public native String nativeToString();
-
-    @Override
-    public BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.int64_t;
-    }
-
-    @Override
-    public String nativeToHexString() {
-        return nativeInt64ToHexString();
+    public BaseDataType getBaseDataType() {
+        return DATA_TYPE;
     }
 
 }

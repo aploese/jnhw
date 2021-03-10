@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
@@ -888,7 +889,7 @@ public abstract class Winbase {
         public final static native int sizeof();
 
         public COMMTIMEOUTS(boolean clearMemory) {
-            super(sizeof(), clearMemory);
+            super((OpaqueMemory32) null, 0, sizeof(), clearMemory ? (byte) 0 : null);
         }
 
         /**
@@ -972,7 +973,7 @@ public abstract class Winbase {
         public final static native int sizeof();
 
         public COMSTAT(boolean clearMemory) {
-            super(sizeof(), clearMemory);
+            super((OpaqueMemory32) null, 0, sizeof(), clearMemory ? (byte) 0 : null);
         }
 
         /**
@@ -1047,7 +1048,7 @@ public abstract class Winbase {
         }
 
         public DCB(boolean clearMemory) {
-            super(sizeof(), clearMemory);
+            super((OpaqueMemory32) null, 0, sizeof(), clearMemory ? (byte) 0 : null);
             //set the current size explicitly.
             DCBlength(sizeof());
         }

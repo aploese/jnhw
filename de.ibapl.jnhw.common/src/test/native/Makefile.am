@@ -4,7 +4,7 @@ AM_LDFLAGS = -z noexecstack -no-undefined -static-libgcc -version-info @JNHW_VER
 
 LIB_JNHW_COMMON_TEST_NAME=@JNHW_LIB_PREFIX@jnhw-common-test@JNHW_LIBTOOL_LIB_SUFFIX@
 LIB_JNHW_COMMON_TEST_RES_NAME=@JNHW_TEST_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-common-test@JNHW_LIB_SUFFIX@
- 
+
 lib_LTLIBRARIES = libjnhw-common-test.la
 
 noinst_LTLIBRARIES = libtests.la
@@ -12,6 +12,7 @@ noinst_LTLIBRARIES = libtests.la
 libjnhw_common_test_la_LIBADD = libtests.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libtests_la_SOURCES = \
+ AbstractNativeMemoryTest_NativeMemoryAlignment.c \
  ByteRefTest.c \
  ShortRefTest.c \
  IntRefTest.c \
@@ -25,6 +26,8 @@ libtests_la_SOURCES = \
  Callback_PtrAbstractNativeMemory_V_Test.c \
  NativeRunnableTest.c \
  PointerArray32Test.c \
+ FieldLayoutTest.c \
+ SimpeStructureImpl.c \
  JnhwExceptionsTest.c
 
 #hook into make all

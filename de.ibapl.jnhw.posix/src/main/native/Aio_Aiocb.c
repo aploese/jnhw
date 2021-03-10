@@ -222,7 +222,7 @@ extern "C" {
 #else
     (JNIEnv *env, jobject structAiocb, jobject bufOpaqueMemory, jint off, jint length) {
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_buf = UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_OR_NULL(bufOpaqueMemory) + off;
-        // lengt cant be < 0
+        // lengt can't be < 0
         (UNWRAP_STRUCT_AIOCB_PTR(structAiocb))->aio_nbytes = (uint32_t) length;
 #endif
     }

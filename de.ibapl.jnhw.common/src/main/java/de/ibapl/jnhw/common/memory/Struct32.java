@@ -21,8 +21,7 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataTypes;
-import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 
 /**
  *
@@ -34,33 +33,13 @@ public class Struct32 extends OpaqueMemory32 {
         super(nativeAddressHolder, sizeInBytes);
     }
 
-    public Struct32(int sizeInBytes, boolean clearMem) {
-        super(sizeInBytes, clearMem);
-    }
-
-    public Struct32(int elements, int elementSizeInBytes, boolean clearMem) {
-        super(elements, elementSizeInBytes, clearMem);
-    }
-
-    public Struct32(OpaqueMemory32 owner, int offset, int elements, int elementSizeInBytes) {
-        super(owner, offset, elements, elementSizeInBytes);
-    }
-
-    public Struct32(OpaqueMemory64 owner, long offset, int elements, int elementSizeInBytes) {
-        super(owner, offset, elements, elementSizeInBytes);
-    }
-
-    public Struct32(OpaqueMemory32 owner, int offset, int sizeInBytes) {
-        super(owner, offset, sizeInBytes);
-    }
-
-    public Struct32(OpaqueMemory64 owner, long offset, int sizeInBytes) throws NoSuchNativeMethodException {
-        super(owner, offset, sizeInBytes);
+    public Struct32(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+        super(owner, offset, sizeInBytes, setMem);
     }
 
     @Override
-    public final BaseDataTypes getBaseDataType() {
-        return BaseDataTypes.struct;
+    public final BaseDataType getBaseDataType() {
+        return BaseDataType.struct;
     }
 
     @Override
