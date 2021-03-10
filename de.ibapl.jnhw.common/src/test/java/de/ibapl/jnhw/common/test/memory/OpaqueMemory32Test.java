@@ -34,6 +34,7 @@ import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.memory.layout.SimpeStructureOnTheFlyImpl;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.WordSize;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -282,7 +283,16 @@ public class OpaqueMemory32Test {
         Assertions.assertEquals(24, AbstractNativeMemory.offsetof(struct.seventh));
         struct.seventh((byte) 0x77);
 
-        Assertions.assertEquals(32, AbstractNativeMemory.offsetof(struct.eighth));
+        switch (BaseDataType.ALIGN_OF_POINTER) {
+            case AT_8:
+                Assertions.assertEquals(32, AbstractNativeMemory.offsetof(struct.eighth));
+                break;
+            case AT_4:
+                Assertions.assertEquals(32, AbstractNativeMemory.offsetof(struct.eighth));
+                break;
+            default:
+                Assertions.fail();
+        }
         struct.eighth(0x8888888888888888L);
 
         String expected

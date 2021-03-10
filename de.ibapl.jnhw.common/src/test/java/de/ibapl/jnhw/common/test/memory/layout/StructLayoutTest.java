@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.common.test.memory.layout;
 
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
-import de.ibapl.jnhw.libloader.NativeLibResolver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
@@ -50,18 +50,19 @@ public class StructLayoutTest {
         Assertions.assertEquals(12, definedLayout.offsetFifth);
         Assertions.assertEquals(16, definedLayout.offsetSixth);
         Assertions.assertEquals(24, definedLayout.offsetSeventh);
-        switch (NativeLibResolver.getWordSize()) {
-            case _64_BIT:
+        switch (BaseDataType.ALIGN_OF_POINTER) {
+            case AT_8:
                 Assertions.assertEquals(32, definedLayout.offsetEighth);
 
                 Assertions.assertEquals(40, definedLayout.sizeof);
                 Assertions.assertEquals(Alignment.AT_8, definedLayout.alignment);
                 break;
-            case _32_BIT:
+            case AT_4:
                 Assertions.assertEquals(28, definedLayout.offsetEighth);
 
                 Assertions.assertEquals(36, definedLayout.sizeof);
                 Assertions.assertEquals(Alignment.AT_4, definedLayout.alignment);
+                break;
             default:
                 Assertions.fail();
         }
@@ -78,18 +79,19 @@ public class StructLayoutTest {
         Assertions.assertEquals(12, nativeLayout.offsetFifth);
         Assertions.assertEquals(16, nativeLayout.offsetSixth);
         Assertions.assertEquals(24, nativeLayout.offsetSeventh);
-        switch (NativeLibResolver.getWordSize()) {
-            case _64_BIT:
+        switch (BaseDataType.ALIGN_OF_POINTER) {
+            case AT_8:
                 Assertions.assertEquals(32, nativeLayout.offsetEighth);
 
                 Assertions.assertEquals(40, nativeLayout.sizeof);
                 Assertions.assertEquals(Alignment.AT_8, nativeLayout.alignment);
                 break;
-            case _32_BIT:
+            case AT_4:
                 Assertions.assertEquals(28, nativeLayout.offsetEighth);
 
                 Assertions.assertEquals(36, nativeLayout.sizeof);
                 Assertions.assertEquals(Alignment.AT_4, nativeLayout.alignment);
+                break;
             default:
                 Assertions.fail();
         }
