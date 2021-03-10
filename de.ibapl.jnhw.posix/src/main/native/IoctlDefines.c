@@ -234,7 +234,7 @@ extern "C" {
             return;
         }
 
-        if (JnhwSetStaticIntField(env, clazz, "IOC_IN", IOC_IN)) {
+        if (JnhwSetStaticIntField(env, clazz, "IOC_IN", (int32_t) IOC_IN)) {
             return;
         }
 

@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-    //We need the POSIX version ...    
+    //We need the POSIX version ...
 #if !defined(HAVE_TERMIOS_H) || !defined(_POSIX_VERSION)
 
     /*
@@ -257,14 +257,14 @@ extern "C" {
             return;
         }
 
-#if defined(__linux__) && !defined(__mips__)
+#if defined(__linux__)
+#if defined(CMSPAR)
+        //it is defined for mips at least since glibc 2.31
         if (JnhwSetStaticIntDefineField(env, clazz, "CMSPAR", CMSPAR)) {
             return;
         }
-#elif defined(CMSPAR)
-#error "CMSPAR defined"
 #endif
-
+#endif
         if (JnhwSetStaticIntField(env, clazz, "CREAD", CREAD)) {
             return;
         }

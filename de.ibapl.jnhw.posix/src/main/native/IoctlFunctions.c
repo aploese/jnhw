@@ -59,7 +59,7 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl__1IOC_1DIR
 #if defined(__linux__)
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nr) {
-        return (int32_t) _IOC_DIR(nr);
+        return (int32_t) _IOC_DIR((uint32_t) nr);
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint nr) {
         throw_NoSuchNativeMethodException(env, "_IOC_DIR");
