@@ -73,6 +73,16 @@ extern "C" {
         return __alignof__ (long);
     }
 
+/*
+     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
+     * Method:    getAlignOfInt64_t0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlignOfInt64_1t0
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return __alignof__ (uint64_t);
+    }
+
 #ifdef __cplusplus
 }
 #endif

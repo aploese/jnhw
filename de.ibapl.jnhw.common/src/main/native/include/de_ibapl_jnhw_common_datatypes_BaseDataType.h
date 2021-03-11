@@ -39,6 +39,14 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeO
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlignOfLong0
   (JNIEnv *, jclass);
 
+/*
+ * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
+ * Method:    getAlignOfInt64_t0
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlignOfInt64_1t0
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif

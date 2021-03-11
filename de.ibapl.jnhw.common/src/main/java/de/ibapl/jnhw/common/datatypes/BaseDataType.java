@@ -29,24 +29,24 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
  * @author aploese
  */
 public enum BaseDataType {
-    int8_t(false, 1),
-    uint8_t(true, 1),
-    int16_t(false, 2),
-    uint16_t(true, 2),
-    int32_t(false, 4),
-    uint32_t(true, 4),
-    int64_t(false, 8),
-    uint64_t(true, 8),
-    struct(getAlignOfPointer(), null),
-    union(getAlignOfPointer(), null),
+    int8_t(1, Alignment.AT_1, false),
+    uint8_t(1, Alignment.AT_1, true),
+    int16_t(2, Alignment.AT_2, false),
+    uint16_t(2, Alignment.AT_2, true),
+    int32_t(4, Alignment.AT_4, false),
+    uint32_t(4, Alignment.AT_4, true),
+    int64_t(8, getAlignOfInt64_t(), false),
+    uint64_t(8, getAlignOfInt64_t(), true),
+    struct(0, null),
+    union(0, null),
     array(null, null),
-    intptr_t(getAlignOfPointer(), getSizeOfPointer()),
-    uintptr_t(getAlignOfPointer(), getSizeOfPointer()),
-    function(getAlignOfPointer(), getSizeOfPointer()),
+    intptr_t(getSizeOfPointer(), getAlignOfPointer(), false),
+    uintptr_t(getSizeOfPointer(), getAlignOfPointer(), true),
+    function(getSizeOfPointer(), getAlignOfPointer()),
     /**
      * the infamous void*
      */
-    pointer(getAlignOfPointer(), getSizeOfPointer());
+    pointer(getSizeOfPointer(), getAlignOfPointer());
 
     public static BaseDataType getSigned_Long_Mapping() {
         switch (SIZE_OF_LONG) {
@@ -70,13 +70,13 @@ public enum BaseDataType {
         }
     }
 
-    private BaseDataType(boolean unsigned, int sizeof) {
+    private BaseDataType(int sizeof, Alignment align, boolean unsigned) {
         this.UNSIGNED = unsigned;
-        this.ALIGN_OF = Alignment.fromAlignof(sizeof);
+        this.ALIGN_OF = align;
         this.SIZE_OF = sizeof;
     }
 
-    private BaseDataType(Alignment alignment, Integer sizeof) {
+    private BaseDataType(Integer sizeof, Alignment alignment) {
         this.UNSIGNED = null;
         this.SIZE_OF = sizeof;
         this.ALIGN_OF = alignment;
@@ -91,6 +91,8 @@ public enum BaseDataType {
     public final static int SIZE_OF_LONG;
     public final static Alignment ALIGN_OF_LONG;
 
+    public final static Alignment ALIGN_OF_INT64_T;
+
     static {
         // This get called after the Constructor of BaseDataType...
         LibJnhwCommonLoader.touch();
@@ -98,6 +100,7 @@ public enum BaseDataType {
         ALIGN_OF_POINTER = getAlignOfPointer();
         SIZE_OF_LONG = getSizeOfLong();
         ALIGN_OF_LONG = getAlignOfLong();
+        ALIGN_OF_INT64_T = getAlignOfInt64_t();
     }
 
     private final static native int getSizeOfPointer0();
@@ -130,6 +133,14 @@ public enum BaseDataType {
         // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
         LibJnhwCommonLoader.touch();
         return Alignment.fromAlignof(getAlignOfLong0());
+    }
+
+    private final static native int getAlignOfInt64_t0();
+
+    private final static Alignment getAlignOfInt64_t() {
+        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
+        LibJnhwCommonLoader.touch();
+        return Alignment.fromAlignof(getAlignOfInt64_t0());
     }
 
 }
