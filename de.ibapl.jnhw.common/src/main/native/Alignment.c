@@ -36,6 +36,14 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_layout_Alignment_getFromNative
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint req) {
         switch (req) {
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT8_T:
+                return __alignof__ (int8_t);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT16_T:
+                return __alignof__ (int16_t);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT32_T:
+                return __alignof__ (int32_t);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT64_T:
+                return __alignof__ (int64_t);
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_POINTER:
                 return __alignof__ (void*);
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG:

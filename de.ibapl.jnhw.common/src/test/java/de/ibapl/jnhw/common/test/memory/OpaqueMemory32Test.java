@@ -24,17 +24,11 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
-import de.ibapl.jnhw.common.memory.Int16_t;
-import de.ibapl.jnhw.common.memory.Int32_t;
-import de.ibapl.jnhw.common.memory.Int64_t;
-import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.memory.layout.SimpeStructureOnTheFlyImpl;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.libloader.WordSize;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -284,9 +278,8 @@ public class OpaqueMemory32Test {
         struct.seventh((byte) 0x77);
 
         String expected = null;
-        switch (Alignment.__BIGGEST_ALIGNMENT__) {
+        switch (Alignment.ALIGN_OF_INT64_T) {
             case AT_8:
-            case AT_16:
                 Assertions.assertEquals(32, AbstractNativeMemory.offsetof(struct.eighth));
                 expected = "11002222 33000000  44444444 55000000 |  \"\"3   DDDDU   \n"
                         + "66666666 66666666  77000000 00000000 | ffffffffw       \n"
@@ -341,9 +334,8 @@ public class OpaqueMemory32Test {
         Assertions.assertEquals(0x00, result[26]);
         Assertions.assertEquals(0x00, result[27]);
 
-        switch (Alignment.__BIGGEST_ALIGNMENT__) {
+        switch (Alignment.ALIGN_OF_INT64_T) {
             case AT_8:
-            case AT_16:
                 Assertions.assertEquals(0x00, result[28]);
                 Assertions.assertEquals(0x00, result[29]);
                 Assertions.assertEquals(0x00, result[30]);

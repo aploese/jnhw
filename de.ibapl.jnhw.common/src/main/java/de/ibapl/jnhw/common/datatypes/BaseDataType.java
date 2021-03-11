@@ -29,14 +29,14 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
  * @author aploese
  */
 public enum BaseDataType {
-    int8_t(1, Alignment.AT_1, false),
-    uint8_t(1, Alignment.AT_1, true),
-    int16_t(2, Alignment.AT_2, false),
-    uint16_t(2, Alignment.AT_2, true),
-    int32_t(4, Alignment.AT_4, false),
-    uint32_t(4, Alignment.AT_4, true),
-    int64_t(8, Alignment.AT_8, false),
-    uint64_t(8, Alignment.AT_8, true),
+    int8_t(1, Alignment.ALIGN_OF_INT8_T, false),
+    uint8_t(1, Alignment.ALIGN_OF_INT8_T, true),
+    int16_t(2, Alignment.ALIGN_OF_INT16_T, false),
+    uint16_t(2, Alignment.ALIGN_OF_INT16_T, true),
+    int32_t(4, Alignment.ALIGN_OF_INT32_T, false),
+    uint32_t(4, Alignment.ALIGN_OF_INT32_T, true),
+    int64_t(8, Alignment.ALIGN_OF_INT64_T, false),
+    uint64_t(8, Alignment.ALIGN_OF_INT64_T, true),
     struct(0, null),
     union(0, null),
     array(null, null),

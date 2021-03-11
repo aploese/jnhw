@@ -66,20 +66,40 @@ public enum Alignment {
         }
     }
 
+    public final static Alignment ALIGN_OF_INT8_T;
+    public final static Alignment ALIGN_OF_INT16_T;
+    public final static Alignment ALIGN_OF_INT32_T;
+    public final static Alignment ALIGN_OF_INT64_T;
+
     public final static Alignment ALIGN_OF_POINTER;
     public final static Alignment ALIGN_OF_LONG;
     public final static Alignment __BIGGEST_ALIGNMENT__;
 
     @Native
-    private final static int REQ_ALIGNOF_POINTER = 0x0001;
+    private final static int REQ_ALIGNOF_INT8_T = 0x0001;
     @Native
-    private final static int REQ_ALIGNOF_LONG = 0x0002;
+    private final static int REQ_ALIGNOF_INT16_T = 0x0002;
     @Native
-    private final static int REQ___BIGGEST_ALIGNMENT__ = 0x0003;
+    private final static int REQ_ALIGNOF_INT32_T = 0x0003;
+    @Native
+    private final static int REQ_ALIGNOF_INT64_T = 0x0004;
+
+    @Native
+    private final static int REQ_ALIGNOF_POINTER = 0x0010;
+    @Native
+    private final static int REQ_ALIGNOF_LONG = 0x0020;
+
+    @Native
+    private final static int REQ___BIGGEST_ALIGNMENT__ = 0x0300;
 
     static {
         // This get called after the Constructor of BaseDataType...
         LibJnhwCommonLoader.touch();
+        ALIGN_OF_INT8_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT8_T));
+        ALIGN_OF_INT16_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T));
+        ALIGN_OF_INT32_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT32_T));
+        ALIGN_OF_INT64_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T));
+
         ALIGN_OF_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER));
         ALIGN_OF_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG));
         __BIGGEST_ALIGNMENT__ = Alignment.fromAlignof(getFromNative(REQ___BIGGEST_ALIGNMENT__));

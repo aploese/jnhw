@@ -51,16 +51,25 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_LONG);
                     assertEquals(4, BaseDataType.SIZE_OF_POINTER);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_POINTER);
+                    assertEquals(Alignment.AT_1, Alignment.ALIGN_OF_INT8_T);
+                    assertEquals(Alignment.AT_2, Alignment.ALIGN_OF_INT16_T);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_INT32_T);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_INT64_T);
                     break;
                 case I386__LINUX__GNU:
                     //classical 32bit anything is at 4 byte aligned
-                    assertEquals(Alignment.AT_4, Alignment.__BIGGEST_ALIGNMENT__);
+                    assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
 
                     assertEquals(4, BaseDataType.SIZE_OF_LONG);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_LONG);
                     assertEquals(4, BaseDataType.SIZE_OF_POINTER);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_POINTER);
+                    assertEquals(Alignment.AT_1, Alignment.ALIGN_OF_INT8_T);
+                    assertEquals(Alignment.AT_2, Alignment.ALIGN_OF_INT16_T);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_INT32_T);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_INT64_T);
                     break;
+                case AARCH64__LINUX__GNU:
                 case X86_64__LINUX__GNU:
                     //classical 64bit anything is at 8 byte aligned
                     assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
@@ -69,6 +78,10 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG);
                     assertEquals(8, BaseDataType.SIZE_OF_POINTER);
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_POINTER);
+                    assertEquals(Alignment.AT_1, Alignment.ALIGN_OF_INT8_T);
+                    assertEquals(Alignment.AT_2, Alignment.ALIGN_OF_INT16_T);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_INT32_T);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_INT64_T);
                     break;
                 default:
                     //sorry, but we need proof.... so test an commit results ....

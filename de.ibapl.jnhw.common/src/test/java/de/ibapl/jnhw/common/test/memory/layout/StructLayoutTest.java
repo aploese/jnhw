@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.common.test.memory.layout;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import org.junit.jupiter.api.Assertions;
@@ -79,9 +78,8 @@ public class StructLayoutTest {
 
     @Test
     public void testAlignOfStruct_Int64_t() {
-        switch (Alignment.__BIGGEST_ALIGNMENT__) {
+        switch (Alignment.ALIGN_OF_INT64_T) {
             case AT_8:
-            case AT_16:
                 Assertions.assertEquals(Alignment.AT_8.alignof, getAlignOfStruct_Int64_t());
                 break;
             case AT_4:
@@ -109,9 +107,8 @@ public class StructLayoutTest {
 
     @Test
     public void testAlignOf_Int64_t() {
-        switch (Alignment.__BIGGEST_ALIGNMENT__) {
+        switch (Alignment.ALIGN_OF_INT64_T) {
             case AT_8:
-            case AT_16:
                 Assertions.assertEquals(Alignment.AT_8.alignof, getAlignOf_Int64_t());
                 break;
             case AT_4:
@@ -133,9 +130,8 @@ public class StructLayoutTest {
         Assertions.assertEquals(12, definedLayout.offsetFifth);
         Assertions.assertEquals(16, definedLayout.offsetSixth);
         Assertions.assertEquals(24, definedLayout.offsetSeventh);
-        switch (Alignment.__BIGGEST_ALIGNMENT__) {
+        switch (Alignment.ALIGN_OF_INT64_T) {
             case AT_8:
-            case AT_16:
                 Assertions.assertEquals(32, definedLayout.offsetEighth);
 
                 Assertions.assertEquals(40, definedLayout.sizeof);
@@ -163,9 +159,8 @@ public class StructLayoutTest {
         Assertions.assertEquals(12, nativeLayout.offsetFifth);
         Assertions.assertEquals(16, nativeLayout.offsetSixth);
         Assertions.assertEquals(24, nativeLayout.offsetSeventh);
-        switch (Alignment.__BIGGEST_ALIGNMENT__) {
+        switch (Alignment.ALIGN_OF_INT64_T) {
             case AT_8:
-            case AT_16:
                 Assertions.assertEquals(32, nativeLayout.offsetEighth);
 
                 Assertions.assertEquals(40, nativeLayout.sizeof);
