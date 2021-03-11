@@ -448,7 +448,7 @@ public interface Ch9 {
                     result = new Usb_ss_ep_comp_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
                     break;
                 case USB_DT_PIPE_USAGE:
-                    result = new Uas.Usb_pipe_usage_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
+                    result = new Uas.Usb_pipe_usage_descriptor(parent, getOffset(), bLength(), MEM_UNINITIALIZED);
                     break;
                 default:
                     throw new RuntimeException("Can't handle bDescriptorType of:" + String.format("0x%02x", bDescriptorType()));
