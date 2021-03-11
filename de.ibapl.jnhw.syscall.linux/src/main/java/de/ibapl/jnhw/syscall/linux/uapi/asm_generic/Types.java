@@ -48,6 +48,12 @@ public interface Types {
     public @interface __le16 {
     }
 
+    //TODO 
+    @Retention(value = RetentionPolicy.SOURCE)
+    @Target(value = {ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
+    public @interface __be16 {
+    }
+
     @Retention(value = RetentionPolicy.SOURCE)
     @Target(value = {ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
     public @interface __s16 {

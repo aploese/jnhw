@@ -68,6 +68,7 @@ public class Hid {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             jsb.appendByteMember("bDescriptorType", bDescriptorType());
             jsb.appendIntMember("wDescriptorLength", wDescriptorLength());
+            jsb.close();
         }
 
     }

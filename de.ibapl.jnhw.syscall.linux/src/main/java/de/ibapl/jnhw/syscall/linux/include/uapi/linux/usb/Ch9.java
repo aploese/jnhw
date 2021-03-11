@@ -64,6 +64,7 @@ import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.syscall.linux.annotation.SysFs;
 import de.ibapl.jnhw.syscall.linux.include.linux.Hid;
+import de.ibapl.jnhw.syscall.linux.include.linux.usb.Uas;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__le16;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__le32;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u16;
@@ -446,9 +447,9 @@ public interface Ch9 {
                 case USB_DT_SS_ENDPOINT_COMP:
                     result = new Usb_ss_ep_comp_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
                     break;
-//TODO                case USB_DT_PIPE_USAGE: => 0x24
-//TODO                    result = new Usb_Pi(parent, getOffset(), MEM_UNINITIALIZED);
-//TODO                    break;
+                case USB_DT_PIPE_USAGE:
+                    result = new Uas.Usb_pipe_usage_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
+                    break;
                 default:
                     throw new RuntimeException("Can't handle bDescriptorType of:" + String.format("0x%02x", bDescriptorType()));
             }
