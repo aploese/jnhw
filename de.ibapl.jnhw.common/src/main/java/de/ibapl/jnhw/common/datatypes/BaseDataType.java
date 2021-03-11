@@ -36,6 +36,11 @@ public enum BaseDataType {
     uint16_t(2, ALIGN_OF_INT16_T, ALIGN_OF_STRUCT_INT16_T, true),
     int32_t(4, ALIGN_OF_INT32_T, ALIGN_OF_STRUCT_INT32_T, false),
     uint32_t(4, ALIGN_OF_INT32_T, ALIGN_OF_STRUCT_INT32_T, true),
+    _long(getSizeOf_long(), ALIGN_OF_LONG, ALIGN_OF_STRUCT_LONG, false),
+    _unsigned_long(getSizeOf_long(), ALIGN_OF_LONG, ALIGN_OF_STRUCT_LONG, false),
+    _float(getSizeOf_float(), ALIGN_OF_FLOAT, ALIGN_OF_STRUCT_FLOAT, false),
+    _double(getSizeOf_double(), ALIGN_OF_DOUBLE, ALIGN_OF_STRUCT_DOUBLE, false),
+    _long_double(getSizeOf_long_double(), ALIGN_OF_LONG_DOUBLE, ALIGN_OF_STRUCT_LONG_DOUBLE, false),
     int64_t(8, ALIGN_OF_INT64_T, ALIGN_OF_STRUCT_INT64_T, false),
     uint64_t(8, ALIGN_OF_INT64_T, ALIGN_OF_STRUCT_INT64_T, true),
     struct(0, null),
@@ -99,6 +104,9 @@ public enum BaseDataType {
 
     public final static int SIZE_OF_POINTER;
     public final static int SIZE_OF_LONG;
+    public final static int SIZE_OF_FLOAT;
+    public final static int SIZE_OF_DOUBLE;
+    public final static int SIZE_OF_LONG_DOUBLE;
 
     /**
      * this for gcc will be the define __BIGGEST_ALIGNMENT__
@@ -107,7 +115,10 @@ public enum BaseDataType {
         // This get called after the Constructor of BaseDataType...
         LibJnhwCommonLoader.touch();
         SIZE_OF_POINTER = getSizeOfPointer0();
-        SIZE_OF_LONG = getSizeOfLong0();
+        SIZE_OF_LONG = getSizeOf_long0();
+        SIZE_OF_FLOAT = getSizeOf_float0();
+        SIZE_OF_DOUBLE = getSizeOf_double0();
+        SIZE_OF_LONG_DOUBLE = getSizeOf_long_double0();
     }
 
     private final static native int getSizeOfPointer0();
@@ -118,12 +129,35 @@ public enum BaseDataType {
         return getSizeOfPointer0();
     }
 
-    private final static native int getSizeOfLong0();
+    private final static native int getSizeOf_long0();
 
-    private final static int getSizeOfLong() {
+    private final static int getSizeOf_long() {
         // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
         LibJnhwCommonLoader.touch();
-        return getSizeOfLong0();
+        return getSizeOf_long0();
     }
 
+    private final static native int getSizeOf_float0();
+
+    private final static int getSizeOf_float() {
+        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
+        LibJnhwCommonLoader.touch();
+        return getSizeOf_float0();
+    }
+
+    private final static native int getSizeOf_double0();
+
+    private final static int getSizeOf_double() {
+        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
+        LibJnhwCommonLoader.touch();
+        return getSizeOf_double0();
+    }
+
+    private final static native int getSizeOf_long_double0();
+
+    private final static int getSizeOf_long_double() {
+        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
+        LibJnhwCommonLoader.touch();
+        return getSizeOf_long_double0();
+    }
 }

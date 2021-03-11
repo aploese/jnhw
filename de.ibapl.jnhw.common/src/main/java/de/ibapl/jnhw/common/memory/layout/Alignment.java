@@ -87,6 +87,15 @@ public enum Alignment {
     public final static Alignment ALIGN_OF_INTPTR_T;
     public final static Alignment ALIGN_OF_STRUCT_INTPTR_T;
 
+    public final static Alignment ALIGN_OF_FLOAT;
+    public final static Alignment ALIGN_OF_STRUCT_FLOAT;
+
+    public final static Alignment ALIGN_OF_DOUBLE;
+    public final static Alignment ALIGN_OF_STRUCT_DOUBLE;
+
+    public final static Alignment ALIGN_OF_LONG_DOUBLE;
+    public final static Alignment ALIGN_OF_STRUCT_LONG_DOUBLE;
+
     public final static Alignment __BIGGEST_ALIGNMENT__;
 
     @Native
@@ -103,6 +112,12 @@ public enum Alignment {
     private final static int REQ_ALIGNOF_POINTER = 0x0006;
     @Native
     private final static int REQ_ALIGNOF_LONG = 0x0007;
+    @Native
+    private final static int REQ_ALIGNOF_FLOAT = 0x0008;
+    @Native
+    private final static int REQ_ALIGNOF_DOUBLE = 0x0009;
+    @Native
+    private final static int REQ_ALIGNOF_LONG_DOUBLE = 0x000a;
 
     @Native
     private final static int STRUCT_ALIGN_OFFSET = 0x0010;
@@ -124,6 +139,9 @@ public enum Alignment {
 
         ALIGN_OF_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER));
         ALIGN_OF_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG));
+        ALIGN_OF_FLOAT = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_FLOAT));
+        ALIGN_OF_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_DOUBLE));
+        ALIGN_OF_LONG_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG_DOUBLE));
 
         ALIGN_OF_STRUCT_INT8_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT8_T | STRUCT_OFFSET));
         ALIGN_OF_STRUCT_INT16_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T | STRUCT_OFFSET));
@@ -133,6 +151,9 @@ public enum Alignment {
 
         ALIGN_OF_STRUCT_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER | STRUCT_OFFSET));
         ALIGN_OF_STRUCT_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
+        ALIGN_OF_STRUCT_FLOAT = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
+        ALIGN_OF_STRUCT_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
+        ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
 
         __BIGGEST_ALIGNMENT__ = Alignment.fromAlignof(getFromNative(REQ___BIGGEST_ALIGNMENT__));
     }

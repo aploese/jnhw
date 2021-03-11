@@ -49,12 +49,26 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_8, Alignment.__BIGGEST_ALIGNMENT__);
 
                     assertEquals(4, BaseDataType.SIZE_OF_LONG);
+                    assertEquals(4, BaseDataType.SIZE_OF_POINTER);
+
+                    assertEquals(4, BaseDataType.SIZE_OF_FLOAT);
+                    assertEquals(8, BaseDataType.SIZE_OF_DOUBLE);
+                    assertEquals(16, BaseDataType.SIZE_OF_LONG_DOUBLE);
+
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_LONG);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_LONG);
 
-                    assertEquals(4, BaseDataType.SIZE_OF_POINTER);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_POINTER);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_POINTER);
+
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_FLOAT);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_FLOAT);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_DOUBLE);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_DOUBLE);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG_DOUBLE);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_LONG_DOUBLE);
 
                     assertEquals(Alignment.AT_1, Alignment.ALIGN_OF_INT8_T);
                     assertEquals(Alignment.AT_1, Alignment.ALIGN_OF_STRUCT_INT8_T);
@@ -76,12 +90,26 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
 
                     assertEquals(4, BaseDataType.SIZE_OF_LONG);
+                    assertEquals(4, BaseDataType.SIZE_OF_POINTER);
+
+                    assertEquals(4, BaseDataType.SIZE_OF_FLOAT);
+                    assertEquals(8, BaseDataType.SIZE_OF_DOUBLE);
+                    assertEquals(16, BaseDataType.SIZE_OF_LONG_DOUBLE);
+
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_LONG);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_LONG);
 
-                    assertEquals(4, BaseDataType.SIZE_OF_POINTER);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_POINTER);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_POINTER);
+
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_FLOAT);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_FLOAT);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_DOUBLE);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_DOUBLE);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG_DOUBLE);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_LONG_DOUBLE);
 
                     assertEquals(Alignment.AT_1, Alignment.ALIGN_OF_INT8_T);
                     assertEquals(Alignment.AT_1, Alignment.ALIGN_OF_STRUCT_INT8_T);
@@ -105,12 +133,26 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
 
                     assertEquals(8, BaseDataType.SIZE_OF_LONG);
+                    assertEquals(8, BaseDataType.SIZE_OF_POINTER);
+
+                    assertEquals(4, BaseDataType.SIZE_OF_FLOAT);
+                    assertEquals(8, BaseDataType.SIZE_OF_DOUBLE);
+                    assertEquals(16, BaseDataType.SIZE_OF_LONG_DOUBLE);
+
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG);
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_LONG);
 
-                    assertEquals(8, BaseDataType.SIZE_OF_POINTER);
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_POINTER);
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_POINTER);
+
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_FLOAT);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_FLOAT);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_DOUBLE);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_DOUBLE);
+
+                    assertEquals(Alignment.AT_16, Alignment.ALIGN_OF_LONG_DOUBLE);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_LONG_DOUBLE);
 
                     assertEquals(Alignment.AT_1, Alignment.ALIGN_OF_INT8_T);
                     assertEquals(Alignment.AT_1, Alignment.ALIGN_OF_STRUCT_INT8_T);

@@ -22,8 +22,7 @@
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
 
-//for offsetof
-#include <stddef.h>
+#include <float.h>
 
 #include "de_ibapl_jnhw_common_memory_layout_Alignment.h"
 
@@ -53,6 +52,12 @@ extern "C" {
                 return __alignof__ (void*);
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG:
                 return __alignof__ (long);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_FLOAT:
+                return __alignof__ (float);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_DOUBLE:
+                return __alignof__ (double);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG_DOUBLE:
+                return __alignof__ (long double);
 
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT8_T | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
                 return __alignof__ (struct {
@@ -87,6 +92,21 @@ extern "C" {
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
                 return __alignof__ (struct {
                     long member;
+                });
+
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_FLOAT | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+                return __alignof__ (struct {
+                    float member;
+                });
+
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_DOUBLE | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+                return __alignof__ (struct {
+                    double member;
+                });
+
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG_DOUBLE | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+                return __alignof__ (struct {
+                    long double member;
                 });
 
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ___BIGGEST_ALIGNMENT__:

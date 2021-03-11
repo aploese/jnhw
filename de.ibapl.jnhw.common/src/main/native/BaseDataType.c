@@ -43,15 +43,46 @@ extern "C" {
         return sizeof (void*);
     }
 
-    /*
+/*
      * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
-     * Method:    getSizeOfLong0
+     * Method:    getSizeOf_long0
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOfLong0
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOf_1long0
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return sizeof (long);
     }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
+     * Method:    getSizeOf_float0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOf_1float0
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof (float);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
+     * Method:    getSizeOf_double0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOf_1double0
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof (double);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
+     * Method:    getSizeOf_long_double0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOf_1long_1double0
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return sizeof (long double);
+    }
+
 
 #ifdef __cplusplus
 }
