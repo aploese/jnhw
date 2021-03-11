@@ -162,7 +162,7 @@ public class Uas {
             public final static byte bPipeID = _sizeof;
             public final static byte Reserved = bPipeID + __U8;
 
-            public final static byte sizeof = Reserved + __U8;
+            public final static byte sizeof = Reserved + __U8 + 1; //TODO ERROR? a descriptor has USB_DT_PIPE_USAGE with blength == 5 ???
         }
 
         public Usb_pipe_usage_descriptor(AbstractNativeMemory parent, long offset, Byte setMem) {
