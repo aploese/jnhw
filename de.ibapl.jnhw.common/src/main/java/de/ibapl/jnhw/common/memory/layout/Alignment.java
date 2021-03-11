@@ -70,6 +70,7 @@ public enum Alignment {
     public final static Alignment ALIGN_OF_INT16_T;
     public final static Alignment ALIGN_OF_INT32_T;
     public final static Alignment ALIGN_OF_INT64_T;
+    public final static Alignment ALIGN_OF_INTPTR_T;
 
     public final static Alignment ALIGN_OF_POINTER;
     public final static Alignment ALIGN_OF_LONG;
@@ -83,6 +84,8 @@ public enum Alignment {
     private final static int REQ_ALIGNOF_INT32_T = 0x0003;
     @Native
     private final static int REQ_ALIGNOF_INT64_T = 0x0004;
+    @Native
+    private final static int REQ_ALIGNOF_INTPTR_T = 0x0005;
 
     @Native
     private final static int REQ_ALIGNOF_POINTER = 0x0010;
@@ -99,6 +102,7 @@ public enum Alignment {
         ALIGN_OF_INT16_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T));
         ALIGN_OF_INT32_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT32_T));
         ALIGN_OF_INT64_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T));
+        ALIGN_OF_INTPTR_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INTPTR_T));
 
         ALIGN_OF_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER));
         ALIGN_OF_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG));

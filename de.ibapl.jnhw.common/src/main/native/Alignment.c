@@ -44,6 +44,8 @@ extern "C" {
                 return __alignof__ (int32_t);
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT64_T:
                 return __alignof__ (int64_t);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INTPTR_T:
+                return __alignof__ (intptr_t);
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_POINTER:
                 return __alignof__ (void*);
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG:

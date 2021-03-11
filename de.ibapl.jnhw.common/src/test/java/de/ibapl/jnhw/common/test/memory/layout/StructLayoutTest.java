@@ -25,7 +25,6 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
 
 /**
  *
@@ -33,28 +32,27 @@ import org.junit.jupiter.api.BeforeAll;
  */
 public class StructLayoutTest {
 
-    @BeforeAll
-    public static void setup() {
+    static {
         LibJnhwCommonTestLoader.touch();
     }
 
-    private native int getAlignOfEmptyStruct();
+    public static native int getAlignOfEmptyStruct();
 
-    private native int getAlignOfStruct_Int8_t();
+    public static native int getAlignOfStruct_Int8_t();
 
-    private native int getAlignOfStruct_Int16_t();
+    public static native int getAlignOfStruct_Int16_t();
 
-    private native int getAlignOfStruct_Int32_t();
+    public static native int getAlignOfStruct_Int32_t();
 
-    private native int getAlignOfStruct_Int64_t();
+    public static native int getAlignOfStruct_Int64_t();
 
-    private native int getAlignOf_Int8_t();
+    public static native int getAlignOf_Int8_t();
 
-    private native int getAlignOf_Int16_t();
+    public static native int getAlignOf_Int16_t();
 
-    private native int getAlignOf_Int32_t();
+    public static native int getAlignOf_Int32_t();
 
-    private native int getAlignOf_Int64_t();
+    public static native int getAlignOf_Int64_t();
 
     @Test
     public void testAlignOfEmptyStruct() {

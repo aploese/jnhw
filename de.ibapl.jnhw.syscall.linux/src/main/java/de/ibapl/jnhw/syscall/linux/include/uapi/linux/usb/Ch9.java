@@ -446,6 +446,9 @@ public interface Ch9 {
                 case USB_DT_SS_ENDPOINT_COMP:
                     result = new Usb_ss_ep_comp_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
                     break;
+//TODO                case USB_DT_PIPE_USAGE: => 0x24
+//TODO                    result = new Usb_Pi(parent, getOffset(), MEM_UNINITIALIZED);
+//TODO                    break;
                 default:
                     throw new RuntimeException("Can't handle bDescriptorType of:" + String.format("0x%02x", bDescriptorType()));
             }

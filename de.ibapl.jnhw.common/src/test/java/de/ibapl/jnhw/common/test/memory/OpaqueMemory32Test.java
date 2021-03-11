@@ -334,7 +334,7 @@ public class OpaqueMemory32Test {
         Assertions.assertEquals(0x00, result[26]);
         Assertions.assertEquals(0x00, result[27]);
 
-        switch (Alignment.ALIGN_OF_INT64_T) {
+        switch (Alignment.ALIGN_OF_POINTER) {
             case AT_8:
                 Assertions.assertEquals(0x00, result[28]);
                 Assertions.assertEquals(0x00, result[29]);

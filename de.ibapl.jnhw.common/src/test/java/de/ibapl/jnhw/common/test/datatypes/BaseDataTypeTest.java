@@ -23,6 +23,7 @@ package de.ibapl.jnhw.common.test.datatypes;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.test.memory.layout.StructLayoutTest;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,7 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_2, Alignment.ALIGN_OF_INT16_T);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_INT32_T);
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_INT64_T);
+                    assertEquals(Alignment.AT_8.alignof, StructLayoutTest.getAlignOfStruct_Int64_t());
                     break;
                 case I386__LINUX__GNU:
                     //classical 32bit anything is at 4 byte aligned
@@ -68,6 +70,7 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_2, Alignment.ALIGN_OF_INT16_T);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_INT32_T);
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_INT64_T);
+                    assertEquals(Alignment.AT_4.alignof, StructLayoutTest.getAlignOfStruct_Int64_t());
                     break;
                 case AARCH64__LINUX__GNU:
                 case X86_64__LINUX__GNU:
@@ -82,6 +85,7 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_2, Alignment.ALIGN_OF_INT16_T);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_INT32_T);
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_INT64_T);
+                    assertEquals(Alignment.AT_8.alignof, StructLayoutTest.getAlignOfStruct_Int64_t());
                     break;
                 default:
                     //sorry, but we need proof.... so test an commit results ....
@@ -90,7 +94,8 @@ public class BaseDataTypeTest {
                             + "\n\tSIZE_OF_LONG = " + BaseDataType.SIZE_OF_LONG
                             + "\n\tALIGN_OF_LONG = " + Alignment.ALIGN_OF_LONG
                             + "\n\tSIZE_OF_POINTER = " + BaseDataType.SIZE_OF_POINTER
-                            + "\n\tALIGN_OF_POINTER = " + Alignment.ALIGN_OF_POINTER;
+                            + "\n\tALIGN_OF_POINTER = " + Alignment.ALIGN_OF_POINTER
+                            + "\n\talign of struct with int64_t = " + StructLayoutTest.getAlignOfStruct_Int64_t();
                     fail(msg);
             }
         }
