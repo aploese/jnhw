@@ -25,7 +25,6 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.NativeLibResolver;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,8 +42,11 @@ public class BaseDataTypeTest {
         MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
         for (MultiarchInfo mi : mtb.getMultiarchs()) {
             switch (mi) {
+                case ARM__LINUX__GNU_EABI:
                 case ARM__LINUX__GNU_EABI_HF:
-                    //32 bit, but int64_t is aligned at 8 byte
+                    //32 bit, but __BIGGEST_ALIGNMENT__ is 8
+                    assertEquals(Alignment.AT_8, BaseDataType.__BIGGEST_ALIGNMENT__);
+
                     assertEquals(4, BaseDataType.SIZE_OF_LONG);
                     assertEquals(Alignment.AT_4, BaseDataType.ALIGN_OF_LONG);
                     assertEquals(4, BaseDataType.SIZE_OF_POINTER);
@@ -53,6 +55,8 @@ public class BaseDataTypeTest {
                     break;
                 case I386__LINUX__GNU:
                     //classical 32bit anything is at 4 byte aligned
+                    assertEquals(Alignment.AT_4, BaseDataType.__BIGGEST_ALIGNMENT__);
+
                     assertEquals(4, BaseDataType.SIZE_OF_LONG);
                     assertEquals(Alignment.AT_4, BaseDataType.ALIGN_OF_LONG);
                     assertEquals(4, BaseDataType.SIZE_OF_POINTER);
@@ -61,6 +65,8 @@ public class BaseDataTypeTest {
                     break;
                 case X86_64__LINUX__GNU:
                     //classical 64bit anything is at 8 byte aligned
+                    assertEquals(Alignment.AT_8, BaseDataType.__BIGGEST_ALIGNMENT__);
+
                     assertEquals(8, BaseDataType.SIZE_OF_LONG);
                     assertEquals(Alignment.AT_8, BaseDataType.ALIGN_OF_LONG);
                     assertEquals(8, BaseDataType.SIZE_OF_POINTER);
@@ -70,6 +76,7 @@ public class BaseDataTypeTest {
                 default:
                     //sorry, but we need proof.... so test an commit results ....
                     String msg = "No testvalues for multiarch: " + mi
+                            + "\n\t__BIGGEST_ALIGNMENT__ = " + BaseDataType.__BIGGEST_ALIGNMENT__
                             + "\n\tSIZE_OF_LONG = " + BaseDataType.SIZE_OF_LONG
                             + "\n\tALIGN_OF_LONG = " + BaseDataType.ALIGN_OF_LONG
                             + "\n\tSIZE_OF_POINTER = " + BaseDataType.SIZE_OF_POINTER

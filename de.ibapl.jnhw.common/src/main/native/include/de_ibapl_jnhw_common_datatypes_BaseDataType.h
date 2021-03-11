@@ -47,6 +47,14 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlign
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlignOfInt64_1t0
   (JNIEnv *, jclass);
 
+/*
+ * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
+ * Method:    get__BIGGEST_ALIGNMENT__0
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_get_1_1BIGGEST_1ALIGNMENT_1_10
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif

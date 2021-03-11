@@ -73,7 +73,7 @@ extern "C" {
         return __alignof__ (long);
     }
 
-/*
+        /*
      * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
      * Method:    getAlignOfInt64_t0
      * Signature: ()I
@@ -81,6 +81,16 @@ extern "C" {
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlignOfInt64_1t0
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return __alignof__ (uint64_t);
+    }
+
+/*
+     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
+     * Method:    get__BIGGEST_ALIGNMENT__0
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_get_1_1BIGGEST_1ALIGNMENT_1_10
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return __BIGGEST_ALIGNMENT__;
     }
 
 #ifdef __cplusplus

@@ -93,6 +93,11 @@ public enum BaseDataType {
 
     public final static Alignment ALIGN_OF_INT64_T;
 
+    /**
+     * this for gcc will be the define __BIGGEST_ALIGNMENT__
+     */
+    public final static Alignment __BIGGEST_ALIGNMENT__;
+
     static {
         // This get called after the Constructor of BaseDataType...
         LibJnhwCommonLoader.touch();
@@ -101,6 +106,7 @@ public enum BaseDataType {
         SIZE_OF_LONG = getSizeOfLong();
         ALIGN_OF_LONG = getAlignOfLong();
         ALIGN_OF_INT64_T = getAlignOfInt64_t();
+        __BIGGEST_ALIGNMENT__ = get__BIGGEST_ALIGNMENT__();
     }
 
     private final static native int getSizeOfPointer0();
@@ -141,6 +147,14 @@ public enum BaseDataType {
         // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
         LibJnhwCommonLoader.touch();
         return Alignment.fromAlignof(getAlignOfInt64_t0());
+    }
+
+    private final static native int get__BIGGEST_ALIGNMENT__0();
+
+    private final static Alignment get__BIGGEST_ALIGNMENT__() {
+        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
+        LibJnhwCommonLoader.touch();
+        return Alignment.fromAlignof(get__BIGGEST_ALIGNMENT__0());
     }
 
 }
