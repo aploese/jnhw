@@ -95,6 +95,13 @@ public enum Alignment {
 
     public final static Alignment __BIGGEST_ALIGNMENT__;
 
+    /**
+     * armhf uses 8 and __BIGGEST_ALIGNMENT__ == 8, _LP64 ? 8 but
+     * __BIGGEST_ALIGNMENT__ == 8, i386 4 but __BIGGEST_ALIGNMENT__ == 8 .. It
+     * just a guess
+     */
+    public final static Alignment JNHW_DEFAULT_STRUCT_ALIGNMENT;
+
     @Native
     private final static int REQ_ALIGNOF_INT8_T = 0x0001;
     @Native
@@ -152,6 +159,7 @@ public enum Alignment {
         ALIGN_IN_STRUCT_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | ALIGN_IN_STRUCT_OFFSET));
 
         __BIGGEST_ALIGNMENT__ = Alignment.fromAlignof(getFromNative(REQ___BIGGEST_ALIGNMENT__));
+        JNHW_DEFAULT_STRUCT_ALIGNMENT = ALIGN_IN_STRUCT_INT64_T;
     }
 
     private final static native int getFromNative(int alignofReqXXX);

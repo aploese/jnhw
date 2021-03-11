@@ -76,7 +76,7 @@ public class StructLayoutTest {
 
     @Test
     public void testAlignOfStruct_Int64_t() {
-        Assertions.assertEquals(Alignment.ALIGN_OF_POINTER.alignof, getAlignOfStruct_Int64_t());
+        Assertions.assertEquals(Alignment.ALIGN_OF_STRUCT_INT64_T.alignof, getAlignOfStruct_Int64_t());
     }
 
     @Test

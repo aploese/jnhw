@@ -23,30 +23,31 @@ package de.ibapl.jnhw.common.datatypes;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import static de.ibapl.jnhw.common.memory.layout.Alignment.*;
 
 /**
  *
  * @author aploese
  */
 public enum BaseDataType {
-    int8_t(1, Alignment.ALIGN_OF_INT8_T, false),
-    uint8_t(1, Alignment.ALIGN_OF_INT8_T, true),
-    int16_t(2, Alignment.ALIGN_OF_INT16_T, false),
-    uint16_t(2, Alignment.ALIGN_OF_INT16_T, true),
-    int32_t(4, Alignment.ALIGN_OF_INT32_T, false),
-    uint32_t(4, Alignment.ALIGN_OF_INT32_T, true),
-    int64_t(8, Alignment.ALIGN_OF_INT64_T, false),
-    uint64_t(8, Alignment.ALIGN_OF_INT64_T, true),
+    int8_t(1, ALIGN_OF_INT8_T, false),
+    uint8_t(1, ALIGN_OF_INT8_T, true),
+    int16_t(2, ALIGN_OF_INT16_T, false),
+    uint16_t(2, ALIGN_OF_INT16_T, true),
+    int32_t(4, ALIGN_OF_INT32_T, false),
+    uint32_t(4, ALIGN_OF_INT32_T, true),
+    int64_t(8, ALIGN_OF_INT64_T, false),
+    uint64_t(8, ALIGN_OF_INT64_T, true),
     struct(0, null),
     union(0, null),
     array(null, null),
-    intptr_t(getSizeOfPointer(), Alignment.ALIGN_OF_POINTER, false),
-    uintptr_t(getSizeOfPointer(), Alignment.ALIGN_OF_POINTER, true),
-    function(getSizeOfPointer(), Alignment.ALIGN_OF_POINTER),
+    intptr_t(getSizeOfPointer(), ALIGN_OF_INTPTR_T, false),
+    uintptr_t(getSizeOfPointer(), ALIGN_OF_INTPTR_T, true),
+    function(getSizeOfPointer(), ALIGN_OF_POINTER),
     /**
      * the infamous void*
      */
-    pointer(getSizeOfPointer(), Alignment.ALIGN_OF_POINTER);
+    pointer(getSizeOfPointer(), ALIGN_OF_POINTER);
 
     public static BaseDataType getSigned_Long_Mapping() {
         switch (SIZE_OF_LONG) {
@@ -70,12 +71,19 @@ public enum BaseDataType {
         }
     }
 
-    private BaseDataType(int sizeof, Alignment align, boolean unsigned) {
+    private BaseDataType(int sizeof, Alignment alignof, boolean unsigned) {
         this.UNSIGNED = unsigned;
-        this.ALIGN_OF = align;
+        this.ALIGN_OF = alignof;
         this.SIZE_OF = sizeof;
     }
 
+    /**
+     *
+     * ALIGN_IN_STRUCT == ALIGN_OF
+     *
+     * @param sizeof
+     * @param alignment
+     */
     private BaseDataType(Integer sizeof, Alignment alignment) {
         this.UNSIGNED = null;
         this.SIZE_OF = sizeof;

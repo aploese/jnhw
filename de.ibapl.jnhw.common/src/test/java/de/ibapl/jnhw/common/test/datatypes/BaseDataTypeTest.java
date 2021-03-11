@@ -102,6 +102,7 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_INT32_T);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_IN_STRUCT_INT32_T);
 
+                    //Why is int64_t alighned at 8, but in struct at 4 ????
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_INT64_T);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_INT64_T);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_IN_STRUCT_INT64_T);
