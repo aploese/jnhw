@@ -76,6 +76,10 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_INTPTR_T);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_INTPTR_T);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_IN_STRUCT_INTPTR_T);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_ALIGN_16);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_IN_STRUCT_ALIGN_16);
+
                     break;
                 case I386__LINUX__GNU:
                     //classical 32bit anything is at 4 byte aligned
@@ -110,6 +114,9 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_INTPTR_T);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_INTPTR_T);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_IN_STRUCT_INTPTR_T);
+
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_ALIGN_16);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_IN_STRUCT_ALIGN_16);
                     break;
                 case AARCH64__LINUX__GNU:
                 case X86_64__LINUX__GNU:
@@ -144,6 +151,10 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_INTPTR_T);
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_INTPTR_T);
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_IN_STRUCT_INTPTR_T);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_ALIGN_16);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_IN_STRUCT_ALIGN_16);
+
                     break;
                 default:
                     //sorry, but we need proof.... so test an commit results ....

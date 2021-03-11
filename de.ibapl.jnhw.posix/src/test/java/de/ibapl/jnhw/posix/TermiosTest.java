@@ -186,7 +186,7 @@ public class TermiosTest {
     @Test
     public void testCc_t() {
         Assertions.assertEquals(1, PosixDataType.cc_t.baseDataType.SIZE_OF);
-        Assertions.assertEquals(Alignment.AT_1, PosixDataType.cc_t.baseDataType.ALIGN_IN_STRUCT);
+        Assertions.assertEquals(Alignment.AT_1, PosixDataType.cc_t.baseDataType.ALIGN_OF);
         assertTrue(PosixDataType.cc_t.baseDataType.UNSIGNED);
         Termios.Cc_t instance = new Termios.Cc_t(null, 0, SET_MEM_TO_0);
         assertEquals(BaseDataType.uint8_t, instance.getBaseDataType());
@@ -200,7 +200,7 @@ public class TermiosTest {
     @Test
     public void testSpeed_t() {
         Assertions.assertEquals(4, PosixDataType.speed_t.baseDataType.SIZE_OF);
-        Assertions.assertEquals(Alignment.AT_4, PosixDataType.speed_t.baseDataType.ALIGN_IN_STRUCT);
+        Assertions.assertEquals(Alignment.AT_4, PosixDataType.speed_t.baseDataType.ALIGN_OF);
         assertTrue(PosixDataType.speed_t.baseDataType.UNSIGNED);
         Termios.Speed_t instance = new Termios.Speed_t(null, 0, SET_MEM_TO_0);
         assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
@@ -216,7 +216,7 @@ public class TermiosTest {
     @Test
     public void testTcflag_t() {
         Assertions.assertEquals(4, PosixDataType.tcflag_t.baseDataType.SIZE_OF);
-        Assertions.assertEquals(Alignment.AT_4, PosixDataType.tcflag_t.baseDataType.ALIGN_IN_STRUCT);
+        Assertions.assertEquals(Alignment.AT_4, PosixDataType.tcflag_t.baseDataType.ALIGN_OF);
         Assertions.assertTrue(PosixDataType.tcflag_t.baseDataType.UNSIGNED);
         Termios.Tcflag_t instance = new Termios.Tcflag_t(null, 0, SET_MEM_TO_0);
         assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());

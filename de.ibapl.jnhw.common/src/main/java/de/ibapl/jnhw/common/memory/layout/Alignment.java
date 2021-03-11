@@ -95,6 +95,9 @@ public enum Alignment {
 
     public final static Alignment __BIGGEST_ALIGNMENT__;
 
+    public final static Alignment ALIGN_OF_STRUCT_ALIGN_16;
+    public final static Alignment ALIGN_IN_STRUCT_ALIGN_16;
+
     /**
      * armhf uses 8 and __BIGGEST_ALIGNMENT__ == 8, _LP64 ? 8 but
      * __BIGGEST_ALIGNMENT__ == 8, i386 4 but __BIGGEST_ALIGNMENT__ == 8 .. It
@@ -116,6 +119,9 @@ public enum Alignment {
     private final static int REQ_ALIGNOF_POINTER = 0x0006;
     @Native
     private final static int REQ_ALIGNOF_LONG = 0x0007;
+
+    @Native
+    private final static int REQ_ALIGNOF_ALIGN_16 = 0x0008;
 
     @Native
     private final static int STRUCT_ALIGN_OFFSET = 0x0010;
@@ -159,6 +165,10 @@ public enum Alignment {
         ALIGN_IN_STRUCT_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | ALIGN_IN_STRUCT_OFFSET));
 
         __BIGGEST_ALIGNMENT__ = Alignment.fromAlignof(getFromNative(REQ___BIGGEST_ALIGNMENT__));
+
+        ALIGN_OF_STRUCT_ALIGN_16 = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_ALIGN_16 | STRUCT_OFFSET));
+        ALIGN_IN_STRUCT_ALIGN_16 = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_ALIGN_16 | ALIGN_IN_STRUCT_OFFSET));
+
         JNHW_DEFAULT_STRUCT_ALIGNMENT = ALIGN_IN_STRUCT_INT64_T;
     }
 

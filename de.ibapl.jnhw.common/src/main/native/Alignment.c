@@ -65,6 +65,16 @@ extern "C" {
         long last;
     };
 
+#pragma pack(push)  /* push current alignment to stack */
+#pragma pack(16)     /* set alignment to 16 byte boundary */
+
+    struct align_16 {
+        int8_t first;
+        int64_t last;
+    };
+
+#pragma pack(pop)   /* restore original alignment from stack */
+
     /*
      * Class:     de_ibapl_jnhw_common_memory_layout_Alignment
      * Method:    getFromNative
@@ -116,6 +126,14 @@ extern "C" {
                 return offsetof(struct s_long, last);
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ___BIGGEST_ALIGNMENT__:
                 return __BIGGEST_ALIGNMENT__;
+
+
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_ALIGN_16 | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+                return __alignof__ (struct align_16);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_ALIGN_16 | de_ibapl_jnhw_common_memory_layout_Alignment_ALIGN_IN_STRUCT_OFFSET:
+                return offsetof(struct align_16, last);
+
+
             default:
                 throw_IllegalArgumentException(env, "Can't handle request");
                 return -1;
