@@ -39,6 +39,69 @@ public class StructLayoutTest {
         LibJnhwCommonTestLoader.touch();
     }
 
+    private native int getAlignOfEmptyStruct();
+
+    private native int getAlignOfStruct_Int8_t();
+
+    private native int getAlignOfStruct_Int16_t();
+
+    private native int getAlignOfStruct_Int32_t();
+
+    private native int getAlignOfStruct_Int64_t();
+
+    private native int getAlignOf_Int8_t();
+
+    private native int getAlignOf_Int16_t();
+
+    private native int getAlignOf_Int32_t();
+
+    private native int getAlignOf_Int64_t();
+
+    @Test
+    public void testAlignOfEmptyStruct() {
+        Assertions.assertEquals(1, getAlignOfEmptyStruct());
+    }
+
+    @Test
+    public void testAlignOfStruct_Int8_t() {
+        Assertions.assertEquals(1, getAlignOfStruct_Int8_t());
+    }
+
+    @Test
+    public void testAlignOfStruct_Int16_t() {
+        Assertions.assertEquals(2, getAlignOfStruct_Int16_t());
+    }
+
+    @Test
+    public void testAlignOfStruct_Int32_t() {
+        Assertions.assertEquals(4, getAlignOfStruct_Int32_t());
+    }
+
+    @Test
+    public void testAlignOfStruct_Int64_t() {
+        Assertions.assertEquals(BaseDataType.ALIGN_OF_POINTER.alignof, getAlignOfStruct_Int64_t());
+    }
+
+    @Test
+    public void testAlignOf_Int8_t() {
+        Assertions.assertEquals(1, getAlignOf_Int8_t());
+    }
+
+    @Test
+    public void testAlignOf_Int16_t() {
+        Assertions.assertEquals(2, getAlignOf_Int16_t());
+    }
+
+    @Test
+    public void testAlignOf_Int32_t() {
+        Assertions.assertEquals(4, getAlignOf_Int32_t());
+    }
+
+    @Test
+    public void testAlignOf_Int64_t() {
+        Assertions.assertEquals(BaseDataType.ALIGN_OF_POINTER.alignof, getAlignOf_Int64_t());
+    }
+
     @Test
     public void testDefinedLayout() {
         SimpeStructureImpl.Layout definedLayout = new SimpeStructureImpl.Layout();

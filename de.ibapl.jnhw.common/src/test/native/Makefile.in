@@ -152,7 +152,8 @@ am_libtests_la_OBJECTS =  \
 	Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.lo \
 	Callback_PtrAbstractNativeMemory_V_Test.lo \
 	NativeRunnableTest.lo PointerArray32Test.lo FieldLayoutTest.lo \
-	SimpeStructureImpl.lo JnhwExceptionsTest.lo
+	StructLayoutTest.lo SimpeStructureImpl.lo \
+	JnhwExceptionsTest.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -183,6 +184,7 @@ am__depfiles_remade = ./$(DEPDIR)/AbstractNativeMemoryTest_NativeMemoryAlignment
 	./$(DEPDIR)/PointerArray32Test.Plo \
 	./$(DEPDIR)/ShortRefTest.Plo \
 	./$(DEPDIR)/SimpeStructureImpl.Plo \
+	./$(DEPDIR)/StructLayoutTest.Plo \
 	./$(DEPDIR)/libjnhw-common-test.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -388,6 +390,7 @@ libtests_la_SOURCES = \
  NativeRunnableTest.c \
  PointerArray32Test.c \
  FieldLayoutTest.c \
+ StructLayoutTest.c \
  SimpeStructureImpl.c \
  JnhwExceptionsTest.c
 
@@ -500,6 +503,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PointerArray32Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ShortRefTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SimpeStructureImpl.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StructLayoutTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libjnhw-common-test.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
@@ -678,6 +682,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/PointerArray32Test.Plo
 	-rm -f ./$(DEPDIR)/ShortRefTest.Plo
 	-rm -f ./$(DEPDIR)/SimpeStructureImpl.Plo
+	-rm -f ./$(DEPDIR)/StructLayoutTest.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-common-test.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
@@ -741,6 +746,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/PointerArray32Test.Plo
 	-rm -f ./$(DEPDIR)/ShortRefTest.Plo
 	-rm -f ./$(DEPDIR)/SimpeStructureImpl.Plo
+	-rm -f ./$(DEPDIR)/StructLayoutTest.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-common-test.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic

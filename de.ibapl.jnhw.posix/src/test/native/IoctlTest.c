@@ -36,7 +36,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_get_1IOR_1int32_1t
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jobject clazz, jchar c, jint value) {
-        return (int32_t) _IOR(c, (uint32_t) value, int32_t);
+        return (int32_t) _IOR((uint32_t) c, (uint32_t) value, int32_t);
     }
 
     /*
@@ -46,7 +46,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_get_1IOW_1int32_1t
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jobject clazz, jchar c, jint value) {
-        return (int32_t) _IOW(c, (uint32_t) value, int32_t);
+        return (int32_t) _IOW((uint32_t) c, (uint32_t) value, int32_t);
     }
 
     /*
@@ -56,7 +56,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_get_1IOWR_1int32_1t
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jobject clazz, jchar c, jint value) {
-        return (int32_t) _IOWR(c, (uint32_t) value, int32_t);
+        return (int32_t) _IOWR((uint32_t) c, (uint32_t) value, int32_t);
     }
 
 

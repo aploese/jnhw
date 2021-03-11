@@ -9,11 +9,75 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest
- * Method:    createLayout
- * Signature: (Ljava/lang/Class;Ljava/lang/Class;JJLjava/lang/String;Ljava/lang/String;J)Lde/ibapl/jnhw/common/memory/layout/StructLayout;
+ * Method:    getAlignOfEmptyStruct
+ * Signature: ()I
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest_createLayout
-  (JNIEnv *, jclass, jclass, jclass, jlong, jlong, jstring, jstring, jlong);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest_getAlignOfEmptyStruct
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest
+ * Method:    getAlignOfStruct_Int8_t
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest_getAlignOfStruct_1Int8_1t
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest
+ * Method:    getAlignOfStruct_Int16_t
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest_getAlignOfStruct_1Int16_1t
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest
+ * Method:    getAlignOfStruct_Int32_t
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest_getAlignOfStruct_1Int32_1t
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest
+ * Method:    getAlignOfStruct_Int64_t
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest_getAlignOfStruct_1Int64_1t
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest
+ * Method:    getAlignOf_Int8_t
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest_getAlignOf_1Int8_1t
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest
+ * Method:    getAlignOf_Int16_t
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest_getAlignOf_1Int16_1t
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest
+ * Method:    getAlignOf_Int32_t
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest_getAlignOf_1Int32_1t
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest
+ * Method:    getAlignOf_Int64_t
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_StructLayoutTest_getAlignOf_1Int64_1t
+  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

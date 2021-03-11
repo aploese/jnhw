@@ -27,6 +27,7 @@ libtests_la_SOURCES = \
  NativeRunnableTest.c \
  PointerArray32Test.c \
  FieldLayoutTest.c \
+ StructLayoutTest.c \
  SimpeStructureImpl.c \
  JnhwExceptionsTest.c
 
