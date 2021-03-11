@@ -278,7 +278,7 @@ public class OpaqueMemory32Test {
         struct.seventh((byte) 0x77);
 
         String expected = null;
-        switch (Alignment.ALIGN_OF_INT64_T) {
+        switch (Alignment.ALIGN_OF_POINTER) {
             case AT_8:
                 Assertions.assertEquals(32, AbstractNativeMemory.offsetof(struct.eighth));
                 expected = "11002222 33000000  44444444 55000000 |  \"\"3   DDDDU   \n"
