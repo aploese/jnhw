@@ -72,11 +72,7 @@ public enum BaseDataType {
 
     private BaseDataType(int sizeof, Alignment align, boolean unsigned) {
         this.UNSIGNED = unsigned;
-        if (align.alignof > Alignment.__BIGGEST_ALIGNMENT__.alignof) {
-            this.ALIGN_OF = Alignment.__BIGGEST_ALIGNMENT__;
-        } else {
-            this.ALIGN_OF = align;
-        }
+        this.ALIGN_OF = align;
         this.SIZE_OF = sizeof;
     }
 
