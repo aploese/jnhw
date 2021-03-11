@@ -151,9 +151,9 @@ public enum Alignment {
 
         ALIGN_OF_STRUCT_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER | STRUCT_OFFSET));
         ALIGN_OF_STRUCT_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
-        ALIGN_OF_STRUCT_FLOAT = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
+        ALIGN_OF_STRUCT_FLOAT = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_FLOAT | STRUCT_OFFSET));
         ALIGN_OF_STRUCT_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
-        ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
+        ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG_DOUBLE | STRUCT_OFFSET));
 
         __BIGGEST_ALIGNMENT__ = Alignment.fromAlignof(getFromNative(REQ___BIGGEST_ALIGNMENT__));
     }
