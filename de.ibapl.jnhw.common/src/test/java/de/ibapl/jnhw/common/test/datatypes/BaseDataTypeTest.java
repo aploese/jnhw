@@ -106,7 +106,7 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_FLOAT);
 
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_DOUBLE);
-                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_DOUBLE);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_DOUBLE);
 
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG_DOUBLE);
                     assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_LONG_DOUBLE);
