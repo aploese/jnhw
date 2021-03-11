@@ -22,6 +22,9 @@
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
 
+//for offsetof
+#include <stddef.h>
+
 #include "de_ibapl_jnhw_common_memory_layout_Alignment.h"
 
 #ifdef __cplusplus
@@ -33,27 +36,33 @@ extern "C" {
     };
 
     struct s_int16_t {
-        int16_t first;
+        int8_t first;
+        int16_t last;
     };
 
     struct s_int32_t {
-        int32_t first;
+        int8_t first;
+        int32_t last;
     };
 
     struct s_int64_t {
-        int64_t first;
+        int8_t first;
+        int64_t last;
     };
 
     struct s_intptr_t {
-        intptr_t first;
+        int8_t first;
+        intptr_t last;
     };
 
     struct s_void {
-        void* first;
+        int8_t first;
+        void* last;
     };
 
     struct s_long {
-        long first;
+        int8_t first;
+        long last;
     };
 
     /*
@@ -93,7 +102,18 @@ extern "C" {
                 return __alignof__ (struct s_void);
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
                 return __alignof__ (struct s_long);
-
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT16_T | de_ibapl_jnhw_common_memory_layout_Alignment_ALIGN_IN_STRUCT_OFFSET:
+                return offsetof(struct s_int16_t, last);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT32_T | de_ibapl_jnhw_common_memory_layout_Alignment_ALIGN_IN_STRUCT_OFFSET:
+                return offsetof(struct s_int32_t, last);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT64_T | de_ibapl_jnhw_common_memory_layout_Alignment_ALIGN_IN_STRUCT_OFFSET:
+                return offsetof(struct s_int64_t, last);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INTPTR_T | de_ibapl_jnhw_common_memory_layout_Alignment_ALIGN_IN_STRUCT_OFFSET:
+                return offsetof(struct s_intptr_t, last);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_POINTER | de_ibapl_jnhw_common_memory_layout_Alignment_ALIGN_IN_STRUCT_OFFSET:
+                return offsetof(struct s_void, last);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG | de_ibapl_jnhw_common_memory_layout_Alignment_ALIGN_IN_STRUCT_OFFSET:
+                return offsetof(struct s_long, last);
             case de_ibapl_jnhw_common_memory_layout_Alignment_REQ___BIGGEST_ALIGNMENT__:
                 return __BIGGEST_ALIGNMENT__;
             default:

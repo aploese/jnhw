@@ -66,23 +66,34 @@ public enum Alignment {
         }
     }
 
-    public final static Alignment ALIGN_OF_INT8_T;
-    public final static Alignment ALIGN_OF_INT16_T;
-    public final static Alignment ALIGN_OF_INT32_T;
-    public final static Alignment ALIGN_OF_INT64_T;
-    public final static Alignment ALIGN_OF_INTPTR_T;
+    public final static Alignment ALIGN_OF_LONG;
+    public final static Alignment ALIGN_OF_STRUCT_LONG;
+    public final static Alignment ALIGN_IN_STRUCT_LONG;
 
     public final static Alignment ALIGN_OF_POINTER;
-    public final static Alignment ALIGN_OF_LONG;
-    public final static Alignment __BIGGEST_ALIGNMENT__;
-
-    public final static Alignment ALIGN_OF_STRUCT_INT8_T;
-    public final static Alignment ALIGN_OF_STRUCT_INT16_T;
-    public final static Alignment ALIGN_OF_STRUCT_INT32_T;
-    public final static Alignment ALIGN_OF_STRUCT_INT64_T;
-    public final static Alignment ALIGN_OF_STRUCT_INTPTR_T;
     public final static Alignment ALIGN_OF_STRUCT_POINTER;
-    public final static Alignment ALIGN_OF_STRUCT_LONG;
+    public final static Alignment ALIGN_IN_STRUCT_POINTER;
+
+    public final static Alignment ALIGN_OF_INT8_T;
+    public final static Alignment ALIGN_OF_STRUCT_INT8_T;
+
+    public final static Alignment ALIGN_OF_INT16_T;
+    public final static Alignment ALIGN_OF_STRUCT_INT16_T;
+    public final static Alignment ALIGN_IN_STRUCT_INT16_T;
+
+    public final static Alignment ALIGN_OF_INT32_T;
+    public final static Alignment ALIGN_OF_STRUCT_INT32_T;
+    public final static Alignment ALIGN_IN_STRUCT_INT32_T;
+
+    public final static Alignment ALIGN_OF_INT64_T;
+    public final static Alignment ALIGN_OF_STRUCT_INT64_T;
+    public final static Alignment ALIGN_IN_STRUCT_INT64_T;
+
+    public final static Alignment ALIGN_OF_INTPTR_T;
+    public final static Alignment ALIGN_OF_STRUCT_INTPTR_T;
+    public final static Alignment ALIGN_IN_STRUCT_INTPTR_T;
+
+    public final static Alignment __BIGGEST_ALIGNMENT__;
 
     @Native
     private final static int REQ_ALIGNOF_INT8_T = 0x0001;
@@ -98,6 +109,12 @@ public enum Alignment {
     private final static int REQ_ALIGNOF_POINTER = 0x0006;
     @Native
     private final static int REQ_ALIGNOF_LONG = 0x0007;
+
+    @Native
+    private final static int STRUCT_ALIGN_OFFSET = 0x0010;
+
+    @Native
+    private final static int ALIGN_IN_STRUCT_OFFSET = 0x0020;
 
     @Native
     private final static int STRUCT_OFFSET = 0x0010;
@@ -123,8 +140,16 @@ public enum Alignment {
         ALIGN_OF_STRUCT_INT64_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T | STRUCT_OFFSET));
         ALIGN_OF_STRUCT_INTPTR_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INTPTR_T | STRUCT_OFFSET));
 
-        ALIGN_OF_STRUCT_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER));
-        ALIGN_OF_STRUCT_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG));
+        ALIGN_OF_STRUCT_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER | STRUCT_OFFSET));
+        ALIGN_OF_STRUCT_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
+
+        ALIGN_IN_STRUCT_INT16_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T | ALIGN_IN_STRUCT_OFFSET));
+        ALIGN_IN_STRUCT_INT32_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT32_T | ALIGN_IN_STRUCT_OFFSET));
+        ALIGN_IN_STRUCT_INT64_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T | ALIGN_IN_STRUCT_OFFSET));
+        ALIGN_IN_STRUCT_INTPTR_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INTPTR_T | ALIGN_IN_STRUCT_OFFSET));
+
+        ALIGN_IN_STRUCT_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER | ALIGN_IN_STRUCT_OFFSET));
+        ALIGN_IN_STRUCT_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | ALIGN_IN_STRUCT_OFFSET));
 
         __BIGGEST_ALIGNMENT__ = Alignment.fromAlignof(getFromNative(REQ___BIGGEST_ALIGNMENT__));
     }
