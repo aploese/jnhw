@@ -21,6 +21,9 @@
  */
 package de.ibapl.jnhw.common.memory.layout;
 
+import de.ibapl.jnhw.common.LibJnhwCommonLoader;
+import java.lang.annotation.Native;
+
 /**
  *
  * @author aploese
@@ -62,6 +65,27 @@ public enum Alignment {
                 throw new IllegalArgumentException("Can't get Alignment from alignof: " + alignof);
         }
     }
+
+    public final static Alignment ALIGN_OF_POINTER;
+    public final static Alignment ALIGN_OF_LONG;
+    public final static Alignment __BIGGEST_ALIGNMENT__;
+
+    @Native
+    private final static int REQ_ALIGNOF_POINTER = 0x0001;
+    @Native
+    private final static int REQ_ALIGNOF_LONG = 0x0002;
+    @Native
+    private final static int REQ___BIGGEST_ALIGNMENT__ = 0x0003;
+
+    static {
+        // This get called after the Constructor of BaseDataType...
+        LibJnhwCommonLoader.touch();
+        ALIGN_OF_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER));
+        ALIGN_OF_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG));
+        __BIGGEST_ALIGNMENT__ = Alignment.fromAlignof(getFromNative(REQ___BIGGEST_ALIGNMENT__));
+    }
+
+    private final static native int getFromNative(int alignofReqXXX);
 
     /**
      * calculate the alignment of a field in a structure - the smalles alignment

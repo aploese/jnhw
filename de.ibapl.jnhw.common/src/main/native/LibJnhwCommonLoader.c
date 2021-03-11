@@ -22,35 +22,22 @@
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
 
-#include "de_ibapl_jnhw_common_datatypes_BaseDataType.h"
+#include "de_ibapl_jnhw_common_LibJnhwCommonLoader.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-
-#if __SIZEOF_POINTER__ != __SIZEOF_LONG__
-#error expected not to happen: __SIZEOF_POINTER__ != __SIZEOF_LONG__
-#endif
+    jboolean JNICALL jnhw_common_init(JNIEnv *env);
 
     /*
-     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
-     * Method:    getSizeOfPointer0
-     * Signature: ()I
+     * Class:     de_ibapl_jnhw_common_LibJnhwCommonLoader
+     * Method:    initNativeClasses
+     * Signature: ()Z
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOfPointer0
-    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof (void*);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
-     * Method:    getSizeOfLong0
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOfLong0
-    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof (long);
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_common_LibJnhwCommonLoader_initNativeClasses
+    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return jnhw_common_init(env);
     }
 
 #ifdef __cplusplus

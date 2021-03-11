@@ -22,37 +22,31 @@
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
 
-#include "de_ibapl_jnhw_common_datatypes_BaseDataType.h"
+#include "de_ibapl_jnhw_common_memory_layout_Alignment.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-
-#if __SIZEOF_POINTER__ != __SIZEOF_LONG__
-#error expected not to happen: __SIZEOF_POINTER__ != __SIZEOF_LONG__
-#endif
-
     /*
-     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
-     * Method:    getSizeOfPointer0
-     * Signature: ()I
+     * Class:     de_ibapl_jnhw_common_memory_layout_Alignment
+     * Method:    getFromNative
+     * Signature: (I)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOfPointer0
-    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof (void*);
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_layout_Alignment_getFromNative
+    (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint req) {
+        switch (req) {
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_POINTER:
+                return __alignof__ (void*);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG:
+                return __alignof__ (long);
+            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ___BIGGEST_ALIGNMENT__:
+                return __BIGGEST_ALIGNMENT__;
+            default:
+                throw_IllegalArgumentException(env, "Can't handle request");
+                return -1;
+        }
     }
-
-    /*
-     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
-     * Method:    getSizeOfLong0
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOfLong0
-    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof (long);
-    }
-
 #ifdef __cplusplus
 }
 #endif

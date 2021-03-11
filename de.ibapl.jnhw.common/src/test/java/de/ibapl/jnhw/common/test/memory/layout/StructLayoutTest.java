@@ -79,7 +79,17 @@ public class StructLayoutTest {
 
     @Test
     public void testAlignOfStruct_Int64_t() {
-        Assertions.assertEquals(BaseDataType.ALIGN_OF_INT64_T.alignof, getAlignOfStruct_Int64_t());
+        switch (Alignment.__BIGGEST_ALIGNMENT__) {
+            case AT_8:
+            case AT_16:
+                Assertions.assertEquals(Alignment.AT_8.alignof, getAlignOfStruct_Int64_t());
+                break;
+            case AT_4:
+                Assertions.assertEquals(Alignment.AT_4.alignof, getAlignOfStruct_Int64_t());
+                break;
+            default:
+                Assertions.fail();
+        }
     }
 
     @Test
@@ -99,7 +109,17 @@ public class StructLayoutTest {
 
     @Test
     public void testAlignOf_Int64_t() {
-        Assertions.assertEquals(BaseDataType.ALIGN_OF_INT64_T.alignof, getAlignOf_Int64_t());
+        switch (Alignment.__BIGGEST_ALIGNMENT__) {
+            case AT_8:
+            case AT_16:
+                Assertions.assertEquals(Alignment.AT_8.alignof, getAlignOf_Int64_t());
+                break;
+            case AT_4:
+                Assertions.assertEquals(Alignment.AT_4.alignof, getAlignOf_Int64_t());
+                break;
+            default:
+                Assertions.fail();
+        }
     }
 
     @Test
@@ -113,8 +133,9 @@ public class StructLayoutTest {
         Assertions.assertEquals(12, definedLayout.offsetFifth);
         Assertions.assertEquals(16, definedLayout.offsetSixth);
         Assertions.assertEquals(24, definedLayout.offsetSeventh);
-        switch (BaseDataType.ALIGN_OF_INT64_T) {
+        switch (Alignment.__BIGGEST_ALIGNMENT__) {
             case AT_8:
+            case AT_16:
                 Assertions.assertEquals(32, definedLayout.offsetEighth);
 
                 Assertions.assertEquals(40, definedLayout.sizeof);
@@ -142,8 +163,9 @@ public class StructLayoutTest {
         Assertions.assertEquals(12, nativeLayout.offsetFifth);
         Assertions.assertEquals(16, nativeLayout.offsetSixth);
         Assertions.assertEquals(24, nativeLayout.offsetSeventh);
-        switch (BaseDataType.ALIGN_OF_INT64_T) {
+        switch (Alignment.__BIGGEST_ALIGNMENT__) {
             case AT_8:
+            case AT_16:
                 Assertions.assertEquals(32, nativeLayout.offsetEighth);
 
                 Assertions.assertEquals(40, nativeLayout.sizeof);

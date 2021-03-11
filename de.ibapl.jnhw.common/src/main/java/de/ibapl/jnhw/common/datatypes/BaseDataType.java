@@ -35,18 +35,18 @@ public enum BaseDataType {
     uint16_t(2, Alignment.AT_2, true),
     int32_t(4, Alignment.AT_4, false),
     uint32_t(4, Alignment.AT_4, true),
-    int64_t(8, getAlignOfInt64_t(), false),
-    uint64_t(8, getAlignOfInt64_t(), true),
+    int64_t(8, Alignment.AT_8, false),
+    uint64_t(8, Alignment.AT_8, true),
     struct(0, null),
     union(0, null),
     array(null, null),
-    intptr_t(getSizeOfPointer(), getAlignOfPointer(), false),
-    uintptr_t(getSizeOfPointer(), getAlignOfPointer(), true),
-    function(getSizeOfPointer(), getAlignOfPointer()),
+    intptr_t(getSizeOfPointer(), Alignment.ALIGN_OF_POINTER, false),
+    uintptr_t(getSizeOfPointer(), Alignment.ALIGN_OF_POINTER, true),
+    function(getSizeOfPointer(), Alignment.ALIGN_OF_POINTER),
     /**
      * the infamous void*
      */
-    pointer(getSizeOfPointer(), getAlignOfPointer());
+    pointer(getSizeOfPointer(), Alignment.ALIGN_OF_POINTER);
 
     public static BaseDataType getSigned_Long_Mapping() {
         switch (SIZE_OF_LONG) {
@@ -72,7 +72,11 @@ public enum BaseDataType {
 
     private BaseDataType(int sizeof, Alignment align, boolean unsigned) {
         this.UNSIGNED = unsigned;
-        this.ALIGN_OF = align;
+        if (align.alignof > Alignment.__BIGGEST_ALIGNMENT__.alignof) {
+            this.ALIGN_OF = Alignment.__BIGGEST_ALIGNMENT__;
+        } else {
+            this.ALIGN_OF = align;
+        }
         this.SIZE_OF = sizeof;
     }
 
@@ -87,31 +91,19 @@ public enum BaseDataType {
     public final Integer SIZE_OF;
 
     public final static int SIZE_OF_POINTER;
-    public final static Alignment ALIGN_OF_POINTER;
     public final static int SIZE_OF_LONG;
-    public final static Alignment ALIGN_OF_LONG;
-
-    public final static Alignment ALIGN_OF_INT64_T;
 
     /**
      * this for gcc will be the define __BIGGEST_ALIGNMENT__
      */
-    public final static Alignment __BIGGEST_ALIGNMENT__;
-
     static {
         // This get called after the Constructor of BaseDataType...
         LibJnhwCommonLoader.touch();
-        SIZE_OF_POINTER = getSizeOfPointer();
-        ALIGN_OF_POINTER = getAlignOfPointer();
-        SIZE_OF_LONG = getSizeOfLong();
-        ALIGN_OF_LONG = getAlignOfLong();
-        ALIGN_OF_INT64_T = getAlignOfInt64_t();
-        __BIGGEST_ALIGNMENT__ = get__BIGGEST_ALIGNMENT__();
+        SIZE_OF_POINTER = getSizeOfPointer0();
+        SIZE_OF_LONG = getSizeOfLong0();
     }
 
     private final static native int getSizeOfPointer0();
-
-    private final static native int getAlignOfPointer0();
 
     private final static int getSizeOfPointer() {
         // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
@@ -119,42 +111,12 @@ public enum BaseDataType {
         return getSizeOfPointer0();
     }
 
-    private final static Alignment getAlignOfPointer() {
-        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
-        LibJnhwCommonLoader.touch();
-        return Alignment.fromAlignof(getAlignOfPointer0());
-    }
-
     private final static native int getSizeOfLong0();
-
-    private final static native int getAlignOfLong0();
 
     private final static int getSizeOfLong() {
         // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
         LibJnhwCommonLoader.touch();
         return getSizeOfLong0();
-    }
-
-    private final static Alignment getAlignOfLong() {
-        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
-        LibJnhwCommonLoader.touch();
-        return Alignment.fromAlignof(getAlignOfLong0());
-    }
-
-    private final static native int getAlignOfInt64_t0();
-
-    private final static Alignment getAlignOfInt64_t() {
-        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
-        LibJnhwCommonLoader.touch();
-        return Alignment.fromAlignof(getAlignOfInt64_t0());
-    }
-
-    private final static native int get__BIGGEST_ALIGNMENT__0();
-
-    private final static Alignment get__BIGGEST_ALIGNMENT__() {
-        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
-        LibJnhwCommonLoader.touch();
-        return Alignment.fromAlignof(get__BIGGEST_ALIGNMENT__0());
     }
 
 }

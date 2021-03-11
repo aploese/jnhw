@@ -44,10 +44,12 @@ libcallnative_la_SOURCES = \
  CallNative_Mem_V.c
 
 libmemory_la_SOURCES = \
+ Alignment.c \
  BaseDataType.c \
  JnhwMemoryAccessor.c
 
 libjnhw_common_la_SOURCES = \
+ LibJnhwCommonLoader.c \
  jnhw-common.c
 
 #hook into make all

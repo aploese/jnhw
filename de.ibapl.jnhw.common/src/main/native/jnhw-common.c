@@ -192,7 +192,13 @@ extern "C" {
         return JNI_FALSE;
     }
 
-    static jboolean JNICALL jnhw_common_init(JNIEnv *env) {
+    /**
+     * Called direct from Java_de_ibapl_jnhw_common_LibJnhwCommonLoader_initNativeClasses without header definition...
+     * file: LibJnhwCommonLoader.c
+     * @param env
+     * @return
+     */
+    jboolean jnhw_common_init(JNIEnv * env) {
         if (initExceptions(env) == JNI_FALSE) {
             return JNI_FALSE;
         }
@@ -420,7 +426,7 @@ extern "C" {
         return JNI_TRUE;
     }
 
-    static void JNICALL jnhw_common_release(JNIEnv *env) {
+    static void JNICALL jnhw_common_release(JNIEnv * env) {
         releaseExceptions(env);
 
         dijc_r_ByteRef_value__FID = NULL;
@@ -481,7 +487,7 @@ extern "C" {
 
     }
 
-    JNIEXPORT void JNICALL deleteGlobalRef(JNIEnv *env, jobject *classRef) {
+    JNIEXPORT void JNICALL deleteGlobalRef(JNIEnv *env, jobject * classRef) {
         if (*classRef != NULL) {
             (*env)->DeleteGlobalRef(env, *classRef);
             *classRef = NULL;
@@ -545,11 +551,8 @@ extern "C" {
             return JNI_ERR;
         }
 
-        if (jnhw_common_init(env) == JNI_TRUE) {
-            return JNI_VERSION_10;
-        } else {
-            return JNI_ERR;
-        }
+        return JNI_VERSION_10;
+        // DO not initialize here...
     }
 
     JNIEXPORT void JNICALL

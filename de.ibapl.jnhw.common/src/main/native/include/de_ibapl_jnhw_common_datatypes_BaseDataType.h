@@ -17,42 +17,10 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeO
 
 /*
  * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
- * Method:    getAlignOfPointer0
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlignOfPointer0
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
  * Method:    getSizeOfLong0
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOfLong0
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
- * Method:    getAlignOfLong0
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlignOfLong0
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
- * Method:    getAlignOfInt64_t0
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getAlignOfInt64_1t0
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
- * Method:    get__BIGGEST_ALIGNMENT__0
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_get_1_1BIGGEST_1ALIGNMENT_1_10
   (JNIEnv *, jclass);
 
 #ifdef __cplusplus

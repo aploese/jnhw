@@ -45,43 +45,39 @@ public class BaseDataTypeTest {
                 case ARM__LINUX__GNU_EABI:
                 case ARM__LINUX__GNU_EABI_HF:
                     //32 bit, but __BIGGEST_ALIGNMENT__ is 8
-                    assertEquals(Alignment.AT_8, BaseDataType.__BIGGEST_ALIGNMENT__);
+                    assertEquals(Alignment.AT_8, Alignment.__BIGGEST_ALIGNMENT__);
 
                     assertEquals(4, BaseDataType.SIZE_OF_LONG);
-                    assertEquals(Alignment.AT_4, BaseDataType.ALIGN_OF_LONG);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_LONG);
                     assertEquals(4, BaseDataType.SIZE_OF_POINTER);
-                    assertEquals(Alignment.AT_4, BaseDataType.ALIGN_OF_POINTER);
-                    assertEquals(Alignment.AT_8, BaseDataType.ALIGN_OF_INT64_T);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_POINTER);
                     break;
                 case I386__LINUX__GNU:
                     //classical 32bit anything is at 4 byte aligned
-                    assertEquals(Alignment.AT_4, BaseDataType.__BIGGEST_ALIGNMENT__);
+                    assertEquals(Alignment.AT_4, Alignment.__BIGGEST_ALIGNMENT__);
 
                     assertEquals(4, BaseDataType.SIZE_OF_LONG);
-                    assertEquals(Alignment.AT_4, BaseDataType.ALIGN_OF_LONG);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_LONG);
                     assertEquals(4, BaseDataType.SIZE_OF_POINTER);
-                    assertEquals(Alignment.AT_4, BaseDataType.ALIGN_OF_POINTER);
-                    assertEquals(Alignment.AT_4, BaseDataType.ALIGN_OF_INT64_T);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_POINTER);
                     break;
                 case X86_64__LINUX__GNU:
                     //classical 64bit anything is at 8 byte aligned
-                    assertEquals(Alignment.AT_8, BaseDataType.__BIGGEST_ALIGNMENT__);
+                    assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
 
                     assertEquals(8, BaseDataType.SIZE_OF_LONG);
-                    assertEquals(Alignment.AT_8, BaseDataType.ALIGN_OF_LONG);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG);
                     assertEquals(8, BaseDataType.SIZE_OF_POINTER);
-                    assertEquals(Alignment.AT_8, BaseDataType.ALIGN_OF_POINTER);
-                    assertEquals(Alignment.AT_8, BaseDataType.ALIGN_OF_INT64_T);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_POINTER);
                     break;
                 default:
                     //sorry, but we need proof.... so test an commit results ....
                     String msg = "No testvalues for multiarch: " + mi
-                            + "\n\t__BIGGEST_ALIGNMENT__ = " + BaseDataType.__BIGGEST_ALIGNMENT__
+                            + "\n\t__BIGGEST_ALIGNMENT__ = " + Alignment.__BIGGEST_ALIGNMENT__
                             + "\n\tSIZE_OF_LONG = " + BaseDataType.SIZE_OF_LONG
-                            + "\n\tALIGN_OF_LONG = " + BaseDataType.ALIGN_OF_LONG
+                            + "\n\tALIGN_OF_LONG = " + Alignment.ALIGN_OF_LONG
                             + "\n\tSIZE_OF_POINTER = " + BaseDataType.SIZE_OF_POINTER
-                            + "\n\tALIGN_OF_POINTER = " + BaseDataType.ALIGN_OF_POINTER
-                            + "\n\tALIGN_OF_INT64_T = " + BaseDataType.ALIGN_OF_INT64_T;
+                            + "\n\tALIGN_OF_POINTER = " + Alignment.ALIGN_OF_POINTER;
                     fail(msg);
             }
         }

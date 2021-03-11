@@ -33,7 +33,7 @@ public class StdStructLayoutFactory implements StructLayoutFactory {
     private Alignment structAlignment = Alignment.AT_1;
 
     protected long calcNextOffset(Alignment currentAlignment, long currentSizeInBytes) {
-        if ((currentAlignment.alignof > structAlignment.alignof) && (currentAlignment.alignof <= BaseDataType.__BIGGEST_ALIGNMENT__.alignof)) {
+        if ((currentAlignment.alignof > structAlignment.alignof) && (currentAlignment.alignof <= Alignment.__BIGGEST_ALIGNMENT__.alignof)) {
             structAlignment = currentAlignment;
         }
 

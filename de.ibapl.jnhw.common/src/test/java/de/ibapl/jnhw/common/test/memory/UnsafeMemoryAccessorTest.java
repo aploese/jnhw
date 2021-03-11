@@ -42,15 +42,15 @@ public class UnsafeMemoryAccessorTest {
         switch (NativeLibResolver.getWordSize()) {
             case _32_BIT:
                 assertEquals(4, BaseDataType.SIZE_OF_LONG);
-                assertEquals(Alignment.AT_4, BaseDataType.ALIGN_OF_LONG);
+                assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_LONG);
                 assertEquals(4, BaseDataType.SIZE_OF_POINTER);
-                assertEquals(Alignment.AT_4, BaseDataType.ALIGN_OF_POINTER);
+                assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_POINTER);
                 break;
             case _64_BIT:
                 assertEquals(8, BaseDataType.SIZE_OF_LONG);
-                assertEquals(Alignment.AT_8, BaseDataType.ALIGN_OF_LONG);
+                assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG);
                 assertEquals(8, BaseDataType.SIZE_OF_POINTER);
-                assertEquals(Alignment.AT_8, BaseDataType.ALIGN_OF_POINTER);
+                assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_POINTER);
                 break;
             default:
                 fail();
