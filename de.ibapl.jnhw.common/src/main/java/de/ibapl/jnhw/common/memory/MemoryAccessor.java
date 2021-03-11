@@ -499,12 +499,17 @@ public interface MemoryAccessor {
 
     abstract void copyMemory64(OpaqueMemory64 srcMem, long srcPos, byte[] dest, int destPos, int length);
 
-    long uintptr_t(OpaqueMemory32 mem, long offset);
+    NativeAddressHolder uintptr_t(OpaqueMemory32 mem, long offset);
 
     void uintptr_t(OpaqueMemory32 mem, long offset, OpaqueMemory32 dest);
 
-    long uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index);
+    void uintptr_t(OpaqueMemory32 mem, long offset, OpaqueMemory32 dest, long destOffset);
+
+    void uintptr_t(OpaqueMemory32 mem, long offset, NativeAddressHolder dest);
+
+    NativeAddressHolder uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index);
 
     void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, OpaqueMemory32 dest);
 
+    void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, NativeAddressHolder dest);
 }

@@ -21,19 +21,19 @@
  */
 package de.ibapl.jnhw.util.posix.memory;
 
-import de.ibapl.jnhw.annontation.posix.sys.types.time_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 
 /**
  *
  * @author aploese
  */
-@time_t
-public interface Accessor_Time_t {
+@size_t
+public interface Accessor_Size_t {
 
-    void time_t(OpaqueMemory32 mem, long offset, @time_t long value);
+    void size_t(OpaqueMemory32 mem, long offset, @size_t long value);
 
-    @time_t
-    long time_t(OpaqueMemory32 mem, long offset);
+    @size_t
+    long size_t(OpaqueMemory32 mem, long offset);
 
 }

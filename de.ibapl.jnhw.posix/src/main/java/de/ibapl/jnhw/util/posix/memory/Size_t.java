@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.util.posix.memory;
 
-import de.ibapl.jnhw.annontation.posix.sys.types.time_t;
+import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;
@@ -33,23 +33,23 @@ import java.io.IOException;
  *
  * @author aploese
  */
-@time_t
-public class Time_t extends NativeIntNumber implements Accessor_Time_t {
+@size_t
+public class Size_t extends NativeIntNumber implements Accessor_Size_t {
 
     private final static BaseDataType dataType = PosixDataType.time_t.baseDataType;
 
-    public Time_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Size_t(AbstractNativeMemory owner, long offset, Byte setMem) {
         super(owner, offset, dataType.SIZE_OF, setMem);
     }
 
     @Override
-    public void time_t(OpaqueMemory32 mem, long offset, @time_t long value) {
+    public void size_t(OpaqueMemory32 mem, long offset, @size_t long value) {
         PosixStruct32.ACCESSOR_TIME_T.time_t(mem, offset, value);
     }
 
     @Override
-    @time_t
-    public long time_t(OpaqueMemory32 mem, long offset) {
+    @size_t
+    public long size_t(OpaqueMemory32 mem, long offset) {
         return PosixStruct32.ACCESSOR_TIME_T.time_t(mem, offset);
     }
 

@@ -23,10 +23,8 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.annontation.posix.termios.speed_t;
 import de.ibapl.jnhw.annontation.posix.termios.tcflag_t;
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;

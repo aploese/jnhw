@@ -60,7 +60,7 @@ libjnhw_posix_la_SOURCES = \
 libaio_la_SOURCES = \
  AioDefines.c \
  AioFunctions.c \
- Aio_Aiocb.c
+ AioStructures.c
 
 liberrno_la_SOURCES = \
  Isoc_ErrnoDefines.c \

@@ -310,8 +310,8 @@ class JnhwMemoryAccessor implements MemoryAccessor {
     }
 
     @Override
-    public long uintptr_t(OpaqueMemory32 mem, long offset) {
-        return uintptr_t0(mem.baseAddress + offset);
+    public NativeAddressHolder uintptr_t(OpaqueMemory32 mem, long offset) {
+        return new NativeAddressHolder(uintptr_t0(mem.baseAddress + offset));
     }
 
     @Override
@@ -320,13 +320,28 @@ class JnhwMemoryAccessor implements MemoryAccessor {
     }
 
     @Override
-    public long uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
-        return uintptr_t_AtIndex0(mem.baseAddress + offset, index);
+    public void uintptr_t(OpaqueMemory32 mem, long offset, OpaqueMemory32 destMem, long destOffset) {
+        uintptr_t0(mem.baseAddress + offset, destMem.baseAddress + destOffset);
+    }
+
+    @Override
+    public void uintptr_t(OpaqueMemory32 mem, long offset, NativeAddressHolder dest) {
+        uintptr_t0(mem.baseAddress + offset, dest.address);
+    }
+
+    @Override
+    public NativeAddressHolder uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+        return new NativeAddressHolder(uintptr_t_AtIndex0(mem.baseAddress + offset, index));
     }
 
     @Override
     public void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, OpaqueMemory32 destAddress) {
         uintptr_t_AtIndex0(mem.baseAddress + offset, index, destAddress.baseAddress);
+    }
+
+    @Override
+    public void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, NativeAddressHolder dest) {
+        uintptr_t_AtIndex0(mem.baseAddress + offset, index, dest.address);
     }
 
     private native byte int8_t0(long address);

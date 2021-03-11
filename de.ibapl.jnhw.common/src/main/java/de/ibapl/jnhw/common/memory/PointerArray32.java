@@ -74,11 +74,11 @@ public class PointerArray32<T extends OpaqueMemory32> extends OpaqueMemory32 {
     public final T get(int index, ElementProducer<T> p) {
         @SuppressWarnings("unchecked")
         final T ref = (T) cachedReferences[index];
-        final long elementBaseAddress = MEM_ACCESS.uintptr_t_AtIndex(this, 0, index);
-        if (ref == null ? elementBaseAddress == 0 : elementBaseAddress == ref.baseAddress) {
+        final NativeAddressHolder elementBaseAddress = MEM_ACCESS.uintptr_t_AtIndex(this, 0, index);
+        if (ref == null ? elementBaseAddress.address == 0 : elementBaseAddress.address == ref.baseAddress) {
             return ref;
         } else {
-            final T newRef = p.produce(new NativeAddressHolder(elementBaseAddress), index, ref);
+            final T newRef = p.produce(elementBaseAddress, index, ref);
             cachedReferences[index] = newRef;
             return newRef;
         }

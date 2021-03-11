@@ -21,15 +21,11 @@
  */
 package de.ibapl.jnhw.linux.sys;
 
+import de.ibapl.jnhw.annotation.linux.sys.eventfd_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  * Wrapper around the linux {@code <sys/eventfd.h>} header. execute
@@ -129,11 +125,6 @@ public final class Eventfd {
 
     private Eventfd() {
 
-    }
-
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface eventfd_t {
     }
 
 }

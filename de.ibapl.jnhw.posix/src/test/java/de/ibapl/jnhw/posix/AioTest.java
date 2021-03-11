@@ -33,6 +33,7 @@ import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
 import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V_Impl;
@@ -620,7 +621,7 @@ public class AioTest {
             default:
                 Aio.Aiocb aiocb = new Aio.Aiocb();
                 System.out.println("aiocb : " + aiocb.nativeToString());
-                assertEquals(NativeAddressHolder.NULL, aiocb.aio_buf0());
+                assertEquals(NativeAddressHolder.NULL, aiocb.aio_buf());
 
                 ByteBuffer buf = ByteBuffer.allocateDirect(128);
                 buf.position(16);
@@ -628,7 +629,7 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
                 assertEquals(-1, aiocb.aio_fildes());
                 aiocb.aio_buf(buf);
-                Assertions.assertNotEquals(NativeAddressHolder.NULL, aiocb.aio_buf0());
+                Assertions.assertNotEquals(NativeAddressHolder.NULL, aiocb.aio_buf());
                 assertEquals(0, aiocb.aio_offset());
                 assertEquals(48, aiocb.aio_nbytes());
                 aiocb.aio_offset(8);
@@ -760,25 +761,23 @@ public class AioTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(144, Aio.Aiocb.sizeof());
+                        Assertions.assertEquals(144, Aio.Aiocb.LAYOUT.sizeof);
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(168, Aio.Aiocb.sizeof());
+                        Assertions.assertEquals(168, Aio.Aiocb.LAYOUT.sizeof);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Aio.Aiocb.sizeof());
+                        Assertions.assertEquals(-1, Aio.Aiocb.LAYOUT.sizeof);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(160, Aio.Aiocb.sizeof());
+                Assertions.assertEquals(160, Aio.Aiocb.LAYOUT.sizeof);
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.Aiocb.sizeof();
-                });
+                Assertions.assertNull(Aio.Aiocb.LAYOUT);
                 break;
             default:
-                Assertions.assertEquals(-1, Aio.Aiocb.sizeof());
+                Assertions.assertEquals(-1, Aio.Aiocb.LAYOUT.sizeof);
         }
     }
 
@@ -789,22 +788,20 @@ public class AioTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(4, Aio.Aiocb.alignof());
+                        Assertions.assertEquals(Alignment.AT_4, Aio.Aiocb.LAYOUT.alignment);
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(8, Aio.Aiocb.alignof());
+                        Assertions.assertEquals(Alignment.AT_8, Aio.Aiocb.LAYOUT.alignment);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Aio.Aiocb.alignof());
+                        Assertions.assertEquals(null, Aio.Aiocb.LAYOUT.alignment);
                 }
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.Aiocb.alignof();
-                });
+                Assertions.assertNull(Aio.Aiocb.LAYOUT);
                 break;
             default:
-                Assertions.assertEquals(-1, Aio.Aiocb.alignof());
+                Assertions.assertEquals(null, Aio.Aiocb.LAYOUT.alignment);
         }
     }
 
@@ -814,25 +811,23 @@ public class AioTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(20, Aio.Aiocb.offsetof_Aio_sigevent());
+                        Assertions.assertEquals(20, Aio.Aiocb.LAYOUT.aio_sigevent);
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(32, Aio.Aiocb.offsetof_Aio_sigevent());
+                        Assertions.assertEquals(32, Aio.Aiocb.LAYOUT.aio_sigevent);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Aio.Aiocb.offsetof_Aio_sigevent());
+                        Assertions.assertEquals(-1, Aio.Aiocb.LAYOUT.aio_sigevent);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(80, Aio.Aiocb.offsetof_Aio_sigevent());
+                Assertions.assertEquals(80, Aio.Aiocb.LAYOUT.aio_sigevent);
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.Aiocb.offsetof_Aio_sigevent();
-                });
+                Assertions.assertNull(Aio.Aiocb.LAYOUT);
                 break;
             default:
-                Assertions.assertEquals(-1, Aio.Aiocb.offsetof_Aio_sigevent());
+                Assertions.assertEquals(-1, Aio.Aiocb.LAYOUT.aio_sigevent);
         }
     }
 

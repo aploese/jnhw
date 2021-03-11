@@ -41,6 +41,7 @@ import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
 import de.ibapl.jnhw.common.callback.Callback_I_V;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.common.util.IntDefine;
@@ -651,12 +652,7 @@ public class Signal {
             sigev_value = new Sigval(this, offsetof_Sigev_value());
         }
 
-        @SuppressWarnings("unchecked")
-        Sigevent(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
-            this(owner, offset, null);
-        }
-
-        public Sigevent(OpaqueMemory32 parent, int offset, Byte setMem) throws NoSuchNativeTypeException {
+        public Sigevent(AbstractNativeMemory parent, long offset, Byte setMem) throws NoSuchNativeTypeException {
             super(parent, offset, sizeof(), setMem);
             sigev_value = new Sigval(this, offsetof_Sigev_value());
         }
