@@ -119,7 +119,7 @@ public class StructLayoutTest {
         Assertions.assertEquals(12, definedLayout.offsetFifth);
         Assertions.assertEquals(16, definedLayout.offsetSixth);
         Assertions.assertEquals(24, definedLayout.offsetSeventh);
-        switch (Alignment.ALIGN_OF_POINTER) {
+        switch (Alignment.ALIGN_OF_STRUCT_INT64_T) {
             case AT_8:
                 Assertions.assertEquals(32, definedLayout.offsetEighth);
 
@@ -148,7 +148,7 @@ public class StructLayoutTest {
         Assertions.assertEquals(12, nativeLayout.offsetFifth);
         Assertions.assertEquals(16, nativeLayout.offsetSixth);
         Assertions.assertEquals(24, nativeLayout.offsetSeventh);
-        switch (Alignment.ALIGN_OF_POINTER) {
+        switch (Alignment.ALIGN_OF_STRUCT_INT64_T) {
             case AT_8:
                 Assertions.assertEquals(32, nativeLayout.offsetEighth);
 

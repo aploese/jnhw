@@ -33,7 +33,7 @@ public class StdStructLayoutFactory implements StructLayoutFactory {
     private Alignment structAlignment = Alignment.AT_1;
 
     protected long calcNextOffset(Alignment currentAlignment, long currentSizeInBytes) {
-        if ((currentAlignment.alignof > structAlignment.alignof) && (currentAlignment.alignof <= Alignment.JNHW_DEFAULT_STRUCT_ALIGNMENT.alignof)) {
+        if ((currentAlignment.alignof > structAlignment.alignof) && (currentAlignment.alignof <= Alignment.__BIGGEST_ALIGNMENT__.alignof)) {
             structAlignment = currentAlignment;
         }
 
@@ -46,52 +46,52 @@ public class StdStructLayoutFactory implements StructLayoutFactory {
 
     @Override
     public long int8_t() {
-        return calcNextOffset(BaseDataType.int8_t.ALIGN_OF, BaseDataType.int8_t.SIZE_OF);
+        return calcNextOffset(BaseDataType.int8_t.ALIGN_IN_STRUCT, BaseDataType.int8_t.SIZE_OF);
     }
 
     @Override
     public long int16_t() {
-        return calcNextOffset(BaseDataType.int16_t.ALIGN_OF, BaseDataType.int16_t.SIZE_OF);
+        return calcNextOffset(BaseDataType.int16_t.ALIGN_IN_STRUCT, BaseDataType.int16_t.SIZE_OF);
     }
 
     @Override
     public long int32_t() {
-        return calcNextOffset(BaseDataType.int32_t.ALIGN_OF, BaseDataType.int32_t.SIZE_OF);
+        return calcNextOffset(BaseDataType.int32_t.ALIGN_IN_STRUCT, BaseDataType.int32_t.SIZE_OF);
     }
 
     @Override
     public long int64_t() {
-        return calcNextOffset(BaseDataType.int64_t.ALIGN_OF, BaseDataType.int64_t.SIZE_OF);
+        return calcNextOffset(BaseDataType.int64_t.ALIGN_IN_STRUCT, BaseDataType.int64_t.SIZE_OF);
     }
 
     @Override
     public long intptr_t() {
-        return calcNextOffset(BaseDataType.intptr_t.ALIGN_OF, BaseDataType.intptr_t.SIZE_OF);
+        return calcNextOffset(BaseDataType.intptr_t.ALIGN_IN_STRUCT, BaseDataType.intptr_t.SIZE_OF);
     }
 
     @Override
     public long uint8_t() {
-        return calcNextOffset(BaseDataType.uint8_t.ALIGN_OF, BaseDataType.uint8_t.SIZE_OF);
+        return calcNextOffset(BaseDataType.uint8_t.ALIGN_IN_STRUCT, BaseDataType.uint8_t.SIZE_OF);
     }
 
     @Override
     public long uint16_t() {
-        return calcNextOffset(BaseDataType.uint16_t.ALIGN_OF, BaseDataType.uint16_t.SIZE_OF);
+        return calcNextOffset(BaseDataType.uint16_t.ALIGN_IN_STRUCT, BaseDataType.uint16_t.SIZE_OF);
     }
 
     @Override
     public long uint32_t() {
-        return calcNextOffset(BaseDataType.uint32_t.ALIGN_OF, BaseDataType.uint32_t.SIZE_OF);
+        return calcNextOffset(BaseDataType.uint32_t.ALIGN_IN_STRUCT, BaseDataType.uint32_t.SIZE_OF);
     }
 
     @Override
     public long uint64_t() {
-        return calcNextOffset(BaseDataType.uint64_t.ALIGN_OF, BaseDataType.uint64_t.SIZE_OF);
+        return calcNextOffset(BaseDataType.uint64_t.ALIGN_IN_STRUCT, BaseDataType.uint64_t.SIZE_OF);
     }
 
     @Override
     public long uintptr_t() {
-        return calcNextOffset(BaseDataType.uintptr_t.ALIGN_OF, BaseDataType.uintptr_t.SIZE_OF);
+        return calcNextOffset(BaseDataType.uintptr_t.ALIGN_IN_STRUCT, BaseDataType.uintptr_t.SIZE_OF);
     }
 
     /*

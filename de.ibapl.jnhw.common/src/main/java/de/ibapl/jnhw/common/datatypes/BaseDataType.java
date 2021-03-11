@@ -30,19 +30,19 @@ import static de.ibapl.jnhw.common.memory.layout.Alignment.*;
  * @author aploese
  */
 public enum BaseDataType {
-    int8_t(1, ALIGN_OF_INT8_T, false),
-    uint8_t(1, ALIGN_OF_INT8_T, true),
-    int16_t(2, ALIGN_OF_INT16_T, false),
-    uint16_t(2, ALIGN_OF_INT16_T, true),
-    int32_t(4, ALIGN_OF_INT32_T, false),
-    uint32_t(4, ALIGN_OF_INT32_T, true),
-    int64_t(8, ALIGN_OF_INT64_T, false),
-    uint64_t(8, ALIGN_OF_INT64_T, true),
+    int8_t(1, ALIGN_OF_INT8_T, ALIGN_OF_INT8_T, false),
+    uint8_t(1, ALIGN_OF_INT8_T, ALIGN_OF_INT8_T, true),
+    int16_t(2, ALIGN_OF_INT16_T, ALIGN_OF_STRUCT_INT16_T, false),
+    uint16_t(2, ALIGN_OF_INT16_T, ALIGN_OF_STRUCT_INT16_T, true),
+    int32_t(4, ALIGN_OF_INT32_T, ALIGN_OF_STRUCT_INT32_T, false),
+    uint32_t(4, ALIGN_OF_INT32_T, ALIGN_OF_STRUCT_INT32_T, true),
+    int64_t(8, ALIGN_OF_INT64_T, ALIGN_OF_STRUCT_INT64_T, false),
+    uint64_t(8, ALIGN_OF_INT64_T, ALIGN_OF_STRUCT_INT64_T, true),
     struct(0, null),
     union(0, null),
     array(null, null),
-    intptr_t(getSizeOfPointer(), ALIGN_OF_INTPTR_T, false),
-    uintptr_t(getSizeOfPointer(), ALIGN_OF_INTPTR_T, true),
+    intptr_t(getSizeOfPointer(), ALIGN_OF_INTPTR_T, ALIGN_OF_STRUCT_INTPTR_T, false),
+    uintptr_t(getSizeOfPointer(), ALIGN_OF_INTPTR_T, ALIGN_OF_STRUCT_INTPTR_T, true),
     function(getSizeOfPointer(), ALIGN_OF_POINTER),
     /**
      * the infamous void*
@@ -71,9 +71,10 @@ public enum BaseDataType {
         }
     }
 
-    private BaseDataType(int sizeof, Alignment alignof, boolean unsigned) {
+    private BaseDataType(int sizeof, Alignment alignof, Alignment alignInStructure, boolean unsigned) {
         this.UNSIGNED = unsigned;
         this.ALIGN_OF = alignof;
+        this.ALIGN_IN_STRUCT = alignInStructure;
         this.SIZE_OF = sizeof;
     }
 
@@ -88,10 +89,12 @@ public enum BaseDataType {
         this.UNSIGNED = null;
         this.SIZE_OF = sizeof;
         this.ALIGN_OF = alignment;
+        this.ALIGN_IN_STRUCT = alignment;
     }
 
     public final Boolean UNSIGNED;
     public final Alignment ALIGN_OF;
+    public final Alignment ALIGN_IN_STRUCT;
     public final Integer SIZE_OF;
 
     public final static int SIZE_OF_POINTER;
