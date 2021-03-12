@@ -21,16 +21,16 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.annontation.posix.termios.speed_t;
-import de.ibapl.jnhw.annontation.posix.termios.tcflag_t;
+import de.ibapl.jnhw.annotation.posix.termios.speed_t;
+import de.ibapl.jnhw.annotation.posix.termios.tcflag_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
-import de.ibapl.jnhw.annontation.posix.termios.cc_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
+import de.ibapl.jnhw.annotation.posix.termios.cc_t;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;

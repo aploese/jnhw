@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
@@ -41,6 +40,9 @@ public abstract class AbstractNativeMemory {
 
     protected final static Cleaner CLEANER = Cleaner.create();
 
+    protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw-common");
+
+    public final static String MEM_ACCESS_PROPERTY = "de.ibapl.jnhw.common.memory.MEMORY_ACCESSSOR";
     protected final static MemoryAccessor MEM_ACCESS = getMemoryAccessor();
 
     /**
@@ -85,26 +87,50 @@ public abstract class AbstractNativeMemory {
     }
 
     private static MemoryAccessor getMemoryAccessor() {
-        try {
-            switch (NativeLibResolver.getWordSize()) {
-                case _32_BIT:
-                    return new UnsafeMemoryAccessor32();
-                case _64_BIT:
-                    return new UnsafeMemoryAccessor64();
-                default:
-                    throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
-            }
-        } catch (Exception ex) {
-            if (ex instanceof IllegalStateException) {
-                throw ex;
-            } else {
-                return new JnhwMemoryAccessor();
+        String memAccProperty = System.getProperty(MEM_ACCESS_PROPERTY);
+        if (memAccProperty == null) {
+            LOG.info("Use default MEM_ACCESS");
+            try {
+                switch (NativeLibResolver.getWordSize()) {
+                    case _32_BIT:
+                        LOG.info("Use sun.misc.Unsafe - 32bit for MEM_ACCESS");
+                        return new UnsafeMemoryAccessor32();
+                    case _64_BIT:
+                        LOG.info("Use sun.misc.Unsafe - 64bit for MEM_ACCESS");
+                        return new UnsafeMemoryAccessor64();
+                    default:
+                        throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
+                }
+            } catch (Exception ex) {
+                if (ex instanceof IllegalStateException) {
+                    throw ex;
+                } else {
+                    LOG.info("Fall back to JNHW for MEM_ACCESS");
+                    return new JnhwMemoryAccessor();
+                }
             }
         }
-
+        switch (memAccProperty) {
+            case "Unsafe":
+                switch (NativeLibResolver.getWordSize()) {
+                    case _32_BIT:
+                        LOG.info("Force sun.misc.Unsafe - 32bit for MEM_ACCESS");
+                        return new UnsafeMemoryAccessor32();
+                    case _64_BIT:
+                        LOG.info("Force sun.misc.Unsafe 64bit for MEM_ACCESS");
+                        return new UnsafeMemoryAccessor64();
+                    default:
+                        throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
+                }
+            case "Jnhw":
+                LOG.info("Force JNHW for MEM_ACCESS");
+                return new JnhwMemoryAccessor();
+            default:
+                String msg = "Unknown value \"" + memAccProperty + "\" for system property: \"" + MEM_ACCESS_PROPERTY + "\"";
+                LOG.severe(msg);
+                throw new RuntimeException(msg);
+        }
     }
-
-    protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw");
 
     protected final long baseAddress;
 

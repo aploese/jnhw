@@ -21,20 +21,17 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.annontation.posix.sys.types.off_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.ssize_t;
-import de.ibapl.jnhw.common.annotation.AlignOf;
+import de.ibapl.jnhw.annotation.posix.sys.types.off_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.ssize_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.PointerArray32;
-import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.util.IntDefine;
@@ -497,14 +494,6 @@ public class Aio {
         }
 
         /**
-         *
-         * @param aio_buf
-         * @param offset
-         * @param length must not < 0
-         */
-        private native void aio_bufByteBuffer(ByteBuffer aio_buf, int offset, int length) throws NoSuchNativeTypeException;
-
-        /**
          * The location of buffer.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
          * aiocb}</a>.
@@ -515,9 +504,11 @@ public class Aio {
          */
         public void aio_buf(ByteBuffer aio_buf) throws NoSuchNativeTypeException {
             if (aio_buf == null) {
-                aio_bufByteBuffer(null, 0, 0);
+                MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf, NativeAddressHolder.NULL);
+                ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes, 0);
             } else {
-                aio_bufByteBuffer(aio_buf, aio_buf.position(), aio_buf.remaining());
+                MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf, aio_buf);
+                ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes, aio_buf.remaining());
             }
             this.aio_buf = aio_buf;
         }

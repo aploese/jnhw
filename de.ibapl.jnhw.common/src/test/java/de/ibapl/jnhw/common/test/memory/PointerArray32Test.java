@@ -90,45 +90,29 @@ public class PointerArray32Test {
     @SuppressWarnings("unchecked")
     public void testSetAndGet() {
         System.out.println("set");
+        PointerArray32.ElementProducer<OpaqueMemory32> producerFail = (baseAddress, index, cachedElement) -> {
+            Assertions.fail("Not expecting to be called for index: " + index);
+            return null;
+        };
         PointerArray32<OpaqueMemory32> instance = new PointerArray32<>(16, SET_MEM_TO_0);
         OpaqueMemory32 element1 = new Memory32Heap((OpaqueMemory32) null, 0, 8, SET_MEM_TO_0);
         OpaqueMemory32.setByte(element1, 0, (byte) 1);
         instance.set(1, element1);
+        for (int i = 0; i < instance.length(); i++) {
+            instance.get(i, producerFail);
+        }
+
         OpaqueMemory32 element2 = new Memory32Heap((OpaqueMemory32) null, 0, 8, SET_MEM_TO_0);
         OpaqueMemory32.setByte(element2, 0, (byte) 2);
         instance.set(2, element2);
-        instance.set(4, element1);
-        instance.get(0, (baseAddress, index, cachedElement) -> {
-            Assertions.assertEquals(null, cachedElement);
-            Assertions.assertEquals(0, index);
-            Assertions.assertEquals(new NativeAddressHolder(0L), baseAddress);
-            return cachedElement;
-        });
-        instance.get(1, (baseAddress, index, cachedElement) -> {
-            Assertions.assertSame(element1, cachedElement);
-            Assertions.assertEquals(1, index);
-            Assertions.assertTrue(OpaqueMemory32.isSameAddress(baseAddress, cachedElement), "baseaddress != cachedElement.baseAddress");
-            return cachedElement;
-        });
-        instance.get(3, (baseAddress, index, cachedElement) -> {
-            Assertions.assertEquals(null, cachedElement);
-            Assertions.assertEquals(3, index);
-            Assertions.assertEquals(new NativeAddressHolder(0L), baseAddress);
-            return cachedElement;
-        });
-        instance.get(2, (baseAddress, index, cachedElement) -> {
-            Assertions.assertSame(element2, cachedElement);
-            Assertions.assertEquals(2, index);
-            Assertions.assertTrue(OpaqueMemory32.isSameAddress(baseAddress, cachedElement), "baseaddress != cachedElement.baseAddress");
-            return cachedElement;
-        });
-        instance.get(4, (baseAddress, index, cachedElement) -> {
-            Assertions.assertSame(element1, cachedElement);
-            Assertions.assertEquals(4, index);
-            Assertions.assertTrue(OpaqueMemory32.isSameAddress(baseAddress, cachedElement), "baseaddress != cachedElement.baseAddress");
-            return cachedElement;
-        });
+        for (int i = 0; i < instance.length(); i++) {
+            instance.get(i, producerFail);
+        }
 
+        instance.set(4, element1);
+        for (int i = 0; i < instance.length(); i++) {
+            instance.get(i, producerFail);
+        }
     }
 
     /**

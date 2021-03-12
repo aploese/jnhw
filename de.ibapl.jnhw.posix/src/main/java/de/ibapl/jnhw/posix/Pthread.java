@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.annontation.posix.sys.types.clockid_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.pthread_attr_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.pthread_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.clockid_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.pthread_attr_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.pthread_t;
 import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;

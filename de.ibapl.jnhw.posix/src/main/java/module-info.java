@@ -54,10 +54,11 @@ module de.ibapl.jnhw.posix {
     requires transitive de.ibapl.jnhw.common;
     requires jdk.unsupported;
 
-    exports de.ibapl.jnhw.annontation.posix.poll;
-    exports de.ibapl.jnhw.annontation.posix.sys.types;
-    exports de.ibapl.jnhw.annontation.posix.termios;
-    exports de.ibapl.jnhw.isoc;
+    exports de.ibapl.jnhw.annotation.linux.sys;
+    exports de.ibapl.jnhw.annotation.posix.poll;
+    exports de.ibapl.jnhw.annotation.posix.sys.types;
+    exports de.ibapl.jnhw.annotation.posix.termios;
+    exports de.ibapl.jnhw.annotation.posix.locale;
     exports de.ibapl.jnhw.linux.sys;
     exports de.ibapl.jnhw.posix;
     exports de.ibapl.jnhw.posix.sys;

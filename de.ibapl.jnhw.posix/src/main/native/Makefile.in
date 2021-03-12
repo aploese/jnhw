@@ -164,7 +164,7 @@ am_libjnhw_posix_la_OBJECTS = PosixDataType.lo jnhw-posix-jni.lo
 libjnhw_posix_la_OBJECTS = $(am_libjnhw_posix_la_OBJECTS)
 liblocale_la_LIBADD =
 am_liblocale_la_OBJECTS = LocaleDefines.lo LocaleFunctions.lo \
-	Locale_Lconv.lo
+	LocaleStructures.lo
 liblocale_la_OBJECTS = $(am_liblocale_la_OBJECTS)
 libpoll_la_LIBADD =
 am_libpoll_la_OBJECTS = PollDefines.lo PollFunctions.lo \
@@ -240,7 +240,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/Isoc_ErrnoDefines.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
 	./$(DEPDIR)/LocaleDefines.Plo ./$(DEPDIR)/LocaleFunctions.Plo \
-	./$(DEPDIR)/Locale_Lconv.Plo ./$(DEPDIR)/PollDefines.Plo \
+	./$(DEPDIR)/LocaleStructures.Plo ./$(DEPDIR)/PollDefines.Plo \
 	./$(DEPDIR)/PollFunctions.Plo ./$(DEPDIR)/PollStructures.Plo \
 	./$(DEPDIR)/PosixDataType.Plo \
 	./$(DEPDIR)/Posix_ErrnoDefines.Plo \
@@ -553,7 +553,7 @@ libioclt_la_SOURCES = \
 liblocale_la_SOURCES = \
  LocaleDefines.c \
  LocaleFunctions.c \
- Locale_Lconv.c
+ LocaleStructures.c
 
 libpoll_la_SOURCES = \
  PollDefines.c \
@@ -781,7 +781,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Locale_Lconv.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollStructures.Plo@am__quote@ # am--include-marker
@@ -997,7 +997,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
 	-rm -f ./$(DEPDIR)/LocaleDefines.Plo
 	-rm -f ./$(DEPDIR)/LocaleFunctions.Plo
-	-rm -f ./$(DEPDIR)/Locale_Lconv.Plo
+	-rm -f ./$(DEPDIR)/LocaleStructures.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo
@@ -1098,7 +1098,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
 	-rm -f ./$(DEPDIR)/LocaleDefines.Plo
 	-rm -f ./$(DEPDIR)/LocaleFunctions.Plo
-	-rm -f ./$(DEPDIR)/Locale_Lconv.Plo
+	-rm -f ./$(DEPDIR)/LocaleStructures.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo

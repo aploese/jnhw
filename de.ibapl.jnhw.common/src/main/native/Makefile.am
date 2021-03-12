@@ -46,6 +46,7 @@ libcallnative_la_SOURCES = \
 libmemory_la_SOURCES = \
  Alignment.c \
  BaseDataType.c \
+ UnsafeMemoryAccessor.c \
  JnhwMemoryAccessor.c
 
 libjnhw_common_la_SOURCES = \

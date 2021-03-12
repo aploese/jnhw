@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.util.posix.memory;
 
-import de.ibapl.jnhw.annontation.posix.sys.types.time_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;

@@ -23,6 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Assertions;
@@ -191,13 +192,13 @@ public class LocaleTest {
     public void testSizeOfLconv() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(56, Locale.Lconv.sizeof());
+                Assertions.assertEquals(56, Locale.Lconv.LAYOUT.sizeof);
                 break;
             case _64_BIT:
-                Assertions.assertEquals(96, Locale.Lconv.sizeof());
+                Assertions.assertEquals(96, Locale.Lconv.LAYOUT.sizeof);
                 break;
             default:
-                Assertions.assertEquals(-1, Locale.Lconv.sizeof());
+                Assertions.assertEquals(-1, Locale.Lconv.LAYOUT.sizeof);
         }
     }
 
@@ -205,13 +206,13 @@ public class LocaleTest {
     public void testAlignOfLconv() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Locale.Lconv.alignof());
+                Assertions.assertEquals(Alignment.AT_4, Locale.Lconv.LAYOUT.alignment);
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Locale.Lconv.alignof());
+                Assertions.assertEquals(Alignment.AT_8, Locale.Lconv.LAYOUT.alignment);
                 break;
             default:
-                Assertions.assertEquals(-1, Locale.Lconv.alignof());
+                Assertions.assertEquals(null, Locale.Lconv.LAYOUT.alignment);
         }
     }
 }

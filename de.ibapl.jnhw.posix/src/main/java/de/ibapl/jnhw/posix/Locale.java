@@ -21,17 +21,18 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotation.AlignOf;
+import de.ibapl.jnhw.annotation.posix.locale.locale_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
 import java.io.IOException;
 
 /**
@@ -279,38 +280,96 @@ public class Locale {
      * lconv}</a>.
      *
      */
-    public static final class Lconv extends Struct32 {
+    public static final class Lconv extends PosixStruct32 {
+
+        public static class Layout extends StructLayout {
+
+            public final long currency_symbol;
+            public final long decimal_point;
+            public final long frac_digits;
+            public final long grouping;
+            public final long int_curr_symbol;
+            public final long int_frac_digits;
+            public final long int_n_cs_precedes;
+            public final long int_n_sep_by_space;
+            public final long int_n_sign_posn;
+            public final long int_p_cs_precedes;
+            public final long int_p_sep_by_space;
+            public final long int_p_sign_posn;
+            public final long mon_decimal_point;
+            public final long mon_grouping;
+            public final long mon_thousands_sep;
+            public final long negative_sign;
+            public final long n_cs_precedes;
+            public final long n_sep_by_space;
+            public final long n_sign_posn;
+            public final long positive_sign;
+            public final long p_cs_precedes;
+            public final long p_sep_by_space;
+            public final long p_sign_posn;
+            public final long thousands_sep;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                currency_symbol = -1;
+                decimal_point = -1;
+                frac_digits = -1;
+                grouping = -1;
+                int_curr_symbol = -1;
+                int_frac_digits = -1;
+                int_n_cs_precedes = -1;
+                int_n_sep_by_space = -1;
+                int_n_sign_posn = -1;
+                int_p_cs_precedes = -1;
+                int_p_sep_by_space = -1;
+                int_p_sign_posn = -1;
+                mon_decimal_point = -1;
+                mon_grouping = -1;
+                mon_thousands_sep = -1;
+                negative_sign = -1;
+                n_cs_precedes = -1;
+                n_sep_by_space = -1;
+                n_sign_posn = -1;
+                positive_sign = -1;
+                p_cs_precedes = -1;
+                p_sep_by_space = -1;
+                p_sign_posn = -1;
+                thousands_sep = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
 
         /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
+         * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        /**
-         * Get the real size of struct lconv natively.
-         *
-         * @return the native value sizeof(struct lconv).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        /**
-         * Get the alignment of struct lconv natively.
-         *
-         * @return the native value __alignof__(struct lconv).
-         */
-        @AlignOf
-        public static native int alignof();
-
         public Lconv() {
-            this(null, 0, null);
+            this(null, 0, MEM_UNINITIALIZED);
         }
 
         public Lconv(OpaqueMemory32 parent, int offset, Byte setMem) {
-            super(parent, offset, sizeof(), setMem);
+            super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
         /**
@@ -360,13 +419,17 @@ public class Locale {
          *
          * @return the native value of currency_symbol.
          */
-        public final native String currency_symbol();
+        public final String currency_symbol() {
+            return MEM_ACCESS.getStringUTF(this, LAYOUT.currency_symbol);
+        }
 
         /**
          *
          * @return the native value of decimal_point.
          */
-        public final native String decimal_point();
+        public final String decimal_point() {
+            return MEM_ACCESS.getStringUTF(this, LAYOUT.decimal_point);
+        }
 
         /**
          * An integer representing the number of fractional digits (those to the
@@ -377,13 +440,17 @@ public class Locale {
          *
          * @return the native value of frac_digits.
          */
-        public final native short frac_digits();
+        public final short frac_digits() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.frac_digits);
+        }
 
         /**
          *
          * @return the native value of grouping.
          */
-        public final native String grouping();
+        public final String grouping() {
+            return MEM_ACCESS.getStringUTF(this, LAYOUT.grouping);
+        }
 
         /**
          * The international currency symbol.
@@ -392,7 +459,9 @@ public class Locale {
          *
          * @return the native value of int_curr_symbol.
          */
-        public final native String int_curr_symbol();
+        public final String int_curr_symbol() {
+            return MEM_ACCESS.getStringUTF(this, LAYOUT.int_curr_symbol);
+        }
 
         /**
          * An integer representing the number of fractional digits (those to the
@@ -403,7 +472,9 @@ public class Locale {
          *
          * @return the native value of int_frac_digits.
          */
-        public final native short int_frac_digits();
+        public final short int_frac_digits() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.int_frac_digits);
+        }
 
         /**
          * An integer set to 1 if the int_curr_symbol precedes the value for a
@@ -414,7 +485,9 @@ public class Locale {
          *
          * @return the native value of int_n_cs_precedes.
          */
-        public final native short int_n_cs_precedes();
+        public final short int_n_cs_precedes() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.int_n_cs_precedes);
+        }
 
         /**
          * Set to a value indicating the separation of the int_curr_symbol, the
@@ -425,7 +498,9 @@ public class Locale {
          *
          * @return the native value of int_n_sep_by_space.
          */
-        public final native short int_n_sep_by_space();
+        public final short int_n_sep_by_space() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.int_n_sep_by_space);
+        }
 
         /**
          * An integer set to a value indicating the positioning of the
@@ -436,7 +511,9 @@ public class Locale {
          *
          * @return the native value of int_n_sign_posn.
          */
-        public final native short int_n_sign_posn();
+        public final short int_n_sign_posn() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.int_n_sign_posn);
+        }
 
         /**
          * An integer set to 1 if the int_curr_symbol precedes the value for a
@@ -447,7 +524,9 @@ public class Locale {
          *
          * @return the native value of int_p_cs_precedes.
          */
-        public final native short int_p_cs_precedes();
+        public final short int_p_cs_precedes() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.int_p_cs_precedes);
+        }
 
         /**
          * Set to a value indicating the separation of the int_curr_symbol, the
@@ -458,7 +537,9 @@ public class Locale {
          *
          * @return the native value of int_p_sep_by_space.
          */
-        public final native short int_p_sep_by_space();
+        public final short int_p_sep_by_space() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.int_p_sep_by_space);
+        }
 
         /**
          * An integer set to a value indicating the positioning of the
@@ -469,7 +550,9 @@ public class Locale {
          *
          * @return the native value of int_p_sign_posn.
          */
-        public final native short int_p_sign_posn();
+        public final short int_p_sign_posn() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.int_p_sign_posn);
+        }
 
         /**
          * The operand is a string containing the symbol that shall be used as
@@ -480,7 +563,9 @@ public class Locale {
          *
          * @return the native value of mon_decimal_point.
          */
-        public final native String mon_decimal_point();
+        public final String mon_decimal_point() {
+            return MEM_ACCESS.getStringUTF(this, LAYOUT.mon_decimal_point);
+        }
 
         /**
          * Define the size of each group of digits in formatted monetary
@@ -490,7 +575,9 @@ public class Locale {
          *
          * @return the native value of mon_grouping.
          */
-        public final native String mon_grouping();
+        public final String mon_grouping() {
+            return MEM_ACCESS.getStringUTF(this, LAYOUT.mon_grouping);
+        }
 
         /**
          * The operand is a string containing the symbol that shall be used as a
@@ -501,7 +588,9 @@ public class Locale {
          *
          * @return the native value of mon_thousands_sep.
          */
-        public final native String mon_thousands_sep();
+        public final String mon_thousands_sep() {
+            return MEM_ACCESS.getStringUTF(this, LAYOUT.mon_thousands_sep);
+        }
 
         /**
          * A string that shall be used to indicate a negative-valued formatted
@@ -511,7 +600,9 @@ public class Locale {
          *
          * @return the native value of negative_sign.
          */
-        public final native String negative_sign();
+        public final String negative_sign() {
+            return MEM_ACCESS.getStringUTF(this, LAYOUT.negative_sign);
+        }
 
         /**
          * An integer set to 1 if the currency_symbol precedes the value for a
@@ -522,7 +613,9 @@ public class Locale {
          *
          * @return the native value of n_cs_precedes.
          */
-        public final native short n_cs_precedes();
+        public final short n_cs_precedes() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.n_cs_precedes);
+        }
 
         /**
          * Set to a value indicating the separation of the currency_symbol, the
@@ -533,7 +626,9 @@ public class Locale {
          *
          * @return the native value of n_sep_by_space.
          */
-        public final native short n_sep_by_space();
+        public final short n_sep_by_space() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.n_sep_by_space);
+        }
 
         /**
          * An integer set to a value indicating the positioning of the
@@ -543,7 +638,9 @@ public class Locale {
          *
          * @return the native value of n_sign_posn.
          */
-        public final native short n_sign_posn();
+        public final short n_sign_posn() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.n_sign_posn);
+        }
 
         /**
          * A string that shall be used to indicate a non-negative-valued
@@ -553,7 +650,9 @@ public class Locale {
          *
          * @return the native value of positive_sign.
          */
-        public final native String positive_sign();
+        public final String positive_sign() {
+            return MEM_ACCESS.getStringUTF(this, LAYOUT.positive_sign);
+        }
 
         /**
          * An integer set to 1 if the currency_symbol precedes the value for a
@@ -564,7 +663,9 @@ public class Locale {
          *
          * @return the native value of p_cs_precedes.
          */
-        public final native short p_cs_precedes();
+        public final short p_cs_precedes() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.p_cs_precedes);
+        }
 
         /**
          * Set to a value indicating the separation of the currency_symbol, the
@@ -575,7 +676,9 @@ public class Locale {
          *
          * @return the native value of p_sep_by_space.
          */
-        public final native short p_sep_by_space();
+        public final short p_sep_by_space() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.p_sep_by_space);
+        }
 
         /**
          * An integer set to a value indicating the positioning of the
@@ -585,13 +688,17 @@ public class Locale {
          *
          * @return the native value of p_sign_posn.
          */
-        public final native short p_sign_posn();
+        public final short p_sign_posn() {
+            return MEM_ACCESS.int16_t(this, LAYOUT.p_sign_posn);
+        }
 
         /**
          *
          * @return the native value of thousands_sep.
          */
-        public final native String thousands_sep();
+        public final String thousands_sep() {
+            return MEM_ACCESS.getStringUTF(this, LAYOUT.thousands_sep);
+        }
 
     }
 
@@ -601,6 +708,7 @@ public class Locale {
      *
      * @author aploese
      */
+    @locale_t
     public static class Locale_t {
 
         private final long nativeValue;

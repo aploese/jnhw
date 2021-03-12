@@ -23,6 +23,7 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import java.lang.reflect.Field;
+import java.nio.ByteBuffer;
 import java.util.logging.Level;
 
 /**
@@ -84,6 +85,13 @@ abstract class UnsafeMemoryAccessor implements MemoryAccessor {
     @Override
     public void uintptr_t(OpaqueMemory32 mem, long offset, OpaqueMemory32 destMem, long destOffset) {
         unsafe.putAddress(mem.baseAddress + offset, destMem.baseAddress + destOffset);
+    }
+
+    private static native void uintptr_t0(long address, ByteBuffer destMem, int position);
+
+    @Override
+    public void uintptr_t(OpaqueMemory32 mem, long offset, ByteBuffer destMem) {
+        uintptr_t0(mem.baseAddress + offset, destMem, destMem.position());
     }
 
     @Override
@@ -351,6 +359,14 @@ abstract class UnsafeMemoryAccessor implements MemoryAccessor {
         final long result = unsafe.allocateMemory(sizeInBytes);
         AbstractNativeMemory.CLEANER.register(mem, new UnsafeMemoryCleaner(result));
         return result;
+    }
+
+    private static native String getStringUTF0(long address);
+
+    @Override
+    public String getStringUTF(OpaqueMemory32 mem, long offset) {
+        //no method on unsafe...
+        return getStringUTF0(mem.baseAddress + offset);
     }
 
 }

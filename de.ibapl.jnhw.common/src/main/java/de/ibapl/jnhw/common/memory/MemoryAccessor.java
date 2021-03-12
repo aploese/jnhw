@@ -29,6 +29,7 @@ import de.ibapl.jnhw.common.annotation.uint16_t;
 import de.ibapl.jnhw.common.annotation.uint32_t;
 import de.ibapl.jnhw.common.annotation.uint64_t;
 import de.ibapl.jnhw.common.annotation.uint8_t;
+import java.nio.ByteBuffer;
 
 /**
  *
@@ -505,6 +506,8 @@ public interface MemoryAccessor {
 
     void uintptr_t(OpaqueMemory32 mem, long offset, OpaqueMemory32 dest, long destOffset);
 
+    void uintptr_t(OpaqueMemory32 mem, long offset, ByteBuffer dest);
+
     void uintptr_t(OpaqueMemory32 mem, long offset, NativeAddressHolder dest);
 
     NativeAddressHolder uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index);
@@ -512,4 +515,6 @@ public interface MemoryAccessor {
     void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, OpaqueMemory32 dest);
 
     void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, NativeAddressHolder dest);
+
+    public String getStringUTF(OpaqueMemory32 mem, long offset);
 }

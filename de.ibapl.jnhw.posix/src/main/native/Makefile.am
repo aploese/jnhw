@@ -82,7 +82,7 @@ libioclt_la_SOURCES = \
 liblocale_la_SOURCES = \
  LocaleDefines.c \
  LocaleFunctions.c \
- Locale_Lconv.c
+ LocaleStructures.c
 
 libpoll_la_SOURCES = \
  PollDefines.c \

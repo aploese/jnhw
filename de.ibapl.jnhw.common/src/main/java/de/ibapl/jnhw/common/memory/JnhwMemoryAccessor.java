@@ -24,6 +24,7 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.util.JnhwFormater;
+import java.nio.ByteBuffer;
 import java.util.logging.Level;
 
 /**
@@ -50,7 +51,7 @@ class JnhwMemoryAccessor implements MemoryAccessor {
     protected JnhwMemoryAccessor() {
     }
 
-    private native void setMemory0(long address, long sizeInBytes, byte value);
+    private static native void setMemory0(long address, long sizeInBytes, byte value);
 
     @Override
     public void setMemory32(OpaqueMemory32 mem, byte value) {
@@ -62,7 +63,7 @@ class JnhwMemoryAccessor implements MemoryAccessor {
         setMemory0(mem.baseAddress, mem.sizeInBytes, value);
     }
 
-    private native void copyMemory0(byte[] src, int srcPos, long destAddress, long destPos, int length);
+    private static native void copyMemory0(byte[] src, int srcPos, long destAddress, long destPos, int length);
 
     @Override
     public void copyMemory32(byte[] src, int srcPos, OpaqueMemory32 destMem, int destPos, int length) {
@@ -78,7 +79,7 @@ class JnhwMemoryAccessor implements MemoryAccessor {
         copyMemory0(src, srcPos, destMem.baseAddress, destPos, length);
     }
 
-    private native void copyMemory0(long srcAddress, long srcPos, byte[] dest, int destPos, int length);
+    private static native void copyMemory0(long srcAddress, long srcPos, byte[] dest, int destPos, int length);
 
     @Override
     public void copyMemory32(OpaqueMemory32 srcMem, int srcPos, byte[] dest, int destPos, int length) {
@@ -94,13 +95,15 @@ class JnhwMemoryAccessor implements MemoryAccessor {
         copyMemory0(srcMem.baseAddress, srcPos, dest, destPos, length);
     }
 
-    private native long uintptr_t0(long address);
+    private static native long uintptr_t0(long address);
 
-    private native void uintptr_t0(long address, long destAddress);
+    private static native void uintptr_t0(long address, long destAddress);
 
-    private native long uintptr_t_AtIndex0(long address, int index);
+    private static native void uintptr_t0(long address, ByteBuffer destMem, int position);
 
-    private native void uintptr_t_AtIndex0(long address, int index, long destAddress);
+    private static native long uintptr_t_AtIndex0(long address, int index);
+
+    private static native void uintptr_t_AtIndex0(long address, int index, long destAddress);
 
     @Override
     public byte int8_t(OpaqueMemory32 mem, long offset) {
@@ -325,6 +328,11 @@ class JnhwMemoryAccessor implements MemoryAccessor {
     }
 
     @Override
+    public void uintptr_t(OpaqueMemory32 mem, long offset, ByteBuffer destMem) {
+        uintptr_t0(mem.baseAddress + offset, destMem, destMem.position());
+    }
+
+    @Override
     public void uintptr_t(OpaqueMemory32 mem, long offset, NativeAddressHolder dest) {
         uintptr_t0(mem.baseAddress + offset, dest.address);
     }
@@ -344,81 +352,81 @@ class JnhwMemoryAccessor implements MemoryAccessor {
         uintptr_t_AtIndex0(mem.baseAddress + offset, index, dest.address);
     }
 
-    private native byte int8_t0(long address);
+    private static native byte int8_t0(long address);
 
-    private native void int8_t0(long address, @de.ibapl.jnhw.common.annotation.int8_t byte value);
+    private static native void int8_t0(long address, @de.ibapl.jnhw.common.annotation.int8_t byte value);
 
-    private native String int8_t_AsHex0(long address);
+    private static native String int8_t_AsHex0(long address);
 
-    private native String int8_t_nativeToString0(long address);
+    private static native String int8_t_nativeToString0(long address);
 
-    private native short int16_t0(long address);
+    private static native short int16_t0(long address);
 
-    private native void int16_t0(long address, short value);
+    private static native void int16_t0(long address, short value);
 
-    private native String int16_t_AsHex0(long address);
+    private static native String int16_t_AsHex0(long address);
 
-    private native String int16_t_nativeToString0(long address);
+    private static native String int16_t_nativeToString0(long address);
 
-    private native int int32_t0(long address);
+    private static native int int32_t0(long address);
 
-    private native void int32_t0(long address, int value);
+    private static native void int32_t0(long address, int value);
 
-    private native String int32_t_AsHex0(long address);
+    private static native String int32_t_AsHex0(long address);
 
-    private native String int32_t_nativeToString0(long address);
+    private static native String int32_t_nativeToString0(long address);
 
-    private native long int64_t0(long address);
+    private static native long int64_t0(long address);
 
-    private native void int64_t0(long address, long value);
+    private static native void int64_t0(long address, long value);
 
-    private native String int64_t_AsHex0(long address);
+    private static native String int64_t_AsHex0(long address);
 
-    private native String int64_t_nativeToString0(long address);
+    private static native String int64_t_nativeToString0(long address);
 
-    private native byte uint8_t0(long address);
+    private static native byte uint8_t0(long address);
 
-    private native short uint8_t_AsShort0(long address);
+    private static native short uint8_t_AsShort0(long address);
 
-    private native void uint8_t0(long address, byte value);
+    private static native void uint8_t0(long address, byte value);
 
-    private native void uint8_t_FromShort0(long address, short value);
+    private static native void uint8_t_FromShort0(long address, short value);
 
-    private native String uint8_t_AsHex0(long address);
+    private static native String uint8_t_AsHex0(long address);
 
-    private native String uint8_t_nativeToString0(long address);
+    private static native String uint8_t_nativeToString0(long address);
 
-    private native short uint16_t0(long address);
+    private static native short uint16_t0(long address);
 
-    private native int uint16_t_AsInt0(long address);
+    private static native int uint16_t_AsInt0(long address);
 
-    private native void uint16_t0(long address, short value);
+    private static native void uint16_t0(long address, short value);
 
-    private native void uint16_t_FromInt0(long address, int value);
+    private static native void uint16_t_FromInt0(long address, int value);
 
-    private native String uint16_t_AsHex0(long address);
+    private static native String uint16_t_AsHex0(long address);
 
-    private native String uint16_t_nativeToString0(long address);
+    private static native String uint16_t_nativeToString0(long address);
 
-    private native int uint32_t0(long address);
+    private static native int uint32_t0(long address);
 
-    private native long uint32_t_AsLong0(long address);
+    private static native long uint32_t_AsLong0(long address);
 
-    private native void uint32_t0(long address, int value);
+    private static native void uint32_t0(long address, int value);
 
-    private native void uint32_t_FromLong0(long address, long value);
+    private static native void uint32_t_FromLong0(long address, long value);
 
-    private native String uint32_t_AsHex0(long address);
+    private static native String uint32_t_AsHex0(long address);
 
-    private native String uint32_t_nativeToString0(long address);
+    private static native String uint32_t_nativeToString0(long address);
 
-    private native long uint64_t0(long address);
+    private static native long uint64_t0(long address);
 
-    private native void uint64_t0(long address, long value);
+    private static native void uint64_t0(long address, long value);
 
-    private native String uint64_t_AsHex0(long address);
+    private static native String uint64_t_AsHex0(long address);
 
-    private native String uint64_t_nativeToString0(long address);
+    private static native String uint64_t_nativeToString0(long address);
 
     private long allocateMemory0(long sizeInBytes) {
         try {
@@ -434,13 +442,15 @@ class JnhwMemoryAccessor implements MemoryAccessor {
         }
     }
 
-    private native long signed_long0(long address);
+    private static native long signed_long0(long address);
 
-    private native void signed_long0(long address, long value);
+    private static native void signed_long0(long address, long value);
 
-    private native long unsigned_long0(long address);
+    private static native long unsigned_long0(long address);
 
-    private native void unsigned_long0(long address, long value);
+    private static native void unsigned_long0(long address, long value);
+
+    private static native String getStringUTF0(long address);
 
     @Override
     public long signed_long(OpaqueMemory32 mem, long offset) {
@@ -460,6 +470,11 @@ class JnhwMemoryAccessor implements MemoryAccessor {
     @Override
     public void unsigned_long(OpaqueMemory32 mem, long offset, long value) {
         unsigned_long0(mem.baseAddress + offset, value);
+    }
+
+    @Override
+    public String getStringUTF(OpaqueMemory32 mem, long offset) {
+        return getStringUTF0(mem.baseAddress + offset);
     }
 
     class JnhwMemoryCleaner implements Runnable {

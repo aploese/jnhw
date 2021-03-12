@@ -21,14 +21,14 @@
  */
 package de.ibapl.jnhw.posix.sys;
 
-import de.ibapl.jnhw.annontation.posix.sys.types.clock_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.pid_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.mode_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.uid_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.ssize_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.off_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.time_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.clock_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.mode_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.uid_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.ssize_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.off_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.memory.AsSignedLong;
 import de.ibapl.jnhw.common.memory.AsUnsignedInt;

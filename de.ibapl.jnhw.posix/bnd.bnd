@@ -1,8 +1,10 @@
 -noimportjava: true
 Export-Package: \
-	de.ibapl.jnhw.annontation.posix.poll,\
-	de.ibapl.jnhw.annontation.posix.sys.types,\
-	de.ibapl.jnhw.annontation.posix.termios,\
+	de.ibapl.jnhw.annotation.linux.sys,\
+	de.ibapl.jnhw.annotation.posix.poll,\
+	de.ibapl.jnhw.annotation.posix.locale,\
+	de.ibapl.jnhw.annotation.posix.sys.types,\
+	de.ibapl.jnhw.annotation.posix.termios,\
         de.ibapl.jnhw.isoc,\
 	de.ibapl.jnhw.linux.sys,\
 	de.ibapl.jnhw.posix,\

@@ -26,9 +26,9 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.posix.sys.Stat;
-import de.ibapl.jnhw.annontation.posix.sys.types.mode_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.off64_t;
-import de.ibapl.jnhw.annontation.posix.sys.types.off_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.mode_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.off64_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.off_t;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 

@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.util.posix.memory;
 
-import de.ibapl.jnhw.annontation.posix.sys.types.size_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 
 /**

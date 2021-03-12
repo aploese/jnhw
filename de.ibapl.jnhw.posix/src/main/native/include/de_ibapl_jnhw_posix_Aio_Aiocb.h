@@ -15,14 +15,6 @@ extern "C" {
 JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_native2Layout
   (JNIEnv *, jclass, jclass);
 
-/*
- * Class:     de_ibapl_jnhw_posix_Aio_Aiocb
- * Method:    aio_bufByteBuffer
- * Signature: (Ljava/nio/ByteBuffer;II)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_00024Aiocb_aio_1bufByteBuffer
-  (JNIEnv *, jobject, jobject, jint, jint);
-
 #ifdef __cplusplus
 }
 #endif
