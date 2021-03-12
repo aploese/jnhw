@@ -146,7 +146,7 @@ extern "C" {
      * @param value
      * @return
      */
-    _JNHW_IMPORT_OR_EXPORT_ extern jobject JNICALL JnhwCreateFieldLayout(JNIEnv *env, jclass clazzFL, const char * dataTypeName, jlong offset);
+    _JNHW_IMPORT_OR_EXPORT_ extern jobject JnhwCreateFieldLayout(JNIEnv *env, jclass clazzFL, const char * dataTypeName, jlong offset);
     _JNHW_IMPORT_OR_EXPORT_ extern jobject JnhwCreateStructLayout(JNIEnv *env, jclass structLayoutClass, int64_t sizeInBytes, int32_t alingmentInBytes);
 
     _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetLongField(JNIEnv *env, jclass clazz, const char * fieldName, jlong value);
