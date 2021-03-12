@@ -127,7 +127,48 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_INTPTR_T);
                     assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_INTPTR_T);
                     break;
+                case S390_X__LINUX__GNU:
+                    assertEquals(Alignment.AT_8, Alignment.__BIGGEST_ALIGNMENT__);
+
+                    assertEquals(8, BaseDataType.SIZE_OF_LONG);
+                    assertEquals(8, BaseDataType.SIZE_OF_POINTER);
+
+                    assertEquals(4, BaseDataType.SIZE_OF_FLOAT);
+                    assertEquals(8, BaseDataType.SIZE_OF_DOUBLE);
+                    assertEquals(16, BaseDataType.SIZE_OF_LONG_DOUBLE);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_LONG);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_POINTER);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_POINTER);
+
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_FLOAT);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_FLOAT);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_DOUBLE);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_DOUBLE);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG_DOUBLE);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_LONG_DOUBLE);
+
+                    assertEquals(Alignment.AT_1, Alignment.ALIGN_OF_INT8_T);
+                    assertEquals(Alignment.AT_1, Alignment.ALIGN_OF_STRUCT_INT8_T);
+
+                    assertEquals(Alignment.AT_2, Alignment.ALIGN_OF_INT16_T);
+                    assertEquals(Alignment.AT_2, Alignment.ALIGN_OF_STRUCT_INT16_T);
+
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_INT32_T);
+                    assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_STRUCT_INT32_T);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_INT64_T);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_INT64_T);
+
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_INTPTR_T);
+                    assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_STRUCT_INTPTR_T);
+                    break;
                 case AARCH64__LINUX__GNU:
+                case POWER_PC_64_LE__LINUX__GNU:
                 case X86_64__LINUX__GNU:
                     //classical 64bit anything is at 8 byte aligned
                     assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
@@ -173,44 +214,44 @@ public class BaseDataTypeTest {
                     //sorry, but we need proof.... so test an commit results ....
                     StringBuilder sb = new StringBuilder();
                     sb.append("No testvalues for multiarch: ").append(mi).append("\n");
-                    sb.append("__BIGGEST_ALIGNMENT__").append(Alignment.__BIGGEST_ALIGNMENT__).append("\n");
+                    sb.append("__BIGGEST_ALIGNMENT__ = ").append(Alignment.__BIGGEST_ALIGNMENT__).append("\n");
 
-                    sb.append("SIZE_OF_LONG").append(BaseDataType.SIZE_OF_LONG).append("\n");
-                    sb.append("SIZE_OF_POINTER").append(BaseDataType.SIZE_OF_POINTER).append("\n");
+                    sb.append("SIZE_OF_LONG = ").append(BaseDataType.SIZE_OF_LONG).append("\n");
+                    sb.append("SIZE_OF_POINTER = ").append(BaseDataType.SIZE_OF_POINTER).append("\n");
 
-                    sb.append("SIZE_OF_FLOAT").append(BaseDataType.SIZE_OF_FLOAT).append("\n");
-                    sb.append("SIZE_OF_DOUBLE").append(BaseDataType.SIZE_OF_DOUBLE).append("\n");
-                    sb.append("SIZE_OF_LONG_DOUBLE").append(BaseDataType.SIZE_OF_LONG_DOUBLE).append("\n");
+                    sb.append("SIZE_OF_FLOAT = ").append(BaseDataType.SIZE_OF_FLOAT).append("\n");
+                    sb.append("SIZE_OF_DOUBLE = ").append(BaseDataType.SIZE_OF_DOUBLE).append("\n");
+                    sb.append("SIZE_OF_LONG_DOUBLE = ").append(BaseDataType.SIZE_OF_LONG_DOUBLE).append("\n");
 
-                    sb.append("ALIGN_OF_LONG").append(Alignment.ALIGN_OF_LONG).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_LONG").append(Alignment.ALIGN_OF_STRUCT_LONG).append("\n");
+                    sb.append("ALIGN_OF_LONG = ").append(Alignment.ALIGN_OF_LONG).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_LONG = ").append(Alignment.ALIGN_OF_STRUCT_LONG).append("\n");
 
-                    sb.append("ALIGN_OF_POINTER").append(Alignment.ALIGN_OF_POINTER).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_POINTER").append(Alignment.ALIGN_OF_STRUCT_POINTER).append("\n");
+                    sb.append("ALIGN_OF_POINTER = ").append(Alignment.ALIGN_OF_POINTER).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_POINTER = ").append(Alignment.ALIGN_OF_STRUCT_POINTER).append("\n");
 
-                    sb.append("ALIGN_OF_FLOAT").append(Alignment.ALIGN_OF_FLOAT).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_FLOAT").append(Alignment.ALIGN_OF_STRUCT_FLOAT).append("\n");
+                    sb.append("ALIGN_OF_FLOAT = ").append(Alignment.ALIGN_OF_FLOAT).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_FLOAT = ").append(Alignment.ALIGN_OF_STRUCT_FLOAT).append("\n");
 
-                    sb.append("ALIGN_OF_DOUBLE").append(Alignment.ALIGN_OF_DOUBLE).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_DOUBLE").append(Alignment.ALIGN_OF_STRUCT_DOUBLE).append("\n");
+                    sb.append("ALIGN_OF_DOUBLE = ").append(Alignment.ALIGN_OF_DOUBLE).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_DOUBLE = ").append(Alignment.ALIGN_OF_STRUCT_DOUBLE).append("\n");
 
-                    sb.append("ALIGN_OF_LONG_DOUBLE").append(Alignment.ALIGN_OF_LONG_DOUBLE).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_LONG_DOUBLE").append(Alignment.ALIGN_OF_STRUCT_LONG_DOUBLE).append("\n");
+                    sb.append("ALIGN_OF_LONG_DOUBLE = ").append(Alignment.ALIGN_OF_LONG_DOUBLE).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_LONG_DOUBLE = ").append(Alignment.ALIGN_OF_STRUCT_LONG_DOUBLE).append("\n");
 
-                    sb.append("ALIGN_OF_INT8_T").append(Alignment.ALIGN_OF_INT8_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT8_T").append(Alignment.ALIGN_OF_STRUCT_INT8_T).append("\n");
+                    sb.append("ALIGN_OF_INT8_T = ").append(Alignment.ALIGN_OF_INT8_T).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_INT8_T = ").append(Alignment.ALIGN_OF_STRUCT_INT8_T).append("\n");
 
-                    sb.append("ALIGN_OF_INT16_T").append(Alignment.ALIGN_OF_INT16_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT16_T").append(Alignment.ALIGN_OF_STRUCT_INT16_T).append("\n");
+                    sb.append("ALIGN_OF_INT16_T = ").append(Alignment.ALIGN_OF_INT16_T).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_INT16_T = ").append(Alignment.ALIGN_OF_STRUCT_INT16_T).append("\n");
 
-                    sb.append("ALIGN_OF_INT32_T").append(Alignment.ALIGN_OF_INT32_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT32_T").append(Alignment.ALIGN_OF_STRUCT_INT32_T).append("\n");
+                    sb.append("ALIGN_OF_INT32_T = ").append(Alignment.ALIGN_OF_INT32_T).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_INT32_T = ").append(Alignment.ALIGN_OF_STRUCT_INT32_T).append("\n");
 
-                    sb.append("ALIGN_OF_INT64_T").append(Alignment.ALIGN_OF_INT64_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT64_T").append(Alignment.ALIGN_OF_STRUCT_INT64_T).append("\n");
+                    sb.append("ALIGN_OF_INT64_T = ").append(Alignment.ALIGN_OF_INT64_T).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_INT64_T = ").append(Alignment.ALIGN_OF_STRUCT_INT64_T).append("\n");
 
-                    sb.append("ALIGN_OF_INTPTR_T").append(Alignment.ALIGN_OF_INTPTR_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INTPTR_T").append(Alignment.ALIGN_OF_STRUCT_INTPTR_T).append("\n");
+                    sb.append("ALIGN_OF_INTPTR_T = ").append(Alignment.ALIGN_OF_INTPTR_T).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_INTPTR_T = ").append(Alignment.ALIGN_OF_STRUCT_INTPTR_T).append("\n");
 
                     fail(sb.toString());
             }
