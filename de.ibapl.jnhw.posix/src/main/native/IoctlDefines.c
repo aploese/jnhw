@@ -38,6 +38,10 @@ extern "C" {
     }
 #else
 #include <sys/ioctl.h>
+#ifdef  __OpenBSD__
+    // for PAGE_SIZE
+#include <sys/param.h>
+#endif
 
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
