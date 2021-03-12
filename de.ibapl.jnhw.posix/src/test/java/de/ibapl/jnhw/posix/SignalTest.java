@@ -38,6 +38,7 @@ import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
@@ -561,7 +562,7 @@ public class SignalTest {
         Signal.sigemptyset(set);
         Signal.sigpending(set);
         assertEquals("[]", set.nativeToString());
-        Assertions.assertArrayEquals(new byte[Signal.Sigset_t.sizeof()], OpaqueMemory32.toBytes(set));
+        Assertions.assertArrayEquals(new byte[Signal.Sigset_t.LAYOUT.sizeof], OpaqueMemory32.toBytes(set));
     }
 
     /**
@@ -1044,41 +1045,41 @@ public class SignalTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getArch()) {
                     case AARCH64:
-                        Assertions.assertEquals(4384, Signal.Mcontext_t.sizeof());
+                        Assertions.assertEquals(4384, Signal.Mcontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case ARM:
-                        Assertions.assertEquals(84, Signal.Mcontext_t.sizeof());
+                        Assertions.assertEquals(84, Signal.Mcontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case I386:
-                        Assertions.assertEquals(88, Signal.Mcontext_t.sizeof());
+                        Assertions.assertEquals(88, Signal.Mcontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case MIPS_64:
-                        Assertions.assertEquals(600, Signal.Mcontext_t.sizeof());
+                        Assertions.assertEquals(600, Signal.Mcontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case MIPS:
-                        Assertions.assertEquals(592, Signal.Mcontext_t.sizeof());
+                        Assertions.assertEquals(592, Signal.Mcontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case POWER_PC_64:
-                        Assertions.assertEquals(1272, Signal.Mcontext_t.sizeof());
+                        Assertions.assertEquals(1272, Signal.Mcontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case S390_X:
-                        Assertions.assertEquals(344, Signal.Mcontext_t.sizeof());
+                        Assertions.assertEquals(344, Signal.Mcontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case X86_64:
-                        Assertions.assertEquals(256, Signal.Mcontext_t.sizeof());
+                        Assertions.assertEquals(256, Signal.Mcontext_t.getLayoutOrThrow().sizeof);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Mcontext_t.sizeof());
+                        Assertions.assertEquals(-1, Signal.Mcontext_t.getLayoutOrThrow().sizeof);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(800, Signal.Mcontext_t.sizeof());
+                Assertions.assertEquals(800, Signal.Mcontext_t.getLayoutOrThrow().sizeof);
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Mcontext_t::sizeof);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Mcontext_t::getLayoutOrThrow);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Mcontext_t.sizeof());
+                Assertions.assertEquals(-1, Signal.Mcontext_t.getLayoutOrThrow().sizeof);
         }
     }
 
@@ -1088,31 +1089,31 @@ public class SignalTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getArch()) {
                     case AARCH64:
-                        Assertions.assertEquals(16, Signal.Mcontext_t.alignof());
+                        Assertions.assertEquals(Alignment.AT_16, Signal.Mcontext_t.getLayoutOrThrow().alignment);
                         break;
                     case ARM:
                     case I386:
-                        Assertions.assertEquals(4, Signal.Mcontext_t.alignof());
+                        Assertions.assertEquals(Alignment.AT_4, Signal.Mcontext_t.getLayoutOrThrow().alignment);
                         break;
                     case MIPS_64:
                     case MIPS:
                     case POWER_PC_64:
                     case S390_X:
                     case X86_64:
-                        Assertions.assertEquals(8, Signal.Mcontext_t.alignof());
+                        Assertions.assertEquals(Alignment.AT_8, Signal.Mcontext_t.getLayoutOrThrow().alignment);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Mcontext_t.alignof());
+                        Assertions.fail("Signal.Mcontext_t.getLayoutOrThrow().alignment " + Signal.Mcontext_t.getLayoutOrThrow().alignment);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(16, Signal.Mcontext_t.alignof());
+                Assertions.assertEquals(Alignment.AT_16, Signal.Mcontext_t.getLayoutOrThrow().alignment);
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Mcontext_t::alignof);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Mcontext_t::getLayoutOrThrow);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Mcontext_t.alignof());
+                Assertions.fail("Signal.Mcontext_t.getLayoutOrThrow().alignment " + Signal.Mcontext_t.getLayoutOrThrow().alignment);
         }
     }
 
@@ -1126,27 +1127,27 @@ public class SignalTest {
                     case POWER_PC_64:
                     case S390_X:
                     case X86_64:
-                        Assertions.assertEquals(152, Signal.Sigaction.sizeof());
+                        Assertions.assertEquals(152, Signal.Sigaction.LAYOUT.sizeof);
                         break;
                     case ARM:
                     case I386:
-                        Assertions.assertEquals(140, Signal.Sigaction.sizeof());
+                        Assertions.assertEquals(140, Signal.Sigaction.LAYOUT.sizeof);
                         break;
                     case MIPS:
-                        Assertions.assertEquals(144, Signal.Sigaction.sizeof());
+                        Assertions.assertEquals(144, Signal.Sigaction.LAYOUT.sizeof);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Sigaction.sizeof());
+                        Assertions.assertEquals(-1, Signal.Sigaction.LAYOUT.sizeof);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(32, Signal.Sigaction.sizeof());
+                Assertions.assertEquals(32, Signal.Sigaction.LAYOUT.sizeof);
                 break;
             case OPEN_BSD:
-                Assertions.assertEquals(16, Signal.Sigaction.sizeof());
+                Assertions.assertEquals(16, Signal.Sigaction.LAYOUT.sizeof);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Sigaction.sizeof());
+                Assertions.fail("Signal.Sigaction.LAYOUT.sizeof " + Signal.Sigaction.LAYOUT.sizeof);
         }
     }
 
@@ -1154,13 +1155,13 @@ public class SignalTest {
     public void testAlignOfSigaction() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Signal.Sigaction.alignof());
+                Assertions.assertEquals(Alignment.AT_4, Signal.Sigaction.LAYOUT.alignment);
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Signal.Sigaction.alignof());
+                Assertions.assertEquals(Alignment.AT_8, Signal.Sigaction.LAYOUT.alignment);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Sigaction.alignof());
+                Assertions.fail("Signal.Sigaction.LAYOUT.alignment " + Signal.Sigaction.LAYOUT.alignment);
         }
     }
 
@@ -1173,30 +1174,30 @@ public class SignalTest {
                     case MIPS:
                     case POWER_PC_64:
                     case X86_64:
-                        Assertions.assertEquals(8, Signal.Sigaction.offsetof_Sa_mask());
+                        Assertions.assertEquals(8, Signal.Sigaction.LAYOUT.sa_mask);
                         break;
                     case ARM:
                     case I386:
-                        Assertions.assertEquals(4, Signal.Sigaction.offsetof_Sa_mask());
+                        Assertions.assertEquals(4, Signal.Sigaction.LAYOUT.sa_mask);
                         break;
                     case MIPS_64:
-                        Assertions.assertEquals(16, Signal.Sigaction.offsetof_Sa_mask());
+                        Assertions.assertEquals(16, Signal.Sigaction.LAYOUT.sa_mask);
                         break;
                     case S390_X:
-                        Assertions.assertEquals(24, Signal.Sigaction.offsetof_Sa_mask());
+                        Assertions.assertEquals(24, Signal.Sigaction.LAYOUT.sa_mask);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Sigaction.offsetof_Sa_mask());
+                        Assertions.assertEquals(-1, Signal.Sigaction.LAYOUT.sa_mask);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(12, Signal.Sigaction.offsetof_Sa_mask());
+                Assertions.assertEquals(12, Signal.Sigaction.LAYOUT.sa_mask);
                 break;
             case OPEN_BSD:
-                Assertions.assertEquals(8, Signal.Sigaction.offsetof_Sa_mask());
+                Assertions.assertEquals(8, Signal.Sigaction.LAYOUT.sa_mask);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Sigaction.offsetof_Sa_mask());
+                Assertions.assertEquals(-1, Signal.Sigaction.LAYOUT.sa_mask);
         }
     }
 
@@ -1204,16 +1205,16 @@ public class SignalTest {
     public void testSizeOfSigevent() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                Assertions.assertEquals(64, Signal.Sigevent.sizeof());
+                Assertions.assertEquals(64, Signal.Sigevent.getLayoutOrThrow().sizeof);
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(80, Signal.Sigevent.sizeof());
+                Assertions.assertEquals(80, Signal.Sigevent.getLayoutOrThrow().sizeof);
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::sizeof);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::getLayoutOrThrow);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Sigevent.sizeof());
+                Assertions.fail("Signal.Sigevent.getLayoutOrThrow().sizeof " + Signal.Sigevent.getLayoutOrThrow().sizeof);
         }
     }
 
@@ -1224,20 +1225,20 @@ public class SignalTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(4, Signal.Sigevent.alignof());
+                        Assertions.assertEquals(Alignment.AT_4, Signal.Sigevent.getLayoutOrThrow().alignment);
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(8, Signal.Sigevent.alignof());
+                        Assertions.assertEquals(Alignment.AT_8, Signal.Sigevent.getLayoutOrThrow().alignment);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Sigevent.alignof());
+                        Assertions.fail("Signal.Sigevent.getLayoutOrThrow().alignment " + Signal.Sigevent.getLayoutOrThrow().alignment);
                 }
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::alignof);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::getLayoutOrThrow);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Sigevent.alignof());
+                Assertions.fail("Signal.Sigevent.getLayoutOrThrow().alignment " + Signal.Sigevent.getLayoutOrThrow().alignment);
         }
     }
 
@@ -1245,16 +1246,16 @@ public class SignalTest {
     public void testOffsetOfSigev_value() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                Assertions.assertEquals(0, Signal.Sigevent.offsetof_Sigev_value());
+                Assertions.assertEquals(0, Signal.Sigevent.getLayoutOrThrow().sigev_value);
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(8, Signal.Sigevent.offsetof_Sigev_value());
+                Assertions.assertEquals(8, Signal.Sigevent.getLayoutOrThrow().sigev_value);
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::offsetof_Sigev_value);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Sigevent::getLayoutOrThrow);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Sigevent.offsetof_Sigev_value());
+                Assertions.fail("Signal.Sigevent.getLayoutOrThrow().sigev_value " + Signal.Sigevent.getLayoutOrThrow().sigev_value);
         }
     }
 
@@ -1262,16 +1263,16 @@ public class SignalTest {
     public void testSizeOfSiginfo_t() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                Assertions.assertEquals(128, Signal.Siginfo_t.sizeof());
+                Assertions.assertEquals(128, Signal.Siginfo_t.LAYOUT.sizeof);
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(80, Signal.Siginfo_t.sizeof());
+                Assertions.assertEquals(80, Signal.Siginfo_t.LAYOUT.sizeof);
                 break;
             case OPEN_BSD:
-                Assertions.assertEquals(136, Signal.Siginfo_t.sizeof());
+                Assertions.assertEquals(136, Signal.Siginfo_t.LAYOUT.sizeof);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Siginfo_t.sizeof());
+                Assertions.fail("Signal.Siginfo_t.LAYOUT.sizeof " + Signal.Siginfo_t.LAYOUT.sizeof);
         }
     }
 
@@ -1279,13 +1280,13 @@ public class SignalTest {
     public void testAlignOfSiginfo_t() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Signal.Siginfo_t.alignof());
+                Assertions.assertEquals(Alignment.AT_4, Signal.Siginfo_t.LAYOUT.alignment);
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Signal.Siginfo_t.alignof());
+                Assertions.assertEquals(Alignment.AT_8, Signal.Siginfo_t.LAYOUT.alignment);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Siginfo_t.alignof());
+                Assertions.fail("Signal.Siginfo_t.LAYOUT.alignment " + Signal.Siginfo_t.LAYOUT.alignment);
         }
     }
 
@@ -1295,21 +1296,21 @@ public class SignalTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _64_BIT:
-                        Assertions.assertEquals(24, Signal.Siginfo_t.offsetof_Si_value());
+                        Assertions.assertEquals(24, Signal.Siginfo_t.LAYOUT.si_value);
                         break;
                     case _32_BIT:
-                        Assertions.assertEquals(20, Signal.Siginfo_t.offsetof_Si_value());
+                        Assertions.assertEquals(20, Signal.Siginfo_t.LAYOUT.si_value);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Siginfo_t.offsetof_Si_value());
+                        Assertions.fail("Signal.Siginfo_t.LAYOUT.si_value " + Signal.Siginfo_t.LAYOUT.si_value);
                 }
                 break;
             case FREE_BSD:
             case OPEN_BSD:
-                Assertions.assertEquals(32, Signal.Siginfo_t.offsetof_Si_value());
+                Assertions.assertEquals(32, Signal.Siginfo_t.LAYOUT.si_value);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Siginfo_t.offsetof_Si_value());
+                Assertions.fail("Signal.Siginfo_t.LAYOUT.si_value " + Signal.Siginfo_t.LAYOUT.si_value);
         }
     }
 
@@ -1317,16 +1318,16 @@ public class SignalTest {
     public void testSizeOfSigset_t() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                Assertions.assertEquals(128, Signal.Sigset_t.sizeof());
+                Assertions.assertEquals(128, Signal.Sigset_t.LAYOUT.sizeof);
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(16, Signal.Sigset_t.sizeof());
+                Assertions.assertEquals(16, Signal.Sigset_t.LAYOUT.sizeof);
                 break;
             case OPEN_BSD:
-                Assertions.assertEquals(4, Signal.Sigset_t.sizeof());
+                Assertions.assertEquals(4, Signal.Sigset_t.LAYOUT.sizeof);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Sigset_t.sizeof());
+                Assertions.fail("Signal.Sigset_t.LAYOUT.sizeof " + Signal.Sigset_t.LAYOUT.sizeof);
         }
     }
 
@@ -1336,21 +1337,21 @@ public class SignalTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(4, Signal.Sigset_t.alignof());
+                        Assertions.assertEquals(Alignment.AT_4, Signal.Sigset_t.LAYOUT.alignment);
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(8, Signal.Sigset_t.alignof());
+                        Assertions.assertEquals(Alignment.AT_8, Signal.Sigset_t.LAYOUT.alignment);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Sigset_t.alignof());
+                        Assertions.fail("Signal.Sigset_t.LAYOUT.alignment " + Signal.Sigset_t.LAYOUT.alignment);
                 }
                 break;
             case FREE_BSD:
             case OPEN_BSD:
-                Assertions.assertEquals(4, Signal.Sigset_t.alignof());
+                Assertions.assertEquals(Alignment.AT_4, Signal.Sigset_t.LAYOUT.alignment);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Sigset_t.alignof());
+                Assertions.fail("Signal.Sigset_t.LAYOUT.alignment " + Signal.Sigset_t.LAYOUT.alignment);
         }
     }
 
@@ -1358,13 +1359,13 @@ public class SignalTest {
     public void testSizeOfSigval() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Signal.Sigval.sizeof());
+                Assertions.assertEquals(4, Signal.Sigval.LAYOUT.sizeof);
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Signal.Sigval.sizeof());
+                Assertions.assertEquals(8, Signal.Sigval.LAYOUT.sizeof);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Sigval.sizeof());
+                Assertions.fail("Signal.Sigval.LAYOUT.sizeof " + Signal.Sigval.LAYOUT.sizeof);
         }
     }
 
@@ -1372,13 +1373,13 @@ public class SignalTest {
     public void testAlignOfSigval() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Signal.Sigval.alignof());
+                Assertions.assertEquals(Alignment.AT_4, Signal.Sigval.LAYOUT.alignment);
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Signal.Sigval.alignof());
+                Assertions.assertEquals(Alignment.AT_8, Signal.Sigval.LAYOUT.alignment);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Sigval.alignof());
+                Assertions.fail("Signal.Sigval.LAYOUT.alignment " + Signal.Sigval.LAYOUT.alignment);
         }
     }
 
@@ -1386,13 +1387,13 @@ public class SignalTest {
     public void testSizeOfStack_t() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(12, Signal.Stack_t.sizeof());
+                Assertions.assertEquals(12, Signal.Stack_t.LAYOUT.sizeof);
                 break;
             case _64_BIT:
-                Assertions.assertEquals(24, Signal.Stack_t.sizeof());
+                Assertions.assertEquals(24, Signal.Stack_t.LAYOUT.sizeof);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Stack_t.sizeof());
+                Assertions.fail("Signal.Stack_t.LAYOUT.sizeof " + Signal.Stack_t.LAYOUT.sizeof);
         }
     }
 
@@ -1400,13 +1401,13 @@ public class SignalTest {
     public void testAlignOfStack_t() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                Assertions.assertEquals(4, Signal.Stack_t.alignof());
+                Assertions.assertEquals(Alignment.AT_4, Signal.Stack_t.LAYOUT.alignment);
                 break;
             case _64_BIT:
-                Assertions.assertEquals(8, Signal.Stack_t.alignof());
+                Assertions.assertEquals(Alignment.AT_8, Signal.Stack_t.LAYOUT.alignment);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Stack_t.alignof());
+                Assertions.fail("Signal.Stack_t.LAYOUT.alignment " + Signal.Stack_t.LAYOUT.alignment);
         }
     }
 
@@ -1416,41 +1417,41 @@ public class SignalTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getArch()) {
                     case AARCH64:
-                        Assertions.assertEquals(4560, Signal.Ucontext_t.sizeof());
+                        Assertions.assertEquals(4560, Signal.Ucontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case ARM:
-                        Assertions.assertEquals(744, Signal.Ucontext_t.sizeof());
+                        Assertions.assertEquals(744, Signal.Ucontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case I386:
-                        Assertions.assertEquals(364, Signal.Ucontext_t.sizeof());
+                        Assertions.assertEquals(364, Signal.Ucontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case MIPS_64:
-                        Assertions.assertEquals(768, Signal.Ucontext_t.sizeof());
+                        Assertions.assertEquals(768, Signal.Ucontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case MIPS:
-                        Assertions.assertEquals(744, Signal.Ucontext_t.sizeof());
+                        Assertions.assertEquals(744, Signal.Ucontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case POWER_PC_64:
-                        Assertions.assertEquals(1440, Signal.Ucontext_t.sizeof());
+                        Assertions.assertEquals(1440, Signal.Ucontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case S390_X:
-                        Assertions.assertEquals(512, Signal.Ucontext_t.sizeof());
+                        Assertions.assertEquals(512, Signal.Ucontext_t.getLayoutOrThrow().sizeof);
                         break;
                     case X86_64:
-                        Assertions.assertEquals(968, Signal.Ucontext_t.sizeof());
+                        Assertions.assertEquals(968, Signal.Ucontext_t.getLayoutOrThrow().sizeof);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Ucontext_t.sizeof());
+                        Assertions.assertEquals(-1, Signal.Ucontext_t.getLayoutOrThrow().sizeof);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(880, Signal.Ucontext_t.sizeof());
+                Assertions.assertEquals(880, Signal.Ucontext_t.getLayoutOrThrow().sizeof);
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::sizeof);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::getLayoutOrThrow);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Ucontext_t.sizeof());
+                Assertions.fail("Signal.Ucontext_t.getLayoutOrThrow().sizeof " + Signal.Ucontext_t.getLayoutOrThrow().sizeof);
         }
     }
 
@@ -1460,7 +1461,7 @@ public class SignalTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getArch()) {
                     case AARCH64:
-                        Assertions.assertEquals(16, Signal.Ucontext_t.alignof());
+                        Assertions.assertEquals(Alignment.AT_16, Signal.Ucontext_t.getLayoutOrThrow().alignment);
                         break;
                     case ARM:
                     case MIPS:
@@ -1468,23 +1469,23 @@ public class SignalTest {
                     case POWER_PC_64:
                     case S390_X:
                     case X86_64:
-                        Assertions.assertEquals(8, Signal.Ucontext_t.alignof());
+                        Assertions.assertEquals(Alignment.AT_8, Signal.Ucontext_t.getLayoutOrThrow().alignment);
                         break;
                     case I386:
-                        Assertions.assertEquals(4, Signal.Ucontext_t.alignof());
+                        Assertions.assertEquals(Alignment.AT_4, Signal.Ucontext_t.getLayoutOrThrow().alignment);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Ucontext_t.alignof());
+                        Assertions.fail("Signal.Ucontext_t.getLayoutOrThrow().alignment " + Signal.Ucontext_t.getLayoutOrThrow().alignment);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(16, Signal.Ucontext_t.alignof());
+                Assertions.assertEquals(Alignment.AT_16, Signal.Ucontext_t.getLayoutOrThrow().alignment);
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::alignof);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::getLayoutOrThrow);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Ucontext_t.alignof());
+                Assertions.fail("Signal.Ucontext_t.getLayoutOrThrow().alignment " + Signal.Ucontext_t.getLayoutOrThrow().alignment);
         }
     }
 
@@ -1494,36 +1495,36 @@ public class SignalTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getArch()) {
                     case AARCH64:
-                        Assertions.assertEquals(176, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                        Assertions.assertEquals(176, Signal.Ucontext_t.getLayoutOrThrow().uc_mcontext);
                         break;
                     case ARM:
                     case I386:
-                        Assertions.assertEquals(20, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                        Assertions.assertEquals(20, Signal.Ucontext_t.getLayoutOrThrow().uc_mcontext);
                         break;
                     case POWER_PC_64:
-                        Assertions.assertEquals(168, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                        Assertions.assertEquals(168, Signal.Ucontext_t.getLayoutOrThrow().uc_mcontext);
                         break;
                     case MIPS_64:
                     case S390_X:
                     case X86_64:
-                        Assertions.assertEquals(40, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                        Assertions.assertEquals(40, Signal.Ucontext_t.getLayoutOrThrow().uc_mcontext);
                         break;
                     case MIPS:
-                        Assertions.assertEquals(24, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                        Assertions.assertEquals(24, Signal.Ucontext_t.getLayoutOrThrow().uc_mcontext);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                        Assertions.fail("Signal.Ucontext_t.getLayoutOrThrow().uc_mcontext" + Signal.Ucontext_t.getLayoutOrThrow().uc_mcontext);
                 }
                 break;
 
             case FREE_BSD:
-                Assertions.assertEquals(16, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                Assertions.assertEquals(16, Signal.Ucontext_t.getLayoutOrThrow().uc_mcontext);
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::offsetof_Uc_mcontext);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::getLayoutOrThrow);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_mcontext());
+                Assertions.fail("Signal.Ucontext_t.getLayoutOrThrow().uc_mcontext" + Signal.Ucontext_t.getLayoutOrThrow().uc_mcontext);
         }
     }
 
@@ -1534,38 +1535,38 @@ public class SignalTest {
                 switch (MULTIARCHTUPEL_BUILDER.getArch()) {
                     case AARCH64:
                     case POWER_PC_64:
-                        Assertions.assertEquals(40, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        Assertions.assertEquals(40, Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask);
                         break;
                     case ARM:
-                        Assertions.assertEquals(104, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        Assertions.assertEquals(104, Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask);
                         break;
                     case I386:
-                        Assertions.assertEquals(108, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        Assertions.assertEquals(108, Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask);
                         break;
                     case MIPS:
-                        Assertions.assertEquals(616, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        Assertions.assertEquals(616, Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask);
                         break;
                     case MIPS_64:
-                        Assertions.assertEquals(640, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        Assertions.assertEquals(640, Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask);
                         break;
                     case S390_X:
-                        Assertions.assertEquals(384, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        Assertions.assertEquals(384, Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask);
                         break;
                     case X86_64:
-                        Assertions.assertEquals(296, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        Assertions.assertEquals(296, Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                        Assertions.fail("Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask" + Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(0, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                Assertions.assertEquals(0, Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask);
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::offsetof_Uc_sigmask);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::getLayoutOrThrow);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_sigmask());
+                Assertions.fail("Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask" + Signal.Ucontext_t.getLayoutOrThrow().uc_sigmask);
         }
     }
 
@@ -1575,23 +1576,23 @@ public class SignalTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(8, Signal.Ucontext_t.offsetof_Uc_stack());
+                        Assertions.assertEquals(8, Signal.Ucontext_t.getLayoutOrThrow().uc_stack);
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(16, Signal.Ucontext_t.offsetof_Uc_stack());
+                        Assertions.assertEquals(16, Signal.Ucontext_t.getLayoutOrThrow().uc_stack);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_stack());
+                        Assertions.fail("Signal.Ucontext_t.getLayoutOrThrow().uc_stack " + Signal.Ucontext_t.getLayoutOrThrow().uc_stack);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(824, Signal.Ucontext_t.offsetof_Uc_stack());
+                Assertions.assertEquals(824, Signal.Ucontext_t.getLayoutOrThrow().uc_stack);
                 break;
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::offsetof_Uc_stack);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, Signal.Ucontext_t::getLayoutOrThrow);
                 break;
             default:
-                Assertions.assertEquals(-1, Signal.Ucontext_t.offsetof_Uc_stack());
+                Assertions.fail("Signal.Ucontext_t.getLayoutOrThrow().uc_stack " + Signal.Ucontext_t.getLayoutOrThrow().uc_stack);
         }
     }
 

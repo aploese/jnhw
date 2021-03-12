@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
 import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
  *
@@ -300,22 +301,32 @@ public class SchedTest {
 
     @Test
     public void testSizeOfSchedparam() throws Exception {
-        Assertions.assertEquals(4, Sched.Sched_param.sizeof());
+        Assertions.assertEquals(4, Sched.Sched_param.LAYOUT.sizeof);
     }
 
     @Test
     public void testAlignOfSchedparam() throws Exception {
-        Assertions.assertEquals(4, Sched.Sched_param.alignof());
+        Assertions.assertEquals(Alignment.AT_4, Sched.Sched_param.LAYOUT.alignment);
     }
 
     @Test
-    public void testOffsetOfSched_ss_init_budget() throws Exception {
-        Assertions.assertThrows(NoSuchNativeTypeMemberException.class, Sched.Sched_param::offsetof_Sched_ss_init_budget);
+    public void testSched_ss_init_budget() throws Exception {
+        assertEquals(-1, Sched.Sched_param.LAYOUT.sched_ss_init_budget);
     }
 
     @Test
-    public void testOffsetOfSched_ss_repl_period() throws Exception {
-        Assertions.assertThrows(NoSuchNativeTypeMemberException.class, Sched.Sched_param::offsetof_Sched_ss_repl_period);
+    public void testSched_ss_low_priority() throws Exception {
+        assertEquals(-1, Sched.Sched_param.LAYOUT.sched_ss_low_priority);
+    }
+
+    @Test
+    public void testSched_ss_max_repl() throws Exception {
+        assertEquals(-1, Sched.Sched_param.LAYOUT.sched_ss_max_repl);
+    }
+
+    @Test
+    public void testSched_ss_repl_period() throws Exception {
+        assertEquals(-1, Sched.Sched_param.LAYOUT.sched_ss_repl_period);
     }
 
 }

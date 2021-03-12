@@ -9,19 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_attr_t
- * Method:    sizeof
- * Signature: ()I
+ * Method:    native2Layout
+ * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t/Layout;
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1attr_1t_sizeof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_attr_t
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1attr_1t_alignof
-  (JNIEnv *, jclass);
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1attr_1t_native2Layout
+  (JNIEnv *, jclass, jclass);
 
 #ifdef __cplusplus
 }

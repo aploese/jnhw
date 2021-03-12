@@ -338,6 +338,11 @@ class JnhwMemoryAccessor implements MemoryAccessor {
     }
 
     @Override
+    public void uintptr_t(OpaqueMemory32 mem, long offset, NativeFunctionPointer dest) {
+        uintptr_t0(mem.baseAddress + offset, dest.nativeAddress);
+    }
+
+    @Override
     public NativeAddressHolder uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
         return new NativeAddressHolder(uintptr_t_AtIndex0(mem.baseAddress + offset, index));
     }

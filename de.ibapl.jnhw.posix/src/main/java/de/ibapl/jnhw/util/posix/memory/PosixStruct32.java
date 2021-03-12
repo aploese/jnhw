@@ -33,37 +33,6 @@ import de.ibapl.jnhw.util.posix.PosixDataType;
  */
 public abstract class PosixStruct32 extends Struct32 {
 
-    protected static class Accessor_Time_t_As_int64_t implements Accessor_Time_t {
-
-        @Override
-        public long time_t(OpaqueMemory32 mem, long offset) {
-            return MEM_ACCESS.int64_t(mem, offset);
-        }
-
-        @Override
-        public void time_t(OpaqueMemory32 mem, long offset, long value) {
-            MEM_ACCESS.int64_t(mem, offset, value);
-        }
-
-    }
-
-    protected static class Accessor_Time_t_As_int32_t implements Accessor_Time_t {
-
-        @Override
-        public long time_t(OpaqueMemory32 mem, long offset) {
-            return MEM_ACCESS.int32_t(mem, offset);
-        }
-
-        @Override
-        public void time_t(OpaqueMemory32 mem, long offset, long value) {
-            if ((value > Integer.MAX_VALUE) || (value < Integer.MIN_VALUE)) {
-                throw new IllegalArgumentException("value outside of int32_t: " + value);
-            }
-            MEM_ACCESS.int32_t(mem, offset, (int) value);
-        }
-
-    }
-
     protected static class Accessor_Off_t_As_int64_t implements Accessor_Off_t {
 
         @Override
@@ -91,6 +60,20 @@ public abstract class PosixStruct32 extends Struct32 {
                 throw new IllegalArgumentException("value outside of int32_t: " + value);
             }
             MEM_ACCESS.int32_t(mem, offset, (int) value);
+        }
+
+    }
+
+    protected static class Accessor_Pid_t_As_int32_t implements Accessor_Pid_t {
+
+        @Override
+        public int pid_t(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.int32_t(mem, offset);
+        }
+
+        @Override
+        public void pid_t(OpaqueMemory32 mem, long offset, int value) {
+            MEM_ACCESS.int32_t(mem, offset, value);
         }
 
     }
@@ -126,6 +109,51 @@ public abstract class PosixStruct32 extends Struct32 {
 
     }
 
+    protected static class Accessor_Time_t_As_int64_t implements Accessor_Time_t {
+
+        @Override
+        public long time_t(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.int64_t(mem, offset);
+        }
+
+        @Override
+        public void time_t(OpaqueMemory32 mem, long offset, long value) {
+            MEM_ACCESS.int64_t(mem, offset, value);
+        }
+
+    }
+
+    protected static class Accessor_Time_t_As_int32_t implements Accessor_Time_t {
+
+        @Override
+        public long time_t(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.int32_t(mem, offset);
+        }
+
+        @Override
+        public void time_t(OpaqueMemory32 mem, long offset, long value) {
+            if ((value > Integer.MAX_VALUE) || (value < Integer.MIN_VALUE)) {
+                throw new IllegalArgumentException("value outside of int32_t: " + value);
+            }
+            MEM_ACCESS.int32_t(mem, offset, (int) value);
+        }
+
+    }
+
+    protected static class Accessor_Uid_t_As_uint32_t implements Accessor_Uid_t {
+
+        @Override
+        public long uid_t(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint32_t_AsLong(mem, offset);
+        }
+
+        @Override
+        public void uid_t(OpaqueMemory32 mem, long offset, long value) {
+            MEM_ACCESS.uint32_t_FromLong(mem, offset, (int) value);
+        }
+
+    }
+
     public PosixStruct32(NativeAddressHolder nativeAddressHolder, int sizeInBytes) {
         super(nativeAddressHolder, sizeInBytes);
     }
@@ -135,8 +163,10 @@ public abstract class PosixStruct32 extends Struct32 {
     }
 
     protected final static Accessor_Off_t ACCESSOR_OFF_T;
+    protected final static Accessor_Pid_t ACCESSOR_PID_T;
     protected final static Accessor_Size_t ACCESSOR_SIZE_T;
     protected final static Accessor_Time_t ACCESSOR_TIME_T;
+    protected final static Accessor_Uid_t ACCESSOR_UID_T;
 
     static {
         switch (PosixDataType.off_t.baseDataType) {
@@ -148,6 +178,13 @@ public abstract class PosixStruct32 extends Struct32 {
                 break;
             default:
                 throw new IllegalStateException("off_t is neither int64_t nor int32_t");
+        }
+        switch (PosixDataType.pid_t.baseDataType) {
+            case int32_t:
+                ACCESSOR_PID_T = new Accessor_Pid_t_As_int32_t();
+                break;
+            default:
+                throw new IllegalStateException("pid_t is not int32_t");
         }
         switch (PosixDataType.size_t.baseDataType) {
             case uint64_t:
@@ -168,6 +205,13 @@ public abstract class PosixStruct32 extends Struct32 {
                 break;
             default:
                 throw new IllegalStateException("time_t is neither int64_t nor int32_t");
+        }
+        switch (PosixDataType.uid_t.baseDataType) {
+            case uint32_t:
+                ACCESSOR_UID_T = new Accessor_Uid_t_As_uint32_t();
+                break;
+            default:
+                throw new IllegalStateException("uid_t is not uint32_t");
         }
     }
 

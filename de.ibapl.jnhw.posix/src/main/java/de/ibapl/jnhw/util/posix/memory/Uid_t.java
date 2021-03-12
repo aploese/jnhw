@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.util.posix.memory;
 
-import de.ibapl.jnhw.annotation.posix.sys.types.off_t;
+import de.ibapl.jnhw.annotation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;
@@ -33,24 +33,24 @@ import java.io.IOException;
  *
  * @author aploese
  */
-@off_t
-public class Off_t extends NativeIntNumber implements Accessor_Off_t {
+@uid_t
+public class Uid_t extends NativeIntNumber implements Accessor_Uid_t {
 
-    private final static BaseDataType dataType = PosixDataType.off_t.baseDataType;
+    private final static BaseDataType dataType = PosixDataType.uid_t.baseDataType;
 
-    public Off_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Uid_t(AbstractNativeMemory owner, long offset, Byte setMem) {
         super(owner, offset, dataType.SIZE_OF, setMem);
     }
 
     @Override
-    public void off_t(OpaqueMemory32 mem, long offset, @off_t long value) {
-        PosixStruct32.ACCESSOR_OFF_T.off_t(mem, offset, value);
+    public void uid_t(OpaqueMemory32 mem, long offset, @uid_t long value) {
+        PosixStruct32.ACCESSOR_UID_T.uid_t(mem, offset, value);
     }
 
     @Override
-    @off_t
-    public long off_t(OpaqueMemory32 mem, long offset) {
-        return PosixStruct32.ACCESSOR_OFF_T.off_t(mem, offset);
+    @uid_t
+    public long uid_t(OpaqueMemory32 mem, long offset) {
+        return PosixStruct32.ACCESSOR_UID_T.uid_t(mem, offset);
     }
 
     @Override

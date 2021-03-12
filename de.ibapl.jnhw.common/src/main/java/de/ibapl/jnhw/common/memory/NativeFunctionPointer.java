@@ -53,11 +53,11 @@ public class NativeFunctionPointer {
         this.nativeAddress = producer.apply((T) this).address;
     }
 
-    protected NativeFunctionPointer(NativeAddressHolder src) {
+    public NativeFunctionPointer(NativeAddressHolder src) {
         this.nativeAddress = src.address;
     }
 
-    protected NativeFunctionPointer(NativeFunctionPointer src) {
+    public NativeFunctionPointer(NativeFunctionPointer src) {
         this.nativeAddress = src.nativeAddress;
     }
 
@@ -65,7 +65,7 @@ public class NativeFunctionPointer {
         this.nativeAddress = nativeAddress;
     }
 
-    private final long nativeAddress;
+    final long nativeAddress;
 
     @Override
     public int hashCode() {

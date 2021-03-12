@@ -20,6 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
+#include "de_ibapl_jnhw_posix_Pthread_Pthread_attr_t.h"
 #include "de_ibapl_jnhw_posix_Pthread_Pthread_t.h"
 
 #ifdef __cplusplus
@@ -28,28 +29,34 @@ extern "C" {
 
 #ifdef _POSIX_VERSION
 #include <pthread.h>
-    //for offsetof
-#include <stddef.h>
 #include <unistd.h>
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_t
-     * Method:    alignof
-     * Signature: ()I
+     * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_attr_t
+     * Method:    native2Layout
+     * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t/Layout;
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_alignof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __alignof__ (pthread_t);
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1attr_1t_native2Layout
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jclass layoutClass) {
+        jobject result = JnhwCreateStructLayout(env, layoutClass, sizeof (pthread_attr_t), __alignof__ (pthread_attr_t));
+        if (result == NULL) {
+            return NULL;
+        }
+        return result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_t
-     * Method:    sizeof
-     * Signature: ()I
+     * Method:    native2Layout
+     * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/posix/Pthread/Pthread_t/Layout;
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_sizeof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return sizeof (pthread_t);
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_native2Layout
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jclass layoutClass) {
+        jobject result = JnhwCreateStructLayout(env, layoutClass, sizeof (pthread_t), __alignof__ (pthread_t));
+        if (result == NULL) {
+            return NULL;
+        }
+        return result;
     }
 
     /*
@@ -68,6 +75,7 @@ extern "C" {
 #endif
         return (*env)->NewStringUTF(env, buf);
     }
+
 
 #endif
 #ifdef __cplusplus

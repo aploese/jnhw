@@ -24,16 +24,16 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.annotation.posix.sys.types.clockid_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.pthread_attr_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.pthread_t;
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.io.IOException;
 
@@ -250,38 +250,50 @@ public class Pthread {
     @pthread_attr_t
     public static final class Pthread_attr_t extends Struct32 {
 
+        public static class Layout extends StructLayout {
+
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
+
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
-
-        /**
-         * Get the real size of struct pthread_attr_t natively.
-         *
-         * @return the native value sizeof(struct pthread_attr_t).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
 
         public Pthread_attr_t() {
-            this(null, 0, null);
-        }
-
-        public Pthread_attr_t(OpaqueMemory32 owner, int offset) {
-            this(owner, offset, null);
+            this(null, 0, MEM_UNINITIALIZED);
         }
 
         public Pthread_attr_t(NativeAddressHolder baseAddress) {
-            super(baseAddress, sizeof());
+            super(baseAddress, LAYOUT.sizeof);
         }
 
         public Pthread_attr_t(OpaqueMemory32 parent, int offset, Byte setMem) {
-            super(parent, offset, sizeof(), setMem);
+            super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
     }
@@ -295,38 +307,50 @@ public class Pthread {
     @pthread_t
     public static final class Pthread_t extends Struct32 {
 
+        public static class Layout extends StructLayout {
+
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
+
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
-
-        /**
-         * Get the real size of struct pthread_t natively.
-         *
-         * @return the native value sizeof(struct pthread_t).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
 
         public Pthread_t() {
-            this(null, 0, null);
-        }
-
-        public Pthread_t(OpaqueMemory32 owner, int offset) {
-            this(owner, offset, null);
+            this(null, 0, MEM_UNINITIALIZED);
         }
 
         public Pthread_t(OpaqueMemory32 parent, int offset, Byte setMem) {
-            super(parent, offset, sizeof(), setMem);
+            super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
         public Pthread_t(NativeAddressHolder baseAddress) {
-            super(baseAddress, sizeof());
+            super(baseAddress, LAYOUT.sizeof);
         }
 
         @Override

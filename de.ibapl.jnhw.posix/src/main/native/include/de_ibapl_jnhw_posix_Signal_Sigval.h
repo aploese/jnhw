@@ -9,51 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Signal_Sigval
- * Method:    sival_ptr
- * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+ * Method:    native2Layout
+ * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/posix/Signal/Sigval/Layout;
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigval
- * Method:    sizeof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sizeof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigval
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_alignof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigval
- * Method:    sival_int
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1int__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigval
- * Method:    sival_int
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1int__I
-  (JNIEnv *, jobject, jint);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigval
- * Method:    sival_ptr0
- * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory32;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_sival_1ptr0
-  (JNIEnv *, jobject, jobject);
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigval_native2Layout
+  (JNIEnv *, jclass, jclass);
 
 #ifdef __cplusplus
 }

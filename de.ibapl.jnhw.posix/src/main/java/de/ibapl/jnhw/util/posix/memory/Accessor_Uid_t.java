@@ -19,40 +19,21 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_Pthread_Pthread_attr_t.h"
+package de.ibapl.jnhw.util.posix.memory;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+import de.ibapl.jnhw.annotation.posix.sys.types.uid_t;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 
-#ifdef _POSIX_VERSION
-#include <pthread.h>
-    //for offsetof
-#include <stddef.h>
-#include <unistd.h>
+/**
+ *
+ * @author aploese
+ */
+@uid_t
+public interface Accessor_Uid_t {
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_attr_t
-     * Method:    sizeof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1attr_1t_sizeof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return sizeof (pthread_attr_t);
-    }
+    void uid_t(OpaqueMemory32 mem, long offset, @uid_t long value);
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_attr_t
-     * Method:    alignof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1attr_1t_alignof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __alignof__ (pthread_attr_t);
-    }
+    @uid_t
+    long uid_t(OpaqueMemory32 mem, long offset);
 
-#endif
-#ifdef __cplusplus
 }
-#endif

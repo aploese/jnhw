@@ -349,7 +349,7 @@ public class Aio {
 
         private static native Layout native2Layout(Class<Layout> layoutClass);
 
-        public final static Layout LAYOUT;
+        private final static Layout LAYOUT;
 
         /**
          * Make sure the native lib is loaded
@@ -378,8 +378,15 @@ public class Aio {
             this(null, 0, SET_MEM_TO_0);
         }
 
+        public static Layout getLayoutOrThrow() throws NoSuchNativeTypeException {
+            if (LAYOUT == null) {
+                throw new NoSuchNativeTypeException("Aio.Aiocb");
+            }
+            return LAYOUT;
+        }
+
         public Aiocb(OpaqueMemory32 parent, int offset, Byte setMem) throws NoSuchNativeTypeException {
-            super(parent, offset, LAYOUT.sizeof, setMem);
+            super(parent, offset, getLayoutOrThrow().sizeof, setMem);
             aio_sigevent = new Sigevent(this, LAYOUT.aio_sigevent, MEM_UNINITIALIZED);
         }
 
@@ -401,7 +408,7 @@ public class Aio {
          *
          * @return the native value of aio_fildes.
          */
-        public int aio_fildes() throws NoSuchNativeTypeException {
+        public int aio_fildes() {
             return MEM_ACCESS.int32_t(this, LAYOUT.aio_fildes);
         }
 
@@ -412,7 +419,7 @@ public class Aio {
          *
          * @param aio_fildes the value of aio_fildes to be set natively.
          */
-        public void aio_fildes(int aio_fildes) throws NoSuchNativeTypeException {
+        public void aio_fildes(int aio_fildes) {
             MEM_ACCESS.int32_t(this, LAYOUT.aio_fildes, aio_fildes);
         }
 
@@ -424,7 +431,7 @@ public class Aio {
          * @return the native value of aio_offset.
          */
         @off_t
-        public long aio_offset() throws NoSuchNativeTypeException {
+        public long aio_offset() {
             return ACCESSOR_OFF_T.off_t(this, LAYOUT.aio_offset);
         }
 
@@ -435,7 +442,7 @@ public class Aio {
          *
          * @param aio_offset the value of aio_offset to be set natively.
          */
-        public void aio_offset(@off_t long aio_offset) throws NoSuchNativeTypeException {
+        public void aio_offset(@off_t long aio_offset) {
             ACCESSOR_OFF_T.off_t(this, LAYOUT.aio_offset, aio_offset);
         }
 
@@ -445,7 +452,7 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public ByteBuffer aio_bufAsByteBuffer() throws NoSuchNativeTypeException {
+        public ByteBuffer aio_bufAsByteBuffer() {
             final NativeAddressHolder result = aio_buf();
             if (aio_buf == null) {
                 if (result.isNULL()) {
@@ -467,7 +474,7 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public NativeAddressHolder aio_buf() throws NoSuchNativeTypeException {
+        public NativeAddressHolder aio_buf() {
             return MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf);
         }
 
@@ -477,7 +484,7 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public OpaqueMemory32 aio_bufAsOpaqueMemory() throws NoSuchNativeTypeException {
+        public OpaqueMemory32 aio_bufAsOpaqueMemory() {
             final NativeAddressHolder result = aio_buf();
             if (aio_buf == null) {
                 if (result.isNULL()) {
@@ -502,7 +509,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(ByteBuffer aio_buf) throws NoSuchNativeTypeException {
+        public void aio_buf(ByteBuffer aio_buf) {
             if (aio_buf == null) {
                 MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf, NativeAddressHolder.NULL);
                 ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes, 0);
@@ -522,7 +529,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory32 aio_buf) throws NoSuchNativeTypeException {
+        public void aio_buf(OpaqueMemory32 aio_buf) {
             if (aio_buf == null) {
                 MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf, NativeAddressHolder.NULL);
                 ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes, 0);
@@ -546,7 +553,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory32 aio_buf, int off, @size_t int aio_nbytes) throws NoSuchNativeTypeException {
+        public void aio_buf(OpaqueMemory32 aio_buf, int off, @size_t int aio_nbytes) {
             if (aio_buf == null) {
                 if (off != 0) {
                     throw new IllegalArgumentException("off must be 0");
@@ -580,7 +587,7 @@ public class Aio {
          * @return the native value of aio_nbytes.
          */
         @size_t
-        public long aio_nbytes() throws NoSuchNativeTypeException {
+        public long aio_nbytes() {
             return ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes);
         }
 
@@ -591,7 +598,7 @@ public class Aio {
          *
          * @return the native value of aio_reqprio.
          */
-        public int aio_reqprio() throws NoSuchNativeTypeException {
+        public int aio_reqprio() {
             return MEM_ACCESS.int32_t(this, LAYOUT.aio_reqprio);
         }
 
@@ -602,7 +609,7 @@ public class Aio {
          *
          * @param aio_reqprio the value of aio_reqprio to be set natively.
          */
-        public void aio_reqprio(int aio_reqprio) throws NoSuchNativeTypeException {
+        public void aio_reqprio(int aio_reqprio) {
             MEM_ACCESS.int32_t(this, LAYOUT.aio_reqprio, aio_reqprio);
         }
 
@@ -613,7 +620,7 @@ public class Aio {
          *
          * @return the native value of aio_lio_opcode.
          */
-        public int aio_lio_opcode() throws NoSuchNativeTypeException {
+        public int aio_lio_opcode() {
             return MEM_ACCESS.int32_t(this, LAYOUT.aio_lio_opcode);
         }
 
@@ -624,25 +631,21 @@ public class Aio {
          *
          * @param aio_lio_opcode the value of aio_lio_opcode to be set natively.
          */
-        public void aio_lio_opcode(int aio_lio_opcode) throws NoSuchNativeTypeException {
+        public void aio_lio_opcode(int aio_lio_opcode) {
             MEM_ACCESS.int32_t(this, LAYOUT.aio_lio_opcode, aio_lio_opcode);
         }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            try {
-                jsb.appendIntMember("aio_fildes", aio_fildes());
-                jsb.appendUnsignedLongMember("aio_offset", aio_offset());
-                jsb.appendNativeAddressHolderMember("aio_buf", aio_buf());
-                jsb.appendUnsignedLongMember("aio_nbytes", aio_nbytes());
-                jsb.appendIntMember("aio_reqprio", aio_reqprio());
-                jsb.appendStruct32Member("aio_sigevent", aio_sigevent);
-                jsb.appendHexIntMember("aio_lio_opcode", aio_lio_opcode());
-                jsb.close();
-            } catch (NoSuchNativeTypeException nsnte) {
-                throw new RuntimeException(nsnte);
-            }
+            jsb.appendIntMember("aio_fildes", aio_fildes());
+            jsb.appendUnsignedLongMember("aio_offset", aio_offset());
+            jsb.appendNativeAddressHolderMember("aio_buf", aio_buf());
+            jsb.appendUnsignedLongMember("aio_nbytes", aio_nbytes());
+            jsb.appendIntMember("aio_reqprio", aio_reqprio());
+            jsb.appendStruct32Member("aio_sigevent", aio_sigevent);
+            jsb.appendHexIntMember("aio_lio_opcode", aio_lio_opcode());
+            jsb.close();
         }
 
     }
@@ -668,6 +671,7 @@ public class Aio {
 
         public Aiocbs(int arrayLength, OpaqueMemory32 parent, int offset, Byte setMem) throws NoSuchNativeTypeException {
             super(arrayLength, parent, offset, setMem);
+            Aiocb.getLayoutOrThrow();
         }
 
     }

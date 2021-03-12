@@ -21,13 +21,11 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.callback.Callback_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.callback.Callback_NativeRunnable;
 import de.ibapl.jnhw.common.callback.Callback_Mem_V;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
@@ -42,6 +40,8 @@ import de.ibapl.jnhw.annotation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
 import de.ibapl.jnhw.common.callback.Callback_I_V;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.common.util.IntDefine;
@@ -49,6 +49,7 @@ import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
 import java.io.IOException;
 
 /**
@@ -255,38 +256,57 @@ public class Signal {
      */
     public static final class Mcontext_t extends Struct32 {
 
+        public static class Layout extends StructLayout {
+
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        private final static Layout LAYOUT;
+
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        /**
-         * Get the real size of struct mcontext_t natively.
-         *
-         * @return the native value sizeof(struct mcontext_t).
-         */
-        @SizeOf
-        public static native int sizeof() throws NoSuchNativeTypeException;
-
-        @AlignOf
-        public static native int alignof() throws NoSuchNativeTypeException;
+        public static Layout getLayoutOrThrow() throws NoSuchNativeTypeException {
+            if (LAYOUT == null) {
+                throw new NoSuchNativeTypeException("Aio.Aiocb");
+            }
+            return LAYOUT;
+        }
 
         public Mcontext_t() throws NoSuchNativeTypeException {
-            this(null, 0, null);
+            this(null, 0, MEM_UNINITIALIZED);
         }
 
-        public Mcontext_t(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
-            this(owner, offset, null);
-        }
-
-        public Mcontext_t(OpaqueMemory32 owner, int offset, Byte setMem) throws NoSuchNativeTypeException {
-            super(owner, offset, sizeof(), setMem);
+        public Mcontext_t(AbstractNativeMemory owner, long offset, Byte setMem) throws NoSuchNativeTypeException {
+            super(owner, offset, getLayoutOrThrow().sizeof, setMem);
         }
 
         public Mcontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, sizeof());
+            super(baseAddress, getLayoutOrThrow().sizeof);
         }
 
     }
@@ -295,34 +315,46 @@ public class Signal {
 
     public static final class Sigset_t extends Struct32 {
 
+        public static class Layout extends StructLayout {
+
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
+
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
-
-        /**
-         * Get the real size of struct sigset_t natively.
-         *
-         * @return the native value sizeof(struct sigset_t).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
 
         public Sigset_t() {
-            this(null, 0, null);
+            this(null, 0, MEM_UNINITIALIZED);
         }
 
-        public Sigset_t(OpaqueMemory32 owner, int offset) {
-            this(owner, offset, null);
-        }
-
-        public Sigset_t(OpaqueMemory32 parent, int offset, Byte setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Sigset_t(OpaqueMemory32 parent, long offset, Byte setMem) {
+            super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
         private void maybeDoFormatBeforeFirst(Appendable sb, boolean first, final String indent) throws IOException {
@@ -499,43 +531,61 @@ public class Signal {
      */
     public static final class Sigval<T extends OpaqueMemory32> extends Struct32 {
 
-        private native NativeAddressHolder sival_ptr();
+        public static class Layout extends StructLayout {
+
+            public final long sival_int;
+            public final long sival_ptr;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                sival_int = -1;
+                sival_ptr = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
-
-        /**
-         * Get the real size of struct sigval natively.
-         *
-         * @return the native value sizeof(struct sigval).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
 
         public Sigval() {
-            this(null, 0, null);
+            this(null, 0, MEM_UNINITIALIZED);
         }
 
-        public Sigval(OpaqueMemory32 owner, int offset) {
-            this(owner, offset, null);
-        }
-
-        public Sigval(OpaqueMemory32 parent, int offset, Byte setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Sigval(AbstractNativeMemory parent, long offset, Byte setMem) {
+            super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
         public Sigval(NativeAddressHolder baseAddress) {
-            super(baseAddress, sizeof());
+            super(baseAddress, LAYOUT.sizeof);
         }
 
         private T sival_ptr;
+
+        private NativeAddressHolder sival_ptr() {
+            return MEM_ACCESS.uintptr_t(this, LAYOUT.sival_ptr);
+        }
 
         /**
          * Integer signal value.
@@ -544,7 +594,9 @@ public class Signal {
          *
          * @return the native value of sival_int.
          */
-        public native int sival_int();
+        public int sival_int() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.sival_int);
+        }
 
         /**
          * Integer signal value.
@@ -553,7 +605,9 @@ public class Signal {
          *
          * @param sival_int the value of sival_int to be set natively.
          */
-        public native void sival_int(int sival_int);
+        public void sival_int(int sival_int) {
+            MEM_ACCESS.int32_t(this, LAYOUT.sival_int, sival_int);
+        }
 
         /**
          * Pointer signal value.
@@ -577,8 +631,6 @@ public class Signal {
             }
         }
 
-        private native void sival_ptr0(T sival_ptr);
-
         /**
          * Pointer signal value.
          * <b>POSIX:</b>
@@ -588,7 +640,7 @@ public class Signal {
          */
         public final void sival_ptr(T sival_ptr) {
             this.sival_ptr = sival_ptr;
-            sival_ptr0(sival_ptr);
+            MEM_ACCESS.uintptr_t(this, LAYOUT.sival_ptr, sival_ptr);
         }
 
         @Override
@@ -611,25 +663,56 @@ public class Signal {
      */
     public static final class Sigevent<T extends OpaqueMemory32> extends Struct32 {
 
+        public static class Layout extends StructLayout {
+
+            public final long sigev_notify;
+            public final long sigev_signo;
+            public final long sigev_value;
+            public final long sigev_notify_function;
+            public final long sigev_notify_attributes;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                sigev_notify = -1;
+                sigev_signo = -1;
+                sigev_value = -1;
+                sigev_notify_function = -1;
+                sigev_notify_attributes = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        private final static Layout LAYOUT;
+
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        public static native int offsetof_Sigev_value() throws NoSuchNativeTypeException;
-
-        /**
-         * Get the real size of struct sigevent natively.
-         *
-         * @return the native value sizeof(struct sigevent).
-         */
-        @SizeOf
-        public static native int sizeof() throws NoSuchNativeTypeException;
-
-        @AlignOf
-        public static native int alignof() throws NoSuchNativeTypeException;
+        public static Layout getLayoutOrThrow() throws NoSuchNativeTypeException {
+            if (LAYOUT == null) {
+                throw new NoSuchNativeTypeException("Aio.Aiocb");
+            }
+            return LAYOUT;
+        }
 
         /**
          * Signal value.
@@ -639,7 +722,7 @@ public class Signal {
          */
         public final Sigval<T> sigev_value;
         private NativeFunctionPointer sigev_notify_function;
-        Pthread.Pthread_attr_t sigev_notify_attributes;
+        private Pthread.Pthread_attr_t sigev_notify_attributes;
 
         @SuppressWarnings("unchecked")
         public Sigevent() throws NoSuchNativeTypeException {
@@ -648,13 +731,13 @@ public class Signal {
 
         @SuppressWarnings("unchecked")
         public Sigevent(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, sizeof());
-            sigev_value = new Sigval(this, offsetof_Sigev_value());
+            super(baseAddress, getLayoutOrThrow().sizeof);
+            sigev_value = new Sigval(this, getLayoutOrThrow().sigev_value, MEM_UNINITIALIZED);
         }
 
         public Sigevent(AbstractNativeMemory parent, long offset, Byte setMem) throws NoSuchNativeTypeException {
-            super(parent, offset, sizeof(), setMem);
-            sigev_value = new Sigval(this, offsetof_Sigev_value());
+            super(parent, offset, getLayoutOrThrow().sizeof, setMem);
+            sigev_value = new Sigval(this, getLayoutOrThrow().sigev_value, MEM_UNINITIALIZED);
         }
 
         /**
@@ -664,9 +747,13 @@ public class Signal {
          *
          * @return the native value of sigev_notify.
          */
-        public final native int sigev_notify() throws NoSuchNativeTypeException;
+        public int sigev_notify() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.sigev_notify);
+        }
 
-        public final native void sigev_notify(int value) throws NoSuchNativeTypeException;
+        public void sigev_notify(int value) {
+            MEM_ACCESS.int32_t(this, LAYOUT.sigev_notify, value);
+        }
 
         /**
          * Signal number. * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
@@ -674,13 +761,19 @@ public class Signal {
          *
          * @return the native value of sigev_signo.
          */
-        public final native int sigev_signo() throws NoSuchNativeTypeException;
+        public int sigev_signo() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.sigev_signo);
+        }
 
-        public final native void sigev_signo(int value) throws NoSuchNativeTypeException;
+        public void sigev_signo(int value) {
+            MEM_ACCESS.int32_t(this, LAYOUT.sigev_signo, value);
+        }
 
-        private native NativeAddressHolder sigev_notify_attributes() throws NoSuchNativeTypeException;
+        protected NativeAddressHolder sigev_notify_attributes() {
+            return MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_attributes);
+        }
 
-        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemory32Producer<Pthread.Pthread_attr_t, Sigevent> producer) throws NoSuchNativeTypeException {
+        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemory32Producer<Pthread.Pthread_attr_t, Sigevent> producer) {
             final NativeAddressHolder sigev_notify_attributesAddress = sigev_notify_attributes();
             if (sigev_notify_attributes != null) {
                 if (!OpaqueMemory32.isSameAddress(sigev_notify_attributesAddress, sigev_notify_attributes)) {
@@ -695,16 +788,14 @@ public class Signal {
             }
         }
 
-        private native void sigev_notify_attributes0(Pthread.Pthread_attr_t value) throws NoSuchNativeTypeException;
-
-        public final void sigev_notify_attributes(Pthread.Pthread_attr_t value) throws NoSuchNativeTypeException {
+        public void sigev_notify_attributes(Pthread.Pthread_attr_t value) {
             this.sigev_notify_attributes = value;
-            sigev_notify_attributes0(value);
+            MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_attributes, value);
         }
 
-        public final native NativeFunctionPointer sigev_notify_function() throws NoSuchNativeTypeException;
-
-        private native void sigev_notify_function0(NativeFunctionPointer sigev_notify_function) throws NoSuchNativeTypeException;
+        public NativeFunctionPointer sigev_notify_function() {
+            return new NativeFunctionPointer(MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_function));
+        }
 
         /**
          * Even if we can get away with an int we dont do this. BIG ENDIAN will
@@ -714,22 +805,22 @@ public class Signal {
          * @param sigev_notify_function
          * @throws NoSuchNativeTypeException
          */
-        public final void sigev_notify_function(Callback__Sigval_int__V sigev_notify_function) throws NoSuchNativeTypeException {
+        public final void sigev_notify_function(Callback__Sigval_int__V sigev_notify_function) {
             this.sigev_notify_function = sigev_notify_function;
-            sigev_notify_function0(sigev_notify_function);
+            MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_function, sigev_notify_function);
         }
 
-        public final void sigev_notify_function(Callback_Mem_V<T> sigev_notify_function) throws NoSuchNativeTypeException {
+        public final void sigev_notify_function(Callback_Mem_V<T> sigev_notify_function) {
             this.sigev_notify_function = sigev_notify_function;
-            sigev_notify_function0(sigev_notify_function);
+            MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_function, sigev_notify_function);
         }
 
-        public final void sigev_notify_function(Callback_NativeRunnable sigev_notify_function) throws NoSuchNativeTypeException {
+        public final void sigev_notify_function(Callback_NativeRunnable sigev_notify_function) {
             this.sigev_notify_function = sigev_notify_function;
-            sigev_notify_function0(sigev_notify_function);
+            MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_function, sigev_notify_function);
         }
 
-        public final Callback__Sigval_int__V sigev_notify_functionAsCallback__Sigval_int__V() throws NoSuchNativeTypeException {
+        public final Callback__Sigval_int__V sigev_notify_functionAsCallback__Sigval_int__V() {
             if (sigev_notify_function instanceof Callback__Sigval_int__V) {
                 if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
                     return (Callback__Sigval_int__V) sigev_notify_function;
@@ -741,7 +832,7 @@ public class Signal {
             }
         }
 
-        public final Callback_Mem_V sigev_notify_functionAsCallback_PtrOpaqueMemory_V() throws NoSuchNativeTypeException {
+        public final Callback_Mem_V sigev_notify_functionAsCallback_PtrOpaqueMemory_V() {
             if (sigev_notify_function instanceof Callback_Mem_V) {
                 if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
                     return (Callback_Mem_V) sigev_notify_function;
@@ -753,7 +844,7 @@ public class Signal {
             }
         }
 
-        public final Callback_NativeRunnable sigev_notify_functionAsCallback_NativeRunnable() throws NoSuchNativeTypeException {
+        public final Callback_NativeRunnable sigev_notify_functionAsCallback_NativeRunnable() {
             if (sigev_notify_function instanceof Callback_NativeRunnable) {
                 if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
                     return (Callback_NativeRunnable) sigev_notify_function;
@@ -781,16 +872,12 @@ public class Signal {
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            try {
-                jsb.appendIntMember("sigev_notify", sigev_notify(), (value) -> sigev_notify2String(value));
-                jsb.appendIntMember("sigev_signo", sigev_signo(), (value) -> Signal.sigNumber2String(value));
-                //We do not dereference the pointer - just the memory address will do nicely.
-                jsb.appendNativeAddressHolderMember("sigev_notify_attributes", sigev_notify_attributes());
-                jsb.appendFunctionPtrMember("sigev_notify_function", sigev_notify_function);
-                jsb.appendStruct32Member("sigev_value", sigev_value);
-            } catch (NoSuchNativeTypeException nste) {
-                throw new RuntimeException(nste);
-            }
+            jsb.appendIntMember("sigev_notify", sigev_notify(), (value) -> sigev_notify2String(value));
+            jsb.appendIntMember("sigev_signo", sigev_signo(), (value) -> Signal.sigNumber2String(value));
+            //We do not dereference the pointer - just the memory address will do nicely.
+            jsb.appendNativeAddressHolderMember("sigev_notify_attributes", sigev_notify_attributes());
+            jsb.appendFunctionPtrMember("sigev_notify_function", sigev_notify_function);
+            jsb.appendStruct32Member("sigev_value", sigev_value);
             jsb.close();
         }
 
@@ -1079,33 +1166,55 @@ public class Signal {
      */
     public static class Sigaction<T extends OpaqueMemory32> extends Struct32 {
 
+        public static class Layout extends StructLayout {
+
+            public final long sa_handler;
+            public final long sa_mask;
+            public final long sa_flags;
+            public final long sa_sigaction;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                sa_handler = -1;
+                sa_mask = -1;
+                sa_flags = -1;
+                sa_sigaction = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
+
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
-
-        /**
-         * Get the real size of struct sigaction natively.
-         *
-         * @return the native value sizeof(struct sigaction).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public static native int offsetof_Sa_mask();
 
         public Sigaction() {
-            this(null, 0, null);
+            this(null, 0, MEM_UNINITIALIZED);
         }
 
-        public Sigaction(OpaqueMemory32 parent, int offset, Byte setMem) {
-            super(parent, offset, sizeof(), setMem);
-            sa_mask = new Sigset_t(this, offsetof_Sa_mask());
+        public Sigaction(AbstractNativeMemory parent, int offset, Byte setMem) {
+            super(parent, offset, LAYOUT.sizeof, setMem);
+            sa_mask = new Sigset_t(this, LAYOUT.sa_mask, MEM_UNINITIALIZED);
         }
 
         /**
@@ -1126,7 +1235,9 @@ public class Signal {
          *
          * @return the native value of sa_flags.
          */
-        public final native int sa_flags();
+        public int sa_flags() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.sa_flags);
+        }
 
         /**
          * Special flags
@@ -1135,7 +1246,9 @@ public class Signal {
          *
          * @param sa_flags the value of sa_flags to be set natively.
          */
-        public final native void sa_flags(int sa_flags);
+        public void sa_flags(int sa_flags) {
+            MEM_ACCESS.int32_t(this, LAYOUT.sa_flags, sa_flags);
+        }
 
         /**
          * Pointer to a signal-catching function or one of the SIG_IGN or
@@ -1144,7 +1257,9 @@ public class Signal {
          *
          * @return the native value of sa_handler.
          */
-        public final native FunctionPtr_I_V sa_handler();
+        public FunctionPtr_I_V sa_handler() {
+            return new FunctionPtr_I_V(MEM_ACCESS.uintptr_t(this, LAYOUT.sa_handler));
+        }
 
         /**
          * Pointer to a signal-catching function or one of the SIG_IGN or
@@ -1156,7 +1271,7 @@ public class Signal {
          * @return the native value of sa_handler if the cached value match
          * otherwise an exception is thrown.
          */
-        public final Callback_I_V sa_handlerAsCallback_I_V() {
+        public Callback_I_V sa_handlerAsCallback_I_V() {
             final NativeFunctionPointer sa_handler = sa_handler();
             if (cachedHandlerOrAction instanceof Callback_I_V) {
                 if (NativeFunctionPointer.isSameAddress(sa_handler, cachedHandlerOrAction)) {
@@ -1169,11 +1284,9 @@ public class Signal {
             }
         }
 
-        public final native void sa_handler0(FunctionPtr_I_V sa_handler);
-
-        public final void sa_handler(FunctionPtr_I_V sa_handler) {
+        public void sa_handler(FunctionPtr_I_V sa_handler) {
             cachedHandlerOrAction = sa_handler;
-            sa_handler0(sa_handler);
+            MEM_ACCESS.uintptr_t(this, LAYOUT.sa_handler, sa_handler);
         }
 
         /**
@@ -1183,7 +1296,9 @@ public class Signal {
          *
          * @return the native value of sa_sigaction.
          */
-        public final native FunctionPtr_I_Mem_Mem_V sa_sigaction();
+        public final FunctionPtr_I_Mem_Mem_V sa_sigaction() {
+            return new FunctionPtr_I_Mem_Mem_V(MEM_ACCESS.uintptr_t(this, LAYOUT.sa_sigaction));
+        }
 
         /**
          * Pointer to a signal-catching function
@@ -1196,7 +1311,7 @@ public class Signal {
          * otherwise an exception is thrown.
          */
         @SuppressWarnings("unchecked")
-        public final Callback_I_Mem_Mem_V<Siginfo_t, T> sa_sigactionAsCallback_I_Mem_Mem_V() {
+        public Callback_I_Mem_Mem_V<Siginfo_t, T> sa_sigactionAsCallback_I_Mem_Mem_V() {
             final NativeFunctionPointer sa_sigaction = sa_sigaction();
             if (cachedHandlerOrAction instanceof Callback_I_Mem_Mem_V) {
                 if (NativeFunctionPointer.isSameAddress(sa_sigaction, cachedHandlerOrAction)) {
@@ -1209,11 +1324,9 @@ public class Signal {
             }
         }
 
-        public final native <T extends OpaqueMemory32> void sa_sigaction0(FunctionPtr_I_Mem_Mem_V<Siginfo_t, T> sa_sigaction);
-
-        public final <T extends OpaqueMemory32> void sa_sigaction(FunctionPtr_I_Mem_Mem_V<Siginfo_t, T> sa_sigaction) {
+        public <T extends OpaqueMemory32> void sa_sigaction(FunctionPtr_I_Mem_Mem_V<Siginfo_t, T> sa_sigaction) {
             cachedHandlerOrAction = sa_sigaction;
-            sa_sigaction0(sa_sigaction);
+            MEM_ACCESS.uintptr_t(this, LAYOUT.sa_sigaction, sa_sigaction);
         }
 
         @Override
@@ -1342,46 +1455,71 @@ public class Signal {
      */
     public static class Ucontext_t extends Struct32 {
 
+        public static class Layout extends StructLayout {
+
+            public final long uc_link;
+            public final long uc_sigmask;
+            public final long uc_stack;
+            public final long uc_mcontext;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                uc_link = -1;
+                uc_sigmask = -1;
+                uc_stack = -1;
+                uc_mcontext = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        private final static Layout LAYOUT;
+
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        /**
-         * Get the real size of struct ucontext_t natively.
-         *
-         * @return the native value sizeof(struct ucontext_t).
-         */
-        @SizeOf
-        public static native int sizeof() throws NoSuchNativeTypeException;
-
-        @AlignOf
-        public static native int alignof() throws NoSuchNativeTypeException;
-
-        public static native int offsetof_Uc_sigmask() throws NoSuchNativeTypeException;
-
-        public static native int offsetof_Uc_stack() throws NoSuchNativeTypeException;
-
-        public static native int offsetof_Uc_mcontext() throws NoSuchNativeTypeException;
+        public static Layout getLayoutOrThrow() throws NoSuchNativeTypeException {
+            if (LAYOUT == null) {
+                throw new NoSuchNativeTypeException("Aio.Aiocb");
+            }
+            return LAYOUT;
+        }
 
         public Ucontext_t(Byte setMem) throws NoSuchNativeTypeException {
             this(null, 0, setMem);
         }
 
-        public Ucontext_t(OpaqueMemory32 parent, int offset, Byte setMem) throws NoSuchNativeTypeException {
-            super(parent, offset, sizeof(), setMem);
-            uc_sigmask = new Sigset_t(this, offsetof_Uc_sigmask());
-            uc_stack = new Stack_t(this, offsetof_Uc_stack());
-            uc_mcontext = new Mcontext_t(this, offsetof_Uc_mcontext());
+        public Ucontext_t(AbstractNativeMemory parent, long offset, Byte setMem) throws NoSuchNativeTypeException {
+            super(parent, offset, getLayoutOrThrow().sizeof, setMem);
+            uc_sigmask = new Sigset_t(this, getLayoutOrThrow().uc_sigmask, MEM_UNINITIALIZED);
+            uc_stack = new Stack_t(this, getLayoutOrThrow().uc_stack, MEM_UNINITIALIZED);
+            uc_mcontext = new Mcontext_t(this, getLayoutOrThrow().uc_mcontext, MEM_UNINITIALIZED);
         }
 
         public Ucontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, sizeof());
-            uc_sigmask = new Sigset_t(this, offsetof_Uc_sigmask());
-            uc_stack = new Stack_t(this, offsetof_Uc_stack());
-            uc_mcontext = new Mcontext_t(this, offsetof_Uc_mcontext());
+            super(baseAddress, getLayoutOrThrow().sizeof);
+            uc_sigmask = new Sigset_t(this, getLayoutOrThrow().uc_sigmask, MEM_UNINITIALIZED);
+            uc_stack = new Stack_t(this, getLayoutOrThrow().uc_stack, MEM_UNINITIALIZED);
+            uc_mcontext = new Mcontext_t(this, getLayoutOrThrow().uc_mcontext, MEM_UNINITIALIZED);
         }
 
         /**
@@ -1391,7 +1529,9 @@ public class Signal {
          *
          * @return the native value of uc_link.
          */
-        private native NativeAddressHolder uc_link0() throws NoSuchNativeTypeException;
+        private NativeAddressHolder uc_link0() {
+            return MEM_ACCESS.uintptr_t(this, LAYOUT.uc_link);
+        }
 
         /**
          * Pointer to the context that is resumed when this context returns.
@@ -1399,7 +1539,7 @@ public class Signal {
          * ucontext_t}</a>.
          *
          */
-        public final Ucontext_t uc_link(OpaqueMemory32Producer<Ucontext_t, Ucontext_t> producer) throws NoSuchNativeTypeException {
+        public final Ucontext_t uc_link(OpaqueMemory32Producer<Ucontext_t, Ucontext_t> producer) {
             return producer.produce(uc_link0(), this);
         }
 
@@ -1429,11 +1569,7 @@ public class Signal {
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            try {
-                jsb.appendNativeAddressHolderMember("uc_link: ", uc_link0());
-            } catch (NoSuchNativeTypeException nsnte) {
-                //noop...
-            }
+            jsb.appendNativeAddressHolderMember("uc_link: ", uc_link0());
             jsb.appendStruct32Member("uc_sigmask", uc_sigmask);
             jsb.appendStruct32Member("uc_stack", uc_stack);
             jsb.appendStruct32Member("uc_mcontext", uc_mcontext);
@@ -1447,36 +1583,54 @@ public class Signal {
      * stack_t}</a>.
      *
      */
-    public static class Stack_t<T extends OpaqueMemory32> extends Struct32 {
+    public static class Stack_t<T extends OpaqueMemory32> extends PosixStruct32 {
+
+        public static class Layout extends StructLayout {
+
+            public final long ss_sp;
+            public final long ss_size;
+            public final long ss_flags;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                ss_sp = -1;
+                ss_size = -1;
+                ss_flags = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-        }
-
-        /**
-         * Get the real size of struct stack_t natively.
-         *
-         * @return the native value sizeof(struct stack_t).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        private Stack_t(OpaqueMemory32 owner, int offset) {
-            this(owner, offset, null);
+            LAYOUT = native2Layout(Layout.class);
         }
 
         public Stack_t() {
-            this(null, 0, null);
+            this(null, 0, MEM_UNINITIALIZED);
         }
 
-        public Stack_t(OpaqueMemory32 parent, int offset, Byte setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Stack_t(AbstractNativeMemory parent, long offset, Byte setMem) {
+            super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
         /**
@@ -1494,11 +1648,17 @@ public class Signal {
             return result;
         }
 
-        private native void ss_flags(int ss_flags);
+        private void ss_flags(int ss_flags) {
+            MEM_ACCESS.int32_t(this, LAYOUT.ss_flags, ss_flags);
+        }
 
-        private native NativeAddressHolder ss_sp0();
+        private NativeAddressHolder ss_sp0() {
+            return MEM_ACCESS.uintptr_t(this, LAYOUT.ss_sp);
+        }
 
-        private native void ss_size(long sizeInBytes);
+        private void ss_size(@size_t long ss_size) {
+            ACCESSOR_SIZE_T.size_t(this, LAYOUT.ss_size, ss_size);
+        }
 
         /**
          * Stack base or pointer.
@@ -1519,8 +1679,10 @@ public class Signal {
          *
          * @return the native value of ss_size.
          */
-        public final native @size_t
-        long ss_size();
+        @size_t
+        public final long ss_size() {
+            return ACCESSOR_SIZE_T.size_t(this, LAYOUT.ss_size);
+        }
 
         /**
          * Flags.
@@ -1529,9 +1691,13 @@ public class Signal {
          *
          * @return the native value of ss_flags.
          */
-        public final native int ss_flags();
+        public final int ss_flags() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.ss_flags);
+        }
 
-        private native void ss_sp(T ss_sp);
+        private void ss_sp(T ss_sp) {
+            MEM_ACCESS.uintptr_t(this, LAYOUT.ss_sp, ss_sp);
+        }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
@@ -1549,36 +1715,67 @@ public class Signal {
      * siginfo_t}</a>.
      *
      */
-    public static class Siginfo_t<T extends OpaqueMemory32> extends Struct32 {
+    public static class Siginfo_t<T extends OpaqueMemory32> extends PosixStruct32 {
+
+        public static class Layout extends StructLayout {
+
+            public final long si_signo;
+            public final long si_code;
+            public final long si_errno;
+            public final long si_pid;
+            public final long si_uid;
+            public final long si_addr;
+            public final long si_status;
+            public final long si_band;
+            public final long si_value;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                si_signo = -1;
+                si_code = -1;
+                si_errno = -1;
+                si_pid = -1;
+                si_uid = -1;
+                si_addr = -1;
+                si_status = -1;
+                si_band = -1;
+                si_value = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        /**
-         * Get the real size of struct siginfo_t natively.
-         *
-         * @return the native value sizeof(struct siginfo_t).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public static native int offsetof_Si_value();
-
-        @SuppressWarnings("unchecked")
         public Siginfo_t() {
-            this(null, 0, null);
+            this(null, 0, MEM_UNINITIALIZED);
         }
 
-        public Siginfo_t(OpaqueMemory32 parent, int offset, Byte setMem) {
-            super(parent, offset, sizeof(), setMem);
-            si_value = new Sigval(this, offsetof_Si_value());
+        public Siginfo_t(AbstractNativeMemory parent, long offset, Byte setMem) {
+            super(parent, offset, LAYOUT.sizeof, setMem);
+            si_value = new Sigval(this, LAYOUT.si_value, MEM_UNINITIALIZED);
         }
 
         /**
@@ -1586,10 +1783,9 @@ public class Signal {
          *
          * @param address
          */
-        @SuppressWarnings("unchecked")
         public Siginfo_t(NativeAddressHolder address) {
-            super(address, sizeof());
-            si_value = new Sigval(this, offsetof_Si_value());
+            super(address, LAYOUT.sizeof);
+            si_value = new Sigval(this, LAYOUT.si_value, MEM_UNINITIALIZED);
         }
 
         /**
@@ -1599,7 +1795,9 @@ public class Signal {
          *
          * @return the native value of si_signo.
          */
-        public final native int si_signo();
+        public final int si_signo() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.si_signo);
+        }
 
         /**
          * Signal code.
@@ -1608,7 +1806,9 @@ public class Signal {
          *
          * @return the native value of si_code.
          */
-        public final native int si_code();
+        public final int si_code() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.si_code);
+        }
 
         /**
          * If non-zero, an errno value associated with this signal, as described
@@ -1618,7 +1818,9 @@ public class Signal {
          *
          * @return the native value of si_errno.
          */
-        public final native int si_errno();
+        public final int si_errno() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.si_errno);
+        }
 
         /**
          * Sending process ID.pid_t si_pid Sending process ID..
@@ -1627,8 +1829,10 @@ public class Signal {
          *
          * @return the native value of si_pid.
          */
-        public final native @pid_t
-        int si_pid();
+        @pid_t
+        public final int si_pid() {
+            return ACCESSOR_PID_T.pid_t(this, LAYOUT.si_pid);
+        }
 
         /**
          * Sending process ID.uid_t si_uid Real user ID of sending process.
@@ -1637,8 +1841,10 @@ public class Signal {
          *
          * @return the native value of si_pid.
          */
-        public final native @uid_t
-        int si_uid();
+        @uid_t
+        public final long si_uid() {
+            return ACCESSOR_UID_T.uid_t(this, LAYOUT.si_uid);
+        }
 
         /**
          * Address of faulting instruction.
@@ -1647,7 +1853,9 @@ public class Signal {
          *
          * @return the native value of si_addr.
          */
-        public final native long si_addr();
+        public final NativeAddressHolder si_addr() {
+            return MEM_ACCESS.uintptr_t(this, LAYOUT.si_addr);
+        }
 
         /**
          * Exit value or signal.
@@ -1656,7 +1864,9 @@ public class Signal {
          *
          * @return the native value of si_status.
          */
-        public final native int si_status();
+        public final int si_status() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.si_status);
+        }
 
         /**
          * Band event for SIGPOLL.
@@ -1665,7 +1875,12 @@ public class Signal {
          *
          * @return the native value of si_band.
          */
-        public final native long si_band() throws NoSuchNativeTypeMemberException;
+        public final long si_band() throws NoSuchNativeTypeMemberException {
+            if (LAYOUT.si_band == -1) {
+                throw new NoSuchNativeTypeMemberException("siginfo_t", "si_band");
+            }
+            return MEM_ACCESS.signed_long(this, LAYOUT.si_band);
+        }
         /**
          * Signal value.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
@@ -1677,7 +1892,7 @@ public class Signal {
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            jsb.appendAddressMember("si_addr", si_addr());
+            jsb.appendNativeAddressHolderMember("si_addr", si_addr());
             try {
                 jsb.appendHexLongMember("si_band", si_band());
             } catch (NoSuchNativeTypeMemberException nsntme) {

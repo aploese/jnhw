@@ -175,18 +175,15 @@ am_libposixutils_la_OBJECTS = Defines.lo
 libposixutils_la_OBJECTS = $(am_libposixutils_la_OBJECTS)
 libpthread_la_LIBADD =
 am_libpthread_la_OBJECTS = PthreadDefines.lo PthreadFunctions.lo \
-	Pthread_Pthread_t.lo Pthread_Pthread_attr_t.lo
+	PthreadStructures.lo
 libpthread_la_OBJECTS = $(am_libpthread_la_OBJECTS)
 libsched_la_LIBADD =
 am_libsched_la_OBJECTS = SchedDefines.lo SchedFunctions.lo \
-	Sched_Sched_param.lo
+	SchedStructures.lo
 libsched_la_OBJECTS = $(am_libsched_la_OBJECTS)
 libsignal_la_LIBADD =
 am_libsignal_la_OBJECTS = SignalDefines.lo SignalFunctions.lo \
-	Signal_Sigaction.lo Signal_Sigevent.lo Signal_Siginfo_t.lo \
-	Signal_Sigset_t.lo Signal_Sigval.lo Signal_Stack_t.lo \
-	Signal_Ucontext_t.lo Signal_Mcontext_t.lo \
-	Callback__Sigval_int__V_Impl.lo
+	SignalStructures.lo Callback__Sigval_int__V_Impl.lo
 libsignal_la_OBJECTS = $(am_libsignal_la_OBJECTS)
 libstdio_la_LIBADD =
 am_libstdio_la_OBJECTS = StdioDefines.lo StdioFunctions.lo
@@ -246,18 +243,10 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/Posix_ErrnoDefines.Plo \
 	./$(DEPDIR)/PthreadDefines.Plo \
 	./$(DEPDIR)/PthreadFunctions.Plo \
-	./$(DEPDIR)/Pthread_Pthread_attr_t.Plo \
-	./$(DEPDIR)/Pthread_Pthread_t.Plo ./$(DEPDIR)/SchedDefines.Plo \
-	./$(DEPDIR)/SchedFunctions.Plo \
-	./$(DEPDIR)/Sched_Sched_param.Plo \
+	./$(DEPDIR)/PthreadStructures.Plo ./$(DEPDIR)/SchedDefines.Plo \
+	./$(DEPDIR)/SchedFunctions.Plo ./$(DEPDIR)/SchedStructures.Plo \
 	./$(DEPDIR)/SignalDefines.Plo ./$(DEPDIR)/SignalFunctions.Plo \
-	./$(DEPDIR)/Signal_Mcontext_t.Plo \
-	./$(DEPDIR)/Signal_Sigaction.Plo \
-	./$(DEPDIR)/Signal_Sigevent.Plo \
-	./$(DEPDIR)/Signal_Siginfo_t.Plo \
-	./$(DEPDIR)/Signal_Sigset_t.Plo ./$(DEPDIR)/Signal_Sigval.Plo \
-	./$(DEPDIR)/Signal_Stack_t.Plo \
-	./$(DEPDIR)/Signal_Ucontext_t.Plo ./$(DEPDIR)/StatDefines.Plo \
+	./$(DEPDIR)/SignalStructures.Plo ./$(DEPDIR)/StatDefines.Plo \
 	./$(DEPDIR)/StatFunctions.Plo ./$(DEPDIR)/StdioDefines.Plo \
 	./$(DEPDIR)/StdioFunctions.Plo \
 	./$(DEPDIR)/StringHeaderDefines.Plo \
@@ -566,25 +555,17 @@ libposixutils_la_SOURCES = \
 libpthread_la_SOURCES = \
  PthreadDefines.c \
  PthreadFunctions.c \
- Pthread_Pthread_t.c \
- Pthread_Pthread_attr_t.c
+ PthreadStructures.c
 
 libsched_la_SOURCES = \
  SchedDefines.c \
  SchedFunctions.c \
- Sched_Sched_param.c
+ SchedStructures.c
 
 libsignal_la_SOURCES = \
  SignalDefines.c \
  SignalFunctions.c \
- Signal_Sigaction.c \
- Signal_Sigevent.c \
- Signal_Siginfo_t.c \
- Signal_Sigset_t.c \
- Signal_Sigval.c \
- Signal_Stack_t.c \
- Signal_Ucontext_t.c \
- Signal_Mcontext_t.c \
+ SignalStructures.c \
  Callback__Sigval_int__V_Impl.c
 
 libstdio_la_SOURCES = \
@@ -789,21 +770,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Pthread_Pthread_attr_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Pthread_Pthread_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Sched_Sched_param.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Mcontext_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Sigaction.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Sigevent.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Siginfo_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Sigset_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Sigval.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Stack_t.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Signal_Ucontext_t.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdioDefines.Plo@am__quote@ # am--include-marker
@@ -1005,21 +978,13 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
-	-rm -f ./$(DEPDIR)/Pthread_Pthread_attr_t.Plo
-	-rm -f ./$(DEPDIR)/Pthread_Pthread_t.Plo
+	-rm -f ./$(DEPDIR)/PthreadStructures.Plo
 	-rm -f ./$(DEPDIR)/SchedDefines.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
-	-rm -f ./$(DEPDIR)/Sched_Sched_param.Plo
+	-rm -f ./$(DEPDIR)/SchedStructures.Plo
 	-rm -f ./$(DEPDIR)/SignalDefines.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
-	-rm -f ./$(DEPDIR)/Signal_Mcontext_t.Plo
-	-rm -f ./$(DEPDIR)/Signal_Sigaction.Plo
-	-rm -f ./$(DEPDIR)/Signal_Sigevent.Plo
-	-rm -f ./$(DEPDIR)/Signal_Siginfo_t.Plo
-	-rm -f ./$(DEPDIR)/Signal_Sigset_t.Plo
-	-rm -f ./$(DEPDIR)/Signal_Sigval.Plo
-	-rm -f ./$(DEPDIR)/Signal_Stack_t.Plo
-	-rm -f ./$(DEPDIR)/Signal_Ucontext_t.Plo
+	-rm -f ./$(DEPDIR)/SignalStructures.Plo
 	-rm -f ./$(DEPDIR)/StatDefines.Plo
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo
 	-rm -f ./$(DEPDIR)/StdioDefines.Plo
@@ -1106,21 +1071,13 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
-	-rm -f ./$(DEPDIR)/Pthread_Pthread_attr_t.Plo
-	-rm -f ./$(DEPDIR)/Pthread_Pthread_t.Plo
+	-rm -f ./$(DEPDIR)/PthreadStructures.Plo
 	-rm -f ./$(DEPDIR)/SchedDefines.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
-	-rm -f ./$(DEPDIR)/Sched_Sched_param.Plo
+	-rm -f ./$(DEPDIR)/SchedStructures.Plo
 	-rm -f ./$(DEPDIR)/SignalDefines.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
-	-rm -f ./$(DEPDIR)/Signal_Mcontext_t.Plo
-	-rm -f ./$(DEPDIR)/Signal_Sigaction.Plo
-	-rm -f ./$(DEPDIR)/Signal_Sigevent.Plo
-	-rm -f ./$(DEPDIR)/Signal_Siginfo_t.Plo
-	-rm -f ./$(DEPDIR)/Signal_Sigset_t.Plo
-	-rm -f ./$(DEPDIR)/Signal_Sigval.Plo
-	-rm -f ./$(DEPDIR)/Signal_Stack_t.Plo
-	-rm -f ./$(DEPDIR)/Signal_Ucontext_t.Plo
+	-rm -f ./$(DEPDIR)/SignalStructures.Plo
 	-rm -f ./$(DEPDIR)/StatDefines.Plo
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo
 	-rm -f ./$(DEPDIR)/StdioDefines.Plo

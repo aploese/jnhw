@@ -510,6 +510,8 @@ public interface MemoryAccessor {
 
     void uintptr_t(OpaqueMemory32 mem, long offset, NativeAddressHolder dest);
 
+    void uintptr_t(OpaqueMemory32 mem, long offset, NativeFunctionPointer dest);
+
     NativeAddressHolder uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index);
 
     void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, OpaqueMemory32 dest);

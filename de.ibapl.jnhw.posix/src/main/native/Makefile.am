@@ -95,25 +95,17 @@ libposixutils_la_SOURCES = \
 libpthread_la_SOURCES = \
  PthreadDefines.c \
  PthreadFunctions.c \
- Pthread_Pthread_t.c \
- Pthread_Pthread_attr_t.c
+ PthreadStructures.c
 
 libsched_la_SOURCES = \
  SchedDefines.c \
  SchedFunctions.c \
- Sched_Sched_param.c
+ SchedStructures.c
 
 libsignal_la_SOURCES = \
  SignalDefines.c \
  SignalFunctions.c \
- Signal_Sigaction.c \
- Signal_Sigevent.c \
- Signal_Siginfo_t.c \
- Signal_Sigset_t.c \
- Signal_Sigval.c \
- Signal_Stack_t.c \
- Signal_Ucontext_t.c \
- Signal_Mcontext_t.c \
+ SignalStructures.c \
  Callback__Sigval_int__V_Impl.c
 
 libstdio_la_SOURCES = \

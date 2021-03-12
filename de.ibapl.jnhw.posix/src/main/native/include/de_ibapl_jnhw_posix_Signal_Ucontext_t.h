@@ -9,51 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
- * Method:    sizeof
- * Signature: ()I
+ * Method:    native2Layout
+ * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/posix/Signal/Ucontext_t/Layout;
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_sizeof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_alignof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
- * Method:    offsetof_Uc_sigmask
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_offsetof_1Uc_1sigmask
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
- * Method:    offsetof_Uc_stack
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_offsetof_1Uc_1stack
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
- * Method:    offsetof_Uc_mcontext
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_offsetof_1Uc_1mcontext
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Ucontext_t
- * Method:    uc_link0
- * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_uc_1link0
-  (JNIEnv *, jobject);
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Ucontext_1t_native2Layout
+  (JNIEnv *, jclass, jclass);
 
 #ifdef __cplusplus
 }

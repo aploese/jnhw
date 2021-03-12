@@ -100,6 +100,11 @@ abstract class UnsafeMemoryAccessor implements MemoryAccessor {
     }
 
     @Override
+    public void uintptr_t(OpaqueMemory32 mem, long offset, NativeFunctionPointer dest) {
+        unsafe.putAddress(mem.baseAddress + offset, dest.nativeAddress);
+    }
+
+    @Override
     public NativeAddressHolder uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
         return new NativeAddressHolder(unsafe.getAddress(mem.baseAddress + offset + index * unsafe.addressSize()));
     }

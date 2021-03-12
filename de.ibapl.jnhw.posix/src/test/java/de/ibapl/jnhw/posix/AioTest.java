@@ -761,23 +761,23 @@ public class AioTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(144, Aio.Aiocb.LAYOUT.sizeof);
+                        Assertions.assertEquals(144, Aio.Aiocb.getLayoutOrThrow().sizeof);
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(168, Aio.Aiocb.LAYOUT.sizeof);
+                        Assertions.assertEquals(168, Aio.Aiocb.getLayoutOrThrow().sizeof);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Aio.Aiocb.LAYOUT.sizeof);
+                        Assertions.assertEquals(-1, Aio.Aiocb.getLayoutOrThrow().sizeof);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(160, Aio.Aiocb.LAYOUT.sizeof);
+                Assertions.assertEquals(160, Aio.Aiocb.getLayoutOrThrow().sizeof);
                 break;
             case OPEN_BSD:
-                Assertions.assertNull(Aio.Aiocb.LAYOUT);
+                Assertions.assertNull(Aio.Aiocb.getLayoutOrThrow());
                 break;
             default:
-                Assertions.assertEquals(-1, Aio.Aiocb.LAYOUT.sizeof);
+                Assertions.assertEquals(-1, Aio.Aiocb.getLayoutOrThrow().sizeof);
         }
     }
 
@@ -788,20 +788,20 @@ public class AioTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(Alignment.AT_4, Aio.Aiocb.LAYOUT.alignment);
+                        Assertions.assertEquals(Alignment.AT_4, Aio.Aiocb.getLayoutOrThrow().alignment);
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(Alignment.AT_8, Aio.Aiocb.LAYOUT.alignment);
+                        Assertions.assertEquals(Alignment.AT_8, Aio.Aiocb.getLayoutOrThrow().alignment);
                         break;
                     default:
-                        Assertions.assertEquals(null, Aio.Aiocb.LAYOUT.alignment);
+                        Assertions.assertEquals(null, Aio.Aiocb.getLayoutOrThrow().alignment);
                 }
                 break;
             case OPEN_BSD:
-                Assertions.assertNull(Aio.Aiocb.LAYOUT);
+                Assertions.assertNull(Aio.Aiocb.getLayoutOrThrow());
                 break;
             default:
-                Assertions.assertEquals(null, Aio.Aiocb.LAYOUT.alignment);
+                Assertions.assertEquals(null, Aio.Aiocb.getLayoutOrThrow().alignment);
         }
     }
 
@@ -811,23 +811,23 @@ public class AioTest {
             case LINUX:
                 switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
                     case _32_BIT:
-                        Assertions.assertEquals(20, Aio.Aiocb.LAYOUT.aio_sigevent);
+                        Assertions.assertEquals(20, Aio.Aiocb.getLayoutOrThrow().aio_sigevent);
                         break;
                     case _64_BIT:
-                        Assertions.assertEquals(32, Aio.Aiocb.LAYOUT.aio_sigevent);
+                        Assertions.assertEquals(32, Aio.Aiocb.getLayoutOrThrow().aio_sigevent);
                         break;
                     default:
-                        Assertions.assertEquals(-1, Aio.Aiocb.LAYOUT.aio_sigevent);
+                        Assertions.assertEquals(-1, Aio.Aiocb.getLayoutOrThrow().aio_sigevent);
                 }
                 break;
             case FREE_BSD:
-                Assertions.assertEquals(80, Aio.Aiocb.LAYOUT.aio_sigevent);
+                Assertions.assertEquals(80, Aio.Aiocb.getLayoutOrThrow().aio_sigevent);
                 break;
             case OPEN_BSD:
-                Assertions.assertNull(Aio.Aiocb.LAYOUT);
+                Assertions.assertNull(Aio.Aiocb.getLayoutOrThrow());
                 break;
             default:
-                Assertions.assertEquals(-1, Aio.Aiocb.LAYOUT.aio_sigevent);
+                Assertions.assertEquals(-1, Aio.Aiocb.getLayoutOrThrow().aio_sigevent);
         }
     }
 

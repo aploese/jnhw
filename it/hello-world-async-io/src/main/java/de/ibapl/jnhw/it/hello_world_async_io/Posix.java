@@ -187,7 +187,7 @@ public class Posix {
                 Callback_NativeRunnable.INSTANCE.nativeToString(osa, "", " ");
                 osa.append("\n");
                 System.out.flush();
-            } catch (IOException | NoSuchNativeTypeException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }

@@ -31,6 +31,8 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
@@ -77,49 +79,58 @@ public class Sched {
      */
     public static class Sched_param extends Struct32 {
 
+        public static class Layout extends StructLayout {
+
+            public final long sched_priority;
+            public final long sched_ss_low_priority;
+            public final long sched_ss_repl_period;
+            public final long sched_ss_init_budget;
+            public final long sched_ss_max_repl;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                sched_priority = -1;
+                sched_ss_low_priority = -1;
+                sched_ss_repl_period = -1;
+                sched_ss_init_budget = -1;
+                sched_ss_max_repl = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
+
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
-
-        /**
-         * Get the real size of struct sched_param natively.
-         *
-         * @return the native value sizeof(struct sched_param).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public static native int offsetof_Sched_ss_init_budget() throws NoSuchNativeTypeMemberException;
-
-        public static native int offsetof_Sched_ss_repl_period() throws NoSuchNativeTypeMemberException;
 
         public Sched_param(Byte setMem) {
             this(null, 0, setMem);
         }
 
         public Sched_param(OpaqueMemory32 parent, int offset, Byte setMem) {
-            super(parent, offset, sizeof(), setMem);
-
-            Time.Timespec t;
-            try {
-                t = new Time.Timespec(this, offsetof_Sched_ss_init_budget(), MEM_UNINITIALIZED);//mem is already initialized by parent
-            } catch (NoSuchNativeTypeMemberException nstme) {
-                t = null;
-            }
-            sched_ss_init_budget = t;
-
-            try {
-                t = new Time.Timespec(this, offsetof_Sched_ss_repl_period(), MEM_UNINITIALIZED);//mem is already initialized by parent
-            } catch (NoSuchNativeTypeMemberException nstme) {
-                t = null;
-            }
-            sched_ss_repl_period = t;
+            super(parent, offset, LAYOUT.sizeof, setMem);
+            sched_ss_init_budget = LAYOUT.sched_ss_init_budget == -1 ? null : new Time.Timespec(this, LAYOUT.sched_ss_init_budget, MEM_UNINITIALIZED);//mem is already initialized by parent
+            sched_ss_repl_period = LAYOUT.sched_ss_repl_period == -1 ? null : new Time.Timespec(this, LAYOUT.sched_ss_repl_period, MEM_UNINITIALIZED);//mem is already initialized by parent
         }
 
         /**
@@ -129,7 +140,9 @@ public class Sched {
          *
          * @return the native value of sched_priority.
          */
-        public native int sched_priority();
+        public int sched_priority() {
+            return MEM_ACCESS.int32_t(this, LAYOUT.sched_priority);
+        }
 
         /**
          * Process or thread execution scheduling priority.
@@ -138,7 +151,9 @@ public class Sched {
          *
          * @param sched_priority the value of sched_priority to be set natively.
          */
-        public native void sched_priority(int sched_priority);
+        public void sched_priority(int sched_priority) {
+            MEM_ACCESS.int32_t(this, LAYOUT.sched_priority, sched_priority);
+        }
 
         public Time.Timespec sched_ss_init_budget() throws NoSuchNativeTypeMemberException {
             if (sched_ss_init_budget == null) {
@@ -158,7 +173,12 @@ public class Sched {
          * @throws NoSuchNativeTypeMemberException if sched_ss_low_priority does
          * not exists.
          */
-        public native int sched_ss_low_priority() throws NoSuchNativeTypeMemberException;
+        public int sched_ss_low_priority() throws NoSuchNativeTypeMemberException {
+            if (LAYOUT.sched_ss_low_priority == -1) {
+                throw new NoSuchNativeTypeMemberException("sched_param", "sched_ss_low_priority");
+            }
+            return MEM_ACCESS.int32_t(this, LAYOUT.sched_ss_low_priority);
+        }
 
         /**
          * Low scheduling priority for sporadic server.
@@ -171,7 +191,12 @@ public class Sched {
          * @throws NoSuchNativeTypeMemberException if sched_ss_low_priority does
          * not exists.
          */
-        public native void sched_ss_low_priority(int sched_ss_low_priority) throws NoSuchNativeTypeMemberException;
+        public void sched_ss_low_priority(int sched_ss_low_priority) throws NoSuchNativeTypeMemberException {
+            if (LAYOUT.sched_ss_low_priority == -1) {
+                throw new NoSuchNativeTypeMemberException("sched_param", "sched_ss_low_priority");
+            }
+            MEM_ACCESS.int32_t(this, LAYOUT.sched_ss_low_priority, sched_ss_low_priority);
+        }
         /**
          * Replenishment period for sporadic server.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sched.h.html">{@code structure
@@ -198,7 +223,12 @@ public class Sched {
          * @throws NoSuchNativeTypeMemberException if sched_ss_max_repl does not
          * exists.
          */
-        public native int sched_ss_max_repl() throws NoSuchNativeTypeMemberException;
+        public int sched_ss_max_repl() throws NoSuchNativeTypeMemberException {
+            if (LAYOUT.sched_ss_max_repl == -1) {
+                throw new NoSuchNativeTypeMemberException("sched_param", "sched_ss_max_repl");
+            }
+            return MEM_ACCESS.int32_t(this, LAYOUT.sched_ss_max_repl);
+        }
 
         /**
          * Maximum pending replenishments for sporadic server.
@@ -211,7 +241,12 @@ public class Sched {
          * @throws NoSuchNativeTypeMemberException if sched_ss_max_repl does not
          * exists.
          */
-        public native void sched_ss_max_repl(int sched_ss_max_repl) throws NoSuchNativeTypeMemberException;
+        public void sched_ss_max_repl(int sched_ss_max_repl) throws NoSuchNativeTypeMemberException {
+            if (LAYOUT.sched_ss_max_repl == -1) {
+                throw new NoSuchNativeTypeMemberException("sched_param", "sched_ss_max_repl");
+            }
+            MEM_ACCESS.int32_t(this, LAYOUT.sched_ss_max_repl, sched_ss_max_repl);
+        }
 
         public Time.Timespec sched_ss_repl_period() throws NoSuchNativeTypeMemberException {
             if (sched_ss_repl_period == null) {

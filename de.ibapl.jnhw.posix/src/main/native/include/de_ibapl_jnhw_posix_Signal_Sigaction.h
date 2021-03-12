@@ -9,75 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    sizeof
- * Signature: ()I
+ * Method:    native2Layout
+ * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/posix/Signal/Sigaction/Layout;
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sizeof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_alignof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    offsetof_Sa_mask
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_offsetof_1Sa_1mask
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    sa_flags
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1flags__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    sa_flags
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1flags__I
-  (JNIEnv *, jobject, jint);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    sa_handler
- * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    sa_handler0
- * Signature: (Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1handler0
-  (JNIEnv *, jobject, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    sa_sigaction
- * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_Mem_Mem_V;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigaction
- * Method:    sa_sigaction0
- * Signature: (Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_Mem_Mem_V;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_sa_1sigaction0
-  (JNIEnv *, jobject, jobject);
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigaction_native2Layout
+  (JNIEnv *, jclass, jclass);
 
 #ifdef __cplusplus
 }

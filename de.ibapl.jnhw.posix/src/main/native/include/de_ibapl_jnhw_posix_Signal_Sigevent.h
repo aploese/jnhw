@@ -9,91 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    offsetof_Sigev_value
- * Signature: ()I
+ * Method:    native2Layout
+ * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/posix/Signal/Sigevent/Layout;
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_offsetof_1Sigev_1value
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sizeof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sizeof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    alignof
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_alignof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_notify
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_notify
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify__I
-  (JNIEnv *, jobject, jint);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_signo
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1signo__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_signo
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1signo__I
-  (JNIEnv *, jobject, jint);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_notify_attributes
- * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1attributes
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_notify_attributes0
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1attributes0
-  (JNIEnv *, jobject, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_notify_function
- * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal_Sigevent
- * Method:    sigev_notify_function0
- * Signature: (Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_sigev_1notify_1function0
-  (JNIEnv *, jobject, jobject);
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_00024Sigevent_native2Layout
+  (JNIEnv *, jclass, jclass);
 
 #ifdef __cplusplus
 }
