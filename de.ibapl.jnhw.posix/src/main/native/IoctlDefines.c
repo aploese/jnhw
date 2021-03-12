@@ -206,7 +206,7 @@ extern "C" {
         }
 #endif
 
-#if defined (__OpenBSD__)
+#if defined (__OpenBSD__) || defined (__FreeBSD__)
         if (JnhwSetStaticIntDefineField(env, clazz, "IOCPARM_MASK", IOCPARM_MASK)) {
             return;
         }
@@ -214,7 +214,7 @@ extern "C" {
 #error "IOCPARM_MASK defined"
 #endif
 
-#if defined (__OpenBSD__)
+#if defined (__OpenBSD__) || defined (__FreeBSD__)
         if (JnhwSetStaticIntDefineField(env, clazz, "IOCPARM_MAX", IOCPARM_MAX)) {
             return;
         }
@@ -222,7 +222,7 @@ extern "C" {
 #error "IOCPARM_MAX defined"
 #endif
 
-#if defined (__OpenBSD__)
+#if defined (__OpenBSD__) || defined (__FreeBSD__)
         if (JnhwSetStaticIntDefineField(env, clazz, "IOC_VOID", IOC_VOID)) {
             return;
         }
@@ -435,7 +435,7 @@ extern "C" {
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint nr) {
         throw_NoSuchNativeMethodException(env, "_IOC_TYPE");
-        return -1;
+        return 0;
 #endif
     }
 
