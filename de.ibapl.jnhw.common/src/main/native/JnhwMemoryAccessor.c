@@ -69,7 +69,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uintptr_1t0__J
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return *((int64_t*) (uintptr_t) address);
+        return (int64_t)*((uintptr_t*) (uintptr_t) address);
     }
 
     /*
