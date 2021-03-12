@@ -24,7 +24,7 @@
         <module>jnhw-jna-jnr</module>
         <module>fun-with-memory-and-function-pointers</module>
     </modules>
-    
+
     <!-- do compile/pack the examples, but do not install or deploy them-->
     <build>
         <pluginManagement>
@@ -63,6 +63,13 @@
                         <skip>true</skip>
                     </configuration>
                 </plugin>
+                <!--plugin>
+                    <groupId>biz.aQute.bnd</groupId>
+                    <artifactId>bnd-maven-plugin</artifactId>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin-->
             </plugins>
         </pluginManagement>
     </build>
