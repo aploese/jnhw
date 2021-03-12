@@ -242,7 +242,7 @@ extern "C" {
             return;
         }
 
-#if defined (__OpenBSD__)
+#if defined (__OpenBSD__)|| defined (__FreeBSD__)
         if (JnhwSetStaticIntDefineField(env, clazz, "IOC_DIRMASK", IOC_DIRMASK)) {
             return;
         }
