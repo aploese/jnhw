@@ -39,7 +39,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_setMemory0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jlong length, jbyte value) {
-        memset((void*) (intptr_t) address, value, (uint32_t) length);
+        memset((void*) (uintptr_t) address, value, (uint32_t) length);
     }
 
     /*
@@ -49,7 +49,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_copyMemory0___3BIJJI
     (JNIEnv *env, __attribute__ ((unused))jclass memAcc, jbyteArray src, jint srcPos, jlong destAddress, jlong destPos, jint len) {
-        (*env)->GetByteArrayRegion(env, src, srcPos, len, ((void*) (intptr_t) destAddress) + destPos);
+        (*env)->GetByteArrayRegion(env, src, srcPos, len, ((void*) (uintptr_t) destAddress) + destPos);
     }
 
     /*
@@ -59,7 +59,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_copyMemory0__JJ_3BII
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong srcAddress, jlong srcPos, jbyteArray dest, jint destPos, jint len) {
-        (*env)->SetByteArrayRegion(env, dest, destPos, len, ((void*) (intptr_t) srcAddress) + srcPos);
+        (*env)->SetByteArrayRegion(env, dest, destPos, len, ((void*) (uintptr_t) srcAddress) + srcPos);
     }
 
     /*
@@ -69,7 +69,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uintptr_1t0__J
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return *((intptr_t*) (intptr_t) address);
+        return *((int64_t*) (uintptr_t) address);
     }
 
     /*
@@ -79,7 +79,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uintptr_1t0__JJ
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jlong value) {
-        *((intptr_t*) (intptr_t) address) = (intptr_t) value;
+        *((uintptr_t*) (uintptr_t) address) = (uintptr_t) value;
     }
 
     /*
@@ -89,7 +89,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uintptr_1t_1AtIndex0__JI
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jint index) {
-        return *(((intptr_t*) (intptr_t) address) + index);
+        return (int64_t)*(((uintptr_t*) (uintptr_t) address) + index);
     }
 
     /*
@@ -99,7 +99,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uintptr_1t_1AtIndex0__JIJ
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jint index, jlong value) {
-        *(((intptr_t*) (intptr_t) address) + index) = (intptr_t) value;
+        *(((uintptr_t*) (uintptr_t) address) + index) = (uintptr_t) value;
     }
 
     /*
@@ -109,7 +109,7 @@ extern "C" {
      */
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int8_1t0__J
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return *((int8_t*) (intptr_t) address);
+        return *((int8_t*) (uintptr_t) address);
     }
 
     /*
@@ -119,7 +119,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int8_1t0__JB
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jbyte value) {
-        *((int8_t*) (intptr_t) address) = value;
+        *((int8_t*) (uintptr_t) address) = value;
     }
 
     /*
@@ -130,7 +130,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int8_1t_1AsHex0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_int8_t, 0x000000FF & *((int8_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_int8_t, 0x000000FF & *((int8_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -142,7 +142,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int8_1t_1nativeToString0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_int8_t, *((int8_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_int8_t, *((int8_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -153,7 +153,7 @@ extern "C" {
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int16_1t0__J
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return *((int16_t*) (intptr_t) address);
+        return *((int16_t*) (uintptr_t) address);
     }
 
     /*
@@ -163,7 +163,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int16_1t0__JS
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jshort value) {
-        *((int16_t*) (intptr_t) address) = value;
+        *((int16_t*) (uintptr_t) address) = value;
     }
 
     /*
@@ -174,7 +174,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int16_1t_1AsHex0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_int16_t, 0x0000FFFF & *((int16_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_int16_t, 0x0000FFFF & *((int16_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -186,7 +186,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int16_1t_1nativeToString0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_int16_t, *((int16_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_int16_t, *((int16_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -197,7 +197,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int32_1t0__J
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return *((int32_t*) (intptr_t) address);
+        return *((int32_t*) (uintptr_t) address);
     }
 
     /*
@@ -207,7 +207,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int32_1t0__JI
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jint value) {
-        *((int32_t*) (intptr_t) address) = value;
+        *((int32_t*) (uintptr_t) address) = value;
     }
 
     /*
@@ -218,7 +218,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int32_1t_1AsHex0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_int32_t, *((int32_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_int32_t, *((int32_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -230,7 +230,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int32_1t_1nativeToString0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_int32_t, *((int32_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_int32_t, *((int32_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -241,7 +241,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int64_1t0__J
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return *((int64_t*) (intptr_t) address);
+        return *((int64_t*) (uintptr_t) address);
     }
 
     /*
@@ -251,7 +251,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int64_1t0__JJ
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jlong value) {
-        *((int64_t*) (intptr_t) address) = value;
+        *((int64_t*) (uintptr_t) address) = value;
     }
 
     /*
@@ -262,7 +262,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int64_1t_1AsHex0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_int64_t, *((int64_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_int64_t, *((int64_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -274,7 +274,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_int64_1t_1nativeToString0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_int64_t, *((int64_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_int64_t, *((int64_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -285,7 +285,7 @@ extern "C" {
      */
     JNIEXPORT jbyte JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint8_1t0__J
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return *((int8_t*) (intptr_t) address);
+        return *((int8_t*) (uintptr_t) address);
     }
 
     /*
@@ -295,7 +295,7 @@ extern "C" {
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint8_1t_1AsShort0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return (int16_t)*((uint8_t*) (intptr_t) address);
+        return (int16_t)*((uint8_t*) (uintptr_t) address);
     }
 
     /*
@@ -305,7 +305,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint8_1t0__JB
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jbyte value) {
-        *((uint8_t*) (intptr_t) address) = (uint8_t) value;
+        *((uint8_t*) (uintptr_t) address) = (uint8_t) value;
     }
 
     /*
@@ -319,7 +319,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "value must not be nagative");
             return;
         }
-        *((uint8_t*) (intptr_t) address) = (uint8_t) value;
+        *((uint8_t*) (uintptr_t) address) = (uint8_t) value;
     }
 
     /*
@@ -330,7 +330,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint8_1t_1AsHex0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint8_t, 0x000000FF & *((uint8_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint8_t, 0x000000FF & *((uint8_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -342,7 +342,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint8_1t_1nativeToString0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint8_t, *((uint8_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint8_t, *((uint8_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -353,7 +353,7 @@ extern "C" {
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint16_1t0__J
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return *((int16_t*) (intptr_t) address);
+        return *((int16_t*) (uintptr_t) address);
     }
 
     /*
@@ -363,7 +363,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint16_1t_1AsInt0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return (int32_t)*((uint16_t*) (intptr_t) address);
+        return (int32_t)*((uint16_t*) (uintptr_t) address);
     }
 
     /*
@@ -373,7 +373,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint16_1t0__JS
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jshort value) {
-        *((uint16_t*) (intptr_t) address) = (uint16_t) value;
+        *((uint16_t*) (uintptr_t) address) = (uint16_t) value;
     }
 
     /*
@@ -387,7 +387,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "value must not be nagative");
             return;
         }
-        *((uint16_t*) (intptr_t) address) = (uint16_t) value;
+        *((uint16_t*) (uintptr_t) address) = (uint16_t) value;
     }
 
     /*
@@ -398,7 +398,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint16_1t_1AsHex0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint16_t, 0x0000FFFF & *((uint16_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint16_t, 0x0000FFFF & *((uint16_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -410,7 +410,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint16_1t_1nativeToString0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint16_t, *((uint16_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint16_t, *((uint16_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -421,7 +421,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint32_1t0__J
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return *((int32_t*) (intptr_t) address);
+        return *((int32_t*) (uintptr_t) address);
     }
 
     /*
@@ -431,7 +431,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint32_1t_1AsLong0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return (int64_t)*((uint32_t*) (intptr_t) address);
+        return (int64_t)*((uint32_t*) (uintptr_t) address);
     }
 
     /*
@@ -441,7 +441,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint32_1t0__JI
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jint value) {
-        *((uint32_t*) (intptr_t) address) = (uint32_t) value;
+        *((uint32_t*) (uintptr_t) address) = (uint32_t) value;
     }
 
     /*
@@ -455,7 +455,7 @@ extern "C" {
             throw_IllegalArgumentException(env, "value must not be nagative");
             return;
         }
-        *((uint32_t*) (intptr_t) address) = (uint32_t) value;
+        *((uint32_t*) (uintptr_t) address) = (uint32_t) value;
     }
 
     /*
@@ -466,7 +466,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint32_1t_1AsHex0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint32_t, *((uint32_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint32_t, *((uint32_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -478,7 +478,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint32_1t_1nativeToString0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint32_t, *((uint32_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint32_t, *((uint32_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -489,7 +489,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint64_1t0__J
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return *((int64_t*) (intptr_t) address);
+        return *((int64_t*) (uintptr_t) address);
     }
 
     /*
@@ -499,7 +499,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint64_1t0__JJ
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jlong value) {
-        *((uint64_t*) (intptr_t) address) = (uint64_t) value;
+        *((uint64_t*) (uintptr_t) address) = (uint64_t) value;
     }
 
     /*
@@ -510,7 +510,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint64_1t_1AsHex0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint64_t, *((uint64_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_uint64_t, *((uint64_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -522,7 +522,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint64_1t_1nativeToString0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
         char buf[128] = {0};
-        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint64_t, *((uint64_t*) (intptr_t) address));
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_uint64_t, *((uint64_t*) (uintptr_t) address));
         return (*env)->NewStringUTF(env, buf);
     }
 
@@ -560,7 +560,7 @@ extern "C" {
             throw_NativeErrorException(env, errno);
         }
         //on 32bit it must not be negative
-        return (intptr_t) result;
+        return (int64_t) (uintptr_t) result;
     }
 
     /*
@@ -570,7 +570,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_free
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong address) {
-        free((void*) (intptr_t) address);
+        free((void*) (uintptr_t) address);
     }
 
     /*
@@ -580,7 +580,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_signed_1long0__J
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
-        return *((long*) (intptr_t) address);
+        return *((long*) (uintptr_t) address);
     }
 
     /*
@@ -591,13 +591,13 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_signed_1long0__JJ
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jlong value) {
 #if __SIZEOF_LONG__ == 8
-        *((long*) (intptr_t) address) = value;
+        *((long*) (uintptr_t) address) = value;
 #elif __SIZEOF_LONG__ == 4
         if ((value > INT32_MAX) || (value < INT32_MIN)) {
             throw_IllegalArgumentException(env, "value outside of int32_t");
             return;
         }
-        *((long*) (intptr_t) address) = (long) value;
+        *((long*) (uintptr_t) address) = (long) value;
 #else
 #error unknown __SIZEOF_LONG__
 #endif
@@ -611,9 +611,9 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_unsigned_1long0__J
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
 #if __SIZEOF_LONG__ == 8
-        return (int64_t)*((unsigned long*) (intptr_t) address);
+        return (int64_t)*((unsigned long*) (uintptr_t) address);
 #elif __SIZEOF_LONG__ == 4
-        return (int64_t) (*((unsigned long*) (intptr_t) address) & 0x00000000ffffffff);
+        return (int64_t) (*((unsigned long*) (uintptr_t) address) & 0x00000000ffffffff);
 #else
 #error unknown __SIZEOF_LONG__
 #endif
@@ -627,7 +627,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_unsigned_1long0__JJ
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jlong value) {
 #if __SIZEOF_LONG__ == 8
-        *((unsigned long*) (intptr_t) address) = (uint64_t) value;
+        *((unsigned long*) (uintptr_t) address) = (uint64_t) value;
 #elif __SIZEOF_LONG__ == 4
         if ((value > 0x00000000ffffffffL)) {
             throw_IllegalArgumentException(env, "value too big for uint32_t");
@@ -636,7 +636,7 @@ extern "C" {
         if (value < 0) {
             throw_IllegalArgumentException(env, "value must not be nagative");
         }
-        *((unsigned long*) (intptr_t) address) = (uint32_t) value;
+        *((unsigned long*) (uintptr_t) address) = (uint32_t) value;
 #else
 #error unknown __SIZEOF_LONG__
 #endif
@@ -649,7 +649,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uintptr_1t0__JLjava_nio_ByteBuffer_2I
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jobject byteBuffer, jint off) {
-        *((void**) (intptr_t) address) = (*env)->GetDirectBufferAddress(env, byteBuffer) + off;
+        *((void**) (uintptr_t) address) = (*env)->GetDirectBufferAddress(env, byteBuffer) + off;
     }
 
     /*
@@ -659,7 +659,7 @@ extern "C" {
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_getStringUTF0
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address) {
-        return (*env)->NewStringUTF(env, ((char*) (intptr_t) address));
+        return (*env)->NewStringUTF(env, ((char*) (uintptr_t) address));
 
     }
 
