@@ -243,7 +243,7 @@ extern "C" {
         }
 
 #if defined (__OpenBSD__)|| defined (__FreeBSD__)
-        if (JnhwSetStaticIntDefineField(env, clazz, "IOC_DIRMASK", IOC_DIRMASK)) {
+        if (JnhwSetStaticIntDefineField(env, clazz, "IOC_DIRMASK", (int32_t) IOC_DIRMASK)) {
             return;
         }
 #elif defined(IOC_DIRMASK)
