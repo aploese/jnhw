@@ -451,7 +451,7 @@ public interface Ch9 {
                     result = new Uas.Usb_pipe_usage_descriptor(parent, getOffset(), bLength(), MEM_UNINITIALIZED);
                     break;
                 default:
-                    throw new RuntimeException("Can't handle bDescriptorType of:" + String.format("0x%02x", bDescriptorType()));
+                    result = new UsbUnknownDescriptor(parent, getOffset(), bLength(), MEM_UNINITIALIZED);
             }
             if (result.sizeInBytes != bLength()) {
                 throw new RuntimeException("bLength mismatch");

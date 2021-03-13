@@ -170,7 +170,7 @@ public class BaseDataTypeTest {
                     break;
                 case AARCH64__LINUX__GNU:
                 case POWER_PC_64_LE__LINUX__GNU:
-                    //  case X86_64__LINUX__GNU:
+                case X86_64__LINUX__GNU:
                     //classical 64bit anything is at 8 byte aligned
                     assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
 

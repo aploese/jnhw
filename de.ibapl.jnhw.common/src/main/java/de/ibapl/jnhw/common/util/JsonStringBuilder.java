@@ -149,6 +149,15 @@ public class JsonStringBuilder {
         sb.append(String.format("0x%02x", value));
     }
 
+    public void appendRawDataMember(String name, byte[] value) throws IOException {
+        appendMemberName(name);
+        sb.append("[");
+        for (byte b : value) {
+            sb.append(String.format("%02x", b));
+        }
+        sb.append("]");
+    }
+
     public void appendShortMember(String name, short value) throws IOException {
         appendMemberName(name);
         sb.append(Short.toString(value));
