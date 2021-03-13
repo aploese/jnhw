@@ -131,6 +131,15 @@ public class UsbDevice {
                     result.add(current);
                 } while (currentPos < size);
                 return result;
+            } catch (Exception ex) {
+                try {
+                    System.err.print("Error during decoding of descriptors\n DATA>>>");
+                    mem.nativeToString(System.err, "", "");
+                    System.err.println("<<<------------------------------");
+                    throw ex;
+                } catch (IOException ioe) {
+                    throw new RuntimeException(ioe);
+                }
             } finally {
                 Unistd.close(fd);
             }

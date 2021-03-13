@@ -37,9 +37,9 @@ public class UsbUnknownDescriptor extends AbstractDescriptor {
 
     @Override
     protected void nativeToString(JsonStringBuilder jsb, String indentPrefix, String indent) throws IOException {
-        byte[] rawData = new byte[sizeInBytes + Layout._sizeof];
-        MEM_ACCESS.copyMemory32(this, Layout._sizeof, rawData, 0, rawData.length);
-        jsb.appendRawDataMember("rawData", rawData);
+        byte[] payload = new byte[sizeInBytes - Layout._sizeof];
+        MEM_ACCESS.copyMemory32(this, Layout._sizeof, payload, 0, payload.length);
+        jsb.appendRawDataMember("payload", payload);
     }
 
 }
