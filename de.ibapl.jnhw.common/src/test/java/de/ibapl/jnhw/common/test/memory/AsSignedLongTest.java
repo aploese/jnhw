@@ -28,13 +28,15 @@ import de.ibapl.jnhw.common.memory.Int64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
-import de.ibapl.jnhw.common.memory.Signed_Long;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 
 /**
  *
  * @author aploese
  */
 public class AsSignedLongTest {
+
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public AsSignedLongTest() {
     }
@@ -45,7 +47,12 @@ public class AsSignedLongTest {
         AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, int64_t, 0, SET_MEM_TO_0);
         long input = 0x08070605040302010L;
         int64_t.int64_t(input);
-        assertEquals(input & 0x00000000ffffffffL, instance.getAsSignedLong());
+        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
+            assertEquals((input >>> 32), instance.getAsSignedLong());
+        } else {
+            assertEquals(input & 0x00000000ffffffffL, instance.getAsSignedLong());
+        }
+
         instance.setFromSignedLong(-33);
         assertEquals(-33, instance.getAsSignedLong());
         assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(input));
@@ -56,8 +63,12 @@ public class AsSignedLongTest {
     public void testNativeToString() {
         Int64_t int64_t = new Int64_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
         AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, int64_t, 0, SET_MEM_TO_0);
-        int64_t.int64_t(0xfffffffffffffffeL);
-        assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
+        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
+            int64_t.int64_t(0xfffffffeffffffffL);
+        } else {
+            int64_t.int64_t(0xfffffffffffffffeL);
+        }
         assertEquals("0xfffffffe", instance.nativeToHexString());
+        assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
     }
 }

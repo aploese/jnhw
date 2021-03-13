@@ -26,6 +26,7 @@ import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
 import de.ibapl.jnhw.common.memory.AsUnsignedInt;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Uint64_t;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,6 +35,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author aploese
  */
 public class AsUnsignedIntTest {
+
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public AsUnsignedIntTest() {
     }
@@ -44,7 +47,11 @@ public class AsUnsignedIntTest {
         AsUnsignedInt instance = new AsUnsignedInt(BaseDataType.uint16_t, uint32_t, 0, SET_MEM_TO_0);
         int input = 0x040302010;
         uint32_t.uint32_t(input);
-        assertEquals(input & 0x0000ffff, instance.getAsUnsignedInt());
+        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
+            assertEquals((input >>> 16), instance.getAsUnsignedInt());
+        } else {
+            assertEquals(input & 0x0000ffff, instance.getAsUnsignedInt());
+        }
         instance.setFromUnsignedInt(33);
         assertEquals(33, instance.getAsUnsignedInt());
         assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(input));
@@ -56,8 +63,12 @@ public class AsUnsignedIntTest {
     public void testNativeToString() {
         Uint64_t uint64_t = new Uint64_t(null, 0, null);
         AsUnsignedInt instance = new AsUnsignedInt(BaseDataType.uint16_t, uint64_t, 0, SET_MEM_TO_0);
-        uint64_t.uint64_t(0xfffffffffffffffeL);
-        assertEquals(Integer.toString(0xfffe), instance.nativeToString());
+        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
+            uint64_t.uint64_t(0xfffeffffffffffffL);
+        } else {
+            uint64_t.uint64_t(0xfffffffffffffffeL);
+        }
         assertEquals("0xfffe", instance.nativeToHexString());
+        assertEquals(Integer.toString(0xfffe), instance.nativeToString());
     }
 }

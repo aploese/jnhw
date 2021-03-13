@@ -136,10 +136,10 @@ public class UsbDevice {
                     System.err.print("Error during decoding of descriptors\n DATA>>>");
                     mem.nativeToString(System.err, "", "");
                     System.err.println("<<<------------------------------");
-                    throw ex;
                 } catch (IOException ioe) {
                     throw new RuntimeException(ioe);
                 }
+                throw ex;
             } finally {
                 Unistd.close(fd);
             }
