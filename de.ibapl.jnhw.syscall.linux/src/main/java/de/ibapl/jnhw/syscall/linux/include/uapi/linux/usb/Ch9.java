@@ -393,9 +393,9 @@ public interface Ch9 {
     public final static byte USB_DT_CS_CONFIG = (USB_TYPE_CLASS | USB_DT_CONFIG);
     public final static byte USB_DT_CS_STRING = (USB_TYPE_CLASS | USB_DT_STRING);
     public final static byte USB_DT_CS_INTERFACE = (USB_TYPE_CLASS | USB_DT_INTERFACE);
-    /* All standard descriptors have these 2 fields at the beginning */
     public final static byte USB_DT_CS_ENDPOINT = (USB_TYPE_CLASS | USB_DT_ENDPOINT);
 
+    /* All standard descriptors have these 2 fields at the beginning */
     public final static class Usb_descriptor_header extends AbstractDescriptor {
 
         public static final class Layout extends AbstractDescriptor.Layout {

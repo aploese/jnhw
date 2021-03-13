@@ -139,4 +139,7 @@ public class UsbDevice {
         }
     }
 
+    public File getSysDir() {
+        return sysFsDir;
+    }
 }

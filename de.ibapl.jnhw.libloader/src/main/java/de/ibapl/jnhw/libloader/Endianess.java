@@ -45,7 +45,7 @@ public enum Endianess {
             case LITTLE:
                 return false;
             default:
-                throw new IllegalStateException("Expected ony to have BIG and LITTLE but not: " + this);
+                throw new IllegalStateException("Expected only to have BIG and LITTLE but not: " + this);
         }
     }
 

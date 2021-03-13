@@ -72,11 +72,12 @@ public class AsSignedIntTest {
         Int64_t int64_t = new Int64_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
         AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, int64_t, 0, SET_MEM_TO_0);
         if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
-            int64_t.int64_t(0xfffffffeffffffffL);
+            int64_t.int64_t(0x0808060504030201L); // Just to see where we land.... on s390...
+//            int64_t.int64_t(0xfffffffeffffffffL);
         } else {
             int64_t.int64_t(0xfffffffffffffffeL);
         }
-        assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
         assertEquals("0xfffe", instance.nativeToHexString());
+        assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
     }
 }

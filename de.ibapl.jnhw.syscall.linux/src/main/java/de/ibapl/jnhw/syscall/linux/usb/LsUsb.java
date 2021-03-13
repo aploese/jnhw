@@ -48,6 +48,7 @@ public class LsUsb {
 
     private void listLong() {
         for (UsbDevice dev : SysFs.bus().usb().devices()) {
+            System.out.println("SysFs dir: \"" + dev.getSysDir() + "\"");
             System.out.println(dev.toShortString());
             for (AbstractDescriptor descr : dev.descriptors()) {
                 try {

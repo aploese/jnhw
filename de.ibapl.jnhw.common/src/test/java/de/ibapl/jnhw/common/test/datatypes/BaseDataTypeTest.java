@@ -23,7 +23,6 @@ package de.ibapl.jnhw.common.test.datatypes;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.test.memory.layout.StructLayoutTest;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Test;
@@ -45,6 +44,8 @@ public class BaseDataTypeTest {
             switch (mi) {
                 case ARM__LINUX__GNU_EABI:
                 case ARM__LINUX__GNU_EABI_HF:
+                case MIPS__LINUX__GNU:
+                case MIPS_EL__LINUX__GNU:
                     //32 bit, but __BIGGEST_ALIGNMENT__ is 8
                     assertEquals(Alignment.AT_8, Alignment.__BIGGEST_ALIGNMENT__);
 
@@ -169,7 +170,7 @@ public class BaseDataTypeTest {
                     break;
                 case AARCH64__LINUX__GNU:
                 case POWER_PC_64_LE__LINUX__GNU:
-                case X86_64__LINUX__GNU:
+                    //  case X86_64__LINUX__GNU:
                     //classical 64bit anything is at 8 byte aligned
                     assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
 
@@ -213,45 +214,45 @@ public class BaseDataTypeTest {
                 default:
                     //sorry, but we need proof.... so test an commit results ....
                     StringBuilder sb = new StringBuilder();
-                    sb.append("No testvalues for multiarch: ").append(mi).append("\n");
-                    sb.append("__BIGGEST_ALIGNMENT__ = ").append(Alignment.__BIGGEST_ALIGNMENT__).append("\n");
+                    sb.append("No testvalues for multiarch:  ").append(mi).append("\n");
+                    sb.append("__BIGGEST_ALIGNMENT__       = ").append(Alignment.__BIGGEST_ALIGNMENT__).append("\n");
 
-                    sb.append("SIZE_OF_LONG = ").append(BaseDataType.SIZE_OF_LONG).append("\n");
-                    sb.append("SIZE_OF_POINTER = ").append(BaseDataType.SIZE_OF_POINTER).append("\n");
+                    sb.append("SIZE_OF_LONG                = ").append(BaseDataType.SIZE_OF_LONG).append("\n");
+                    sb.append("SIZE_OF_POINTER             = ").append(BaseDataType.SIZE_OF_POINTER).append("\n");
 
-                    sb.append("SIZE_OF_FLOAT = ").append(BaseDataType.SIZE_OF_FLOAT).append("\n");
-                    sb.append("SIZE_OF_DOUBLE = ").append(BaseDataType.SIZE_OF_DOUBLE).append("\n");
-                    sb.append("SIZE_OF_LONG_DOUBLE = ").append(BaseDataType.SIZE_OF_LONG_DOUBLE).append("\n");
+                    sb.append("SIZE_OF_FLOAT               = ").append(BaseDataType.SIZE_OF_FLOAT).append("\n");
+                    sb.append("SIZE_OF_DOUBLE              = ").append(BaseDataType.SIZE_OF_DOUBLE).append("\n");
+                    sb.append("SIZE_OF_LONG_DOUBLE         = ").append(BaseDataType.SIZE_OF_LONG_DOUBLE).append("\n");
 
-                    sb.append("ALIGN_OF_LONG = ").append(Alignment.ALIGN_OF_LONG).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_LONG = ").append(Alignment.ALIGN_OF_STRUCT_LONG).append("\n");
+                    sb.append("ALIGN_OF_LONG               = ").append(Alignment.ALIGN_OF_LONG).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_LONG        = ").append(Alignment.ALIGN_OF_STRUCT_LONG).append("\n");
 
-                    sb.append("ALIGN_OF_POINTER = ").append(Alignment.ALIGN_OF_POINTER).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_POINTER = ").append(Alignment.ALIGN_OF_STRUCT_POINTER).append("\n");
+                    sb.append("ALIGN_OF_POINTER            = ").append(Alignment.ALIGN_OF_POINTER).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_POINTER     = ").append(Alignment.ALIGN_OF_STRUCT_POINTER).append("\n");
 
-                    sb.append("ALIGN_OF_FLOAT = ").append(Alignment.ALIGN_OF_FLOAT).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_FLOAT = ").append(Alignment.ALIGN_OF_STRUCT_FLOAT).append("\n");
+                    sb.append("ALIGN_OF_FLOAT              = ").append(Alignment.ALIGN_OF_FLOAT).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_FLOAT       = ").append(Alignment.ALIGN_OF_STRUCT_FLOAT).append("\n");
 
-                    sb.append("ALIGN_OF_DOUBLE = ").append(Alignment.ALIGN_OF_DOUBLE).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_DOUBLE = ").append(Alignment.ALIGN_OF_STRUCT_DOUBLE).append("\n");
+                    sb.append("ALIGN_OF_DOUBLE             = ").append(Alignment.ALIGN_OF_DOUBLE).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_DOUBLE      = ").append(Alignment.ALIGN_OF_STRUCT_DOUBLE).append("\n");
 
-                    sb.append("ALIGN_OF_LONG_DOUBLE = ").append(Alignment.ALIGN_OF_LONG_DOUBLE).append("\n");
+                    sb.append("ALIGN_OF_LONG_DOUBLE        = ").append(Alignment.ALIGN_OF_LONG_DOUBLE).append("\n");
                     sb.append("ALIGN_OF_STRUCT_LONG_DOUBLE = ").append(Alignment.ALIGN_OF_STRUCT_LONG_DOUBLE).append("\n");
 
-                    sb.append("ALIGN_OF_INT8_T = ").append(Alignment.ALIGN_OF_INT8_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT8_T = ").append(Alignment.ALIGN_OF_STRUCT_INT8_T).append("\n");
+                    sb.append("ALIGN_OF_INT8_T             = ").append(Alignment.ALIGN_OF_INT8_T).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_INT8_T      = ").append(Alignment.ALIGN_OF_STRUCT_INT8_T).append("\n");
 
-                    sb.append("ALIGN_OF_INT16_T = ").append(Alignment.ALIGN_OF_INT16_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT16_T = ").append(Alignment.ALIGN_OF_STRUCT_INT16_T).append("\n");
+                    sb.append("ALIGN_OF_INT16_T            = ").append(Alignment.ALIGN_OF_INT16_T).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_INT16_T     = ").append(Alignment.ALIGN_OF_STRUCT_INT16_T).append("\n");
 
-                    sb.append("ALIGN_OF_INT32_T = ").append(Alignment.ALIGN_OF_INT32_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT32_T = ").append(Alignment.ALIGN_OF_STRUCT_INT32_T).append("\n");
+                    sb.append("ALIGN_OF_INT32_T            = ").append(Alignment.ALIGN_OF_INT32_T).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_INT32_T     = ").append(Alignment.ALIGN_OF_STRUCT_INT32_T).append("\n");
 
-                    sb.append("ALIGN_OF_INT64_T = ").append(Alignment.ALIGN_OF_INT64_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT64_T = ").append(Alignment.ALIGN_OF_STRUCT_INT64_T).append("\n");
+                    sb.append("ALIGN_OF_INT64_T            = ").append(Alignment.ALIGN_OF_INT64_T).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_INT64_T     = ").append(Alignment.ALIGN_OF_STRUCT_INT64_T).append("\n");
 
-                    sb.append("ALIGN_OF_INTPTR_T = ").append(Alignment.ALIGN_OF_INTPTR_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INTPTR_T = ").append(Alignment.ALIGN_OF_STRUCT_INTPTR_T).append("\n");
+                    sb.append("ALIGN_OF_INTPTR_T           = ").append(Alignment.ALIGN_OF_INTPTR_T).append("\n");
+                    sb.append("ALIGN_OF_STRUCT_INTPTR_T    = ").append(Alignment.ALIGN_OF_STRUCT_INTPTR_T).append("\n");
 
                     fail(sb.toString());
             }
