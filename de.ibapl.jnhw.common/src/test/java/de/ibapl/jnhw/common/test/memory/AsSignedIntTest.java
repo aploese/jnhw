@@ -61,7 +61,7 @@ public class AsSignedIntTest {
                 assertEquals(input & 0x0000ffff, instance.getAsSignedInt());
                 break;
             case BIG:
-                assertEquals((input & 0x0000ffff) >>> 16, instance.getAsSignedInt());
+                assertEquals((input >>> 16), instance.getAsSignedInt());
                 break;
             default:
                 fail("Endianess");
