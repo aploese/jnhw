@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.AsSignedLong;
 import de.ibapl.jnhw.common.memory.Int64_t;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ public class AsSignedLongTest {
 
     @Test
     public void testNative() {
-        Int64_t int64_t = new Int64_t(null, 0, null);
+        Int64_t int64_t = new Int64_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
         AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, int64_t, 0, SET_MEM_TO_0);
         long input = 0x08070605040302010L;
         int64_t.int64_t(input);
@@ -53,7 +54,7 @@ public class AsSignedLongTest {
 
     @Test
     public void testNativeToString() {
-        Int64_t int64_t = new Int64_t(null, 0, null);
+        Int64_t int64_t = new Int64_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
         AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, int64_t, 0, SET_MEM_TO_0);
         int64_t.int64_t(0xfffffffffffffffeL);
         assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());

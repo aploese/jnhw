@@ -31,7 +31,7 @@ import java.util.logging.Level;
  *
  * @author aploese
  */
-class JnhwMemoryAccessor implements MemoryAccessor {
+public class JnhwMemoryAccessor implements MemoryAccessor {
 
     /**
      * Make sure the native lib is loaded. Subclasses in common do not need to
@@ -48,7 +48,7 @@ class JnhwMemoryAccessor implements MemoryAccessor {
 
     private static native void free(long baseAddress);
 
-    protected JnhwMemoryAccessor() {
+    public JnhwMemoryAccessor() {
     }
 
     private static native void setMemory0(long address, long sizeInBytes, byte value);

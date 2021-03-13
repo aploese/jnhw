@@ -22,12 +22,19 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.AsSignedInt;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Int64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.JnhwMemoryAccessor;
+import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor;
+import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor32;
+import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor64;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.WordSize;
 
 /**
  *
@@ -35,16 +42,30 @@ import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
  */
 public class AsSignedIntTest {
 
+    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
+    private UnsafeMemoryAccessor unsafeMemAccess = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._64_BIT ? new UnsafeMemoryAccessor64() : new UnsafeMemoryAccessor32();
+    private JnhwMemoryAccessor jnhwMemAccess = new JnhwMemoryAccessor();
+
     public AsSignedIntTest() {
     }
 
     @Test
     public void testNative() {
-        Int32_t int32_t = new Int32_t(null, 0, null);
+        Int32_t int32_t = new Int32_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
         AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, int32_t, 0, SET_MEM_TO_0);
-        int input = 0x040302010;
+        int input = 0x40302010;
         int32_t.int32_t(input);
-        assertEquals(input & 0x0000ffff, instance.getAsSignedInt());
+        assertEquals(unsafeMemAccess.int16_t(instance, 0), jnhwMemAccess.int16_t(instance, 0));
+        switch (MULTIARCH_TUPEL_BUILDER.getEndianess()) {
+            case LITTLE:
+                assertEquals(input & 0x0000ffff, instance.getAsSignedInt());
+                break;
+            case BIG:
+                assertEquals((input & 0x0000ffff) > 16, instance.getAsSignedInt());
+                break;
+            default:
+                fail("Endianess");
+        }
         instance.setFromSignedInt(-33);
         assertEquals(-33, instance.getAsSignedInt());
         assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedInt(input));
@@ -53,7 +74,7 @@ public class AsSignedIntTest {
 
     @Test
     public void testNativeToString() {
-        Int64_t int64_t = new Int64_t(null, 0, null);
+        Int64_t int64_t = new Int64_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
         AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, int64_t, 0, SET_MEM_TO_0);
         int64_t.int64_t(0xfffffffffffffffeL);
         assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());

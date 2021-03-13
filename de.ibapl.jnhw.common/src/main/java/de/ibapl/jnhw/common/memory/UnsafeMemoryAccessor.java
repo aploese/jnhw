@@ -30,7 +30,7 @@ import java.util.logging.Level;
  *
  * @author aploese
  */
-abstract class UnsafeMemoryAccessor implements MemoryAccessor {
+public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
 
     final sun.misc.Unsafe unsafe;
 
@@ -139,7 +139,7 @@ abstract class UnsafeMemoryAccessor implements MemoryAccessor {
         }
     }
 
-    protected UnsafeMemoryAccessor() {
+    public UnsafeMemoryAccessor() {
         try {
             Field f = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
             f.setAccessible(true);

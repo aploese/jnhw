@@ -25,7 +25,7 @@ package de.ibapl.jnhw.common.memory;
  *
  * @author aploese
  */
-class UnsafeMemoryAccessor32 extends UnsafeMemoryAccessor {
+public class UnsafeMemoryAccessor32 extends UnsafeMemoryAccessor {
 
     @Override
     public long signed_long(OpaqueMemory32 mem, long offset) {
