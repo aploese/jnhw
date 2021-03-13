@@ -56,15 +56,10 @@ public class AsSignedIntTest {
         int input = 0x40302010;
         int32_t.int32_t(input);
         assertEquals(unsafeMemAccess.int16_t(instance, 0), jnhwMemAccess.int16_t(instance, 0));
-        switch (MULTIARCH_TUPEL_BUILDER.getEndianess()) {
-            case LITTLE:
-                assertEquals(input & 0x0000ffff, instance.getAsSignedInt());
-                break;
-            case BIG:
-                assertEquals((input >>> 16), instance.getAsSignedInt());
-                break;
-            default:
-                fail("Endianess");
+        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
+            assertEquals((input >>> 16), instance.getAsSignedInt());
+        } else {
+            assertEquals(input & 0x0000ffff, instance.getAsSignedInt());
         }
         instance.setFromSignedInt(-33);
         assertEquals(-33, instance.getAsSignedInt());
@@ -76,7 +71,11 @@ public class AsSignedIntTest {
     public void testNativeToString() {
         Int64_t int64_t = new Int64_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
         AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, int64_t, 0, SET_MEM_TO_0);
-        int64_t.int64_t(0xfffffffffffffffeL);
+        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
+            int64_t.int64_t(0xfffffffeffffffffL);
+        } else {
+            int64_t.int64_t(0xfffffffffffffffeL);
+        }
         assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
         assertEquals("0xfffe", instance.nativeToHexString());
     }

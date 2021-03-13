@@ -22,10 +22,31 @@
 package de.ibapl.jnhw.libloader;
 
 /**
+ * Only BIG and LITTLE are supported otherwise remove isBigEndian as a
+ * shortcut...
  *
  * @author aploese
  */
 public enum Endianess {
-    BIG, LITTLE
+    BIG,
+    LITTLE;
+
+    /**
+     * Assuming there is only BIG and LITTLE, true means it is big endian and
+     * false means it is little endian. this will be removed if other
+     * endianesses are supported.
+     *
+     * @return
+     */
+    public boolean isBigEndian() {
+        switch (this) {
+            case BIG:
+                return true;
+            case LITTLE:
+                return false;
+            default:
+                throw new IllegalStateException("Expected ony to have BIG and LITTLE but not: " + this);
+        }
+    }
 
 }

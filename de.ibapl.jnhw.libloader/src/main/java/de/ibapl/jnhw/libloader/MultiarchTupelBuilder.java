@@ -408,6 +408,10 @@ public final class MultiarchTupelBuilder {
         return cachedMultiarchinfo.getEndianess();
     }
 
+    public boolean isBigEndian() {
+        return getEndianess().isBigEndian();
+    }
+
     public static String listSystemProperties() {
         StringBuilder sb = new StringBuilder();
         System.getProperties().stringPropertyNames().forEach(name -> {
