@@ -48,7 +48,7 @@ public class AsSignedLongTest {
         long input = 0x8070605040302010L;
         int64_t.int64_t(input);
         if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
-            assertEquals(String.format("0x%016x", (input >>> 32)), String.format("0x%016x", instance.getAsSignedLong()));
+            assertEquals(String.format("0x%016x", (input >> 32)), String.format("0x%016x", instance.getAsSignedLong()));
         } else {
             assertEquals(input & 0x00000000ffffffffL, instance.getAsSignedLong());
         }
