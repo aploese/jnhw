@@ -45,11 +45,10 @@ public class AsSignedLongTest {
     public void testNative() {
         Int64_t int64_t = new Int64_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
         AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, int64_t, 0, SET_MEM_TO_0);
-        long input = 0x08070605040302010L;
+        long input = 0x8070605040302010L;
         int64_t.int64_t(input);
         if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
-            assertEquals(int64_t.nativeToHexString(), instance.nativeToHexString());  //Just check...
-            assertEquals((input >>> 32), instance.getAsSignedLong());
+            assertEquals(String.format("0x%016x", (input >>> 32)), String.format("0x%016x", instance.getAsSignedLong()));
         } else {
             assertEquals(input & 0x00000000ffffffffL, instance.getAsSignedLong());
         }
