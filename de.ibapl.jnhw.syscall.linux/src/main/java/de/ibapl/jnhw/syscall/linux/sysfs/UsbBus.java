@@ -24,6 +24,7 @@ package de.ibapl.jnhw.syscall.linux.sysfs;
 import de.ibapl.jnhw.syscall.linux.annotation.Path;
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
@@ -36,6 +37,9 @@ public class UsbBus {
     @Path("/sys/bus/usb/devices")
     public Collection<UsbDevice> devices() {
         File devices = new File("/sys/bus/usb/devices");
+        if (!devices.exists()) {
+            return Collections.EMPTY_LIST;
+        }
         LinkedList<UsbDevice> result = new LinkedList<>();
         for (File f : devices.listFiles()) {
             if (UsbDevice.isDeviceDir(f)) {
