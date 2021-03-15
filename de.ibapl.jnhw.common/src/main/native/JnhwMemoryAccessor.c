@@ -605,6 +605,42 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+     * Method:    signed_long_AtIndex0
+     * Signature: (JI)J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_signed_1long_1AtIndex0__JI
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jint index) {
+#if __SIZEOF_LONG__ == 8
+        return *(((long*) (uintptr_t) address) + index);
+#elif __SIZEOF_LONG__ == 4
+        return *(((long*) (uintptr_t) address) + index);
+#else
+#error unknown __SIZEOF_LONG__
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+     * Method:    signed_long_AtIndex0
+     * Signature: (JIJ)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_signed_1long_1AtIndex0__JIJ
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jint index, jlong value) {
+#if __SIZEOF_LONG__ == 8
+        *(((long*) (uintptr_t) address) + index) = value;
+#elif __SIZEOF_LONG__ == 4
+        if ((value > INT32_MAX) || (value < INT32_MIN)) {
+            throw_IllegalArgumentException(env, "value outside of int32_t");
+            return;
+        }
+        *(((long*) (uintptr_t) address) + index) = (long) value;
+#else
+#error unknown __SIZEOF_LONG__
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
      * Method:    unsigned_long0
      * Signature: (J)J
      */
@@ -637,6 +673,45 @@ extern "C" {
             throw_IllegalArgumentException(env, "value must not be nagative");
         }
         *((unsigned long*) (uintptr_t) address) = (uint32_t) value;
+#else
+#error unknown __SIZEOF_LONG__
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+     * Method:    unsigned_long_AtIndex0
+     * Signature: (JI)J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_unsigned_1long_1AtIndex0__JI
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jint index) {
+#if __SIZEOF_LONG__ == 8
+        return (int64_t)*(((unsigned long*) (uintptr_t) address) + index);
+#elif __SIZEOF_LONG__ == 4
+        return (int64_t) (*(((unsigned long*) (uintptr_t) address) + index) & 0x00000000ffffffff);
+#else
+#error unknown __SIZEOF_LONG__
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+     * Method:    unsigned_long_AtIndex0
+     * Signature: (JIJ)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_unsigned_1long_1AtIndex0__JIJ
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jint index, jlong value) {
+#if __SIZEOF_LONG__ == 8
+        *(((unsigned long*) (uintptr_t) address) + index) = (uint64_t) value;
+#elif __SIZEOF_LONG__ == 4
+        if ((value > 0x00000000ffffffffL)) {
+            throw_IllegalArgumentException(env, "value too big for uint32_t");
+            return;
+        }
+        if (value < 0) {
+            throw_IllegalArgumentException(env, "value must not be nagative");
+        }
+        *(((unsigned long*) (uintptr_t) address) + index) = (uint32_t) value;
 #else
 #error unknown __SIZEOF_LONG__
 #endif

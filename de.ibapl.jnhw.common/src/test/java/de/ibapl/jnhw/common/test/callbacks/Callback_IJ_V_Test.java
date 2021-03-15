@@ -151,7 +151,7 @@ public class Callback_IJ_V_Test {
 
     @Test
     public void testNativeFunctionPointer() {
-        final Callback_IJ_V testPtr = new Callback_IJ_V(new NativeAddressHolder(121)) {
+        final Callback_IJ_V testPtr = new Callback_IJ_V(NativeAddressHolder.of(121)) {
             @Override
             protected void callback(long value) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -175,7 +175,7 @@ public class Callback_IJ_V_Test {
         System.out.println("release");
         final ObjectRef<Object> ref = new ObjectRef();
 
-        final Callback_IJ_V NULL_PTR = new Callback_IJ_V(new NativeAddressHolder(0)) {
+        final Callback_IJ_V NULL_PTR = new Callback_IJ_V(NativeAddressHolder.NULL) {
             @Override
             protected void callback(long value) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -252,7 +252,7 @@ public class Callback_IJ_V_Test {
         Cleaner CLEANER = Cleaner.create();
 
         final ObjectRef<Number> ref = new ObjectRef<>();
-        final Callback_IJ_V NULL_PTR = new Callback_IJ_V(new NativeAddressHolder(0)) {
+        final Callback_IJ_V NULL_PTR = new Callback_IJ_V(NativeAddressHolder.NULL) {
             @Override
             protected void callback(int value) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Int64_t;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.MemoryAccessor;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor32;
 import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor64;
@@ -290,6 +291,47 @@ public class MemoryAccessorTest {
 
         assertEquals(String.format("0x%016x", value), ma.uint64_t_AsHex(mem, 0));
         assertEquals(Long.toUnsignedString(value), ma.uint64_t_nativeToString(mem, 0));
+    }
+
+    @Test
+    public void testUintptr_t() {
+        final long address = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
+        NativeAddressHolder expected = NativeAddressHolder.of(address);
+        ma.uintptr_t(mem, 0, expected);
+        assertMem();
+
+        assertEquals(expected, ma.uintptr_t(mem, 0));
+        assertEquals(address, ma.unsigned_long(mem, 0));
+
+    }
+
+    @Test
+    public void testUintptr_t_AtIndex() {
+        final long address = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
+        NativeAddressHolder expected = NativeAddressHolder.of(address);
+        ma.uintptr_t_AtIndex(mem, 0, 3, expected);
+
+        assertEquals(expected, ma.uintptr_t_AtIndex(mem, 0, 3));
+        assertEquals(address, ma.unsigned_long_AtIndex(mem, 0, 3));
+
+    }
+
+    @Test
+    public void testunsigned_long_AtIndex() {
+        final long expected = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
+        ma.unsigned_long_AtIndex(mem, 0, 3, expected);
+
+        assertEquals(expected, ma.unsigned_long_AtIndex(mem, 0, 3));
+    }
+
+    @Test
+    public void testsigned_long_AtIndex() {
+        final long expected = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
+        ma.signed_long_AtIndex(mem, 0, 3, expected);
+        assertEquals(expected, ma.signed_long_AtIndex(mem, 0, 3));
+
+        ma.signed_long_AtIndex(mem, 0, 3, -1);
+        assertEquals(-1, ma.signed_long_AtIndex(mem, 0, 3));
     }
 
     /*
@@ -917,7 +959,6 @@ public class MemoryAccessorTest {
         final byte[] expected = new byte[8];
         expected[0] = value;
         assertArrayEquals(expected, actual);
-
     }
 
     private void assertMemEqualsShort(short value) {

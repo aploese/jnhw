@@ -450,6 +450,8 @@ public interface Ch9 {
                 case USB_DT_PIPE_USAGE:
                     result = new Uas.Usb_pipe_usage_descriptor(parent, getOffset(), bLength(), MEM_UNINITIALIZED);
                     break;
+                case USB_DT_INTERFACE_ASSOCIATION:
+                    result = new Usb_interface_assoc_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
                 default:
                     result = new UsbUnknownDescriptor(parent, getOffset(), bLength(), MEM_UNINITIALIZED);
             }
@@ -1420,64 +1422,64 @@ public interface Ch9 {
     /*-------------------------------------------------------------------------*/
 
  /* USB_DT_INTERFACE_ASSOCIATION: groups interfaces */
-    public abstract static class Usb_interface_assoc_descriptor extends AbstractDescriptor {
+    public static class Usb_interface_assoc_descriptor extends AbstractDescriptor {
 
         public final static byte USB_DT_INTERFACE_ASSOCIATION_SIZE = 8;
 
-        public static class Layout extends AbstractLayout {
+        public static class Layout extends AbstractDescriptor.Layout {
 
-            public final int bFirstInterface;
-            public final int bInterfaceCount;
-            public final int bFunctionClass;
-            public final int bFunctionSubClass;
-            public final int bFunctionProtocol;
-            public final int iFunction;
+            public final static byte bFirstInterface = _sizeof;
+            public final static byte bInterfaceCount = bFirstInterface + __U8;
+            public final static byte bFunctionClass = bInterfaceCount + __U8;
+            public final static byte bFunctionSubClass = bFunctionClass + __U8;
+            public final static byte bFunctionProtocol = bFunctionSubClass + __U8;
+            public final static byte iFunction = bFunctionProtocol + __U8;
 
-            protected Layout() {
-                bFirstInterface = (int) slf.uint8_t();
-                bInterfaceCount = (int) slf.uint8_t();
-                bFunctionClass = (int) slf.uint8_t();
-                bFunctionSubClass = (int) slf.uint8_t();
-                bFunctionProtocol = (int) slf.uint8_t();
-                iFunction = (int) slf.uint8_t();
-            }
-
+            public final static byte sizeof = iFunction + __U8;
         }
 
-        protected final static Layout LAYOUT = new Layout();
-
-        public Usb_interface_assoc_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_interface_assoc_descriptor(AbstractNativeMemory parent, long offset, Byte setMem) {
+            super(parent, offset, Layout.sizeof, setMem);
         }
 
         @__u8
         public byte bFirstInterface() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bFirstInterface);
+            return ACCESSOR___U8.__u8(this, Layout.bFirstInterface);
         }
 
         @__u8
         public short bInterfaceCount() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bInterfaceCount);
+            return ACCESSOR___U8.__u8(this, Layout.bInterfaceCount);
         }
 
         @__u8
         public byte bFunctionClass() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bFunctionClass);
+            return ACCESSOR___U8.__u8(this, Layout.bFunctionClass);
         }
 
         @__u8
         public byte bFunctionSubClass() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bFunctionSubClass);
+            return ACCESSOR___U8.__u8(this, Layout.bFunctionSubClass);
         }
 
         @__u8
         public byte bFunctionProtocol() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bFunctionProtocol);
+            return ACCESSOR___U8.__u8(this, Layout.bFunctionProtocol);
         }
 
         @__u8
         public byte iFunction() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.iFunction);
+            return ACCESSOR___U8.__u8(this, Layout.iFunction);
+        }
+
+        @Override
+        protected void nativeToString(JsonStringBuilder jsb, String indentPrefix, String indent) throws IOException {
+            jsb.appendByteMember("bFirstInterface", bFirstInterface());
+            jsb.appendShortMember("bInterfaceCount", bInterfaceCount());
+            jsb.appendByteMember("bFunctionClass", bFunctionClass());
+            jsb.appendByteMember("bFunctionSubClass", bFunctionSubClass());
+            jsb.appendByteMember("bFunctionProtocol", bFunctionProtocol());
+            jsb.appendByteMember("iFunction", iFunction());
         }
     }
 

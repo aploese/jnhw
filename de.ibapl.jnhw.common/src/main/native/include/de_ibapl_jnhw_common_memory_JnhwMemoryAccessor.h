@@ -417,6 +417,22 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_signe
 
 /*
  * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    signed_long_AtIndex0
+ * Signature: (JI)J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_signed_1long_1AtIndex0__JI
+  (JNIEnv *, jclass, jlong, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    signed_long_AtIndex0
+ * Signature: (JIJ)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_signed_1long_1AtIndex0__JIJ
+  (JNIEnv *, jclass, jlong, jint, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
  * Method:    unsigned_long0
  * Signature: (J)J
  */
@@ -430,6 +446,22 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_unsi
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_unsigned_1long0__JJ
   (JNIEnv *, jclass, jlong, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    unsigned_long_AtIndex0
+ * Signature: (JI)J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_unsigned_1long_1AtIndex0__JI
+  (JNIEnv *, jclass, jlong, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    unsigned_long_AtIndex0
+ * Signature: (JIJ)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_unsigned_1long_1AtIndex0__JIJ
+  (JNIEnv *, jclass, jlong, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor

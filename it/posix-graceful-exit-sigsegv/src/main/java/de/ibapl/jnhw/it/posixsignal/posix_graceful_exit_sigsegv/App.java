@@ -73,7 +73,7 @@ public class App {
         FunctionPtr_I_V originalHandler = Signal.signal(Signal.SIGSEGV, callback_I_V);
 
         //We will call a NULL pointer on the native side. So we will force a segmentation violation.
-        NativeAddressHolder nah = new NativeAddressHolder(0L);
+        NativeAddressHolder nah = NativeAddressHolder.NULL;
         CallNative_I_V callNative_I_V = new CallNative_I_V(nah);
         callNative_I_V.call(42);
 

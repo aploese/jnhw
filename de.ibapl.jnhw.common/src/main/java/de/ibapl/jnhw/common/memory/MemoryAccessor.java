@@ -67,87 +67,87 @@ public interface MemoryAccessor {
     }
 
     @int8_t
-    abstract byte int8_t(OpaqueMemory32 mem, long offset);
+    byte int8_t(OpaqueMemory32 mem, long offset);
 
-    abstract void int8_t(OpaqueMemory32 mem, long offset, @int8_t byte value);
+    void int8_t(OpaqueMemory32 mem, long offset, @int8_t byte value);
 
     @int8_t
-    abstract byte int8_t(OpaqueMemory64 mem, long offset);
+    byte int8_t(OpaqueMemory64 mem, long offset);
 
-    abstract void int8_t(OpaqueMemory64 mem, long offset, @int8_t byte value);
+    void int8_t(OpaqueMemory64 mem, long offset, @int8_t byte value);
 
-    abstract String int8_t_AsHex(OpaqueMemory32 mem, long offset);
+    String int8_t_AsHex(OpaqueMemory32 mem, long offset);
 
-    abstract String int8_t_nativeToString(OpaqueMemory32 mem, long offset);
+    String int8_t_nativeToString(OpaqueMemory32 mem, long offset);
 
     @int16_t
-    abstract short int16_t(OpaqueMemory32 mem, long offset);
+    short int16_t(OpaqueMemory32 mem, long offset);
 
-    abstract void int16_t(OpaqueMemory32 mem, long offset, @int16_t short value);
+    void int16_t(OpaqueMemory32 mem, long offset, @int16_t short value);
 
-    abstract String int16_t_AsHex(OpaqueMemory32 mem, long offset);
+    String int16_t_AsHex(OpaqueMemory32 mem, long offset);
 
-    abstract String int16_t_nativeToString(OpaqueMemory32 mem, long offset);
+    String int16_t_nativeToString(OpaqueMemory32 mem, long offset);
 
     @int32_t
-    abstract int int32_t(OpaqueMemory32 mem, long offset);
+    int int32_t(OpaqueMemory32 mem, long offset);
 
-    abstract void int32_t(OpaqueMemory32 mem, long offset, @int32_t int value);
+    void int32_t(OpaqueMemory32 mem, long offset, @int32_t int value);
 
-    abstract String int32_t_AsHex(OpaqueMemory32 mem, long offset);
+    String int32_t_AsHex(OpaqueMemory32 mem, long offset);
 
-    abstract String int32_t_nativeToString(OpaqueMemory32 mem, long offset);
+    String int32_t_nativeToString(OpaqueMemory32 mem, long offset);
 
     @int64_t
-    abstract long int64_t(OpaqueMemory32 mem, long offset);
+    long int64_t(OpaqueMemory32 mem, long offset);
 
-    abstract void int64_t(OpaqueMemory32 mem, long offset, @int64_t long value);
+    void int64_t(OpaqueMemory32 mem, long offset, @int64_t long value);
 
-    abstract String int64_t_AsHex(OpaqueMemory32 mem, long offset);
+    String int64_t_AsHex(OpaqueMemory32 mem, long offset);
 
-    abstract String int64_t_nativeToString(OpaqueMemory32 mem, long offset);
-
-    @uint8_t
-    abstract byte uint8_t(OpaqueMemory32 mem, long offset);
+    String int64_t_nativeToString(OpaqueMemory32 mem, long offset);
 
     @uint8_t
-    abstract short uint8_t_AsShort(OpaqueMemory32 mem, long offset);
+    byte uint8_t(OpaqueMemory32 mem, long offset);
 
-    abstract void uint8_t(OpaqueMemory32 mem, long offset, @uint8_t byte value);
+    @uint8_t
+    short uint8_t_AsShort(OpaqueMemory32 mem, long offset);
 
-    abstract void uint8_t_FromShort(OpaqueMemory32 mem, long offset, @uint8_t short value);
+    void uint8_t(OpaqueMemory32 mem, long offset, @uint8_t byte value);
 
-    abstract String uint8_t_AsHex(OpaqueMemory32 mem, long offset);
+    void uint8_t_FromShort(OpaqueMemory32 mem, long offset, @uint8_t short value);
 
-    abstract String uint8_t_nativeToString(OpaqueMemory32 mem, long offset);
+    String uint8_t_AsHex(OpaqueMemory32 mem, long offset);
+
+    String uint8_t_nativeToString(OpaqueMemory32 mem, long offset);
 
     @uint16_t
-    abstract short uint16_t(OpaqueMemory32 mem, long offset);
+    short uint16_t(OpaqueMemory32 mem, long offset);
 
     @uint16_t
-    abstract int uint16_t_AsInt(OpaqueMemory32 mem, long offset);
+    int uint16_t_AsInt(OpaqueMemory32 mem, long offset);
 
-    abstract void uint16_t(OpaqueMemory32 mem, long offset, @uint16_t short value);
+    void uint16_t(OpaqueMemory32 mem, long offset, @uint16_t short value);
 
-    abstract void uint16_t_FromInt(OpaqueMemory32 mem, long offset, @uint16_t int value);
+    void uint16_t_FromInt(OpaqueMemory32 mem, long offset, @uint16_t int value);
 
-    abstract String uint16_t_AsHex(OpaqueMemory32 mem, long offset);
+    String uint16_t_AsHex(OpaqueMemory32 mem, long offset);
 
-    abstract String uint16_t_nativeToString(OpaqueMemory32 mem, long offset);
-
-    @uint32_t
-    abstract int uint32_t(OpaqueMemory32 mem, long offset);
+    String uint16_t_nativeToString(OpaqueMemory32 mem, long offset);
 
     @uint32_t
-    abstract long uint32_t_AsLong(OpaqueMemory32 mem, long offset);
+    int uint32_t(OpaqueMemory32 mem, long offset);
 
-    abstract void uint32_t(OpaqueMemory32 mem, long offset, @uint32_t int value);
+    @uint32_t
+    long uint32_t_AsLong(OpaqueMemory32 mem, long offset);
 
-    abstract void uint32_t_FromLong(OpaqueMemory32 mem, long offset, @uint32_t long value);
+    void uint32_t(OpaqueMemory32 mem, long offset, @uint32_t int value);
 
-    abstract String uint32_t_AsHex(OpaqueMemory32 mem, long offset);
+    void uint32_t_FromLong(OpaqueMemory32 mem, long offset, @uint32_t long value);
 
-    abstract String uint32_t_nativeToString(OpaqueMemory32 mem, long offset);
+    String uint32_t_AsHex(OpaqueMemory32 mem, long offset);
+
+    String uint32_t_nativeToString(OpaqueMemory32 mem, long offset);
 
     /**
      * access the native long (signed long) datatype. It m,ay be 32 or 64bis
@@ -156,7 +156,7 @@ public interface MemoryAccessor {
      * @param offset
      * @return
      */
-    abstract long signed_long(OpaqueMemory32 mem, long offset);
+    long signed_long(OpaqueMemory32 mem, long offset);
 
     /**
      * access the native long (signed long) datatype. It m,ay be 32 or 64bis
@@ -165,7 +165,23 @@ public interface MemoryAccessor {
      * @param offset
      * @return
      */
-    abstract void signed_long(OpaqueMemory32 mem, long offset, @uint64_t long value);
+    void signed_long(OpaqueMemory32 mem, long offset, long value);
+
+    /**
+     * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
+     *
+     * @param mem
+     * @param offset
+     */
+    long signed_long_AtIndex(OpaqueMemory32 mem, long offset, int index);
+
+    /**
+     * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
+     *
+     * @param mem
+     * @param offset
+     */
+    void signed_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value);
 
     /**
      * access the native unsigned long datatype. It m,ay be 32 or 64bis
@@ -174,25 +190,40 @@ public interface MemoryAccessor {
      * @param offset
      * @return
      */
-    abstract long unsigned_long(OpaqueMemory32 mem, long offset);
+    long unsigned_long(OpaqueMemory32 mem, long offset);
 
     /**
      * access the native unsigned long datatype. It m,ay be 32 or 64bis
      *
      * @param mem
      * @param offset
-     * @return
      */
-    abstract void unsigned_long(OpaqueMemory32 mem, long offset, @uint64_t long value);
+    void unsigned_long(OpaqueMemory32 mem, long offset, long value);
+
+    /**
+     * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
+     *
+     * @param mem
+     * @param offset
+     */
+    long unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index);
+
+    /**
+     * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
+     *
+     * @param mem
+     * @param offset
+     */
+    void unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value);
 
     @uint64_t
-    abstract long uint64_t(OpaqueMemory32 mem, long offset);
+    long uint64_t(OpaqueMemory32 mem, long offset);
 
-    abstract void uint64_t(OpaqueMemory32 mem, long offset, @uint64_t long value);
+    void uint64_t(OpaqueMemory32 mem, long offset, @uint64_t long value);
 
-    abstract String uint64_t_AsHex(OpaqueMemory32 mem, long offset);
+    String uint64_t_AsHex(OpaqueMemory32 mem, long offset);
 
-    abstract String uint64_t_nativeToString(OpaqueMemory32 mem, long offset);
+    String uint64_t_nativeToString(OpaqueMemory32 mem, long offset);
 
     default int getSignedIntOf(OpaqueMemory32 mem, long offset, int realSize) {
         switch (realSize) {
@@ -495,19 +526,19 @@ public interface MemoryAccessor {
         }
     }
 
-    abstract long allocateMemory(AbstractNativeMemory mem, long sizeInBytes);
+    long allocateMemory(AbstractNativeMemory mem, long sizeInBytes);
 
-    abstract void setMemory32(OpaqueMemory32 mem, byte value);
+    void setMemory32(OpaqueMemory32 mem, byte value);
 
-    abstract void setMemory64(OpaqueMemory64 mem, byte value);
+    void setMemory64(OpaqueMemory64 mem, byte value);
 
-    abstract void copyMemory32(byte[] src, int srcPos, OpaqueMemory32 destMem, int destPos, int length);
+    void copyMemory32(byte[] src, int srcPos, OpaqueMemory32 destMem, int destPos, int length);
 
-    abstract void copyMemory64(byte[] src, int srcPos, OpaqueMemory64 destMem, long destPos, int length);
+    void copyMemory64(byte[] src, int srcPos, OpaqueMemory64 destMem, long destPos, int length);
 
-    abstract void copyMemory32(OpaqueMemory32 srcMem, int srcPos, byte[] dest, int destPos, int length);
+    void copyMemory32(OpaqueMemory32 srcMem, int srcPos, byte[] dest, int destPos, int length);
 
-    abstract void copyMemory64(OpaqueMemory64 srcMem, long srcPos, byte[] dest, int destPos, int length);
+    void copyMemory64(OpaqueMemory64 srcMem, long srcPos, byte[] dest, int destPos, int length);
 
     NativeAddressHolder uintptr_t(OpaqueMemory32 mem, long offset);
 

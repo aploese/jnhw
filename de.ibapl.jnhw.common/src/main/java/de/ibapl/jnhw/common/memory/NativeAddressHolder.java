@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.common.memory;
 
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 
 /**
@@ -38,7 +39,7 @@ public final class NativeAddressHolder {
      *
      * @param address
      */
-    public NativeAddressHolder(long address) {
+    protected NativeAddressHolder(long address) {
         this.address = address;
     }
 
@@ -68,6 +69,13 @@ public final class NativeAddressHolder {
     @Override
     public String toString() {
         return "{address : " + JnhwFormater.formatAddress(address) + "}";
+    }
+
+    public static NativeAddressHolder of(long address) {
+        if ((BaseDataType.uintptr_t.SIZE_OF == 32) && ((address < 0) || (address > 0x00000000ffffffffL))) {
+            throw new IllegalArgumentException("address outside range");
+        }
+        return new NativeAddressHolder(address);
     }
 
 }

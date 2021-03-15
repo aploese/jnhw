@@ -211,8 +211,8 @@ public class OpaqueMemory64Test {
 
     @Test
     public void testEquals() throws Exception {
-        OpaqueMemory64 mem = new MemToTest(new NativeAddressHolder(0x2aL), 8);
-        OpaqueMemory64 mem1 = new MemToTest(new NativeAddressHolder(42L), 8);
+        OpaqueMemory64 mem = new MemToTest(NativeAddressHolder.of(0x2aL), 8);
+        OpaqueMemory64 mem1 = new MemToTest(NativeAddressHolder.of(42L), 8);
         OpaqueMemory64 mem2 = new MemToTest(mem, 0, 8, null);
         switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
             case _32_BIT:

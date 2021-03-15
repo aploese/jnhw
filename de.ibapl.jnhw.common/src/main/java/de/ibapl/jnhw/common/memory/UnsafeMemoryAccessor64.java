@@ -47,4 +47,24 @@ public class UnsafeMemoryAccessor64 extends UnsafeMemoryAccessor {
         unsafe.putLong(mem.baseAddress + offset, value);
     }
 
+    @Override
+    public long signed_long_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+        return unsafe.getLong(mem.baseAddress + offset + 8 * index);
+    }
+
+    @Override
+    public void signed_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value) {
+        unsafe.putLong(mem.baseAddress + offset + 8 * index, value);
+    }
+
+    @Override
+    public long unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+        return unsafe.getLong(mem.baseAddress + offset + 8 * index);
+    }
+
+    @Override
+    public void unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value) {
+        unsafe.putLong(mem.baseAddress + offset + 8 * index, value);
+    }
+
 }

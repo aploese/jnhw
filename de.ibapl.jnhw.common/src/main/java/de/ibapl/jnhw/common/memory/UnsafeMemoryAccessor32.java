@@ -41,6 +41,19 @@ public class UnsafeMemoryAccessor32 extends UnsafeMemoryAccessor {
     }
 
     @Override
+    public long signed_long_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+        return unsafe.getInt(mem.baseAddress + offset + 4 * index);
+    }
+
+    @Override
+    public void signed_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value) {
+        if ((value > Integer.MAX_VALUE) || (value < Integer.MIN_VALUE)) {
+            throw new IllegalArgumentException("value outside of int32_t: " + value);
+        }
+        unsafe.putInt(mem.baseAddress + offset + 4 * index, (int) value);
+    }
+
+    @Override
     public long unsigned_long(OpaqueMemory32 mem, long offset) {
         return (long) (unsafe.getInt(mem.baseAddress + offset) & 0x00000000ffffffffL);
     }
@@ -54,6 +67,22 @@ public class UnsafeMemoryAccessor32 extends UnsafeMemoryAccessor {
             throw new IllegalArgumentException("value must not be nagative");
         }
         unsafe.putInt(mem.baseAddress + offset, (int) value);
+    }
+
+    @Override
+    public long unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+        return (long) (unsafe.getInt(mem.baseAddress + offset + 4 * index) & 0x00000000ffffffffL);
+    }
+
+    @Override
+    public void unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value) {
+        if (value > 0x00000000ffffffffL) {
+            throw new IllegalArgumentException("value too big for uint32_t: " + value);
+        }
+        if (value < 0) {
+            throw new IllegalArgumentException("value must not be nagative");
+        }
+        unsafe.putInt(mem.baseAddress + offset + 4 * index, (int) value);
     }
 
 }

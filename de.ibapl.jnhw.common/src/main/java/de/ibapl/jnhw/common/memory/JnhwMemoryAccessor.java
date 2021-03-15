@@ -466,9 +466,17 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
 
     private static native void signed_long0(long address, long value);
 
+    private static native long signed_long_AtIndex0(long address, int index);
+
+    private static native void signed_long_AtIndex0(long address, int index, long value);
+
     private static native long unsigned_long0(long address);
 
     private static native void unsigned_long0(long address, long value);
+
+    private static native long unsigned_long_AtIndex0(long address, int index);
+
+    private static native void unsigned_long_AtIndex0(long address, int index, long value);
 
     private static native String getStringUTF0(long address);
 
@@ -495,6 +503,26 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
     @Override
     public String getStringUTF(OpaqueMemory32 mem, long offset) {
         return getStringUTF0(mem.baseAddress + offset);
+    }
+
+    @Override
+    public long signed_long_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+        return signed_long_AtIndex0(mem.baseAddress + offset, index);
+    }
+
+    @Override
+    public void signed_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value) {
+        signed_long_AtIndex0(mem.baseAddress + offset, index, value);
+    }
+
+    @Override
+    public long unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+        return unsigned_long_AtIndex0(mem.baseAddress + offset, index);
+    }
+
+    @Override
+    public void unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value) {
+        unsigned_long_AtIndex0(mem.baseAddress + offset, index, value);
     }
 
     class JnhwMemoryCleaner implements Runnable {

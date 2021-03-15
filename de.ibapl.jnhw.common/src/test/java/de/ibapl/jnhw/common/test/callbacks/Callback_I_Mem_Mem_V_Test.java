@@ -165,7 +165,7 @@ public class Callback_I_Mem_Mem_V_Test {
     @Test
     public void testNativeFunctionPointer() {
         @SuppressWarnings("unchecked")
-        final Callback_I_Mem_Mem_V<A, B> testPtr = new Callback_I_Mem_Mem_V(new NativeAddressHolder(121)) {
+        final Callback_I_Mem_Mem_V<A, B> testPtr = new Callback_I_Mem_Mem_V(NativeAddressHolder.of(121)) {
             @Override
             protected void callback(int value, AbstractNativeMemory a, AbstractNativeMemory b) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -259,7 +259,7 @@ public class Callback_I_Mem_Mem_V_Test {
 
         final IntRef intref = new IntRef();
         @SuppressWarnings("unchecked")
-        final Callback_I_Mem_Mem_V<A, B> NULL_PTR = new Callback_I_Mem_Mem_V(new NativeAddressHolder(0)) {
+        final Callback_I_Mem_Mem_V<A, B> NULL_PTR = new Callback_I_Mem_Mem_V(NativeAddressHolder.NULL) {
             @Override
             protected void callback(int value, AbstractNativeMemory a, AbstractNativeMemory b) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
