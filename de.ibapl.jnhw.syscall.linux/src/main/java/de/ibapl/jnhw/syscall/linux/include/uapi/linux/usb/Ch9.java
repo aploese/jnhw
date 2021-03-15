@@ -452,6 +452,7 @@ public interface Ch9 {
                     break;
                 case USB_DT_INTERFACE_ASSOCIATION:
                     result = new Usb_interface_assoc_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
+                    break;
                 default:
                     result = new UsbUnknownDescriptor(parent, getOffset(), bLength(), MEM_UNINITIALIZED);
             }
