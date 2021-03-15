@@ -258,9 +258,9 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
     @Override
     public void uint8_t_FromShort(OpaqueMemory32 mem, long offset, short value) {
         if (value < 0) {
-            throw new IllegalArgumentException("value must not be nagative");
+            throw new IllegalArgumentException("value must not be negative: " + value);
         } else if (value > (short) 0x00ff) {
-            throw new IllegalArgumentException("value must not be bigger than 255");
+            throw new IllegalArgumentException("value must not be bigger than 255 (0xff): " + value);
         }
         unsafe.putByte(mem.baseAddress + offset, (byte) value);
     }
@@ -293,7 +293,9 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
     @Override
     public void uint16_t_FromInt(OpaqueMemory32 mem, long offset, int value) {
         if (value < 0) {
-            throw new IllegalArgumentException("value must not be nagative");
+            throw new IllegalArgumentException("value must not be negative: " + value);
+        } else if (value > 0x0000ffff) {
+            throw new IllegalArgumentException("value must not be bigger than  65535 (0xffff): " + value);
         }
         unsafe.putShort(mem.baseAddress + offset, (short) value);
     }

@@ -158,6 +158,58 @@ public class MemoryAccessorTest {
         assertEquals(Integer.toString(value & 0xffff), ma.uint8_t_nativeToString(mem, 0));
     }
 
+    /**
+     * Test of int16_t (short) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(shorts = {Short.MIN_VALUE, -1, 0, 1, Short.MAX_VALUE})
+    public void testInt16_t_ShortTest(short value) {
+        ma.int16_t(mem, 0, value);
+        assertMem();
+        assertMemEqualsLittleEndianValue(value & 0x000000000000ffffL);
+        assertEquals(value, ma.int16_t(mem, 0));
+
+        assertEquals(String.format("0x%04x", value), ma.int16_t_AsHex(mem, 0));
+        assertEquals(Short.toString(value), ma.int16_t_nativeToString(mem, 0));
+    }
+
+    /**
+     * Test of uint16_t (short) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(shorts = {Short.MIN_VALUE, -1, 0, 1, Short.MAX_VALUE})
+    public void testUint16_t_ShortTest(short value) {
+        ma.uint16_t(mem, 0, value);
+        assertMem();
+        assertMemEqualsLittleEndianValue(value & 0x000000000000ffffL);
+        assertEquals(value, ma.uint16_t(mem, 0));
+
+        assertEquals(String.format("0x%04x", value), ma.uint16_t_AsHex(mem, 0));
+        assertEquals(Integer.toString(value & 0xffff), ma.uint16_t_nativeToString(mem, 0));
+    }
+
+    /**
+     * Test of uint16_t (int) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 0, 1, 0x0000ffff, 0x00010000})
+    public void testUint16_t_IntTest(int value) {
+        if ((value < 0) || (value > 0xffff)) {
+            assertThrows(IllegalArgumentException.class, () -> ma.uint16_t_FromInt(mem, 0, value));
+            assertMem();
+            assertMemEqualsLittleEndianValue(0L);
+            return;
+        }
+
+        ma.uint16_t_FromInt(mem, 0, value);
+        assertMem();
+        assertMemEqualsLittleEndianValue(value & 0x000000000000ffffL);
+        assertEquals(value, ma.uint16_t_AsInt(mem, 0));
+
+        assertEquals(String.format("0x%04x", value), ma.uint16_t_AsHex(mem, 0));
+        assertEquals(Integer.toString(value & 0xffff), ma.uint16_t_nativeToString(mem, 0));
+    }
+
     /*
 
     /**

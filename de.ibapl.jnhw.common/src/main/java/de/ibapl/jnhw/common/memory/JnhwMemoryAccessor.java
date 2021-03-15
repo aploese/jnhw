@@ -212,6 +212,11 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
 
     @Override
     public void uint8_t_FromShort(OpaqueMemory32 mem, long offset, short value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("value must not be negative: " + value);
+        } else if (value > (short) 0x00ff) {
+            throw new IllegalArgumentException("value must not be bigger than 255 (0xff): " + value);
+        }
         uint8_t_FromShort0(mem.baseAddress + offset, value);
     }
 
@@ -242,6 +247,11 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
 
     @Override
     public void uint16_t_FromInt(OpaqueMemory32 mem, long offset, int value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("value must not be negative: " + value);
+        } else if (value > 0x0000ffff) {
+            throw new IllegalArgumentException("value must not be bigger than  65535 (0xffff): " + value);
+        }
         uint16_t_FromInt0(mem.baseAddress + offset, value);
     }
 
