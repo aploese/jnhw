@@ -527,5 +527,62 @@ public interface MemoryAccessor {
 
     void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, NativeAddressHolder dest);
 
-    public String getStringUTF(OpaqueMemory32 mem, long offset);
+    String getStringUTF(OpaqueMemory32 mem, long offset);
+
+    static long getBitsInLong(long value, int bitpos, int bitsize) {
+        final long mask = (0xffffffffffffffffL >>> (64 - bitsize)); // just shift the mask...
+        return (value >> bitpos) & mask;
+    }
+
+    static long setBitsInLong(long value, long bits, int bitpos, int bitsize) {
+        final long maskValue = (0xffffffffffffffffL >>> (64 - bitsize)); // just shift the mask...
+        final long mask = maskValue << bitpos;
+        if ((bits & ~maskValue) != 0) {
+            throw new IllegalArgumentException("value has bits outside of range");
+        }
+        return (value & ~mask) | ((bits << bitpos) & mask);
+    }
+
+    static int getBitsInInt(int value, int bitpos, int bitsize) {
+        final int mask = (0xffffffff >>> (32 - bitsize)); // just shift the mask...
+        return (value >> bitpos) & mask;
+    }
+
+    static int setBitsInInt(int value, int bits, int bitpos, int bitsize) {
+        final int maskValue = (0xffffffff >>> (32 - bitsize)); // just shift the mask...
+        final int mask = maskValue << bitpos;
+        if ((bits & ~maskValue) != 0) {
+            throw new IllegalArgumentException("value has bits outside of range");
+        }
+        return (value & ~mask) | ((bits << bitpos) & mask);
+    }
+
+    static short getBitsInShort(short value, int bitpos, int bitsize) {
+        final short mask = (short) (0xffff >>> (16 - bitsize)); // just shift the mask...
+        return (short) ((value >> bitpos) & mask);
+    }
+
+    static short setBitsInShort(short value, short bits, int bitpos, int bitsize) {
+        final short maskValue = (short) (0xffff >>> (16 - bitsize)); // just shift the mask...
+        final short mask = (short) (maskValue << bitpos);
+        if ((bits & ~maskValue) != 0) {
+            throw new IllegalArgumentException("value has bits outside of range");
+        }
+        return (short) ((value & ~mask) | ((bits << bitpos) & mask));
+    }
+
+    static byte getBitsInByte(byte value, int bitpos, int bitsize) {
+        final byte mask = (byte) (0xff >>> (8 - bitsize)); // just shift the mask...
+        return (byte) ((value >> bitpos) & mask);
+    }
+
+    static byte setBitsInByte(byte value, byte bits, int bitpos, int bitsize) {
+        final byte maskValue = (byte) (0xff >>> (8 - bitsize)); // just shift the mask...
+        final byte mask = (byte) (maskValue << bitpos);
+        if ((bits & ~maskValue) != 0) {
+            throw new IllegalArgumentException("value has bits outside of range");
+        }
+        return (byte) ((value & ~mask) | ((bits << bitpos) & mask));
+    }
+
 }

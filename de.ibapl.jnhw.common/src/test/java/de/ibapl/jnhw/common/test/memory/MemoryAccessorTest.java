@@ -986,4 +986,39 @@ public class MemoryAccessorTest {
         assertEquals(0, mem.int64_t());
     }
 
+    @Test
+    public void testBitsInLong() {
+        assertEquals(0x07, MemoryAccessor.getBitsInLong(0x0102030405060708L, 8, 4));
+        assertEquals(0x01, MemoryAccessor.getBitsInLong(0x0102030405060708L, 3, 5));
+        assertEquals(1, MemoryAccessor.setBitsInLong(0, 1, 0, 1));
+        assertEquals(1, MemoryAccessor.setBitsInLong(-1, 0, 1, 63));
+        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInLong(0, 0x00010000, 0, 16));
+    }
+
+    @Test
+    public void testBitsInInt() {
+        assertEquals(0x07, MemoryAccessor.getBitsInInt(0x05060708, 8, 4));
+        assertEquals(0x01, MemoryAccessor.getBitsInInt(0x05060708, 3, 5));
+        assertEquals(1, MemoryAccessor.setBitsInInt(0, 1, 0, 1));
+        assertEquals(1, MemoryAccessor.setBitsInInt(-1, 0, 1, 31));
+        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInInt(0, 0x00010000, 0, 16));
+    }
+
+    @Test
+    public void testBitsInShort() {
+        assertEquals(0x07, MemoryAccessor.getBitsInShort((short) 0x0708, 8, 4));
+        assertEquals(0x01, MemoryAccessor.getBitsInShort((short) 0x0708, 3, 5));
+        assertEquals(1, MemoryAccessor.setBitsInShort((short) 0, (short) 1, 0, 1));
+        assertEquals(1, MemoryAccessor.setBitsInShort((short) -1, (short) 0, 1, 15));
+        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInShort((short) 0, (short) 0x0100, 0, 8));
+    }
+
+    @Test
+    public void testBitsInByte() {
+        assertEquals(0x07, MemoryAccessor.getBitsInByte((byte) 0x07, 0, 4));
+        assertEquals(0x01, MemoryAccessor.getBitsInByte((byte) 0x08, 3, 5));
+        assertEquals(1, MemoryAccessor.setBitsInByte((byte) 0, (byte) 1, 0, 1));
+        assertEquals(1, MemoryAccessor.setBitsInByte((byte) -1, (byte) 0, 1, 7));
+        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInByte((byte) 0, (byte) 0x10, 0, 4));
+    }
 }
