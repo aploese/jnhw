@@ -168,6 +168,29 @@ public class MemoryAccessorTest {
     }
 
     /**
+     * Test of uint8_t (short) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(shorts = {-1, 0, 1, 0x00ff, 0x0100})
+
+    public void testUint8_t_ShortTest(short value) {
+        if ((value < 0) || (value > 0xff)) {
+            assertThrows(IllegalArgumentException.class, () -> ma.uint8_t_FromShort(mem, 0, value));
+            assertMem();
+            assertMemIsClear();
+            return;
+        }
+
+        ma.uint8_t_FromShort(mem, 0, value);
+        assertMem();
+        assertMemEqualsByte((byte) value);
+        assertEquals(value, ma.uint8_t_AsShort(mem, 0));
+
+        assertEquals(String.format("0x%02x", value), ma.uint8_t_AsHex(mem, 0));
+        assertEquals(Integer.toString(value & 0xffff), ma.uint8_t_nativeToString(mem, 0));
+    }
+
+    /**
      * Test of UnsignedIntOf (byte) methods, of class MemoryAccessor.
      */
     @ParameterizedTest
@@ -193,8 +216,8 @@ public class MemoryAccessorTest {
      * Test of UnsignedLongOf (byte) methods, of class MemoryAccessor.
      */
     @ParameterizedTest
-    @ValueSource(ints = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
-    public void testUnsignedLong_ByteTest(int value) {
+    @ValueSource(longs = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
+    public void testUnsignedLong_ByteTest(long value) {
         if ((value < 0) || (value > 0xff)) {
             assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedLongOf(mem, 0, 1, value));
             assertMem();
@@ -208,30 +231,7 @@ public class MemoryAccessorTest {
         assertEquals(value, ma.getUnsignedLongOf(mem, 0, 1));
 
         assertEquals(String.format("0x%02x", value & 0xff), ma.getUnsignedLongOf_AsHex(mem, 0, 1));
-        assertEquals(Integer.toString(value & 0xff), ma.getUnsignedLongOf_nativeToString(mem, 0, 1));
-    }
-
-    /**
-     * Test of uint8_t (short) methods, of class MemoryAccessor.
-     */
-    @ParameterizedTest
-    @ValueSource(shorts = {-1, 0, 1, 0x00ff, 0x0100})
-
-    public void testUint8_t_ShortTest(short value) {
-        if ((value < 0) || (value > 0xff)) {
-            assertThrows(IllegalArgumentException.class, () -> ma.uint8_t_FromShort(mem, 0, value));
-            assertMem();
-            assertMemIsClear();
-            return;
-        }
-
-        ma.uint8_t_FromShort(mem, 0, value);
-        assertMem();
-        assertMemEqualsByte((byte) value);
-        assertEquals(value, ma.uint8_t_AsShort(mem, 0));
-
-        assertEquals(String.format("0x%02x", value), ma.uint8_t_AsHex(mem, 0));
-        assertEquals(Integer.toString(value & 0xffff), ma.uint8_t_nativeToString(mem, 0));
+        assertEquals(Long.toString(value & 0xff), ma.getUnsignedLongOf_nativeToString(mem, 0, 1));
     }
 
     /**
@@ -247,6 +247,36 @@ public class MemoryAccessorTest {
 
         assertEquals(String.format("0x%04x", value), ma.int16_t_AsHex(mem, 0));
         assertEquals(Short.toString(value), ma.int16_t_nativeToString(mem, 0));
+    }
+
+    /**
+     * Test of SignedIntOf (short) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(ints = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
+    public void testSignedIntOf_ShortTest(int value) {
+        ma.setSignedIntOf(mem, 0, 2, value);
+        assertMem();
+        assertMemEqualsShort((short) value);
+        assertEquals(value, ma.getSignedIntOf(mem, 0, 2));
+
+        assertEquals(String.format("0x%04x", value & 0xffff), ma.getSignedIntOf_AsHex(mem, 0, 2));
+        assertEquals(Short.toString((short) value), ma.getSignedIntOf_nativeToString(mem, 0, 2));
+    }
+
+    /**
+     * Test of SignedLongOf (short) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(longs = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
+    public void testSignedLongOf_ShortTest(long value) {
+        ma.setSignedLongOf(mem, 0, 2, value);
+        assertMem();
+        assertMemEqualsShort((short) value);
+        assertEquals(value, ma.getSignedLongOf(mem, 0, 2));
+
+        assertEquals(String.format("0x%04x", value & 0xffff), ma.getSignedLongOf_AsHex(mem, 0, 2));
+        assertEquals(Short.toString((short) value), ma.getSignedLongOf_nativeToString(mem, 0, 2));
     }
 
     /**
@@ -284,6 +314,50 @@ public class MemoryAccessorTest {
 
         assertEquals(String.format("0x%04x", value), ma.uint16_t_AsHex(mem, 0));
         assertEquals(Integer.toString(value & 0xffff), ma.uint16_t_nativeToString(mem, 0));
+    }
+
+    /**
+     * Test of UnsignedIntOf (short) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(ints = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
+    public void testUnsignedInt_ShortTest(int value) {
+        if ((value < 0) || (value > 0xffff)) {
+            assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedIntOf(mem, 0, 2, value));
+            assertMem();
+            assertMemIsClear();
+            return;
+        }
+
+        ma.setUnsignedIntOf(mem, 0, 2, value);
+        assertMem();
+        assertMemEqualsShort((short) value);
+        assertEquals(value, ma.getUnsignedIntOf(mem, 0, 2));
+
+        assertEquals(String.format("0x%04x", value & 0xffff), ma.getUnsignedIntOf_AsHex(mem, 0, 2));
+        assertEquals(Integer.toString(value & 0xffff), ma.getUnsignedIntOf_nativeToString(mem, 0, 2));
+    }
+
+    /**
+     * Test of UnsignedLongOf (short) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(longs = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
+    public void testUnsignedLong_ShortTest(long value) {
+        if ((value < 0) || (value > 0xffff)) {
+            assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedLongOf(mem, 0, 2, value));
+            assertMem();
+            assertMemIsClear();
+            return;
+        }
+
+        ma.setUnsignedLongOf(mem, 0, 2, value);
+        assertMem();
+        assertMemEqualsShort((short) value);
+        assertEquals(value, ma.getUnsignedLongOf(mem, 0, 2));
+
+        assertEquals(String.format("0x%04x", value & 0xffff), ma.getUnsignedLongOf_AsHex(mem, 0, 2));
+        assertEquals(Long.toString(value & 0xffff), ma.getUnsignedLongOf_nativeToString(mem, 0, 2));
     }
 
     /**

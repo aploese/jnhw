@@ -35,39 +35,16 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
  */
 public class AsUnsignedLongTest {
 
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-
     public AsUnsignedLongTest() {
     }
 
     @Test
     public void testNative() {
-        Uint64_t uint64_t = new Uint64_t(null, 0, null);
-        AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, uint64_t, 0, SET_MEM_TO_0);
-        final long input = 0x08070605040302010L;
-        uint64_t.uint64_t(input);
-        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
-            assertEquals((input >>> 32), instance.getAsUnsignedLong());
-        } else {
-            assertEquals(input & 0x00000000ffffffffL, instance.getAsUnsignedLong());
-        }
+        AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, null, 0, SET_MEM_TO_0);
         instance.setFromUnsignedLong(33);
         assertEquals(33, instance.getAsUnsignedLong());
-        assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(input));
         assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
         assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, null, 0, null));
     }
 
-    @Test
-    public void testNativeToString() {
-        Uint64_t uint64_t = new Uint64_t(null, 0, null);
-        AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, uint64_t, 0, SET_MEM_TO_0);
-        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
-            uint64_t.uint64_t(0xfffffffeffffffffL);
-        } else {
-            uint64_t.uint64_t(0xfffffffffffffffeL);
-        }
-        assertEquals("0xfffffffe", instance.nativeToHexString());
-        assertEquals(Long.toString(0xfffffffeL), instance.nativeToString());
-    }
 }

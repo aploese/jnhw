@@ -42,41 +42,17 @@ import de.ibapl.jnhw.libloader.WordSize;
  */
 public class AsSignedIntTest {
 
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-    private UnsafeMemoryAccessor unsafeMemAccess = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._64_BIT ? new UnsafeMemoryAccessor64() : new UnsafeMemoryAccessor32();
-    private JnhwMemoryAccessor jnhwMemAccess = new JnhwMemoryAccessor();
-
     public AsSignedIntTest() {
     }
 
     @Test
     public void testNative() {
-        Int32_t int32_t = new Int32_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
-        AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, int32_t, 0, SET_MEM_TO_0);
-        int input = 0x40302010;
-        int32_t.int32_t(input);
-        assertEquals(unsafeMemAccess.int16_t(instance, 0), jnhwMemAccess.int16_t(instance, 0));
-        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
-            assertEquals((input >>> 16), instance.getAsSignedInt());
-        } else {
-            assertEquals(input & 0x0000ffff, instance.getAsSignedInt());
-        }
-        instance.setFromSignedInt(-33);
-        assertEquals(-33, instance.getAsSignedInt());
-        assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedInt(input));
+        AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, null, 0, SET_MEM_TO_0);
+        short expResult = 0x2010;
+        instance.setFromSignedInt(expResult);
+        assertEquals(expResult, instance.getAsSignedInt());
+        assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedInt(Integer.MAX_VALUE));
         assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, null, 0, null));
     }
 
-    @Test
-    public void testNativeToString() {
-        Int64_t int64_t = new Int64_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
-        AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, int64_t, 0, SET_MEM_TO_0);
-        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
-            int64_t.int64_t(0xfffeffffffffffffL);
-        } else {
-            int64_t.int64_t(0xfffffffffffffffeL);
-        }
-        assertEquals("0xfffe", instance.nativeToHexString());
-        assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
-    }
 }

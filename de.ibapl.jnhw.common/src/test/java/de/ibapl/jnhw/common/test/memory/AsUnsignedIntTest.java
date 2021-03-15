@@ -36,39 +36,16 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class AsUnsignedIntTest {
 
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-
     public AsUnsignedIntTest() {
     }
 
     @Test
     public void testNative() {
-        Uint32_t uint32_t = new Uint32_t(null, 0, null);
-        AsUnsignedInt instance = new AsUnsignedInt(BaseDataType.uint16_t, uint32_t, 0, SET_MEM_TO_0);
-        int input = 0x040302010;
-        uint32_t.uint32_t(input);
-        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
-            assertEquals((input >>> 16), instance.getAsUnsignedInt());
-        } else {
-            assertEquals(input & 0x0000ffff, instance.getAsUnsignedInt());
-        }
+        AsUnsignedInt instance = new AsUnsignedInt(BaseDataType.uint16_t, null, 0, SET_MEM_TO_0);
         instance.setFromUnsignedInt(33);
         assertEquals(33, instance.getAsUnsignedInt());
-        assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(input));
         assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(-1));
         assertThrows(IllegalArgumentException.class, () -> new AsUnsignedInt(BaseDataType.int8_t, null, 0, null));
     }
 
-    @Test
-    public void testNativeToString() {
-        Uint64_t uint64_t = new Uint64_t(null, 0, null);
-        AsUnsignedInt instance = new AsUnsignedInt(BaseDataType.uint16_t, uint64_t, 0, SET_MEM_TO_0);
-        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
-            uint64_t.uint64_t(0xfffeffffffffffffL);
-        } else {
-            uint64_t.uint64_t(0xfffffffffffffffeL);
-        }
-        assertEquals("0xfffe", instance.nativeToHexString());
-        assertEquals(Integer.toString(0xfffe), instance.nativeToString());
-    }
 }

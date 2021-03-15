@@ -36,47 +36,16 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
  */
 public class AsSignedLongTest {
 
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-
     public AsSignedLongTest() {
     }
 
     @Test
     public void testNative() {
-        Int64_t int64_t = new Int64_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
-        AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, int64_t, 0, SET_MEM_TO_0);
-        long input = 0x8070605040302010L;
-        int64_t.int64_t(input);
-        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
-            assertEquals(String.format("0x%016x", (input >> 32)), String.format("0x%016x", instance.getAsSignedLong()));
-        } else {
-            assertEquals(input & 0x00000000ffffffffL, instance.getAsSignedLong());
-        }
-
+        AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, null, 0, SET_MEM_TO_0);
         instance.setFromSignedLong(-33);
         assertEquals(-33, instance.getAsSignedLong());
-        assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(input));
+        assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(Long.MAX_VALUE));
         assertThrows(IllegalArgumentException.class, () -> new AsSignedLong(BaseDataType.uint8_t, null, 0, null));
     }
 
-    /*
-MIPS 32
-[ERROR]   Signed_LongTest.testNative:51 expected: <1076895760> but was: <-2140118960>
-[ERROR]   Signed_LongTest.testNativeToString:72 expected: <-2> but was: <-1>
-[ERROR]   Unsigned_LongTest.testNative:50 expected: <1076895760> but was: <2154848336>
-[ERROR]   Unsigned_LongTest.testNativeToString:74 expected: <4294967294> but was: <4294967295>
-     */
-
-    @Test
-    public void testNativeToString() {
-        Int64_t int64_t = new Int64_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
-        AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, int64_t, 0, SET_MEM_TO_0);
-        if (MULTIARCH_TUPEL_BUILDER.isBigEndian()) {
-            int64_t.int64_t(0xfffffffeffffffffL);
-        } else {
-            int64_t.int64_t(0xfffffffffffffffeL);
-        }
-        assertEquals("0xfffffffe", instance.nativeToHexString());
-        assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
-    }
 }
