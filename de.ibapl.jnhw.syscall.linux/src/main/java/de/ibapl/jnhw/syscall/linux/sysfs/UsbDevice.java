@@ -31,12 +31,14 @@ import de.ibapl.jnhw.syscall.linux.annotation.Path;
 import de.ibapl.jnhw.syscall.linux.annotation.PathRegex;
 import de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb.AbstractDescriptor;
 import de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb.Ch9;
+import de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb.UsbUnknownDescriptor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -112,40 +114,51 @@ public class UsbDevice {
         }
     }
 
-    public Collection<AbstractDescriptor> descriptors() {
+    private class DeviceIterator implements Iterator<AbstractDescriptor> {
+
         // get 1 page of kernel memory - this is also the size od descriptors ...
-        OpaqueMemory32 mem = new Memory32Heap(null, 0, 1024 * 64, MEM_UNINITIALIZED);
-        List<AbstractDescriptor> result = new LinkedList<>();
-        try {
-            final int fd = Fcntl.open(new File(sysFsDir, "descriptors").getAbsolutePath(), Fcntl.O_RDONLY);
+        private final OpaqueMemory32 mem;
+        private int currentPos = 0;
+        private int length;
+
+        protected DeviceIterator() {
+            mem = new Memory32Heap(null, 0, 1024 * 64, MEM_UNINITIALIZED);
             try {
-                int size = Unistd.read(fd, mem);
-                if (size < Ch9.Usb_descriptor_header.Layout.sizeof) {
-                    throw new RuntimeException("read not the minimum length!");
-                }
-                int currentPos = 0;
-                do {
-                    Ch9.Usb_descriptor_header header = new Ch9.Usb_descriptor_header(mem, currentPos, null);
-                    AbstractDescriptor current = header.toDescriptor();
-                    currentPos += current.sizeInBytes;
-                    result.add(current);
-                } while (currentPos < size);
-                return result;
-            } catch (Exception ex) {
+                final int fd = Fcntl.open(new File(sysFsDir, "descriptors").getAbsolutePath(), Fcntl.O_RDONLY);
                 try {
-                    System.err.print("Error during decoding of descriptors\n DATA>>>");
-                    mem.nativeToString(System.err, "", "");
-                    System.err.println("<<<------------------------------");
-                } catch (IOException ioe) {
-                    throw new RuntimeException(ioe);
+                    length = Unistd.read(fd, mem);
+                    if (length < Ch9.Usb_descriptor_header.Layout.sizeof) {
+                        throw new RuntimeException("read not the minimum length!");
+                    }
+                } finally {
+                    Unistd.close(fd);
                 }
-                throw ex;
-            } finally {
-                Unistd.close(fd);
+            } catch (NativeErrorException nee) {
+                throw new RuntimeException(nee);
             }
-        } catch (NativeErrorException e) {
-            throw new RuntimeException(e);
         }
+
+        @Override
+        public boolean hasNext() {
+            return currentPos < length;
+        }
+
+        @Override
+        public AbstractDescriptor next() {
+            Ch9.Usb_descriptor_header header = new Ch9.Usb_descriptor_header(mem, currentPos, null);
+            try {
+                return header.toDescriptor();
+            } catch (Exception ex) {
+                return new UsbUnknownDescriptor(mem, currentPos, header.bLength(), MEM_UNINITIALIZED);
+            } finally {
+                currentPos += header.bLength();
+            }
+
+        }
+    }
+
+    public Iterable<AbstractDescriptor> descriptors() {
+        return () -> new DeviceIterator();
     }
 
     public File getSysDir() {

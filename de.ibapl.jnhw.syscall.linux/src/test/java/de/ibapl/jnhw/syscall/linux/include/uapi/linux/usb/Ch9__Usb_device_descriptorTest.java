@@ -42,7 +42,7 @@ public class Ch9__Usb_device_descriptorTest {
     public void testUsb_device_descriptor() throws Exception {
         System.out.println("test Usb_device_descriptor");
         for (UsbDevice dev : SysFs.bus().usb().devices()) {
-            System.out.println("SysFs dir: \"" + dev.getSysDir() + "\"");
+            System.out.println("SysFs dir: \"" + dev.getSysDir() + "\" links to device dir: \"" + dev.getSysDir().getCanonicalPath() + "\"");
             System.out.println(dev.toShortString());
             for (AbstractDescriptor descriptor : dev.descriptors()) {
                 descriptor.nativeToString(System.out, "", "");
