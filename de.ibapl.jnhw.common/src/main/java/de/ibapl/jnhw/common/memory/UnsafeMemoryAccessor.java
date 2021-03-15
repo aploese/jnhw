@@ -259,6 +259,8 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
     public void uint8_t_FromShort(OpaqueMemory32 mem, long offset, short value) {
         if (value < 0) {
             throw new IllegalArgumentException("value must not be nagative");
+        } else if (value > (short) 0x00ff) {
+            throw new IllegalArgumentException("value must not be bigger than 255");
         }
         unsafe.putByte(mem.baseAddress + offset, (byte) value);
     }

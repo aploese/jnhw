@@ -59,6 +59,14 @@ public class AsSignedLongTest {
         assertThrows(IllegalArgumentException.class, () -> new AsSignedLong(BaseDataType.uint8_t, null, 0, null));
     }
 
+    /*
+MIPS 32
+[ERROR]   Signed_LongTest.testNative:51 expected: <1076895760> but was: <-2140118960>
+[ERROR]   Signed_LongTest.testNativeToString:72 expected: <-2> but was: <-1>
+[ERROR]   Unsigned_LongTest.testNative:50 expected: <1076895760> but was: <2154848336>
+[ERROR]   Unsigned_LongTest.testNativeToString:74 expected: <4294967294> but was: <4294967295>
+     */
+
     @Test
     public void testNativeToString() {
         Int64_t int64_t = new Int64_t(null, 0, AbstractNativeMemory.MEM_UNINITIALIZED);

@@ -26,6 +26,7 @@ module de.ibapl.jnhw.common.test {
 
     requires org.junit.jupiter.api;
     requires org.junit.jupiter.engine;
+    requires org.junit.jupiter.params;
 
     requires de.ibapl.jnhw.common;
 

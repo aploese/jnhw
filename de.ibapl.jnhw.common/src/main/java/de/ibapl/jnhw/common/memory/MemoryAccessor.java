@@ -37,6 +37,15 @@ import java.nio.ByteBuffer;
  */
 public interface MemoryAccessor {
 
+    /**
+     *
+     * @param pos a position with in the array
+     * @param len a length
+     * @param arrayLength th length of the array
+     *
+     * @throws ArrayIndexOutOfBoundsException if pos or len < 0 or pos + len >
+     * arrayLength
+     */
     public static void outOfBoundsByteArray(int pos, int len, int arrayLength) {
         if (pos < 0) {
             throw new ArrayIndexOutOfBoundsException("pos: " + pos);
