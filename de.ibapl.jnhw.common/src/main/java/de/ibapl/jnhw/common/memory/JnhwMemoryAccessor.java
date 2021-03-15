@@ -282,6 +282,11 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
 
     @Override
     public void uint32_t_FromLong(OpaqueMemory32 mem, long offset, long value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("value must not be negative: " + value);
+        } else if (value > 0x00000000ffffffffL) {
+            throw new IllegalArgumentException("value must not be bigger than  4294967295 (0xffffffff): " + value);
+        }
         uint32_t_FromLong0(mem.baseAddress + offset, value);
     }
 

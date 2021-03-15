@@ -114,7 +114,7 @@ public class MemoryAccessorTest {
     public void testInt8_t_ByteTest(byte value) {
         ma.int8_t(mem, 0, value);
         assertMem();
-        assertMemEqualsLittleEndianValue(value & 0x00000000000000ffL);
+        assertMemEqualsByte(value);
         assertEquals(value, ma.int8_t(mem, 0));
 
         assertEquals(String.format("0x%02x", value), ma.int8_t_AsHex(mem, 0));
@@ -129,7 +129,7 @@ public class MemoryAccessorTest {
     public void testUint8_t_ByteTest(byte value) {
         ma.uint8_t(mem, 0, value);
         assertMem();
-        assertMemEqualsLittleEndianValue(value & 0x00000000000000ffL);
+        assertMemEqualsByte(value);
         assertEquals(value, ma.uint8_t(mem, 0));
 
         assertEquals(String.format("0x%02x", value), ma.uint8_t_AsHex(mem, 0));
@@ -145,13 +145,13 @@ public class MemoryAccessorTest {
         if ((value < 0) || (value > 0xff)) {
             assertThrows(IllegalArgumentException.class, () -> ma.uint8_t_FromShort(mem, 0, value));
             assertMem();
-            assertMemEqualsLittleEndianValue(0L);
+            assertMemIsClear();
             return;
         }
 
         ma.uint8_t_FromShort(mem, 0, value);
         assertMem();
-        assertMemEqualsLittleEndianValue(value & 0x00000000000000ffL);
+        assertMemEqualsByte((byte) value);
         assertEquals(value, ma.uint8_t_AsShort(mem, 0));
 
         assertEquals(String.format("0x%02x", value), ma.uint8_t_AsHex(mem, 0));
@@ -166,7 +166,7 @@ public class MemoryAccessorTest {
     public void testInt16_t_ShortTest(short value) {
         ma.int16_t(mem, 0, value);
         assertMem();
-        assertMemEqualsLittleEndianValue(value & 0x000000000000ffffL);
+        assertMemEqualsShort(value);
         assertEquals(value, ma.int16_t(mem, 0));
 
         assertEquals(String.format("0x%04x", value), ma.int16_t_AsHex(mem, 0));
@@ -181,7 +181,7 @@ public class MemoryAccessorTest {
     public void testUint16_t_ShortTest(short value) {
         ma.uint16_t(mem, 0, value);
         assertMem();
-        assertMemEqualsLittleEndianValue(value & 0x000000000000ffffL);
+        assertMemEqualsShort(value);
         assertEquals(value, ma.uint16_t(mem, 0));
 
         assertEquals(String.format("0x%04x", value), ma.uint16_t_AsHex(mem, 0));
@@ -197,17 +197,69 @@ public class MemoryAccessorTest {
         if ((value < 0) || (value > 0xffff)) {
             assertThrows(IllegalArgumentException.class, () -> ma.uint16_t_FromInt(mem, 0, value));
             assertMem();
-            assertMemEqualsLittleEndianValue(0L);
+            assertMemIsClear();
             return;
         }
 
         ma.uint16_t_FromInt(mem, 0, value);
         assertMem();
-        assertMemEqualsLittleEndianValue(value & 0x000000000000ffffL);
+        assertMemEqualsShort((short) value);
         assertEquals(value, ma.uint16_t_AsInt(mem, 0));
 
         assertEquals(String.format("0x%04x", value), ma.uint16_t_AsHex(mem, 0));
         assertEquals(Integer.toString(value & 0xffff), ma.uint16_t_nativeToString(mem, 0));
+    }
+
+    /**
+     * Test of int32_t (int) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
+    public void testInt32_t_IntTest(int value) {
+        ma.int32_t(mem, 0, value);
+        assertMem();
+        assertMemEqualsInt(value);
+        assertEquals(value, ma.int32_t(mem, 0));
+
+        assertEquals(String.format("0x%08x", value), ma.int32_t_AsHex(mem, 0));
+        assertEquals(Integer.toString(value), ma.int32_t_nativeToString(mem, 0));
+    }
+
+    /**
+     * Test of uint32_t (int) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
+    public void testUint32_t_IntTest(int value) {
+        ma.uint32_t(mem, 0, value);
+        assertMem();
+        assertMemEqualsInt(value);
+        assertEquals(value, ma.uint32_t(mem, 0));
+
+        assertEquals(String.format("0x%08x", value), ma.uint32_t_AsHex(mem, 0));
+        assertEquals(Long.toString(value & 0xffffffffL), ma.uint32_t_nativeToString(mem, 0));
+    }
+
+    /**
+     * Test of uint32_t (long) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(longs = {-1, 0, 1, 0x00000000ffffffff, 0x0000000100000000L})
+    public void testUint32_t_LongTest(long value) {
+        if ((value < 0) || (value > 0xffffffffL)) {
+            assertThrows(IllegalArgumentException.class, () -> ma.uint32_t_FromLong(mem, 0, value));
+            assertMem();
+            assertMemIsClear();
+            return;
+        }
+
+        ma.uint32_t_FromLong(mem, 0, value);
+        assertMem();
+        assertMemEqualsInt((int) value);
+        assertEquals(value, ma.uint32_t_AsLong(mem, 0));
+
+        assertEquals(String.format("0x%08x", value), ma.uint32_t_AsHex(mem, 0));
+        assertEquals(Long.toString(value & 0xffffffffL), ma.uint32_t_nativeToString(mem, 0));
     }
 
     /*
@@ -1268,21 +1320,62 @@ public class MemoryAccessorTest {
 
     }
      */
-    private void assertMemEqualsLittleEndianValue(long expectedLittleEndian) {
-        final long actualRaw = mem.int64_t();
-        final long actualLittleEndian;
-        if (IS_BIG_ENDIAN) {
-            actualLittleEndian = Long.reverseBytes(actualRaw);
-        } else {
-            actualLittleEndian = actualRaw;
-        }
+    private void assertMemEqualsByte(byte value) {
+        final byte[] actual = new byte[8];
+        ma.copyMemory32(mem, 0, actual, 0, actual.length);
 
-        assertEquals(expectedLittleEndian, actualLittleEndian, () -> {
-            return String.format("Endianess: %s\n"
-                    + "expected(LE) = 0x%016x\n"
-                    + "actual(LE)   = 0x%016x\n"
-                    + "actualRaw    = 0x%016x \n", MULTIARCH_TUPEL_BUILDER.getEndianess(), expectedLittleEndian, actualLittleEndian, actualRaw);
-        });
+        final byte[] expected = new byte[8];
+        expected[0] = value;
+        assertArrayEquals(expected, actual);
 
     }
+
+    private void assertMemEqualsShort(short value) {
+        final byte[] actual = new byte[8];
+        ma.copyMemory32(mem, 0, actual, 0, actual.length);
+
+        final byte[] expected = new byte[8];
+        if (IS_BIG_ENDIAN) {
+            expected[0] = (byte) ((value >>> 8) & 0xff);
+            expected[1] = (byte) (value & 0xff);
+        } else {
+            expected[0] = (byte) (value & 0xff);
+            expected[1] = (byte) ((value >>> 8) & 0xff);
+        }
+        assertArrayEquals(expected, actual);
+
+    }
+
+    private void assertMemEqualsInt(int value) {
+        final byte[] actual = new byte[8];
+        ma.copyMemory32(mem, 0, actual, 0, actual.length);
+
+        final byte[] expected = new byte[8];
+        if (IS_BIG_ENDIAN) {
+            expected[0] = (byte) ((value >>> 24) & 0xff);
+            expected[1] = (byte) ((value >>> 16) & 0xff);
+            expected[2] = (byte) ((value >>> 8) & 0xff);
+            expected[3] = (byte) (value & 0xff);
+        } else {
+            expected[0] = (byte) (value & 0xff);
+            expected[1] = (byte) ((value >>> 8) & 0xff);
+            expected[2] = (byte) ((value >>> 16) & 0xff);
+            expected[3] = (byte) ((value >>> 24) & 0xff);
+        }
+        assertArrayEquals(expected, actual);
+    }
+
+    private void assertMemEqualsLong(long value) {
+        final byte[] actual = new byte[8];
+        ma.copyMemory32(mem, 0, actual, 0, actual.length);
+
+        final byte[] expected = new byte[8];
+        //expected[0] = value;
+        assertArrayEquals(expected, actual);
+    }
+
+    private void assertMemIsClear() {
+        assertEquals(0, mem.int64_t());
+    }
+
 }
