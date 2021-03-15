@@ -262,6 +262,36 @@ public class MemoryAccessorTest {
         assertEquals(Long.toString(value & 0xffffffffL), ma.uint32_t_nativeToString(mem, 0));
     }
 
+    /**
+     * Test of int64_t (long) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(longs = {Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE})
+    public void testInt64_t_LongTest(long value) {
+        ma.int64_t(mem, 0, value);
+        assertMem();
+        assertMemEqualsLong(value);
+        assertEquals(value, ma.int64_t(mem, 0));
+
+        assertEquals(String.format("0x%016x", value), ma.int64_t_AsHex(mem, 0));
+        assertEquals(Long.toString(value), ma.int64_t_nativeToString(mem, 0));
+    }
+
+    /**
+     * Test of uint64_t (long) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(longs = {Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE})
+    public void testUint64_t_LongTest(long value) {
+        ma.uint64_t(mem, 0, value);
+        assertMem();
+        assertMemEqualsLong(value);
+        assertEquals(value, ma.uint64_t(mem, 0));
+
+        assertEquals(String.format("0x%016x", value), ma.uint64_t_AsHex(mem, 0));
+        assertEquals(Long.toUnsignedString(value), ma.uint64_t_nativeToString(mem, 0));
+    }
+
     /*
 
     /**
@@ -275,383 +305,6 @@ public class MemoryAccessorTest {
         MemoryAccessor instance = new MemoryAccessorImpl();
         byte expResult = 0;
         byte result = instance.int8_t(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int16_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt16_t_OpaqueMemory32_long() {
-        System.out.println("int16_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        short expResult = 0;
-        short result = instance.int16_t(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int16_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt16_t_3args() {
-        System.out.println("int16_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        short value = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.int16_t(mem, offset, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int16_t_AsHex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt16_t_AsHex() {
-        System.out.println("int16_t_AsHex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.int16_t_AsHex(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int16_t_nativeToString method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt16_t_nativeToString() {
-        System.out.println("int16_t_nativeToString");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.int16_t_nativeToString(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int32_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt32_t_OpaqueMemory32_long() {
-        System.out.println("int32_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        int expResult = 0;
-        int result = instance.int32_t(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int32_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt32_t_3args() {
-        System.out.println("int32_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int value = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.int32_t(mem, offset, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int32_t_AsHex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt32_t_AsHex() {
-        System.out.println("int32_t_AsHex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.int32_t_AsHex(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int32_t_nativeToString method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt32_t_nativeToString() {
-        System.out.println("int32_t_nativeToString");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.int32_t_nativeToString(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int64_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt64_t_OpaqueMemory32_long() {
-        System.out.println("int64_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        long expResult = 0L;
-        long result = instance.int64_t(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int64_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt64_t_3args() {
-        System.out.println("int64_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        long value = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.int64_t(mem, offset, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int64_t_AsHex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt64_t_AsHex() {
-        System.out.println("int64_t_AsHex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.int64_t_AsHex(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of int64_t_nativeToString method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testInt64_t_nativeToString() {
-        System.out.println("int64_t_nativeToString");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.int64_t_nativeToString(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint16_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint16_t_OpaqueMemory32_long() {
-        System.out.println("uint16_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        short expResult = 0;
-        short result = instance.uint16_t(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint16_t_AsInt method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint16_t_AsInt() {
-        System.out.println("uint16_t_AsInt");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        int expResult = 0;
-        int result = instance.uint16_t_AsInt(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint16_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint16_t_3args() {
-        System.out.println("uint16_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        short value = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uint16_t(mem, offset, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint16_t_FromInt method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint16_t_FromInt() {
-        System.out.println("uint16_t_FromInt");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int value = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uint16_t_FromInt(mem, offset, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint16_t_AsHex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint16_t_AsHex() {
-        System.out.println("uint16_t_AsHex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.uint16_t_AsHex(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint16_t_nativeToString method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint16_t_nativeToString() {
-        System.out.println("uint16_t_nativeToString");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.uint16_t_nativeToString(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint32_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint32_t_OpaqueMemory32_long() {
-        System.out.println("uint32_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        int expResult = 0;
-        int result = instance.uint32_t(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint32_t_AsLong method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint32_t_AsLong() {
-        System.out.println("uint32_t_AsLong");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        long expResult = 0L;
-        long result = instance.uint32_t_AsLong(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint32_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint32_t_3args() {
-        System.out.println("uint32_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int value = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uint32_t(mem, offset, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint32_t_FromLong method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint32_t_FromLong() {
-        System.out.println("uint32_t_FromLong");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        long value = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uint32_t_FromLong(mem, offset, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint32_t_AsHex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint32_t_AsHex() {
-        System.out.println("uint32_t_AsHex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.uint32_t_AsHex(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint32_t_nativeToString method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint32_t_nativeToString() {
-        System.out.println("uint32_t_nativeToString");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.uint32_t_nativeToString(mem, offset);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -715,69 +368,6 @@ public class MemoryAccessorTest {
         long value = 0L;
         MemoryAccessor instance = new MemoryAccessorImpl();
         instance.unsigned_long(mem, offset, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint64_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint64_t_OpaqueMemory32_long() {
-        System.out.println("uint64_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        long expResult = 0L;
-        long result = instance.uint64_t(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint64_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint64_t_3args() {
-        System.out.println("uint64_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        long value = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uint64_t(mem, offset, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint64_t_AsHex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint64_t_AsHex() {
-        System.out.println("uint64_t_AsHex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.uint64_t_AsHex(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uint64_t_nativeToString method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUint64_t_nativeToString() {
-        System.out.println("uint64_t_nativeToString");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.uint64_t_nativeToString(mem, offset);
-        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -1370,7 +960,25 @@ public class MemoryAccessorTest {
         ma.copyMemory32(mem, 0, actual, 0, actual.length);
 
         final byte[] expected = new byte[8];
-        //expected[0] = value;
+        if (IS_BIG_ENDIAN) {
+            expected[0] = (byte) ((value >>> 56) & 0xff);
+            expected[1] = (byte) ((value >>> 48) & 0xff);
+            expected[2] = (byte) ((value >>> 40) & 0xff);
+            expected[3] = (byte) ((value >>> 32) & 0xff);
+            expected[4] = (byte) ((value >>> 24) & 0xff);
+            expected[5] = (byte) ((value >>> 16) & 0xff);
+            expected[6] = (byte) ((value >>> 8) & 0xff);
+            expected[7] = (byte) (value & 0xff);
+        } else {
+            expected[0] = (byte) (value & 0xff);
+            expected[1] = (byte) ((value >>> 8) & 0xff);
+            expected[2] = (byte) ((value >>> 16) & 0xff);
+            expected[3] = (byte) ((value >>> 24) & 0xff);
+            expected[4] = (byte) ((value >>> 32) & 0xff);
+            expected[5] = (byte) ((value >>> 40) & 0xff);
+            expected[6] = (byte) ((value >>> 48) & 0xff);
+            expected[7] = (byte) ((value >>> 56) & 0xff);
+        }
         assertArrayEquals(expected, actual);
     }
 
