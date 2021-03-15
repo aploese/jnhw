@@ -819,10 +819,10 @@ public interface Ch9 {
 
         public Usb_endpoint_descriptor(AbstractNativeMemory parent, long offset, int size, Byte setMem) {
             super(parent, offset, size, setMem);
-            if ((size == USB_DT_ENDPOINT_SIZE) || (size == USB_DT_ENDPOINT_SIZE)) {
+            if ((size == USB_DT_ENDPOINT_SIZE) || (size == USB_DT_ENDPOINT_AUDIO_SIZE)) {
                 //no-op
             } else {
-                throw new IllegalArgumentException("size must be USB_DT_ENDPOINT_SIZE or  USB_DT_ENDPOINT_SIZE");
+                throw new IllegalArgumentException("size must be USB_DT_ENDPOINT_SIZE or  USB_DT_ENDPOINT_AUDIO_SIZE");
             }
         }
 

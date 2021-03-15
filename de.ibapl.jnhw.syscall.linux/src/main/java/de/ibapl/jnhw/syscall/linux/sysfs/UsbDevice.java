@@ -41,6 +41,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -149,6 +151,7 @@ public class UsbDevice {
             try {
                 return header.toDescriptor();
             } catch (Exception ex) {
+                Logger.getLogger("d.i.j.s.l.UsbDevice").log(Level.SEVERE, "Decode USB descriptor", ex);
                 return new UsbUnknownDescriptor(mem, currentPos, header.bLength(), MEM_UNINITIALIZED);
             } finally {
                 currentPos += header.bLength();
