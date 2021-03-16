@@ -24,6 +24,7 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
+import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,7 +48,11 @@ public class UnsafeMemoryAccessorTest {
                 assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_POINTER);
                 break;
             case _64_BIT:
-                assertEquals(8, BaseDataType.SIZE_OF_LONG);
+                if (NativeLibResolver.getOS() == OS.WINDOWS) {
+                    assertEquals(4, BaseDataType.SIZE_OF_LONG);
+                } else {
+                    assertEquals(8, BaseDataType.SIZE_OF_LONG);
+                }
                 assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG);
                 assertEquals(8, BaseDataType.SIZE_OF_POINTER);
                 assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_POINTER);

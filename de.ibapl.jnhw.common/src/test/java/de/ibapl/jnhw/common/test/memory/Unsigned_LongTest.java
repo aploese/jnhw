@@ -40,14 +40,14 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNative() {
-        Uint64_t uint64_t = new Uint64_t(null, 0, null);
-        Unsigned_Long instance = new Unsigned_Long(uint64_t, 0, SET_MEM_TO_0);
-        final long input = 0x08070605040302010L;
-        uint64_t.uint64_t(input);
+        Unsigned_Long instance = new Unsigned_Long(null, 0, SET_MEM_TO_0);
+        final long input = 0x8070605040302010L;
         if (BaseDataType.SIZE_OF_LONG == 8) {
+            instance.unsigned_long(input);
             assertEquals(input, instance.unsigned_long());
         } else {
-            assertEquals(input & 0x00000000ffffffffL, instance.unsigned_long());
+            instance.unsigned_long(input >>> 32);
+            assertEquals(input >>> 32, instance.unsigned_long());
         }
         instance.unsigned_long(33);
         assertEquals(33, instance.unsigned_long());

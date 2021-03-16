@@ -440,14 +440,6 @@ public final class Winnt {
          */
         public final static HANDLE INVALID_HANDLE_VALUE = new HANDLE(INVALID_HANDLE_VALUE__VALUE);
 
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwWinApiLoader.touch();
-        }
-
         private final long value;
 
         protected HANDLE(long value) {
@@ -501,6 +493,18 @@ public final class Winnt {
 
         public boolean isNot_NULL() {
             return value != NULL__VALUE;
+        }
+
+        public static HANDLE of(long value) {
+            if (value == 0L) {
+                return NULL;
+            } else {
+                return new HANDLE(value);
+            }
+        }
+
+        public static long getHandleValue(HANDLE handle) {
+            return handle.value;
         }
 
     }

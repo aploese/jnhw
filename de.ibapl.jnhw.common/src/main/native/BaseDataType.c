@@ -28,11 +28,11 @@
 extern "C" {
 #endif
 
-
+/* ON Win long is always int22_t
 #if __SIZEOF_POINTER__ != __SIZEOF_LONG__
 #error expected not to happen: __SIZEOF_POINTER__ != __SIZEOF_LONG__
 #endif
-
+*/
     /*
      * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
      * Method:    getSizeOfPointer0
