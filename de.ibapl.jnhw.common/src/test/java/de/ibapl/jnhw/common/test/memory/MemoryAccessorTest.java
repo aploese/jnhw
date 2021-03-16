@@ -549,22 +549,20 @@ public class MemoryAccessorTest {
     @Test
     public void testUintptr_t() {
         final long address = MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT ? 0x04030201L : 0x0807060504030201L;
-        NativeAddressHolder expected = NativeAddressHolder.of(address);
+        NativeAddressHolder expected = NativeAddressHolder.ofUintptr_t(address);
         ma.uintptr_t(mem64, 0, expected);
         assertMem();
 
         assertEquals(expected, ma.uintptr_t(mem64, 0));
-        assertEquals(address, ma.unsigned_long(mem64, 0));
     }
 
     @Test
     public void testUintptr_t_AtIndex() {
         final long address = MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT ? 0x04030201L : 0x0807060504030201L;
-        NativeAddressHolder expected = NativeAddressHolder.of(address);
+        NativeAddressHolder expected = NativeAddressHolder.ofUintptr_t(address);
         ma.uintptr_t_AtIndex(mem64, 0, 3, expected);
 
         assertEquals(expected, ma.uintptr_t_AtIndex(mem64, 0, 3));
-        assertEquals(address, ma.unsigned_long_AtIndex(mem64, 0, 3));
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(0, succ32_2.uint32_t());

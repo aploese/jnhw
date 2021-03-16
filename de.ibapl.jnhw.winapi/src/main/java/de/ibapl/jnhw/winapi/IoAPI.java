@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.references.LongRef;
@@ -76,7 +77,7 @@ public final class IoAPI {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native HANDLE CreateIoCompletionPort(HANDLE FileHandle, HANDLE ExistingCompletionPort, @BaseTsd.ULONG_PTR long CompletionKey, int NumberOfConcurrentThreads) throws NativeErrorException;
+    public static native HANDLE CreateIoCompletionPort(HANDLE FileHandle, HANDLE ExistingCompletionPort, @ULONG_PTR long CompletionKey, int NumberOfConcurrentThreads) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-getqueuedcompletionstatus">GetQueuedCompletionStatus</a>
@@ -99,7 +100,7 @@ public final class IoAPI {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void GetQueuedCompletionStatus(HANDLE CompletionPort, IntRef lpNumberOfBytesTransferred, @BaseTsd.ULONG_PTR LongRef lpCompletionKey, ObjectRef<NativeAddressHolder> lpOverlapped, long dwMilliseconds) throws NativeErrorException;
+    public static native void GetQueuedCompletionStatus(HANDLE CompletionPort, IntRef lpNumberOfBytesTransferred, @ULONG_PTR LongRef lpCompletionKey, ObjectRef<NativeAddressHolder> lpOverlapped, long dwMilliseconds) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-postqueuedcompletionstatus">PostQueuedCompletionStatus</a>
@@ -119,7 +120,7 @@ public final class IoAPI {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void PostQueuedCompletionStatus(HANDLE CompletionPort, int dwNumberOfBytesTransferred, @BaseTsd.ULONG_PTR long dwCompletionKey, OVERLAPPED lpOverlapped) throws NativeErrorException;
+    public static native void PostQueuedCompletionStatus(HANDLE CompletionPort, int dwNumberOfBytesTransferred, @ULONG_PTR long dwCompletionKey, OVERLAPPED lpOverlapped) throws NativeErrorException;
 
     public final static boolean HAVE_IOAPI_H;
 

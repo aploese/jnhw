@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import de.ibapl.jnhw.winapi.Winnt.PAPCFUNC;
-import de.ibapl.jnhw.winapi.BaseTsd.ULONG_PTR;
+import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
 
 /**
  * Wrapper around the

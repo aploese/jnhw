@@ -40,22 +40,26 @@ public class UnsafeMemoryAccessorTest {
     @Test
     public void testSizes() {
         //We rely on this to figure out 32 or 64 for long
-        switch (NativeLibResolver.getSizeOfLong()) {
+        switch (NativeLibResolver.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(4, BaseDataType.SIZE_OF_LONG);
-                assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_LONG);
                 assertEquals(4, BaseDataType.SIZE_OF_POINTER);
                 assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_POINTER);
                 break;
             case _64_BIT:
-                if (NativeLibResolver.getOS() == OS.WINDOWS) {
-                    assertEquals(4, BaseDataType.SIZE_OF_LONG);
-                } else {
-                    assertEquals(8, BaseDataType.SIZE_OF_LONG);
-                }
-                assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG);
                 assertEquals(8, BaseDataType.SIZE_OF_POINTER);
                 assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_POINTER);
+                break;
+            default:
+                fail();
+        }
+        switch (NativeLibResolver.getSizeOfLong()) {
+            case _32_BIT:
+                assertEquals(4, BaseDataType.SIZE_OF_LONG);
+                assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_LONG);
+                break;
+            case _64_BIT:
+                assertEquals(8, BaseDataType.SIZE_OF_LONG);
+                assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG);
                 break;
             default:
                 fail();

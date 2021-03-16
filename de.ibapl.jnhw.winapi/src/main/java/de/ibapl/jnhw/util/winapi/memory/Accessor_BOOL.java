@@ -19,25 +19,21 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.winapi;
+package de.ibapl.jnhw.util.winapi.memory;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import org.junit.jupiter.api.Test;
-
-import org.junit.jupiter.api.condition.EnabledOnOs;
-
-import static org.junit.jupiter.api.Assertions.*;
+import de.ibapl.jnhw.annotation.winapi.basetsd.BOOL;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 
 /**
  *
  * @author aploese
  */
-@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class BaseTsdTest {
+@BOOL
+public interface Accessor_BOOL {
 
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
+    void BOOL(OpaqueMemory32 mem, long offset, @BOOL boolean value);
 
-    public BaseTsdTest() {
-    }
+    @BOOL
+    boolean BOOL(OpaqueMemory32 mem, long offset);
 
 }

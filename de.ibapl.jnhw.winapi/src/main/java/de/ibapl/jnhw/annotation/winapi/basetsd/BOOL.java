@@ -19,25 +19,14 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.winapi;
+package de.ibapl.jnhw.annotation.winapi.basetsd;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import org.junit.jupiter.api.Test;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.junit.jupiter.api.condition.EnabledOnOs;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-/**
- *
- * @author aploese
- */
-@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class BaseTsdTest {
-
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-
-    public BaseTsdTest() {
-    }
-
+@Retention(value = RetentionPolicy.SOURCE)
+@Target(value = {ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
+public @interface BOOL {
 }

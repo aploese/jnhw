@@ -123,7 +123,7 @@ public class Callback_IJ_V_Test {
 
     @Test
     public void testNativeFunctionPointer() {
-        final Callback_IJ_V testPtr = new Callback_IJ_V(NativeAddressHolder.of(121)) {
+        final Callback_IJ_V testPtr = new Callback_IJ_V(NativeAddressHolder.ofUintptr_t(121)) {
             @Override
             protected void callback(long value) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

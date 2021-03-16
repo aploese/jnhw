@@ -25,7 +25,6 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.PointerArray32;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Assertions;

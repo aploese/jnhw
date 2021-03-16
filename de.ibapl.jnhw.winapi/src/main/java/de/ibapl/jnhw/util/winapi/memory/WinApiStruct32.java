@@ -93,12 +93,12 @@ public class WinApiStruct32 extends Struct32 {
 
         @Override
         public long ULONG_PTR(OpaqueMemory32 mem, long offset) {
-            return MEM_ACCESS.unsigned_long(mem, offset);
+            return NativeAddressHolder.toUintptr_t(MEM_ACCESS.uintptr_t(mem, offset));
         }
 
         @Override
         public void ULONG_PTR(OpaqueMemory32 mem, long offset, long value) {
-            MEM_ACCESS.unsigned_long(mem, offset, value);
+            MEM_ACCESS.uintptr_t(mem, offset, NativeAddressHolder.ofUintptr_t(value));
         }
 
     }

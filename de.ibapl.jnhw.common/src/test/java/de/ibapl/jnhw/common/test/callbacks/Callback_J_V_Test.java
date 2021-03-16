@@ -100,7 +100,7 @@ public class Callback_J_V_Test {
 
     @Test
     public void testNativeFunctionPointer() {
-        final Callback_J_V testPtr = new Callback_J_V(NativeAddressHolder.of(121)) {
+        final Callback_J_V testPtr = new Callback_J_V(NativeAddressHolder.ofUintptr_t(121)) {
             @Override
             protected void callback(long value) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -53,16 +53,4 @@ public abstract class BaseTsd {
 
     public static final boolean HAVE_BASETSD_H;
 
-    public final static native int sizeof_ULONG_PTR();
-
-    /**
-     * Wrapper for
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#ulong_ptr">ULONG_PTR</a>.<p>
-     * An unsigned LONG_PTR.<br>
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    public static @interface ULONG_PTR {
-    }
-
 }

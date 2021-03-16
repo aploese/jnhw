@@ -219,8 +219,8 @@ public class OpaqueMemory32Test {
 
     @Test
     public void testEquals() throws Exception {
-        OpaqueMemory32 mem = new MemToTest(NativeAddressHolder.of(0x2aL), 8);
-        OpaqueMemory32 mem1 = new MemToTest(NativeAddressHolder.of(42L), 8);
+        OpaqueMemory32 mem = new MemToTest(NativeAddressHolder.ofUintptr_t(0x2aL), 8);
+        OpaqueMemory32 mem1 = new MemToTest(NativeAddressHolder.ofUintptr_t(42L), 8);
         OpaqueMemory32 mem2 = new MemToTest(mem, 0, 8, null);
         switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:

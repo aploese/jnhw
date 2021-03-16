@@ -31,7 +31,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
  *
  * @author aploese
  */
-@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+@EnabledOnOs(org.junit.jupiter.api.condition.OS.OTHER)
 public class IoapisetTest {
 
     public IoapisetTest() {
