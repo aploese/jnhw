@@ -567,11 +567,14 @@ public class MemoryAccessorTest {
         assertEquals(address, ma.unsigned_long_AtIndex(mem64, 0, 3));
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                assertEquals(address, succ32_6.uint32_t_AsLong());
-                assertEquals(0, succ32_7.uint32_t());
+                assertEquals(0, succ32_2.uint32_t());
+                assertEquals(address, succ32_3.uint32_t_AsLong());
+                assertEquals(0, succ32_4.uint32_t());
                 break;
             case _64_BIT:
+                assertEquals(0, succ64_2.uint64_t());
                 assertEquals(address, succ64_3.uint64_t());
+                assertEquals(0, succ64_4.uint64_t());
                 break;
             default:
                 fail();
@@ -587,11 +590,14 @@ public class MemoryAccessorTest {
         assertEquals(expected, ma.unsigned_long_AtIndex(mem64, 0, 3));
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                assertEquals(expected, succ32_6.uint32_t_AsLong());
-                assertEquals(0, succ32_7.uint32_t());
+                assertEquals(0, succ32_2.uint32_t());
+                assertEquals(expected, succ32_3.uint32_t_AsLong());
+                assertEquals(0, succ32_4.uint32_t());
                 break;
             case _64_BIT:
+                assertEquals(0, succ64_2.uint64_t());
                 assertEquals(expected, succ64_3.uint64_t());
+                assertEquals(0, succ64_4.uint64_t());
                 break;
             default:
                 fail();
@@ -605,11 +611,14 @@ public class MemoryAccessorTest {
         assertEquals(expected, ma.signed_long_AtIndex(mem64, 0, 3));
         switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
             case _32_BIT:
-                assertEquals(expected, succ32_6.uint32_t());
-                assertEquals(0, succ32_7.uint32_t());
+                assertEquals(0, succ32_2.uint32_t());
+                assertEquals(expected, succ32_3.uint32_t_AsLong());
+                assertEquals(0, succ32_4.uint32_t());
                 break;
             case _64_BIT:
+                assertEquals(0, succ64_2.uint64_t());
                 assertEquals(expected, succ64_3.uint64_t());
+                assertEquals(0, succ64_4.uint64_t());
                 break;
             default:
                 fail();
