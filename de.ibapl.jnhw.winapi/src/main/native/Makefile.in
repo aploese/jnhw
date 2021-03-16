@@ -167,7 +167,7 @@ am_libjnhw_winapi_la_OBJECTS = jnhw-winapi-jni.lo
 libjnhw_winapi_la_OBJECTS = $(am_libjnhw_winapi_la_OBJECTS)
 libminwinbase_la_LIBADD =
 am_libminwinbase_la_OBJECTS = MinwinbaseDefines.lo \
-	Minwinbase_OVERLAPPED.lo Minwinbase_SECURITY_ATTRIBUTES.lo
+	MinwinbaseStructures.lo
 libminwinbase_la_OBJECTS = $(am_libminwinbase_la_OBJECTS)
 libprocessenv_la_LIBADD =
 am_libprocessenv_la_OBJECTS = ProcessEnvDefines.lo \
@@ -225,8 +225,7 @@ am__depfiles_remade = ./$(DEPDIR)/BaseTsdDefines.Plo \
 	./$(DEPDIR)/IoapisetDefines.Plo \
 	./$(DEPDIR)/IoapisetFunctions.Plo \
 	./$(DEPDIR)/MinwinbaseDefines.Plo \
-	./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo \
-	./$(DEPDIR)/Minwinbase_SECURITY_ATTRIBUTES.Plo \
+	./$(DEPDIR)/MinwinbaseStructures.Plo \
 	./$(DEPDIR)/ProcessEnvDefines.Plo \
 	./$(DEPDIR)/ProcessEnvFunctions.Plo \
 	./$(DEPDIR)/ProcessthreadsapiDefines.Plo \
@@ -491,8 +490,7 @@ libbasetsd_la_SOURCES = \
 
 libminwinbase_la_SOURCES = \
  MinwinbaseDefines.c \
- Minwinbase_OVERLAPPED.c \
- Minwinbase_SECURITY_ATTRIBUTES.c
+ MinwinbaseStructures.c
 
 libwindef_la_SOURCES = \
  WinDefDefines.c
@@ -537,11 +535,11 @@ liberrhandlingapi_la_SOURCES = \
 
 libprocessenv_la_SOURCES = \
  ProcessEnvDefines.c \
- ProcessEnvFunctions.c 
+ ProcessEnvFunctions.c
 
 libprocessthreadsapi_la_SOURCES = \
  ProcessthreadsapiDefines.c \
- ProcessthreadsapiFunctions.c 
+ ProcessthreadsapiFunctions.c
 
 all: all-am
 
@@ -690,8 +688,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoapisetDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoapisetFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MinwinbaseDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Minwinbase_SECURITY_ATTRIBUTES.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MinwinbaseStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ProcessEnvDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ProcessEnvFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ProcessthreadsapiDefines.Plo@am__quote@ # am--include-marker
@@ -885,8 +882,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/IoapisetDefines.Plo
 	-rm -f ./$(DEPDIR)/IoapisetFunctions.Plo
 	-rm -f ./$(DEPDIR)/MinwinbaseDefines.Plo
-	-rm -f ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo
-	-rm -f ./$(DEPDIR)/Minwinbase_SECURITY_ATTRIBUTES.Plo
+	-rm -f ./$(DEPDIR)/MinwinbaseStructures.Plo
 	-rm -f ./$(DEPDIR)/ProcessEnvDefines.Plo
 	-rm -f ./$(DEPDIR)/ProcessEnvFunctions.Plo
 	-rm -f ./$(DEPDIR)/ProcessthreadsapiDefines.Plo
@@ -965,8 +961,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/IoapisetDefines.Plo
 	-rm -f ./$(DEPDIR)/IoapisetFunctions.Plo
 	-rm -f ./$(DEPDIR)/MinwinbaseDefines.Plo
-	-rm -f ./$(DEPDIR)/Minwinbase_OVERLAPPED.Plo
-	-rm -f ./$(DEPDIR)/Minwinbase_SECURITY_ATTRIBUTES.Plo
+	-rm -f ./$(DEPDIR)/MinwinbaseStructures.Plo
 	-rm -f ./$(DEPDIR)/ProcessEnvDefines.Plo
 	-rm -f ./$(DEPDIR)/ProcessEnvFunctions.Plo
 	-rm -f ./$(DEPDIR)/ProcessthreadsapiDefines.Plo

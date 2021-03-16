@@ -23,7 +23,7 @@ noinst_LTLIBRARIES = \
  liberrhandlingapi.la \
  libprocessenv.la \
  libprocessthreadsapi.la
- 
+
 libjnhw_winapi_la_LIBADD = \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la \
  libbasetsd.la \
@@ -57,8 +57,7 @@ libbasetsd_la_SOURCES = \
 
 libminwinbase_la_SOURCES = \
  MinwinbaseDefines.c \
- Minwinbase_OVERLAPPED.c \
- Minwinbase_SECURITY_ATTRIBUTES.c
+ MinwinbaseStructures.c
 
 libwindef_la_SOURCES = \
  WinDefDefines.c
@@ -76,7 +75,7 @@ libwinreg_la_SOURCES = \
 
 libwinerror_la_SOURCES = \
  WinerrorDefines.c
- 
+
 libsynchapi_la_SOURCES = \
  SynchapiDefines.c \
  SynchapiFunctions.c
@@ -84,7 +83,7 @@ libsynchapi_la_SOURCES = \
 libfileapi_la_SOURCES = \
  FileapiDefines.c \
  FileapiFunctions.c
- 
+
 libioapi_la_SOURCES = \
  IoAPIDefines.c \
  IoAPIFunctions.c
@@ -103,18 +102,18 @@ liberrhandlingapi_la_SOURCES = \
 
 libprocessenv_la_SOURCES = \
  ProcessEnvDefines.c \
- ProcessEnvFunctions.c 
+ ProcessEnvFunctions.c
 
 libprocessthreadsapi_la_SOURCES = \
  ProcessthreadsapiDefines.c \
- ProcessthreadsapiFunctions.c 
+ ProcessthreadsapiFunctions.c
 
 #hook into make all
 all-local: $(LIB_JNHW_WINAPI_RES_NAME)
 
 clean-generic:
 	-test -z "$(LIB_JNHW_WINAPI_RES_NAME)" || rm -f $(LIB_JNHW_WINAPI_RES_NAME)
-	
+
 install-jnhw-resources: $(LIB_JNHW_WINAPI_RES_NAME)
 
 $(LIB_JNHW_WINAPI_RES_NAME): libjnhw-winapi.la

@@ -75,7 +75,11 @@ public final class NativeAddressHolder {
         if ((BaseDataType.uintptr_t.SIZE_OF == 32) && ((address < 0) || (address > 0x00000000ffffffffL))) {
             throw new IllegalArgumentException("address outside range");
         }
-        return new NativeAddressHolder(address);
+        if (address == 0L) {
+            return NULL;
+        } else {
+            return new NativeAddressHolder(address);
+        }
     }
 
 }
