@@ -26,11 +26,11 @@ package de.ibapl.jnhw.libloader;
  *
  * @author aploese
  */
-public enum WordSize {
+public enum SizeInBit {
     _32_BIT(32), _64_BIT(64);
     public final int sizeInBit;
 
-    private WordSize(int sizeInBit) {
+    private SizeInBit(int sizeInBit) {
         this.sizeInBit = sizeInBit;
     }
 

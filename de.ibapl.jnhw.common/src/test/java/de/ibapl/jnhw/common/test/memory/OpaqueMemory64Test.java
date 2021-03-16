@@ -214,7 +214,7 @@ public class OpaqueMemory64Test {
         OpaqueMemory64 mem = new MemToTest(NativeAddressHolder.of(0x2aL), 8);
         OpaqueMemory64 mem1 = new MemToTest(NativeAddressHolder.of(42L), 8);
         OpaqueMemory64 mem2 = new MemToTest(mem, 0, 8, null);
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
                 Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());

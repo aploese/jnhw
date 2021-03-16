@@ -326,8 +326,12 @@ public final class NativeLibResolver {
         return MULTIARCH_TUPEL_BUILDER.getArch();
     }
 
-    public static WordSize getWordSize() {
-        return MULTIARCH_TUPEL_BUILDER.getWordSize();
+    public static SizeInBit getSizeOfPointer() {
+        return MULTIARCH_TUPEL_BUILDER.getSizeOfPointer();
+    }
+
+    public static SizeInBit getSizeOfLong() {
+        return MULTIARCH_TUPEL_BUILDER.getSizeOfLong();
     }
 
     public static Endianess getEndianess() {

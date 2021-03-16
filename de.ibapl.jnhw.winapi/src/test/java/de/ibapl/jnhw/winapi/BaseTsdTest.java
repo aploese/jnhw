@@ -46,7 +46,7 @@ public class BaseTsdTest {
     @Test
     public void testULONG_PTR() {
         System.out.println("test ULONG_PTR");
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(4, BaseTsd.sizeof_ULONG_PTR());
                 break;
@@ -54,7 +54,7 @@ public class BaseTsdTest {
                 assertEquals(8, BaseTsd.sizeof_ULONG_PTR());
                 break;
             default:
-                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
     }
 

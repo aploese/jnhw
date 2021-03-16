@@ -31,10 +31,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
 import de.ibapl.jnhw.common.memory.JnhwMemoryAccessor;
 import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor;
-import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor32;
-import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor64;
+import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor_SizeOfLong32;
+import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor_SizeOfLong64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.WordSize;
+import de.ibapl.jnhw.libloader.SizeInBit;
 
 /**
  *

@@ -759,7 +759,7 @@ public class AioTest {
     public void testSizeOfAiocb() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
                     case _32_BIT:
                         Assertions.assertEquals(144, Aio.Aiocb.getLayoutOrThrow().sizeof);
                         break;
@@ -786,7 +786,7 @@ public class AioTest {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case FREE_BSD:
             case LINUX:
-                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
                     case _32_BIT:
                         Assertions.assertEquals(Alignment.AT_4, Aio.Aiocb.getLayoutOrThrow().alignment);
                         break;
@@ -809,7 +809,7 @@ public class AioTest {
     public void testOffsetOfAio_sigevent() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
                     case _32_BIT:
                         Assertions.assertEquals(20, Aio.Aiocb.getLayoutOrThrow().aio_sigevent);
                         break;

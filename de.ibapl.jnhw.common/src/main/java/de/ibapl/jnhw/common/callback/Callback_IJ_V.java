@@ -27,6 +27,7 @@ import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import java.util.function.Function;
 
 /**
+ * Callback with the current size of pointer
  *
  * @author aploese
  */
@@ -46,10 +47,6 @@ public abstract class Callback_IJ_V extends FunctionPtr_IJ_V {
     protected Callback_IJ_V(NativeAddressHolder src) {
         super(src);
     }
-
-    public static native int sizeofIntptr_t();
-
-    public static native int alignofIntptr_t();
 
     /**
      * this will be called from the native code.

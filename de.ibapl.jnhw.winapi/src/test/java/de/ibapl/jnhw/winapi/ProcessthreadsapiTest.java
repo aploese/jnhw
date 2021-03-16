@@ -44,14 +44,6 @@ public class ProcessthreadsapiTest {
     }
 
     /**
-     * Test of QueueUserAPC method, of class Processthreadsapi.
-     */
-    @Test
-    public void test__QueueUserAPC__CanUse__Callback_IJ_V() {
-        assertEquals(Callback_IJ_V.sizeofIntptr_t(), BaseTsd.sizeof_ULONG_PTR());
-    }
-
-    /**
      * Test of GetCurrentThread, of class Processthreadsapi.
      */
     @Test
@@ -99,7 +91,7 @@ public class ProcessthreadsapiTest {
         long result = Synchapi.SleepEx(100, true);
         assertEquals(Winbase.WAIT_IO_COMPLETION, result);
 
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(-1, longRef.value);
                 assertEquals(42, intRef.value);
@@ -115,7 +107,7 @@ public class ProcessthreadsapiTest {
                 assertEquals(42, longRef.value);
                 break;
             default:
-                throw new RuntimeException("Cant handle wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Cant handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
     }
 }

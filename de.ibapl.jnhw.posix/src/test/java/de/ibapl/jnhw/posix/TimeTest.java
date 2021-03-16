@@ -918,7 +918,7 @@ public class TimeTest {
     @Test
     public void testTimer_t() throws Exception {
         Time.Timer_t timer_t = new Time.Timer_t(SET_MEM_TO_0);
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals("0x00000000", timer_t.nativeToString());
                 break;
@@ -938,7 +938,7 @@ public class TimeTest {
 
     @Test
     public void testSizeOfItimerspec() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfLong()) {
             case _32_BIT:
                 Assertions.assertEquals(16, Time.Itimerspec.LAYOUT.sizeof);
                 break;
@@ -952,7 +952,7 @@ public class TimeTest {
 
     @Test
     public void testAlignOfItimerspec() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfLong()) {
             case _32_BIT:
                 Assertions.assertEquals(Alignment.AT_4, Time.Itimerspec.LAYOUT.alignment);
                 break;
@@ -969,7 +969,7 @@ public class TimeTest {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
             case FREE_BSD:
-                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
                     case _32_BIT:
                         Assertions.assertEquals(4, Time.Timer_t.LAYOUT.sizeof);
                         break;
@@ -993,7 +993,7 @@ public class TimeTest {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
             case FREE_BSD:
-                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
                     case _32_BIT:
                         Assertions.assertEquals(Alignment.AT_4, Time.Timer_t.LAYOUT.alignment);
                         break;
@@ -1015,7 +1015,7 @@ public class TimeTest {
     @Test
     public void testTimespecLayout() throws Exception {
         final Time.Timespec.Layout layout = Time.Timespec.LAYOUT;
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfLong()) {
             case _32_BIT:
                 Assertions.assertEquals(8, layout.sizeof);
                 Assertions.assertEquals(Alignment.AT_4, layout.alignment);
@@ -1031,7 +1031,7 @@ public class TimeTest {
 
     @Test
     public void testSizeOfTm() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(44, Time.Tm.LAYOUT.sizeof);
                 break;
@@ -1045,7 +1045,7 @@ public class TimeTest {
 
     @Test
     public void testAlignOfTm() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(Alignment.AT_4, Time.Tm.LAYOUT.alignment);
                 break;
@@ -1064,7 +1064,7 @@ public class TimeTest {
 
     @Test
     public void testOffsetOfIt_value() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfLong()) {
             case _32_BIT:
                 Assertions.assertEquals(8, Time.Itimerspec.LAYOUT.it_value);
                 break;

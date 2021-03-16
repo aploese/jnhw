@@ -293,7 +293,7 @@ public class PthreadTest {
 
     @Test
     public void testAlignOfPthread_attr_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(Alignment.AT_4, Pthread.Pthread_attr_t.LAYOUT.alignment);
                 break;
@@ -307,7 +307,7 @@ public class PthreadTest {
 
     @Test
     public void testSizeOfPthread_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(4, Pthread.Pthread_t.LAYOUT.sizeof);
                 break;
@@ -321,7 +321,7 @@ public class PthreadTest {
 
     @Test
     public void testAlignOfPthread_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(Alignment.AT_4, Pthread.Pthread_t.LAYOUT.alignment);
                 break;

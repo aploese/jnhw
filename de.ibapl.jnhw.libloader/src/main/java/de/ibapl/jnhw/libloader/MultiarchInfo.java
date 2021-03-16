@@ -29,35 +29,37 @@ package de.ibapl.jnhw.libloader;
  */
 public enum MultiarchInfo {
 
-    X86_64__LINUX__GNU(WordSize._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.LINUX, Abi.GNU),
-    I386__LINUX__GNU(WordSize._32_BIT, Endianess.LITTLE, Arch.I386, OS.LINUX, Abi.GNU),
-    ARM__LINUX__GNU_EABI_HF(WordSize._32_BIT, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI_HF),
-    ARM__LINUX__GNU_EABI(WordSize._32_BIT, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI),
-    AARCH64__LINUX__GNU(WordSize._64_BIT, Endianess.LITTLE, Arch.AARCH64, OS.LINUX, Abi.GNU),
-    MIPS_EL__LINUX__GNU(WordSize._32_BIT, Endianess.LITTLE, Arch.MIPS, OS.LINUX, Abi.GNU),
-    MIPS__LINUX__GNU(WordSize._32_BIT, Endianess.BIG, Arch.MIPS, OS.LINUX, Abi.GNU),
-    MIPS_64_EL__LINUX__GNU_ABI_64(WordSize._64_BIT, Endianess.LITTLE, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
-    MIPS_64__LINUX__GNU_ABI_64(WordSize._64_BIT, Endianess.BIG, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
-    POWER_PC_64__LINUX__GNU(WordSize._64_BIT, Endianess.BIG, Arch.POWER_PC_64, OS.LINUX, Abi.GNU),
-    POWER_PC_64_LE__LINUX__GNU(WordSize._64_BIT, Endianess.LITTLE, Arch.POWER_PC_64, OS.LINUX, Abi.GNU),
-    S390_X__LINUX__GNU(WordSize._64_BIT, Endianess.BIG, Arch.S390_X, OS.LINUX, Abi.GNU),
-    SPARC_64__LINUX__GNU(WordSize._64_BIT, Endianess.BIG, Arch.SPARC_64, OS.LINUX, Abi.GNU),
-    X86_64__WINDOWS__PE32_PLUS(WordSize._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.WINDOWS, Abi.PE32_PLUS),
-    X86__WINDOWS__PE32(WordSize._32_BIT, Endianess.LITTLE, Arch.X86, OS.WINDOWS, Abi.PE32),
-    I386__WINDOWS__PE32(WordSize._32_BIT, Endianess.LITTLE, Arch.I386, OS.WINDOWS, Abi.PE32),
-    X86_64__FREE_BSD__BSD(WordSize._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.FREE_BSD, Abi.BSD),
-    X86_64__OPEN_BSD__BSD(WordSize._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.OPEN_BSD, Abi.BSD),
-    X86_64__MAC_OS_X__BSD(WordSize._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.MAC_OS_X, Abi.BSD);
+    X86_64__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.LINUX, Abi.GNU),
+    I386__LINUX__GNU(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.I386, OS.LINUX, Abi.GNU),
+    ARM__LINUX__GNU_EABI_HF(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI_HF),
+    ARM__LINUX__GNU_EABI(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI),
+    AARCH64__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.AARCH64, OS.LINUX, Abi.GNU),
+    MIPS_EL__LINUX__GNU(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.MIPS, OS.LINUX, Abi.GNU),
+    MIPS__LINUX__GNU(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.BIG, Arch.MIPS, OS.LINUX, Abi.GNU),
+    MIPS_64_EL__LINUX__GNU_ABI_64(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
+    MIPS_64__LINUX__GNU_ABI_64(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.BIG, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
+    POWER_PC_64__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.BIG, Arch.POWER_PC_64, OS.LINUX, Abi.GNU),
+    POWER_PC_64_LE__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.POWER_PC_64, OS.LINUX, Abi.GNU),
+    S390_X__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.BIG, Arch.S390_X, OS.LINUX, Abi.GNU),
+    SPARC_64__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.BIG, Arch.SPARC_64, OS.LINUX, Abi.GNU),
+    X86_64__WINDOWS__PE32_PLUS(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.WINDOWS, Abi.PE32_PLUS),
+    X86__WINDOWS__PE32(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.X86, OS.WINDOWS, Abi.PE32),
+    I386__WINDOWS__PE32(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.I386, OS.WINDOWS, Abi.PE32),
+    X86_64__FREE_BSD__BSD(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.FREE_BSD, Abi.BSD),
+    X86_64__OPEN_BSD__BSD(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.OPEN_BSD, Abi.BSD),
+    X86_64__MAC_OS_X__BSD(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.MAC_OS_X, Abi.BSD);
 
-    private MultiarchInfo(WordSize wordSize, Endianess endianess, Arch arch, OS os, Abi abi) {
+    private MultiarchInfo(SizeInBit sizeOfPointer, SizeInBit sizeOfLong, Endianess endianess, Arch arch, OS os, Abi abi) {
         this.arch = arch;
         this.os = os;
         this.abi = abi;
-        this.wordSize = wordSize;
+        this.sizeOfPointer = sizeOfPointer;
+        this.sizeOfLong = sizeOfLong;
         this.endianess = endianess;
     }
 
-    private final WordSize wordSize;
+    private final SizeInBit sizeOfPointer;
+    private final SizeInBit sizeOfLong;
     private final Endianess endianess;
     private final OS os;
     private final Arch arch;
@@ -67,8 +69,12 @@ public enum MultiarchInfo {
         return String.format("%s-%s-%s", arch.formatArchName(endianess), os.osName, abi.abiName);
     }
 
-    public WordSize getWordSize() {
-        return wordSize;
+    public SizeInBit getSizeOfPointer() {
+        return sizeOfPointer;
+    }
+
+    public SizeInBit getSizeOfLong() {
+        return sizeOfLong;
     }
 
     public Endianess getEndianess() {

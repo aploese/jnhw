@@ -1153,7 +1153,7 @@ public class SignalTest {
 
     @Test
     public void testAlignOfSigaction() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(Alignment.AT_4, Signal.Sigaction.LAYOUT.alignment);
                 break;
@@ -1223,7 +1223,7 @@ public class SignalTest {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case FREE_BSD:
             case LINUX:
-                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
                     case _32_BIT:
                         Assertions.assertEquals(Alignment.AT_4, Signal.Sigevent.getLayoutOrThrow().alignment);
                         break;
@@ -1278,7 +1278,7 @@ public class SignalTest {
 
     @Test
     public void testAlignOfSiginfo_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(Alignment.AT_4, Signal.Siginfo_t.LAYOUT.alignment);
                 break;
@@ -1294,7 +1294,7 @@ public class SignalTest {
     public void testOffsetOfSi_value() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
                     case _64_BIT:
                         Assertions.assertEquals(24, Signal.Siginfo_t.LAYOUT.si_value);
                         break;
@@ -1335,7 +1335,7 @@ public class SignalTest {
     public void testAlignOfSigset_t() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
                     case _32_BIT:
                         Assertions.assertEquals(Alignment.AT_4, Signal.Sigset_t.LAYOUT.alignment);
                         break;
@@ -1357,7 +1357,7 @@ public class SignalTest {
 
     @Test
     public void testSizeOfSigval() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(4, Signal.Sigval.LAYOUT.sizeof);
                 break;
@@ -1371,7 +1371,7 @@ public class SignalTest {
 
     @Test
     public void testAlignOfSigval() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(Alignment.AT_4, Signal.Sigval.LAYOUT.alignment);
                 break;
@@ -1385,7 +1385,7 @@ public class SignalTest {
 
     @Test
     public void testSizeOfStack_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(12, Signal.Stack_t.LAYOUT.sizeof);
                 break;
@@ -1399,7 +1399,7 @@ public class SignalTest {
 
     @Test
     public void testAlignOfStack_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(Alignment.AT_4, Signal.Stack_t.LAYOUT.alignment);
                 break;
@@ -1574,7 +1574,7 @@ public class SignalTest {
     public void testOffsetofUc_stack() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case LINUX:
-                switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
                     case _32_BIT:
                         Assertions.assertEquals(8, Signal.Ucontext_t.getLayoutOrThrow().uc_stack);
                         break;

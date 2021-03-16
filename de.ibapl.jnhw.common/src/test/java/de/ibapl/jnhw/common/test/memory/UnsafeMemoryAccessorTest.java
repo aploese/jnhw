@@ -40,7 +40,7 @@ public class UnsafeMemoryAccessorTest {
     @Test
     public void testSizes() {
         //We rely on this to figure out 32 or 64 for long
-        switch (NativeLibResolver.getWordSize()) {
+        switch (NativeLibResolver.getSizeOfLong()) {
             case _32_BIT:
                 assertEquals(4, BaseDataType.SIZE_OF_LONG);
                 assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_LONG);

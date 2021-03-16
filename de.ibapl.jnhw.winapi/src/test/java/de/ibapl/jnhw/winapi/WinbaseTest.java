@@ -34,7 +34,7 @@ public class WinbaseTest {
     @Test
     public void testCOMMTIMEOUTS() {
         System.out.println("test COMMTIMEOUTS");
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(20, Winbase.COMMTIMEOUTS.sizeof());
                 break;
@@ -42,14 +42,14 @@ public class WinbaseTest {
                 assertEquals(20, Winbase.COMMTIMEOUTS.sizeof());
                 break;
             default:
-                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
     }
 
     @Test
     public void testCOMSTAT() {
         System.out.println("test COMSTAT");
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(12, Winbase.COMSTAT.sizeof());
                 break;
@@ -57,14 +57,14 @@ public class WinbaseTest {
                 assertEquals(12, Winbase.COMSTAT.sizeof());
                 break;
             default:
-                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
     }
 
     @Test
     public void testDCB() {
         System.out.println("test COMMTIMEOUTS");
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(28, Winbase.DCB.sizeof());
                 break;
@@ -72,7 +72,7 @@ public class WinbaseTest {
                 assertEquals(28, Winbase.DCB.sizeof());
                 break;
             default:
-                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
     }
 
