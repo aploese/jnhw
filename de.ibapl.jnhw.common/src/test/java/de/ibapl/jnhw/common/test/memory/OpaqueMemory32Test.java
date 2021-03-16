@@ -29,7 +29,7 @@ import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.memory.layout.SimpeStructureOnTheFlyImpl;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.WordSize;
+import de.ibapl.jnhw.libloader.SizeInBit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -222,7 +222,7 @@ public class OpaqueMemory32Test {
         OpaqueMemory32 mem = new MemToTest(NativeAddressHolder.of(0x2aL), 8);
         OpaqueMemory32 mem1 = new MemToTest(NativeAddressHolder.of(42L), 8);
         OpaqueMemory32 mem2 = new MemToTest(mem, 0, 8, null);
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem.toString());
                 Assertions.assertEquals("{baseAddress : 0x0000002a, sizeInBytes : 8, memoryOwner : null}", mem1.toString());
@@ -247,8 +247,8 @@ public class OpaqueMemory32Test {
     @Test
     public void testAddressOn32BitNotNegative() {
         MemToTest parent = new MemToTest(null, 0, 48, SET_MEM_TO_0);
-        if (MULTIARCHTUPEL_BUILDER.getWordSize() == WordSize._32_BIT) {
-            Assertions.assertTrue(parent.getBaseAddress() > 0, "baseaddress is not positive");
+        if (MULTIARCHTUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT) {
+            Assertions.assertTrue(parent.getBaseAddress() > 0, "baseaddress must not be nagative");
         }
     }
 

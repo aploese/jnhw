@@ -39,7 +39,7 @@ public class JnhwFormaterTest {
 
     @Test
     public void testFormatAddress() {
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _64_BIT:
                 assertEquals("0xfedcba9876543210", JnhwFormater.formatAddress(0xfedcba9876543210L));
                 break;

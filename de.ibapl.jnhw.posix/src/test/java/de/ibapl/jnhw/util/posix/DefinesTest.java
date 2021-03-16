@@ -527,7 +527,8 @@ public class DefinesTest {
                 assertFalse(Defines.__WORDSIZE.isDefined());
                 break;
             default:
-                assertEquals(MULTIARCHTUPEL_BUILDER.getWordSize().sizeInBit, Defines.__WORDSIZE.get(), "wordsize");
+                assertEquals(MULTIARCHTUPEL_BUILDER.getSizeOfPointer().sizeInBit, Defines.__WORDSIZE.get(), "size of pointer != wordsize");
+                assertEquals(MULTIARCHTUPEL_BUILDER.getSizeOfLong().sizeInBit, Defines.__WORDSIZE.get(), "size of long != wordsize");
         }
     }
 
@@ -572,7 +573,8 @@ public class DefinesTest {
         if (Defines.__GNU_LIBRARY__.isDefined()) {
             assertTrue(Defines.__GLIBC__.isDefined(), "__GLIBC__");
             assertTrue(Defines.__GLIBC_MINOR__.isDefined(), "__GLIBC_MINOR__");
-            assertEquals(MULTIARCHTUPEL_BUILDER.getWordSize().sizeInBit, Defines.__WORDSIZE.get());
+            assertEquals(MULTIARCHTUPEL_BUILDER.getSizeOfLong().sizeInBit, Defines.__WORDSIZE.get());
+            assertEquals(MULTIARCHTUPEL_BUILDER.getSizeOfPointer().sizeInBit, Defines.__WORDSIZE.get());
             //assertEquals(new MultiarchTupelBuilder().getWordSize().sizeInBit, Defines.__TIMESIZE());
         }
     }

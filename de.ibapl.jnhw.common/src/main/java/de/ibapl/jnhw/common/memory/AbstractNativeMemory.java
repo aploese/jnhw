@@ -91,13 +91,13 @@ public abstract class AbstractNativeMemory {
         if (memAccProperty == null) {
             LOG.info("Use default MEM_ACCESS");
             try {
-                switch (NativeLibResolver.getWordSize()) {
+                switch (NativeLibResolver.getSizeOfLong()) {
                     case _32_BIT:
-                        LOG.info("Use sun.misc.Unsafe - 32bit for MEM_ACCESS");
-                        return new UnsafeMemoryAccessor32();
+                        LOG.info("Use sun.misc.Unsafe - 32bit for long access");
+                        return new UnsafeMemoryAccessor_SizeOfLong32();
                     case _64_BIT:
-                        LOG.info("Use sun.misc.Unsafe - 64bit for MEM_ACCESS");
-                        return new UnsafeMemoryAccessor64();
+                        LOG.info("Use sun.misc.Unsafe - 64bit for long access");
+                        return new UnsafeMemoryAccessor_SizeOfLong64();
                     default:
                         throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
                 }
@@ -112,13 +112,13 @@ public abstract class AbstractNativeMemory {
         }
         switch (memAccProperty) {
             case "Unsafe":
-                switch (NativeLibResolver.getWordSize()) {
+                switch (NativeLibResolver.getSizeOfLong()) {
                     case _32_BIT:
-                        LOG.info("Force sun.misc.Unsafe - 32bit for MEM_ACCESS");
-                        return new UnsafeMemoryAccessor32();
+                        LOG.info("Force sun.misc.Unsafe - 32bit for long access");
+                        return new UnsafeMemoryAccessor_SizeOfLong32();
                     case _64_BIT:
-                        LOG.info("Force sun.misc.Unsafe 64bit for MEM_ACCESS");
-                        return new UnsafeMemoryAccessor64();
+                        LOG.info("Force sun.misc.Unsafe 64bit for long access");
+                        return new UnsafeMemoryAccessor_SizeOfLong64();
                     default:
                         throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
                 }

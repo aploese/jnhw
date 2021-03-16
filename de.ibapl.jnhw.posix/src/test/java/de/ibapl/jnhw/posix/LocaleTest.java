@@ -190,7 +190,7 @@ public class LocaleTest {
 
     @Test
     public void testSizeOfLconv() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(56, Locale.Lconv.LAYOUT.sizeof);
                 break;
@@ -204,7 +204,7 @@ public class LocaleTest {
 
     @Test
     public void testAlignOfLconv() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(Alignment.AT_4, Locale.Lconv.LAYOUT.alignment);
                 break;

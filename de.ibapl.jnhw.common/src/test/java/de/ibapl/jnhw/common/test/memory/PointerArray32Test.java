@@ -57,7 +57,7 @@ public class PointerArray32Test {
      */
     @Test
     public void testSizeofPointer() {
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(4, BaseDataType.uintptr_t.SIZE_OF);
                 break;
@@ -65,13 +65,13 @@ public class PointerArray32Test {
                 Assertions.assertEquals(8, BaseDataType.uintptr_t.SIZE_OF);
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize");
+                throw new RuntimeException("Unknown SizeOfPointer");
         }
     }
 
     @Test
     public void testAlignofPointer() {
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(Alignment.AT_4, BaseDataType.uintptr_t.ALIGN_OF);
                 break;
@@ -79,7 +79,7 @@ public class PointerArray32Test {
                 Assertions.assertEquals(Alignment.AT_8, BaseDataType.uintptr_t.ALIGN_OF);
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize");
+                throw new RuntimeException("Unknown SizeOfPointer");
         }
     }
 

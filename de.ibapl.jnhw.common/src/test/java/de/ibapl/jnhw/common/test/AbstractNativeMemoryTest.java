@@ -200,7 +200,7 @@ public class AbstractNativeMemoryTest {
     }
 
     public void testSizeOfS_i8_i64() {
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals(12, NativeMemoryAlignment.sizeOfS_i8_i64());
                 break;
@@ -208,7 +208,7 @@ public class AbstractNativeMemoryTest {
                 Assertions.assertEquals(16, NativeMemoryAlignment.sizeOfS_i8_i64());
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Unknown sizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
     }
 

@@ -37,7 +37,7 @@ public class WinntTest {
     @Test
     public void testLPWSTR() {
         System.out.println("test LPWSTR");
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(4, Winnt.LPWSTR.sizeof());
                 break;
@@ -45,14 +45,14 @@ public class WinntTest {
                 assertEquals(8, Winnt.LPWSTR.sizeof());
                 break;
             default:
-                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
     }
 
     @Test
     public void testPHANDLE() {
         System.out.println("test PHANDLE");
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(4, Winnt.PHANDLE.sizeof());
                 break;
@@ -60,7 +60,7 @@ public class WinntTest {
                 assertEquals(8, Winnt.PHANDLE.sizeof());
                 break;
             default:
-                throw new RuntimeException("Can't handle Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
     }
 

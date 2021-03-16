@@ -29,10 +29,10 @@ import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Uint64_t;
-import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor32;
-import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor64;
+import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor_SizeOfLong32;
+import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor_SizeOfLong64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.WordSize;
+import de.ibapl.jnhw.libloader.SizeInBit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -90,7 +90,7 @@ public class MemoryAccessorTest {
     }
 
     public MemoryAccessorTest() {
-        this.ma = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._64_BIT ? new UnsafeMemoryAccessor64() : new UnsafeMemoryAccessor32();
+        this.ma = MULTIARCH_TUPEL_BUILDER.getSizeOfLong() == SizeInBit._64_BIT ? new UnsafeMemoryAccessor_SizeOfLong64() : new UnsafeMemoryAccessor_SizeOfLong32();
     }
 
     /**
@@ -548,7 +548,7 @@ public class MemoryAccessorTest {
 
     @Test
     public void testUintptr_t() {
-        final long address = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
+        final long address = MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT ? 0x04030201L : 0x0807060504030201L;
         NativeAddressHolder expected = NativeAddressHolder.of(address);
         ma.uintptr_t(mem64, 0, expected);
         assertMem();
@@ -559,13 +559,13 @@ public class MemoryAccessorTest {
 
     @Test
     public void testUintptr_t_AtIndex() {
-        final long address = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
+        final long address = MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT ? 0x04030201L : 0x0807060504030201L;
         NativeAddressHolder expected = NativeAddressHolder.of(address);
         ma.uintptr_t_AtIndex(mem64, 0, 3, expected);
 
         assertEquals(expected, ma.uintptr_t_AtIndex(mem64, 0, 3));
         assertEquals(address, ma.unsigned_long_AtIndex(mem64, 0, 3));
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(0, succ32_2.uint32_t());
                 assertEquals(address, succ32_3.uint32_t_AsLong());
@@ -584,11 +584,11 @@ public class MemoryAccessorTest {
 
     @Test
     public void testunsigned_long_AtIndex() {
-        final long expected = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
+        final long expected = MULTIARCH_TUPEL_BUILDER.getSizeOfLong() == SizeInBit._32_BIT ? 0x04030201L : 0x0807060504030201L;
         ma.unsigned_long_AtIndex(mem64, 0, 3, expected);
 
         assertEquals(expected, ma.unsigned_long_AtIndex(mem64, 0, 3));
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfLong()) {
             case _32_BIT:
                 assertEquals(0, succ32_2.uint32_t());
                 assertEquals(expected, succ32_3.uint32_t_AsLong());
@@ -606,10 +606,10 @@ public class MemoryAccessorTest {
 
     @Test
     public void testsigned_long_AtIndex() {
-        final long expected = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
+        final long expected = MULTIARCH_TUPEL_BUILDER.getSizeOfLong() == SizeInBit._32_BIT ? 0x04030201L : 0x0807060504030201L;
         ma.signed_long_AtIndex(mem64, 0, 3, expected);
         assertEquals(expected, ma.signed_long_AtIndex(mem64, 0, 3));
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfLong()) {
             case _32_BIT:
                 assertEquals(0, succ32_2.uint32_t());
                 assertEquals(expected, succ32_3.uint32_t_AsLong());

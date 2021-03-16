@@ -36,7 +36,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.WordSize;
+import de.ibapl.jnhw.libloader.SizeInBit;
 
 /**
  *
@@ -48,7 +48,7 @@ public class Callback_IJ_V_Test {
     private final static long CB_VALUE;
 
     static {
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 CB_VALUE = 0xFEDCBA98;
                 break;
@@ -56,7 +56,7 @@ public class Callback_IJ_V_Test {
                 CB_VALUE = 0xFEDCBA9876543210L;
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Unknown SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
 
     }
@@ -87,34 +87,6 @@ public class Callback_IJ_V_Test {
     private static native void setCallback(Callback_IJ_V callback);
 
     private static native void doCallTheCallback(long value);
-
-    @Test
-    public void testAlignofIntptr_t() {
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
-            case _32_BIT:
-                assertEquals(4, Callback_IJ_V.alignofIntptr_t());
-                break;
-            case _64_BIT:
-                assertEquals(8, Callback_IJ_V.alignofIntptr_t());
-                break;
-            default:
-                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
-        }
-    }
-
-    @Test
-    public void testSizeofIntptr_t() {
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
-            case _32_BIT:
-                assertEquals(4, Callback_IJ_V.sizeofIntptr_t());
-                break;
-            case _64_BIT:
-                assertEquals(8, Callback_IJ_V.sizeofIntptr_t());
-                break;
-            default:
-                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
-        }
-    }
 
     /**
      * Test of MAX_INT_CONSUMER_CALLBACKS method, of class
@@ -216,16 +188,16 @@ public class Callback_IJ_V_Test {
         assertEquals(getCallbackPtr(), callback);
         assertSame(Callback_IJ_V_Impl.find(getCallbackPtr()), callback);
         doCallTheCallback(CB_VALUE);
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertTrue(ref.value instanceof Integer, "ref.value not Integer.class");
-                assertEquals((int) CB_VALUE, ref.value, String.format("ref mismatch for 32 bit - CB_VALUE = 0x%08x, value = 0x%04x ", CB_VALUE, ref.value));
+                assertEquals((int) CB_VALUE, ref.value, String.format("ref mismatch for 32 bit pointers - CB_VALUE = 0x%08x, value = 0x%04x ", CB_VALUE, ref.value));
                 break;
             case _64_BIT:
                 assertEquals(CB_VALUE, ref.value);
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Unknown SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
 
         callback = null;
@@ -284,7 +256,7 @@ public class Callback_IJ_V_Test {
 
         assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(CB_VALUE);
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(Integer.valueOf((int) CB_VALUE), ref.value);
                 break;
@@ -292,13 +264,13 @@ public class Callback_IJ_V_Test {
                 assertEquals(Long.valueOf(CB_VALUE), ref.value);
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
 
         ref.value = -1;
 
         CallNative_IJ_V.wrap(getCallbackPtr()).call(CB_VALUE);
-        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(Integer.valueOf((int) CB_VALUE), ref.value);
                 break;
@@ -306,9 +278,9 @@ public class Callback_IJ_V_Test {
                 assertEquals(Long.valueOf(CB_VALUE), ref.value);
                 break;
             default:
-                throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getWordSize());
+                throw new RuntimeException("Unknown SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
-        if (MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT) {
+        if (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT) {
             ref.value = -1;
             assertThrows(IllegalArgumentException.class, () -> CallNative_IJ_V.wrap(getCallbackPtr()).call((long) Integer.MIN_VALUE - 1L));
             assertThrows(IllegalArgumentException.class, () -> CallNative_IJ_V.wrap(getCallbackPtr()).call(1L + Integer.MAX_VALUE));

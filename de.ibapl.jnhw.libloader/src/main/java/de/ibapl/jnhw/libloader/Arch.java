@@ -27,23 +27,23 @@ package de.ibapl.jnhw.libloader;
  * @author aploese
  */
 public enum Arch {
-    X86_64(WordSize._64_BIT, "x86_64", "%s", null),
-    X86(WordSize._32_BIT, "x86", "%s", null),
-    I386(WordSize._32_BIT, "i386", "%s", null),
-    ARM(WordSize._32_BIT, "arm", "%s", null),
-    AARCH64(WordSize._64_BIT, "aarch64", "%s", null),
-    MIPS(WordSize._64_BIT, "mips", "%sel", "%s"),
-    MIPS_64(WordSize._64_BIT, "mips64", "%sel", "%s"),
-    POWER_PC_64(WordSize._64_BIT, "powerpc64", "%sle", "%s"),
-    S390_X(WordSize._64_BIT, "s390x", null, "%s"),
-    SPARC_64(WordSize._64_BIT, "sparc64", null, "%s");
+    X86_64(SizeInBit._64_BIT, "x86_64", "%s", null),
+    X86(SizeInBit._32_BIT, "x86", "%s", null),
+    I386(SizeInBit._32_BIT, "i386", "%s", null),
+    ARM(SizeInBit._32_BIT, "arm", "%s", null),
+    AARCH64(SizeInBit._64_BIT, "aarch64", "%s", null),
+    MIPS(SizeInBit._64_BIT, "mips", "%sel", "%s"),
+    MIPS_64(SizeInBit._64_BIT, "mips64", "%sel", "%s"),
+    POWER_PC_64(SizeInBit._64_BIT, "powerpc64", "%sle", "%s"),
+    S390_X(SizeInBit._64_BIT, "s390x", null, "%s"),
+    SPARC_64(SizeInBit._64_BIT, "sparc64", null, "%s");
 
     public final String archName;
     public final String fmtLittleEndian;
     public final String fmtBigEndian;
-    public final WordSize wordSize;
+    public final SizeInBit wordSize;
 
-    private Arch(WordSize wordSize, String archName, String fmtLittleEndian, String fmtBigEndian) {
+    private Arch(SizeInBit wordSize, String archName, String fmtLittleEndian, String fmtBigEndian) {
         this.wordSize = wordSize;
         this.archName = archName;
         this.fmtLittleEndian = fmtLittleEndian;

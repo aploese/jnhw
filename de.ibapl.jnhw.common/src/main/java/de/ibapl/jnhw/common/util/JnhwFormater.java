@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.common.util;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.WordSize;
+import de.ibapl.jnhw.libloader.SizeInBit;
 
 /**
  *
@@ -30,7 +30,7 @@ import de.ibapl.jnhw.libloader.WordSize;
  */
 public class JnhwFormater {
 
-    private final static WordSize WORD_SIZE = new MultiarchTupelBuilder().getWordSize();
+    private final static SizeInBit POINTER_SIZE = new MultiarchTupelBuilder().getSizeOfPointer();
 
     /**
      * formats an Address accorfing to 32 or 64 bit
@@ -39,7 +39,7 @@ public class JnhwFormater {
      * @return
      */
     public static String formatAddress(long address) {
-        switch (WORD_SIZE) {
+        switch (POINTER_SIZE) {
             case _64_BIT:
                 return String.format("0x%016x", address);
             case _32_BIT:
@@ -47,7 +47,7 @@ public class JnhwFormater {
                 if (upper32 == 0L) {
                     return String.format("0x%08x", address);
                 } else {
-                    //Error?? on 32 bit we got the upper 32 set?? 
+                    //Error?? on 32 bit we got the upper 32 set??
                     return String.format("0x(!>>>)%08x(<<<!)%08x", upper32 >>> 32, address & 0x00000000FFFFFFFFL);
                 }
             default:
