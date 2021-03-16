@@ -27,6 +27,8 @@ import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.MemoryAccessor;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Uint32_t;
+import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor32;
 import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
@@ -39,6 +41,9 @@ import org.junit.jupiter.api.BeforeEach;
 
 /**
  *
+ * succ64_X is the Xth successor in 64bit mode succ32_X is the Xth successor in
+ * 32bit mode
+ *
  * @author aploese
  */
 public class MemoryAccessorTest {
@@ -47,17 +52,26 @@ public class MemoryAccessorTest {
     private final static boolean IS_BIG_ENDIAN = MULTIARCH_TUPEL_BUILDER.getEndianess().isBigEndian();
     private final static Memory32Heap heap = new Memory32Heap(null, 0, 8 * 12, AbstractNativeMemory.MEM_UNINITIALIZED);
     private final static Int64_t prev = new Int64_t(heap, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t mem = new Int64_t(heap, 8 * 1, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t succ1 = new Int64_t(heap, 8 * 2, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t succ2 = new Int64_t(heap, 8 * 3, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t succ3 = new Int64_t(heap, 8 * 4, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t succ4 = new Int64_t(heap, 8 * 5, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t succ5 = new Int64_t(heap, 8 * 6, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t succ6 = new Int64_t(heap, 8 * 7, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t succ7 = new Int64_t(heap, 8 * 8, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t succ8 = new Int64_t(heap, 8 * 9, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t succ9 = new Int64_t(heap, 8 * 10, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t succ10 = new Int64_t(heap, 8 * 11, AbstractNativeMemory.MEM_UNINITIALIZED);
+
+    private final static Int64_t mem64 = new Int64_t(heap, 8 * 1, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Int64_t mem32 = new Int64_t(heap, 4 * 2, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint32_t succ32_1 = new Uint32_t(heap, 4 * 3, AbstractNativeMemory.MEM_UNINITIALIZED);
+
+    private final static Uint64_t succ64_1 = new Uint64_t(heap, 8 * 2, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint32_t succ32_2 = new Uint32_t(heap, 4 * 4, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint32_t succ32_3 = new Uint32_t(heap, 4 * 5, AbstractNativeMemory.MEM_UNINITIALIZED);
+
+    private final static Uint64_t succ64_2 = new Uint64_t(heap, 8 * 3, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint32_t succ32_4 = new Uint32_t(heap, 4 * 6, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint32_t succ32_5 = new Uint32_t(heap, 4 * 7, AbstractNativeMemory.MEM_UNINITIALIZED);
+
+    private final static Uint64_t succ64_3 = new Uint64_t(heap, 8 * 4, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint32_t succ32_6 = new Uint32_t(heap, 4 * 8, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint32_t succ32_7 = new Uint32_t(heap, 4 * 9, AbstractNativeMemory.MEM_UNINITIALIZED);
+
+    private final static Uint64_t succ64_4 = new Uint64_t(heap, 8 * 5, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint32_t succ32_8 = new Uint32_t(heap, 4 * 10, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint32_t succ32_9 = new Uint32_t(heap, 4 * 11, AbstractNativeMemory.MEM_UNINITIALIZED);
 
     private final MemoryAccessor ma;
 
@@ -69,16 +83,10 @@ public class MemoryAccessorTest {
     public static void assertMem() {
         // Just make sure we have not written outside...
         assertEquals(0L, prev.int64_t());
-        assertEquals(0L, succ1.int64_t());
-        assertEquals(0L, succ2.int64_t());
-        assertEquals(0L, succ3.int64_t());
-        assertEquals(0L, succ4.int64_t());
-        assertEquals(0L, succ5.int64_t());
-        assertEquals(0L, succ6.int64_t());
-        assertEquals(0L, succ7.int64_t());
-        assertEquals(0L, succ8.int64_t());
-        assertEquals(0L, succ9.int64_t());
-        assertEquals(0L, succ10.int64_t());
+        assertEquals(0L, succ64_1.uint64_t());
+        assertEquals(0L, succ64_2.uint64_t());
+        assertEquals(0L, succ64_3.uint64_t());
+        assertEquals(0L, succ64_4.uint64_t());
     }
 
     public MemoryAccessorTest() {
@@ -113,13 +121,13 @@ public class MemoryAccessorTest {
     @ParameterizedTest
     @ValueSource(bytes = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
     public void testInt8_t_ByteTest(byte value) {
-        ma.int8_t(mem, 0, value);
+        ma.int8_t(mem64, 0, value);
         assertMem();
         assertMemEqualsByte(value);
-        assertEquals(value, ma.int8_t(mem, 0));
+        assertEquals(value, ma.int8_t(mem64, 0));
 
-        assertEquals(String.format("0x%02x", value), ma.int8_t_AsHex(mem, 0));
-        assertEquals(Byte.toString(value), ma.int8_t_nativeToString(mem, 0));
+        assertEquals(String.format("0x%02x", value), ma.int8_t_AsHex(mem64, 0));
+        assertEquals(Byte.toString(value), ma.int8_t_nativeToString(mem64, 0));
     }
 
     /**
@@ -128,13 +136,13 @@ public class MemoryAccessorTest {
     @ParameterizedTest
     @ValueSource(ints = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
     public void testSignedIntOf_ByteTest(int value) {
-        ma.setSignedIntOf(mem, 0, 1, value);
+        ma.setSignedIntOf(mem64, 0, 1, value);
         assertMem();
         assertMemEqualsByte((byte) value);
-        assertEquals(value, ma.getSignedIntOf(mem, 0, 1));
+        assertEquals(value, ma.getSignedIntOf(mem64, 0, 1));
 
-        assertEquals(String.format("0x%02x", value & 0xff), ma.getSignedIntOf_AsHex(mem, 0, 1));
-        assertEquals(Byte.toString((byte) value), ma.getSignedIntOf_nativeToString(mem, 0, 1));
+        assertEquals(String.format("0x%02x", value & 0xff), ma.getSignedIntOf_AsHex(mem64, 0, 1));
+        assertEquals(Byte.toString((byte) value), ma.getSignedIntOf_nativeToString(mem64, 0, 1));
     }
 
     /**
@@ -143,13 +151,13 @@ public class MemoryAccessorTest {
     @ParameterizedTest
     @ValueSource(longs = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
     public void testSignedLongOf_ByteTest(long value) {
-        ma.setSignedLongOf(mem, 0, 1, value);
+        ma.setSignedLongOf(mem64, 0, 1, value);
         assertMem();
         assertMemEqualsByte((byte) value);
-        assertEquals(value, ma.getSignedLongOf(mem, 0, 1));
+        assertEquals(value, ma.getSignedLongOf(mem64, 0, 1));
 
-        assertEquals(String.format("0x%02x", value & 0xff), ma.getSignedLongOf_AsHex(mem, 0, 1));
-        assertEquals(Byte.toString((byte) value), ma.getSignedLongOf_nativeToString(mem, 0, 1));
+        assertEquals(String.format("0x%02x", value & 0xff), ma.getSignedLongOf_AsHex(mem64, 0, 1));
+        assertEquals(Byte.toString((byte) value), ma.getSignedLongOf_nativeToString(mem64, 0, 1));
     }
 
     /**
@@ -158,13 +166,13 @@ public class MemoryAccessorTest {
     @ParameterizedTest
     @ValueSource(bytes = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
     public void testUint8_t_ByteTest(byte value) {
-        ma.uint8_t(mem, 0, value);
+        ma.uint8_t(mem64, 0, value);
         assertMem();
         assertMemEqualsByte(value);
-        assertEquals(value, ma.uint8_t(mem, 0));
+        assertEquals(value, ma.uint8_t(mem64, 0));
 
-        assertEquals(String.format("0x%02x", value), ma.uint8_t_AsHex(mem, 0));
-        assertEquals(Integer.toString(value & 0xff), ma.uint8_t_nativeToString(mem, 0));
+        assertEquals(String.format("0x%02x", value), ma.uint8_t_AsHex(mem64, 0));
+        assertEquals(Integer.toString(value & 0xff), ma.uint8_t_nativeToString(mem64, 0));
     }
 
     /**
@@ -172,22 +180,21 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(shorts = {-1, 0, 1, 0x00ff, 0x0100})
-
     public void testUint8_t_ShortTest(short value) {
         if ((value < 0) || (value > 0xff)) {
-            assertThrows(IllegalArgumentException.class, () -> ma.uint8_t_FromShort(mem, 0, value));
+            assertThrows(IllegalArgumentException.class, () -> ma.uint8_t_FromShort(mem64, 0, value));
             assertMem();
             assertMemIsClear();
             return;
         }
 
-        ma.uint8_t_FromShort(mem, 0, value);
+        ma.uint8_t_FromShort(mem64, 0, value);
         assertMem();
         assertMemEqualsByte((byte) value);
-        assertEquals(value, ma.uint8_t_AsShort(mem, 0));
+        assertEquals(value, ma.uint8_t_AsShort(mem64, 0));
 
-        assertEquals(String.format("0x%02x", value), ma.uint8_t_AsHex(mem, 0));
-        assertEquals(Integer.toString(value & 0xffff), ma.uint8_t_nativeToString(mem, 0));
+        assertEquals(String.format("0x%02x", value), ma.uint8_t_AsHex(mem64, 0));
+        assertEquals(Integer.toString(value & 0xffff), ma.uint8_t_nativeToString(mem64, 0));
     }
 
     /**
@@ -197,19 +204,19 @@ public class MemoryAccessorTest {
     @ValueSource(ints = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
     public void testUnsignedInt_ByteTest(int value) {
         if ((value < 0) || (value > 0xff)) {
-            assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedIntOf(mem, 0, 1, value));
+            assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedIntOf(mem64, 0, 1, value));
             assertMem();
             assertMemIsClear();
             return;
         }
 
-        ma.setUnsignedIntOf(mem, 0, 1, value);
+        ma.setUnsignedIntOf(mem64, 0, 1, value);
         assertMem();
         assertMemEqualsByte((byte) value);
-        assertEquals(value, ma.getUnsignedIntOf(mem, 0, 1));
+        assertEquals(value, ma.getUnsignedIntOf(mem64, 0, 1));
 
-        assertEquals(String.format("0x%02x", value & 0xff), ma.getUnsignedIntOf_AsHex(mem, 0, 1));
-        assertEquals(Integer.toString(value & 0xff), ma.getUnsignedIntOf_nativeToString(mem, 0, 1));
+        assertEquals(String.format("0x%02x", value & 0xff), ma.getUnsignedIntOf_AsHex(mem64, 0, 1));
+        assertEquals(Integer.toString(value & 0xff), ma.getUnsignedIntOf_nativeToString(mem64, 0, 1));
     }
 
     /**
@@ -219,19 +226,19 @@ public class MemoryAccessorTest {
     @ValueSource(longs = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
     public void testUnsignedLong_ByteTest(long value) {
         if ((value < 0) || (value > 0xff)) {
-            assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedLongOf(mem, 0, 1, value));
+            assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedLongOf(mem64, 0, 1, value));
             assertMem();
             assertMemIsClear();
             return;
         }
 
-        ma.setUnsignedLongOf(mem, 0, 1, value);
+        ma.setUnsignedLongOf(mem64, 0, 1, value);
         assertMem();
         assertMemEqualsByte((byte) value);
-        assertEquals(value, ma.getUnsignedLongOf(mem, 0, 1));
+        assertEquals(value, ma.getUnsignedLongOf(mem64, 0, 1));
 
-        assertEquals(String.format("0x%02x", value & 0xff), ma.getUnsignedLongOf_AsHex(mem, 0, 1));
-        assertEquals(Long.toString(value & 0xff), ma.getUnsignedLongOf_nativeToString(mem, 0, 1));
+        assertEquals(String.format("0x%02x", value & 0xff), ma.getUnsignedLongOf_AsHex(mem64, 0, 1));
+        assertEquals(Long.toString(value & 0xff), ma.getUnsignedLongOf_nativeToString(mem64, 0, 1));
     }
 
     /**
@@ -240,43 +247,43 @@ public class MemoryAccessorTest {
     @ParameterizedTest
     @ValueSource(shorts = {Short.MIN_VALUE, -1, 0, 1, Short.MAX_VALUE})
     public void testInt16_t_ShortTest(short value) {
-        ma.int16_t(mem, 0, value);
+        ma.int16_t(mem64, 0, value);
         assertMem();
         assertMemEqualsShort(value);
-        assertEquals(value, ma.int16_t(mem, 0));
+        assertEquals(value, ma.int16_t(mem64, 0));
 
-        assertEquals(String.format("0x%04x", value), ma.int16_t_AsHex(mem, 0));
-        assertEquals(Short.toString(value), ma.int16_t_nativeToString(mem, 0));
+        assertEquals(String.format("0x%04x", value), ma.int16_t_AsHex(mem64, 0));
+        assertEquals(Short.toString(value), ma.int16_t_nativeToString(mem64, 0));
     }
 
     /**
      * Test of SignedIntOf (short) methods, of class MemoryAccessor.
      */
     @ParameterizedTest
-    @ValueSource(ints = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
+    @ValueSource(ints = {Short.MIN_VALUE, -1, 0, 1, Short.MAX_VALUE})
     public void testSignedIntOf_ShortTest(int value) {
-        ma.setSignedIntOf(mem, 0, 2, value);
+        ma.setSignedIntOf(mem64, 0, 2, value);
         assertMem();
         assertMemEqualsShort((short) value);
-        assertEquals(value, ma.getSignedIntOf(mem, 0, 2));
+        assertEquals(value, ma.getSignedIntOf(mem64, 0, 2));
 
-        assertEquals(String.format("0x%04x", value & 0xffff), ma.getSignedIntOf_AsHex(mem, 0, 2));
-        assertEquals(Short.toString((short) value), ma.getSignedIntOf_nativeToString(mem, 0, 2));
+        assertEquals(String.format("0x%04x", value & 0xffff), ma.getSignedIntOf_AsHex(mem64, 0, 2));
+        assertEquals(Short.toString((short) value), ma.getSignedIntOf_nativeToString(mem64, 0, 2));
     }
 
     /**
      * Test of SignedLongOf (short) methods, of class MemoryAccessor.
      */
     @ParameterizedTest
-    @ValueSource(longs = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
+    @ValueSource(shorts = {Short.MIN_VALUE, -1, 0, 1, Short.MAX_VALUE})
     public void testSignedLongOf_ShortTest(long value) {
-        ma.setSignedLongOf(mem, 0, 2, value);
+        ma.setSignedLongOf(mem64, 0, 2, value);
         assertMem();
         assertMemEqualsShort((short) value);
-        assertEquals(value, ma.getSignedLongOf(mem, 0, 2));
+        assertEquals(value, ma.getSignedLongOf(mem64, 0, 2));
 
-        assertEquals(String.format("0x%04x", value & 0xffff), ma.getSignedLongOf_AsHex(mem, 0, 2));
-        assertEquals(Short.toString((short) value), ma.getSignedLongOf_nativeToString(mem, 0, 2));
+        assertEquals(String.format("0x%04x", value & 0xffff), ma.getSignedLongOf_AsHex(mem64, 0, 2));
+        assertEquals(Short.toString((short) value), ma.getSignedLongOf_nativeToString(mem64, 0, 2));
     }
 
     /**
@@ -285,13 +292,13 @@ public class MemoryAccessorTest {
     @ParameterizedTest
     @ValueSource(shorts = {Short.MIN_VALUE, -1, 0, 1, Short.MAX_VALUE})
     public void testUint16_t_ShortTest(short value) {
-        ma.uint16_t(mem, 0, value);
+        ma.uint16_t(mem64, 0, value);
         assertMem();
         assertMemEqualsShort(value);
-        assertEquals(value, ma.uint16_t(mem, 0));
+        assertEquals(value, ma.uint16_t(mem64, 0));
 
-        assertEquals(String.format("0x%04x", value), ma.uint16_t_AsHex(mem, 0));
-        assertEquals(Integer.toString(value & 0xffff), ma.uint16_t_nativeToString(mem, 0));
+        assertEquals(String.format("0x%04x", value), ma.uint16_t_AsHex(mem64, 0));
+        assertEquals(Integer.toString(value & 0xffff), ma.uint16_t_nativeToString(mem64, 0));
     }
 
     /**
@@ -301,63 +308,63 @@ public class MemoryAccessorTest {
     @ValueSource(ints = {-1, 0, 1, 0x0000ffff, 0x00010000})
     public void testUint16_t_IntTest(int value) {
         if ((value < 0) || (value > 0xffff)) {
-            assertThrows(IllegalArgumentException.class, () -> ma.uint16_t_FromInt(mem, 0, value));
+            assertThrows(IllegalArgumentException.class, () -> ma.uint16_t_FromInt(mem64, 0, value));
             assertMem();
             assertMemIsClear();
             return;
         }
 
-        ma.uint16_t_FromInt(mem, 0, value);
+        ma.uint16_t_FromInt(mem64, 0, value);
         assertMem();
         assertMemEqualsShort((short) value);
-        assertEquals(value, ma.uint16_t_AsInt(mem, 0));
+        assertEquals(value, ma.uint16_t_AsInt(mem64, 0));
 
-        assertEquals(String.format("0x%04x", value), ma.uint16_t_AsHex(mem, 0));
-        assertEquals(Integer.toString(value & 0xffff), ma.uint16_t_nativeToString(mem, 0));
+        assertEquals(String.format("0x%04x", value), ma.uint16_t_AsHex(mem64, 0));
+        assertEquals(Integer.toUnsignedString(value), ma.uint16_t_nativeToString(mem64, 0));
     }
 
     /**
      * Test of UnsignedIntOf (short) methods, of class MemoryAccessor.
      */
     @ParameterizedTest
-    @ValueSource(ints = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
+    @ValueSource(ints = {-1, 0, 1, 0x0000ffff, 0x00010000})
     public void testUnsignedInt_ShortTest(int value) {
         if ((value < 0) || (value > 0xffff)) {
-            assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedIntOf(mem, 0, 2, value));
+            assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedIntOf(mem64, 0, 2, value));
             assertMem();
             assertMemIsClear();
             return;
         }
 
-        ma.setUnsignedIntOf(mem, 0, 2, value);
+        ma.setUnsignedIntOf(mem64, 0, 2, value);
         assertMem();
         assertMemEqualsShort((short) value);
-        assertEquals(value, ma.getUnsignedIntOf(mem, 0, 2));
+        assertEquals(value, ma.getUnsignedIntOf(mem64, 0, 2));
 
-        assertEquals(String.format("0x%04x", value & 0xffff), ma.getUnsignedIntOf_AsHex(mem, 0, 2));
-        assertEquals(Integer.toString(value & 0xffff), ma.getUnsignedIntOf_nativeToString(mem, 0, 2));
+        assertEquals(String.format("0x%04x", value & 0xffff), ma.getUnsignedIntOf_AsHex(mem64, 0, 2));
+        assertEquals(Integer.toString(value & 0xffff), ma.getUnsignedIntOf_nativeToString(mem64, 0, 2));
     }
 
     /**
      * Test of UnsignedLongOf (short) methods, of class MemoryAccessor.
      */
     @ParameterizedTest
-    @ValueSource(longs = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
+    @ValueSource(longs = {-1, 0, 1, 0x0000ffff, 0x00010000})
     public void testUnsignedLong_ShortTest(long value) {
         if ((value < 0) || (value > 0xffff)) {
-            assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedLongOf(mem, 0, 2, value));
+            assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedLongOf(mem64, 0, 2, value));
             assertMem();
             assertMemIsClear();
             return;
         }
 
-        ma.setUnsignedLongOf(mem, 0, 2, value);
+        ma.setUnsignedLongOf(mem64, 0, 2, value);
         assertMem();
         assertMemEqualsShort((short) value);
-        assertEquals(value, ma.getUnsignedLongOf(mem, 0, 2));
+        assertEquals(value, ma.getUnsignedLongOf(mem64, 0, 2));
 
-        assertEquals(String.format("0x%04x", value & 0xffff), ma.getUnsignedLongOf_AsHex(mem, 0, 2));
-        assertEquals(Long.toString(value & 0xffff), ma.getUnsignedLongOf_nativeToString(mem, 0, 2));
+        assertEquals(String.format("0x%04x", value & 0xffff), ma.getUnsignedLongOf_AsHex(mem64, 0, 2));
+        assertEquals(Long.toString(value & 0xffff), ma.getUnsignedLongOf_nativeToString(mem64, 0, 2));
     }
 
     /**
@@ -366,13 +373,43 @@ public class MemoryAccessorTest {
     @ParameterizedTest
     @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
     public void testInt32_t_IntTest(int value) {
-        ma.int32_t(mem, 0, value);
+        ma.int32_t(mem64, 0, value);
         assertMem();
         assertMemEqualsInt(value);
-        assertEquals(value, ma.int32_t(mem, 0));
+        assertEquals(value, ma.int32_t(mem64, 0));
 
-        assertEquals(String.format("0x%08x", value), ma.int32_t_AsHex(mem, 0));
-        assertEquals(Integer.toString(value), ma.int32_t_nativeToString(mem, 0));
+        assertEquals(String.format("0x%08x", value), ma.int32_t_AsHex(mem64, 0));
+        assertEquals(Integer.toString(value), ma.int32_t_nativeToString(mem64, 0));
+    }
+
+    /**
+     * Test of SignedIntOf (int) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
+    public void testSignedIntOf_IntTest(int value) {
+        ma.setSignedIntOf(mem64, 0, 4, value);
+        assertMem();
+        assertMemEqualsInt(value);
+        assertEquals(value, ma.getSignedIntOf(mem64, 0, 4));
+
+        assertEquals(String.format("0x%08x", value), ma.getSignedIntOf_AsHex(mem64, 0, 4));
+        assertEquals(Integer.toString(value), ma.getSignedIntOf_nativeToString(mem64, 0, 4));
+    }
+
+    /**
+     * Test of SignedLongOf (int) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(longs = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
+    public void testSignedLongOf_IntTest(long value) {
+        ma.setSignedLongOf(mem64, 0, 4, value);
+        assertMem();
+        assertMemEqualsInt((int) value);
+        assertEquals(value, ma.getSignedLongOf(mem64, 0, 4));
+
+        assertEquals(String.format("0x%08x", value & 0xffffffffL), ma.getSignedLongOf_AsHex(mem64, 0, 4));
+        assertEquals(Integer.toString((int) value), ma.getSignedLongOf_nativeToString(mem64, 0, 4));
     }
 
     /**
@@ -381,13 +418,13 @@ public class MemoryAccessorTest {
     @ParameterizedTest
     @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
     public void testUint32_t_IntTest(int value) {
-        ma.uint32_t(mem, 0, value);
+        ma.uint32_t(mem64, 0, value);
         assertMem();
         assertMemEqualsInt(value);
-        assertEquals(value, ma.uint32_t(mem, 0));
+        assertEquals(value, ma.uint32_t(mem64, 0));
 
-        assertEquals(String.format("0x%08x", value), ma.uint32_t_AsHex(mem, 0));
-        assertEquals(Long.toString(value & 0xffffffffL), ma.uint32_t_nativeToString(mem, 0));
+        assertEquals(String.format("0x%08x", value), ma.uint32_t_AsHex(mem64, 0));
+        assertEquals(Long.toString(value & 0xffffffffL), ma.uint32_t_nativeToString(mem64, 0));
     }
 
     /**
@@ -397,19 +434,56 @@ public class MemoryAccessorTest {
     @ValueSource(longs = {-1, 0, 1, 0x00000000ffffffff, 0x0000000100000000L})
     public void testUint32_t_LongTest(long value) {
         if ((value < 0) || (value > 0xffffffffL)) {
-            assertThrows(IllegalArgumentException.class, () -> ma.uint32_t_FromLong(mem, 0, value));
+            assertThrows(IllegalArgumentException.class, () -> ma.uint32_t_FromLong(mem64, 0, value));
             assertMem();
             assertMemIsClear();
             return;
         }
 
-        ma.uint32_t_FromLong(mem, 0, value);
+        ma.uint32_t_FromLong(mem64, 0, value);
         assertMem();
         assertMemEqualsInt((int) value);
-        assertEquals(value, ma.uint32_t_AsLong(mem, 0));
+        assertEquals(value, ma.uint32_t_AsLong(mem64, 0));
 
-        assertEquals(String.format("0x%08x", value), ma.uint32_t_AsHex(mem, 0));
-        assertEquals(Long.toString(value & 0xffffffffL), ma.uint32_t_nativeToString(mem, 0));
+        assertEquals(String.format("0x%08x", value), ma.uint32_t_AsHex(mem64, 0));
+        assertEquals(Long.toUnsignedString(value), ma.uint32_t_nativeToString(mem64, 0));
+    }
+
+    /**
+     * Test of UnsignedIntOf (int) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
+    public void testUnsignedInt_IntTest(int value) {
+        ma.setUnsignedIntOf(mem64, 0, 4, value);
+        assertMem();
+        assertMemEqualsInt((int) value);
+        assertEquals(value, ma.getUnsignedIntOf(mem64, 0, 4));
+
+        assertEquals(String.format("0x%08x", value), ma.getUnsignedIntOf_AsHex(mem64, 0, 4));
+        assertEquals(Integer.toUnsignedString(value), ma.getUnsignedIntOf_nativeToString(mem64, 0, 4));
+    }
+
+    /**
+     * Test of UnsignedLongOf (int) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(longs = {-1, 0, 1, 0x00000000ffffffff, 0x0000000100000000L})
+    public void testUnsignedLong_IntTest(long value) {
+        if ((value < 0) || (value > 0xffffffffL)) {
+            assertThrows(IllegalArgumentException.class, () -> ma.setUnsignedLongOf(mem64, 0, 4, value));
+            assertMem();
+            assertMemIsClear();
+            return;
+        }
+
+        ma.setUnsignedLongOf(mem64, 0, 4, value);
+        assertMem();
+        assertMemEqualsInt((int) value);
+        assertEquals(value, ma.getUnsignedLongOf(mem64, 0, 4));
+
+        assertEquals(String.format("0x%08x", value & 0xffffffffL), ma.getUnsignedLongOf_AsHex(mem64, 0, 4));
+        assertEquals(Long.toUnsignedString(value & 0xffffffffL), ma.getUnsignedLongOf_nativeToString(mem64, 0, 4));
     }
 
     /**
@@ -418,13 +492,28 @@ public class MemoryAccessorTest {
     @ParameterizedTest
     @ValueSource(longs = {Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE})
     public void testInt64_t_LongTest(long value) {
-        ma.int64_t(mem, 0, value);
+        ma.int64_t(mem64, 0, value);
         assertMem();
         assertMemEqualsLong(value);
-        assertEquals(value, ma.int64_t(mem, 0));
+        assertEquals(value, ma.int64_t(mem64, 0));
 
-        assertEquals(String.format("0x%016x", value), ma.int64_t_AsHex(mem, 0));
-        assertEquals(Long.toString(value), ma.int64_t_nativeToString(mem, 0));
+        assertEquals(String.format("0x%016x", value), ma.int64_t_AsHex(mem64, 0));
+        assertEquals(Long.toString(value), ma.int64_t_nativeToString(mem64, 0));
+    }
+
+    /**
+     * Test of SignedLongOf (long) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(longs = {Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE})
+    public void testSignedLongOf_LongTest(long value) {
+        ma.setSignedLongOf(mem64, 0, 8, value);
+        assertMem();
+        assertMemEqualsLong(value);
+        assertEquals(value, ma.getSignedLongOf(mem64, 0, 8));
+
+        assertEquals(String.format("0x%016x", value), ma.getSignedLongOf_AsHex(mem64, 0, 8));
+        assertEquals(Long.toString(value), ma.getSignedLongOf_nativeToString(mem64, 0, 8));
     }
 
     /**
@@ -433,54 +522,101 @@ public class MemoryAccessorTest {
     @ParameterizedTest
     @ValueSource(longs = {Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE})
     public void testUint64_t_LongTest(long value) {
-        ma.uint64_t(mem, 0, value);
+        ma.uint64_t(mem64, 0, value);
         assertMem();
         assertMemEqualsLong(value);
-        assertEquals(value, ma.uint64_t(mem, 0));
+        assertEquals(value, ma.uint64_t(mem64, 0));
 
-        assertEquals(String.format("0x%016x", value), ma.uint64_t_AsHex(mem, 0));
-        assertEquals(Long.toUnsignedString(value), ma.uint64_t_nativeToString(mem, 0));
+        assertEquals(String.format("0x%016x", value), ma.uint64_t_AsHex(mem64, 0));
+        assertEquals(Long.toUnsignedString(value), ma.uint64_t_nativeToString(mem64, 0));
+    }
+
+    /**
+     * Test of UnsignedLongOf (long) methods, of class MemoryAccessor.
+     */
+    @ParameterizedTest
+    @ValueSource(longs = {Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE})
+    public void testUnsignedLong_LongTest(long value) {
+        ma.setUnsignedLongOf(mem64, 0, 8, value);
+        assertMem();
+        assertMemEqualsLong(value);
+        assertEquals(value, ma.getUnsignedLongOf(mem64, 0, 8));
+
+        assertEquals(String.format("0x%016x", value), ma.getUnsignedLongOf_AsHex(mem64, 0, 8));
+        assertEquals(Long.toUnsignedString(value), ma.getUnsignedLongOf_nativeToString(mem64, 0, 8));
     }
 
     @Test
     public void testUintptr_t() {
         final long address = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
         NativeAddressHolder expected = NativeAddressHolder.of(address);
-        ma.uintptr_t(mem, 0, expected);
+        ma.uintptr_t(mem64, 0, expected);
         assertMem();
 
-        assertEquals(expected, ma.uintptr_t(mem, 0));
-        assertEquals(address, ma.unsigned_long(mem, 0));
-
+        assertEquals(expected, ma.uintptr_t(mem64, 0));
+        assertEquals(address, ma.unsigned_long(mem64, 0));
     }
 
     @Test
     public void testUintptr_t_AtIndex() {
         final long address = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
         NativeAddressHolder expected = NativeAddressHolder.of(address);
-        ma.uintptr_t_AtIndex(mem, 0, 3, expected);
+        ma.uintptr_t_AtIndex(mem64, 0, 3, expected);
 
-        assertEquals(expected, ma.uintptr_t_AtIndex(mem, 0, 3));
-        assertEquals(address, ma.unsigned_long_AtIndex(mem, 0, 3));
+        assertEquals(expected, ma.uintptr_t_AtIndex(mem64, 0, 3));
+        assertEquals(address, ma.unsigned_long_AtIndex(mem64, 0, 3));
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                assertEquals(address, succ32_6.uint32_t_AsLong());
+                assertEquals(0, succ32_7.uint32_t());
+                break;
+            case _64_BIT:
+                assertEquals(address, succ64_3.uint64_t());
+                break;
+            default:
+                fail();
+        }
 
     }
 
     @Test
     public void testunsigned_long_AtIndex() {
         final long expected = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
-        ma.unsigned_long_AtIndex(mem, 0, 3, expected);
+        ma.unsigned_long_AtIndex(mem64, 0, 3, expected);
 
-        assertEquals(expected, ma.unsigned_long_AtIndex(mem, 0, 3));
+        assertEquals(expected, ma.unsigned_long_AtIndex(mem64, 0, 3));
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                assertEquals(expected, succ32_6.uint32_t_AsLong());
+                assertEquals(0, succ32_7.uint32_t());
+                break;
+            case _64_BIT:
+                assertEquals(expected, succ64_3.uint64_t());
+                break;
+            default:
+                fail();
+        }
     }
 
     @Test
     public void testsigned_long_AtIndex() {
         final long expected = MULTIARCH_TUPEL_BUILDER.getWordSize() == WordSize._32_BIT ? 0x04030201L : 0x0807060504030201L;
-        ma.signed_long_AtIndex(mem, 0, 3, expected);
-        assertEquals(expected, ma.signed_long_AtIndex(mem, 0, 3));
+        ma.signed_long_AtIndex(mem64, 0, 3, expected);
+        assertEquals(expected, ma.signed_long_AtIndex(mem64, 0, 3));
+        switch (MULTIARCH_TUPEL_BUILDER.getWordSize()) {
+            case _32_BIT:
+                assertEquals(expected, succ32_6.uint32_t());
+                assertEquals(0, succ32_7.uint32_t());
+                break;
+            case _64_BIT:
+                assertEquals(expected, succ64_3.uint64_t());
+                break;
+            default:
+                fail();
+        }
 
-        ma.signed_long_AtIndex(mem, 0, 3, -1);
-        assertEquals(-1, ma.signed_long_AtIndex(mem, 0, 3));
+        ma.signed_long_AtIndex(mem64, 0, 3, -1);
+        assertEquals(-1, ma.signed_long_AtIndex(mem64, 0, 3));
     }
 
     /*
@@ -495,276 +631,7 @@ public class MemoryAccessorTest {
         long offset = 0L;
         MemoryAccessor instance = new MemoryAccessorImpl();
         byte expResult = 0;
-        byte result = instance.int8_t(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-
-    /**
-     * Test of getSignedIntOf method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetSignedIntOf() {
-        System.out.println("getSignedIntOf");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        int expResult = 0;
-        int result = instance.getSignedIntOf(mem, offset, realSize);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setSignedIntOf method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testSetSignedIntOf() {
-        System.out.println("setSignedIntOf");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        int value = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.setSignedIntOf(mem, offset, realSize, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setUnsignedIntOf method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testSetUnsignedIntOf() {
-        System.out.println("setUnsignedIntOf");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        int value = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.setUnsignedIntOf(mem, offset, realSize, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getUnsignedIntOf method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetUnsignedIntOf() {
-        System.out.println("getUnsignedIntOf");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        int expResult = 0;
-        int result = instance.getUnsignedIntOf(mem, offset, realSize);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getUnsignedIntOf_AsHex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetUnsignedIntOf_AsHex() {
-        System.out.println("getUnsignedIntOf_AsHex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.getUnsignedIntOf_AsHex(mem, offset, realSize);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getSignedIntOf_AsHex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetSignedIntOf_AsHex() {
-        System.out.println("getSignedIntOf_AsHex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.getSignedIntOf_AsHex(mem, offset, realSize);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getUnsignedIntOf_nativeToString method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetUnsignedIntOf_nativeToString() {
-        System.out.println("getUnsignedIntOf_nativeToString");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.getUnsignedIntOf_nativeToString(mem, offset, realSize);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getSignedIntOf_nativeToString method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetSignedIntOf_nativeToString() {
-        System.out.println("getSignedIntOf_nativeToString");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.getSignedIntOf_nativeToString(mem, offset, realSize);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getSignedLongOf method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetSignedLongOf() {
-        System.out.println("getSignedLongOf");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        long expResult = 0L;
-        long result = instance.getSignedLongOf(mem, offset, realSize);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setSignedLongOf method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testSetSignedLongOf() {
-        System.out.println("setSignedLongOf");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        long value = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.setSignedLongOf(mem, offset, realSize, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setUnsignedLongOf method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testSetUnsignedLongOf() {
-        System.out.println("setUnsignedLongOf");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        long value = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.setUnsignedLongOf(mem, offset, realSize, value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getUnsignedLongOf method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetUnsignedLongOf() {
-        System.out.println("getUnsignedLongOf");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        long expResult = 0L;
-        long result = instance.getUnsignedLongOf(mem, offset, realSize);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getUnsignedLongOf_AsHex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetUnsignedLongOf_AsHex() {
-        System.out.println("getUnsignedLongOf_AsHex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.getUnsignedLongOf_AsHex(mem, offset, realSize);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getSignedLongOf_AsHex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetSignedLongOf_AsHex() {
-        System.out.println("getSignedLongOf_AsHex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.getSignedLongOf_AsHex(mem, offset, realSize);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getUnsignedLongOf_nativeToString method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetUnsignedLongOf_nativeToString() {
-        System.out.println("getUnsignedLongOf_nativeToString");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.getUnsignedLongOf_nativeToString(mem, offset, realSize);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getSignedLongOf_nativeToString method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testGetSignedLongOf_nativeToString() {
-        System.out.println("getSignedLongOf_nativeToString");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int realSize = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        String expResult = "";
-        String result = instance.getSignedLongOf_nativeToString(mem, offset, realSize);
+        byte result = instance.int8_t(mem64, offset);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -883,147 +750,6 @@ public class MemoryAccessorTest {
     }
 
     /**
-     * Test of uintptr_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUintptr_t_OpaqueMemory32_long() {
-        System.out.println("uintptr_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        NativeAddressHolder expResult = null;
-        NativeAddressHolder result = instance.uintptr_t(mem, offset);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uintptr_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUintptr_t_3args_1() {
-        System.out.println("uintptr_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        OpaqueMemory32 dest = null;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uintptr_t(mem, offset, dest);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uintptr_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUintptr_t_4args() {
-        System.out.println("uintptr_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        OpaqueMemory32 dest = null;
-        long destOffset = 0L;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uintptr_t(mem, offset, dest, destOffset);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uintptr_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUintptr_t_3args_2() {
-        System.out.println("uintptr_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        ByteBuffer dest = null;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uintptr_t(mem, offset, dest);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uintptr_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUintptr_t_3args_3() {
-        System.out.println("uintptr_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        NativeAddressHolder dest = null;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uintptr_t(mem, offset, dest);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uintptr_t method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUintptr_t_3args_4() {
-        System.out.println("uintptr_t");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        NativeFunctionPointer dest = null;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uintptr_t(mem, offset, dest);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uintptr_t_AtIndex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUintptr_t_AtIndex_3args() {
-        System.out.println("uintptr_t_AtIndex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int index = 0;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        NativeAddressHolder expResult = null;
-        NativeAddressHolder result = instance.uintptr_t_AtIndex(mem, offset, index);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uintptr_t_AtIndex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUintptr_t_AtIndex_4args_1() {
-        System.out.println("uintptr_t_AtIndex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int index = 0;
-        OpaqueMemory32 dest = null;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uintptr_t_AtIndex(mem, offset, index, dest);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of uintptr_t_AtIndex method, of class MemoryAccessor.
-     * /
-    @Test
-    public void testUintptr_t_AtIndex_4args_2() {
-        System.out.println("uintptr_t_AtIndex");
-        OpaqueMemory32 mem = null;
-        long offset = 0L;
-        int index = 0;
-        NativeAddressHolder dest = null;
-        MemoryAccessor instance = new MemoryAccessorImpl();
-        instance.uintptr_t_AtIndex(mem, offset, index, dest);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getStringUTF method, of class MemoryAccessor.
      * /
     @Test
@@ -1042,7 +768,7 @@ public class MemoryAccessorTest {
      */
     private void assertMemEqualsByte(byte value) {
         final byte[] actual = new byte[8];
-        ma.copyMemory32(mem, 0, actual, 0, actual.length);
+        ma.copyMemory32(mem64, 0, actual, 0, actual.length);
 
         final byte[] expected = new byte[8];
         expected[0] = value;
@@ -1051,7 +777,7 @@ public class MemoryAccessorTest {
 
     private void assertMemEqualsShort(short value) {
         final byte[] actual = new byte[8];
-        ma.copyMemory32(mem, 0, actual, 0, actual.length);
+        ma.copyMemory32(mem64, 0, actual, 0, actual.length);
 
         final byte[] expected = new byte[8];
         if (IS_BIG_ENDIAN) {
@@ -1067,7 +793,7 @@ public class MemoryAccessorTest {
 
     private void assertMemEqualsInt(int value) {
         final byte[] actual = new byte[8];
-        ma.copyMemory32(mem, 0, actual, 0, actual.length);
+        ma.copyMemory32(mem64, 0, actual, 0, actual.length);
 
         final byte[] expected = new byte[8];
         if (IS_BIG_ENDIAN) {
@@ -1086,7 +812,7 @@ public class MemoryAccessorTest {
 
     private void assertMemEqualsLong(long value) {
         final byte[] actual = new byte[8];
-        ma.copyMemory32(mem, 0, actual, 0, actual.length);
+        ma.copyMemory32(mem64, 0, actual, 0, actual.length);
 
         final byte[] expected = new byte[8];
         if (IS_BIG_ENDIAN) {
@@ -1112,7 +838,7 @@ public class MemoryAccessorTest {
     }
 
     private void assertMemIsClear() {
-        assertEquals(0, mem.int64_t());
+        assertEquals(0, mem64.int64_t());
     }
 
     @Test
