@@ -22,13 +22,14 @@
 package de.ibapl.jnhw.unix.sys;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class IoctlTest {
 
     @BeforeAll

@@ -58,7 +58,7 @@ public class WinntTest {
 
     @Test
     public void testArrayOfHandle() throws Exception {
-        Winnt.ArrayOfHandle aoh = new Winnt.ArrayOfHandle(3, MEM_UNINITIALIZED);
+        Winnt.ArrayOfHandle aoh = new Winnt.ArrayOfHandle(3, SET_MEM_TO_0);
         Winnt.HANDLE h1 = new Winnt.HANDLE(42);
         aoh.set(1, h1);
         Winnt.HANDLE h2 = Winnt.HANDLE.INVALID_HANDLE_VALUE;
