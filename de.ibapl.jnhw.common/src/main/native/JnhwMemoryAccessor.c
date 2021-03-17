@@ -125,6 +125,7 @@ extern "C" {
         }
         if (value < 0) {
             throw_IllegalArgumentException(env, "value must not be nagative");
+            return;
         }
         * ((uintptr_t*) (uintptr_t) address) = (uintptr_t) value;
 #else
@@ -620,6 +621,7 @@ extern "C" {
 #endif
         if (result == NULL) {
             throw_NativeErrorException(env, errno);
+            return -1;
         }
         //on 32bit it must not be negative
         return (int64_t) (uintptr_t) result;
@@ -733,6 +735,7 @@ extern "C" {
         }
         if (value < 0) {
             throw_IllegalArgumentException(env, "value must not be negative");
+            return;
         }
         *((unsigned long*) (uintptr_t) address) = (uint32_t) value;
 #else
@@ -772,6 +775,7 @@ extern "C" {
         }
         if (value < 0) {
             throw_IllegalArgumentException(env, "value must not be nagative");
+            return;
         }
         *(((unsigned long*) (uintptr_t) address) + index) = (uint32_t) value;
 #else

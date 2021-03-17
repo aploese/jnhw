@@ -68,6 +68,11 @@ public class UnsafeMemoryAccessor_P64_L64 extends UnsafeMemoryAccessor {
     }
 
     @Override
+    public long intptr_t(OpaqueMemory32 mem, long offset) {
+        return unsafe.getAddress(mem.baseAddress + offset);
+    }
+
+    @Override
     public void intptr_t(OpaqueMemory32 mem, long offset, long dest) {
         unsafe.putAddress(mem.baseAddress + offset, dest);
     }

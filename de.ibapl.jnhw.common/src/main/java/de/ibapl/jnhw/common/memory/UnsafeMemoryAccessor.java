@@ -73,11 +73,6 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
     }
 
     @Override
-    public long intptr_t(OpaqueMemory32 mem, long offset) {
-        return unsafe.getAddress(mem.baseAddress + offset);
-    }
-
-    @Override
     public long uintptr_t(OpaqueMemory32 mem, long offset) {
         return unsafe.getAddress(mem.baseAddress + offset);
     }

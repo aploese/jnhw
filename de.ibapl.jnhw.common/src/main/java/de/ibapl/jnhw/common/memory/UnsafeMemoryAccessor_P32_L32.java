@@ -86,6 +86,12 @@ public class UnsafeMemoryAccessor_P32_L32 extends UnsafeMemoryAccessor {
     }
 
     @Override
+    public long intptr_t(OpaqueMemory32 mem, long offset) {
+        //restore the sign in the bitspace of int
+        return (int) unsafe.getAddress(mem.baseAddress + offset);
+    }
+
+    @Override
     public void intptr_t(OpaqueMemory32 mem, long offset, long dest) {
         if ((dest > Integer.MAX_VALUE) || (dest < Integer.MIN_VALUE)) {
             throw new IllegalArgumentException("value outside of int32_t: " + dest);

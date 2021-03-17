@@ -579,7 +579,7 @@ public class MemoryAccessorTest {
             ma.intptr_t(mem64, 0, value);
             assertMem();
             assertMemEqualsInt((int) value);
-            assertEquals(value, ma.intptr_t(mem64, 0));
+            assertEquals(value, ma.intptr_t(mem32, 0));
             return;
         }
         ma.intptr_t(mem64, 0, value);
@@ -602,8 +602,8 @@ public class MemoryAccessorTest {
             ma.uintptr_t(mem64, 0, value);
             assertMem();
             assertMemEqualsInt((int) value);
-            assertEquals(value, ma.uintptr_t(mem64, 0));
-            assertEquals(String.format("0x%08x", value), ma.uintptr_t_AsHex(mem64, 0));
+            assertEquals(value, ma.uintptr_t(mem32, 0));
+            assertEquals(String.format("0x%08x", value), ma.uintptr_t_AsHex(mem32, 0));
             return;
         }
 
