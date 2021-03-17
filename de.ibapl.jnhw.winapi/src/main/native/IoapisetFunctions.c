@@ -126,7 +126,7 @@ extern "C" {
                 (uint32_t) nOutBufferSize,
                 &_BytesReturned,
                 UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped))) {
-            if ((UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped) == NULL) || (GetLastError() != ERROR_IO_PENDING)) {
+            if (((UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped)) == NULL) || (GetLastError() != ERROR_IO_PENDING)) {
                 //if lpOverlapped is not NULL and GetLastError() == ERROR_IO_PENDING is not an error condition
                 throw_NativeErrorException(env, (int32_t) GetLastError());
             }
