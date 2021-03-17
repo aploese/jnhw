@@ -60,6 +60,7 @@ module de.ibapl.jnhw.posix {
     exports de.ibapl.jnhw.annotation.posix.termios;
     exports de.ibapl.jnhw.annotation.posix.locale;
     exports de.ibapl.jnhw.linux.sys;
+    exports de.ibapl.jnhw.isoc;
     exports de.ibapl.jnhw.posix;
     exports de.ibapl.jnhw.posix.sys;
     exports de.ibapl.jnhw.unix.sys;
