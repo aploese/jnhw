@@ -475,7 +475,7 @@ public class Aio {
          * @return the native value of aio_buf.
          */
         public NativeAddressHolder aio_buf() {
-            return MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.aio_buf);
         }
 
         /**

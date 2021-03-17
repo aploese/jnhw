@@ -43,14 +43,63 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
-     * Method:    getStringUTF0
+     * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
+     * Method:    callJniNewStringUTF
      * Signature: (J)Ljava/lang/String;
      */
-    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_getStringUTF0
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniNewStringUTF
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address) {
         return (*env)->NewStringUTF(env, ((char*) (intptr_t) address));
+    }
 
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
+     * Method:    callJniGetStringUTFRegion
+     * Signature: (Ljava/lang/String;IJI)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniGetStringUTFRegion
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring s, jint srcStart, jlong address, jint len) {
+        (*env)->GetStringUTFRegion(env, s, srcStart, len, ((char*) (intptr_t) address));
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
+     * Method:    callJniGetStringUTFLength
+     * Signature: (Ljava/lang/String;)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniGetStringUTFLength
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring s) {
+        return (*env)->GetStringUTFLength(env, s);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
+     * Method:    callJniNewString
+     * Signature: (JII)Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniNewString
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jint start, jint len) {
+        return (*env)->NewString(env, (((jchar*) (uintptr_t) address) + start), len);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
+     * Method:    callJniGetStringRegion
+     * Signature: (Ljava/lang/String;IJII)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniGetStringRegion
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring s, jint srcStart, jlong address, jint destStart, jint len) {
+        (*env)->GetStringRegion(env, s, srcStart, len, (((jchar*) (uintptr_t) address) + destStart));
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
+     * Method:    callJniGetStringLength
+     * Signature: (Ljava/lang/String;)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniGetStringLength
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring s) {
+        return (*env)->GetStringLength(env, s);
     }
 
 #ifdef __cplusplus

@@ -420,7 +420,7 @@ public class Locale {
          * @return the native value of currency_symbol.
          */
         public final String currency_symbol() {
-            return MEM_ACCESS.getStringUTF(this, LAYOUT.currency_symbol);
+            return MEM_ACCESS.getUTF_8String(this, LAYOUT.currency_symbol);
         }
 
         /**
@@ -428,7 +428,7 @@ public class Locale {
          * @return the native value of decimal_point.
          */
         public final String decimal_point() {
-            return MEM_ACCESS.getStringUTF(this, LAYOUT.decimal_point);
+            return MEM_ACCESS.getUTF_8String(this, LAYOUT.decimal_point);
         }
 
         /**
@@ -449,7 +449,7 @@ public class Locale {
          * @return the native value of grouping.
          */
         public final String grouping() {
-            return MEM_ACCESS.getStringUTF(this, LAYOUT.grouping);
+            return MEM_ACCESS.getUTF_8String(this, LAYOUT.grouping);
         }
 
         /**
@@ -460,7 +460,7 @@ public class Locale {
          * @return the native value of int_curr_symbol.
          */
         public final String int_curr_symbol() {
-            return MEM_ACCESS.getStringUTF(this, LAYOUT.int_curr_symbol);
+            return MEM_ACCESS.getUTF_8String(this, LAYOUT.int_curr_symbol);
         }
 
         /**
@@ -564,7 +564,7 @@ public class Locale {
          * @return the native value of mon_decimal_point.
          */
         public final String mon_decimal_point() {
-            return MEM_ACCESS.getStringUTF(this, LAYOUT.mon_decimal_point);
+            return MEM_ACCESS.getUTF_8String(this, LAYOUT.mon_decimal_point);
         }
 
         /**
@@ -576,7 +576,7 @@ public class Locale {
          * @return the native value of mon_grouping.
          */
         public final String mon_grouping() {
-            return MEM_ACCESS.getStringUTF(this, LAYOUT.mon_grouping);
+            return MEM_ACCESS.getUTF_8String(this, LAYOUT.mon_grouping);
         }
 
         /**
@@ -589,7 +589,7 @@ public class Locale {
          * @return the native value of mon_thousands_sep.
          */
         public final String mon_thousands_sep() {
-            return MEM_ACCESS.getStringUTF(this, LAYOUT.mon_thousands_sep);
+            return MEM_ACCESS.getUTF_8String(this, LAYOUT.mon_thousands_sep);
         }
 
         /**
@@ -601,7 +601,7 @@ public class Locale {
          * @return the native value of negative_sign.
          */
         public final String negative_sign() {
-            return MEM_ACCESS.getStringUTF(this, LAYOUT.negative_sign);
+            return MEM_ACCESS.getUTF_8String(this, LAYOUT.negative_sign);
         }
 
         /**
@@ -651,7 +651,7 @@ public class Locale {
          * @return the native value of positive_sign.
          */
         public final String positive_sign() {
-            return MEM_ACCESS.getStringUTF(this, LAYOUT.positive_sign);
+            return MEM_ACCESS.getUTF_8String(this, LAYOUT.positive_sign);
         }
 
         /**
@@ -697,7 +697,7 @@ public class Locale {
          * @return the native value of thousands_sep.
          */
         public final String thousands_sep() {
-            return MEM_ACCESS.getStringUTF(this, LAYOUT.thousands_sep);
+            return MEM_ACCESS.getUTF_8String(this, LAYOUT.thousands_sep);
         }
 
     }

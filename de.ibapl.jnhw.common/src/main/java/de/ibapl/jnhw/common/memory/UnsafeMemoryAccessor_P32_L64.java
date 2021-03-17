@@ -25,7 +25,7 @@ package de.ibapl.jnhw.common.memory;
  *
  * @author aploese
  */
-public class UnsafeMemoryAccessor_SizeOfLong64 extends UnsafeMemoryAccessor {
+public class UnsafeMemoryAccessor_P32_L64 extends UnsafeMemoryAccessor {
 
     @Override
     public long signed_long(OpaqueMemory32 mem, long offset) {
@@ -65,6 +65,30 @@ public class UnsafeMemoryAccessor_SizeOfLong64 extends UnsafeMemoryAccessor {
     @Override
     public void unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value) {
         unsafe.putLong(mem.baseAddress + offset + 8 * index, value);
+    }
+
+    @Override
+    public void intptr_t(OpaqueMemory32 mem, long offset, long dest) {
+        if ((dest > Integer.MAX_VALUE) || (dest < Integer.MIN_VALUE)) {
+            throw new IllegalArgumentException("value outside of int32_t: " + dest);
+        }
+        unsafe.putAddress(mem.baseAddress + offset, dest);
+    }
+
+    @Override
+    public void uintptr_t(OpaqueMemory32 mem, long offset, long dest) {
+        if (dest > 0x00000000ffffffffL) {
+            throw new IllegalArgumentException("value too big for uint32_t: " + dest);
+        }
+        if (dest < 0) {
+            throw new IllegalArgumentException("value must not be nagative");
+        }
+        unsafe.putAddress(mem.baseAddress + offset, dest);
+    }
+
+    @Override
+    public String uintptr_t_AsHex(OpaqueMemory32 mem, long offset) {
+        return String.format("0x%08x", unsafe.getAddress(mem.baseAddress + offset));
     }
 
 }

@@ -95,6 +95,10 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
         copyMemory0(srcMem.baseAddress, srcPos, dest, destPos, length);
     }
 
+    private static native long intptr_t0(long address);
+
+    private static native void intptr_t0(long address, long destAddress);
+
     private static native long uintptr_t0(long address);
 
     private static native void uintptr_t0(long address, long destAddress);
@@ -327,8 +331,15 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
         return result;
     }
 
+    private static native String uintptr_t_AsHex0(long address);
+
     @Override
-    public NativeAddressHolder uintptr_t(OpaqueMemory32 mem, long offset) {
+    public String uintptr_t_AsHex(OpaqueMemory32 mem, long offset) {
+        return uintptr_t_AsHex0(mem.baseAddress + offset);
+    }
+
+    @Override
+    public NativeAddressHolder uintptr_t_AsNativeAddressHolder(OpaqueMemory32 mem, long offset) {
         return new NativeAddressHolder(uintptr_t0(mem.baseAddress + offset));
     }
 
@@ -358,8 +369,18 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
     }
 
     @Override
-    public NativeAddressHolder uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+    public long uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+        return uintptr_t_AtIndex0(mem.baseAddress + offset, index);
+    }
+
+    @Override
+    public NativeAddressHolder uintptr_t_AtIndex_AsNativeAddressHolder(OpaqueMemory32 mem, long offset, int index) {
         return new NativeAddressHolder(uintptr_t_AtIndex0(mem.baseAddress + offset, index));
+    }
+
+    @Override
+    public void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, long dest) {
+        uintptr_t_AtIndex0(mem.baseAddress + offset, index, dest);
     }
 
     @Override
@@ -478,8 +499,6 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
 
     private static native void unsigned_long_AtIndex0(long address, int index, long value);
 
-    private static native String getStringUTF0(long address);
-
     @Override
     public long signed_long(OpaqueMemory32 mem, long offset) {
         return signed_long0(mem.baseAddress + offset);
@@ -501,11 +520,6 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
     }
 
     @Override
-    public String getStringUTF(OpaqueMemory32 mem, long offset) {
-        return getStringUTF0(mem.baseAddress + offset);
-    }
-
-    @Override
     public long signed_long_AtIndex(OpaqueMemory32 mem, long offset, int index) {
         return signed_long_AtIndex0(mem.baseAddress + offset, index);
     }
@@ -523,6 +537,69 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
     @Override
     public void unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value) {
         unsigned_long_AtIndex0(mem.baseAddress + offset, index, value);
+    }
+
+    @Override
+    public long intptr_t(OpaqueMemory32 mem, long offset) {
+        return intptr_t0(mem.baseAddress + offset);
+    }
+
+    @Override
+    public void intptr_t(OpaqueMemory32 mem, long offset, long dest) {
+        intptr_t0(mem.baseAddress + offset, dest);
+    }
+
+    @Override
+    public long uintptr_t(OpaqueMemory32 mem, long offset) {
+        return uintptr_t0(mem.baseAddress + offset);
+    }
+
+    @Override
+    public void uintptr_t(OpaqueMemory32 mem, long offset, long dest) {
+        uintptr_t0(mem.baseAddress + offset, dest);
+    }
+
+    private static native String callJniNewStringUTF(long address);
+
+    @Override
+    public String getUTF_8String(OpaqueMemory32 mem, long offset) {
+        //no method on unsafe...
+        return callJniNewStringUTF(mem.baseAddress + offset);
+    }
+
+    private static native void callJniGetStringUTFRegion(String s, int srcStart, long address, int len);
+
+    @Override
+    public void setUTF_8String(String s, int srcStart, OpaqueMemory32 mem, long offset, int len) {
+        callJniGetStringUTFRegion(s, srcStart, mem.baseAddress + offset, len);
+    }
+
+    private static native int callJniGetStringUTFLength(String s);
+
+    @Override
+    public int getUTF_8StringLength(String s) {
+        return callJniGetStringUTFLength(s);
+    }
+
+    private static native String callJniNewString(long address, int start, int len);
+
+    @Override
+    public String getUnicodeString(OpaqueMemory32 mem, long offset, int start, int len) {
+        return callJniNewString(mem.baseAddress + offset, start, len);
+    }
+
+    private static native void callJniGetStringRegion(String s, int srcStart, long address, int destStart, int len);
+
+    @Override
+    public void setUnicodeString(String s, int srcStart, OpaqueMemory32 mem, long offset, int destStart, int len) {
+        callJniGetStringRegion(s, srcStart, mem.baseAddress + offset, destStart, len);
+    }
+
+    private static native int callJniGetStringLength(String s);
+
+    @Override
+    public int getUnicodeStringLength(String s) {
+        return callJniGetStringLength(s);
     }
 
     class JnhwMemoryCleaner implements Runnable {

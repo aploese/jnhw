@@ -19,38 +19,28 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "jnhw-winapi.h"
-#include "de_ibapl_jnhw_winapi_Winnt_LPWSTR.h"
+package de.ibapl.jnhw.util.winapi.memory;
 
-#ifdef HAVE_WINNT_H
-#include <winnt.h>
+import de.ibapl.jnhw.annotation.winapi.basetsd.WORD;
+import de.ibapl.jnhw.common.memory.MemoryAccessor;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.winapi.Winbase;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/**
+ *
+ * @author aploese
+ */
+@WORD
+public interface Accessor_WORD {
 
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winnt_LPWSTR
-     * Method:    sizeof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024LPWSTR_sizeof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return sizeof (LPWSTR);
-    }
+    void WORD(OpaqueMemory32 mem, long offset, @WORD short value);
 
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Winnt_LPWSTR
-     * Method:    getString
-     * Signature: (Lde/ibapl/jnhw/common/memory/OpaqueMemory;I)Ljava/lang/String;
-     */
-    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_winapi_Winnt_00024LPWSTR_getString
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject opaqueMem, jint len) {
-        return (*env)->NewString(env, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(opaqueMem), len);
-    }
+    void WORD_FromInt(OpaqueMemory32 mem, long offset, @WORD int value);
 
+    @WORD
+    short WORD(OpaqueMemory32 mem, long offset);
 
-#ifdef __cplusplus
+    @WORD
+    int WORD_AsInt(OpaqueMemory32 mem, long offset);
+
 }
-#endif
-#endif

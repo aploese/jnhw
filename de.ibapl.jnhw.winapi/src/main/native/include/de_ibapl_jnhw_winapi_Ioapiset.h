@@ -42,18 +42,10 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_GetOverlappedResult
 /*
  * Class:     de_ibapl_jnhw_winapi_Ioapiset
  * Method:    DeviceIoControl
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;ILde/ibapl/jnhw/common/memory/OpaqueMemory32;IILde/ibapl/jnhw/common/memory/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)I
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;ILde/ibapl/jnhw/common/memory/OpaqueMemory32;ILde/ibapl/jnhw/common/memory/OpaqueMemory32;ILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_DeviceIoControl__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2ILde_ibapl_jnhw_common_memory_OpaqueMemory32_2IILde_ibapl_jnhw_common_memory_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
-  (JNIEnv *, jobject, jobject, jint, jobject, jint, jint, jobject, jint, jint, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Ioapiset
- * Method:    DeviceIoControl
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;ILjava/nio/ByteBuffer;Ljava/nio/ByteBuffer;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_DeviceIoControl__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2ILjava_nio_ByteBuffer_2Ljava_nio_ByteBuffer_2Lde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
-  (JNIEnv *, jobject, jobject, jint, jobject, jobject, jobject);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_DeviceIoControl
+  (JNIEnv *, jclass, jobject, jint, jobject, jint, jobject, jint, jobject);
 
 #ifdef __cplusplus
 }

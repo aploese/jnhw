@@ -584,7 +584,7 @@ public class Signal {
         private T sival_ptr;
 
         private NativeAddressHolder sival_ptr() {
-            return MEM_ACCESS.uintptr_t(this, LAYOUT.sival_ptr);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.sival_ptr);
         }
 
         /**
@@ -770,7 +770,7 @@ public class Signal {
         }
 
         protected NativeAddressHolder sigev_notify_attributes() {
-            return MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_attributes);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.sigev_notify_attributes);
         }
 
         public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemory32Producer<Pthread.Pthread_attr_t, Sigevent> producer) {
@@ -794,7 +794,7 @@ public class Signal {
         }
 
         public NativeFunctionPointer sigev_notify_function() {
-            return new NativeFunctionPointer(MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_function));
+            return new NativeFunctionPointer(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.sigev_notify_function));
         }
 
         /**
@@ -1258,7 +1258,7 @@ public class Signal {
          * @return the native value of sa_handler.
          */
         public FunctionPtr_I_V sa_handler() {
-            return new FunctionPtr_I_V(MEM_ACCESS.uintptr_t(this, LAYOUT.sa_handler));
+            return new FunctionPtr_I_V(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.sa_handler));
         }
 
         /**
@@ -1297,7 +1297,7 @@ public class Signal {
          * @return the native value of sa_sigaction.
          */
         public final FunctionPtr_I_Mem_Mem_V sa_sigaction() {
-            return new FunctionPtr_I_Mem_Mem_V(MEM_ACCESS.uintptr_t(this, LAYOUT.sa_sigaction));
+            return new FunctionPtr_I_Mem_Mem_V(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.sa_sigaction));
         }
 
         /**
@@ -1530,7 +1530,7 @@ public class Signal {
          * @return the native value of uc_link.
          */
         private NativeAddressHolder uc_link0() {
-            return MEM_ACCESS.uintptr_t(this, LAYOUT.uc_link);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.uc_link);
         }
 
         /**
@@ -1653,7 +1653,7 @@ public class Signal {
         }
 
         private NativeAddressHolder ss_sp0() {
-            return MEM_ACCESS.uintptr_t(this, LAYOUT.ss_sp);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.ss_sp);
         }
 
         private void ss_size(@size_t long ss_size) {
@@ -1854,7 +1854,7 @@ public class Signal {
          * @return the native value of si_addr.
          */
         public final NativeAddressHolder si_addr() {
-            return MEM_ACCESS.uintptr_t(this, LAYOUT.si_addr);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.si_addr);
         }
 
         /**

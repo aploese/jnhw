@@ -154,29 +154,11 @@ public final class Ioapiset {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public native int DeviceIoControl(HANDLE hDevice, int dwIoControlCode, OpaqueMemory32 lpInBuffer,
-            int nInBufferOffset,
+    public static native int DeviceIoControl(HANDLE hDevice, int dwIoControlCode, OpaqueMemory32 lpInBuffer,
             int nInBufferSize,
             OpaqueMemory32 lpOutBuffer,
-            int nOutBufferOffset,
             int nOutBufferSize,
             OVERLAPPED lpOverlapped
-    ) throws NativeErrorException;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-deviceiocontrol">DeviceIoControl</a>
-     * Sends a control code directly to a specified device driver, causing the
-     * corresponding device to perform the corresponding operation.
-     *
-     * @return the value of lpBytesReturned.
-     *
-     * @throws NullPointerException if hDevice or lpInBuffer or lpOutBuffer is
-     * {@code null}.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    public native int DeviceIoControl(HANDLE hDevice, int dwIoControlCode, ByteBuffer lpInBuffer, ByteBuffer lpOutBuffer, OVERLAPPED lpOverlapped
     ) throws NativeErrorException;
 
     public final static boolean HAVE_IOAPISET_H;

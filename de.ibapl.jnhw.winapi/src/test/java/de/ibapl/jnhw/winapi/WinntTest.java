@@ -21,6 +21,8 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.nio.charset.Charset;
@@ -33,36 +35,6 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 public class WinntTest {
 
     private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-
-    @Test
-    public void testLPWSTR() {
-        System.out.println("test LPWSTR");
-        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
-                assertEquals(4, Winnt.LPWSTR.sizeof());
-                break;
-            case _64_BIT:
-                assertEquals(8, Winnt.LPWSTR.sizeof());
-                break;
-            default:
-                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
-        }
-    }
-
-    @Test
-    public void testPHANDLE() {
-        System.out.println("test PHANDLE");
-        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
-                assertEquals(4, Winnt.PHANDLE.sizeof());
-                break;
-            case _64_BIT:
-                assertEquals(8, Winnt.PHANDLE.sizeof());
-                break;
-            default:
-                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
-        }
-    }
 
     @Test
     public void testMAXDWORD() throws Exception {
@@ -78,15 +50,15 @@ public class WinntTest {
     @Test
     public void test_LPWSTR_stringValueOfNullTerminated() throws Exception {
         byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
-        WinDef.LPBYTE lpByte = new WinDef.LPBYTE(64, true);
+        WinDef.LPBYTE lpByte = new WinDef.LPBYTE(64, SET_MEM_TO_0);
         OpaqueMemory32.copy(data, 0, lpByte, 0, data.length);
         lpByte.bufferEnd = data.length;
-        Assertions.assertEquals("HELLO WORLD!", Winnt.LPWSTR.stringValueOfNullTerminated(lpByte));
+        Assertions.assertEquals("HELLO WORLD!", WinDef.LPBYTE.getUnicodeString(lpByte, true));
     }
 
     @Test
     public void testArrayOfHandle() throws Exception {
-        Winnt.ArrayOfHandle aoh = new Winnt.ArrayOfHandle(3, true);
+        Winnt.ArrayOfHandle aoh = new Winnt.ArrayOfHandle(3, MEM_UNINITIALIZED);
         Winnt.HANDLE h1 = new Winnt.HANDLE(42);
         aoh.set(1, h1);
         Winnt.HANDLE h2 = Winnt.HANDLE.INVALID_HANDLE_VALUE;

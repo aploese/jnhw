@@ -27,8 +27,11 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.callback.Callback_IJ_V_Impl;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
+import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
 
 /**
  * Wrapper around the
@@ -509,11 +512,7 @@ public final class Winnt {
 
     }
 
-    public static class ArrayOfHandle extends Struct32 {
-
-        static {
-            LibJnhwWinApiLoader.touch();
-        }
+    public static class ArrayOfHandle extends WinApiStruct32 {
 
         public final int length;
 
@@ -523,28 +522,11 @@ public final class Winnt {
             } else if (i >= length) {
                 throw new IllegalArgumentException("i >= length");
             }
-            set0(i, element);
+            MEM_ACCESS.uintptr_t_AtIndex(this, 0, i, element.value);
         }
 
-        /**
-         *
-         * @param i the index must be in range.
-         * @return
-         */
-        private native HANDLE get0(int i);
-
-        /**
-         *
-         * @param i the index must be in range.
-         * @param element
-         */
-        private native void set0(int i, HANDLE element);
-
-        @SizeOf
-        public final static native int sizeof();
-
-        public ArrayOfHandle(int length, boolean clearMem) {
-            super((OpaqueMemory32) null, 0, length * sizeof(), clearMem ? (byte) 0 : null);
+        public ArrayOfHandle(int length, Byte setMem) {
+            super((OpaqueMemory32) null, 0, length * WinApiDataType.HANDLE.baseDataType.SIZE_OF, setMem);
             this.length = length;
         }
 
@@ -554,7 +536,7 @@ public final class Winnt {
             } else if (i >= length) {
                 throw new IllegalArgumentException("i >= length");
             }
-            return get0(i);
+            return new HANDLE(MEM_ACCESS.uintptr_t_AtIndex(this, 0, i));
         }
 
         @Override
@@ -566,7 +548,7 @@ public final class Winnt {
                 } else {
                     sb.append(", ");
                 }
-                sb.append(get0(i));
+                sb.append(get(i));
             }
             sb.append("]");
             return sb.toString();
@@ -591,30 +573,9 @@ public final class Winnt {
      * of valid bytes in the buffer and must be set if the amount of valid bytes
      * changed.
      */
-    public static class LPWSTR extends Struct32 {
+    public static class LPWSTR extends WinApiStruct32 {
 
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwWinApiLoader.touch();
-        }
-
-        @SizeOf
-        public final static native int sizeof();
-
-        public final static int SIZE_OF_WCHAR = 2;
-
-        /**
-         * Skip the last two 0 bytes aka the last 0 char
-         *
-         * @param lpData
-         * @return
-         */
-        public static String stringValueOfNullTerminated(WinDef.LPBYTE lpData) {
-            return getString(lpData, lpData.bufferEnd / SIZE_OF_WCHAR - 1);
-        }
+        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.baseDataType.SIZE_OF;
 
         int bufferEnd;
 
@@ -622,26 +583,19 @@ public final class Winnt {
          * Creates space for a Wide String (16 bit)
          *
          * @param elementLength
-         * @param clearMemory
          */
-        public LPWSTR(int elementLength, boolean clearMemory) {
-            super((OpaqueMemory32) null, 0, elementLength * SIZE_OF_WCHAR, clearMemory ? (byte) 0 : null);
+        public LPWSTR(int elementLength, Byte setMem) {
+            super((OpaqueMemory32) null, 0, elementLength * SIZE_OF_WCHAR, setMem);
             bufferEnd = elementLength;
         }
-
-//        private static native void setString(long baseAddress, String value);
-//        public void set(String value) {
-//            setString(baseAddress, value);
-//        }
-        private static native String getString(OpaqueMemory32 lpByte, int charLength);
 
         /**
          * return the NULL terminated string @baseaddress
          *
          * @return
          */
-        public String getString() {
-            return getString(this, bufferEnd);
+        public String getUnicodeString() {
+            return MEM_ACCESS.getUnicodeString(this, 0, 0, bufferEnd);
         }
 
         public void clear() {
@@ -663,7 +617,19 @@ public final class Winnt {
      * typedef HANDLE *PHANDLE;
      * </p>
      */
-    public static class PHANDLE extends Struct32 {
+    public static class PHANDLE extends OpaqueMemory32 {
+
+        private final static int SIZE_OF = WinApiDataType.PHANDLE.baseDataType.SIZE_OF;
+
+        @Override
+        public BaseDataType getBaseDataType() {
+            return WinApiDataType.PHANDLE.baseDataType;
+        }
+
+        @Override
+        public String nativeToHexString() {
+            return MEM_ACCESS.uintptr_t_AsHex(this, 0);
+        }
 
         @FunctionalInterface
         protected static interface CreateHandler {
@@ -672,36 +638,29 @@ public final class Winnt {
 
         }
 
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwWinApiLoader.touch();
-        }
-
-        @SizeOf
-        public final static native int sizeof();
-
         HANDLE cachedHandle;
 
+        private void setHandleValue(long value) {
+            MEM_ACCESS.uintptr_t(this, 0, value);
+        }
+
+        private long getHandleValue() {
+            return MEM_ACCESS.uintptr_t(this, 0);
+        }
+
         protected PHANDLE(CreateHandler handler) {
-            super((OpaqueMemory32) null, 0, sizeof(), SET_MEM_TO_0);
+            super((OpaqueMemory32) null, 0, SIZE_OF, SET_MEM_TO_0);
             cachedHandle = handler.create(getHandleValue());
         }
 
         protected PHANDLE(HANDLE handle) {
-            super((OpaqueMemory32) null, 0, sizeof(), null);
+            super((OpaqueMemory32) null, 0, SIZE_OF, MEM_UNINITIALIZED);
             setHandleValue(handle.value);
             cachedHandle = handle;
         }
 
-        private native long getHandleValue();
-
-        private native void setHandleValue(long value);
-
         public HANDLE dereference() {
-            final long currentValue = getHandleValue();
+            final long currentValue = MEM_ACCESS.uintptr_t(this, 0);
             if (cachedHandle.value != currentValue) {
                 //cached is not valid anymore, create new one...
                 cachedHandle = createTarget(currentValue);

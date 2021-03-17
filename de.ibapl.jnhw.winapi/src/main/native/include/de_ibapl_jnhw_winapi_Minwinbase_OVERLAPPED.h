@@ -9,43 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
- * Method:    sizeof
- * Signature: ()I
+ * Method:    native2Layout
+ * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED/Layout;
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_sizeof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
- * Method:    Internal
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_Internal
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
- * Method:    InternalHigh
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_InternalHigh
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
- * Method:    hEvent
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_hEvent__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2
-  (JNIEnv *, jobject, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED
- * Method:    hEvent
- * Signature: ()Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_hEvent__
-  (JNIEnv *, jobject);
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024OVERLAPPED_native2Layout
+  (JNIEnv *, jclass, jclass);
 
 #ifdef __cplusplus
 }

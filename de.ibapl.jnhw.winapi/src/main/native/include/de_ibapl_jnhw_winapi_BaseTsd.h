@@ -15,14 +15,6 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_BaseTsd_initFields
   (JNIEnv *, jclass);
 
-/*
- * Class:     de_ibapl_jnhw_winapi_BaseTsd
- * Method:    sizeof_ULONG_PTR
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_BaseTsd_sizeof_1ULONG_1PTR
-  (JNIEnv *, jclass);
-
 #ifdef __cplusplus
 }
 #endif

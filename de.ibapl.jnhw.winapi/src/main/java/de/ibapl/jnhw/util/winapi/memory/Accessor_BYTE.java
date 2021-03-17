@@ -21,42 +21,24 @@
  */
 package de.ibapl.jnhw.util.winapi.memory;
 
-import de.ibapl.jnhw.annotation.winapi.basetsd.DWORD;
-import de.ibapl.jnhw.common.memory.MemoryAccessor;
+import de.ibapl.jnhw.annotation.winapi.basetsd.BYTE;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.winapi.Winbase;
 
 /**
  *
  * @author aploese
  */
-@DWORD
-public interface Accessor_DWORD {
+@BYTE
+public interface Accessor_BYTE {
 
-    void DWORD(OpaqueMemory32 mem, long offset, @DWORD int value);
+    void BYTE(OpaqueMemory32 mem, long offset, @BYTE byte value);
 
-    void DWORD_FromLong(OpaqueMemory32 mem, long offset, @DWORD long value);
+    void BYTE_FromShort(OpaqueMemory32 mem, long offset, @BYTE short value);
 
-    @DWORD
-    int DWORD(OpaqueMemory32 mem, long offset);
+    @BYTE
+    byte BYTE(OpaqueMemory32 mem, long offset);
 
-    @DWORD
-    long DWORD_AsLong(OpaqueMemory32 mem, long offset);
-
-    default boolean getBitAt(OpaqueMemory32 mem, long offset, int bitpos) {
-        return MemoryAccessor.getBitInInt(DWORD(mem, offset), bitpos);
-    }
-
-    default void setBitAt(OpaqueMemory32 mem, long offset, boolean bit, int bitpos) {
-        DWORD(mem, offset, MemoryAccessor.setBitInInt(DWORD(mem, offset), bit, bitpos));
-    }
-
-    default int getBits(OpaqueMemory32 mem, long offset, int bitpos, int bitsize) {
-        return MemoryAccessor.getBitsInInt(DWORD(mem, offset), bitpos, bitsize);
-    }
-
-    default void setBits(OpaqueMemory32 mem, long offset, int bits, int bitpos, int bitsize) {
-        DWORD(mem, offset, MemoryAccessor.setBitsInInt(DWORD(mem, offset), bits, bitpos, bitsize));
-    }
+    @BYTE
+    short BYTE_AsShort(OpaqueMemory32 mem, long offset);
 
 }

@@ -17,11 +17,51 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_uin
 
 /*
  * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
- * Method:    getStringUTF0
+ * Method:    callJniNewStringUTF
  * Signature: (J)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_getStringUTF0
+JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniNewStringUTF
   (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
+ * Method:    callJniGetStringUTFRegion
+ * Signature: (Ljava/lang/String;IJI)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniGetStringUTFRegion
+  (JNIEnv *, jclass, jstring, jint, jlong, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
+ * Method:    callJniGetStringUTFLength
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniGetStringUTFLength
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
+ * Method:    callJniNewString
+ * Signature: (JII)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniNewString
+  (JNIEnv *, jclass, jlong, jint, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
+ * Method:    callJniGetStringRegion
+ * Signature: (Ljava/lang/String;IJII)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniGetStringRegion
+  (JNIEnv *, jclass, jstring, jint, jlong, jint, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor
+ * Method:    callJniGetStringLength
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_UnsafeMemoryAccessor_callJniGetStringLength
+  (JNIEnv *, jclass, jstring);
 
 #ifdef __cplusplus
 }

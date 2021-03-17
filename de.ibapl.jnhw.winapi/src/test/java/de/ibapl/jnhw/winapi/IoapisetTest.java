@@ -104,34 +104,13 @@ public class IoapisetTest {
         Winnt.HANDLE hDevice = null;
         int dwIoControlCode = 0;
         OpaqueMemory32 lpInBuffer = null;
-        int nInBufferOffset = 0;
         int nInBufferSize = 0;
         OpaqueMemory32 lpOutBuffer = null;
-        int nOutBufferOffset = 0;
         int nOutBufferSize = 0;
         Minwinbase.OVERLAPPED lpOverlapped = null;
         Ioapiset instance = new Ioapiset();
         int expResult = 0;
-        int result = instance.DeviceIoControl(hDevice, dwIoControlCode, lpInBuffer, nInBufferOffset, nInBufferSize, lpOutBuffer, nOutBufferOffset, nOutBufferSize, lpOverlapped);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of DeviceIoControl method, of class Ioapiset.
-     */
-    @Test
-    public void testDeviceIoControl_5args() throws Exception {
-        System.out.println("DeviceIoControl");
-        Winnt.HANDLE hDevice = null;
-        int dwIoControlCode = 0;
-        ByteBuffer lpInBuffer = null;
-        ByteBuffer lpOutBuffer = null;
-        Minwinbase.OVERLAPPED lpOverlapped = null;
-        Ioapiset instance = new Ioapiset();
-        int expResult = 0;
-        int result = instance.DeviceIoControl(hDevice, dwIoControlCode, lpInBuffer, lpOutBuffer, lpOverlapped);
+        int result = instance.DeviceIoControl(hDevice, dwIoControlCode, lpInBuffer, nInBufferSize, lpOutBuffer, nOutBufferSize, lpOverlapped);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

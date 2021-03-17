@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
 import de.ibapl.jnhw.winapi.WinDef.PHKEY;
@@ -39,18 +40,18 @@ public class WinregTest {
         Winreg.RegOpenKeyExW(Winreg.HKEY_LOCAL_MACHINE, testKeyStr, 0, Winnt.KEY_READ, testKey);
         Assertions.assertFalse(testKey.dereference().is_INVALID_HANDLE_VALUE(), "PHKEY is not valid");
         int dwIndex = 0;
-        LPWSTR lpValueName = new LPWSTR(256, true);
-        LPBYTE lpData = new LPBYTE(256, false);
+        LPWSTR lpValueName = new LPWSTR(256, SET_MEM_TO_0);
+        LPBYTE lpData = new LPBYTE(256, SET_MEM_TO_0);
         IntRef lpType = new IntRef();
         boolean collecting = true;
         do {
             long result = Winreg.RegEnumValueW(testKey.dereference(), dwIndex, lpValueName, lpType, lpData);
             if (result == Winerror.ERROR_SUCCESS) {
-                System.out.print("lpValueName: " + lpValueName.getString());
+                System.out.print("lpValueName: " + lpValueName.getUnicodeString());
                 if (lpType.value == Winnt.REG_SZ) {
-                    System.out.println(" = " + LPWSTR.stringValueOfNullTerminated(lpData));
+                    System.out.println(" = " + LPBYTE.getUnicodeString(lpData, true));
                 } else if (lpType.value == Winnt.REG_MULTI_SZ) {
-                    System.out.println(" = " + LPWSTR.stringValueOfNullTerminated(lpData));
+                    System.out.println(" = " + LPBYTE.getUnicodeString(lpData, true));
                 } else {
                     System.out.println(" ... Winnt.Reg*:" + lpType.value);
                 }

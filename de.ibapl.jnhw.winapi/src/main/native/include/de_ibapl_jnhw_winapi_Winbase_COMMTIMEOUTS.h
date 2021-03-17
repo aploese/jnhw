@@ -9,91 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
- * Method:    sizeof
- * Signature: ()I
+ * Method:    native2Layout
+ * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS/Layout;
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_sizeof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
- * Method:    ReadIntervalTimeout
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadIntervalTimeout__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
- * Method:    ReadIntervalTimeout
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadIntervalTimeout__J
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
- * Method:    ReadTotalTimeoutMultiplier
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadTotalTimeoutMultiplier__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
- * Method:    ReadTotalTimeoutMultiplier
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadTotalTimeoutMultiplier__J
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
- * Method:    ReadTotalTimeoutConstant
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadTotalTimeoutConstant__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
- * Method:    ReadTotalTimeoutConstant
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_ReadTotalTimeoutConstant__J
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
- * Method:    WriteTotalTimeoutMultiplier
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_WriteTotalTimeoutMultiplier__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
- * Method:    WriteTotalTimeoutMultiplier
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_WriteTotalTimeoutMultiplier__J
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
- * Method:    WriteTotalTimeoutConstant
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_WriteTotalTimeoutConstant__
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winbase_COMMTIMEOUTS
- * Method:    WriteTotalTimeoutConstant
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_WriteTotalTimeoutConstant__J
-  (JNIEnv *, jobject, jlong);
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Winbase_00024COMMTIMEOUTS_native2Layout
+  (JNIEnv *, jclass, jclass);
 
 #ifdef __cplusplus
 }

@@ -180,27 +180,34 @@ extern "C" {
 #define JNHW_FORMAT_STRING_HEX_uint32_t "0x%08x"
 
 #if defined(__LP64__)
+    //Unix 64 bit pointer
 #if defined(__OpenBSD__)
 #define JNHW_FORMAT_STRING_int64_t "%lld"
 #define JNHW_FORMAT_STRING_uint64_t "%llu"
 #define JNHW_FORMAT_STRING_HEX_int64_t "0x%016llx"
 #define JNHW_FORMAT_STRING_HEX_uint64_t "0x%016llx"
+#define JNHW_FORMAT_STRING_HEX_uintptr_t "0x%016llx"
 #else
 #define JNHW_FORMAT_STRING_int64_t "%ld"
 #define JNHW_FORMAT_STRING_uint64_t "%lu"
 #define JNHW_FORMAT_STRING_HEX_int64_t "0x%016lx"
 #define JNHW_FORMAT_STRING_HEX_uint64_t "0x%016lx"
+#define JNHW_FORMAT_STRING_HEX_uintptr_t "0x%016lx"
 #endif
 #elif defined(__WIN64)
+    //Win 64 bit pointer
 #define JNHW_FORMAT_STRING_int64_t "%lld"
 #define JNHW_FORMAT_STRING_uint64_t "%llu"
 #define JNHW_FORMAT_STRING_HEX_int64_t "0x%016llx"
 #define JNHW_FORMAT_STRING_HEX_uint64_t "0x%016llx"
+#define JNHW_FORMAT_STRING_HEX_uintptr_t "0x%016llx"
 #else
+    // 32 bit pointer
 #define JNHW_FORMAT_STRING_int64_t "%lld"
 #define JNHW_FORMAT_STRING_uint64_t "%llu"
 #define JNHW_FORMAT_STRING_HEX_int64_t "0x%016llx"
 #define JNHW_FORMAT_STRING_HEX_uint64_t "0x%016llx"
+#define JNHW_FORMAT_STRING_HEX_uintptr_t "0x%08x"
 #endif
 
     /**

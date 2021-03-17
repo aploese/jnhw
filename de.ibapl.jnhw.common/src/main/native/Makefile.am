@@ -27,7 +27,6 @@ libexceptions_la_SOURCES = \
 libcallbacks_la_SOURCES = \
  Callback_I_V_Impl.c \
  Callback_J_V_Impl.c \
- Callback_IJ_V.c \
  Callback_IJ_V_Impl.c \
  Callback_I_I_Mem_V_Impl.c \
  Callback_I_Mem_Mem_V_Impl.c \

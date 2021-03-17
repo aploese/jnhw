@@ -183,7 +183,7 @@ am_libsynchapi_la_OBJECTS = SynchapiDefines.lo SynchapiFunctions.lo
 libsynchapi_la_OBJECTS = $(am_libsynchapi_la_OBJECTS)
 libwinbase_la_LIBADD =
 am_libwinbase_la_OBJECTS = WinbaseDefines.lo WinbaseFunctions.lo \
-	Winbase_COMMTIMEOUTS.lo Winbase_COMSTAT.lo Winbase_DCB.lo
+	WinbaseStructures.lo
 libwinbase_la_OBJECTS = $(am_libwinbase_la_OBJECTS)
 libwindef_la_LIBADD =
 am_libwindef_la_OBJECTS = WinDefDefines.lo
@@ -192,8 +192,7 @@ libwinerror_la_LIBADD =
 am_libwinerror_la_OBJECTS = WinerrorDefines.lo
 libwinerror_la_OBJECTS = $(am_libwinerror_la_OBJECTS)
 libwinnt_la_LIBADD =
-am_libwinnt_la_OBJECTS = WinntDefines.lo Winnt_PHANDLE.lo \
-	Winnt_LPWSTR.lo Winnt_ArrayOfHandle.lo
+am_libwinnt_la_OBJECTS = WinntDefines.lo
 libwinnt_la_OBJECTS = $(am_libwinnt_la_OBJECTS)
 libwinreg_la_LIBADD =
 am_libwinreg_la_OBJECTS = WinregDefines.lo WinregFunctions.lo
@@ -234,11 +233,8 @@ am__depfiles_remade = ./$(DEPDIR)/BaseTsdDefines.Plo \
 	./$(DEPDIR)/SynchapiFunctions.Plo \
 	./$(DEPDIR)/WinDefDefines.Plo ./$(DEPDIR)/WinbaseDefines.Plo \
 	./$(DEPDIR)/WinbaseFunctions.Plo \
-	./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo \
-	./$(DEPDIR)/Winbase_COMSTAT.Plo ./$(DEPDIR)/Winbase_DCB.Plo \
+	./$(DEPDIR)/WinbaseStructures.Plo \
 	./$(DEPDIR)/WinerrorDefines.Plo ./$(DEPDIR)/WinntDefines.Plo \
-	./$(DEPDIR)/Winnt_ArrayOfHandle.Plo \
-	./$(DEPDIR)/Winnt_LPWSTR.Plo ./$(DEPDIR)/Winnt_PHANDLE.Plo \
 	./$(DEPDIR)/WinregDefines.Plo ./$(DEPDIR)/WinregFunctions.Plo \
 	./$(DEPDIR)/jnhw-winapi-jni.Plo
 am__mv = mv -f
@@ -479,10 +475,7 @@ libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
 
 libwinnt_la_SOURCES = \
- WinntDefines.c \
- Winnt_PHANDLE.c \
- Winnt_LPWSTR.c \
- Winnt_ArrayOfHandle.c
+ WinntDefines.c
 
 libbasetsd_la_SOURCES = \
   BaseTsdDefines.c \
@@ -498,9 +491,7 @@ libwindef_la_SOURCES = \
 libwinbase_la_SOURCES = \
  WinbaseDefines.c \
  WinbaseFunctions.c \
- Winbase_COMMTIMEOUTS.c \
- Winbase_COMSTAT.c \
- Winbase_DCB.c
+ WinbaseStructures.c
 
 libwinreg_la_SOURCES = \
  WinregDefines.c \
@@ -698,14 +689,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinDefDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinbaseDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinbaseFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winbase_COMSTAT.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winbase_DCB.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinbaseStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinerrorDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinntDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winnt_ArrayOfHandle.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winnt_LPWSTR.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Winnt_PHANDLE.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinregDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinregFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-winapi-jni.Plo@am__quote@ # am--include-marker
@@ -892,14 +878,9 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/WinDefDefines.Plo
 	-rm -f ./$(DEPDIR)/WinbaseDefines.Plo
 	-rm -f ./$(DEPDIR)/WinbaseFunctions.Plo
-	-rm -f ./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo
-	-rm -f ./$(DEPDIR)/Winbase_COMSTAT.Plo
-	-rm -f ./$(DEPDIR)/Winbase_DCB.Plo
+	-rm -f ./$(DEPDIR)/WinbaseStructures.Plo
 	-rm -f ./$(DEPDIR)/WinerrorDefines.Plo
 	-rm -f ./$(DEPDIR)/WinntDefines.Plo
-	-rm -f ./$(DEPDIR)/Winnt_ArrayOfHandle.Plo
-	-rm -f ./$(DEPDIR)/Winnt_LPWSTR.Plo
-	-rm -f ./$(DEPDIR)/Winnt_PHANDLE.Plo
 	-rm -f ./$(DEPDIR)/WinregDefines.Plo
 	-rm -f ./$(DEPDIR)/WinregFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
@@ -971,14 +952,9 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/WinDefDefines.Plo
 	-rm -f ./$(DEPDIR)/WinbaseDefines.Plo
 	-rm -f ./$(DEPDIR)/WinbaseFunctions.Plo
-	-rm -f ./$(DEPDIR)/Winbase_COMMTIMEOUTS.Plo
-	-rm -f ./$(DEPDIR)/Winbase_COMSTAT.Plo
-	-rm -f ./$(DEPDIR)/Winbase_DCB.Plo
+	-rm -f ./$(DEPDIR)/WinbaseStructures.Plo
 	-rm -f ./$(DEPDIR)/WinerrorDefines.Plo
 	-rm -f ./$(DEPDIR)/WinntDefines.Plo
-	-rm -f ./$(DEPDIR)/Winnt_ArrayOfHandle.Plo
-	-rm -f ./$(DEPDIR)/Winnt_LPWSTR.Plo
-	-rm -f ./$(DEPDIR)/Winnt_PHANDLE.Plo
 	-rm -f ./$(DEPDIR)/WinregDefines.Plo
 	-rm -f ./$(DEPDIR)/WinregFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo

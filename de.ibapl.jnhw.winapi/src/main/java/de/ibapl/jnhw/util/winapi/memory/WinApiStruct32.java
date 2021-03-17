@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt;
 
 /**
@@ -32,6 +33,14 @@ import de.ibapl.jnhw.winapi.Winnt;
  * @author apl
  */
 public class WinApiStruct32 extends Struct32 {
+
+    /**
+     * Make sure the native lib is loaded ... this class is static, so we have
+     * to
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
 
     protected static class Accessor_BOOL_As_int32_t implements Accessor_BOOL {
 
@@ -47,15 +56,49 @@ public class WinApiStruct32 extends Struct32 {
 
     }
 
+    protected static class Accessor_BYTE_As_uint8_t implements Accessor_BYTE {
+
+        @Override
+        public byte BYTE(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint8_t(mem, offset);
+        }
+
+        @Override
+        public void BYTE(OpaqueMemory32 mem, long offset, byte value) {
+            MEM_ACCESS.uint8_t(mem, offset, value);
+        }
+
+        @Override
+        public short BYTE_AsShort(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint8_t_AsShort(mem, offset);
+        }
+
+        @Override
+        public void BYTE_FromShort(OpaqueMemory32 mem, long offset, short value) {
+            MEM_ACCESS.uint8_t_FromShort(mem, offset, value);
+        }
+
+    }
+
     protected static class Accessor_DWORD_As_uint32_t implements Accessor_DWORD {
 
         @Override
-        public long DWORD(OpaqueMemory32 mem, long offset) {
+        public int DWORD(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint32_t(mem, offset);
+        }
+
+        @Override
+        public void DWORD(OpaqueMemory32 mem, long offset, int value) {
+            MEM_ACCESS.uint32_t(mem, offset, value);
+        }
+
+        @Override
+        public long DWORD_AsLong(OpaqueMemory32 mem, long offset) {
             return MEM_ACCESS.uint32_t_AsLong(mem, offset);
         }
 
         @Override
-        public void DWORD(OpaqueMemory32 mem, long offset, long value) {
+        public void DWORD_FromLong(OpaqueMemory32 mem, long offset, long value) {
             MEM_ACCESS.uint32_t_FromLong(mem, offset, value);
         }
 
@@ -79,7 +122,7 @@ public class WinApiStruct32 extends Struct32 {
 
         @Override
         public NativeAddressHolder PVOID(OpaqueMemory32 mem, long offset) {
-            return MEM_ACCESS.uintptr_t(mem, offset);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(mem, offset);
         }
 
         @Override
@@ -93,12 +136,36 @@ public class WinApiStruct32 extends Struct32 {
 
         @Override
         public long ULONG_PTR(OpaqueMemory32 mem, long offset) {
-            return NativeAddressHolder.toUintptr_t(MEM_ACCESS.uintptr_t(mem, offset));
+            return MEM_ACCESS.uintptr_t(mem, offset);
         }
 
         @Override
         public void ULONG_PTR(OpaqueMemory32 mem, long offset, long value) {
-            MEM_ACCESS.uintptr_t(mem, offset, NativeAddressHolder.ofUintptr_t(value));
+            MEM_ACCESS.uintptr_t(mem, offset, value);
+        }
+
+    }
+
+    protected static class Accessor_WORD_As_uint16_t implements Accessor_WORD {
+
+        @Override
+        public short WORD(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint16_t(mem, offset);
+        }
+
+        @Override
+        public void WORD(OpaqueMemory32 mem, long offset, short value) {
+            MEM_ACCESS.uint16_t(mem, offset, value);
+        }
+
+        @Override
+        public int WORD_AsInt(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint16_t_AsInt(mem, offset);
+        }
+
+        @Override
+        public void WORD_FromInt(OpaqueMemory32 mem, long offset, int value) {
+            MEM_ACCESS.uint16_t_FromInt(mem, offset, value);
         }
 
     }
@@ -112,16 +179,20 @@ public class WinApiStruct32 extends Struct32 {
     }
 
     protected final static Accessor_BOOL ACCESSOR_BOOL;
+    protected final static Accessor_BYTE ACCESSOR_BYTE;
     protected final static Accessor_DWORD ACCESSOR_DWORD;
     protected final static Accessor_HANDLE ACCESSOR_HANDLE;
     protected final static Accessor_PVOID ACCESSOR_PVOID;
     protected final static Accessor_ULONG_PTR ACCESSOR_ULONG_PTR;
+    protected final static Accessor_WORD ACCESSOR_WORD;
 
     static {
         ACCESSOR_BOOL = new Accessor_BOOL_As_int32_t();
+        ACCESSOR_BYTE = new Accessor_BYTE_As_uint8_t();
         ACCESSOR_DWORD = new Accessor_DWORD_As_uint32_t();
         ACCESSOR_HANDLE = new Accessor_HANDLE_As_unsigned_long();
         ACCESSOR_PVOID = new Accessor_PVOID_As_uintptr_t();
         ACCESSOR_ULONG_PTR = new Accessor_ULONG_PTR_As_uintptr_t();
+        ACCESSOR_WORD = new Accessor_WORD_As_uint16_t();
     }
 }

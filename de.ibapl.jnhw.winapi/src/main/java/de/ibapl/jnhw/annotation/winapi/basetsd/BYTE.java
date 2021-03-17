@@ -19,18 +19,14 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#define _JNHW_COMMON_IMPLEMENTATION_ 1
-#include "de_ibapl_jnhw_common_callback_Callback_IJ_V.h"
+package de.ibapl.jnhw.annotation.winapi.basetsd;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-#include "jnhw-common.h"
-
-#include <stdlib.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
+@Retention(value = RetentionPolicy.SOURCE)
+@Target(value = {ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
+public @interface BYTE {
 }
-#endif

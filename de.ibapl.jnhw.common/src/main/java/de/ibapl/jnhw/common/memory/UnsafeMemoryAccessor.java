@@ -73,7 +73,17 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
     }
 
     @Override
-    public NativeAddressHolder uintptr_t(OpaqueMemory32 mem, long offset) {
+    public long intptr_t(OpaqueMemory32 mem, long offset) {
+        return unsafe.getAddress(mem.baseAddress + offset);
+    }
+
+    @Override
+    public long uintptr_t(OpaqueMemory32 mem, long offset) {
+        return unsafe.getAddress(mem.baseAddress + offset);
+    }
+
+    @Override
+    public NativeAddressHolder uintptr_t_AsNativeAddressHolder(OpaqueMemory32 mem, long offset) {
         return new NativeAddressHolder(unsafe.getAddress(mem.baseAddress + offset));
     }
 
@@ -105,8 +115,18 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
     }
 
     @Override
-    public NativeAddressHolder uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+    public long uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+        return unsafe.getAddress(mem.baseAddress + offset + index * unsafe.addressSize());
+    }
+
+    @Override
+    public NativeAddressHolder uintptr_t_AtIndex_AsNativeAddressHolder(OpaqueMemory32 mem, long offset, int index) {
         return new NativeAddressHolder(unsafe.getAddress(mem.baseAddress + offset + index * unsafe.addressSize()));
+    }
+
+    @Override
+    public void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, long dest) {
+        unsafe.putAddress(mem.baseAddress + offset + index * unsafe.addressSize(), dest);
     }
 
     @Override
@@ -372,12 +392,47 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
         return result;
     }
 
-    private static native String getStringUTF0(long address);
+    private static native String callJniNewStringUTF(long address);
 
     @Override
-    public String getStringUTF(OpaqueMemory32 mem, long offset) {
+    public String getUTF_8String(OpaqueMemory32 mem, long offset) {
         //no method on unsafe...
-        return getStringUTF0(mem.baseAddress + offset);
+        return callJniNewStringUTF(mem.baseAddress + offset);
+    }
+
+    private static native void callJniGetStringUTFRegion(String s, int srcStart, long address, int len);
+
+    @Override
+    public void setUTF_8String(String s, int srcStart, OpaqueMemory32 mem, long offset, int len) {
+        callJniGetStringUTFRegion(s, srcStart, mem.baseAddress + offset, len);
+    }
+
+    private static native int callJniGetStringUTFLength(String s);
+
+    @Override
+    public int getUTF_8StringLength(String s) {
+        return callJniGetStringUTFLength(s);
+    }
+
+    private static native String callJniNewString(long address, int start, int len);
+
+    @Override
+    public String getUnicodeString(OpaqueMemory32 mem, long offset, int start, int len) {
+        return callJniNewString(mem.baseAddress + offset, start, len);
+    }
+
+    private static native void callJniGetStringRegion(String s, int srcStart, long address, int destStart, int len);
+
+    @Override
+    public void setUnicodeString(String s, int srcStart, OpaqueMemory32 mem, long offset, int destStart, int len) {
+        callJniGetStringRegion(s, srcStart, mem.baseAddress + offset, destStart, len);
+    }
+
+    private static native int callJniGetStringLength(String s);
+
+    @Override
+    public int getUnicodeStringLength(String s) {
+        return callJniGetStringLength(s);
     }
 
 }

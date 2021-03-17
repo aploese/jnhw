@@ -21,15 +21,17 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.annotation.winapi.basetsd.BOOL;
+import de.ibapl.jnhw.annotation.winapi.basetsd.DWORD;
+import de.ibapl.jnhw.annotation.winapi.basetsd.PVOID;
+import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
 import de.ibapl.jnhw.common.callback.Callback_I_I_Mem_V_Impl;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
-import de.ibapl.jnhw.util.winapi.memory.Accessor_DWORD;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -123,6 +125,7 @@ public class Minwinbase {
          * @return the native value of Internal;
          *
          */
+        @ULONG_PTR
         public final long Internal() {
             return ACCESSOR_ULONG_PTR.ULONG_PTR(this, LAYOUT.Internal);
         }
@@ -136,6 +139,7 @@ public class Minwinbase {
          *
          * @return the native value of InternalHigh;
          */
+        @ULONG_PTR
         public final long InternalHigh() {
             return ACCESSOR_ULONG_PTR.ULONG_PTR(this, LAYOUT.InternalHigh);
         }
@@ -146,12 +150,13 @@ public class Minwinbase {
          *
          * @return
          */
+        @DWORD
         public final long Offset() {
-            return ACCESSOR_DWORD.DWORD(this, LAYOUT.Offset);
+            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.Offset);
         }
 
-        public final void Offset(long value) {
-            ACCESSOR_DWORD.DWORD(this, LAYOUT.Offset, value);
+        public final void Offset(@DWORD long value) {
+            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.Offset, value);
         }
 
         /**
@@ -160,12 +165,13 @@ public class Minwinbase {
          *
          * @return
          */
+        @DWORD
         public final long OffsetHigh() {
-            return ACCESSOR_DWORD.DWORD(this, LAYOUT.OffsetHigh);
+            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.OffsetHigh);
         }
 
-        public final void OffsetHigh(long value) {
-            ACCESSOR_DWORD.DWORD(this, LAYOUT.OffsetHigh, value);
+        public final void OffsetHigh(@DWORD long value) {
+            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.OffsetHigh, value);
         }
 
         /**
@@ -173,6 +179,7 @@ public class Minwinbase {
          *
          * @return
          */
+        @PVOID
         public final NativeAddressHolder Pointer() {
             return ACCESSOR_PVOID.PVOID(this, LAYOUT.InternalHigh);
         }
@@ -259,30 +266,33 @@ public class Minwinbase {
         /**
          * @return the native value of nLength;
          */
+        @DWORD
         public final long nLength() {
-            return ACCESSOR_DWORD.DWORD(this, LAYOUT.nLength);
+            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.nLength);
         }
 
-        public final void nLength(long nLength) {
-            ACCESSOR_DWORD.DWORD(this, LAYOUT.nLength, nLength);
+        public final void nLength(@DWORD long nLength) {
+            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.nLength, nLength);
         }
 
+        @PVOID
         public NativeAddressHolder lpSecurityDescriptor() {
             return ACCESSOR_PVOID.PVOID(this, LAYOUT.lpSecurityDescriptor);
         }
 
-        public void lpSecurityDescriptor(NativeAddressHolder lpSecurityDescriptor) {
+        public void lpSecurityDescriptor(@PVOID NativeAddressHolder lpSecurityDescriptor) {
             ACCESSOR_PVOID.PVOID(this, LAYOUT.lpSecurityDescriptor, lpSecurityDescriptor);
         }
 
         /**
          * @return the native value of bInheritHandle;
          */
+        @BOOL
         public boolean bInheritHandle() {
             return ACCESSOR_BOOL.BOOL(this, LAYOUT.bInheritHandle);
         }
 
-        public void bInheritHandle(boolean bInheritHandle) {
+        public void bInheritHandle(@BOOL boolean bInheritHandle) {
             ACCESSOR_BOOL.BOOL(this, LAYOUT.bInheritHandle, bInheritHandle);
         }
 

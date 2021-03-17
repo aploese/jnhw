@@ -9,27 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_winapi_Minwinbase_SECURITY_ATTRIBUTES
- * Method:    sizeof
- * Signature: ()I
+ * Method:    native2Layout
+ * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/winapi/Minwinbase/SECURITY_ATTRIBUTES/Layout;
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024SECURITY_1ATTRIBUTES_sizeof
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Minwinbase_SECURITY_ATTRIBUTES
- * Method:    nLength
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024SECURITY_1ATTRIBUTES_nLength
-  (JNIEnv *, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Minwinbase_SECURITY_ATTRIBUTES
- * Method:    bInheritHandle
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024SECURITY_1ATTRIBUTES_bInheritHandle
-  (JNIEnv *, jobject);
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_00024SECURITY_1ATTRIBUTES_native2Layout
+  (JNIEnv *, jclass, jclass);
 
 #ifdef __cplusplus
 }

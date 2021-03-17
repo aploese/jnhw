@@ -540,7 +540,15 @@ public interface MemoryAccessor {
 
     void copyMemory64(OpaqueMemory64 srcMem, long srcPos, byte[] dest, int destPos, int length);
 
-    NativeAddressHolder uintptr_t(OpaqueMemory32 mem, long offset);
+    long intptr_t(OpaqueMemory32 mem, long offset);
+
+    void intptr_t(OpaqueMemory32 mem, long offset, long dest);
+
+    long uintptr_t(OpaqueMemory32 mem, long offset);
+
+    NativeAddressHolder uintptr_t_AsNativeAddressHolder(OpaqueMemory32 mem, long offset);
+
+    void uintptr_t(OpaqueMemory32 mem, long offset, long dest);
 
     void uintptr_t(OpaqueMemory32 mem, long offset, OpaqueMemory32 dest);
 
@@ -552,13 +560,51 @@ public interface MemoryAccessor {
 
     void uintptr_t(OpaqueMemory32 mem, long offset, NativeFunctionPointer dest);
 
-    NativeAddressHolder uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index);
+    String uintptr_t_AsHex(OpaqueMemory32 mem, long offset);
+
+    long uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index);
+
+    NativeAddressHolder uintptr_t_AtIndex_AsNativeAddressHolder(OpaqueMemory32 mem, long offset, int index);
+
+    void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, long dest);
 
     void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, OpaqueMemory32 dest);
 
     void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, NativeAddressHolder dest);
 
-    String getStringUTF(OpaqueMemory32 mem, long offset);
+    /**
+     * this is a NULL terminated string, so we have to fetch the complete
+     * string.
+     *
+     * @param mem
+     * @param offset
+     * @return
+     */
+    String getUTF_8String(OpaqueMemory32 mem, long offset);
+
+    void setUTF_8String(String s, int srcStart, OpaqueMemory32 mem, long offset, int len);
+
+    /**
+     * In order to calculate the needed size in bytes, add a 1 for NULL
+     * termination!
+     *
+     * @param s
+     * @return
+     */
+    int getUTF_8StringLength(String s);
+
+    String getUnicodeString(OpaqueMemory32 mem, long offset, int start, int len);
+
+    void setUnicodeString(String s, int srcStart, OpaqueMemory32 mem, long offset, int destStart, int len);
+
+    /**
+     * underlying datatype is 16 bit wide, so multiply this by 2 for bytes
+     * needed! this will not be NULL terminated!
+     *
+     * @param s
+     * @return
+     */
+    int getUnicodeStringLength(String s);
 
     static long getBitsInLong(long value, int bitpos, int bitsize) {
         final long mask = (0xffffffffffffffffL >>> (64 - bitsize)); // just shift the mask...
@@ -572,6 +618,20 @@ public interface MemoryAccessor {
             throw new IllegalArgumentException("value has bits outside of range");
         }
         return (value & ~mask) | ((bits << bitpos) & mask);
+    }
+
+    static boolean getBitInInt(int value, int bitpos) {
+        return (value & (1 << bitpos)) != 0;
+    }
+
+    static int setBitInInt(int value, boolean bit, int bitpos) {
+        if (bit) {
+            //set bit at pos
+            return value | (1 << bitpos);
+        } else {
+            //clear bit at pos
+            return value & ~(1 << bitpos);
+        }
     }
 
     static int getBitsInInt(int value, int bitpos, int bitsize) {

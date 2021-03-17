@@ -29,8 +29,6 @@ import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Uint64_t;
-import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor_SizeOfLong32;
-import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor_SizeOfLong64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.SizeInBit;
 import org.junit.jupiter.api.Test;
@@ -38,6 +36,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 
 /**
  *
@@ -55,6 +54,8 @@ public class MemoryAccessorTest {
 
     private final static Int64_t mem64 = new Int64_t(heap, 8 * 1, AbstractNativeMemory.MEM_UNINITIALIZED);
     private final static Int64_t mem32 = new Int64_t(heap, 4 * 2, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Memory32Heap buff_16 = new Memory32Heap(heap, 8 * 1, 16, AbstractNativeMemory.MEM_UNINITIALIZED);
+
     private final static Uint32_t succ32_1 = new Uint32_t(heap, 4 * 3, AbstractNativeMemory.MEM_UNINITIALIZED);
 
     private final static Uint64_t succ64_1 = new Uint64_t(heap, 8 * 2, AbstractNativeMemory.MEM_UNINITIALIZED);
@@ -73,6 +74,18 @@ public class MemoryAccessorTest {
     private final static Uint32_t succ32_8 = new Uint32_t(heap, 4 * 10, AbstractNativeMemory.MEM_UNINITIALIZED);
     private final static Uint32_t succ32_9 = new Uint32_t(heap, 4 * 11, AbstractNativeMemory.MEM_UNINITIALIZED);
 
+    private abstract static class MEM extends Memory32Heap {
+
+        public MEM(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+            super(owner, offset, sizeInBytes, setMem);
+        }
+
+        static MemoryAccessor getCurrentMemAcc() {
+            return MEM_ACCESS;
+        }
+
+    }
+
     private final MemoryAccessor ma;
 
     @BeforeEach
@@ -90,7 +103,7 @@ public class MemoryAccessorTest {
     }
 
     public MemoryAccessorTest() {
-        this.ma = MULTIARCH_TUPEL_BUILDER.getSizeOfLong() == SizeInBit._64_BIT ? new UnsafeMemoryAccessor_SizeOfLong64() : new UnsafeMemoryAccessor_SizeOfLong32();
+        this.ma = MEM.getCurrentMemAcc();
     }
 
     /**
@@ -401,8 +414,15 @@ public class MemoryAccessorTest {
      * Test of SignedLongOf (int) methods, of class MemoryAccessor.
      */
     @ParameterizedTest
-    @ValueSource(longs = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
+    @ValueSource(longs = {Long.MIN_VALUE, Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE, Long.MAX_VALUE})
     public void testSignedLongOf_IntTest(long value) {
+        if (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE) {
+            assertThrows(IllegalArgumentException.class, () -> ma.setSignedLongOf(mem64, 0, 4, value));
+            assertMem();
+            assertMemIsClear();
+            return;
+        }
+
         ma.setSignedLongOf(mem64, 0, 4, value);
         assertMem();
         assertMemEqualsInt((int) value);
@@ -546,14 +566,52 @@ public class MemoryAccessorTest {
         assertEquals(Long.toUnsignedString(value), ma.getUnsignedLongOf_nativeToString(mem64, 0, 8));
     }
 
-    @Test
-    public void testUintptr_t() {
-        final long address = MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT ? 0x04030201L : 0x0807060504030201L;
-        NativeAddressHolder expected = NativeAddressHolder.ofUintptr_t(address);
-        ma.uintptr_t(mem64, 0, expected);
+    @ParameterizedTest
+    @ValueSource(longs = {Long.MIN_VALUE, Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE, Long.MAX_VALUE})
+    public void testIntptr_tTest(long value) {
+        if (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT) {
+            if (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE) {
+                assertThrows(IllegalArgumentException.class, () -> ma.intptr_t(mem64, 0, value));
+                assertMem();
+                assertMemIsClear();
+                return;
+            }
+            ma.intptr_t(mem64, 0, value);
+            assertMem();
+            assertMemEqualsInt((int) value);
+            assertEquals(value, ma.intptr_t(mem64, 0));
+            return;
+        }
+        ma.intptr_t(mem64, 0, value);
         assertMem();
+        assertMemEqualsLong(value);
+        assertEquals(value, ma.intptr_t(mem64, 0));
 
-        assertEquals(expected, ma.uintptr_t(mem64, 0));
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {-1, 0, 1, 0x00000000ffffffff, 0x0000000100000000L})
+    public void testUintPtr_tTest(long value) {
+        if (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT) {
+            if ((value < 0) || (value > 0xffffffffL)) {
+                assertThrows(IllegalArgumentException.class, () -> ma.uintptr_t(mem64, 0, value));
+                assertMem();
+                assertMemIsClear();
+                return;
+            }
+            ma.uintptr_t(mem64, 0, value);
+            assertMem();
+            assertMemEqualsInt((int) value);
+            assertEquals(value, ma.uintptr_t(mem64, 0));
+            assertEquals(String.format("0x%08x", value), ma.uintptr_t_AsHex(mem64, 0));
+            return;
+        }
+
+        ma.uintptr_t(mem64, 0, value);
+        assertMem();
+        assertMemEqualsLong(value);
+        assertEquals(value, ma.uintptr_t(mem64, 0));
+        assertEquals(String.format("0x%016x", value), ma.uintptr_t_AsHex(mem64, 0));
     }
 
     @Test
@@ -562,7 +620,7 @@ public class MemoryAccessorTest {
         NativeAddressHolder expected = NativeAddressHolder.ofUintptr_t(address);
         ma.uintptr_t_AtIndex(mem64, 0, 3, expected);
 
-        assertEquals(expected, ma.uintptr_t_AtIndex(mem64, 0, 3));
+        assertEquals(expected, ma.uintptr_t_AtIndex_AsNativeAddressHolder(mem64, 0, 3));
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(0, succ32_2.uint32_t());
@@ -624,6 +682,68 @@ public class MemoryAccessorTest {
 
         ma.signed_long_AtIndex(mem64, 0, 3, -1);
         assertEquals(-1, ma.signed_long_AtIndex(mem64, 0, 3));
+    }
+
+    @Test
+    public void testStringAsUnicode_ASCII_Only() {
+
+        final String expectedString = "Hello!";
+        final int LENGTH = expectedString.length();
+        final int NATIVE_LENGTH = ma.getUnicodeStringLength(expectedString);
+        // assert enough space in buff_16
+        assert (NATIVE_LENGTH * 2 < buff_16.sizeInBytes);
+        assertEquals(LENGTH, NATIVE_LENGTH);
+
+        ma.setUnicodeString(expectedString, 0, buff_16, 0, 0, LENGTH);
+        assertEquals("48006500 6c006c00  6f002100 00000000 | H e l l o !     ", OpaqueMemory32.printMemory(buff_16, false));
+        assertEquals(expectedString, ma.getUnicodeString(buff_16, 0, 0, LENGTH));
+        assertEquals(expectedString.substring(2, 6), ma.getUnicodeString(buff_16, 0, 2, 4));
+        ma.setUnicodeString("XXX_LL_YY", 4, buff_16, 0, 2, 2);
+        assertEquals("HeLLo!", ma.getUnicodeString(buff_16, 0, 0, LENGTH));
+    }
+
+    @Test
+    public void testStringAsUnicode_With_Non_ASCII() {
+
+        final String expectedString = "\u263A Hi! \u263A";
+        final int LENGTH = expectedString.length();
+        final int NATIVE_LENGTH = ma.getUnicodeStringLength(expectedString);
+        // assert enough space in buff_16
+        assert (NATIVE_LENGTH * 2 < buff_16.sizeInBytes);
+        assertEquals(LENGTH, NATIVE_LENGTH);
+
+        ma.setUnicodeString(expectedString, 0, buff_16, 0, 0, LENGTH);
+        assertEquals("3a262000 48006900  21002000 3a260000 | :&  H i !   :&  ", OpaqueMemory32.printMemory(buff_16, false));
+        assertEquals(expectedString, ma.getUnicodeString(buff_16, 0, 0, LENGTH));
+        assertEquals(expectedString.substring(2, 6), ma.getUnicodeString(buff_16, 0, 2, 4));
+        ma.setUnicodeString("XXX_YY_ZZZ", 4, buff_16, 0, 2, 2);
+        assertEquals("\u263A YY! \u263A", ma.getUnicodeString(buff_16, 0, 0, LENGTH));
+    }
+
+    @Test
+    public void testStringAsUTF_ASCII_Only() {
+        String expectedString = "Hello!";
+        assertEquals(expectedString.length(), ma.getUTF_8StringLength(expectedString));
+
+        ma.setUTF_8String(expectedString, 0, buff_16, 0, expectedString.length());
+        assertEquals("48656c6c 6f210000  00000000 00000000 | Hello!          ", OpaqueMemory32.printMemory(buff_16, false));
+        assertEquals(expectedString, ma.getUTF_8String(buff_16, 0));
+
+    }
+
+    @Test
+    public void testStringAsUTF_With_Non_ASCII() {
+        String expectedString = "\u263AHi!\u263A";
+        final int LENGTH = expectedString.length();
+        final int NATIVE_LENGTH = ma.getUTF_8StringLength(expectedString);
+        // assert enough space in buff_16
+        assert (NATIVE_LENGTH + 1 < buff_16.sizeInBytes);
+
+        assertEquals(LENGTH + 4, NATIVE_LENGTH);
+
+        ma.setUTF_8String(expectedString, 0, buff_16, 0, LENGTH);
+        assertEquals("e298ba48 6921e298  ba000000 00000000 | ￢ﾘﾺHi!￢ﾘﾺ       ", OpaqueMemory32.printMemory(buff_16, false));
+        assertEquals(expectedString, ma.getUTF_8String(buff_16, 0));
     }
 
     /*
@@ -855,6 +975,15 @@ public class MemoryAccessorTest {
         assertEquals(1, MemoryAccessor.setBitsInLong(0, 1, 0, 1));
         assertEquals(1, MemoryAccessor.setBitsInLong(-1, 0, 1, 63));
         assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInLong(0, 0x00010000, 0, 16));
+    }
+
+    @Test
+    public void testBitInInt() {
+        assertTrue(MemoryAccessor.getBitInInt(0x00000001, 0));
+        assertTrue(MemoryAccessor.getBitInInt(0x01000000, 24));
+        assertFalse(MemoryAccessor.getBitInInt(0x11111111, 1));
+        assertEquals(0x02, MemoryAccessor.setBitInInt(0, true, 1));
+        assertEquals(0xfffffffd, MemoryAccessor.setBitInInt(-1, false, 1));
     }
 
     @Test

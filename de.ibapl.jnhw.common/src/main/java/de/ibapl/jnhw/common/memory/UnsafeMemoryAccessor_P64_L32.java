@@ -25,7 +25,7 @@ package de.ibapl.jnhw.common.memory;
  *
  * @author aploese
  */
-public class UnsafeMemoryAccessor_SizeOfLong32 extends UnsafeMemoryAccessor {
+public class UnsafeMemoryAccessor_P64_L32 extends UnsafeMemoryAccessor {
 
     @Override
     public long signed_long(OpaqueMemory32 mem, long offset) {
@@ -83,6 +83,21 @@ public class UnsafeMemoryAccessor_SizeOfLong32 extends UnsafeMemoryAccessor {
             throw new IllegalArgumentException("value must not be nagative");
         }
         unsafe.putInt(mem.baseAddress + offset + 4 * index, (int) value);
+    }
+
+    @Override
+    public void intptr_t(OpaqueMemory32 mem, long offset, long dest) {
+        unsafe.putAddress(mem.baseAddress + offset, dest);
+    }
+
+    @Override
+    public void uintptr_t(OpaqueMemory32 mem, long offset, long dest) {
+        unsafe.putAddress(mem.baseAddress + offset, dest);
+    }
+
+    @Override
+    public String uintptr_t_AsHex(OpaqueMemory32 mem, long offset) {
+        return String.format("0x%016x", unsafe.getAddress(mem.baseAddress + offset));
     }
 
 }

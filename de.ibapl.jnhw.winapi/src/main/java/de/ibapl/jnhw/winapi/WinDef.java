@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
@@ -78,18 +79,26 @@ public abstract class WinDef {
      */
     public static class LPBYTE extends Struct32 {
 
+        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.baseDataType.SIZE_OF;
+
         /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
+         * if isNullTerminated do skip the last two 0 bytes aka the last 0 char.
+         *
+         * @param lpData
+         * @return
          */
-        static {
-            LibJnhwWinApiLoader.touch();
+        public static String getUnicodeString(LPBYTE lpData, boolean isNullTerminated) {
+            if (isNullTerminated) {
+                return MEM_ACCESS.getUnicodeString(lpData, 0, 0, lpData.bufferEnd / SIZE_OF_WCHAR - 1);
+            } else {
+                return MEM_ACCESS.getUnicodeString(lpData, 0, 0, lpData.bufferEnd / SIZE_OF_WCHAR);
+            }
         }
 
         int bufferEnd;
 
-        public LPBYTE(int size, boolean clearMemory) {
-            super((OpaqueMemory32) null, 0, size, clearMemory ? (byte) 0 : null);
+        public LPBYTE(int size, Byte setMem) {
+            super((OpaqueMemory32) null, 0, size, setMem);
             bufferEnd = size;
         }
 

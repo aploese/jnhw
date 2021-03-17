@@ -57,6 +57,22 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_copyM
 
 /*
  * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    intptr_t0
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_intptr_1t0__J
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    intptr_t0
+ * Signature: (JJ)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_intptr_1t0__JJ
+  (JNIEnv *, jclass, jlong, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
  * Method:    uintptr_t0
  * Signature: (J)J
  */
@@ -94,6 +110,14 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uintptr_1t_1AtIndex0__JIJ
   (JNIEnv *, jclass, jlong, jint, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    uintptr_t_AsHex0
+ * Signature: (J)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uintptr_1t_1AsHex0
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
@@ -465,11 +489,51 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_unsig
 
 /*
  * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
- * Method:    getStringUTF0
+ * Method:    callJniNewStringUTF
  * Signature: (J)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_getStringUTF0
+JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_callJniNewStringUTF
   (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    callJniGetStringUTFRegion
+ * Signature: (Ljava/lang/String;IJI)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_callJniGetStringUTFRegion
+  (JNIEnv *, jclass, jstring, jint, jlong, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    callJniGetStringUTFLength
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_callJniGetStringUTFLength
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    callJniNewString
+ * Signature: (JII)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_callJniNewString
+  (JNIEnv *, jclass, jlong, jint, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    callJniGetStringRegion
+ * Signature: (Ljava/lang/String;IJII)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_callJniGetStringRegion
+  (JNIEnv *, jclass, jstring, jint, jlong, jint, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    callJniGetStringLength
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_callJniGetStringLength
+  (JNIEnv *, jclass, jstring);
 
 #ifdef __cplusplus
 }

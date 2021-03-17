@@ -46,10 +46,7 @@ libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
 
 libwinnt_la_SOURCES = \
- WinntDefines.c \
- Winnt_PHANDLE.c \
- Winnt_LPWSTR.c \
- Winnt_ArrayOfHandle.c
+ WinntDefines.c
 
 libbasetsd_la_SOURCES = \
   BaseTsdDefines.c \
@@ -65,9 +62,7 @@ libwindef_la_SOURCES = \
 libwinbase_la_SOURCES = \
  WinbaseDefines.c \
  WinbaseFunctions.c \
- Winbase_COMMTIMEOUTS.c \
- Winbase_COMSTAT.c \
- Winbase_DCB.c
+ WinbaseStructures.c
 
 libwinreg_la_SOURCES = \
  WinregDefines.c \

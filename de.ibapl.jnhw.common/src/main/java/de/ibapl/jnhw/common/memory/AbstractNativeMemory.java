@@ -86,21 +86,41 @@ public abstract class AbstractNativeMemory {
         return (reminder == 0) ? startOffset : startOffset + structAlignment.alignof - reminder;
     }
 
+    private static UnsafeMemoryAccessor getUnsafeMemoryAccessor() {
+        switch (NativeLibResolver.getSizeOfPointer()) {
+            case _32_BIT:
+                switch (NativeLibResolver.getSizeOfLong()) {
+                    case _32_BIT:
+                        LOG.info("Use sun.misc.Unsafe - 32bit for long and 32 bit for pointer access");
+                        return new UnsafeMemoryAccessor_P32_L32();
+                    case _64_BIT:
+                        LOG.info("Use sun.misc.Unsafe - 64bit for long and 32 bit for pointer access");
+                        return new UnsafeMemoryAccessor_P32_L64();
+                    default:
+                        throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
+                }
+            case _64_BIT:
+                switch (NativeLibResolver.getSizeOfLong()) {
+                    case _32_BIT:
+                        LOG.info("Use sun.misc.Unsafe - 32bit for long and 64 bit for pointer access");
+                        return new UnsafeMemoryAccessor_P64_L32();
+                    case _64_BIT:
+                        LOG.info("Use sun.misc.Unsafe - 64bit for long and 64 bit for pointer access");
+                        return new UnsafeMemoryAccessor_P64_L64();
+                    default:
+                        throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
+                }
+            default:
+                throw new IllegalStateException("Unknow size of pointer: " + BaseDataType.SIZE_OF_POINTER);
+        }
+    }
+
     private static MemoryAccessor getMemoryAccessor() {
         String memAccProperty = System.getProperty(MEM_ACCESS_PROPERTY);
         if (memAccProperty == null) {
             LOG.info("Use default MEM_ACCESS");
             try {
-                switch (NativeLibResolver.getSizeOfLong()) {
-                    case _32_BIT:
-                        LOG.info("Use sun.misc.Unsafe - 32bit for long access");
-                        return new UnsafeMemoryAccessor_SizeOfLong32();
-                    case _64_BIT:
-                        LOG.info("Use sun.misc.Unsafe - 64bit for long access");
-                        return new UnsafeMemoryAccessor_SizeOfLong64();
-                    default:
-                        throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
-                }
+                return getUnsafeMemoryAccessor();
             } catch (Exception ex) {
                 if (ex instanceof IllegalStateException) {
                     throw ex;
@@ -112,16 +132,7 @@ public abstract class AbstractNativeMemory {
         }
         switch (memAccProperty) {
             case "Unsafe":
-                switch (NativeLibResolver.getSizeOfLong()) {
-                    case _32_BIT:
-                        LOG.info("Force sun.misc.Unsafe - 32bit for long access");
-                        return new UnsafeMemoryAccessor_SizeOfLong32();
-                    case _64_BIT:
-                        LOG.info("Force sun.misc.Unsafe 64bit for long access");
-                        return new UnsafeMemoryAccessor_SizeOfLong64();
-                    default:
-                        throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
-                }
+                return getUnsafeMemoryAccessor();
             case "Jnhw":
                 LOG.info("Force JNHW for MEM_ACCESS");
                 return new JnhwMemoryAccessor();

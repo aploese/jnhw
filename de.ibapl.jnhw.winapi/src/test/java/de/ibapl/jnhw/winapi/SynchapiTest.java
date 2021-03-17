@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -81,7 +82,7 @@ public class SynchapiTest {
     public void testWaitForMultipleSignaled() throws Exception {
         final Winnt.HANDLE hEvent1 = Synchapi.CreateEventW(null, true, false, null);
         final Winnt.HANDLE hEvent2 = Synchapi.CreateEventW(null, true, false, null);
-        final Winnt.ArrayOfHandle handles = new Winnt.ArrayOfHandle(2, false);
+        final Winnt.ArrayOfHandle handles = new Winnt.ArrayOfHandle(2, MEM_UNINITIALIZED);
         handles.set(0, hEvent1);
         handles.set(1, hEvent2);
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(5000), () -> {
@@ -106,7 +107,7 @@ public class SynchapiTest {
     public void testWaitForMultipleTimeout() throws Exception {
         final Winnt.HANDLE hEvent1 = Synchapi.CreateEventW(null, true, false, null);
         final Winnt.HANDLE hEvent2 = Synchapi.CreateEventW(null, true, false, null);
-        final Winnt.ArrayOfHandle handles = new Winnt.ArrayOfHandle(2, false);
+        final Winnt.ArrayOfHandle handles = new Winnt.ArrayOfHandle(2, MEM_UNINITIALIZED);
         handles.set(0, hEvent1);
         handles.set(1, hEvent2);
 

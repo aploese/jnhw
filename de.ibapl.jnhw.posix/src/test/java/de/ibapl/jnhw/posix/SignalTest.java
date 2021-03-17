@@ -931,7 +931,7 @@ public class SignalTest {
             sigevent.sigev_signo(Signal.SIGBUS);
             assertEquals(Signal.SIGBUS, sigevent.sigev_signo());
 
-            Callback__Sigval_int__V sigev_notify_functionLong = new Callback__Sigval_int__V(NativeAddressHolder.of(44)) {
+            Callback__Sigval_int__V sigev_notify_functionLong = new Callback__Sigval_int__V(NativeAddressHolder.ofUintptr_t(44)) {
                 @Override
                 protected void callback(int value) {
                     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -941,7 +941,7 @@ public class SignalTest {
             Assertions.assertSame(sigev_notify_functionLong, sigevent.sigev_notify_functionAsCallback__Sigval_int__V());
 
             @SuppressWarnings("unchecked")
-            Callback_Mem_V<OpaqueMemory32> sigev_notify_functionPtr = new Callback_Mem_V<>(NativeAddressHolder.of(44)) {
+            Callback_Mem_V<OpaqueMemory32> sigev_notify_functionPtr = new Callback_Mem_V<>(NativeAddressHolder.ofUintptr_t(44)) {
                 @Override
                 protected void callback(OpaqueMemory32 a) {
                     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -1014,7 +1014,7 @@ public class SignalTest {
         sigaction.sa_flags(22);
         assertEquals(22, sigaction.sa_flags());
 
-        Callback_I_V sa_handler = new Callback_I_V(NativeAddressHolder.of(33)) {
+        Callback_I_V sa_handler = new Callback_I_V(NativeAddressHolder.ofUintptr_t(33)) {
             @Override
             protected void callback(int value) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -1024,7 +1024,7 @@ public class SignalTest {
         Assertions.assertSame(sa_handler, sigaction.sa_handlerAsCallback_I_V());
 
         @SuppressWarnings("unchecked")
-        Callback_I_Mem_Mem_V<Signal.Siginfo_t, OpaqueMemory32> sa_sigaction = new Callback_I_Mem_Mem_V<>(NativeAddressHolder.of(44)) {
+        Callback_I_Mem_Mem_V<Signal.Siginfo_t, OpaqueMemory32> sa_sigaction = new Callback_I_Mem_Mem_V<>(NativeAddressHolder.ofUintptr_t(44)) {
             @Override
             protected void callback(int value, Signal.Siginfo_t a, OpaqueMemory32 b) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

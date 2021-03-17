@@ -19,38 +19,14 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.util.winapi;
+package de.ibapl.jnhw.annotation.winapi.basetsd;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/**
- * The windows datatypes with their mapping to the base datatypes that we have
- * seen so far.
- *
- * @author aploese
- */
-public enum WinApiDataType {
-
-    BOOL(BaseDataType.int32_t),
-    DWORD(BaseDataType.uint32_t),
-    HANDLE(BaseDataType.uintptr_t),
-    ULONG_PTR(BaseDataType.uintptr_t),
-    WCHAR(BaseDataType.uint16_t),
-    //Pointer of types
-    PHANDLE(BaseDataType.uintptr_t, HANDLE),
-    PVOID(BaseDataType.uintptr_t);
-
-    private WinApiDataType(BaseDataType dataType) {
-        this.baseDataType = dataType;
-        this.pointerOf = null;
-    }
-
-    private WinApiDataType(BaseDataType dataType, WinApiDataType pointerOf) {
-        this.baseDataType = dataType;
-        this.pointerOf = pointerOf;
-    }
-
-    public final BaseDataType baseDataType;
-    public final WinApiDataType pointerOf;
-
+@Retention(value = RetentionPolicy.SOURCE)
+@Target(value = {ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
+public @interface WORD {
 }

@@ -36,10 +36,10 @@ public class WinbaseTest {
         System.out.println("test COMMTIMEOUTS");
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(20, Winbase.COMMTIMEOUTS.sizeof());
+                assertEquals(20, Winbase.COMMTIMEOUTS.LAYOUT.sizeof);
                 break;
             case _64_BIT:
-                assertEquals(20, Winbase.COMMTIMEOUTS.sizeof());
+                assertEquals(20, Winbase.COMMTIMEOUTS.LAYOUT.sizeof);
                 break;
             default:
                 throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
@@ -51,10 +51,10 @@ public class WinbaseTest {
         System.out.println("test COMSTAT");
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(12, Winbase.COMSTAT.sizeof());
+                assertEquals(12, Winbase.COMSTAT.LAYOUT.sizeof);
                 break;
             case _64_BIT:
-                assertEquals(12, Winbase.COMSTAT.sizeof());
+                assertEquals(12, Winbase.COMSTAT.LAYOUT.sizeof);
                 break;
             default:
                 throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
@@ -66,10 +66,10 @@ public class WinbaseTest {
         System.out.println("test COMMTIMEOUTS");
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(28, Winbase.DCB.sizeof());
+                assertEquals(28, Winbase.DCB.LAYOUT.sizeof);
                 break;
             case _64_BIT:
-                assertEquals(28, Winbase.DCB.sizeof());
+                assertEquals(28, Winbase.DCB.LAYOUT.sizeof);
                 break;
             default:
                 throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());

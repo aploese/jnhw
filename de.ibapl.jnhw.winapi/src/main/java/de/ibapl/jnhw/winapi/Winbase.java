@@ -21,14 +21,22 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.annotation.winapi.basetsd.BOOL;
+import de.ibapl.jnhw.annotation.winapi.basetsd.BYTE;
+import de.ibapl.jnhw.annotation.winapi.basetsd.DWORD;
+import de.ibapl.jnhw.annotation.winapi.basetsd.WORD;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.memory.MemoryAccessor;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
@@ -875,82 +883,141 @@ public abstract class Winbase {
      * COMMTIMEOUTS}</a>.
      *
      */
-    public final static class COMMTIMEOUTS extends Struct32 {
+    public final static class COMMTIMEOUTS extends WinApiStruct32 {
+
+        public static class Layout extends StructLayout {
+
+            public final long ReadIntervalTimeout;
+            public final long ReadTotalTimeoutMultiplier;
+            public final long ReadTotalTimeoutConstant;
+            public final long WriteTotalTimeoutMultiplier;
+            public final long WriteTotalTimeoutConstant;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                ReadIntervalTimeout = -1;
+                ReadTotalTimeoutMultiplier = -1;
+                ReadTotalTimeoutConstant = -1;
+                WriteTotalTimeoutMultiplier = -1;
+                WriteTotalTimeoutConstant = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
 
         /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
+         * Make sure the native lib is loaded
          */
         static {
             LibJnhwWinApiLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        @SizeOf
-        public final static native int sizeof();
-
         public COMMTIMEOUTS(boolean clearMemory) {
-            super((OpaqueMemory32) null, 0, sizeof(), clearMemory ? (byte) 0 : null);
+            super((OpaqueMemory32) null, 0, LAYOUT.sizeof, clearMemory ? (byte) 0 : null);
         }
 
         /**
          *
          * @return the native value of ReadIntervalTimeout.
          */
-        public native long ReadIntervalTimeout();
+        @DWORD
+        public long ReadIntervalTimeout() {
+            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.ReadIntervalTimeout);
+        }
 
         /**
          * @param ReadIntervalTimeout the value of ReadIntervalTimeout to be set
          * natively.
          */
-        public native void ReadIntervalTimeout(long ReadIntervalTimeout);
+        public void ReadIntervalTimeout(@DWORD long ReadIntervalTimeout) {
+            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.ReadIntervalTimeout, ReadIntervalTimeout);
+        }
 
         /**
          *
          * @return the native value of ReadTotalTimeoutMultiplier.
          */
-        public native long ReadTotalTimeoutMultiplier();
+        @DWORD
+        public long ReadTotalTimeoutMultiplier() {
+            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.ReadTotalTimeoutMultiplier);
+        }
 
         /**
          * @param ReadTotalTimeoutMultiplier the value of
          * ReadTotalTimeoutMultiplier to be set natively.
          */
-        public native void ReadTotalTimeoutMultiplier(long ReadTotalTimeoutMultiplier);
+        public void ReadTotalTimeoutMultiplier(@DWORD long ReadTotalTimeoutMultiplier) {
+            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.ReadTotalTimeoutMultiplier, ReadTotalTimeoutMultiplier);
+        }
 
         /**
          *
          * @return the native value of ReadTotalTimeoutConstant.
          */
-        public native long ReadTotalTimeoutConstant();
+        @DWORD
+        public long ReadTotalTimeoutConstant() {
+            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.ReadTotalTimeoutConstant);
+        }
 
         /**
          * @param ReadTotalTimeoutConstant the value of ReadTotalTimeoutConstant
          * to be set natively.
          */
-        public native void ReadTotalTimeoutConstant(long ReadTotalTimeoutConstant);
+        public void ReadTotalTimeoutConstant(@DWORD long ReadTotalTimeoutConstant) {
+            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.ReadTotalTimeoutConstant, ReadTotalTimeoutConstant);
+        }
 
         /**
          *
          * @return the native value of WriteTotalTimeoutMultiplier.
          */
-        public native long WriteTotalTimeoutMultiplier();
+        @DWORD
+        public long WriteTotalTimeoutMultiplier() {
+            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.WriteTotalTimeoutMultiplier);
+        }
 
         /**
          * @param WriteTotalTimeoutMultiplier the value of
          * WriteTotalTimeoutMultiplier to be set natively.
          */
-        public native void WriteTotalTimeoutMultiplier(long WriteTotalTimeoutMultiplier);
+        public void WriteTotalTimeoutMultiplier(@DWORD long WriteTotalTimeoutMultiplier) {
+            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.WriteTotalTimeoutMultiplier, WriteTotalTimeoutMultiplier);
+        }
 
         /**
          *
          * @return the native value of WriteTotalTimeoutConstant.
          */
-        public native long WriteTotalTimeoutConstant();
+        @DWORD
+        public long WriteTotalTimeoutConstant() {
+            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.WriteTotalTimeoutConstant);
+
+        }
 
         /**
          * @param WriteTotalTimeoutConstant the value of
          * WriteTotalTimeoutConstant to be set natively.
          */
-        public native void WriteTotalTimeoutConstant(long WriteTotalTimeoutConstant);
+        public void WriteTotalTimeoutConstant(@DWORD long WriteTotalTimeoutConstant) {
+            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.WriteTotalTimeoutConstant, WriteTotalTimeoutConstant);
+        }
 
     }
 
@@ -959,77 +1026,142 @@ public abstract class Winbase {
      * COMSTAT}</a>.
      *
      */
-    public static class COMSTAT extends Struct32 {
+    public static class COMSTAT extends WinApiStruct32 {
+
+        public static class Layout extends StructLayout {
+
+            public final long BF_0_1__fCtsHold;
+            public final long BF_1_1__fDsrHold;
+            public final long BF_2_1__fRlsdHold;
+            public final long BF_3_1__fXoffHold;
+            public final long BF_4_1__fXoffSent;
+            public final long BF_5_1__fEof;
+            public final long BF_6_1__fTxim;
+            public final long BF_7_25__fReserved;
+            public final long cbInQue;
+            public final long cbOutQue;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                BF_0_1__fCtsHold = -1;
+                BF_1_1__fDsrHold = -1;
+                BF_2_1__fRlsdHold = -1;
+                BF_3_1__fXoffHold = -1;
+                BF_4_1__fXoffSent = -1;
+                BF_5_1__fEof = -1;
+                BF_6_1__fTxim = -1;
+                BF_7_25__fReserved = -1;
+                cbInQue = -1;
+                cbOutQue = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
 
         /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
+         * Make sure the native lib is loaded
          */
         static {
             LibJnhwWinApiLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        @SizeOf
-        public final static native int sizeof();
-
-        public COMSTAT(boolean clearMemory) {
-            super((OpaqueMemory32) null, 0, sizeof(), clearMemory ? (byte) 0 : null);
+        public COMSTAT(Byte setMem) {
+            super((OpaqueMemory32) null, 0, LAYOUT.sizeof, setMem);
         }
 
         /**
          * @return the native value of fCtsHold.
          */
-        public native boolean fCtsHold();
+        public boolean fCtsHold() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_0_1__fCtsHold, 0);
+        }
 
         /**
          * @return the native value of fDsrHold.
          */
-        public native boolean fDsrHold();
+        public boolean fDsrHold() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_1_1__fDsrHold, 1);
+        }
 
         /**
          * @return the native value of fRlsdHold.
          */
-        public native boolean fRlsdHold();
+        public boolean fRlsdHold() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_2_1__fRlsdHold, 2);
+        }
 
         /**
          * @return the native value of fXoffHold.
          */
-        public native boolean fXoffHold();
+        public boolean fXoffHold() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_3_1__fXoffHold, 3);
+        }
 
         /**
          * @return the native value of fXoffSent.
          */
-        public native boolean fXoffSent();
+        public boolean fXoffSent() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_4_1__fXoffSent, 4);
+        }
 
         /**
          *
          * @return the native value of fEof.
          */
-        public native boolean fEof();
+        public boolean fEof() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_5_1__fEof, 5);
+        }
 
         /**
          *
          * @return the native value of fTxim.
          */
-        public native boolean fTxim();
+        public boolean fTxim() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_6_1__fTxim, 6);
+        }
 
         /**
          *
          * @return the native value of fReserved.
          */
-        public native int fReserved();
+        public int fReserved() {
+            return MemoryAccessor.getBitsInInt(ACCESSOR_DWORD.DWORD(this, LAYOUT.BF_7_25__fReserved), 7, 25);
+        }
 
         /**
          *
          * @return the native value of cbInQue.
          */
-        public native int cbInQue();
+        @DWORD
+        public int cbInQue() {
+            return ACCESSOR_DWORD.DWORD(this, LAYOUT.cbInQue);
+        }
 
         /**
          *
          * @return the native value of cbOutQue.
          */
-        public native int cbOutQue();
+        @DWORD
+        public int cbOutQue() {
+            return ACCESSOR_DWORD.DWORD(this, LAYOUT.cbOutQue);
+        }
     }
 
     /**
@@ -1037,128 +1169,245 @@ public abstract class Winbase {
      * DCB}</a>.
      *
      */
-    public final static class DCB extends Struct32 {
+    public final static class DCB extends WinApiStruct32 {
+
+        public static class Layout extends StructLayout {
+
+            public final long DCBlength;
+            public final long BaudRate;
+            public final long BF_0_1__fBinary;
+            public final long BF_1_1__fParity;
+            public final long BF_2_1__fOutxCtsFlow;
+            public final long BF_3_1__fOutxDsrFlow;
+            public final long BF_4_2__fDtrControl;
+            public final long BF_6_1__fDsrSensitivity;
+            public final long BF_7_1__fTXContinueOnXoff;
+            public final long BF_8_1__fOutX;
+            public final long BF_9_1__fInX;
+            public final long BF_10_1__fErrorChar;
+            public final long BF_11_1__fNull;
+            public final long BF_12_2__fRtsControl;
+            public final long BF_14_1__fAbortOnError;
+            public final long BF_15_17__fDummy2;
+            public final long wReserved;
+            public final long XonLim;
+            public final long XoffLim;
+            public final long ByteSize;
+            public final long Parity;
+            public final long StopBits;
+            public final long XonChar;
+            public final long XoffChar;
+            public final long ErrorChar;
+            public final long EofChar;
+            public final long EvtChar;
+            public final long wReserved1;
+            public final Alignment alignment;
+            public final int sizeof;
+
+            public Layout(long sizeof, int alignof) {
+                super();
+                DCBlength = -1;
+                BaudRate = -1;
+                BF_0_1__fBinary = -1;
+                BF_1_1__fParity = -1;
+                BF_2_1__fOutxCtsFlow = -1;
+                BF_3_1__fOutxDsrFlow = -1;
+                BF_4_2__fDtrControl = -1;
+                BF_6_1__fDsrSensitivity = -1;
+                BF_7_1__fTXContinueOnXoff = -1;
+                BF_8_1__fOutX = -1;
+                BF_9_1__fInX = -1;
+                BF_10_1__fErrorChar = -1;
+                BF_11_1__fNull = -1;
+                BF_12_2__fRtsControl = -1;
+                BF_14_1__fAbortOnError = -1;
+                BF_15_17__fDummy2 = -1;
+                wReserved = -1;
+                XonLim = -1;
+                XoffLim = -1;
+                ByteSize = -1;
+                Parity = -1;
+                StopBits = -1;
+                XonChar = -1;
+                XoffChar = -1;
+                ErrorChar = -1;
+                EofChar = -1;
+                EvtChar = -1;
+                wReserved1 = -1;
+                this.sizeof = (int) sizeof;
+                this.alignment = Alignment.fromAlignof(alignof);
+            }
+
+            @Override
+            public int getSizeof() {
+                return sizeof;
+            }
+
+            @Override
+            public Alignment getAlignment() {
+                return alignment;
+            }
+        }
+
+        private static native Layout native2Layout(Class<Layout> layoutClass);
+
+        public final static Layout LAYOUT;
 
         /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
+         * Make sure the native lib is loaded
          */
         static {
             LibJnhwWinApiLoader.touch();
+            LAYOUT = native2Layout(Layout.class);
         }
 
-        public DCB(boolean clearMemory) {
-            super((OpaqueMemory32) null, 0, sizeof(), clearMemory ? (byte) 0 : null);
+        public DCB(Byte setMem) {
+            super(null, 0, LAYOUT.sizeof, setMem);
             //set the current size explicitly.
-            DCBlength(sizeof());
+            DCBlength(LAYOUT.sizeof);
         }
-
-        @SizeOf
-        public final static native int sizeof();
 
         /**
          * @param DCBlength the value of DCBlength to be set natively.
          */
-        public native void DCBlength(int DCBlength);
+        public void DCBlength(@DWORD int DCBlength) {
+            ACCESSOR_DWORD.DWORD(this, LAYOUT.DCBlength, DCBlength);
+        }
 
         /**
          *
          * @return the native value of DCBlength.
          */
-        public native int DCBlength();
+        @DWORD
+        public int DCBlength() {
+            return ACCESSOR_DWORD.DWORD(this, LAYOUT.DCBlength);
+        }
 
         /**
          *
          * @return the native value of BaudRate.
          */
-        public native int BaudRate();
+        @DWORD
+        public int BaudRate() {
+            return ACCESSOR_DWORD.DWORD(this, LAYOUT.BaudRate);
+        }
 
         /**
          * @param BaudRate the value of BaudRate to be set natively.
          */
-        public native void BaudRate(int BaudRate);
+        public void BaudRate(@DWORD int BaudRate) {
+            ACCESSOR_DWORD.DWORD(this, LAYOUT.BaudRate, BaudRate);
+        }
 
         /**
          *
          * @return the native value of fBinary.
          */
-        public native boolean fBinary();
+        public boolean fBinary() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_0_1__fBinary, 0);
+        }
 
         /**
          *
          * @return the native value of fParity.
          */
-        public native boolean fParity();
+        public boolean fParity() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_1_1__fParity, 1);
+        }
 
         /**
          *
          * @return the native value of fOutxCtsFlow.
          */
-        public native boolean fOutxCtsFlow();
+        public boolean fOutxCtsFlow() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_2_1__fOutxCtsFlow, 2);
+        }
 
         /**
          * @param fOutxCtsFlow the value of fOutxCtsFlow to be set natively.
          */
-        public native void fOutxCtsFlow(boolean fOutxCtsFlow);
+        public void fOutxCtsFlow(boolean fOutxCtsFlow) {
+            ACCESSOR_DWORD.setBitAt(this, LAYOUT.BF_2_1__fOutxCtsFlow, fOutxCtsFlow, 2);
+        }
 
         /**
          *
          * @return the native value of fOutxDsrFlow.
          */
-        public native boolean fOutxDsrFlow();
+        public boolean fOutxDsrFlow() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_3_1__fOutxDsrFlow, 3);
+        }
 
         /**
          * Values: DTR_CONTROL_DISABLE DTR_CONTROL_ENABLE DTR_CONTROL_HANDSHAKE
          *
          * @return the native value of fDtrControl.
          */
-        public native byte fDtrControl();
+        public byte fDtrControl() {
+            return (byte) ACCESSOR_DWORD.getBits(this, LAYOUT.BF_4_2__fDtrControl, 4, 2);
+        }
 
         /**
          *
          * @return the native value of fDsrSensitivity.
          */
-        public native boolean fDsrSensitivity();
+        public boolean fDsrSensitivity() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_6_1__fDsrSensitivity, 6);
+        }
 
         /**
          *
          * @return the native value of fTXContinueOnXoff.
          */
-        public native boolean fTXContinueOnXoff();
+        public boolean fTXContinueOnXoff() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_7_1__fTXContinueOnXoff, 7);
+        }
 
         /**
          *
          * @return the native value of fOutX.
          */
-        public native boolean fOutX();
+        public boolean fOutX() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_8_1__fOutX, 8);
+        }
 
         /**
          * @param fOutX the value of fOutX to be set natively.
          */
-        public native void fOutX(boolean fOutX);
+        public void fOutX(boolean fOutX) {
+            ACCESSOR_DWORD.setBitAt(this, LAYOUT.BF_8_1__fOutX, fOutX, 8);
+        }
 
         /**
          *
          * @return the native value of fInX.
          */
-        public native boolean fInX();
+        public boolean fInX() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_9_1__fInX, 9);
+        }
 
         /**
          * @param fInX the value of fInX to be set natively.
          */
-        public native void fInX(boolean fInX);
+        public void fInX(boolean fInX) {
+            ACCESSOR_DWORD.setBitAt(this, LAYOUT.BF_9_1__fInX, fInX, 9);
+        }
 
         /**
          *
          * @return the native value of fErrorChar.
          */
-        public native boolean fErrorChar();
+        public boolean fErrorChar() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_10_1__fErrorChar, 10);
+        }
 
         /**
          *
          * @return the native value of fNull.
          */
-        public native boolean fNull();
+        public boolean fNull() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_11_1__fNull, 11);
+        }
 
         /**
          * Values: RTS_CONTROL_DISABLE RTS_CONTROL_ENABLE RTS_CONTROL_HANDSHAKE
@@ -1166,122 +1415,170 @@ public abstract class Winbase {
          *
          * @return the native value of fRtsControl.
          */
-        public native byte fRtsControl();
+        public byte fRtsControl() {
+            return (byte) ACCESSOR_DWORD.getBits(this, LAYOUT.BF_12_2__fRtsControl, 11, 2);
+        }
 
         /**
          * @param fRtsControl the value of fRtsControl to be set natively.
          */
-        public native void fRtsControl(byte fRtsControl);
+        public void fRtsControl(byte fRtsControl) {
+            ACCESSOR_DWORD.setBits(this, LAYOUT.BF_12_2__fRtsControl, fRtsControl, 11, 2);
+        }
 
         /**
          *
          * @return the native value of fAbortOnError.
          */
-        public native boolean fAbortOnError();
+        public boolean fAbortOnError() {
+            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_14_1__fAbortOnError, 14);
+        }
 
         /**
          *
          * @return the native value of fDummy2.
          */
-        public native int fDummy2();
+        public int fDummy2() {
+            return ACCESSOR_DWORD.getBits(this, LAYOUT.BF_15_17__fDummy2, 15, 17);
+        }
 
         /**
          *
          * @return the native value of wReserved.
          */
-        public native short wReserved();
+        @WORD
+        public short wReserved() {
+            return ACCESSOR_WORD.WORD(this, LAYOUT.wReserved);
+        }
 
         /**
          *
          * @return the native value of XonLim.
          */
-        public native short XonLim();
+        @WORD
+        public short XonLim() {
+            return ACCESSOR_WORD.WORD(this, LAYOUT.XoffLim);
+        }
 
         /**
          *
          * @return the native value of XoffLim.
          */
-        public native short XoffLim();
+        @WORD
+        public short XoffLim() {
+            return ACCESSOR_WORD.WORD(this, LAYOUT.XoffLim);
+        }
 
         /**
          *
          * @return the native value of ByteSize.
          */
-        public native byte ByteSize();
+        @BYTE
+        public byte ByteSize() {
+            return ACCESSOR_BYTE.BYTE(this, LAYOUT.ByteSize);
+        }
 
         /**
          * @param ByteSize the value of ByteSize to be set natively.
          */
-        public native void ByteSize(byte ByteSize);
+        public void ByteSize(@BYTE byte ByteSize) {
+            ACCESSOR_BYTE.BYTE(this, LAYOUT.ByteSize, ByteSize);
+        }
 
         /**
          * Values: EVENPARITY MARKPARITY NOPARITY ODDPARITY SPACEPARITY
          *
          * @return the native value of Parity.
          */
-        public native byte Parity();
+        @BYTE
+        public byte Parity() {
+            return ACCESSOR_BYTE.BYTE(this, LAYOUT.Parity);
+        }
 
         /**
          * @param Parity the value of Parity to be set natively.
          */
-        public native void Parity(byte Parity);
+        public void Parity(@BYTE byte Parity) {
+            ACCESSOR_BYTE.BYTE(this, LAYOUT.Parity, Parity);
+        }
 
         /**
          * Values: ONESTOPBIT ONE5STOPBITS TWOSTOPBITS
          *
          * @return the native value of StopBits.
          */
-        public native byte StopBits();
+        @BYTE
+        public byte StopBits() {
+            return ACCESSOR_BYTE.BYTE(this, LAYOUT.StopBits);
+        }
 
         /**
          * @param StopBits the value of StopBits to be set natively.
          */
-        public native void StopBits(byte StopBits);
+        public void StopBits(@BYTE byte StopBits) {
+            ACCESSOR_BYTE.BYTE(this, LAYOUT.StopBits, StopBits);
+        }
 
         /**
          *
          * @return the native value of XonChar.
          */
-        public native char XonChar();
+        public char XonChar() {
+            return (char) MEM_ACCESS.int8_t(this, LAYOUT.XonChar);
+        }
 
         /**
          * @param XonChar the value of XonChar to be set natively.
          */
-        public native void XonChar(char XonChar);
+        public void XonChar(char XonChar) {
+            MEM_ACCESS.int8_t(this, LAYOUT.XonChar, (byte) XonChar);
+        }
 
         /**
          *
          * @return the native value of XoffChar.
          */
-        public native char XoffChar();
+        public char XoffChar() {
+            return (char) MEM_ACCESS.int8_t(this, LAYOUT.XoffChar);
+        }
 
         /**
          * @param XoffChar the value of XoffChar to be set natively.
          */
-        public native void XoffChar(char XoffChar);
+        public void XoffChar(char XoffChar) {
+            MEM_ACCESS.int8_t(this, LAYOUT.XoffChar, (byte) XoffChar);
+        }
 
         /**
          *
          * @return the native value of ErrorChar.
          */
-        public native char ErrorChar();
+        public char ErrorChar() {
+            return (char) MEM_ACCESS.int8_t(this, LAYOUT.ErrorChar);
+        }
 
         /**
          *
          * @return the native value of EofChar.
          */
-        public native char EofChar();
+        public char EofChar() {
+            return (char) MEM_ACCESS.int8_t(this, LAYOUT.EofChar);
+        }
 
         /**
          * @return the native value of EvtChar.
          */
-        public native char EvtChar();
+        public char EvtChar() {
+            return (char) MEM_ACCESS.int8_t(this, LAYOUT.EvtChar);
+        }
 
         /**
          *
          * @return the native value of wReserved1.
          */
-        public native short wReserved1();
+        public short wReserved1() {
+            return ACCESSOR_WORD.WORD(this, LAYOUT.wReserved1);
+        }
 
     }
 
