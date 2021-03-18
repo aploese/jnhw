@@ -163,6 +163,23 @@ public final class Winnt {
     @Define
     public final static int GENERIC_WRITE;
 
+    @Define
+    public final static int COMPRESSION_FORMAT_NONE = 0x000;
+    @Define
+    public final static int COMPRESSION_FORMAT_DEFAULT = 0x0001;
+    @Define
+    public final static int COMPRESSION_FORMAT_LZNT1 = 0x0002;
+    @Define
+    public final static int COMPRESSION_FORMAT_XPRESS = 0x0003;
+    @Define
+    public final static int COMPRESSION_FORMAT_XPRESS_HUFF = 0x0004;
+    @Define
+    public final static int COMPRESSION_ENGINE_STANDARD = 0x0000;
+    @Define
+    public final static int COMPRESSION_ENGINE_MAXIMUM = 0x0100;
+    @Define
+    public final static int COMPRESSION_ENGINE_HIBER = 0x0200;
+
     public final static boolean HAVE_WINNT_H;
 
     /**
