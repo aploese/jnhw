@@ -24,11 +24,9 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.callback.Callback_IJ_V_Impl;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
@@ -522,7 +520,7 @@ public final class Winnt {
             } else if (i >= length) {
                 throw new IllegalArgumentException("i >= length");
             }
-            MEM_ACCESS.uintptr_t_AtIndex(this, 0, i, element.value);
+            MEM_ACCESS.intptr_t_AtIndex(this, 0, i, element.value);
         }
 
         public ArrayOfHandle(int length, Byte setMem) {
@@ -536,7 +534,7 @@ public final class Winnt {
             } else if (i >= length) {
                 throw new IllegalArgumentException("i >= length");
             }
-            return new HANDLE(MEM_ACCESS.uintptr_t_AtIndex(this, 0, i));
+            return new HANDLE(MEM_ACCESS.intptr_t_AtIndex(this, 0, i));
         }
 
         @Override
@@ -628,7 +626,7 @@ public final class Winnt {
 
         @Override
         public String nativeToHexString() {
-            return MEM_ACCESS.uintptr_t_AsHex(this, 0);
+            return MEM_ACCESS.intptr_t_AsHex(this, 0);
         }
 
         @FunctionalInterface
@@ -641,11 +639,11 @@ public final class Winnt {
         HANDLE cachedHandle;
 
         private void setHandleValue(long value) {
-            MEM_ACCESS.uintptr_t(this, 0, value);
+            MEM_ACCESS.intptr_t(this, 0, value);
         }
 
         private long getHandleValue() {
-            return MEM_ACCESS.uintptr_t(this, 0);
+            return MEM_ACCESS.intptr_t(this, 0);
         }
 
         protected PHANDLE(CreateHandler handler) {
@@ -660,7 +658,7 @@ public final class Winnt {
         }
 
         public HANDLE dereference() {
-            final long currentValue = MEM_ACCESS.uintptr_t(this, 0);
+            final long currentValue = MEM_ACCESS.intptr_t(this, 0);
             if (cachedHandle.value != currentValue) {
                 //cached is not valid anymore, create new one...
                 cachedHandle = createTarget(currentValue);

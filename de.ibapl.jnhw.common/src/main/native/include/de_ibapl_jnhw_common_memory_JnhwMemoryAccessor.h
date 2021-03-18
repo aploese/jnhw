@@ -505,6 +505,14 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_unsig
 
 /*
  * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+ * Method:    intptr_t_AsHex0
+ * Signature: (J)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_intptr_1t_1AsHex0
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
  * Method:    callJniNewStringUTF
  * Signature: (J)Ljava/lang/String;
  */

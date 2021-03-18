@@ -544,6 +544,8 @@ public interface MemoryAccessor {
 
     void intptr_t(OpaqueMemory32 mem, long offset, long dest);
 
+    String intptr_t_AsHex(OpaqueMemory32 mem, long offset);
+
     long intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index);
 
     void intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, long dest);

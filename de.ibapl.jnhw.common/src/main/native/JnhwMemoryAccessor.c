@@ -90,7 +90,36 @@ extern "C" {
 #else
 #error unknown __SIZEOF_POINTER__
 #endif
+    }
 
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+     * Method:    intptr_t_AtIndex0
+     * Signature: (JI)J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_intptr_1t_1AtIndex0__JI
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jint index) {
+        return (int64_t)*(((intptr_t*) (uintptr_t) address) + index);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+     * Method:    intptr_t_AtIndex0
+     * Signature: (JIJ)V
+     */
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_intptr_1t_1AtIndex0__JIJ
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jint index, jlong value) {
+#if __SIZEOF_POINTER__ == 8
+        * (((intptr_t*) (uintptr_t) address) + index) = (intptr_t) value;
+#elif __SIZEOF_POINTER__ == 4
+        if ((value > INT32_MAX) || (value < INT32_MIN)) {
+            throw_IllegalArgumentException(env, "value outside of int32_t");
+            return;
+        }
+        * (((intptr_t*) (uintptr_t) address) + index) = (intptr_t) value;
+#else
+#error unknown __SIZEOF_POINTER__
+#endif
     }
 
     /*
@@ -781,6 +810,18 @@ extern "C" {
 #else
 #error unknown __SIZEOF_LONG__
 #endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_memory_JnhwMemoryAccessor
+     * Method:    intptr_t_AsHex0
+     * Signature: (J)Ljava/lang/String;
+     */
+    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_intptr_1t_1AsHex0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address) {
+        char buf[128] = {0};
+        snprintf(buf, sizeof (buf) - 1, JNHW_FORMAT_STRING_HEX_intptr_t, *((intptr_t*) (uintptr_t) address));
+        return (*env)->NewStringUTF(env, buf);
     }
 
     /*

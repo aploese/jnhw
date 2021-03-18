@@ -96,6 +96,11 @@ public class UnsafeMemoryAccessor_P64_L32 extends UnsafeMemoryAccessor {
     }
 
     @Override
+    public String intptr_t_AsHex(OpaqueMemory32 mem, long offset) {
+        return String.format("0x%016x", unsafe.getAddress(mem.baseAddress + offset));
+    }
+
+    @Override
     public long intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
         return unsafe.getAddress(mem.baseAddress + offset + index * unsafe.addressSize());
     }

@@ -553,6 +553,13 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
         intptr_t0(mem.baseAddress + offset, dest);
     }
 
+    private static native String intptr_t_AsHex0(long address);
+
+    @Override
+    public String intptr_t_AsHex(OpaqueMemory32 mem, long offset) {
+        return intptr_t_AsHex0(mem.baseAddress + offset);
+    }
+
     @Override
     public long intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
         return intptr_t_AtIndex0(mem.baseAddress + offset, index);
