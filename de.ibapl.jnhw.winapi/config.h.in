@@ -75,6 +75,9 @@
 /* Define to 1 if you have the <winerror.h> header file. */
 #undef HAVE_WINERROR_H
 
+/* Define to 1 if you have the <winioctl.h> header file. */
+#undef HAVE_WINIOCTL_H
+
 /* Define to 1 if you have the <winnt.h> header file. */
 #undef HAVE_WINNT_H
 

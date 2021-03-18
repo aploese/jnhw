@@ -13190,7 +13190,7 @@ fi
 
 done
 
-for ac_header in winnt.h basetsd.h fileapi.h minwinbase.h  windef.h minwindef.h winbase.h winreg.h winerror.h synchapi.h ioapi.h ioapiset.h fileapi.h processenv.h processthreadsapi.h handleapi.h errhandlingapi.h
+for ac_header in winnt.h basetsd.h fileapi.h minwinbase.h  windef.h minwindef.h winbase.h winreg.h winerror.h synchapi.h ioapi.h ioapiset.h winioctl.h fileapi.h processenv.h processthreadsapi.h handleapi.h errhandlingapi.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
 ac_fn_c_check_header_compile "$LINENO" "$ac_header" "$as_ac_Header" "#include <windows.h>
