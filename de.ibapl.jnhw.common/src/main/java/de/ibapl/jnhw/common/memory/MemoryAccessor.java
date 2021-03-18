@@ -544,6 +544,10 @@ public interface MemoryAccessor {
 
     void intptr_t(OpaqueMemory32 mem, long offset, long dest);
 
+    long intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index);
+
+    void intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, long dest);
+
     long uintptr_t(OpaqueMemory32 mem, long offset);
 
     NativeAddressHolder uintptr_t_AsNativeAddressHolder(OpaqueMemory32 mem, long offset);

@@ -589,6 +589,52 @@ public class MemoryAccessorTest {
 
     }
 
+    @Test
+    public void testIntptr_t_AtIndex() {
+        final long value = MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT ? 0x04030201L : 0x0807060504030201L;
+        ma.intptr_t_AtIndex(mem64, 0, 3, value);
+
+        assertEquals(value, ma.intptr_t_AtIndex(mem64, 0, 3));
+        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
+            case _32_BIT:
+                assertEquals(0, succ32_2.uint32_t());
+                assertEquals(value, ma.int32_t(succ32_3, 0));
+                assertEquals(0, succ32_4.uint32_t());
+                break;
+            case _64_BIT:
+                assertEquals(0, succ64_2.uint64_t());
+                assertEquals(value, ma.int64_t(succ64_3, 0));
+                assertEquals(0, succ64_4.uint64_t());
+                break;
+            default:
+                fail();
+        }
+
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {Long.MIN_VALUE, Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE, Long.MAX_VALUE})
+    public void testIntptr_t_AtIndexTestExceptions(long value) {
+        if (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT) {
+            if (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE) {
+                assertThrows(IllegalArgumentException.class, () -> ma.intptr_t_AtIndex(mem64, 0, 0, value));
+                assertMem();
+                assertMemIsClear();
+                return;
+            }
+            ma.intptr_t(mem64, 0, value);
+            assertMem();
+            assertMemEqualsInt((int) value);
+            assertEquals(value, ma.intptr_t_AtIndex(mem32, 0, 0));
+            return;
+        }
+        ma.intptr_t(mem64, 0, value);
+        assertMem();
+        assertMemEqualsLong(value);
+        assertEquals(value, ma.intptr_t_AtIndex(mem64, 0, 0));
+
+    }
+
     @ParameterizedTest
     @ValueSource(longs = {-1, 0, 1, 0x00000000ffffffff, 0x0000000100000000L})
     public void testUintPtr_tTest(long value) {
@@ -636,6 +682,29 @@ public class MemoryAccessorTest {
                 fail();
         }
 
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {-1, 0, 1, 0x00000000ffffffff, 0x0000000100000000L})
+    public void testUintPtr_t_AtIndexExceptions(long value) {
+        if (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT) {
+            if ((value < 0) || (value > 0xffffffffL)) {
+                assertThrows(IllegalArgumentException.class, () -> ma.uintptr_t_AtIndex(mem64, 0, 0, value));
+                assertMem();
+                assertMemIsClear();
+                return;
+            }
+            ma.uintptr_t(mem64, 0, value);
+            assertMem();
+            assertMemEqualsInt((int) value);
+            assertEquals(value, ma.uintptr_t_AtIndex(mem32, 0, 0));
+            return;
+        }
+
+        ma.uintptr_t_AtIndex(mem64, 0, 0, value);
+        assertMem();
+        assertMemEqualsLong(value);
+        assertEquals(value, ma.uintptr_t(mem64, 0));
     }
 
     @Test

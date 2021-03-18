@@ -120,11 +120,6 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
     }
 
     @Override
-    public void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, long dest) {
-        unsafe.putAddress(mem.baseAddress + offset + index * unsafe.addressSize(), dest);
-    }
-
-    @Override
     public void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, OpaqueMemory32 destMem) {
         unsafe.putAddress(mem.baseAddress + offset + index * unsafe.addressSize(), destMem.baseAddress);
     }

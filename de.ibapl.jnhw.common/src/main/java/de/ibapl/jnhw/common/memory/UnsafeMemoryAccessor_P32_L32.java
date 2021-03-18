@@ -100,6 +100,19 @@ public class UnsafeMemoryAccessor_P32_L32 extends UnsafeMemoryAccessor {
     }
 
     @Override
+    public long intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+        return (int) unsafe.getAddress(mem.baseAddress + offset + index * unsafe.addressSize());
+    }
+
+    @Override
+    public void intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, long dest) {
+        if ((dest > Integer.MAX_VALUE) || (dest < Integer.MIN_VALUE)) {
+            throw new IllegalArgumentException("value outside of int32_t: " + dest);
+        }
+        unsafe.putAddress(mem.baseAddress + offset + index * unsafe.addressSize(), dest);
+    }
+
+    @Override
     public void uintptr_t(OpaqueMemory32 mem, long offset, long dest) {
         if (dest > 0x00000000ffffffffL) {
             throw new IllegalArgumentException("value too big for uint32_t: " + dest);
@@ -108,6 +121,17 @@ public class UnsafeMemoryAccessor_P32_L32 extends UnsafeMemoryAccessor {
             throw new IllegalArgumentException("value must not be nagative");
         }
         unsafe.putAddress(mem.baseAddress + offset, dest);
+    }
+
+    @Override
+    public void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, long dest) {
+        if (dest > 0x00000000ffffffffL) {
+            throw new IllegalArgumentException("value too big for uint32_t: " + dest);
+        }
+        if (dest < 0) {
+            throw new IllegalArgumentException("value must not be nagative");
+        }
+        unsafe.putAddress(mem.baseAddress + offset + index * unsafe.addressSize(), dest);
     }
 
     @Override

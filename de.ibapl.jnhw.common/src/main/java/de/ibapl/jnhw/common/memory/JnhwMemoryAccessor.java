@@ -99,6 +99,10 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
 
     private static native void intptr_t0(long address, long destAddress);
 
+    private static native long intptr_t_AtIndex0(long address, int index);
+
+    private static native void intptr_t_AtIndex0(long address, int index, long destAddress);
+
     private static native long uintptr_t0(long address);
 
     private static native void uintptr_t0(long address, long destAddress);
@@ -547,6 +551,16 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
     @Override
     public void intptr_t(OpaqueMemory32 mem, long offset, long dest) {
         intptr_t0(mem.baseAddress + offset, dest);
+    }
+
+    @Override
+    public long intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index) {
+        return intptr_t_AtIndex0(mem.baseAddress + offset, index);
+    }
+
+    @Override
+    public void intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, long dest) {
+        intptr_t_AtIndex0(mem.baseAddress + offset, index, dest);
     }
 
     @Override
