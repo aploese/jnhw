@@ -248,7 +248,7 @@ public class OpaqueMemory32Test {
     public void testAddressOn32BitNotNegative() {
         MemToTest parent = new MemToTest(null, 0, 48, SET_MEM_TO_0);
         if (MULTIARCHTUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT) {
-            Assertions.assertTrue(parent.getBaseAddress() > 0, "baseaddress must not be nagative");
+            Assertions.assertTrue(parent.getBaseAddress() > 0, "baseaddress must not be negative");
         }
     }
 

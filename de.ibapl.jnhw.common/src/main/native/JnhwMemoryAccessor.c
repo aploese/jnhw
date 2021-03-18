@@ -124,7 +124,7 @@ extern "C" {
             return;
         }
         if (value < 0) {
-            throw_IllegalArgumentException(env, "value must not be nagative");
+            throw_IllegalArgumentException(env, "value must not be negative");
             return;
         }
         * ((uintptr_t*) (uintptr_t) address) = (uintptr_t) value;
@@ -379,7 +379,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint8_1t_1FromShort0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jshort value) {
         if (value < 0) {
-            throw_IllegalArgumentException(env, "value must not be nagative");
+            throw_IllegalArgumentException(env, "value must not be negative");
             return;
         }
         *((uint8_t*) (uintptr_t) address) = (uint8_t) value;
@@ -447,7 +447,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint16_1t_1FromInt0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jint value) {
         if (value < 0) {
-            throw_IllegalArgumentException(env, "value must not be nagative");
+            throw_IllegalArgumentException(env, "value must not be negative");
             return;
         }
         *((uint16_t*) (uintptr_t) address) = (uint16_t) value;
@@ -515,7 +515,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_memory_JnhwMemoryAccessor_uint32_1t_1FromLong0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused))jclass memAcc, jlong address, jlong value) {
         if (value < 0) {
-            throw_IllegalArgumentException(env, "value must not be nagative");
+            throw_IllegalArgumentException(env, "value must not be negative");
             return;
         }
         *((uint32_t*) (uintptr_t) address) = (uint32_t) value;
@@ -774,7 +774,7 @@ extern "C" {
             return;
         }
         if (value < 0) {
-            throw_IllegalArgumentException(env, "value must not be nagative");
+            throw_IllegalArgumentException(env, "value must not be negative");
             return;
         }
         *(((unsigned long*) (uintptr_t) address) + index) = (uint32_t) value;

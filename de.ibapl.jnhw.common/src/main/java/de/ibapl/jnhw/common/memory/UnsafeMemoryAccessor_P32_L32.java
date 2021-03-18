@@ -64,7 +64,7 @@ public class UnsafeMemoryAccessor_P32_L32 extends UnsafeMemoryAccessor {
             throw new IllegalArgumentException("value too big for uint32_t: " + value);
         }
         if (value < 0) {
-            throw new IllegalArgumentException("value must not be nagative");
+            throw new IllegalArgumentException("value must not be negative");
         }
         unsafe.putInt(mem.baseAddress + offset, (int) value);
     }
@@ -80,7 +80,7 @@ public class UnsafeMemoryAccessor_P32_L32 extends UnsafeMemoryAccessor {
             throw new IllegalArgumentException("value too big for uint32_t: " + value);
         }
         if (value < 0) {
-            throw new IllegalArgumentException("value must not be nagative");
+            throw new IllegalArgumentException("value must not be negative");
         }
         unsafe.putInt(mem.baseAddress + offset + 4 * index, (int) value);
     }
@@ -105,7 +105,7 @@ public class UnsafeMemoryAccessor_P32_L32 extends UnsafeMemoryAccessor {
             throw new IllegalArgumentException("value too big for uint32_t: " + dest);
         }
         if (dest < 0) {
-            throw new IllegalArgumentException("value must not be nagative");
+            throw new IllegalArgumentException("value must not be negative");
         }
         unsafe.putAddress(mem.baseAddress + offset, dest);
     }
