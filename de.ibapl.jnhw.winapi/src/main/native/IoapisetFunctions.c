@@ -95,35 +95,26 @@ extern "C" {
         }
     }
 
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Ioapiset
-     * Method:    DeviceIoControl
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;ILde/ibapl/jnhw/common/memory/OpaqueMemory32;ILde/ibapl/jnhw/common/memory/OpaqueMemory32;ILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_DeviceIoControl__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2ILde_ibapl_jnhw_common_memory_OpaqueMemory32_2ILde_ibapl_jnhw_common_memory_OpaqueMemory32_2ILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
+/*
+ * Class:     de_ibapl_jnhw_winapi_Ioapiset
+ * Method:    DeviceIoControl
+ * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;ILde/ibapl/jnhw/common/memory/OpaqueMemory32;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_DeviceIoControl
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hDevice, jint dwIoControlCode, jobject lpInBuffer,
-            jint nInBufferSize, jobject lpOutBuffer, jint nOutBufferSize, jobject lpOverlapped) {
+            jobject lpOutBuffer, jobject lpOverlapped) {
         if (hDevice == NULL) {
             throw_NullPointerException(env, "hDevice is null.");
             return -1;
         }
-        if (nInBufferSize < 0) {
-            throw_IndexOutOfBoundsException(env, "nInBufferSize index out of bounds");
-            return -1;
-        }
-        if (nOutBufferSize < 0) {
-            throw_IndexOutOfBoundsException(env, "nOutBufferSize index out of bounds");
-            return -1;
-        }
-
         DWORD _BytesReturned;
 
         if (!DeviceIoControl(UNWRAP_HANDLE(hDevice),
                 (uint32_t) dwIoControlCode,
                 UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_OR_NULL(lpInBuffer),
-                (uint32_t) nInBufferSize,
+                lpInBuffer == NULL ? 0 : (uint32_t)SIZE_OF_OPAQUE_MEM_32(lpInBuffer),
                 UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_OR_NULL(lpOutBuffer),
-                (uint32_t) nOutBufferSize,
+                lpOutBuffer == NULL ? 0 : (uint32_t)SIZE_OF_OPAQUE_MEM_32(lpOutBuffer),
                 &_BytesReturned,
                 UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped))) {
             if (((UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped)) == NULL) || (GetLastError() != ERROR_IO_PENDING)) {

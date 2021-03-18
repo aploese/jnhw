@@ -21,17 +21,21 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import java.nio.ByteBuffer;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.Disabled;
+import java.io.File;
 
 /**
  *
  * @author aploese
  */
-@EnabledOnOs(org.junit.jupiter.api.condition.OS.OTHER)
+@EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class IoapisetTest {
 
     public IoapisetTest() {
@@ -41,6 +45,7 @@ public class IoapisetTest {
      * Test of CancelIo method, of class Ioapiset.
      */
     @Test
+    @Disabled
     public void testCancelIo() throws Exception {
         System.out.println("CancelIo");
         Winnt.HANDLE hFile = null;
@@ -53,6 +58,7 @@ public class IoapisetTest {
      * Test of CancelIoEx method, of class Ioapiset.
      */
     @Test
+    @Disabled
     public void testCancelIoEx() throws Exception {
         System.out.println("CancelIoEx");
         Winnt.HANDLE hFile = null;
@@ -66,6 +72,7 @@ public class IoapisetTest {
      * Test of GetOverlappedResult method, of class Ioapiset.
      */
     @Test
+    @Disabled
     public void testGetOverlappedResult_3args() throws Exception {
         System.out.println("GetOverlappedResult");
         Winnt.HANDLE hFile = null;
@@ -82,6 +89,7 @@ public class IoapisetTest {
      * Test of GetOverlappedResult method, of class Ioapiset.
      */
     @Test
+    @Disabled
     public void testGetOverlappedResult_4args() throws Exception {
         System.out.println("GetOverlappedResult");
         Winnt.HANDLE hFile = null;
@@ -99,21 +107,24 @@ public class IoapisetTest {
      * Test of DeviceIoControl method, of class Ioapiset.
      */
     @Test
-    public void testDeviceIoControl_9args() throws Exception {
+    public void testDeviceIoControl() throws Exception {
         System.out.println("DeviceIoControl");
-        Winnt.HANDLE hDevice = null;
-        int dwIoControlCode = 0;
-        OpaqueMemory32 lpInBuffer = null;
-        int nInBufferSize = 0;
-        OpaqueMemory32 lpOutBuffer = null;
-        int nOutBufferSize = 0;
-        Minwinbase.OVERLAPPED lpOverlapped = null;
-        Ioapiset instance = new Ioapiset();
-        int expResult = 0;
-        int result = instance.DeviceIoControl(hDevice, dwIoControlCode, lpInBuffer, nInBufferSize, lpOutBuffer, nOutBufferSize, lpOverlapped);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        File file = File.createTempFile("JNHW_Ioapiset_DeviceIoControl", ".txt");
+        Winnt.HANDLE hDevice = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_WRITE,
+                0,
+                null,
+                Fileapi.OPEN_EXISTING,
+                0,
+                null);
+
+        Memory32Heap lpOutBuffer = new Memory32Heap(null, 0, 128, AbstractNativeMemory.SET_MEM_TO_0);
+
+        int lpBytesReturned = Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, lpOutBuffer, null);
+
+// TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+
     }
 
 }

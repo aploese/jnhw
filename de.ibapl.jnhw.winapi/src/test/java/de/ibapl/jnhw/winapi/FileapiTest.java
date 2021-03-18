@@ -44,7 +44,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class FileapiTests {
+public class FileapiTest {
 
     private final static byte[] WRITE_VALUE = "Hello world!".getBytes();
 
@@ -59,7 +59,7 @@ public class FileapiTests {
 
     @BeforeEach
     public void setUp() throws Exception {
-        file = File.createTempFile("JNHW_FileapiTests", ".txt");
+        file = File.createTempFile("JNHW_FileapiTest", ".txt");
     }
 
     @AfterEach
@@ -79,7 +79,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, bytesWritten);
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -127,7 +127,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -200,7 +200,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -266,7 +266,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -321,7 +321,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -362,7 +362,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -411,7 +411,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(opaqueMemory.sizeInBytes, bytesTransferred);
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -465,7 +465,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(opaqueMemory.sizeInBytes, bytesTransferred);
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -537,7 +537,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -610,7 +610,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -673,7 +673,7 @@ public class FileapiTests {
 
         Handleapi.CloseHandle(hFile);
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -738,7 +738,7 @@ public class FileapiTests {
 
         Handleapi.CloseHandle(hFile);
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -786,7 +786,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, bytesWritten);
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -824,7 +824,7 @@ public class FileapiTests {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, bytesWritten);
 
-        try (FileInputStream fio = new FileInputStream(file)) {
+        try ( FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {

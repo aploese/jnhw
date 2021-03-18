@@ -18,6 +18,7 @@ noinst_LTLIBRARIES = \
  libsynchapi.la \
  libfileapi.la \
  libioapiset.la \
+ libwinioctl.la \
  libioapi.la \
  libhandleapi.la \
  liberrhandlingapi.la \
@@ -36,6 +37,7 @@ libjnhw_winapi_la_LIBADD = \
  libsynchapi.la \
  libfileapi.la \
  libioapiset.la \
+ libwinioctl.la \
  libioapi.la \
  libhandleapi.la \
  liberrhandlingapi.la \
@@ -86,6 +88,9 @@ libioapi_la_SOURCES = \
 libioapiset_la_SOURCES = \
  IoapisetDefines.c \
  IoapisetFunctions.c
+
+libwinioctl_la_SOURCES = \
+ WinioctlDefines.c
 
 libhandleapi_la_SOURCES = \
  HandleapiDefines.c \

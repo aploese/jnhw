@@ -154,10 +154,10 @@ public final class Ioapiset {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native int DeviceIoControl(HANDLE hDevice, int dwIoControlCode, OpaqueMemory32 lpInBuffer,
-            int nInBufferSize,
+    public static native int DeviceIoControl(HANDLE hDevice,
+            int dwIoControlCode,
+            OpaqueMemory32 lpInBuffer,
             OpaqueMemory32 lpOutBuffer,
-            int nOutBufferSize,
             OVERLAPPED lpOverlapped
     ) throws NativeErrorException;
 
