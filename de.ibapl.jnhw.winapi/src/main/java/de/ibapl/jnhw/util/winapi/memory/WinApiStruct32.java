@@ -104,16 +104,16 @@ public class WinApiStruct32 extends Struct32 {
 
     }
 
-    protected static class Accessor_HANDLE_As_unsigned_long implements Accessor_HANDLE {
+    protected static class Accessor_HANDLE_As_intptr_t implements Accessor_HANDLE {
 
         @Override
         public Winnt.HANDLE HANDLE(OpaqueMemory32 mem, long offset) {
-            return Winnt.HANDLE.of(MEM_ACCESS.unsigned_long(mem, offset));
+            return Winnt.HANDLE.of(MEM_ACCESS.intptr_t(mem, offset));
         }
 
         @Override
         public void HANDLE(OpaqueMemory32 mem, long offset, Winnt.HANDLE value) {
-            MEM_ACCESS.unsigned_long(mem, offset, Winnt.HANDLE.getHandleValue(value));
+            MEM_ACCESS.intptr_t(mem, offset, Winnt.HANDLE.getHandleValue(value));
         }
 
     }
@@ -190,7 +190,7 @@ public class WinApiStruct32 extends Struct32 {
         ACCESSOR_BOOL = new Accessor_BOOL_As_int32_t();
         ACCESSOR_BYTE = new Accessor_BYTE_As_uint8_t();
         ACCESSOR_DWORD = new Accessor_DWORD_As_uint32_t();
-        ACCESSOR_HANDLE = new Accessor_HANDLE_As_unsigned_long();
+        ACCESSOR_HANDLE = new Accessor_HANDLE_As_intptr_t();
         ACCESSOR_PVOID = new Accessor_PVOID_As_uintptr_t();
         ACCESSOR_ULONG_PTR = new Accessor_ULONG_PTR_As_uintptr_t();
         ACCESSOR_WORD = new Accessor_WORD_As_uint16_t();

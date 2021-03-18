@@ -33,7 +33,7 @@ public enum WinApiDataType {
 
     BOOL(BaseDataType.int32_t),
     DWORD(BaseDataType.uint32_t),
-    HANDLE(BaseDataType.uintptr_t),
+    HANDLE(BaseDataType.intptr_t),
     ULONG_PTR(BaseDataType.uintptr_t),
     WCHAR(BaseDataType.uint16_t),
     //Pointer of types
