@@ -9,14 +9,6 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_winapi_Winreg
- * Method:    initFields
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winreg_initFields
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Winreg
  * Method:    RegCloseKey
  * Signature: (Lde/ibapl/jnhw/winapi/WinDef/HKEY;)V
  */

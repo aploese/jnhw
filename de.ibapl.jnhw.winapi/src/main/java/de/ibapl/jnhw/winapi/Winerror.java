@@ -49,145 +49,28 @@ public abstract class Winerror {
      */
     static {
         LibJnhwWinApiLoader.touch();
-
-        HAVE_WINERROR_H = false;
-
-        ERROR_ACCESS_DENIED = 0;
-        ERROR_ALREADY_EXISTS = 0;
-
-        ERROR_FILE_EXISTS = 0;
-        ERROR_FILE_NOT_FOUND = 0;
-
-        ERROR_GEN_FAILURE = 0;
-
-        ERROR_INVALID_HANDLE = 0;
-        ERROR_INVALID_PARAMETER = 0;
-        ERROR_IO_INCOMPLETE = 0;
-        ERROR_IO_PENDING = 0;
-
-        ERROR_MORE_DATA = 0;
-
-        ERROR_NOACCESS = 0;
-        ERROR_NOT_FOUND = 0;
-        ERROR_NO_MORE_ITEMS = 0;
-
-        ERROR_PIPE_BUSY = 0;
-        ERROR_PROC_NOT_FOUND = 0;
-
-        ERROR_SHARING_VIOLATION = 0;
-        ERROR_SUCCESS = 0;
-
-        WAIT_TIMEOUT = 0;
-
-        initFields();
     }
-
-    private static native void initFields();
 
     /**
      * The operation completed successfully.
      *
      */
     @Define
-    public final static int ERROR_SUCCESS;
+    public final static int ERROR_SUCCESS = 0;
 
     /**
      * Access is denied.
      *
      */
     @Define
-    public final static int ERROR_ACCESS_DENIED;
-
-    /**
-     * Cannot create a file when that file already exists.
-     *
-     */
-    @Define
-    public final static int ERROR_ALREADY_EXISTS;
-
-    /**
-     * The file exists.
-     *
-     */
-    @Define
-    public final static int ERROR_FILE_EXISTS;
-
-    /**
-     * The system cannot find the file specified.
-     *
-     */
-    @Define
-    public final static int ERROR_FILE_NOT_FOUND;
+    public final static int ERROR_ACCESS_DENIED = 5;
 
     /**
      * The system cannot read from the specified device.
      *
      */
     @Define
-    public final static int ERROR_GEN_FAILURE;
-
-    /**
-     * The handle is invalid.
-     *
-     */
-    @Define
-    public final static int ERROR_INVALID_HANDLE;
-
-    /**
-     * The specified network password is not correct.
-     *
-     */
-    @Define
-    public final static int ERROR_INVALID_PARAMETER;
-
-    /**
-     * Overlapped I/O event is not in a signaled state.
-     *
-     */
-    @Define
-    public final static int ERROR_IO_INCOMPLETE;
-
-    /**
-     * Overlapped I/O operation is in progress.
-     *
-     */
-    @Define
-    public final static int ERROR_IO_PENDING;
-
-    /**
-     * More data is available.
-     *
-     */
-    @Define
-    public final static int ERROR_MORE_DATA;
-
-    /**
-     * Invalid access to memory location.
-     *
-     */
-    @Define
-    public final static int ERROR_NOACCESS;
-
-    /**
-     * Element not found.
-     *
-     */
-    @Define
-    public final static int ERROR_NOT_FOUND;
-
-    /**
-     * No more data is available.
-     *
-     */
-    @Define
-    public final static int ERROR_NO_MORE_ITEMS;
-
-    /**
-     * All pipe instances are busy.
-     *
-     */
-    @Define
-    public final static int ERROR_PIPE_BUSY;
+    public final static int ERROR_GEN_FAILURE = 31;
 
     /**
      * The process cannot access the file because it is being used by another
@@ -195,22 +78,107 @@ public abstract class Winerror {
      *
      */
     @Define
-    public final static int ERROR_SHARING_VIOLATION;
+    public final static int ERROR_SHARING_VIOLATION = 32;
 
     /**
-     * The wait operation timed out.
+     * The file exists.
      *
      */
     @Define
-    public final static int WAIT_TIMEOUT;
+    public final static int ERROR_FILE_EXISTS = 80;
+
+    /**
+     * The specified network password is not correct.
+     *
+     */
+    @Define
+    public final static int ERROR_INVALID_PARAMETER = 87;
 
     /**
      * The specified procedure could not be found.
      *
      */
     @Define
-    public final static int ERROR_PROC_NOT_FOUND;
+    public final static int ERROR_PROC_NOT_FOUND = 127;
 
-    public final static boolean HAVE_WINERROR_H;
+    /**
+     * Cannot create a file when that file already exists.
+     *
+     */
+    @Define
+    public final static int ERROR_ALREADY_EXISTS = 183;
+
+    /**
+     * All pipe instances are busy.
+     *
+     */
+    @Define
+    public final static int ERROR_PIPE_BUSY = 231;
+
+    /**
+     * The wait operation timed out.
+     *
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject/">WAIT_TIMEOUT</a>
+     * The time-out interval elapsed, and the object's state is nonsignaled.
+     *
+     */
+    @Define
+    public final static int WAIT_TIMEOUT = 258;
+
+    /**
+     * No more data is available.
+     *
+     */
+    @Define
+    public final static int ERROR_NO_MORE_ITEMS = 259;
+
+    /**
+     * Overlapped I/O event is not in a signaled state.
+     *
+     */
+    @Define
+    public final static int ERROR_IO_INCOMPLETE = 996;
+
+    /**
+     * Overlapped I/O operation is in progress.
+     *
+     */
+    @Define
+    public final static int ERROR_IO_PENDING = 997;
+
+    /**
+     * Invalid access to memory location.
+     *
+     */
+    @Define
+    public final static int ERROR_NOACCESS = 998;
+
+    /**
+     * Element not found.
+     *
+     */
+    @Define
+    public final static int ERROR_NOT_FOUND = 1168;
+
+    /**
+     * The handle is invalid.
+     *
+     */
+    @Define
+    public final static int ERROR_INVALID_HANDLE = 1609;
+
+    /**
+     * The system cannot find the file specified.
+     *
+     */
+    @Define
+    public final static int ERROR_FILE_NOT_FOUND = 0x88790002;
+
+    /**
+     * More data is available.
+     *
+     */
+    @Define
+    public final static int ERROR_MORE_DATA = 0x887A0003;
 
 }

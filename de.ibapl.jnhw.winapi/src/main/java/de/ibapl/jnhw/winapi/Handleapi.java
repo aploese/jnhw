@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.annotation.winapi.basetsd.LONG_PTR;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
@@ -40,7 +41,9 @@ public abstract class Handleapi {
     /**
      * cached instance.
      */
-    public final static HANDLE INVALID_HANDLE_VALUE;
+    @de.ibapl.jnhw.annotation.winapi.basetsd.HANDLE
+    @LONG_PTR
+    public final static HANDLE INVALID_HANDLE_VALUE = new HANDLE(-1);
 
     /**
      * Make sure the native lib is loaded
@@ -53,15 +56,7 @@ public abstract class Handleapi {
      */
     static {
         LibJnhwWinApiLoader.touch();
-
-        HAVE_HANDLEAPI_H = false;
-
-        INVALID_HANDLE_VALUE = null;
-
-        initFields();
     }
-
-    private static native void initFields();
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-closehandle">CloseHandle</a>
@@ -75,7 +70,5 @@ public abstract class Handleapi {
      * indicates an error.
      */
     public final native static void CloseHandle(HANDLE hObject) throws NativeErrorException;
-
-    public final static boolean HAVE_HANDLEAPI_H;
 
 }

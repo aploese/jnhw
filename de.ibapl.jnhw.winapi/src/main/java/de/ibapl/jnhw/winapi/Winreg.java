@@ -49,16 +49,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_CLASSES_ROOT;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_CONFIG</a>
-     * Registry entries subordinate to this key define types (or classes) of
-     * documents and the properties associated with those types.
-     *
-     */
-    @Define
-    public final static HKEY HKEY_CURRENT_CONFIG;
+    public final static HKEY HKEY_CLASSES_ROOT = new HKEY(0x80000000L);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER</a>
@@ -67,25 +58,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_CURRENT_USER;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER_LOCAL_SETTINGS</a>
-     * Registry entries subordinate to this key define preferences of the
-     * current user that are local to the machine.
-     *
-     */
-    @Define
-    public final static HKEY HKEY_CURRENT_USER_LOCAL_SETTINGS;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CLASSES_ROOT</a>
-     * Registry entries subordinate to this key define types (or classes) of
-     * documents and the properties associated with those types.
-     *
-     */
-    @Define
-    public final static HKEY HKEY_DYN_DATA;
+    public final static HKEY HKEY_CURRENT_USER = new HKEY(0x80000001L);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_LOCAL_MACHINE</a>
@@ -95,35 +68,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_LOCAL_MACHINE;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_DATA</a>
-     * Registry entries subordinate to this key allow you to access performance
-     * data.
-     *
-     */
-    @Define
-    public final static HKEY HKEY_PERFORMANCE_DATA;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_NLSTEXT</a>
-     * Registry entries subordinate to this key reference the text strings that
-     * describe counters in the local language of the area in which the computer
-     * system is running.
-     *
-     */
-    @Define
-    public final static HKEY HKEY_PERFORMANCE_NLSTEXT;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_TEXT</a>
-     * Registry entries subordinate to this key reference the text strings that
-     * describe counters in US English.
-     *
-     */
-    @Define
-    public final static HKEY HKEY_PERFORMANCE_TEXT;
+    public final static HKEY HKEY_LOCAL_MACHINE = new HKEY(0x80000002L);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_USERS</a>
@@ -133,7 +78,62 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_USERS;
+    public final static HKEY HKEY_USERS = new HKEY(0x80000003L);
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_DATA</a>
+     * Registry entries subordinate to this key allow you to access performance
+     * data.
+     *
+     */
+    @Define
+    public final static HKEY HKEY_PERFORMANCE_DATA = new HKEY(0x80000004L);
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_TEXT</a>
+     * Registry entries subordinate to this key reference the text strings that
+     * describe counters in US English.
+     *
+     */
+    @Define
+    public final static HKEY HKEY_PERFORMANCE_TEXT = new HKEY(0x80000050L);
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_NLSTEXT</a>
+     * Registry entries subordinate to this key reference the text strings that
+     * describe counters in the local language of the area in which the computer
+     * system is running.
+     *
+     */
+    @Define
+    public final static HKEY HKEY_PERFORMANCE_NLSTEXT = new HKEY(0x80000060L);
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_CONFIG</a>
+     * Registry entries subordinate to this key define types (or classes) of
+     * documents and the properties associated with those types.
+     *
+     */
+    @Define
+    public final static HKEY HKEY_CURRENT_CONFIG = new HKEY(0x80000005L);
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CLASSES_ROOT</a>
+     * Registry entries subordinate to this key define types (or classes) of
+     * documents and the properties associated with those types.
+     *
+     */
+    @Define
+    public final static HKEY HKEY_DYN_DATA = new HKEY(0x80000006L);
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER_LOCAL_SETTINGS</a>
+     * Registry entries subordinate to this key define preferences of the
+     * current user that are local to the machine.
+     *
+     */
+    @Define
+    public final static HKEY HKEY_CURRENT_USER_LOCAL_SETTINGS = new HKEY(0x80000007L);
 
     /**
      * Make sure the native lib is loaded
@@ -146,26 +146,7 @@ public abstract class Winreg {
      */
     static {
         LibJnhwWinApiLoader.touch();
-
-        HAVE_WINREG_H = false;
-
-        HKEY_CLASSES_ROOT = null;
-        HKEY_CURRENT_CONFIG = null;
-        HKEY_CURRENT_USER = null;
-        HKEY_CURRENT_USER_LOCAL_SETTINGS = null;
-        HKEY_DYN_DATA = null;
-        HKEY_LOCAL_MACHINE = null;
-        HKEY_PERFORMANCE_DATA = null;
-        HKEY_PERFORMANCE_NLSTEXT = null;
-        HKEY_PERFORMANCE_TEXT = null;
-        HKEY_USERS = null;
-
-        initFields();
     }
-
-    private static native void initFields();
-
-    public static boolean HAVE_WINREG_H;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regclosekey">RegCloseKey</a>

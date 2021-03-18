@@ -42,15 +42,7 @@ public abstract class Processthreadsapi {
      */
     static {
         LibJnhwWinApiLoader.touch();
-
-        HAVE_PROCESSTHREADSAPI_H = false;
-
-        initFields();
     }
-
-    private static native void initFields();
-
-    public static final boolean HAVE_PROCESSTHREADSAPI_H;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-queueuserapc">QueueUserAPC</a>

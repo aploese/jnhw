@@ -30,8 +30,11 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.memory.layout.StdStructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
+import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -50,15 +53,7 @@ public class Minwinbase {
      */
     static {
         LibJnhwWinApiLoader.touch();
-
-        HAVE_MINWINBASE_H = false;
-
-        initFields();
     }
-
-    private static native void initFields();
-
-    public final static boolean HAVE_MINWINBASE_H;
 
     /**
      * <b>WIN:</b> <a href="https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-overlapped">{@code structure
@@ -67,50 +62,29 @@ public class Minwinbase {
      */
     public final static class OVERLAPPED extends WinApiStruct32 {
 
-        public static class Layout extends StructLayout {
+        public abstract static class Layout extends StructLayout {
 
-            public final long Internal;
-            public final long InternalHigh;
-            public final long Offset;
-            public final long OffsetHigh;
-            public final long Pointer;
-            public final long hEvent;
-            public final Alignment alignment;
-            public final int sizeof;
+            public final static long Internal;
+            public final static long InternalHigh;
+            public final static long Offset;
+            public final static long OffsetHigh;
+            public final static long Pointer;
+            public final static long hEvent;
+            public final static Alignment alignment;
+            public final static int sizeof;
 
-            public Layout(long sizeof, int alignof) {
-                super();
-                Internal = -1;
-                InternalHigh = -1;
-                Offset = -1;
-                OffsetHigh = -1;
-                Pointer = -1;
-                hEvent = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
+            static {
+                WinApiStdStructLayoutFactory slf = new WinApiStdStructLayoutFactory();
+                Internal = slf.ULONG_PTR();
+                InternalHigh = slf.ULONG_PTR();
+                Offset = slf.DWORD();
+                OffsetHigh = slf.DWORD();
+                Pointer = slf.PVOID();
+                hEvent = slf.HANDLE();
+                sizeof = (int) slf.getSizeInBytes();
+                alignment = slf.getAlignment();
             }
 
-            @Override
-            public int getSizeof() {
-                return sizeof;
-            }
-
-            @Override
-            public Alignment getAlignment() {
-                return alignment;
-            }
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
-
-        /**
-         * Make sure the native lib is loaded
-         */
-        static {
-            LibJnhwWinApiLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
         }
 
         /**
@@ -127,7 +101,7 @@ public class Minwinbase {
          */
         @ULONG_PTR
         public final long Internal() {
-            return ACCESSOR_ULONG_PTR.ULONG_PTR(this, LAYOUT.Internal);
+            return ACCESSOR_ULONG_PTR.ULONG_PTR(this, Layout.Internal);
         }
 
         /**
@@ -141,7 +115,7 @@ public class Minwinbase {
          */
         @ULONG_PTR
         public final long InternalHigh() {
-            return ACCESSOR_ULONG_PTR.ULONG_PTR(this, LAYOUT.InternalHigh);
+            return ACCESSOR_ULONG_PTR.ULONG_PTR(this, Layout.InternalHigh);
         }
 
         /**
@@ -152,11 +126,11 @@ public class Minwinbase {
          */
         @DWORD
         public final long Offset() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.Offset);
+            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.Offset);
         }
 
         public final void Offset(@DWORD long value) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.Offset, value);
+            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.Offset, value);
         }
 
         /**
@@ -167,11 +141,11 @@ public class Minwinbase {
          */
         @DWORD
         public final long OffsetHigh() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.OffsetHigh);
+            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.OffsetHigh);
         }
 
         public final void OffsetHigh(@DWORD long value) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.OffsetHigh, value);
+            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.OffsetHigh, value);
         }
 
         /**
@@ -181,30 +155,30 @@ public class Minwinbase {
          */
         @PVOID
         public final NativeAddressHolder Pointer() {
-            return ACCESSOR_PVOID.PVOID(this, LAYOUT.InternalHigh);
+            return ACCESSOR_PVOID.PVOID(this, Layout.InternalHigh);
         }
 
         /**
          * @param hEvent the value of hEvent to be set natively.
          */
         public void hEvent(HANDLE hEvent) {
-            ACCESSOR_HANDLE.HANDLE(this, LAYOUT.hEvent, hEvent);
+            ACCESSOR_HANDLE.HANDLE(this, Layout.hEvent, hEvent);
         }
 
         /**
          * @return the native value of hEvent;
          */
         public HANDLE hEvent() {
-            return ACCESSOR_HANDLE.HANDLE(this, LAYOUT.hEvent);
+            return ACCESSOR_HANDLE.HANDLE(this, Layout.hEvent);
         }
 
         public OVERLAPPED() {
             //always clean field Pointer must be zero!
-            super((OpaqueMemory32) null, 0, LAYOUT.sizeof, SET_MEM_TO_0);
+            super((OpaqueMemory32) null, 0, Layout.sizeof, SET_MEM_TO_0);
         }
 
         public OVERLAPPED(NativeAddressHolder addressHolder) {
-            super(addressHolder, LAYOUT.sizeof);
+            super(addressHolder, Layout.sizeof);
         }
 
     }
@@ -223,44 +197,30 @@ public class Minwinbase {
      */
     public static class SECURITY_ATTRIBUTES extends WinApiStruct32 {
 
-        public static class Layout extends StructLayout {
+        public abstract static class Layout extends StructLayout {
 
-            public final long nLength;
-            public final long lpSecurityDescriptor;
-            public final long bInheritHandle;
-            public final Alignment alignment;
-            public final int sizeof;
+            public final static long nLength;
+            public final static long lpSecurityDescriptor;
+            public final static long bInheritHandle;
+            public final static Alignment alignment;
+            public final static int sizeof;
 
-            public Layout(long sizeof, int alignof) {
-                super();
-                nLength = -1;
-                lpSecurityDescriptor = -1;
-                bInheritHandle = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
+            static {
+                WinApiStdStructLayoutFactory slf = new WinApiStdStructLayoutFactory();
+                nLength = slf.DWORD();
+                lpSecurityDescriptor = slf.PVOID();
+                bInheritHandle = slf.BOOL();
+                sizeof = (int) slf.getSizeInBytes();
+                alignment = slf.getAlignment();
             }
 
-            @Override
-            public int getSizeof() {
-                return sizeof;
-            }
-
-            @Override
-            public Alignment getAlignment() {
-                return alignment;
-            }
         }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwWinApiLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
         }
 
         /**
@@ -268,20 +228,20 @@ public class Minwinbase {
          */
         @DWORD
         public final long nLength() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.nLength);
+            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.nLength);
         }
 
         public final void nLength(@DWORD long nLength) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.nLength, nLength);
+            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.nLength, nLength);
         }
 
         @PVOID
         public NativeAddressHolder lpSecurityDescriptor() {
-            return ACCESSOR_PVOID.PVOID(this, LAYOUT.lpSecurityDescriptor);
+            return ACCESSOR_PVOID.PVOID(this, Layout.lpSecurityDescriptor);
         }
 
         public void lpSecurityDescriptor(@PVOID NativeAddressHolder lpSecurityDescriptor) {
-            ACCESSOR_PVOID.PVOID(this, LAYOUT.lpSecurityDescriptor, lpSecurityDescriptor);
+            ACCESSOR_PVOID.PVOID(this, Layout.lpSecurityDescriptor, lpSecurityDescriptor);
         }
 
         /**
@@ -289,15 +249,15 @@ public class Minwinbase {
          */
         @BOOL
         public boolean bInheritHandle() {
-            return ACCESSOR_BOOL.BOOL(this, LAYOUT.bInheritHandle);
+            return ACCESSOR_BOOL.BOOL(this, Layout.bInheritHandle);
         }
 
         public void bInheritHandle(@BOOL boolean bInheritHandle) {
-            ACCESSOR_BOOL.BOOL(this, LAYOUT.bInheritHandle, bInheritHandle);
+            ACCESSOR_BOOL.BOOL(this, Layout.bInheritHandle, bInheritHandle);
         }
 
         public SECURITY_ATTRIBUTES() {
-            super((OpaqueMemory32) null, 0, LAYOUT.sizeof, SET_MEM_TO_0);
+            super((OpaqueMemory32) null, 0, Layout.sizeof, SET_MEM_TO_0);
         }
 
     };

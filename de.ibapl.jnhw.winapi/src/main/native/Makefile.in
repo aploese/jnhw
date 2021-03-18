@@ -134,68 +134,47 @@ am__uninstall_files_from_dir = { \
   }
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
-libbasetsd_la_LIBADD =
-am_libbasetsd_la_OBJECTS = BaseTsdDefines.lo BaseTsdFunctions.lo
-libbasetsd_la_OBJECTS = $(am_libbasetsd_la_OBJECTS)
+liberrhandlingapi_la_LIBADD =
+am_liberrhandlingapi_la_OBJECTS = ErrhandlingapiFunctions.lo
+liberrhandlingapi_la_OBJECTS = $(am_liberrhandlingapi_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-liberrhandlingapi_la_LIBADD =
-am_liberrhandlingapi_la_OBJECTS = ErrhandlingapiDefines.lo \
-	ErrhandlingapiFunctions.lo
-liberrhandlingapi_la_OBJECTS = $(am_liberrhandlingapi_la_OBJECTS)
 libfileapi_la_LIBADD =
-am_libfileapi_la_OBJECTS = FileapiDefines.lo FileapiFunctions.lo
+am_libfileapi_la_OBJECTS = FileapiFunctions.lo
 libfileapi_la_OBJECTS = $(am_libfileapi_la_OBJECTS)
 libhandleapi_la_LIBADD =
-am_libhandleapi_la_OBJECTS = HandleapiDefines.lo HandleapiFunctions.lo
+am_libhandleapi_la_OBJECTS = HandleapiFunctions.lo
 libhandleapi_la_OBJECTS = $(am_libhandleapi_la_OBJECTS)
 libioapi_la_LIBADD =
-am_libioapi_la_OBJECTS = IoAPIDefines.lo IoAPIFunctions.lo
+am_libioapi_la_OBJECTS = IoAPIFunctions.lo
 libioapi_la_OBJECTS = $(am_libioapi_la_OBJECTS)
 libioapiset_la_LIBADD =
-am_libioapiset_la_OBJECTS = IoapisetDefines.lo IoapisetFunctions.lo
+am_libioapiset_la_OBJECTS = IoapisetFunctions.lo
 libioapiset_la_OBJECTS = $(am_libioapiset_la_OBJECTS)
 libjnhw_winapi_la_DEPENDENCIES =  \
-	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la libbasetsd.la \
-	libminwinbase.la libwindef.la libwinnt.la libwinbase.la \
-	libwinreg.la libwinerror.la libsynchapi.la libfileapi.la \
-	libioapiset.la libioapi.la libhandleapi.la \
-	liberrhandlingapi.la libprocessenv.la libprocessthreadsapi.la
+	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la libwinbase.la \
+	libwinreg.la libsynchapi.la libfileapi.la libioapiset.la \
+	libioapi.la libhandleapi.la liberrhandlingapi.la \
+	libprocessenv.la libprocessthreadsapi.la
 am_libjnhw_winapi_la_OBJECTS = jnhw-winapi-jni.lo
 libjnhw_winapi_la_OBJECTS = $(am_libjnhw_winapi_la_OBJECTS)
-libminwinbase_la_LIBADD =
-am_libminwinbase_la_OBJECTS = MinwinbaseDefines.lo \
-	MinwinbaseStructures.lo
-libminwinbase_la_OBJECTS = $(am_libminwinbase_la_OBJECTS)
 libprocessenv_la_LIBADD =
-am_libprocessenv_la_OBJECTS = ProcessEnvDefines.lo \
-	ProcessEnvFunctions.lo
+am_libprocessenv_la_OBJECTS = ProcessEnvFunctions.lo
 libprocessenv_la_OBJECTS = $(am_libprocessenv_la_OBJECTS)
 libprocessthreadsapi_la_LIBADD =
-am_libprocessthreadsapi_la_OBJECTS = ProcessthreadsapiDefines.lo \
-	ProcessthreadsapiFunctions.lo
+am_libprocessthreadsapi_la_OBJECTS = ProcessthreadsapiFunctions.lo
 libprocessthreadsapi_la_OBJECTS =  \
 	$(am_libprocessthreadsapi_la_OBJECTS)
 libsynchapi_la_LIBADD =
-am_libsynchapi_la_OBJECTS = SynchapiDefines.lo SynchapiFunctions.lo
+am_libsynchapi_la_OBJECTS = SynchapiFunctions.lo
 libsynchapi_la_OBJECTS = $(am_libsynchapi_la_OBJECTS)
 libwinbase_la_LIBADD =
-am_libwinbase_la_OBJECTS = WinbaseDefines.lo WinbaseFunctions.lo \
-	WinbaseStructures.lo
+am_libwinbase_la_OBJECTS = WinbaseFunctions.lo WinbaseStructures.lo
 libwinbase_la_OBJECTS = $(am_libwinbase_la_OBJECTS)
-libwindef_la_LIBADD =
-am_libwindef_la_OBJECTS = WinDefDefines.lo
-libwindef_la_OBJECTS = $(am_libwindef_la_OBJECTS)
-libwinerror_la_LIBADD =
-am_libwinerror_la_OBJECTS = WinerrorDefines.lo
-libwinerror_la_OBJECTS = $(am_libwinerror_la_OBJECTS)
-libwinnt_la_LIBADD =
-am_libwinnt_la_OBJECTS = WinntDefines.lo
-libwinnt_la_OBJECTS = $(am_libwinnt_la_OBJECTS)
 libwinreg_la_LIBADD =
-am_libwinreg_la_OBJECTS = WinregDefines.lo WinregFunctions.lo
+am_libwinreg_la_OBJECTS = WinregFunctions.lo
 libwinreg_la_OBJECTS = $(am_libwinreg_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -212,30 +191,17 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/BaseTsdDefines.Plo \
-	./$(DEPDIR)/BaseTsdFunctions.Plo \
-	./$(DEPDIR)/ErrhandlingapiDefines.Plo \
-	./$(DEPDIR)/ErrhandlingapiFunctions.Plo \
-	./$(DEPDIR)/FileapiDefines.Plo \
+am__depfiles_remade = ./$(DEPDIR)/ErrhandlingapiFunctions.Plo \
 	./$(DEPDIR)/FileapiFunctions.Plo \
-	./$(DEPDIR)/HandleapiDefines.Plo \
 	./$(DEPDIR)/HandleapiFunctions.Plo \
-	./$(DEPDIR)/IoAPIDefines.Plo ./$(DEPDIR)/IoAPIFunctions.Plo \
-	./$(DEPDIR)/IoapisetDefines.Plo \
+	./$(DEPDIR)/IoAPIFunctions.Plo \
 	./$(DEPDIR)/IoapisetFunctions.Plo \
-	./$(DEPDIR)/MinwinbaseDefines.Plo \
-	./$(DEPDIR)/MinwinbaseStructures.Plo \
-	./$(DEPDIR)/ProcessEnvDefines.Plo \
 	./$(DEPDIR)/ProcessEnvFunctions.Plo \
-	./$(DEPDIR)/ProcessthreadsapiDefines.Plo \
 	./$(DEPDIR)/ProcessthreadsapiFunctions.Plo \
-	./$(DEPDIR)/SynchapiDefines.Plo \
 	./$(DEPDIR)/SynchapiFunctions.Plo \
-	./$(DEPDIR)/WinDefDefines.Plo ./$(DEPDIR)/WinbaseDefines.Plo \
 	./$(DEPDIR)/WinbaseFunctions.Plo \
 	./$(DEPDIR)/WinbaseStructures.Plo \
-	./$(DEPDIR)/WinerrorDefines.Plo ./$(DEPDIR)/WinntDefines.Plo \
-	./$(DEPDIR)/WinregDefines.Plo ./$(DEPDIR)/WinregFunctions.Plo \
+	./$(DEPDIR)/WinregFunctions.Plo \
 	./$(DEPDIR)/jnhw-winapi-jni.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -256,23 +222,18 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libbasetsd_la_SOURCES) $(liberrhandlingapi_la_SOURCES) \
-	$(libfileapi_la_SOURCES) $(libhandleapi_la_SOURCES) \
-	$(libioapi_la_SOURCES) $(libioapiset_la_SOURCES) \
-	$(libjnhw_winapi_la_SOURCES) $(libminwinbase_la_SOURCES) \
-	$(libprocessenv_la_SOURCES) $(libprocessthreadsapi_la_SOURCES) \
-	$(libsynchapi_la_SOURCES) $(libwinbase_la_SOURCES) \
-	$(libwindef_la_SOURCES) $(libwinerror_la_SOURCES) \
-	$(libwinnt_la_SOURCES) $(libwinreg_la_SOURCES)
-DIST_SOURCES = $(libbasetsd_la_SOURCES) \
-	$(liberrhandlingapi_la_SOURCES) $(libfileapi_la_SOURCES) \
+SOURCES = $(liberrhandlingapi_la_SOURCES) $(libfileapi_la_SOURCES) \
 	$(libhandleapi_la_SOURCES) $(libioapi_la_SOURCES) \
 	$(libioapiset_la_SOURCES) $(libjnhw_winapi_la_SOURCES) \
-	$(libminwinbase_la_SOURCES) $(libprocessenv_la_SOURCES) \
-	$(libprocessthreadsapi_la_SOURCES) $(libsynchapi_la_SOURCES) \
-	$(libwinbase_la_SOURCES) $(libwindef_la_SOURCES) \
-	$(libwinerror_la_SOURCES) $(libwinnt_la_SOURCES) \
+	$(libprocessenv_la_SOURCES) $(libprocessthreadsapi_la_SOURCES) \
+	$(libsynchapi_la_SOURCES) $(libwinbase_la_SOURCES) \
 	$(libwinreg_la_SOURCES)
+DIST_SOURCES = $(liberrhandlingapi_la_SOURCES) \
+	$(libfileapi_la_SOURCES) $(libhandleapi_la_SOURCES) \
+	$(libioapi_la_SOURCES) $(libioapiset_la_SOURCES) \
+	$(libjnhw_winapi_la_SOURCES) $(libprocessenv_la_SOURCES) \
+	$(libprocessthreadsapi_la_SOURCES) $(libsynchapi_la_SOURCES) \
+	$(libwinbase_la_SOURCES) $(libwinreg_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -437,13 +398,8 @@ LIB_JNHW_WINAPI_NAME = @JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIBTOOL_LIB_SUFFIX@
 LIB_JNHW_WINAPI_RES_NAME = @JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-winapi@JNHW_LIB_SUFFIX@
 lib_LTLIBRARIES = libjnhw-winapi.la
 noinst_LTLIBRARIES = \
- libwinnt.la \
- libbasetsd.la \
- libminwinbase.la \
- libwindef.la \
  libwinbase.la \
  libwinreg.la \
- libwinerror.la \
  libsynchapi.la \
  libfileapi.la \
  libioapiset.la \
@@ -455,13 +411,8 @@ noinst_LTLIBRARIES = \
 
 libjnhw_winapi_la_LIBADD = \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la \
- libbasetsd.la \
- libminwinbase.la \
- libwindef.la \
- libwinnt.la \
  libwinbase.la \
  libwinreg.la \
- libwinerror.la  \
  libsynchapi.la \
  libfileapi.la \
  libioapiset.la \
@@ -474,62 +425,35 @@ libjnhw_winapi_la_LIBADD = \
 libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
 
-libwinnt_la_SOURCES = \
- WinntDefines.c
-
-libbasetsd_la_SOURCES = \
-  BaseTsdDefines.c \
-  BaseTsdFunctions.c
-
-libminwinbase_la_SOURCES = \
- MinwinbaseDefines.c \
- MinwinbaseStructures.c
-
-libwindef_la_SOURCES = \
- WinDefDefines.c
-
 libwinbase_la_SOURCES = \
- WinbaseDefines.c \
  WinbaseFunctions.c \
  WinbaseStructures.c
 
 libwinreg_la_SOURCES = \
- WinregDefines.c \
  WinregFunctions.c
 
-libwinerror_la_SOURCES = \
- WinerrorDefines.c
-
 libsynchapi_la_SOURCES = \
- SynchapiDefines.c \
  SynchapiFunctions.c
 
 libfileapi_la_SOURCES = \
- FileapiDefines.c \
  FileapiFunctions.c
 
 libioapi_la_SOURCES = \
- IoAPIDefines.c \
  IoAPIFunctions.c
 
 libioapiset_la_SOURCES = \
- IoapisetDefines.c \
  IoapisetFunctions.c
 
 libhandleapi_la_SOURCES = \
- HandleapiDefines.c \
  HandleapiFunctions.c
 
 liberrhandlingapi_la_SOURCES = \
- ErrhandlingapiDefines.c \
  ErrhandlingapiFunctions.c
 
 libprocessenv_la_SOURCES = \
- ProcessEnvDefines.c \
  ProcessEnvFunctions.c
 
 libprocessthreadsapi_la_SOURCES = \
- ProcessthreadsapiDefines.c \
  ProcessthreadsapiFunctions.c
 
 all: all-am
@@ -612,9 +536,6 @@ clean-noinstLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
-libbasetsd.la: $(libbasetsd_la_OBJECTS) $(libbasetsd_la_DEPENDENCIES) $(EXTRA_libbasetsd_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libbasetsd_la_OBJECTS) $(libbasetsd_la_LIBADD) $(LIBS)
-
 liberrhandlingapi.la: $(liberrhandlingapi_la_OBJECTS) $(liberrhandlingapi_la_DEPENDENCIES) $(EXTRA_liberrhandlingapi_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(liberrhandlingapi_la_OBJECTS) $(liberrhandlingapi_la_LIBADD) $(LIBS)
 
@@ -633,9 +554,6 @@ libioapiset.la: $(libioapiset_la_OBJECTS) $(libioapiset_la_DEPENDENCIES) $(EXTRA
 libjnhw-winapi.la: $(libjnhw_winapi_la_OBJECTS) $(libjnhw_winapi_la_DEPENDENCIES) $(EXTRA_libjnhw_winapi_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK) -rpath $(libdir) $(libjnhw_winapi_la_OBJECTS) $(libjnhw_winapi_la_LIBADD) $(LIBS)
 
-libminwinbase.la: $(libminwinbase_la_OBJECTS) $(libminwinbase_la_DEPENDENCIES) $(EXTRA_libminwinbase_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libminwinbase_la_OBJECTS) $(libminwinbase_la_LIBADD) $(LIBS)
-
 libprocessenv.la: $(libprocessenv_la_OBJECTS) $(libprocessenv_la_DEPENDENCIES) $(EXTRA_libprocessenv_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libprocessenv_la_OBJECTS) $(libprocessenv_la_LIBADD) $(LIBS)
 
@@ -648,15 +566,6 @@ libsynchapi.la: $(libsynchapi_la_OBJECTS) $(libsynchapi_la_DEPENDENCIES) $(EXTRA
 libwinbase.la: $(libwinbase_la_OBJECTS) $(libwinbase_la_DEPENDENCIES) $(EXTRA_libwinbase_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libwinbase_la_OBJECTS) $(libwinbase_la_LIBADD) $(LIBS)
 
-libwindef.la: $(libwindef_la_OBJECTS) $(libwindef_la_DEPENDENCIES) $(EXTRA_libwindef_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libwindef_la_OBJECTS) $(libwindef_la_LIBADD) $(LIBS)
-
-libwinerror.la: $(libwinerror_la_OBJECTS) $(libwinerror_la_DEPENDENCIES) $(EXTRA_libwinerror_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libwinerror_la_OBJECTS) $(libwinerror_la_LIBADD) $(LIBS)
-
-libwinnt.la: $(libwinnt_la_OBJECTS) $(libwinnt_la_DEPENDENCIES) $(EXTRA_libwinnt_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libwinnt_la_OBJECTS) $(libwinnt_la_LIBADD) $(LIBS)
-
 libwinreg.la: $(libwinreg_la_OBJECTS) $(libwinreg_la_DEPENDENCIES) $(EXTRA_libwinreg_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libwinreg_la_OBJECTS) $(libwinreg_la_LIBADD) $(LIBS)
 
@@ -666,33 +575,16 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BaseTsdDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BaseTsdFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ErrhandlingapiDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ErrhandlingapiFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FileapiDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FileapiFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HandleapiDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HandleapiFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoAPIDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoAPIFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoapisetDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoapisetFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MinwinbaseDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MinwinbaseStructures.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ProcessEnvDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ProcessEnvFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ProcessthreadsapiDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ProcessthreadsapiFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SynchapiDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SynchapiFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinDefDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinbaseDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinbaseFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinbaseStructures.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinerrorDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinntDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinregDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinregFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-winapi-jni.Plo@am__quote@ # am--include-marker
 
@@ -855,33 +747,16 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/BaseTsdDefines.Plo
-	-rm -f ./$(DEPDIR)/BaseTsdFunctions.Plo
-	-rm -f ./$(DEPDIR)/ErrhandlingapiDefines.Plo
-	-rm -f ./$(DEPDIR)/ErrhandlingapiFunctions.Plo
-	-rm -f ./$(DEPDIR)/FileapiDefines.Plo
+		-rm -f ./$(DEPDIR)/ErrhandlingapiFunctions.Plo
 	-rm -f ./$(DEPDIR)/FileapiFunctions.Plo
-	-rm -f ./$(DEPDIR)/HandleapiDefines.Plo
 	-rm -f ./$(DEPDIR)/HandleapiFunctions.Plo
-	-rm -f ./$(DEPDIR)/IoAPIDefines.Plo
 	-rm -f ./$(DEPDIR)/IoAPIFunctions.Plo
-	-rm -f ./$(DEPDIR)/IoapisetDefines.Plo
 	-rm -f ./$(DEPDIR)/IoapisetFunctions.Plo
-	-rm -f ./$(DEPDIR)/MinwinbaseDefines.Plo
-	-rm -f ./$(DEPDIR)/MinwinbaseStructures.Plo
-	-rm -f ./$(DEPDIR)/ProcessEnvDefines.Plo
 	-rm -f ./$(DEPDIR)/ProcessEnvFunctions.Plo
-	-rm -f ./$(DEPDIR)/ProcessthreadsapiDefines.Plo
 	-rm -f ./$(DEPDIR)/ProcessthreadsapiFunctions.Plo
-	-rm -f ./$(DEPDIR)/SynchapiDefines.Plo
 	-rm -f ./$(DEPDIR)/SynchapiFunctions.Plo
-	-rm -f ./$(DEPDIR)/WinDefDefines.Plo
-	-rm -f ./$(DEPDIR)/WinbaseDefines.Plo
 	-rm -f ./$(DEPDIR)/WinbaseFunctions.Plo
 	-rm -f ./$(DEPDIR)/WinbaseStructures.Plo
-	-rm -f ./$(DEPDIR)/WinerrorDefines.Plo
-	-rm -f ./$(DEPDIR)/WinntDefines.Plo
-	-rm -f ./$(DEPDIR)/WinregDefines.Plo
 	-rm -f ./$(DEPDIR)/WinregFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
 	-rm -f Makefile
@@ -929,33 +804,16 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/BaseTsdDefines.Plo
-	-rm -f ./$(DEPDIR)/BaseTsdFunctions.Plo
-	-rm -f ./$(DEPDIR)/ErrhandlingapiDefines.Plo
-	-rm -f ./$(DEPDIR)/ErrhandlingapiFunctions.Plo
-	-rm -f ./$(DEPDIR)/FileapiDefines.Plo
+		-rm -f ./$(DEPDIR)/ErrhandlingapiFunctions.Plo
 	-rm -f ./$(DEPDIR)/FileapiFunctions.Plo
-	-rm -f ./$(DEPDIR)/HandleapiDefines.Plo
 	-rm -f ./$(DEPDIR)/HandleapiFunctions.Plo
-	-rm -f ./$(DEPDIR)/IoAPIDefines.Plo
 	-rm -f ./$(DEPDIR)/IoAPIFunctions.Plo
-	-rm -f ./$(DEPDIR)/IoapisetDefines.Plo
 	-rm -f ./$(DEPDIR)/IoapisetFunctions.Plo
-	-rm -f ./$(DEPDIR)/MinwinbaseDefines.Plo
-	-rm -f ./$(DEPDIR)/MinwinbaseStructures.Plo
-	-rm -f ./$(DEPDIR)/ProcessEnvDefines.Plo
 	-rm -f ./$(DEPDIR)/ProcessEnvFunctions.Plo
-	-rm -f ./$(DEPDIR)/ProcessthreadsapiDefines.Plo
 	-rm -f ./$(DEPDIR)/ProcessthreadsapiFunctions.Plo
-	-rm -f ./$(DEPDIR)/SynchapiDefines.Plo
 	-rm -f ./$(DEPDIR)/SynchapiFunctions.Plo
-	-rm -f ./$(DEPDIR)/WinDefDefines.Plo
-	-rm -f ./$(DEPDIR)/WinbaseDefines.Plo
 	-rm -f ./$(DEPDIR)/WinbaseFunctions.Plo
 	-rm -f ./$(DEPDIR)/WinbaseStructures.Plo
-	-rm -f ./$(DEPDIR)/WinerrorDefines.Plo
-	-rm -f ./$(DEPDIR)/WinntDefines.Plo
-	-rm -f ./$(DEPDIR)/WinregDefines.Plo
 	-rm -f ./$(DEPDIR)/WinregFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
 	-rm -f Makefile

@@ -19,42 +19,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "jnhw-winapi.h"
-#include "de_ibapl_jnhw_winapi_ProcessEnv.h"
+package de.ibapl.jnhw.util.winapi.memory;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+import de.ibapl.jnhw.common.memory.layout.StdStructLayoutFactory;
 
+/**
+ *
+ * @author aploese
+ */
+public class WinApiStdStructLayoutFactory extends StdStructLayoutFactory {
 
-#ifndef HAVE_PROCESSENV_H
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_ProcessEnv
-     * Method:    initFields
-     * Signature: ()V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_initFields
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    }
-#else
-#include <processenv.h>
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_ProcessEnv
-     * Method:    initFields
-     * Signature: ()V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_initFields
-    (JNIEnv *env, jclass clazz) {
-
-        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_PROCESSENV_H", JNI_TRUE)) {
-            return;
-        }
-
+    public long ULONG_PTR() {
+        return uintptr_t();
     }
 
-#endif
-#ifdef __cplusplus
+    public long DWORD() {
+        return uint32_t();
+    }
+
+    public long PVOID() {
+        return uintptr_t();
+    }
+
+    public long HANDLE() {
+        return uintptr_t();
+    }
+
+    public long BOOL() {
+        return int32_t();
+    }
+
 }
-#endif

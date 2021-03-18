@@ -31,8 +31,10 @@ import java.util.logging.Logger;
  */
 public abstract class StructLayout {
 
+    @Deprecated
     public abstract int getSizeof();
 
+    @Deprecated
     public abstract Alignment getAlignment();
 
     public StructLayout() {

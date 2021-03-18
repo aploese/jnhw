@@ -44,13 +44,7 @@ public final class Ioapiset {
      */
     static {
         LibJnhwWinApiLoader.touch();
-
-        HAVE_IOAPISET_H = false;
-
-        initFields();
     }
-
-    private static native void initFields();
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-cancelio">CancelIo</a>
@@ -160,7 +154,5 @@ public final class Ioapiset {
             OpaqueMemory32 lpOutBuffer,
             OVERLAPPED lpOverlapped
     ) throws NativeErrorException;
-
-    public final static boolean HAVE_IOAPISET_H;
 
 }

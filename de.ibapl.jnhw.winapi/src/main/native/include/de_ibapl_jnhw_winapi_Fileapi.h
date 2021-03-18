@@ -7,14 +7,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    initFields
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_initFields
-  (JNIEnv *, jclass);
-
+#undef de_ibapl_jnhw_winapi_Fileapi_CREATE_NEW
+#define de_ibapl_jnhw_winapi_Fileapi_CREATE_NEW 1L
+#undef de_ibapl_jnhw_winapi_Fileapi_CREATE_ALWAYS
+#define de_ibapl_jnhw_winapi_Fileapi_CREATE_ALWAYS 2L
+#undef de_ibapl_jnhw_winapi_Fileapi_OPEN_EXISTING
+#define de_ibapl_jnhw_winapi_Fileapi_OPEN_EXISTING 3L
+#undef de_ibapl_jnhw_winapi_Fileapi_OPEN_ALWAYS
+#define de_ibapl_jnhw_winapi_Fileapi_OPEN_ALWAYS 4L
+#undef de_ibapl_jnhw_winapi_Fileapi_TRUNCATE_EXISTING
+#define de_ibapl_jnhw_winapi_Fileapi_TRUNCATE_EXISTING 5L
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    CreateFileW

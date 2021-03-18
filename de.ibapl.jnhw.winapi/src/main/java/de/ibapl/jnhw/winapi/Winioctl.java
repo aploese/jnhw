@@ -22,7 +22,6 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 
 /**
  *

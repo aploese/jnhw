@@ -9,14 +9,6 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
- * Method:    initFields
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_initFields
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
  * Method:    QueueUserAPC
  * Signature: (Lde/ibapl/jnhw/winapi/Winnt/PAPCFUNC;Lde/ibapl/jnhw/winapi/Winnt/HANDLE;J)V
  */

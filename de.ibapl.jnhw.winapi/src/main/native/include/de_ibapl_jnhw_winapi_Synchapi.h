@@ -9,14 +9,6 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_winapi_Synchapi
- * Method:    initFields
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_initFields
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Synchapi
  * Method:    CreateEventW
  * Signature: (Lde/ibapl/jnhw/winapi/Minwinbase/SECURITY_ATTRIBUTES;ZZLjava/lang/String;)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
  */

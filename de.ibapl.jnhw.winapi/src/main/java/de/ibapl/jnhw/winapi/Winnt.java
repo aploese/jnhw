@@ -53,65 +53,98 @@ public final class Winnt {
      */
     static {
         LibJnhwWinApiLoader.touch();
-
-        HAVE_WINNT_H = false;
-
-        FILE_SHARE_DELETE = 0;
-        FILE_SHARE_READ = 0;
-        FILE_SHARE_WRITE = 0;
-
-        GENERIC_ALL = 0;
-        GENERIC_EXECUTE = 0;
-        GENERIC_READ = 0;
-        GENERIC_WRITE = 0;
-
-        KEY_ALL_ACCESS = 0;
-        KEY_CREATE_LINK = 0;
-        KEY_CREATE_SUB_KEY = 0;
-        KEY_ENUMERATE_SUB_KEYS = 0;
-        KEY_EXECUTE = 0;
-        KEY_NOTIFY = 0;
-        KEY_QUERY_VALUE = 0;
-        KEY_READ = 0;
-        KEY_SET_VALUE = 0;
-
-        MAXDWORD = 0;
-
-        REG_BINARY = 0;
-        REG_CREATED_NEW_KEY = 0;
-        REG_DWORD = 0;
-        REG_DWORD_BIG_ENDIAN = 0;
-        REG_DWORD_LITTLE_ENDIAN = 0;
-        REG_EXPAND_SZ = 0;
-        REG_FULL_RESOURCE_DESCRIPTOR = 0;
-        REG_LINK = 0;
-        REG_MULTI_SZ = 0;
-        REG_NONE = 0;
-        REG_OPENED_EXISTING_KEY = 0;
-        REG_OPTION_BACKUP_RESTORE = 0;
-        REG_OPTION_CREATE_LINK = 0;
-        REG_OPTION_NON_VOLATILE = 0;
-        REG_OPTION_OPEN_LINK = 0;
-        REG_OPTION_VOLATILE = 0;
-        REG_QWORD = 0;
-        REG_QWORD_LITTLE_ENDIAN = 0;
-        REG_RESOURCE_LIST = 0;
-        REG_RESOURCE_REQUIREMENTS_LIST = 0;
-        REG_SZ = 0;
-
-        initFields();
     }
 
-    private static native void initFields();
+    /**
+     * unsigned long int so to preserve the signess use javas long
+     */
+    @Define
+    public final static long MAXDWORD = 0xffffffff;
+
+    @Define
+    public final static int STATUS_WAIT_0 = 0x00000000;
+
+    @Define
+    public final static int STATUS_ABANDONED_WAIT_0 = 0x00000080;
+
+    @Define
+    public final static int STATUS_USER_APC = 0x000000C0;
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">FILE_SHARE_DELETE</a>
-     * Enables subsequent open operations on a file or device to request delete
-     * access.
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew/">FILE_ATTRIBUTE_READONLY</a>
+     * The file is read only. Applications can read the file, but cannot write
+     * to or delete it.
      *
      */
     @Define
-    public final static int FILE_SHARE_DELETE;
+    public final static int FILE_ATTRIBUTE_READONLY = 0x00000001;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew/">FILE_ATTRIBUTE_HIDDEN</a>
+     * The file is hidden. Do not include it in an ordinary directory listing.
+     *
+     */
+    @Define
+    public final static int FILE_ATTRIBUTE_HIDDEN = 0x00000002;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew/">FILE_ATTRIBUTE_SYSTEM</a>
+     * The file is part of or used exclusively by an operating system.
+     *
+     */
+    @Define
+    public final static int FILE_ATTRIBUTE_SYSTEM = 0x00000004;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew/">FILE_ATTRIBUTE_ARCHIVE</a>
+     * The file should be archived. Applications use this attribute to mark
+     * files for backup or removal.
+     *
+     */
+    @Define
+    public final static int FILE_ATTRIBUTE_ARCHIVE = 0x00000020;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew/">FILE_ATTRIBUTE_NORMAL</a>
+     * The file does not have other attributes set. This attribute is valid only
+     * if used alone.
+     *
+     */
+    @Define
+    public final static int FILE_ATTRIBUTE_NORMAL = 0x00000080;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew/">FILE_ATTRIBUTE_TEMPORARY</a>
+     * The file is being used for temporary storage.
+     *
+     */
+    @Define
+    public final static int FILE_ATTRIBUTE_TEMPORARY = 0x00000100;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew/">FILE_ATTRIBUTE_OFFLINE</a>
+     * The data of a file is not immediately available.
+     *
+     */
+    @Define
+    public final static int FILE_ATTRIBUTE_OFFLINE = 0x00001000;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew/">FILE_ATTRIBUTE_ENCRYPTED</a>
+     * The file or directory is encrypted. For a file, this means that all data
+     * in the file is encrypted.
+     *
+     */
+    @Define
+    public final static int FILE_ATTRIBUTE_ENCRYPTED = 0x00004000;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects/">MAXIMUM_WAIT_OBJECTS</a>
+     * The state of the specified object is signaled.
+     *
+     */
+    @Define
+    public final static int MAXIMUM_WAIT_OBJECTS = 64;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">FILE_SHARE_READ</a>
@@ -120,7 +153,7 @@ public final class Winnt {
      *
      */
     @Define
-    public final static int FILE_SHARE_READ;
+    public final static int FILE_SHARE_READ = 0x00000001;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">FILE_SHARE_WRITE</a>
@@ -129,23 +162,43 @@ public final class Winnt {
      *
      */
     @Define
-    public final static int FILE_SHARE_WRITE;
+    public final static int FILE_SHARE_WRITE = 0x00000002;
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/generic-access-rights/">GENERIC_ALL</a>
-     * All possible access rights
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">FILE_SHARE_DELETE</a>
+     * Enables subsequent open operations on a file or device to request delete
+     * access.
      *
      */
     @Define
-    public final static int GENERIC_ALL;
+    public final static int FILE_SHARE_DELETE = 0x00000004;
 
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/generic-access-rights/">GENERIC_EXECUTE</a>
-     * Execute access
-     *
-     */
     @Define
-    public final static int GENERIC_EXECUTE;
+    public final static int DELETE = 0x00010000;
+    @Define
+    public final static int READ_CONTROL = 0x00020000;
+    @Define
+    public final static int WRITE_DAC = 0x00040000;
+    @Define
+    public final static int WRITE_OWNER = 0x00080000;
+    @Define
+    public final static int SYNCHRONIZE = 0x00100000;
+    @Define
+    public final static int STANDARD_RIGHTS_REQUIRED = 0x000F0000;
+    @Define
+    public final static int STANDARD_RIGHTS_READ = READ_CONTROL;
+    @Define
+    public final static int STANDARD_RIGHTS_WRITE = READ_CONTROL;
+    @Define
+    public final static int STANDARD_RIGHTS_EXECUTE = READ_CONTROL;
+    @Define
+    public final static int STANDARD_RIGHTS_ALL = 0x001F0000;
+    @Define
+    public final static int SPECIFIC_RIGHTS_ALL = 0x0000FFFF;
+    @Define
+    public final static int ACCESS_SYSTEM_SECURITY = 0x01000000;
+    @Define
+    public final static int MAXIMUM_ALLOWED = 0x02000000;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/generic-access-rights/">GENERIC_READ</a>
@@ -153,7 +206,7 @@ public final class Winnt {
      *
      */
     @Define
-    public final static int GENERIC_READ;
+    public final static int GENERIC_READ = 0x80000000;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/generic-access-rights/">GENERIC_WRITE</a>
@@ -161,7 +214,23 @@ public final class Winnt {
      *
      */
     @Define
-    public final static int GENERIC_WRITE;
+    public final static int GENERIC_WRITE = 0x40000000;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/generic-access-rights/">GENERIC_EXECUTE</a>
+     * Execute access
+     *
+     */
+    @Define
+    public final static int GENERIC_EXECUTE = 0x20000000;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/generic-access-rights/">GENERIC_ALL</a>
+     * All possible access rights
+     *
+     */
+    @Define
+    public final static int GENERIC_ALL = 0x10000000;
 
     @Define
     public final static int COMPRESSION_FORMAT_NONE = 0x000;
@@ -180,7 +249,72 @@ public final class Winnt {
     @Define
     public final static int COMPRESSION_ENGINE_HIBER = 0x0200;
 
-    public final static boolean HAVE_WINNT_H;
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_QUERY_VALUE</a>
+     * Required to query the values of a registry key.
+     *
+     */
+    @Define
+    public final static int KEY_QUERY_VALUE = 0x0001;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_SET_VALUE</a>
+     * ombines the STANDARD_RIGHTS_WRITE, KEY_SET_VALUE, and KEY_CREATE_SUB_KEY
+     * access rights.
+     *
+     */
+    @Define
+    public final static int KEY_SET_VALUE = 0x0002;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_CREATE_SUB_KEY</a>
+     * Required to create a subkey of a registry key.
+     *
+     */
+    @Define
+    public final static int KEY_CREATE_SUB_KEY = 0x0004;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_ENUMERATE_SUB_KEYS</a>
+     * Required to enumerate the subkeys of a registry key.
+     *
+     */
+    @Define
+    public final static int KEY_ENUMERATE_SUB_KEYS = 0x0008;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_NOTIFY</a>
+     * Required to request change notifications for a registry key or for
+     * subkeys of a registry key.
+     *
+     */
+    @Define
+    public final static int KEY_NOTIFY = 0x0010;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_CREATE_LINK</a>
+     * Reserved for system use.
+     *
+     */
+    @Define
+    public final static int KEY_CREATE_LINK = 0x0020;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_READ</a>
+     * Combines the STANDARD_RIGHTS_READ, KEY_QUERY_VALUE,
+     * KEY_ENUMERATE_SUB_KEYS, and KEY_NOTIFY values.
+     *
+     */
+    @Define
+    public final static int KEY_READ = ((STANDARD_RIGHTS_READ | KEY_QUERY_VALUE | KEY_ENUMERATE_SUB_KEYS | KEY_NOTIFY) & (~SYNCHRONIZE));
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_EXECUTE</a>
+     * Equivalent to KEY_READ.
+     *
+     */
+    @Define
+    public final static int KEY_EXECUTE = ((KEY_READ) & (~SYNCHRONIZE));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_ALL_ACCESS</a>
@@ -190,88 +324,32 @@ public final class Winnt {
      *
      */
     @Define
-    public final static int KEY_ALL_ACCESS;
+    public final static int KEY_ALL_ACCESS = ((STANDARD_RIGHTS_ALL | KEY_QUERY_VALUE | KEY_SET_VALUE | KEY_CREATE_SUB_KEY | KEY_ENUMERATE_SUB_KEYS | KEY_NOTIFY | KEY_CREATE_LINK) & (~SYNCHRONIZE));
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_CREATE_LINK</a>
-     * Reserved for system use.
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPTION_NON_VOLATILE</a>
+     * This key is not volatile; this is the default.
      *
      */
     @Define
-    public final static int KEY_CREATE_LINK;
+    public final static int REG_OPTION_NON_VOLATILE = 0x00000000;
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_CREATE_SUB_KEY</a>
-     * Required to create a subkey of a registry key.
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPTION_VOLATILE</a>
+     * All keys created by the function are volatile.
      *
      */
     @Define
-    public final static int KEY_CREATE_SUB_KEY;
+    public final static int REG_OPTION_VOLATILE = 0x00000001;
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_ENUMERATE_SUB_KEYS</a>
-     * Required to enumerate the subkeys of a registry key.
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPTION_CREATE_LINK</a>
+     * This key is a symbolic link. The target path is assigned to the
+     * L"SymbolicLinkValue" value of the key.
      *
      */
     @Define
-    public final static int KEY_ENUMERATE_SUB_KEYS;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_EXECUTE</a>
-     * Equivalent to KEY_READ.
-     *
-     */
-    @Define
-    public final static int KEY_EXECUTE;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_NOTIFY</a>
-     * Required to request change notifications for a registry key or for
-     * subkeys of a registry key.
-     *
-     */
-    @Define
-    public final static int KEY_NOTIFY;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_QUERY_VALUE</a>
-     * Required to query the values of a registry key.
-     *
-     */
-    @Define
-    public final static int KEY_QUERY_VALUE;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_READ</a>
-     * Combines the STANDARD_RIGHTS_READ, KEY_QUERY_VALUE,
-     * KEY_ENUMERATE_SUB_KEYS, and KEY_NOTIFY values.
-     *
-     */
-    @Define
-    public final static int KEY_READ;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights/">KEY_SET_VALUE</a>
-     * ombines the STANDARD_RIGHTS_WRITE, KEY_SET_VALUE, and KEY_CREATE_SUB_KEY
-     * access rights.
-     *
-     */
-    @Define
-    public final static int KEY_SET_VALUE;
-
-    /**
-     * unsigned long int so to preserve the signess use javas long
-     */
-    @Define
-    public final static long MAXDWORD;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_BINARY</a>
-     * Binary data in any form.
-     *
-     */
-    @Define
-    public final static int REG_BINARY;
+    public final static int REG_OPTION_CREATE_LINK = 0x00000002;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_CREATED_NEW_KEY</a>
@@ -279,74 +357,7 @@ public final class Winnt {
      *
      */
     @Define
-    public final static int REG_CREATED_NEW_KEY;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_BINARY</a>
-     * A 32-bit number.
-     *
-     */
-    @Define
-    public final static int REG_DWORD;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_DWORD_BIG_ENDIAN</a>
-     * A 32-bit number in big-endian format.
-     *
-     */
-    @Define
-    public final static int REG_DWORD_BIG_ENDIAN;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_DWORD_LITTLE_ENDIAN</a>
-     * A 32-bit number in little-endian format.
-     *
-     */
-    @Define
-    public final static int REG_DWORD_LITTLE_ENDIAN;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_EXPAND_SZ</a>
-     * A null-terminated string that contains unexpanded references to
-     * environment variables (for example, "%PATH%").
-     *
-     */
-    @Define
-    public final static int REG_EXPAND_SZ;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">XXX</a>
-     *
-     */
-    @Define
-    public final static int REG_FULL_RESOURCE_DESCRIPTOR;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_LINK</a>
-     * A null-terminated Unicode string that contains the target path of a
-     * symbolic link that was created by calling the RegCreateKeyEx function
-     * with {@link REG_OPTION_CREATE_LINK}.
-     *
-     */
-    @Define
-    public final static int REG_LINK;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_MULTI_SZ</a>
-     * A sequence of null-terminated strings, terminated by an empty string
-     * (\0).
-     *
-     */
-    @Define
-    public final static int REG_MULTI_SZ;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_NONE</a>
-     * No defined value type.
-     *
-     */
-    @Define
-    public final static int REG_NONE;
+    public final static int REG_CREATED_NEW_KEY = 0x00000001;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPENED_EXISTING_KEY</a>
@@ -354,7 +365,7 @@ public final class Winnt {
      *
      */
     @Define
-    public final static int REG_OPENED_EXISTING_KEY;
+    public final static int REG_OPENED_EXISTING_KEY = 0x00000002;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPTION_BACKUP_RESTORE</a>
@@ -364,24 +375,7 @@ public final class Winnt {
      *
      */
     @Define
-    public final static int REG_OPTION_BACKUP_RESTORE;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPTION_CREATE_LINK</a>
-     * This key is a symbolic link. The target path is assigned to the
-     * L"SymbolicLinkValue" value of the key.
-     *
-     */
-    @Define
-    public final static int REG_OPTION_CREATE_LINK;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPTION_NON_VOLATILE</a>
-     * This key is not volatile; this is the default.
-     *
-     */
-    @Define
-    public final static int REG_OPTION_NON_VOLATILE;
+    public final static int REG_OPTION_BACKUP_RESTORE = 0x00000004;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regopenkeyexw">REG_OPTION_OPEN_LINK</a>
@@ -389,45 +383,15 @@ public final class Winnt {
      *
      */
     @Define
-    public final static int REG_OPTION_OPEN_LINK;
+    public final static int REG_OPTION_OPEN_LINK = 0x00000008;
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regcreatekeyexw">REG_OPTION_VOLATILE</a>
-     * All keys created by the function are volatile.
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_NONE</a>
+     * No defined value type.
      *
      */
     @Define
-    public final static int REG_OPTION_VOLATILE;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_QWORD</a>
-     * A 64-bit number.
-     *
-     */
-    @Define
-    public final static int REG_QWORD;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_QWORD_LITTLE_ENDIAN</a>
-     * A 64-bit number in little-endian format.
-     *
-     */
-    @Define
-    public final static int REG_QWORD_LITTLE_ENDIAN;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">XXX</a>
-     *
-     */
-    @Define
-    public final static int REG_RESOURCE_LIST;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">XXX</a>
-     *
-     */
-    @Define
-    public final static int REG_RESOURCE_REQUIREMENTS_LIST;
+    public final static int REG_NONE = 0;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_SZ</a>
@@ -436,7 +400,104 @@ public final class Winnt {
      *
      */
     @Define
-    public final static int REG_SZ;
+    public final static int REG_SZ = 1;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_EXPAND_SZ</a>
+     * A null-terminated string that contains unexpanded references to
+     * environment variables (for example, "%PATH%").
+     *
+     */
+    @Define
+    public final static int REG_EXPAND_SZ = 2;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_BINARY</a>
+     * Binary data in any form.
+     *
+     */
+    @Define
+    public final static int REG_BINARY = 3;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_BINARY</a>
+     * A 32-bit number.
+     *
+     */
+    @Define
+    public final static int REG_DWORD = 4;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_DWORD_LITTLE_ENDIAN</a>
+     * A 32-bit number in little-endian format.
+     *
+     */
+    @Define
+    public final static int REG_DWORD_LITTLE_ENDIAN = 4;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_DWORD_BIG_ENDIAN</a>
+     * A 32-bit number in big-endian format.
+     *
+     */
+    @Define
+    public final static int REG_DWORD_BIG_ENDIAN = 5;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_LINK</a>
+     * A null-terminated Unicode string that contains the target path of a
+     * symbolic link that was created by calling the RegCreateKeyEx function
+     * with {@link REG_OPTION_CREATE_LINK}.
+     *
+     */
+    @Define
+    public final static int REG_LINK = 6;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_MULTI_SZ</a>
+     * A sequence of null-terminated strings, terminated by an empty string
+     * (\0).
+     *
+     */
+    @Define
+    public final static int REG_MULTI_SZ = 7;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">XXX</a>
+     *
+     */
+    @Define
+    public final static int REG_RESOURCE_LIST = 8;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">XXX</a>
+     *
+     */
+    @Define
+    public final static int REG_FULL_RESOURCE_DESCRIPTOR = 9;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">XXX</a>
+     *
+     */
+    @Define
+    public final static int REG_RESOURCE_REQUIREMENTS_LIST = 10;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_QWORD</a>
+     * A 64-bit number.
+     *
+     */
+    @Define
+    public final static int REG_QWORD = 11;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types/">REG_QWORD_LITTLE_ENDIAN</a>
+     * A 64-bit number in little-endian format.
+     *
+     */
+    @Define
+    public final static int REG_QWORD_LITTLE_ENDIAN = 11;
 
     /**
      * Wrapper for

@@ -36,10 +36,10 @@ public class MinwinbaseTest {
         System.out.println("test OVERLAPPED");
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(32, Minwinbase.OVERLAPPED.LAYOUT.sizeof);
+                assertEquals(32, Minwinbase.OVERLAPPED.Layout.sizeof);
                 break;
             case _64_BIT:
-                assertEquals(32, Minwinbase.OVERLAPPED.LAYOUT.sizeof);
+                assertEquals(32, Minwinbase.OVERLAPPED.Layout.sizeof);
                 break;
             default:
                 throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
@@ -51,10 +51,10 @@ public class MinwinbaseTest {
         System.out.println("test SECURITY_ATTRIBUTES");
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(24, Minwinbase.SECURITY_ATTRIBUTES.LAYOUT.sizeof);
+                assertEquals(24, Minwinbase.SECURITY_ATTRIBUTES.Layout.sizeof);
                 break;
             case _64_BIT:
-                assertEquals(24, Minwinbase.SECURITY_ATTRIBUTES.LAYOUT.sizeof);
+                assertEquals(24, Minwinbase.SECURITY_ATTRIBUTES.Layout.sizeof);
                 break;
             default:
                 throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());

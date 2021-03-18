@@ -9,14 +9,6 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_winapi_ProcessEnv
- * Method:    initFields
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_initFields
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_ProcessEnv
  * Method:    GetStdHandle
  * Signature: (I)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
  */

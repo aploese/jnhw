@@ -19,41 +19,14 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "jnhw-winapi.h"
-#include "de_ibapl_jnhw_winapi_Minwinbase.h"
+package de.ibapl.jnhw.annotation.winapi.basetsd;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-#ifndef HAVE_MINWINBASE_H
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Minwinbase
-     * Method:    initFields
-     * Signature: ()V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_initFields
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-    }
-#else
-#include <minwinbase.h>
-
-    /*
-     * Class:     de_ibapl_jnhw_winapi_Minwinbase
-     * Method:    initFields
-     * Signature: ()V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Minwinbase_initFields
-    (JNIEnv *env, jclass clazz) {
-
-        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_MINWINBASE_H", JNI_TRUE)) {
-            return;
-        }
-
-    }
-
-#endif
-#ifdef __cplusplus
+@Retention(value = RetentionPolicy.SOURCE)
+@Target(value = {ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
+public @interface LONG_PTR {
 }
-#endif

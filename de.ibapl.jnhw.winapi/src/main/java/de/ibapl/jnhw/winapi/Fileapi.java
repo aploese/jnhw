@@ -56,27 +56,7 @@ public final class Fileapi {
      */
     static {
         LibJnhwWinApiLoader.touch();
-
-        HAVE_FILEAPI_H = false;
-
-        CREATE_ALWAYS = 0;
-        CREATE_NEW = 0;
-        OPEN_ALWAYS = 0;
-        OPEN_EXISTING = 0;
-        TRUNCATE_EXISTING = 0;
-
-        initFields();
     }
-
-    private static native void initFields();
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">CREATE_ALWAYS</a>
-     * Creates a new file, always.
-     *
-     */
-    @Define
-    public final static int CREATE_ALWAYS;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">CREATE_NEW</a>
@@ -84,7 +64,38 @@ public final class Fileapi {
      *
      */
     @Define
-    public final static int CREATE_NEW;
+    public final static int CREATE_NEW = 1;
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">CREATE_ALWAYS</a>
+     * Creates a new file, always.
+     *
+     */
+    @Define
+    public final static int CREATE_ALWAYS = 2;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">OPEN_EXISTING</a>
+     * Opens a file or device, only if it exists.
+     *
+     */
+    @Define
+    public final static int OPEN_EXISTING = 3;
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">OPEN_ALWAYS</a>
+     * Opens a file, always.
+     *
+     */
+    @Define
+    public final static int OPEN_ALWAYS = 4;
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">TRUNCATE_EXISTING</a>
+     * Opens a file and truncates it so that its size is zero bytes, only if it
+     * exists.
+     *
+     */
+    @Define
+    public final static int TRUNCATE_EXISTING = 5;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew">CreateFileW</a>
@@ -162,24 +173,6 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static native void FlushFileBuffers(HANDLE hFile) throws NativeErrorException;
-
-    public final static boolean HAVE_FILEAPI_H;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">OPEN_ALWAYS</a>
-     * Opens a file, always.
-     *
-     */
-    @Define
-    public final static int OPEN_ALWAYS;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">OPEN_EXISTING</a>
-     * Opens a file or device, only if it exists.
-     *
-     */
-    @Define
-    public final static int OPEN_EXISTING;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
@@ -586,15 +579,6 @@ public final class Fileapi {
     private static native void ReadFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped) throws NativeErrorException;
 
     private static native void ReadFileEx_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/">TRUNCATE_EXISTING</a>
-     * Opens a file and truncates it so that its size is zero bytes, only if it
-     * exists.
-     *
-     */
-    @Define
-    public final static int TRUNCATE_EXISTING;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>

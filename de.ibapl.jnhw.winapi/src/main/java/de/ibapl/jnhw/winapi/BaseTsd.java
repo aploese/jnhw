@@ -22,11 +22,6 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  * Wrapper around the
@@ -37,20 +32,5 @@ import java.lang.annotation.Target;
  */
 @Include("basetsd.h")
 public abstract class BaseTsd {
-
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-
-        HAVE_BASETSD_H = false;
-
-        initFields();
-    }
-
-    private static native void initFields();
-
-    public static final boolean HAVE_BASETSD_H;
 
 }
