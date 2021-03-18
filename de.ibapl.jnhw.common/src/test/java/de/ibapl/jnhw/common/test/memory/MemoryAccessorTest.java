@@ -719,7 +719,7 @@ public class MemoryAccessorTest {
         ma.setUnicodeString(expectedString, 0, buff_16, 0, 0, LENGTH);
 
         if (IS_BIG_ENDIAN) {
-            assertEquals("263a0020 00480069  00210020 263a0000 | &:. .H.i.!. .&.:", OpaqueMemory32.printMemory(buff_16, false));
+            assertEquals("263a0020 00480069  00210020 263a0000 | &:. .H.i.!. &:..", OpaqueMemory32.printMemory(buff_16, false));
         } else {
             assertEquals("3a262000 48006900  21002000 3a260000 | :& .H.i.!. .:&..", OpaqueMemory32.printMemory(buff_16, false));
         }
