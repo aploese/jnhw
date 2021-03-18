@@ -79,17 +79,17 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
 
     @Override
     public NativeAddressHolder uintptr_t_AsNativeAddressHolder(OpaqueMemory32 mem, long offset) {
-        return new NativeAddressHolder(unsafe.getAddress(mem.baseAddress + offset));
+        return new NativeAddressHolder(uintptr_t(mem, offset));
     }
 
     @Override
     public void uintptr_t(OpaqueMemory32 mem, long offset, OpaqueMemory32 destMem) {
-        unsafe.putAddress(mem.baseAddress + offset, destMem.baseAddress);
+        uintptr_t(mem, offset, destMem.baseAddress);
     }
 
     @Override
     public void uintptr_t(OpaqueMemory32 mem, long offset, OpaqueMemory32 destMem, long destOffset) {
-        unsafe.putAddress(mem.baseAddress + offset, destMem.baseAddress + destOffset);
+        uintptr_t(mem, offset, destMem.baseAddress + destOffset);
     }
 
     private static native void uintptr_t0(long address, ByteBuffer destMem, int position);
@@ -101,12 +101,12 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
 
     @Override
     public void uintptr_t(OpaqueMemory32 mem, long offset, NativeAddressHolder dest) {
-        unsafe.putAddress(mem.baseAddress + offset, dest.address);
+        uintptr_t(mem, offset, dest.address);
     }
 
     @Override
     public void uintptr_t(OpaqueMemory32 mem, long offset, NativeFunctionPointer dest) {
-        unsafe.putAddress(mem.baseAddress + offset, dest.nativeAddress);
+        uintptr_t(mem, offset, dest.nativeAddress);
     }
 
     @Override
@@ -116,17 +116,17 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
 
     @Override
     public NativeAddressHolder uintptr_t_AtIndex_AsNativeAddressHolder(OpaqueMemory32 mem, long offset, int index) {
-        return new NativeAddressHolder(unsafe.getAddress(mem.baseAddress + offset + index * unsafe.addressSize()));
+        return new NativeAddressHolder(uintptr_t_AtIndex(mem, offset, index));
     }
 
     @Override
     public void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, OpaqueMemory32 destMem) {
-        unsafe.putAddress(mem.baseAddress + offset + index * unsafe.addressSize(), destMem.baseAddress);
+        uintptr_t_AtIndex(mem, offset, index, destMem.baseAddress);
     }
 
     @Override
     public void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, NativeAddressHolder dest) {
-        unsafe.putAddress(mem.baseAddress + offset + index * unsafe.addressSize(), dest.address);
+        uintptr_t_AtIndex(mem, offset, index, dest.address);
     }
 
     class UnsafeMemoryCleaner implements Runnable {
