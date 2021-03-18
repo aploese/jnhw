@@ -209,7 +209,12 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
                     case 12:
                         if (j < currentBlockSize) {
                             sb.append(String.format(" %02x", block[j]));
-                            ascii.append((char) block[j]);
+                            if ((block[j] < 0x20) || (block[j] >= 0x7f)) {
+                                //replace all control and non 7 bit ASCII chars by a single dot.
+                                ascii.append('.');
+                            } else {
+                                ascii.append((char) block[j]);
+                            }
                         } else {
                             sb.append("   ");
                         }
@@ -217,7 +222,12 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
                     case 8:
                         if (j < currentBlockSize) {
                             sb.append(String.format("  %02x", block[j]));
-                            ascii.append((char) block[j]);
+                            if ((block[j] < 0x20) || (block[j] >= 0x7f)) {
+                                //replace all control and non 7 bit ASCII chars by a single dot.
+                                ascii.append('.');
+                            } else {
+                                ascii.append((char) block[j]);
+                            }
                         } else {
                             sb.append("    ");
                         }
@@ -225,7 +235,12 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
                     default:
                         if (j < currentBlockSize) {
                             sb.append(String.format("%02x", block[j]));
-                            ascii.append((char) block[j]);
+                            if ((block[j] < 0x20) || (block[j] >= 0x7f)) {
+                                //replace all control and non 7 bit ASCII chars by a single dot.
+                                ascii.append('.');
+                            } else {
+                                ascii.append((char) block[j]);
+                            }
                         } else {
                             sb.append("  ");
                         }
