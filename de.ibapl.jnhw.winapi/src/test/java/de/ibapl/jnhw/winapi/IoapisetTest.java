@@ -21,9 +21,12 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Uint16_t;
+import de.ibapl.jnhw.common.memory.Uint8_t;
 import java.nio.ByteBuffer;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -122,9 +125,15 @@ public class IoapisetTest {
 
         int lpBytesReturned = Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, lpOutBuffer, null);
 
-// TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(2, lpBytesReturned);
+        Uint16_t uint16_t = new Uint16_t(lpOutBuffer, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
+        assertEquals(Winnt.COMPRESSION_FORMAT_NONE, uint16_t.uint16_t());
 
+        Uint8_t uint8_t = new Uint8_t(null, 0, AbstractNativeMemory.SET_MEM_TO_0);
+        NativeErrorException nee = assertThrows(NativeErrorException.class, () -> Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, uint8_t, null));
+        assertEquals(Winerror.ERROR_INVALID_PARAMETER, nee.errno);
+
+        Handleapi.CloseHandle(hDevice);
     }
 
 }

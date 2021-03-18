@@ -38,13 +38,11 @@ import de.ibapl.jnhw.winapi.Synchapi;
 import de.ibapl.jnhw.winapi.WinDef;
 import de.ibapl.jnhw.winapi.Winbase;
 import de.ibapl.jnhw.winapi.Winerror;
+import de.ibapl.jnhw.winapi.Winioctl;
 import de.ibapl.jnhw.winapi.Winnt;
 import de.ibapl.jnhw.winapi.Winreg;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -133,6 +131,12 @@ public class DefinesTest {
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testWinDefDefines() throws Exception {
         testDefines(WinDef.class);
+    }
+
+    @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testWinioctlDefines() throws Exception {
+        testDefines(Winioctl.class);
     }
 
     @Test
@@ -246,6 +250,15 @@ public class DefinesTest {
             Assertions.assertTrue(WinDef.HAVE_WINDEF_H, "expected to have WinDef.h");
         } else {
             Assertions.assertFalse(WinDef.HAVE_WINDEF_H, "expected not to have WinDef.h");
+        }
+    }
+
+    @Test
+    public void test_HAVE_WINIOCTL_H() throws Exception {
+        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertTrue(Winioctl.HAVE_WINIOCTL_H, "expected to have Winioctl.h");
+        } else {
+            Assertions.assertFalse(Winioctl.HAVE_WINIOCTL_H, "expected not to have Winioctl.h");
         }
     }
 
