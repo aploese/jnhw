@@ -428,7 +428,7 @@ public final class Winnt {
      * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#handle">HANDLE</a>.<p>
      * A handle to an object.<br>
      * This type is declared in WinNT.h as follows:<br>
-     * typedef PVOID HANDLE;
+     * typedef PVOID HANDLE; LONG_PTR is used for INVALID_HANDLE_VALUE == -1.
      * </p>
      */
     public static class HANDLE {
