@@ -188,8 +188,12 @@ extern "C" {
 #if __SIZEOF_POINTER__ == 8
         *(((uintptr_t*) (uintptr_t) address) + index) = (uintptr_t) value;
 #elif __SIZEOF_POINTER__ == 4
-        if ((value > INT32_MAX) || (value < INT32_MIN)) {
-            throw_IllegalArgumentException(env, "value outside of int32_t");
+        if ((value > 0x00000000ffffffffL)) {
+            throw_IllegalArgumentException(env, "value too big for uint32_t");
+            return;
+        }
+        if (value < 0) {
+            throw_IllegalArgumentException(env, "value must not be negative");
             return;
         }
         *(((uintptr_t*) (uintptr_t) address) + index) = (uintptr_t) value;
