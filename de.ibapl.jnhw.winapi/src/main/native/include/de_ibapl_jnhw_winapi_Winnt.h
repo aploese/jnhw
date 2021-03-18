@@ -7,6 +7,22 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef de_ibapl_jnhw_winapi_Winnt_COMPRESSION_FORMAT_NONE
+#define de_ibapl_jnhw_winapi_Winnt_COMPRESSION_FORMAT_NONE 0L
+#undef de_ibapl_jnhw_winapi_Winnt_COMPRESSION_FORMAT_DEFAULT
+#define de_ibapl_jnhw_winapi_Winnt_COMPRESSION_FORMAT_DEFAULT 1L
+#undef de_ibapl_jnhw_winapi_Winnt_COMPRESSION_FORMAT_LZNT1
+#define de_ibapl_jnhw_winapi_Winnt_COMPRESSION_FORMAT_LZNT1 2L
+#undef de_ibapl_jnhw_winapi_Winnt_COMPRESSION_FORMAT_XPRESS
+#define de_ibapl_jnhw_winapi_Winnt_COMPRESSION_FORMAT_XPRESS 3L
+#undef de_ibapl_jnhw_winapi_Winnt_COMPRESSION_FORMAT_XPRESS_HUFF
+#define de_ibapl_jnhw_winapi_Winnt_COMPRESSION_FORMAT_XPRESS_HUFF 4L
+#undef de_ibapl_jnhw_winapi_Winnt_COMPRESSION_ENGINE_STANDARD
+#define de_ibapl_jnhw_winapi_Winnt_COMPRESSION_ENGINE_STANDARD 0L
+#undef de_ibapl_jnhw_winapi_Winnt_COMPRESSION_ENGINE_MAXIMUM
+#define de_ibapl_jnhw_winapi_Winnt_COMPRESSION_ENGINE_MAXIMUM 256L
+#undef de_ibapl_jnhw_winapi_Winnt_COMPRESSION_ENGINE_HIBER
+#define de_ibapl_jnhw_winapi_Winnt_COMPRESSION_ENGINE_HIBER 512L
 /*
  * Class:     de_ibapl_jnhw_winapi_Winnt
  * Method:    initFields

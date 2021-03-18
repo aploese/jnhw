@@ -161,7 +161,7 @@ libjnhw_winapi_la_DEPENDENCIES =  \
 	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la libbasetsd.la \
 	libminwinbase.la libwindef.la libwinnt.la libwinbase.la \
 	libwinreg.la libwinerror.la libsynchapi.la libfileapi.la \
-	libioapiset.la libwinioctl.la libioapi.la libhandleapi.la \
+	libioapiset.la libioapi.la libhandleapi.la \
 	liberrhandlingapi.la libprocessenv.la libprocessthreadsapi.la
 am_libjnhw_winapi_la_OBJECTS = jnhw-winapi-jni.lo
 libjnhw_winapi_la_OBJECTS = $(am_libjnhw_winapi_la_OBJECTS)
@@ -191,9 +191,6 @@ libwindef_la_OBJECTS = $(am_libwindef_la_OBJECTS)
 libwinerror_la_LIBADD =
 am_libwinerror_la_OBJECTS = WinerrorDefines.lo
 libwinerror_la_OBJECTS = $(am_libwinerror_la_OBJECTS)
-libwinioctl_la_LIBADD =
-am_libwinioctl_la_OBJECTS = WinioctlDefines.lo
-libwinioctl_la_OBJECTS = $(am_libwinioctl_la_OBJECTS)
 libwinnt_la_LIBADD =
 am_libwinnt_la_OBJECTS = WinntDefines.lo
 libwinnt_la_OBJECTS = $(am_libwinnt_la_OBJECTS)
@@ -237,8 +234,7 @@ am__depfiles_remade = ./$(DEPDIR)/BaseTsdDefines.Plo \
 	./$(DEPDIR)/WinDefDefines.Plo ./$(DEPDIR)/WinbaseDefines.Plo \
 	./$(DEPDIR)/WinbaseFunctions.Plo \
 	./$(DEPDIR)/WinbaseStructures.Plo \
-	./$(DEPDIR)/WinerrorDefines.Plo \
-	./$(DEPDIR)/WinioctlDefines.Plo ./$(DEPDIR)/WinntDefines.Plo \
+	./$(DEPDIR)/WinerrorDefines.Plo ./$(DEPDIR)/WinntDefines.Plo \
 	./$(DEPDIR)/WinregDefines.Plo ./$(DEPDIR)/WinregFunctions.Plo \
 	./$(DEPDIR)/jnhw-winapi-jni.Plo
 am__mv = mv -f
@@ -267,8 +263,7 @@ SOURCES = $(libbasetsd_la_SOURCES) $(liberrhandlingapi_la_SOURCES) \
 	$(libprocessenv_la_SOURCES) $(libprocessthreadsapi_la_SOURCES) \
 	$(libsynchapi_la_SOURCES) $(libwinbase_la_SOURCES) \
 	$(libwindef_la_SOURCES) $(libwinerror_la_SOURCES) \
-	$(libwinioctl_la_SOURCES) $(libwinnt_la_SOURCES) \
-	$(libwinreg_la_SOURCES)
+	$(libwinnt_la_SOURCES) $(libwinreg_la_SOURCES)
 DIST_SOURCES = $(libbasetsd_la_SOURCES) \
 	$(liberrhandlingapi_la_SOURCES) $(libfileapi_la_SOURCES) \
 	$(libhandleapi_la_SOURCES) $(libioapi_la_SOURCES) \
@@ -276,8 +271,8 @@ DIST_SOURCES = $(libbasetsd_la_SOURCES) \
 	$(libminwinbase_la_SOURCES) $(libprocessenv_la_SOURCES) \
 	$(libprocessthreadsapi_la_SOURCES) $(libsynchapi_la_SOURCES) \
 	$(libwinbase_la_SOURCES) $(libwindef_la_SOURCES) \
-	$(libwinerror_la_SOURCES) $(libwinioctl_la_SOURCES) \
-	$(libwinnt_la_SOURCES) $(libwinreg_la_SOURCES)
+	$(libwinerror_la_SOURCES) $(libwinnt_la_SOURCES) \
+	$(libwinreg_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -452,7 +447,6 @@ noinst_LTLIBRARIES = \
  libsynchapi.la \
  libfileapi.la \
  libioapiset.la \
- libwinioctl.la \
  libioapi.la \
  libhandleapi.la \
  liberrhandlingapi.la \
@@ -471,7 +465,6 @@ libjnhw_winapi_la_LIBADD = \
  libsynchapi.la \
  libfileapi.la \
  libioapiset.la \
- libwinioctl.la \
  libioapi.la \
  libhandleapi.la \
  liberrhandlingapi.la \
@@ -522,9 +515,6 @@ libioapi_la_SOURCES = \
 libioapiset_la_SOURCES = \
  IoapisetDefines.c \
  IoapisetFunctions.c
-
-libwinioctl_la_SOURCES = \
- WinioctlDefines.c
 
 libhandleapi_la_SOURCES = \
  HandleapiDefines.c \
@@ -664,9 +654,6 @@ libwindef.la: $(libwindef_la_OBJECTS) $(libwindef_la_DEPENDENCIES) $(EXTRA_libwi
 libwinerror.la: $(libwinerror_la_OBJECTS) $(libwinerror_la_DEPENDENCIES) $(EXTRA_libwinerror_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libwinerror_la_OBJECTS) $(libwinerror_la_LIBADD) $(LIBS)
 
-libwinioctl.la: $(libwinioctl_la_OBJECTS) $(libwinioctl_la_DEPENDENCIES) $(EXTRA_libwinioctl_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libwinioctl_la_OBJECTS) $(libwinioctl_la_LIBADD) $(LIBS)
-
 libwinnt.la: $(libwinnt_la_OBJECTS) $(libwinnt_la_DEPENDENCIES) $(EXTRA_libwinnt_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libwinnt_la_OBJECTS) $(libwinnt_la_LIBADD) $(LIBS)
 
@@ -704,7 +691,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinbaseFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinbaseStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinerrorDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinioctlDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinntDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinregDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinregFunctions.Plo@am__quote@ # am--include-marker
@@ -894,7 +880,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/WinbaseFunctions.Plo
 	-rm -f ./$(DEPDIR)/WinbaseStructures.Plo
 	-rm -f ./$(DEPDIR)/WinerrorDefines.Plo
-	-rm -f ./$(DEPDIR)/WinioctlDefines.Plo
 	-rm -f ./$(DEPDIR)/WinntDefines.Plo
 	-rm -f ./$(DEPDIR)/WinregDefines.Plo
 	-rm -f ./$(DEPDIR)/WinregFunctions.Plo
@@ -969,7 +954,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/WinbaseFunctions.Plo
 	-rm -f ./$(DEPDIR)/WinbaseStructures.Plo
 	-rm -f ./$(DEPDIR)/WinerrorDefines.Plo
-	-rm -f ./$(DEPDIR)/WinioctlDefines.Plo
 	-rm -f ./$(DEPDIR)/WinntDefines.Plo
 	-rm -f ./$(DEPDIR)/WinregDefines.Plo
 	-rm -f ./$(DEPDIR)/WinregFunctions.Plo

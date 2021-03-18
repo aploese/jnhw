@@ -254,15 +254,6 @@ public class DefinesTest {
     }
 
     @Test
-    public void test_HAVE_WINIOCTL_H() throws Exception {
-        if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertTrue(Winioctl.HAVE_WINIOCTL_H, "expected to have Winioctl.h");
-        } else {
-            Assertions.assertFalse(Winioctl.HAVE_WINIOCTL_H, "expected not to have Winioctl.h");
-        }
-    }
-
-    @Test
     public void test_HAVE_PROCESSENV_H() throws Exception {
         if (MULTIARCH_TUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertTrue(ProcessEnv.HAVE_PROCESSENV_H, "expected to have processenv.h");
