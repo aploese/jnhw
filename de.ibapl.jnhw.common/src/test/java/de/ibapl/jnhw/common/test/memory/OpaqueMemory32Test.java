@@ -281,15 +281,15 @@ public class OpaqueMemory32Test {
         switch (Alignment.ALIGN_OF_STRUCT_INT64_T) {
             case AT_8:
                 Assertions.assertEquals(32, AbstractNativeMemory.offsetof(struct.eighth));
-                expected = "11002222 33000000  44444444 55000000 |  \"\"3   DDDDU   \n"
-                        + "66666666 66666666  77000000 00000000 | ffffffffw       \n"
-                        + "88888888 88888888  00000000 00000000 | ﾈﾈﾈﾈﾈﾈﾈﾈ        ";
+                expected = "11002222 33000000  44444444 55000000 | ..\"\"3...DDDDU...\n"
+                        + "66666666 66666666  77000000 00000000 | ffffffffw.......\n"
+                        + "88888888 88888888  00000000 00000000 | ................";
                 break;
             case AT_4:
                 Assertions.assertEquals(28, AbstractNativeMemory.offsetof(struct.eighth));
-                expected = "11002222 33000000  44444444 55000000 |  \"\"3   DDDDU   \n"
-                        + "66666666 66666666  77000000 88888888 | ffffffffw   ﾈﾈﾈﾈ\n"
-                        + "88888888 00000000  00000000 00000000 | ﾈﾈﾈﾈ            ";
+                expected = "11002222 33000000  44444444 55000000 | ..\"\"3...DDDDU...\n"
+                        + "66666666 66666666  77000000 88888888 | ffffffffw.......\n"
+                        + "88888888 00000000  00000000 00000000 | ................";
                 break;
             default:
                 Assertions.fail();

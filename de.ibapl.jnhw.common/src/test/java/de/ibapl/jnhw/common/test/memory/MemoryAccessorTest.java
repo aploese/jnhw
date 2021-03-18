@@ -696,9 +696,9 @@ public class MemoryAccessorTest {
 
         ma.setUnicodeString(expectedString, 0, buff_16, 0, 0, LENGTH);
         if (IS_BIG_ENDIAN) {
-            assertEquals("00480065 006c006c  006f0021 00000000 | Hello!", OpaqueMemory32.printMemory(buff_16, false));
+            assertEquals("00480065 006c006c  006f0021 00000000 | .H.e.l.l.o.!....", OpaqueMemory32.printMemory(buff_16, false));
         } else {
-            assertEquals("48006500 6c006c00  6f002100 00000000 | H e l l o !     ", OpaqueMemory32.printMemory(buff_16, false));
+            assertEquals("48006500 6c006c00  6f002100 00000000 | H.e.l.l.o.!.....", OpaqueMemory32.printMemory(buff_16, false));
         }
         assertEquals(expectedString, ma.getUnicodeString(buff_16, 0, 0, LENGTH));
         assertEquals(expectedString.substring(2, 6), ma.getUnicodeString(buff_16, 0, 2, 4));
@@ -719,9 +719,9 @@ public class MemoryAccessorTest {
         ma.setUnicodeString(expectedString, 0, buff_16, 0, 0, LENGTH);
 
         if (IS_BIG_ENDIAN) {
-            assertEquals("263a0020 00480069  00210020 263a0000 | &: Hi! &:", OpaqueMemory32.printMemory(buff_16, false));
+            assertEquals("263a0020 00480069  00210020 263a0000 | &:. .H.i.!. &:..", OpaqueMemory32.printMemory(buff_16, false));
         } else {
-            assertEquals("3a262000 48006900  21002000 3a260000 | :&  H i !   :&  ", OpaqueMemory32.printMemory(buff_16, false));
+            assertEquals("3a262000 48006900  21002000 3a260000 | :& .H.i.!. .:&..", OpaqueMemory32.printMemory(buff_16, false));
         }
 
         assertEquals(expectedString, ma.getUnicodeString(buff_16, 0, 0, LENGTH));
@@ -736,7 +736,7 @@ public class MemoryAccessorTest {
         assertEquals(expectedString.length(), ma.getUTF_8StringLength(expectedString));
 
         ma.setUTF_8String(expectedString, 0, buff_16, 0, expectedString.length());
-        assertEquals("48656c6c 6f210000  00000000 00000000 | Hello!          ", OpaqueMemory32.printMemory(buff_16, false));
+        assertEquals("48656c6c 6f210000  00000000 00000000 | Hello!..........", OpaqueMemory32.printMemory(buff_16, false));
         assertEquals(expectedString, ma.getUTF_8String(buff_16, 0));
 
     }
@@ -752,7 +752,7 @@ public class MemoryAccessorTest {
         assertEquals(LENGTH + 4, NATIVE_LENGTH);
 
         ma.setUTF_8String(expectedString, 0, buff_16, 0, LENGTH);
-        assertEquals("e298ba48 6921e298  ba000000 00000000 | ￢ﾘﾺHi!￢ﾘﾺ       ", OpaqueMemory32.printMemory(buff_16, false));
+        assertEquals("e298ba48 6921e298  ba000000 00000000 | ...Hi!..........", OpaqueMemory32.printMemory(buff_16, false));
         assertEquals(expectedString, ma.getUTF_8String(buff_16, 0));
     }
 
