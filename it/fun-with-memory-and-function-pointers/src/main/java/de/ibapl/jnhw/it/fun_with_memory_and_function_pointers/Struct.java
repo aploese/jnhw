@@ -35,7 +35,7 @@ import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.memory.Uint8_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.memory.layout.StdStructLayoutFactory;
+import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutOnTheFlyFactory;
 import java.io.IOException;
 

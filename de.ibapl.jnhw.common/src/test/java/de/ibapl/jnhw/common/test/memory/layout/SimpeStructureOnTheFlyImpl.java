@@ -29,7 +29,7 @@ import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.memory.layout.StdStructLayoutFactory;
+import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 
 /**
@@ -51,7 +51,7 @@ public class SimpeStructureOnTheFlyImpl extends Struct32 implements SimpeStructu
 
     public SimpeStructureOnTheFlyImpl(OpaqueMemory32 parent, int offset, int sizeInBytes, Byte setMem) {
         super(parent, offset, sizeInBytes, setMem);
-        StructLayoutFactory slf = new StdStructLayoutFactory();
+        StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactoryImpl.Type.STRUCT);
         first = new Int8_t(this, slf.int8_t(), MEM_UNINITIALIZED);
         second = new Int16_t(this, slf.int16_t(), MEM_UNINITIALIZED);
         third = new Int8_t(this, slf.int8_t(), MEM_UNINITIALIZED);
@@ -61,7 +61,7 @@ public class SimpeStructureOnTheFlyImpl extends Struct32 implements SimpeStructu
         seventh = new Int8_t(this, slf.int8_t(), MEM_UNINITIALIZED);
         eighth = new Int64_t(this, slf.int64_t(), MEM_UNINITIALIZED);
         alignment = slf.getAlignment();
-        sizeof = (int) slf.getSizeInBytes();
+        sizeof = (int) slf.getSizeof();
     }
 
     @Override

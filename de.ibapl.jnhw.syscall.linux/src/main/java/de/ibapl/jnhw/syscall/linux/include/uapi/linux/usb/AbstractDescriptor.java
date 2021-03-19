@@ -26,6 +26,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.PackedStructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
+import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.syscall.linux.annotation.SysFs;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types;
@@ -47,7 +48,7 @@ public abstract class AbstractDescriptor extends LinuxSyscallStruct32 {
     @Deprecated
     public static class AbstractLayout extends StructLayout {
 
-        protected final StructLayoutFactory slf = new PackedStructLayoutFactory(Alignment.AT_1);
+        protected final StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactoryImpl.Type.STRUCT, Alignment.AT_1);
         public final int bLength;
         public final int bDescriptorType;
 
@@ -57,12 +58,10 @@ public abstract class AbstractDescriptor extends LinuxSyscallStruct32 {
             throw new UnsupportedOperationException("Not implemented!");
         }
 
-        @Override
         final public int getSizeof() {
-            return (int) slf.getSizeInBytes();
+            return (int) slf.getSizeof();
         }
 
-        @Override
         final public Alignment getAlignment() {
             return slf.getAlignment();
         }

@@ -22,11 +22,12 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.AsUnsignedLong;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
 import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Unsigned_Long;
 
 /**
@@ -46,6 +47,7 @@ public class Unsigned_LongTest {
             instance.unsigned_long(input);
             assertEquals(input, instance.unsigned_long());
         } else {
+            //Big Endian so the layout of the bytes is different.... from Little Endian
             instance.unsigned_long(input >>> 32);
             assertEquals(input >>> 32, instance.unsigned_long());
         }
@@ -64,13 +66,15 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNativeToString() {
-        Uint64_t uint64_t = new Uint64_t(null, 0, null);
-        Unsigned_Long instance = new Unsigned_Long(uint64_t, 0, SET_MEM_TO_0);
-        uint64_t.uint64_t(0xfffffffffffffffeL);
+        Unsigned_Long instance = new Unsigned_Long(null, 0, SET_MEM_TO_0);
         if (BaseDataType.SIZE_OF_LONG == 8) {
+            Uint64_t uint64_t = new Uint64_t(instance, 0, MEM_UNINITIALIZED);
+            uint64_t.uint64_t(0xfffffffffffffffeL);
             assertEquals(Long.toUnsignedString(0xfffffffffffffffeL), instance.nativeToString());
             assertEquals("0xfffffffffffffffe", instance.nativeToHexString());
         } else {
+            Uint32_t uint32_t = new Uint32_t(instance, 0, MEM_UNINITIALIZED);
+            uint32_t.uint32_t(0xfffffffe);
             assertEquals(Long.toString(0xfffffffeL), instance.nativeToString());
             assertEquals("0xfffffffe", instance.nativeToHexString());
         }

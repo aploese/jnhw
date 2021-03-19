@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
-import de.ibapl.jnhw.common.memory.layout.StdStructLayoutFactory;
+import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 
@@ -62,7 +62,7 @@ public class SimpeStructureImpl extends Struct32 implements SimpeStructure {
 
         public Layout() {
             super();
-            StructLayoutFactory slf = new StdStructLayoutFactory();
+            StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactoryImpl.Type.STRUCT);
             offsetFirst = slf.int8_t();
             offsetSecond = slf.int16_t();
             offsetThird = slf.int8_t();
@@ -72,7 +72,7 @@ public class SimpeStructureImpl extends Struct32 implements SimpeStructure {
             offsetSeventh = slf.int8_t();
             offsetEighth = slf.uint64_t();
             alignment = slf.getAlignment();
-            sizeof = (int) slf.getSizeInBytes();
+            sizeof = (int) slf.getSizeof();
         }
 
         public Layout(long sizeof, int alignof) {
@@ -89,15 +89,6 @@ public class SimpeStructureImpl extends Struct32 implements SimpeStructure {
             this.alignment = Alignment.fromAlignof(alignof);
         }
 
-        @Override
-        public int getSizeof() {
-            return sizeof;
-        }
-
-        @Override
-        public Alignment getAlignment() {
-            return alignment;
-        }
     }
 
     @Override

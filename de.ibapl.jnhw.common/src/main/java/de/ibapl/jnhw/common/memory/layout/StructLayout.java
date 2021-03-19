@@ -21,61 +21,10 @@
  */
 package de.ibapl.jnhw.common.memory.layout;
 
-import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author aploese
  */
-public abstract class StructLayout {
+public class StructLayout {
 
-    @Deprecated
-    public abstract int getSizeof();
-
-    @Deprecated
-    public abstract Alignment getAlignment();
-
-    public StructLayout() {
-    }
-
-    public void check() {
-        long currentOffset = 0;
-        int currentBitpos = 0;
-        FieldLayout previousField = null;
-        for (Field f : getClass().getFields()) {
-            try {
-                if (FieldLayout.class.isInstance(f.getType()));
-                final FieldLayout currentField = (FieldLayout) f.get(this);
-
-                if (currentField instanceof FieldLayout.BitField) {
-                    FieldLayout.BitField bf = (FieldLayout.BitField) currentField;
-                    if (currentOffset != bf.offset) {
-                        //start at a new (byte) address
-                        currentBitpos = 0;
-                    }
-                    throw new RuntimeException();
-                    /*                    testen Überlauf
-                    shift und maske setzen
-                    .
-                    currentBitpos += bf.bits;
-                     */
-                } else {
-                    currentBitpos = 0;
-                }
-                currentOffset = currentField.offset;
-                previousField = currentField;
-            } catch (IllegalArgumentException ex) {
-                Logger.getLogger(StructLayout.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(StructLayout.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            throw new RuntimeException();
-            /*            größe ok
-            ?
-            sizeof = size;
-             */        }
-
-    }
 }

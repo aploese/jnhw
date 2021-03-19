@@ -21,13 +21,17 @@
  */
 package de.ibapl.jnhw.common.memory.layout;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataType;
-
 /**
  *
  * @author aploese
+ * @param <T>
  */
 public interface StructLayoutFactory {
+
+    public static enum Type {
+        STRUCT,
+        UNION;
+    }
 
     long int8_t();
 
@@ -49,7 +53,12 @@ public interface StructLayoutFactory {
 
     long uintptr_t();
 
-    long getSizeInBytes();
+    long getSizeof();
 
     Alignment getAlignment();
+
+    long struct(long sizeInBytes, Alignment alignment);
+
+    long union(long sizeInBytes, Alignment alignment);
+
 }

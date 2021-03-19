@@ -733,15 +733,6 @@ public abstract class Winbase {
                 this.alignment = Alignment.fromAlignof(alignof);
             }
 
-            @Override
-            public int getSizeof() {
-                return sizeof;
-            }
-
-            @Override
-            public Alignment getAlignment() {
-                return alignment;
-            }
         }
 
         private static native Layout native2Layout(Class<Layout> layoutClass);
@@ -886,15 +877,6 @@ public abstract class Winbase {
                 this.alignment = Alignment.fromAlignof(alignof);
             }
 
-            @Override
-            public int getSizeof() {
-                return sizeof;
-            }
-
-            @Override
-            public Alignment getAlignment() {
-                return alignment;
-            }
         }
 
         private static native Layout native2Layout(Class<Layout> layoutClass);
@@ -1065,15 +1047,6 @@ public abstract class Winbase {
                 this.alignment = Alignment.fromAlignof(alignof);
             }
 
-            @Override
-            public int getSizeof() {
-                return sizeof;
-            }
-
-            @Override
-            public Alignment getAlignment() {
-                return alignment;
-            }
         }
 
         private static native Layout native2Layout(Class<Layout> layoutClass);

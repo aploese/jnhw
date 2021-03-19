@@ -27,16 +27,39 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
  *
  * @author aploese
  */
-public class StdStructLayoutFactory implements StructLayoutFactory {
+public class StructLayoutFactoryImpl implements StructLayoutFactory {
 
     private long nextOffset;
     private Alignment structAlignment = Alignment.AT_1;
+    private final boolean ALIGNMENT_IS_FIXED;
+    private final Type type;
+
+    public StructLayoutFactoryImpl(Type type, Alignment alignment) {
+        ALIGNMENT_IS_FIXED = true;
+        this.type = type;
+        structAlignment = alignment;
+    }
+
+    public StructLayoutFactoryImpl(Type type) {
+        ALIGNMENT_IS_FIXED = false;
+        this.type = type;
+    }
 
     protected long calcNextOffset(Alignment currentAlignment, long currentSizeInBytes) {
-        if ((currentAlignment.alignof > structAlignment.alignof) && (currentAlignment.alignof <= Alignment.__BIGGEST_ALIGNMENT__.alignof)) {
-            structAlignment = currentAlignment;
+        switch (type) {
+            case STRUCT:
+                break;
+            case UNION:
+                return 0;
+            default:
+                throw new IllegalStateException("Unknown type to build: " + type);
         }
 
+        if (ALIGNMENT_IS_FIXED) {
+            //no-op
+        } else if ((currentAlignment.alignof > structAlignment.alignof) && (currentAlignment.alignof <= Alignment.__BIGGEST_ALIGNMENT__.alignof)) {
+            structAlignment = currentAlignment;
+        }
         final int intAlignment = Alignment.calcElementAlignmentInStruct(structAlignment, currentAlignment);
         final int reminder = (int) Long.remainderUnsigned(nextOffset, intAlignment);
         final long offset = (reminder == 0) ? nextOffset : nextOffset + intAlignment - reminder;
@@ -94,58 +117,23 @@ public class StdStructLayoutFactory implements StructLayoutFactory {
         return calcNextOffset(BaseDataType.uintptr_t.ALIGN_IN_STRUCT, BaseDataType.uintptr_t.SIZE_OF);
     }
 
-    /*
-    public FieldLayout function() {
-        return new FieldLayout(offset, BaseDataType.pointer.SIZE_OF);
-    }
-
-    public FieldLayout array(long sizeInBytes) {
-        return new FieldLayout(offset, sizeInBytes);
-    }
-
-    public UnionField union(long offset, long sizeInBytes) {
-        return new UnionField(offset, sizeInBytes);
-    }
-
-    public static BitField bitfield__uint8_t(long offset, int bits, int bitOffset) {
-        return new BitField(offset, BaseDataType.uint8_t.SIZE_OF, bits, bitOffset);
-    }
-
-    public static BitField bitfield__uint16_t(long offset, int bits, int bitOffset) {
-        return new BitField(offset, BaseDataType.uint16_t.SIZE_OF, bits, bitOffset);
-    }
-
-    public static BitField bitfield__uint32_t(long offset, int bits, int bitOffset) {
-        return new BitField(offset, BaseDataType.uint32_t.SIZE_OF, bits, bitOffset);
-    }
-
-    public static BitField bitfield__uint64_t(long offset, int bits, int bitOffset) {
-        return new BitField(offset, BaseDataType.uint64_t.SIZE_OF, bits, bitOffset);
-    }
-
-    public static BitField bitfield__int8_t(long offset, int bits, int bitOffset) {
-        return new BitField(offset, BaseDataType.int8_t.SIZE_OF, bits, bitOffset);
-    }
-
-    public static BitField bitfield__int16_t(long offset, int bits, int bitOffset) {
-        return new BitField(offset, BaseDataType.int16_t.SIZE_OF, bits, bitOffset);
-    }
-
-    public static BitField bitfield__int32_t(long offset, int bits, int bitOffset) {
-        return new BitField(offset, BaseDataType.int32_t.SIZE_OF, bits, bitOffset);
-    }
-
-    public static BitField bitfield__int64_t(long offset, int bits, int bitOffset) {
-        return new BitField(offset, BaseDataType.int64_t.SIZE_OF, bits, bitOffset);
-    }
-     */
     @Override
-    public long getSizeInBytes() {
+    public long getSizeof() {
         return nextOffset;
     }
 
     @Override
     public Alignment getAlignment() {
         return structAlignment;
+    }
+
+    @Override
+    public long struct(long sizeInBytes, Alignment alignment) {
+        return calcNextOffset(alignment, sizeInBytes);
+    }
+
+    @Override
+    public long union(long sizeInBytes, Alignment alignment) {
+        return calcNextOffset(alignment, sizeInBytes);
     }
 }

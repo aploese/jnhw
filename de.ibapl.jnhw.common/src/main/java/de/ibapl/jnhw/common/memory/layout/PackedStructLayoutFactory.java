@@ -27,7 +27,7 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
  *
  * @author aploese
  */
-public class PackedStructLayoutFactory implements StructLayoutFactory {
+public abstract class PackedStructLayoutFactory implements StructLayoutFactory {
 
     private long nextOffset;
     private final Alignment structAlignment;
@@ -140,7 +140,7 @@ public class PackedStructLayoutFactory implements StructLayoutFactory {
     }
      */
     @Override
-    public long getSizeInBytes() {
+    public long getSizeof() {
         return nextOffset;
     }
 

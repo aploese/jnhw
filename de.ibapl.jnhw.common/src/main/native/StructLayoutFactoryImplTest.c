@@ -19,44 +19,39 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.util.winapi.memory;
 
-import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
-import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
+#include <stdint.h>
+//for offsetof
+#include <stddef.h>
+#include <assert.h>
 
-/**
+/** If this is not compilable, then the failed asserts indicate the wrong behavior of StructFactoryImpl
+ * at that point.
  *
- * @author aploese
  */
-public class WinApiStdStructLayoutFactory extends StructLayoutFactoryImpl {
 
-    public WinApiStdStructLayoutFactory(Type type) {
-        super(type);
-    }
+struct s1 {
+    uint8_t f0;
+    uint16_t f1;
+};
 
-    public WinApiStdStructLayoutFactory(Type type, Alignment alignment) {
-        super(type, alignment);
-    }
+static_assert(4 == sizeof (struct s1), "4 != sizeof(struct s1)");
+static_assert(2 == __alignof__ (struct s1), "2 != __alignof__(struct s1)");
 
-    public long ULONG_PTR() {
-        return uintptr_t();
-    }
+struct s2 {
+    uint8_t f0;
+    struct s1 f1;
+};
 
-    public long DWORD() {
-        return uint32_t();
-    }
+static_assert(6 == sizeof (struct s2), "6 != sizeof(struct s2)");
+static_assert(2 == offsetof(struct s2, f1), "2 != offsetof(struct s2, f1)");
+static_assert(2 == __alignof__ (struct s2), "2 != __alignof__(struct s2)");
 
-    public long PVOID() {
-        return uintptr_t();
-    }
+struct s3 {
+    uint8_t f0;
+    struct s1 f1;
+} __attribute__ ((packed));
 
-    public long HANDLE() {
-        return uintptr_t();
-    }
-
-    public long BOOL() {
-        return int32_t();
-    }
-
-}
+static_assert(5 == sizeof (struct s3), "5 != sizeof(struct s3)");
+static_assert(1 == offsetof(struct s3, f1), "1 == offsetof(struct s2, f1)");
+static_assert(1 == __alignof__ (struct s3), "1 != __alignof__(struct s3)");

@@ -165,15 +165,15 @@ public enum Alignment {
      * wins.
      *
      * @param structAlignment
-     * @param datayteAlignment
+     * @param dataTypeAlignment
      * @return
      */
-    public static int calcElementAlignmentInStruct(Alignment structAlignment, Alignment datayteAlignment) {
-        if (structAlignment.alignof < datayteAlignment.alignof) {
+    public static int calcElementAlignmentInStruct(Alignment structAlignment, Alignment dataTypeAlignment) {
+        if (structAlignment.alignof < dataTypeAlignment.alignof) {
             //We have a packed structure
             return structAlignment.alignof;
         } else {
-            return datayteAlignment.alignof;
+            return dataTypeAlignment.alignof;
         }
     }
 

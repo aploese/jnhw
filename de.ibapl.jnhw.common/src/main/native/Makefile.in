@@ -160,7 +160,8 @@ am_libjnhw_common_la_OBJECTS = LibJnhwCommonLoader.lo jnhw-common.lo
 libjnhw_common_la_OBJECTS = $(am_libjnhw_common_la_OBJECTS)
 libmemory_la_LIBADD =
 am_libmemory_la_OBJECTS = Alignment.lo BaseDataType.lo \
-	UnsafeMemoryAccessor.lo JnhwMemoryAccessor.lo
+	UnsafeMemoryAccessor.lo JnhwMemoryAccessor.lo \
+	StructLayoutFactoryImplTest.lo
 libmemory_la_OBJECTS = $(am_libmemory_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -194,6 +195,7 @@ am__depfiles_remade = ./$(DEPDIR)/Alignment.Plo \
 	./$(DEPDIR)/JnhwMemoryAccessor.Plo \
 	./$(DEPDIR)/LibJnhwCommonLoader.Plo \
 	./$(DEPDIR)/NativeRunnable.Plo \
+	./$(DEPDIR)/StructLayoutFactoryImplTest.Plo \
 	./$(DEPDIR)/UnsafeMemoryAccessor.Plo \
 	./$(DEPDIR)/jnhw-common.Plo
 am__mv = mv -f
@@ -425,7 +427,8 @@ libmemory_la_SOURCES = \
  Alignment.c \
  BaseDataType.c \
  UnsafeMemoryAccessor.c \
- JnhwMemoryAccessor.c
+ JnhwMemoryAccessor.c \
+ StructLayoutFactoryImplTest.c
 
 libjnhw_common_la_SOURCES = \
  LibJnhwCommonLoader.c \
@@ -551,6 +554,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwMemoryAccessor.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LibJnhwCommonLoader.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NativeRunnable.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StructLayoutFactoryImplTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnsafeMemoryAccessor.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-common.Plo@am__quote@ # am--include-marker
 
@@ -753,6 +757,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/JnhwMemoryAccessor.Plo
 	-rm -f ./$(DEPDIR)/LibJnhwCommonLoader.Plo
 	-rm -f ./$(DEPDIR)/NativeRunnable.Plo
+	-rm -f ./$(DEPDIR)/StructLayoutFactoryImplTest.Plo
 	-rm -f ./$(DEPDIR)/UnsafeMemoryAccessor.Plo
 	-rm -f ./$(DEPDIR)/jnhw-common.Plo
 	-rm -f Makefile
@@ -819,6 +824,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/JnhwMemoryAccessor.Plo
 	-rm -f ./$(DEPDIR)/LibJnhwCommonLoader.Plo
 	-rm -f ./$(DEPDIR)/NativeRunnable.Plo
+	-rm -f ./$(DEPDIR)/StructLayoutFactoryImplTest.Plo
 	-rm -f ./$(DEPDIR)/UnsafeMemoryAccessor.Plo
 	-rm -f ./$(DEPDIR)/jnhw-common.Plo
 	-rm -f Makefile

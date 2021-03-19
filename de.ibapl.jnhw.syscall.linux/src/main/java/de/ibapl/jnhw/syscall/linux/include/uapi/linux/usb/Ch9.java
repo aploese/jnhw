@@ -61,6 +61,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.PackedStructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
+import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.syscall.linux.annotation.SysFs;
 import de.ibapl.jnhw.syscall.linux.include.linux.Hid;
@@ -279,7 +280,7 @@ public interface Ch9 {
 
         public static final class Layout extends StructLayout {
 
-            protected final StructLayoutFactory slf = new PackedStructLayoutFactory(Alignment.AT_1);
+            protected final StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactoryImpl.Type.STRUCT, Alignment.AT_1);
             public final int bRequestType;
             public final int bRequest;
             public final int wValue;
@@ -294,12 +295,10 @@ public interface Ch9 {
                 wLength = (int) slf.uint8_t();
             }
 
-            @Override
             public int getSizeof() {
-                return (int) slf.getSizeInBytes();
+                return (int) slf.getSizeof();
             }
 
-            @Override
             public Alignment getAlignment() {
                 return slf.getAlignment();
             }

@@ -22,11 +22,12 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.AsSignedLong;
 import de.ibapl.jnhw.common.memory.Int64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
 import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Signed_Long;
 
 /**
@@ -41,34 +42,37 @@ public class Signed_LongTest {
     @Test
 
     public void testNative() {
-        Int64_t int64_t = new Int64_t(null, 0, null);
-        Signed_Long instance = new Signed_Long(int64_t, 0, SET_MEM_TO_0);
-        long input = 0x08070605040302010L;
-        int64_t.int64_t(input);
+        Signed_Long instance = new Signed_Long(null, 0, SET_MEM_TO_0);
+        long input64 = 0x08070605040302010L;
         if (BaseDataType.SIZE_OF_LONG == 8) {
-            assertEquals(input, instance.signed_long());
+            instance.signed_long(input64);
+            assertEquals(input64, instance.signed_long());
         } else {
-            assertEquals(input & 0x00000000ffffffffL, instance.signed_long());
+            //Big Endian so the layout of the bytes is different.... from Little Endian
+            instance.signed_long(input64 >>> 32);
+            assertEquals(input64 & 0x00000000ffffffffL, instance.signed_long());
         }
         instance.signed_long(-33);
         assertEquals(-33, instance.signed_long());
         if (BaseDataType.SIZE_OF_LONG == 8) {
-            instance.signed_long(input);
-            assertEquals(input, instance.signed_long());
+            instance.signed_long(input64);
+            assertEquals(input64, instance.signed_long());
         } else {
-            assertThrows(IllegalArgumentException.class, () -> instance.signed_long(input));
+            assertThrows(IllegalArgumentException.class, () -> instance.signed_long(input64));
         }
     }
 
     @Test
     public void testNativeToString() {
-        Int64_t int64_t = new Int64_t(null, 0, null);
-        Signed_Long instance = new Signed_Long(int64_t, 0, SET_MEM_TO_0);
-        int64_t.int64_t(0xfffffffffffffffeL);
+        Signed_Long instance = new Signed_Long(null, 0, SET_MEM_TO_0);
         if (BaseDataType.SIZE_OF_LONG == 8) {
+            Int64_t int64_t = new Int64_t(instance, 0, MEM_UNINITIALIZED);
+            int64_t.int64_t(0xfffffffffffffffeL);
             assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
             assertEquals("0xfffffffffffffffe", instance.nativeToHexString());
         } else {
+            Int32_t int32_t = new Int32_t(instance, 0, MEM_UNINITIALIZED);
+            int32_t.int32_t(0xfffffffe);
             assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
             assertEquals("0xfffffffe", instance.nativeToHexString());
         }

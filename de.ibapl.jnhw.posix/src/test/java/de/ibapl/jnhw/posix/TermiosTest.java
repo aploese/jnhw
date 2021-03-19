@@ -163,24 +163,24 @@ public class TermiosTest {
                 switch (MULTIARCHTUPEL_BUILDER.getArch()) {
                     case MIPS:
                     case MIPS_64:
-                        Assertions.assertEquals(52, Termios.StructTermios.LAYOUT.getSizeof());
+                        Assertions.assertEquals(52, Termios.StructTermios.LAYOUT.sizeof);
                         break;
                     default:
-                        Assertions.assertEquals(60, Termios.StructTermios.LAYOUT.getSizeof());
+                        Assertions.assertEquals(60, Termios.StructTermios.LAYOUT.sizeof);
                 }
                 break;
             case FREE_BSD:
             case OPEN_BSD:
-                Assertions.assertEquals(44, Termios.StructTermios.LAYOUT.getSizeof());
+                Assertions.assertEquals(44, Termios.StructTermios.LAYOUT.sizeof);
                 break;
             default:
-                Assertions.assertEquals(-1, Termios.StructTermios.LAYOUT.getSizeof());
+                Assertions.assertEquals(-1, Termios.StructTermios.LAYOUT.sizeof);
         }
     }
 
     @Test
     public void testAlignOfTermios() throws Exception {
-        Assertions.assertEquals(Alignment.AT_4, Termios.StructTermios.LAYOUT.getAlignment());
+        Assertions.assertEquals(Alignment.AT_4, Termios.StructTermios.LAYOUT.alignment);
     }
 
     @Test

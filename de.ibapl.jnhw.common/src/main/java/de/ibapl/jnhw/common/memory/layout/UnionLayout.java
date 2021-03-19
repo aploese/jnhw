@@ -25,18 +25,19 @@ package de.ibapl.jnhw.common.memory.layout;
  *
  * @author aploese
  */
-public class UnionLayout {
+public abstract class UnionLayout {
 
-    public final int sizeof;
-    public final int alignof;
-
-    public UnionLayout(int sizeof, int alignof) {
-        this.sizeof = sizeof;
-        this.alignof = alignof;
+    protected Alignment max(Alignment... alignments) {
+        Alignment result = Alignment.AT_1;
+        if (result == null) {
+            return result;
+        }
+        for (Alignment a : alignments) {
+            if (result.alignof < a.alignof) {
+                result = a;
+            }
+        }
+        return result;
     }
 
-    public UnionLayout() {
-        sizeof = -1;
-        alignof = -1;
-    }
 }

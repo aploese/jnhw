@@ -46,7 +46,8 @@ libmemory_la_SOURCES = \
  Alignment.c \
  BaseDataType.c \
  UnsafeMemoryAccessor.c \
- JnhwMemoryAccessor.c
+ JnhwMemoryAccessor.c \
+ StructLayoutFactoryImplTest.c
 
 libjnhw_common_la_SOURCES = \
  LibJnhwCommonLoader.c \

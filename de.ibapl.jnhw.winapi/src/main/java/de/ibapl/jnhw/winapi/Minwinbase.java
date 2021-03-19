@@ -30,9 +30,10 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.memory.layout.StdStructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
+import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
+import de.ibapl.jnhw.common.memory.layout.UnionLayout;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
@@ -62,10 +63,45 @@ public class Minwinbase {
      */
     public final static class OVERLAPPED extends WinApiStruct32 {
 
-        public abstract static class Layout extends StructLayout {
+        public static class Layout extends StructLayout {
+
+            public static class DUMMYUNIONNAMELayout extends UnionLayout {
+
+                public static class DUMMYSTRUCTNAMELayout extends StructLayout {
+
+                    public final static long Offset;
+                    public final static long OffsetHigh;
+                    public final static Alignment alignment;
+                    public final static int sizeof;
+
+                    static {
+                        final WinApiStdStructLayoutFactory slf = new WinApiStdStructLayoutFactory(StructLayoutFactory.Type.STRUCT);
+                        Offset = slf.DWORD();
+                        OffsetHigh = slf.DWORD();
+                        sizeof = (int) slf.getSizeof();
+                        alignment = slf.getAlignment();
+                    }
+
+                }
+
+                public final static long Pointer;
+                public final static long DUMMYSTRUCTNAME;
+                public final static Alignment alignment;
+                public final static int sizeof;
+
+                static {
+                    WinApiStdStructLayoutFactory slf = new WinApiStdStructLayoutFactory(StructLayoutFactory.Type.UNION);
+                    Pointer = slf.PVOID();
+                    DUMMYSTRUCTNAME = slf.struct(DUMMYSTRUCTNAMELayout.sizeof, DUMMYSTRUCTNAMELayout.alignment);
+                    sizeof = (int) slf.getSizeof();
+                    alignment = slf.getAlignment();
+                }
+
+            }
 
             public final static long Internal;
             public final static long InternalHigh;
+            public final static long DUMMYUNIONNAME;
             public final static long Offset;
             public final static long OffsetHigh;
             public final static long Pointer;
@@ -74,14 +110,16 @@ public class Minwinbase {
             public final static int sizeof;
 
             static {
-                WinApiStdStructLayoutFactory slf = new WinApiStdStructLayoutFactory();
+                final WinApiStdStructLayoutFactory slf = new WinApiStdStructLayoutFactory(StructLayoutFactory.Type.STRUCT);
+
                 Internal = slf.ULONG_PTR();
                 InternalHigh = slf.ULONG_PTR();
-                Offset = slf.DWORD();
-                OffsetHigh = slf.DWORD();
-                Pointer = slf.PVOID();
+                DUMMYUNIONNAME = slf.union(DUMMYUNIONNAMELayout.sizeof, DUMMYUNIONNAMELayout.alignment);
+                Offset = DUMMYUNIONNAME + DUMMYUNIONNAMELayout.DUMMYSTRUCTNAME + DUMMYUNIONNAMELayout.DUMMYSTRUCTNAMELayout.Offset;
+                OffsetHigh = DUMMYUNIONNAME + DUMMYUNIONNAMELayout.DUMMYSTRUCTNAME + DUMMYUNIONNAMELayout.DUMMYSTRUCTNAMELayout.OffsetHigh;
+                Pointer = DUMMYUNIONNAME + DUMMYUNIONNAMELayout.Pointer;
                 hEvent = slf.HANDLE();
-                sizeof = (int) slf.getSizeInBytes();
+                sizeof = (int) slf.getSizeof();
                 alignment = slf.getAlignment();
             }
 
@@ -197,7 +235,7 @@ public class Minwinbase {
      */
     public static class SECURITY_ATTRIBUTES extends WinApiStruct32 {
 
-        public abstract static class Layout extends StructLayout {
+        public static class Layout extends StructLayout {
 
             public final static long nLength;
             public final static long lpSecurityDescriptor;
@@ -206,11 +244,11 @@ public class Minwinbase {
             public final static int sizeof;
 
             static {
-                WinApiStdStructLayoutFactory slf = new WinApiStdStructLayoutFactory();
+                WinApiStdStructLayoutFactory slf = new WinApiStdStructLayoutFactory(StructLayoutFactory.Type.STRUCT);
                 nLength = slf.DWORD();
                 lpSecurityDescriptor = slf.PVOID();
                 bInheritHandle = slf.BOOL();
-                sizeof = (int) slf.getSizeInBytes();
+                sizeof = (int) slf.getSizeof();
                 alignment = slf.getAlignment();
             }
 
