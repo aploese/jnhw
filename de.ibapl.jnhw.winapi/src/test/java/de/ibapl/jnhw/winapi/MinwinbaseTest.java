@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
@@ -37,9 +38,11 @@ public class MinwinbaseTest {
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(32, Minwinbase.OVERLAPPED.Layout.sizeof);
+                assertEquals(Alignment.AT_4, Minwinbase.OVERLAPPED.Layout.alignment);
                 break;
             case _64_BIT:
                 assertEquals(32, Minwinbase.OVERLAPPED.Layout.sizeof);
+                assertEquals(Alignment.AT_8, Minwinbase.OVERLAPPED.Layout.alignment);
                 break;
             default:
                 throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
@@ -52,9 +55,11 @@ public class MinwinbaseTest {
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 assertEquals(24, Minwinbase.SECURITY_ATTRIBUTES.Layout.sizeof);
+                assertEquals(Alignment.AT_4, Minwinbase.SECURITY_ATTRIBUTES.Layout.alignment);
                 break;
             case _64_BIT:
                 assertEquals(24, Minwinbase.SECURITY_ATTRIBUTES.Layout.sizeof);
+                assertEquals(Alignment.AT_8, Minwinbase.SECURITY_ATTRIBUTES.Layout.alignment);
                 break;
             default:
                 throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());

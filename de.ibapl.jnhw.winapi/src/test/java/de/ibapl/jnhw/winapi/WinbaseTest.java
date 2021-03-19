@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
@@ -36,10 +37,12 @@ public class WinbaseTest {
         System.out.println("test COMMTIMEOUTS");
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(20, Winbase.COMMTIMEOUTS.LAYOUT.sizeof);
+                assertEquals(20, Winbase.COMMTIMEOUTS.Layout.sizeof);
+                assertEquals(Alignment.AT_4, Winbase.COMMTIMEOUTS.Layout.alignment);
                 break;
             case _64_BIT:
-                assertEquals(20, Winbase.COMMTIMEOUTS.LAYOUT.sizeof);
+                assertEquals(20, Winbase.COMMTIMEOUTS.Layout.sizeof);
+                assertEquals(Alignment.AT_4, Winbase.COMMTIMEOUTS.Layout.alignment);
                 break;
             default:
                 throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
@@ -51,10 +54,12 @@ public class WinbaseTest {
         System.out.println("test COMSTAT");
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(12, Winbase.COMSTAT.LAYOUT.sizeof);
+                assertEquals(12, Winbase.COMSTAT.Layout.sizeof);
+                assertEquals(Alignment.AT_4, Winbase.COMSTAT.Layout.alignment);
                 break;
             case _64_BIT:
-                assertEquals(12, Winbase.COMSTAT.LAYOUT.sizeof);
+                assertEquals(12, Winbase.COMSTAT.Layout.sizeof);
+                assertEquals(Alignment.AT_4, Winbase.COMSTAT.Layout.alignment);
                 break;
             default:
                 throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
@@ -66,10 +71,12 @@ public class WinbaseTest {
         System.out.println("test COMMTIMEOUTS");
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(28, Winbase.DCB.LAYOUT.sizeof);
+                assertEquals(28, Winbase.DCB.Layout.sizeof);
+                assertEquals(Alignment.AT_4, Winbase.DCB.Layout.alignment);
                 break;
             case _64_BIT:
-                assertEquals(28, Winbase.DCB.LAYOUT.sizeof);
+                assertEquals(28, Winbase.DCB.Layout.sizeof);
+                assertEquals(Alignment.AT_4, Winbase.DCB.Layout.alignment);
                 break;
             default:
                 throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());

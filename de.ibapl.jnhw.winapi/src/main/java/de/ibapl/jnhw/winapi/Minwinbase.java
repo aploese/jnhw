@@ -114,7 +114,7 @@ public class Minwinbase {
 
                 Internal = slf.ULONG_PTR();
                 InternalHigh = slf.ULONG_PTR();
-                DUMMYUNIONNAME = slf.union(DUMMYUNIONNAMELayout.sizeof, DUMMYUNIONNAMELayout.alignment);
+                DUMMYUNIONNAME = slf.struct(DUMMYUNIONNAMELayout.sizeof, DUMMYUNIONNAMELayout.alignment);
                 Offset = DUMMYUNIONNAME + DUMMYUNIONNAMELayout.DUMMYSTRUCTNAME + DUMMYUNIONNAMELayout.DUMMYSTRUCTNAMELayout.Offset;
                 OffsetHigh = DUMMYUNIONNAME + DUMMYUNIONNAMELayout.DUMMYSTRUCTNAME + DUMMYUNIONNAMELayout.DUMMYSTRUCTNAMELayout.OffsetHigh;
                 Pointer = DUMMYUNIONNAME + DUMMYUNIONNAMELayout.Pointer;

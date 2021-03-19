@@ -31,8 +31,11 @@ import de.ibapl.jnhw.common.memory.MemoryAccessor;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
+import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
+import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -714,41 +717,29 @@ public abstract class Winbase {
 
         public static class Layout extends StructLayout {
 
-            public final long ReadIntervalTimeout;
-            public final long ReadTotalTimeoutMultiplier;
-            public final long ReadTotalTimeoutConstant;
-            public final long WriteTotalTimeoutMultiplier;
-            public final long WriteTotalTimeoutConstant;
-            public final Alignment alignment;
-            public final int sizeof;
+            public final static long ReadIntervalTimeout;
+            public final static long ReadTotalTimeoutMultiplier;
+            public final static long ReadTotalTimeoutConstant;
+            public final static long WriteTotalTimeoutMultiplier;
+            public final static long WriteTotalTimeoutConstant;
+            public final static Alignment alignment;
+            public final static int sizeof;
 
-            public Layout(long sizeof, int alignof) {
-                super();
-                ReadIntervalTimeout = -1;
-                ReadTotalTimeoutMultiplier = -1;
-                ReadTotalTimeoutConstant = -1;
-                WriteTotalTimeoutMultiplier = -1;
-                WriteTotalTimeoutConstant = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
+            static {
+                WinApiStdStructLayoutFactory slf = new WinApiStdStructLayoutFactory(StructLayoutFactory.Type.STRUCT);
+                ReadIntervalTimeout = slf.DWORD();
+                ReadTotalTimeoutMultiplier = slf.DWORD();
+                ReadTotalTimeoutConstant = slf.DWORD();
+                WriteTotalTimeoutMultiplier = slf.DWORD();
+                WriteTotalTimeoutConstant = slf.DWORD();
+                sizeof = (int) slf.getSizeof();
+                alignment = slf.getAlignment();
             }
 
         }
 
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
-
-        /**
-         * Make sure the native lib is loaded
-         */
-        static {
-            LibJnhwWinApiLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
-        }
-
-        public COMMTIMEOUTS(boolean clearMemory) {
-            super((OpaqueMemory32) null, 0, LAYOUT.sizeof, clearMemory ? (byte) 0 : null);
+        public COMMTIMEOUTS(Byte setMem) {
+            super((OpaqueMemory32) null, 0, Layout.sizeof, setMem);
         }
 
         /**
@@ -757,7 +748,7 @@ public abstract class Winbase {
          */
         @DWORD
         public long ReadIntervalTimeout() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.ReadIntervalTimeout);
+            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.ReadIntervalTimeout);
         }
 
         /**
@@ -765,7 +756,7 @@ public abstract class Winbase {
          * natively.
          */
         public void ReadIntervalTimeout(@DWORD long ReadIntervalTimeout) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.ReadIntervalTimeout, ReadIntervalTimeout);
+            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.ReadIntervalTimeout, ReadIntervalTimeout);
         }
 
         /**
@@ -774,7 +765,7 @@ public abstract class Winbase {
          */
         @DWORD
         public long ReadTotalTimeoutMultiplier() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.ReadTotalTimeoutMultiplier);
+            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.ReadTotalTimeoutMultiplier);
         }
 
         /**
@@ -782,7 +773,7 @@ public abstract class Winbase {
          * ReadTotalTimeoutMultiplier to be set natively.
          */
         public void ReadTotalTimeoutMultiplier(@DWORD long ReadTotalTimeoutMultiplier) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.ReadTotalTimeoutMultiplier, ReadTotalTimeoutMultiplier);
+            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.ReadTotalTimeoutMultiplier, ReadTotalTimeoutMultiplier);
         }
 
         /**
@@ -791,7 +782,7 @@ public abstract class Winbase {
          */
         @DWORD
         public long ReadTotalTimeoutConstant() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.ReadTotalTimeoutConstant);
+            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.ReadTotalTimeoutConstant);
         }
 
         /**
@@ -799,7 +790,7 @@ public abstract class Winbase {
          * to be set natively.
          */
         public void ReadTotalTimeoutConstant(@DWORD long ReadTotalTimeoutConstant) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.ReadTotalTimeoutConstant, ReadTotalTimeoutConstant);
+            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.ReadTotalTimeoutConstant, ReadTotalTimeoutConstant);
         }
 
         /**
@@ -808,7 +799,7 @@ public abstract class Winbase {
          */
         @DWORD
         public long WriteTotalTimeoutMultiplier() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.WriteTotalTimeoutMultiplier);
+            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.WriteTotalTimeoutMultiplier);
         }
 
         /**
@@ -816,7 +807,7 @@ public abstract class Winbase {
          * WriteTotalTimeoutMultiplier to be set natively.
          */
         public void WriteTotalTimeoutMultiplier(@DWORD long WriteTotalTimeoutMultiplier) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.WriteTotalTimeoutMultiplier, WriteTotalTimeoutMultiplier);
+            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.WriteTotalTimeoutMultiplier, WriteTotalTimeoutMultiplier);
         }
 
         /**
@@ -825,7 +816,7 @@ public abstract class Winbase {
          */
         @DWORD
         public long WriteTotalTimeoutConstant() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, LAYOUT.WriteTotalTimeoutConstant);
+            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.WriteTotalTimeoutConstant);
 
         }
 
@@ -834,7 +825,7 @@ public abstract class Winbase {
          * WriteTotalTimeoutConstant to be set natively.
          */
         public void WriteTotalTimeoutConstant(@DWORD long WriteTotalTimeoutConstant) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, LAYOUT.WriteTotalTimeoutConstant, WriteTotalTimeoutConstant);
+            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.WriteTotalTimeoutConstant, WriteTotalTimeoutConstant);
         }
 
     }
@@ -848,86 +839,76 @@ public abstract class Winbase {
 
         public static class Layout extends StructLayout {
 
-            public final long BF_0_1__fCtsHold;
-            public final long BF_1_1__fDsrHold;
-            public final long BF_2_1__fRlsdHold;
-            public final long BF_3_1__fXoffHold;
-            public final long BF_4_1__fXoffSent;
-            public final long BF_5_1__fEof;
-            public final long BF_6_1__fTxim;
-            public final long BF_7_25__fReserved;
-            public final long cbInQue;
-            public final long cbOutQue;
-            public final Alignment alignment;
-            public final int sizeof;
+            public final static long bitfield_Offset;
+            public final static int BF_0_1__fCtsHold;
+            public final static int BF_1_1__fDsrHold;
+            public final static int BF_2_1__fRlsdHold;
+            public final static int BF_3_1__fXoffHold;
+            public final static int BF_4_1__fXoffSent;
+            public final static int BF_5_1__fEof;
+            public final static int BF_6_1__fTxim;
+            public final static int BF_7_25__fReserved;
+            public final static long cbInQue;
+            public final static long cbOutQue;
+            public final static Alignment alignment;
+            public final static int sizeof;
 
-            public Layout(long sizeof, int alignof) {
-                super();
-                BF_0_1__fCtsHold = -1;
-                BF_1_1__fDsrHold = -1;
-                BF_2_1__fRlsdHold = -1;
-                BF_3_1__fXoffHold = -1;
-                BF_4_1__fXoffSent = -1;
-                BF_5_1__fEof = -1;
-                BF_6_1__fTxim = -1;
-                BF_7_25__fReserved = -1;
-                cbInQue = -1;
-                cbOutQue = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
+            static {
+                WinApiStdStructLayoutFactory slf = new WinApiStdStructLayoutFactory(StructLayoutFactory.Type.STRUCT);
+                bitfield_Offset = slf.DWORD();
+                BF_0_1__fCtsHold = 0;
+                BF_1_1__fDsrHold = 1;
+                BF_2_1__fRlsdHold = 2;
+                BF_3_1__fXoffHold = 3;
+                BF_4_1__fXoffSent = 4;
+                BF_5_1__fEof = 5;
+                BF_6_1__fTxim = 6;
+                BF_7_25__fReserved = 7;
+                cbInQue = slf.DWORD();
+                cbOutQue = slf.DWORD();
+                sizeof = (int) slf.getSizeof();
+                alignment = slf.getAlignment();
             }
 
         }
 
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
-
-        /**
-         * Make sure the native lib is loaded
-         */
-        static {
-            LibJnhwWinApiLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
-        }
-
         public COMSTAT(Byte setMem) {
-            super((OpaqueMemory32) null, 0, LAYOUT.sizeof, setMem);
+            super((OpaqueMemory32) null, 0, Layout.sizeof, setMem);
         }
 
         /**
          * @return the native value of fCtsHold.
          */
         public boolean fCtsHold() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_0_1__fCtsHold, 0);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_0_1__fCtsHold);
         }
 
         /**
          * @return the native value of fDsrHold.
          */
         public boolean fDsrHold() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_1_1__fDsrHold, 1);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_1_1__fDsrHold);
         }
 
         /**
          * @return the native value of fRlsdHold.
          */
         public boolean fRlsdHold() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_2_1__fRlsdHold, 2);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_2_1__fRlsdHold);
         }
 
         /**
          * @return the native value of fXoffHold.
          */
         public boolean fXoffHold() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_3_1__fXoffHold, 3);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_3_1__fXoffHold);
         }
 
         /**
          * @return the native value of fXoffSent.
          */
         public boolean fXoffSent() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_4_1__fXoffSent, 4);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_4_1__fXoffSent);
         }
 
         /**
@@ -935,7 +916,7 @@ public abstract class Winbase {
          * @return the native value of fEof.
          */
         public boolean fEof() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_5_1__fEof, 5);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_5_1__fEof);
         }
 
         /**
@@ -943,7 +924,7 @@ public abstract class Winbase {
          * @return the native value of fTxim.
          */
         public boolean fTxim() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_6_1__fTxim, 6);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_6_1__fTxim);
         }
 
         /**
@@ -951,7 +932,7 @@ public abstract class Winbase {
          * @return the native value of fReserved.
          */
         public int fReserved() {
-            return MemoryAccessor.getBitsInInt(ACCESSOR_DWORD.DWORD(this, LAYOUT.BF_7_25__fReserved), 7, 25);
+            return ACCESSOR_DWORD.getBits(this, Layout.bitfield_Offset, Layout.BF_7_25__fReserved, 25);
         }
 
         /**
@@ -960,7 +941,7 @@ public abstract class Winbase {
          */
         @DWORD
         public int cbInQue() {
-            return ACCESSOR_DWORD.DWORD(this, LAYOUT.cbInQue);
+            return ACCESSOR_DWORD.DWORD(this, Layout.cbInQue);
         }
 
         /**
@@ -969,7 +950,7 @@ public abstract class Winbase {
          */
         @DWORD
         public int cbOutQue() {
-            return ACCESSOR_DWORD.DWORD(this, LAYOUT.cbOutQue);
+            return ACCESSOR_DWORD.DWORD(this, Layout.cbOutQue);
         }
     }
 
@@ -982,96 +963,86 @@ public abstract class Winbase {
 
         public static class Layout extends StructLayout {
 
-            public final long DCBlength;
-            public final long BaudRate;
-            public final long BF_0_1__fBinary;
-            public final long BF_1_1__fParity;
-            public final long BF_2_1__fOutxCtsFlow;
-            public final long BF_3_1__fOutxDsrFlow;
-            public final long BF_4_2__fDtrControl;
-            public final long BF_6_1__fDsrSensitivity;
-            public final long BF_7_1__fTXContinueOnXoff;
-            public final long BF_8_1__fOutX;
-            public final long BF_9_1__fInX;
-            public final long BF_10_1__fErrorChar;
-            public final long BF_11_1__fNull;
-            public final long BF_12_2__fRtsControl;
-            public final long BF_14_1__fAbortOnError;
-            public final long BF_15_17__fDummy2;
-            public final long wReserved;
-            public final long XonLim;
-            public final long XoffLim;
-            public final long ByteSize;
-            public final long Parity;
-            public final long StopBits;
-            public final long XonChar;
-            public final long XoffChar;
-            public final long ErrorChar;
-            public final long EofChar;
-            public final long EvtChar;
-            public final long wReserved1;
-            public final Alignment alignment;
-            public final int sizeof;
+            public final static long DCBlength;
+            public final static long BaudRate;
+            public final static long bitfield_Offset;
+            public final static int BF_0_1__fBinary;
+            public final static int BF_1_1__fParity;
+            public final static int BF_2_1__fOutxCtsFlow;
+            public final static int BF_3_1__fOutxDsrFlow;
+            public final static int BF_4_2__fDtrControl;
+            public final static int BF_6_1__fDsrSensitivity;
+            public final static int BF_7_1__fTXContinueOnXoff;
+            public final static int BF_8_1__fOutX;
+            public final static int BF_9_1__fInX;
+            public final static int BF_10_1__fErrorChar;
+            public final static int BF_11_1__fNull;
+            public final static int BF_12_2__fRtsControl;
+            public final static int BF_14_1__fAbortOnError;
+            public final static int BF_15_17__fDummy2;
+            public final static long wReserved;
+            public final static long XonLim;
+            public final static long XoffLim;
+            public final static long ByteSize;
+            public final static long Parity;
+            public final static long StopBits;
+            public final static long XonChar;
+            public final static long XoffChar;
+            public final static long ErrorChar;
+            public final static long EofChar;
+            public final static long EvtChar;
+            public final static long wReserved1;
+            public final static Alignment alignment;
+            public final static int sizeof;
 
-            public Layout(long sizeof, int alignof) {
-                super();
-                DCBlength = -1;
-                BaudRate = -1;
-                BF_0_1__fBinary = -1;
-                BF_1_1__fParity = -1;
-                BF_2_1__fOutxCtsFlow = -1;
-                BF_3_1__fOutxDsrFlow = -1;
-                BF_4_2__fDtrControl = -1;
-                BF_6_1__fDsrSensitivity = -1;
-                BF_7_1__fTXContinueOnXoff = -1;
-                BF_8_1__fOutX = -1;
-                BF_9_1__fInX = -1;
-                BF_10_1__fErrorChar = -1;
-                BF_11_1__fNull = -1;
-                BF_12_2__fRtsControl = -1;
-                BF_14_1__fAbortOnError = -1;
-                BF_15_17__fDummy2 = -1;
-                wReserved = -1;
-                XonLim = -1;
-                XoffLim = -1;
-                ByteSize = -1;
-                Parity = -1;
-                StopBits = -1;
-                XonChar = -1;
-                XoffChar = -1;
-                ErrorChar = -1;
-                EofChar = -1;
-                EvtChar = -1;
-                wReserved1 = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
+            static {
+                WinApiStdStructLayoutFactory slf = new WinApiStdStructLayoutFactory(StructLayoutFactory.Type.STRUCT);
+                DCBlength = slf.DWORD();
+                BaudRate = slf.DWORD();
+                bitfield_Offset = slf.DWORD();
+                BF_0_1__fBinary = 0;
+                BF_1_1__fParity = 1;
+                BF_2_1__fOutxCtsFlow = 2;
+                BF_3_1__fOutxDsrFlow = 3;
+                BF_4_2__fDtrControl = 4;
+                BF_6_1__fDsrSensitivity = 6;
+                BF_7_1__fTXContinueOnXoff = 7;
+                BF_8_1__fOutX = 8;
+                BF_9_1__fInX = 9;
+                BF_10_1__fErrorChar = 10;
+                BF_11_1__fNull = 11;
+                BF_12_2__fRtsControl = 12;
+                BF_14_1__fAbortOnError = 14;
+                BF_15_17__fDummy2 = 15;
+                wReserved = slf.WORD();
+                XonLim = slf.WORD();
+                XoffLim = slf.WORD();
+                ByteSize = slf.BYTE();
+                Parity = slf.BYTE();
+                StopBits = slf.BYTE();
+                XonChar = slf.int8_t();
+                XoffChar = slf.int8_t();
+                ErrorChar = slf.int8_t();
+                EofChar = slf.int8_t();
+                EvtChar = slf.int8_t();
+                wReserved1 = slf.WORD();
+                sizeof = (int) slf.getSizeof();
+                alignment = slf.getAlignment();
             }
 
         }
 
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
-
-        /**
-         * Make sure the native lib is loaded
-         */
-        static {
-            LibJnhwWinApiLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
-        }
-
         public DCB(Byte setMem) {
-            super(null, 0, LAYOUT.sizeof, setMem);
+            super(null, 0, Layout.sizeof, setMem);
             //set the current size explicitly.
-            DCBlength(LAYOUT.sizeof);
+            DCBlength(Layout.sizeof);
         }
 
         /**
          * @param DCBlength the value of DCBlength to be set natively.
          */
         public void DCBlength(@DWORD int DCBlength) {
-            ACCESSOR_DWORD.DWORD(this, LAYOUT.DCBlength, DCBlength);
+            ACCESSOR_DWORD.DWORD(this, Layout.DCBlength, DCBlength);
         }
 
         /**
@@ -1080,7 +1051,7 @@ public abstract class Winbase {
          */
         @DWORD
         public int DCBlength() {
-            return ACCESSOR_DWORD.DWORD(this, LAYOUT.DCBlength);
+            return ACCESSOR_DWORD.DWORD(this, Layout.DCBlength);
         }
 
         /**
@@ -1089,14 +1060,14 @@ public abstract class Winbase {
          */
         @DWORD
         public int BaudRate() {
-            return ACCESSOR_DWORD.DWORD(this, LAYOUT.BaudRate);
+            return ACCESSOR_DWORD.DWORD(this, Layout.BaudRate);
         }
 
         /**
          * @param BaudRate the value of BaudRate to be set natively.
          */
         public void BaudRate(@DWORD int BaudRate) {
-            ACCESSOR_DWORD.DWORD(this, LAYOUT.BaudRate, BaudRate);
+            ACCESSOR_DWORD.DWORD(this, Layout.BaudRate, BaudRate);
         }
 
         /**
@@ -1104,7 +1075,7 @@ public abstract class Winbase {
          * @return the native value of fBinary.
          */
         public boolean fBinary() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_0_1__fBinary, 0);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_0_1__fBinary);
         }
 
         /**
@@ -1112,7 +1083,7 @@ public abstract class Winbase {
          * @return the native value of fParity.
          */
         public boolean fParity() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_1_1__fParity, 1);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_1_1__fParity);
         }
 
         /**
@@ -1120,14 +1091,14 @@ public abstract class Winbase {
          * @return the native value of fOutxCtsFlow.
          */
         public boolean fOutxCtsFlow() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_2_1__fOutxCtsFlow, 2);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_2_1__fOutxCtsFlow);
         }
 
         /**
          * @param fOutxCtsFlow the value of fOutxCtsFlow to be set natively.
          */
         public void fOutxCtsFlow(boolean fOutxCtsFlow) {
-            ACCESSOR_DWORD.setBitAt(this, LAYOUT.BF_2_1__fOutxCtsFlow, fOutxCtsFlow, 2);
+            ACCESSOR_DWORD.setBitAt(this, Layout.bitfield_Offset, Layout.BF_2_1__fOutxCtsFlow, fOutxCtsFlow);
         }
 
         /**
@@ -1135,7 +1106,7 @@ public abstract class Winbase {
          * @return the native value of fOutxDsrFlow.
          */
         public boolean fOutxDsrFlow() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_3_1__fOutxDsrFlow, 3);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_3_1__fOutxDsrFlow);
         }
 
         /**
@@ -1144,7 +1115,7 @@ public abstract class Winbase {
          * @return the native value of fDtrControl.
          */
         public byte fDtrControl() {
-            return (byte) ACCESSOR_DWORD.getBits(this, LAYOUT.BF_4_2__fDtrControl, 4, 2);
+            return (byte) ACCESSOR_DWORD.getBits(this, Layout.bitfield_Offset, Layout.BF_4_2__fDtrControl, 2);
         }
 
         /**
@@ -1152,7 +1123,7 @@ public abstract class Winbase {
          * @return the native value of fDsrSensitivity.
          */
         public boolean fDsrSensitivity() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_6_1__fDsrSensitivity, 6);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_6_1__fDsrSensitivity);
         }
 
         /**
@@ -1160,7 +1131,7 @@ public abstract class Winbase {
          * @return the native value of fTXContinueOnXoff.
          */
         public boolean fTXContinueOnXoff() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_7_1__fTXContinueOnXoff, 7);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_7_1__fTXContinueOnXoff);
         }
 
         /**
@@ -1168,14 +1139,14 @@ public abstract class Winbase {
          * @return the native value of fOutX.
          */
         public boolean fOutX() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_8_1__fOutX, 8);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_8_1__fOutX);
         }
 
         /**
          * @param fOutX the value of fOutX to be set natively.
          */
         public void fOutX(boolean fOutX) {
-            ACCESSOR_DWORD.setBitAt(this, LAYOUT.BF_8_1__fOutX, fOutX, 8);
+            ACCESSOR_DWORD.setBitAt(this, Layout.bitfield_Offset, Layout.BF_8_1__fOutX, fOutX);
         }
 
         /**
@@ -1183,14 +1154,14 @@ public abstract class Winbase {
          * @return the native value of fInX.
          */
         public boolean fInX() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_9_1__fInX, 9);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_9_1__fInX);
         }
 
         /**
          * @param fInX the value of fInX to be set natively.
          */
         public void fInX(boolean fInX) {
-            ACCESSOR_DWORD.setBitAt(this, LAYOUT.BF_9_1__fInX, fInX, 9);
+            ACCESSOR_DWORD.setBitAt(this, Layout.bitfield_Offset, Layout.BF_9_1__fInX, fInX);
         }
 
         /**
@@ -1198,7 +1169,7 @@ public abstract class Winbase {
          * @return the native value of fErrorChar.
          */
         public boolean fErrorChar() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_10_1__fErrorChar, 10);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_10_1__fErrorChar);
         }
 
         /**
@@ -1206,7 +1177,7 @@ public abstract class Winbase {
          * @return the native value of fNull.
          */
         public boolean fNull() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_11_1__fNull, 11);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_11_1__fNull);
         }
 
         /**
@@ -1216,14 +1187,14 @@ public abstract class Winbase {
          * @return the native value of fRtsControl.
          */
         public byte fRtsControl() {
-            return (byte) ACCESSOR_DWORD.getBits(this, LAYOUT.BF_12_2__fRtsControl, 11, 2);
+            return (byte) ACCESSOR_DWORD.getBits(this, Layout.bitfield_Offset, Layout.BF_12_2__fRtsControl, 2);
         }
 
         /**
          * @param fRtsControl the value of fRtsControl to be set natively.
          */
         public void fRtsControl(byte fRtsControl) {
-            ACCESSOR_DWORD.setBits(this, LAYOUT.BF_12_2__fRtsControl, fRtsControl, 11, 2);
+            ACCESSOR_DWORD.setBits(this, Layout.bitfield_Offset, Layout.BF_12_2__fRtsControl, 2, fRtsControl);
         }
 
         /**
@@ -1231,7 +1202,7 @@ public abstract class Winbase {
          * @return the native value of fAbortOnError.
          */
         public boolean fAbortOnError() {
-            return ACCESSOR_DWORD.getBitAt(this, LAYOUT.BF_14_1__fAbortOnError, 14);
+            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_14_1__fAbortOnError);
         }
 
         /**
@@ -1239,7 +1210,7 @@ public abstract class Winbase {
          * @return the native value of fDummy2.
          */
         public int fDummy2() {
-            return ACCESSOR_DWORD.getBits(this, LAYOUT.BF_15_17__fDummy2, 15, 17);
+            return ACCESSOR_DWORD.getBits(this, Layout.bitfield_Offset, Layout.BF_15_17__fDummy2, 17);
         }
 
         /**
@@ -1248,7 +1219,7 @@ public abstract class Winbase {
          */
         @WORD
         public short wReserved() {
-            return ACCESSOR_WORD.WORD(this, LAYOUT.wReserved);
+            return ACCESSOR_WORD.WORD(this, Layout.wReserved);
         }
 
         /**
@@ -1257,7 +1228,7 @@ public abstract class Winbase {
          */
         @WORD
         public short XonLim() {
-            return ACCESSOR_WORD.WORD(this, LAYOUT.XoffLim);
+            return ACCESSOR_WORD.WORD(this, Layout.XoffLim);
         }
 
         /**
@@ -1266,7 +1237,7 @@ public abstract class Winbase {
          */
         @WORD
         public short XoffLim() {
-            return ACCESSOR_WORD.WORD(this, LAYOUT.XoffLim);
+            return ACCESSOR_WORD.WORD(this, Layout.XoffLim);
         }
 
         /**
@@ -1275,14 +1246,14 @@ public abstract class Winbase {
          */
         @BYTE
         public byte ByteSize() {
-            return ACCESSOR_BYTE.BYTE(this, LAYOUT.ByteSize);
+            return ACCESSOR_BYTE.BYTE(this, Layout.ByteSize);
         }
 
         /**
          * @param ByteSize the value of ByteSize to be set natively.
          */
         public void ByteSize(@BYTE byte ByteSize) {
-            ACCESSOR_BYTE.BYTE(this, LAYOUT.ByteSize, ByteSize);
+            ACCESSOR_BYTE.BYTE(this, Layout.ByteSize, ByteSize);
         }
 
         /**
@@ -1292,14 +1263,14 @@ public abstract class Winbase {
          */
         @BYTE
         public byte Parity() {
-            return ACCESSOR_BYTE.BYTE(this, LAYOUT.Parity);
+            return ACCESSOR_BYTE.BYTE(this, Layout.Parity);
         }
 
         /**
          * @param Parity the value of Parity to be set natively.
          */
         public void Parity(@BYTE byte Parity) {
-            ACCESSOR_BYTE.BYTE(this, LAYOUT.Parity, Parity);
+            ACCESSOR_BYTE.BYTE(this, Layout.Parity, Parity);
         }
 
         /**
@@ -1309,14 +1280,14 @@ public abstract class Winbase {
          */
         @BYTE
         public byte StopBits() {
-            return ACCESSOR_BYTE.BYTE(this, LAYOUT.StopBits);
+            return ACCESSOR_BYTE.BYTE(this, Layout.StopBits);
         }
 
         /**
          * @param StopBits the value of StopBits to be set natively.
          */
         public void StopBits(@BYTE byte StopBits) {
-            ACCESSOR_BYTE.BYTE(this, LAYOUT.StopBits, StopBits);
+            ACCESSOR_BYTE.BYTE(this, Layout.StopBits, StopBits);
         }
 
         /**
@@ -1324,14 +1295,14 @@ public abstract class Winbase {
          * @return the native value of XonChar.
          */
         public char XonChar() {
-            return (char) MEM_ACCESS.int8_t(this, LAYOUT.XonChar);
+            return (char) MEM_ACCESS.int8_t(this, Layout.XonChar);
         }
 
         /**
          * @param XonChar the value of XonChar to be set natively.
          */
         public void XonChar(char XonChar) {
-            MEM_ACCESS.int8_t(this, LAYOUT.XonChar, (byte) XonChar);
+            MEM_ACCESS.int8_t(this, Layout.XonChar, (byte) XonChar);
         }
 
         /**
@@ -1339,14 +1310,14 @@ public abstract class Winbase {
          * @return the native value of XoffChar.
          */
         public char XoffChar() {
-            return (char) MEM_ACCESS.int8_t(this, LAYOUT.XoffChar);
+            return (char) MEM_ACCESS.int8_t(this, Layout.XoffChar);
         }
 
         /**
          * @param XoffChar the value of XoffChar to be set natively.
          */
         public void XoffChar(char XoffChar) {
-            MEM_ACCESS.int8_t(this, LAYOUT.XoffChar, (byte) XoffChar);
+            MEM_ACCESS.int8_t(this, Layout.XoffChar, (byte) XoffChar);
         }
 
         /**
@@ -1354,7 +1325,7 @@ public abstract class Winbase {
          * @return the native value of ErrorChar.
          */
         public char ErrorChar() {
-            return (char) MEM_ACCESS.int8_t(this, LAYOUT.ErrorChar);
+            return (char) MEM_ACCESS.int8_t(this, Layout.ErrorChar);
         }
 
         /**
@@ -1362,14 +1333,14 @@ public abstract class Winbase {
          * @return the native value of EofChar.
          */
         public char EofChar() {
-            return (char) MEM_ACCESS.int8_t(this, LAYOUT.EofChar);
+            return (char) MEM_ACCESS.int8_t(this, Layout.EofChar);
         }
 
         /**
          * @return the native value of EvtChar.
          */
         public char EvtChar() {
-            return (char) MEM_ACCESS.int8_t(this, LAYOUT.EvtChar);
+            return (char) MEM_ACCESS.int8_t(this, Layout.EvtChar);
         }
 
         /**
@@ -1377,7 +1348,7 @@ public abstract class Winbase {
          * @return the native value of wReserved1.
          */
         public short wReserved1() {
-            return ACCESSOR_WORD.WORD(this, LAYOUT.wReserved1);
+            return ACCESSOR_WORD.WORD(this, Layout.wReserved1);
         }
 
     }

@@ -48,7 +48,7 @@ public class Unsigned_LongTest {
             assertEquals(input, instance.unsigned_long());
         } else {
             //Big Endian so the layout of the bytes is different.... from Little Endian
-            instance.unsigned_long(input >>> 32);
+            instance.unsigned_long(input >>> 32); // shift without sign
             assertEquals(input >>> 32, instance.unsigned_long());
         }
         instance.unsigned_long(33);

@@ -59,4 +59,12 @@ public class WinApiStdStructLayoutFactory extends StructLayoutFactoryImpl {
         return int32_t();
     }
 
+    public long BYTE() {
+        return uint8_t();
+    }
+
+    public long WORD() {
+        return uint16_t();
+    }
+
 }

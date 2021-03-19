@@ -1051,9 +1051,9 @@ public class MemoryAccessorTest {
     public void testBitsInLong() {
         assertEquals(0x07, MemoryAccessor.getBitsInLong(0x0102030405060708L, 8, 4));
         assertEquals(0x01, MemoryAccessor.getBitsInLong(0x0102030405060708L, 3, 5));
-        assertEquals(1, MemoryAccessor.setBitsInLong(0, 1, 0, 1));
-        assertEquals(1, MemoryAccessor.setBitsInLong(-1, 0, 1, 63));
-        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInLong(0, 0x00010000, 0, 16));
+        assertEquals(1, MemoryAccessor.setBitsInLong(0, 0, 1, 1));
+        assertEquals(1, MemoryAccessor.setBitsInLong(-1, 1, 63, 0));
+        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInLong(0, 0, 16, 0x00010000));
     }
 
     @Test
@@ -1061,34 +1061,34 @@ public class MemoryAccessorTest {
         assertTrue(MemoryAccessor.getBitInInt(0x00000001, 0));
         assertTrue(MemoryAccessor.getBitInInt(0x01000000, 24));
         assertFalse(MemoryAccessor.getBitInInt(0x11111111, 1));
-        assertEquals(0x02, MemoryAccessor.setBitInInt(0, true, 1));
-        assertEquals(0xfffffffd, MemoryAccessor.setBitInInt(-1, false, 1));
+        assertEquals(0x02, MemoryAccessor.setBitInInt(0, 1, true));
+        assertEquals(0xfffffffd, MemoryAccessor.setBitInInt(-1, 1, false));
     }
 
     @Test
     public void testBitsInInt() {
         assertEquals(0x07, MemoryAccessor.getBitsInInt(0x05060708, 8, 4));
         assertEquals(0x01, MemoryAccessor.getBitsInInt(0x05060708, 3, 5));
-        assertEquals(1, MemoryAccessor.setBitsInInt(0, 1, 0, 1));
-        assertEquals(1, MemoryAccessor.setBitsInInt(-1, 0, 1, 31));
-        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInInt(0, 0x00010000, 0, 16));
+        assertEquals(1, MemoryAccessor.setBitsInInt(0, 0, 1, 1));
+        assertEquals(1, MemoryAccessor.setBitsInInt(-1, 1, 31, 0));
+        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInInt(0, 0, 16, 0x00010000));
     }
 
     @Test
     public void testBitsInShort() {
         assertEquals(0x07, MemoryAccessor.getBitsInShort((short) 0x0708, 8, 4));
         assertEquals(0x01, MemoryAccessor.getBitsInShort((short) 0x0708, 3, 5));
-        assertEquals(1, MemoryAccessor.setBitsInShort((short) 0, (short) 1, 0, 1));
-        assertEquals(1, MemoryAccessor.setBitsInShort((short) -1, (short) 0, 1, 15));
-        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInShort((short) 0, (short) 0x0100, 0, 8));
+        assertEquals(1, MemoryAccessor.setBitsInShort((short) 0, 0, 1, (short) 1));
+        assertEquals(1, MemoryAccessor.setBitsInShort((short) -1, 1, 15, (short) 0));
+        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInShort((short) 0, 0, 8, (short) 0x0100));
     }
 
     @Test
     public void testBitsInByte() {
         assertEquals(0x07, MemoryAccessor.getBitsInByte((byte) 0x07, 0, 4));
         assertEquals(0x01, MemoryAccessor.getBitsInByte((byte) 0x08, 3, 5));
-        assertEquals(1, MemoryAccessor.setBitsInByte((byte) 0, (byte) 1, 0, 1));
-        assertEquals(1, MemoryAccessor.setBitsInByte((byte) -1, (byte) 0, 1, 7));
-        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInByte((byte) 0, (byte) 0x10, 0, 4));
+        assertEquals(1, MemoryAccessor.setBitsInByte((byte) 0, 0, 1, (byte) 1));
+        assertEquals(1, MemoryAccessor.setBitsInByte((byte) -1, 1, 7, (byte) 0));
+        assertThrows(IllegalArgumentException.class, () -> MemoryAccessor.setBitsInByte((byte) 0, 0, 4, (byte) 0x10));
     }
 }

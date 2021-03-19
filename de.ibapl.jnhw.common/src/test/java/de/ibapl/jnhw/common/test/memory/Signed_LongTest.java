@@ -43,14 +43,14 @@ public class Signed_LongTest {
 
     public void testNative() {
         Signed_Long instance = new Signed_Long(null, 0, SET_MEM_TO_0);
-        long input64 = 0x08070605040302010L;
+        long input64 = 0x8070605040302010L;
         if (BaseDataType.SIZE_OF_LONG == 8) {
             instance.signed_long(input64);
             assertEquals(input64, instance.signed_long());
         } else {
             //Big Endian so the layout of the bytes is different.... from Little Endian
-            instance.signed_long(input64 >>> 32);
-            assertEquals(input64 & 0x00000000ffffffffL, instance.signed_long());
+            instance.signed_long(input64 >> 32); // shift with sign
+            assertEquals(input64 >> 32, instance.signed_long());
         }
         instance.signed_long(-33);
         assertEquals(-33, instance.signed_long());

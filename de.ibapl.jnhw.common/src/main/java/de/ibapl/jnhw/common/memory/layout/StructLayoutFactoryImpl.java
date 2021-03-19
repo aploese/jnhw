@@ -46,25 +46,27 @@ public class StructLayoutFactoryImpl implements StructLayoutFactory {
     }
 
     protected long calcNextOffset(Alignment currentAlignment, long currentSizeInBytes) {
-        switch (type) {
-            case STRUCT:
-                break;
-            case UNION:
-                return 0;
-            default:
-                throw new IllegalStateException("Unknown type to build: " + type);
-        }
-
         if (ALIGNMENT_IS_FIXED) {
             //no-op
         } else if ((currentAlignment.alignof > structAlignment.alignof) && (currentAlignment.alignof <= Alignment.__BIGGEST_ALIGNMENT__.alignof)) {
             structAlignment = currentAlignment;
         }
-        final int intAlignment = Alignment.calcElementAlignmentInStruct(structAlignment, currentAlignment);
-        final int reminder = (int) Long.remainderUnsigned(nextOffset, intAlignment);
-        final long offset = (reminder == 0) ? nextOffset : nextOffset + intAlignment - reminder;
-        nextOffset = offset + currentSizeInBytes;
-        return offset;
+        switch (type) {
+            case STRUCT:
+                final int intAlignment = Alignment.calcElementAlignmentInStruct(structAlignment, currentAlignment);
+                final int reminder = (int) Long.remainderUnsigned(nextOffset, intAlignment);
+                final long offset = (reminder == 0) ? nextOffset : nextOffset + intAlignment - reminder;
+                nextOffset = offset + currentSizeInBytes;
+                return offset;
+            case UNION:
+                if (nextOffset < currentSizeInBytes) {
+                    nextOffset = currentSizeInBytes;
+                }
+                return 0;
+            default:
+                throw new IllegalStateException("Unknown type to build: " + type);
+        }
+
     }
 
     @Override

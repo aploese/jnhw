@@ -59,7 +59,7 @@ public final class Winnt {
      * unsigned long int so to preserve the signess use javas long
      */
     @Define
-    public final static long MAXDWORD = 0xffffffff;
+    public final static long MAXDWORD = 0xffffffffL;
 
     @Define
     public final static int STATUS_WAIT_0 = 0x00000000;

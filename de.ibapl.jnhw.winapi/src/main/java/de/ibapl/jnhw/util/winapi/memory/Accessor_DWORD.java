@@ -47,16 +47,16 @@ public interface Accessor_DWORD {
         return MemoryAccessor.getBitInInt(DWORD(mem, offset), bitpos);
     }
 
-    default void setBitAt(OpaqueMemory32 mem, long offset, boolean bit, int bitpos) {
-        DWORD(mem, offset, MemoryAccessor.setBitInInt(DWORD(mem, offset), bit, bitpos));
+    default void setBitAt(OpaqueMemory32 mem, long offset, int bitpos, boolean bit) {
+        DWORD(mem, offset, MemoryAccessor.setBitInInt(DWORD(mem, offset), bitpos, bit));
     }
 
     default int getBits(OpaqueMemory32 mem, long offset, int bitpos, int bitsize) {
         return MemoryAccessor.getBitsInInt(DWORD(mem, offset), bitpos, bitsize);
     }
 
-    default void setBits(OpaqueMemory32 mem, long offset, int bits, int bitpos, int bitsize) {
-        DWORD(mem, offset, MemoryAccessor.setBitsInInt(DWORD(mem, offset), bits, bitpos, bitsize));
+    default void setBits(OpaqueMemory32 mem, long offset, int bitpos, int bitsize, int value) {
+        DWORD(mem, offset, MemoryAccessor.setBitsInInt(DWORD(mem, offset), bitpos, bitsize, value));
     }
 
 }
