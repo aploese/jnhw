@@ -35,8 +35,8 @@ import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.memory.Uint8_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
-import de.ibapl.jnhw.common.memory.layout.StructLayoutOnTheFlyFactory;
 import java.io.IOException;
 
 /**
@@ -84,17 +84,18 @@ public class Struct {
     public static void onTheFlyStructure() {
         System.out.println("\n\nStruct.onTheFlyStructure()\n");
         final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 16, null);
-        StructLayoutOnTheFlyFactory slf = new StructLayoutOnTheFlyFactory(Alignment.AT_8, heap, 0);
+        StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactory.Type.STRUCT);
+        final long offsetInHeap = heap.getAlignmentOffset(0, Alignment.AT_16);
 
         //start with offset == 0
-        final Int8_t _int8_t = new Int8_t(heap, slf.int8_t(), MEM_UNINITIALIZED);
+        final Int8_t _int8_t = new Int8_t(heap, offsetInHeap + slf.int8_t(), MEM_UNINITIALIZED);
         _int8_t.int8_t((byte) 0x61);//a
         //alignment on 2 byte boundary after int16_t
-        final Int16_t _int16_t = new Int16_t(heap, slf.int16_t(), MEM_UNINITIALIZED);
+        final Int16_t _int16_t = new Int16_t(heap, offsetInHeap + slf.int16_t(), MEM_UNINITIALIZED);
         _int16_t.int16_t((short) 0x6362);//bc
-        final Int32_t _int32_t = new Int32_t(heap, slf.int32_t(), MEM_UNINITIALIZED);
+        final Int32_t _int32_t = new Int32_t(heap, offsetInHeap + slf.int32_t(), MEM_UNINITIALIZED);
         _int32_t.int32_t(0x67666564);//defg
-        final Int64_t _int64_t = new Int64_t(heap, slf.int64_t(), MEM_UNINITIALIZED);
+        final Int64_t _int64_t = new Int64_t(heap, offsetInHeap + slf.int64_t(), MEM_UNINITIALIZED);
         _int64_t.int64_t(0x6f6e6d6c6b6a6968L);//hijklmno
 
         System.out.println("int8_t: " + _int8_t.toString() + " " + _int8_t.int8_t());
@@ -122,14 +123,15 @@ public class Struct {
     public static void onTheFlyUnion() {
         System.out.println("\n\nStruct.onTheFlyUnion()\n");
         final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 16, SET_MEM_TO_0);
-        StructLayoutOnTheFlyFactory slf = new StructLayoutOnTheFlyFactory(Alignment.AT_8, heap, 0);
+        StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactory.Type.STRUCT);
+        final long offsetInHeap = heap.getAlignmentOffset(0, Alignment.AT_8);
 
         //start with offset == 0
-        final Int8_t _int8_t = new Int8_t(heap, slf.int8_t(), MEM_UNINITIALIZED);
+        final Int8_t _int8_t = new Int8_t(heap, offsetInHeap + slf.int8_t(), MEM_UNINITIALIZED);
         _int8_t.int8_t((byte) 'a');
 
         //use the biggest alignment to align union
-        final long unionOffset = slf.union(BaseDataType.int64_t.ALIGN_OF, BaseDataType.int64_t.SIZE_OF);
+        final long unionOffset = offsetInHeap + slf.union(BaseDataType.int64_t.SIZE_OF, BaseDataType.int64_t.ALIGN_OF);
         //alignment on 2 byte boundary after int16_t
         final Int16_t _int16_t = new Int16_t(heap, unionOffset, MEM_UNINITIALIZED);
         final Int32_t _int32_t = new Int32_t(heap, unionOffset, MEM_UNINITIALIZED);

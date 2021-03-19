@@ -119,7 +119,8 @@ public class StructLayoutFactoryImpl implements StructLayoutFactory {
 
     @Override
     public long getSizeof() {
-        return nextOffset;
+        final int reminder = (int) Long.remainderUnsigned(nextOffset, structAlignment.alignof);
+        return (reminder == 0) ? nextOffset : nextOffset + structAlignment.alignof - reminder;
     }
 
     @Override

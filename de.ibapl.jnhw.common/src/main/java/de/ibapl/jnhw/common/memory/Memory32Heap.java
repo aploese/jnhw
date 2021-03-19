@@ -69,4 +69,9 @@ public class Memory32Heap extends OpaqueMemory32 {
         return AbstractNativeMemory.calcOffsetForAlignemt(this, fieldAlignment, fieldOnTheFly.getOffset() + fieldOnTheFly.getSizeInBytes());
     }
 
+    public long getAlignmentOffset(long offset, Alignment alignment) {
+        final int reminder = (int) Long.remainderUnsigned(baseAddress + offset, alignment.alignof);
+        return (reminder == 0) ? baseAddress + offset : baseAddress + offset + alignment.alignof - reminder;
+    }
+
 }

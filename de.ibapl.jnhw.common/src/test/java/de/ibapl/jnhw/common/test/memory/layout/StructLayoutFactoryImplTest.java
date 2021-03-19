@@ -53,6 +53,25 @@ public class StructLayoutFactoryImplTest {
 
     }
 
+    public static class S1_fields_reversed extends StructLayout {
+
+        public final static long f0;
+        public final static long f1;
+        public final static int sizeof;
+        public final static Alignment alignment;
+
+        static {
+            StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactoryImpl.Type.STRUCT);
+            f0 = slf.uint16_t();
+            f1 = slf.uint8_t();
+            sizeof = (int) slf.getSizeof();
+            alignment = slf.getAlignment();
+        }
+
+        private long offset;
+
+    }
+
     public static class S2 extends StructLayout {
 
         public final static long f0;
@@ -94,7 +113,15 @@ public class StructLayoutFactoryImplTest {
     @Test
     public void testS1() {
         assertEquals(4, S1.sizeof);
+        assertEquals(2, S1.f1);
         assertEquals(Alignment.AT_2, S1.alignment);
+    }
+
+    @Test
+    public void testS1_fields_reversed() {
+        assertEquals(4, S1_fields_reversed.sizeof);
+        assertEquals(2, S1_fields_reversed.f1);
+        assertEquals(Alignment.AT_2, S1_fields_reversed.alignment);
     }
 
     @Test

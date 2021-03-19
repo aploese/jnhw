@@ -36,7 +36,17 @@ struct s1 {
 };
 
 static_assert(4 == sizeof (struct s1), "4 != sizeof(struct s1)");
+static_assert(2 == offsetof(struct s1, f1), "2 != offsetof(struct s1, f1)");
 static_assert(2 == __alignof__ (struct s1), "2 != __alignof__(struct s1)");
+
+struct s1_fields_reversed {
+    uint16_t f0;
+    uint8_t f1;
+};
+
+static_assert(4 == sizeof (struct s1_fields_reversed), "4 != sizeof(struct s1_fields_reversed)");
+static_assert(2 == offsetof(struct s1_fields_reversed, f1), "2 != offsetof(struct s1_fields_reversed, f1)");
+static_assert(2 == __alignof__ (struct s1_fields_reversed), "2 != __alignof__(struct s1_fields_reversed)");
 
 struct s2 {
     uint8_t f0;
