@@ -36,8 +36,7 @@ libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
 
 libwinbase_la_SOURCES = \
- WinbaseFunctions.c \
- WinbaseStructures.c
+ WinbaseFunctions.c
 
 libwinreg_la_SOURCES = \
  WinregFunctions.c

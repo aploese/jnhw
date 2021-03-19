@@ -171,7 +171,7 @@ libsynchapi_la_LIBADD =
 am_libsynchapi_la_OBJECTS = SynchapiFunctions.lo
 libsynchapi_la_OBJECTS = $(am_libsynchapi_la_OBJECTS)
 libwinbase_la_LIBADD =
-am_libwinbase_la_OBJECTS = WinbaseFunctions.lo WinbaseStructures.lo
+am_libwinbase_la_OBJECTS = WinbaseFunctions.lo
 libwinbase_la_OBJECTS = $(am_libwinbase_la_OBJECTS)
 libwinreg_la_LIBADD =
 am_libwinreg_la_OBJECTS = WinregFunctions.lo
@@ -200,7 +200,6 @@ am__depfiles_remade = ./$(DEPDIR)/ErrhandlingapiFunctions.Plo \
 	./$(DEPDIR)/ProcessthreadsapiFunctions.Plo \
 	./$(DEPDIR)/SynchapiFunctions.Plo \
 	./$(DEPDIR)/WinbaseFunctions.Plo \
-	./$(DEPDIR)/WinbaseStructures.Plo \
 	./$(DEPDIR)/WinregFunctions.Plo \
 	./$(DEPDIR)/jnhw-winapi-jni.Plo
 am__mv = mv -f
@@ -426,8 +425,7 @@ libjnhw_winapi_la_SOURCES = \
  jnhw-winapi-jni.c
 
 libwinbase_la_SOURCES = \
- WinbaseFunctions.c \
- WinbaseStructures.c
+ WinbaseFunctions.c
 
 libwinreg_la_SOURCES = \
  WinregFunctions.c
@@ -584,7 +582,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ProcessthreadsapiFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SynchapiFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinbaseFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinbaseStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WinregFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-winapi-jni.Plo@am__quote@ # am--include-marker
 
@@ -756,7 +753,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/ProcessthreadsapiFunctions.Plo
 	-rm -f ./$(DEPDIR)/SynchapiFunctions.Plo
 	-rm -f ./$(DEPDIR)/WinbaseFunctions.Plo
-	-rm -f ./$(DEPDIR)/WinbaseStructures.Plo
 	-rm -f ./$(DEPDIR)/WinregFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
 	-rm -f Makefile
@@ -813,7 +809,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/ProcessthreadsapiFunctions.Plo
 	-rm -f ./$(DEPDIR)/SynchapiFunctions.Plo
 	-rm -f ./$(DEPDIR)/WinbaseFunctions.Plo
-	-rm -f ./$(DEPDIR)/WinbaseStructures.Plo
 	-rm -f ./$(DEPDIR)/WinregFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-winapi-jni.Plo
 	-rm -f Makefile
