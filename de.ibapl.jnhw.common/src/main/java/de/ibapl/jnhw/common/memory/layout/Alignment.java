@@ -29,11 +29,38 @@ import java.lang.annotation.Native;
  * @author aploese
  */
 public enum Alignment {
-    AT_1(1), AT_2(2), AT_4(4), AT_8(8),
+    AT_1(1) {
+        public long doAlignment(long unaligned) {
+            return unaligned;
+        }
+
+    },
+    AT_2(2) {
+        public long doAlignment(long unaligned) {
+            return (unaligned & 0x1L) == 0 ? unaligned : unaligned + 1;
+        }
+    },
+    AT_4(4) {
+        public long doAlignment(long unaligned) {
+            final long remainder = unaligned & 0x3L;
+            return (remainder == 0) ? unaligned : unaligned + alignof - remainder;
+        }
+    },
+    AT_8(8) {
+        public long doAlignment(long unaligned) {
+            final long remainder = unaligned & 0x5L;
+            return (remainder == 0) ? unaligned : unaligned + alignof - remainder;
+        }
+    },
     /**
      * aarch64 POSIX->signal.h -> ucontext_t
      */
-    AT_16(16);
+    AT_16(16) {
+        public long doAlignment(long unaligned) {
+            final long remainder = unaligned & 0xfL;
+            return (remainder == 0) ? unaligned : unaligned + alignof - remainder;
+        }
+    };
 
     public static Alignment max(Alignment a1, Alignment a2) {
         return a1.alignof >= a2.alignof ? a1 : a2;
@@ -41,6 +68,18 @@ public enum Alignment {
 
     public static Alignment min(Alignment a1, Alignment a2) {
         return a1.alignof >= a2.alignof ? a2 : a1;
+    }
+
+    /**
+     * AT_X enumn members will override this, it is basically an unsigned
+     * fivision by zero so there ip potential to optimize..
+     *
+     * @param unaligned
+     * @return
+     */
+    public long doAlignment(long unaligned) {
+        final int remainder = (int) Long.remainderUnsigned(unaligned, alignof);
+        return (remainder == 0) ? unaligned : unaligned + alignof - remainder;
     }
 
     private Alignment(int alignof) {
@@ -168,12 +207,12 @@ public enum Alignment {
      * @param dataTypeAlignment
      * @return
      */
-    public static int calcElementAlignmentInStruct(Alignment structAlignment, Alignment dataTypeAlignment) {
+    public static Alignment calcElementAlignmentInStruct(Alignment structAlignment, Alignment dataTypeAlignment) {
         if (structAlignment.alignof < dataTypeAlignment.alignof) {
             //We have a packed structure
-            return structAlignment.alignof;
+            return structAlignment;
         } else {
-            return dataTypeAlignment.alignof;
+            return dataTypeAlignment;
         }
     }
 

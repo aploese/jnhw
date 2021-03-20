@@ -29,7 +29,7 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
  */
 public class StructLayoutFactoryImpl implements StructLayoutFactory {
 
-    private long nextOffset;
+    private long nextOffsetUnaligned;
     private Alignment structAlignment = Alignment.AT_1;
     private final boolean ALIGNMENT_IS_FIXED;
     private final Type type;
@@ -53,14 +53,13 @@ public class StructLayoutFactoryImpl implements StructLayoutFactory {
         }
         switch (type) {
             case STRUCT:
-                final int intAlignment = Alignment.calcElementAlignmentInStruct(structAlignment, currentAlignment);
-                final int reminder = (int) Long.remainderUnsigned(nextOffset, intAlignment);
-                final long offset = (reminder == 0) ? nextOffset : nextOffset + intAlignment - reminder;
-                nextOffset = offset + currentSizeInBytes;
+                final Alignment intAlignment = Alignment.calcElementAlignmentInStruct(structAlignment, currentAlignment);
+                final long offset = intAlignment.doAlignment(nextOffsetUnaligned);
+                nextOffsetUnaligned = offset + currentSizeInBytes;
                 return offset;
             case UNION:
-                if (nextOffset < currentSizeInBytes) {
-                    nextOffset = currentSizeInBytes;
+                if (nextOffsetUnaligned < currentSizeInBytes) {
+                    nextOffsetUnaligned = currentSizeInBytes;
                 }
                 return 0;
             default:
@@ -121,8 +120,7 @@ public class StructLayoutFactoryImpl implements StructLayoutFactory {
 
     @Override
     public long getSizeof() {
-        final int reminder = (int) Long.remainderUnsigned(nextOffset, structAlignment.alignof);
-        return (reminder == 0) ? nextOffset : nextOffset + structAlignment.alignof - reminder;
+        return structAlignment.doAlignment(nextOffsetUnaligned);
     }
 
     @Override

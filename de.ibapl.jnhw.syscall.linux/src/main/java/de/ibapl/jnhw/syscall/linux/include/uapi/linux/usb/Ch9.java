@@ -58,7 +58,6 @@ import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.memory.layout.PackedStructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;

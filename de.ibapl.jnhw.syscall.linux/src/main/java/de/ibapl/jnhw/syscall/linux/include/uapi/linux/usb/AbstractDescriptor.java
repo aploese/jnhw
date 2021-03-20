@@ -23,7 +23,6 @@ package de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb;
 
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.memory.layout.PackedStructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;

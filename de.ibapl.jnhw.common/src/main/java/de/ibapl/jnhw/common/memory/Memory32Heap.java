@@ -66,12 +66,11 @@ public class Memory32Heap extends OpaqueMemory32 {
         if (fieldOnTheFly.parent != this) {
             throw new IllegalArgumentException("Im not the parent of: " + fieldOnTheFly);
         }
-        return AbstractNativeMemory.calcOffsetForAlignemt(this, fieldAlignment, fieldOnTheFly.getOffset() + fieldOnTheFly.getSizeInBytes());
+        return AbstractNativeMemory.calcOffsetForAlignment(this, fieldAlignment, fieldOnTheFly.getOffset() + fieldOnTheFly.getSizeInBytes());
     }
 
     public long getAlignmentOffset(long offset, Alignment alignment) {
-        final int reminder = (int) Long.remainderUnsigned(baseAddress + offset, alignment.alignof);
-        return (reminder == 0) ? baseAddress + offset : baseAddress + offset + alignment.alignof - reminder;
+        return AbstractNativeMemory.calcOffsetForAlignment(this, alignment, offset);
     }
 
 }

@@ -81,9 +81,8 @@ public abstract class AbstractNativeMemory {
      * @param startOffset the offset in mem where you intend to place onTheFly
      * @return the aligned offset
      */
-    public static long calcOffsetForAlignemt(final AbstractNativeMemory mem, final Alignment structAlignment, final long startOffset) {
-        final int reminder = (int) Long.remainderUnsigned(mem.baseAddress + startOffset, structAlignment.alignof);
-        return (reminder == 0) ? startOffset : startOffset + structAlignment.alignof - reminder;
+    public static long calcOffsetForAlignment(final AbstractNativeMemory mem, final Alignment structAlignment, final long startOffset) {
+        return structAlignment.doAlignment(mem.baseAddress + startOffset) - mem.baseAddress;
     }
 
     private static UnsafeMemoryAccessor getUnsafeMemoryAccessor() {
