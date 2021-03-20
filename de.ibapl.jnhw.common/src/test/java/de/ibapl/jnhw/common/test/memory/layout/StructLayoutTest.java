@@ -76,7 +76,7 @@ public class StructLayoutTest {
 
     @Test
     public void testAlignOfStruct_Int64_t() {
-        Assertions.assertEquals(Alignment.ALIGN_OF_STRUCT_INT64_T.alignof, getAlignOfStruct_Int64_t());
+        Assertions.assertEquals(Alignment.__ALIGN_OF_STRUCT_INT64_T.alignof, getAlignOfStruct_Int64_t());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class StructLayoutTest {
 
     @Test
     public void testAlignOf_Int64_t() {
-        switch (Alignment.ALIGN_OF_INT64_T) {
+        switch (Alignment.__ALIGN_OF_INT64_T) {
             case AT_8:
                 Assertions.assertEquals(Alignment.AT_8.alignof, getAlignOf_Int64_t());
                 break;
@@ -119,7 +119,7 @@ public class StructLayoutTest {
         Assertions.assertEquals(12, definedLayout.offsetFifth);
         Assertions.assertEquals(16, definedLayout.offsetSixth);
         Assertions.assertEquals(24, definedLayout.offsetSeventh);
-        switch (Alignment.ALIGN_OF_STRUCT_INT64_T) {
+        switch (Alignment.__ALIGN_OF_STRUCT_INT64_T) {
             case AT_8:
                 Assertions.assertEquals(32, definedLayout.offsetEighth);
 
@@ -148,7 +148,7 @@ public class StructLayoutTest {
         Assertions.assertEquals(12, nativeLayout.offsetFifth);
         Assertions.assertEquals(16, nativeLayout.offsetSixth);
         Assertions.assertEquals(24, nativeLayout.offsetSeventh);
-        switch (Alignment.ALIGN_OF_STRUCT_INT64_T) {
+        switch (Alignment.__ALIGN_OF_STRUCT_INT64_T) {
             case AT_8:
                 Assertions.assertEquals(32, nativeLayout.offsetEighth);
 

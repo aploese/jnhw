@@ -44,7 +44,7 @@ public class Signed_LongTest {
     public void testNative() {
         Signed_Long instance = new Signed_Long(null, 0, SET_MEM_TO_0);
         long input64 = 0x8070605040302010L;
-        if (BaseDataType.SIZE_OF_LONG == 8) {
+        if (BaseDataType.__SIZE_OF_LONG == 8) {
             instance.signed_long(input64);
             assertEquals(input64, instance.signed_long());
         } else {
@@ -54,7 +54,7 @@ public class Signed_LongTest {
         }
         instance.signed_long(-33);
         assertEquals(-33, instance.signed_long());
-        if (BaseDataType.SIZE_OF_LONG == 8) {
+        if (BaseDataType.__SIZE_OF_LONG == 8) {
             instance.signed_long(input64);
             assertEquals(input64, instance.signed_long());
         } else {
@@ -65,7 +65,7 @@ public class Signed_LongTest {
     @Test
     public void testNativeToString() {
         Signed_Long instance = new Signed_Long(null, 0, SET_MEM_TO_0);
-        if (BaseDataType.SIZE_OF_LONG == 8) {
+        if (BaseDataType.__SIZE_OF_LONG == 8) {
             Int64_t int64_t = new Int64_t(instance, 0, MEM_UNINITIALIZED);
             int64_t.int64_t(0xfffffffffffffffeL);
             assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());

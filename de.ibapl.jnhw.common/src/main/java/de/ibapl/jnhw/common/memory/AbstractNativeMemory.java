@@ -96,7 +96,7 @@ public abstract class AbstractNativeMemory {
                         LOG.info("Use sun.misc.Unsafe - 64bit for long and 32 bit for pointer access");
                         return new UnsafeMemoryAccessor_P32_L64();
                     default:
-                        throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
+                        throw new IllegalStateException("Unknow size of long: " + BaseDataType.__SIZE_OF_LONG);
                 }
             case _64_BIT:
                 switch (NativeLibResolver.getSizeOfLong()) {
@@ -107,10 +107,10 @@ public abstract class AbstractNativeMemory {
                         LOG.info("Use sun.misc.Unsafe - 64bit for long and 64 bit for pointer access");
                         return new UnsafeMemoryAccessor_P64_L64();
                     default:
-                        throw new IllegalStateException("Unknow size of long: " + BaseDataType.SIZE_OF_LONG);
+                        throw new IllegalStateException("Unknow size of long: " + BaseDataType.__SIZE_OF_LONG);
                 }
             default:
-                throw new IllegalStateException("Unknow size of pointer: " + BaseDataType.SIZE_OF_POINTER);
+                throw new IllegalStateException("Unknow size of pointer: " + BaseDataType.__SIZE_OF_POINTER);
         }
     }
 

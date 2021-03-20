@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.common.memory.layout;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
+import de.ibapl.jnhw.common.annotation.Define;
 import java.lang.annotation.Native;
 
 /**
@@ -101,40 +102,41 @@ public enum Alignment {
             case 16:
                 return AT_16;
             default:
-                throw new IllegalArgumentException("Can't get Alignment from alignof: " + alignof);
+                throw new IllegalArgumentException("Can't get alignment from alignof: " + alignof);
         }
     }
 
-    public final static Alignment ALIGN_OF_LONG;
-    public final static Alignment ALIGN_OF_STRUCT_LONG;
+    public final static Alignment __ALIGN_OF_LONG;
+    public final static Alignment __ALIGN_OF_STRUCT_LONG;
 
-    public final static Alignment ALIGN_OF_POINTER;
-    public final static Alignment ALIGN_OF_STRUCT_POINTER;
+    public final static Alignment __ALIGN_OF_POINTER;
+    public final static Alignment __ALIGN_OF_STRUCT_POINTER;
 
-    public final static Alignment ALIGN_OF_INT8_T;
-    public final static Alignment ALIGN_OF_STRUCT_INT8_T;
+    public final static Alignment __ALIGN_OF_INT8_T;
+    public final static Alignment __ALIGN_OF_STRUCT_INT8_T;
 
-    public final static Alignment ALIGN_OF_INT16_T;
-    public final static Alignment ALIGN_OF_STRUCT_INT16_T;
+    public final static Alignment __ALIGN_OF_INT16_T;
+    public final static Alignment __ALIGN_OF_STRUCT_INT16_T;
 
-    public final static Alignment ALIGN_OF_INT32_T;
-    public final static Alignment ALIGN_OF_STRUCT_INT32_T;
+    public final static Alignment __ALIGN_OF_INT32_T;
+    public final static Alignment __ALIGN_OF_STRUCT_INT32_T;
 
-    public final static Alignment ALIGN_OF_INT64_T;
-    public final static Alignment ALIGN_OF_STRUCT_INT64_T;
+    public final static Alignment __ALIGN_OF_INT64_T;
+    public final static Alignment __ALIGN_OF_STRUCT_INT64_T;
 
-    public final static Alignment ALIGN_OF_INTPTR_T;
-    public final static Alignment ALIGN_OF_STRUCT_INTPTR_T;
+    public final static Alignment __ALIGN_OF_INTPTR_T;
+    public final static Alignment __ALIGN_OF_STRUCT_INTPTR_T;
 
-    public final static Alignment ALIGN_OF_FLOAT;
-    public final static Alignment ALIGN_OF_STRUCT_FLOAT;
+    public final static Alignment __ALIGN_OF_FLOAT;
+    public final static Alignment __ALIGN_OF_STRUCT_FLOAT;
 
-    public final static Alignment ALIGN_OF_DOUBLE;
-    public final static Alignment ALIGN_OF_STRUCT_DOUBLE;
+    public final static Alignment __ALIGN_OF_DOUBLE;
+    public final static Alignment __ALIGN_OF_STRUCT_DOUBLE;
 
-    public final static Alignment ALIGN_OF_LONG_DOUBLE;
-    public final static Alignment ALIGN_OF_STRUCT_LONG_DOUBLE;
+    public final static Alignment __ALIGN_OF_LONG_DOUBLE;
+    public final static Alignment __ALIGN_OF_STRUCT_LONG_DOUBLE;
 
+    @Define
     public final static Alignment __BIGGEST_ALIGNMENT__;
 
     @Native
@@ -159,9 +161,6 @@ public enum Alignment {
     private final static int REQ_ALIGNOF_LONG_DOUBLE = 0x000a;
 
     @Native
-    private final static int STRUCT_ALIGN_OFFSET = 0x0010;
-
-    @Native
     private final static int STRUCT_OFFSET = 0x0010;
 
     @Native
@@ -170,34 +169,34 @@ public enum Alignment {
     static {
         // This get called after the Constructor of BaseDataType...
         LibJnhwCommonLoader.touch();
-        ALIGN_OF_INT8_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT8_T));
-        ALIGN_OF_INT16_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T));
-        ALIGN_OF_INT32_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT32_T));
-        ALIGN_OF_INT64_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T));
-        ALIGN_OF_INTPTR_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INTPTR_T));
+        __ALIGN_OF_INT8_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT8_T));
+        __ALIGN_OF_INT16_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T));
+        __ALIGN_OF_INT32_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT32_T));
+        __ALIGN_OF_INT64_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T));
+        __ALIGN_OF_INTPTR_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INTPTR_T));
 
-        ALIGN_OF_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER));
-        ALIGN_OF_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG));
-        ALIGN_OF_FLOAT = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_FLOAT));
-        ALIGN_OF_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_DOUBLE));
-        ALIGN_OF_LONG_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG_DOUBLE));
+        __ALIGN_OF_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER));
+        __ALIGN_OF_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG));
+        __ALIGN_OF_FLOAT = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_FLOAT));
+        __ALIGN_OF_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_DOUBLE));
+        __ALIGN_OF_LONG_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG_DOUBLE));
 
-        ALIGN_OF_STRUCT_INT8_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT8_T | STRUCT_OFFSET));
-        ALIGN_OF_STRUCT_INT16_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T | STRUCT_OFFSET));
-        ALIGN_OF_STRUCT_INT32_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT32_T | STRUCT_OFFSET));
-        ALIGN_OF_STRUCT_INT64_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T | STRUCT_OFFSET));
-        ALIGN_OF_STRUCT_INTPTR_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INTPTR_T | STRUCT_OFFSET));
+        __ALIGN_OF_STRUCT_INT8_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT8_T | STRUCT_OFFSET));
+        __ALIGN_OF_STRUCT_INT16_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T | STRUCT_OFFSET));
+        __ALIGN_OF_STRUCT_INT32_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT32_T | STRUCT_OFFSET));
+        __ALIGN_OF_STRUCT_INT64_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T | STRUCT_OFFSET));
+        __ALIGN_OF_STRUCT_INTPTR_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INTPTR_T | STRUCT_OFFSET));
 
-        ALIGN_OF_STRUCT_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER | STRUCT_OFFSET));
-        ALIGN_OF_STRUCT_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
-        ALIGN_OF_STRUCT_FLOAT = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_FLOAT | STRUCT_OFFSET));
-        ALIGN_OF_STRUCT_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
-        ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG_DOUBLE | STRUCT_OFFSET));
+        __ALIGN_OF_STRUCT_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER | STRUCT_OFFSET));
+        __ALIGN_OF_STRUCT_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
+        __ALIGN_OF_STRUCT_FLOAT = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_FLOAT | STRUCT_OFFSET));
+        __ALIGN_OF_STRUCT_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
+        __ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG_DOUBLE | STRUCT_OFFSET));
 
         __BIGGEST_ALIGNMENT__ = Alignment.fromAlignof(getFromNative(REQ___BIGGEST_ALIGNMENT__));
     }
 
-    private final static native int getFromNative(int alignofReqXXX);
+    private static native int getFromNative(int alignofReqXXX);
 
     /**
      * calculate the alignment of a field in a structure - the smalles alignment

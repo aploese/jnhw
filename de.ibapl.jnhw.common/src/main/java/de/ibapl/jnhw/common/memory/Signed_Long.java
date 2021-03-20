@@ -34,7 +34,7 @@ public class Signed_Long extends NativeIntNumber {
     private final BaseDataType dataType;
 
     public Signed_Long(AbstractNativeMemory owner, long offset, Byte setMem) {
-        super(owner, offset, BaseDataType.SIZE_OF_LONG, setMem);
+        super(owner, offset, BaseDataType.__SIZE_OF_LONG, setMem);
         dataType = BaseDataType.getSigned_Long_Mapping();
     }
 

@@ -24,7 +24,6 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
-import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,24 +41,24 @@ public class UnsafeMemoryAccessorTest {
         //We rely on this to figure out 32 or 64 for long
         switch (NativeLibResolver.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(4, BaseDataType.SIZE_OF_POINTER);
-                assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_POINTER);
+                assertEquals(4, BaseDataType.__SIZE_OF_POINTER);
+                assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_POINTER);
                 break;
             case _64_BIT:
-                assertEquals(8, BaseDataType.SIZE_OF_POINTER);
-                assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_POINTER);
+                assertEquals(8, BaseDataType.__SIZE_OF_POINTER);
+                assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_POINTER);
                 break;
             default:
                 fail();
         }
         switch (NativeLibResolver.getSizeOfLong()) {
             case _32_BIT:
-                assertEquals(4, BaseDataType.SIZE_OF_LONG);
-                assertEquals(Alignment.AT_4, Alignment.ALIGN_OF_LONG);
+                assertEquals(4, BaseDataType.__SIZE_OF_LONG);
+                assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_LONG);
                 break;
             case _64_BIT:
-                assertEquals(8, BaseDataType.SIZE_OF_LONG);
-                assertEquals(Alignment.AT_8, Alignment.ALIGN_OF_LONG);
+                assertEquals(8, BaseDataType.__SIZE_OF_LONG);
+                assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_LONG);
                 break;
             default:
                 fail();

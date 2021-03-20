@@ -43,7 +43,7 @@ public class Unsigned_LongTest {
     public void testNative() {
         Unsigned_Long instance = new Unsigned_Long(null, 0, SET_MEM_TO_0);
         final long input = 0x8070605040302010L;
-        if (BaseDataType.SIZE_OF_LONG == 8) {
+        if (BaseDataType.__SIZE_OF_LONG == 8) {
             instance.unsigned_long(input);
             assertEquals(input, instance.unsigned_long());
         } else {
@@ -53,7 +53,7 @@ public class Unsigned_LongTest {
         }
         instance.unsigned_long(33);
         assertEquals(33, instance.unsigned_long());
-        if (BaseDataType.SIZE_OF_LONG == 8) {
+        if (BaseDataType.__SIZE_OF_LONG == 8) {
             instance.unsigned_long(input);
             assertEquals(input, instance.unsigned_long());
             instance.unsigned_long(-1);
@@ -67,7 +67,7 @@ public class Unsigned_LongTest {
     @Test
     public void testNativeToString() {
         Unsigned_Long instance = new Unsigned_Long(null, 0, SET_MEM_TO_0);
-        if (BaseDataType.SIZE_OF_LONG == 8) {
+        if (BaseDataType.__SIZE_OF_LONG == 8) {
             Uint64_t uint64_t = new Uint64_t(instance, 0, MEM_UNINITIALIZED);
             uint64_t.uint64_t(0xfffffffffffffffeL);
             assertEquals(Long.toUnsignedString(0xfffffffffffffffeL), instance.nativeToString());
