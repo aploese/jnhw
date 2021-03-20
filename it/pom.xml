@@ -29,6 +29,11 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!-- run this first, and then override it in maven-assembly-plugin -->
+                <plugin>
+                    <groupId>biz.aQute.bnd</groupId>
+                    <artifactId>bnd-maven-plugin</artifactId>
+                </plugin>
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>3.3.0</version>
