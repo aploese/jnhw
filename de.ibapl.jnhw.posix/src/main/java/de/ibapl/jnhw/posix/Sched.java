@@ -114,14 +114,14 @@ public class Sched {
             LAYOUT = native2Layout(Layout.class);
         }
 
-        public Sched_param(Byte setMem) {
+        public Sched_param(SetMem setMem) {
             this(null, 0, setMem);
         }
 
-        public Sched_param(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Sched_param(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
-            sched_ss_init_budget = LAYOUT.sched_ss_init_budget == -1 ? null : new Time.Timespec(this, LAYOUT.sched_ss_init_budget, MEM_UNINITIALIZED);//mem is already initialized by parent
-            sched_ss_repl_period = LAYOUT.sched_ss_repl_period == -1 ? null : new Time.Timespec(this, LAYOUT.sched_ss_repl_period, MEM_UNINITIALIZED);//mem is already initialized by parent
+            sched_ss_init_budget = LAYOUT.sched_ss_init_budget == -1 ? null : new Time.Timespec(this, LAYOUT.sched_ss_init_budget, SetMem.DO_NOT_SET);//mem is already initialized by parent
+            sched_ss_repl_period = LAYOUT.sched_ss_repl_period == -1 ? null : new Time.Timespec(this, LAYOUT.sched_ss_repl_period, SetMem.DO_NOT_SET);//mem is already initialized by parent
         }
 
         /**

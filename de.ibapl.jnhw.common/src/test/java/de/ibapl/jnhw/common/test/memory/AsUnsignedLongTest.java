@@ -23,11 +23,9 @@ package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AsUnsignedLong;
-import de.ibapl.jnhw.common.memory.Uint64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 
 /**
  *
@@ -40,11 +38,11 @@ public class AsUnsignedLongTest {
 
     @Test
     public void testNative() {
-        AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, null, 0, SET_MEM_TO_0);
+        AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, null, 0, SetMem.TO_0x00);
         instance.setFromUnsignedLong(33);
         assertEquals(33, instance.getAsUnsignedLong());
         assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
-        assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, null, 0, null));
+        assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, null, 0, SetMem.DO_NOT_SET));
     }
 
 }

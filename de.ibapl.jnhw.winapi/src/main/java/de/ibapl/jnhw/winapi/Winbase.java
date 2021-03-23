@@ -738,7 +738,7 @@ public abstract class Winbase {
 
         }
 
-        public COMMTIMEOUTS(Byte setMem) {
+        public COMMTIMEOUTS(SetMem setMem) {
             super((OpaqueMemory32) null, 0, Layout.sizeof, setMem);
         }
 
@@ -872,7 +872,7 @@ public abstract class Winbase {
 
         }
 
-        public COMSTAT(Byte setMem) {
+        public COMSTAT(SetMem setMem) {
             super((OpaqueMemory32) null, 0, Layout.sizeof, setMem);
         }
 
@@ -1032,7 +1032,7 @@ public abstract class Winbase {
 
         }
 
-        public DCB(Byte setMem) {
+        public DCB(SetMem setMem) {
             super(null, 0, Layout.sizeof, setMem);
             //set the current size explicitly.
             DCBlength(Layout.sizeof);

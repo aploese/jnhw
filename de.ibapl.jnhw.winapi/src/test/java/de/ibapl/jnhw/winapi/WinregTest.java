@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
 import de.ibapl.jnhw.winapi.WinDef.PHKEY;
@@ -40,8 +40,8 @@ public class WinregTest {
         Winreg.RegOpenKeyExW(Winreg.HKEY_LOCAL_MACHINE, testKeyStr, 0, Winnt.KEY_READ, testKey);
         Assertions.assertFalse(testKey.dereference().is_INVALID_HANDLE_VALUE(), "PHKEY is not valid");
         int dwIndex = 0;
-        LPWSTR lpValueName = new LPWSTR(256, SET_MEM_TO_0);
-        LPBYTE lpData = new LPBYTE(256, SET_MEM_TO_0);
+        LPWSTR lpValueName = new LPWSTR(256, SetMem.TO_0x00);
+        LPBYTE lpData = new LPBYTE(256, SetMem.TO_0x00);
         IntRef lpType = new IntRef();
         boolean collecting = true;
         do {

@@ -38,7 +38,7 @@ public class Size_t extends NativeIntNumber implements Accessor_Size_t {
 
     private final static BaseDataType dataType = PosixDataType.size_t.baseDataType;
 
-    public Size_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Size_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
         super(owner, offset, dataType.SIZE_OF, setMem);
     }
 

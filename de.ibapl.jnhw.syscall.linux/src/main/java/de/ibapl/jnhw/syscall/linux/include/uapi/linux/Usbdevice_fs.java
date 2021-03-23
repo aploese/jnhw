@@ -83,7 +83,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_ctrltransfer(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_ctrltransfer(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 
@@ -143,7 +143,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_bulktransfer(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_bulktransfer(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 
@@ -219,7 +219,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_setinterface(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_setinterface(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 
@@ -242,7 +242,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_disconnectsignal(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_disconnectsignal(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 
@@ -268,7 +268,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_getdriver(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_getdriver(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 
@@ -291,7 +291,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_connectinfo(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_connectinfo(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 
@@ -314,7 +314,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_conninfo_ex(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_conninfo_ex(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 
@@ -380,7 +380,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_iso_packet_desc(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_iso_packet_desc(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 
@@ -406,7 +406,7 @@ public final class Usbdevice_fs {
 
         public static native int offsetof_iso_frame_desc();
 
-        public Usbdevfs_urb(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_urb(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
             iso_frame_desc = null;
             throw new RuntimeException("Implement me!");
@@ -460,7 +460,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_ioctl(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_ioctl(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 
@@ -490,7 +490,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_hub_portinfo(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_hub_portinfo(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 
@@ -532,7 +532,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_disconnect_claim(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_disconnect_claim(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 
@@ -556,7 +556,7 @@ public final class Usbdevice_fs {
         @AlignOf
         public static native int alignof();
 
-        public Usbdevfs_streams(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usbdevfs_streams(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, sizeof(), setMem);
         }
 

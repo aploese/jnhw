@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.syscall.linux.sysfs;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.posix.Fcntl;
@@ -124,7 +124,7 @@ public class UsbDevice {
         private int length;
 
         protected DeviceIterator() {
-            mem = new Memory32Heap(null, 0, 1024 * 64, MEM_UNINITIALIZED);
+            mem = new Memory32Heap(null, 0, 1024 * 64, SetMem.DO_NOT_SET);
             try {
                 final int fd = Fcntl.open(new File(sysFsDir, "descriptors").getAbsolutePath(), Fcntl.O_RDONLY);
                 try {
@@ -147,12 +147,12 @@ public class UsbDevice {
 
         @Override
         public AbstractDescriptor next() {
-            Ch9.Usb_descriptor_header header = new Ch9.Usb_descriptor_header(mem, currentPos, null);
+            Ch9.Usb_descriptor_header header = new Ch9.Usb_descriptor_header(mem, currentPos, SetMem.DO_NOT_SET);
             try {
                 return header.toDescriptor();
             } catch (Exception ex) {
                 Logger.getLogger("d.i.j.s.l.UsbDevice").log(Level.SEVERE, "Decode USB descriptor", ex);
-                return new UsbUnknownDescriptor(mem, currentPos, header.bLength(), MEM_UNINITIALIZED);
+                return new UsbUnknownDescriptor(mem, currentPos, header.bLength(), SetMem.DO_NOT_SET);
             } finally {
                 currentPos += header.bLength();
             }

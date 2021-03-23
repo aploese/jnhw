@@ -48,8 +48,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.opentest4j.MultipleFailuresError;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
@@ -74,7 +73,7 @@ public class TimeTest {
     @Test
     public void testAsctime() {
         System.out.println("asctime");
-        Time.Tm tm = new Time.Tm(SET_MEM_TO_0);
+        Time.Tm tm = new Time.Tm(SetMem.TO_0x00);
         tm.tm_year(119);
         tm.tm_mon(11);
         tm.tm_mday(3);
@@ -97,7 +96,7 @@ public class TimeTest {
     @Test
     public void testAsctime_r() {
         System.out.println("asctime_r");
-        Time.Tm tm = new Time.Tm(SET_MEM_TO_0);
+        Time.Tm tm = new Time.Tm(SetMem.TO_0x00);
         tm.tm_year(119);
         tm.tm_mon(11);
         tm.tm_mday(3);
@@ -108,7 +107,7 @@ public class TimeTest {
         tm.tm_isdst(0);
 
         final int BUF_SIZE = 26;
-        Memory32Heap buf = new Memory32Heap((OpaqueMemory32) null, 0, BUF_SIZE, SET_MEM_TO_0);
+        Memory32Heap buf = new Memory32Heap((OpaqueMemory32) null, 0, BUF_SIZE, SetMem.TO_0x00);
         String result = Time.asctime_r(tm, buf);
         assertEquals("Wed Dec  3 08:17:07 2019\n", result);
         byte[] raw = OpaqueMemory32.toBytes(buf);
@@ -122,7 +121,7 @@ public class TimeTest {
         });
         //Test that there at least 26 bytes available in the buffer.
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Time.asctime_r(tm, new Memory32Heap((OpaqueMemory32) null, 0, 25, (byte) 0));
+            Time.asctime_r(tm, new Memory32Heap((OpaqueMemory32) null, 0, 25, SetMem.TO_0x00));
         });
     }
 
@@ -164,7 +163,7 @@ public class TimeTest {
     public void testClock_getres() throws Exception {
         System.out.println("clock_getres");
 
-        Time.Timespec timespec = new Time.Timespec(SET_MEM_TO_0);
+        Time.Timespec timespec = new Time.Timespec(SetMem.TO_0x00);
         Time.clock_getres(Time.CLOCK_MONOTONIC, timespec);
 
         assertEquals(0, timespec.tv_sec());
@@ -181,7 +180,7 @@ public class TimeTest {
     public void testClock_gettime() throws Exception {
         System.out.println("clock_gettime");
         int clock_id = Time.CLOCK_MONOTONIC;
-        Time.Timespec timespec = new Time.Timespec(SET_MEM_TO_0);
+        Time.Timespec timespec = new Time.Timespec(SetMem.TO_0x00);
         Time.clock_gettime(clock_id, timespec);
 
         System.out.println("timespec: " + timespec);
@@ -209,9 +208,9 @@ public class TimeTest {
             default:
                 int clock_id = Time.CLOCK_MONOTONIC;
                 int flags = 0;
-                Time.Timespec rqtp = new Time.Timespec(SET_MEM_TO_0);
+                Time.Timespec rqtp = new Time.Timespec(SetMem.TO_0x00);
                 rqtp.tv_nsec(10_000_000L); //10ms
-                Time.Timespec rmtp = new Time.Timespec(MEM_UNINITIALIZED);
+                Time.Timespec rmtp = new Time.Timespec(SetMem.DO_NOT_SET);
 
                 long start = System.nanoTime();
                 Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
@@ -243,7 +242,7 @@ public class TimeTest {
                 Time.clock_settime(0, null);
             });
         } else {
-            Time.Timespec timespec = new Time.Timespec(SET_MEM_TO_0);
+            Time.Timespec timespec = new Time.Timespec(SetMem.TO_0x00);
             //We should not habe the priveleges to set the CLOCK_REALTIME ... so a NativeErrorException with EPERM as errno should be thrown.
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                 Time.clock_settime(Time.CLOCK_REALTIME, timespec);
@@ -281,7 +280,7 @@ public class TimeTest {
     public void testCtime_r() throws Exception {
         System.out.println("ctime_r  @" + ZoneId.systemDefault());
         final long clock = TIME_T__20191203_142044;
-        Memory32Heap buf = new Memory32Heap((OpaqueMemory32) null, 0, 32, SET_MEM_TO_0);
+        Memory32Heap buf = new Memory32Heap((OpaqueMemory32) null, 0, 32, SetMem.TO_0x00);
         String result = Time.ctime_r(clock, buf);
 
         assertEquals(getCtimeFormated(clock), result);
@@ -295,7 +294,7 @@ public class TimeTest {
         });
         //Test that there at least 26 bytes available in the buffer.
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Time.ctime_r(clock, new Memory32Heap((OpaqueMemory32) null, 0, 25, (byte) 0));
+            Time.ctime_r(clock, new Memory32Heap((OpaqueMemory32) null, 0, 25, SetMem.TO_0x00));
         });
     }
 
@@ -368,7 +367,7 @@ public class TimeTest {
         System.out.println("gmtime_r");
         final Instant instant = Instant.now();
         final long timer = instant.getEpochSecond();
-        Time.Tm tm = new Time.Tm(MEM_UNINITIALIZED);
+        Time.Tm tm = new Time.Tm(SetMem.DO_NOT_SET);
         Time.Tm result = Time.gmtime_r(timer, tm);
         assertTm(instant, result, ZoneOffset.UTC);
 
@@ -435,7 +434,7 @@ public class TimeTest {
         System.out.println("localtime_r");
         final Instant instant = Instant.now();
         final long timer = instant.getEpochSecond();
-        final Time.Tm tm = new Time.Tm(MEM_UNINITIALIZED);
+        final Time.Tm tm = new Time.Tm(SetMem.DO_NOT_SET);
 
         final Time.Tm result = Time.localtime_r(timer, tm);
         Assertions.assertNotNull(result);
@@ -472,7 +471,7 @@ public class TimeTest {
     @Test
     public void testStructTimespec() {
         System.out.println("struct timespec");
-        Time.Timespec timespec = new Time.Timespec(MEM_UNINITIALIZED);
+        Time.Timespec timespec = new Time.Timespec(SetMem.DO_NOT_SET);
         timespec.tv_nsec(10_000_000L); //10ms
         timespec.tv_sec(42);
         assertEquals(10_000_000L, timespec.tv_nsec(), "tv_sec");
@@ -485,11 +484,11 @@ public class TimeTest {
     @Test
     public void testNanosleep() throws Exception {
         System.out.println("nanosleep");
-        Time.Timespec rqtp = new Time.Timespec(MEM_UNINITIALIZED);
+        Time.Timespec rqtp = new Time.Timespec(SetMem.DO_NOT_SET);
         rqtp.tv_nsec(10_000_000L); //10ms
         rqtp.tv_sec(0);
 
-        Time.Timespec rmtp = new Time.Timespec(MEM_UNINITIALIZED);
+        Time.Timespec rmtp = new Time.Timespec(SetMem.DO_NOT_SET);
         rmtp.tv_nsec(42);
         rmtp.tv_sec(42);
         try {
@@ -527,7 +526,7 @@ public class TimeTest {
         System.out.println("strftime");
         long maxsize = 1024;
         String format = "%Y-%m-%d %H:%M:%S";
-        Time.Tm timeptr = new Time.Tm(SET_MEM_TO_0);
+        Time.Tm timeptr = new Time.Tm(SetMem.TO_0x00);
         timeptr.tm_year(2020 - 1900);
         timeptr.tm_mon(1);
         timeptr.tm_mday(19);
@@ -556,7 +555,7 @@ public class TimeTest {
         System.out.println("strftime_l");
         long maxsize = 256;
         String format = "%Y-%m-%d %H:%M:%S";
-        Time.Tm timeptr = new Time.Tm(SET_MEM_TO_0);
+        Time.Tm timeptr = new Time.Tm(SetMem.TO_0x00);
         timeptr.tm_year(2020 - 1900);
         timeptr.tm_mon(1);
         timeptr.tm_mday(19);
@@ -593,7 +592,7 @@ public class TimeTest {
         System.out.println("strptime");
         String buf = "2020-01-27 09:12:57\nJNHW";
         String format = "%Y-%m-%d %H:%M:%S";
-        Time.Tm tm = new Time.Tm(MEM_UNINITIALIZED);
+        Time.Tm tm = new Time.Tm(SetMem.DO_NOT_SET);
         String expResult = "\nJNHW";
 
         String result = Time.strptime(buf, format, tm);
@@ -666,7 +665,7 @@ public class TimeTest {
             case MAC_OS_X:
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    new Time.Timer_t(SET_MEM_TO_0);
+                    new Time.Timer_t(SetMem.TO_0x00);
                 });
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.timer_create(0, null, null);
@@ -677,7 +676,7 @@ public class TimeTest {
                 return;
         }
 
-        final Time.Timer_t timerid = new Time.Timer_t(SET_MEM_TO_0);
+        final Time.Timer_t timerid = new Time.Timer_t(SetMem.TO_0x00);
 
         Time.timer_create(Time.CLOCK_MONOTONIC, null, timerid);
         try {
@@ -740,15 +739,15 @@ public class TimeTest {
             case MAC_OS_X:
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    new Time.Timer_t(SET_MEM_TO_0);
+                    new Time.Timer_t(SetMem.TO_0x00);
                 });
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    new Time.Itimerspec(SET_MEM_TO_0);
+                    new Time.Itimerspec(SetMem.TO_0x00);
                 });
                 break;
             default:
-                Time.Timer_t timerid = new Time.Timer_t(SET_MEM_TO_0);
-                Time.Itimerspec trigger = new Time.Itimerspec(SET_MEM_TO_0);
+                Time.Timer_t timerid = new Time.Timer_t(SetMem.TO_0x00);
+                Time.Itimerspec trigger = new Time.Itimerspec(SetMem.TO_0x00);
                 Signal.Sigevent sev = new Signal.Sigevent();
 
                 sev.sigev_notify(Signal.SIGEV_NONE.get());
@@ -786,13 +785,13 @@ public class TimeTest {
             case MAC_OS_X:
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    new Time.Timer_t(SET_MEM_TO_0);
+                    new Time.Timer_t(SetMem.TO_0x00);
                 });
                 break;
             default:
 
                 final ObjectRef<Object> intRef = new ObjectRef<>(null);
-                Time.Timer_t timerid = new Time.Timer_t(MEM_UNINITIALIZED);
+                Time.Timer_t timerid = new Time.Timer_t(SetMem.DO_NOT_SET);
 
                 //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
                 //Pthread.pthread_attr_init(attr);
@@ -829,7 +828,7 @@ public class TimeTest {
                 System.out.println("evp: " + evp);
                 Time.timer_create(Time.CLOCK_REALTIME, evp, timerid);
                 try {
-                    Time.Itimerspec value = new Time.Itimerspec(SET_MEM_TO_0);
+                    Time.Itimerspec value = new Time.Itimerspec(SetMem.TO_0x00);
 //          Time.Itimerspec ovalue = new Time.Itimerspec(true);
                     value.it_value.tv_sec(2); // after 2 s
                     value.it_interval.tv_sec(1); //fire all 1s
@@ -837,7 +836,7 @@ public class TimeTest {
 
                     //TODO Errno.EINVAL() aka 22
                     Time.timer_settime(timerid, 0, value, null);
-                    Time.Itimerspec itimerspec = new Time.Itimerspec(MEM_UNINITIALIZED);
+                    Time.Itimerspec itimerspec = new Time.Itimerspec(SetMem.DO_NOT_SET);
                     System.out.println("timer_gettime");
                     Time.timer_gettime(timerid, itimerspec);
 
@@ -917,7 +916,7 @@ public class TimeTest {
 
     @Test
     public void testTimer_t() throws Exception {
-        Time.Timer_t timer_t = new Time.Timer_t(SET_MEM_TO_0);
+        Time.Timer_t timer_t = new Time.Timer_t(SetMem.TO_0x00);
         switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
                 Assertions.assertEquals("0x00000000", timer_t.nativeToString());
@@ -932,7 +931,7 @@ public class TimeTest {
 
     @Test
     public void testItimerspec() throws Exception {
-        Time.Itimerspec itimerspec = new Time.Itimerspec(SET_MEM_TO_0);
+        Time.Itimerspec itimerspec = new Time.Itimerspec(SetMem.TO_0x00);
         Assertions.assertEquals("{it_value : {tv_sec : 0, tv_nsec : 0}, it_interval : {tv_sec : 0, tv_nsec : 0}}", itimerspec.nativeToString());
     }
 

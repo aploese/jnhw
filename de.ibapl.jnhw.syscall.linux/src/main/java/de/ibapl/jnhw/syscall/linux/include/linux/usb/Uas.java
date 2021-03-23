@@ -165,11 +165,11 @@ public class Uas {
             public final static byte sizeof = Reserved + __U8; //TODO ERROR? a descriptor has USB_DT_PIPE_USAGE with blength == 5 ???
         }
 
-        public Usb_pipe_usage_descriptor(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_pipe_usage_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, Layout.sizeof, setMem);
         }
 
-        public Usb_pipe_usage_descriptor(AbstractNativeMemory parent, long offset, int sizeInBytes, Byte setMem) {
+        public Usb_pipe_usage_descriptor(AbstractNativeMemory parent, long offset, int sizeInBytes, SetMem setMem) {
             super(parent, offset, sizeInBytes, setMem);
             if (sizeInBytes < Layout.sizeof) {
                 throw new IllegalArgumentException("sizeInBytes too small");

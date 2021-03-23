@@ -30,7 +30,7 @@ import java.io.IOException;
 @SysFs("/sys/bus/usb/devices/*/descriptors")
 public abstract class AbstractCapabilityDescriptor extends AbstractDescriptor {
 
-    public AbstractCapabilityDescriptor(OpaqueMemory32 parent, int offset, int sizeInBytes, Byte setMem) {
+    public AbstractCapabilityDescriptor(OpaqueMemory32 parent, int offset, int sizeInBytes, SetMem setMem) {
         super(parent, offset, sizeInBytes, setMem);
     }
 

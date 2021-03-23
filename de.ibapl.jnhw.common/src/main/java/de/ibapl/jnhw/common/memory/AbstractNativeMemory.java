@@ -34,9 +34,34 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractNativeMemory {
 
-    public static final Byte SET_MEM_TO_0 = 0;
-    public static final Byte SET_MEM_TO_0xFF = (byte) 0xff;
-    public static final Byte MEM_UNINITIALIZED = null;
+    public static enum SetMem {
+        DO_NOT_SET(false, (byte) 0),
+        TO_0x00(false, (byte) 0x00),
+        FORCE_0x00(true, (byte) 0x00),
+        /**
+         *
+         * 0b10101010
+         */
+        TO_0x55(false, (byte) 0x55),
+        FORCE_0x55(true, (byte) 0x55),
+        /**
+         * 0b01010101
+         */
+        TO_0xAA(false, (byte) 0xAA),
+        FORCE_0xAA(true, (byte) 0xAA),
+        TO_0x0F(false, (byte) 0x0F),
+        FORCE_0xF0(true, (byte) 0xF0),
+        TO_0xFF(false, (byte) 0xFF),
+        FORCE_0xFF(true, (byte) 0xFF);
+
+        private SetMem(boolean force, byte value) {
+            this.value = value;
+            this.force = force;
+        }
+
+        public final byte value;
+        public final boolean force;
+    }
 
     protected final static Cleaner CLEANER = Cleaner.create();
 

@@ -606,14 +606,14 @@ public class Time {
             LAYOUT = native2Layout(Layout.class);
         }
 
-        public Itimerspec(Byte setMem) throws NoSuchNativeTypeException {
+        public Itimerspec(SetMem setMem) throws NoSuchNativeTypeException {
             this(null, 0, setMem);
         }
 
-        public Itimerspec(OpaqueMemory32 owner, int offset, Byte setMem) throws NoSuchNativeTypeException {
+        public Itimerspec(OpaqueMemory32 owner, int offset, SetMem setMem) throws NoSuchNativeTypeException {
             super((OpaqueMemory32) owner, 0, LAYOUT.sizeof, setMem);
-            it_interval = new Timespec(this, LAYOUT.it_interval, MEM_UNINITIALIZED);//mem is already initialized by parent
-            it_value = new Timespec(this, LAYOUT.it_value, MEM_UNINITIALIZED);//mem is already initialized by parent
+            it_interval = new Timespec(this, LAYOUT.it_interval, SetMem.DO_NOT_SET);//mem is already initialized by parent
+            it_value = new Timespec(this, LAYOUT.it_value, SetMem.DO_NOT_SET);//mem is already initialized by parent
         }
 
         /**
@@ -703,11 +703,11 @@ public class Time {
             LAYOUT = native2Layout(Layout.class);
         }
 
-        public Timespec(OpaqueMemory32 parent, long offset, Byte setMem) {
+        public Timespec(OpaqueMemory32 parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
-        public Timespec(Byte setMem) {
+        public Timespec(SetMem setMem) {
             this(null, 0, setMem);
         }
 
@@ -843,11 +843,11 @@ public class Time {
             super(addressHolder, LAYOUT.sizeof);
         }
 
-        public Tm(Byte setMem) {
+        public Tm(SetMem setMem) {
             this(null, 0, setMem);
         }
 
-        public Tm(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Tm(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
@@ -1100,11 +1100,11 @@ public class Time {
             LAYOUT = native2Layout(Layout.class);
         }
 
-        public Timer_t(Byte setMem) {
+        public Timer_t(SetMem setMem) {
             this(null, 0, setMem);
         }
 
-        public Timer_t(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Timer_t(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 

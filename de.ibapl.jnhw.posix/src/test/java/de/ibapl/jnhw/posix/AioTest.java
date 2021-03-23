@@ -28,9 +28,7 @@ import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.callback.NativeRunnable;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
@@ -394,12 +392,12 @@ public class AioTest {
                 });
                 break;
             default:
-                Aio.Aiocbs aiocbs = new Aio.Aiocbs(1, MEM_UNINITIALIZED);
+                Aio.Aiocbs aiocbs = new Aio.Aiocbs(1, SetMem.DO_NOT_SET);
                 Aio.Aiocb aiocb = new Aio.Aiocb();
                 aiocb.aio_fildes(-1);
                 aiocbs.set(0, aiocb);
 
-                Time.Timespec timeout = new Time.Timespec(SET_MEM_TO_0);
+                Time.Timespec timeout = new Time.Timespec(SetMem.TO_0x00);
                 timeout.tv_sec(1);
 
                 //Just a dry run....
@@ -523,7 +521,7 @@ public class AioTest {
                 //Clean up references to Callbacks
                 System.gc();
 
-                Aio.Aiocbs list = new Aio.Aiocbs(1, MEM_UNINITIALIZED);
+                Aio.Aiocbs list = new Aio.Aiocbs(1, SetMem.DO_NOT_SET);
                 Aio.Aiocb aiocb = new Aio.Aiocb();
                 aiocb.aio_fildes(-1);
                 list.set(0, aiocb);
@@ -582,7 +580,7 @@ public class AioTest {
                 aiocb.aio_buf(aioBuffer);
                 assertEquals(0, aioBuffer.position());
 
-                Aio.Aiocbs list = new Aio.Aiocbs(1, MEM_UNINITIALIZED);
+                Aio.Aiocbs list = new Aio.Aiocbs(1, SetMem.DO_NOT_SET);
                 list.set(0, aiocb);
 
                 Aio.lio_listio(Aio.LIO_NOWAIT.get(), list, null);
@@ -649,7 +647,7 @@ public class AioTest {
                 Assertions.assertFalse(Aio.HAVE_AIO_H);
                 break;
             default:
-                Aio.Aiocbs aiocbs = new Aio.Aiocbs(1, SET_MEM_TO_0);
+                Aio.Aiocbs aiocbs = new Aio.Aiocbs(1, SetMem.TO_0x00);
 
                 Aio.Aiocb aiocb_null = aiocbs.get(0, null);
                 Assertions.assertNull(aiocb_null);

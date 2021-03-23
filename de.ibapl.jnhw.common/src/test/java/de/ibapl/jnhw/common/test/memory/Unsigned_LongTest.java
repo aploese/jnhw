@@ -25,8 +25,7 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Unsigned_Long;
 
@@ -41,7 +40,7 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNative() {
-        Unsigned_Long instance = new Unsigned_Long(null, 0, SET_MEM_TO_0);
+        Unsigned_Long instance = new Unsigned_Long(null, 0, SetMem.TO_0x00);
         final long input = 0x8070605040302010L;
         if (BaseDataType.__SIZE_OF_LONG == 8) {
             instance.unsigned_long(input);
@@ -66,14 +65,14 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNativeToString() {
-        Unsigned_Long instance = new Unsigned_Long(null, 0, SET_MEM_TO_0);
+        Unsigned_Long instance = new Unsigned_Long(null, 0, SetMem.TO_0x00);
         if (BaseDataType.__SIZE_OF_LONG == 8) {
-            Uint64_t uint64_t = new Uint64_t(instance, 0, MEM_UNINITIALIZED);
+            Uint64_t uint64_t = new Uint64_t(instance, 0, SetMem.DO_NOT_SET);
             uint64_t.uint64_t(0xfffffffffffffffeL);
             assertEquals(Long.toUnsignedString(0xfffffffffffffffeL), instance.nativeToString());
             assertEquals("0xfffffffffffffffe", instance.nativeToHexString());
         } else {
-            Uint32_t uint32_t = new Uint32_t(instance, 0, MEM_UNINITIALIZED);
+            Uint32_t uint32_t = new Uint32_t(instance, 0, SetMem.DO_NOT_SET);
             uint32_t.uint32_t(0xfffffffe);
             assertEquals(Long.toString(0xfffffffeL), instance.nativeToString());
             assertEquals("0xfffffffe", instance.nativeToHexString());

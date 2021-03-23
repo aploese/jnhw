@@ -22,11 +22,8 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.AsUnsignedInt;
-import de.ibapl.jnhw.common.memory.Uint32_t;
-import de.ibapl.jnhw.common.memory.Uint64_t;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,11 +38,11 @@ public class AsUnsignedIntTest {
 
     @Test
     public void testNative() {
-        AsUnsignedInt instance = new AsUnsignedInt(BaseDataType.uint16_t, null, 0, SET_MEM_TO_0);
+        AsUnsignedInt instance = new AsUnsignedInt(BaseDataType.uint16_t, null, 0, SetMem.TO_0x00);
         instance.setFromUnsignedInt(33);
         assertEquals(33, instance.getAsUnsignedInt());
         assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(-1));
-        assertThrows(IllegalArgumentException.class, () -> new AsUnsignedInt(BaseDataType.int8_t, null, 0, null));
+        assertThrows(IllegalArgumentException.class, () -> new AsUnsignedInt(BaseDataType.int8_t, null, 0, SetMem.DO_NOT_SET));
     }
 
 }

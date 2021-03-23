@@ -21,8 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.nio.charset.Charset;
@@ -50,7 +49,7 @@ public class WinntTest {
     @Test
     public void test_LPWSTR_stringValueOfNullTerminated() throws Exception {
         byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
-        WinDef.LPBYTE lpByte = new WinDef.LPBYTE(64, SET_MEM_TO_0);
+        WinDef.LPBYTE lpByte = new WinDef.LPBYTE(64, SetMem.TO_0x00);
         OpaqueMemory32.copy(data, 0, lpByte, 0, data.length);
         lpByte.bufferEnd = data.length;
         Assertions.assertEquals("HELLO WORLD!", WinDef.LPBYTE.getUnicodeString(lpByte, true));
@@ -58,7 +57,7 @@ public class WinntTest {
 
     @Test
     public void testArrayOfHandle() throws Exception {
-        Winnt.ArrayOfHandle aoh = new Winnt.ArrayOfHandle(3, SET_MEM_TO_0);
+        Winnt.ArrayOfHandle aoh = new Winnt.ArrayOfHandle(3, SetMem.TO_0x00);
         Winnt.HANDLE h1 = new Winnt.HANDLE(42);
         aoh.set(1, h1);
         Winnt.HANDLE h2 = Winnt.HANDLE.INVALID_HANDLE_VALUE;

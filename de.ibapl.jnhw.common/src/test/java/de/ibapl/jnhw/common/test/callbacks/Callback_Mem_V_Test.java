@@ -53,7 +53,7 @@ public class Callback_Mem_V_Test {
         }
 
         public A() {
-            super((OpaqueMemory32) null, 0, SIZE_OF, SET_MEM_TO_0);
+            super((OpaqueMemory32) null, 0, SIZE_OF, SetMem.TO_0x00);
         }
 
     }

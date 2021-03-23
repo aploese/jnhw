@@ -356,10 +356,10 @@ public class Locale {
         }
 
         public Lconv() {
-            this(null, 0, MEM_UNINITIALIZED);
+            this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public Lconv(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Lconv(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 

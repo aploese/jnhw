@@ -21,11 +21,10 @@
  */
 package de.ibapl.jnhw.common.test.memory;
 
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
@@ -58,7 +57,7 @@ public class Int32_tTest {
      */
     @Test
     public void testInt32_t() {
-        Int32_t instance = new Int32_t(null, 0, SET_MEM_TO_0);
+        Int32_t instance = new Int32_t(null, 0, SetMem.TO_0x00);
         int expResult = 0x40302010;
         instance.int32_t(expResult);
         assertEquals(expResult, instance.int32_t());
@@ -66,7 +65,7 @@ public class Int32_tTest {
 
     @Test
     public void testNativeToString() {
-        Int32_t instance = new Int32_t(null, 0, SET_MEM_TO_0);
+        Int32_t instance = new Int32_t(null, 0, SetMem.TO_0x00);
         instance.int32_t(-2);
         assertEquals("-2", instance.nativeToString());
         assertEquals("0xfffffffe", instance.nativeToHexString());

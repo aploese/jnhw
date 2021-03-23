@@ -30,7 +30,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
  */
 public class Memory32Heap extends OpaqueMemory32 {
 
-    public Memory32Heap(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+    public Memory32Heap(AbstractNativeMemory owner, long offset, int sizeInBytes, SetMem setMem) {
         super(owner, offset, sizeInBytes, setMem);
     }
 
@@ -39,7 +39,7 @@ public class Memory32Heap extends OpaqueMemory32 {
     }
 
     public static Memory32Heap of(byte[] bytes) {
-        final Memory32Heap result = new Memory32Heap((OpaqueMemory32) null, 0, bytes.length, null);
+        final Memory32Heap result = new Memory32Heap((OpaqueMemory32) null, 0, bytes.length, SetMem.DO_NOT_SET);
         OpaqueMemory32.copy(bytes, 0, result, 0, bytes.length);
         return result;
     }

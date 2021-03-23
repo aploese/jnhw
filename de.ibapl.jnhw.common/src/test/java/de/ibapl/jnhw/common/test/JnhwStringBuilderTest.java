@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.common.test;
 
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
@@ -42,7 +43,7 @@ public class JnhwStringBuilderTest {
 
     public class Struct32Test extends Struct32 {
 
-        public Struct32Test(OpaqueMemory32 owner, int offset, int sizeInBytes, Byte setMem) {
+        public Struct32Test(OpaqueMemory32 owner, int offset, int sizeInBytes, SetMem setMem) {
             super(owner, offset, sizeInBytes, setMem);
         }
 
@@ -60,10 +61,10 @@ public class JnhwStringBuilderTest {
         final Int8_t i1;
 
         public StructArray32TestElement(OpaqueMemory32 parent, long offset, byte i0, byte i1) {
-            super(parent, offset, 2, null);
-            this.i0 = new Int8_t(this, 0, null);
+            super(parent, offset, 2, SetMem.DO_NOT_SET);
+            this.i0 = new Int8_t(this, 0, SetMem.DO_NOT_SET);
             this.i0.int8_t(i0);
-            this.i1 = new Int8_t(this, 1, null);
+            this.i1 = new Int8_t(this, 1, SetMem.DO_NOT_SET);
             this.i1.int8_t(i1);
         }
 
@@ -79,7 +80,7 @@ public class JnhwStringBuilderTest {
     public static class StructArray32Test extends StructArray32<StructArray32TestElement> {
 
         public StructArray32Test() {
-            super(new StructArray32TestElement[3], StructArray32Test::createAtOffset, 3, SET_MEM_TO_0);
+            super(new StructArray32TestElement[3], StructArray32Test::createAtOffset, 3, SetMem.TO_0x00);
         }
 
         private static StructArray32TestElement createAtOffset(OpaqueMemory32 parent, long offset) {
@@ -127,7 +128,7 @@ public class JnhwStringBuilderTest {
         }, "]");
         jsb.appendShortMember("_short", Short.MAX_VALUE);
         jsb.appendStringMember("_string", "Hello!");
-        jsb.appendStruct32Member("_struct32", new Struct32Test(null, 0, 16, (byte) 0));
+        jsb.appendStruct32Member("_struct32", new Struct32Test(null, 0, 16, SetMem.TO_0x00));
         jsb.appendStructArray32Member("array", new StructArray32Test());
         assertEquals("{_byte : 127, _char : \"a\", _int : 2147483647, _long : 9223372036854775807, _flags : [ONE, TWO], _short : 32767, _string : \"Hello!\", _struct32 : {memory : \"00000000 00000000  00000000 00000000 | ................\"}, array : [{i0 : 0x00, i1 : 0x00}, {i0 : 0x00, i1 : 0x03}, {i0 : 0x00, i1 : 0x06}]}", jsb.toString()
         );
@@ -145,7 +146,7 @@ public class JnhwStringBuilderTest {
         }, "]");
         jsb.appendShortMember("_short", Short.MAX_VALUE);
         jsb.appendStringMember("_string", "Hello!");
-        jsb.appendStruct32Member("_struct32", new Struct32Test(null, 0, 16, (byte) 0));
+        jsb.appendStruct32Member("_struct32", new Struct32Test(null, 0, 16, SetMem.TO_0x00));
         jsb.appendStructArray32Member("array", new StructArray32Test());
         assertEquals("{\n"
                 + " _byte : 127,\n"

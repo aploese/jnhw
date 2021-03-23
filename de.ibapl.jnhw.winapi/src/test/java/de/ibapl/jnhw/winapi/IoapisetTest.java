@@ -22,9 +22,8 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Uint16_t;
 import de.ibapl.jnhw.common.memory.Uint8_t;
 import java.nio.ByteBuffer;
@@ -121,15 +120,15 @@ public class IoapisetTest {
                 0,
                 null);
 
-        Memory32Heap lpOutBuffer = new Memory32Heap(null, 0, 128, AbstractNativeMemory.SET_MEM_TO_0);
+        Memory32Heap lpOutBuffer = new Memory32Heap(null, 0, 128, SetMem.TO_0x00);
 
         int lpBytesReturned = Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, lpOutBuffer, null);
 
         assertEquals(2, lpBytesReturned);
-        Uint16_t uint16_t = new Uint16_t(lpOutBuffer, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
+        Uint16_t uint16_t = new Uint16_t(lpOutBuffer, 0, SetMem.DO_NOT_SET);
         assertEquals(Winnt.COMPRESSION_FORMAT_NONE, uint16_t.uint16_t());
 
-        Uint8_t uint8_t = new Uint8_t(null, 0, AbstractNativeMemory.SET_MEM_TO_0);
+        Uint8_t uint8_t = new Uint8_t(null, 0, SetMem.TO_0x00);
         NativeErrorException nee = assertThrows(NativeErrorException.class, () -> Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, uint8_t, null));
         assertEquals(Winerror.ERROR_INVALID_PARAMETER, nee.errno);
 

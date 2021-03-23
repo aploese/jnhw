@@ -174,7 +174,7 @@ public class WinApiStruct32 extends Struct32 {
         super(nativeAddressHolder, sizeInBytes);
     }
 
-    public WinApiStruct32(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+    public WinApiStruct32(AbstractNativeMemory owner, long offset, int sizeInBytes, SetMem setMem) {
         super(owner, offset, sizeInBytes, setMem);
     }
 

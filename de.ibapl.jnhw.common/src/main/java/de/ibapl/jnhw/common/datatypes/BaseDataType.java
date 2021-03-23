@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.common.datatypes;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
@@ -124,7 +124,7 @@ public enum BaseDataType {
         __SIZE_OF_FLOAT = getSizeOf_float0();
         __SIZE_OF_DOUBLE = getSizeOf_double0();
         __SIZE_OF_LONG_DOUBLE = getSizeOf_long_double0();
-        final Uint64_t uint64_t = new Uint64_t(null, 0, AbstractNativeMemory.SET_MEM_TO_0);
+        final Uint64_t uint64_t = new Uint64_t(null, 0, SetMem.TO_0x00);
         OpaqueMemory32.setByte(uint64_t, 0, (byte) 0x01);
         OpaqueMemory32.setByte(uint64_t, 1, (byte) 0x02);
         OpaqueMemory32.setByte(uint64_t, 2, (byte) 0x03);

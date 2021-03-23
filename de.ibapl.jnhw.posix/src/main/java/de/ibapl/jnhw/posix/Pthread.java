@@ -276,14 +276,14 @@ public class Pthread {
         }
 
         public Pthread_attr_t() {
-            this(null, 0, MEM_UNINITIALIZED);
+            this(null, 0, SetMem.DO_NOT_SET);
         }
 
         public Pthread_attr_t(NativeAddressHolder baseAddress) {
             super(baseAddress, LAYOUT.sizeof);
         }
 
-        public Pthread_attr_t(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Pthread_attr_t(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
@@ -324,10 +324,10 @@ public class Pthread {
         }
 
         public Pthread_t() {
-            this(null, 0, MEM_UNINITIALIZED);
+            this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public Pthread_t(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Pthread_t(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 

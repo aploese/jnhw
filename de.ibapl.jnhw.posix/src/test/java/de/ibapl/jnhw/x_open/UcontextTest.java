@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.x_open;
 
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.Signal;
@@ -52,7 +52,7 @@ public class UcontextTest {
             assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.getcontext(null));
         } else {
             assertThrows(NullPointerException.class, () -> Ucontext.getcontext(null));
-            Signal.Ucontext_t ucp = new Signal.Ucontext_t(MEM_UNINITIALIZED);
+            Signal.Ucontext_t ucp = new Signal.Ucontext_t(SetMem.DO_NOT_SET);
             Ucontext.getcontext(ucp);
             StringBuilder sb = new StringBuilder();
             ucp.nativeToString(sb, "", " ");
@@ -72,7 +72,7 @@ public class UcontextTest {
             assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.setcontext(null));
         } else {
             assertThrows(NullPointerException.class, () -> Ucontext.setcontext(null));
-            Signal.Ucontext_t ucp = new Signal.Ucontext_t(MEM_UNINITIALIZED);
+            Signal.Ucontext_t ucp = new Signal.Ucontext_t(SetMem.DO_NOT_SET);
             count = 0;
             Ucontext.getcontext(ucp);
             count++;

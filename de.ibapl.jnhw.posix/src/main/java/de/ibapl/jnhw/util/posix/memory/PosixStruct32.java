@@ -158,7 +158,7 @@ public abstract class PosixStruct32 extends Struct32 {
         super(nativeAddressHolder, sizeInBytes);
     }
 
-    public PosixStruct32(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+    public PosixStruct32(AbstractNativeMemory owner, long offset, int sizeInBytes, SetMem setMem) {
         super(owner, offset, sizeInBytes, setMem);
     }
 

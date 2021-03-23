@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
@@ -34,7 +35,7 @@ public class AbstractNativeMemoryTest {
 
     @Test
     public void testAllocateDirtyMem() throws Exception {
-        Memory32Heap mem = new Memory32Heap(null, 0, 1024, AbstractNativeMemory.MEM_UNINITIALIZED);
+        Memory32Heap mem = new Memory32Heap(null, 0, 1024, SetMem.DO_NOT_SET);
         Assertions.assertEquals(mem, mem.parent);
         Assertions.assertEquals(0, AbstractNativeMemory.calcOffsetForAlignment(mem, Alignment.__BIGGEST_ALIGNMENT__, 0));
         mem = null;

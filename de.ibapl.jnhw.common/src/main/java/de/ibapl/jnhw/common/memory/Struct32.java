@@ -33,7 +33,7 @@ public class Struct32 extends OpaqueMemory32 {
         super(nativeAddressHolder, sizeInBytes);
     }
 
-    public Struct32(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+    public Struct32(AbstractNativeMemory owner, long offset, int sizeInBytes, SetMem setMem) {
         super(owner, offset, sizeInBytes, setMem);
     }
 

@@ -33,7 +33,7 @@ public class MapNativeToInt extends NativeIntNumber {
     private final BaseDataType dataType;
     private final boolean unsigned;
 
-    public MapNativeToInt(BaseDataType nativeType, AbstractNativeMemory owner, int offset, Byte setMem) {
+    public MapNativeToInt(BaseDataType nativeType, AbstractNativeMemory owner, int offset, SetMem setMem) {
         super(owner, offset, nativeType.SIZE_OF, setMem);
         if (nativeType.SIZE_OF > BaseDataType.int32_t.SIZE_OF) {
             throw new IllegalArgumentException("Data type is too big, a smaller data type was expected");

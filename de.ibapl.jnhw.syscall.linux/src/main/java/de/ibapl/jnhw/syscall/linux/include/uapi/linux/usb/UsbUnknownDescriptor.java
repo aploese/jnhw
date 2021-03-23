@@ -31,7 +31,7 @@ import java.io.IOException;
  */
 public class UsbUnknownDescriptor extends AbstractDescriptor {
 
-    public UsbUnknownDescriptor(AbstractNativeMemory parent, long offset, int size, Byte setMem) {
+    public UsbUnknownDescriptor(AbstractNativeMemory parent, long offset, int size, SetMem setMem) {
         super(parent, offset, size, setMem);
     }
 

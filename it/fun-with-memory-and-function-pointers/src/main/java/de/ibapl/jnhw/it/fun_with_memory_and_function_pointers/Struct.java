@@ -22,8 +22,7 @@
 package de.ibapl.jnhw.it.fun_with_memory_and_function_pointers;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Int16_t;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Int64_t;
@@ -47,25 +46,25 @@ public class Struct {
 
     public static void getMemory() {
         System.out.println("\n\nStruct.getMemory()\n");
-        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 1024, MEM_UNINITIALIZED);
+        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 1024, SetMem.DO_NOT_SET);
 
-        final Int8_t int8_t = new Int8_t(null, 0, MEM_UNINITIALIZED);
+        final Int8_t int8_t = new Int8_t(null, 0, SetMem.DO_NOT_SET);
         int8_t.int8_t((byte) 42);
-        final Int16_t int16_t = new Int16_t(null, 0, MEM_UNINITIALIZED);
+        final Int16_t int16_t = new Int16_t(null, 0, SetMem.DO_NOT_SET);
         int16_t.int16_t(int8_t.int8_t());
-        final Int32_t int32_t = new Int32_t(null, 0, MEM_UNINITIALIZED);
+        final Int32_t int32_t = new Int32_t(null, 0, SetMem.DO_NOT_SET);
         int32_t.int32_t(int16_t.int16_t());
-        final Int64_t int64_t = new Int64_t(null, 0, MEM_UNINITIALIZED);
+        final Int64_t int64_t = new Int64_t(null, 0, SetMem.DO_NOT_SET);
         int64_t.int64_t(int32_t.int32_t());
         System.out.println("int64_t: " + int64_t.int64_t());
 
-        final Uint8_t uint8_t = new Uint8_t(null, 0, MEM_UNINITIALIZED);
+        final Uint8_t uint8_t = new Uint8_t(null, 0, SetMem.DO_NOT_SET);
         uint8_t.uint8_t((byte) 42);
-        final Uint16_t uint16_t = new Uint16_t(null, 0, MEM_UNINITIALIZED);
+        final Uint16_t uint16_t = new Uint16_t(null, 0, SetMem.DO_NOT_SET);
         uint16_t.uint16_t(uint8_t.uint8_t());
-        final Uint32_t uint32_t = new Uint32_t(null, 0, MEM_UNINITIALIZED);
+        final Uint32_t uint32_t = new Uint32_t(null, 0, SetMem.DO_NOT_SET);
         uint32_t.uint32_t(uint16_t.uint16_t());
-        final Uint64_t uint64_t = new Uint64_t(null, 0, MEM_UNINITIALIZED);
+        final Uint64_t uint64_t = new Uint64_t(null, 0, SetMem.DO_NOT_SET);
         uint64_t.uint64_t(uint32_t.uint32_t());
         System.out.println("uint64_t: " + Long.toUnsignedString(uint64_t.uint64_t()));
         System.out.println();
@@ -88,14 +87,14 @@ public class Struct {
         final long offsetInHeap = heap.getAlignmentOffset(0, Alignment.AT_16);
 
         //start with offset == 0
-        final Int8_t _int8_t = new Int8_t(heap, offsetInHeap + slf.int8_t(), MEM_UNINITIALIZED);
+        final Int8_t _int8_t = new Int8_t(heap, offsetInHeap + slf.int8_t(), SetMem.DO_NOT_SET);
         _int8_t.int8_t((byte) 0x61);//a
         //alignment on 2 byte boundary after int16_t
-        final Int16_t _int16_t = new Int16_t(heap, offsetInHeap + slf.int16_t(), MEM_UNINITIALIZED);
+        final Int16_t _int16_t = new Int16_t(heap, offsetInHeap + slf.int16_t(), SetMem.DO_NOT_SET);
         _int16_t.int16_t((short) 0x6362);//bc
-        final Int32_t _int32_t = new Int32_t(heap, offsetInHeap + slf.int32_t(), MEM_UNINITIALIZED);
+        final Int32_t _int32_t = new Int32_t(heap, offsetInHeap + slf.int32_t(), SetMem.DO_NOT_SET);
         _int32_t.int32_t(0x67666564);//defg
-        final Int64_t _int64_t = new Int64_t(heap, offsetInHeap + slf.int64_t(), MEM_UNINITIALIZED);
+        final Int64_t _int64_t = new Int64_t(heap, offsetInHeap + slf.int64_t(), SetMem.DO_NOT_SET);
         _int64_t.int64_t(0x6f6e6d6c6b6a6968L);//hijklmno
 
         System.out.println("int8_t: " + _int8_t.toString() + " " + _int8_t.int8_t());
@@ -122,20 +121,20 @@ public class Struct {
      */
     public static void onTheFlyUnion() {
         System.out.println("\n\nStruct.onTheFlyUnion()\n");
-        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 16, SET_MEM_TO_0);
+        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 16, SetMem.DO_NOT_SET);
         StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactory.Type.STRUCT);
         final long offsetInHeap = heap.getAlignmentOffset(0, Alignment.AT_8);
 
         //start with offset == 0
-        final Int8_t _int8_t = new Int8_t(heap, offsetInHeap + slf.int8_t(), MEM_UNINITIALIZED);
+        final Int8_t _int8_t = new Int8_t(heap, offsetInHeap + slf.int8_t(), SetMem.DO_NOT_SET);
         _int8_t.int8_t((byte) 'a');
 
         //use the biggest alignment to align union
         final long unionOffset = offsetInHeap + slf.union(BaseDataType.int64_t.SIZE_OF, BaseDataType.int64_t.ALIGN_OF);
         //alignment on 2 byte boundary after int16_t
-        final Int16_t _int16_t = new Int16_t(heap, unionOffset, MEM_UNINITIALIZED);
-        final Int32_t _int32_t = new Int32_t(heap, unionOffset, MEM_UNINITIALIZED);
-        final Int64_t _int64_t = new Int64_t(heap, unionOffset, MEM_UNINITIALIZED);
+        final Int16_t _int16_t = new Int16_t(heap, unionOffset, SetMem.DO_NOT_SET);
+        final Int32_t _int32_t = new Int32_t(heap, unionOffset, SetMem.DO_NOT_SET);
+        final Int64_t _int64_t = new Int64_t(heap, unionOffset, SetMem.DO_NOT_SET);
         _int32_t.int32_t('b');
 
         System.out.println("int8_t: " + _int8_t.int8_t());
@@ -148,7 +147,7 @@ public class Struct {
 
     public static void printMemory() throws IOException {
         System.out.println("\n\nStruct.printMemory()\n");
-        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 256, SET_MEM_TO_0);
+        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 256, SetMem.DO_NOT_SET);
         for (int i = 0; i < heap.sizeInBytes; i++) {
             OpaqueMemory32.setByte(heap, i, (byte) i);
         }

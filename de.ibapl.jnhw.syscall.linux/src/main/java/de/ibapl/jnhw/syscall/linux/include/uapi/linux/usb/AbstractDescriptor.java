@@ -73,7 +73,7 @@ public abstract class AbstractDescriptor extends LinuxSyscallStruct32 {
         return String.format("%x.%02x", (bcdValue >> 8), (bcdValue & 0x00FF));
     }
 
-    public AbstractDescriptor(AbstractNativeMemory parent, long offset, int sizeInBytes, Byte setMem) {
+    public AbstractDescriptor(AbstractNativeMemory parent, long offset, int sizeInBytes, SetMem setMem) {
         super(parent, offset, sizeInBytes, setMem);
     }
 

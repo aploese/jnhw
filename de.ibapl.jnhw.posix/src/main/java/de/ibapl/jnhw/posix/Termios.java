@@ -1332,7 +1332,7 @@ public final class Termios {
     @cc_t
     public static class Cc_t extends Uint8_t {
 
-        public Cc_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+        public Cc_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
             super(owner, offset, setMem);
         }
 
@@ -1422,7 +1422,7 @@ public final class Termios {
             }
         }
 
-        public Speed_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+        public Speed_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
             super(owner, offset, setMem);
         }
 
@@ -1736,7 +1736,7 @@ public final class Termios {
             }
         }
 
-        public Tcflag_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+        public Tcflag_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
             super(owner, offset, setMem);
         }
 
@@ -2001,10 +2001,10 @@ public final class Termios {
 
         public StructTermios() {
             // get unitialized mem
-            this(null, 0, null);
+            this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public StructTermios(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public StructTermios(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 

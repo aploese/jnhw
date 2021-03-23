@@ -62,11 +62,11 @@ public class PointerArray32<T extends OpaqueMemory32> extends OpaqueMemory32 {
 
     private final OpaqueMemory32[] cachedReferences;
 
-    public PointerArray32(int arrayLength, Byte setMem) {
+    public PointerArray32(int arrayLength, SetMem setMem) {
         this(arrayLength, null, 0, setMem);
     }
 
-    public PointerArray32(int arrayLength, OpaqueMemory32 parent, long offset, Byte setMem) {
+    public PointerArray32(int arrayLength, OpaqueMemory32 parent, long offset, SetMem setMem) {
         super(parent, offset, arrayLength * BaseDataType.uintptr_t.SIZE_OF, setMem);
         cachedReferences = new OpaqueMemory32[arrayLength];
     }

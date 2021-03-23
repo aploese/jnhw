@@ -27,7 +27,7 @@ package de.ibapl.jnhw.common.memory;
  */
 public abstract class NativeIntNumber extends OpaqueMemory32 {
 
-    protected NativeIntNumber(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+    protected NativeIntNumber(AbstractNativeMemory owner, long offset, int sizeInBytes, SetMem setMem) {
         super(owner, offset, sizeInBytes, setMem);
     }
 

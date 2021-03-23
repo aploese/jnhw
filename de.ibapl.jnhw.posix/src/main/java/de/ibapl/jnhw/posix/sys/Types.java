@@ -75,7 +75,7 @@ public class Types {
     @off_t
     public static class Off_t extends AsSignedLong {
 
-        public Off_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+        public Off_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
             super(PosixDataType.off_t.baseDataType, owner, offset, setMem);
         }
 
@@ -84,7 +84,7 @@ public class Types {
     @mode_t
     public static class Mode_t extends AsUnsignedInt {
 
-        public Mode_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+        public Mode_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
             super(PosixDataType.mode_t.baseDataType, owner, offset, setMem);
         }
 
@@ -93,7 +93,7 @@ public class Types {
     @ssize_t
     public static class Ssize_t extends AsSignedLong {
 
-        public Ssize_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+        public Ssize_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
             super(PosixDataType.ssize_t.baseDataType, owner, offset, setMem);
         }
 
@@ -102,7 +102,7 @@ public class Types {
     @size_t
     public static class Size_t extends AsUnsignedLong {
 
-        public Size_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+        public Size_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
             super(PosixDataType.size_t.baseDataType, owner, offset, setMem);
         }
     }
@@ -110,7 +110,7 @@ public class Types {
     @pid_t
     public static class Pid_t extends Int32_t {
 
-        public Pid_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+        public Pid_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
             super(owner, offset, setMem);
         }
 
@@ -119,7 +119,7 @@ public class Types {
     @clock_t
     public static class Clock_t extends AsSignedLong {
 
-        public Clock_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+        public Clock_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
             super(PosixDataType.clock_t.baseDataType, owner, offset, setMem);
         }
 
@@ -128,7 +128,7 @@ public class Types {
     @time_t
     public static class Time_t extends AsSignedLong {
 
-        public Time_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+        public Time_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
             super(PosixDataType.time_t.baseDataType, owner, offset, setMem);
         }
 
@@ -137,7 +137,7 @@ public class Types {
     @uid_t
     public static class Uid_t extends Uint32_t {
 
-        public Uid_t(OpaqueMemory32 owner, int offset, Byte setMem) {
+        public Uid_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
             super(owner, offset, setMem);
         }
     }

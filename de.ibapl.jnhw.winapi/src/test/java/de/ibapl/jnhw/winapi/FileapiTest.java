@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.Memory64Heap;
 import de.ibapl.jnhw.common.references.IntRef;
@@ -79,7 +79,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, bytesWritten);
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -127,7 +127,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -200,7 +200,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -266,7 +266,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -321,7 +321,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -362,7 +362,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -399,7 +399,7 @@ public class FileapiTest {
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
 
-        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SET_MEM_TO_0);
+        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SetMem.TO_0x00);
         OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
         Fileapi.WriteFile(hFile, opaqueMemory, overlapped);
         long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE);
@@ -411,7 +411,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(opaqueMemory.sizeInBytes, bytesTransferred);
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -453,7 +453,7 @@ public class FileapiTest {
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
 
-        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SET_MEM_TO_0);
+        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SetMem.TO_0x00);
         OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
         Fileapi.WriteFile(hFile, opaqueMemory, 0, (int) opaqueMemory.sizeInBytes, overlapped);
         long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE);
@@ -465,7 +465,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(opaqueMemory.sizeInBytes, bytesTransferred);
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -507,7 +507,7 @@ public class FileapiTest {
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
 
-        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SET_MEM_TO_0);
+        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SetMem.TO_0x00);
         OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
 
         Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE overlappedCompletionRoutine = new Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE() {
@@ -537,7 +537,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -580,7 +580,7 @@ public class FileapiTest {
         Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
 
-        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SET_MEM_TO_0);
+        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SetMem.TO_0x00);
         OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
 
         Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE overlappedCompletionRoutine = new Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE() {
@@ -610,7 +610,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, bytesTransferred);
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -654,7 +654,7 @@ public class FileapiTest {
         final long COMPLETION_KEY = 24;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SET_MEM_TO_0);
+        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SetMem.TO_0x00);
         OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
 
         IntRef lpNumberOfBytesTransferred = new IntRef();
@@ -673,7 +673,7 @@ public class FileapiTest {
 
         Handleapi.CloseHandle(hFile);
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -719,7 +719,7 @@ public class FileapiTest {
         final long COMPLETION_KEY = 24;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SET_MEM_TO_0);
+        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SetMem.TO_0x00);
         OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
 
         IntRef lpNumberOfBytesTransferred = new IntRef();
@@ -738,7 +738,7 @@ public class FileapiTest {
 
         Handleapi.CloseHandle(hFile);
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -780,13 +780,13 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 0,
                 null);
-        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SET_MEM_TO_0);
+        Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SetMem.TO_0x00);
         OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
         int bytesWritten = Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length);
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, bytesWritten);
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -818,13 +818,13 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 0,
                 null);
-        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SET_MEM_TO_0);
+        Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SetMem.TO_0x00);
         OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
         int bytesWritten = Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length);
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, bytesWritten);
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {

@@ -289,10 +289,10 @@ public class Signal {
         }
 
         public Mcontext_t() throws NoSuchNativeTypeException {
-            this(null, 0, MEM_UNINITIALIZED);
+            this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public Mcontext_t(AbstractNativeMemory owner, long offset, Byte setMem) throws NoSuchNativeTypeException {
+        public Mcontext_t(AbstractNativeMemory owner, long offset, SetMem setMem) throws NoSuchNativeTypeException {
             super(owner, offset, getLayoutOrThrow().sizeof, setMem);
         }
 
@@ -332,10 +332,10 @@ public class Signal {
         }
 
         public Sigset_t() {
-            this(null, 0, MEM_UNINITIALIZED);
+            this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public Sigset_t(OpaqueMemory32 parent, long offset, Byte setMem) {
+        public Sigset_t(OpaqueMemory32 parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
@@ -543,10 +543,10 @@ public class Signal {
         }
 
         public Sigval() {
-            this(null, 0, MEM_UNINITIALIZED);
+            this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public Sigval(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Sigval(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
@@ -690,18 +690,18 @@ public class Signal {
 
         @SuppressWarnings("unchecked")
         public Sigevent() throws NoSuchNativeTypeException {
-            this(null, 0, SET_MEM_TO_0);
+            this(null, 0, SetMem.TO_0x00);
         }
 
         @SuppressWarnings("unchecked")
         public Sigevent(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
             super(baseAddress, getLayoutOrThrow().sizeof);
-            sigev_value = new Sigval(this, getLayoutOrThrow().sigev_value, MEM_UNINITIALIZED);
+            sigev_value = new Sigval(this, getLayoutOrThrow().sigev_value, SetMem.DO_NOT_SET);
         }
 
-        public Sigevent(AbstractNativeMemory parent, long offset, Byte setMem) throws NoSuchNativeTypeException {
+        public Sigevent(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
             super(parent, offset, getLayoutOrThrow().sizeof, setMem);
-            sigev_value = new Sigval(this, getLayoutOrThrow().sigev_value, MEM_UNINITIALIZED);
+            sigev_value = new Sigval(this, getLayoutOrThrow().sigev_value, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -1164,12 +1164,12 @@ public class Signal {
         }
 
         public Sigaction() {
-            this(null, 0, MEM_UNINITIALIZED);
+            this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public Sigaction(AbstractNativeMemory parent, int offset, Byte setMem) {
+        public Sigaction(AbstractNativeMemory parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
-            sa_mask = new Sigset_t(this, LAYOUT.sa_mask, MEM_UNINITIALIZED);
+            sa_mask = new Sigset_t(this, LAYOUT.sa_mask, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -1450,22 +1450,22 @@ public class Signal {
             return LAYOUT;
         }
 
-        public Ucontext_t(Byte setMem) throws NoSuchNativeTypeException {
+        public Ucontext_t(SetMem setMem) throws NoSuchNativeTypeException {
             this(null, 0, setMem);
         }
 
-        public Ucontext_t(AbstractNativeMemory parent, long offset, Byte setMem) throws NoSuchNativeTypeException {
+        public Ucontext_t(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
             super(parent, offset, getLayoutOrThrow().sizeof, setMem);
-            uc_sigmask = new Sigset_t(this, getLayoutOrThrow().uc_sigmask, MEM_UNINITIALIZED);
-            uc_stack = new Stack_t(this, getLayoutOrThrow().uc_stack, MEM_UNINITIALIZED);
-            uc_mcontext = new Mcontext_t(this, getLayoutOrThrow().uc_mcontext, MEM_UNINITIALIZED);
+            uc_sigmask = new Sigset_t(this, getLayoutOrThrow().uc_sigmask, SetMem.DO_NOT_SET);
+            uc_stack = new Stack_t(this, getLayoutOrThrow().uc_stack, SetMem.DO_NOT_SET);
+            uc_mcontext = new Mcontext_t(this, getLayoutOrThrow().uc_mcontext, SetMem.DO_NOT_SET);
         }
 
         public Ucontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
             super(baseAddress, getLayoutOrThrow().sizeof);
-            uc_sigmask = new Sigset_t(this, getLayoutOrThrow().uc_sigmask, MEM_UNINITIALIZED);
-            uc_stack = new Stack_t(this, getLayoutOrThrow().uc_stack, MEM_UNINITIALIZED);
-            uc_mcontext = new Mcontext_t(this, getLayoutOrThrow().uc_mcontext, MEM_UNINITIALIZED);
+            uc_sigmask = new Sigset_t(this, getLayoutOrThrow().uc_sigmask, SetMem.DO_NOT_SET);
+            uc_stack = new Stack_t(this, getLayoutOrThrow().uc_stack, SetMem.DO_NOT_SET);
+            uc_mcontext = new Mcontext_t(this, getLayoutOrThrow().uc_mcontext, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -1563,10 +1563,10 @@ public class Signal {
         }
 
         public Stack_t() {
-            this(null, 0, MEM_UNINITIALIZED);
+            this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public Stack_t(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Stack_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
@@ -1698,12 +1698,12 @@ public class Signal {
         }
 
         public Siginfo_t() {
-            this(null, 0, MEM_UNINITIALIZED);
+            this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public Siginfo_t(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Siginfo_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
-            si_value = new Sigval(this, LAYOUT.si_value, MEM_UNINITIALIZED);
+            si_value = new Sigval(this, LAYOUT.si_value, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -1713,7 +1713,7 @@ public class Signal {
          */
         public Siginfo_t(NativeAddressHolder address) {
             super(address, LAYOUT.sizeof);
-            si_value = new Sigval(this, LAYOUT.si_value, MEM_UNINITIALIZED);
+            si_value = new Sigval(this, LAYOUT.si_value, SetMem.DO_NOT_SET);
         }
 
         /**

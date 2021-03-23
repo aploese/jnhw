@@ -34,7 +34,7 @@ public class Int8_t extends NativeIntNumber {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.int8_t;
 
-    public Int8_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Int8_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
         super(owner, offset, 1, setMem);
     }
 

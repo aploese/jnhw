@@ -30,7 +30,7 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
  */
 public class Memory64Heap extends OpaqueMemory64 {
 
-    public Memory64Heap(OpaqueMemory64 owner, long offset, long sizeInBytes, Byte setMem) {
+    public Memory64Heap(OpaqueMemory64 owner, long offset, long sizeInBytes, SetMem setMem) {
         super(owner, offset, sizeInBytes, setMem);
     }
 

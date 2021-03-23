@@ -38,7 +38,7 @@ public class Off_t extends NativeIntNumber implements Accessor_Off_t {
 
     private final static BaseDataType dataType = PosixDataType.off_t.baseDataType;
 
-    public Off_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Off_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
         super(owner, offset, dataType.SIZE_OF, setMem);
     }
 

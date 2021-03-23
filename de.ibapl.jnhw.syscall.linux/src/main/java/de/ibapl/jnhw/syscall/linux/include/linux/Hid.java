@@ -49,7 +49,7 @@ public class Hid {
             public final static byte sizeof = wDescriptorLength + __LE16;
         }
 
-        public Hid_class_descriptor(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Hid_class_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, Layout.sizeof, setMem);
         }
 
@@ -77,16 +77,16 @@ public class Hid {
 
         public Hid_class_descriptors(int arraylength) {
             //get uninitialized mem we need to set this anyway ...
-            super(new Hid_class_descriptor[arraylength], Hid_class_descriptors::createAtOffset, Hid_class_descriptor.Layout.sizeof, MEM_UNINITIALIZED);
+            super(new Hid_class_descriptor[arraylength], Hid_class_descriptors::createAtOffset, Hid_class_descriptor.Layout.sizeof, SetMem.DO_NOT_SET);
         }
 
         public Hid_class_descriptors(AbstractNativeMemory parent, long offset, int arraylength) {
             //get uninitialized mem we need to set this anyway ...
-            super(parent, offset, new Hid_class_descriptor[arraylength], Hid_class_descriptors::createAtOffset, Hid_class_descriptor.Layout.sizeof, MEM_UNINITIALIZED);
+            super(parent, offset, new Hid_class_descriptor[arraylength], Hid_class_descriptors::createAtOffset, Hid_class_descriptor.Layout.sizeof, SetMem.DO_NOT_SET);
         }
 
         private static Hid_class_descriptor createAtOffset(AbstractNativeMemory parent, long offset) {
-            return new Hid_class_descriptor(parent, offset, MEM_UNINITIALIZED);
+            return new Hid_class_descriptor(parent, offset, SetMem.DO_NOT_SET);
         }
 
     }
@@ -107,7 +107,7 @@ public class Hid {
 
         public static final int MIN_SIZEOF = 9;
 
-        public Hid_descriptor(AbstractNativeMemory parent, long offset, int size, Byte setMem) {
+        public Hid_descriptor(AbstractNativeMemory parent, long offset, int size, SetMem setMem) {
             super(parent, offset, size, setMem);
             if ((size < MIN_SIZEOF) && (size < bLength())) {
                 throw new RuntimeException("size is too small");

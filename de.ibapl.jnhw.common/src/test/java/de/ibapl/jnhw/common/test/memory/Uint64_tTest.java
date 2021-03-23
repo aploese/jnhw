@@ -24,7 +24,7 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
@@ -57,7 +57,7 @@ public class Uint64_tTest {
      */
     @Test
     public void testRawUint64_t() {
-        Uint64_t instance = new Uint64_t(null, 0, SET_MEM_TO_0);
+        Uint64_t instance = new Uint64_t(null, 0, SetMem.TO_0x00);
         long expResult = 0x08070605040302010L;
         instance.uint64_t(expResult);
         assertEquals(expResult, instance.uint64_t());
@@ -65,7 +65,7 @@ public class Uint64_tTest {
 
     @Test
     public void testNativeToString() {
-        Uint64_t instance = new Uint64_t(null, 0, SET_MEM_TO_0);
+        Uint64_t instance = new Uint64_t(null, 0, SetMem.TO_0x00);
         instance.uint64_t(-2);
         assertEquals(Long.toUnsignedString(-2), instance.nativeToString());
         assertEquals("0xfffffffffffffffe", instance.nativeToHexString());

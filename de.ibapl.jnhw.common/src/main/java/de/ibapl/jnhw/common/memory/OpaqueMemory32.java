@@ -49,7 +49,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
     }
 
     public static void clear(OpaqueMemory32 mem) {
-        memset(mem, SET_MEM_TO_0);
+        memset(mem, (byte) 0);
     }
 
     public static void copy(byte[] src, int srcPos, OpaqueMemory32 dest, int destPos, int length) {
@@ -109,7 +109,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
      * @param offset
      * @param sizeInBytes
      */
-    protected OpaqueMemory32(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+    protected OpaqueMemory32(AbstractNativeMemory owner, long offset, int sizeInBytes, SetMem setMem) {
         super(owner, offset, sizeInBytes);
         if ((owner != null)) {
             if ((offset + sizeInBytes > owner.getSizeInBytes())) {
@@ -117,8 +117,15 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
             }
         }
         this.sizeInBytes = sizeInBytes;
-        if (setMem != null) {
-            memset(this, setMem);
+//TODO        assert setMem != null;
+        if (setMem == SetMem.DO_NOT_SET) {
+            //no-op
+        } else if (owner == null) {
+            memset(this, setMem.value);
+        } else if (setMem.force) {
+            memset(this, setMem.value);
+        } else {
+            throw new IllegalArgumentException("Try to set memory which has an owner, use force if you realloy mean to set the mem.");
         }
     }
 

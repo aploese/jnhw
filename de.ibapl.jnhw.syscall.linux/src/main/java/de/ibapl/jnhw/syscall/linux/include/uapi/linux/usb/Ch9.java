@@ -55,6 +55,7 @@ package de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb;
 
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
@@ -306,7 +307,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ctrlrequest(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_ctrlrequest(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -401,7 +402,7 @@ public interface Ch9 {
             public final static byte sizeof = _sizeof;
         }
 
-        public Usb_descriptor_header(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_descriptor_header(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, Layout.sizeof, setMem);
         }
 
@@ -424,35 +425,35 @@ public interface Ch9 {
             AbstractDescriptor result;
             switch (bDescriptorType()) {
                 case USB_DT_DEVICE:
-                    result = new Usb_device_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
+                    result = new Usb_device_descriptor(parent, getOffset(), SetMem.DO_NOT_SET);
                     break;
                 case USB_DT_CONFIG:
-                    result = new Usb_config_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
+                    result = new Usb_config_descriptor(parent, getOffset(), SetMem.DO_NOT_SET);
                     break;
                 /*
                 case USB_DT_STRING:
                     throw new RuntimeException("Not implemented");
                  */
                 case USB_DT_INTERFACE:
-                    result = new Usb_interface_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
+                    result = new Usb_interface_descriptor(parent, getOffset(), SetMem.DO_NOT_SET);
                     break;
                 case USB_DT_ENDPOINT:
-                    result = new Usb_endpoint_descriptor(parent, getOffset(), bLength(), MEM_UNINITIALIZED);
+                    result = new Usb_endpoint_descriptor(parent, getOffset(), bLength(), SetMem.DO_NOT_SET);
                     break;
                 case USB_DT_WIRE_ADAPTER:
-                    result = new Hid.Hid_descriptor(parent, getOffset(), bLength(), MEM_UNINITIALIZED);
+                    result = new Hid.Hid_descriptor(parent, getOffset(), bLength(), SetMem.DO_NOT_SET);
                     break;
                 case USB_DT_SS_ENDPOINT_COMP:
-                    result = new Usb_ss_ep_comp_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
+                    result = new Usb_ss_ep_comp_descriptor(parent, getOffset(), SetMem.DO_NOT_SET);
                     break;
                 case USB_DT_PIPE_USAGE:
-                    result = new Uas.Usb_pipe_usage_descriptor(parent, getOffset(), bLength(), MEM_UNINITIALIZED);
+                    result = new Uas.Usb_pipe_usage_descriptor(parent, getOffset(), bLength(), SetMem.DO_NOT_SET);
                     break;
                 case USB_DT_INTERFACE_ASSOCIATION:
-                    result = new Usb_interface_assoc_descriptor(parent, getOffset(), MEM_UNINITIALIZED);
+                    result = new Usb_interface_assoc_descriptor(parent, getOffset(), SetMem.DO_NOT_SET);
                     break;
                 default:
-                    result = new UsbUnknownDescriptor(parent, getOffset(), bLength(), MEM_UNINITIALIZED);
+                    result = new UsbUnknownDescriptor(parent, getOffset(), bLength(), SetMem.DO_NOT_SET);
             }
             if (result.sizeInBytes != bLength()) {
                 throw new RuntimeException("bLength mismatch");
@@ -492,7 +493,7 @@ public interface Ch9 {
 
         public final static byte USB_DT_DEVICE_SIZE = 18;
 
-        public Usb_device_descriptor(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_device_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, Layout.sizeof, setMem);
         }
 
@@ -630,7 +631,7 @@ public interface Ch9 {
 
         public final static byte USB_DT_CONFIG_SIZE = 9;
 
-        public Usb_config_descriptor(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_config_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, Layout.sizeof, setMem);
         }
 
@@ -703,7 +704,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_string_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_string_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -741,7 +742,7 @@ public interface Ch9 {
 
         public final static byte USB_DT_INTERFACE_SIZE = 9;
 
-        public Usb_interface_descriptor(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_interface_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, Layout.sizeof, setMem);
         }
 
@@ -815,7 +816,7 @@ public interface Ch9 {
         /* Audio extension */
         public final static byte USB_DT_ENDPOINT_AUDIO_SIZE = 9;
 
-        public Usb_endpoint_descriptor(AbstractNativeMemory parent, long offset, int size, Byte setMem) {
+        public Usb_endpoint_descriptor(AbstractNativeMemory parent, long offset, int size, SetMem setMem) {
             super(parent, offset, size, setMem);
             if ((size == USB_DT_ENDPOINT_SIZE) || (size == USB_DT_ENDPOINT_AUDIO_SIZE)) {
                 //no-op
@@ -1145,7 +1146,7 @@ public interface Ch9 {
          *
          * /*-------------------------------------------------------------------------
          */
-        public Usb_ssp_isoc_ep_comp_descriptor(AbstractNativeMemory parent, long offset, int sizeInBytes, Byte setMem) {
+        public Usb_ssp_isoc_ep_comp_descriptor(AbstractNativeMemory parent, long offset, int sizeInBytes, SetMem setMem) {
             super(parent, offset, sizeInBytes, setMem);
         }
 
@@ -1180,7 +1181,7 @@ public interface Ch9 {
 
         public final static byte USB_DT_SS_EP_COMP_SIZE = 6;
 
-        public Usb_ss_ep_comp_descriptor(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_ss_ep_comp_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, Layout.sizeof, setMem);
         }
 
@@ -1268,7 +1269,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_qualifier_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_qualifier_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1326,7 +1327,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_otg_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_otg_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1354,7 +1355,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_otg20_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_otg20_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1402,7 +1403,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_debug_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_debug_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1437,7 +1438,7 @@ public interface Ch9 {
             public final static byte sizeof = iFunction + __U8;
         }
 
-        public Usb_interface_assoc_descriptor(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_interface_assoc_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, Layout.sizeof, setMem);
         }
 
@@ -1504,7 +1505,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_security_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_security_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1542,7 +1543,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_key_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_key_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1577,7 +1578,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_encryption_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_encryption_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1627,7 +1628,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_bos_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_bos_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1656,7 +1657,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_dev_cap_header(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_dev_cap_header(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1689,7 +1690,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_wireless_cap_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_wireless_cap_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1764,7 +1765,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ext_cap_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_ext_cap_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1829,7 +1830,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ss_cap_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_ss_cap_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1893,7 +1894,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ss_container_id_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_ss_container_id_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -1937,7 +1938,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ssp_cap_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_ssp_cap_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -2024,7 +2025,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_pd_cap_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_pd_cap_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -2111,7 +2112,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_pd_cap_battery_info_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_pd_cap_battery_info_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -2206,7 +2207,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_pd_cap_consumer_port_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_pd_cap_consumer_port_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -2287,7 +2288,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_pd_cap_provider_port_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_pd_cap_provider_port_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -2339,7 +2340,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ptm_cap_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_ptm_cap_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -2384,7 +2385,7 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_wireless_ep_comp_descriptor(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_wireless_ep_comp_descriptor(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, LAYOUT.getSizeof(), setMem);
         }
 
@@ -2449,7 +2450,7 @@ public interface Ch9 {
             public final static byte sizeof = MIC + sizeof_MIC;
         }
 
-        public Usb_handshake(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_handshake(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, Layout.sizeof, setMem);
         }
 
@@ -2510,7 +2511,7 @@ public interface Ch9 {
             public final static byte sizeof = CK + sizeof_CK;
         }
 
-        public Usb_connection_context(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_connection_context(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, Layout.sizeof, setMem);
         }
 
@@ -2610,7 +2611,7 @@ public interface Ch9 {
 
     public abstract static class Usb_set_sel_req extends Struct32 {
 
-        public Usb_set_sel_req(OpaqueMemory32 parent, int offset, Byte setMem) {
+        public Usb_set_sel_req(OpaqueMemory32 parent, int offset, SetMem setMem) {
             super(parent, offset, -1, setMem);
         }
 

@@ -601,7 +601,7 @@ public final class Winnt {
             MEM_ACCESS.intptr_t_AtIndex(this, 0, i, element.value);
         }
 
-        public ArrayOfHandle(int length, Byte setMem) {
+        public ArrayOfHandle(int length, SetMem setMem) {
             super((OpaqueMemory32) null, 0, length * WinApiDataType.HANDLE.baseDataType.SIZE_OF, setMem);
             this.length = length;
         }
@@ -660,7 +660,7 @@ public final class Winnt {
          *
          * @param elementLength
          */
-        public LPWSTR(int elementLength, Byte setMem) {
+        public LPWSTR(int elementLength, SetMem setMem) {
             super((OpaqueMemory32) null, 0, elementLength * SIZE_OF_WCHAR, setMem);
             bufferEnd = elementLength;
         }
@@ -725,12 +725,12 @@ public final class Winnt {
         }
 
         protected PHANDLE(CreateHandler handler) {
-            super((OpaqueMemory32) null, 0, SIZE_OF, SET_MEM_TO_0);
+            super((OpaqueMemory32) null, 0, SIZE_OF, SetMem.TO_0x00);
             cachedHandle = handler.create(getHandleValue());
         }
 
         protected PHANDLE(HANDLE handle) {
-            super((OpaqueMemory32) null, 0, SIZE_OF, MEM_UNINITIALIZED);
+            super((OpaqueMemory32) null, 0, SIZE_OF, SetMem.DO_NOT_SET);
             setHandleValue(handle.value);
             cachedHandle = handle;
         }

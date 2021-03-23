@@ -212,14 +212,14 @@ public final class Poll {
         }
 
         public PollFd(AbstractNativeMemory owner, long offset) {
-            this(owner, offset, null);
+            this(owner, offset, SetMem.DO_NOT_SET);
         }
 
         public PollFd() {
-            this(null, 0, null);
+            this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public PollFd(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public PollFd(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
@@ -366,12 +366,12 @@ public final class Poll {
 
         public PollFds(int arraylength) {
             //get uninitialized mem we need to set this anyway ...
-            super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.LAYOUT.sizeof, MEM_UNINITIALIZED);
+            super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.LAYOUT.sizeof, SetMem.DO_NOT_SET);
         }
 
         public PollFds(AbstractNativeMemory parent, long offset, int arraylength) {
             //get uninitialized mem we need to set this anyway ...
-            super(parent, offset, new PollFd[arraylength], PollFds::createAtOffset, PollFd.LAYOUT.sizeof, MEM_UNINITIALIZED);
+            super(parent, offset, new PollFd[arraylength], PollFds::createAtOffset, PollFd.LAYOUT.sizeof, SetMem.DO_NOT_SET);
         }
 
         private static PollFd createAtOffset(AbstractNativeMemory parent, long offset) {

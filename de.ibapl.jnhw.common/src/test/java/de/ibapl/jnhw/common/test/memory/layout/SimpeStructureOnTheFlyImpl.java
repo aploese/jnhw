@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.test.memory.layout;
 
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Int16_t;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Int64_t;
@@ -49,17 +49,17 @@ public class SimpeStructureOnTheFlyImpl extends Struct32 implements SimpeStructu
     public final int sizeof;
     public final Alignment alignment;
 
-    public SimpeStructureOnTheFlyImpl(OpaqueMemory32 parent, int offset, int sizeInBytes, Byte setMem) {
+    public SimpeStructureOnTheFlyImpl(OpaqueMemory32 parent, int offset, int sizeInBytes, SetMem setMem) {
         super(parent, offset, sizeInBytes, setMem);
         StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactoryImpl.Type.STRUCT);
-        first = new Int8_t(this, slf.int8_t(), MEM_UNINITIALIZED);
-        second = new Int16_t(this, slf.int16_t(), MEM_UNINITIALIZED);
-        third = new Int8_t(this, slf.int8_t(), MEM_UNINITIALIZED);
-        forth = new Int32_t(this, slf.int32_t(), MEM_UNINITIALIZED);
-        fifth = new Int8_t(this, slf.int8_t(), MEM_UNINITIALIZED);
-        sixth = new Int64_t(this, slf.int64_t(), MEM_UNINITIALIZED);
-        seventh = new Int8_t(this, slf.int8_t(), MEM_UNINITIALIZED);
-        eighth = new Int64_t(this, slf.int64_t(), MEM_UNINITIALIZED);
+        first = new Int8_t(this, slf.int8_t(), SetMem.DO_NOT_SET);
+        second = new Int16_t(this, slf.int16_t(), SetMem.DO_NOT_SET);
+        third = new Int8_t(this, slf.int8_t(), SetMem.DO_NOT_SET);
+        forth = new Int32_t(this, slf.int32_t(), SetMem.DO_NOT_SET);
+        fifth = new Int8_t(this, slf.int8_t(), SetMem.DO_NOT_SET);
+        sixth = new Int64_t(this, slf.int64_t(), SetMem.DO_NOT_SET);
+        seventh = new Int8_t(this, slf.int8_t(), SetMem.DO_NOT_SET);
+        eighth = new Int64_t(this, slf.int64_t(), SetMem.DO_NOT_SET);
         alignment = slf.getAlignment();
         sizeof = (int) slf.getSizeof();
     }

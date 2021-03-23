@@ -33,7 +33,7 @@ public class Unsigned_Long extends NativeIntNumber {
 
     private final BaseDataType dataType;
 
-    public Unsigned_Long(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Unsigned_Long(AbstractNativeMemory owner, long offset, SetMem setMem) {
         super(owner, offset, BaseDataType.__SIZE_OF_LONG, setMem);
         dataType = BaseDataType.getUnsigned_Long_Mapping();
     }

@@ -34,7 +34,7 @@ public class Int64_t extends NativeIntNumber {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.int64_t;
 
-    public Int64_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Int64_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
         super(owner, offset, 8, setMem);
     }
 

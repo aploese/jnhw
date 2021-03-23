@@ -89,7 +89,7 @@ public abstract class WinDef {
 
         int bufferEnd;
 
-        public LPBYTE(int size, Byte setMem) {
+        public LPBYTE(int size, SetMem setMem) {
             super((OpaqueMemory32) null, 0, size, setMem);
             bufferEnd = size;
         }

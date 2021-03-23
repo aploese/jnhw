@@ -36,7 +36,7 @@ import java.io.IOException;
 public abstract class OpaqueMemory64 extends AbstractNativeMemory implements Native {
 
     public static void clear(OpaqueMemory64 mem) {
-        memset(mem, SET_MEM_TO_0);
+        memset(mem, (byte) 0);
     }
 
     public static void copy(byte[] src, int srcPos, OpaqueMemory64 dest, long destPos, int length) {
@@ -91,14 +91,21 @@ public abstract class OpaqueMemory64 extends AbstractNativeMemory implements Nat
         this.sizeInBytes = sizeInBytes;
     }
 
-    protected OpaqueMemory64(OpaqueMemory64 owner, long offset, long sizeInBytes, Byte setMem) {
+    protected OpaqueMemory64(OpaqueMemory64 owner, long offset, long sizeInBytes, SetMem setMem) {
         super(owner, offset, sizeInBytes);
         if ((owner != null) && (offset + sizeInBytes > owner.sizeInBytes)) {
             throw new IndexOutOfBoundsException("end will be outside (after)) of owner");
         }
         this.sizeInBytes = sizeInBytes;
-        if (setMem != null) {
-            memset(this, setMem);
+//TODO        assert setMem != null;
+        if (setMem == SetMem.DO_NOT_SET) {
+            //no-op
+        } else if (owner == null) {
+            memset(this, setMem.value);
+        } else if (setMem.force) {
+            memset(this, setMem.value);
+        } else {
+            throw new IllegalArgumentException("Try to set memory which has an owner, use force if you realloy mean to set the mem.");
         }
     }
 

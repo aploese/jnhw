@@ -24,7 +24,7 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
@@ -150,7 +150,7 @@ public class PthreadTest {
     public void testPthread_attr_setget_schedparam() throws Exception {
         Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
         Pthread.pthread_attr_init(attr);
-        Sched.Sched_param param = new Sched.Sched_param(SET_MEM_TO_0);
+        Sched.Sched_param param = new Sched.Sched_param(SetMem.TO_0x00);
         param.sched_priority(0); //TODO Any other will give a EINVAL ????
         try {
             System.out.println("pthread_attr_setschedparam ");
@@ -163,7 +163,7 @@ public class PthreadTest {
             Pthread.pthread_attr_setschedparam(attr, param);
 
             System.out.println("pthread_attr_getschedparam");
-            Sched.Sched_param param1 = new Sched.Sched_param(SET_MEM_TO_0);
+            Sched.Sched_param param1 = new Sched.Sched_param(SetMem.TO_0x00);
             Assertions.assertThrows(NullPointerException.class, () -> {
                 Pthread.pthread_attr_getschedparam(null, param1);
             });
@@ -202,7 +202,7 @@ public class PthreadTest {
 
     @Test
     public void testPthread_setget_schedparam() throws NativeErrorException {
-        Sched.Sched_param param = new Sched.Sched_param(SET_MEM_TO_0);
+        Sched.Sched_param param = new Sched.Sched_param(SetMem.TO_0x00);
         param.sched_priority(127);
 
         System.out.println("pthread_setschedparam");

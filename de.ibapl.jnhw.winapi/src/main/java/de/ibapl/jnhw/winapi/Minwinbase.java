@@ -212,7 +212,7 @@ public class Minwinbase {
 
         public OVERLAPPED() {
             //always clean field Pointer must be zero!
-            super((OpaqueMemory32) null, 0, Layout.sizeof, SET_MEM_TO_0);
+            super((OpaqueMemory32) null, 0, Layout.sizeof, SetMem.TO_0x00);
         }
 
         public OVERLAPPED(NativeAddressHolder addressHolder) {
@@ -295,7 +295,7 @@ public class Minwinbase {
         }
 
         public SECURITY_ATTRIBUTES() {
-            super((OpaqueMemory32) null, 0, Layout.sizeof, SET_MEM_TO_0);
+            super((OpaqueMemory32) null, 0, Layout.sizeof, SetMem.TO_0x00);
         }
 
     };

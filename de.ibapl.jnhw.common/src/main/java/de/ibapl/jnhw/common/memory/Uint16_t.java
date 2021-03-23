@@ -34,7 +34,7 @@ public class Uint16_t extends NativeIntNumber {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.uint16_t;
 
-    public Uint16_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Uint16_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
         super(owner, offset, 2, setMem);
     }
 

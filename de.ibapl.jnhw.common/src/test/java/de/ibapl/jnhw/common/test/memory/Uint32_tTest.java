@@ -24,8 +24,7 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
@@ -58,7 +57,7 @@ public class Uint32_tTest {
      */
     @Test
     public void testRawUint32_t() {
-        Uint32_t instance = new Uint32_t(null, 0, SET_MEM_TO_0);
+        Uint32_t instance = new Uint32_t(null, 0, SetMem.TO_0x00);
         int expResult = 0x40302010;
         instance.uint32_t(expResult);
         assertEquals(expResult, instance.uint32_t());
@@ -69,7 +68,7 @@ public class Uint32_tTest {
 
     @Test
     public void testNativeToString() {
-        Uint32_t instance = new Uint32_t(null, 0, SET_MEM_TO_0);
+        Uint32_t instance = new Uint32_t(null, 0, SetMem.TO_0x00);
         instance.uint32_t(-2);
         assertEquals(String.valueOf(0x00000000FFFFFFFFL & -2), instance.nativeToString());
         assertEquals(Integer.toUnsignedString(-2), instance.nativeToString());

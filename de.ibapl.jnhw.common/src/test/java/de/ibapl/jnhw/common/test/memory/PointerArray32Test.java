@@ -30,7 +30,7 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
@@ -93,15 +93,15 @@ public class PointerArray32Test {
             Assertions.fail("Not expecting to be called for index: " + index);
             return null;
         };
-        PointerArray32<OpaqueMemory32> instance = new PointerArray32<>(16, SET_MEM_TO_0);
-        OpaqueMemory32 element1 = new Memory32Heap((OpaqueMemory32) null, 0, 8, SET_MEM_TO_0);
+        PointerArray32<OpaqueMemory32> instance = new PointerArray32<>(16, SetMem.TO_0x00);
+        OpaqueMemory32 element1 = new Memory32Heap((OpaqueMemory32) null, 0, 8, SetMem.TO_0x00);
         OpaqueMemory32.setByte(element1, 0, (byte) 1);
         instance.set(1, element1);
         for (int i = 0; i < instance.length(); i++) {
             instance.get(i, producerFail);
         }
 
-        OpaqueMemory32 element2 = new Memory32Heap((OpaqueMemory32) null, 0, 8, SET_MEM_TO_0);
+        OpaqueMemory32 element2 = new Memory32Heap((OpaqueMemory32) null, 0, 8, SetMem.TO_0x00);
         OpaqueMemory32.setByte(element2, 0, (byte) 2);
         instance.set(2, element2);
         for (int i = 0; i < instance.length(); i++) {
@@ -121,8 +121,8 @@ public class PointerArray32Test {
     @SuppressWarnings("unchecked")
     public void testNativeToString() {
         System.out.println("toString");
-        PointerArray32<OpaqueMemory32> instance = new PointerArray32<>(6, SET_MEM_TO_0);
-        OpaqueMemory32 element1 = new Memory32Heap((OpaqueMemory32) null, 0, 1, SET_MEM_TO_0);
+        PointerArray32<OpaqueMemory32> instance = new PointerArray32<>(6, SetMem.TO_0x00);
+        OpaqueMemory32 element1 = new Memory32Heap((OpaqueMemory32) null, 0, 1, SetMem.TO_0x00);
         instance.set(1, element1);
         String result = instance.nativeToString();
         Assertions.assertEquals("[null, " + element1.nativeToString() + ", null, null, null, null]", result);
@@ -131,7 +131,7 @@ public class PointerArray32Test {
     @Test
     @SuppressWarnings("unchecked")
     public void testArrayBounds() {
-        PointerArray32<OpaqueMemory32> instance = new PointerArray32<>(2, SET_MEM_TO_0);
+        PointerArray32<OpaqueMemory32> instance = new PointerArray32<>(2, SetMem.TO_0x00);
 
         Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
             instance.set(-1, null);
@@ -153,13 +153,13 @@ public class PointerArray32Test {
 
     @Test
     public void testCachedPointerArrayLength() {
-        PointerArray32<OpaqueMemory32> instance = new PointerArray32<>(0, SET_MEM_TO_0);
+        PointerArray32<OpaqueMemory32> instance = new PointerArray32<>(0, SetMem.TO_0x00);
         Assertions.assertEquals(instance.length(), getCachedReferencesLength(instance));
 
-        instance = new PointerArray32(1, SET_MEM_TO_0);
+        instance = new PointerArray32(1, SetMem.TO_0x00);
         Assertions.assertEquals(instance.length(), getCachedReferencesLength(instance));
 
-        instance = new PointerArray32(2, SET_MEM_TO_0);
+        instance = new PointerArray32(2, SetMem.TO_0x00);
         Assertions.assertEquals(instance.length(), getCachedReferencesLength(instance));
     }
 

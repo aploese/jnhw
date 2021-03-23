@@ -23,7 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
@@ -188,7 +188,7 @@ public class TermiosTest {
         Assertions.assertEquals(1, PosixDataType.cc_t.baseDataType.SIZE_OF);
         Assertions.assertEquals(Alignment.AT_1, PosixDataType.cc_t.baseDataType.ALIGN_OF);
         assertTrue(PosixDataType.cc_t.baseDataType.UNSIGNED);
-        Termios.Cc_t instance = new Termios.Cc_t(null, 0, SET_MEM_TO_0);
+        Termios.Cc_t instance = new Termios.Cc_t(null, 0, SetMem.TO_0x00);
         assertEquals(BaseDataType.uint8_t, instance.getBaseDataType());
         instance.uint8_t((byte) 0x80);
         assertEquals((byte) 0x80, instance.uint8_t());
@@ -202,7 +202,7 @@ public class TermiosTest {
         Assertions.assertEquals(4, PosixDataType.speed_t.baseDataType.SIZE_OF);
         Assertions.assertEquals(Alignment.AT_4, PosixDataType.speed_t.baseDataType.ALIGN_OF);
         assertTrue(PosixDataType.speed_t.baseDataType.UNSIGNED);
-        Termios.Speed_t instance = new Termios.Speed_t(null, 0, SET_MEM_TO_0);
+        Termios.Speed_t instance = new Termios.Speed_t(null, 0, SetMem.TO_0x00);
         assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
         instance.uint32_t(0x80706050);
         assertEquals(0x80706050, instance.uint32_t());
@@ -218,7 +218,7 @@ public class TermiosTest {
         Assertions.assertEquals(4, PosixDataType.tcflag_t.baseDataType.SIZE_OF);
         Assertions.assertEquals(Alignment.AT_4, PosixDataType.tcflag_t.baseDataType.ALIGN_OF);
         Assertions.assertTrue(PosixDataType.tcflag_t.baseDataType.UNSIGNED);
-        Termios.Tcflag_t instance = new Termios.Tcflag_t(null, 0, SET_MEM_TO_0);
+        Termios.Tcflag_t instance = new Termios.Tcflag_t(null, 0, SetMem.TO_0x00);
         assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
         instance.uint32_t(0x80706050);
         assertEquals(0x80706050, instance.uint32_t());

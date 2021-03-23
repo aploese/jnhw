@@ -90,7 +90,7 @@ public class LinuxSyscallStruct32 extends Struct32 {
 
     }
 
-    public LinuxSyscallStruct32(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+    public LinuxSyscallStruct32(AbstractNativeMemory owner, long offset, int sizeInBytes, SetMem setMem) {
         super(owner, offset, sizeInBytes, setMem);
     }
 

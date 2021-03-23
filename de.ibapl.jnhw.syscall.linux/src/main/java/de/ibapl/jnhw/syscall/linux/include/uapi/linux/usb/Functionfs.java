@@ -61,7 +61,7 @@ public class Functionfs {
     /* Descriptor of an non-audio endpoint */
     public abstract static class Usb_endpoint_descriptor_no_audio extends Struct32 {
 
-        public Usb_endpoint_descriptor_no_audio(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_endpoint_descriptor_no_audio(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, -1, setMem);
         }
 
@@ -86,7 +86,7 @@ public class Functionfs {
 
     public abstract static class Usb_functionfs_descs_head_v2 extends Struct32 {
 
-        public Usb_functionfs_descs_head_v2(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_functionfs_descs_head_v2(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, -1, setMem);
         }
 
@@ -107,7 +107,7 @@ public class Functionfs {
     /* MS OS Descriptor header */
     public abstract static class Usb_os_desc_header extends Struct32 {
 
-        public Usb_os_desc_header(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_os_desc_header(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, -1, setMem);
         }
 
@@ -139,7 +139,7 @@ public class Functionfs {
 
     public abstract static class Usb_ext_compat_desc extends Struct32 {
 
-        public Usb_ext_compat_desc(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_ext_compat_desc(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, -1, setMem);
         }
 
@@ -161,7 +161,7 @@ public class Functionfs {
 
     public abstract static class Usb_ext_prop_desc extends Struct32 {
 
-        public Usb_ext_prop_desc(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_ext_prop_desc(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, -1, setMem);
         }
 
@@ -267,7 +267,7 @@ public class Functionfs {
      */
     public abstract static class Usb_functionfs_strings_head extends Struct32 {
 
-        public Usb_functionfs_strings_head(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_functionfs_strings_head(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, -1, setMem);
         }
 
@@ -329,7 +329,7 @@ public class Functionfs {
      */
     public abstract static class Usb_functionfs_event extends Struct32 {
 
-        public Usb_functionfs_event(AbstractNativeMemory parent, long offset, Byte setMem) {
+        public Usb_functionfs_event(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, -1, setMem);
             setup = null; //new Usb_ctrlrequest(this, offsetof_setup(), setMem);
         }

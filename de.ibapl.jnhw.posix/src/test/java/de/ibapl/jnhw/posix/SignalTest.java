@@ -33,8 +33,7 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_UNINITIALIZED;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
@@ -347,7 +346,7 @@ public class SignalTest {
     @Test
     public void testSigaltstack() throws Exception {
         System.out.println("sigaltstack");
-        final Memory32Heap ss_sp = new Memory32Heap((OpaqueMemory32) null, 0, Signal.MINSIGSTKSZ, SET_MEM_TO_0);
+        final Memory32Heap ss_sp = new Memory32Heap((OpaqueMemory32) null, 0, Signal.MINSIGSTKSZ, SetMem.TO_0x00);
         Signal.Stack_t ss = Signal.Stack_t.of(Signal.SS_DISABLE, ss_sp);
         Signal.Stack_t oss = new Signal.Stack_t();
         Signal.sigaltstack(null, oss);
@@ -645,7 +644,7 @@ public class SignalTest {
             final Signal.Sigaction actOut = new Signal.Sigaction();
             Signal.sigaction(SIG, act, oact);
 
-            OpaqueMemory32 data = new Memory32Heap((OpaqueMemory32) null, 0, 128, SET_MEM_TO_0);
+            OpaqueMemory32 data = new Memory32Heap((OpaqueMemory32) null, 0, 128, SetMem.TO_0x00);
 
             Signal.Sigval sigval = new Signal.Sigval();
             sigval.sival_ptr(data);
@@ -752,7 +751,7 @@ public class SignalTest {
 
         final Signal.Siginfo_t info = new Signal.Siginfo_t();
 
-        final Time.Timespec timeout = new Time.Timespec(MEM_UNINITIALIZED);
+        final Time.Timespec timeout = new Time.Timespec(SetMem.DO_NOT_SET);
         timeout.tv_nsec(0);
         timeout.tv_sec(10);
 
@@ -886,7 +885,7 @@ public class SignalTest {
 
     @Test
     public void testUnionSigval() throws Exception {
-        Memory32Heap mem = new Memory32Heap((OpaqueMemory32) null, 0, 2, null);
+        Memory32Heap mem = new Memory32Heap((OpaqueMemory32) null, 0, 2, SetMem.DO_NOT_SET);
         Signal.Sigval<Memory32Heap> sigval = new Signal.Sigval<>();
         sigval.sival_int(22);
         assertEquals(22, sigval.sival_int());
@@ -980,9 +979,9 @@ public class SignalTest {
     @Test
     public void testStructUcontext_t() throws Exception {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Ucontext_t(MEM_UNINITIALIZED));
+            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> new Signal.Ucontext_t(SetMem.DO_NOT_SET));
         } else {
-            Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t(SET_MEM_TO_0);
+            Signal.Ucontext_t ucontext_t = new Signal.Ucontext_t(SetMem.TO_0x00);
             Assertions.assertNull(ucontext_t.uc_link((baseAddress, parent) -> {
                 try {
                     return baseAddress.isNULL() ? null : new Signal.Ucontext_t(baseAddress);

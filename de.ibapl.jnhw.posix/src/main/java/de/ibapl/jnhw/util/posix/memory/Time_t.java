@@ -38,7 +38,7 @@ public class Time_t extends NativeIntNumber implements Accessor_Time_t {
 
     private final static BaseDataType dataType = PosixDataType.time_t.baseDataType;
 
-    public Time_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Time_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
         super(owner, offset, dataType.SIZE_OF, setMem);
     }
 

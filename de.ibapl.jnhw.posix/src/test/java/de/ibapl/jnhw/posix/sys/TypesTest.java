@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.posix.sys;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import org.junit.jupiter.api.Assertions;
@@ -43,7 +43,7 @@ public class TypesTest {
     @Test
     public void testClock_t() {
         Assertions.assertFalse(PosixDataType.clock_t.baseDataType.UNSIGNED);
-        Types.Clock_t instance = new Types.Clock_t(null, 0, SET_MEM_TO_0);
+        Types.Clock_t instance = new Types.Clock_t(null, 0, SetMem.TO_0x00);
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
         if (PosixDataType.clock_t.baseDataType.SIZE_OF == 4) {
@@ -70,7 +70,7 @@ public class TypesTest {
     @Test
     public void testMode_t() {
         Assertions.assertTrue(PosixDataType.mode_t.baseDataType.UNSIGNED);
-        Types.Mode_t instance = new Types.Mode_t(null, 0, SET_MEM_TO_0);
+        Types.Mode_t instance = new Types.Mode_t(null, 0, SetMem.TO_0x00);
         if (PosixDataType.mode_t.baseDataType.SIZE_OF == 2) {
             Assertions.assertEquals(Alignment.AT_2, PosixDataType.mode_t.baseDataType.ALIGN_OF);
             assertEquals(BaseDataType.uint16_t, instance.getBaseDataType());
@@ -103,7 +103,7 @@ public class TypesTest {
     @Test
     public void testOff_t() {
         Assertions.assertFalse(PosixDataType.off_t.baseDataType.UNSIGNED);
-        Types.Off_t instance = new Types.Off_t(null, 0, SET_MEM_TO_0);
+        Types.Off_t instance = new Types.Off_t(null, 0, SetMem.TO_0x00);
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
         if (PosixDataType.off_t.baseDataType.SIZE_OF == 4) {
@@ -132,7 +132,7 @@ public class TypesTest {
         Assertions.assertEquals(4, PosixDataType.pid_t.baseDataType.SIZE_OF);
         Assertions.assertEquals(Alignment.AT_4, PosixDataType.pid_t.baseDataType.ALIGN_OF);
         Assertions.assertFalse(PosixDataType.pid_t.baseDataType.UNSIGNED);
-        Types.Pid_t instance = new Types.Pid_t(null, 0, SET_MEM_TO_0);
+        Types.Pid_t instance = new Types.Pid_t(null, 0, SetMem.TO_0x00);
         instance.int32_t(0x80706050);
         assertEquals(0x80706050, instance.int32_t());
         assertEquals(Integer.toString(0x80706050), instance.nativeToString());
@@ -142,7 +142,7 @@ public class TypesTest {
     @Test
     public void testSize_t() {
         Assertions.assertTrue(PosixDataType.size_t.baseDataType.UNSIGNED);
-        Types.Size_t instance = new Types.Size_t(null, 0, SET_MEM_TO_0);
+        Types.Size_t instance = new Types.Size_t(null, 0, SetMem.TO_0x00);
         if (PosixDataType.size_t.baseDataType.SIZE_OF == 4) {
             Assertions.assertEquals(Alignment.AT_4, PosixDataType.size_t.baseDataType.ALIGN_OF);
             assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
@@ -175,7 +175,7 @@ public class TypesTest {
     @Test
     public void testSsize_t() {
         Assertions.assertFalse(PosixDataType.ssize_t.baseDataType.UNSIGNED);
-        Types.Ssize_t instance = new Types.Ssize_t(null, 0, SET_MEM_TO_0);
+        Types.Ssize_t instance = new Types.Ssize_t(null, 0, SetMem.TO_0x00);
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
         if (PosixDataType.ssize_t.baseDataType.SIZE_OF == 4) {
@@ -202,7 +202,7 @@ public class TypesTest {
     @Test
     public void testTime_t() {
         Assertions.assertFalse(PosixDataType.time_t.baseDataType.UNSIGNED);
-        Types.Time_t instance = new Types.Time_t(null, 0, SET_MEM_TO_0);
+        Types.Time_t instance = new Types.Time_t(null, 0, SetMem.TO_0x00);
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
         if (PosixDataType.time_t.baseDataType.SIZE_OF == 4) {
@@ -231,7 +231,7 @@ public class TypesTest {
         Assertions.assertEquals(4, PosixDataType.uid_t.baseDataType.SIZE_OF);
         Assertions.assertEquals(Alignment.AT_4, PosixDataType.uid_t.baseDataType.ALIGN_OF);
         Assertions.assertTrue(PosixDataType.uid_t.baseDataType.UNSIGNED);
-        Types.Uid_t instance = new Types.Uid_t(null, 0, SET_MEM_TO_0);
+        Types.Uid_t instance = new Types.Uid_t(null, 0, SetMem.TO_0x00);
         instance.uint32_t(0x80706050);
         assertEquals(0x80706050, instance.uint32_t());
         assertEquals(Integer.toUnsignedString(0x80706050), instance.nativeToString());

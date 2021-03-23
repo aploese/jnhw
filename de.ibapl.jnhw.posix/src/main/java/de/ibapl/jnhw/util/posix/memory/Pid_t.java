@@ -38,7 +38,7 @@ public class Pid_t extends NativeIntNumber implements Accessor_Pid_t {
 
     private final static BaseDataType dataType = PosixDataType.pid_t.baseDataType;
 
-    public Pid_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Pid_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
         super(owner, offset, dataType.SIZE_OF, setMem);
     }
 

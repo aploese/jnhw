@@ -361,12 +361,12 @@ public class Aio {
 
         @SuppressWarnings("unchecked")
         public Aiocb(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
-            this(owner, offset, null);
+            this(owner, offset, SetMem.DO_NOT_SET);
         }
 
         @SuppressWarnings("unchecked")
         public Aiocb() throws NoSuchNativeTypeException {
-            this(null, 0, SET_MEM_TO_0);
+            this(null, 0, SetMem.TO_0x00);
         }
 
         public static Layout getLayoutOrThrow() throws NoSuchNativeTypeException {
@@ -376,9 +376,9 @@ public class Aio {
             return LAYOUT;
         }
 
-        public Aiocb(OpaqueMemory32 parent, int offset, Byte setMem) throws NoSuchNativeTypeException {
+        public Aiocb(OpaqueMemory32 parent, int offset, SetMem setMem) throws NoSuchNativeTypeException {
             super(parent, offset, getLayoutOrThrow().sizeof, setMem);
-            aio_sigevent = new Sigevent(this, LAYOUT.aio_sigevent, MEM_UNINITIALIZED);
+            aio_sigevent = new Sigevent(this, LAYOUT.aio_sigevent, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -389,7 +389,7 @@ public class Aio {
         @SuppressWarnings("unchecked")
         public Aiocb(NativeAddressHolder address) throws NoSuchNativeTypeException {
             super(address, LAYOUT.sizeof);
-            aio_sigevent = new Sigevent(this, LAYOUT.aio_sigevent, MEM_UNINITIALIZED);
+            aio_sigevent = new Sigevent(this, LAYOUT.aio_sigevent, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -656,11 +656,11 @@ public class Aio {
             LibJnhwPosixLoader.touch();
         }
 
-        public Aiocbs(int arraylength, Byte setMem) throws NoSuchNativeTypeException {
+        public Aiocbs(int arraylength, SetMem setMem) throws NoSuchNativeTypeException {
             this(arraylength, null, 0, setMem);
         }
 
-        public Aiocbs(int arrayLength, OpaqueMemory32 parent, int offset, Byte setMem) throws NoSuchNativeTypeException {
+        public Aiocbs(int arrayLength, OpaqueMemory32 parent, int offset, SetMem setMem) throws NoSuchNativeTypeException {
             super(arrayLength, parent, offset, setMem);
             Aiocb.getLayoutOrThrow();
         }

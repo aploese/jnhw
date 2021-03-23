@@ -34,7 +34,7 @@ public class Int32_t extends NativeIntNumber {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.int32_t;
 
-    public Int32_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Int32_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
         super(owner, offset, 4, setMem);
     }
 

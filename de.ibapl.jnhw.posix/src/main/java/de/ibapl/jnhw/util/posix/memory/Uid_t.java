@@ -38,7 +38,7 @@ public class Uid_t extends NativeIntNumber implements Accessor_Uid_t {
 
     private final static BaseDataType dataType = PosixDataType.uid_t.baseDataType;
 
-    public Uid_t(AbstractNativeMemory owner, long offset, Byte setMem) {
+    public Uid_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
         super(owner, offset, dataType.SIZE_OF, setMem);
     }
 

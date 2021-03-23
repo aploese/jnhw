@@ -42,7 +42,7 @@ public class SimpeStructureImpl extends Struct32 implements SimpeStructure {
     }
     protected final Layout LAYOUT;
 
-    public SimpeStructureImpl(OpaqueMemory32 owner, int offset, Layout layout, Byte setMem) {
+    public SimpeStructureImpl(OpaqueMemory32 owner, int offset, Layout layout, SetMem setMem) {
         super(owner, offset, layout.sizeof, setMem);
         this.LAYOUT = layout;
     }

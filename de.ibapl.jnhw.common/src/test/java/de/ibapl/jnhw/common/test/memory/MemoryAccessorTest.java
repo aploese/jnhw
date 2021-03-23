@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Int64_t;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.MemoryAccessor;
@@ -36,7 +37,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 
 /**
  *
@@ -49,34 +49,34 @@ public class MemoryAccessorTest {
 
     private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
     private final static boolean IS_BIG_ENDIAN = MULTIARCH_TUPEL_BUILDER.getEndianess().isBigEndian();
-    private final static Memory32Heap heap = new Memory32Heap(null, 0, 8 * 12, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t prev = new Int64_t(heap, 0, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Memory32Heap heap = new Memory32Heap(null, 0, 8 * 12, SetMem.DO_NOT_SET);
+    private final static Int64_t prev = new Int64_t(heap, 0, SetMem.DO_NOT_SET);
 
-    private final static Int64_t mem64 = new Int64_t(heap, 8 * 1, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Int64_t mem32 = new Int64_t(heap, 4 * 2, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Memory32Heap buff_16 = new Memory32Heap(heap, 8 * 1, 16, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Int64_t mem64 = new Int64_t(heap, 8 * 1, SetMem.DO_NOT_SET);
+    private final static Int64_t mem32 = new Int64_t(heap, 4 * 2, SetMem.DO_NOT_SET);
+    private final static Memory32Heap buff_16 = new Memory32Heap(heap, 8 * 1, 16, SetMem.DO_NOT_SET);
 
-    private final static Uint32_t succ32_1 = new Uint32_t(heap, 4 * 3, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint32_t succ32_1 = new Uint32_t(heap, 4 * 3, SetMem.DO_NOT_SET);
 
-    private final static Uint64_t succ64_1 = new Uint64_t(heap, 8 * 2, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Uint32_t succ32_2 = new Uint32_t(heap, 4 * 4, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Uint32_t succ32_3 = new Uint32_t(heap, 4 * 5, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint64_t succ64_1 = new Uint64_t(heap, 8 * 2, SetMem.DO_NOT_SET);
+    private final static Uint32_t succ32_2 = new Uint32_t(heap, 4 * 4, SetMem.DO_NOT_SET);
+    private final static Uint32_t succ32_3 = new Uint32_t(heap, 4 * 5, SetMem.DO_NOT_SET);
 
-    private final static Uint64_t succ64_2 = new Uint64_t(heap, 8 * 3, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Uint32_t succ32_4 = new Uint32_t(heap, 4 * 6, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Uint32_t succ32_5 = new Uint32_t(heap, 4 * 7, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint64_t succ64_2 = new Uint64_t(heap, 8 * 3, SetMem.DO_NOT_SET);
+    private final static Uint32_t succ32_4 = new Uint32_t(heap, 4 * 6, SetMem.DO_NOT_SET);
+    private final static Uint32_t succ32_5 = new Uint32_t(heap, 4 * 7, SetMem.DO_NOT_SET);
 
-    private final static Uint64_t succ64_3 = new Uint64_t(heap, 8 * 4, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Uint32_t succ32_6 = new Uint32_t(heap, 4 * 8, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Uint32_t succ32_7 = new Uint32_t(heap, 4 * 9, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint64_t succ64_3 = new Uint64_t(heap, 8 * 4, SetMem.DO_NOT_SET);
+    private final static Uint32_t succ32_6 = new Uint32_t(heap, 4 * 8, SetMem.DO_NOT_SET);
+    private final static Uint32_t succ32_7 = new Uint32_t(heap, 4 * 9, SetMem.DO_NOT_SET);
 
-    private final static Uint64_t succ64_4 = new Uint64_t(heap, 8 * 5, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Uint32_t succ32_8 = new Uint32_t(heap, 4 * 10, AbstractNativeMemory.MEM_UNINITIALIZED);
-    private final static Uint32_t succ32_9 = new Uint32_t(heap, 4 * 11, AbstractNativeMemory.MEM_UNINITIALIZED);
+    private final static Uint64_t succ64_4 = new Uint64_t(heap, 8 * 5, SetMem.DO_NOT_SET);
+    private final static Uint32_t succ32_8 = new Uint32_t(heap, 4 * 10, SetMem.DO_NOT_SET);
+    private final static Uint32_t succ32_9 = new Uint32_t(heap, 4 * 11, SetMem.DO_NOT_SET);
 
     private abstract static class MEM extends Memory32Heap {
 
-        public MEM(AbstractNativeMemory owner, long offset, int sizeInBytes, Byte setMem) {
+        public MEM(AbstractNativeMemory owner, long offset, int sizeInBytes, SetMem setMem) {
             super(owner, offset, sizeInBytes, setMem);
         }
 

@@ -22,19 +22,10 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.AsSignedInt;
-import de.ibapl.jnhw.common.memory.Int32_t;
-import de.ibapl.jnhw.common.memory.Int64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
-import de.ibapl.jnhw.common.memory.JnhwMemoryAccessor;
-import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor;
-import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor_P64_L32;
-import de.ibapl.jnhw.common.memory.UnsafeMemoryAccessor_P32_L64;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.SizeInBit;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 
 /**
  *
@@ -47,12 +38,12 @@ public class AsSignedIntTest {
 
     @Test
     public void testNative() {
-        AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, null, 0, SET_MEM_TO_0);
+        AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, null, 0, SetMem.TO_0x00);
         short expResult = 0x2010;
         instance.setFromSignedInt(expResult);
         assertEquals(expResult, instance.getAsSignedInt());
         assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedInt(Integer.MAX_VALUE));
-        assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, null, 0, null));
+        assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, null, 0, SetMem.DO_NOT_SET));
     }
 
 }

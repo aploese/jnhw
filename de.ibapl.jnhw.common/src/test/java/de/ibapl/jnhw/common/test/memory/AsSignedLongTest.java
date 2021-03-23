@@ -22,13 +22,10 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.AsSignedLong;
-import de.ibapl.jnhw.common.memory.Int64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 
 /**
  *
@@ -41,11 +38,11 @@ public class AsSignedLongTest {
 
     @Test
     public void testNative() {
-        AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, null, 0, SET_MEM_TO_0);
+        AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, null, 0, SetMem.TO_0x00);
         instance.setFromSignedLong(-33);
         assertEquals(-33, instance.getAsSignedLong());
         assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(Long.MAX_VALUE));
-        assertThrows(IllegalArgumentException.class, () -> new AsSignedLong(BaseDataType.uint8_t, null, 0, null));
+        assertThrows(IllegalArgumentException.class, () -> new AsSignedLong(BaseDataType.uint8_t, null, 0, SetMem.DO_NOT_SET));
     }
 
 }

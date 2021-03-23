@@ -24,7 +24,7 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.memory.Uint8_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SET_MEM_TO_0;
+import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 
 /**
@@ -57,7 +57,7 @@ public class Uint8_tTest {
      */
     @Test
     public void testRawUint8_t() {
-        Uint8_t instance = new Uint8_t(null, 0, SET_MEM_TO_0);
+        Uint8_t instance = new Uint8_t(null, 0, SetMem.TO_0x00);
         byte expResult = 0x10;
         instance.uint8_t(expResult);
         assertEquals(expResult, instance.uint8_t());
@@ -68,7 +68,7 @@ public class Uint8_tTest {
 
     @Test
     public void testNativeToString() {
-        Uint8_t instance = new Uint8_t(null, 0, SET_MEM_TO_0);
+        Uint8_t instance = new Uint8_t(null, 0, SetMem.TO_0x00);
         instance.uint8_t((byte) -2);
         assertEquals(String.valueOf(0x00FF & -2), instance.nativeToString());
         assertEquals(String.valueOf(Byte.toUnsignedInt((byte) -2)), instance.nativeToString());

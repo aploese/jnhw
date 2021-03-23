@@ -32,7 +32,7 @@ public class AsSignedLong extends NativeIntNumber {
 
     private final BaseDataType dataType;
 
-    public AsSignedLong(BaseDataType nativeType, AbstractNativeMemory owner, long offset, Byte setMem) {
+    public AsSignedLong(BaseDataType nativeType, AbstractNativeMemory owner, long offset, SetMem setMem) {
         super(owner, offset, nativeType.SIZE_OF, setMem);
         if (nativeType.UNSIGNED) {
             throw new IllegalArgumentException("Data type is unsigned, but a signed data type was expected");
