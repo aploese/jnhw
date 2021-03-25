@@ -53,6 +53,7 @@ package de.ibapl.jnhw.syscall.linux.include.uapi.linux;
 import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.SizeOf;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
@@ -70,21 +71,10 @@ public final class Usbdevice_fs {
     }
 
     /* usbdevfs ioctl codes */
-    public static class Usbdevfs_ctrltransfer extends Struct32 {
+    public abstract static class Usbdevfs_ctrltransfer extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_ctrltransfer(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_ctrltransfer(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
         /**
@@ -95,82 +85,65 @@ public final class Usbdevice_fs {
          * @return the native value of tv_sec.
          */
         @__u8
-        public native byte bRequestType();
+        public abstract byte bRequestType();
 
-        public native void bRequestType(@__u8 byte bRequestType);
+        public abstract void bRequestType(@__u8 byte bRequestType);
 
         @__u8
-        public native byte bRequest();
+        public abstract byte bRequest();
 
-        public native void bRequest(@__u8 byte bRequest);
-
-        @__u16
-        public native short wValue();
-
-        public native void wValue(@__u16 short wValue);
+        public abstract void bRequest(@__u8 byte bRequest);
 
         @__u16
-        public native short wIndex();
+        public abstract short wValue();
 
-        public native void wIndex(@__u16 short wIndex);
+        public abstract void wValue(@__u16 short wValue);
 
         @__u16
-        public native short wLength();
+        public abstract short wIndex();
 
-        public native void wLength(@__u16 short wLength);
+        public abstract void wIndex(@__u16 short wIndex);
+
+        @__u16
+        public abstract short wLength();
+
+        public abstract void wLength(@__u16 short wLength);
 
         @__u32
-        public native int timeout();
+        public abstract int timeout();
 
         /* in milliseconds */
-        public native void timeout(@__u32 int timeout);
+        public abstract void timeout(@__u32 int timeout);
 
-        public native NativeAddressHolder data();
+        public abstract NativeAddressHolder data();
 
-        public native void data(OpaqueMemory32 data);
+        public abstract void data(OpaqueMemory32 data);
     };
 
-    public static class Usbdevfs_bulktransfer extends Struct32 {
+    public abstract static class Usbdevfs_bulktransfer extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_bulktransfer(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_bulktransfer(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
         private Object data;
 
-        public native int ep();
+        public abstract int ep();
 
-        public native void eb(int ep);
+        public abstract void eb(int ep);
 
-        public native long len();
+        public abstract long len();
 
         /* in milliseconds */
-        public native long timeout();
+        public abstract long timeout();
 
-        public native void timeout(long timeout);
-
-        private native NativeAddressHolder data0();
-
-        private native void dataByteBuffer(ByteBuffer aio_buf, int offset, int length);
-
-        private native void dataOpaqueMemory32(OpaqueMemory32 aio_buf, int offset, int length);
+        public abstract void timeout(long timeout);
 
         public void data(OpaqueMemory32 data) {
             if (data == null) {
-                dataOpaqueMemory32(null, 0, 0);
+                //          dataOpaqueMemory32(null, 0, 0);
             } else {
-                dataOpaqueMemory32(data, 0, data.sizeInBytes);
+                //        dataOpaqueMemory32(data, 0, data.sizeInBytes);
             }
             this.data = data;
         }
@@ -183,7 +156,7 @@ public final class Usbdevice_fs {
                 if (len != 0) {
                     throw new IllegalArgumentException("len must be 0");
                 }
-                dataOpaqueMemory32(null, 0, 0);
+                //        dataOpaqueMemory32(null, 0, 0);
             } else {
                 if ((off < 0) || (off >= data.sizeInBytes)) {
                     throw new IllegalArgumentException("off not in range");
@@ -191,131 +164,76 @@ public final class Usbdevice_fs {
                 if ((len < 0) || (len >= data.sizeInBytes)) {
                     throw new IllegalArgumentException("aio_nbytes not in range");
                 }
-                dataOpaqueMemory32(data, off, len);
+                //      dataOpaqueMemory32(data, off, len);
             }
             this.data = data;
         }
 
         public void data(ByteBuffer data, int len) {
             if (data == null) {
-                dataByteBuffer(null, 0, 0);
+                //      dataByteBuffer(null, 0, 0);
             } else {
-                dataByteBuffer(data, data.position(), data.remaining());
+                //    dataByteBuffer(data, data.position(), data.remaining());
             }
             this.data = data;
         }
     };
 
-    public static class Usbdevfs_setinterface extends Struct32 {
+    public abstract static class Usbdevfs_setinterface extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_setinterface(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_setinterface(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
-        public native int interface_();
+        public abstract int interface_();
 
-        public native int altsetting();
+        public abstract int altsetting();
 
     };
 
-    public static class Usbdevfs_disconnectsignal extends Struct32 {
+    public abstract static class Usbdevfs_disconnectsignal extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_disconnectsignal(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_disconnectsignal(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
-        public native int signr();
+        public abstract int signr();
 
-        public native NativeAddressHolder context();
+        public abstract NativeAddressHolder context();
 
     };
 
     public final static byte USBDEVFS_MAXDRIVERNAME = (byte) 255;
 
-    public static class Usbdevfs_getdriver
+    public abstract static class Usbdevfs_getdriver
             extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_getdriver(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_getdriver(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
-        public native int interface_();
+        public abstract int interface_();
 
-        public native String driver();
+        public abstract String driver();
 
     };
 
-    public static class Usbdevfs_connectinfo extends Struct32 {
+    public abstract static class Usbdevfs_connectinfo extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_connectinfo(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_connectinfo(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
-        public native int devnum();
+        public abstract int devnum();
 
-        public native byte slow();
+        public abstract byte slow();
 
     };
 
-    public static class Usbdevfs_conninfo_ex extends Struct32 {
+    public abstract static class Usbdevfs_conninfo_ex extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_conninfo_ex(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_conninfo_ex(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
         /* Size of the structure from the kernel's */
@@ -323,27 +241,27 @@ public final class Usbdevice_fs {
  /* to determine how much data can be       */
  /* used/trusted.                           */
         @__u32
-        public native long size();
+        public abstract long size();
 
         /* USB bus number, as enumerated by the    */
  /* kernel, the device is connected to.     */
         @__u32
-        public native long busnum();
+        public abstract long busnum();
 
         /* Device address on the bus.              */
         @__u32
-        public native long devnum();
+        public abstract long devnum();
 
         /* USB_SPEED_* constants from ch9.h        */
         @__u32
-        public native long speed();
+        public abstract long speed();
 
         /* Number of ports the device is connected */
  /* to on the way to the root hub. It may   */
  /* be bigger than size of 'ports' array so */
  /* userspace can detect overflows.         */
         @__u8
-        public native short num_ports();
+        public abstract short num_ports();
 
         /* List of ports on the way from the root  */
  /* hub to the device. Current limit in     */
@@ -351,7 +269,7 @@ public final class Usbdevice_fs {
  /* 5 intermediate hubs, device), which     */
  /* gives at most 6 port entries.           */
         @__u8
-        public native byte[] ports();
+        public abstract byte[] ports();
     };
 
     public final static byte USBDEVFS_URB_SHORT_NOT_OK = 0x01;
@@ -367,138 +285,92 @@ public final class Usbdevice_fs {
     public final static byte USBDEVFS_URB_TYPE_CONTROL = 2;
     public final static byte USBDEVFS_URB_TYPE_BULK = 3;
 
-    public static class Usbdevfs_iso_packet_desc extends Struct32 {
+    public abstract static class Usbdevfs_iso_packet_desc extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_iso_packet_desc(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_iso_packet_desc(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
-        public native long length();
+        public abstract long length();
 
-        public native long actual_length();
+        public abstract long actual_length();
 
-        public native int status();
+        public abstract int status();
     };
 
-    public static class Usbdevfs_urb extends Struct32 {
+    public abstract static class Usbdevfs_urb extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public static native int offsetof_iso_frame_desc();
-
-        public Usbdevfs_urb(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_urb(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
             iso_frame_desc = null;
             throw new RuntimeException("Implement me!");
         }
 
-        public native byte type();
+        public abstract byte type();
 
-        public native byte endpoint();
+        public abstract byte endpoint();
 
-        public native int status();
+        public abstract int status();
 
-        public native int flags();
+        public abstract int flags();
 
-        public native NativeAddressHolder buffer();
+        public abstract NativeAddressHolder buffer();
 
-        public native int buffer_length();
+        public abstract int buffer_length();
 
-        public native int actual_length();
+        public abstract int actual_length();
 
-        public native int start_frame();
+        public abstract int start_frame();
 
         //begin-union
         /* Only used for isoc urbs */
-        public native int number_of_packets();
+        public abstract int number_of_packets();
 
         /* Only used with bulk streams */
-        public native int stream_id();
+        public abstract int stream_id();
         //endunion
 
-        public native int error_count();
+        public abstract int error_count();
 
         /* signal to be sent on completion,
 				  or 0 if none should be sent. */
-        public native int signr();
+        public abstract int signr();
 
-        public native NativeAddressHolder usercontext();
+        public abstract NativeAddressHolder usercontext();
         final StructArray32<Usbdevfs_iso_packet_desc> iso_frame_desc;
     };
 
     /* ioctls for talking directly to drivers */
-    public static class Usbdevfs_ioctl extends Struct32 {
+    public abstract static class Usbdevfs_ioctl extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_ioctl(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_ioctl(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
         /* interface 0..N ; negative numbers reserved */
-        public native int ifno();
+        public abstract int ifno();
 
         /* MUST encode size + direction of data so the
 				 * macros in <asm/ioctl.h> give correct values */
-        public native int ioctl_code();
+        public abstract int ioctl_code();
 
         /* param buffer (in, or out) */
-        public native NativeAddressHolder data();
+        public abstract NativeAddressHolder data();
     };
 
     /* You can do most things with hubs just through control messages,
  * except find out what device connects to what port. */
-    public static class Usbdevfs_hub_portinfo extends Struct32 {
+    public abstract static class Usbdevfs_hub_portinfo extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_hub_portinfo(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_hub_portinfo(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
         /* number of downstream ports in this hub */
-        public native byte nports();
+        public abstract byte nports();
 
         /* e.g. port 3 connects to device 27 */
-        public native String port();
+        public abstract String port();
     };
 
     /* System and bus capability flags */
@@ -519,53 +391,31 @@ public final class Usbdevice_fs {
     /* disconnect-and-claim except when the driver matches the driver field */
     public final static byte USBDEVFS_DISCONNECT_CLAIM_EXCEPT_DRIVER = 0x02;
 
-    public static class Usbdevfs_disconnect_claim extends Struct32 {
+    public abstract static class Usbdevfs_disconnect_claim extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_disconnect_claim(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_disconnect_claim(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
-        public native int interface_();
+        public abstract int interface_();
 
-        public native int flags();
+        public abstract int flags();
 
-        public native String driver();
+        public abstract String driver();
     };
 
-    public static class Usbdevfs_streams extends Struct32 {
+    public abstract static class Usbdevfs_streams extends Struct32 {
 
-        /**
-         * Get the real size of struct timespec natively.
-         *
-         * @return the native value sizeof(struct timespec).
-         */
-        @SizeOf
-        public static native int sizeof();
-
-        @AlignOf
-        public static native int alignof();
-
-        public Usbdevfs_streams(OpaqueMemory32 parent, int offset, SetMem setMem) {
-            super(parent, offset, sizeof(), setMem);
+        public Usbdevfs_streams(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, -1, setMem);
         }
 
         /* Not used by USBDEVFS_FREE_STREAMS */
-        public native long num_streams();
+        public abstract long num_streams();
 
-        public native long num_eps();
+        public abstract long num_eps();
 
-        public native byte[] eps();
+        public abstract byte[] eps();
     };
 
     /*

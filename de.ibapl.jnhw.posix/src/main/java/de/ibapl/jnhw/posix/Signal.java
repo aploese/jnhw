@@ -335,7 +335,7 @@ public class Signal {
             this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public Sigset_t(OpaqueMemory32 parent, long offset, SetMem setMem) {
+        public Sigset_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 

@@ -70,7 +70,7 @@ public abstract class NativeRunnable extends OpaqueMemory32 {
     public static native int sizeOf_ObjectRef();
 
     public NativeRunnable() {
-        super((OpaqueMemory32) null, 0, sizeOf_ObjectRef(), SetMem.DO_NOT_SET);
+        super(null, 0L, sizeOf_ObjectRef(), SetMem.DO_NOT_SET);
         aquireObjectRef();
     }
 

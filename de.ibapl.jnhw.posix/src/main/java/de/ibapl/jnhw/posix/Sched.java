@@ -29,6 +29,7 @@ import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
@@ -118,7 +119,7 @@ public class Sched {
             this(null, 0, setMem);
         }
 
-        public Sched_param(OpaqueMemory32 parent, int offset, SetMem setMem) {
+        public Sched_param(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
             sched_ss_init_budget = LAYOUT.sched_ss_init_budget == -1 ? null : new Time.Timespec(this, LAYOUT.sched_ss_init_budget, SetMem.DO_NOT_SET);//mem is already initialized by parent
             sched_ss_repl_period = LAYOUT.sched_ss_repl_period == -1 ? null : new Time.Timespec(this, LAYOUT.sched_ss_repl_period, SetMem.DO_NOT_SET);//mem is already initialized by parent

@@ -36,8 +36,6 @@ import de.ibapl.jnhw.unix.sys.Ioctl;
  */
 public class Functionfs {
 
-    private static native void initNative();
-
     private Functionfs() {
         super();
     }

@@ -38,6 +38,7 @@ import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.timer_t;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
@@ -703,7 +704,7 @@ public class Time {
             LAYOUT = native2Layout(Layout.class);
         }
 
-        public Timespec(OpaqueMemory32 parent, long offset, SetMem setMem) {
+        public Timespec(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
@@ -847,7 +848,7 @@ public class Time {
             this(null, 0, setMem);
         }
 
-        public Tm(OpaqueMemory32 parent, int offset, SetMem setMem) {
+        public Tm(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
@@ -1104,7 +1105,7 @@ public class Time {
             this(null, 0, setMem);
         }
 
-        public Timer_t(OpaqueMemory32 parent, int offset, SetMem setMem) {
+        public Timer_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 

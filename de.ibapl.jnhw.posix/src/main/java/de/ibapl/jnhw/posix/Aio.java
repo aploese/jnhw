@@ -30,6 +30,7 @@ import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.PointerArray32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
@@ -376,7 +377,7 @@ public class Aio {
             return LAYOUT;
         }
 
-        public Aiocb(OpaqueMemory32 parent, int offset, SetMem setMem) throws NoSuchNativeTypeException {
+        public Aiocb(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
             super(parent, offset, getLayoutOrThrow().sizeof, setMem);
             aio_sigevent = new Sigevent(this, LAYOUT.aio_sigevent, SetMem.DO_NOT_SET);
         }

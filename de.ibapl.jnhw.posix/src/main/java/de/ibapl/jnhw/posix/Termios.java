@@ -31,6 +31,7 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annotation.posix.termios.cc_t;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
@@ -2004,7 +2005,7 @@ public final class Termios {
             this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public StructTermios(OpaqueMemory32 parent, int offset, SetMem setMem) {
+        public StructTermios(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 

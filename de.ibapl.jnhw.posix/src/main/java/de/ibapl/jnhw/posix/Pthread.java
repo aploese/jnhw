@@ -30,6 +30,7 @@ import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
@@ -283,7 +284,7 @@ public class Pthread {
             super(baseAddress, LAYOUT.sizeof);
         }
 
-        public Pthread_attr_t(OpaqueMemory32 parent, int offset, SetMem setMem) {
+        public Pthread_attr_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
@@ -327,7 +328,7 @@ public class Pthread {
             this(null, 0, SetMem.DO_NOT_SET);
         }
 
-        public Pthread_t(OpaqueMemory32 parent, int offset, SetMem setMem) {
+        public Pthread_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 

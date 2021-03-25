@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.common.test.memory.layout;
 
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Int16_t;
 import de.ibapl.jnhw.common.memory.Int32_t;
@@ -49,7 +50,7 @@ public class SimpeStructureOnTheFlyImpl extends Struct32 implements SimpeStructu
     public final int sizeof;
     public final Alignment alignment;
 
-    public SimpeStructureOnTheFlyImpl(OpaqueMemory32 parent, int offset, int sizeInBytes, SetMem setMem) {
+    public SimpeStructureOnTheFlyImpl(AbstractNativeMemory parent, long offset, int sizeInBytes, SetMem setMem) {
         super(parent, offset, sizeInBytes, setMem);
         StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactoryImpl.Type.STRUCT);
         first = new Int8_t(this, slf.int8_t(), SetMem.DO_NOT_SET);

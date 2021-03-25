@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.common.test;
 
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
@@ -60,7 +61,7 @@ public class JnhwStringBuilderTest {
         final Int8_t i0;
         final Int8_t i1;
 
-        public StructArray32TestElement(OpaqueMemory32 parent, long offset, byte i0, byte i1) {
+        public StructArray32TestElement(AbstractNativeMemory parent, long offset, byte i0, byte i1) {
             super(parent, offset, 2, SetMem.DO_NOT_SET);
             this.i0 = new Int8_t(this, 0, SetMem.DO_NOT_SET);
             this.i0.int8_t(i0);
@@ -83,7 +84,7 @@ public class JnhwStringBuilderTest {
             super(new StructArray32TestElement[3], StructArray32Test::createAtOffset, 3, SetMem.TO_0x00);
         }
 
-        private static StructArray32TestElement createAtOffset(OpaqueMemory32 parent, long offset) {
+        private static StructArray32TestElement createAtOffset(AbstractNativeMemory parent, long offset) {
             return new StructArray32TestElement(parent, offset, (byte) 0, (byte) offset);
         }
 

@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb;
 
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.syscall.linux.annotation.SysFs;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types;
@@ -30,7 +30,7 @@ import java.io.IOException;
 @SysFs("/sys/bus/usb/devices/*/descriptors")
 public abstract class AbstractCapabilityDescriptor extends AbstractDescriptor {
 
-    public AbstractCapabilityDescriptor(OpaqueMemory32 parent, int offset, int sizeInBytes, SetMem setMem) {
+    public AbstractCapabilityDescriptor(AbstractNativeMemory parent, long offset, int sizeInBytes, SetMem setMem) {
         super(parent, offset, sizeInBytes, setMem);
     }
 
@@ -40,5 +40,5 @@ public abstract class AbstractCapabilityDescriptor extends AbstractDescriptor {
     }
 
     @Types.__u8
-    public final native byte bDevCapabilityType();
+    public abstract byte bDevCapabilityType();
 }
