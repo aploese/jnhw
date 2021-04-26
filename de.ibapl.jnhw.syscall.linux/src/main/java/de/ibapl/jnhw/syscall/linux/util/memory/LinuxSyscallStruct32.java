@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 
 /**
  *
@@ -61,7 +62,41 @@ public class LinuxSyscallStruct32 extends Struct32 {
 
     }
 
-    protected static class Accessor___le16_As_uint16_t implements Accessor___le16 {
+    protected static class BigEndianAccessor___le16_As_uint16_t implements Accessor___le16 {
+
+        @Override
+        public short __le16(OpaqueMemory32 mem, long offset) {
+            return Short.reverseBytes(MEM_ACCESS.uint16_t(mem, offset));
+        }
+
+        @Override
+        public int __le16_AsInt(OpaqueMemory32 mem, long offset) {
+            return __le16(mem, offset) & 0xffff;
+        }
+
+        @Override
+        public void __le16(OpaqueMemory32 mem, long offset, short value) {
+            MEM_ACCESS.uint16_t(mem, offset, Short.reverseBytes(value));
+        }
+
+        @Override
+        public void __le16_FromInt(OpaqueMemory32 mem, long offset, int value) {
+            if (value < 0) {
+                throw new IllegalArgumentException("value must not be negative: " + value);
+            } else if (value > 0x0000ffff) {
+                throw new IllegalArgumentException("value must not be bigger than  65535 (0xffff): " + value);
+            }
+            __le16(mem, offset, (short) value);
+        }
+
+        @Override
+        public short[] __le16_Array(OpaqueMemory32 mem, long offset, int lenght) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+    }
+
+    protected static class LitteleEndianAccessor___le16_As_uint16_t implements Accessor___le16 {
 
         @Override
         public short __le16(OpaqueMemory32 mem, long offset) {
@@ -100,6 +135,20 @@ public class LinuxSyscallStruct32 extends Struct32 {
 
     protected final static Accessor___u8 ACCESSOR___U8 = new Accessor___u8_As_uint8_t();
 
-    protected final static Accessor___le16 ACCESSOR___LE16 = new Accessor___le16_As_uint16_t();
+    protected final static Accessor___le16 ACCESSOR___LE16;
+
+    static {
+        switch (new MultiarchTupelBuilder().getEndianess()) {
+            case LITTLE:
+                ACCESSOR___LE16 = new LitteleEndianAccessor___le16_As_uint16_t();
+                break;
+            case BIG:
+                ACCESSOR___LE16 = new BigEndianAccessor___le16_As_uint16_t();
+                break;
+            default:
+                ACCESSOR___LE16 = null;
+                throw new RuntimeException("Unknown Endianess : " + new MultiarchTupelBuilder().getEndianess());
+        }
+    }
 
 }
