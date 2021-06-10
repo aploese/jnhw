@@ -139,15 +139,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Time
      * Method:    clock_gettime
-     * Signature: (ILde/ibapl/jnhw/posix/Time$Timespec;)V
+     * Signature: (IL)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1gettime
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jobject timespec) {
-        if (timespec == NULL) {
-            throw_NullPointerException(env, "timespec is NULL");
-            return;
-        }
-        if (clock_gettime(clock_id, UNWRAP_STRUCT_TIMESPEC_PTR(timespec))) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jlong ptrTimespec) {
+        if (clock_gettime(clock_id, (struct timespec*) (uintptr_t) ptrTimespec)) {
             throw_NativeErrorException(env, errno);
             return;
         }

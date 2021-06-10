@@ -58,10 +58,10 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getres
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    clock_gettime
- * Signature: (ILde/ibapl/jnhw/posix/Time/Timespec;)V
+ * Signature: (IJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1gettime
-  (JNIEnv *, jclass, jint, jobject);
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time

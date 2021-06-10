@@ -18,18 +18,10 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Poll_initFields
 /*
  * Class:     de_ibapl_jnhw_posix_Poll
  * Method:    poll
- * Signature: (Lde/ibapl/jnhw/posix/Poll/PollFds;I)I
+ * Signature: (JII)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll__Lde_ibapl_jnhw_posix_Poll_PollFds_2I
-  (JNIEnv *, jclass, jobject, jint);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Poll
- * Method:    poll
- * Signature: (Lde/ibapl/jnhw/posix/Poll/PollFd;I)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll__Lde_ibapl_jnhw_posix_Poll_PollFd_2I
-  (JNIEnv *, jclass, jobject, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll
+  (JNIEnv *, jclass, jlong, jint, jint);
 
 #ifdef __cplusplus
 }

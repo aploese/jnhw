@@ -18,42 +18,42 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_initFields
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    cfgetispeed
- * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;)I
+ * Signature: (J)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetispeed
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    cfgetospeed
- * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;)I
+ * Signature: (J)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetospeed
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    cfsetispeed
- * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)V
+ * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetispeed
-  (JNIEnv *, jclass, jobject, jint);
+  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    cfsetospeed
- * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)V
+ * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetospeed
-  (JNIEnv *, jclass, jobject, jint);
+  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    cfsetspeed
- * Signature: (Lde/ibapl/jnhw/posix/Termios/StructTermios;I)V
+ * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetspeed
-  (JNIEnv *, jclass, jobject, jint);
+  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
@@ -82,10 +82,10 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_tcflush
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    tcgetattr
- * Signature: (ILde/ibapl/jnhw/posix/Termios/StructTermios;)V
+ * Signature: (IJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_tcgetattr
-  (JNIEnv *, jclass, jint, jobject);
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
@@ -106,10 +106,10 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_tcsendbreak
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    tcsetattr
- * Signature: (IILde/ibapl/jnhw/posix/Termios/StructTermios;)V
+ * Signature: (IIJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_tcsetattr
-  (JNIEnv *, jclass, jint, jint, jobject);
+  (JNIEnv *, jclass, jint, jint, jlong);
 
 #ifdef __cplusplus
 }

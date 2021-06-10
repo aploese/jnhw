@@ -117,7 +117,7 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
             }
         }
         this.sizeInBytes = sizeInBytes;
-//TODO        assert setMem != null;
+        assert setMem != null;
         if (setMem == SetMem.DO_NOT_SET) {
             //no-op
         } else if (owner == null) {

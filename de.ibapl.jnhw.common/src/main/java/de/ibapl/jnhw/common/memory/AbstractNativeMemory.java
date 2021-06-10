@@ -77,8 +77,12 @@ public abstract class AbstractNativeMemory {
      * @param instance the instance.
      * @return the instance.getSizeInBytes() .
      */
-    public static long getSizeInBytes(AbstractNativeMemory instance) {
+    public final static long getSizeInBytes(final AbstractNativeMemory instance) {
         return instance.getSizeInBytes();
+    }
+
+    public final static long getAddress(final AbstractNativeMemory instance) {
+        return instance.baseAddress;
     }
 
     /**

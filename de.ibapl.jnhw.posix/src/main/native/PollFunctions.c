@@ -37,33 +37,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Poll
      * Method:    poll
-     * Signature: (Lde/ibapl/jnhw/posix/Poll$PollFds;I)I
+     * Signature: (JII)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll__Lde_ibapl_jnhw_posix_Poll_00024PollFds_2I
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pollFdArray, jint timeout) {
-        if (pollFdArray == NULL) {
-            throw_NullPointerException(env, "pollFd array");
-            return -1;
-        }
-        const int result = poll(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(pollFdArray), (uint32_t) LENGTH_OF_STRUCTURE_ARRAY_32(pollFdArray), timeout);
-        if (result == -1) {
-            throw_NativeErrorException(env, errno);
-        }
-        return result;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Poll
-     * Method:    poll
-     * Signature: (Lde/ibapl/jnhw/posix/Poll$PollFd;I)I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll__Lde_ibapl_jnhw_posix_Poll_00024PollFd_2I
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pollFd, jint timeout) {
-        if (pollFd == NULL) {
-            throw_NullPointerException(env, "pollFd array");
-            return -1;
-        }
-        const int result = poll(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(pollFd), 1, timeout);
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Poll_poll
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrPollFds, jint elements, jint timeout) {
+        const int result = poll((struct pollfd*) (uintptr_t) ptrPollFds, (uint32_t) elements, timeout);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }

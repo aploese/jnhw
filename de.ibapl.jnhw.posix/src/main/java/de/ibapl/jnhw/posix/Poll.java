@@ -160,7 +160,11 @@ public final class Poll {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int poll(PollFds fds, int timeout) throws NativeErrorException;
+    public final static int poll(PollFds fds, int timeout) throws NativeErrorException {
+        return poll(AbstractNativeMemory.getAddress(fds), fds.length(), timeout);
+    }
+
+    private static native int poll(long ptrFds, int elements, int timeout) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -174,7 +178,9 @@ public final class Poll {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int poll(PollFd fd, int timeout) throws NativeErrorException;
+    public final static int poll(PollFd fd, int timeout) throws NativeErrorException {
+        return poll(AbstractNativeMemory.getAddress(fd), 1, timeout);
+    }
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure

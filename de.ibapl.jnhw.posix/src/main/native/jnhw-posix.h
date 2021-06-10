@@ -177,10 +177,6 @@ extern "C" {
 #define UNWRAP_LOCALE_T(Locale_tObject) (locale_t)(uintptr_t)(*env)->GetLongField(env, Locale_tObject, dij_p_Locale_Locale_t_nativeValue__FID)
 #define CREATE_Locale_t(value) (*env)->NewObject(env, dij_p_Locale_Locale_t__GCR, dij_p_Locale_Locale_t_init__MID, (jlong)((uintptr_t)value))
 
-#define UNWRAP_STRUCT_TERMIOS_PTR(structTermios) UNWRAP_ABSTRACT_MEM_TO(struct termios*, structTermios)
-
-#define UNWRAP_STRUCT_POLLFD_PTR(structPollFd) UNWRAP_ABSTRACT_MEM_TO(struct pollfd*, structPollFd)
-
 #define UNWRAP_STRUCT_LCONV_PTR(structLconv) UNWRAP_ABSTRACT_MEM_TO(struct lconv*, structLconv)
 
 #define UNWRAP_STRUCT_TM_PTR(structTm) UNWRAP_ABSTRACT_MEM_TO(struct tm*, structTm)

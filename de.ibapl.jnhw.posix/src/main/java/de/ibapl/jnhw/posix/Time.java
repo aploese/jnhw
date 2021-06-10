@@ -219,7 +219,11 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void clock_gettime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException;
+    public final static void clock_gettime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException {
+        clock_gettime(clock_id, AbstractNativeMemory.getAddress(timespec));
+    }
+
+    private static native void clock_gettime(int clock_id, long ptrTimespec) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>

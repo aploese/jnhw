@@ -1184,7 +1184,11 @@ public final class Termios {
      * type speed_t representing the input speed.
      */
     @speed_t
-    public final static native int cfgetispeed(StructTermios termios);
+    public final static int cfgetispeed(StructTermios termios) {
+        return cfgetispeed(AbstractNativeMemory.getAddress(termios));
+    }
+
+    private static native int cfgetispeed(long ptrTermios);
 
     /**
      * <b>POSIX:</b>
@@ -1197,7 +1201,11 @@ public final class Termios {
      * type speed_t representing the output speed.
      */
     @speed_t
-    public final static native int cfgetospeed(StructTermios termios);
+    public final static int cfgetospeed(StructTermios termios) {
+        return cfgetospeed(AbstractNativeMemory.getAddress(termios));
+    }
+
+    private static native int cfgetospeed(long ptrTermios);
 
     /**
      * <b>POSIX:</b>
@@ -1210,7 +1218,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void cfsetispeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
+    public final static void cfsetispeed(StructTermios termios, @speed_t int speed) throws NativeErrorException {
+        cfsetispeed(AbstractNativeMemory.getAddress(termios), speed);
+    }
+
+    private static native void cfsetispeed(long ptrTermios, int speed) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1223,7 +1235,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void cfsetospeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
+    public final static void cfsetospeed(StructTermios termios, @speed_t int speed) throws NativeErrorException {
+        cfsetospeed(AbstractNativeMemory.getAddress(termios), speed);
+    }
+
+    private static native void cfsetospeed(long ptrTermios, int speed) throws NativeErrorException;
 
     /**
      * <b>Non POSIX:</b> set input and output spped at the same time.
@@ -1234,7 +1250,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void cfsetspeed(StructTermios termios, @speed_t int speed) throws NativeErrorException;
+    public final static void cfsetspeed(StructTermios termios, @speed_t int speed) throws NativeErrorException {
+        cfsetspeed(AbstractNativeMemory.getAddress(termios), speed);
+    }
+
+    private static native void cfsetspeed(long ptrTermios, int speed) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1283,7 +1303,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void tcgetattr(int fildes, StructTermios termios) throws NativeErrorException;
+    public final static void tcgetattr(int fildes, StructTermios termios) throws NativeErrorException {
+        tcgetattr(fildes, AbstractNativeMemory.getAddress(termios));
+    }
+
+    private static native void tcgetattr(int fildes, long ptrTermios) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1297,8 +1321,8 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native @pid_t
-    int tcgetsid(int fildes) throws NativeErrorException;
+    @pid_t
+    public final static native int tcgetsid(int fildes) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1328,7 +1352,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException;
+    public final static void tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException {
+        tcsetattr(fildes, optional_actions, AbstractNativeMemory.getAddress(termios));
+    }
+
+    private static native void tcsetattr(int fildes, int optional_actions, long ptrTermios) throws NativeErrorException;
 
     @cc_t
     public static class Cc_t extends Uint8_t {
