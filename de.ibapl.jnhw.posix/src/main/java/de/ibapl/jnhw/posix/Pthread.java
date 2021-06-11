@@ -26,12 +26,10 @@ import de.ibapl.jnhw.annotation.posix.sys.types.pthread_attr_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.pthread_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
@@ -91,8 +89,6 @@ public class Pthread {
 
     public final static boolean HAVE_PTHREAD_H;
 
-    private static native void pthread_self0(Pthread_t result);
-
     /**
      * <b>POSIX.TPS:</b>
      *
@@ -128,16 +124,22 @@ public class Pthread {
      */
     public final static Pthread_t pthread_self() {
         final Pthread_t result = new Pthread_t();
-        pthread_self0(result);
+        pthread_self(AbstractNativeMemory.getAddress(result));
         return result;
     }
+
+    private static native void pthread_self(long result);
 
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_equal.html">pthread_equal
      * - pthread_equal - compare thread IDs</a>.
      */
-    public final static native boolean pthread_equal(Pthread_t t1, Pthread_t t2);
+    public final static boolean pthread_equal(Pthread_t t1, Pthread_t t2) {
+        return pthread_equal(AbstractNativeMemory.getAddress(t1), AbstractNativeMemory.getAddress(t2));
+    }
+
+    public final static native boolean pthread_equal(long ptrT1, long ptrT2);
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -152,7 +154,11 @@ public class Pthread {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int pthread_attr_getinheritsched(Pthread_attr_t attr) throws NativeErrorException;
+    public final static int pthread_attr_getinheritsched(Pthread_attr_t attr) throws NativeErrorException {
+        return pthread_attr_getinheritsched(AbstractNativeMemory.getAddress(attr));
+    }
+
+    protected static native int pthread_attr_getinheritsched(long ptrAttr) throws NativeErrorException;
 
     /**
      * <b>POSIX.TPS:</b>
@@ -162,7 +168,11 @@ public class Pthread {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void pthread_attr_getschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException;
+    public final static void pthread_attr_getschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException {
+        pthread_attr_getschedparam(AbstractNativeMemory.getAddress(attr), AbstractNativeMemory.getAddress(param));
+    }
+
+    private static native void pthread_attr_getschedparam(long ptrAttr, long ptrParam) throws NativeErrorException;
 
     /**
      * <b>POSIX.TPS:</b>
@@ -173,7 +183,11 @@ public class Pthread {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void pthread_attr_setinheritsched(Pthread_attr_t attr, int inheritsched) throws NativeErrorException;
+    public final static void pthread_attr_setinheritsched(Pthread_attr_t attr, int inheritsched) throws NativeErrorException {
+        pthread_attr_setinheritsched(AbstractNativeMemory.getAddress(attr), inheritsched);
+    }
+
+    private static native void pthread_attr_setinheritsched(long ptrAttr, int inheritsched) throws NativeErrorException;
 
     /**
      * <b>POSIX.TPS:</b>
@@ -183,7 +197,11 @@ public class Pthread {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void pthread_attr_setschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException;
+    public final static void pthread_attr_setschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException {
+        pthread_attr_setschedparam(AbstractNativeMemory.getAddress(attr), AbstractNativeMemory.getAddress(param));
+    }
+
+    private static native void pthread_attr_setschedparam(long ptrAttr, long ptrParam) throws NativeErrorException;
 
     /**
      * <b>POSIX.TPS:</b>
@@ -191,10 +209,19 @@ public class Pthread {
      * pthread_setschedparam - dynamic thread scheduling parameters access
      * (REALTIME THREADS)</a>.
      *
+     *
+     * @param policyIN the policy as input - the result is the output
+     *
+     * @return the policy
+     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void pthread_getschedparam(Pthread_t thread, IntRef policy, Sched.Sched_param param) throws NativeErrorException;
+    public final static int pthread_getschedparam(Pthread_t thread, Sched.Sched_param param) throws NativeErrorException {
+        return pthread_getschedparam(AbstractNativeMemory.getAddress(thread), AbstractNativeMemory.getAddress(param));
+    }
+
+    private static native int pthread_getschedparam(long ptrThread, long ptrParam) throws NativeErrorException;
 
     /**
      * <b>POSIX.TPS:</b>
@@ -205,7 +232,11 @@ public class Pthread {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void pthread_setschedparam(Pthread_t thread, int policy, Sched.Sched_param param) throws NativeErrorException;
+    public final static void pthread_setschedparam(Pthread_t thread, int policy, Sched.Sched_param param) throws NativeErrorException {
+        pthread_setschedparam(AbstractNativeMemory.getAddress(thread), policy, AbstractNativeMemory.getAddress(param));
+    }
+
+    private static native void pthread_setschedparam(long ptrThread, int policy, long ptrParam) throws NativeErrorException;
 
     /**
      * <b>POSIX.TPS:</b>
@@ -217,14 +248,26 @@ public class Pthread {
      * @throws NoSuchNativeMethodException if the method pthread_setschedprio is
      * not available natively.
      */
-    public final static native void pthread_setschedprio(Pthread_t thread, int prio) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void pthread_setschedprio(Pthread_t thread, int prio) throws NativeErrorException, NoSuchNativeMethodException {
+        pthread_setschedprio(AbstractNativeMemory.getAddress(thread), prio);
+    }
+
+    private static native void pthread_setschedprio(long ptrThread, int prio) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_getcpuclockid.html">pthread_getcpuclockid
      * - access a thread CPU-time clock (ADVANCED REALTIME THREADS)</a>.
+     *
+     * @param thread_id in
+     * @return clock_id out
      */
-    public final static native void pthread_getcpuclockid(Pthread_t thread_id, @clockid_t IntRef clock_id) throws NativeErrorException;
+    @clockid_t
+    public final static int pthread_getcpuclockid(Pthread_t thread_id) throws NativeErrorException {
+        return pthread_getcpuclockid(AbstractNativeMemory.getAddress(thread_id));
+    }
+
+    private static native int pthread_getcpuclockid(long ptrThread_id) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -232,7 +275,11 @@ public class Pthread {
      * pthread_attr_init - destroy and initialize the thread attributes
      * object</a>.
      */
-    public final static native void pthread_attr_destroy(Pthread_attr_t attr);
+    public final static void pthread_attr_destroy(Pthread_attr_t attr) {
+        pthread_attr_destroy(AbstractNativeMemory.getAddress(attr));
+    }
+
+    private static native void pthread_attr_destroy(long ptrAttr);
 
     /**
      * <b>POSIX:</b>
@@ -240,7 +287,11 @@ public class Pthread {
      * pthread_attr_init - destroy and initialize the thread attributes
      * object</a>.
      */
-    public final static native void pthread_attr_init(Pthread_attr_t attr);
+    public final static void pthread_attr_init(Pthread_attr_t attr) {
+        pthread_attr_init(AbstractNativeMemory.getAddress(attr));
+    }
+
+    private static native void pthread_attr_init(long attr);
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html">{@code typedef
@@ -342,8 +393,11 @@ public class Pthread {
         }
 
         @Override
-        public native String nativeToString();
+        public String nativeToString() {
+            return nativeToString(baseAddress);
+        }
 
+        private static native String nativeToString(long ptrPthread_t);
     }
 
     /**
@@ -356,7 +410,11 @@ public class Pthread {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    final static native void pthread_cancel(Pthread_t thread) throws NativeErrorException;
+    final static void pthread_cancel(Pthread_t thread) throws NativeErrorException {
+        pthread_cancel(AbstractNativeMemory.getAddress(thread));
+    }
+
+    private static native void pthread_cancel(long thread) throws NativeErrorException;
 
     /**
      * <b>POSIX.TPS:</b>

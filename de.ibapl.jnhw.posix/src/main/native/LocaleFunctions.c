@@ -29,7 +29,7 @@ extern "C" {
 #if defined(_POSIX_VERSION)
 #include <locale.h>
 
-#if defined (__APPLE__) 
+#if defined (__APPLE__)
 #include <xlocale.h>
 #endif
 
@@ -38,85 +38,61 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale
      * Method:    duplocale
-     * Signature: (Lde/ibapl/jnhw/posix/Locale/Locale_t;)Lde/ibapl/jnhw/posix/Locale/Locale_t;
+     * Signature: (J)J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Locale_duplocale
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject locobj) {
-        if (locobj == NULL) {
-            throw_NullPointerException(env, "locobj is null.");
-            return 0;
-        }
-        const locale_t result = duplocale(UNWRAP_LOCALE_T(locobj));
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_duplocale
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrLocobj) {
+        const locale_t result = duplocale((locale_t) (uintptr_t) ptrLocobj);
         if (!result) {
             throw_NativeErrorException(env, errno);
         }
-        return CREATE_Locale_t(result);
+        return (jlong) (uintptr_t) result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Locale
      * Method:    freelocale
-     * Signature: (Lde/ibapl/jnhw/posix/Locale/Locale_t;)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Locale_freelocale
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject locobj) {
-        if (locobj == NULL) {
-            throw_NullPointerException(env, "locobj is null");
-            return;
-        }
-        freelocale(UNWRAP_LOCALE_T(locobj));
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrLocobj) {
+        freelocale((locale_t) ptrLocobj);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Locale
-     * Method:    localeconv
-     * Signature: ()Lde/ibapl/jnhw/posix/Locale/Lconv;
+     * Method:    localeconv0
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Locale_localeconv
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        struct lconv *lconv = localeconv();
-        //prepare the java object tht wraps lconv
-        jclass lconvClass = (*env)->FindClass(env, "de/ibapl/jnhw/posix/Locale$Lconv");
-        if (lconvClass == NULL) {
-            return NULL;
-        }
-        jobject result = NULL;
-        jmethodID lconvInitID = (*env)->GetMethodID(env, lconvClass, "<init>", "("dijc_m_NativeAddressHolder_CSig"I)V");
-        if (lconvInitID != NULL) {
-            result = (*env)->NewObject(env, lconvClass, lconvInitID, CREATE_NativeAddressHolder((intptr_t) lconv), sizeof (struct lconv));
-        }
-        (*env)->DeleteLocalRef(env, lconvClass);
-        return result;
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_localeconv0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return (jlong) (uintptr_t) localeconv();
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Locale
      * Method:    newlocale
-     * Signature: (ILjava/lang/String;Lde/ibapl/jnhw/posix/Locale$Locale_t;)Lde/ibapl/jnhw/posix/Locale$Locale_t;
+     * Signature: (ILjava/lang/String;J)J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Locale_newlocale
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint category_mask, jstring locale, jobject base) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_newlocale
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint category_mask, jstring locale, jlong ptrBase) {
         if (locale == NULL) {
             throw_NullPointerException(env, "locale is null.");
-            return NULL;
+            return (jlong) (uintptr_t) NULL;
         }
-        if (base == NULL) {
-            throw_NullPointerException(env, "base is null.");
-            return NULL;
-        }
-        const locale_t _base = UNWRAP_LOCALE_T(base);
+        const locale_t _base = (locale_t) (uintptr_t) ptrBase;
         if (_base == LC_GLOBAL_LOCALE) {
             throw_IllegalArgumentException(env, "base is LC_GLOBAL_LOCALE");
-            return NULL;
+            return (jlong) (uintptr_t) NULL;
         }
         const char* _locale = (*env)->GetStringUTFChars(env, locale, NULL);
         locale_t result = newlocale(category_mask, _locale, _base);
         (*env)->ReleaseStringUTFChars(env, locale, _locale);
         if (result == (locale_t) 0) {
             throw_NativeErrorException(env, errno);
-            return NULL;
+            return (jlong) (uintptr_t) NULL;
         }
-        return CREATE_Locale_t(result);
+        return (jlong) (uintptr_t) result;
     }
 
     /*
@@ -141,19 +117,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Locale
      * Method:    uselocale
-     * Signature: (Lde/ibapl/jnhw/posix/Locale/Locale_t;)Lde/ibapl/jnhw/posix/Locale/Locale_t;
+     * Signature: (J)J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Locale_uselocale
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject newloc) {
-        if (newloc == NULL) {
-            throw_NullPointerException(env, "newloc is null.");
-            return 0;
-        }
-        locale_t result = uselocale(UNWRAP_LOCALE_T(newloc));
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_uselocale
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrNewloc) {
+        locale_t result = uselocale((locale_t) (uintptr_t) ptrNewloc);
         if (result == (locale_t) 0) {
             throw_NativeErrorException(env, errno);
         }
-        return CREATE_Locale_t(result);
+        return (jlong) (uintptr_t) result;
     }
 
 #endif

@@ -7,6 +7,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef de_ibapl_jnhw_posix_Poll_PollFd_NULL
+#define de_ibapl_jnhw_posix_Poll_PollFd_NULL 0LL
 /*
  * Class:     de_ibapl_jnhw_posix_Poll_PollFd
  * Method:    native2Layout

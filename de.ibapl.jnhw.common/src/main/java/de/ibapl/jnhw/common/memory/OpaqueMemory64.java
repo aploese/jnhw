@@ -35,6 +35,16 @@ import java.io.IOException;
  */
 public abstract class OpaqueMemory64 extends AbstractNativeMemory implements Native {
 
+    public static void checkIndex(OpaqueMemory64 mem, long offset, long length) {
+        if ((offset < 0)
+                || (length < 0)
+                || // We are very careful to avoid signed integer overflow,
+                // the result of which is undefined in C.
+                (mem.sizeInBytes - offset < length)) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
     public static void clear(OpaqueMemory64 mem) {
         memset(mem, (byte) 0);
     }

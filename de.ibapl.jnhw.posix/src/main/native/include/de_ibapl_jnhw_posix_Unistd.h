@@ -177,19 +177,19 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I_3BII
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    read
- * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory32;II)I
+ * Method:    read_ArgsOK
+ * Signature: (IJII)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
-  (JNIEnv *, jclass, jint, jobject, jint, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read_1ArgsOK__IJII
+  (JNIEnv *, jclass, jint, jlong, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    read
- * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory64;JJ)J
+ * Method:    read_ArgsOK
+ * Signature: (IJJJ)J
  */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_common_memory_OpaqueMemory64_2JJ
-  (JNIEnv *, jclass, jint, jobject, jlong, jlong);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_read_1ArgsOK__IJJJ
+  (JNIEnv *, jclass, jint, jlong, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
@@ -212,7 +212,7 @@ JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
  * Method:    read_ArgsOK
  * Signature: (ILjava/nio/ByteBuffer;II)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read_1ArgsOK
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read_1ArgsOK__ILjava_nio_ByteBuffer_2II
   (JNIEnv *, jclass, jint, jobject, jint, jint);
 
 /*
@@ -225,19 +225,19 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_usleep
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    write
- * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory32;II)I
+ * Method:    write_ArgsOK
+ * Signature: (IJII)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
-  (JNIEnv *, jclass, jint, jobject, jint, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write_1ArgsOK__IJII
+  (JNIEnv *, jclass, jint, jlong, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    write
- * Signature: (ILde/ibapl/jnhw/common/memory/OpaqueMemory64;JJ)J
+ * Method:    write_ArgsOK
+ * Signature: (IJJJ)J
  */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILde_ibapl_jnhw_common_memory_OpaqueMemory64_2JJ
-  (JNIEnv *, jclass, jint, jobject, jlong, jlong);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_write_1ArgsOK__IJJJ
+  (JNIEnv *, jclass, jint, jlong, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
@@ -260,7 +260,7 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__I_3BII
  * Method:    write_ArgsOK
  * Signature: (ILjava/nio/ByteBuffer;II)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write_1ArgsOK
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write_1ArgsOK__ILjava_nio_ByteBuffer_2II
   (JNIEnv *, jclass, jint, jobject, jint, jint);
 
 #ifdef __cplusplus

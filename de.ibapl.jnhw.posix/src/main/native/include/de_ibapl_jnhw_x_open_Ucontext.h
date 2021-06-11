@@ -18,26 +18,26 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_initFields
 /*
  * Class:     de_ibapl_jnhw_x_open_Ucontext
  * Method:    getcontext
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Ucontext_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_getcontext
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_x_open_Ucontext
  * Method:    setcontext
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Ucontext_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_setcontext
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_x_open_Ucontext
  * Method:    swapcontext
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Ucontext_t;Lde/ibapl/jnhw/posix/Signal/Ucontext_t;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_swapcontext
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 #ifdef __cplusplus
 }

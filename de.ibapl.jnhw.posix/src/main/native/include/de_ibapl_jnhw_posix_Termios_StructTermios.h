@@ -7,6 +7,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef de_ibapl_jnhw_posix_Termios_StructTermios_NULL
+#define de_ibapl_jnhw_posix_Termios_StructTermios_NULL 0LL
 /*
  * Class:     de_ibapl_jnhw_posix_Termios_StructTermios
  * Method:    native2Layout

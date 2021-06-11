@@ -207,7 +207,11 @@ public class Locale {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native Locale_t duplocale(Locale_t locobj) throws NativeErrorException;
+    public final static Locale_t duplocale(Locale_t locobj) throws NativeErrorException {
+        return new Locale_t(duplocale(locobj.nativeValue));
+    }
+
+    private static native long duplocale(long ptrLocobj) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -217,7 +221,11 @@ public class Locale {
      * @param locobj a valid locale object handle.
      *
      */
-    public final static native void freelocale(Locale_t locobj);
+    public final static void freelocale(Locale_t locobj) {
+        freelocale(locobj.nativeValue);
+    }
+
+    private static native void freelocale(long ptrLocobj);
 
     /**
      * <b>POSIX:</b>
@@ -228,7 +236,11 @@ public class Locale {
      * @return The localeconv() function shall return a pointer to the filled-in
      * object.
      */
-    public final static native Lconv localeconv();
+    public final static Lconv localeconv() {
+        return new Lconv(NativeAddressHolder.ofUintptr_t(localeconv0()));
+    }
+
+    private static native long localeconv0();
 
     /**
      * <b>POSIX:</b>
@@ -245,7 +257,11 @@ public class Locale {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native Locale_t newlocale(int category_mask, String locale, Locale_t base) throws NativeErrorException;
+    public final static Locale_t newlocale(int category_mask, String locale, Locale_t base) throws NativeErrorException {
+        return new Locale_t(newlocale(category_mask, locale, base.nativeValue));
+    }
+
+    private static native long newlocale(int category_mask, String locale, long ptrBase) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -274,7 +290,11 @@ public class Locale {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native Locale_t uselocale(Locale_t newloc) throws NativeErrorException;
+    public final static Locale_t uselocale(Locale_t newloc) throws NativeErrorException {
+        return new Locale_t(uselocale(newloc.nativeValue));
+    }
+
+    private static native long uselocale(long ptrNewloc) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/locale.h.html">{@code structure
@@ -364,14 +384,8 @@ public class Locale {
             super(parent, offset, LAYOUT.sizeof, setMem);
         }
 
-        /**
-         * To be called only from native code ...
-         *
-         * @param addressHolder
-         * @param size
-         */
-        private Lconv(NativeAddressHolder addressHolder, int size) {
-            super(addressHolder, size);
+        public Lconv(NativeAddressHolder addressHolder) {
+            super(addressHolder, LAYOUT.sizeof);
         }
 
         @Override
@@ -702,6 +716,10 @@ public class Locale {
      */
     @locale_t
     public static class Locale_t {
+
+        public final static long getNativeValue(final Locale_t locale) {
+            return locale.nativeValue;
+        }
 
         private final long nativeValue;
 

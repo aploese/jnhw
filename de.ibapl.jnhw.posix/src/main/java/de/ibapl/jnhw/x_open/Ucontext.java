@@ -23,6 +23,7 @@ package de.ibapl.jnhw.x_open;
 
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
@@ -59,14 +60,30 @@ public class Ucontext {
     /**
      * Get user context and store it in variable pointed to by UCP.
      */
-    public final static native void getcontext(Signal.Ucontext_t ucp) throws NativeErrorException;
+    public final static void getcontext(Signal.Ucontext_t ucp) throws NativeErrorException {
+        getcontext(AbstractNativeMemory.getAddress(ucp));
+    }
 
-    /* Set user context from information of variable pointed to by UCP.  */
-    final static native void setcontext(final Signal.Ucontext_t ucp) throws NativeErrorException;
+    private static native void getcontext(long ptrUcp) throws NativeErrorException;
 
-    /* Save current context in context variable pointed to by OUCP and set
-   context from variable pointed to by UCP.  */
-    final static native void swapcontext(Signal.Ucontext_t oucp, final Signal.Ucontext_t ucp) throws NativeErrorException;
+    /**
+     * Set user context from information of variable pointed to by UCP.
+     */
+    final static void setcontext(final Signal.Ucontext_t ucp) throws NativeErrorException {
+        setcontext(AbstractNativeMemory.getAddress(ucp));
+    }
+
+    private static native void setcontext(final long ptrUcp) throws NativeErrorException;
+
+    /**
+     * Save current context in context variable pointed to by OUCP and set
+     * context from variable pointed to by UCP.
+     */
+    final static void swapcontext(Signal.Ucontext_t oucp, final Signal.Ucontext_t ucp) throws NativeErrorException {
+        swapcontext(AbstractNativeMemory.getAddress(oucp), AbstractNativeMemory.getAddress(ucp));
+    }
+
+    private static native void swapcontext(long ptrOucp, final long ptrUcp) throws NativeErrorException;
 
     /* Manipulate user context UCP to continue with calling functions FUNC
    and the ARGC-1 parameters following ARGC when the context is used

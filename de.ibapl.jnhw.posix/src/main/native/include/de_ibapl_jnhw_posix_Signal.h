@@ -34,10 +34,10 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_killpg
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    psiginfo
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Siginfo_t;Ljava/lang/String;)V
+ * Signature: (JLjava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_psiginfo
-  (JNIEnv *, jclass, jobject, jstring);
+  (JNIEnv *, jclass, jlong, jstring);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
@@ -50,18 +50,18 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_psignal
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    pthread_kill
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;I)V
+ * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_pthread_1kill
-  (JNIEnv *, jclass, jobject, jint);
+  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    pthread_sigmask
- * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Sigset_t;)V
+ * Signature: (IJJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_pthread_1sigmask
-  (JNIEnv *, jclass, jint, jobject, jobject);
+  (JNIEnv *, jclass, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
@@ -74,50 +74,50 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_raise
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigaction
- * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigaction;Lde/ibapl/jnhw/posix/Signal/Sigaction;)V
+ * Signature: (IJJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigaction
-  (JNIEnv *, jclass, jint, jobject, jobject);
+  (JNIEnv *, jclass, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigaddset
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;I)V
+ * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigaddset
-  (JNIEnv *, jclass, jobject, jint);
+  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigaltstack
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Stack_t;Lde/ibapl/jnhw/posix/Signal/Stack_t;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigaltstack
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigdelset
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;I)V
+ * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigdelset
-  (JNIEnv *, jclass, jobject, jint);
+  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigemptyset
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigemptyset
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigfillset
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigfillset
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
@@ -146,18 +146,18 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_siginterrupt
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigismember
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;I)Z
+ * Signature: (JI)Z
  */
 JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Signal_sigismember
-  (JNIEnv *, jclass, jobject, jint);
+  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    signal
- * Signature: (ILde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;)Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;
+ * Signature: (IJ)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
-  (JNIEnv *, jclass, jint, jobject);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_signal
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
@@ -170,26 +170,26 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigpause
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigpending
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigpending
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigprocmask
- * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Sigset_t;)V
+ * Signature: (IJJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigprocmask
-  (JNIEnv *, jclass, jint, jobject, jobject);
+  (JNIEnv *, jclass, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigqueue
- * Signature: (IILde/ibapl/jnhw/posix/Signal/Sigval;)V
+ * Signature: (IIJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigqueue
-  (JNIEnv *, jclass, jint, jint, jobject);
+  (JNIEnv *, jclass, jint, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
@@ -202,42 +202,42 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigrelse
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigset
- * Signature: (ILde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;)Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_V;
+ * Signature: (IJ)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Signal_sigset
-  (JNIEnv *, jclass, jint, jobject);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Signal_sigset
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigsuspend
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_sigsuspend
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigtimedwait
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Siginfo_t;Lde/ibapl/jnhw/posix/Time/Timespec;)I
+ * Signature: (JJJ)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigtimedwait
-  (JNIEnv *, jclass, jobject, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigwait
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;)I
+ * Signature: (J)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigwait
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigwaitinfo
- * Signature: (Lde/ibapl/jnhw/posix/Signal/Sigset_t;Lde/ibapl/jnhw/posix/Signal/Siginfo_t;)I
+ * Signature: (JJ)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigwaitinfo
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 #ifdef __cplusplus
 }

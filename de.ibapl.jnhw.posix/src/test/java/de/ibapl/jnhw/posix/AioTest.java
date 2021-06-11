@@ -527,21 +527,21 @@ public class AioTest {
                 list.set(0, aiocb);
 
                 NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    Aio.lio_listio(Aio.LIO_WAIT.get(), list, null);
+                    Aio.lio_listio(Aio.LIO_WAIT.get(), list);
                 });
                 assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
 
                 Assertions.assertThrows(NullPointerException.class, () -> {
-                    Aio.lio_listio(Aio.LIO_WAIT.get(), null, null);
+                    Aio.lio_listio(Aio.LIO_WAIT.get(), null);
                 });
 
                 if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
                     nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                        Aio.lio_listio(Aio.LIO_NOWAIT.get(), list, null);
+                        Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);
                     });
                     assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
                 } else {
-                    Aio.lio_listio(Aio.LIO_NOWAIT.get(), list, null);
+                    Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);
                 }
         }
     }
@@ -583,7 +583,7 @@ public class AioTest {
                 Aio.Aiocbs list = new Aio.Aiocbs(1, SetMem.DO_NOT_SET);
                 list.set(0, aiocb);
 
-                Aio.lio_listio(Aio.LIO_NOWAIT.get(), list, null);
+                Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);
                 int errno = Aio.aio_error(aiocb);
                 while (errno != 0) {
                     assertEquals(Errno.EINPROGRESS, errno, "Got errno from aio_error: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));

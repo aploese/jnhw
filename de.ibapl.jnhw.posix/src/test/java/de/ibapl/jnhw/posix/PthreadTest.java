@@ -90,16 +90,18 @@ public class PthreadTest {
             Pthread.pthread_equal(null, null);
         });
         final Pthread.Pthread_t t1 = Pthread.pthread_self();
-        Assertions.assertTrue(Pthread.pthread_equal(t1, Pthread.pthread_self()));
+        final Pthread.Pthread_t t2 = Pthread.pthread_self();
+
+        Assertions.assertTrue(Pthread.pthread_equal(t1, t2));
 
         final ObjectRef<Pthread.Pthread_t> objectRef = new ObjectRef();
-        Thread t2 = new Thread(() -> {
+        Thread t3 = new Thread(() -> {
             objectRef.value = Pthread.pthread_self();
         });
-        t2.start();
-        t2.join();
+        t3.start();
+        t3.join();
 
-        Assertions.assertNotEquals(t2.toString(), objectRef.value.toString());
+        Assertions.assertNotEquals(t3.toString(), objectRef.value.toString());
         boolean result = Pthread.pthread_equal(t1, objectRef.value);
         Assertions.assertFalse(result);
 
@@ -113,20 +115,17 @@ public class PthreadTest {
         System.out.println("pthread_getcpuclockid");
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Pthread.pthread_getcpuclockid(null, null);
+                Pthread.pthread_getcpuclockid(null);
             });
         } else {
-            IntRef clock_id = new IntRef();
+            int clock_id;
             Assertions.assertThrows(NullPointerException.class, () -> {
-                Pthread.pthread_getcpuclockid(null, clock_id);
+                Pthread.pthread_getcpuclockid(null);
             });
 
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Pthread.pthread_getcpuclockid(Pthread.pthread_self(), null);
-            });
-
-            Pthread.pthread_getcpuclockid(Pthread.pthread_self(), clock_id);
-            Assertions.assertNotNull(clock_id.value);
+//This will crach with SIGSEV
+//            clock_id = Pthread.pthread_getcpuclockid(new Pthread.Pthread_t(NativeAddressHolder.ofUintptr_t(1024)));
+            clock_id = Pthread.pthread_getcpuclockid(Pthread.pthread_self());
         }
     }
 
@@ -223,20 +222,16 @@ public class PthreadTest {
         }
 
         System.out.println("pthread_getschedparam");
-        IntRef intRef = new IntRef();
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_getschedparam(Pthread.pthread_self(), intRef, null);
+            Pthread.pthread_getschedparam(Pthread.pthread_self(), null);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_getschedparam(Pthread.pthread_self(), null, param);
-        });
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_getschedparam(null, intRef, param);
+            Pthread.pthread_getschedparam(null, param);
         });
 
-        Pthread.pthread_getschedparam(Pthread.pthread_self(), intRef, param);
-        Assertions.assertEquals(0, intRef.value);
+        int policy = Pthread.pthread_getschedparam(Pthread.pthread_self(), param);
+        Assertions.assertEquals(0, policy);
 
     }
 

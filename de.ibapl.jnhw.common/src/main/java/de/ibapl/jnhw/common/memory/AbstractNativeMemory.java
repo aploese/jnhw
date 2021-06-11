@@ -34,6 +34,8 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractNativeMemory {
 
+    public final static long NULL = 0L;
+
     public static enum SetMem {
         DO_NOT_SET(false, (byte) 0),
         TO_0x00(false, (byte) 0x00),
@@ -83,6 +85,10 @@ public abstract class AbstractNativeMemory {
 
     public final static long getAddress(final AbstractNativeMemory instance) {
         return instance.baseAddress;
+    }
+
+    public final static long getAddressOrNULL(final AbstractNativeMemory instance) {
+        return (instance == null) ? AbstractNativeMemory.NULL : instance.baseAddress;
     }
 
     /**

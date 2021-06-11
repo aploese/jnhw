@@ -18,34 +18,34 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Locale_initFields
 /*
  * Class:     de_ibapl_jnhw_posix_Locale
  * Method:    duplocale
- * Signature: (Lde/ibapl/jnhw/posix/Locale/Locale_t;)Lde/ibapl/jnhw/posix/Locale/Locale_t;
+ * Signature: (J)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Locale_duplocale
-  (JNIEnv *, jclass, jobject);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_duplocale
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Locale
  * Method:    freelocale
- * Signature: (Lde/ibapl/jnhw/posix/Locale/Locale_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Locale_freelocale
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Locale
- * Method:    localeconv
- * Signature: ()Lde/ibapl/jnhw/posix/Locale/Lconv;
+ * Method:    localeconv0
+ * Signature: ()J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Locale_localeconv
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_localeconv0
   (JNIEnv *, jclass);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Locale
  * Method:    newlocale
- * Signature: (ILjava/lang/String;Lde/ibapl/jnhw/posix/Locale/Locale_t;)Lde/ibapl/jnhw/posix/Locale/Locale_t;
+ * Signature: (ILjava/lang/String;J)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Locale_newlocale
-  (JNIEnv *, jclass, jint, jstring, jobject);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_newlocale
+  (JNIEnv *, jclass, jint, jstring, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Locale
@@ -58,10 +58,10 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Locale_setlocale
 /*
  * Class:     de_ibapl_jnhw_posix_Locale
  * Method:    uselocale
- * Signature: (Lde/ibapl/jnhw/posix/Locale/Locale_t;)Lde/ibapl/jnhw/posix/Locale/Locale_t;
+ * Signature: (J)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Locale_uselocale
-  (JNIEnv *, jclass, jobject);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_uselocale
+  (JNIEnv *, jclass, jlong);
 
 #ifdef __cplusplus
 }

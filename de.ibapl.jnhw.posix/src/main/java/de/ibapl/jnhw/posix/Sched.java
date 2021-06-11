@@ -22,15 +22,12 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.annotation.SizeOf;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
@@ -310,7 +307,11 @@ public class Sched {
      * @throws NoSuchNativeMethodException if the method sched_getparam is not
      * available natively.
      */
-    public final static native void sched_getparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void sched_getparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException {
+        sched_getparam(pid, AbstractNativeMemory.getAddress(param));
+    }
+
+    private static native void sched_getparam(@pid_t int pid, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -335,7 +336,11 @@ public class Sched {
      * @throws NoSuchNativeMethodException if the method sched_rr_get_interval
      * is not available natively.
      */
-    public final static native void sched_rr_get_interval(@pid_t int pid, Time.Timespec interval) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void sched_rr_get_interval(@pid_t int pid, Time.Timespec interval) throws NativeErrorException, NoSuchNativeMethodException {
+        sched_rr_get_interval(pid, AbstractNativeMemory.getAddress(interval));
+    }
+
+    private static native void sched_rr_get_interval(@pid_t int pid, long ptrInterval) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -347,7 +352,11 @@ public class Sched {
      * @throws NoSuchNativeMethodException if the method sched_setparam is not
      * available natively.
      */
-    public final static native void sched_setparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void sched_setparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException {
+        sched_setparam(pid, AbstractNativeMemory.getAddress(param));
+    }
+
+    private static native void sched_setparam(@pid_t int pid, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -359,7 +368,11 @@ public class Sched {
      * @throws NoSuchNativeMethodException if the method sched_setscheduler is
      * not available natively.
      */
-    public final static native int sched_setscheduler(@pid_t int pid, int policy, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int sched_setscheduler(@pid_t int pid, int policy, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException {
+        return sched_setscheduler(pid, policy, AbstractNativeMemory.getAddress(param));
+    }
+
+    private static native int sched_setscheduler(@pid_t int pid, int policy, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>

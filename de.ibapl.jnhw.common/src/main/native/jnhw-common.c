@@ -528,22 +528,6 @@ extern "C" {
                 ((*env)->GetArrayLength(env, array) - pos < len));
     }
 
-    JNIEXPORT int outOfBoundsOpaqueMemory32(JNIEnv *env, jint pos, jint len, jobject opaqueMemory) {
-        return (pos < 0) ||
-                (len < 0) ||
-                // We are very careful to avoid signed integer overflow,
-                // the result of which is undefined in C.
-                (SIZE_OF_OPAQUE_MEM_32(opaqueMemory) - pos < len);
-    }
-
-    JNIEXPORT int outOfBoundsOpaqueMemory64(JNIEnv *env, jlong pos, jlong len, jobject opaqueMemory) {
-        return (pos < 0) ||
-                (len < 0) ||
-                // We are very careful to avoid signed integer overflow,
-                // the result of which is undefined in C.
-                (SIZE_OF_OPAQUE_MEM_64(opaqueMemory) - pos < len);
-    }
-
     JNIEXPORT jint JNICALL
     JNI_OnLoad(JavaVM *jvm, __attribute__ ((unused)) void *reserved) {
         JNIEnv *env;

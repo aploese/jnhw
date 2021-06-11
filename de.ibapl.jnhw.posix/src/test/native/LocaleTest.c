@@ -27,6 +27,11 @@ extern "C" {
 #endif
 #if defined(_POSIX_VERSION)
 
+
+    //TODO remove
+#define UNWRAP_LOCALE_T(Locale_tObject) (locale_t)(uintptr_t)(*env)->GetLongField(env, Locale_tObject, dij_p_Locale_Locale_t_nativeValue__FID)
+
+
 #include <locale.h>
 
     /*

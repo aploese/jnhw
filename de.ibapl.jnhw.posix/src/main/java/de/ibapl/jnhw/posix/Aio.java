@@ -173,7 +173,11 @@ public class Aio {
      * @throws NoSuchNativeMethodException if the method aio_cancel is not
      * available natively.
      */
-    public final static native int aio_cancel(Aiocb aiocbp) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int aio_cancel(Aiocb aiocbp) throws NativeErrorException, NoSuchNativeMethodException {
+        return aio_cancel(aiocbp.aio_fildes(), AbstractNativeMemory.getAddress(aiocbp));
+    }
+
+    private static native int aio_cancel(int fildes, long ptrAiocbp) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -194,7 +198,9 @@ public class Aio {
      * @throws NoSuchNativeMethodException if the method aio_cancel is not
      * available natively.
      */
-    public final static native int aio_cancel(int fildes) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int aio_cancel(int fildes) throws NativeErrorException, NoSuchNativeMethodException {
+        return aio_cancel(fildes, 0);
+    }
 
     /**
      * <b>POSIX:</b>
@@ -211,7 +217,11 @@ public class Aio {
      * @throws NoSuchNativeMethodException if the method aio_error is not
      * available natively.
      */
-    public final static native int aio_error(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int aio_error(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
+        return aio_error(AbstractNativeMemory.getAddress(aiocb));
+    }
+
+    private static native int aio_error(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -226,7 +236,11 @@ public class Aio {
      * @throws NoSuchNativeMethodException if the method aio_fsync is not
      * available natively.
      */
-    public final static native void aio_fsync(int op, Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void aio_fsync(int op, Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
+        aio_fsync(op, AbstractNativeMemory.getAddress(aiocb));
+    }
+
+    private static native void aio_fsync(int op, long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -240,7 +254,11 @@ public class Aio {
      * @throws NoSuchNativeMethodException if the method aio_read is not
      * available natively.
      */
-    public final static native void aio_read(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void aio_read(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
+        aio_read(AbstractNativeMemory.getAddress(aiocb));
+    }
+
+    private static native void aio_read(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -257,8 +275,12 @@ public class Aio {
      * @throws NoSuchNativeMethodException if the method aio_return is not
      * available natively.
      */
-    public final static native @ssize_t
-    long aio_return(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
+    @ssize_t
+    public final static long aio_return(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
+        return aio_return(AbstractNativeMemory.getAddress(aiocb));
+    }
+
+    private static native long aio_return(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -273,7 +295,11 @@ public class Aio {
      * @throws NoSuchNativeMethodException if the method aio_suspend is not
      * available natively.
      */
-    public final static native void aio_suspend(Aiocbs list, Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void aio_suspend(Aiocbs list, Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
+        aio_suspend(AbstractNativeMemory.getAddress(list), list.length(), AbstractNativeMemory.getSizeInBytes(timeout));
+    }
+
+    private static native void aio_suspend(long ptrList, int nent, long ptrTimeout) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -287,7 +313,11 @@ public class Aio {
      * @throws NoSuchNativeMethodException if the method aio_write is not
      * available natively.
      */
-    public final static native void aio_write(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void aio_write(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
+        aio_write(AbstractNativeMemory.getAddress(aiocb));
+    }
+
+    private static native void aio_write(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -303,7 +333,15 @@ public class Aio {
      * @throws NoSuchNativeMethodException if the method lio_listio is not
      * available natively.
      */
-    public final static native void lio_listio(int mode, Aiocbs list, Sigevent sig) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void lio_listio(int mode, Aiocbs list, Sigevent sig) throws NativeErrorException, NoSuchNativeMethodException {
+        lio_listio(mode, AbstractNativeMemory.getAddress(list), list.length(), AbstractNativeMemory.getAddress(sig));
+    }
+
+    public final static void lio_listio(int mode, Aiocbs list) throws NativeErrorException, NoSuchNativeMethodException {
+        lio_listio(mode, AbstractNativeMemory.getAddress(list), list.length(), 0);
+    }
+
+    private static native void lio_listio(int mode, long ptrList, int nent, long ptrSig) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure

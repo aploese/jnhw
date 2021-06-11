@@ -26,10 +26,10 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_StringHeader_strerror
 /*
  * Class:     de_ibapl_jnhw_posix_StringHeader
  * Method:    strerror_l
- * Signature: (ILde/ibapl/jnhw/posix/Locale/Locale_t;)Ljava/lang/String;
+ * Signature: (IJ)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_StringHeader_strerror_1l
-  (JNIEnv *, jclass, jint, jobject);
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_StringHeader

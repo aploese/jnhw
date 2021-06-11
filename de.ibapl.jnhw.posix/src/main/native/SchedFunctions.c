@@ -65,19 +65,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Sched
      * Method:    sched_getparam
-     * Signature: (ILde/ibapl/jnhw/posix/Sched/Sched_param;)V
+     * Signature: (IJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1getparam
 #if defined(__APPLE__) || defined(__OpenBSD__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jobject sched_param) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jlong ptrSched_param) {
         throw_NoSuchNativeMethodException(env, "sched_getparam");
 #else
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jobject sched_param) {
-        if (sched_param == NULL) {
-            throw_NullPointerException(env, "sched_param is NULL");
-            return;
-        }
-        if (sched_getparam(pid, UNWRAP_STRUCT_SCHED_PARAM_PTR(sched_param))) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jlong ptrSched_param) {
+        if (sched_getparam(pid, (struct sched_param*) (uintptr_t) ptrSched_param)) {
             throw_NativeErrorException(env, errno);
         }
 #endif
@@ -106,19 +102,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Sched
      * Method:    sched_rr_get_interval
-     * Signature: (ILde/ibapl/jnhw/posix/Time/Timespec;)V
+     * Signature: (IJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1rr_1get_1interval
 #if defined(__APPLE__) || defined(__OpenBSD__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jobject interval) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jlong ptrInterval) {
         throw_NoSuchNativeMethodException(env, "sched_rr_get_interval");
 #else
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jobject interval) {
-        if (interval == NULL) {
-            throw_NullPointerException(env, "interval is NULL");
-            return;
-        }
-        if (sched_rr_get_interval(pid, UNWRAP_STRUCT_TIMESPEC_PTR(interval))) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jlong ptrInterval) {
+        if (sched_rr_get_interval(pid, (struct timespec*) (uintptr_t) ptrInterval)) {
             throw_NativeErrorException(env, errno);
         }
 #endif
@@ -127,19 +119,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Sched
      * Method:    sched_setparam
-     * Signature: (ILde/ibapl/jnhw/posix/Sched/Sched_param;)V
+     * Signature: (IJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1setparam
 #if defined(__APPLE__) || defined(__OpenBSD__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jobject sched_param) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jlong ptrSched_param) {
         throw_NoSuchNativeMethodException(env, "sched_setparam");
 #else
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jobject sched_param) {
-        if (sched_param == NULL) {
-            throw_NullPointerException(env, "sched_param is NULL");
-            return;
-        }
-        if (sched_setparam(pid, UNWRAP_STRUCT_SCHED_PARAM_PTR(sched_param))) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jlong ptrSched_param) {
+        if (sched_setparam(pid, (struct sched_param*) (uintptr_t) ptrSched_param)) {
             throw_NativeErrorException(env, errno);
         }
 #endif
@@ -148,20 +136,16 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Sched
      * Method:    sched_setscheduler
-     * Signature: (IILde/ibapl/jnhw/posix/Sched/Sched_param;)I
+     * Signature: (IIJ)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1setscheduler
 #if defined(__APPLE__) || defined(__OpenBSD__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jint policy, __attribute__ ((unused)) jobject param) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid, __attribute__ ((unused)) jint policy, __attribute__ ((unused)) jlong ptrParam) {
         throw_NoSuchNativeMethodException(env, "sched_setscheduler");
         return -1;
 #else
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jint policy, jobject param) {
-        if (param == NULL) {
-            throw_NullPointerException(env, "sched_param is NULL");
-            return -1;
-        }
-        const int result = sched_setscheduler(pid, policy, UNWRAP_STRUCT_SCHED_PARAM_PTR(param));
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid, jint policy, jlong ptrParam) {
+        const int result = sched_setscheduler(pid, policy, (struct sched_param*) (uintptr_t) ptrParam);
         if (result == -1) {
             throw_NativeErrorException(env, errno);
         }

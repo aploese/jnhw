@@ -35,6 +35,16 @@ import java.io.IOException;
  */
 public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Native {
 
+    public static void checkIndex(OpaqueMemory32 mem, int offset, int length) {
+        if ((offset < 0)
+                || (length < 0)
+                || // We are very careful to avoid signed integer overflow,
+                // the result of which is undefined in C.
+                (mem.sizeInBytes - offset < length)) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
     @FunctionalInterface
     public static interface OpaqueMemory32Producer<T extends OpaqueMemory32, P extends AbstractNativeMemory> {
 

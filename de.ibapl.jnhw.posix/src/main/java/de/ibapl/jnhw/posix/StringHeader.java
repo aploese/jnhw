@@ -73,7 +73,11 @@ public class StringHeader {
      * @throws NoSuchNativeMethodException if the method strerror_l is not
      * available natively.
      */
-    public final static native String strerror_l(int errnum, Locale.Locale_t locale) throws NoSuchNativeMethodException;
+    public final static String strerror_l(int errnum, Locale.Locale_t locale) throws NoSuchNativeMethodException {
+        return strerror_l(errnum, Locale.Locale_t.getNativeValue(locale));
+    }
+
+    private static native String strerror_l(int errnum, long ptrLocale) throws NoSuchNativeMethodException;
 
     /**
      * <b>POSIX.CX:</b>

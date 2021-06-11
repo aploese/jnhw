@@ -7,6 +7,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef de_ibapl_jnhw_posix_Signal_Sigval_NULL
+#define de_ibapl_jnhw_posix_Signal_Sigval_NULL 0LL
 /*
  * Class:     de_ibapl_jnhw_posix_Signal_Sigval
  * Method:    native2Layout

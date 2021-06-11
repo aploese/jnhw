@@ -2160,7 +2160,11 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method psiginfo is not
      * available natively.
      */
-    public final static native void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException {
+        psiginfo(AbstractNativeMemory.getAddress(pinfo), message);
+    }
+
+    private static native void psiginfo(long ptrPinfo, String message) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -2184,7 +2188,11 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method pthread_kill is not
      * available natively.
      */
-    public final static native void pthread_kill(Pthread.Pthread_t thread, int sig) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void pthread_kill(Pthread.Pthread_t thread, int sig) throws NativeErrorException, NoSuchNativeMethodException {
+        pthread_kill(AbstractNativeMemory.getAddress(thread), sig);
+    }
+
+    private static native void pthread_kill(long ptrThread, int sig) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -2200,8 +2208,12 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void pthread_sigmask(int how, Sigset_t set,
-            Sigset_t oset) throws NativeErrorException;
+    public final static void pthread_sigmask(int how, Sigset_t set, Sigset_t oset) throws NativeErrorException {
+        pthread_sigmask(how, AbstractNativeMemory.getAddressOrNULL(set), AbstractNativeMemory.getAddressOrNULL(oset));
+    }
+
+    private static native void pthread_sigmask(int how, long ptrSet,
+            long ptrOset) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2225,7 +2237,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigaction(int sig, Sigaction act, Sigaction oact) throws NativeErrorException;
+    public final static void sigaction(int sig, Sigaction act, Sigaction oact) throws NativeErrorException {
+        sigaction(sig, AbstractNativeMemory.getAddressOrNULL(act), AbstractNativeMemory.getAddressOrNULL(oact));
+    }
+
+    private static native void sigaction(int sig, long ptrAct, long ptrOact) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2236,7 +2252,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigaddset(Sigset_t set, int signo) throws NativeErrorException;
+    public final static void sigaddset(Sigset_t set, int signo) throws NativeErrorException {
+        sigaddset(AbstractNativeMemory.getAddress(set), signo);
+    }
+
+    private static native void sigaddset(long set, int signo) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2247,7 +2267,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigaltstack(Stack_t ss, Stack_t oss) throws NativeErrorException;
+    public final static void sigaltstack(Stack_t ss, Stack_t oss) throws NativeErrorException {
+        sigaltstack(AbstractNativeMemory.getAddressOrNULL(ss), AbstractNativeMemory.getAddressOrNULL(oss));
+    }
+
+    private static native void sigaltstack(long ptrSs, long ptrOss) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2258,7 +2282,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigdelset(Sigset_t set, int signo) throws NativeErrorException;
+    public final static void sigdelset(Sigset_t set, int signo) throws NativeErrorException {
+        sigdelset(AbstractNativeMemory.getAddress(set), signo);
+    }
+
+    private static native void sigdelset(long ptrSet, int signo) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2269,7 +2297,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigemptyset(Sigset_t set) throws NativeErrorException;
+    public final static void sigemptyset(Sigset_t set) throws NativeErrorException {
+        sigemptyset(AbstractNativeMemory.getAddress(set));
+    }
+
+    private static native void sigemptyset(long ptrSet) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2280,7 +2312,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigfillset(Sigset_t set) throws NativeErrorException;
+    public final static void sigfillset(Sigset_t set) throws NativeErrorException {
+        sigfillset(AbstractNativeMemory.getAddress(set));
+    }
+
+    private static native void sigfillset(long set) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2328,7 +2364,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native boolean sigismember(Sigset_t set, int signo) throws NativeErrorException;
+    public final static boolean sigismember(Sigset_t set, int signo) throws NativeErrorException {
+        return sigismember(AbstractNativeMemory.getAddress(set), signo);
+    }
+
+    private static native boolean sigismember(long ptrSet, int signo) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2342,7 +2382,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native FunctionPtr_I_V signal(int sig, FunctionPtr_I_V func) throws NativeErrorException;
+    public final static FunctionPtr_I_V signal(int sig, FunctionPtr_I_V func) throws NativeErrorException {
+        return FunctionPtr_I_V.ofUintptr_t((signal(sig, NativeFunctionPointer.getNativeAddressOrNULL(func))));
+    }
+
+    private static native long signal(int sig, long ptrFunc) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2366,7 +2410,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigpending(Sigset_t set) throws NativeErrorException;
+    public final static void sigpending(Sigset_t set) throws NativeErrorException {
+        sigpending(AbstractNativeMemory.getAddress(set));
+    }
+
+    private static native void sigpending(long ptrSet) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2377,7 +2425,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sigprocmask(int how, Sigset_t set, Sigset_t oset) throws NativeErrorException;
+    public final static void sigprocmask(int how, Sigset_t set, Sigset_t oset) throws NativeErrorException {
+        sigprocmask(how, AbstractNativeMemory.getAddressOrNULL(set), AbstractNativeMemory.getAddressOrNULL(oset));
+    }
+
+    private static native void sigprocmask(int how, long ptrSet, long ptrOset) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2390,7 +2442,11 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigqueue is not
      * available natively.
      */
-    public final static native void sigqueue(@pid_t int pid, int signo, Sigval value) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void sigqueue(@pid_t int pid, int signo, Sigval value) throws NativeErrorException, NoSuchNativeMethodException {
+        sigqueue(pid, signo, AbstractNativeMemory.getAddress(value));
+    }
+
+    private static native void sigqueue(int pid, int signo, long ptrValue) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -2416,7 +2472,11 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigset is not available
      * natively.
      *///TODO args missing ....
-    public final static native FunctionPtr_I_V sigset(int sig, FunctionPtr_I_V disp) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static FunctionPtr_I_V sigset(int sig, FunctionPtr_I_V disp) throws NativeErrorException, NoSuchNativeMethodException {
+        return FunctionPtr_I_V.ofUintptr_t(sigset(sig, NativeFunctionPointer.getNativeAddressOrNULL(disp)));
+    }
+
+    private static native long sigset(int sig, long ptrDisp) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -2427,7 +2487,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * is -1 an errno is other than EINTR.
      */
-    public final static native void sigsuspend(Sigset_t sigmask) throws NativeErrorException;
+    public final static void sigsuspend(Sigset_t sigmask) throws NativeErrorException {
+        sigsuspend(AbstractNativeMemory.getAddress(sigmask));
+    }
+
+    private static native void sigsuspend(long ptrSigmask) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2440,8 +2504,13 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigtimedwait is not
      * available natively.
      */
-    public final static native int sigtimedwait(Sigset_t set, Siginfo_t info,
-            Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int sigtimedwait(Sigset_t set, Siginfo_t info,
+            Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
+        return sigtimedwait(AbstractNativeMemory.getAddress(set), AbstractNativeMemory.getAddressOrNULL(info), AbstractNativeMemory.getAddress(timeout));
+    }
+
+    private static native int sigtimedwait(long ptrSet, long ptrInfo,
+            long ptrTimeout) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -2456,7 +2525,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int sigwait(Sigset_t set) throws NativeErrorException;
+    public final static int sigwait(Sigset_t set) throws NativeErrorException {
+        return sigwait(AbstractNativeMemory.getAddress(set));
+    }
+
+    private static native int sigwait(long ptrSet) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2469,5 +2542,9 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigwaitinfo is not
      * available natively.
      */
-    public final static native int sigwaitinfo(Sigset_t set, Siginfo_t info) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int sigwaitinfo(Sigset_t set, Siginfo_t info) throws NativeErrorException, NoSuchNativeMethodException {
+        return sigwaitinfo(AbstractNativeMemory.getAddress(set), AbstractNativeMemory.getAddressOrNULL(info));
+    }
+
+    private static native int sigwaitinfo(long ptrSet, long ptrInfo) throws NativeErrorException, NoSuchNativeMethodException;
 }

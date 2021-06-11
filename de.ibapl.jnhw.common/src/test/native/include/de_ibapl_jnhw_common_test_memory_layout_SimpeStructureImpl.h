@@ -7,6 +7,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_NULL
+#define de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_NULL 0LL
 /*
  * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
  * Method:    getNativeDefinedLayout

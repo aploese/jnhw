@@ -18,18 +18,18 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_initFields
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    asctime
- * Signature: (Lde/ibapl/jnhw/posix/Time/Tm;)Ljava/lang/String;
+ * Signature: (J)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_asctime
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    asctime_r
- * Signature: (Lde/ibapl/jnhw/posix/Time/Tm;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;)Ljava/lang/String;
+ * Signature: (JJ)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_asctime_1r
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
@@ -42,18 +42,18 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_clock
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    clock_getcpuclockid
- * Signature: (ILde/ibapl/jnhw/common/references/IntRef;)V
+ * Signature: (I)I
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getcpuclockid
-  (JNIEnv *, jclass, jint, jobject);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getcpuclockid
+  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    clock_getres
- * Signature: (ILde/ibapl/jnhw/posix/Time/Timespec;)V
+ * Signature: (IJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getres
-  (JNIEnv *, jclass, jint, jobject);
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
@@ -66,18 +66,18 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1gettime
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    clock_nanosleep
- * Signature: (IILde/ibapl/jnhw/posix/Time/Timespec;Lde/ibapl/jnhw/posix/Time/Timespec;)V
+ * Signature: (IIJJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1nanosleep
-  (JNIEnv *, jclass, jint, jint, jobject, jobject);
+  (JNIEnv *, jclass, jint, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    clock_settime
- * Signature: (ILde/ibapl/jnhw/posix/Time/Timespec;)V
+ * Signature: (IJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1settime
-  (JNIEnv *, jclass, jint, jobject);
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
@@ -90,10 +90,10 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_ctime
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    ctime_r
- * Signature: (JLde/ibapl/jnhw/common/memory/OpaqueMemory32;)Ljava/lang/String;
+ * Signature: (JJ)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_ctime_1r
-  (JNIEnv *, jclass, jlong, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
@@ -114,130 +114,130 @@ JNIEXPORT jdouble JNICALL Java_de_ibapl_jnhw_posix_Time_difftime
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    getdate0
- * Signature: (Ljava/lang/String;)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+ * Signature: (Ljava/lang/String;)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_getdate0
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_getdate0
   (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    gmtime0
- * Signature: (J)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+ * Signature: (J)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime0
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime0
   (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    gmtime_r
- * Signature: (JLde/ibapl/jnhw/posix/Time/Tm;)Lde/ibapl/jnhw/posix/Time/Tm;
+ * Signature: (JJ)V
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime_1r
-  (JNIEnv *, jclass, jlong, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime_1r
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    localtime0
- * Signature: (J)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+ * Signature: (J)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_localtime0
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_localtime0
   (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    localtime_r
- * Signature: (JLde/ibapl/jnhw/posix/Time/Tm;)Lde/ibapl/jnhw/posix/Time/Tm;
+ * Signature: (JJ)V
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Time_localtime_1r
-  (JNIEnv *, jclass, jlong, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_localtime_1r
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    mktime
- * Signature: (Lde/ibapl/jnhw/posix/Time/Tm;)J
+ * Signature: (J)J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_mktime
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    nanosleep
- * Signature: (Lde/ibapl/jnhw/posix/Time/Timespec;Lde/ibapl/jnhw/posix/Time/Timespec;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_nanosleep
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    strftime
- * Signature: (JLjava/lang/String;Lde/ibapl/jnhw/posix/Time/Tm;)Ljava/lang/String;
+ * Signature: (JLjava/lang/String;J)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime
-  (JNIEnv *, jclass, jlong, jstring, jobject);
+  (JNIEnv *, jclass, jlong, jstring, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    strftime_l
- * Signature: (JLjava/lang/String;Lde/ibapl/jnhw/posix/Time/Tm;Lde/ibapl/jnhw/posix/Locale/Locale_t;)Ljava/lang/String;
+ * Signature: (JLjava/lang/String;JJ)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
-  (JNIEnv *, jclass, jlong, jstring, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jstring, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    strptime
- * Signature: (Ljava/lang/String;Ljava/lang/String;Lde/ibapl/jnhw/posix/Time/Tm;)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;Ljava/lang/String;J)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strptime
-  (JNIEnv *, jclass, jstring, jstring, jobject);
+  (JNIEnv *, jclass, jstring, jstring, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    time
- * Signature: (Lde/ibapl/jnhw/common/references/LongRef;)J
+ * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_time
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    timer_create
- * Signature: (ILde/ibapl/jnhw/posix/Signal/Sigevent;Lde/ibapl/jnhw/posix/Time/Timer_t;)V
+ * Signature: (IJJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1create
-  (JNIEnv *, jclass, jint, jobject, jobject);
+  (JNIEnv *, jclass, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    timer_delete
- * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1delete
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    timer_getoverrun
- * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;)I
+ * Signature: (J)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1getoverrun
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    timer_gettime
- * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1gettime
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    timer_settime
- * Signature: (Lde/ibapl/jnhw/posix/Time/Timer_t;ILde/ibapl/jnhw/posix/Time/Itimerspec;Lde/ibapl/jnhw/posix/Time/Itimerspec;)V
+ * Signature: (JIJJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_timer_1settime
-  (JNIEnv *, jclass, jobject, jint, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time

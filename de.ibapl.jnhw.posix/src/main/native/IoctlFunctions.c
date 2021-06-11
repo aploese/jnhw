@@ -70,17 +70,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    ioctl
-     * Signature: (IILde/ibapl/jnhw/common/memory/OpaqueMemory32;)I
+     * Signature: (IIJ)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IILde_ibapl_jnhw_common_memory_OpaqueMemory32_2
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint request, jobject value) {
-
-        if (value == NULL) {
-            throw_NullPointerException(env, "value is null");
-            return -1;
-        }
-
-        const int result = ioctl(fd, (uint32_t) request, UNWRAP_ABSTRACT_MEM_TO(void*, value));
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IIJ
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint request, jlong ptrValue) {
+        const int result = ioctl(fd, (uint32_t) request, (void*) (uintptr_t) ptrValue);
         if (result < 0) {
             throw_NativeErrorException(env, errno);
         }

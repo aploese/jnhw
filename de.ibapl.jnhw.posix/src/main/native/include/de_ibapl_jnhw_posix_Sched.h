@@ -34,10 +34,10 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1get_1priority_1min
 /*
  * Class:     de_ibapl_jnhw_posix_Sched
  * Method:    sched_getparam
- * Signature: (ILde/ibapl/jnhw/posix/Sched/Sched_param;)V
+ * Signature: (IJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1getparam
-  (JNIEnv *, jclass, jint, jobject);
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Sched
@@ -50,26 +50,26 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1getscheduler
 /*
  * Class:     de_ibapl_jnhw_posix_Sched
  * Method:    sched_rr_get_interval
- * Signature: (ILde/ibapl/jnhw/posix/Time/Timespec;)V
+ * Signature: (IJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1rr_1get_1interval
-  (JNIEnv *, jclass, jint, jobject);
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Sched
  * Method:    sched_setparam
- * Signature: (ILde/ibapl/jnhw/posix/Sched/Sched_param;)V
+ * Signature: (IJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1setparam
-  (JNIEnv *, jclass, jint, jobject);
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Sched
  * Method:    sched_setscheduler
- * Signature: (IILde/ibapl/jnhw/posix/Sched/Sched_param;)I
+ * Signature: (IIJ)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Sched_sched_1setscheduler
-  (JNIEnv *, jclass, jint, jint, jobject);
+  (JNIEnv *, jclass, jint, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Sched

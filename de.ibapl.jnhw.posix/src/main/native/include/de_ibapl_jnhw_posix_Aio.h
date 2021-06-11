@@ -18,74 +18,66 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_initFields
 /*
  * Class:     de_ibapl_jnhw_posix_Aio
  * Method:    aio_cancel
- * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocb;)I
+ * Signature: (IJ)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1cancel__Lde_ibapl_jnhw_posix_Aio_Aiocb_2
-  (JNIEnv *, jclass, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Aio
- * Method:    aio_cancel
- * Signature: (I)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1cancel__I
-  (JNIEnv *, jclass, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1cancel
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Aio
  * Method:    aio_error
- * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocb;)I
+ * Signature: (J)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1error
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Aio
  * Method:    aio_fsync
- * Signature: (ILde/ibapl/jnhw/posix/Aio/Aiocb;)V
+ * Signature: (IJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1fsync
-  (JNIEnv *, jclass, jint, jobject);
+  (JNIEnv *, jclass, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Aio
  * Method:    aio_read
- * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocb;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1read
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Aio
  * Method:    aio_return
- * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocb;)J
+ * Signature: (J)J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1return
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Aio
  * Method:    aio_suspend
- * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocbs;Lde/ibapl/jnhw/posix/Time/Timespec;)V
+ * Signature: (JIJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1suspend
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Aio
  * Method:    aio_write
- * Signature: (Lde/ibapl/jnhw/posix/Aio/Aiocb;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_aio_1write
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Aio
  * Method:    lio_listio
- * Signature: (ILde/ibapl/jnhw/posix/Aio/Aiocbs;Lde/ibapl/jnhw/posix/Signal/Sigevent;)V
+ * Signature: (IJIJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Aio_lio_1listio
-  (JNIEnv *, jclass, jint, jobject, jobject);
+  (JNIEnv *, jclass, jint, jlong, jint, jlong);
 
 #ifdef __cplusplus
 }

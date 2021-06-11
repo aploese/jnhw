@@ -36,6 +36,14 @@ public class NativeFunctionPointer {
         return (ptr1 == ptr2) || (ptr1 != null && ptr1.nativeAddress == ptr2.nativeAddress);
     }
 
+    public static long getNativeAddress(NativeFunctionPointer nativeFunctionPointer) {
+        return nativeFunctionPointer.nativeAddress;
+    }
+
+    public static long getNativeAddressOrNULL(NativeFunctionPointer nativeFunctionPointer) {
+        return (nativeFunctionPointer == null) ? AbstractNativeMemory.NULL : nativeFunctionPointer.nativeAddress;
+    }
+
     public static NativeAddressHolder toNativeAddressHolder(NativeFunctionPointer nativeFunctionPointer) {
         return new NativeAddressHolder(nativeFunctionPointer.nativeAddress);
     }

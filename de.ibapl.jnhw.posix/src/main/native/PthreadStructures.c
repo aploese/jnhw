@@ -62,16 +62,16 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_t
      * Method:    nativeToString
-     * Signature: ()Ljava/lang/String;
+     * Signature: (J)Ljava/lang/String;
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_nativeToString
-    (JNIEnv *env, jobject pthread) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrPthread) {
         char buf[1024] = {0};
         static_assert(sizeof (pthread_t) == sizeof (uintptr_t), "sizeof(pthread_t) != sizeof(uintptr_t)");
 #if defined(__LP64__)
-        snprintf(buf, sizeof (buf) - 1, "0x%016lx", (uintptr_t) * UNWRAP_PTHREAD_T_PTR(pthread));
+        snprintf(buf, sizeof (buf) - 1, "0x%016lx", (uintptr_t) *((pthread_t*) (uintptr_t) ptrPthread));
 #else
-        snprintf(buf, sizeof (buf) - 1, "0x%08x", (uintptr_t) * UNWRAP_PTHREAD_T_PTR(pthread));
+        snprintf(buf, sizeof (buf) - 1, "0x%08x", (uintptr_t) *((pthread_t*) (uintptr_t) ptrPthread));
 #endif
         return (*env)->NewStringUTF(env, buf);
     }

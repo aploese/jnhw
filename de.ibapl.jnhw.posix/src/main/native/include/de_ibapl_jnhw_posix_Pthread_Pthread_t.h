@@ -7,6 +7,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef de_ibapl_jnhw_posix_Pthread_Pthread_t_NULL
+#define de_ibapl_jnhw_posix_Pthread_Pthread_t_NULL 0LL
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_t
  * Method:    native2Layout
@@ -18,10 +20,10 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_nativ
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread_Pthread_t
  * Method:    nativeToString
- * Signature: ()Ljava/lang/String;
+ * Signature: (J)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Pthread_00024Pthread_1t_nativeToString
-  (JNIEnv *, jobject);
+  (JNIEnv *, jclass, jlong);
 
 #ifdef __cplusplus
 }

@@ -174,59 +174,8 @@ extern "C" {
     extern jfieldID dij_p_Locale_Locale_t_nativeValue__FID;
     extern jmethodID dij_p_Locale_Locale_t_init__MID;
 
-#define UNWRAP_LOCALE_T(Locale_tObject) (locale_t)(uintptr_t)(*env)->GetLongField(env, Locale_tObject, dij_p_Locale_Locale_t_nativeValue__FID)
+    //EX #define UNWRAP_LOCALE_T(Locale_tObject) (locale_t)(uintptr_t)(*env)->GetLongField(env, Locale_tObject, dij_p_Locale_Locale_t_nativeValue__FID)
 #define CREATE_Locale_t(value) (*env)->NewObject(env, dij_p_Locale_Locale_t__GCR, dij_p_Locale_Locale_t_init__MID, (jlong)((uintptr_t)value))
-
-#define UNWRAP_STRUCT_LCONV_PTR(structLconv) UNWRAP_ABSTRACT_MEM_TO(struct lconv*, structLconv)
-
-#define UNWRAP_STRUCT_TM_PTR(structTm) UNWRAP_ABSTRACT_MEM_TO(struct tm*, structTm)
-
-#define UNWRAP_STRUCT_TIMESPEC_PTR(structTimespec) UNWRAP_ABSTRACT_MEM_TO(struct timespec*, structTimespec)
-#define UNWRAP_STRUCT_TIMESPEC_PTR_OR_NULL(structTimespec) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(struct timespec*, structTimespec)
-
-#define UNWRAP_STRUCT_TM_PTR(structTm) UNWRAP_ABSTRACT_MEM_TO(struct tm*, structTm)
-
-#define UNWRAP_STRUCT_SIGACTION_PTR(structSigaction) UNWRAP_ABSTRACT_MEM_TO(struct sigaction*, structSigaction)
-#define UNWRAP_STRUCT_SIGACTION_PTR_OR_NULL(structSigaction) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(struct sigaction*, structSigaction)
-
-#define UNWRAP_STRUCT_SIGEVENT_PTR(structSigevent) UNWRAP_ABSTRACT_MEM_TO(struct sigevent*, structSigevent)
-#define UNWRAP_STRUCT_SIGEVENT_PTR_OR_NULL(structSigevent) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(struct sigevent*, structSigevent)
-
-#define UNWRAP_SIGINFO_T_PTR(structSiginfo_t) UNWRAP_ABSTRACT_MEM_TO(siginfo_t*, structSiginfo_t)
-#define UNWRAP_SIGINFO_T_PTR_OR_NULL(structSiginfo_t) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(siginfo_t*, structSiginfo_t)
-
-#define UNWRAP_UNION_SIGVAL_PTR(unionSigval) UNWRAP_ABSTRACT_MEM_TO(union sigval*, unionSigval)
-
-#define UNWRAP_STACK_T_PTR(structStack_t) UNWRAP_ABSTRACT_MEM_TO(stack_t*, structStack_t)
-#define UNWRAP_STACK_T_PTR_OR_NULL(structStack_t) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(stack_t*, structStack_t)
-#if defined (__FreeBSD__)
-#define UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t) UNWRAP_ABSTRACT_MEM_TO(ucontext_t*, structUcontext_t)
-#else
-#define UNWRAP_STRUCT_UCONTEXT_T_PTR(structUcontext_t) UNWRAP_ABSTRACT_MEM_TO(struct ucontext_t*, structUcontext_t)
-#endif
-
-#define UNWRAP_STRUCT_AIOCB_PTR(structAiocb) UNWRAP_ABSTRACT_MEM_TO(struct aiocb*, structAiocb)
-#define UNWRAP_STRUCT_AIOCB_PTR_OR_NULL(structAiocb) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(struct aiocb*, structAiocb)
-
-#define UNWRAP_CONST_STRUCT_AIOCBS_PTR_PTR(list) UNWRAP_ABSTRACT_MEM_TO(const struct aiocb**, list)
-#define UNWRAP_STRUCT_AIOCBS_PTR_PTR(list) UNWRAP_ABSTRACT_MEM_TO(struct aiocb**, list)
-
-#define UNWRAP_SIGSET_T_PTR(sigset)UNWRAP_ABSTRACT_MEM_TO(sigset_t*, sigset)
-#define UNWRAP_SIGSET_T_PTR_OR_NULL(sigset) UNWRAP_ABSTRACT_MEM_TO_OR_NULL(sigset_t*, sigset)
-
-#define UNWRAP_PTHREAD_T_PTR(pthread)UNWRAP_ABSTRACT_MEM_TO(pthread_t*, pthread)
-
-#define UNWRAP_PTHREAD_ATTR_T_PTR(pthread_attr)UNWRAP_ABSTRACT_MEM_TO(pthread_attr_t*, pthread_attr)
-#define UNWRAP_PTHREAD_ATTR_T_PTR_OR_NULL(pthread_attr)UNWRAP_ABSTRACT_MEM_TO_OR_NULL(pthread_attr_t*, pthread_attr)
-
-#define UNWRAP_TIMER_T_PTR(timerid)UNWRAP_ABSTRACT_MEM_TO(timer_t*, timerid)
-
-#define UNWRAP_STRUCT_ITIMERSPEC_T_PTR(value)UNWRAP_ABSTRACT_MEM_TO(struct itimerspec*, value)
-#define UNWRAP_STRUCT_ITIMERSPEC_T_PTR_OR_NULL(value)UNWRAP_ABSTRACT_MEM_TO_OR_NULL(struct itimerspec*, value)
-
-#define UNWRAP_STRUCT_SCHED_PARAM_PTR(value)UNWRAP_ABSTRACT_MEM_TO(struct sched_param*, value)
-
-#define LENGTH_OF_AIOCBS(aiocbs) LENGTH_OF_POINTER_ARRAY_32(aiocbs)
 
 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
     //Convert a jlong to (long int *) the pointer must be shifted by sizeof(long int)

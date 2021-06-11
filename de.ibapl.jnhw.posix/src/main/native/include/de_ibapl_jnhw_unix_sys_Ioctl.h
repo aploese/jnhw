@@ -106,10 +106,10 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IILde_ibapl_jnhw
 /*
  * Class:     de_ibapl_jnhw_unix_sys_Ioctl
  * Method:    ioctl
- * Signature: (IILde/ibapl/jnhw/common/memory/OpaqueMemory32;)I
+ * Signature: (IIJ)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IILde_ibapl_jnhw_common_memory_OpaqueMemory32_2
-  (JNIEnv *, jclass, jint, jint, jobject);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IIJ
+  (JNIEnv *, jclass, jint, jint, jlong);
 
 #ifdef __cplusplus
 }

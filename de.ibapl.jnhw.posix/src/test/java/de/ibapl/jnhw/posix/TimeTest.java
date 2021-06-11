@@ -22,8 +22,6 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
-import de.ibapl.jnhw.common.references.IntRef;
-import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
@@ -143,16 +141,12 @@ public class TimeTest {
         System.out.println("clock_getcpuclockid");
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Time.clock_getcpuclockid(0, null);
+                Time.clock_getcpuclockid(0);
             });
         } else {
             int pid = 0;
-            IntRef clock_id = new IntRef();
-            Time.clock_getcpuclockid(pid, clock_id);
-            Assertions.assertNotEquals(0, clock_id.value);
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Time.clock_getcpuclockid(0, null);
-            });
+            int clock_id = Time.clock_getcpuclockid(pid);
+            Assertions.assertNotEquals(0, clock_id);
         }
     }
 
@@ -170,7 +164,7 @@ public class TimeTest {
         //TODO virt env needs to be fixed
         assertEquals(1, timespec.tv_nsec());
 
-        Time.clock_getres(Time.CLOCK_REALTIME, null);
+        Time.clock_getres(Time.CLOCK_REALTIME);
     }
 
     /**
@@ -222,7 +216,7 @@ public class TimeTest {
                 rqtp.tv_nsec(0);
                 Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
 
-                Time.clock_nanosleep(clock_id, flags, rqtp, null);
+                Time.clock_nanosleep(clock_id, flags, rqtp);
 
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Time.clock_nanosleep(clock_id, flags, null, null);
@@ -368,8 +362,8 @@ public class TimeTest {
         final Instant instant = Instant.now();
         final long timer = instant.getEpochSecond();
         Time.Tm tm = new Time.Tm(SetMem.DO_NOT_SET);
-        Time.Tm result = Time.gmtime_r(timer, tm);
-        assertTm(instant, result, ZoneOffset.UTC);
+        Time.gmtime_r(timer, tm);
+        assertTm(instant, tm, ZoneOffset.UTC);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.gmtime_r(timer, null);
@@ -436,13 +430,11 @@ public class TimeTest {
         final long timer = instant.getEpochSecond();
         final Time.Tm tm = new Time.Tm(SetMem.DO_NOT_SET);
 
-        final Time.Tm result = Time.localtime_r(timer, tm);
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(tm, result);
+        Time.localtime_r(timer, tm);
 
-        System.out.println("time: " + timer + " localtime: " + result);
+        System.out.println("time: " + timer + " localtime: " + tm);
 
-        assertTm(instant, result, ZoneId.systemDefault());
+        assertTm(instant, tm, ZoneId.systemDefault());
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.localtime_r(timer, null);
@@ -510,7 +502,7 @@ public class TimeTest {
         rqtp.tv_nsec(0);
         Time.nanosleep(rqtp, rmtp);
 
-        Time.nanosleep(rqtp, null);
+        Time.nanosleep(rqtp);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.nanosleep(null, null);
@@ -638,12 +630,8 @@ public class TimeTest {
     @Test
     public void testTime() throws Exception {
         System.out.println("time");
-        LongRef tloc = new LongRef();
         long expResult = System.currentTimeMillis() / 1000;
-        long result = Time.time(tloc);
-        assertEquals(expResult, tloc.value);
-        assertEquals(expResult, result);
-        result = Time.time(null);
+        long result = Time.time();
         assertEquals(expResult, result);
     }
 
@@ -678,7 +666,7 @@ public class TimeTest {
 
         final Time.Timer_t timerid = new Time.Timer_t(SetMem.TO_0x00);
 
-        Time.timer_create(Time.CLOCK_MONOTONIC, null, timerid);
+        Time.timer_create(Time.CLOCK_MONOTONIC, timerid);
         try {
             System.out.println("timerid: " + timerid);
         } finally {
@@ -761,7 +749,7 @@ public class TimeTest {
                 trigger.it_value.tv_nsec(30000);
                 trigger.it_interval.tv_sec(1000);
 
-                Time.timer_settime(timerid, 0, trigger, null);
+                Time.timer_settime(timerid, 0, trigger);
 
                 Thread.sleep(1000);
 
@@ -835,7 +823,7 @@ public class TimeTest {
                     System.out.println("timer_settime");
 
                     //TODO Errno.EINVAL() aka 22
-                    Time.timer_settime(timerid, 0, value, null);
+                    Time.timer_settime(timerid, 0, value);
                     Time.Itimerspec itimerspec = new Time.Itimerspec(SetMem.DO_NOT_SET);
                     System.out.println("timer_gettime");
                     Time.timer_gettime(timerid, itimerspec);
@@ -861,7 +849,6 @@ public class TimeTest {
                     NullPointerException nee = Assertions.assertThrows(NullPointerException.class, () -> {
                         Time.timer_settime(timerid, 0, null, null);
                     });
-                    assertEquals("value is NULL", nee.getMessage());
                 } finally {
                     System.out.println("timer_delete");
                     Time.timer_delete(timerid);

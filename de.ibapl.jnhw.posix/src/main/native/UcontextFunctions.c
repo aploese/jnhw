@@ -38,19 +38,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_x_open_Ucontext
      * Method:    getcontext
-     * Signature: (Lde/ibapl/jnhw/posix/Signal/Ucontext_t;)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_getcontext
 #if defined(__OpenBSD__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject ucp) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jlong ptrUcp) {
         throw_NoSuchNativeMethodException(env, "getcontext");
 #else
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject ucp) {
-        if (ucp == NULL) {
-            throw_NullPointerException(env, "ucp is NULL");
-            return;
-        }
-        if (getcontext(UNWRAP_STRUCT_UCONTEXT_T_PTR(ucp))) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrUcp) {
+        if (getcontext((struct ucontext_t*) (uintptr_t) ptrUcp)) {
             throw_NativeErrorException(env, errno);
         }
 #endif
@@ -59,19 +55,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_x_open_Ucontext
      * Method:    setcontext
-     * Signature: (Lde/ibapl/jnhw/posix/Signal/Ucontext_t;)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_setcontext
 #if defined(__OpenBSD__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject ucp) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jlong ptrUcp) {
         throw_NoSuchNativeMethodException(env, "setcontext");
 #else
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject ucp) {
-        if (ucp == NULL) {
-            throw_NullPointerException(env, "ucp is NULL");
-            return;
-        }
-        if (setcontext(UNWRAP_STRUCT_UCONTEXT_T_PTR(ucp))) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrUcp) {
+        if (setcontext((struct ucontext_t*) (uintptr_t) ptrUcp)) {
             throw_NativeErrorException(env, errno);
         }
 #endif
@@ -80,23 +72,15 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_x_open_Ucontext
      * Method:    swapcontext
-     * Signature: (Lde/ibapl/jnhw/posix/Signal/Ucontext_t;Lde/ibapl/jnhw/posix/Signal/Ucontext_t;)V
+     * Signature: (JJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_swapcontext
 #if defined(__OpenBSD__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jobject oucp, __attribute__ ((unused)) jobject ucp) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jlong ptrOucp, __attribute__ ((unused)) jlong ptrUcp) {
         throw_NoSuchNativeMethodException(env, "swapcontext");
 #else
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject oucp, jobject ucp) {
-        if (oucp == NULL) {
-            throw_NullPointerException(env, "oucp is NULL");
-            return;
-        }
-        if (ucp == NULL) {
-            throw_NullPointerException(env, "ucp is NULL");
-            return;
-        }
-        if (swapcontext(UNWRAP_STRUCT_UCONTEXT_T_PTR(oucp), UNWRAP_STRUCT_UCONTEXT_T_PTR(ucp))) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrOucp, jlong ptrUcp) {
+        if (swapcontext((struct ucontext_t*) (uintptr_t) ptrOucp, (struct ucontext_t*) (uintptr_t) ptrUcp)) {
             throw_NativeErrorException(env, errno);
         }
 #endif

@@ -17,107 +17,107 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_initFields
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    pthread_self0
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;)V
+ * Method:    pthread_self
+ * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1self0
-  (JNIEnv *, jclass, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1self
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_equal
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;Lde/ibapl/jnhw/posix/Pthread/Pthread_t;)Z
+ * Signature: (JJ)Z
  */
 JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1equal
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_attr_getinheritsched
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t;)I
+ * Signature: (J)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1getinheritsched
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_attr_getschedparam
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t;Lde/ibapl/jnhw/posix/Sched/Sched_param;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1getschedparam
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_attr_setinheritsched
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t;I)V
+ * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1setinheritsched
-  (JNIEnv *, jclass, jobject, jint);
+  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_attr_setschedparam
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t;Lde/ibapl/jnhw/posix/Sched/Sched_param;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1setschedparam
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_getschedparam
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;Lde/ibapl/jnhw/common/references/IntRef;Lde/ibapl/jnhw/posix/Sched/Sched_param;)V
+ * Signature: (JJ)I
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1getschedparam
-  (JNIEnv *, jclass, jobject, jobject, jobject);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1getschedparam
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_setschedparam
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;ILde/ibapl/jnhw/posix/Sched/Sched_param;)V
+ * Signature: (JIJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1setschedparam
-  (JNIEnv *, jclass, jobject, jint, jobject);
+  (JNIEnv *, jclass, jlong, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_setschedprio
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;I)V
+ * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1setschedprio
-  (JNIEnv *, jclass, jobject, jint);
+  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_getcpuclockid
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;Lde/ibapl/jnhw/common/references/IntRef;)V
+ * Signature: (J)I
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1getcpuclockid
-  (JNIEnv *, jclass, jobject, jobject);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1getcpuclockid
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_attr_destroy
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1destroy
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_attr_init
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_attr_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1init
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_cancel
- * Signature: (Lde/ibapl/jnhw/posix/Pthread/Pthread_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1cancel
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
