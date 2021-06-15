@@ -99,11 +99,22 @@ public class PollTest {
         if (DefinesTest.MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             return;
         }
-        Assertions.assertEquals(NativePollFd.sizeof(), Poll.PollFd.sizeof);
-        Assertions.assertEquals(NativePollFd.alignof(), Poll.PollFd.alignof.alignof);
-        Assertions.assertEquals(NativePollFd.fd(), Poll.PollFd.offsetof_Fd);
-        Assertions.assertEquals(NativePollFd.events(), Poll.PollFd.offsetof_Events);
-        Assertions.assertEquals(NativePollFd.revents(), Poll.PollFd.offsetof_Revents);
+        Assertions.assertAll(() -> {
+            Assertions.assertEquals(NativePollFd.sizeof(), Poll.PollFd.sizeof, "sizeof");
+        },
+                () -> {
+                    Assertions.assertEquals(NativePollFd.alignof(), Poll.PollFd.alignof.alignof, "alignof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativePollFd.fd(), Poll.PollFd.offsetof_Fd, "offsetof_Fd");
+                },
+                () -> {
+                    Assertions.assertEquals(NativePollFd.events(), Poll.PollFd.offsetof_Events, "offsetof_Events");
+                },
+                () -> {
+                    Assertions.assertEquals(NativePollFd.revents(), Poll.PollFd.offsetof_Revents, "offsetof_Revents");
+                }
+        );
     }
 
     @Test

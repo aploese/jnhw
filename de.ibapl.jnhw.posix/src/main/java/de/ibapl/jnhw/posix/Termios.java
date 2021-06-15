@@ -39,7 +39,6 @@ import java.io.IOException;
 import de.ibapl.jnhw.common.memory.Uint8_t;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.memory.layout.StructLayout;
 
 /**
  * Wrapper around the {@code <termios.h>} header.
@@ -53,157 +52,319 @@ import de.ibapl.jnhw.common.memory.layout.StructLayout;
 @Include("#include <termios.h>")
 public final class Termios {
 
+    public static class LinuxDefines {
+
+        /* c_cc characters */
+        public final static int VINTR = 0;
+        public final static int VQUIT = 1;
+        public final static int VERASE = 2;
+        public final static int VKILL = 3;
+        public final static int VEOF = 4;
+        public final static int VTIME = 5;
+        public final static int VMIN = 6;
+        //#define VSWTC 7
+        public final static int VSTART = 8;
+        public final static int VSTOP = 9;
+        public final static int VSUSP = 10;
+        public final static int VEOL = 11;
+        //#define VREPRINT 12
+        //#define VDISCARD 13
+        //#define VWERASE 14
+        //#define VLNEXT 15
+        //#define VEOL2 16
+
+        /* c_iflag bits */
+        public final static int IGNBRK = 0000001;
+        public final static int BRKINT = 0000002;
+        public final static int IGNPAR = 0000004;
+        public final static int PARMRK = 0000010;
+        public final static int INPCK = 0000020;
+        public final static int ISTRIP = 0000040;
+        public final static int INLCR = 0000100;
+        public final static int IGNCR = 0000200;
+        public final static int ICRNL = 0000400;
+        //#define IUCLC   0001000
+        public final static int IXON = 0002000;
+        public final static int IXANY = 0004000;
+        public final static int IXOFF = 0010000;
+        //#define IMAXBEL 0020000
+        //#define IUTF8   0040000
+
+        /* c_oflag bits */
+        public final static int OPOST = 0000001;
+        //#define OLCUC   0000002
+        public final static int ONLCR = 0000004;
+        public final static int OCRNL = 0000010;
+        public final static int ONOCR = 0000020;
+        public final static int ONLRET = 0000040;
+        public final static int OFILL = 0000100;
+        public final static int OFDEL = 0000200;
+        public final static int NLDLY = 0000400;
+        public final static int NL0 = 0000000;
+        public final static int NL1 = 0000400;
+        public final static int CRDLY = 0003000;
+        public final static int CR0 = 0000000;
+        public final static int CR1 = 0001000;
+        public final static int CR2 = 0002000;
+        public final static int CR3 = 0003000;
+        public final static int TABDLY = 0014000;
+        public final static int TAB0 = 0000000;
+        public final static int TAB1 = 0004000;
+        public final static int TAB2 = 0010000;
+        public final static int TAB3 = 0014000;
+        //#define   XTABS 0014000
+        public final static int BSDLY = 0020000;
+        public final static int BS0 = 0000000;
+        public final static int BS1 = 0020000;
+        public final static int VTDLY = 0040000;
+        public final static int VT0 = 0000000;
+        public final static int VT1 = 0040000;
+        public final static int FFDLY = 0100000;
+        public final static int FF0 = 0000000;
+        public final static int FF1 = 0100000;
+
+        /* c_cflag bit meaning */
+        //#define CBAUD   0010017
+        public final static int B0 = 0000000;
+        public final static int B50 = 0000001;
+        public final static int B75 = 0000002;
+        public final static int B110 = 0000003;
+        public final static int B134 = 0000004;
+        public final static int B150 = 0000005;
+        public final static int B200 = 0000006;
+        public final static int B300 = 0000007;
+        public final static int B600 = 0000010;
+        public final static int B1200 = 0000011;
+        public final static int B1800 = 0000012;
+        public final static int B2400 = 0000013;
+        public final static int B4800 = 0000014;
+        public final static int B9600 = 0000015;
+        public final static int B19200 = 0000016;
+        public final static int B38400 = 0000017;
+        //#define EXTA B19200
+        //#define EXTB B38400
+        public final static int CSIZE = 0000060;
+        public final static int CS5 = 0000000;
+        public final static int CS6 = 0000020;
+        public final static int CS7 = 0000040;
+        public final static int CS8 = 0000060;
+        public final static int CSTOPB = 0000100;
+        public final static int CREAD = 0000200;
+        public final static int PARENB = 0000400;
+        public final static int PARODD = 0001000;
+        public final static int HUPCL = 0002000;
+        public final static int CLOCAL = 0004000;
+        //#define CBAUDEX 0010000
+        //#define    BOTHER 0010000
+        public final static int B57600 = 0010001;
+        public final static int B115200 = 0010002;
+        public final static int B230400 = 0010003;
+        public final static int B460800 = 0010004;
+        public final static int B500000 = 0010005;
+        public final static int B576000 = 0010006;
+
+        public final static int B921600 = 0010007;
+        public final static int B1000000 = 0010010;
+        public final static int B1152000 = 0010011;
+        public final static int B1500000 = 0010012;
+        public final static int B2000000 = 0010013;
+        public final static int B2500000 = 0010014;
+        public final static int B3000000 = 0010015;
+        public final static int B3500000 = 0010016;
+        public final static int B4000000 = 0010017;
+        //#define CIBAUD    002003600000
+        public final static int CMSPAR = 010000000000;
+        public final static int CRTSCTS = 020000000000;
+        //#define IBSHIFT   16
+
+        /* c_lflag bits */
+        public final static int ISIG = 0000001;
+        public final static int ICANON = 0000002;
+        //#define XCASE   0000004
+        public final static int ECHO = 0000010;
+        public final static int ECHOE = 0000020;
+        public final static int ECHOK = 0000040;
+        public final static int ECHONL = 0000100;
+        public final static int NOFLSH = 0000200;
+        public final static int TOSTOP = 0000400;
+        //#define ECHOCTL 0001000
+        //#define ECHOPRT 0002000
+        //#define ECHOKE  0004000
+        //#define FLUSHO  0010000
+        //#define PENDIN  0040000
+        public final static int IEXTEN = 0100000;
+        //#define EXTPROC 0200000
+
+        /* tcflow() and TCXONC use these */
+        public final static int TCOOFF = 0;
+        public final static int TCOON = 1;
+        public final static int TCIOFF = 2;
+        public final static int TCION = 3;
+
+        /* tcflush() and TCFLSH use these */
+        public final static int TCIFLUSH = 0;
+        public final static int TCOFLUSH = 1;
+        public final static int TCIOFLUSH = 2;
+
+        /* tcsetattr uses these */
+        public final static int TCSANOW = 0;
+        public final static int TCSADRAIN = 1;
+        public final static int TCSAFLUSH = 2;
+
+        public final static int NCCS = 32;
+
+        public final static int _HAVE_STRUCT_TERMIOS_C_ISPEED = 1;
+        public final static int _HAVE_STRUCT_TERMIOS_C_OSPEED = 1;
+    }
+
     /**
      * Make sure the native lib is loaded
      */
     static {
         LibJnhwPosixLoader.touch();
 
-        _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.UNDEFINED;
-        _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.UNDEFINED;
+        _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.toIntDefine(LinuxDefines._HAVE_STRUCT_TERMIOS_C_ISPEED);
+        _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.toIntDefine(LinuxDefines._HAVE_STRUCT_TERMIOS_C_OSPEED);
 
-        B0 = 0;
+        B0 = LinuxDefines.B0;
 
-        B1000000 = IntDefine.UNDEFINED;
-        B110 = 0;
-        B115200 = 0;
-        B1152000 = IntDefine.UNDEFINED;
-        B1200 = 0;
-        B134 = 0;
-        B150 = 0;
-        B1500000 = IntDefine.UNDEFINED;
-        B1800 = 0;
-        B19200 = 0;
+        B1000000 = IntDefine.toIntDefine(LinuxDefines.B1000000);
+        B110 = LinuxDefines.B110;
+        B115200 = LinuxDefines.B115200;
+        B1152000 = IntDefine.toIntDefine(LinuxDefines.B1152000);
+        B1200 = LinuxDefines.B1200;
+        B134 = LinuxDefines.B134;
+        B150 = LinuxDefines.B150;
+        B1500000 = IntDefine.toIntDefine(LinuxDefines.B1500000);
+        B1800 = LinuxDefines.B1800;
+        B19200 = LinuxDefines.B19200;
 
-        B200 = 0;
-        B2000000 = IntDefine.UNDEFINED;
-        B230400 = 0;
-        B2400 = 0;
-        B2500000 = IntDefine.UNDEFINED;
+        B200 = LinuxDefines.B200;
+        B2000000 = IntDefine.toIntDefine(LinuxDefines.B2000000);
+        B230400 = LinuxDefines.B230400;
+        B2400 = LinuxDefines.B2400;
+        B2500000 = IntDefine.toIntDefine(LinuxDefines.B2500000);
 
-        B300 = 0;
-        B3000000 = IntDefine.UNDEFINED;
-        B3500000 = IntDefine.UNDEFINED;
-        B38400 = 0;
+        B300 = LinuxDefines.B300;
+        B3000000 = IntDefine.toIntDefine(LinuxDefines.B3000000);
+        B3500000 = IntDefine.toIntDefine(LinuxDefines.B3500000);
+        B38400 = LinuxDefines.B38400;
 
-        B4000000 = IntDefine.UNDEFINED;
-        B460800 = IntDefine.UNDEFINED;
-        B4800 = 0;
+        B4000000 = IntDefine.toIntDefine(LinuxDefines.B4000000);
+        B460800 = IntDefine.toIntDefine(LinuxDefines.B460800);
+        B4800 = LinuxDefines.B4800;
 
-        B50 = 0;
-        B500000 = IntDefine.UNDEFINED;
-        B57600 = 0;
-        B576000 = IntDefine.UNDEFINED;
+        B50 = LinuxDefines.B50;
+        B500000 = IntDefine.toIntDefine(LinuxDefines.B500000);
+        B57600 = LinuxDefines.B57600;
+        B576000 = IntDefine.toIntDefine(LinuxDefines.B576000);
 
-        B600 = 0;
+        B600 = LinuxDefines.B600;
 
-        B75 = 0;
+        B75 = LinuxDefines.B75;
 
-        B921600 = IntDefine.UNDEFINED;
-        B9600 = 0;
+        B921600 = IntDefine.toIntDefine(LinuxDefines.B921600);
+        B9600 = LinuxDefines.B9600;
 
-        BRKINT = 0;
-        BS0 = IntDefine.UNDEFINED;
-        BS1 = IntDefine.UNDEFINED;
-        BSDLY = IntDefine.UNDEFINED;
+        BRKINT = LinuxDefines.BRKINT;
+        BS0 = IntDefine.toIntDefine(LinuxDefines.BS0);
+        BS1 = IntDefine.toIntDefine(LinuxDefines.BS1);
+        BSDLY = IntDefine.toIntDefine(LinuxDefines.BSDLY);
 
-        CLOCAL = 0;
-        CMSPAR = IntDefine.UNDEFINED;
-        CR0 = IntDefine.UNDEFINED;
-        CR1 = IntDefine.UNDEFINED;
-        CR2 = IntDefine.UNDEFINED;
-        CR3 = IntDefine.UNDEFINED;
-        CRDLY = IntDefine.UNDEFINED;
-        CREAD = 0;
-        CRTSCTS = 0;
-        CS5 = 0;
-        CS6 = 0;
-        CS7 = 0;
-        CS8 = 0;
-        CSIZE = 0;
-        CSTOPB = 0;
+        CLOCAL = LinuxDefines.CLOCAL;
+        CMSPAR = IntDefine.toIntDefine(LinuxDefines.CMSPAR);
+        CR0 = IntDefine.toIntDefine(LinuxDefines.CR0);
+        CR1 = IntDefine.toIntDefine(LinuxDefines.CR1);
+        CR2 = IntDefine.toIntDefine(LinuxDefines.CR2);
+        CR3 = IntDefine.toIntDefine(LinuxDefines.CR3);
+        CRDLY = IntDefine.toIntDefine(LinuxDefines.CRDLY);
+        CREAD = LinuxDefines.CREAD;
+        CRTSCTS = LinuxDefines.CRTSCTS;
+        CS5 = LinuxDefines.CS5;
+        CS6 = LinuxDefines.CS6;
+        CS7 = LinuxDefines.CS7;
+        CS8 = LinuxDefines.CS8;
+        CSIZE = LinuxDefines.CSIZE;
+        CSTOPB = LinuxDefines.CSTOPB;
 
-        ECHO = 0;
-        ECHOE = 0;
-        ECHOK = 0;
-        ECHONL = 0;
+        ECHO = LinuxDefines.ECHO;
+        ECHOE = LinuxDefines.ECHOE;
+        ECHOK = LinuxDefines.ECHOK;
+        ECHONL = LinuxDefines.ECHONL;
 
-        FF0 = IntDefine.UNDEFINED;
-        FF1 = IntDefine.UNDEFINED;
-        FFDLY = IntDefine.UNDEFINED;
+        FF0 = IntDefine.toIntDefine(LinuxDefines.FF0);
+        FF1 = IntDefine.toIntDefine(LinuxDefines.FF1);
+        FFDLY = IntDefine.toIntDefine(LinuxDefines.FFDLY);
 
-        HUPCL = 0;
-        HAVE_TERMIOS_H = false;
+        HUPCL = LinuxDefines.HUPCL;
+        HAVE_TERMIOS_H = true;
 
-        ICANON = 0;
-        ICRNL = 0;
-        IEXTEN = 0;
-        IGNBRK = 0;
-        IGNCR = 0;
-        IGNPAR = 0;
-        INLCR = 0;
-        INPCK = 0;
-        ISIG = 0;
-        ISTRIP = 0;
-        IXANY = 0;
-        IXOFF = 0;
-        IXON = 0;
+        ICANON = LinuxDefines.ICANON;
+        ICRNL = LinuxDefines.ICRNL;
+        IEXTEN = LinuxDefines.IEXTEN;
+        IGNBRK = LinuxDefines.IGNBRK;
+        IGNCR = LinuxDefines.IGNCR;
+        IGNPAR = LinuxDefines.IGNPAR;
+        INLCR = LinuxDefines.INLCR;
+        INPCK = LinuxDefines.INPCK;
+        ISIG = LinuxDefines.ISIG;
+        ISTRIP = LinuxDefines.ISTRIP;
+        IXANY = LinuxDefines.IXANY;
+        IXOFF = LinuxDefines.IXOFF;
+        IXON = LinuxDefines.IXON;
 
-        NCCS = 0;
-        NL0 = IntDefine.UNDEFINED;
-        NL1 = IntDefine.UNDEFINED;
-        NLDLY = IntDefine.UNDEFINED;
-        NOFLSH = 0;
+        NCCS = LinuxDefines.NCCS;
+        NL0 = IntDefine.toIntDefine(LinuxDefines.NL0);
+        NL1 = IntDefine.toIntDefine(LinuxDefines.NL1);
+        NLDLY = IntDefine.toIntDefine(LinuxDefines.NLDLY);
+        NOFLSH = LinuxDefines.NOFLSH;
 
-        OCRNL = 0;
-        OFDEL = IntDefine.UNDEFINED;
-        OFILL = IntDefine.UNDEFINED;
-        ONLCR = 0;
-        ONLRET = 0;
-        ONOCR = 0;
-        OPOST = 0;
+        OCRNL = LinuxDefines.OCRNL;
+        OFDEL = IntDefine.toIntDefine(LinuxDefines.OFDEL);
+        OFILL = IntDefine.toIntDefine(LinuxDefines.OFILL);
+        ONLCR = LinuxDefines.ONLCR;
+        ONLRET = LinuxDefines.ONLRET;
+        ONOCR = LinuxDefines.ONOCR;
+        OPOST = LinuxDefines.OPOST;
 
-        PARENB = 0;
+        PARENB = LinuxDefines.PARENB;
         PAREXT = IntDefine.UNDEFINED;
-        PARMRK = 0;
-        PARODD = 0;
+        PARMRK = LinuxDefines.PARMRK;
+        PARODD = LinuxDefines.PARODD;
 
-        TAB0 = IntDefine.UNDEFINED;
-        TAB1 = IntDefine.UNDEFINED;
-        TAB2 = IntDefine.UNDEFINED;
-        TAB3 = IntDefine.UNDEFINED;
-        TABDLY = IntDefine.UNDEFINED;
-        TCIFLUSH = 0;
-        TCIOFF = 0;
-        TCIOFLUSH = 0;
-        TCION = 0;
-        TCOFLUSH = 0;
-        TCOOFF = 0;
-        TCOON = 0;
-        TCSADRAIN = 0;
-        TCSAFLUSH = 0;
-        TCSANOW = 0;
-        TOSTOP = 0;
+        TAB0 = IntDefine.toIntDefine(LinuxDefines.TAB0);
+        TAB1 = IntDefine.toIntDefine(LinuxDefines.TAB1);
+        TAB2 = IntDefine.toIntDefine(LinuxDefines.TAB2);
+        TAB3 = IntDefine.toIntDefine(LinuxDefines.TAB3);
+        TABDLY = IntDefine.toIntDefine(LinuxDefines.TABDLY);
+        TCIFLUSH = LinuxDefines.TCIFLUSH;
+        TCIOFF = LinuxDefines.TCIOFF;
+        TCIOFLUSH = LinuxDefines.TCIOFLUSH;
+        TCION = LinuxDefines.TCION;
+        TCOFLUSH = LinuxDefines.TCOFLUSH;
+        TCOOFF = LinuxDefines.TCOOFF;
+        TCOON = LinuxDefines.TCOON;
+        TCSADRAIN = LinuxDefines.TCSADRAIN;
+        TCSAFLUSH = LinuxDefines.TCSAFLUSH;
+        TCSANOW = LinuxDefines.TCSANOW;
+        TOSTOP = LinuxDefines.TOSTOP;
 
-        VEOF = 0;
-        VEOL = 0;
-        VERASE = 0;
-        VINTR = 0;
-        VKILL = 0;
-        VMIN = 0;
-        VQUIT = 0;
-        VSTART = 0;
-        VSTOP = 0;
-        VSUSP = 0;
-        VT0 = IntDefine.UNDEFINED;
-        VT1 = IntDefine.UNDEFINED;
-        VTDLY = IntDefine.UNDEFINED;
-        VTIME = 0;
+        VEOF = LinuxDefines.VEOF;
+        VEOL = LinuxDefines.VEOL;
+        VERASE = LinuxDefines.VERASE;
+        VINTR = LinuxDefines.VINTR;
+        VKILL = LinuxDefines.VKILL;
+        VMIN = LinuxDefines.VMIN;
+        VQUIT = LinuxDefines.VQUIT;
+        VSTART = LinuxDefines.VSTART;
+        VSTOP = LinuxDefines.VSTOP;
+        VSUSP = LinuxDefines.VSUSP;
+        VT0 = IntDefine.toIntDefine(LinuxDefines.VT0);
+        VT1 = IntDefine.toIntDefine(LinuxDefines.VT1);
+        VTDLY = IntDefine.toIntDefine(LinuxDefines.VTDLY);
+        VTIME = LinuxDefines.VTIME;
 
-        initFields();
     }
-
-    private static native void initFields();
 
     /**
      * <b>POSIX:</b> <i>Baud Rate Selection</i> Hang up.
@@ -1789,45 +1950,32 @@ public final class Termios {
      */
     public final static class StructTermios extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long c_iflag;
-            public final long c_oflag;
-            public final long c_cflag;
-            public final long c_lflag;
-            public final long c_cc;
-            public final long c_line;
-            public final long c_ispeed;
-            public final long c_ospeed;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                c_iflag = -1;
-                c_oflag = -1;
-                c_cflag = -1;
-                c_lflag = -1;
-                c_cc = -1;
-                c_line = -1;
-                c_ispeed = -1;
-                c_ospeed = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static long offsetof_C_iflag;
+        public final static long offsetof_C_oflag;
+        public final static long offsetof_C_cflag;
+        public final static long offsetof_C_lflag;
+        public final static long offsetof_C_cc;
+        public final static long offsetof_C_line;
+        public final static long offsetof_C_ispeed;
+        public final static long offsetof_C_ospeed;
+        public final static Alignment alignof;
+        public final static int sizeof;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+            offsetof_C_iflag = 0;
+            offsetof_C_oflag = 4;
+            offsetof_C_cflag = 8;
+            offsetof_C_lflag = 12;
+            offsetof_C_cc = 17;
+            offsetof_C_line = 16;
+            offsetof_C_ispeed = 52;
+            offsetof_C_ospeed = 56;
+            sizeof = 60;
+            alignof = Alignment.AT_4;
         }
 
         /**
@@ -1838,7 +1986,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_iflag() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.c_iflag);
+            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_iflag);
         }
 
         /**
@@ -1848,7 +1996,7 @@ public final class Termios {
          * @param value the value of c_iflag to be set natively.
          */
         public void c_iflag(@tcflag_t int value) {
-            MEM_ACCESS.uint32_t(this, LAYOUT.c_iflag, value);
+            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_iflag, value);
         }
 
         /**
@@ -1859,7 +2007,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_oflag() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.c_oflag);
+            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_oflag);
         }
 
         /**
@@ -1869,7 +2017,7 @@ public final class Termios {
          * @param value the value of c_oflag to be set natively.
          */
         public void c_oflag(@tcflag_t int value) {
-            MEM_ACCESS.uint32_t(this, LAYOUT.c_oflag, value);
+            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_oflag, value);
         }
 
         /**
@@ -1880,7 +2028,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_cflag() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.c_cflag);
+            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_cflag);
         }
 
         /**
@@ -1890,7 +2038,7 @@ public final class Termios {
          * @param value the value of c_cflag to be set natively.
          */
         public void c_cflag(@tcflag_t int value) {
-            MEM_ACCESS.uint32_t(this, LAYOUT.c_cflag, value);
+            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_cflag, value);
         }
 
         /**
@@ -1901,7 +2049,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_lflag() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.c_lflag);
+            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_lflag);
         }
 
         /**
@@ -1911,7 +2059,7 @@ public final class Termios {
          * @param value the value of c_lflag to be set natively.
          */
         public void c_lflag(@tcflag_t int value) {
-            MEM_ACCESS.uint32_t(this, LAYOUT.c_lflag, value);
+            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_lflag, value);
         }
 
         /**
@@ -1926,7 +2074,7 @@ public final class Termios {
             if ((index < 0) || (index >= NCCS)) {
                 throw new ArrayIndexOutOfBoundsException(index);
             }
-            return MEM_ACCESS.uint8_t(this, LAYOUT.c_cc + index);
+            return MEM_ACCESS.uint8_t(this, StructTermios.offsetof_C_cc + index);
         }
 
         /**
@@ -1940,7 +2088,7 @@ public final class Termios {
             if ((index < 0) || (index >= NCCS)) {
                 throw new ArrayIndexOutOfBoundsException(index);
             }
-            MEM_ACCESS.uint8_t(this, LAYOUT.c_cc + index, value);
+            MEM_ACCESS.uint8_t(this, StructTermios.offsetof_C_cc + index, value);
         }
 
         /**
@@ -1952,7 +2100,7 @@ public final class Termios {
          */
         @cc_t
         public byte c_line() throws NoSuchNativeTypeMemberException {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.c_line);
+            return MEM_ACCESS.uint8_t(this, StructTermios.offsetof_C_line);
         }
 
         /**
@@ -1963,7 +2111,7 @@ public final class Termios {
          * @throws NoSuchNativeTypeMemberException if c_line does not * exists.
          */
         public void c_line(@cc_t byte value) throws NoSuchNativeTypeMemberException {
-            MEM_ACCESS.uint8_t(this, LAYOUT.c_line, value);
+            MEM_ACCESS.uint8_t(this, StructTermios.offsetof_C_line, value);
         }
 
         /**
@@ -1976,10 +2124,10 @@ public final class Termios {
          */
         @speed_t
         public int c_ispeed() throws NoSuchNativeTypeMemberException {
-            if (LAYOUT.c_ispeed == -1) {
+            if (StructTermios.offsetof_C_ispeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            return MEM_ACCESS.uint32_t(this, LAYOUT.c_ispeed);
+            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_ispeed);
         }
 
         /**
@@ -1991,10 +2139,10 @@ public final class Termios {
          * exists.
          */
         public void c_ispeed(@speed_t int value) throws NoSuchNativeTypeMemberException {
-            if (LAYOUT.c_ispeed == -1) {
+            if (StructTermios.offsetof_C_ispeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            MEM_ACCESS.uint32_t(this, LAYOUT.c_ispeed, value);
+            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_ispeed, value);
         }
 
         /**
@@ -2007,10 +2155,10 @@ public final class Termios {
          */
         @speed_t
         public int c_ospeed() throws NoSuchNativeTypeMemberException {
-            if (LAYOUT.c_ospeed == -1) {
+            if (StructTermios.offsetof_C_ospeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            return MEM_ACCESS.uint32_t(this, LAYOUT.c_ospeed);
+            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_ospeed);
         }
 
         /**
@@ -2022,10 +2170,10 @@ public final class Termios {
          * exists.
          */
         public void c_ospeed(@speed_t int value) throws NoSuchNativeTypeMemberException {
-            if (LAYOUT.c_ospeed == -1) {
+            if (StructTermios.offsetof_C_ospeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            MEM_ACCESS.uint32_t(this, LAYOUT.c_ospeed, value);
+            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_ospeed, value);
         }
 
         public StructTermios() {
@@ -2034,7 +2182,7 @@ public final class Termios {
         }
 
         public StructTermios(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
+            super(parent, offset, StructTermios.sizeof, setMem);
         }
 
         public static String toCcName(int value) {

@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.linux.sys.Eventfd;
-import de.ibapl.jnhw.posix.Aio;
 import de.ibapl.jnhw.posix.Fcntl;
 import de.ibapl.jnhw.posix.Locale;
 import de.ibapl.jnhw.posix.Pthread;
@@ -34,7 +33,6 @@ import de.ibapl.jnhw.posix.Sched;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.posix.Stdio;
 import de.ibapl.jnhw.posix.StringHeader;
-import de.ibapl.jnhw.posix.Termios;
 import de.ibapl.jnhw.posix.Time;
 import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.posix.sys.Stat;
@@ -43,13 +41,11 @@ import de.ibapl.jnhw.unix.sys.Ioctl;
 import de.ibapl.jnhw.x_open.Ucontext;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledOnOs;
-import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test all symbolic constants XXX that are defined with #define XXX
@@ -61,37 +57,64 @@ public class DefinesTest {
     public final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public static void testDefines(Class javaDefines, Class nativeDefines, String haveHeaderName) throws Exception {
+
+        Stream.Builder<Executable> streamBuilder = Stream.builder();
+
         for (Field f : javaDefines.getFields()) {
             if (f.getAnnotation(Define.class) != null) {
                 final Class type = f.getType();
                 final Method nativeDefine = nativeDefines.getDeclaredMethod(f.getName());
 
                 if (Long.class.equals(type) || Integer.class.equals(type) || Short.class.equals(type) || Byte.class.equals(type)) {
-                    assertEquals(f.get(javaDefines), nativeDefine.invoke(nativeDefines), f.getName());
+                    streamBuilder.accept(() -> {
+                        assertEquals(f.get(javaDefines), nativeDefine.invoke(nativeDefines), f.getName());
+                    });
                 } else if (long.class.equals(type)) {
-                    assertEquals((Long) nativeDefine.invoke(nativeDefines), f.getLong(javaDefines), f.getName());
+                    streamBuilder.accept(() -> {
+                        assertEquals((Long) nativeDefine.invoke(nativeDefines), f.getLong(javaDefines), f.getName());
+                    });
                 } else if (int.class.equals(type)) {
-                    assertEquals((Integer) nativeDefine.invoke(nativeDefines), f.getInt(javaDefines), f.getName());
+                    streamBuilder.accept(() -> {
+                        assertEquals((Integer) nativeDefine.invoke(nativeDefines), f.getInt(javaDefines), f.getName());
+                    });
                 } else if (short.class.equals(type)) {
-                    assertEquals((Short) nativeDefine.invoke(nativeDefines), f.getShort(javaDefines), f.getName());
+                    streamBuilder.accept(() -> {
+                        assertEquals((Short) nativeDefine.invoke(nativeDefines), f.getShort(javaDefines), f.getName());
+                    });
                 } else if (byte.class.equals(type)) {
-                    assertEquals((Byte) nativeDefine.invoke(nativeDefines), f.getByte(javaDefines), f.getName());
+                    streamBuilder.accept(() -> {
+                        assertEquals((Byte) nativeDefine.invoke(nativeDefines), f.getByte(javaDefines), f.getName());
+                    });
                 } else if (IntDefine.class.equals(type)) {
                     IntDefine def = (IntDefine) f.get(javaDefines);
                     Integer nativeResult = (Integer) nativeDefine.invoke(nativeDefines);
                     if (nativeResult == null) {
-                        assertFalse(((IntDefine) f.get(javaDefines)).isDefined(), f.getName());
+                        streamBuilder.accept(() -> {
+                            assertFalse(((IntDefine) f.get(javaDefines)).isDefined(), () -> {
+                                return f.getName() + " is defined";
+                            });
+                        });
                     } else {
-                        assertEquals(nativeResult, ((IntDefine) f.get(javaDefines)).get(), f.getName());
+                        streamBuilder.accept(() -> {
+                            assertTrue(((IntDefine) f.get(javaDefines)).isDefined(), () -> {
+                                return f.getName() + " is not defined";
+                            });
+                            assertEquals(nativeResult, ((IntDefine) f.get(javaDefines)).get(), f.getName());
+                        });
                     }
                 } else {
-                    fail("Implement Any Define!");
+                    streamBuilder.accept(() -> {
+                        fail("Implement Any Define!");
+                    });
                 }
             } else if (haveHeaderName.equals(f.getName())) {
                 final Method nativeDefine = nativeDefines.getDeclaredMethod(f.getName());
-                assertEquals((Boolean) nativeDefine.invoke(nativeDefines), f.getBoolean(javaDefines), haveHeaderName);
+                streamBuilder.accept(() -> {
+                    assertEquals((Boolean) nativeDefine.invoke(nativeDefines), f.getBoolean(javaDefines), haveHeaderName);
+                });
             }
         }
+        assertAll(streamBuilder.build());
     }
 
     public static void printDefines(Class clazz) throws Exception {
@@ -124,11 +147,6 @@ public class DefinesTest {
     }
 
     /*
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testAioDefines() throws Exception {
-        testDefines(Aio.class);
-    }
 
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.LINUX)
@@ -238,18 +256,6 @@ public class DefinesTest {
     }
      */
     @Test
-    public void test_HAVE_AIO_H() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case OPEN_BSD:
-            case WINDOWS:
-                Assertions.assertFalse(Aio.HAVE_AIO_H, "expected not to have aio.h");
-                break;
-            default:
-                Assertions.assertTrue(Aio.HAVE_AIO_H, "expected to have aio.h");
-        }
-    }
-
-    @Test
     public void test_HAVE_ERRNO_H() throws Exception {
         Assertions.assertTrue(de.ibapl.jnhw.isoc.Errno.HAVE_ERRNO_H, "expected to have errno.h");
     }
@@ -350,15 +356,6 @@ public class DefinesTest {
             Assertions.assertFalse(Types.HAVE_SYS_TYPES_H, "not expected to have sys/types.h");
         } else {
             Assertions.assertTrue(Types.HAVE_SYS_TYPES_H, "expected to have sys/types.h");
-        }
-    }
-
-    @Test
-    public void test_HAVE_TERMIOS_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            assertFalse(Termios.HAVE_TERMIOS_H, "not expected to have termios.h");
-        } else {
-            assertTrue(Termios.HAVE_TERMIOS_H, "expected to have termios.h");
         }
     }
 

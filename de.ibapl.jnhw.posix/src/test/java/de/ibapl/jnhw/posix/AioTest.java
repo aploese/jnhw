@@ -44,7 +44,6 @@ import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -111,10 +110,13 @@ public class AioTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_AIO_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Aio.HAVE_AIO_H, "not expected to have aio.h");
-        } else {
-            Assertions.assertTrue(Aio.HAVE_AIO_H, "expected to have aio.h");
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+            case WINDOWS:
+                Assertions.assertFalse(Aio.HAVE_AIO_H, "expected not to have aio.h");
+                break;
+            default:
+                Assertions.assertTrue(Aio.HAVE_AIO_H, "expected to have aio.h");
         }
     }
 
@@ -136,15 +138,35 @@ public class AioTest {
                 fail("Assertions.assertNull(Aio.Aiocb.getLayoutOrThrow()");
                 break;
             default:
-                Assertions.assertEquals(NativeAiocb.sizeof(), Aio.Aiocb.sizeof);
-                Assertions.assertEquals(NativeAiocb.alignof(), Aio.Aiocb.alignof.alignof);
-                Assertions.assertEquals(NativeAiocb.aio_fildes(), Aio.Aiocb.offsetof_Aio_fildes);
-                Assertions.assertEquals(NativeAiocb.aio_offset(), Aio.Aiocb.offsetof_Aio_offset);
-                Assertions.assertEquals(NativeAiocb.aio_buf(), Aio.Aiocb.offsetof_Aio_buf);
-                Assertions.assertEquals(NativeAiocb.aio_nbytes(), Aio.Aiocb.offsetof_Aio_nbytes);
-                Assertions.assertEquals(NativeAiocb.aio_reqprio(), Aio.Aiocb.offsetof_Aio_reqprio);
-                Assertions.assertEquals(NativeAiocb.aio_sigevent(), Aio.Aiocb.offsetof_Aio_sigevent);
-                Assertions.assertEquals(NativeAiocb.aio_lio_opcode(), Aio.Aiocb.offsetof_Aio_lio_opcode);
+                Assertions.assertAll(
+                        () -> {
+                            Assertions.assertEquals(NativeAiocb.sizeof(), Aio.Aiocb.sizeof, "sizeof");
+                        },
+                        () -> {
+                            Assertions.assertEquals(NativeAiocb.alignof(), Aio.Aiocb.alignof.alignof, "alignof");
+                        },
+                        () -> {
+                            Assertions.assertEquals(NativeAiocb.aio_fildes(), Aio.Aiocb.offsetof_Aio_fildes, "offsetof_Aio_fildes");
+                        },
+                        () -> {
+                            Assertions.assertEquals(NativeAiocb.aio_offset(), Aio.Aiocb.offsetof_Aio_offset, "offsetof_Aio_offset");
+                        },
+                        () -> {
+                            Assertions.assertEquals(NativeAiocb.aio_buf(), Aio.Aiocb.offsetof_Aio_buf, "offsetof_Aio_buf");
+                        },
+                        () -> {
+                            Assertions.assertEquals(NativeAiocb.aio_nbytes(), Aio.Aiocb.offsetof_Aio_nbytes, "offsetof_Aio_nbytes");
+                        },
+                        () -> {
+                            Assertions.assertEquals(NativeAiocb.aio_reqprio(), Aio.Aiocb.offsetof_Aio_reqprio, "offsetof_Aio_reqprio");
+                        },
+                        () -> {
+                            Assertions.assertEquals(NativeAiocb.aio_sigevent(), Aio.Aiocb.offsetof_Aio_sigevent, "offsetof_Aio_sigevent");
+                        },
+                        () -> {
+                            Assertions.assertEquals(NativeAiocb.aio_lio_opcode(), Aio.Aiocb.offsetof_Aio_lio_opcode, "offsetof_Aio_lio_opcode");
+                        }
+                );
         }
     }
 

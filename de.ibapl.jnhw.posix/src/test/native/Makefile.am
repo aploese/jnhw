@@ -23,7 +23,9 @@ libtests_la_SOURCES = \
  PollDefines.c \
  PollStructures.c \
  LocaleTest.c \
- IoctlTest.c
+ IoctlTest.c \
+ TermiosDefines.c \
+ TermiosStructures.c
 
 #hook into make all
 all-local: $(LIB_JNHW_POSIX_TEST_RES_NAME)

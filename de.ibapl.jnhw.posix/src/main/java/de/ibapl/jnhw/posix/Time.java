@@ -23,8 +23,6 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.references.IntRef;
-import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
@@ -424,8 +422,6 @@ public class Time {
      *
      * @param timer the time in seconds since the Epoch.
      * @param result a sruct tm ({@link Tm}) to hold the result.
-     * @return on successful completion, a pointer to the broken-down time
-     * structure {@code result}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.

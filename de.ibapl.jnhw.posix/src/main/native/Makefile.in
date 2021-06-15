@@ -198,8 +198,7 @@ libsystypes_la_LIBADD =
 am_libsystypes_la_OBJECTS = TypesDefines.lo
 libsystypes_la_OBJECTS = $(am_libsystypes_la_OBJECTS)
 libtermios_la_LIBADD =
-am_libtermios_la_OBJECTS = TermiosDefines.lo TermiosFunctions.lo \
-	TermiosStructures.lo
+am_libtermios_la_OBJECTS = TermiosFunctions.lo
 libtermios_la_OBJECTS = $(am_libtermios_la_OBJECTS)
 libtime_la_LIBADD =
 am_libtime_la_OBJECTS = TimeDefines.lo TimeFunctions.lo \
@@ -248,9 +247,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/StdioFunctions.Plo \
 	./$(DEPDIR)/StringHeaderDefines.Plo \
 	./$(DEPDIR)/StringHeaderFunctions.Plo \
-	./$(DEPDIR)/TermiosDefines.Plo \
-	./$(DEPDIR)/TermiosFunctions.Plo \
-	./$(DEPDIR)/TermiosStructures.Plo ./$(DEPDIR)/TimeDefines.Plo \
+	./$(DEPDIR)/TermiosFunctions.Plo ./$(DEPDIR)/TimeDefines.Plo \
 	./$(DEPDIR)/TimeFunctions.Plo ./$(DEPDIR)/TimeStructures.Plo \
 	./$(DEPDIR)/TypesDefines.Plo ./$(DEPDIR)/UcontextDefines.Plo \
 	./$(DEPDIR)/UcontextFunctions.Plo \
@@ -577,9 +574,7 @@ libsysstat_la_SOURCES = \
  StatFunctions.c
 
 libtermios_la_SOURCES = \
- TermiosDefines.c \
- TermiosFunctions.c \
- TermiosStructures.c
+ TermiosFunctions.c
 
 libtime_la_SOURCES = \
  TimeDefines.c \
@@ -772,9 +767,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdioFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeStructures.Plo@am__quote@ # am--include-marker
@@ -976,9 +969,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/StdioFunctions.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderDefines.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
-	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
-	-rm -f ./$(DEPDIR)/TermiosStructures.Plo
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
 	-rm -f ./$(DEPDIR)/TimeStructures.Plo
@@ -1065,9 +1056,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/StdioFunctions.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderDefines.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
-	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
-	-rm -f ./$(DEPDIR)/TermiosStructures.Plo
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
 	-rm -f ./$(DEPDIR)/TimeStructures.Plo

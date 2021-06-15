@@ -120,9 +120,7 @@ libsysstat_la_SOURCES = \
  StatFunctions.c
 
 libtermios_la_SOURCES = \
- TermiosDefines.c \
- TermiosFunctions.c \
- TermiosStructures.c
+ TermiosFunctions.c
 
 libtime_la_SOURCES = \
  TimeDefines.c \
