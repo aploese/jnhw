@@ -29,7 +29,6 @@ import de.ibapl.jnhw.linux.sys.Eventfd;
 import de.ibapl.jnhw.posix.Aio;
 import de.ibapl.jnhw.posix.Fcntl;
 import de.ibapl.jnhw.posix.Locale;
-import de.ibapl.jnhw.posix.Poll;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.posix.Sched;
 import de.ibapl.jnhw.posix.Signal;
@@ -43,6 +42,9 @@ import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.unix.sys.Ioctl;
 import de.ibapl.jnhw.x_open.Ucontext;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -56,9 +58,39 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
  */
 public class DefinesTest {
 
-    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
+    public final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
-    public static void testDefines(Class clazz) throws Exception {
+    public static void testDefines(Class javaDefines, Class nativeDefines, String haveHeaderName) throws Exception {
+        for (Field f : javaDefines.getFields()) {
+            if (f.getAnnotation(Define.class) != null) {
+                final Class type = f.getType();
+                final Method nativeDefine = nativeDefines.getDeclaredMethod(f.getName());
+
+                if (Long.class.equals(type) || Integer.class.equals(type) || Short.class.equals(type) || Byte.class.equals(type)) {
+                    assertEquals(f.get(javaDefines), nativeDefine.invoke(nativeDefines), f.getName());
+                } else if (long.class.equals(type)) {
+                    assertEquals((Long) nativeDefine.invoke(nativeDefines), f.getLong(javaDefines), f.getName());
+                } else if (int.class.equals(type)) {
+                    assertEquals((Integer) nativeDefine.invoke(nativeDefines), f.getInt(javaDefines), f.getName());
+                } else if (short.class.equals(type)) {
+                    assertEquals((Short) nativeDefine.invoke(nativeDefines), f.getShort(javaDefines), f.getName());
+                } else if (byte.class.equals(type)) {
+                    assertEquals((Byte) nativeDefine.invoke(nativeDefines), f.getByte(javaDefines), f.getName());
+                } else if (IntDefine.class.equals(type)) {
+                    IntDefine def = (IntDefine) f.get(javaDefines);
+                    assertNotNull(def, javaDefines.getName() + "#" + f.getName());
+                    fail("Implement Int Define!");
+                } else {
+                    fail("Implement Any Define!");
+                }
+            } else if (haveHeaderName.equals(f.getName())) {
+                final Method nativeDefine = nativeDefines.getDeclaredMethod(f.getName());
+                assertEquals((Boolean) nativeDefine.invoke(nativeDefines), f.getBoolean(javaDefines), haveHeaderName);
+            }
+        }
+    }
+
+    public static void printDefines(Class clazz) throws Exception {
         System.out.println(clazz.getName() + " Defines: >>>");
         for (Field f : clazz.getFields()) {
             if (f.getAnnotation(Define.class) != null) {
@@ -87,6 +119,7 @@ public class DefinesTest {
         System.out.println("<<< " + clazz.getName() + " Defines");
     }
 
+    /*
     @Test
     @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testAioDefines() throws Exception {
@@ -121,12 +154,6 @@ public class DefinesTest {
     @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testLocaleDefines() throws Exception {
         testDefines(Locale.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testPollDefines() throws Exception {
-        testDefines(Poll.class);
     }
 
     @Test
@@ -205,7 +232,7 @@ public class DefinesTest {
     public void testUnistdDefines() throws Exception {
         testDefines(Unistd.class);
     }
-
+     */
     @Test
     public void test_HAVE_AIO_H() throws Exception {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
@@ -238,15 +265,6 @@ public class DefinesTest {
             Assertions.assertFalse(Locale.HAVE_LOCALE_H, "expected not to have locale.h");
         } else {
             Assertions.assertTrue(Locale.HAVE_LOCALE_H, "expected to have locale.h");
-        }
-    }
-
-    @Test
-    public void test_HAVE_POLL_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Poll.HAVE_POLL_H, "not expected to have poll.h");
-        } else {
-            Assertions.assertTrue(Poll.HAVE_POLL_H, "expected to have poll.h");
         }
     }
 

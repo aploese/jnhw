@@ -22,12 +22,75 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.util.posix.DefinesTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class PollTest {
+
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_POLL_H();
+
+        public final static native short POLLERR();
+
+        public final static native short POLLHUP();
+
+        public final static native short POLLIN();
+
+        public final static native short POLLNVAL();
+
+        public final static native short POLLOUT();
+
+        public final static native short POLLPRI();
+
+        public final static native short POLLRDBAND();
+
+        public final static native short POLLRDNORM();
+
+        public final static native short POLLWRBAND();
+
+        public final static native short POLLWRNORM();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    public static class NativePollFd {
+
+        public final static native int alignof();
+
+        public final static native int sizeof();
+
+        public final static native long fd();
+
+        public final static native long events();
+
+        public final static native long revents();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    @Test
+    public void test_HAVE_POLL_H() throws Exception {
+        if (DefinesTest.MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Poll.HAVE_POLL_H, "not expected to have poll.h");
+        } else {
+            Assertions.assertTrue(Poll.HAVE_POLL_H, "expected to have poll.h");
+        }
+    }
+
+    @Test
+    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testPollDefines() throws Exception {
+        DefinesTest.testDefines(Poll.class, NativeDefines.class, "HAVE_POLL_H");
+    }
 
     @Test
     public void testCreatePollFd() throws Exception {
@@ -45,12 +108,11 @@ public class PollTest {
     }
 
     @Test
-    public void testSizeOfPollFd() throws Exception {
-        Assertions.assertEquals(8, Poll.PollFd.LAYOUT.sizeof);
-    }
-
-    @Test
-    public void testAlignOfPollFd() throws Exception {
-        Assertions.assertEquals(Alignment.AT_4, Poll.PollFd.LAYOUT.alignment);
+    public void testPollFd() throws Exception {
+        Assertions.assertEquals(NativePollFd.sizeof(), Poll.PollFd.sizeof);
+        Assertions.assertEquals(NativePollFd.alignof(), Poll.PollFd.alignof.alignof);
+        Assertions.assertEquals(NativePollFd.fd(), Poll.PollFd.offsetof_Fd);
+        Assertions.assertEquals(NativePollFd.events(), Poll.PollFd.offsetof_Events);
+        Assertions.assertEquals(NativePollFd.revents(), Poll.PollFd.offsetof_Revents);
     }
 }

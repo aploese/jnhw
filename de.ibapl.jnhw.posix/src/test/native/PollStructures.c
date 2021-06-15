@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_Poll_PollFd.h"
+#include "de_ibapl_jnhw_posix_PollTest_NativePollFd.h"
 
 
 #ifdef __cplusplus
@@ -46,30 +46,55 @@ extern "C" {
     static_assert((typeof (((struct pollfd *) 0)->events)) - 1 < 0, "Not signed");
 #endif
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_Poll_PollFd
-     * Method:    native2Layout
-     * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/posix/Poll/PollFd/Layout;
+        /*
+     * Class:     de_ibapl_jnhw_posix_PollTest_NativePollFd
+     * Method:    alignof
+     * Signature: ()I
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_Poll_00024PollFd_native2Layout
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jclass layoutClass) {
-        jobject result = JnhwCreateStructLayout(env, layoutClass, sizeof (struct pollfd), __alignof__ (struct pollfd));
-        if (result == NULL) {
-            return NULL;
-        }
-        if (JnhwSetLongField(env, result, "fd", offsetof(struct pollfd, fd))) {
-            return result;
-        }
-        if (JnhwSetLongField(env, result, "events", offsetof(struct pollfd, events))) {
-            return result;
-        }
-        if (JnhwSetLongField(env, result, "revents", offsetof(struct pollfd, revents))) {
-            return result;
-        }
-        return result;
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativePollFd_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct pollfd);
     }
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_PollTest_NativePollFd
+     * Method:    sizeof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativePollFd_sizeof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return sizeof (struct pollfd);
+    }
 
+    /*
+     * Class:     de_ibapl_jnhw_posix_PollTest_NativePollFd
+     * Method:    fd
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativePollFd_fd
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct pollfd, fd);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_PollTest_NativePollFd
+     * Method:    events
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativePollFd_events
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct pollfd, events);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_PollTest_NativePollFd
+     * Method:    revents
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativePollFd_revents
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct pollfd, revents);
+    }
 
 #endif
 #ifdef __cplusplus

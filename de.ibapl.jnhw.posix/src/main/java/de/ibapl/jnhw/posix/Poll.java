@@ -45,6 +45,21 @@ import java.io.IOException;
 @Include("#include <poll.h>")
 public final class Poll {
 
+    public static class LinuxDefines {
+
+        public final static boolean HAVE_POLL_H = true;
+        public final static short POLLERR = 0x0008;
+        public final static short POLLHUP = 0x0010;
+        public final static short POLLIN = 0x0001;
+        public final static short POLLNVAL = 0x0020;
+        public final static short POLLOUT = 0x0004;
+        public final static short POLLPRI = 0x0002;
+        public final static short POLLRDBAND = 0x0080;
+        public final static short POLLRDNORM = 0x0040;
+        public final static short POLLWRBAND = 0x0200;
+        public final static short POLLWRNORM = 0x0100;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -57,23 +72,24 @@ public final class Poll {
     static {
         LibJnhwPosixLoader.touch();
 
-        HAVE_POLL_H = false;
-
-        POLLERR = 0;
-        POLLHUP = 0;
-        POLLIN = 0;
-        POLLNVAL = 0;
-        POLLOUT = 0;
-        POLLPRI = 0;
-        POLLRDBAND = 0;
-        POLLRDNORM = 0;
-        POLLWRBAND = 0;
-        POLLWRNORM = 0;
-
-        initFields();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_POLL_H = LinuxDefines.HAVE_POLL_H;
+                POLLERR = LinuxDefines.POLLERR;
+                POLLHUP = LinuxDefines.POLLHUP;
+                POLLIN = LinuxDefines.POLLIN;
+                POLLNVAL = LinuxDefines.POLLNVAL;
+                POLLOUT = LinuxDefines.POLLOUT;
+                POLLPRI = LinuxDefines.POLLPRI;
+                POLLRDBAND = LinuxDefines.POLLRDBAND;
+                POLLRDNORM = LinuxDefines.POLLRDNORM;
+                POLLWRBAND = LinuxDefines.POLLWRBAND;
+                POLLWRNORM = LinuxDefines.POLLWRNORM;
+                break;
+            default:
+                throw new NoClassDefFoundError("No poll.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     public final static boolean HAVE_POLL_H;
 
@@ -189,33 +205,11 @@ public final class Poll {
      */
     public final static class PollFd extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long fd;
-            public final long events;
-            public final long revents;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                fd = -1;
-                events = -1;
-                revents = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
-
-        static {
-            LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
-        }
+        public final static long offsetof_Fd = 0;
+        public final static long offsetof_Events = 4;
+        public final static long offsetof_Revents = 6;
+        public final static Alignment alignof = Alignment.AT_4;
+        public final static int sizeof = 8;
 
         public PollFd(AbstractNativeMemory owner, long offset) {
             this(owner, offset, SetMem.DO_NOT_SET);
@@ -226,7 +220,7 @@ public final class Poll {
         }
 
         public PollFd(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
+            super(parent, offset, PollFd.sizeof, setMem);
         }
 
         /**
@@ -237,7 +231,7 @@ public final class Poll {
          * @return the native value of events;
          */
         public short events() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.events);
+            return MEM_ACCESS.uint16_t(this, PollFd.offsetof_Events);
         }
 
         /**
@@ -248,7 +242,7 @@ public final class Poll {
          * @param events the value of events to be set natively.
          */
         public void events(short events) {
-            MEM_ACCESS.uint16_t(this, LAYOUT.events, events);
+            MEM_ACCESS.uint16_t(this, PollFd.offsetof_Events, events);
         }
 
         /**
@@ -259,7 +253,7 @@ public final class Poll {
          * @return the native value of fd;
          */
         public int fd() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.fd);
+            return MEM_ACCESS.int32_t(this, PollFd.offsetof_Fd);
         }
 
         /**
@@ -270,7 +264,7 @@ public final class Poll {
          * @param fd the value of fd to be set natively.
          */
         public void fd(int fd) {
-            MEM_ACCESS.int32_t(this, LAYOUT.fd, fd);
+            MEM_ACCESS.int32_t(this, PollFd.offsetof_Fd, fd);
         }
 
         /**
@@ -281,7 +275,7 @@ public final class Poll {
          * @return the native value of revents;
          */
         public short revents() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.revents);
+            return MEM_ACCESS.uint16_t(this, PollFd.offsetof_Revents);
         }
 
         /**
@@ -292,7 +286,7 @@ public final class Poll {
          * @param revents the value of revents to be set natively.
          */
         public void revents(short revents) {
-            MEM_ACCESS.uint16_t(this, LAYOUT.revents, revents);
+            MEM_ACCESS.uint16_t(this, PollFd.offsetof_Revents, revents);
         }
 
         @Override
@@ -372,12 +366,12 @@ public final class Poll {
 
         public PollFds(int arraylength) {
             //get uninitialized mem we need to set this anyway ...
-            super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.LAYOUT.sizeof, SetMem.DO_NOT_SET);
+            super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof, SetMem.DO_NOT_SET);
         }
 
         public PollFds(AbstractNativeMemory parent, long offset, int arraylength) {
             //get uninitialized mem we need to set this anyway ...
-            super(parent, offset, new PollFd[arraylength], PollFds::createAtOffset, PollFd.LAYOUT.sizeof, SetMem.DO_NOT_SET);
+            super(parent, offset, new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof, SetMem.DO_NOT_SET);
         }
 
         private static PollFd createAtOffset(AbstractNativeMemory parent, long offset) {

@@ -85,9 +85,7 @@ liblocale_la_SOURCES = \
  LocaleStructures.c
 
 libpoll_la_SOURCES = \
- PollDefines.c \
- PollFunctions.c \
- PollStructures.c
+ PollFunctions.c
 
 libposixutils_la_SOURCES = \
  Defines.c
