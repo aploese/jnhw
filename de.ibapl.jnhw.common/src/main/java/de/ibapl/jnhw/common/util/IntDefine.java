@@ -27,8 +27,7 @@ package de.ibapl.jnhw.common.util;
  */
 public abstract class IntDefine {
 
-    //Called from native code
-    private static IntDefine toIntDefine(int value) {
+    public static IntDefine toIntDefine(int value) {
         return new IntDefined(value);
     }
 

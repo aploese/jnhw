@@ -135,7 +135,7 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libaio_la_LIBADD =
-am_libaio_la_OBJECTS = AioDefines.lo AioFunctions.lo AioStructures.lo
+am_libaio_la_OBJECTS = AioFunctions.lo
 libaio_la_OBJECTS = $(am_libaio_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -226,8 +226,7 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
-	./$(DEPDIR)/AioFunctions.Plo ./$(DEPDIR)/AioStructures.Plo \
+am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo \
 	./$(DEPDIR)/Defines.Plo ./$(DEPDIR)/EventFdDefines.Plo \
 	./$(DEPDIR)/EventFdFunctions.Plo ./$(DEPDIR)/FcntlDefines.Plo \
@@ -516,9 +515,7 @@ libjnhw_posix_la_SOURCES = \
  jnhw-posix-jni.c
 
 libaio_la_SOURCES = \
- AioDefines.c \
- AioFunctions.c \
- AioStructures.c
+ AioFunctions.c
 
 liberrno_la_SOURCES = \
  Isoc_ErrnoDefines.c \
@@ -743,9 +740,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Defines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdDefines.Plo@am__quote@ # am--include-marker
@@ -949,9 +944,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/AioDefines.Plo
-	-rm -f ./$(DEPDIR)/AioFunctions.Plo
-	-rm -f ./$(DEPDIR)/AioStructures.Plo
+		-rm -f ./$(DEPDIR)/AioFunctions.Plo
 	-rm -f ./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
@@ -1040,9 +1033,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/AioDefines.Plo
-	-rm -f ./$(DEPDIR)/AioFunctions.Plo
-	-rm -f ./$(DEPDIR)/AioStructures.Plo
+		-rm -f ./$(DEPDIR)/AioFunctions.Plo
 	-rm -f ./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo
 	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo

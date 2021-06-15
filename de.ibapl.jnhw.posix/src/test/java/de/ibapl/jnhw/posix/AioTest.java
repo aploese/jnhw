@@ -31,10 +31,10 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V_Impl;
+import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -43,6 +43,8 @@ import java.nio.ByteBuffer;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -53,12 +55,154 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class AioTest {
 
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_AIO_H();
+
+        public final static native Integer AIO_ALLDONE();
+
+        public final static native Integer AIO_CANCELED();
+
+        public final static native Integer AIO_NOTCANCELED();
+
+        public final static native Integer LIO_NOP();
+
+        public final static native Integer LIO_NOWAIT();
+
+        public final static native Integer LIO_READ();
+
+        public final static native Integer LIO_WAIT();
+
+        public final static native Integer LIO_WRITE();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    public static class NativeAiocb {
+
+        public final static native int alignof();
+
+        public final static native int sizeof();
+
+        public final static native long aio_fildes();
+
+        public final static native long aio_offset();
+
+        public final static native long aio_buf();
+
+        public final static native long aio_nbytes();
+
+        public final static native long aio_reqprio();
+
+        public final static native long aio_sigevent();
+
+        public final static native long aio_lio_opcode();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
     // just for vm in qemu...
     private final static long ONE_MINUTE = 60_000;
     private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
-    public AioTest() {
-        super();
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_AIO_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Aio.HAVE_AIO_H, "not expected to have aio.h");
+        } else {
+            Assertions.assertTrue(Aio.HAVE_AIO_H, "expected to have aio.h");
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_AioDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(Aio.class, NativeDefines.class, "HAVE_AIO_H");
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_StructAiocb() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+                fail("Assertions.assertNull(Aio.Aiocb.getLayoutOrThrow()");
+                break;
+            default:
+                Assertions.assertEquals(NativeAiocb.sizeof(), Aio.Aiocb.sizeof);
+                Assertions.assertEquals(NativeAiocb.alignof(), Aio.Aiocb.alignof.alignof);
+                Assertions.assertEquals(NativeAiocb.aio_fildes(), Aio.Aiocb.offsetof_Aio_fildes);
+                Assertions.assertEquals(NativeAiocb.aio_offset(), Aio.Aiocb.offsetof_Aio_offset);
+                Assertions.assertEquals(NativeAiocb.aio_buf(), Aio.Aiocb.offsetof_Aio_buf);
+                Assertions.assertEquals(NativeAiocb.aio_nbytes(), Aio.Aiocb.offsetof_Aio_nbytes);
+                Assertions.assertEquals(NativeAiocb.aio_reqprio(), Aio.Aiocb.offsetof_Aio_reqprio);
+                Assertions.assertEquals(NativeAiocb.aio_sigevent(), Aio.Aiocb.offsetof_Aio_sigevent);
+                Assertions.assertEquals(NativeAiocb.aio_lio_opcode(), Aio.Aiocb.offsetof_Aio_lio_opcode);
+        }
+    }
+
+    /**
+     * Test struct aiocb.
+     */
+    @Test
+    public void testStructAiocb() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    new Aio.Aiocb();
+                });
+                break;
+            default:
+                Aio.Aiocb aiocb = new Aio.Aiocb();
+                System.out.println("aiocb : " + aiocb.nativeToString());
+                assertEquals(NativeAddressHolder.NULL, aiocb.aio_buf());
+
+                ByteBuffer buf = ByteBuffer.allocateDirect(128);
+                buf.position(16);
+                buf.limit(64);
+                aiocb.aio_fildes(-1);
+                assertEquals(-1, aiocb.aio_fildes());
+                aiocb.aio_buf(buf);
+                Assertions.assertNotEquals(NativeAddressHolder.NULL, aiocb.aio_buf());
+                assertEquals(0, aiocb.aio_offset());
+                assertEquals(48, aiocb.aio_nbytes());
+                aiocb.aio_offset(8);
+                assertEquals(8, aiocb.aio_offset());
+
+                System.out.println("aiocb : " + aiocb.nativeToString());
+        }
+    }
+
+    /**
+     * Test members of struct Aiocb[].
+     */
+    @Test
+    public void testAiocbs() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+                Assertions.assertFalse(Aio.HAVE_AIO_H);
+                break;
+            default:
+                Aio.Aiocbs aiocbs = new Aio.Aiocbs(1, SetMem.TO_0x00);
+
+                Aio.Aiocb aiocb_null = aiocbs.get(0, null);
+                Assertions.assertNull(aiocb_null);
+
+                Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_fildes(-1);
+                aiocbs.set(0, aiocb);
+
+                Aio.Aiocb aiocb_get = aiocbs.get(0, null);
+                assertEquals(aiocb, aiocb_get);
+        }
+
     }
 
     /**
@@ -606,63 +750,6 @@ public class AioTest {
     }
 
     /**
-     * Test struct aiocb.
-     */
-    @Test
-    public void testStructAiocb() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    new Aio.Aiocb();
-                });
-                break;
-            default:
-                Aio.Aiocb aiocb = new Aio.Aiocb();
-                System.out.println("aiocb : " + aiocb.nativeToString());
-                assertEquals(NativeAddressHolder.NULL, aiocb.aio_buf());
-
-                ByteBuffer buf = ByteBuffer.allocateDirect(128);
-                buf.position(16);
-                buf.limit(64);
-                aiocb.aio_fildes(-1);
-                assertEquals(-1, aiocb.aio_fildes());
-                aiocb.aio_buf(buf);
-                Assertions.assertNotEquals(NativeAddressHolder.NULL, aiocb.aio_buf());
-                assertEquals(0, aiocb.aio_offset());
-                assertEquals(48, aiocb.aio_nbytes());
-                aiocb.aio_offset(8);
-                assertEquals(8, aiocb.aio_offset());
-
-                System.out.println("aiocb : " + aiocb.nativeToString());
-        }
-    }
-
-    /**
-     * Test members of struct Aiocb[].
-     */
-    @Test
-    public void testAiocbs() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case OPEN_BSD:
-                Assertions.assertFalse(Aio.HAVE_AIO_H);
-                break;
-            default:
-                Aio.Aiocbs aiocbs = new Aio.Aiocbs(1, SetMem.TO_0x00);
-
-                Aio.Aiocb aiocb_null = aiocbs.get(0, null);
-                Assertions.assertNull(aiocb_null);
-
-                Aio.Aiocb aiocb = new Aio.Aiocb();
-                aiocb.aio_fildes(-1);
-                aiocbs.set(0, aiocb);
-
-                Aio.Aiocb aiocb_get = aiocbs.get(0, null);
-                assertEquals(aiocb, aiocb_get);
-        }
-
-    }
-
-    /**
      * Test of aio_read method, of class Aio.
      */
     @Test
@@ -750,82 +837,6 @@ public class AioTest {
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Aio.aio_read(null);
                 });
-        }
-    }
-
-    @Test
-    public void testSizeOfAiocb() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case LINUX:
-                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
-                    case _32_BIT:
-                        Assertions.assertEquals(144, Aio.Aiocb.getLayoutOrThrow().sizeof);
-                        break;
-                    case _64_BIT:
-                        Assertions.assertEquals(168, Aio.Aiocb.getLayoutOrThrow().sizeof);
-                        break;
-                    default:
-                        Assertions.assertEquals(-1, Aio.Aiocb.getLayoutOrThrow().sizeof);
-                }
-                break;
-            case FREE_BSD:
-                Assertions.assertEquals(160, Aio.Aiocb.getLayoutOrThrow().sizeof);
-                break;
-            case OPEN_BSD:
-                Assertions.assertNull(Aio.Aiocb.getLayoutOrThrow());
-                break;
-            default:
-                Assertions.assertEquals(-1, Aio.Aiocb.getLayoutOrThrow().sizeof);
-        }
-    }
-
-    @Test
-    public void testAlignOfAiocb() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case FREE_BSD:
-            case LINUX:
-                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
-                    case _32_BIT:
-                        Assertions.assertEquals(Alignment.AT_4, Aio.Aiocb.getLayoutOrThrow().alignment);
-                        break;
-                    case _64_BIT:
-                        Assertions.assertEquals(Alignment.AT_8, Aio.Aiocb.getLayoutOrThrow().alignment);
-                        break;
-                    default:
-                        Assertions.assertEquals(null, Aio.Aiocb.getLayoutOrThrow().alignment);
-                }
-                break;
-            case OPEN_BSD:
-                Assertions.assertNull(Aio.Aiocb.getLayoutOrThrow());
-                break;
-            default:
-                Assertions.assertEquals(null, Aio.Aiocb.getLayoutOrThrow().alignment);
-        }
-    }
-
-    @Test
-    public void testOffsetOfAio_sigevent() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case LINUX:
-                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
-                    case _32_BIT:
-                        Assertions.assertEquals(20, Aio.Aiocb.getLayoutOrThrow().aio_sigevent);
-                        break;
-                    case _64_BIT:
-                        Assertions.assertEquals(32, Aio.Aiocb.getLayoutOrThrow().aio_sigevent);
-                        break;
-                    default:
-                        Assertions.assertEquals(-1, Aio.Aiocb.getLayoutOrThrow().aio_sigevent);
-                }
-                break;
-            case FREE_BSD:
-                Assertions.assertEquals(80, Aio.Aiocb.getLayoutOrThrow().aio_sigevent);
-                break;
-            case OPEN_BSD:
-                Assertions.assertNull(Aio.Aiocb.getLayoutOrThrow());
-                break;
-            default:
-                Assertions.assertEquals(-1, Aio.Aiocb.getLayoutOrThrow().aio_sigevent);
         }
     }
 

@@ -192,6 +192,28 @@ extern "C" {
         return JNI_FALSE;
     }
 
+    /*
+     * only for tests - it is not optimized.
+     */
+    JNIEXPORT jobject JnhwWrapInteger(JNIEnv *env, int value) {
+        jclass intClass = (*env)->FindClass(env, "java/lang/Integer");
+        if (intClass == NULL) {
+            return NULL;
+        }
+
+        jmethodID mId = (*env)->GetStaticMethodID(env, intClass, "valueOf", "(I)Ljava/lang/Integer;");
+        if (mId == NULL) {
+            return NULL;
+        }
+
+        jobject o = (*env)->CallStaticObjectMethod(env, intClass, mId, value);
+        if ((*env)->ExceptionCheck(env)) {
+            return NULL;
+        } else {
+            return o;
+        }
+    }
+
     /**
      * Called direct from Java_de_ibapl_jnhw_common_LibJnhwCommonLoader_initNativeClasses without header definition...
      * file: LibJnhwCommonLoader.c

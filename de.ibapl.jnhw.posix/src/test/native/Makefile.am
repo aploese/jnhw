@@ -18,6 +18,8 @@ libtests.la \
 
 
 libtests_la_SOURCES = \
+ AioDefines.c \
+ AioStructures.c \
  PollDefines.c \
  PollStructures.c \
  LocaleTest.c \

@@ -78,8 +78,12 @@ public class DefinesTest {
                     assertEquals((Byte) nativeDefine.invoke(nativeDefines), f.getByte(javaDefines), f.getName());
                 } else if (IntDefine.class.equals(type)) {
                     IntDefine def = (IntDefine) f.get(javaDefines);
-                    assertNotNull(def, javaDefines.getName() + "#" + f.getName());
-                    fail("Implement Int Define!");
+                    Integer nativeResult = (Integer) nativeDefine.invoke(nativeDefines);
+                    if (nativeResult == null) {
+                        assertFalse(((IntDefine) f.get(javaDefines)).isDefined(), f.getName());
+                    } else {
+                        assertEquals(nativeResult, ((IntDefine) f.get(javaDefines)).get(), f.getName());
+                    }
                 } else {
                     fail("Implement Any Define!");
                 }

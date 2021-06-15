@@ -37,6 +37,8 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
@@ -56,6 +58,19 @@ import java.nio.ByteBuffer;
 @Include("#include <aio.h>")
 public class Aio {
 
+    public static class LinuxDefines {
+
+        public final static int AIO_ALLDONE = 2;
+        public final static int AIO_CANCELED = 0;
+        public final static int AIO_NOTCANCELED = 1;
+        public final static int LIO_NOP = 2;
+        public final static int LIO_NOWAIT = 1;
+        public final static int LIO_READ = 0;
+        public final static int LIO_WAIT = 0;
+        public final static int LIO_WRITE = 1;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -67,22 +82,23 @@ public class Aio {
      */
     static {
         LibJnhwPosixLoader.touch();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_AIO_H = true;
 
-        HAVE_AIO_H = false;
-
-        AIO_ALLDONE = IntDefine.UNDEFINED;
-        AIO_CANCELED = IntDefine.UNDEFINED;
-        AIO_NOTCANCELED = IntDefine.UNDEFINED;
-        LIO_NOP = IntDefine.UNDEFINED;
-        LIO_NOWAIT = IntDefine.UNDEFINED;
-        LIO_READ = IntDefine.UNDEFINED;
-        LIO_WAIT = IntDefine.UNDEFINED;
-        LIO_WRITE = IntDefine.UNDEFINED;
-
-        initFields();
+                AIO_ALLDONE = IntDefine.toIntDefine(LinuxDefines.AIO_ALLDONE);
+                AIO_CANCELED = IntDefine.toIntDefine(LinuxDefines.AIO_CANCELED);
+                AIO_NOTCANCELED = IntDefine.toIntDefine(LinuxDefines.AIO_NOTCANCELED);
+                LIO_NOP = IntDefine.toIntDefine(LinuxDefines.LIO_NOP);
+                LIO_NOWAIT = IntDefine.toIntDefine(LinuxDefines.LIO_NOWAIT);
+                LIO_READ = IntDefine.toIntDefine(LinuxDefines.LIO_READ);
+                LIO_WAIT = IntDefine.toIntDefine(LinuxDefines.LIO_WAIT);
+                LIO_WRITE = IntDefine.toIntDefine(LinuxDefines.LIO_WRITE);
+                break;
+            default:
+                throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     /**
      * <b>POSIX:</b> A return value indicating that none of the requested
@@ -350,43 +366,65 @@ public class Aio {
      */
     public static final class Aiocb<T extends OpaqueMemory32> extends PosixStruct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long aio_fildes;
-            public final long aio_offset;
-            public final long aio_buf;
-            public final long aio_nbytes;
-            public final long aio_reqprio;
-            public final long aio_sigevent;
-            public final long aio_lio_opcode;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                aio_fildes = -1;
-                aio_offset = -1;
-                aio_buf = -1;
-                aio_nbytes = -1;
-                aio_reqprio = -1;
-                aio_sigevent = -1;
-                aio_lio_opcode = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        private final static Layout LAYOUT;
+        public final static long offsetof_Aio_fildes;
+        public final static long offsetof_Aio_offset;
+        public final static long offsetof_Aio_buf;
+        public final static long offsetof_Aio_nbytes;
+        public final static long offsetof_Aio_reqprio;
+        public final static long offsetof_Aio_sigevent;
+        public final static long offsetof_Aio_lio_opcode;
+        public final static Alignment alignof;
+        public final static int sizeof;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+            switch (multiarchInfo.getOS()) {
+                case LINUX:
+                    switch (multiarchInfo.getSizeOfPointer()) {
+                        case _32_BIT:
+                            offsetof_Aio_fildes = 0;
+                            offsetof_Aio_offset = -1;
+                            offsetof_Aio_buf = -1;
+                            offsetof_Aio_nbytes = -1;
+                            offsetof_Aio_reqprio = -1;
+                            offsetof_Aio_sigevent = 20;
+                            offsetof_Aio_lio_opcode = -1;
+                            alignof = Alignment.AT_4;
+                            sizeof = 144;
+                            break;
+                        case _64_BIT:
+                            offsetof_Aio_fildes = 0;
+                            offsetof_Aio_offset = 128;
+                            offsetof_Aio_buf = 16;
+                            offsetof_Aio_nbytes = 24;
+                            offsetof_Aio_reqprio = 8;
+                            offsetof_Aio_sigevent = 32;
+                            offsetof_Aio_lio_opcode = 4;
+                            alignof = Alignment.AT_8;
+                            sizeof = 168;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
+                    break;
+                case FREE_BSD:
+                    offsetof_Aio_fildes = -1;
+                    offsetof_Aio_offset = -1;
+                    offsetof_Aio_buf = -1;
+                    offsetof_Aio_nbytes = -1;
+                    offsetof_Aio_reqprio = -1;
+                    offsetof_Aio_sigevent = 80;
+                    offsetof_Aio_lio_opcode = -1;
+                    alignof = Alignment.AT_8;
+                    sizeof = 160;
+
+                default:
+                    throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         /**
@@ -408,16 +446,9 @@ public class Aio {
             this(null, 0, SetMem.TO_0x00);
         }
 
-        public static Layout getLayoutOrThrow() throws NoSuchNativeTypeException {
-            if (LAYOUT == null) {
-                throw new NoSuchNativeTypeException("Aio.Aiocb");
-            }
-            return LAYOUT;
-        }
-
         public Aiocb(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super(parent, offset, getLayoutOrThrow().sizeof, setMem);
-            aio_sigevent = new Sigevent(this, LAYOUT.aio_sigevent, SetMem.DO_NOT_SET);
+            super(parent, offset, Aiocb.sizeof, setMem);
+            aio_sigevent = new Sigevent(this, Aiocb.offsetof_Aio_sigevent, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -427,8 +458,8 @@ public class Aio {
          */
         @SuppressWarnings("unchecked")
         public Aiocb(NativeAddressHolder address) throws NoSuchNativeTypeException {
-            super(address, LAYOUT.sizeof);
-            aio_sigevent = new Sigevent(this, LAYOUT.aio_sigevent, SetMem.DO_NOT_SET);
+            super(address, Aiocb.sizeof);
+            aio_sigevent = new Sigevent(this, Aiocb.offsetof_Aio_sigevent, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -439,7 +470,7 @@ public class Aio {
          * @return the native value of aio_fildes.
          */
         public int aio_fildes() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.aio_fildes);
+            return MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_fildes);
         }
 
         /**
@@ -450,7 +481,7 @@ public class Aio {
          * @param aio_fildes the value of aio_fildes to be set natively.
          */
         public void aio_fildes(int aio_fildes) {
-            MEM_ACCESS.int32_t(this, LAYOUT.aio_fildes, aio_fildes);
+            MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_fildes, aio_fildes);
         }
 
         /**
@@ -462,7 +493,7 @@ public class Aio {
          */
         @off_t
         public long aio_offset() {
-            return ACCESSOR_OFF_T.off_t(this, LAYOUT.aio_offset);
+            return ACCESSOR_OFF_T.off_t(this, Aiocb.offsetof_Aio_offset);
         }
 
         /**
@@ -473,7 +504,7 @@ public class Aio {
          * @param aio_offset the value of aio_offset to be set natively.
          */
         public void aio_offset(@off_t long aio_offset) {
-            ACCESSOR_OFF_T.off_t(this, LAYOUT.aio_offset, aio_offset);
+            ACCESSOR_OFF_T.off_t(this, Aiocb.offsetof_Aio_offset, aio_offset);
         }
 
         /**
@@ -505,7 +536,7 @@ public class Aio {
          * @return the native value of aio_buf.
          */
         public NativeAddressHolder aio_buf() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.aio_buf);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Aiocb.offsetof_Aio_buf);
         }
 
         /**
@@ -541,11 +572,11 @@ public class Aio {
          */
         public void aio_buf(ByteBuffer aio_buf) {
             if (aio_buf == null) {
-                MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf, NativeAddressHolder.NULL);
-                ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes, 0);
+                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, NativeAddressHolder.NULL);
+                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, 0);
             } else {
-                MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf, aio_buf);
-                ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes, aio_buf.remaining());
+                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, aio_buf);
+                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, aio_buf.remaining());
             }
             this.aio_buf = aio_buf;
         }
@@ -561,11 +592,11 @@ public class Aio {
          */
         public void aio_buf(OpaqueMemory32 aio_buf) {
             if (aio_buf == null) {
-                MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf, NativeAddressHolder.NULL);
-                ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes, 0);
+                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, NativeAddressHolder.NULL);
+                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, 0);
             } else {
-                MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf, aio_buf);
-                ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes, aio_buf.sizeInBytes);
+                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, aio_buf);
+                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, aio_buf.sizeInBytes);
             }
             this.aio_buf = aio_buf;
         }
@@ -591,8 +622,8 @@ public class Aio {
                 if (aio_nbytes != 0) {
                     throw new IllegalArgumentException("aio_nbytes must be 0");
                 }
-                MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf, NativeAddressHolder.NULL);
-                ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes, 0);
+                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, NativeAddressHolder.NULL);
+                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, 0);
             } else {
                 if ((off < 0) || (off >= aio_buf.sizeInBytes)) {
                     throw new IllegalArgumentException("off not in range");
@@ -600,8 +631,8 @@ public class Aio {
                 if ((aio_nbytes < 0) || (aio_nbytes >= aio_buf.sizeInBytes)) {
                     throw new IllegalArgumentException("aio_nbytes not in range");
                 }
-                MEM_ACCESS.uintptr_t(this, LAYOUT.aio_buf, aio_buf, off);
-                ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes, aio_nbytes);
+                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, aio_buf, off);
+                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, aio_nbytes);
             }
             this.aio_buf = aio_buf;
         }
@@ -618,7 +649,7 @@ public class Aio {
          */
         @size_t
         public long aio_nbytes() {
-            return ACCESSOR_SIZE_T.size_t(this, LAYOUT.aio_nbytes);
+            return ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes);
         }
 
         /**
@@ -629,7 +660,7 @@ public class Aio {
          * @return the native value of aio_reqprio.
          */
         public int aio_reqprio() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.aio_reqprio);
+            return MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_reqprio);
         }
 
         /**
@@ -640,7 +671,7 @@ public class Aio {
          * @param aio_reqprio the value of aio_reqprio to be set natively.
          */
         public void aio_reqprio(int aio_reqprio) {
-            MEM_ACCESS.int32_t(this, LAYOUT.aio_reqprio, aio_reqprio);
+            MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_reqprio, aio_reqprio);
         }
 
         /**
@@ -651,7 +682,7 @@ public class Aio {
          * @return the native value of aio_lio_opcode.
          */
         public int aio_lio_opcode() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.aio_lio_opcode);
+            return MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_lio_opcode);
         }
 
         /**
@@ -662,7 +693,7 @@ public class Aio {
          * @param aio_lio_opcode the value of aio_lio_opcode to be set natively.
          */
         public void aio_lio_opcode(int aio_lio_opcode) {
-            MEM_ACCESS.int32_t(this, LAYOUT.aio_lio_opcode, aio_lio_opcode);
+            MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_lio_opcode, aio_lio_opcode);
         }
 
         @Override
@@ -701,7 +732,6 @@ public class Aio {
 
         public Aiocbs(int arrayLength, OpaqueMemory32 parent, int offset, SetMem setMem) throws NoSuchNativeTypeException {
             super(arrayLength, parent, offset, setMem);
-            Aiocb.getLayoutOrThrow();
         }
 
     }

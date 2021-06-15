@@ -21,10 +21,10 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -77,8 +77,8 @@ public class PollTest {
         }
     }
 
-    @Test
-    public void test_HAVE_POLL_H() throws Exception {
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_POLL_H() throws Exception {
         if (DefinesTest.MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Poll.HAVE_POLL_H, "not expected to have poll.h");
         } else {
@@ -86,10 +86,24 @@ public class PollTest {
         }
     }
 
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testPollDefines() throws Exception {
+    @BeforeAll
+    public static void checkBeforeAll_PollDefines() throws Exception {
+        if (DefinesTest.MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
         DefinesTest.testDefines(Poll.class, NativeDefines.class, "HAVE_POLL_H");
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_StructPollFd() throws Exception {
+        if (DefinesTest.MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        Assertions.assertEquals(NativePollFd.sizeof(), Poll.PollFd.sizeof);
+        Assertions.assertEquals(NativePollFd.alignof(), Poll.PollFd.alignof.alignof);
+        Assertions.assertEquals(NativePollFd.fd(), Poll.PollFd.offsetof_Fd);
+        Assertions.assertEquals(NativePollFd.events(), Poll.PollFd.offsetof_Events);
+        Assertions.assertEquals(NativePollFd.revents(), Poll.PollFd.offsetof_Revents);
     }
 
     @Test
@@ -107,12 +121,4 @@ public class PollTest {
         });
     }
 
-    @Test
-    public void testPollFd() throws Exception {
-        Assertions.assertEquals(NativePollFd.sizeof(), Poll.PollFd.sizeof);
-        Assertions.assertEquals(NativePollFd.alignof(), Poll.PollFd.alignof.alignof);
-        Assertions.assertEquals(NativePollFd.fd(), Poll.PollFd.offsetof_Fd);
-        Assertions.assertEquals(NativePollFd.events(), Poll.PollFd.offsetof_Events);
-        Assertions.assertEquals(NativePollFd.revents(), Poll.PollFd.offsetof_Revents);
-    }
 }

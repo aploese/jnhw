@@ -144,8 +144,8 @@ am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
 libtests_la_LIBADD =
-am_libtests_la_OBJECTS = PollDefines.lo PollStructures.lo \
-	LocaleTest.lo IoctlTest.lo
+am_libtests_la_OBJECTS = AioDefines.lo AioStructures.lo PollDefines.lo \
+	PollStructures.lo LocaleTest.lo IoctlTest.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -162,7 +162,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/IoctlTest.Plo \
+am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
+	./$(DEPDIR)/AioStructures.Plo ./$(DEPDIR)/IoctlTest.Plo \
 	./$(DEPDIR)/LocaleTest.Plo ./$(DEPDIR)/PollDefines.Plo \
 	./$(DEPDIR)/PollStructures.Plo \
 	./$(DEPDIR)/libjnhw-posix-test.Plo
@@ -366,6 +367,8 @@ libtests.la \
 @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libtests_la_SOURCES = \
+ AioDefines.c \
+ AioStructures.c \
  PollDefines.c \
  PollStructures.c \
  LocaleTest.c \
@@ -463,6 +466,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollDefines.Plo@am__quote@ # am--include-marker
@@ -628,7 +633,9 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/IoctlTest.Plo
+		-rm -f ./$(DEPDIR)/AioDefines.Plo
+	-rm -f ./$(DEPDIR)/AioStructures.Plo
+	-rm -f ./$(DEPDIR)/IoctlTest.Plo
 	-rm -f ./$(DEPDIR)/LocaleTest.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo
@@ -678,7 +685,9 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/IoctlTest.Plo
+		-rm -f ./$(DEPDIR)/AioDefines.Plo
+	-rm -f ./$(DEPDIR)/AioStructures.Plo
+	-rm -f ./$(DEPDIR)/IoctlTest.Plo
 	-rm -f ./$(DEPDIR)/LocaleTest.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo

@@ -159,6 +159,10 @@ extern "C" {
     _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticObjectDefineField(JNIEnv *env, jclass clazz, const char * fieldName, jobject value);
     _JNHW_IMPORT_OR_EXPORT_ extern jboolean JnhwSetStaticIntDefineField(JNIEnv *env, jclass clazz, const char * fieldName, jint value);
 
+    /* TODO move to test...
+     */
+    _JNHW_IMPORT_OR_EXPORT_ extern jobject JnhwWrapInteger(JNIEnv *env, int value);
+
     //Its funny how the differnt archs ans OSses have different datatypes so a long int is not equals to long long on 64 bit...
 
 #define JNHW_FORMAT_STRING_int8_t "%d"

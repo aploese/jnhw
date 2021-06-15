@@ -58,9 +58,7 @@ libjnhw_posix_la_SOURCES = \
  jnhw-posix-jni.c
 
 libaio_la_SOURCES = \
- AioDefines.c \
- AioFunctions.c \
- AioStructures.c
+ AioFunctions.c
 
 liberrno_la_SOURCES = \
  Isoc_ErrnoDefines.c \
