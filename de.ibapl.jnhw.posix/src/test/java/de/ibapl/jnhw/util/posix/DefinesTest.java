@@ -31,9 +31,7 @@ import de.ibapl.jnhw.posix.Locale;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.posix.Sched;
 import de.ibapl.jnhw.posix.Signal;
-import de.ibapl.jnhw.posix.Stdio;
 import de.ibapl.jnhw.posix.StringHeader;
-import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.unix.sys.Ioctl;
@@ -305,15 +303,6 @@ public class DefinesTest {
     }
 
     @Test
-    public void test_HAVE_STDIO_H() {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            assertFalse(Stdio.HAVE_STDIO_H, "not expected to have stdio.h");
-        } else {
-            assertTrue(Stdio.HAVE_STDIO_H, "expected to have stdio.h");
-        }
-    }
-
-    @Test
     public void test_HAVE_STRING_H() {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(StringHeader.HAVE_STRING_H, "not expected to have string.h");
@@ -367,15 +356,6 @@ public class DefinesTest {
                 break;
             default:
                 assertTrue(Ucontext.HAVE_UCONTEXT_H, "expected to have ucontext.h");
-        }
-    }
-
-    @Test
-    public void test_HAVE_UNISTD_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Unistd.HAVE_UNISTD_H, "not expected to have unistd.h");
-        } else {
-            Assertions.assertTrue(Unistd.HAVE_UNISTD_H, "expected to have unistd.h");
         }
     }
 

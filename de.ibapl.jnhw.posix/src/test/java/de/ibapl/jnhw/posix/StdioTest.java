@@ -21,8 +21,13 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.io.File;
+import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -32,6 +37,42 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
  */
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class StdioTest {
+
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_STDIO_H();
+
+        public final static native int EOF();
+
+        public final static native int SEEK_CUR();
+
+        public final static native int SEEK_END();
+
+        public final static native int SEEK_SET();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
+
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_STDIO_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Stdio.HAVE_STDIO_H, "not expected to have stdio.h");
+        } else {
+            Assertions.assertTrue(Stdio.HAVE_STDIO_H, "expected to have stdio.h");
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_StdioDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(Stdio.class, NativeDefines.class, "HAVE_STDIO_H");
+    }
 
     /**
      * Test of remove method, of class Stdio.

@@ -42,6 +42,15 @@ import java.lang.annotation.Target;
 @Include("#include <stdio.h>")
 public class Stdio {
 
+    public static class LinuxDefines {
+
+        public static final int EOF = -1;
+        public static final int SEEK_CUR = 1;
+        public static final int SEEK_END = 2;
+        public static final int SEEK_SET = 0;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -53,18 +62,18 @@ public class Stdio {
      */
     static {
         LibJnhwPosixLoader.touch();
-
-        HAVE_STDIO_H = false;
-
-        EOF = 0;
-        SEEK_CUR = 0;
-        SEEK_END = 0;
-        SEEK_SET = 0;
-
-        initFields();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_STDIO_H = true;
+                EOF = LinuxDefines.EOF;
+                SEEK_CUR = LinuxDefines.SEEK_CUR;
+                SEEK_END = LinuxDefines.SEEK_END;
+                SEEK_SET = LinuxDefines.SEEK_SET;
+                break;
+            default:
+                throw new NoClassDefFoundError("No stdio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     public final static boolean HAVE_STDIO_H;
 
@@ -129,38 +138,5 @@ public class Stdio {
      * indicates an error.
      */
     public static native void remove(String path) throws NativeErrorException;
-
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
-     * FILE}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface FILE {
-    }
-
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
-     * fpos_t}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface fpos_t {
-    }
-
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
-     * va_list}</a>.
-     *
-     * @author aploese
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-    @interface va_list {
-    }
 
 }

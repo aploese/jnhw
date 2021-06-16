@@ -185,11 +185,10 @@ am_libsignal_la_OBJECTS = SignalDefines.lo SignalFunctions.lo \
 	SignalStructures.lo Callback__Sigval_int__V_Impl.lo
 libsignal_la_OBJECTS = $(am_libsignal_la_OBJECTS)
 libstdio_la_LIBADD =
-am_libstdio_la_OBJECTS = StdioDefines.lo StdioFunctions.lo
+am_libstdio_la_OBJECTS = StdioFunctions.lo
 libstdio_la_OBJECTS = $(am_libstdio_la_OBJECTS)
 libstring_la_LIBADD =
-am_libstring_la_OBJECTS = StringHeaderDefines.lo \
-	StringHeaderFunctions.lo
+am_libstring_la_OBJECTS = StringHeaderFunctions.lo
 libstring_la_OBJECTS = $(am_libstring_la_OBJECTS)
 libsysstat_la_LIBADD =
 am_libsysstat_la_OBJECTS = StatDefines.lo StatFunctions.lo
@@ -242,9 +241,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/SchedFunctions.Plo ./$(DEPDIR)/SchedStructures.Plo \
 	./$(DEPDIR)/SignalDefines.Plo ./$(DEPDIR)/SignalFunctions.Plo \
 	./$(DEPDIR)/SignalStructures.Plo ./$(DEPDIR)/StatDefines.Plo \
-	./$(DEPDIR)/StatFunctions.Plo ./$(DEPDIR)/StdioDefines.Plo \
-	./$(DEPDIR)/StdioFunctions.Plo \
-	./$(DEPDIR)/StringHeaderDefines.Plo \
+	./$(DEPDIR)/StatFunctions.Plo ./$(DEPDIR)/StdioFunctions.Plo \
 	./$(DEPDIR)/StringHeaderFunctions.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo ./$(DEPDIR)/TimeFunctions.Plo \
 	./$(DEPDIR)/TypesDefines.Plo ./$(DEPDIR)/UcontextDefines.Plo \
@@ -556,11 +553,9 @@ libsignal_la_SOURCES = \
  Callback__Sigval_int__V_Impl.c
 
 libstdio_la_SOURCES = \
- StdioDefines.c \
  StdioFunctions.c
 
 libstring_la_SOURCES = \
- StringHeaderDefines.c \
  StringHeaderFunctions.c
 
 libsystypes_la_SOURCES = \
@@ -757,9 +752,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdioDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdioFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeFunctions.Plo@am__quote@ # am--include-marker
@@ -956,9 +949,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/SignalStructures.Plo
 	-rm -f ./$(DEPDIR)/StatDefines.Plo
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo
-	-rm -f ./$(DEPDIR)/StdioDefines.Plo
 	-rm -f ./$(DEPDIR)/StdioFunctions.Plo
-	-rm -f ./$(DEPDIR)/StringHeaderDefines.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
@@ -1040,9 +1031,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/SignalStructures.Plo
 	-rm -f ./$(DEPDIR)/StatDefines.Plo
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo
-	-rm -f ./$(DEPDIR)/StdioDefines.Plo
 	-rm -f ./$(DEPDIR)/StdioFunctions.Plo
-	-rm -f ./$(DEPDIR)/StringHeaderDefines.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo

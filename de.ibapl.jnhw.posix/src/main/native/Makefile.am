@@ -105,11 +105,9 @@ libsignal_la_SOURCES = \
  Callback__Sigval_int__V_Impl.c
 
 libstdio_la_SOURCES = \
- StdioDefines.c \
  StdioFunctions.c
 
 libstring_la_SOURCES = \
- StringHeaderDefines.c \
  StringHeaderFunctions.c
 
 libsystypes_la_SOURCES = \

@@ -23,7 +23,11 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.util.posix.DefinesTest;
+import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -36,7 +40,30 @@ public class StringHeaderTest {
 
     private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
-    public StringHeaderTest() {
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_STRING_H();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_STRING_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(StringHeader.HAVE_STRING_H, "not expected to have string.h");
+        } else {
+            Assertions.assertTrue(StringHeader.HAVE_STRING_H, "expected to have string.h");
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_StdioDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(StringHeader.class, NativeDefines.class, "HAVE_STRING_H");
     }
 
     /**

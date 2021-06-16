@@ -20,51 +20,35 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_Stdio.h"
+#include "de_ibapl_jnhw_posix_StringHeaderTest_NativeDefines.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-
-    //We need the POSIX version ...    
-#if !defined(HAVE_STDIO_H) || !defined(_POSIX_VERSION)
+    //We need the POSIX version ...
+#if !defined(HAVE_STRING_H) || !defined(_POSIX_VERSION)
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Stdio
-     * Method:    initFields
-     * Signature: ()V
+     * Class:     de_ibapl_jnhw_posix_StringHeaderTest_NativeDefines
+     * Method:    HAVE_STRING_H
+     * Signature: ()Z
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Stdio_initFields
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_StringHeaderTest_00024NativeDefines_HAVE_1STRING_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return JNI_FALSE;
     }
 #else
-#include <stdio.h>
+#include <string.h>
 
     /*
-     * Class:     de_ibapl_jnhw_posix_Stdio
-     * Method:    initFields
-     * Signature: ()V
+     * Class:     de_ibapl_jnhw_posix_StringHeaderTest_NativeDefines
+     * Method:    HAVE_STRING_H
+     * Signature: ()Z
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Stdio_initFields
-    (JNIEnv *env, jclass clazz) {
-
-        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_STDIO_H", JNI_TRUE)) {
-            return;
-        }
-
-        if (JnhwSetStaticIntField(env, clazz, "SEEK_SET", SEEK_SET)) {
-            return;
-        }
-        if (JnhwSetStaticIntField(env, clazz, "SEEK_CUR", SEEK_CUR)) {
-            return;
-        }
-        if (JnhwSetStaticIntField(env, clazz, "EOF", EOF)) {
-            return;
-        }
-        if (JnhwSetStaticIntField(env, clazz, "SEEK_END", SEEK_END)) {
-            return;
-        }
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_StringHeaderTest_00024NativeDefines_HAVE_1STRING_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return JNI_TRUE;
     }
 
 #endif

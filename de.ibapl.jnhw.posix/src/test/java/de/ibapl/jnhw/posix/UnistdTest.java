@@ -155,7 +155,7 @@ public class UnistdTest {
     }
 
     @BeforeAll
-    public static void checkBeforeAll_TermiosDefines() throws Exception {
+    public static void checkBeforeAll_UnistdDefines() throws Exception {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             return;
         }

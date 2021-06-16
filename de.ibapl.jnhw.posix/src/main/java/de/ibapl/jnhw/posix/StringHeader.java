@@ -48,13 +48,14 @@ public class StringHeader {
      */
     static {
         LibJnhwPosixLoader.touch();
-
-        HAVE_STRING_H = false;
-
-        initFields();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_STRING_H = true;
+                break;
+            default:
+                throw new NoClassDefFoundError("No string.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     public final static boolean HAVE_STRING_H;
 
