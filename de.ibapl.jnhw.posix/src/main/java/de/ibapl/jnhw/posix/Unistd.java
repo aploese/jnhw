@@ -55,6 +55,19 @@ import java.nio.ByteBuffer;
 @Include("#include <unistd.h>")
 public final class Unistd {
 
+    public static class LinuxDefines {
+
+        public final static long _POSIX_VERSION = 200809L;
+        public final static int SEEK_CUR = 1;
+        public final static int SEEK_DATA = 3;
+        public final static int SEEK_END = 2;
+        public final static int SEEK_HOLE = 4;
+        public final static int SEEK_SET = 0;
+        public final static int STDERR_FILENO = 2;
+        public final static int STDIN_FILENO = 0;
+        public final static int STDOUT_FILENO = 1;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -66,22 +79,23 @@ public final class Unistd {
      */
     static {
         LibJnhwPosixLoader.touch();
-
-        HAVE_UNISTD_H = false;
-
-        SEEK_CUR = 0;
-        SEEK_DATA = IntDefine.UNDEFINED;
-        SEEK_END = 0;
-        SEEK_HOLE = IntDefine.UNDEFINED;
-        SEEK_SET = 0;
-        STDERR_FILENO = 0;
-        STDIN_FILENO = 0;
-        STDOUT_FILENO = 0;
-
-        initFields();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_UNISTD_H = true;
+                _POSIX_VERSION = LinuxDefines._POSIX_VERSION;
+                SEEK_CUR = LinuxDefines.SEEK_CUR;
+                SEEK_DATA = IntDefine.toIntDefine(LinuxDefines.SEEK_DATA);
+                SEEK_END = LinuxDefines.SEEK_END;
+                SEEK_HOLE = IntDefine.toIntDefine(LinuxDefines.SEEK_HOLE);
+                SEEK_SET = LinuxDefines.SEEK_SET;
+                STDERR_FILENO = LinuxDefines.STDERR_FILENO;
+                STDIN_FILENO = LinuxDefines.STDIN_FILENO;
+                STDOUT_FILENO = LinuxDefines.STDOUT_FILENO;
+                break;
+            default:
+                throw new NoClassDefFoundError("No unistd.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     public final static boolean HAVE_UNISTD_H;
 
@@ -152,7 +166,7 @@ public final class Unistd {
      *
      */
     @Define
-    public static int _POSIX_VERSION;
+    public final static long _POSIX_VERSION;
 
     /**
      * <b>POSIX:</b>

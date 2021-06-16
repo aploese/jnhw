@@ -27,7 +27,8 @@ libtests_la_SOURCES = \
  TermiosDefines.c \
  TermiosStructures.c \
  TimeDefines.c \
- TimeStructures.c
+ TimeStructures.c \
+ UnistdDefines.c
 
 #hook into make all
 all-local: $(LIB_JNHW_POSIX_TEST_RES_NAME)

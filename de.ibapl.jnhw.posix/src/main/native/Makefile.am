@@ -130,7 +130,6 @@ libucontext_la_SOURCES = \
  UcontextFunctions.c
 
 libunistd_la_SOURCES = \
- UnistdDefines.c \
  UnistdFunctions.c
 
 

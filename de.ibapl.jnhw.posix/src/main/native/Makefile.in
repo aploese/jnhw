@@ -207,7 +207,7 @@ libucontext_la_LIBADD =
 am_libucontext_la_OBJECTS = UcontextDefines.lo UcontextFunctions.lo
 libucontext_la_OBJECTS = $(am_libucontext_la_OBJECTS)
 libunistd_la_LIBADD =
-am_libunistd_la_OBJECTS = UnistdDefines.lo UnistdFunctions.lo
+am_libunistd_la_OBJECTS = UnistdFunctions.lo
 libunistd_la_OBJECTS = $(am_libunistd_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -249,8 +249,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo ./$(DEPDIR)/TimeFunctions.Plo \
 	./$(DEPDIR)/TypesDefines.Plo ./$(DEPDIR)/UcontextDefines.Plo \
 	./$(DEPDIR)/UcontextFunctions.Plo \
-	./$(DEPDIR)/UnistdDefines.Plo ./$(DEPDIR)/UnistdFunctions.Plo \
-	./$(DEPDIR)/jnhw-posix-jni.Plo
+	./$(DEPDIR)/UnistdFunctions.Plo ./$(DEPDIR)/jnhw-posix-jni.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -582,7 +581,6 @@ libucontext_la_SOURCES = \
  UcontextFunctions.c
 
 libunistd_la_SOURCES = \
- UnistdDefines.c \
  UnistdFunctions.c
 
 all: all-am
@@ -768,7 +766,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TypesDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-posix-jni.Plo@am__quote@ # am--include-marker
 
@@ -968,7 +965,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo
-	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo
 	-rm -f Makefile
@@ -1053,7 +1049,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo
-	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo
 	-rm -f Makefile

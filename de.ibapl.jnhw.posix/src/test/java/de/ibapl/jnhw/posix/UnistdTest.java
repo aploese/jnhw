@@ -43,9 +43,41 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.util.posix.DefinesTest;
 
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class UnistdTest {
+
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_UNISTD_H();
+
+        public final static native long _POSIX_VERSION();
+
+        public final static native int SEEK_CUR();
+
+        public final static native Integer SEEK_DATA();
+
+        public final static native int SEEK_END();
+
+        public final static native Integer SEEK_HOLE();
+
+        public final static native int SEEK_SET();
+
+        public final static native int STDERR_FILENO();
+
+        public final static native int STDIN_FILENO();
+
+        public final static native int STDOUT_FILENO();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public final static int LEN = 239;
     public final static int POS = 111;
@@ -111,6 +143,23 @@ public class UnistdTest {
         if (fd != -1) {
             Unistd.close(fd);
         }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_UNISTD_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Unistd.HAVE_UNISTD_H, "not expected to have unistd.h");
+        } else {
+            Assertions.assertTrue(Unistd.HAVE_UNISTD_H, "expected to have unistd.h");
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_TermiosDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(Unistd.class, NativeDefines.class, "HAVE_UNISTD_H");
     }
 
     @Test

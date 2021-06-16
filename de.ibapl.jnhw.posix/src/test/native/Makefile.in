@@ -146,7 +146,8 @@ am__v_lt_1 =
 libtests_la_LIBADD =
 am_libtests_la_OBJECTS = AioDefines.lo AioStructures.lo PollDefines.lo \
 	PollStructures.lo LocaleTest.lo IoctlTest.lo TermiosDefines.lo \
-	TermiosStructures.lo TimeDefines.lo TimeStructures.lo
+	TermiosStructures.lo TimeDefines.lo TimeStructures.lo \
+	UnistdDefines.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -168,7 +169,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/LocaleTest.Plo ./$(DEPDIR)/PollDefines.Plo \
 	./$(DEPDIR)/PollStructures.Plo ./$(DEPDIR)/TermiosDefines.Plo \
 	./$(DEPDIR)/TermiosStructures.Plo ./$(DEPDIR)/TimeDefines.Plo \
-	./$(DEPDIR)/TimeStructures.Plo \
+	./$(DEPDIR)/TimeStructures.Plo ./$(DEPDIR)/UnistdDefines.Plo \
 	./$(DEPDIR)/libjnhw-posix-test.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -379,7 +380,8 @@ libtests_la_SOURCES = \
  TermiosDefines.c \
  TermiosStructures.c \
  TimeDefines.c \
- TimeStructures.c
+ TimeStructures.c \
+ UnistdDefines.c
 
 all: all-am
 
@@ -483,6 +485,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeStructures.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libjnhw-posix-test.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
@@ -654,6 +657,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/TermiosStructures.Plo
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeStructures.Plo
+	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-posix-test.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
@@ -710,6 +714,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/TermiosStructures.Plo
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeStructures.Plo
+	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-posix-test.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic

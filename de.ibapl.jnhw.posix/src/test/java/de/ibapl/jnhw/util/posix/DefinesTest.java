@@ -33,7 +33,6 @@ import de.ibapl.jnhw.posix.Sched;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.posix.Stdio;
 import de.ibapl.jnhw.posix.StringHeader;
-import de.ibapl.jnhw.posix.Time;
 import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -356,15 +355,6 @@ public class DefinesTest {
             Assertions.assertFalse(Types.HAVE_SYS_TYPES_H, "not expected to have sys/types.h");
         } else {
             Assertions.assertTrue(Types.HAVE_SYS_TYPES_H, "expected to have sys/types.h");
-        }
-    }
-
-    @Test
-    public void test_HAVE_TIME_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            assertFalse(Time.HAVE_TIME_H, "not expected to have time.h");
-        } else {
-            assertTrue(Time.HAVE_TIME_H, "expected to have time.h");
         }
     }
 

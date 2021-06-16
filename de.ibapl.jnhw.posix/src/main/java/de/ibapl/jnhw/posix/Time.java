@@ -93,7 +93,7 @@ public class Time {
                 TIMER_ABSTIME = LinuxDefines.TIMER_ABSTIME;
                 break;
             default:
-                throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
     }
 
