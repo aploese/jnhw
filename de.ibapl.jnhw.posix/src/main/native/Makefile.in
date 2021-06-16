@@ -201,8 +201,7 @@ libtermios_la_LIBADD =
 am_libtermios_la_OBJECTS = TermiosFunctions.lo
 libtermios_la_OBJECTS = $(am_libtermios_la_OBJECTS)
 libtime_la_LIBADD =
-am_libtime_la_OBJECTS = TimeDefines.lo TimeFunctions.lo \
-	TimeStructures.lo
+am_libtime_la_OBJECTS = TimeFunctions.lo
 libtime_la_OBJECTS = $(am_libtime_la_OBJECTS)
 libucontext_la_LIBADD =
 am_libucontext_la_OBJECTS = UcontextDefines.lo UcontextFunctions.lo
@@ -247,8 +246,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/StdioFunctions.Plo \
 	./$(DEPDIR)/StringHeaderDefines.Plo \
 	./$(DEPDIR)/StringHeaderFunctions.Plo \
-	./$(DEPDIR)/TermiosFunctions.Plo ./$(DEPDIR)/TimeDefines.Plo \
-	./$(DEPDIR)/TimeFunctions.Plo ./$(DEPDIR)/TimeStructures.Plo \
+	./$(DEPDIR)/TermiosFunctions.Plo ./$(DEPDIR)/TimeFunctions.Plo \
 	./$(DEPDIR)/TypesDefines.Plo ./$(DEPDIR)/UcontextDefines.Plo \
 	./$(DEPDIR)/UcontextFunctions.Plo \
 	./$(DEPDIR)/UnistdDefines.Plo ./$(DEPDIR)/UnistdFunctions.Plo \
@@ -577,9 +575,7 @@ libtermios_la_SOURCES = \
  TermiosFunctions.c
 
 libtime_la_SOURCES = \
- TimeDefines.c \
- TimeFunctions.c \
- TimeStructures.c
+ TimeFunctions.c
 
 libucontext_la_SOURCES = \
  UcontextDefines.c \
@@ -768,9 +764,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TypesDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextFunctions.Plo@am__quote@ # am--include-marker
@@ -970,9 +964,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/StringHeaderDefines.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
-	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
-	-rm -f ./$(DEPDIR)/TimeStructures.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo
@@ -1057,9 +1049,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/StringHeaderDefines.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
-	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
-	-rm -f ./$(DEPDIR)/TimeStructures.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo

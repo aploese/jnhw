@@ -421,7 +421,7 @@ public class Aio {
                     offsetof_Aio_lio_opcode = -1;
                     alignof = Alignment.AT_8;
                     sizeof = 160;
-
+                    break;
                 default:
                     throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }

@@ -123,9 +123,7 @@ libtermios_la_SOURCES = \
  TermiosFunctions.c
 
 libtime_la_SOURCES = \
- TimeDefines.c \
- TimeFunctions.c \
- TimeStructures.c
+ TimeFunctions.c
 
 libucontext_la_SOURCES = \
  UcontextDefines.c \

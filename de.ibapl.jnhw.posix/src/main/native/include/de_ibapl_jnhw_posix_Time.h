@@ -9,14 +9,6 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Time
- * Method:    initFields
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_initFields
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Time
  * Method:    asctime
  * Signature: (J)Ljava/lang/String;
  */

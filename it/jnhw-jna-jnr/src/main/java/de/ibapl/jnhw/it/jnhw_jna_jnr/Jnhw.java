@@ -35,7 +35,7 @@ public class Jnhw {
 
     public static void runFullTest_HeapAllocated(final int count) throws NativeErrorException {
         final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
-        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, Time.Timespec.LAYOUT.sizeof, SetMem.DO_NOT_SET);
+        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, Time.Timespec.sizeof, SetMem.DO_NOT_SET);
         for (int i = 0; i < count; i++) {
             final Time.Timespec timespec = new Time.Timespec(heap, 0, SetMem.DO_NOT_SET);
             Time.clock_gettime(CLOCK_MONOTONIC, timespec);
@@ -64,7 +64,7 @@ public class Jnhw {
      * @param count
      */
     public static void mem_HeapAllocated(final int count) {
-        final Memory32Heap heap = new Memory32Heap(null, 0, Time.Timespec.LAYOUT.sizeof, SetMem.DO_NOT_SET);
+        final Memory32Heap heap = new Memory32Heap(null, 0, Time.Timespec.sizeof, SetMem.DO_NOT_SET);
         for (int i = 0; i < count; i++) {
             ts = new Time.Timespec(heap, 0, SetMem.DO_NOT_SET);
         }

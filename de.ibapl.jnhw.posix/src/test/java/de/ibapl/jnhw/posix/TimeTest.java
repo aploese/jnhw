@@ -47,7 +47,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.opentest4j.MultipleFailuresError;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.util.posix.DefinesTest;
+import org.junit.jupiter.api.BeforeAll;
 
 /**
  *
@@ -56,13 +57,211 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TimeTest {
 
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_TIME_H();
+
+        public final static native int CLOCKS_PER_SEC();
+
+        public final static native int CLOCK_MONOTONIC();
+
+        public final static native int CLOCK_PROCESS_CPUTIME_ID();
+
+        public final static native int CLOCK_REALTIME();
+
+        public final static native int CLOCK_THREAD_CPUTIME_ID();
+
+        public final static native int TIMER_ABSTIME();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    public static class NativeItimerspec {
+
+        public final static native int alignof();
+
+        public final static native int sizeof();
+
+        public final static native long it_interval();
+
+        public final static native long it_value();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    public static class NativeTimespec {
+
+        public final static native int alignof();
+
+        public final static native int sizeof();
+
+        public final static native long tv_sec();
+
+        public final static native long tv_nsec();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    public static class NativeTm {
+
+        public final static native int alignof();
+
+        public final static native int sizeof();
+
+        public final static native long tm_sec();
+
+        public final static native long tm_min();
+
+        public final static native long tm_hour();
+
+        public final static native long tm_mday();
+
+        public final static native long tm_mon();
+
+        public final static native long tm_year();
+
+        public final static native long tm_wday();
+
+        public final static native long tm_yday();
+
+        public final static native long tm_isdst();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    public static class NativeTimer_t {
+
+        public final static native int alignof();
+
+        public final static native int sizeof();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
     // just for vm in qemu...
     private final static long ONE_MINUTE = 60_000;
     @time_t
     private final static long TIME_T__20191203_142044 = 1575382844;
     private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
-    public TimeTest() {
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_AIO_H() throws Exception {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+            case WINDOWS:
+                Assertions.assertFalse(Aio.HAVE_AIO_H, "expected not to have aio.h");
+                break;
+            default:
+                Assertions.assertTrue(Aio.HAVE_AIO_H, "expected to have aio.h");
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_AioDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(Time.class, NativeDefines.class, "HAVE_TIME_H");
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_StructItimespec() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        Assertions.assertAll(
+                () -> {
+                    Assertions.assertEquals(NativeItimerspec.sizeof(), Time.Itimerspec.sizeof, "sizeof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeItimerspec.alignof(), Time.Itimerspec.alignof.alignof, "alignof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeItimerspec.it_value(), Time.Itimerspec.offsetof_It_value, "offsetof_It_value");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeItimerspec.it_interval(), Time.Itimerspec.offsetof_It_interval, "offsetof_It_interval");
+                }
+        );
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_StructTimespec() throws Exception {
+        Assertions.assertAll(
+                () -> {
+                    Assertions.assertEquals(NativeTimespec.sizeof(), Time.Timespec.sizeof, "sizeof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTimespec.alignof(), Time.Timespec.alignof.alignof, "alignof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTimespec.tv_sec(), Time.Timespec.offsetof_Tv_sec, "offsetof_Tv_sec");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTimespec.tv_nsec(), Time.Timespec.offsetof_Tv_nsec, "offsetof_Tv_nsec");
+                }
+        );
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_StructTm() throws Exception {
+        Assertions.assertAll(
+                () -> {
+                    Assertions.assertEquals(NativeTm.sizeof(), Time.Tm.sizeof, "sizeof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTm.alignof(), Time.Tm.alignof.alignof, "alignof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTm.tm_sec(), Time.Tm.offsetof_Tm_sec, "offsetof_Tm_sec");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTm.tm_min(), Time.Tm.offsetof_Tm_min, "offsetof_Tm_min");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTm.tm_hour(), Time.Tm.offsetof_Tm_hour, "offsetof_Tm_hour");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTm.tm_mday(), Time.Tm.offsetof_Tm_mday, "offsetof_Tm_mday");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTm.tm_mon(), Time.Tm.offsetof_Tm_mon, "offsetof_Tm_mon");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTm.tm_year(), Time.Tm.offsetof_Tm_year, "offsetof_Tm_year");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTm.tm_wday(), Time.Tm.offsetof_Tm_wday, "offsetof_Tm_wday");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTm.tm_yday(), Time.Tm.offsetof_Tm_yday, "offsetof_Tm_yday");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTm.tm_isdst(), Time.Tm.offsetof_Tm_isdst, "offsetof_Tm_isdst");
+                }
+        );
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_Timer_t() throws Exception {
+        Assertions.assertAll(
+                () -> {
+                    Assertions.assertEquals(NativeTimer_t.sizeof(), Time.Timer_t.sizeof, "sizeof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeTimer_t.alignof(), Time.Timer_t.alignof.alignof, "alignof");
+                }
+        );
     }
 
     /**
@@ -920,146 +1119,6 @@ public class TimeTest {
     public void testItimerspec() throws Exception {
         Time.Itimerspec itimerspec = new Time.Itimerspec(SetMem.TO_0x00);
         Assertions.assertEquals("{it_value : {tv_sec : 0, tv_nsec : 0}, it_interval : {tv_sec : 0, tv_nsec : 0}}", itimerspec.nativeToString());
-    }
-
-    @Test
-    public void testSizeOfItimerspec() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getSizeOfLong()) {
-            case _32_BIT:
-                Assertions.assertEquals(16, Time.Itimerspec.LAYOUT.sizeof);
-                break;
-            case _64_BIT:
-                Assertions.assertEquals(32, Time.Itimerspec.LAYOUT.sizeof);
-                break;
-            default:
-                Assertions.assertEquals(-1, Time.Itimerspec.LAYOUT.sizeof);
-        }
-    }
-
-    @Test
-    public void testAlignOfItimerspec() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getSizeOfLong()) {
-            case _32_BIT:
-                Assertions.assertEquals(Alignment.AT_4, Time.Itimerspec.LAYOUT.alignment);
-                break;
-            case _64_BIT:
-                Assertions.assertEquals(Alignment.AT_8, Time.Itimerspec.LAYOUT.alignment);
-                break;
-            default:
-                Assertions.assertEquals(null, Time.Itimerspec.LAYOUT.alignment);
-        }
-    }
-
-    @Test
-    public void testSizeOfTimer_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case LINUX:
-            case FREE_BSD:
-                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
-                    case _32_BIT:
-                        Assertions.assertEquals(4, Time.Timer_t.LAYOUT.sizeof);
-                        break;
-                    case _64_BIT:
-                        Assertions.assertEquals(8, Time.Timer_t.LAYOUT.sizeof);
-                        break;
-                    default:
-                        Assertions.assertEquals(-1, Time.Timer_t.LAYOUT.sizeof);
-                }
-                break;
-            case OPEN_BSD:
-                Assertions.assertEquals(4, Time.Timer_t.LAYOUT.sizeof);
-                break;
-            default:
-                Assertions.assertEquals(-1, Time.Timer_t.LAYOUT.sizeof);
-        }
-    }
-
-    @Test
-    public void testAlignOfTimer_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case LINUX:
-            case FREE_BSD:
-                switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
-                    case _32_BIT:
-                        Assertions.assertEquals(Alignment.AT_4, Time.Timer_t.LAYOUT.alignment);
-                        break;
-                    case _64_BIT:
-                        Assertions.assertEquals(Alignment.AT_8, Time.Timer_t.LAYOUT.alignment);
-                        break;
-                    default:
-                        Assertions.assertEquals(null, Time.Timer_t.LAYOUT.alignment);
-                }
-                break;
-            case OPEN_BSD:
-                Assertions.assertEquals(Alignment.AT_4, Time.Timer_t.LAYOUT.alignment);
-                break;
-            default:
-                Assertions.assertEquals(null, Time.Timer_t.LAYOUT.alignment);
-        }
-    }
-
-    @Test
-    public void testTimespecLayout() throws Exception {
-        final Time.Timespec.Layout layout = Time.Timespec.LAYOUT;
-        switch (MULTIARCHTUPEL_BUILDER.getSizeOfLong()) {
-            case _32_BIT:
-                Assertions.assertEquals(8, layout.sizeof);
-                Assertions.assertEquals(Alignment.AT_4, layout.alignment);
-                break;
-            case _64_BIT:
-                Assertions.assertEquals(16, layout.sizeof);
-                Assertions.assertEquals(Alignment.AT_8, layout.alignment);
-                break;
-            default:
-                Assertions.fail("Time.Timespec.Layout sizeof: " + layout.sizeof + " alignof: " + layout.alignment);
-        }
-    }
-
-    @Test
-    public void testSizeOfTm() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
-                Assertions.assertEquals(44, Time.Tm.LAYOUT.sizeof);
-                break;
-            case _64_BIT:
-                Assertions.assertEquals(56, Time.Tm.LAYOUT.sizeof);
-                break;
-            default:
-                Assertions.assertEquals(-1, Time.Tm.LAYOUT.sizeof);
-        }
-    }
-
-    @Test
-    public void testAlignOfTm() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
-                Assertions.assertEquals(Alignment.AT_4, Time.Tm.LAYOUT.alignment);
-                break;
-            case _64_BIT:
-                Assertions.assertEquals(Alignment.AT_8, Time.Tm.LAYOUT.alignment);
-                break;
-            default:
-                Assertions.assertEquals(null, Time.Tm.LAYOUT.alignment);
-        }
-    }
-
-    @Test
-    public void testOffsetOfIt_interval() throws Exception {
-        Assertions.assertEquals(0, Time.Itimerspec.LAYOUT.it_interval);
-    }
-
-    @Test
-    public void testOffsetOfIt_value() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getSizeOfLong()) {
-            case _32_BIT:
-                Assertions.assertEquals(8, Time.Itimerspec.LAYOUT.it_value);
-                break;
-            case _64_BIT:
-                Assertions.assertEquals(16, Time.Itimerspec.LAYOUT.it_value);
-                break;
-            default:
-                Assertions.assertEquals(-1, Time.Itimerspec.LAYOUT.it_value);
-        }
     }
 
 }

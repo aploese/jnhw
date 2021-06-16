@@ -40,6 +40,7 @@ import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
 import java.io.IOException;
@@ -57,6 +58,17 @@ import java.util.Objects;
 @Include("#include <time.h>")
 public class Time {
 
+    public static class LinuxDefines {
+
+        public final static int CLOCKS_PER_SEC = 1000000;
+        public final static int CLOCK_MONOTONIC = 1;
+        public final static int CLOCK_PROCESS_CPUTIME_ID = 2;
+        public final static int CLOCK_REALTIME = 0;
+        public final static int CLOCK_THREAD_CPUTIME_ID = 3;
+        public final static int TIMER_ABSTIME = 1;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -69,18 +81,21 @@ public class Time {
     static {
         LibJnhwPosixLoader.touch();
 
-        HAVE_TIME_H = false;
-        CLOCKS_PER_SEC = 0;
-        CLOCK_MONOTONIC = 0;
-        CLOCK_PROCESS_CPUTIME_ID = 0;
-        CLOCK_REALTIME = 0;
-        CLOCK_THREAD_CPUTIME_ID = 0;
-        TIMER_ABSTIME = 0;
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_TIME_H = true;
 
-        initFields();
+                CLOCKS_PER_SEC = LinuxDefines.CLOCKS_PER_SEC;
+                CLOCK_MONOTONIC = LinuxDefines.CLOCK_MONOTONIC;
+                CLOCK_PROCESS_CPUTIME_ID = LinuxDefines.CLOCK_PROCESS_CPUTIME_ID;
+                CLOCK_REALTIME = LinuxDefines.CLOCK_REALTIME;
+                CLOCK_THREAD_CPUTIME_ID = LinuxDefines.CLOCK_THREAD_CPUTIME_ID;
+                TIMER_ABSTIME = LinuxDefines.TIMER_ABSTIME;
+                break;
+            default:
+                throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     /**
      * <b>POSIX:</b> A number used to convert the value returned by the clock()
@@ -672,33 +687,32 @@ public class Time {
      */
     public static class Itimerspec extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long it_interval;
-            public final long it_value;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                it_interval = -1;
-                it_value = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static long offsetof_It_interval = 0;
+        public final static long offsetof_It_value;
+        public final static Alignment alignof;
+        public final static int sizeof;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+
+            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+            switch (multiarchInfo.getSizeOfPointer()) {
+                case _32_BIT:
+                    offsetof_It_value = 8;
+                    alignof = Alignment.AT_4;
+                    sizeof = 16;
+                    break;
+                case _64_BIT:
+                    offsetof_It_value = 16;
+                    alignof = Alignment.AT_8;
+                    sizeof = 32;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         public Itimerspec(SetMem setMem) throws NoSuchNativeTypeException {
@@ -706,9 +720,9 @@ public class Time {
         }
 
         public Itimerspec(OpaqueMemory32 owner, int offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super((OpaqueMemory32) owner, 0, LAYOUT.sizeof, setMem);
-            it_interval = new Timespec(this, LAYOUT.it_interval, SetMem.DO_NOT_SET);//mem is already initialized by parent
-            it_value = new Timespec(this, LAYOUT.it_value, SetMem.DO_NOT_SET);//mem is already initialized by parent
+            super((OpaqueMemory32) owner, 0, Itimerspec.sizeof, setMem);
+            it_interval = new Timespec(this, Itimerspec.offsetof_It_interval, SetMem.DO_NOT_SET);//mem is already initialized by parent
+            it_value = new Timespec(this, Itimerspec.offsetof_It_value, SetMem.DO_NOT_SET);//mem is already initialized by parent
         }
 
         /**
@@ -772,34 +786,32 @@ public class Time {
      */
     public static class Timespec extends PosixStruct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long tv_sec;
-            public final long tv_nsec;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                tv_sec = -1;
-                tv_nsec = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static long offsetof_Tv_sec = 0;
+        public final static long offsetof_Tv_nsec;
+        public final static Alignment alignof;
+        public final static int sizeof;
 
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+            switch (multiarchInfo.getSizeOfPointer()) {
+                case _32_BIT:
+                    offsetof_Tv_nsec = 4;
+                    alignof = Alignment.AT_4;
+                    sizeof = 8;
+                    break;
+                case _64_BIT:
+                    offsetof_Tv_nsec = 8;
+                    alignof = Alignment.AT_8;
+                    sizeof = 16;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         public Timespec(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
+            super(parent, offset, Timespec.sizeof, setMem);
         }
 
         public Timespec(SetMem setMem) {
@@ -815,7 +827,7 @@ public class Time {
          */
         @time_t
         public long tv_sec() {
-            return ACCESSOR_TIME_T.time_t(this, LAYOUT.tv_sec);
+            return ACCESSOR_TIME_T.time_t(this, Timespec.offsetof_Tv_sec);
         }
 
         /**
@@ -826,7 +838,7 @@ public class Time {
          * @param tv_sec the value of tv_sec to be set natively.
          */
         public void tv_sec(@time_t long tv_sec) {
-            ACCESSOR_TIME_T.time_t(this, LAYOUT.tv_sec, tv_sec);
+            ACCESSOR_TIME_T.time_t(this, Timespec.offsetof_Tv_sec, tv_sec);
         }
 
         /**
@@ -837,7 +849,7 @@ public class Time {
          * @return the native value of tv_nsec.
          */
         public long tv_nsec() {
-            return MEM_ACCESS.signed_long(this, LAYOUT.tv_nsec);
+            return MEM_ACCESS.signed_long(this, Timespec.offsetof_Tv_nsec);
         }
 
         /**
@@ -848,7 +860,7 @@ public class Time {
          * @param tv_nsec the value of tv_nsec to be set natively.
          */
         public void tv_nsec(long tv_nsec) {
-            MEM_ACCESS.signed_long(this, LAYOUT.tv_nsec, tv_nsec);
+            MEM_ACCESS.signed_long(this, Timespec.offsetof_Tv_nsec, tv_nsec);
         }
 
         @Override
@@ -894,48 +906,54 @@ public class Time {
      */
     public static class Tm extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long tm_sec;
-            public final long tm_min;
-            public final long tm_hour;
-            public final long tm_mday;
-            public final long tm_mon;
-            public final long tm_year;
-            public final long tm_wday;
-            public final long tm_yday;
-            public final long tm_isdst;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                tm_sec = -1;
-                tm_min = -1;
-                tm_hour = -1;
-                tm_mday = -1;
-                tm_mon = -1;
-                tm_year = -1;
-                tm_wday = -1;
-                tm_yday = -1;
-                tm_isdst = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static long offsetof_Tm_sec = 0;
+        public final static long offsetof_Tm_min;
+        public final static long offsetof_Tm_hour;
+        public final static long offsetof_Tm_mday;
+        public final static long offsetof_Tm_mon;
+        public final static long offsetof_Tm_year;
+        public final static long offsetof_Tm_wday;
+        public final static long offsetof_Tm_yday;
+        public final static long offsetof_Tm_isdst;
+        public final static Alignment alignof;
+        public final static int sizeof;
 
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+
+            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+            switch (multiarchInfo.getSizeOfPointer()) {
+                case _32_BIT:
+                    offsetof_Tm_min = -1;
+                    offsetof_Tm_hour = -1;
+                    offsetof_Tm_mday = -1;
+                    offsetof_Tm_mon = -1;
+                    offsetof_Tm_year = -1;
+                    offsetof_Tm_wday = -1;
+                    offsetof_Tm_yday = -1;
+                    offsetof_Tm_isdst = -1;
+                    alignof = Alignment.AT_4;
+                    sizeof = 44;
+                    break;
+                case _64_BIT:
+                    offsetof_Tm_min = 4;
+                    offsetof_Tm_hour = 8;
+                    offsetof_Tm_mday = 12;
+                    offsetof_Tm_mon = 16;
+                    offsetof_Tm_year = 20;
+                    offsetof_Tm_wday = 24;
+                    offsetof_Tm_yday = 28;
+                    offsetof_Tm_isdst = 32;
+                    alignof = Alignment.AT_8;
+                    sizeof = 56;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         public Tm(NativeAddressHolder addressHolder) {
-            super(addressHolder, LAYOUT.sizeof);
+            super(addressHolder, Tm.sizeof);
         }
 
         public Tm(SetMem setMem) {
@@ -943,7 +961,7 @@ public class Time {
         }
 
         public Tm(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
+            super(parent, offset, Tm.sizeof, setMem);
         }
 
         /**
@@ -954,7 +972,7 @@ public class Time {
          * @return the native value of tm_sec.
          */
         public int tm_sec() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.tm_sec);
+            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_sec);
         }
 
         /**
@@ -965,7 +983,7 @@ public class Time {
          * @return the native value of tm_min.
          */
         public int tm_min() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.tm_min);
+            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_min);
         }
 
         /**
@@ -976,7 +994,7 @@ public class Time {
          * @return the native value of tm_hour.
          */
         public int tm_hour() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.tm_hour);
+            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_hour);
         }
 
         /**
@@ -987,7 +1005,7 @@ public class Time {
          * @return the native value of tm_mday.
          */
         public int tm_mday() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.tm_mday);
+            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_mday);
         }
 
         /**
@@ -998,7 +1016,7 @@ public class Time {
          * @return the native value of tm_mon.
          */
         public int tm_mon() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.tm_mon);
+            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_mon);
         }
 
         /**
@@ -1009,7 +1027,7 @@ public class Time {
          * @return the native value of tm_year.
          */
         public int tm_year() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.tm_year);
+            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_year);
         }
 
         /**
@@ -1020,7 +1038,7 @@ public class Time {
          * @return the native value of tm_wday.
          */
         public int tm_wday() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.tm_wday);
+            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_wday);
         }
 
         /**
@@ -1031,7 +1049,7 @@ public class Time {
          * @return the native value of tm_yday.
          */
         public int tm_yday() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.tm_yday);
+            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_yday);
         }
 
         /**
@@ -1042,7 +1060,7 @@ public class Time {
          * @return the native value of tm_isdst.
          */
         public int tm_isdst() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.tm_isdst);
+            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_isdst);
         }
 
         /**
@@ -1053,7 +1071,7 @@ public class Time {
          * @param tm_sec the value of tm_sec to be set natively.
          */
         public void tm_sec(int tm_sec) {
-            MEM_ACCESS.int32_t(this, LAYOUT.tm_sec, tm_sec);
+            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_sec, tm_sec);
         }
 
         /**
@@ -1064,7 +1082,7 @@ public class Time {
          * @param tm_min the value of tm_min to be set natively.
          */
         public void tm_min(int tm_min) {
-            MEM_ACCESS.int32_t(this, LAYOUT.tm_min, tm_min);
+            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_min, tm_min);
         }
 
         /**
@@ -1075,7 +1093,7 @@ public class Time {
          * @param tm_hour the value of tm_hour to be set natively.
          */
         public void tm_hour(int tm_hour) {
-            MEM_ACCESS.int32_t(this, LAYOUT.tm_hour, tm_hour);
+            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_hour, tm_hour);
         }
 
         /**
@@ -1086,7 +1104,7 @@ public class Time {
          * @param tm_mday the value of tm_mday to be set natively.
          */
         public void tm_mday(int tm_mday) {
-            MEM_ACCESS.int32_t(this, LAYOUT.tm_mday, tm_mday);
+            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_mday, tm_mday);
         }
 
         /**
@@ -1097,7 +1115,7 @@ public class Time {
          * @param tm_mon the value of tm_mon to be set natively.
          */
         public void tm_mon(int tm_mon) {
-            MEM_ACCESS.int32_t(this, LAYOUT.tm_mon, tm_mon);
+            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_mon, tm_mon);
         }
 
         /**
@@ -1108,7 +1126,7 @@ public class Time {
          * @param tm_year the value of tm_year to be set natively.
          */
         public void tm_year(int tm_year) {
-            MEM_ACCESS.int32_t(this, LAYOUT.tm_year, tm_year);
+            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_year, tm_year);
         }
 
         /**
@@ -1119,7 +1137,7 @@ public class Time {
          * @param tm_wday the value of tm_wday to be set natively.
          */
         public void tm_wday(int tm_wday) {
-            MEM_ACCESS.int32_t(this, LAYOUT.tm_wday, tm_wday);
+            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_wday, tm_wday);
         }
 
         /**
@@ -1130,7 +1148,7 @@ public class Time {
          * @param tm_yday the value of tm_yday to be set natively.
          */
         public void tm_yday(int tm_yday) {
-            MEM_ACCESS.int32_t(this, LAYOUT.tm_yday, tm_yday);
+            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_yday, tm_yday);
         }
 
         /**
@@ -1141,7 +1159,7 @@ public class Time {
          * @param tm_isdst the value of tm_isdst to be set natively.
          */
         public void tm_isdst(int tm_isdst) {
-            MEM_ACCESS.int32_t(this, LAYOUT.tm_isdst, tm_isdst);
+            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_isdst, tm_isdst);
         }
 
         @Override
@@ -1170,29 +1188,27 @@ public class Time {
     @timer_t
     public static final class Timer_t extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static Alignment alignof;
+        public final static int sizeof;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+            switch (multiarchInfo.getSizeOfPointer()) {
+                case _32_BIT:
+                    alignof = Alignment.AT_4;
+                    sizeof = 4;
+                    break;
+                case _64_BIT:
+                    alignof = Alignment.AT_8;
+                    sizeof = 8;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         public Timer_t(SetMem setMem) {
@@ -1200,7 +1216,7 @@ public class Time {
         }
 
         public Timer_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
+            super(parent, offset, Timer_t.sizeof, setMem);
         }
 
         @Override
@@ -1210,13 +1226,13 @@ public class Time {
 
         @Override
         public String nativeToString() {
-            switch (LAYOUT.sizeof) {
+            switch (Timer_t.sizeof) {
                 case 4:
                     return MEM_ACCESS.uint32_t_AsHex(this, 0);
                 case 8:
                     return MEM_ACCESS.uint64_t_AsHex(this, 0);
                 default:
-                    throw new RuntimeException("cant handle Time_t antiveToString current size: " + LAYOUT.sizeof);
+                    throw new RuntimeException("cant handle Time_t antiveToString current size: " + Timer_t.sizeof);
             }
         }
 
