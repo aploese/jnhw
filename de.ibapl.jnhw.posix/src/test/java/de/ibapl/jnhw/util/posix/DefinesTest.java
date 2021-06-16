@@ -22,7 +22,9 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.linux.sys.Eventfd;
@@ -30,8 +32,6 @@ import de.ibapl.jnhw.posix.Fcntl;
 import de.ibapl.jnhw.posix.Locale;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.posix.Sched;
-import de.ibapl.jnhw.posix.Signal;
-import de.ibapl.jnhw.posix.StringHeader;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.unix.sys.Ioctl;
@@ -97,6 +97,37 @@ public class DefinesTest {
                                 return f.getName() + " is not defined";
                             });
                             assertEquals(nativeResult, ((IntDefine) f.get(javaDefines)).get(), f.getName());
+                        });
+                    }
+                } else if (ObjectDefine.class.equals(type)) {
+                    ObjectDefine def = (ObjectDefine) f.get(javaDefines);
+                    Object nativeResult = (Object) nativeDefine.invoke(nativeDefines);
+                    if (nativeResult == null) {
+                        streamBuilder.accept(() -> {
+                            assertFalse(((ObjectDefine) f.get(javaDefines)).isDefined(), () -> {
+                                return f.getName() + " is defined";
+                            });
+                        });
+                    } else {
+                        streamBuilder.accept(() -> {
+                            assertTrue(((ObjectDefine) f.get(javaDefines)).isDefined(), () -> {
+                                return f.getName() + " is not defined";
+                            });
+                            assertEquals(nativeResult, ((ObjectDefine) f.get(javaDefines)).get(), f.getName());
+                        });
+                    }
+                } else if (FunctionPtr_I_V.class.equals(type)) {
+                    FunctionPtr_I_V def = (FunctionPtr_I_V) f.get(javaDefines);
+                    FunctionPtr_I_V nativeResult = (FunctionPtr_I_V) nativeDefine.invoke(nativeDefines);
+                    if (nativeResult == null) {
+                        streamBuilder.accept(() -> {
+                            assertNull(f.get(javaDefines), () -> {
+                                return f.getName() + " is defined";
+                            });
+                        });
+                    } else {
+                        streamBuilder.accept(() -> {
+                            assertEquals(nativeResult, (FunctionPtr_I_V) f.get(javaDefines), f.getName());
                         });
                     }
                 } else {
@@ -290,24 +321,6 @@ public class DefinesTest {
             Assertions.assertFalse(Sched.HAVE_SCHED_H, "not expected to have sched.h");
         } else {
             Assertions.assertTrue(Sched.HAVE_SCHED_H, "expected to have sched.h");
-        }
-    }
-
-    @Test
-    public void test_HAVE_SIGNAL_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Signal.HAVE_SIGNAL_H, "not expected to have signal.h");
-        } else {
-            Assertions.assertTrue(Signal.HAVE_SIGNAL_H, "expected to have signal.h");
-        }
-    }
-
-    @Test
-    public void test_HAVE_STRING_H() {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(StringHeader.HAVE_STRING_H, "not expected to have string.h");
-        } else {
-            assertTrue(StringHeader.HAVE_STRING_H, "expected to have string.h");
         }
     }
 

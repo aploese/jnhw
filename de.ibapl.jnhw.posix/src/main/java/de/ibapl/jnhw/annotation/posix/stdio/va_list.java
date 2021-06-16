@@ -19,54 +19,20 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.util;
+package de.ibapl.jnhw.annotation.posix.stdio;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
+ * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">{@code typedef
+ * va_list}</a>.
  *
  * @author aploese
  */
-public abstract class ObjectDefine<T> {
-
-    public static ObjectDefine toObjectDefine(Object value) {
-        return new ObjectDefined(value);
-    }
-
-    public final static ObjectDefine UNDEFINED = new ObjectDefine() {
-
-        @Override
-        public boolean isDefined() {
-            return false;
-        }
-
-        @Override
-        public Object get() {
-            throw new RuntimeException("NOT Defined");
-        }
-
-    };
-
-    final static class ObjectDefined<T> extends ObjectDefine<T> {
-
-        private final T value;
-
-        private ObjectDefined(T value) {
-            this.value = value;
-        }
-
-        @Override
-        public boolean isDefined() {
-            return true;
-        }
-
-        @Override
-        public T get() {
-            return value;
-        }
-
-    }
-
-    public abstract boolean isDefined();
-
-    public abstract T get();
-
+@Retention(value = RetentionPolicy.SOURCE)
+@Target(value = {ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+@interface va_list {
 }

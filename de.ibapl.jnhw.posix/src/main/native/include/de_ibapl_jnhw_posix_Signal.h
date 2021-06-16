@@ -9,14 +9,6 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
- * Method:    initFields
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_initFields
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    kill
  * Signature: (II)V
  */

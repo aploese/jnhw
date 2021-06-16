@@ -195,7 +195,7 @@ extern "C" {
     /*
      * only for tests - it is not optimized.
      */
-    JNIEXPORT jobject JnhwWrapInteger(JNIEnv *env, int value) {
+    JNIEXPORT jobject JnhwWrapInteger(JNIEnv *env, jint value) {
         jclass intClass = (*env)->FindClass(env, "java/lang/Integer");
         if (intClass == NULL) {
             return NULL;
@@ -207,6 +207,28 @@ extern "C" {
         }
 
         jobject o = (*env)->CallStaticObjectMethod(env, intClass, mId, value);
+        if ((*env)->ExceptionCheck(env)) {
+            return NULL;
+        } else {
+            return o;
+        }
+    }
+
+    /*
+     * only for tests - it is not optimized.
+     */
+    JNIEXPORT jobject JnhwWrapLong(JNIEnv *env, jlong value) {
+        jclass longClass = (*env)->FindClass(env, "java/lang/Long");
+        if (longClass == NULL) {
+            return NULL;
+        }
+
+        jmethodID mId = (*env)->GetStaticMethodID(env, longClass, "valueOf", "(J)Ljava/lang/Long;");
+        if (mId == NULL) {
+            return NULL;
+        }
+
+        jobject o = (*env)->CallStaticObjectMethod(env, longClass, mId, value);
         if ((*env)->ExceptionCheck(env)) {
             return NULL;
         } else {

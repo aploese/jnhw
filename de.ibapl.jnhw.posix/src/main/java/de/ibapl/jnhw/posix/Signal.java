@@ -41,7 +41,6 @@ import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
 import de.ibapl.jnhw.common.callback.Callback_I_V;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.common.util.IntDefine;
@@ -64,6 +63,117 @@ import java.io.IOException;
 @Include("#include <signal.h>")
 public class Signal {
 
+    public static class LinuxDefines {
+
+        public final static int ILL_ILLOPC = 1;
+        public final static int ILL_ILLOPN = 2;
+        public final static int ILL_ILLADR = 3;
+        public final static int ILL_ILLTRP = 4;
+        public final static int ILL_PRVOPC = 5;
+        public final static int ILL_PRVREG = 6;
+        public final static int ILL_COPROC = 7;
+        public final static int ILL_BADSTK = 8;
+
+        public final static int FPE_INTDIV = 1;
+        public final static int FPE_INTOVF = 2;
+        public final static int FPE_FLTDIV = 3;
+        public final static int FPE_FLTOVF = 4;
+        public final static int FPE_FLTUND = 5;
+        public final static int FPE_FLTRES = 6;
+        public final static int FPE_FLTINV = 7;
+        public final static int FPE_FLTSUB = 8;
+
+        public final static int SEGV_MAPERR = 1;
+        public final static int SEGV_ACCERR = 2;
+
+        public final static int BUS_ADRALN = 1;
+        public final static int BUS_ADRERR = 2;
+        public final static int BUS_OBJERR = 3;
+
+        public final static int TRAP_BRKPT = 1;
+        public final static int TRAP_TRACE = 2;
+
+        public final static int CLD_EXITED = 1;
+        public final static int CLD_KILLED = 2;
+        public final static int CLD_DUMPED = 3;
+        public final static int CLD_TRAPPED = 4;
+        public final static int CLD_STOPPED = 5;
+        public final static int CLD_CONTINUED = 6;
+
+        public final static int POLL_IN = 1;
+        public final static int POLL_OUT = 2;
+        public final static int POLL_MSG = 3;
+        public final static int POLL_ERR = 4;
+        public final static int POLL_PRI = 5;
+        public final static int POLL_HUP = 6;
+
+        public final static int SI_USER = 0; //-1;
+        public final static int SI_QUEUE = -1;
+        public final static int SI_TIMER = -2; //-1;
+        public final static int SI_ASYNCIO = -4; //-1;
+        public final static int SI_MESGQ = -3; //-1;
+
+        public final static int SIG_BLOCK = 0;
+        public final static int SIG_UNBLOCK = 1;
+        public final static int SIG_SETMASK = 2;
+
+        public final static int SA_NOCLDSTOP = 1;
+        public final static int SA_ONSTACK = 0x08000000;
+        public final static int SA_RESETHAND = 0x80000000;
+        public final static int SA_RESTART = 0x10000000;
+        public final static int SA_NOCLDWAIT = 2;
+        public final static int SA_SIGINFO = 4;
+        public final static int SA_NODEFER = 0x40000000;
+
+        public final static int SS_ONSTACK = 1;
+        public final static int SS_DISABLE = 2;
+
+        public final static int MINSIGSTKSZ = 2048;
+        public final static int SIGSTKSZ = 8192;
+
+        public final static FunctionPtr_I_V SIG_ERR = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(-1));
+        public final static FunctionPtr_I_V SIG_DFL = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(0));
+        public final static FunctionPtr_I_V SIG_IGN = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(1));
+        public final static FunctionPtr_I_V SIG_HOLD = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(2));
+
+        public final static int SIGEV_SIGNAL = 0;
+        public final static int SIGEV_NONE = 1;
+        public final static int SIGEV_THREAD = 2;
+
+        /* ISO C99 signals.  */
+        public final static int SIGINT = 2;
+        public final static int SIGILL = 4;
+        public final static int SIGABRT = 6;
+        public final static int SIGFPE = 8;
+        public final static int SIGSEGV = 11;
+        public final static int SIGTERM = 15;
+        /* Historical signals specified by POSIX. */
+        public final static int SIGHUP = 1;
+        public final static int SIGQUIT = 3;
+        public final static int SIGTRAP = 5;
+        public final static int SIGKILL = 9;
+        public final static int SIGBUS = 7; //10;
+        public final static int SIGSYS = 31; //12;
+        public final static int SIGPIPE = 13;
+        public final static int SIGALRM = 14;
+        /* New(er) POSIX signals (1003.1-2008, 1003.1-2013).  */
+        public final static int SIGURG = 23; //16;
+        public final static int SIGSTOP = 19; //17;
+        public final static int SIGTSTP = 20; //18;
+        public final static int SIGCONT = 18; //19;
+        public final static int SIGCHLD = 17; //20;
+        public final static int SIGTTIN = 21;
+        public final static int SIGTTOU = 22;
+        public final static int SIGPOLL = 29;//23;
+        public final static int SIGXCPU = 24;
+        public final static int SIGXFSZ = 25;
+        public final static int SIGVTALRM = 26;
+        public final static int SIGPROF = 27;
+        public final static int SIGUSR1 = 10; //30;
+        public final static int SIGUSR2 = 12;//31;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -75,116 +185,118 @@ public class Signal {
      */
     static {
         LibJnhwPosixLoader.touch();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_SIGNAL_H = true;
 
-        HAVE_SIGNAL_H = false;
+                BUS_ADRALN = LinuxDefines.BUS_ADRALN;
+                BUS_ADRERR = LinuxDefines.BUS_ADRERR;
+                BUS_OBJERR = LinuxDefines.BUS_OBJERR;
 
-        BUS_ADRALN = 0;
-        BUS_ADRERR = 0;
-        BUS_OBJERR = 0;
+                CLD_CONTINUED = LinuxDefines.CLD_CONTINUED;
+                CLD_DUMPED = LinuxDefines.CLD_DUMPED;
+                CLD_EXITED = LinuxDefines.CLD_EXITED;
+                CLD_KILLED = LinuxDefines.CLD_KILLED;
+                CLD_STOPPED = LinuxDefines.CLD_STOPPED;
+                CLD_TRAPPED = LinuxDefines.CLD_TRAPPED;
 
-        CLD_CONTINUED = 0;
-        CLD_DUMPED = 0;
-        CLD_EXITED = 0;
-        CLD_KILLED = 0;
-        CLD_STOPPED = 0;
-        CLD_TRAPPED = 0;
+                FPE_FLTDIV = LinuxDefines.FPE_FLTDIV;
+                FPE_FLTINV = LinuxDefines.FPE_FLTINV;
+                FPE_FLTOVF = LinuxDefines.FPE_FLTOVF;
+                FPE_FLTRES = LinuxDefines.FPE_FLTRES;
+                FPE_FLTSUB = LinuxDefines.FPE_FLTSUB;
+                FPE_FLTUND = LinuxDefines.FPE_FLTUND;
+                FPE_INTDIV = LinuxDefines.FPE_INTDIV;
+                FPE_INTOVF = LinuxDefines.FPE_INTOVF;
 
-        FPE_FLTDIV = 0;
-        FPE_FLTINV = 0;
-        FPE_FLTOVF = 0;
-        FPE_FLTRES = 0;
-        FPE_FLTSUB = 0;
-        FPE_FLTUND = 0;
-        FPE_INTDIV = 0;
-        FPE_INTOVF = 0;
+                ILL_BADSTK = LinuxDefines.ILL_BADSTK;
+                ILL_COPROC = LinuxDefines.ILL_COPROC;
+                ILL_ILLADR = LinuxDefines.ILL_ILLADR;
+                ILL_ILLOPC = LinuxDefines.ILL_ILLOPC;
+                ILL_ILLOPN = LinuxDefines.ILL_ILLOPN;
+                ILL_ILLTRP = LinuxDefines.ILL_ILLTRP;
+                ILL_PRVOPC = LinuxDefines.ILL_PRVOPC;
+                ILL_PRVREG = LinuxDefines.ILL_PRVREG;
 
-        ILL_BADSTK = 0;
-        ILL_COPROC = 0;
-        ILL_ILLADR = 0;
-        ILL_ILLOPC = 0;
-        ILL_ILLOPN = 0;
-        ILL_ILLTRP = 0;
-        ILL_PRVOPC = 0;
-        ILL_PRVREG = 0;
+                MINSIGSTKSZ = LinuxDefines.MINSIGSTKSZ;
 
-        MINSIGSTKSZ = 0;
+                POLL_ERR = IntDefine.toIntDefine(LinuxDefines.POLL_ERR);
+                POLL_HUP = IntDefine.toIntDefine(LinuxDefines.POLL_HUP);
+                POLL_IN = IntDefine.toIntDefine(LinuxDefines.POLL_IN);
+                POLL_MSG = IntDefine.toIntDefine(LinuxDefines.POLL_MSG);
+                POLL_OUT = IntDefine.toIntDefine(LinuxDefines.POLL_OUT);
+                POLL_PRI = IntDefine.toIntDefine(LinuxDefines.POLL_PRI);
 
-        POLL_ERR = IntDefine.UNDEFINED;
-        POLL_HUP = IntDefine.UNDEFINED;
-        POLL_IN = IntDefine.UNDEFINED;
-        POLL_MSG = IntDefine.UNDEFINED;
-        POLL_OUT = IntDefine.UNDEFINED;
-        POLL_PRI = IntDefine.UNDEFINED;
+                SA_NOCLDSTOP = LinuxDefines.SA_NOCLDSTOP;
+                SA_NOCLDWAIT = LinuxDefines.SA_NOCLDWAIT;
+                SA_NODEFER = LinuxDefines.SA_NODEFER;
+                SA_ONSTACK = LinuxDefines.SA_ONSTACK;
+                SA_RESETHAND = LinuxDefines.SA_RESETHAND;
+                SA_RESTART = LinuxDefines.SA_RESTART;
+                SA_SIGINFO = LinuxDefines.SA_SIGINFO;
 
-        SA_NOCLDSTOP = 0;
-        SA_NOCLDWAIT = 0;
-        SA_NODEFER = 0;
-        SA_ONSTACK = 0;
-        SA_RESETHAND = 0;
-        SA_RESTART = 0;
-        SA_SIGINFO = 0;
+                SEGV_ACCERR = LinuxDefines.SEGV_ACCERR;
+                SEGV_MAPERR = LinuxDefines.SEGV_MAPERR;
 
-        SEGV_ACCERR = 0;
-        SEGV_MAPERR = 0;
+                SIGABRT = LinuxDefines.SIGABRT;
+                SIGALRM = LinuxDefines.SIGALRM;
+                SIGBUS = LinuxDefines.SIGBUS;
+                SIGCHLD = LinuxDefines.SIGCHLD;
+                SIGCONT = LinuxDefines.SIGCONT;
 
-        SIGABRT = 0;
-        SIGALRM = 0;
-        SIGBUS = 0;
-        SIGCHLD = 0;
-        SIGCONT = 0;
+                SIGEV_NONE = IntDefine.toIntDefine(LinuxDefines.SIGEV_NONE);
+                SIGEV_SIGNAL = IntDefine.toIntDefine(LinuxDefines.SIGEV_SIGNAL);
+                SIGEV_THREAD = IntDefine.toIntDefine(LinuxDefines.SIGEV_THREAD);
 
-        SIGEV_NONE = IntDefine.UNDEFINED;
-        SIGEV_SIGNAL = IntDefine.UNDEFINED;
-        SIGEV_THREAD = IntDefine.UNDEFINED;
+                SIGFPE = LinuxDefines.SIGFPE;
+                SIGHUP = LinuxDefines.SIGHUP;
+                SIGILL = LinuxDefines.SIGILL;
+                SIGINT = LinuxDefines.SIGINT;
+                SIGKILL = LinuxDefines.SIGKILL;
+                SIGPIPE = LinuxDefines.SIGPIPE;
+                SIGPOLL = IntDefine.toIntDefine(LinuxDefines.SIGPOLL);
+                SIGPROF = LinuxDefines.SIGPROF;
+                SIGQUIT = LinuxDefines.SIGQUIT;
+                SIGSEGV = LinuxDefines.SIGSEGV;
+                SIGSTKSZ = LinuxDefines.SIGSTKSZ;
+                SIGSTOP = LinuxDefines.SIGSTOP;
+                SIGSYS = LinuxDefines.SIGSYS;
+                SIGTERM = LinuxDefines.SIGTERM;
+                SIGTRAP = LinuxDefines.SIGTRAP;
+                SIGTSTP = LinuxDefines.SIGTSTP;
+                SIGTTIN = LinuxDefines.SIGTTIN;
+                SIGTTOU = LinuxDefines.SIGTTOU;
+                SIGURG = LinuxDefines.SIGURG;
+                SIGUSR1 = LinuxDefines.SIGUSR1;
+                SIGUSR2 = LinuxDefines.SIGUSR2;
+                SIGVTALRM = LinuxDefines.SIGVTALRM;
+                SIGXCPU = LinuxDefines.SIGXCPU;
+                SIGXFSZ = LinuxDefines.SIGXFSZ;
+                SIG_BLOCK = LinuxDefines.SIG_BLOCK;
+                SIG_DFL = LinuxDefines.SIG_DFL;
+                SIG_ERR = LinuxDefines.SIG_ERR;
+                SIG_HOLD = ObjectDefine.toObjectDefine(LinuxDefines.SIG_HOLD);
+                SIG_IGN = LinuxDefines.SIG_IGN;
+                SIG_SETMASK = LinuxDefines.SIG_SETMASK;
+                SIG_UNBLOCK = LinuxDefines.SIG_UNBLOCK;
 
-        SIGFPE = 0;
-        SIGHUP = 0;
-        SIGILL = 0;
-        SIGINT = 0;
-        SIGKILL = 0;
-        SIGPIPE = 0;
-        SIGPOLL = IntDefine.UNDEFINED;
-        SIGPROF = 0;
-        SIGQUIT = 0;
-        SIGSEGV = 0;
-        SIGSTKSZ = 0;
-        SIGSTOP = 0;
-        SIGSYS = 0;
-        SIGTERM = 0;
-        SIGTRAP = 0;
-        SIGTSTP = 0;
-        SIGTTIN = 0;
-        SIGTTOU = 0;
-        SIGURG = 0;
-        SIGUSR1 = 0;
-        SIGUSR2 = 0;
-        SIGVTALRM = 0;
-        SIGXCPU = 0;
-        SIGXFSZ = 0;
-        SIG_BLOCK = 0;
-        SIG_DFL = null;
-        SIG_ERR = null;
-        SIG_HOLD = ObjectDefine.UNDEFINED;
-        SIG_IGN = null;
-        SIG_SETMASK = 0;
-        SIG_UNBLOCK = 0;
+                SI_ASYNCIO = IntDefine.toIntDefine(LinuxDefines.SI_ASYNCIO);
+                SI_MESGQ = IntDefine.toIntDefine(LinuxDefines.SI_MESGQ);
+                SI_QUEUE = LinuxDefines.SI_QUEUE;
+                SI_TIMER = LinuxDefines.SI_TIMER;
+                SI_USER = LinuxDefines.SI_USER;
 
-        SI_ASYNCIO = IntDefine.UNDEFINED;
-        SI_MESGQ = IntDefine.UNDEFINED;
-        SI_QUEUE = 0;
-        SI_TIMER = 0;
-        SI_USER = 0;
+                SS_DISABLE = LinuxDefines.SS_DISABLE;
+                SS_ONSTACK = LinuxDefines.SS_ONSTACK;
 
-        SS_DISABLE = 0;
-        SS_ONSTACK = 0;
+                TRAP_BRKPT = LinuxDefines.TRAP_BRKPT;
+                TRAP_TRACE = LinuxDefines.TRAP_TRACE;
 
-        TRAP_BRKPT = 0;
-        TRAP_TRACE = 0;
-
-        initFields();
+                break;
+            default:
+                throw new NoClassDefFoundError("No unistd.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     public static String sigNumber2String(int signalNumber) {
         if (Signal.SIGABRT == signalNumber) {
@@ -256,36 +368,66 @@ public class Signal {
      */
     public static final class Mcontext_t extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        private final static Layout LAYOUT;
+        public final static Alignment alignof;
+        public final static int sizeof;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
-        }
 
-        public static Layout getLayoutOrThrow() throws NoSuchNativeTypeException {
-            if (LAYOUT == null) {
-                throw new NoSuchNativeTypeException("Aio.Aiocb");
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+                case LINUX:
+                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                        case AARCH64:
+                            alignof = Alignment.AT_16;
+                            sizeof = 4384;
+                            break;
+                        case ARM:
+                            alignof = Alignment.AT_4;
+                            sizeof = 84;
+                            break;
+                        case I386:
+                            alignof = Alignment.AT_4;
+                            sizeof = 88;
+                            break;
+                        case MIPS_64:
+                            alignof = Alignment.AT_8;
+                            sizeof = 600;
+                            break;
+                        case MIPS:
+                            alignof = Alignment.AT_8;
+                            sizeof = 592;
+                            break;
+                        case POWER_PC_64:
+                            alignof = Alignment.AT_8;
+                            sizeof = 1272;
+                            break;
+                        case S390_X:
+                            alignof = Alignment.AT_8;
+                            sizeof = 344;
+                            break;
+                        case X86_64:
+                            alignof = Alignment.AT_8;
+                            sizeof = 256;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
+                    break;
+                case FREE_BSD:
+                    alignof = Alignment.AT_16;
+                    sizeof = 800;
+                    break;
+                case OPEN_BSD:
+                    alignof = null;
+                    sizeof = 0;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
-            return LAYOUT;
+
         }
 
         public Mcontext_t() throws NoSuchNativeTypeException {
@@ -293,11 +435,17 @@ public class Signal {
         }
 
         public Mcontext_t(AbstractNativeMemory owner, long offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super(owner, offset, getLayoutOrThrow().sizeof, setMem);
+            super(owner, offset, Mcontext_t.sizeof, setMem);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Mcontext_t");
+            }
         }
 
         public Mcontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, getLayoutOrThrow().sizeof);
+            super(baseAddress, Mcontext_t.sizeof);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Mcontext_t");
+            }
         }
 
     }
@@ -306,29 +454,40 @@ public class Signal {
 
     public static final class Sigset_t extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static Alignment alignof;
+        public final static int sizeof;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+                case LINUX:
+                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
+                        case _32_BIT:
+                            alignof = Alignment.AT_4;
+                            break;
+                        case _64_BIT:
+                            alignof = Alignment.AT_8;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
+                    sizeof = 128;
+                    break;
+                case FREE_BSD:
+                    alignof = Alignment.AT_4;
+                    sizeof = 16;
+                    break;
+                case OPEN_BSD:
+                    alignof = Alignment.AT_4;
+                    sizeof = 4;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         public Sigset_t() {
@@ -336,7 +495,7 @@ public class Signal {
         }
 
         public Sigset_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
+            super(parent, offset, Sigset_t.sizeof, setMem);
         }
 
         private void maybeDoFormatBeforeFirst(Appendable sb, boolean first, final String indent) throws IOException {
@@ -513,33 +672,29 @@ public class Signal {
      */
     public static final class Sigval<T extends OpaqueMemory32> extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long sival_int;
-            public final long sival_ptr;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                sival_int = -1;
-                sival_ptr = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static Alignment alignof;
+        public final static int sizeof;
+        public final static long offsetof_Sival_int = 0;
+        public final static long offsetof_Sival_ptr = 0;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
+                case _32_BIT:
+                    alignof = Alignment.AT_4;
+                    sizeof = 4;
+                    break;
+                case _64_BIT:
+                    alignof = Alignment.AT_8;
+                    sizeof = 8;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         public Sigval() {
@@ -547,17 +702,17 @@ public class Signal {
         }
 
         public Sigval(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
+            super(parent, offset, Sigval.sizeof, setMem);
         }
 
         public Sigval(NativeAddressHolder baseAddress) {
-            super(baseAddress, LAYOUT.sizeof);
+            super(baseAddress, Sigval.sizeof);
         }
 
         private T sival_ptr;
 
         private NativeAddressHolder sival_ptr() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.sival_ptr);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, offsetof_Sival_ptr);
         }
 
         /**
@@ -568,7 +723,7 @@ public class Signal {
          * @return the native value of sival_int.
          */
         public int sival_int() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.sival_int);
+            return MEM_ACCESS.int32_t(this, Sigval.offsetof_Sival_int);
         }
 
         /**
@@ -579,7 +734,7 @@ public class Signal {
          * @param sival_int the value of sival_int to be set natively.
          */
         public void sival_int(int sival_int) {
-            MEM_ACCESS.int32_t(this, LAYOUT.sival_int, sival_int);
+            MEM_ACCESS.int32_t(this, Sigval.offsetof_Sival_int, sival_int);
         }
 
         /**
@@ -613,7 +768,7 @@ public class Signal {
          */
         public final void sival_ptr(T sival_ptr) {
             this.sival_ptr = sival_ptr;
-            MEM_ACCESS.uintptr_t(this, LAYOUT.sival_ptr, sival_ptr);
+            MEM_ACCESS.uintptr_t(this, Sigval.offsetof_Sival_ptr, sival_ptr);
         }
 
         @Override
@@ -636,46 +791,74 @@ public class Signal {
      */
     public static final class Sigevent<T extends OpaqueMemory32> extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long sigev_notify;
-            public final long sigev_signo;
-            public final long sigev_value;
-            public final long sigev_notify_function;
-            public final long sigev_notify_attributes;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                sigev_notify = -1;
-                sigev_signo = -1;
-                sigev_value = -1;
-                sigev_notify_function = -1;
-                sigev_notify_attributes = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        private final static Layout LAYOUT;
+        public final static Alignment alignof;
+        public final static int sizeof;
+        public final static long offsetof_Sigev_notify;
+        public final static long offsetof_Sigev_signo;
+        public final static long offsetof_Sigev_value;
+        public final static long offsetof_Sigev_notify_function;
+        public final static long offsetof_Sigev_notify_attributes;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
-        }
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+                case LINUX:
+                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
+                        case _32_BIT:
+                            alignof = Alignment.AT_4;
+                            offsetof_Sigev_notify = -1;
+                            offsetof_Sigev_signo = -1;
+                            offsetof_Sigev_value = 0;
+                            offsetof_Sigev_notify_function = -1;
+                            offsetof_Sigev_notify_attributes = -1;
+                            break;
+                        case _64_BIT:
+                            alignof = Alignment.AT_8;
+                            offsetof_Sigev_notify = 12;
+                            offsetof_Sigev_signo = 8;
+                            offsetof_Sigev_value = 0;
+                            offsetof_Sigev_notify_function = 16;
+                            offsetof_Sigev_notify_attributes = 24;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
 
-        public static Layout getLayoutOrThrow() throws NoSuchNativeTypeException {
-            if (LAYOUT == null) {
-                throw new NoSuchNativeTypeException("Aio.Aiocb");
+                    sizeof = 64;
+                    break;
+                case FREE_BSD:
+                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
+                        case _32_BIT:
+                            alignof = Alignment.AT_4;
+                            break;
+                        case _64_BIT:
+                            alignof = Alignment.AT_8;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
+                    sizeof = 80;
+                    offsetof_Sigev_notify = -1;
+                    offsetof_Sigev_signo = -1;
+                    offsetof_Sigev_value = 8;
+                    offsetof_Sigev_notify_function = -1;
+                    offsetof_Sigev_notify_attributes = -1;
+                    break;
+                case OPEN_BSD:
+                    alignof = null;
+                    sizeof = 0;
+                    offsetof_Sigev_notify = -1;
+                    offsetof_Sigev_signo = -1;
+                    offsetof_Sigev_value = -1;
+                    offsetof_Sigev_notify_function = -1;
+                    offsetof_Sigev_notify_attributes = -1;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
-            return LAYOUT;
         }
 
         /**
@@ -695,13 +878,19 @@ public class Signal {
 
         @SuppressWarnings("unchecked")
         public Sigevent(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, getLayoutOrThrow().sizeof);
-            sigev_value = new Sigval(this, getLayoutOrThrow().sigev_value, SetMem.DO_NOT_SET);
+            super(baseAddress, Sigevent.sizeof);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Sigevent");
+            }
+            sigev_value = new Sigval(this, Sigevent.offsetof_Sigev_value, SetMem.DO_NOT_SET);
         }
 
         public Sigevent(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super(parent, offset, getLayoutOrThrow().sizeof, setMem);
-            sigev_value = new Sigval(this, getLayoutOrThrow().sigev_value, SetMem.DO_NOT_SET);
+            super(parent, offset, Sigevent.sizeof, setMem);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Sigevent");
+            }
+            sigev_value = new Sigval(this, Sigevent.offsetof_Sigev_value, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -712,11 +901,11 @@ public class Signal {
          * @return the native value of sigev_notify.
          */
         public int sigev_notify() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.sigev_notify);
+            return MEM_ACCESS.int32_t(this, Sigevent.offsetof_Sigev_notify);
         }
 
         public void sigev_notify(int value) {
-            MEM_ACCESS.int32_t(this, LAYOUT.sigev_notify, value);
+            MEM_ACCESS.int32_t(this, Sigevent.offsetof_Sigev_notify, value);
         }
 
         /**
@@ -726,15 +915,15 @@ public class Signal {
          * @return the native value of sigev_signo.
          */
         public int sigev_signo() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.sigev_signo);
+            return MEM_ACCESS.int32_t(this, Sigevent.offsetof_Sigev_signo);
         }
 
         public void sigev_signo(int value) {
-            MEM_ACCESS.int32_t(this, LAYOUT.sigev_signo, value);
+            MEM_ACCESS.int32_t(this, Sigevent.offsetof_Sigev_signo, value);
         }
 
         protected NativeAddressHolder sigev_notify_attributes() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.sigev_notify_attributes);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Sigevent.offsetof_Sigev_notify_attributes);
         }
 
         public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemory32Producer<Pthread.Pthread_attr_t, Sigevent> producer) {
@@ -754,11 +943,11 @@ public class Signal {
 
         public void sigev_notify_attributes(Pthread.Pthread_attr_t value) {
             this.sigev_notify_attributes = value;
-            MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_attributes, value);
+            MEM_ACCESS.uintptr_t(this, Sigevent.offsetof_Sigev_notify_attributes, value);
         }
 
         public NativeFunctionPointer sigev_notify_function() {
-            return new NativeFunctionPointer(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.sigev_notify_function));
+            return new NativeFunctionPointer(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Sigevent.offsetof_Sigev_notify_function));
         }
 
         /**
@@ -771,17 +960,17 @@ public class Signal {
          */
         public final void sigev_notify_function(Callback__Sigval_int__V sigev_notify_function) {
             this.sigev_notify_function = sigev_notify_function;
-            MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_function, sigev_notify_function);
+            MEM_ACCESS.uintptr_t(this, Sigevent.offsetof_Sigev_notify_function, sigev_notify_function);
         }
 
         public final void sigev_notify_function(Callback_Mem_V<T> sigev_notify_function) {
             this.sigev_notify_function = sigev_notify_function;
-            MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_function, sigev_notify_function);
+            MEM_ACCESS.uintptr_t(this, Sigevent.offsetof_Sigev_notify_function, sigev_notify_function);
         }
 
         public final void sigev_notify_function(Callback_NativeRunnable sigev_notify_function) {
             this.sigev_notify_function = sigev_notify_function;
-            MEM_ACCESS.uintptr_t(this, LAYOUT.sigev_notify_function, sigev_notify_function);
+            MEM_ACCESS.uintptr_t(this, Sigevent.offsetof_Sigev_notify_function, sigev_notify_function);
         }
 
         public final Callback__Sigval_int__V sigev_notify_functionAsCallback__Sigval_int__V() {
@@ -1130,37 +1319,109 @@ public class Signal {
      */
     public static class Sigaction<T extends OpaqueMemory32> extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long sa_handler;
-            public final long sa_mask;
-            public final long sa_flags;
-            public final long sa_sigaction;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                sa_handler = -1;
-                sa_mask = -1;
-                sa_flags = -1;
-                sa_sigaction = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static Alignment alignof;
+        public final static int sizeof;
+        public final static long offsetof_Sa_handler;
+        public final static long offsetof_Sa_mask;
+        public final static long offsetof_Sa_flags;
+        public final static long offsetof_Sa_sigaction;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+                case LINUX:
+                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                        case AARCH64:
+                            alignof = Alignment.AT_8;
+                            sizeof = 152;
+                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_mask = 8;
+                            offsetof_Sa_flags = -1;
+                            offsetof_Sa_sigaction = -1;
+                            break;
+                        case MIPS_64:
+                            alignof = Alignment.AT_8;
+                            sizeof = 152;
+                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_mask = 16;
+                            offsetof_Sa_flags = -1;
+                            offsetof_Sa_sigaction = -1;
+                            break;
+                        case POWER_PC_64:
+                            alignof = Alignment.AT_8;
+                            sizeof = 152;
+                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_mask = 8;
+                            offsetof_Sa_flags = -1;
+                            offsetof_Sa_sigaction = -1;
+                            break;
+                        case S390_X:
+                            alignof = Alignment.AT_8;
+                            sizeof = 152;
+                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_mask = 24;
+                            offsetof_Sa_flags = -1;
+                            offsetof_Sa_sigaction = -1;
+                            break;
+                        case X86_64:
+                            alignof = Alignment.AT_8;
+                            sizeof = 152;
+                            offsetof_Sa_handler = 0;
+                            offsetof_Sa_mask = 8;
+                            offsetof_Sa_flags = 136;
+                            offsetof_Sa_sigaction = 0;
+                            break;
+                        case ARM:
+                            alignof = Alignment.AT_4;
+                            sizeof = 140;
+                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_mask = 4;
+                            offsetof_Sa_flags = -1;
+                            offsetof_Sa_sigaction = -1;
+                            break;
+                        case I386:
+                            alignof = Alignment.AT_4;
+                            sizeof = 140;
+                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_mask = 4;
+                            offsetof_Sa_flags = -1;
+                            offsetof_Sa_sigaction = -1;
+                            break;
+                        case MIPS:
+                            alignof = Alignment.AT_4;
+                            sizeof = 144;
+                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_mask = 8;
+                            offsetof_Sa_flags = -1;
+                            offsetof_Sa_sigaction = -1;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
+                    break;
+                case FREE_BSD:
+                    alignof = Alignment.AT_8;
+                    sizeof = 32;
+                    offsetof_Sa_handler = -1;
+                    offsetof_Sa_mask = -1;
+                    offsetof_Sa_flags = -1;
+                    offsetof_Sa_sigaction = -1;
+                    break;
+                case OPEN_BSD:
+                    alignof = Alignment.AT_8;
+                    sizeof = 16;
+                    offsetof_Sa_handler = -1;
+                    offsetof_Sa_mask = -1;
+                    offsetof_Sa_flags = -1;
+                    offsetof_Sa_sigaction = -1;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         public Sigaction() {
@@ -1168,8 +1429,8 @@ public class Signal {
         }
 
         public Sigaction(AbstractNativeMemory parent, int offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
-            sa_mask = new Sigset_t(this, LAYOUT.sa_mask, SetMem.DO_NOT_SET);
+            super(parent, offset, Sigaction.sizeof, setMem);
+            sa_mask = new Sigset_t(this, Sigaction.offsetof_Sa_mask, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -1191,7 +1452,7 @@ public class Signal {
          * @return the native value of sa_flags.
          */
         public int sa_flags() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.sa_flags);
+            return MEM_ACCESS.int32_t(this, Sigaction.offsetof_Sa_flags);
         }
 
         /**
@@ -1202,7 +1463,7 @@ public class Signal {
          * @param sa_flags the value of sa_flags to be set natively.
          */
         public void sa_flags(int sa_flags) {
-            MEM_ACCESS.int32_t(this, LAYOUT.sa_flags, sa_flags);
+            MEM_ACCESS.int32_t(this, Sigaction.offsetof_Sa_flags, sa_flags);
         }
 
         /**
@@ -1213,7 +1474,7 @@ public class Signal {
          * @return the native value of sa_handler.
          */
         public FunctionPtr_I_V sa_handler() {
-            return new FunctionPtr_I_V(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.sa_handler));
+            return new FunctionPtr_I_V(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Sigaction.offsetof_Sa_handler));
         }
 
         /**
@@ -1241,7 +1502,7 @@ public class Signal {
 
         public void sa_handler(FunctionPtr_I_V sa_handler) {
             cachedHandlerOrAction = sa_handler;
-            MEM_ACCESS.uintptr_t(this, LAYOUT.sa_handler, sa_handler);
+            MEM_ACCESS.uintptr_t(this, Sigaction.offsetof_Sa_handler, sa_handler);
         }
 
         /**
@@ -1252,7 +1513,7 @@ public class Signal {
          * @return the native value of sa_sigaction.
          */
         public final FunctionPtr_I_Mem_Mem_V sa_sigaction() {
-            return new FunctionPtr_I_Mem_Mem_V(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.sa_sigaction));
+            return new FunctionPtr_I_Mem_Mem_V(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Sigaction.offsetof_Sa_sigaction));
         }
 
         /**
@@ -1281,7 +1542,7 @@ public class Signal {
 
         public <T extends OpaqueMemory32> void sa_sigaction(FunctionPtr_I_Mem_Mem_V<Siginfo_t, T> sa_sigaction) {
             cachedHandlerOrAction = sa_sigaction;
-            MEM_ACCESS.uintptr_t(this, LAYOUT.sa_sigaction, sa_sigaction);
+            MEM_ACCESS.uintptr_t(this, Sigaction.offsetof_Sa_sigaction, sa_sigaction);
         }
 
         @Override
@@ -1410,44 +1671,110 @@ public class Signal {
      */
     public static class Ucontext_t extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long uc_link;
-            public final long uc_sigmask;
-            public final long uc_stack;
-            public final long uc_mcontext;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                uc_link = -1;
-                uc_sigmask = -1;
-                uc_stack = -1;
-                uc_mcontext = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        private final static Layout LAYOUT;
+        public final static Alignment alignof;
+        public final static int sizeof;
+        public final static long offsetof_Uc_link;
+        public final static long offsetof_Uc_sigmask;
+        public final static long offsetof_Uc_stack;
+        public final static long offsetof_Uc_mcontext;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
-        }
 
-        public static Layout getLayoutOrThrow() throws NoSuchNativeTypeException {
-            if (LAYOUT == null) {
-                throw new NoSuchNativeTypeException("Aio.Aiocb");
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+                case LINUX:
+                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                        case AARCH64:
+                            alignof = Alignment.AT_16;
+                            sizeof = 4560;
+                            offsetof_Uc_link = 0;
+                            offsetof_Uc_sigmask = 40;
+                            offsetof_Uc_stack = 16;
+                            offsetof_Uc_mcontext = 176;
+                            break;
+                        case ARM:
+                            alignof = Alignment.AT_8;
+                            sizeof = 744;
+                            offsetof_Uc_link = 0;
+                            offsetof_Uc_sigmask = 104;
+                            offsetof_Uc_stack = 8;
+                            offsetof_Uc_mcontext = 20;
+                            break;
+                        case I386:
+                            alignof = Alignment.AT_4;
+                            sizeof = 364;
+                            offsetof_Uc_link = 0;
+                            offsetof_Uc_sigmask = 108;
+                            offsetof_Uc_stack = 8;
+                            offsetof_Uc_mcontext = 20;
+                            break;
+                        case MIPS_64:
+                            alignof = Alignment.AT_8;
+                            sizeof = 768;
+                            offsetof_Uc_link = 0;
+                            offsetof_Uc_sigmask = 640;
+                            offsetof_Uc_stack = 16;
+                            offsetof_Uc_mcontext = 40;
+                            break;
+                        case MIPS:
+                            alignof = Alignment.AT_8;
+                            sizeof = 744;
+                            offsetof_Uc_link = 0;
+                            offsetof_Uc_sigmask = 616;
+                            offsetof_Uc_stack = 8;
+                            offsetof_Uc_mcontext = 24;
+                            break;
+                        case POWER_PC_64:
+                            alignof = Alignment.AT_8;
+                            sizeof = 1440;
+                            offsetof_Uc_link = 0;
+                            offsetof_Uc_sigmask = 40;
+                            offsetof_Uc_stack = 16;
+                            offsetof_Uc_mcontext = 168;
+                            break;
+                        case S390_X:
+                            alignof = Alignment.AT_8;
+                            sizeof = 512;
+                            offsetof_Uc_link = 0;
+                            offsetof_Uc_sigmask = 384;
+                            offsetof_Uc_stack = 16;
+                            offsetof_Uc_mcontext = 40;
+                            break;
+                        case X86_64:
+                            alignof = Alignment.AT_8;
+                            sizeof = 968;
+                            offsetof_Uc_link = 8;
+                            offsetof_Uc_sigmask = 296;
+                            offsetof_Uc_stack = 16;
+                            offsetof_Uc_mcontext = 40;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
+                    break;
+                case FREE_BSD:
+                    alignof = Alignment.AT_16;
+                    sizeof = 880;
+                    offsetof_Uc_link = -1;
+                    offsetof_Uc_sigmask = 0;
+                    offsetof_Uc_stack = 824;
+                    offsetof_Uc_mcontext = 16;
+                    break;
+                case OPEN_BSD:
+                    alignof = null;
+                    sizeof = 0;
+                    offsetof_Uc_link = -1;
+                    offsetof_Uc_sigmask = -1;
+                    offsetof_Uc_stack = -1;
+                    offsetof_Uc_mcontext = -1;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
-            return LAYOUT;
+
         }
 
         public Ucontext_t(SetMem setMem) throws NoSuchNativeTypeException {
@@ -1455,17 +1782,23 @@ public class Signal {
         }
 
         public Ucontext_t(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super(parent, offset, getLayoutOrThrow().sizeof, setMem);
-            uc_sigmask = new Sigset_t(this, getLayoutOrThrow().uc_sigmask, SetMem.DO_NOT_SET);
-            uc_stack = new Stack_t(this, getLayoutOrThrow().uc_stack, SetMem.DO_NOT_SET);
-            uc_mcontext = new Mcontext_t(this, getLayoutOrThrow().uc_mcontext, SetMem.DO_NOT_SET);
+            super(parent, offset, Ucontext_t.sizeof, setMem);
+            if (Ucontext_t.alignof == null) {
+                throw new NoSuchNativeTypeException("Ucontext_t");
+            }
+            uc_sigmask = new Sigset_t(this, Ucontext_t.offsetof_Uc_sigmask, SetMem.DO_NOT_SET);
+            uc_stack = new Stack_t(this, Ucontext_t.offsetof_Uc_stack, SetMem.DO_NOT_SET);
+            uc_mcontext = new Mcontext_t(this, Ucontext_t.offsetof_Uc_mcontext, SetMem.DO_NOT_SET);
         }
 
         public Ucontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, getLayoutOrThrow().sizeof);
-            uc_sigmask = new Sigset_t(this, getLayoutOrThrow().uc_sigmask, SetMem.DO_NOT_SET);
-            uc_stack = new Stack_t(this, getLayoutOrThrow().uc_stack, SetMem.DO_NOT_SET);
-            uc_mcontext = new Mcontext_t(this, getLayoutOrThrow().uc_mcontext, SetMem.DO_NOT_SET);
+            super(baseAddress, Ucontext_t.sizeof);
+            if (Ucontext_t.alignof == null) {
+                throw new NoSuchNativeTypeException("Ucontext_t");
+            }
+            uc_sigmask = new Sigset_t(this, Ucontext_t.offsetof_Uc_sigmask, SetMem.DO_NOT_SET);
+            uc_stack = new Stack_t(this, Ucontext_t.offsetof_Uc_stack, SetMem.DO_NOT_SET);
+            uc_mcontext = new Mcontext_t(this, Ucontext_t.offsetof_Uc_mcontext, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -1476,7 +1809,7 @@ public class Signal {
          * @return the native value of uc_link.
          */
         private NativeAddressHolder uc_link0() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.uc_link);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Ucontext_t.offsetof_Uc_link);
         }
 
         /**
@@ -1531,35 +1864,36 @@ public class Signal {
      */
     public static class Stack_t<T extends OpaqueMemory32> extends PosixStruct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long ss_sp;
-            public final long ss_size;
-            public final long ss_flags;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                ss_sp = -1;
-                ss_size = -1;
-                ss_flags = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static Alignment alignof;
+        public final static int sizeof;
+        public final static long offsetof_Ss_sp;
+        public final static long offsetof_Ss_size;
+        public final static long offsetof_Ss_flags;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
+                case _32_BIT:
+                    alignof = Alignment.AT_4;
+                    sizeof = 12;
+                    offsetof_Ss_sp = - 1;
+                    offsetof_Ss_size = - 1;
+                    offsetof_Ss_flags = - 1;
+                    break;
+                case _64_BIT:
+                    alignof = Alignment.AT_8;
+                    sizeof = 24;
+                    offsetof_Ss_sp = 0;
+                    offsetof_Ss_size = 16;
+                    offsetof_Ss_flags = 8;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         public Stack_t() {
@@ -1567,7 +1901,7 @@ public class Signal {
         }
 
         public Stack_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
+            super(parent, offset, Stack_t.sizeof, setMem);
         }
 
         /**
@@ -1586,15 +1920,15 @@ public class Signal {
         }
 
         private void ss_flags(int ss_flags) {
-            MEM_ACCESS.int32_t(this, LAYOUT.ss_flags, ss_flags);
+            MEM_ACCESS.int32_t(this, Stack_t.offsetof_Ss_flags, ss_flags);
         }
 
         private NativeAddressHolder ss_sp0() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.ss_sp);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Stack_t.offsetof_Ss_sp);
         }
 
         private void ss_size(@size_t long ss_size) {
-            ACCESSOR_SIZE_T.size_t(this, LAYOUT.ss_size, ss_size);
+            ACCESSOR_SIZE_T.size_t(this, Stack_t.offsetof_Ss_size, ss_size);
         }
 
         /**
@@ -1618,7 +1952,7 @@ public class Signal {
          */
         @size_t
         public final long ss_size() {
-            return ACCESSOR_SIZE_T.size_t(this, LAYOUT.ss_size);
+            return ACCESSOR_SIZE_T.size_t(this, Stack_t.offsetof_Ss_size);
         }
 
         /**
@@ -1629,11 +1963,11 @@ public class Signal {
          * @return the native value of ss_flags.
          */
         public final int ss_flags() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.ss_flags);
+            return MEM_ACCESS.int32_t(this, Stack_t.offsetof_Ss_flags);
         }
 
         private void ss_sp(T ss_sp) {
-            MEM_ACCESS.uintptr_t(this, LAYOUT.ss_sp, ss_sp);
+            MEM_ACCESS.uintptr_t(this, Stack_t.offsetof_Ss_sp, ss_sp);
         }
 
         @Override
@@ -1654,47 +1988,85 @@ public class Signal {
      */
     public static class Siginfo_t<T extends OpaqueMemory32> extends PosixStruct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final long si_signo;
-            public final long si_code;
-            public final long si_errno;
-            public final long si_pid;
-            public final long si_uid;
-            public final long si_addr;
-            public final long si_status;
-            public final long si_band;
-            public final long si_value;
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                si_signo = -1;
-                si_code = -1;
-                si_errno = -1;
-                si_pid = -1;
-                si_uid = -1;
-                si_addr = -1;
-                si_status = -1;
-                si_band = -1;
-                si_value = -1;
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static Alignment alignof;
+        public final static int sizeof;
+        public final static long offsetof_Si_signo;
+        public final static long offsetof_Si_code;
+        public final static long offsetof_Si_errno;
+        public final static long offsetof_Si_pid;
+        public final static long offsetof_Si_uid;
+        public final static long offsetof_Si_addr;
+        public final static long offsetof_Si_status;
+        public final static long offsetof_Si_band;
+        public final static long offsetof_Si_value;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+                case LINUX:
+                    sizeof = 128;
+                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
+                        case _32_BIT:
+                            alignof = Alignment.AT_4;
+                            offsetof_Si_signo = 0;
+                            offsetof_Si_code = -1;
+                            offsetof_Si_errno = -1;
+                            offsetof_Si_pid = -1;
+                            offsetof_Si_uid = -1;
+                            offsetof_Si_addr = -1;
+                            offsetof_Si_status = -1;
+                            offsetof_Si_band = -1;
+                            offsetof_Si_value = 24;
+                            break;
+                        case _64_BIT:
+                            alignof = Alignment.AT_8;
+                            offsetof_Si_signo = 0;
+                            offsetof_Si_code = 8;
+                            offsetof_Si_errno = 4;
+                            offsetof_Si_pid = 16;
+                            offsetof_Si_uid = 20;
+                            offsetof_Si_addr = 16;
+                            offsetof_Si_status = 24;
+                            offsetof_Si_band = 16;
+                            offsetof_Si_value = 24;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
+                    break;
+                case FREE_BSD:
+                    sizeof = 80;
+                    alignof = Alignment.AT_4;
+                    offsetof_Si_signo = -1;
+                    offsetof_Si_code = -1;
+                    offsetof_Si_errno = -1;
+                    offsetof_Si_pid = -1;
+                    offsetof_Si_uid = -1;
+                    offsetof_Si_addr = -1;
+                    offsetof_Si_status = -1;
+                    offsetof_Si_band = -1;
+                    offsetof_Si_value = -1;
+                    break;
+                case OPEN_BSD:
+                    sizeof = 136;
+                    alignof = Alignment.AT_4;
+                    offsetof_Si_signo = -1;
+                    offsetof_Si_code = -1;
+                    offsetof_Si_errno = -1;
+                    offsetof_Si_pid = -1;
+                    offsetof_Si_uid = -1;
+                    offsetof_Si_addr = -1;
+                    offsetof_Si_status = -1;
+                    offsetof_Si_band = -1;
+                    offsetof_Si_value = -1;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         public Siginfo_t() {
@@ -1702,8 +2074,8 @@ public class Signal {
         }
 
         public Siginfo_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
-            si_value = new Sigval(this, LAYOUT.si_value, SetMem.DO_NOT_SET);
+            super(parent, offset, Siginfo_t.sizeof, setMem);
+            si_value = new Sigval(this, Siginfo_t.offsetof_Si_value, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -1712,8 +2084,8 @@ public class Signal {
          * @param address
          */
         public Siginfo_t(NativeAddressHolder address) {
-            super(address, LAYOUT.sizeof);
-            si_value = new Sigval(this, LAYOUT.si_value, SetMem.DO_NOT_SET);
+            super(address, Siginfo_t.sizeof);
+            si_value = new Sigval(this, Siginfo_t.offsetof_Si_value, SetMem.DO_NOT_SET);
         }
 
         /**
@@ -1724,7 +2096,7 @@ public class Signal {
          * @return the native value of si_signo.
          */
         public final int si_signo() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.si_signo);
+            return MEM_ACCESS.int32_t(this, Siginfo_t.offsetof_Si_signo);
         }
 
         /**
@@ -1735,7 +2107,7 @@ public class Signal {
          * @return the native value of si_code.
          */
         public final int si_code() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.si_code);
+            return MEM_ACCESS.int32_t(this, Siginfo_t.offsetof_Si_code);
         }
 
         /**
@@ -1747,7 +2119,7 @@ public class Signal {
          * @return the native value of si_errno.
          */
         public final int si_errno() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.si_errno);
+            return MEM_ACCESS.int32_t(this, Siginfo_t.offsetof_Si_errno);
         }
 
         /**
@@ -1759,7 +2131,7 @@ public class Signal {
          */
         @pid_t
         public final int si_pid() {
-            return ACCESSOR_PID_T.pid_t(this, LAYOUT.si_pid);
+            return ACCESSOR_PID_T.pid_t(this, Siginfo_t.offsetof_Si_pid);
         }
 
         /**
@@ -1771,7 +2143,7 @@ public class Signal {
          */
         @uid_t
         public final long si_uid() {
-            return ACCESSOR_UID_T.uid_t(this, LAYOUT.si_uid);
+            return ACCESSOR_UID_T.uid_t(this, Siginfo_t.offsetof_Si_uid);
         }
 
         /**
@@ -1782,7 +2154,7 @@ public class Signal {
          * @return the native value of si_addr.
          */
         public final NativeAddressHolder si_addr() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, LAYOUT.si_addr);
+            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Siginfo_t.offsetof_Si_addr);
         }
 
         /**
@@ -1793,7 +2165,7 @@ public class Signal {
          * @return the native value of si_status.
          */
         public final int si_status() {
-            return MEM_ACCESS.int32_t(this, LAYOUT.si_status);
+            return MEM_ACCESS.int32_t(this, Siginfo_t.offsetof_Si_status);
         }
 
         /**
@@ -1804,10 +2176,10 @@ public class Signal {
          * @return the native value of si_band.
          */
         public final long si_band() throws NoSuchNativeTypeMemberException {
-            if (LAYOUT.si_band == -1) {
+            if (Siginfo_t.offsetof_Si_band == -1) {
                 throw new NoSuchNativeTypeMemberException("siginfo_t", "si_band");
             }
-            return MEM_ACCESS.signed_long(this, LAYOUT.si_band);
+            return MEM_ACCESS.signed_long(this, Siginfo_t.offsetof_Si_band);
         }
         /**
          * Signal value.

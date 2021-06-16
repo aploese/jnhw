@@ -145,9 +145,10 @@ am__v_lt_0 = --silent
 am__v_lt_1 = 
 libtests_la_LIBADD =
 am_libtests_la_OBJECTS = AioDefines.lo AioStructures.lo PollDefines.lo \
-	PollStructures.lo LocaleTest.lo IoctlTest.lo StdioDefines.lo \
-	StringHeaderDefines.lo TermiosDefines.lo TermiosStructures.lo \
-	TimeDefines.lo TimeStructures.lo UnistdDefines.lo
+	PollStructures.lo LocaleTest.lo IoctlTest.lo SignalDefines.lo \
+	SignalStructures.lo StdioDefines.lo StringHeaderDefines.lo \
+	TermiosDefines.lo TermiosStructures.lo TimeDefines.lo \
+	TimeStructures.lo UnistdDefines.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -167,7 +168,8 @@ am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/AioStructures.Plo ./$(DEPDIR)/IoctlTest.Plo \
 	./$(DEPDIR)/LocaleTest.Plo ./$(DEPDIR)/PollDefines.Plo \
-	./$(DEPDIR)/PollStructures.Plo ./$(DEPDIR)/StdioDefines.Plo \
+	./$(DEPDIR)/PollStructures.Plo ./$(DEPDIR)/SignalDefines.Plo \
+	./$(DEPDIR)/SignalStructures.Plo ./$(DEPDIR)/StdioDefines.Plo \
 	./$(DEPDIR)/StringHeaderDefines.Plo \
 	./$(DEPDIR)/TermiosDefines.Plo \
 	./$(DEPDIR)/TermiosStructures.Plo ./$(DEPDIR)/TimeDefines.Plo \
@@ -379,6 +381,8 @@ libtests_la_SOURCES = \
  PollStructures.c \
  LocaleTest.c \
  IoctlTest.c \
+ SignalDefines.c \
+ SignalStructures.c \
  StdioDefines.c \
  StringHeaderDefines.c \
  TermiosDefines.c \
@@ -485,6 +489,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollStructures.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdioDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosDefines.Plo@am__quote@ # am--include-marker
@@ -659,6 +665,8 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/LocaleTest.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo
+	-rm -f ./$(DEPDIR)/SignalDefines.Plo
+	-rm -f ./$(DEPDIR)/SignalStructures.Plo
 	-rm -f ./$(DEPDIR)/StdioDefines.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo
@@ -718,6 +726,8 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/LocaleTest.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo
+	-rm -f ./$(DEPDIR)/SignalDefines.Plo
+	-rm -f ./$(DEPDIR)/SignalStructures.Plo
 	-rm -f ./$(DEPDIR)/StdioDefines.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderDefines.Plo
 	-rm -f ./$(DEPDIR)/TermiosDefines.Plo

@@ -161,7 +161,8 @@ extern "C" {
 
     /* TODO move to test...
      */
-    _JNHW_IMPORT_OR_EXPORT_ extern jobject JnhwWrapInteger(JNIEnv *env, int value);
+    _JNHW_IMPORT_OR_EXPORT_ extern jobject JnhwWrapInteger(JNIEnv *env, jint value);
+    _JNHW_IMPORT_OR_EXPORT_ extern jobject JnhwWrapLong(JNIEnv *env, jlong value);
 
     //Its funny how the differnt archs ans OSses have different datatypes so a long int is not equals to long long on 64 bit...
 

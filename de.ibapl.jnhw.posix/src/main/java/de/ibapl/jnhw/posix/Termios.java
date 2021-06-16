@@ -222,147 +222,153 @@ public final class Termios {
      */
     static {
         LibJnhwPosixLoader.touch();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
 
-        _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.toIntDefine(LinuxDefines._HAVE_STRUCT_TERMIOS_C_ISPEED);
-        _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.toIntDefine(LinuxDefines._HAVE_STRUCT_TERMIOS_C_OSPEED);
+                _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.toIntDefine(LinuxDefines._HAVE_STRUCT_TERMIOS_C_ISPEED);
+                _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.toIntDefine(LinuxDefines._HAVE_STRUCT_TERMIOS_C_OSPEED);
 
-        B0 = LinuxDefines.B0;
+                B0 = LinuxDefines.B0;
 
-        B1000000 = IntDefine.toIntDefine(LinuxDefines.B1000000);
-        B110 = LinuxDefines.B110;
-        B115200 = LinuxDefines.B115200;
-        B1152000 = IntDefine.toIntDefine(LinuxDefines.B1152000);
-        B1200 = LinuxDefines.B1200;
-        B134 = LinuxDefines.B134;
-        B150 = LinuxDefines.B150;
-        B1500000 = IntDefine.toIntDefine(LinuxDefines.B1500000);
-        B1800 = LinuxDefines.B1800;
-        B19200 = LinuxDefines.B19200;
+                B1000000 = IntDefine.toIntDefine(LinuxDefines.B1000000);
+                B110 = LinuxDefines.B110;
+                B115200 = LinuxDefines.B115200;
+                B1152000 = IntDefine.toIntDefine(LinuxDefines.B1152000);
+                B1200 = LinuxDefines.B1200;
+                B134 = LinuxDefines.B134;
+                B150 = LinuxDefines.B150;
+                B1500000 = IntDefine.toIntDefine(LinuxDefines.B1500000);
+                B1800 = LinuxDefines.B1800;
+                B19200 = LinuxDefines.B19200;
 
-        B200 = LinuxDefines.B200;
-        B2000000 = IntDefine.toIntDefine(LinuxDefines.B2000000);
-        B230400 = LinuxDefines.B230400;
-        B2400 = LinuxDefines.B2400;
-        B2500000 = IntDefine.toIntDefine(LinuxDefines.B2500000);
+                B200 = LinuxDefines.B200;
+                B2000000 = IntDefine.toIntDefine(LinuxDefines.B2000000);
+                B230400 = LinuxDefines.B230400;
+                B2400 = LinuxDefines.B2400;
+                B2500000 = IntDefine.toIntDefine(LinuxDefines.B2500000);
 
-        B300 = LinuxDefines.B300;
-        B3000000 = IntDefine.toIntDefine(LinuxDefines.B3000000);
-        B3500000 = IntDefine.toIntDefine(LinuxDefines.B3500000);
-        B38400 = LinuxDefines.B38400;
+                B300 = LinuxDefines.B300;
+                B3000000 = IntDefine.toIntDefine(LinuxDefines.B3000000);
+                B3500000 = IntDefine.toIntDefine(LinuxDefines.B3500000);
+                B38400 = LinuxDefines.B38400;
 
-        B4000000 = IntDefine.toIntDefine(LinuxDefines.B4000000);
-        B460800 = IntDefine.toIntDefine(LinuxDefines.B460800);
-        B4800 = LinuxDefines.B4800;
+                B4000000 = IntDefine.toIntDefine(LinuxDefines.B4000000);
+                B460800 = IntDefine.toIntDefine(LinuxDefines.B460800);
+                B4800 = LinuxDefines.B4800;
 
-        B50 = LinuxDefines.B50;
-        B500000 = IntDefine.toIntDefine(LinuxDefines.B500000);
-        B57600 = LinuxDefines.B57600;
-        B576000 = IntDefine.toIntDefine(LinuxDefines.B576000);
+                B50 = LinuxDefines.B50;
+                B500000 = IntDefine.toIntDefine(LinuxDefines.B500000);
+                B57600 = LinuxDefines.B57600;
+                B576000 = IntDefine.toIntDefine(LinuxDefines.B576000);
 
-        B600 = LinuxDefines.B600;
+                B600 = LinuxDefines.B600;
 
-        B75 = LinuxDefines.B75;
+                B75 = LinuxDefines.B75;
 
-        B921600 = IntDefine.toIntDefine(LinuxDefines.B921600);
-        B9600 = LinuxDefines.B9600;
+                B921600 = IntDefine.toIntDefine(LinuxDefines.B921600);
+                B9600 = LinuxDefines.B9600;
 
-        BRKINT = LinuxDefines.BRKINT;
-        BS0 = IntDefine.toIntDefine(LinuxDefines.BS0);
-        BS1 = IntDefine.toIntDefine(LinuxDefines.BS1);
-        BSDLY = IntDefine.toIntDefine(LinuxDefines.BSDLY);
+                BRKINT = LinuxDefines.BRKINT;
+                BS0 = IntDefine.toIntDefine(LinuxDefines.BS0);
+                BS1 = IntDefine.toIntDefine(LinuxDefines.BS1);
+                BSDLY = IntDefine.toIntDefine(LinuxDefines.BSDLY);
 
-        CLOCAL = LinuxDefines.CLOCAL;
-        CMSPAR = IntDefine.toIntDefine(LinuxDefines.CMSPAR);
-        CR0 = IntDefine.toIntDefine(LinuxDefines.CR0);
-        CR1 = IntDefine.toIntDefine(LinuxDefines.CR1);
-        CR2 = IntDefine.toIntDefine(LinuxDefines.CR2);
-        CR3 = IntDefine.toIntDefine(LinuxDefines.CR3);
-        CRDLY = IntDefine.toIntDefine(LinuxDefines.CRDLY);
-        CREAD = LinuxDefines.CREAD;
-        CRTSCTS = LinuxDefines.CRTSCTS;
-        CS5 = LinuxDefines.CS5;
-        CS6 = LinuxDefines.CS6;
-        CS7 = LinuxDefines.CS7;
-        CS8 = LinuxDefines.CS8;
-        CSIZE = LinuxDefines.CSIZE;
-        CSTOPB = LinuxDefines.CSTOPB;
+                CLOCAL = LinuxDefines.CLOCAL;
+                CMSPAR = IntDefine.toIntDefine(LinuxDefines.CMSPAR);
+                CR0 = IntDefine.toIntDefine(LinuxDefines.CR0);
+                CR1 = IntDefine.toIntDefine(LinuxDefines.CR1);
+                CR2 = IntDefine.toIntDefine(LinuxDefines.CR2);
+                CR3 = IntDefine.toIntDefine(LinuxDefines.CR3);
+                CRDLY = IntDefine.toIntDefine(LinuxDefines.CRDLY);
+                CREAD = LinuxDefines.CREAD;
+                CRTSCTS = LinuxDefines.CRTSCTS;
+                CS5 = LinuxDefines.CS5;
+                CS6 = LinuxDefines.CS6;
+                CS7 = LinuxDefines.CS7;
+                CS8 = LinuxDefines.CS8;
+                CSIZE = LinuxDefines.CSIZE;
+                CSTOPB = LinuxDefines.CSTOPB;
 
-        ECHO = LinuxDefines.ECHO;
-        ECHOE = LinuxDefines.ECHOE;
-        ECHOK = LinuxDefines.ECHOK;
-        ECHONL = LinuxDefines.ECHONL;
+                ECHO = LinuxDefines.ECHO;
+                ECHOE = LinuxDefines.ECHOE;
+                ECHOK = LinuxDefines.ECHOK;
+                ECHONL = LinuxDefines.ECHONL;
 
-        FF0 = IntDefine.toIntDefine(LinuxDefines.FF0);
-        FF1 = IntDefine.toIntDefine(LinuxDefines.FF1);
-        FFDLY = IntDefine.toIntDefine(LinuxDefines.FFDLY);
+                FF0 = IntDefine.toIntDefine(LinuxDefines.FF0);
+                FF1 = IntDefine.toIntDefine(LinuxDefines.FF1);
+                FFDLY = IntDefine.toIntDefine(LinuxDefines.FFDLY);
 
-        HUPCL = LinuxDefines.HUPCL;
-        HAVE_TERMIOS_H = true;
+                HUPCL = LinuxDefines.HUPCL;
+                HAVE_TERMIOS_H = true;
 
-        ICANON = LinuxDefines.ICANON;
-        ICRNL = LinuxDefines.ICRNL;
-        IEXTEN = LinuxDefines.IEXTEN;
-        IGNBRK = LinuxDefines.IGNBRK;
-        IGNCR = LinuxDefines.IGNCR;
-        IGNPAR = LinuxDefines.IGNPAR;
-        INLCR = LinuxDefines.INLCR;
-        INPCK = LinuxDefines.INPCK;
-        ISIG = LinuxDefines.ISIG;
-        ISTRIP = LinuxDefines.ISTRIP;
-        IXANY = LinuxDefines.IXANY;
-        IXOFF = LinuxDefines.IXOFF;
-        IXON = LinuxDefines.IXON;
+                ICANON = LinuxDefines.ICANON;
+                ICRNL = LinuxDefines.ICRNL;
+                IEXTEN = LinuxDefines.IEXTEN;
+                IGNBRK = LinuxDefines.IGNBRK;
+                IGNCR = LinuxDefines.IGNCR;
+                IGNPAR = LinuxDefines.IGNPAR;
+                INLCR = LinuxDefines.INLCR;
+                INPCK = LinuxDefines.INPCK;
+                ISIG = LinuxDefines.ISIG;
+                ISTRIP = LinuxDefines.ISTRIP;
+                IXANY = LinuxDefines.IXANY;
+                IXOFF = LinuxDefines.IXOFF;
+                IXON = LinuxDefines.IXON;
 
-        NCCS = LinuxDefines.NCCS;
-        NL0 = IntDefine.toIntDefine(LinuxDefines.NL0);
-        NL1 = IntDefine.toIntDefine(LinuxDefines.NL1);
-        NLDLY = IntDefine.toIntDefine(LinuxDefines.NLDLY);
-        NOFLSH = LinuxDefines.NOFLSH;
+                NCCS = LinuxDefines.NCCS;
+                NL0 = IntDefine.toIntDefine(LinuxDefines.NL0);
+                NL1 = IntDefine.toIntDefine(LinuxDefines.NL1);
+                NLDLY = IntDefine.toIntDefine(LinuxDefines.NLDLY);
+                NOFLSH = LinuxDefines.NOFLSH;
 
-        OCRNL = LinuxDefines.OCRNL;
-        OFDEL = IntDefine.toIntDefine(LinuxDefines.OFDEL);
-        OFILL = IntDefine.toIntDefine(LinuxDefines.OFILL);
-        ONLCR = LinuxDefines.ONLCR;
-        ONLRET = LinuxDefines.ONLRET;
-        ONOCR = LinuxDefines.ONOCR;
-        OPOST = LinuxDefines.OPOST;
+                OCRNL = LinuxDefines.OCRNL;
+                OFDEL = IntDefine.toIntDefine(LinuxDefines.OFDEL);
+                OFILL = IntDefine.toIntDefine(LinuxDefines.OFILL);
+                ONLCR = LinuxDefines.ONLCR;
+                ONLRET = LinuxDefines.ONLRET;
+                ONOCR = LinuxDefines.ONOCR;
+                OPOST = LinuxDefines.OPOST;
 
-        PARENB = LinuxDefines.PARENB;
-        PAREXT = IntDefine.UNDEFINED;
-        PARMRK = LinuxDefines.PARMRK;
-        PARODD = LinuxDefines.PARODD;
+                PARENB = LinuxDefines.PARENB;
+                PAREXT = IntDefine.UNDEFINED;
+                PARMRK = LinuxDefines.PARMRK;
+                PARODD = LinuxDefines.PARODD;
 
-        TAB0 = IntDefine.toIntDefine(LinuxDefines.TAB0);
-        TAB1 = IntDefine.toIntDefine(LinuxDefines.TAB1);
-        TAB2 = IntDefine.toIntDefine(LinuxDefines.TAB2);
-        TAB3 = IntDefine.toIntDefine(LinuxDefines.TAB3);
-        TABDLY = IntDefine.toIntDefine(LinuxDefines.TABDLY);
-        TCIFLUSH = LinuxDefines.TCIFLUSH;
-        TCIOFF = LinuxDefines.TCIOFF;
-        TCIOFLUSH = LinuxDefines.TCIOFLUSH;
-        TCION = LinuxDefines.TCION;
-        TCOFLUSH = LinuxDefines.TCOFLUSH;
-        TCOOFF = LinuxDefines.TCOOFF;
-        TCOON = LinuxDefines.TCOON;
-        TCSADRAIN = LinuxDefines.TCSADRAIN;
-        TCSAFLUSH = LinuxDefines.TCSAFLUSH;
-        TCSANOW = LinuxDefines.TCSANOW;
-        TOSTOP = LinuxDefines.TOSTOP;
+                TAB0 = IntDefine.toIntDefine(LinuxDefines.TAB0);
+                TAB1 = IntDefine.toIntDefine(LinuxDefines.TAB1);
+                TAB2 = IntDefine.toIntDefine(LinuxDefines.TAB2);
+                TAB3 = IntDefine.toIntDefine(LinuxDefines.TAB3);
+                TABDLY = IntDefine.toIntDefine(LinuxDefines.TABDLY);
+                TCIFLUSH = LinuxDefines.TCIFLUSH;
+                TCIOFF = LinuxDefines.TCIOFF;
+                TCIOFLUSH = LinuxDefines.TCIOFLUSH;
+                TCION = LinuxDefines.TCION;
+                TCOFLUSH = LinuxDefines.TCOFLUSH;
+                TCOOFF = LinuxDefines.TCOOFF;
+                TCOON = LinuxDefines.TCOON;
+                TCSADRAIN = LinuxDefines.TCSADRAIN;
+                TCSAFLUSH = LinuxDefines.TCSAFLUSH;
+                TCSANOW = LinuxDefines.TCSANOW;
+                TOSTOP = LinuxDefines.TOSTOP;
 
-        VEOF = LinuxDefines.VEOF;
-        VEOL = LinuxDefines.VEOL;
-        VERASE = LinuxDefines.VERASE;
-        VINTR = LinuxDefines.VINTR;
-        VKILL = LinuxDefines.VKILL;
-        VMIN = LinuxDefines.VMIN;
-        VQUIT = LinuxDefines.VQUIT;
-        VSTART = LinuxDefines.VSTART;
-        VSTOP = LinuxDefines.VSTOP;
-        VSUSP = LinuxDefines.VSUSP;
-        VT0 = IntDefine.toIntDefine(LinuxDefines.VT0);
-        VT1 = IntDefine.toIntDefine(LinuxDefines.VT1);
-        VTDLY = IntDefine.toIntDefine(LinuxDefines.VTDLY);
-        VTIME = LinuxDefines.VTIME;
+                VEOF = LinuxDefines.VEOF;
+                VEOL = LinuxDefines.VEOL;
+                VERASE = LinuxDefines.VERASE;
+                VINTR = LinuxDefines.VINTR;
+                VKILL = LinuxDefines.VKILL;
+                VMIN = LinuxDefines.VMIN;
+                VQUIT = LinuxDefines.VQUIT;
+                VSTART = LinuxDefines.VSTART;
+                VSTOP = LinuxDefines.VSTOP;
+                VSUSP = LinuxDefines.VSUSP;
+                VT0 = IntDefine.toIntDefine(LinuxDefines.VT0);
+                VT1 = IntDefine.toIntDefine(LinuxDefines.VT1);
+                VTDLY = IntDefine.toIntDefine(LinuxDefines.VTDLY);
+                VTIME = LinuxDefines.VTIME;
+                break;
+            default:
+                throw new NoClassDefFoundError("No unistd.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
 
     }
 

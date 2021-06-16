@@ -99,9 +99,7 @@ libsched_la_SOURCES = \
  SchedStructures.c
 
 libsignal_la_SOURCES = \
- SignalDefines.c \
  SignalFunctions.c \
- SignalStructures.c \
  Callback__Sigval_int__V_Impl.c
 
 libstdio_la_SOURCES = \
