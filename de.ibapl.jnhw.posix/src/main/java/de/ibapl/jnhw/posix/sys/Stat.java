@@ -37,6 +37,26 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <sys/stat.h>")
 public class Stat {
 
+    public static class LinuxDefines {
+
+        public final static int S_IRGRP = 32;
+        public final static int S_IROTH = 4;
+        public final static int S_IRUSR = 256;
+        public final static int S_IRWXG = 56;
+        public final static int S_IRWXO = 7;
+        public final static int S_IRWXU = 448;
+        public final static int S_ISGID = 1024;
+        public final static int S_ISUID = 2048;
+        public final static int S_ISVTX = 512;
+        public final static int S_IWGRP = 16;
+        public final static int S_IWOTH = 2;
+        public final static int S_IWUSR = 128;
+        public final static int S_IXGRP = 8;
+        public final static int S_IXOTH = 1;
+        public final static int S_IXUSR = 64;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -49,27 +69,30 @@ public class Stat {
     static {
         LibJnhwPosixLoader.touch();
 
-        HAVE_SYS_STAT_H = false;
-        S_IRGRP = 0;
-        S_IROTH = 0;
-        S_IRUSR = 0;
-        S_IRWXG = 0;
-        S_IRWXO = 0;
-        S_IRWXU = 0;
-        S_ISGID = 0;
-        S_ISUID = 0;
-        S_ISVTX = 0;
-        S_IWGRP = 0;
-        S_IWOTH = 0;
-        S_IWUSR = 0;
-        S_IXGRP = 0;
-        S_IXOTH = 0;
-        S_IXUSR = 0;
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_SYS_STAT_H = true;
+                S_IRGRP = LinuxDefines.S_IRGRP;
+                S_IROTH = LinuxDefines.S_IROTH;
+                S_IRUSR = LinuxDefines.S_IRUSR;
+                S_IRWXG = LinuxDefines.S_IRWXG;
+                S_IRWXO = LinuxDefines.S_IRWXO;
+                S_IRWXU = LinuxDefines.S_IRWXU;
+                S_ISGID = LinuxDefines.S_ISGID;
+                S_ISUID = LinuxDefines.S_ISUID;
+                S_ISVTX = LinuxDefines.S_ISVTX;
+                S_IWGRP = LinuxDefines.S_IWGRP;
+                S_IWOTH = LinuxDefines.S_IWOTH;
+                S_IWUSR = LinuxDefines.S_IWUSR;
+                S_IXGRP = LinuxDefines.S_IXGRP;
+                S_IXOTH = LinuxDefines.S_IXOTH;
+                S_IXUSR = LinuxDefines.S_IXUSR;
 
-        initFields();
+                break;
+            default:
+                throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     public final static boolean HAVE_SYS_STAT_H;
 

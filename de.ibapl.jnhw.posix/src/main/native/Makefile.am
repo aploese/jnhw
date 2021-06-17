@@ -104,7 +104,6 @@ libsystypes_la_SOURCES = \
  TypesDefines.c
 
 libsysstat_la_SOURCES = \
- StatDefines.c \
  StatFunctions.c
 
 libtermios_la_SOURCES = \

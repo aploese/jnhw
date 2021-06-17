@@ -34,6 +34,7 @@ libtests_la_SOURCES = \
  SchedStructures.c \
  SignalDefines.c \
  SignalStructures.c \
+ StatDefines.c \
  StdioDefines.c \
  StringHeaderDefines.c \
  TermiosDefines.c \

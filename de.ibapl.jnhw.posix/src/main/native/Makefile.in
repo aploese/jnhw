@@ -188,7 +188,7 @@ libstring_la_LIBADD =
 am_libstring_la_OBJECTS = StringHeaderFunctions.lo
 libstring_la_OBJECTS = $(am_libstring_la_OBJECTS)
 libsysstat_la_LIBADD =
-am_libsysstat_la_OBJECTS = StatDefines.lo StatFunctions.lo
+am_libsysstat_la_OBJECTS = StatFunctions.lo
 libsysstat_la_OBJECTS = $(am_libsysstat_la_OBJECTS)
 libsystypes_la_LIBADD =
 am_libsystypes_la_OBJECTS = TypesDefines.lo
@@ -232,8 +232,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/Posix_ErrnoDefines.Plo \
 	./$(DEPDIR)/PthreadFunctions.Plo \
 	./$(DEPDIR)/SchedFunctions.Plo ./$(DEPDIR)/SignalFunctions.Plo \
-	./$(DEPDIR)/StatDefines.Plo ./$(DEPDIR)/StatFunctions.Plo \
-	./$(DEPDIR)/StdioFunctions.Plo \
+	./$(DEPDIR)/StatFunctions.Plo ./$(DEPDIR)/StdioFunctions.Plo \
 	./$(DEPDIR)/StringHeaderFunctions.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo ./$(DEPDIR)/TimeFunctions.Plo \
 	./$(DEPDIR)/TypesDefines.Plo ./$(DEPDIR)/UcontextDefines.Plo \
@@ -544,7 +543,6 @@ libsystypes_la_SOURCES = \
  TypesDefines.c
 
 libsysstat_la_SOURCES = \
- StatDefines.c \
  StatFunctions.c
 
 libtermios_la_SOURCES = \
@@ -722,7 +720,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdioFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderFunctions.Plo@am__quote@ # am--include-marker
@@ -909,7 +906,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
-	-rm -f ./$(DEPDIR)/StatDefines.Plo
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo
 	-rm -f ./$(DEPDIR)/StdioFunctions.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
@@ -981,7 +977,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
-	-rm -f ./$(DEPDIR)/StatDefines.Plo
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo
 	-rm -f ./$(DEPDIR)/StdioFunctions.Plo
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
