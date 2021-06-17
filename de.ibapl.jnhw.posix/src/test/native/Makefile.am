@@ -20,6 +20,7 @@ libtests.la \
 libtests_la_SOURCES = \
  AioDefines.c \
  AioStructures.c \
+ FcntlDefines.c \
  PollDefines.c \
  PollStructures.c \
  PthreadDefines.c \

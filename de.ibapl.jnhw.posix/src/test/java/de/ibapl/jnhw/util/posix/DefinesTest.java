@@ -22,15 +22,11 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.linux.sys.Eventfd;
-import de.ibapl.jnhw.posix.Fcntl;
-import de.ibapl.jnhw.posix.Locale;
-import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.unix.sys.Ioctl;
@@ -173,145 +169,9 @@ public class DefinesTest {
         System.out.println("<<< " + clazz.getName() + " Defines");
     }
 
-    /*
-
-    @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.LINUX)
-    public void testEventfdDefines() throws Exception {
-        testDefines(Eventfd.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testFcntlDefines() throws Exception {
-        testDefines(Fcntl.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testIoctlDefines() throws Exception {
-        testDefines(Ioctl.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testIsocErrnoDefines() throws Exception {
-        testDefines(de.ibapl.jnhw.isoc.Errno.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testLocaleDefines() throws Exception {
-        testDefines(Locale.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testPthreadDefines() throws Exception {
-        testDefines(Pthread.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testPosixErrnoDefines() throws Exception {
-        testDefines(de.ibapl.jnhw.posix.Errno.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testSignalDefines() throws Exception {
-        testDefines(Signal.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testSchedDefines() throws Exception {
-        testDefines(Sched.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testStatDefines() throws Exception {
-        testDefines(Stat.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testStdioDefines() throws Exception {
-        testDefines(Stdio.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testStringHeaderDefines() throws Exception {
-        testDefines(StringHeader.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testTermiosDefines() throws Exception {
-        testDefines(Termios.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testTimeDefines() throws Exception {
-        testDefines(Time.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testTypesDefines() throws Exception {
-        testDefines(Types.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testUcontext() throws Exception {
-        testDefines(Ucontext.class);
-    }
-
-    @Test
-    public void testDefines() throws Exception {
-        testDefines(Defines.class);
-    }
-
-    @Test
-    @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testUnistdDefines() throws Exception {
-        testDefines(Unistd.class);
-    }
-     */
     @Test
     public void test_HAVE_ERRNO_H() throws Exception {
         Assertions.assertTrue(de.ibapl.jnhw.isoc.Errno.HAVE_ERRNO_H, "expected to have errno.h");
-    }
-
-    @Test
-    public void test_HAVE_FCNTL_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Fcntl.HAVE_FCNTL_H, "expected not to have fcntl.h");
-        } else {
-            Assertions.assertTrue(Fcntl.HAVE_FCNTL_H, "expected to have fcntl.h");
-        }
-    }
-
-    @Test
-    public void test_HAVE_LOCALE_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Locale.HAVE_LOCALE_H, "expected not to have locale.h");
-        } else {
-            Assertions.assertTrue(Locale.HAVE_LOCALE_H, "expected to have locale.h");
-        }
-    }
-
-    @Test
-    public void test_HAVE_PTHREAD_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Pthread.HAVE_PTHREAD_H, "not expected to have pthread.h");
-        } else {
-            Assertions.assertTrue(Pthread.HAVE_PTHREAD_H, "expected to have pthread.h");
-        }
     }
 
     @Test

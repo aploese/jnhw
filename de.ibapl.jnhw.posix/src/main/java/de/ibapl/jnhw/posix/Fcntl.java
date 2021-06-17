@@ -48,6 +48,55 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <fcntl.h>")
 public final class Fcntl {
 
+    public static class LinuxDefines {
+
+        public final static int AT_EACCESS = 0x200;
+        public final static int AT_FDCWD = -100;
+        public final static int AT_REMOVEDIR = 0x200;
+        public final static int AT_SYMLINK_FOLLOW = 0x400;
+        public final static int AT_SYMLINK_NOFOLLOW = 0x100;
+        public final static int FD_CLOEXEC = 1;
+        public final static int F_DUPFD = 0;
+        public final static int F_DUPFD_CLOEXEC = 1030;
+        public final static int F_GETFD = 1;
+        public final static int F_GETFL = 3;
+        public final static int F_GETLK = 5;
+        public final static int F_GETOWN = 9;
+        public final static int F_RDLCK = 0;
+        public final static int F_SETFD = 2;
+        public final static int F_SETFL = 4;
+        public final static int F_SETLK = 6;
+        public final static int F_SETLKW = 7;
+        public final static int F_SETOWN = 8;
+        public final static int F_UNLCK = 2;
+        public final static int F_WRLCK = 1;
+        public final static int O_ACCMODE = 0003;
+        public final static int O_APPEND = 02000;
+        public final static int O_ASYNC = 020000;
+        public final static int O_CLOEXEC = 02000000;
+        public final static int O_CREAT = 0100;
+        public final static int O_DIRECTORY = 0200000;
+        public final static int O_DSYNC = 010000;
+        public final static int O_EXCL = 0200;
+        public final static int O_FSYNC = 04010000;
+        public final static int O_LARGEFILE = 0; // 32bit -> 0100000;
+        public final static int O_NOCTTY = 0400;
+        public final static int O_NOFOLLOW = 0400000;
+        public final static int O_NONBLOCK = 04000;
+        public final static int O_RDONLY = 00;
+        public final static int O_RDWR = 02;
+        public final static int O_RSYNC = 04010000;
+        public final static int O_SYNC = 04010000;
+        public final static int O_TRUNC = 01000;
+        public final static int O_WRONLY = 01;
+        public final static int POSIX_FADV_DONTNEED = 4;
+        public final static int POSIX_FADV_NOREUSE = 5;
+        public final static int POSIX_FADV_NORMAL = 0;
+        public final static int POSIX_FADV_RANDOM = 1;
+        public final static int POSIX_FADV_SEQUENTIAL = 2;
+        public final static int POSIX_FADV_WILLNEED = 3;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -60,69 +109,72 @@ public final class Fcntl {
     static {
         LibJnhwPosixLoader.touch();
 
-        HAVE_FCNTL_H = false;
+        SEEK_CUR = Stdio.SEEK_CUR;
+        SEEK_END = Stdio.SEEK_END;
+        SEEK_SET = Stdio.SEEK_SET;
 
-        AT_EACCESS = 0;
-        AT_FDCWD = 0;
-        AT_REMOVEDIR = 0;
-        AT_SYMLINK_FOLLOW = 0;
-        AT_SYMLINK_NOFOLLOW = 0;
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_FCNTL_H = true;
 
-        FD_CLOEXEC = 0;
+                AT_EACCESS = LinuxDefines.AT_EACCESS;
+                AT_FDCWD = LinuxDefines.AT_FDCWD;
+                AT_REMOVEDIR = LinuxDefines.AT_REMOVEDIR;
+                AT_SYMLINK_FOLLOW = LinuxDefines.AT_SYMLINK_FOLLOW;
+                AT_SYMLINK_NOFOLLOW = LinuxDefines.AT_SYMLINK_NOFOLLOW;
 
-        F_DUPFD = 0;
-        F_DUPFD_CLOEXEC = 0;
-        F_GETFD = 0;
-        F_GETFL = 0;
-        F_GETLK = 0;
-        F_GETOWN = 0;
-        F_RDLCK = 0;
-        F_SETFD = 0;
-        F_SETFL = 0;
-        F_SETLK = 0;
-        F_SETLKW = 0;
-        F_SETOWN = 0;
-        F_UNLCK = 0;
-        F_WRLCK = 0;
+                FD_CLOEXEC = LinuxDefines.FD_CLOEXEC;
 
-        O_ACCMODE = 0;
-        O_APPEND = 0;
-        O_ASYNC = IntDefine.UNDEFINED;
-        O_CLOEXEC = 0;
-        O_CREAT = 0;
-        O_DIRECTORY = 0;
-        O_DSYNC = IntDefine.UNDEFINED;
-        O_EXCL = 0;
-        O_EXEC = IntDefine.UNDEFINED;
-        O_FSYNC = IntDefine.UNDEFINED;
-        O_LARGEFILE = IntDefine.UNDEFINED;
-        O_NOCTTY = 0;
-        O_NOFOLLOW = 0;
-        O_NONBLOCK = 0;
-        O_RDONLY = 0;
-        O_RDWR = 0;
-        O_RSYNC = IntDefine.UNDEFINED;
-        O_SEARCH = IntDefine.UNDEFINED;
-        O_SYNC = 0;
-        O_TRUNC = 0;
-        O_TTY_INIT = IntDefine.UNDEFINED;
-        O_WRONLY = 0;
+                F_DUPFD = LinuxDefines.F_DUPFD;
+                F_DUPFD_CLOEXEC = LinuxDefines.F_DUPFD_CLOEXEC;
+                F_GETFD = LinuxDefines.F_GETFD;
+                F_GETFL = LinuxDefines.F_GETFL;
+                F_GETLK = LinuxDefines.F_GETLK;
+                F_GETOWN = LinuxDefines.F_GETOWN;
+                F_RDLCK = LinuxDefines.F_RDLCK;
+                F_SETFD = LinuxDefines.F_SETFD;
+                F_SETFL = LinuxDefines.F_SETFL;
+                F_SETLK = LinuxDefines.F_SETLK;
+                F_SETLKW = LinuxDefines.F_SETLKW;
+                F_SETOWN = LinuxDefines.F_SETOWN;
+                F_UNLCK = LinuxDefines.F_UNLCK;
+                F_WRLCK = LinuxDefines.F_WRLCK;
 
-        POSIX_FADV_DONTNEED = IntDefine.UNDEFINED;
-        POSIX_FADV_NOREUSE = IntDefine.UNDEFINED;
-        POSIX_FADV_NORMAL = IntDefine.UNDEFINED;
-        POSIX_FADV_RANDOM = IntDefine.UNDEFINED;
-        POSIX_FADV_SEQUENTIAL = IntDefine.UNDEFINED;
-        POSIX_FADV_WILLNEED = IntDefine.UNDEFINED;
+                O_ACCMODE = LinuxDefines.O_ACCMODE;
+                O_APPEND = LinuxDefines.O_APPEND;
+                O_ASYNC = IntDefine.toIntDefine(LinuxDefines.O_ASYNC);
+                O_CLOEXEC = LinuxDefines.O_CLOEXEC;
+                O_CREAT = LinuxDefines.O_CREAT;
+                O_DIRECTORY = LinuxDefines.O_DIRECTORY;
+                O_DSYNC = IntDefine.toIntDefine(LinuxDefines.O_DSYNC);
+                O_EXCL = LinuxDefines.O_EXCL;
+                O_EXEC = IntDefine.UNDEFINED;
+                O_FSYNC = IntDefine.toIntDefine(LinuxDefines.O_FSYNC);
+                O_LARGEFILE = IntDefine.toIntDefine(LinuxDefines.O_LARGEFILE);
+                O_NOCTTY = LinuxDefines.O_NOCTTY;
+                O_NOFOLLOW = LinuxDefines.O_NOFOLLOW;
+                O_NONBLOCK = LinuxDefines.O_NONBLOCK;
+                O_RDONLY = LinuxDefines.O_RDONLY;
+                O_RDWR = LinuxDefines.O_RDWR;
+                O_RSYNC = IntDefine.toIntDefine(LinuxDefines.O_RSYNC);
+                O_SEARCH = IntDefine.UNDEFINED;
+                O_SYNC = LinuxDefines.O_SYNC;
+                O_TRUNC = LinuxDefines.O_TRUNC;
+                O_TTY_INIT = IntDefine.UNDEFINED;
+                O_WRONLY = LinuxDefines.O_WRONLY;
 
-        SEEK_CUR = 0;
-        SEEK_END = 0;
-        SEEK_SET = 0;
+                POSIX_FADV_DONTNEED = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_DONTNEED);
+                POSIX_FADV_NOREUSE = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_NOREUSE);
+                POSIX_FADV_NORMAL = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_NORMAL);
+                POSIX_FADV_RANDOM = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_RANDOM);
+                POSIX_FADV_SEQUENTIAL = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_SEQUENTIAL);
+                POSIX_FADV_WILLNEED = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_WILLNEED);
 
-        initFields();
+                break;
+            default:
+                throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     /**
      * <b>POSIX:</b> Check access using effective user and group ID.

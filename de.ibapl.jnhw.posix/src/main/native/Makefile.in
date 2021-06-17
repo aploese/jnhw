@@ -149,7 +149,7 @@ libeventfd_la_LIBADD =
 am_libeventfd_la_OBJECTS = EventFdDefines.lo EventFdFunctions.lo
 libeventfd_la_OBJECTS = $(am_libeventfd_la_OBJECTS)
 libfcntl_la_LIBADD =
-am_libfcntl_la_OBJECTS = FcntlDefines.lo FcntlFunctions.lo
+am_libfcntl_la_OBJECTS = FcntlFunctions.lo
 libfcntl_la_OBJECTS = $(am_libfcntl_la_OBJECTS)
 libioclt_la_LIBADD =
 am_libioclt_la_OBJECTS = IoctlDefines.lo IoctlFunctions.lo
@@ -223,7 +223,7 @@ am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo \
 	./$(DEPDIR)/Defines.Plo ./$(DEPDIR)/EventFdDefines.Plo \
-	./$(DEPDIR)/EventFdFunctions.Plo ./$(DEPDIR)/FcntlDefines.Plo \
+	./$(DEPDIR)/EventFdFunctions.Plo \
 	./$(DEPDIR)/FcntlFunctions.Plo ./$(DEPDIR)/IoctlDefines.Plo \
 	./$(DEPDIR)/IoctlFunctions.Plo \
 	./$(DEPDIR)/Isoc_ErrnoDefines.Plo \
@@ -511,7 +511,6 @@ libeventfd_la_SOURCES = \
  EventFdFunctions.c
 
 libfcntl_la_SOURCES = \
- FcntlDefines.c \
  FcntlFunctions.c
 
 libioclt_la_SOURCES = \
@@ -714,7 +713,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Defines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FcntlDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FcntlFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlFunctions.Plo@am__quote@ # am--include-marker
@@ -903,7 +901,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
-	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
 	-rm -f ./$(DEPDIR)/FcntlFunctions.Plo
 	-rm -f ./$(DEPDIR)/IoctlDefines.Plo
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
@@ -977,7 +974,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
-	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
 	-rm -f ./$(DEPDIR)/FcntlFunctions.Plo
 	-rm -f ./$(DEPDIR)/IoctlDefines.Plo
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo

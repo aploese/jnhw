@@ -70,7 +70,6 @@ libeventfd_la_SOURCES = \
  EventFdFunctions.c
 
 libfcntl_la_SOURCES = \
- FcntlDefines.c \
  FcntlFunctions.c
 
 libioclt_la_SOURCES = \
