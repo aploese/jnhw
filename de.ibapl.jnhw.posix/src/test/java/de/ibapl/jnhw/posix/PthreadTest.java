@@ -29,11 +29,13 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -46,21 +48,96 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class PthreadTest {
 
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_PTHREAD_H();
+
+        public final static native int PTHREAD_EXPLICIT_SCHED();
+
+        public final static native int PTHREAD_INHERIT_SCHED();
+
+        public final static native int PTHREAD_CANCEL_DISABLE();
+
+        public final static native int PTHREAD_CANCEL_ENABLE();
+
+        public final static native int PTHREAD_CANCEL_DEFERRED();
+
+        public final static native int PTHREAD_CANCEL_ASYNCHRONOUS();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    public static class NativePthread_attr_t {
+
+        public final static native int alignof();
+
+        public final static native int sizeof();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    public static class NativePthread_t {
+
+        public final static native int alignof();
+
+        public final static native int sizeof();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
     private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
-    public PthreadTest() {
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_PTHREAD_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Pthread.HAVE_PTHREAD_H, "not expected to have pthread.h");
+        } else {
+            Assertions.assertTrue(Pthread.HAVE_PTHREAD_H, "expected to have pthread.h");
+        }
     }
 
-    @AfterAll
-    public static void tearDownClass() {
+    @BeforeAll
+    public static void checkBeforeAll_PthreadDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(Pthread.class, NativeDefines.class, "HAVE_PTHREAD_H");
     }
 
-    @BeforeEach
-    public void setUp() {
+    @BeforeAll
+    public static void checkBeforeAll_NativePthread_attr_t() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        Assertions.assertAll(
+                () -> {
+                    Assertions.assertEquals(NativePthread_attr_t.sizeof(), Pthread.Pthread_attr_t.sizeof, "sizeof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativePthread_attr_t.alignof(), Pthread.Pthread_attr_t.alignof.alignof, "alignof");
+                }
+        );
     }
 
-    @AfterEach
-    public void tearDown() {
+    @BeforeAll
+    public static void checkBeforeAll_NativePthread_t() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        Assertions.assertAll(
+                () -> {
+                    Assertions.assertEquals(NativePthread_t.sizeof(), Pthread.Pthread_t.sizeof, "sizeof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativePthread_t.alignof(), Pthread.Pthread_t.alignof.alignof, "alignof");
+                }
+        );
     }
 
     /**
@@ -251,80 +328,6 @@ public class PthreadTest {
                     Pthread.pthread_setschedprio(null, 0);
                 });
                 Pthread.pthread_setschedprio(Pthread.pthread_self(), 0);
-        }
-    }
-
-    @Test
-    public void testSizeOfPthread_attr_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case LINUX:
-                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
-                    case AARCH64:
-                        Assertions.assertEquals(64, Pthread.Pthread_attr_t.LAYOUT.sizeof);
-                        break;
-                    case ARM:
-                    case I386:
-                    case MIPS:
-                        Assertions.assertEquals(36, Pthread.Pthread_attr_t.LAYOUT.sizeof);
-                        break;
-                    case MIPS_64:
-                    case POWER_PC_64:
-                    case S390_X:
-                    case X86_64:
-                        Assertions.assertEquals(56, Pthread.Pthread_attr_t.LAYOUT.sizeof);
-                        break;
-                    default:
-                        Assertions.assertEquals(-1, Pthread.Pthread_attr_t.LAYOUT.sizeof);
-                }
-                break;
-            case FREE_BSD:
-            case OPEN_BSD:
-                Assertions.assertEquals(8, Pthread.Pthread_attr_t.LAYOUT.sizeof);
-                break;
-            default:
-                Assertions.assertEquals(-1, Pthread.Pthread_attr_t.LAYOUT.sizeof);
-        }
-    }
-
-    @Test
-    public void testAlignOfPthread_attr_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
-                Assertions.assertEquals(Alignment.AT_4, Pthread.Pthread_attr_t.LAYOUT.alignment);
-                break;
-            case _64_BIT:
-                Assertions.assertEquals(Alignment.AT_8, Pthread.Pthread_attr_t.LAYOUT.alignment);
-                break;
-            default:
-                Assertions.fail("Pthread.Pthread_attr_t.LAYOUT.alignment " + Pthread.Pthread_attr_t.LAYOUT.alignment);
-        }
-    }
-
-    @Test
-    public void testSizeOfPthread_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
-                Assertions.assertEquals(4, Pthread.Pthread_t.LAYOUT.sizeof);
-                break;
-            case _64_BIT:
-                Assertions.assertEquals(8, Pthread.Pthread_t.LAYOUT.sizeof);
-                break;
-            default:
-                Assertions.fail("Pthread.Pthread_t.LAYOUT.sizeof " + Pthread.Pthread_t.LAYOUT.sizeof);
-        }
-    }
-
-    @Test
-    public void testAlignOfPthread_t() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
-                Assertions.assertEquals(Alignment.AT_4, Pthread.Pthread_t.LAYOUT.alignment);
-                break;
-            case _64_BIT:
-                Assertions.assertEquals(Alignment.AT_8, Pthread.Pthread_t.LAYOUT.alignment);
-                break;
-            default:
-                Assertions.fail("Pthread.Pthread_t.LAYOUT.sizeof " + Pthread.Pthread_t.LAYOUT.sizeof);
         }
     }
 

@@ -22,6 +22,8 @@ libtests_la_SOURCES = \
  AioStructures.c \
  PollDefines.c \
  PollStructures.c \
+ PthreadDefines.c \
+ PthreadStructures.c \
  LocaleTest.c \
  IoctlTest.c \
  SchedDefines.c \

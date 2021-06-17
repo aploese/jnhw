@@ -30,7 +30,6 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 

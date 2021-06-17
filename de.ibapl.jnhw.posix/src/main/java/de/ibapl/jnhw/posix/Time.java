@@ -38,7 +38,6 @@ import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.timer_t;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;

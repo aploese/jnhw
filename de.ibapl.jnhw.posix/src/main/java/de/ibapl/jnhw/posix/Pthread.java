@@ -32,7 +32,6 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.io.IOException;
 
@@ -48,6 +47,17 @@ import java.io.IOException;
 @Include("#include <pthread.h>")
 public class Pthread {
 
+    public static class LinuxDefines {
+
+        public final static int PTHREAD_EXPLICIT_SCHED = 1;
+        public final static int PTHREAD_INHERIT_SCHED = 0;
+        public final static int PTHREAD_CANCEL_DISABLE = 1;
+        public final static int PTHREAD_CANCEL_ENABLE = 0;
+        public final static int PTHREAD_CANCEL_DEFERRED = 0;
+        public final static int PTHREAD_CANCEL_ASYNCHRONOUS = 1;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -59,19 +69,21 @@ public class Pthread {
      */
     static {
         LibJnhwPosixLoader.touch();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_PTHREAD_H = true;
+                PTHREAD_CANCEL_ASYNCHRONOUS = LinuxDefines.PTHREAD_CANCEL_ASYNCHRONOUS;
+                PTHREAD_CANCEL_DEFERRED = LinuxDefines.PTHREAD_CANCEL_DEFERRED;
+                PTHREAD_CANCEL_DISABLE = LinuxDefines.PTHREAD_CANCEL_DISABLE;
+                PTHREAD_CANCEL_ENABLE = LinuxDefines.PTHREAD_CANCEL_ENABLE;
+                PTHREAD_EXPLICIT_SCHED = LinuxDefines.PTHREAD_EXPLICIT_SCHED;
+                PTHREAD_INHERIT_SCHED = LinuxDefines.PTHREAD_INHERIT_SCHED;
 
-        HAVE_PTHREAD_H = false;
-        PTHREAD_CANCEL_ASYNCHRONOUS = 0;
-        PTHREAD_CANCEL_DEFERRED = 0;
-        PTHREAD_CANCEL_DISABLE = 0;
-        PTHREAD_CANCEL_ENABLE = 0;
-        PTHREAD_EXPLICIT_SCHED = 0;
-        PTHREAD_INHERIT_SCHED = 0;
-
-        initFields();
+                break;
+            default:
+                throw new NoClassDefFoundError("No pthread.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     /**
      * <b>POSIX.TPS:</b>
@@ -302,29 +314,54 @@ public class Pthread {
     @pthread_attr_t
     public static final class Pthread_attr_t extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static Alignment alignof;
+        public final static int sizeof;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+                case LINUX:
+                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                        case AARCH64:
+                            sizeof = 64;
+                            break;
+                        case ARM:
+                        case I386:
+                        case MIPS:
+                            sizeof = 36;
+                            break;
+                        case MIPS_64:
+                        case POWER_PC_64:
+                        case S390_X:
+                        case X86_64:
+                            sizeof = 56;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No pthread.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
+                    break;
+                case FREE_BSD:
+                case OPEN_BSD:
+                    sizeof = 8;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No pthread.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
+                case _32_BIT:
+                    alignof = Alignment.AT_4;
+                    break;
+                case _64_BIT:
+                    alignof = Alignment.AT_8;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No pthread.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
+
         }
 
         public Pthread_attr_t() {
@@ -332,11 +369,11 @@ public class Pthread {
         }
 
         public Pthread_attr_t(NativeAddressHolder baseAddress) {
-            super(baseAddress, LAYOUT.sizeof);
+            super(baseAddress, Pthread_attr_t.sizeof);
         }
 
         public Pthread_attr_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
+            super(parent, offset, Pthread_attr_t.sizeof, setMem);
         }
 
     }
@@ -350,29 +387,28 @@ public class Pthread {
     @pthread_t
     public static final class Pthread_t extends Struct32 {
 
-        public static class Layout extends StructLayout {
-
-            public final Alignment alignment;
-            public final int sizeof;
-
-            public Layout(long sizeof, int alignof) {
-                super();
-                this.sizeof = (int) sizeof;
-                this.alignment = Alignment.fromAlignof(alignof);
-            }
-
-        }
-
-        private static native Layout native2Layout(Class<Layout> layoutClass);
-
-        public final static Layout LAYOUT;
+        public final static Alignment alignof;
+        public final static int sizeof;
 
         /**
          * Make sure the native lib is loaded
          */
         static {
             LibJnhwPosixLoader.touch();
-            LAYOUT = native2Layout(Layout.class);
+
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
+                case _32_BIT:
+                    alignof = Alignment.AT_4;
+                    sizeof = 4;
+                    break;
+                case _64_BIT:
+                    alignof = Alignment.AT_8;
+                    sizeof = 8;
+                    ;
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No pthread.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         public Pthread_t() {
@@ -380,11 +416,11 @@ public class Pthread {
         }
 
         public Pthread_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.sizeof, setMem);
+            super(parent, offset, Pthread_t.sizeof, setMem);
         }
 
         public Pthread_t(NativeAddressHolder baseAddress) {
-            super(baseAddress, LAYOUT.sizeof);
+            super(baseAddress, Pthread_t.sizeof);
         }
 
         @Override
@@ -394,10 +430,9 @@ public class Pthread {
 
         @Override
         public String nativeToString() {
-            return nativeToString(baseAddress);
+            return MEM_ACCESS.uintptr_t_AsHex(this, 0);
         }
 
-        private static native String nativeToString(long ptrPthread_t);
     }
 
     /**

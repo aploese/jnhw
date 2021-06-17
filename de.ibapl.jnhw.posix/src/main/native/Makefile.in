@@ -173,8 +173,7 @@ libposixutils_la_LIBADD =
 am_libposixutils_la_OBJECTS = Defines.lo
 libposixutils_la_OBJECTS = $(am_libposixutils_la_OBJECTS)
 libpthread_la_LIBADD =
-am_libpthread_la_OBJECTS = PthreadDefines.lo PthreadFunctions.lo \
-	PthreadStructures.lo
+am_libpthread_la_OBJECTS = PthreadFunctions.lo
 libpthread_la_OBJECTS = $(am_libpthread_la_OBJECTS)
 libsched_la_LIBADD =
 am_libsched_la_OBJECTS = SchedFunctions.lo
@@ -234,9 +233,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/LocaleStructures.Plo ./$(DEPDIR)/PollFunctions.Plo \
 	./$(DEPDIR)/PosixDataType.Plo \
 	./$(DEPDIR)/Posix_ErrnoDefines.Plo \
-	./$(DEPDIR)/PthreadDefines.Plo \
 	./$(DEPDIR)/PthreadFunctions.Plo \
-	./$(DEPDIR)/PthreadStructures.Plo \
 	./$(DEPDIR)/SchedFunctions.Plo ./$(DEPDIR)/SignalFunctions.Plo \
 	./$(DEPDIR)/StatDefines.Plo ./$(DEPDIR)/StatFunctions.Plo \
 	./$(DEPDIR)/StdioFunctions.Plo \
@@ -535,9 +532,7 @@ libposixutils_la_SOURCES = \
  Defines.c
 
 libpthread_la_SOURCES = \
- PthreadDefines.c \
- PthreadFunctions.c \
- PthreadStructures.c
+ PthreadFunctions.c
 
 libsched_la_SOURCES = \
  SchedFunctions.c
@@ -735,9 +730,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PosixDataType.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatDefines.Plo@am__quote@ # am--include-marker
@@ -928,9 +921,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/PosixDataType.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
-	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
-	-rm -f ./$(DEPDIR)/PthreadStructures.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
 	-rm -f ./$(DEPDIR)/StatDefines.Plo
@@ -1006,9 +997,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/PosixDataType.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
-	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
-	-rm -f ./$(DEPDIR)/PthreadStructures.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
 	-rm -f ./$(DEPDIR)/StatDefines.Plo

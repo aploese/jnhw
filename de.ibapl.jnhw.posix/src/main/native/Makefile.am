@@ -89,9 +89,7 @@ libposixutils_la_SOURCES = \
  Defines.c
 
 libpthread_la_SOURCES = \
- PthreadDefines.c \
- PthreadFunctions.c \
- PthreadStructures.c
+ PthreadFunctions.c
 
 libsched_la_SOURCES = \
  SchedFunctions.c

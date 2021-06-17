@@ -145,11 +145,11 @@ am__v_lt_0 = --silent
 am__v_lt_1 = 
 libtests_la_LIBADD =
 am_libtests_la_OBJECTS = AioDefines.lo AioStructures.lo PollDefines.lo \
-	PollStructures.lo LocaleTest.lo IoctlTest.lo SchedDefines.lo \
-	SchedStructures.lo SignalDefines.lo SignalStructures.lo \
-	StdioDefines.lo StringHeaderDefines.lo TermiosDefines.lo \
-	TermiosStructures.lo TimeDefines.lo TimeStructures.lo \
-	UnistdDefines.lo
+	PollStructures.lo PthreadDefines.lo PthreadStructures.lo \
+	LocaleTest.lo IoctlTest.lo SchedDefines.lo SchedStructures.lo \
+	SignalDefines.lo SignalStructures.lo StdioDefines.lo \
+	StringHeaderDefines.lo TermiosDefines.lo TermiosStructures.lo \
+	TimeDefines.lo TimeStructures.lo UnistdDefines.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -169,7 +169,8 @@ am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/AioStructures.Plo ./$(DEPDIR)/IoctlTest.Plo \
 	./$(DEPDIR)/LocaleTest.Plo ./$(DEPDIR)/PollDefines.Plo \
-	./$(DEPDIR)/PollStructures.Plo ./$(DEPDIR)/SchedDefines.Plo \
+	./$(DEPDIR)/PollStructures.Plo ./$(DEPDIR)/PthreadDefines.Plo \
+	./$(DEPDIR)/PthreadStructures.Plo ./$(DEPDIR)/SchedDefines.Plo \
 	./$(DEPDIR)/SchedStructures.Plo ./$(DEPDIR)/SignalDefines.Plo \
 	./$(DEPDIR)/SignalStructures.Plo ./$(DEPDIR)/StdioDefines.Plo \
 	./$(DEPDIR)/StringHeaderDefines.Plo \
@@ -381,6 +382,8 @@ libtests_la_SOURCES = \
  AioStructures.c \
  PollDefines.c \
  PollStructures.c \
+ PthreadDefines.c \
+ PthreadStructures.c \
  LocaleTest.c \
  IoctlTest.c \
  SchedDefines.c \
@@ -493,6 +496,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollStructures.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalDefines.Plo@am__quote@ # am--include-marker
@@ -671,6 +676,8 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/LocaleTest.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo
+	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
+	-rm -f ./$(DEPDIR)/PthreadStructures.Plo
 	-rm -f ./$(DEPDIR)/SchedDefines.Plo
 	-rm -f ./$(DEPDIR)/SchedStructures.Plo
 	-rm -f ./$(DEPDIR)/SignalDefines.Plo
@@ -734,6 +741,8 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/LocaleTest.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo
+	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
+	-rm -f ./$(DEPDIR)/PthreadStructures.Plo
 	-rm -f ./$(DEPDIR)/SchedDefines.Plo
 	-rm -f ./$(DEPDIR)/SchedStructures.Plo
 	-rm -f ./$(DEPDIR)/SignalDefines.Plo
