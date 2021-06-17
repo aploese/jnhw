@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
-import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.unix.sys.Ioctl;
 import de.ibapl.jnhw.x_open.Ucontext;
 import java.lang.reflect.Field;
@@ -178,15 +177,6 @@ public class DefinesTest {
             assertFalse(Ioctl.HAVE_SYS_IOCTL_H, "not expected to have sys/ioctl.h");
         } else {
             assertTrue(Ioctl.HAVE_SYS_IOCTL_H, "expected to have sys/ioctl.h");
-        }
-    }
-
-    @Test
-    public void test_HAVE_SYS_TYPES_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Types.HAVE_SYS_TYPES_H, "not expected to have sys/types.h");
-        } else {
-            Assertions.assertTrue(Types.HAVE_SYS_TYPES_H, "expected to have sys/types.h");
         }
     }
 

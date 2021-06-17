@@ -41,6 +41,7 @@ libtests_la_SOURCES = \
  TermiosStructures.c \
  TimeDefines.c \
  TimeStructures.c \
+ TypesDefines.c \
  UnistdDefines.c
 
 #hook into make all

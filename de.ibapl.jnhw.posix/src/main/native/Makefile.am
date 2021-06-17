@@ -100,8 +100,7 @@ libstdio_la_SOURCES = \
 libstring_la_SOURCES = \
  StringHeaderFunctions.c
 
-libsystypes_la_SOURCES = \
- TypesDefines.c
+libsystypes_la_SOURCES =
 
 libsysstat_la_SOURCES = \
  StatFunctions.c

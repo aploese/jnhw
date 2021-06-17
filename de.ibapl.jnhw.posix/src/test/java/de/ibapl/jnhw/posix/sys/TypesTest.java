@@ -24,10 +24,15 @@ package de.ibapl.jnhw.posix.sys;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
+import de.ibapl.jnhw.util.posix.DefinesTest;
+import static de.ibapl.jnhw.util.posix.DefinesTest.MULTIARCHTUPEL_BUILDER;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
@@ -37,7 +42,30 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class TypesTest {
 
-    public TypesTest() {
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_SYS_TYPES_H();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_SYS_TYPES_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Types.HAVE_SYS_TYPES_H, "not expected to have sys/types.h");
+        } else {
+            Assertions.assertTrue(Types.HAVE_SYS_TYPES_H, "expected to have sys/types.h");
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_StdioDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(Types.class, NativeDefines.class, "HAVE_SYS_TYPES_H");
     }
 
     @Test

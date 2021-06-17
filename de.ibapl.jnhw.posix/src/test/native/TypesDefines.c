@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_sys_Types.h"
+#include "de_ibapl_jnhw_posix_sys_TypesTest_NativeDefines.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,32 +44,29 @@ extern "C" {
     uid_t
      */
 
-    //We need the POSIX version ...    
+    //We need the POSIX version ...
 #if !defined(HAVE_SYS_TYPES_H) || !defined(_POSIX_VERSION)
 
     /*
-     * Class:     de_ibapl_jnhw_posix_sys_Types
-     * Method:    initFields
-     * Signature: ()V
+     * Class:     de_ibapl_jnhw_posix_sys_TypesTest_NativeDefines
+     * Method:    HAVE_SYS_TYPES_H
+     * Signature: ()Z
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_initFields
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_TypesTest_00024NativeDefines_HAVE_1SYS_1TYPES_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return JNI_FALSE;
     }
 #else
 #include <sys/types.h>
 
     /*
-     * Class:     de_ibapl_jnhw_posix_sys_Types
-     * Method:    initFields
-     * Signature: ()V
+     * Class:     de_ibapl_jnhw_posix_sys_TypesTest_NativeDefines
+     * Method:    HAVE_SYS_TYPES_H
+     * Signature: ()Z
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_sys_Types_initFields
-    (JNIEnv *env, jclass clazz) {
-
-        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_SYS_TYPES_H", JNI_TRUE)) {
-            return;
-        }
-
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_TypesTest_00024NativeDefines_HAVE_1SYS_1TYPES_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return JNI_TRUE;
     }
 
 #endif

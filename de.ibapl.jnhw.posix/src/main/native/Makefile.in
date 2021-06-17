@@ -191,7 +191,7 @@ libsysstat_la_LIBADD =
 am_libsysstat_la_OBJECTS = StatFunctions.lo
 libsysstat_la_OBJECTS = $(am_libsysstat_la_OBJECTS)
 libsystypes_la_LIBADD =
-am_libsystypes_la_OBJECTS = TypesDefines.lo
+am_libsystypes_la_OBJECTS =
 libsystypes_la_OBJECTS = $(am_libsystypes_la_OBJECTS)
 libtermios_la_LIBADD =
 am_libtermios_la_OBJECTS = TermiosFunctions.lo
@@ -235,7 +235,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/StatFunctions.Plo ./$(DEPDIR)/StdioFunctions.Plo \
 	./$(DEPDIR)/StringHeaderFunctions.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo ./$(DEPDIR)/TimeFunctions.Plo \
-	./$(DEPDIR)/TypesDefines.Plo ./$(DEPDIR)/UcontextDefines.Plo \
+	./$(DEPDIR)/UcontextDefines.Plo \
 	./$(DEPDIR)/UcontextFunctions.Plo \
 	./$(DEPDIR)/UnistdFunctions.Plo ./$(DEPDIR)/jnhw-posix-jni.Plo
 am__mv = mv -f
@@ -539,9 +539,7 @@ libstdio_la_SOURCES = \
 libstring_la_SOURCES = \
  StringHeaderFunctions.c
 
-libsystypes_la_SOURCES = \
- TypesDefines.c
-
+libsystypes_la_SOURCES = 
 libsysstat_la_SOURCES = \
  StatFunctions.c
 
@@ -725,7 +723,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TypesDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdFunctions.Plo@am__quote@ # am--include-marker
@@ -911,7 +908,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
-	-rm -f ./$(DEPDIR)/TypesDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
@@ -982,7 +978,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
-	-rm -f ./$(DEPDIR)/TypesDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo

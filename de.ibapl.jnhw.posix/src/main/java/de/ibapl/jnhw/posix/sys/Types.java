@@ -62,13 +62,14 @@ public class Types {
      */
     static {
         LibJnhwPosixLoader.touch();
-
-        HAVE_SYS_TYPES_H = false;
-
-        initFields();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_SYS_TYPES_H = true;
+                break;
+            default:
+                throw new NoClassDefFoundError("No sys/types.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     public final static boolean HAVE_SYS_TYPES_H;
 
