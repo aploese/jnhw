@@ -40,6 +40,58 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <sys/ioctl.h>")
 public final class Ioctl {
 
+    public static class LinuxDefines {
+
+        public final static int FIONREAD = 21531;
+        public final static int TIOCCBRK = 21544;
+        public final static int TIOCEXCL = 21516;
+        public final static int TIOCGICOUNT = 21597;
+        public final static int TIOCGSOFTCAR = 21529;
+        public final static int TIOCMBIC = 21527;
+        public final static int TIOCMBIS = 21526;
+        public final static int TIOCMGET = 21525;
+        public final static int TIOCMIWAIT = 21596;
+        public final static int TIOCMSET = 21528;
+        public final static int TIOCM_CAR = 64;
+        public final static int TIOCM_CD = 64;
+        public final static int TIOCM_CTS = 32;
+        public final static int TIOCM_DSR = 256;
+        public final static int TIOCM_DTR = 2;
+        public final static int TIOCM_LE = 1;
+        public final static int TIOCM_RI = 128;
+        public final static int TIOCM_RNG = 128;
+        public final static int TIOCM_RTS = 4;
+        public final static int TIOCM_SR = 16;
+        public final static int TIOCM_ST = 8;
+        public final static int TIOCOUTQ = 21521;
+        public final static int TIOCSBRK = 21543;
+        public final static int TIOCSSOFTCAR = 21530;
+
+        public final static int IOC_OUT = -2147483648;
+        public final static int IOC_IN = 1073741824;
+        public final static int IOC_INOUT = -1073741824;
+
+        public final static int _IOC_NRBITS = 8;
+        public final static int _IOC_TYPEBITS = 8;
+        public final static int _IOC_SIZEBITS = 14;
+        public final static int _IOC_DIRBITS = 2;
+        public final static int _IOC_NRMASK = 255;
+        public final static int _IOC_TYPEMASK = 255;
+        public final static int _IOC_SIZEMASK = 16383;
+        public final static int _IOC_DIRMASK = 3;
+        public final static int _IOC_NRSHIFT = 0;
+        public final static int _IOC_TYPESHIFT = 8;
+        public final static int _IOC_SIZESHIFT = 16;
+        public final static int _IOC_DIRSHIFT = 30;
+
+        public final static int _IOC_NONE = 0;
+        public final static int _IOC_READ = 2;
+        public final static int _IOC_WRITE = 1;
+
+        public final static int IOCSIZE_MASK = 1073676288;
+        public final static int IOCSIZE_SHIFT = 16;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -52,65 +104,62 @@ public final class Ioctl {
     static {
         LibJnhwPosixLoader.touch();
 
-        HAVE_SYS_IOCTL_H = false;
+        HAVE_SYS_IOCTL_H = true;
 
-        FIONREAD = 0;
-        TIOCCBRK = 0;
-        TIOCEXCL = 0;
-        TIOCGICOUNT = IntDefine.UNDEFINED;
-        TIOCGSOFTCAR = IntDefine.UNDEFINED;
-        TIOCMBIC = 0;
-        TIOCMBIS = 0;
-        TIOCMGET = 0;
-        TIOCMIWAIT = IntDefine.UNDEFINED;
-        TIOCMSET = 0;
-        TIOCM_CAR = 0;
-        TIOCM_CD = 0;
-        TIOCM_CTS = 0;
-        TIOCM_DSR = 0;
-        TIOCM_DTR = 0;
-        TIOCM_LE = 0;
-        TIOCM_RI = 0;
-        TIOCM_RNG = 0;
-        TIOCM_RTS = 0;
-        TIOCM_SR = 0;
-        TIOCM_ST = 0;
-        TIOCOUTQ = 0;
-        TIOCSBRK = 0;
-        TIOCSSOFTCAR = IntDefine.UNDEFINED;
+        FIONREAD = LinuxDefines.FIONREAD;
+        TIOCCBRK = LinuxDefines.TIOCCBRK;
+        TIOCEXCL = LinuxDefines.TIOCEXCL;
+        TIOCGICOUNT = IntDefine.toIntDefine(LinuxDefines.TIOCGICOUNT);
+        TIOCGSOFTCAR = IntDefine.toIntDefine(LinuxDefines.TIOCGSOFTCAR);
+        TIOCMBIC = LinuxDefines.TIOCMBIC;
+        TIOCMBIS = LinuxDefines.TIOCMBIS;
+        TIOCMGET = LinuxDefines.TIOCMGET;
+        TIOCMIWAIT = IntDefine.toIntDefine(LinuxDefines.TIOCMIWAIT);
+        TIOCMSET = LinuxDefines.TIOCMSET;
+        TIOCM_CAR = LinuxDefines.TIOCM_CAR;
+        TIOCM_CD = LinuxDefines.TIOCM_CD;
+        TIOCM_CTS = LinuxDefines.TIOCM_CTS;
+        TIOCM_DSR = LinuxDefines.TIOCM_DSR;
+        TIOCM_DTR = LinuxDefines.TIOCM_DTR;
+        TIOCM_LE = LinuxDefines.TIOCM_LE;
+        TIOCM_RI = LinuxDefines.TIOCM_RI;
+        TIOCM_RNG = LinuxDefines.TIOCM_RNG;
+        TIOCM_RTS = LinuxDefines.TIOCM_RTS;
+        TIOCM_SR = LinuxDefines.TIOCM_SR;
+        TIOCM_ST = LinuxDefines.TIOCM_ST;
+        TIOCOUTQ = LinuxDefines.TIOCOUTQ;
+        TIOCSBRK = LinuxDefines.TIOCSBRK;
+        TIOCSSOFTCAR = IntDefine.toIntDefine(LinuxDefines.TIOCSSOFTCAR);
 
         IOCPARM_MASK = IntDefine.UNDEFINED;
         IOCPARM_MAX = IntDefine.UNDEFINED;
         IOC_VOID = IntDefine.UNDEFINED;
-        IOC_OUT = 0;
-        IOC_IN = 0;
-        IOC_INOUT = 0;
+        IOC_OUT = LinuxDefines.IOC_OUT;
+        IOC_IN = LinuxDefines.IOC_IN;
+        IOC_INOUT = LinuxDefines.IOC_INOUT;
         IOC_DIRMASK = IntDefine.UNDEFINED;
 
-        _IOC_NRBITS = IntDefine.UNDEFINED;
-        _IOC_TYPEBITS = IntDefine.UNDEFINED;
-        _IOC_SIZEBITS = IntDefine.UNDEFINED;
-        _IOC_DIRBITS = IntDefine.UNDEFINED;
-        _IOC_NRMASK = IntDefine.UNDEFINED;
-        _IOC_TYPEMASK = IntDefine.UNDEFINED;
-        _IOC_SIZEMASK = IntDefine.UNDEFINED;
-        _IOC_DIRMASK = IntDefine.UNDEFINED;
-        _IOC_NRSHIFT = IntDefine.UNDEFINED;
-        _IOC_TYPESHIFT = IntDefine.UNDEFINED;
-        _IOC_SIZESHIFT = IntDefine.UNDEFINED;
-        _IOC_DIRSHIFT = IntDefine.UNDEFINED;
+        _IOC_NRBITS = IntDefine.toIntDefine(LinuxDefines._IOC_NRBITS);
+        _IOC_TYPEBITS = IntDefine.toIntDefine(LinuxDefines._IOC_TYPEBITS);
+        _IOC_SIZEBITS = IntDefine.toIntDefine(LinuxDefines._IOC_SIZEBITS);
+        _IOC_DIRBITS = IntDefine.toIntDefine(LinuxDefines._IOC_DIRBITS);
+        _IOC_NRMASK = IntDefine.toIntDefine(LinuxDefines._IOC_NRMASK);
+        _IOC_TYPEMASK = IntDefine.toIntDefine(LinuxDefines._IOC_TYPEMASK);
+        _IOC_SIZEMASK = IntDefine.toIntDefine(LinuxDefines._IOC_SIZEMASK);
+        _IOC_DIRMASK = IntDefine.toIntDefine(LinuxDefines._IOC_DIRMASK);
+        _IOC_NRSHIFT = IntDefine.toIntDefine(LinuxDefines._IOC_NRSHIFT);
+        _IOC_TYPESHIFT = IntDefine.toIntDefine(LinuxDefines._IOC_TYPESHIFT);
+        _IOC_SIZESHIFT = IntDefine.toIntDefine(LinuxDefines._IOC_SIZESHIFT);
+        _IOC_DIRSHIFT = IntDefine.toIntDefine(LinuxDefines._IOC_DIRSHIFT);
 
-        _IOC_NONE = IntDefine.UNDEFINED;
-        _IOC_READ = IntDefine.UNDEFINED;
-        _IOC_WRITE = IntDefine.UNDEFINED;
+        _IOC_NONE = IntDefine.toIntDefine(LinuxDefines._IOC_NONE);
+        _IOC_READ = IntDefine.toIntDefine(LinuxDefines._IOC_READ);
+        _IOC_WRITE = IntDefine.toIntDefine(LinuxDefines._IOC_WRITE);
 
-        IOCSIZE_MASK = IntDefine.UNDEFINED;
-        IOCSIZE_SHIFT = IntDefine.UNDEFINED;
+        IOCSIZE_MASK = IntDefine.toIntDefine(LinuxDefines.IOCSIZE_MASK);
+        IOCSIZE_SHIFT = IntDefine.toIntDefine(LinuxDefines.IOCSIZE_SHIFT);
 
-        initFields();
     }
-
-    private static native void initFields();
 
     /**
      * <b>Non POSIX:</b> Get the number of bytes in the input buffer..

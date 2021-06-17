@@ -22,8 +22,11 @@
 package de.ibapl.jnhw.unix.sys;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
+import de.ibapl.jnhw.util.posix.DefinesTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -32,9 +35,134 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class IoctlTest {
 
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_SYS_IOCTL_H();
+
+        public final static native int FIONREAD();
+
+        public final static native int TIOCCBRK();
+
+        public final static native int TIOCEXCL();
+
+        public final static native Integer TIOCGICOUNT();
+
+        public final static native Integer TIOCGSOFTCAR();
+
+        public final static native int TIOCMBIC();
+
+        public final static native int TIOCMBIS();
+
+        public final static native int TIOCMGET();
+
+        public final static native Integer TIOCMIWAIT();
+
+        public final static native int TIOCMSET();
+
+        public final static native int TIOCM_CAR();
+
+        public final static native int TIOCM_CD();
+
+        public final static native int TIOCM_CTS();
+
+        public final static native int TIOCM_DSR();
+
+        public final static native int TIOCM_DTR();
+
+        public final static native int TIOCM_LE();
+
+        public final static native int TIOCM_RI();
+
+        public final static native int TIOCM_RNG();
+
+        public final static native int TIOCM_RTS();
+
+        public final static native int TIOCM_SR();
+
+        public final static native int TIOCM_ST();
+
+        public final static native int TIOCOUTQ();
+
+        public final static native int TIOCSBRK();
+
+        public final static native Integer TIOCSSOFTCAR();
+
+        public final static native Integer IOCPARM_MASK();
+
+        public final static native Integer IOCPARM_MAX();
+
+        public final static native Integer IOC_VOID();
+
+        public final static native int IOC_OUT();
+
+        public final static native int IOC_IN();
+
+        public final static native int IOC_INOUT();
+
+        public final static native Integer IOC_DIRMASK();
+
+        public final static native Integer _IOC_NRBITS();
+
+        public final static native Integer _IOC_TYPEBITS();
+
+        public final static native Integer _IOC_SIZEBITS();
+
+        public final static native Integer _IOC_DIRBITS();
+
+        public final static native Integer _IOC_NRMASK();
+
+        public final static native Integer _IOC_TYPEMASK();
+
+        public final static native Integer _IOC_SIZEMASK();
+
+        public final static native Integer _IOC_DIRMASK();
+
+        public final static native Integer _IOC_NRSHIFT();
+
+        public final static native Integer _IOC_TYPESHIFT();
+
+        public final static native Integer _IOC_SIZESHIFT();
+
+        public final static native Integer _IOC_DIRSHIFT();
+
+        public final static native Integer _IOC_NONE();
+
+        public final static native Integer _IOC_READ();
+
+        public final static native Integer _IOC_WRITE();
+
+        public final static native Integer IOCSIZE_MASK();
+
+        public final static native Integer IOCSIZE_SHIFT();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+
+    }
+
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
         LibJnhwPosixTestLoader.touch();
+    }
+
+    public final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
+
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_SYS_IOCTL_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Ioctl.HAVE_SYS_IOCTL_H, "not expected to have sys/ioctl.h");
+        } else {
+            Assertions.assertTrue(Ioctl.HAVE_SYS_IOCTL_H, "expected to have sys/ioctl.h");
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_UnistdDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(Ioctl.class, NativeDefines.class, "HAVE_SYS_IOCTL_H");
     }
 
     private native int get_IOR_int32_t(char c, int i);

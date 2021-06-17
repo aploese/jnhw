@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
-import de.ibapl.jnhw.unix.sys.Ioctl;
 import de.ibapl.jnhw.x_open.Ucontext;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -169,15 +168,6 @@ public class DefinesTest {
     @Test
     public void test_HAVE_ERRNO_H() throws Exception {
         Assertions.assertTrue(de.ibapl.jnhw.isoc.Errno.HAVE_ERRNO_H, "expected to have errno.h");
-    }
-
-    @Test
-    public void test_HAVE_SYS_IOCTL_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            assertFalse(Ioctl.HAVE_SYS_IOCTL_H, "not expected to have sys/ioctl.h");
-        } else {
-            assertTrue(Ioctl.HAVE_SYS_IOCTL_H, "expected to have sys/ioctl.h");
-        }
     }
 
     @Test

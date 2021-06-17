@@ -29,6 +29,7 @@ libtests_la_SOURCES = \
  LocaleDefines.c \
  LocaleTest.c \
  LocaleStructures.c \
+ IoctlDefines.c \
  IoctlTest.c \
  SchedDefines.c \
  SchedStructures.c \
