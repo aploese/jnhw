@@ -115,9 +115,9 @@ public class DefinesTest {
                             assertEquals(nativeResult, ((ObjectDefine) f.get(javaDefines)).get(), f.getName());
                         });
                     }
-                } else if (FunctionPtr_I_V.class.equals(type)) {
-                    FunctionPtr_I_V def = (FunctionPtr_I_V) f.get(javaDefines);
-                    FunctionPtr_I_V nativeResult = (FunctionPtr_I_V) nativeDefine.invoke(nativeDefines);
+                } else if (Object.class.isAssignableFrom(type)) {
+                    Object def = f.get(javaDefines);
+                    Object nativeResult = nativeDefine.invoke(nativeDefines);
                     if (nativeResult == null) {
                         streamBuilder.accept(() -> {
                             assertNull(f.get(javaDefines), () -> {
@@ -126,12 +126,12 @@ public class DefinesTest {
                         });
                     } else {
                         streamBuilder.accept(() -> {
-                            assertEquals(nativeResult, (FunctionPtr_I_V) f.get(javaDefines), f.getName());
+                            assertEquals(nativeResult, f.get(javaDefines), f.getName());
                         });
                     }
                 } else {
                     streamBuilder.accept(() -> {
-                        fail("Implement Any Define!");
+                        fail("Implement Any Define! " + f.getName() + " " + type);
                     });
                 }
             } else if (haveHeaderName.equals(f.getName())) {

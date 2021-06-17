@@ -78,7 +78,6 @@ public class Pthread {
                 PTHREAD_CANCEL_ENABLE = LinuxDefines.PTHREAD_CANCEL_ENABLE;
                 PTHREAD_EXPLICIT_SCHED = LinuxDefines.PTHREAD_EXPLICIT_SCHED;
                 PTHREAD_INHERIT_SCHED = LinuxDefines.PTHREAD_INHERIT_SCHED;
-
                 break;
             default:
                 throw new NoClassDefFoundError("No pthread.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

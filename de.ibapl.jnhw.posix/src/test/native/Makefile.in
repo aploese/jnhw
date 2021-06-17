@@ -146,7 +146,8 @@ am__v_lt_1 =
 libtests_la_LIBADD =
 am_libtests_la_OBJECTS = AioDefines.lo AioStructures.lo PollDefines.lo \
 	PollStructures.lo PthreadDefines.lo PthreadStructures.lo \
-	LocaleTest.lo IoctlTest.lo SchedDefines.lo SchedStructures.lo \
+	LocaleDefines.lo LocaleTest.lo LocaleStructures.lo \
+	IoctlTest.lo SchedDefines.lo SchedStructures.lo \
 	SignalDefines.lo SignalStructures.lo StdioDefines.lo \
 	StringHeaderDefines.lo TermiosDefines.lo TermiosStructures.lo \
 	TimeDefines.lo TimeStructures.lo UnistdDefines.lo
@@ -168,6 +169,7 @@ depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/AioStructures.Plo ./$(DEPDIR)/IoctlTest.Plo \
+	./$(DEPDIR)/LocaleDefines.Plo ./$(DEPDIR)/LocaleStructures.Plo \
 	./$(DEPDIR)/LocaleTest.Plo ./$(DEPDIR)/PollDefines.Plo \
 	./$(DEPDIR)/PollStructures.Plo ./$(DEPDIR)/PthreadDefines.Plo \
 	./$(DEPDIR)/PthreadStructures.Plo ./$(DEPDIR)/SchedDefines.Plo \
@@ -384,7 +386,9 @@ libtests_la_SOURCES = \
  PollStructures.c \
  PthreadDefines.c \
  PthreadStructures.c \
+ LocaleDefines.c \
  LocaleTest.c \
+ LocaleStructures.c \
  IoctlTest.c \
  SchedDefines.c \
  SchedStructures.c \
@@ -493,6 +497,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlTest.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollStructures.Plo@am__quote@ # am--include-marker
@@ -673,6 +679,8 @@ distclean: distclean-am
 		-rm -f ./$(DEPDIR)/AioDefines.Plo
 	-rm -f ./$(DEPDIR)/AioStructures.Plo
 	-rm -f ./$(DEPDIR)/IoctlTest.Plo
+	-rm -f ./$(DEPDIR)/LocaleDefines.Plo
+	-rm -f ./$(DEPDIR)/LocaleStructures.Plo
 	-rm -f ./$(DEPDIR)/LocaleTest.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo
@@ -738,6 +746,8 @@ maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/AioDefines.Plo
 	-rm -f ./$(DEPDIR)/AioStructures.Plo
 	-rm -f ./$(DEPDIR)/IoctlTest.Plo
+	-rm -f ./$(DEPDIR)/LocaleDefines.Plo
+	-rm -f ./$(DEPDIR)/LocaleStructures.Plo
 	-rm -f ./$(DEPDIR)/LocaleTest.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo

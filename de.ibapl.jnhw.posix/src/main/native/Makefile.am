@@ -78,9 +78,7 @@ libioclt_la_SOURCES = \
  IoctlFunctions.c
 
 liblocale_la_SOURCES = \
- LocaleDefines.c \
- LocaleFunctions.c \
- LocaleStructures.c
+ LocaleFunctions.c
 
 libpoll_la_SOURCES = \
  PollFunctions.c

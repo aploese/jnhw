@@ -163,8 +163,7 @@ libjnhw_posix_la_DEPENDENCIES = libaio.la liberrno.la libeventfd.la \
 am_libjnhw_posix_la_OBJECTS = PosixDataType.lo jnhw-posix-jni.lo
 libjnhw_posix_la_OBJECTS = $(am_libjnhw_posix_la_OBJECTS)
 liblocale_la_LIBADD =
-am_liblocale_la_OBJECTS = LocaleDefines.lo LocaleFunctions.lo \
-	LocaleStructures.lo
+am_liblocale_la_OBJECTS = LocaleFunctions.lo
 liblocale_la_OBJECTS = $(am_liblocale_la_OBJECTS)
 libpoll_la_LIBADD =
 am_libpoll_la_OBJECTS = PollFunctions.lo
@@ -229,8 +228,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/IoctlFunctions.Plo \
 	./$(DEPDIR)/Isoc_ErrnoDefines.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
-	./$(DEPDIR)/LocaleDefines.Plo ./$(DEPDIR)/LocaleFunctions.Plo \
-	./$(DEPDIR)/LocaleStructures.Plo ./$(DEPDIR)/PollFunctions.Plo \
+	./$(DEPDIR)/LocaleFunctions.Plo ./$(DEPDIR)/PollFunctions.Plo \
 	./$(DEPDIR)/PosixDataType.Plo \
 	./$(DEPDIR)/Posix_ErrnoDefines.Plo \
 	./$(DEPDIR)/PthreadFunctions.Plo \
@@ -521,9 +519,7 @@ libioclt_la_SOURCES = \
  IoctlFunctions.c
 
 liblocale_la_SOURCES = \
- LocaleDefines.c \
- LocaleFunctions.c \
- LocaleStructures.c
+ LocaleFunctions.c
 
 libpoll_la_SOURCES = \
  PollFunctions.c
@@ -724,9 +720,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PosixDataType.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
@@ -915,9 +909,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
-	-rm -f ./$(DEPDIR)/LocaleDefines.Plo
 	-rm -f ./$(DEPDIR)/LocaleFunctions.Plo
-	-rm -f ./$(DEPDIR)/LocaleStructures.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/PosixDataType.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
@@ -991,9 +983,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
-	-rm -f ./$(DEPDIR)/LocaleDefines.Plo
 	-rm -f ./$(DEPDIR)/LocaleFunctions.Plo
-	-rm -f ./$(DEPDIR)/LocaleStructures.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/PosixDataType.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
