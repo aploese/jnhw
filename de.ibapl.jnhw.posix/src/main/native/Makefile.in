@@ -200,7 +200,7 @@ libtime_la_LIBADD =
 am_libtime_la_OBJECTS = TimeFunctions.lo
 libtime_la_OBJECTS = $(am_libtime_la_OBJECTS)
 libucontext_la_LIBADD =
-am_libucontext_la_OBJECTS = UcontextDefines.lo UcontextFunctions.lo
+am_libucontext_la_OBJECTS = UcontextFunctions.lo
 libucontext_la_OBJECTS = $(am_libucontext_la_OBJECTS)
 libunistd_la_LIBADD =
 am_libunistd_la_OBJECTS = UnistdFunctions.lo
@@ -235,7 +235,6 @@ am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/StatFunctions.Plo ./$(DEPDIR)/StdioFunctions.Plo \
 	./$(DEPDIR)/StringHeaderFunctions.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo ./$(DEPDIR)/TimeFunctions.Plo \
-	./$(DEPDIR)/UcontextDefines.Plo \
 	./$(DEPDIR)/UcontextFunctions.Plo \
 	./$(DEPDIR)/UnistdFunctions.Plo ./$(DEPDIR)/jnhw-posix-jni.Plo
 am__mv = mv -f
@@ -550,7 +549,6 @@ libtime_la_SOURCES = \
  TimeFunctions.c
 
 libucontext_la_SOURCES = \
- UcontextDefines.c \
  UcontextFunctions.c
 
 libunistd_la_SOURCES = \
@@ -723,7 +721,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StringHeaderFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TermiosFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-posix-jni.Plo@am__quote@ # am--include-marker
@@ -908,7 +905,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
-	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo
@@ -978,7 +974,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/StringHeaderFunctions.Plo
 	-rm -f ./$(DEPDIR)/TermiosFunctions.Plo
 	-rm -f ./$(DEPDIR)/TimeFunctions.Plo
-	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UcontextFunctions.Plo
 	-rm -f ./$(DEPDIR)/UnistdFunctions.Plo
 	-rm -f ./$(DEPDIR)/jnhw-posix-jni.Plo

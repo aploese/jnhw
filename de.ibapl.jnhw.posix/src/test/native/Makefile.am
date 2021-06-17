@@ -43,6 +43,7 @@ libtests_la_SOURCES = \
  TimeDefines.c \
  TimeStructures.c \
  TypesDefines.c \
+ UcontextDefines.c \
  UnistdDefines.c
 
 #hook into make all

@@ -25,9 +25,13 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.posix.Signal;
+import de.ibapl.jnhw.util.posix.DefinesTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -38,9 +42,32 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class UcontextTest {
 
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_UCONTEXT_H();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
     private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
-    public UcontextTest() {
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_UCONTEXT_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Ucontext.HAVE_UCONTEXT_H, "not expected to have ucontect.h");
+        } else {
+            Assertions.assertTrue(Ucontext.HAVE_UCONTEXT_H, "expected to have ucontect.h");
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_StdioDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(Ucontext.class, NativeDefines.class, "HAVE_UCONTEXT_H");
     }
 
     /**

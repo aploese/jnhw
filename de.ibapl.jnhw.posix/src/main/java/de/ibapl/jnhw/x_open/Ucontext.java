@@ -47,13 +47,14 @@ public class Ucontext {
      */
     static {
         LibJnhwPosixLoader.touch();
-
-        HAVE_UCONTEXT_H = false;
-
-        initFields();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_UCONTEXT_H = true;
+                break;
+            default:
+                throw new NoClassDefFoundError("No ucontext.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     public final static boolean HAVE_UCONTEXT_H;
 

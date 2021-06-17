@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_x_open_Ucontext.h"
+#include "de_ibapl_jnhw_x_open_UcontextTest_NativeDefines.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,28 +29,25 @@ extern "C" {
 #ifndef HAVE_UCONTEXT_H
 
     /*
-     * Class:     de_ibapl_jnhw_x_open_Ucontext
-     * Method:    initFields
-     * Signature: ()V
+     * Class:     de_ibapl_jnhw_x_open_UcontextTest_NativeDefines
+     * Method:    HAVE_UCONTEXT_H
+     * Signature: ()Z
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_initFields
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_x_1open_UcontextTest_00024NativeDefines_HAVE_1UCONTEXT_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return JNI_FALSE;
     }
 #else
 #include <ucontext.h>
 
     /*
-     * Class:     de_ibapl_jnhw_x_open_Ucontext
-     * Method:    initFields
-     * Signature: ()V
+     * Class:     de_ibapl_jnhw_x_open_UcontextTest_NativeDefines
+     * Method:    HAVE_UCONTEXT_H
+     * Signature: ()Z
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_initFields
-    (JNIEnv *env, jclass clazz) {
-
-        if (JnhwSetStaticBooleanField(env, clazz, "HAVE_UCONTEXT_H", JNI_TRUE)) {
-            return;
-        }
-
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_x_1open_UcontextTest_00024NativeDefines_HAVE_1UCONTEXT_1H
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return JNI_TRUE;
     }
 
 #endif

@@ -152,7 +152,8 @@ am_libtests_la_OBJECTS = AioDefines.lo AioStructures.lo \
 	SchedStructures.lo SignalDefines.lo SignalStructures.lo \
 	StatDefines.lo StdioDefines.lo StringHeaderDefines.lo \
 	TermiosDefines.lo TermiosStructures.lo TimeDefines.lo \
-	TimeStructures.lo TypesDefines.lo UnistdDefines.lo
+	TimeStructures.lo TypesDefines.lo UcontextDefines.lo \
+	UnistdDefines.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -184,7 +185,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/TermiosDefines.Plo \
 	./$(DEPDIR)/TermiosStructures.Plo ./$(DEPDIR)/TimeDefines.Plo \
 	./$(DEPDIR)/TimeStructures.Plo ./$(DEPDIR)/TypesDefines.Plo \
-	./$(DEPDIR)/UnistdDefines.Plo \
+	./$(DEPDIR)/UcontextDefines.Plo ./$(DEPDIR)/UnistdDefines.Plo \
 	./$(DEPDIR)/libjnhw-posix-test.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -411,6 +412,7 @@ libtests_la_SOURCES = \
  TimeDefines.c \
  TimeStructures.c \
  TypesDefines.c \
+ UcontextDefines.c \
  UnistdDefines.c
 
 all: all-am
@@ -530,6 +532,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimeStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TypesDefines.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UcontextDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnistdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libjnhw-posix-test.Plo@am__quote@ # am--include-marker
 
@@ -717,6 +720,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeStructures.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
+	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-posix-test.Plo
 	-rm -f Makefile
@@ -789,6 +793,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/TimeDefines.Plo
 	-rm -f ./$(DEPDIR)/TimeStructures.Plo
 	-rm -f ./$(DEPDIR)/TypesDefines.Plo
+	-rm -f ./$(DEPDIR)/UcontextDefines.Plo
 	-rm -f ./$(DEPDIR)/UnistdDefines.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-posix-test.Plo
 	-rm -f Makefile

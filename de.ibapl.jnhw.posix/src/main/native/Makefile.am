@@ -112,7 +112,6 @@ libtime_la_SOURCES = \
  TimeFunctions.c
 
 libucontext_la_SOURCES = \
- UcontextDefines.c \
  UcontextFunctions.c
 
 libunistd_la_SOURCES = \
