@@ -21,22 +21,56 @@
  */
 package de.ibapl.jnhw.isoc;
 
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
+import de.ibapl.jnhw.util.posix.DefinesTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledOnOs;
-import org.junit.jupiter.api.condition.OS;
 
-@DisabledOnOs(OS.WINDOWS)
 public class ErrnoTest {
+
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_ERRNO_H();
+
+        public final static native int EDOM();
+
+        public final static native int EILSEQ();
+
+        public final static native int ERANGE();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
+
+    @Test
+    public void test_HAVE_ERRNO_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Errno.HAVE_ERRNO_H, "not expected to have errno.h");
+        } else {
+            Assertions.assertTrue(Errno.HAVE_ERRNO_H, "expected to have errno.h");
+        }
+    }
+
+    @Test
+    public void test_ErrnoDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(Errno.class, NativeDefines.class, "HAVE_ERRNO_H");
+    }
 
     @Test
     public void testErrno() throws Exception {
         Assertions.assertTrue(Errno.HAVE_ERRNO_H);
         Assertions.assertNotEquals(Errno.ERANGE, Errno.EILSEQ);
         Errno.errno(Errno.ERANGE);
-        Assertions.assertEquals(Errno.ERANGE, Errno.errno(), "Cant Set errno");
+        Assertions.assertEquals(Errno.ERANGE, Errno.errno(), "Can't Set errno");
         Errno.errno(Errno.EDOM);
-        Assertions.assertEquals(Errno.EDOM, Errno.errno(), "Cant Set errno");
+        Assertions.assertEquals(Errno.EDOM, Errno.errno(), "Can't Set errno");
     }
 
 }

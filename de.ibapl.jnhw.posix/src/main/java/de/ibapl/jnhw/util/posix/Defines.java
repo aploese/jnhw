@@ -23,6 +23,9 @@ package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.libloader.Arch;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.OS;
 
 /**
  * get the defines with gcc: create an empty file c.c run
@@ -32,6 +35,74 @@ import de.ibapl.jnhw.common.util.IntDefine;
  * @author aploese
  */
 public class Defines {
+
+    public static class LinuxDefines {
+        /*
+
+        public final static int _BSD_SOURCE = 0;
+        public final static int _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
+        public final static int _LARGEFILE64_SOURCE = IntDefine.UNDEFINED;
+        public final static int _LARGEFILE_SOURCE = IntDefine.UNDEFINED;
+        public final static int _POSIX_C_SOURCE = IntDefine.UNDEFINED;
+        public final static int _XOPEN_SOURCE = IntDefine.UNDEFINED;
+        public final static int _XOPEN_SOURCE_EXTENDED = IntDefine.UNDEFINED;
+
+        public final static int __aarch64__ = IntDefine.UNDEFINED;
+        public final static int __alpha__ = IntDefine.UNDEFINED;
+        public final static int __amd64__ = IntDefine.UNDEFINED;
+        public final static int __APPLE__ = IntDefine.UNDEFINED;
+        public final static int __arm__ = IntDefine.UNDEFINED;
+        public final static int __ARM_ARCH = IntDefine.UNDEFINED;
+
+        public final static int __BIGGEST_ALIGNMENT__ = 0;
+        public final static int __BYTE_ORDER__ = 0;
+
+        public final static int __FreeBSD__ = IntDefine.UNDEFINED;
+
+        public final static int __GLIBC_MINOR__ = IntDefine.UNDEFINED;
+        public final static int __GLIBC__ = IntDefine.UNDEFINED;
+        public final static int __GNU_LIBRARY__ = IntDefine.UNDEFINED;
+
+        public final static int __i386__ = IntDefine.UNDEFINED;
+        public final static int __i686__ = IntDefine.UNDEFINED;
+        public final static int __ILP32__ = IntDefine.UNDEFINED;
+
+        public final static int __linux__ = IntDefine.UNDEFINED;
+        public final static int __LP64__ = IntDefine.UNDEFINED;
+
+        public final static int __mips__ = IntDefine.UNDEFINED;
+        public final static int __mips64 = IntDefine.UNDEFINED;
+        public final static int __MIPSEB__ = IntDefine.UNDEFINED;
+        public final static int __MIPSEL__ = IntDefine.UNDEFINED;
+        public final static int __MIPS_ARCH = IntDefine.UNDEFINED;
+
+        public final static int __ORDER_BIG_ENDIAN__ = 0;
+        public final static int __ORDER_LITTLE_ENDIAN__ = 0;
+        public final static int __ORDER_PDP_ENDIAN__ = 0;
+        public final static int __OpenBSD__ = IntDefine.UNDEFINED;
+
+        public final static int __powerpc__ = IntDefine.UNDEFINED;
+        public final static int __powerpc64__ = IntDefine.UNDEFINED;
+
+        public final static int __riscv__ = IntDefine.UNDEFINED;
+
+        public final static int __SH4__ = IntDefine.UNDEFINED;
+        public final static int __SIZEOF_LONG__ = 0;
+        public final static int __SIZEOF_POINTER__ = 0;
+        public final static int __s390__ = IntDefine.UNDEFINED;
+        public final static int __s390x__ = IntDefine.UNDEFINED;
+        public final static int __sh__ = IntDefine.UNDEFINED;
+        public final static int __sparc64__ = IntDefine.UNDEFINED;
+        public final static int __sparc__ = IntDefine.UNDEFINED;
+
+        public final static int __TIMESIZE = IntDefine.UNDEFINED;
+
+        public final static int __WORDSIZE = IntDefine.UNDEFINED;
+
+        public final static int __x86_64__ = IntDefine.UNDEFINED;
+
+         */
+    }
 
     /**
      * Make sure the native lib is loaded
@@ -45,72 +116,68 @@ public class Defines {
     static {
         LibJnhwPosixLoader.touch();
 
-        _BSD_SOURCE = IntDefine.UNDEFINED;
-        _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
-        _LARGEFILE64_SOURCE = IntDefine.UNDEFINED;
-        _LARGEFILE_SOURCE = IntDefine.UNDEFINED;
-        _POSIX_C_SOURCE = IntDefine.UNDEFINED;
-        _XOPEN_SOURCE = IntDefine.UNDEFINED;
-        _XOPEN_SOURCE_EXTENDED = IntDefine.UNDEFINED;
+        final MultiarchInfo mi = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+        final Arch arch = mi.getArch();
+        final OS os = mi.getOS();
 
         __aarch64__ = IntDefine.UNDEFINED;
         __alpha__ = IntDefine.UNDEFINED;
-        __amd64__ = IntDefine.UNDEFINED;
-        __APPLE__ = IntDefine.UNDEFINED;
+        __amd64__ = arch == Arch.X86_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __arm__ = IntDefine.UNDEFINED;
         __ARM_ARCH = IntDefine.UNDEFINED;
-
-        __BIGGEST_ALIGNMENT__ = 0;
-        __BYTE_ORDER__ = 0;
-
-        __FreeBSD__ = IntDefine.UNDEFINED;
-
-        __GLIBC_MINOR__ = IntDefine.UNDEFINED;
-        __GLIBC__ = IntDefine.UNDEFINED;
-        __GNU_LIBRARY__ = IntDefine.UNDEFINED;
-
         __i386__ = IntDefine.UNDEFINED;
         __i686__ = IntDefine.UNDEFINED;
         __ILP32__ = IntDefine.UNDEFINED;
-
-        __linux__ = IntDefine.UNDEFINED;
-        __LP64__ = IntDefine.UNDEFINED;
-
         __mips__ = IntDefine.UNDEFINED;
         __mips64 = IntDefine.UNDEFINED;
         __MIPSEB__ = IntDefine.UNDEFINED;
         __MIPSEL__ = IntDefine.UNDEFINED;
         __MIPS_ARCH = IntDefine.UNDEFINED;
-
-        __ORDER_BIG_ENDIAN__ = 0;
-        __ORDER_LITTLE_ENDIAN__ = 0;
-        __ORDER_PDP_ENDIAN__ = 0;
-        __OpenBSD__ = IntDefine.UNDEFINED;
-
         __powerpc__ = IntDefine.UNDEFINED;
         __powerpc64__ = IntDefine.UNDEFINED;
-
         __riscv__ = IntDefine.UNDEFINED;
-
         __SH4__ = IntDefine.UNDEFINED;
-        __SIZEOF_LONG__ = 0;
-        __SIZEOF_POINTER__ = 0;
         __s390__ = IntDefine.UNDEFINED;
         __s390x__ = IntDefine.UNDEFINED;
         __sh__ = IntDefine.UNDEFINED;
         __sparc64__ = IntDefine.UNDEFINED;
         __sparc__ = IntDefine.UNDEFINED;
+        __x86_64__ = arch == Arch.X86_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
 
-        __TIMESIZE = IntDefine.UNDEFINED;
+        __APPLE__ = IntDefine.UNDEFINED;
+        _BSD_SOURCE = IntDefine.UNDEFINED;
+        __FreeBSD__ = IntDefine.UNDEFINED;
+        __linux__ = os == OS.LINUX ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __OpenBSD__ = IntDefine.UNDEFINED;
 
-        __WORDSIZE = IntDefine.UNDEFINED;
+        _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
+        _LARGEFILE64_SOURCE = IntDefine.toIntDefine(1);
+        _LARGEFILE_SOURCE = IntDefine.toIntDefine(1);
+        _POSIX_C_SOURCE = IntDefine.toIntDefine(200809);
+        _XOPEN_SOURCE = IntDefine.toIntDefine(700);
+        _XOPEN_SOURCE_EXTENDED = IntDefine.toIntDefine(1);
 
-        __x86_64__ = IntDefine.UNDEFINED;
+        __BIGGEST_ALIGNMENT__ = 16;
 
-        initFields();
+        __GLIBC_MINOR__ = IntDefine.toIntDefine(31);
+        __GLIBC__ = IntDefine.toIntDefine(2);
+        __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
+
+        __LP64__ = IntDefine.toIntDefine(1);
+
+        __BYTE_ORDER__ = 1234;
+        __ORDER_BIG_ENDIAN__ = 4321;
+        __ORDER_LITTLE_ENDIAN__ = 1234;
+        __ORDER_PDP_ENDIAN__ = 3412;
+
+        __SIZEOF_LONG__ = 8;
+        __SIZEOF_POINTER__ = 8;
+
+        __TIMESIZE = IntDefine.toIntDefine(64);
+
+        __WORDSIZE = IntDefine.toIntDefine(64);
+
     }
-
-    private static native void initFields();
 
     /**
      * maybe defined in jnhw-posix.h

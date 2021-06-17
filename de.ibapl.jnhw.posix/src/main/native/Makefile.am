@@ -61,9 +61,7 @@ libaio_la_SOURCES = \
  AioFunctions.c
 
 liberrno_la_SOURCES = \
- Isoc_ErrnoDefines.c \
- Isoc_ErrnoFunctions.c \
- Posix_ErrnoDefines.c
+ Isoc_ErrnoFunctions.c
 
 libeventfd_la_SOURCES = \
  EventFdFunctions.c
@@ -81,8 +79,7 @@ liblocale_la_SOURCES = \
 libpoll_la_SOURCES = \
  PollFunctions.c
 
-libposixutils_la_SOURCES = \
- Defines.c
+libposixutils_la_SOURCES =
 
 libpthread_la_SOURCES = \
  PthreadFunctions.c

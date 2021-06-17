@@ -37,6 +37,13 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <errno.h>")
 public abstract class Errno {
 
+    public static class LinuxDefines {
+
+        public final static int EDOM = 33;
+        public final static int EILSEQ = 84;
+        public final static int ERANGE = 34;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -48,14 +55,17 @@ public abstract class Errno {
      */
     static {
         LibJnhwPosixLoader.touch();
-        EDOM = 0;
-        EILSEQ = 0;
-        ERANGE = 0;
-        HAVE_ERRNO_H = false;
-        initFields();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_ERRNO_H = true;
+                EDOM = LinuxDefines.EDOM;
+                EILSEQ = LinuxDefines.EILSEQ;
+                ERANGE = LinuxDefines.ERANGE;
+                break;
+            default:
+                throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     /**
      * ISOC,POSIX: Mathematics argument out of domain of function.

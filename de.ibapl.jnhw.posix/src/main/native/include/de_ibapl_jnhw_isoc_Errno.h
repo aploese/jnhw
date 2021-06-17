@@ -9,14 +9,6 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_isoc_Errno
- * Method:    initFields
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_isoc_Errno_initFields
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_isoc_Errno
  * Method:    errno
  * Signature: ()I
  */

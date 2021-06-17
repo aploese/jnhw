@@ -41,167 +41,371 @@ import java.util.logging.Logger;
 @Include("#include <errno.h>")
 public final class Errno extends de.ibapl.jnhw.isoc.Errno {
 
+    public static class LinuxDefines {
+
+        public final static int E2BIG = 1;
+
+        public final static int EACCES = 13;
+        public final static int EADDRINUSE = 98;
+        public final static int EADDRNOTAVAIL = 99;
+        public final static int EADV = 68;
+        public final static int EAFNOSUPPORT = 97;
+        public final static int EAGAIN = 11;
+        public final static int EALREADY = 114;
+
+        public final static int EBADE = 52;
+        public final static int EBADF = 9;
+        public final static int EBADFD = 77;
+        public final static int EBADMSG = 74;
+        public final static int EBADR = 53;
+        public final static int EBADRQC = 56;
+        public final static int EBADSLT = 57;
+        public final static int EBFONT = 59;
+        public final static int EBUSY = 16;
+
+        public final static int ECANCELED = 125;
+        public final static int ECHILD = 10;
+        public final static int ECHRNG = 44;
+        public final static int ECOMM = 70;
+        public final static int ECONNABORTED = 103;
+        public final static int ECONNREFUSED = 111;
+        public final static int ECONNRESET = 104;
+
+        public final static int EDEADLK = 35;
+        public final static int EDEADLOCK = 35;
+        public final static int EDESTADDRREQ = 89;
+        public final static int EDOTDOT = 73;
+        public final static int EDQUOT = 122;
+
+        public final static int EEXIST = 17;
+
+        public final static int EFAULT = 14;
+        public final static int EFBIG = 27;
+
+        public final static int EHOSTDOWN = 112;
+        public final static int EHOSTUNREACH = 113;
+        public final static int EHWPOISON = 133;
+
+        public final static int EIDRM = 43;
+        public final static int EINPROGRESS = 115;
+        public final static int EINTR = 4;
+        public final static int EINVAL = 22;
+        public final static int EIO = 5;
+        public final static int EISCONN = 106;
+        public final static int EISDIR = 21;
+        public final static int EISNAM = 120;
+
+        public final static int EKEYEXPIRED = 127;
+        public final static int EKEYREJECTED = 129;
+        public final static int EKEYREVOKED = 128;
+
+        public final static int EL2HLT = 51;
+        public final static int EL2NSYNC = 45;
+        public final static int EL3HLT = 46;
+        public final static int EL3RST = 47;
+        public final static int ELIBACC = 79;
+        public final static int ELIBBAD = 80;
+        public final static int ELIBEXEC = 83;
+        public final static int ELIBMAX = 82;
+        public final static int ELIBSCN = 81;
+        public final static int ELNRNG = 48;
+        public final static int ELOOP = 40;
+
+        public final static int EMEDIUMTYPE = 124;
+        public final static int EMFILE = 24;
+        public final static int EMLINK = 31;
+        public final static int EMSGSIZE = 90;
+        public final static int EMULTIHOP = 72;
+
+        public final static int ENAMETOOLONG = 36;
+        public final static int ENAVAIL = 119;
+        public final static int ENETDOWN = 100;
+        public final static int ENETRESET = 102;
+        public final static int ENETUNREACH = 101;
+        public final static int ENFILE = 23;
+        public final static int ENOANO = 55;
+        public final static int ENOBUFS = 105;
+        public final static int ENOCSI = 50;
+        public final static int ENODATA = 61;
+        public final static int ENODEV = 19;
+        public final static int ENOENT = 2;
+        public final static int ENOEXEC = 8;
+        public final static int ENOKEY = 126;
+        public final static int ENOLCK = 37;
+        public final static int ENOLINK = 67;
+        public final static int ENOMEDIUM = 123;
+        public final static int ENOMEM = 12;
+        public final static int ENOMSG = 42;
+        public final static int ENONET = 64;
+        public final static int ENOPKG = 65;
+        public final static int ENOPROTOOPT = 92;
+        public final static int ENOSPC = 28;
+        public final static int ENOSR = 63;
+        public final static int ENOSTR = 60;
+        public final static int ENOSYS = 38;
+        public final static int ENOTBLK = 15;
+        public final static int ENOTCONN = 107;
+        public final static int ENOTDIR = 20;
+        public final static int ENOTEMPTY = 39;
+        public final static int ENOTNAM = 118;
+        public final static int ENOTRECOVERABLE = 131;
+        public final static int ENOTSOCK = 88;
+        public final static int ENOTSUP = 95;
+        public final static int ENOTTY = 25;
+        public final static int ENOTUNIQ = 76;
+        public final static int ENXIO = 6;
+
+        public final static int EOPNOTSUPP = 95;
+        public final static int EOVERFLOW = 75;
+        public final static int EOWNERDEAD = 130;
+
+        public final static int EPERM = 1;
+        public final static int EPFNOSUPPORT = 96;
+        public final static int EPIPE = 32;
+        public final static int EPROTO = 71;
+        public final static int EPROTONOSUPPORT = 93;
+        public final static int EPROTOTYPE = 91;
+
+        public final static int EREMCHG = 78;
+        public final static int EREMOTE = 66;
+        public final static int EREMOTEIO = 121;
+        public final static int ERESTART = 85;
+        public final static int ERFKILL = 132;
+        public final static int EROFS = 30;
+
+        public final static int ESHUTDOWN = 108;
+        public final static int ESOCKTNOSUPPORT = 94;
+        public final static int ESPIPE = 29;
+        public final static int ESRCH = 3;
+        public final static int ESRMNT = 69;
+        public final static int ESTALE = 116;
+        public final static int ESTRPIPE = 86;
+
+        public final static int ETIME = 62;
+        public final static int ETIMEDOUT = 110;
+        public final static int ETOOMANYREFS = 109;
+        public final static int ETXTBSY = 26;
+
+        public final static int EUCLEAN = 117;
+        public final static int EUNATCH = 49;
+        public final static int EUSERS = 87;
+
+        public final static int EWOULDBLOCK = 11;
+
+        public final static int EXDEV = 18;
+        public final static int EXFULL = 54;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      */
     static {
         LibJnhwPosixLoader.touch();
-        E2BIG = 0;
 
-        EACCES = 0;
-        EADDRINUSE = 0;
-        EADDRNOTAVAIL = 0;
-        EADV = IntDefine.UNDEFINED;
-        EAFNOSUPPORT = 0;
-        EAGAIN = 0;
-        EALREADY = 0;
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                E2BIG = LinuxDefines.E2BIG;
 
-        EBADE = IntDefine.UNDEFINED;
-        EBADF = 0;
-        EBADFD = IntDefine.UNDEFINED;
-        EBADMSG = 0;
-        EBADR = IntDefine.UNDEFINED;
-        EBADRQC = IntDefine.UNDEFINED;
-        EBADSLT = IntDefine.UNDEFINED;
-        EBFONT = IntDefine.UNDEFINED;
-        EBUSY = 0;
+                EACCES = LinuxDefines.EACCES;
+                EADDRINUSE = LinuxDefines.EADDRINUSE;
+                EADDRNOTAVAIL = LinuxDefines.EADDRNOTAVAIL;
+                EADV = IntDefine.toIntDefine(LinuxDefines.EADV);
 
-        ECANCELED = 0;
-        ECHILD = 0;
-        ECHRNG = IntDefine.UNDEFINED;
-        ECOMM = IntDefine.UNDEFINED;
-        ECONNABORTED = 0;
-        ECONNREFUSED = 0;
-        ECONNRESET = 0;
+                EAFNOSUPPORT = LinuxDefines.EAFNOSUPPORT;
+                EAGAIN = LinuxDefines.EAGAIN;
+                EALREADY = LinuxDefines.EALREADY;
 
-        EDEADLK = 0;
-        EDEADLOCK = IntDefine.UNDEFINED;
-        EDESTADDRREQ = 0;
-        EDOTDOT = IntDefine.UNDEFINED;
-        EDQUOT = 0;
+                EBADE = IntDefine.toIntDefine(LinuxDefines.EBADE);
+                EBADF = LinuxDefines.EBADF;
+                EBADFD = IntDefine.toIntDefine(LinuxDefines.EBADFD);
 
-        EEXIST = 0;
+                EBADMSG = LinuxDefines.EBADMSG;
+                EBADR = IntDefine.toIntDefine(LinuxDefines.EBADR);
 
-        EFAULT = 0;
-        EFBIG = 0;
+                EBADRQC = IntDefine.toIntDefine(LinuxDefines.EBADRQC);
 
-        EHOSTDOWN = 0;
-        EHOSTUNREACH = 0;
-        EHWPOISON = IntDefine.UNDEFINED;
+                EBADSLT = IntDefine.toIntDefine(LinuxDefines.EBADSLT);
 
-        EIDRM = 0;
-        EINPROGRESS = 0;
-        EINTR = 0;
-        EINVAL = 0;
-        EIO = 0;
-        EISCONN = 0;
-        EISDIR = 0;
-        EISNAM = IntDefine.UNDEFINED;
+                EBFONT = IntDefine.toIntDefine(LinuxDefines.EBFONT);
 
-        EKEYEXPIRED = IntDefine.UNDEFINED;
-        EKEYREJECTED = IntDefine.UNDEFINED;
-        EKEYREVOKED = IntDefine.UNDEFINED;
+                EBUSY = LinuxDefines.EBUSY;
 
-        EL2HLT = IntDefine.UNDEFINED;
-        EL2NSYNC = IntDefine.UNDEFINED;
-        EL3HLT = IntDefine.UNDEFINED;
-        EL3RST = IntDefine.UNDEFINED;
-        ELIBACC = IntDefine.UNDEFINED;
-        ELIBBAD = IntDefine.UNDEFINED;
-        ELIBEXEC = IntDefine.UNDEFINED;
-        ELIBMAX = IntDefine.UNDEFINED;
-        ELIBSCN = IntDefine.UNDEFINED;
-        ELNRNG = IntDefine.UNDEFINED;
-        ELOOP = 0;
+                ECANCELED = LinuxDefines.ECANCELED;
+                ECHILD = LinuxDefines.ECHILD;
+                ECHRNG = IntDefine.toIntDefine(LinuxDefines.ECHRNG);
 
-        EMEDIUMTYPE = IntDefine.UNDEFINED;
-        EMFILE = 0;
-        EMLINK = 0;
-        EMSGSIZE = 0;
-        EMULTIHOP = IntDefine.UNDEFINED;
+                ECOMM = IntDefine.toIntDefine(LinuxDefines.ECOMM);
 
-        ENAMETOOLONG = 0;
-        ENAVAIL = IntDefine.UNDEFINED;
-        ENETDOWN = 0;
-        ENETRESET = 0;
-        ENETUNREACH = 0;
-        ENFILE = 0;
-        ENOANO = IntDefine.UNDEFINED;
-        ENOBUFS = 0;
-        ENOCSI = IntDefine.UNDEFINED;
-        ENODATA = IntDefine.UNDEFINED;
-        ENODEV = 0;
-        ENOENT = 0;
-        ENOEXEC = 0;
-        ENOKEY = IntDefine.UNDEFINED;
-        ENOLCK = 0;
-        ENOLINK = IntDefine.UNDEFINED;
-        ENOMEDIUM = IntDefine.UNDEFINED;
-        ENOMEM = 0;
-        ENOMSG = 0;
-        ENONET = IntDefine.UNDEFINED;
-        ENOPKG = IntDefine.UNDEFINED;
-        ENOPROTOOPT = 0;
-        ENOSPC = 0;
-        ENOSR = IntDefine.UNDEFINED;
-        ENOSTR = IntDefine.UNDEFINED;
-        ENOSYS = 0;
-        ENOTBLK = 0;
-        ENOTCONN = 0;
-        ENOTDIR = 0;
-        ENOTEMPTY = 0;
-        ENOTNAM = IntDefine.UNDEFINED;
-        ENOTRECOVERABLE = 0;
-        ENOTSOCK = 0;
-        ENOTSUP = 0;
-        ENOTTY = 0;
-        ENOTUNIQ = IntDefine.UNDEFINED;
-        ENXIO = 0;
+                ECONNABORTED = LinuxDefines.ECONNABORTED;
+                ECONNREFUSED = LinuxDefines.ECONNREFUSED;
+                ECONNRESET = LinuxDefines.ECONNRESET;
 
-        EOPNOTSUPP = 0;
-        EOVERFLOW = 0;
-        EOWNERDEAD = 0;
+                EDEADLK = LinuxDefines.EDEADLK;
+                EDEADLOCK = IntDefine.toIntDefine(LinuxDefines.EDEADLOCK);
 
-        EPERM = 0;
-        EPFNOSUPPORT = 0;
-        EPIPE = 0;
-        EPROTO = 0;
-        EPROTONOSUPPORT = 0;
-        EPROTOTYPE = 0;
+                EDESTADDRREQ = LinuxDefines.EDESTADDRREQ;
+                EDOTDOT = IntDefine.toIntDefine(LinuxDefines.EDOTDOT);
 
-        EREMCHG = IntDefine.UNDEFINED;
-        EREMOTE = 0;
-        EREMOTEIO = IntDefine.UNDEFINED;
-        ERESTART = IntDefine.UNDEFINED;
-        ERFKILL = IntDefine.UNDEFINED;
-        EROFS = 0;
+                EDQUOT = LinuxDefines.EDQUOT;
 
-        ESHUTDOWN = 0;
-        ESOCKTNOSUPPORT = 0;
-        ESPIPE = 0;
-        ESRCH = 0;
-        ESRMNT = IntDefine.UNDEFINED;
-        ESTALE = 0;
-        ESTRPIPE = IntDefine.UNDEFINED;
+                EEXIST = LinuxDefines.EEXIST;
 
-        ETIME = IntDefine.UNDEFINED;
-        ETIMEDOUT = 0;
-        ETOOMANYREFS = 0;
-        ETXTBSY = 0;
+                EFAULT = LinuxDefines.EFAULT;
+                EFBIG = LinuxDefines.EFBIG;
 
-        EUCLEAN = IntDefine.UNDEFINED;
-        EUNATCH = IntDefine.UNDEFINED;
-        EUSERS = 0;
+                EHOSTDOWN = LinuxDefines.EHOSTDOWN;
+                EHOSTUNREACH = LinuxDefines.EHOSTUNREACH;
+                EHWPOISON = IntDefine.toIntDefine(LinuxDefines.EHWPOISON);
 
-        EWOULDBLOCK = 0;
+                EIDRM = LinuxDefines.EIDRM;
+                EINPROGRESS = LinuxDefines.EINPROGRESS;
+                EINTR = LinuxDefines.EINTR;
+                EINVAL = LinuxDefines.EINVAL;
+                EIO = LinuxDefines.EIO;
+                EISCONN = LinuxDefines.EISCONN;
+                EISDIR = LinuxDefines.EISDIR;
+                EISNAM = IntDefine.toIntDefine(LinuxDefines.EISNAM);
 
-        EXDEV = 0;
-        EXFULL = IntDefine.UNDEFINED;
+                EKEYEXPIRED = IntDefine.toIntDefine(LinuxDefines.EKEYEXPIRED);
 
-        initFields();
+                EKEYREJECTED = IntDefine.toIntDefine(LinuxDefines.EKEYREJECTED);
+
+                EKEYREVOKED = IntDefine.toIntDefine(LinuxDefines.EKEYREVOKED);
+
+                EL2HLT = IntDefine.toIntDefine(LinuxDefines.EL2HLT);
+
+                EL2NSYNC = IntDefine.toIntDefine(LinuxDefines.EL2NSYNC);
+
+                EL3HLT = IntDefine.toIntDefine(LinuxDefines.EL3HLT);
+
+                EL3RST = IntDefine.toIntDefine(LinuxDefines.EL3RST);
+
+                ELIBACC = IntDefine.toIntDefine(LinuxDefines.ELIBACC);
+
+                ELIBBAD = IntDefine.toIntDefine(LinuxDefines.ELIBBAD);
+
+                ELIBEXEC = IntDefine.toIntDefine(LinuxDefines.ELIBEXEC);
+
+                ELIBMAX = IntDefine.toIntDefine(LinuxDefines.ELIBMAX);
+
+                ELIBSCN = IntDefine.toIntDefine(LinuxDefines.ELIBSCN);
+
+                ELNRNG = IntDefine.toIntDefine(LinuxDefines.ELNRNG);
+
+                ELOOP = LinuxDefines.ELOOP;
+
+                EMEDIUMTYPE = IntDefine.toIntDefine(LinuxDefines.EMEDIUMTYPE);
+
+                EMFILE = LinuxDefines.EMFILE;
+                EMLINK = LinuxDefines.EMLINK;
+                EMSGSIZE = LinuxDefines.EMSGSIZE;
+                EMULTIHOP = IntDefine.toIntDefine(LinuxDefines.EMULTIHOP);
+
+                ENAMETOOLONG = LinuxDefines.ENAMETOOLONG;
+                ENAVAIL = IntDefine.toIntDefine(LinuxDefines.ENAVAIL);
+
+                ENETDOWN = LinuxDefines.ENETDOWN;
+                ENETRESET = LinuxDefines.ENETRESET;
+                ENETUNREACH = LinuxDefines.ENETUNREACH;
+                ENFILE = LinuxDefines.ENFILE;
+                ENOANO = IntDefine.toIntDefine(LinuxDefines.ENOANO);
+
+                ENOBUFS = LinuxDefines.ENOBUFS;
+                ENOCSI = IntDefine.toIntDefine(LinuxDefines.ENOCSI);
+
+                ENODATA = IntDefine.toIntDefine(LinuxDefines.ENODATA);
+
+                ENODEV = LinuxDefines.ENODEV;
+                ENOENT = LinuxDefines.ENOENT;
+                ENOEXEC = LinuxDefines.ENOEXEC;
+                ENOKEY = IntDefine.toIntDefine(LinuxDefines.ENOKEY);
+
+                ENOLCK = LinuxDefines.ENOLCK;
+                ENOLINK = IntDefine.toIntDefine(LinuxDefines.ENOLINK);
+
+                ENOMEDIUM = IntDefine.toIntDefine(LinuxDefines.ENOMEDIUM);
+
+                ENOMEM = LinuxDefines.ENOMEM;
+                ENOMSG = LinuxDefines.ENOMSG;
+                ENONET = IntDefine.toIntDefine(LinuxDefines.ENONET);
+
+                ENOPKG = IntDefine.toIntDefine(LinuxDefines.ENOPKG);
+
+                ENOPROTOOPT = LinuxDefines.ENOPROTOOPT;
+                ENOSPC = LinuxDefines.ENOSPC;
+                ENOSR = IntDefine.toIntDefine(LinuxDefines.ENOSR);
+
+                ENOSTR = IntDefine.toIntDefine(LinuxDefines.ENOSTR);
+
+                ENOSYS = LinuxDefines.ENOSYS;
+                ENOTBLK = LinuxDefines.ENOTBLK;
+                ENOTCONN = LinuxDefines.ENOTCONN;
+                ENOTDIR = LinuxDefines.ENOTDIR;
+                ENOTEMPTY = LinuxDefines.ENOTEMPTY;
+                ENOTNAM = IntDefine.toIntDefine(LinuxDefines.ENOTNAM);
+
+                ENOTRECOVERABLE = LinuxDefines.ENOTRECOVERABLE;
+                ENOTSOCK = LinuxDefines.ENOTSOCK;
+                ENOTSUP = LinuxDefines.ENOTSUP;
+                ENOTTY = LinuxDefines.ENOTTY;
+                ENOTUNIQ = IntDefine.toIntDefine(LinuxDefines.ENOTUNIQ);
+
+                ENXIO = LinuxDefines.ENXIO;
+
+                EOPNOTSUPP = LinuxDefines.EOPNOTSUPP;
+                EOVERFLOW = LinuxDefines.EOVERFLOW;
+                EOWNERDEAD = LinuxDefines.EOWNERDEAD;
+
+                EPERM = LinuxDefines.EPERM;
+                EPFNOSUPPORT = LinuxDefines.EPFNOSUPPORT;
+                EPIPE = LinuxDefines.EPIPE;
+                EPROTO = LinuxDefines.EPROTO;
+                EPROTONOSUPPORT = LinuxDefines.EPROTONOSUPPORT;
+                EPROTOTYPE = LinuxDefines.EPROTOTYPE;
+
+                EREMCHG = IntDefine.toIntDefine(LinuxDefines.EREMCHG);
+
+                EREMOTE = LinuxDefines.EREMOTE;
+                EREMOTEIO = IntDefine.toIntDefine(LinuxDefines.EREMOTEIO);
+
+                ERESTART = IntDefine.toIntDefine(LinuxDefines.ERESTART);
+
+                ERFKILL = IntDefine.toIntDefine(LinuxDefines.ERFKILL);
+
+                EROFS = LinuxDefines.EROFS;
+
+                ESHUTDOWN = LinuxDefines.ESHUTDOWN;
+                ESOCKTNOSUPPORT = LinuxDefines.ESOCKTNOSUPPORT;
+                ESPIPE = LinuxDefines.ESPIPE;
+                ESRCH = LinuxDefines.ESRCH;
+                ESRMNT = IntDefine.toIntDefine(LinuxDefines.ESRMNT);
+
+                ESTALE = LinuxDefines.ESTALE;
+                ESTRPIPE = IntDefine.toIntDefine(LinuxDefines.ESTRPIPE);
+
+                ETIME = IntDefine.toIntDefine(LinuxDefines.ETIME);
+
+                ETIMEDOUT = LinuxDefines.ETIMEDOUT;
+                ETOOMANYREFS = LinuxDefines.ETOOMANYREFS;
+                ETXTBSY = LinuxDefines.ETXTBSY;
+
+                EUCLEAN = IntDefine.toIntDefine(LinuxDefines.EUCLEAN);
+
+                EUNATCH = IntDefine.toIntDefine(LinuxDefines.EUNATCH);
+
+                EUSERS = LinuxDefines.EUSERS;
+
+                EWOULDBLOCK = LinuxDefines.EWOULDBLOCK;
+
+                EXDEV = LinuxDefines.EXDEV;
+                EXFULL = IntDefine.toIntDefine(LinuxDefines.EXFULL);
+
+                break;
+            default:
+                throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
-
-    private static native void initFields();
 
     /**
      * <b>POSIX:</b> Argument list too long.

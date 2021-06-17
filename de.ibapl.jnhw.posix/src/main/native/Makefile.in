@@ -142,8 +142,7 @@ am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
 liberrno_la_LIBADD =
-am_liberrno_la_OBJECTS = Isoc_ErrnoDefines.lo Isoc_ErrnoFunctions.lo \
-	Posix_ErrnoDefines.lo
+am_liberrno_la_OBJECTS = Isoc_ErrnoFunctions.lo
 liberrno_la_OBJECTS = $(am_liberrno_la_OBJECTS)
 libeventfd_la_LIBADD =
 am_libeventfd_la_OBJECTS = EventFdFunctions.lo
@@ -169,7 +168,7 @@ libpoll_la_LIBADD =
 am_libpoll_la_OBJECTS = PollFunctions.lo
 libpoll_la_OBJECTS = $(am_libpoll_la_OBJECTS)
 libposixutils_la_LIBADD =
-am_libposixutils_la_OBJECTS = Defines.lo
+am_libposixutils_la_OBJECTS =
 libposixutils_la_OBJECTS = $(am_libposixutils_la_OBJECTS)
 libpthread_la_LIBADD =
 am_libpthread_la_OBJECTS = PthreadFunctions.lo
@@ -222,15 +221,12 @@ depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo \
-	./$(DEPDIR)/Defines.Plo ./$(DEPDIR)/EventFdFunctions.Plo \
+	./$(DEPDIR)/EventFdFunctions.Plo \
 	./$(DEPDIR)/FcntlFunctions.Plo ./$(DEPDIR)/IoctlDefines.Plo \
 	./$(DEPDIR)/IoctlFunctions.Plo \
-	./$(DEPDIR)/Isoc_ErrnoDefines.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
 	./$(DEPDIR)/LocaleFunctions.Plo ./$(DEPDIR)/PollFunctions.Plo \
-	./$(DEPDIR)/PosixDataType.Plo \
-	./$(DEPDIR)/Posix_ErrnoDefines.Plo \
-	./$(DEPDIR)/PthreadFunctions.Plo \
+	./$(DEPDIR)/PosixDataType.Plo ./$(DEPDIR)/PthreadFunctions.Plo \
 	./$(DEPDIR)/SchedFunctions.Plo ./$(DEPDIR)/SignalFunctions.Plo \
 	./$(DEPDIR)/StatFunctions.Plo ./$(DEPDIR)/StdioFunctions.Plo \
 	./$(DEPDIR)/StringHeaderFunctions.Plo \
@@ -499,9 +495,7 @@ libaio_la_SOURCES = \
  AioFunctions.c
 
 liberrno_la_SOURCES = \
- Isoc_ErrnoDefines.c \
- Isoc_ErrnoFunctions.c \
- Posix_ErrnoDefines.c
+ Isoc_ErrnoFunctions.c
 
 libeventfd_la_SOURCES = \
  EventFdFunctions.c
@@ -519,9 +513,7 @@ liblocale_la_SOURCES = \
 libpoll_la_SOURCES = \
  PollFunctions.c
 
-libposixutils_la_SOURCES = \
- Defines.c
-
+libposixutils_la_SOURCES = 
 libpthread_la_SOURCES = \
  PthreadFunctions.c
 
@@ -702,17 +694,14 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Defines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FcntlFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PosixDataType.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalFunctions.Plo@am__quote@ # am--include-marker
@@ -886,17 +875,14 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/AioFunctions.Plo
 	-rm -f ./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo
-	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
 	-rm -f ./$(DEPDIR)/FcntlFunctions.Plo
 	-rm -f ./$(DEPDIR)/IoctlDefines.Plo
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
-	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
 	-rm -f ./$(DEPDIR)/LocaleFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/PosixDataType.Plo
-	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
@@ -955,17 +941,14 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/AioFunctions.Plo
 	-rm -f ./$(DEPDIR)/Callback__Sigval_int__V_Impl.Plo
-	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdFunctions.Plo
 	-rm -f ./$(DEPDIR)/FcntlFunctions.Plo
 	-rm -f ./$(DEPDIR)/IoctlDefines.Plo
 	-rm -f ./$(DEPDIR)/IoctlFunctions.Plo
-	-rm -f ./$(DEPDIR)/Isoc_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
 	-rm -f ./$(DEPDIR)/LocaleFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
 	-rm -f ./$(DEPDIR)/PosixDataType.Plo
-	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo

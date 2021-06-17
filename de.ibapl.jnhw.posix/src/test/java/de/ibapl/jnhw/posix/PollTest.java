@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import org.junit.jupiter.api.Assertions;
@@ -76,10 +77,11 @@ public class PollTest {
             LibJnhwPosixTestLoader.touch();
         }
     }
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_POLL_H() throws Exception {
-        if (DefinesTest.MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Poll.HAVE_POLL_H, "not expected to have poll.h");
         } else {
             Assertions.assertTrue(Poll.HAVE_POLL_H, "expected to have poll.h");
@@ -88,7 +90,7 @@ public class PollTest {
 
     @BeforeAll
     public static void checkBeforeAll_PollDefines() throws Exception {
-        if (DefinesTest.MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             return;
         }
         DefinesTest.testDefines(Poll.class, NativeDefines.class, "HAVE_POLL_H");
@@ -96,7 +98,7 @@ public class PollTest {
 
     @BeforeAll
     public static void checkBeforeAll_StructPollFd() throws Exception {
-        if (DefinesTest.MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             return;
         }
         Assertions.assertAll(() -> {

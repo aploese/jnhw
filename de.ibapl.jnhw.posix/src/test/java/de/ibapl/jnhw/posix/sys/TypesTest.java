@@ -24,10 +24,10 @@ package de.ibapl.jnhw.posix.sys;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import static de.ibapl.jnhw.util.posix.DefinesTest.MULTIARCHTUPEL_BUILDER;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -50,6 +50,8 @@ public class TypesTest {
             LibJnhwPosixTestLoader.touch();
         }
     }
+
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SYS_TYPES_H() throws Exception {

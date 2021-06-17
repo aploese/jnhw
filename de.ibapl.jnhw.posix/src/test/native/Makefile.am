@@ -20,6 +20,9 @@ libtests.la \
 libtests_la_SOURCES = \
  AioDefines.c \
  AioStructures.c \
+ Defines.c \
+ Isoc_ErrnoDefines.c \
+ Posix_ErrnoDefines.c \
  EventFdDefines.c \
  FcntlDefines.c \
  PollDefines.c \

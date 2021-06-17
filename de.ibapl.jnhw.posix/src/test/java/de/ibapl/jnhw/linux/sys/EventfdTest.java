@@ -21,11 +21,11 @@
  */
 package de.ibapl.jnhw.linux.sys;
 
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import static de.ibapl.jnhw.util.posix.DefinesTest.MULTIARCHTUPEL_BUILDER;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -48,6 +48,7 @@ public class EventfdTest {
             LibJnhwPosixTestLoader.touch();
         }
     }
+    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SYS_EVENTFD_H() throws Exception {
