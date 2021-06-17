@@ -31,7 +31,6 @@ import de.ibapl.jnhw.linux.sys.Eventfd;
 import de.ibapl.jnhw.posix.Fcntl;
 import de.ibapl.jnhw.posix.Locale;
 import de.ibapl.jnhw.posix.Pthread;
-import de.ibapl.jnhw.posix.Sched;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.unix.sys.Ioctl;
@@ -312,15 +311,6 @@ public class DefinesTest {
             Assertions.assertFalse(Pthread.HAVE_PTHREAD_H, "not expected to have pthread.h");
         } else {
             Assertions.assertTrue(Pthread.HAVE_PTHREAD_H, "expected to have pthread.h");
-        }
-    }
-
-    @Test
-    public void test_HAVE_SCHED_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Sched.HAVE_SCHED_H, "not expected to have sched.h");
-        } else {
-            Assertions.assertTrue(Sched.HAVE_SCHED_H, "expected to have sched.h");
         }
     }
 

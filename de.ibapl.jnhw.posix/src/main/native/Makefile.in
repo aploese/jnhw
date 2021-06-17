@@ -177,8 +177,7 @@ am_libpthread_la_OBJECTS = PthreadDefines.lo PthreadFunctions.lo \
 	PthreadStructures.lo
 libpthread_la_OBJECTS = $(am_libpthread_la_OBJECTS)
 libsched_la_LIBADD =
-am_libsched_la_OBJECTS = SchedDefines.lo SchedFunctions.lo \
-	SchedStructures.lo
+am_libsched_la_OBJECTS = SchedFunctions.lo
 libsched_la_OBJECTS = $(am_libsched_la_OBJECTS)
 libsignal_la_LIBADD =
 am_libsignal_la_OBJECTS = SignalFunctions.lo \
@@ -237,10 +236,10 @@ am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/Posix_ErrnoDefines.Plo \
 	./$(DEPDIR)/PthreadDefines.Plo \
 	./$(DEPDIR)/PthreadFunctions.Plo \
-	./$(DEPDIR)/PthreadStructures.Plo ./$(DEPDIR)/SchedDefines.Plo \
-	./$(DEPDIR)/SchedFunctions.Plo ./$(DEPDIR)/SchedStructures.Plo \
-	./$(DEPDIR)/SignalFunctions.Plo ./$(DEPDIR)/StatDefines.Plo \
-	./$(DEPDIR)/StatFunctions.Plo ./$(DEPDIR)/StdioFunctions.Plo \
+	./$(DEPDIR)/PthreadStructures.Plo \
+	./$(DEPDIR)/SchedFunctions.Plo ./$(DEPDIR)/SignalFunctions.Plo \
+	./$(DEPDIR)/StatDefines.Plo ./$(DEPDIR)/StatFunctions.Plo \
+	./$(DEPDIR)/StdioFunctions.Plo \
 	./$(DEPDIR)/StringHeaderFunctions.Plo \
 	./$(DEPDIR)/TermiosFunctions.Plo ./$(DEPDIR)/TimeFunctions.Plo \
 	./$(DEPDIR)/TypesDefines.Plo ./$(DEPDIR)/UcontextDefines.Plo \
@@ -541,9 +540,7 @@ libpthread_la_SOURCES = \
  PthreadStructures.c
 
 libsched_la_SOURCES = \
- SchedDefines.c \
- SchedFunctions.c \
- SchedStructures.c
+ SchedFunctions.c
 
 libsignal_la_SOURCES = \
  SignalFunctions.c \
@@ -741,9 +738,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadStructures.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedStructures.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StatFunctions.Plo@am__quote@ # am--include-marker
@@ -936,9 +931,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
 	-rm -f ./$(DEPDIR)/PthreadStructures.Plo
-	-rm -f ./$(DEPDIR)/SchedDefines.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
-	-rm -f ./$(DEPDIR)/SchedStructures.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
 	-rm -f ./$(DEPDIR)/StatDefines.Plo
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo
@@ -1016,9 +1009,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
 	-rm -f ./$(DEPDIR)/PthreadStructures.Plo
-	-rm -f ./$(DEPDIR)/SchedDefines.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
-	-rm -f ./$(DEPDIR)/SchedStructures.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
 	-rm -f ./$(DEPDIR)/StatDefines.Plo
 	-rm -f ./$(DEPDIR)/StatFunctions.Plo

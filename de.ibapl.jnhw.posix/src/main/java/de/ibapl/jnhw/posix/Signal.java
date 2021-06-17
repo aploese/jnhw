@@ -294,7 +294,7 @@ public class Signal {
 
                 break;
             default:
-                throw new NoClassDefFoundError("No unistd.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
     }
 

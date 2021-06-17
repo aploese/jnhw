@@ -163,7 +163,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeSigevent_sigev_1notify
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
-        return 0;
+        return -1;
 #else
         return offsetof(struct sigevent, sigev_notify);
 #endif
@@ -177,7 +177,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeSigevent_sigev_1signo
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
-        return 0;
+        return -1;
 #else
         return offsetof(struct sigevent, sigev_signo);
 #endif
@@ -191,7 +191,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeSigevent_sigev_1value
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
-        return 0;
+        return -1;
 #else
         return offsetof(struct sigevent, sigev_value);
 #endif
@@ -205,7 +205,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeSigevent_sigev_1notify_1function
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
-        return 0;
+        return -1;
 #else
         return offsetof(struct sigevent, sigev_notify_function);
 #endif
@@ -219,7 +219,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeSigevent_sigev_1notify_1attributes
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
-        return 0;
+        return -1;
 #else
         return offsetof(struct sigevent, sigev_notify_attributes);
 #endif
@@ -445,7 +445,7 @@ extern "C" {
         return offsetof(stack_t, ss_flags);
     }
 
-        /*
+    /*
      * Class:     de_ibapl_jnhw_posix_SignalTest_NativeUcontext_t
      * Method:    alignof
      * Signature: ()I
@@ -485,7 +485,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeUcontext_1t_uc_1link
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
-        return 0;
+        return -1;
 #elif defined(__FreeBSD__)
         return offsetof(ucontext_t, uc_link);
 #else
@@ -501,7 +501,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeUcontext_1t_uc_1sigmask
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
-        return 0;
+        return -1;
 #elif defined(__FreeBSD__)
         return offsetof(ucontext_t, uc_sigmask);
 #else
@@ -517,7 +517,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeUcontext_1t_uc_1stack
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
-        return 0;
+        return -1;
 #elif defined(__FreeBSD__)
         return offsetof(ucontext_t, uc_stack);
 #else
@@ -533,7 +533,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeUcontext_1t_uc_1mcontext
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
-        return 0;
+        return -1;
 #elif defined(__FreeBSD__)
         return offsetof(ucontext_t, uc_mcontext);
 #else

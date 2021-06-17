@@ -32,6 +32,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.util.posix.DefinesTest;
+import org.junit.jupiter.api.BeforeAll;
 
 /**
  *
@@ -40,9 +43,91 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SchedTest {
 
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_SCHED_H();
+
+        public final static native int SCHED_FIFO();
+
+        public final static native int SCHED_OTHER();
+
+        public final static native int SCHED_RR();
+
+        public final static native Integer SCHED_SPORADIC();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    public static class NativeSched_param {
+
+        public final static native int alignof();
+
+        public final static native int sizeof();
+
+        public final static native long sched_priority();
+
+        public final static native long sched_ss_low_priority();
+
+        public final static native long sched_ss_repl_period();
+
+        public final static native long sched_ss_init_budget();
+
+        public final static native long sched_ss_max_repl();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
     private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
-    public SchedTest() {
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_SCHED_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            Assertions.assertFalse(Sched.HAVE_SCHED_H, "not expected to have sched.h");
+        } else {
+            Assertions.assertTrue(Sched.HAVE_SCHED_H, "expected to have sched.h");
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_SchedDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(Sched.class, NativeDefines.class, "HAVE_SCHED_H");
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_NativeSched_param() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        Assertions.assertAll(
+                () -> {
+                    Assertions.assertEquals(NativeSched_param.sizeof(), Sched.Sched_param.sizeof, "sizeof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeSched_param.alignof(), Sched.Sched_param.alignof.alignof, "alignof");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeSched_param.sched_priority(), Sched.Sched_param.offsetof_Sched_priority, "offsetof_Sched_priority");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeSched_param.sched_ss_init_budget(), Sched.Sched_param.offsetof_Sched_ss_init_budget, "offsetof_Sched_ss_init_budget");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeSched_param.sched_ss_low_priority(), Sched.Sched_param.offsetof_Sched_ss_low_priority, "offsetof_Sched_ss_low_priority");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeSched_param.sched_ss_max_repl(), Sched.Sched_param.offsetof_Sched_ss_max_repl, "offsetof_Sched_ss_max_repl");
+                },
+                () -> {
+                    Assertions.assertEquals(NativeSched_param.sched_ss_repl_period(), Sched.Sched_param.offsetof_Sched_ss_repl_period, "offsetof_Sched_ss_repl_period");
+                }
+        );
     }
 
     /**
@@ -296,36 +381,6 @@ public class SchedTest {
         } catch (NoSuchNativeTypeMemberException nstme) {
         }
         Assertions.assertEquals(0, memberSum);
-    }
-
-    @Test
-    public void testSizeOfSchedparam() throws Exception {
-        Assertions.assertEquals(4, Sched.Sched_param.LAYOUT.sizeof);
-    }
-
-    @Test
-    public void testAlignOfSchedparam() throws Exception {
-        Assertions.assertEquals(Alignment.AT_4, Sched.Sched_param.LAYOUT.alignment);
-    }
-
-    @Test
-    public void testSched_ss_init_budget() throws Exception {
-        assertEquals(-1, Sched.Sched_param.LAYOUT.sched_ss_init_budget);
-    }
-
-    @Test
-    public void testSched_ss_low_priority() throws Exception {
-        assertEquals(-1, Sched.Sched_param.LAYOUT.sched_ss_low_priority);
-    }
-
-    @Test
-    public void testSched_ss_max_repl() throws Exception {
-        assertEquals(-1, Sched.Sched_param.LAYOUT.sched_ss_max_repl);
-    }
-
-    @Test
-    public void testSched_ss_repl_period() throws Exception {
-        assertEquals(-1, Sched.Sched_param.LAYOUT.sched_ss_repl_period);
     }
 
 }

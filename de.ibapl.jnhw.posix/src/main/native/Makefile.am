@@ -94,9 +94,7 @@ libpthread_la_SOURCES = \
  PthreadStructures.c
 
 libsched_la_SOURCES = \
- SchedDefines.c \
- SchedFunctions.c \
- SchedStructures.c
+ SchedFunctions.c
 
 libsignal_la_SOURCES = \
  SignalFunctions.c \

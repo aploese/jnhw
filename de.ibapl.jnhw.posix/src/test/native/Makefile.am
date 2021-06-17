@@ -24,6 +24,8 @@ libtests_la_SOURCES = \
  PollStructures.c \
  LocaleTest.c \
  IoctlTest.c \
+ SchedDefines.c \
+ SchedStructures.c \
  SignalDefines.c \
  SignalStructures.c \
  StdioDefines.c \

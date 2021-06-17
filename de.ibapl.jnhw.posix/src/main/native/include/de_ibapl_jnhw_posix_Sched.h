@@ -9,14 +9,6 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Sched
- * Method:    initFields
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Sched_initFields
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Sched
  * Method:    sched_get_priority_max
  * Signature: (I)I
  */
