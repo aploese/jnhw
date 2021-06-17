@@ -21,13 +21,50 @@
  */
 package de.ibapl.jnhw.linux.sys;
 
+import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.posix.Unistd;
+import de.ibapl.jnhw.util.posix.DefinesTest;
+import static de.ibapl.jnhw.util.posix.DefinesTest.MULTIARCHTUPEL_BUILDER;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.LINUX)
 public class EventfdTest {
+
+    public static class NativeDefines {
+
+        public final static native boolean HAVE_SYS_EVENTFD_H();
+
+        public final static native int EFD_CLOEXEC();
+
+        public final static native int EFD_NONBLOCK();
+
+        public final static native int EFD_SEMAPHORE();
+
+        static {
+            LibJnhwPosixTestLoader.touch();
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_HAVE_SYS_EVENTFD_H() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.LINUX) {
+            Assertions.assertTrue(Eventfd.HAVE_SYS_EVENTFD_H, "expected to have sys/eventfd.h");
+        } else {
+            Assertions.assertFalse(Eventfd.HAVE_SYS_EVENTFD_H, "not expected to have sys/eventfd.h");
+        }
+    }
+
+    @BeforeAll
+    public static void checkBeforeAll_FcntlDefines() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        DefinesTest.testDefines(Eventfd.class, NativeDefines.class, "HAVE_SYS_EVENTFD_H");
+    }
 
     @Test
     public void testEventFD() throws Exception {

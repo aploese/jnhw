@@ -48,15 +48,20 @@ public final class Eventfd {
     static {
         LibJnhwPosixLoader.touch();
 
-        HAVE_SYS_EVENTFD_H = false;
-        EFD_CLOEXEC = 0;
-        EFD_NONBLOCK = 0;
-        EFD_SEMAPHORE = 0;
-
-        initFields();
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_SYS_EVENTFD_H = true;
+                EFD_CLOEXEC = 02000000;
+                EFD_NONBLOCK = 00004000;
+                EFD_SEMAPHORE = 00000001;
+                break;
+            default:
+                HAVE_SYS_EVENTFD_H = false;
+                EFD_CLOEXEC = 0;
+                EFD_NONBLOCK = 0;
+                EFD_SEMAPHORE = 0;
+        }
     }
-
-    private static native void initFields();
 
     /**
      * <b>Linux:</b> Set the close-on-exec (FD_CLOEXEC) flag on the new file

@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
-import de.ibapl.jnhw.linux.sys.Eventfd;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.unix.sys.Ioctl;
@@ -172,15 +171,6 @@ public class DefinesTest {
     @Test
     public void test_HAVE_ERRNO_H() throws Exception {
         Assertions.assertTrue(de.ibapl.jnhw.isoc.Errno.HAVE_ERRNO_H, "expected to have errno.h");
-    }
-
-    @Test
-    public void test_HAVE_SYS_EVENTFD_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.LINUX) {
-            Assertions.assertTrue(Eventfd.HAVE_SYS_EVENTFD_H, "expected to have sys/eventfd.h");
-        } else {
-            Assertions.assertFalse(Eventfd.HAVE_SYS_EVENTFD_H, "not expected to have sys/eventfd.h");
-        }
     }
 
     @Test

@@ -145,13 +145,13 @@ am__v_lt_0 = --silent
 am__v_lt_1 = 
 libtests_la_LIBADD =
 am_libtests_la_OBJECTS = AioDefines.lo AioStructures.lo \
-	FcntlDefines.lo PollDefines.lo PollStructures.lo \
-	PthreadDefines.lo PthreadStructures.lo LocaleDefines.lo \
-	LocaleTest.lo LocaleStructures.lo IoctlTest.lo SchedDefines.lo \
-	SchedStructures.lo SignalDefines.lo SignalStructures.lo \
-	StdioDefines.lo StringHeaderDefines.lo TermiosDefines.lo \
-	TermiosStructures.lo TimeDefines.lo TimeStructures.lo \
-	UnistdDefines.lo
+	EventFdDefines.lo FcntlDefines.lo PollDefines.lo \
+	PollStructures.lo PthreadDefines.lo PthreadStructures.lo \
+	LocaleDefines.lo LocaleTest.lo LocaleStructures.lo \
+	IoctlTest.lo SchedDefines.lo SchedStructures.lo \
+	SignalDefines.lo SignalStructures.lo StdioDefines.lo \
+	StringHeaderDefines.lo TermiosDefines.lo TermiosStructures.lo \
+	TimeDefines.lo TimeStructures.lo UnistdDefines.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -169,11 +169,11 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
-	./$(DEPDIR)/AioStructures.Plo ./$(DEPDIR)/FcntlDefines.Plo \
-	./$(DEPDIR)/IoctlTest.Plo ./$(DEPDIR)/LocaleDefines.Plo \
-	./$(DEPDIR)/LocaleStructures.Plo ./$(DEPDIR)/LocaleTest.Plo \
-	./$(DEPDIR)/PollDefines.Plo ./$(DEPDIR)/PollStructures.Plo \
-	./$(DEPDIR)/PthreadDefines.Plo \
+	./$(DEPDIR)/AioStructures.Plo ./$(DEPDIR)/EventFdDefines.Plo \
+	./$(DEPDIR)/FcntlDefines.Plo ./$(DEPDIR)/IoctlTest.Plo \
+	./$(DEPDIR)/LocaleDefines.Plo ./$(DEPDIR)/LocaleStructures.Plo \
+	./$(DEPDIR)/LocaleTest.Plo ./$(DEPDIR)/PollDefines.Plo \
+	./$(DEPDIR)/PollStructures.Plo ./$(DEPDIR)/PthreadDefines.Plo \
 	./$(DEPDIR)/PthreadStructures.Plo ./$(DEPDIR)/SchedDefines.Plo \
 	./$(DEPDIR)/SchedStructures.Plo ./$(DEPDIR)/SignalDefines.Plo \
 	./$(DEPDIR)/SignalStructures.Plo ./$(DEPDIR)/StdioDefines.Plo \
@@ -384,6 +384,7 @@ libtests.la \
 libtests_la_SOURCES = \
  AioDefines.c \
  AioStructures.c \
+ EventFdDefines.c \
  FcntlDefines.c \
  PollDefines.c \
  PollStructures.c \
@@ -499,6 +500,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioStructures.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FcntlDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IoctlTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleDefines.Plo@am__quote@ # am--include-marker
@@ -682,6 +684,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/AioDefines.Plo
 	-rm -f ./$(DEPDIR)/AioStructures.Plo
+	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
 	-rm -f ./$(DEPDIR)/IoctlTest.Plo
 	-rm -f ./$(DEPDIR)/LocaleDefines.Plo
@@ -750,6 +753,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/AioDefines.Plo
 	-rm -f ./$(DEPDIR)/AioStructures.Plo
+	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
 	-rm -f ./$(DEPDIR)/IoctlTest.Plo
 	-rm -f ./$(DEPDIR)/LocaleDefines.Plo

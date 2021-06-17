@@ -66,7 +66,6 @@ liberrno_la_SOURCES = \
  Posix_ErrnoDefines.c
 
 libeventfd_la_SOURCES = \
- EventFdDefines.c \
  EventFdFunctions.c
 
 libfcntl_la_SOURCES = \
