@@ -977,7 +977,7 @@ public class TimeTest {
                 break;
             default:
 
-                final ObjectRef<Object> intRef = new ObjectRef<>(null);
+                final Object[] intRef = new Object[1];
                 Time.Timer_t timerid = new Time.Timer_t(SetMem.DO_NOT_SET);
 
                 //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
@@ -998,12 +998,12 @@ public class TimeTest {
                     protected void callback(int sigval) {
                         try {
                             synchronized (intRef) {
-                                intRef.value = (int) sigval;
+                                intRef[0] = (int) sigval;
                                 intRef.notifyAll();
                             }
                         } catch (Exception ex) {
                             synchronized (intRef) {
-                                intRef.value = ex;
+                                intRef[0] = ex;
                                 intRef.notifyAll();
                             }
                             throw ex;
@@ -1029,14 +1029,14 @@ public class TimeTest {
 
 //TODO 2s will be splitted...            assertEquals(value, itimerspec);
                     synchronized (intRef) {
-                        if (intRef.value == null) {
+                        if (intRef[0] == null) {
                             intRef.wait(ONE_MINUTE);
                         }
-                        Assertions.assertNotNull(intRef.value);
-                        if (intRef.value instanceof Throwable) {
-                            fail("in callback", (Exception) intRef.value);
+                        Assertions.assertNotNull(intRef[0]);
+                        if (intRef[0] instanceof Throwable) {
+                            fail("in callback", (Exception) intRef[0]);
                         } else {
-                            assertEquals(0x12345678, intRef.value);
+                            assertEquals(0x12345678, intRef[0]);
                         }
                     }
 

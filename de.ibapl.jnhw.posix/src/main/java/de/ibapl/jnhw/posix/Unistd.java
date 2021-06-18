@@ -28,7 +28,6 @@ import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.OpaqueMemory64;
-import de.ibapl.jnhw.common.references.ByteRef;
 import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.annotation.posix.sys.types.gid_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.off64_t;
@@ -39,6 +38,8 @@ import de.ibapl.jnhw.annotation.posix.sys.types.ssize_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.useconds_t;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.Int32_t;
+import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.nio.ByteBuffer;
@@ -383,7 +384,11 @@ public final class Unistd {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void pipe(IntRef read_fd, IntRef write_fd) throws NativeErrorException;
+    public final static void pipe(Int32_t read_fd, Int32_t write_fd) throws NativeErrorException {
+        pipe(AbstractNativeMemory.getAddress(read_fd), AbstractNativeMemory.getAddress(write_fd));
+    }
+
+    public final static native void pipe(long ptrRead_fd, long ptrRwrite_fd) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -575,7 +580,9 @@ public final class Unistd {
      * indicates an error.
      */
     @ssize_t
-    public final static native int read(int fildes, ByteRef data) throws NativeErrorException;
+    public final static int read(int fildes, Int8_t data) throws NativeErrorException {
+        return read_ArgsOK(fildes, AbstractNativeMemory.getAddress(data), 0, 1);
+    }
 
     /**
      * <b>POSIX:</b>

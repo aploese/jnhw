@@ -23,7 +23,6 @@ package de.ibapl.jnhw.common.test.callbacks;
 
 import de.ibapl.jnhw.common.callback.Callback_I_V;
 import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
-import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
@@ -123,7 +122,7 @@ public class Callback_I_V_Test {
     @Test
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
-        final IntRef intref = new IntRef();
+        final int[] intref = new int[1];
         final Callback_I_V NULL_PTR = new Callback_I_V(NativeAddressHolder.NULL) {
             @Override
             protected void callback(int value) {
@@ -137,9 +136,9 @@ public class Callback_I_V_Test {
             @Override
             protected void callback(int value) {
                 if (!t.equals(Thread.currentThread())) {
-                    intref.value = value;
+                    intref[0] = value;
                 } else {
-                    intref.value = -value;
+                    intref[0] = -value;
                 }
             }
 
@@ -151,13 +150,13 @@ public class Callback_I_V_Test {
         assertEquals(getCallbackPtr(), callback);
         assertSame(Callback_I_V_Impl.find(getCallbackPtr()), callback);
 
-        intref.value = 0;
+        intref[0] = 0;
         doCallTheCallback(42);
-        assertEquals(42, intref.value);
+        assertEquals(42, intref[0]);
 
-        intref.value = 0;
+        intref[0] = 0;
         CallNative_I_V.wrap(getCallbackPtr()).call(42);
-        assertEquals(-42, intref.value);
+        assertEquals(-42, intref[0]);
 
         callback = null;
 
@@ -169,14 +168,14 @@ public class Callback_I_V_Test {
         assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
-        intref.value = -1;
+        intref[0] = -1;
         doCallTheCallback(84);
-        assertEquals(-1, intref.value);
+        assertEquals(-1, intref[0]);
 
-        intref.value = -1;
+        intref[0] = -1;
         //The logs shoud show: Unassigned callback for trampoline(0, 84)
         CallNative_I_V.wrap(getCallbackPtr()).call(84);
-        assertEquals(-1, intref.value);
+        assertEquals(-1, intref[0]);
 
     }
 
@@ -188,7 +187,7 @@ public class Callback_I_V_Test {
         System.out.println("release");
         Cleaner CLEANER = Cleaner.create();
 
-        final IntRef intref = new IntRef();
+        final int[] intref = new int[1];
         final Callback_I_V NULL_PTR = new Callback_I_V(NativeAddressHolder.NULL) {
             @Override
             protected void callback(int value) {
@@ -199,7 +198,7 @@ public class Callback_I_V_Test {
 
             @Override
             protected void callback(int value) {
-                intref.value = value;
+                intref[0] = value;
             }
 
         };
@@ -211,11 +210,11 @@ public class Callback_I_V_Test {
 
         assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(42);
-        assertEquals(42, intref.value);
+        assertEquals(42, intref[0]);
 
-        intref.value = 0;
+        intref[0] = 0;
         CallNative_I_V.wrap(getCallbackPtr()).call(42);
-        assertEquals(42, intref.value);
+        assertEquals(42, intref[0]);
 
         callback = null;
 

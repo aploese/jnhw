@@ -166,17 +166,6 @@
 extern "C" {
 #endif
 
-#define dij_p_Locale_t_CName "de/ibapl/jnhw/posix/Locale$Locale_t"
-#define dij_p_Locale_t_CSig CLASS_NAME_TO_SIGNATURE(dij_p_Locale_t_CName)
-
-
-    extern jclass dij_p_Locale_Locale_t__GCR;
-    extern jfieldID dij_p_Locale_Locale_t_nativeValue__FID;
-    extern jmethodID dij_p_Locale_Locale_t_init__MID;
-
-    //EX #define UNWRAP_LOCALE_T(Locale_tObject) (locale_t)(uintptr_t)(*env)->GetLongField(env, Locale_tObject, dij_p_Locale_Locale_t_nativeValue__FID)
-#define CREATE_Locale_t(value) (*env)->NewObject(env, dij_p_Locale_Locale_t__GCR, dij_p_Locale_Locale_t_init__MID, (jlong)((uintptr_t)value))
-
 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
     //Convert a jlong to (long int *) the pointer must be shifted by sizeof(long int)
 #define __jlong2long_PTR(value) ((long int *) &value) + 1

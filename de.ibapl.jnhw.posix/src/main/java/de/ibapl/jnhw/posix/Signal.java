@@ -809,11 +809,11 @@ public class Signal {
                     switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
                         case _32_BIT:
                             alignof = Alignment.AT_4;
-                            offsetof_Sigev_notify = -1;
-                            offsetof_Sigev_signo = -1;
+                            offsetof_Sigev_notify = 8;
+                            offsetof_Sigev_signo = 4;
                             offsetof_Sigev_value = 0;
-                            offsetof_Sigev_notify_function = -1;
-                            offsetof_Sigev_notify_attributes = -1;
+                            offsetof_Sigev_notify_function = 12;
+                            offsetof_Sigev_notify_attributes = 16;
                             break;
                         case _64_BIT:
                             alignof = Alignment.AT_8;
@@ -1378,18 +1378,18 @@ public class Signal {
                         case ARM:
                             alignof = Alignment.AT_4;
                             sizeof = 140;
-                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 4;
-                            offsetof_Sa_flags = -1;
-                            offsetof_Sa_sigaction = -1;
+                            offsetof_Sa_flags = 132;
+                            offsetof_Sa_sigaction = 0;
                             break;
                         case I386:
                             alignof = Alignment.AT_4;
                             sizeof = 140;
-                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 4;
-                            offsetof_Sa_flags = -1;
-                            offsetof_Sa_sigaction = -1;
+                            offsetof_Sa_flags = 132;
+                            offsetof_Sa_sigaction = 0;
                             break;
                         case MIPS:
                             alignof = Alignment.AT_4;
@@ -1698,7 +1698,7 @@ public class Signal {
                         case ARM:
                             alignof = Alignment.AT_8;
                             sizeof = 744;
-                            offsetof_Uc_link = 0;
+                            offsetof_Uc_link = 4;
                             offsetof_Uc_sigmask = 104;
                             offsetof_Uc_stack = 8;
                             offsetof_Uc_mcontext = 20;
@@ -1706,7 +1706,7 @@ public class Signal {
                         case I386:
                             alignof = Alignment.AT_4;
                             sizeof = 364;
-                            offsetof_Uc_link = 0;
+                            offsetof_Uc_link = 4;
                             offsetof_Uc_sigmask = 108;
                             offsetof_Uc_stack = 8;
                             offsetof_Uc_mcontext = 20;
@@ -1880,9 +1880,9 @@ public class Signal {
                 case _32_BIT:
                     alignof = Alignment.AT_4;
                     sizeof = 12;
-                    offsetof_Ss_sp = - 1;
-                    offsetof_Ss_size = - 1;
-                    offsetof_Ss_flags = - 1;
+                    offsetof_Ss_sp = 0;
+                    offsetof_Ss_size = 8;
+                    offsetof_Ss_flags = 4;
                     break;
                 case _64_BIT:
                     alignof = Alignment.AT_8;
@@ -2013,14 +2013,14 @@ public class Signal {
                         case _32_BIT:
                             alignof = Alignment.AT_4;
                             offsetof_Si_signo = 0;
-                            offsetof_Si_code = -1;
-                            offsetof_Si_errno = -1;
-                            offsetof_Si_pid = -1;
-                            offsetof_Si_uid = -1;
-                            offsetof_Si_addr = -1;
-                            offsetof_Si_status = -1;
-                            offsetof_Si_band = -1;
-                            offsetof_Si_value = 24;
+                            offsetof_Si_code = 8;
+                            offsetof_Si_errno = 4;
+                            offsetof_Si_pid = 12;
+                            offsetof_Si_uid = 16;
+                            offsetof_Si_addr = 12;
+                            offsetof_Si_status = 20;
+                            offsetof_Si_band = 12;
+                            offsetof_Si_value = 20;
                             break;
                         case _64_BIT:
                             alignof = Alignment.AT_8;

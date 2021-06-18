@@ -38,6 +38,10 @@ public class Uint32_t extends NativeIntNumber {
         super(owner, offset, 4, setMem);
     }
 
+    public Uint32_t() {
+        super(4);
+    }
+
     @uint32_t
     public int uint32_t() {
         return MEM_ACCESS.uint32_t(this, 0);

@@ -635,7 +635,7 @@ public class SignalTest {
 
         final int sig = Signal.SIGCHLD; //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
-        final ObjectRef<Integer> sigRef = new ObjectRef<>();
+        final Integer[] sigRef = new Integer[1];
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -645,7 +645,7 @@ public class SignalTest {
             protected void callback(int sig) {
                 synchronized (sigRef) {
                     System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
-                    sigRef.value = sig;
+                    sigRef[0] = sig;
                     sigRef.notifyAll();
                 }
 
@@ -659,11 +659,11 @@ public class SignalTest {
             System.out.println("pthread_t of testKill: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
             Signal.kill(Unistd.getpid(), sig);
             synchronized (sigRef) {
-                if (sigRef.value == null) {
+                if (sigRef[0] == null) {
                     sigRef.wait(ONE_MINUTE);
                 }
             }
-            assertEquals(sig, sigRef.value);
+            assertEquals(sig, sigRef[0]);
         } finally {
             Signal.sigaction(sig, oact, null);
         }
@@ -677,7 +677,7 @@ public class SignalTest {
         System.out.println("killpg");
         final int sig = Signal.SIGCHLD;
 
-        final ObjectRef<Integer> sigRef = new ObjectRef<>();
+        final Integer[] sigRef = new Integer[1];
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -686,7 +686,7 @@ public class SignalTest {
             @Override
             protected void callback(int sig) {
                 synchronized (sigRef) {
-                    sigRef.value = sig;
+                    sigRef[0] = sig;
                     sigRef.notifyAll();
                 }
             }
@@ -698,11 +698,11 @@ public class SignalTest {
         try {
             Signal.killpg(Unistd.getpgrp(), sig);
             synchronized (sigRef) {
-                if (sigRef.value == null) {
+                if (sigRef[0] == null) {
                     sigRef.wait(ONE_MINUTE);
                 }
             }
-            assertEquals(sig, sigRef.value);
+            assertEquals(sig, sigRef[0]);
         } finally {
             Signal.sigaction(sig, oact, null);
         }
@@ -760,7 +760,7 @@ public class SignalTest {
 
         final int sig = Signal.SIGCHLD; //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
-        final ObjectRef<Integer> sigRef = new ObjectRef<>();
+        final Integer[] sigRef = new Integer[1];
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -768,7 +768,7 @@ public class SignalTest {
         Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
-                sigRef.value = sig;
+                sigRef[0] = sig;
                 System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
             }
         };
@@ -791,7 +791,7 @@ public class SignalTest {
             });
             t.start();
             t.join();
-            assertEquals(sig, sigRef.value);
+            assertEquals(sig, sigRef[0]);
         } finally {
             Signal.sigaction(sig, oact, null);
         }
@@ -837,7 +837,7 @@ public class SignalTest {
         System.out.println("raise");
         final int sig = Signal.SIGCHLD;
 
-        final ObjectRef<Integer> sigRef = new ObjectRef<>();
+        final Integer[] sigRef = new Integer[1];
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -845,7 +845,7 @@ public class SignalTest {
         Callback_I_V_Impl sa_handler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
-                sigRef.value = sig;
+                sigRef[0] = sig;
             }
         };
         act.sa_handler(sa_handler);
@@ -854,7 +854,7 @@ public class SignalTest {
         Signal.sigaction(sig, act, oact);
         try {
             Signal.raise(sig);
-            assertEquals(sig, sigRef.value);
+            assertEquals(sig, sigRef[0]);
         } finally {
             Signal.sigaction(sig, oact, null);
         }
@@ -1025,11 +1025,11 @@ public class SignalTest {
 
         Signal.raise(SIG);
 
-        final ObjectRef<Integer> raisedSignal = new ObjectRef<>(null);
+        final Integer[] raisedSignal = new Integer[1];
         final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
             @Override
             protected void callback(int sig) {
-                raisedSignal.value = sig;
+                raisedSignal[0] = sig;
                 System.out.println("Got signal: " + sig);
             }
         };
@@ -1039,7 +1039,7 @@ public class SignalTest {
             Assertions.assertEquals(funcIgnore, old);
 
             Signal.raise(SIG);
-            Assertions.assertEquals(Integer.valueOf(SIG), raisedSignal.value);
+            Assertions.assertEquals(Integer.valueOf(SIG), raisedSignal[0]);
 
             old = Signal.signal(SIG, null);
             Assertions.assertEquals(funcHandler, old);
@@ -1071,7 +1071,7 @@ public class SignalTest {
         System.out.println("sigpause");
         final int SIG = Signal.SIGUSR2;
 
-        final ObjectRef<Object> resultRef = new ObjectRef<>();
+        final Object[] resultRef = new Object[1];
 
         new Thread() {
             @Override
@@ -1079,17 +1079,17 @@ public class SignalTest {
                 try {
                     Signal.sigpause(SIG);
                     synchronized (resultRef) {
-                        resultRef.value = Boolean.TRUE;
+                        resultRef[0] = Boolean.TRUE;
                         resultRef.notify();
                     }
                 } catch (NoSuchNativeMethodException nsnme) {
                     synchronized (resultRef) {
-                        resultRef.value = nsnme;
+                        resultRef[0] = nsnme;
                         resultRef.notify();
                     }
                 } catch (NativeErrorException nee) {
                     synchronized (resultRef) {
-                        resultRef.value = nee;
+                        resultRef[0] = nee;
                         resultRef.notify();
                     }
                 }
@@ -1098,13 +1098,13 @@ public class SignalTest {
         Thread.sleep(10000);
         Signal.raise(SIG);
         synchronized (resultRef) {
-            if (resultRef.value == null) {
+            if (resultRef[0] == null) {
                 resultRef.wait(ONE_MINUTE);
             }
         }
-        Assertions.assertNotNull(resultRef.value);
-        Assertions.assertEquals(Boolean.class, resultRef.value.getClass(), "value was: " + resultRef.value);
-        Assertions.assertEquals(Boolean.TRUE, resultRef.value);
+        Assertions.assertNotNull(resultRef[0]);
+        Assertions.assertEquals(Boolean.class, resultRef[0].getClass(), "value was: " + resultRef[0]);
+        Assertions.assertEquals(Boolean.TRUE, resultRef[0]);
     }
 
     /**
@@ -1171,15 +1171,15 @@ public class SignalTest {
             act.sa_flags(Signal.SA_SIGINFO);
             Signal.sigemptyset(act.sa_mask);
 
-            final ObjectRef<Signal.Siginfo_t> siginfo_tRef = new ObjectRef<>(null);
-            final ObjectRef<Signal.Ucontext_t> opmRef = new ObjectRef<>(null);
+            final Signal.Siginfo_t[] siginfo_tRef = new Signal.Siginfo_t[1];
+            final Signal.Ucontext_t[] opmRef = new Signal.Ucontext_t[1];
 
             Callback_I_Mem_Mem_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_Mem_Mem_V_Impl<>() {
 
                 @Override
                 protected void callback(int value, Signal.Siginfo_t a, Signal.Ucontext_t b) {
-                    siginfo_tRef.value = a;
-                    opmRef.value = b;
+                    siginfo_tRef[0] = a;
+                    opmRef[0] = b;
                 }
 
                 @Override
@@ -1213,18 +1213,18 @@ public class SignalTest {
 
             Thread.sleep(100);
 
-            System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef.value);
+            System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef[0]);
             try {
-                Assertions.assertNotNull(siginfo_tRef.value);
+                Assertions.assertNotNull(siginfo_tRef[0]);
                 Assertions.assertAll(
                         () -> {
-                            Assertions.assertEquals(0, siginfo_tRef.value.si_errno(), "siginfo_tRef.value.si_errno()");
+                            Assertions.assertEquals(0, siginfo_tRef[0].si_errno(), "siginfo_tRef.value.si_errno()");
                         },
                         () -> {
-                            Assertions.assertEquals(SIG, siginfo_tRef.value.si_signo(), "siginfo_tRef.value.si_signo()");
+                            Assertions.assertEquals(SIG, siginfo_tRef[0].si_signo(), "siginfo_tRef.value.si_signo()");
                         },
                         () -> {
-                            Assertions.assertEquals(data, siginfo_tRef.value.si_value.sival_ptr((baseAddress, size) -> {
+                            Assertions.assertEquals(data, siginfo_tRef[0].si_value.sival_ptr((baseAddress, size) -> {
                                 return new Memory32Heap(baseAddress, data.sizeInBytes) {
                                 };
                             }), "siginfo_tRef.value.si_value.sival_ptr()");

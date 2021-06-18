@@ -27,6 +27,7 @@ package de.ibapl.jnhw.common.references;
  *
  * @author aploese
  */
+@Deprecated
 public class IntRef {
 
     /**

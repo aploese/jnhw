@@ -30,6 +30,8 @@ import de.ibapl.jnhw.annotation.posix.sys.types.mode_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.off64_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.off_t;
 import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.SizeInBit;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -75,13 +77,10 @@ public final class Fcntl {
         public final static int O_ASYNC = 020000;
         public final static int O_CLOEXEC = 02000000;
         public final static int O_CREAT = 0100;
-        public final static int O_DIRECTORY = 0200000;
         public final static int O_DSYNC = 010000;
         public final static int O_EXCL = 0200;
         public final static int O_FSYNC = 04010000;
-        public final static int O_LARGEFILE = 0; // 32bit -> 0100000;
         public final static int O_NOCTTY = 0400;
-        public final static int O_NOFOLLOW = 0400000;
         public final static int O_NONBLOCK = 04000;
         public final static int O_RDONLY = 00;
         public final static int O_RDWR = 02;
@@ -97,6 +96,27 @@ public final class Fcntl {
         public final static int POSIX_FADV_WILLNEED = 3;
     }
 
+    public static class LinuxDefinesARM extends Aio.LinuxDefines {
+
+        public final static int O_DIRECTORY = 040000;
+        public final static int O_LARGEFILE = 0400000;
+        public final static int O_NOFOLLOW = 0100000;
+    }
+
+    public static class LinuxDefinesI386 extends Aio.LinuxDefines {
+
+        public final static int O_DIRECTORY = 0200000;
+        public final static int O_LARGEFILE = 0100000;
+        public final static int O_NOFOLLOW = 0400000;
+    }
+
+    public static class LinuxDefinesX86_64 extends Aio.LinuxDefines {
+
+        public final static int O_DIRECTORY = 0200000;
+        public final static int O_LARGEFILE = 0;
+        public final static int O_NOFOLLOW = 0400000;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -109,11 +129,13 @@ public final class Fcntl {
     static {
         LibJnhwPosixLoader.touch();
 
+        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+
         SEEK_CUR = Stdio.SEEK_CUR;
         SEEK_END = Stdio.SEEK_END;
         SEEK_SET = Stdio.SEEK_SET;
 
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        switch (multiarchInfo.getOS()) {
             case LINUX:
                 HAVE_FCNTL_H = true;
 
@@ -145,14 +167,11 @@ public final class Fcntl {
                 O_ASYNC = IntDefine.toIntDefine(LinuxDefines.O_ASYNC);
                 O_CLOEXEC = LinuxDefines.O_CLOEXEC;
                 O_CREAT = LinuxDefines.O_CREAT;
-                O_DIRECTORY = LinuxDefines.O_DIRECTORY;
                 O_DSYNC = IntDefine.toIntDefine(LinuxDefines.O_DSYNC);
                 O_EXCL = LinuxDefines.O_EXCL;
                 O_EXEC = IntDefine.UNDEFINED;
                 O_FSYNC = IntDefine.toIntDefine(LinuxDefines.O_FSYNC);
-                O_LARGEFILE = IntDefine.toIntDefine(LinuxDefines.O_LARGEFILE);
                 O_NOCTTY = LinuxDefines.O_NOCTTY;
-                O_NOFOLLOW = LinuxDefines.O_NOFOLLOW;
                 O_NONBLOCK = LinuxDefines.O_NONBLOCK;
                 O_RDONLY = LinuxDefines.O_RDONLY;
                 O_RDWR = LinuxDefines.O_RDWR;
@@ -170,9 +189,28 @@ public final class Fcntl {
                 POSIX_FADV_SEQUENTIAL = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_SEQUENTIAL);
                 POSIX_FADV_WILLNEED = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_WILLNEED);
 
+                switch (multiarchInfo.getArch()) {
+                    case ARM:
+                        O_DIRECTORY = LinuxDefinesARM.O_DIRECTORY;
+                        O_LARGEFILE = IntDefine.toIntDefine(LinuxDefinesARM.O_LARGEFILE);
+                        O_NOFOLLOW = LinuxDefinesARM.O_NOFOLLOW;
+                        break;
+                    case I386:
+                        O_DIRECTORY = LinuxDefinesI386.O_DIRECTORY;
+                        O_LARGEFILE = IntDefine.toIntDefine(LinuxDefinesI386.O_LARGEFILE);
+                        O_NOFOLLOW = LinuxDefinesI386.O_NOFOLLOW;
+                        break;
+                    case X86_64:
+                        O_DIRECTORY = LinuxDefinesX86_64.O_DIRECTORY;
+                        O_LARGEFILE = IntDefine.toIntDefine(LinuxDefinesX86_64.O_LARGEFILE);
+                        O_NOFOLLOW = LinuxDefinesX86_64.O_NOFOLLOW;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No fcntl.h defines for " + multiarchInfo);
+                }
                 break;
             default:
-                throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No fcntl.h defines for " + multiarchInfo);
         }
     }
 

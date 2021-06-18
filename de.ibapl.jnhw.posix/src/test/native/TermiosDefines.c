@@ -1058,7 +1058,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_NOFLSH
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && (defined(__powerpc__) || defined(__alpha__)))
+        return (int32_t) NOFLSH;
+#else
         return NOFLSH;
+#endif
     }
 
     /*
@@ -1556,6 +1560,7 @@ extern "C" {
     }
 
 #endif
+
 #ifdef __cplusplus
 }
 #endif

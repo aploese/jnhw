@@ -115,12 +115,12 @@ public class NativeRunnableTest {
     @Test
     public void testCallbackWithRunnable() {
         System.out.println("release");
-        final IntRef intRef = new IntRef(0);
+        final int[] intRef = new int[1];
         Runnable runnable = new Runnable() {
 
             @Override
             public void run() {
-                intRef.value = 42;
+                intRef[0] = 42;
             }
 
         };
@@ -134,7 +134,7 @@ public class NativeRunnableTest {
 
         doCallRunnable(runnable);
 
-        assertEquals(42, intRef.value);
+        assertEquals(42, intRef[0]);
     }
 
 }

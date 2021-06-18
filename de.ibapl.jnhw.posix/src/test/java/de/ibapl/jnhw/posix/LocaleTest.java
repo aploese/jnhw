@@ -21,8 +21,10 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.annotation.posix.locale.locale_t;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
@@ -252,9 +254,7 @@ public class LocaleTest {
         );
     }
 
-    private native long nativeLocale_t(long value);
-
-    private native void testNativelyLC_GLOBAL_LOCALE(Locale.Locale_t value);
+    private native void testNativelyLC_GLOBAL_LOCALE(@locale_t long value);
 
     /**
      * Test of native create ans wrap of class Locale.Locale_t.
@@ -266,31 +266,11 @@ public class LocaleTest {
         System.out.println("testUnwrapLC_GLOBAL_LOCALE");
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE);
+                testNativelyLC_GLOBAL_LOCALE(Locale.Locale_t.getNativeValue(Locale.LC_GLOBAL_LOCALE));
             });
 
         } else {
-            testNativelyLC_GLOBAL_LOCALE(Locale.LC_GLOBAL_LOCALE);
-        }
-    }
-
-    /**
-     * Test of native create ans wrap of class Locale.Locale_t.
-     *
-     * @throws java.lang.Exception
-     */
-    @Test
-    public void testLocale_t() throws Exception {
-        System.out.println("testLocale_t");
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                nativeLocale_t(0);
-            });
-
-        } else {
-            Assertions.assertEquals(0, nativeLocale_t(0));
-            Assertions.assertEquals(1, nativeLocale_t(1));
-            Assertions.assertEquals(-1, nativeLocale_t(-1));
+            testNativelyLC_GLOBAL_LOCALE(Locale.Locale_t.getNativeValue(Locale.LC_GLOBAL_LOCALE));
         }
     }
 

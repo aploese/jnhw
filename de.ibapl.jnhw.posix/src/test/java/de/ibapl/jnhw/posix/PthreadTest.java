@@ -167,15 +167,15 @@ public class PthreadTest {
 
         Assertions.assertTrue(Pthread.pthread_equal(t1, t2));
 
-        final ObjectRef<Pthread.Pthread_t> objectRef = new ObjectRef();
+        final Pthread.Pthread_t[] objectRef = new Pthread.Pthread_t[1];
         Thread t3 = new Thread(() -> {
-            objectRef.value = Pthread.pthread_self();
+            objectRef[0] = Pthread.pthread_self();
         });
         t3.start();
         t3.join();
 
-        Assertions.assertNotEquals(t3.toString(), objectRef.value.toString());
-        boolean result = Pthread.pthread_equal(t1, objectRef.value);
+        Assertions.assertNotEquals(t3.toString(), objectRef[0].toString());
+        boolean result = Pthread.pthread_equal(t1, objectRef[0]);
         Assertions.assertFalse(result);
 
     }
@@ -344,17 +344,17 @@ public class PthreadTest {
 
         Assertions.assertThrows(NullPointerException.class, () -> Pthread.pthread_cancel(null));
 
-        final ObjectRef<Pthread.Pthread_t> objectRef = new ObjectRef();
-        final IntRef intRef = new IntRef(1000);
+        final Pthread.Pthread_t[] objectRef = new Pthread.Pthread_t[1];
+        final int[] intRef = new int[]{1000};
         Thread t2 = new Thread(() -> {
             try {
                 Pthread.pthread_testcancel();
 
-                objectRef.value = Pthread.pthread_self();
+                objectRef[0] = Pthread.pthread_self();
                 synchronized (objectRef) {
                     objectRef.notifyAll();
                 }
-                while (intRef.value-- > 0) {
+                while (intRef[0]-- > 0) {
                     System.err.println("LOOPING in testPthread_t_Cancel()");
                     Thread.sleep(200);
                 }
@@ -370,16 +370,16 @@ public class PthreadTest {
         //Id we remove this at least on linux x86_64 the following test will hang...?
         Thread.sleep(1);
 
-        if (objectRef.value == null) {
+        if (objectRef[0] == null) {
             synchronized (objectRef) {
                 objectRef.wait();
             }
         }
 
-        Pthread.pthread_cancel(objectRef.value);
-        final int value = intRef.value;
+        Pthread.pthread_cancel(objectRef[0]);
+        final int value = intRef[0];
         Thread.sleep(1000);
-        Assertions.assertEquals(value, intRef.value);
+        Assertions.assertEquals(value, intRef[0]);
 
         System.out.println("testPthread_t_Cancel - finished");
     }

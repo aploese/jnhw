@@ -37,6 +37,10 @@ public class Uint8_t extends NativeIntNumber {
         super(owner, offset, 1, setMem);
     }
 
+    public Uint8_t() {
+        super(1);
+    }
+
     @uint8_t
     public byte uint8_t() {
         return MEM_ACCESS.uint8_t(this, 0);

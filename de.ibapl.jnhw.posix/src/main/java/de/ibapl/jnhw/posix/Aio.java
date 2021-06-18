@@ -385,12 +385,12 @@ public class Aio {
                     switch (multiarchInfo.getSizeOfPointer()) {
                         case _32_BIT:
                             offsetof_Aio_fildes = 0;
-                            offsetof_Aio_offset = -1;
-                            offsetof_Aio_buf = -1;
-                            offsetof_Aio_nbytes = -1;
-                            offsetof_Aio_reqprio = -1;
+                            offsetof_Aio_offset = 104;
+                            offsetof_Aio_buf = 12;
+                            offsetof_Aio_nbytes = 16;
+                            offsetof_Aio_reqprio = 8;
                             offsetof_Aio_sigevent = 20;
-                            offsetof_Aio_lio_opcode = -1;
+                            offsetof_Aio_lio_opcode = 4;
                             alignof = Alignment.AT_4;
                             sizeof = 144;
                             break;

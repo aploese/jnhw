@@ -28,36 +28,17 @@ extern "C" {
 #if defined(_POSIX_VERSION)
 
 
-    //TODO remove
-#define UNWRAP_LOCALE_T(Locale_tObject) (locale_t)(uintptr_t)(*env)->GetLongField(env, Locale_tObject, dij_p_Locale_Locale_t_nativeValue__FID)
-
 
 #include <locale.h>
 
     /*
      * Class:     de_ibapl_jnhw_posix_LocaleTest
-     * Method:    nativeLocale_t
-     * Signature: (J)J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_nativeLocale_1t
-    (JNIEnv *env, __attribute__ ((unused)) jobject clazz, jlong value) {
-        locale_t _value = (locale_t) (intptr_t) value;
-        jobject __value = CREATE_Locale_t(_value);
-        locale_t result = UNWRAP_LOCALE_T(__value);
-        if (result != _value) {
-            throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "Java_de_ibapl_jnhw_posix_LocaleTest_nativeLocale_1t failed expected %p but was %p", value, result);
-        }
-        return (intptr_t) result;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest
      * Method:    testNativelyLC_GLOBAL_LOCALE
-     * Signature: (Lde/ibapl/jnhw/posix/Locale/Locale_t;)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBAL_1LOCALE
-    (JNIEnv *env, __attribute__ ((unused)) jobject clazz, jobject value) {
-        locale_t unwrapped = UNWRAP_LOCALE_T(value);
+    (JNIEnv *env, __attribute__ ((unused)) jobject clazz, jlong value) {
+        locale_t unwrapped = (locale_t) (uintptr_t) value;
         if (LC_GLOBAL_LOCALE != unwrapped) {
             throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBAL_1LOCALE failed expected %p but was %p", LC_GLOBAL_LOCALE, unwrapped);
         }

@@ -23,8 +23,6 @@ package de.ibapl.jnhw.common.test.callbacks;
 
 import de.ibapl.jnhw.common.callback.Callback_I_I_Mem_V;
 import de.ibapl.jnhw.common.callback.Callback_I_I_Mem_V_Impl;
-import de.ibapl.jnhw.common.references.ObjectRef;
-import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
@@ -140,17 +138,17 @@ public class Callback_I_I_Mem_V_Test {
     @Test
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
-        final IntRef refA = new IntRef();
-        final IntRef refB = new IntRef();
-        final ObjectRef<C> refC = new ObjectRef<>();
+        final int[] refA = new int[1];
+        final int[] refB = new int[1];
+        final C[] refC = new C[1];
         C c = new C();
         Callback_I_I_Mem_V_Impl<C> callback = new Callback_I_I_Mem_V_Impl<>() {
 
             @Override
             protected void callback(int a, int b, C c) {
-                refA.value = a;
-                refB.value = b;
-                refC.value = c;
+                refA[0] = a;
+                refB[0] = b;
+                refC[0] = c;
             }
 
             @Override
@@ -166,20 +164,20 @@ public class Callback_I_I_Mem_V_Test {
         assertEquals(getCallbackPtr(), callback);
         assertSame(Callback_I_I_Mem_V_Impl.find(getCallbackPtr()), callback);
         doCallTheCallback(42, 84, c);
-        assertEquals(42, refA.value);
-        assertEquals(84, refB.value);
-        assertEquals(c, refC.value);
-        assertNotSame(c, refC.value);
+        assertEquals(42, refA[0]);
+        assertEquals(84, refB[0]);
+        assertEquals(c, refC[0]);
+        assertNotSame(c, refC[0]);
 
-        refA.value = -1;
-        refB.value = -1;
-        refC.value = null;
+        refA[0] = -1;
+        refB[0] = -1;
+        refC[0] = null;
 
         CallNative_I_I_Mem_V.wrap(getCallbackPtr()).call(42, 84, c);
-        assertEquals(42, refA.value);
-        assertEquals(84, refB.value);
-        assertEquals(c, refC.value);
-        assertNotSame(c, refC.value);
+        assertEquals(42, refA[0]);
+        assertEquals(84, refB[0]);
+        assertEquals(c, refC[0]);
+        assertNotSame(c, refC[0]);
 
         callback = null;
 
@@ -191,13 +189,13 @@ public class Callback_I_I_Mem_V_Test {
         assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
-        refA.value = -1;
-        refB.value = -2;
-        refC.value = null;
+        refA[0] = -1;
+        refB[0] = -2;
+        refC[0] = null;
         doCallTheCallback(11, 23, c);
-        assertEquals(-1, refA.value);
-        assertEquals(-2, refB.value);
-        assertNull(refC.value);
+        assertEquals(-1, refA[0]);
+        assertEquals(-2, refB[0]);
+        assertNull(refC[0]);
     }
 
     /**
@@ -207,9 +205,9 @@ public class Callback_I_I_Mem_V_Test {
     public void testReleaseByGarbageCollectorAndCleanup() throws Exception {
         System.out.println("release");
         Cleaner CLEANER = Cleaner.create();
-        final IntRef refA = new IntRef();
-        final IntRef refB = new IntRef();
-        final ObjectRef<C> refC = new ObjectRef<>();
+        final int[] refA = new int[1];
+        final int[] refB = new int[1];
+        final C[] refC = new C[1];
         C c = new C();
 
         @SuppressWarnings("unchecked")
@@ -223,9 +221,9 @@ public class Callback_I_I_Mem_V_Test {
 
             @Override
             protected void callback(int a, int b, C c) {
-                refA.value = a;
-                refB.value = b;
-                refC.value = c;
+                refA[0] = a;
+                refB[0] = b;
+                refC[0] = c;
             }
 
             @Override
@@ -242,10 +240,10 @@ public class Callback_I_I_Mem_V_Test {
 
         assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(42, 41, c);
-        assertEquals(42, refA.value);
-        assertEquals(41, refB.value);
-        assertEquals(c, refC.value);
-        assertNotSame(c, refC.value);
+        assertEquals(42, refA[0]);
+        assertEquals(41, refB[0]);
+        assertEquals(c, refC[0]);
+        assertNotSame(c, refC[0]);
 
         callback = null;
 

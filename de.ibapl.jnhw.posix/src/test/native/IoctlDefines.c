@@ -417,7 +417,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOC_1IN
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined (__linux__) && (defined(__mips__) || defined(__powerpc__))
+        return (int32_t) IOC_IN;
+#else
         return IOC_IN;
+#endif
     }
 
     /*

@@ -24,13 +24,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#if _POSIX_C_SOURCE
-
-    jclass dij_p_Locale_Locale_t__GCR = NULL;
-    jfieldID dij_p_Locale_Locale_t_nativeValue__FID = NULL;
-    jmethodID dij_p_Locale_Locale_t_init__MID = NULL;
-
-#endif
 
     JNIEXPORT jint JNICALL
     JNI_OnLoad(JavaVM *jvm, __attribute__ ((unused)) void *reserved) {
@@ -38,24 +31,6 @@ extern "C" {
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
             return JNI_ERR;
         }
-#if _POSIX_C_SOURCE
-
-        if (dij_p_Locale_Locale_t__GCR == NULL) {
-            dij_p_Locale_Locale_t__GCR = getGlobalClassRef(env, dij_p_Locale_t_CName);
-            if (dij_p_Locale_Locale_t__GCR == NULL) {
-                return JNI_ERR;
-            }
-            dij_p_Locale_Locale_t_nativeValue__FID = (*env)->GetFieldID(env, dij_p_Locale_Locale_t__GCR, "nativeValue", "J");
-            if (dij_p_Locale_Locale_t_nativeValue__FID == NULL) {
-                return JNI_ERR;
-            }
-            dij_p_Locale_Locale_t_init__MID = (*env)->GetMethodID(env, dij_p_Locale_Locale_t__GCR, "<init>", "(J)V");
-            if (dij_p_Locale_Locale_t_init__MID == NULL) {
-                return JNI_ERR;
-            }
-        }
-
-#endif
         return JNI_VERSION_10;
     }
 
@@ -64,13 +39,6 @@ extern "C" {
         JNIEnv *env;
 
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
-#if _POSIX_C_SOURCE
-            deleteGlobalRef(env, &dij_p_Locale_Locale_t__GCR);
-            dij_p_Locale_Locale_t__GCR = NULL;
-            dij_p_Locale_Locale_t_nativeValue__FID = NULL;
-            dij_p_Locale_Locale_t_init__MID = NULL;
-
-#endif
         }
 
     }

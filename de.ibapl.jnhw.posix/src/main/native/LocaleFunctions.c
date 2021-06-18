@@ -56,7 +56,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Locale_freelocale
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrLocobj) {
-        freelocale((locale_t) ptrLocobj);
+        freelocale((locale_t) (uintptr_t) ptrLocobj);
     }
 
     /*

@@ -90,14 +90,6 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__II
 /*
  * Class:     de_ibapl_jnhw_unix_sys_Ioctl
  * Method:    ioctl
- * Signature: (IILde/ibapl/jnhw/common/references/IntRef;)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IILde_ibapl_jnhw_common_references_IntRef_2
-  (JNIEnv *, jclass, jint, jint, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_unix_sys_Ioctl
- * Method:    ioctl
  * Signature: (IIJ)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IIJ

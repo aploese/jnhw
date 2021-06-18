@@ -10,108 +10,31 @@ LIB_JNHW_POSIX_RES_NAME=@JNHW_RESOURCES_DIR@/@JNHW_LIB_PREFIX@jnhw-posix@JNHW_LI
 
 lib_LTLIBRARIES = libjnhw-posix.la
 
-noinst_LTLIBRARIES = \
- libaio.la \
- liberrno.la \
- libeventfd.la \
- libfcntl.la \
- libioclt.la \
- liblocale.la \
- libpoll.la \
- libpthread.la \
- libsched.la \
- libsignal.la \
- libstdio.la \
- libstring.la \
- libsysstat.la \
- libsystypes.la \
- libtermios.la \
- libtime.la \
- libucontext.la \
- libunistd.la \
- libposixutils.la
+noinst_LTLIBRARIES =
 
 libjnhw_posix_la_LIBADD = \
- libaio.la \
- liberrno.la \
- libeventfd.la \
- libfcntl.la \
- libioclt.la \
- liblocale.la \
- libpoll.la \
- libpthread.la \
- libsched.la \
- libsignal.la \
- libstdio.la \
- libstring.la \
- libsysstat.la \
- libsystypes.la \
- libtermios.la \
- libtime.la \
- libucontext.la \
- libunistd.la \
- libposixutils.la \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libjnhw_posix_la_SOURCES = \
  PosixDataType.c \
- jnhw-posix-jni.c
-
-libaio_la_SOURCES = \
- AioFunctions.c
-
-liberrno_la_SOURCES = \
- Isoc_ErrnoFunctions.c
-
-libeventfd_la_SOURCES = \
- EventFdFunctions.c
-
-libfcntl_la_SOURCES = \
- FcntlFunctions.c
-
-libioclt_la_SOURCES = \
+ jnhw-posix-jni.c \
+ AioFunctions.c \
+ Isoc_ErrnoFunctions.c \
+ EventFdFunctions.c \
+ FcntlFunctions.c \
  IoctlDefines.c \
- IoctlFunctions.c
-
-liblocale_la_SOURCES = \
- LocaleFunctions.c
-
-libpoll_la_SOURCES = \
- PollFunctions.c
-
-libposixutils_la_SOURCES =
-
-libpthread_la_SOURCES = \
- PthreadFunctions.c
-
-libsched_la_SOURCES = \
- SchedFunctions.c
-
-libsignal_la_SOURCES = \
+ IoctlFunctions.c \
+ LocaleFunctions.c \
+ PollFunctions.c \
+ PthreadFunctions.c \
+ SchedFunctions.c \
  SignalFunctions.c \
- Callback__Sigval_int__V_Impl.c
-
-libstdio_la_SOURCES = \
- StdioFunctions.c
-
-libstring_la_SOURCES = \
- StringHeaderFunctions.c
-
-libsystypes_la_SOURCES =
-
-libsysstat_la_SOURCES = \
- StatFunctions.c
-
-libtermios_la_SOURCES = \
- TermiosFunctions.c
-
-libtime_la_SOURCES = \
- TimeFunctions.c
-
-libucontext_la_SOURCES = \
- UcontextFunctions.c
-
-libunistd_la_SOURCES = \
+ Callback__Sigval_int__V_Impl.c \
+ StdioFunctions.c \
+ StringHeaderFunctions.c \
+ TermiosFunctions.c \
+ TimeFunctions.c \
+ UcontextFunctions.c \
  UnistdFunctions.c
 
 

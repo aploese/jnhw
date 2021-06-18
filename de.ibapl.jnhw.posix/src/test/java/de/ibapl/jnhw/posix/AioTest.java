@@ -332,7 +332,7 @@ public class AioTest {
 
                 final String HELLO_WORLD = "Hello world!\n";
 
-                final ObjectRef<Object> objRef = new ObjectRef<>(null);
+                final Object[] objRef = new Object[1];
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
                 FileWriter fw = new FileWriter(tmpFile);
                 fw.append(HELLO_WORLD);
@@ -368,13 +368,13 @@ public class AioTest {
                             }
                             aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(a));
                             synchronized (objRef) {
-                                objRef.value = a;
+                                objRef[0] = a;
                                 objRef.notify();
                             }
                             System.out.println("aio_read leave callback");
                         } catch (Exception ex) {
                             synchronized (objRef) {
-                                objRef.value = ex;
+                                objRef[0] = ex;
                                 objRef.notify();
                             }
                             throw new RuntimeException(ex);
@@ -387,7 +387,7 @@ public class AioTest {
                             return new Aio.Aiocb(address);
                         } catch (NoSuchNativeTypeException nste) {
                             synchronized (objRef) {
-                                objRef.value = nste;
+                                objRef[0] = nste;
                                 objRef.notify();
                             }
                             throw new RuntimeException(nste);
@@ -399,16 +399,16 @@ public class AioTest {
                 Aio.aio_read(aiocb);
 
                 synchronized (objRef) {
-                    if (objRef.value == null) {
+                    if (objRef[0] == null) {
                         objRef.wait(ONE_MINUTE);
                     }
                 }
 
-                Assertions.assertNotNull(objRef.value);
-                if (objRef.value instanceof Exception) {
-                    fail("in callback", (Exception) objRef.value);
+                Assertions.assertNotNull(objRef[0]);
+                if (objRef[0] instanceof Exception) {
+                    fail("in callback", (Exception) objRef[0]);
                 } else {
-                    assertEquals(aiocb, objRef.value);
+                    assertEquals(aiocb, objRef[0]);
                 }
 
                 Unistd.close(aiocb.aio_fildes());
@@ -446,7 +446,7 @@ public class AioTest {
 
                 final int SIVAL_INT = 0x01234567;
 
-                final ObjectRef<Object> intRef = new ObjectRef<>(null);
+                final Object[] intRef = new Object[1];
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
 
                 final Aio.Aiocb<Struct32> aiocb = new Aio.Aiocb<>();
@@ -477,13 +477,13 @@ public class AioTest {
                             }
                             aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
                             synchronized (intRef) {
-                                intRef.value = i;
+                                intRef[0] = i;
                                 intRef.notify();
                             }
                             System.out.println("aio_read leave callback");
                         } catch (Exception ex) {
                             synchronized (intRef) {
-                                intRef.value = ex;
+                                intRef[0] = ex;
                                 intRef.notify();
                             }
                             throw new RuntimeException(ex);
@@ -500,15 +500,15 @@ public class AioTest {
                 assertEquals(Errno.EINPROGRESS, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
 
                 synchronized (intRef) {
-                    if (intRef.value == null) {
+                    if (intRef[0] == null) {
                         intRef.wait(ONE_MINUTE);
                     }
                 }
-                Assertions.assertNotNull(intRef.value);
-                if (intRef.value instanceof Exception) {
-                    fail("in callback", (Exception) intRef.value);
+                Assertions.assertNotNull(intRef[0]);
+                if (intRef[0] instanceof Exception) {
+                    fail("in callback", (Exception) intRef[0]);
                 } else {
-                    assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
+                    assertEquals(Integer.valueOf(SIVAL_INT), intRef[0]);
                 }
 
                 errno = Aio.aio_error(aiocb);
@@ -597,7 +597,7 @@ public class AioTest {
                 final String HELLO_WORLD = "Hello world!\n";
                 final int SIVAL_INT = 0x01234567;
 
-                final ObjectRef<Object> intRef = new ObjectRef<>(null);
+                final Object[] intRef = new Object[1];
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
 
                 final Aio.Aiocb<Struct32> aiocb = new Aio.Aiocb();
@@ -631,13 +631,13 @@ public class AioTest {
                             }
                             aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
                             synchronized (intRef) {
-                                intRef.value = i;
+                                intRef[0] = i;
                                 intRef.notify();
                             }
                             System.out.println("aio_write leave callback");
                         } catch (Exception ex) {
                             synchronized (intRef) {
-                                intRef.value = ex;
+                                intRef[0] = ex;
                                 intRef.notify();
                             }
                             throw new RuntimeException(ex);
@@ -649,15 +649,15 @@ public class AioTest {
                 Aio.aio_write(aiocb);
 
                 synchronized (intRef) {
-                    if (intRef.value == null) {
+                    if (intRef[0] == null) {
                         intRef.wait(ONE_MINUTE);
                     }
                 }
-                Assertions.assertNotNull(intRef.value);
-                if (intRef.value instanceof Exception) {
-                    fail("in callback", (Exception) intRef.value);
+                Assertions.assertNotNull(intRef[0]);
+                if (intRef[0] instanceof Exception) {
+                    fail("in callback", (Exception) intRef[0]);
                 } else {
-                    assertEquals(Integer.valueOf(SIVAL_INT), intRef.value);
+                    assertEquals(Integer.valueOf(SIVAL_INT), intRef[0]);
                 }
 
                 Unistd.close(aiocb.aio_fildes());
@@ -730,7 +730,7 @@ public class AioTest {
 
                 final String HELLO_WORLD = "Hello world!\n";
 
-                final ObjectRef objRef = new ObjectRef<>(null);
+                final Object[] objRef = new Object[0];
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
                 FileWriter fw = new FileWriter(tmpFile);
                 fw.append(HELLO_WORLD);
@@ -789,7 +789,7 @@ public class AioTest {
 
                 final String HELLO_WORLD = "Hello world!\n";
 
-                final ObjectRef objRef = new ObjectRef<>(null);
+                final Object[] objRef = new Object[1];
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
                 FileWriter fw = new FileWriter(tmpFile);
                 fw.append(HELLO_WORLD);
@@ -828,7 +828,7 @@ public class AioTest {
                             fail(nsnme);
                         }
                         synchronized (objRef) {
-                            objRef.value = aiocb;
+                            objRef[0] = aiocb;
                             objRef.notify();
                         }
                         System.out.println("aio_read leave callback");
@@ -839,10 +839,10 @@ public class AioTest {
                 Aio.aio_read(aiocb);
 
                 synchronized (objRef) {
-                    if (objRef.value == null) {
+                    if (objRef[0] == null) {
                         objRef.wait(ONE_MINUTE);
                     }
-                    assertEquals(aiocb, objRef.value);
+                    assertEquals(aiocb, objRef[0]);
                 }
 
                 Unistd.close(aiocb.aio_fildes());

@@ -154,10 +154,10 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_lseek64
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
  * Method:    pipe
- * Signature: (Lde/ibapl/jnhw/common/references/IntRef;Lde/ibapl/jnhw/common/references/IntRef;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_pipe
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
@@ -182,14 +182,6 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read_1ArgsOK__IJII
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_read_1ArgsOK__IJJJ
   (JNIEnv *, jclass, jint, jlong, jlong, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    read
- * Signature: (ILde/ibapl/jnhw/common/references/ByteRef;)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_common_references_ByteRef_2
-  (JNIEnv *, jclass, jint, jobject);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd

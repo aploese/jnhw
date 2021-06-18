@@ -205,7 +205,7 @@ extern "C" {
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1ARM_1ARCH
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__ARM_ARCH)
-        return JnhwWrapInteger(env, "__ARM_ARCH", __ARM_ARCH);
+        return JnhwWrapInteger(env, __ARM_ARCH);
 #else
         return NULL;
 #endif

@@ -921,33 +921,25 @@ public class Time {
             LibJnhwPosixLoader.touch();
 
             final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+            offsetof_Tm_min = 4;
+            offsetof_Tm_hour = 8;
+            offsetof_Tm_mday = 12;
+            offsetof_Tm_mon = 16;
+            offsetof_Tm_year = 20;
+            offsetof_Tm_wday = 24;
+            offsetof_Tm_yday = 28;
+            offsetof_Tm_isdst = 32;
             switch (multiarchInfo.getSizeOfPointer()) {
                 case _32_BIT:
-                    offsetof_Tm_min = -1;
-                    offsetof_Tm_hour = -1;
-                    offsetof_Tm_mday = -1;
-                    offsetof_Tm_mon = -1;
-                    offsetof_Tm_year = -1;
-                    offsetof_Tm_wday = -1;
-                    offsetof_Tm_yday = -1;
-                    offsetof_Tm_isdst = -1;
                     alignof = Alignment.AT_4;
                     sizeof = 44;
                     break;
                 case _64_BIT:
-                    offsetof_Tm_min = 4;
-                    offsetof_Tm_hour = 8;
-                    offsetof_Tm_mday = 12;
-                    offsetof_Tm_mon = 16;
-                    offsetof_Tm_year = 20;
-                    offsetof_Tm_wday = 24;
-                    offsetof_Tm_yday = 28;
-                    offsetof_Tm_isdst = 32;
                     alignof = Alignment.AT_8;
                     sizeof = 56;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No time.h defines for " + multiarchInfo);
             }
         }
 

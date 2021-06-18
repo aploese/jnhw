@@ -31,4 +31,8 @@ public abstract class NativeIntNumber extends OpaqueMemory32 {
         super(owner, offset, sizeInBytes, setMem);
     }
 
+    protected NativeIntNumber(int sizeInBytes) {
+        super(null, 0, sizeInBytes, SetMem.DO_NOT_SET);
+    }
+
 }

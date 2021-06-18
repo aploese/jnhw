@@ -9,19 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_LocaleTest
- * Method:    nativeLocale_t
- * Signature: (J)J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_nativeLocale_1t
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_posix_LocaleTest
  * Method:    testNativelyLC_GLOBAL_LOCALE
- * Signature: (Lde/ibapl/jnhw/posix/Locale/Locale_t;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBAL_1LOCALE
-  (JNIEnv *, jobject, jobject);
+  (JNIEnv *, jobject, jlong);
 
 #ifdef __cplusplus
 }

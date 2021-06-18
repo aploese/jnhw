@@ -24,6 +24,7 @@ package de.ibapl.jnhw.util.posix;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.Arch;
+import de.ibapl.jnhw.libloader.Endianess;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.OS;
 
@@ -35,74 +36,6 @@ import de.ibapl.jnhw.libloader.OS;
  * @author aploese
  */
 public class Defines {
-
-    public static class LinuxDefines {
-        /*
-
-        public final static int _BSD_SOURCE = 0;
-        public final static int _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
-        public final static int _LARGEFILE64_SOURCE = IntDefine.UNDEFINED;
-        public final static int _LARGEFILE_SOURCE = IntDefine.UNDEFINED;
-        public final static int _POSIX_C_SOURCE = IntDefine.UNDEFINED;
-        public final static int _XOPEN_SOURCE = IntDefine.UNDEFINED;
-        public final static int _XOPEN_SOURCE_EXTENDED = IntDefine.UNDEFINED;
-
-        public final static int __aarch64__ = IntDefine.UNDEFINED;
-        public final static int __alpha__ = IntDefine.UNDEFINED;
-        public final static int __amd64__ = IntDefine.UNDEFINED;
-        public final static int __APPLE__ = IntDefine.UNDEFINED;
-        public final static int __arm__ = IntDefine.UNDEFINED;
-        public final static int __ARM_ARCH = IntDefine.UNDEFINED;
-
-        public final static int __BIGGEST_ALIGNMENT__ = 0;
-        public final static int __BYTE_ORDER__ = 0;
-
-        public final static int __FreeBSD__ = IntDefine.UNDEFINED;
-
-        public final static int __GLIBC_MINOR__ = IntDefine.UNDEFINED;
-        public final static int __GLIBC__ = IntDefine.UNDEFINED;
-        public final static int __GNU_LIBRARY__ = IntDefine.UNDEFINED;
-
-        public final static int __i386__ = IntDefine.UNDEFINED;
-        public final static int __i686__ = IntDefine.UNDEFINED;
-        public final static int __ILP32__ = IntDefine.UNDEFINED;
-
-        public final static int __linux__ = IntDefine.UNDEFINED;
-        public final static int __LP64__ = IntDefine.UNDEFINED;
-
-        public final static int __mips__ = IntDefine.UNDEFINED;
-        public final static int __mips64 = IntDefine.UNDEFINED;
-        public final static int __MIPSEB__ = IntDefine.UNDEFINED;
-        public final static int __MIPSEL__ = IntDefine.UNDEFINED;
-        public final static int __MIPS_ARCH = IntDefine.UNDEFINED;
-
-        public final static int __ORDER_BIG_ENDIAN__ = 0;
-        public final static int __ORDER_LITTLE_ENDIAN__ = 0;
-        public final static int __ORDER_PDP_ENDIAN__ = 0;
-        public final static int __OpenBSD__ = IntDefine.UNDEFINED;
-
-        public final static int __powerpc__ = IntDefine.UNDEFINED;
-        public final static int __powerpc64__ = IntDefine.UNDEFINED;
-
-        public final static int __riscv__ = IntDefine.UNDEFINED;
-
-        public final static int __SH4__ = IntDefine.UNDEFINED;
-        public final static int __SIZEOF_LONG__ = 0;
-        public final static int __SIZEOF_POINTER__ = 0;
-        public final static int __s390__ = IntDefine.UNDEFINED;
-        public final static int __s390x__ = IntDefine.UNDEFINED;
-        public final static int __sh__ = IntDefine.UNDEFINED;
-        public final static int __sparc64__ = IntDefine.UNDEFINED;
-        public final static int __sparc__ = IntDefine.UNDEFINED;
-
-        public final static int __TIMESIZE = IntDefine.UNDEFINED;
-
-        public final static int __WORDSIZE = IntDefine.UNDEFINED;
-
-        public final static int __x86_64__ = IntDefine.UNDEFINED;
-
-         */
-    }
 
     /**
      * Make sure the native lib is loaded
@@ -119,29 +52,38 @@ public class Defines {
         final MultiarchInfo mi = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
         final Arch arch = mi.getArch();
         final OS os = mi.getOS();
+        final Endianess e = mi.getEndianess();
 
-        __aarch64__ = IntDefine.UNDEFINED;
+        __aarch64__ = arch == Arch.AARCH64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __alpha__ = IntDefine.UNDEFINED;
         __amd64__ = arch == Arch.X86_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        __arm__ = IntDefine.UNDEFINED;
-        __ARM_ARCH = IntDefine.UNDEFINED;
-        __i386__ = IntDefine.UNDEFINED;
-        __i686__ = IntDefine.UNDEFINED;
-        __ILP32__ = IntDefine.UNDEFINED;
-        __mips__ = IntDefine.UNDEFINED;
-        __mips64 = IntDefine.UNDEFINED;
-        __MIPSEB__ = IntDefine.UNDEFINED;
-        __MIPSEL__ = IntDefine.UNDEFINED;
-        __MIPS_ARCH = IntDefine.UNDEFINED;
-        __powerpc__ = IntDefine.UNDEFINED;
-        __powerpc64__ = IntDefine.UNDEFINED;
+        __arm__ = arch == Arch.ARM ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        switch (arch) {
+            case AARCH64:
+                __ARM_ARCH = IntDefine.toIntDefine(8);
+                break;
+            case ARM:
+                __ARM_ARCH = IntDefine.toIntDefine(7);
+                break;
+            default:
+                __ARM_ARCH = IntDefine.UNDEFINED;
+        }
+        __i386__ = arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __i686__ = arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __mips__ = arch == Arch.MIPS ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __mips64 = arch == Arch.MIPS_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __MIPSEB__ = ((arch == Arch.MIPS) || (arch == Arch.MIPS_64)) && e == Endianess.BIG ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __MIPSEL__ = ((arch == Arch.MIPS) || (arch == Arch.MIPS_64)) && e == Endianess.LITTLE ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __MIPS_ARCH = (arch == Arch.MIPS) || (arch == Arch.MIPS_64) ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __powerpc__ = arch == Arch.POWER_PC_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __powerpc64__ = arch == Arch.POWER_PC_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __riscv__ = IntDefine.UNDEFINED;
         __SH4__ = IntDefine.UNDEFINED;
-        __s390__ = IntDefine.UNDEFINED;
-        __s390x__ = IntDefine.UNDEFINED;
+        __s390__ = arch == Arch.S390_X ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __s390x__ = arch == Arch.S390_X ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __sh__ = IntDefine.UNDEFINED;
-        __sparc64__ = IntDefine.UNDEFINED;
-        __sparc__ = IntDefine.UNDEFINED;
+        __sparc64__ = arch == Arch.SPARC_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __sparc__ = arch == Arch.SPARC_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __x86_64__ = arch == Arch.X86_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
 
         __APPLE__ = IntDefine.UNDEFINED;
@@ -157,25 +99,38 @@ public class Defines {
         _XOPEN_SOURCE = IntDefine.toIntDefine(700);
         _XOPEN_SOURCE_EXTENDED = IntDefine.toIntDefine(1);
 
-        __BIGGEST_ALIGNMENT__ = 16;
+        switch (mi.getArch()) {
+            case I386:
+            case X86_64:
+                __BIGGEST_ALIGNMENT__ = 16;
+                break;
+            case ARM:
+                __BIGGEST_ALIGNMENT__ = 8;
+                break;
+            default:
+                throw new NoClassDefFoundError("No default value for __BIGGEST_ALIGNMENT__ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
 
-        __GLIBC_MINOR__ = IntDefine.toIntDefine(31);
+        __GLIBC_MINOR__ = IntDefine.toIntDefine(28);
         __GLIBC__ = IntDefine.toIntDefine(2);
         __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
 
-        __LP64__ = IntDefine.toIntDefine(1);
+        __ILP32__ = IntDefine.UNDEFINED; // glibc > 2.31? arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __LP64__ = arch == Arch.X86_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
 
         __BYTE_ORDER__ = 1234;
         __ORDER_BIG_ENDIAN__ = 4321;
         __ORDER_LITTLE_ENDIAN__ = 1234;
         __ORDER_PDP_ENDIAN__ = 3412;
 
-        __SIZEOF_LONG__ = 8;
-        __SIZEOF_POINTER__ = 8;
+        __SIZEOF_LONG__ = mi.getSizeOfLong().sizeInBit / 8;
+        __SIZEOF_POINTER__ = mi.getSizeOfPointer().sizeInBit / 8;
 
-        __TIMESIZE = IntDefine.toIntDefine(64);
+        //Linux
+        __TIMESIZE = IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
 
-        __WORDSIZE = IntDefine.toIntDefine(64);
+        //Linux
+        __WORDSIZE = IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
 
     }
 

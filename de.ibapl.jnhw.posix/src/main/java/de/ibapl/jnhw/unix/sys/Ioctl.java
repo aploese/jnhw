@@ -26,6 +26,7 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
@@ -507,7 +508,9 @@ public final class Ioctl {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int ioctl(int fd, int request, IntRef value) throws NativeErrorException;
+    public final static int ioctl(int fd, int request, Int32_t value) throws NativeErrorException {
+        return ioctl(fd, request, AbstractNativeMemory.getAddress(value));
+    }
 
     public final static int ioctl(int fd, int request, OpaqueMemory32 value) throws NativeErrorException {
         return ioctl(fd, request, AbstractNativeMemory.getAddress(value));

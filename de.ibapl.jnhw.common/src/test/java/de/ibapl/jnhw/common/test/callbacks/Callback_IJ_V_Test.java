@@ -145,7 +145,7 @@ public class Callback_IJ_V_Test {
     @Test
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
-        final ObjectRef<Object> ref = new ObjectRef();
+        final Object[] ref = new Object[1];
 
         final Callback_IJ_V NULL_PTR = new Callback_IJ_V(NativeAddressHolder.NULL) {
             @Override
@@ -165,18 +165,18 @@ public class Callback_IJ_V_Test {
             @Override
             protected void callback(long value) {
                 if (!t.equals(Thread.currentThread())) {
-                    ref.value = value;
+                    ref[0] = value;
                 } else {
-                    ref.value = Thread.currentThread();
+                    ref[0] = Thread.currentThread();
                 }
             }
 
             @Override
             protected void callback(int value) {
                 if (!t.equals(Thread.currentThread())) {
-                    ref.value = value;
+                    ref[0] = value;
                 } else {
-                    ref.value = Thread.currentThread();
+                    ref[0] = Thread.currentThread();
                 }
             }
 
@@ -190,11 +190,11 @@ public class Callback_IJ_V_Test {
         doCallTheCallback(CB_VALUE);
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertTrue(ref.value instanceof Integer, "ref.value not Integer.class");
-                assertEquals((int) CB_VALUE, ref.value, String.format("ref mismatch for 32 bit pointers - CB_VALUE = 0x%08x, value = 0x%04x ", CB_VALUE, ref.value));
+                assertTrue(ref[0] instanceof Integer, "ref.value not Integer.class");
+                assertEquals((int) CB_VALUE, ref[0], String.format("ref mismatch for 32 bit pointers - CB_VALUE = 0x%08x, value = 0x%04x ", CB_VALUE, ref[0]));
                 break;
             case _64_BIT:
-                assertEquals(CB_VALUE, ref.value);
+                assertEquals(CB_VALUE, ref[0]);
                 break;
             default:
                 throw new RuntimeException("Unknown SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
@@ -210,9 +210,9 @@ public class Callback_IJ_V_Test {
         assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
-        ref.value = -1L;
+        ref[0] = -1L;
         doCallTheCallback(~CB_VALUE);
-        assertEquals(-1L, ref.value);
+        assertEquals(-1L, ref[0]);
     }
 
     /**

@@ -117,7 +117,7 @@ public class Callback_J_V_Test {
     @Test
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
-        final LongRef longRef = new LongRef();
+        final long[] longRef = new long[1];
         final Callback_J_V NULL_PTR = new Callback_J_V(NativeAddressHolder.NULL) {
             @Override
             protected void callback(long value) {
@@ -131,7 +131,7 @@ public class Callback_J_V_Test {
             @Override
             protected void callback(long value) {
                 if (!t.equals(Thread.currentThread())) {
-                    longRef.value = value;
+                    longRef[0] = value;
                 }
             }
 
@@ -143,7 +143,7 @@ public class Callback_J_V_Test {
         assertEquals(getCallbackPtr(), callback);
         assertSame(Callback_J_V_Impl.find(getCallbackPtr()), callback);
         doCallTheCallback(42);
-        assertEquals(42, longRef.value);
+        assertEquals(42, longRef[0]);
 
         callback = null;
 
@@ -155,9 +155,9 @@ public class Callback_J_V_Test {
         assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
-        longRef.value = -1;
+        longRef[0] = -1;
         doCallTheCallback(84);
-        assertEquals(-1, longRef.value);
+        assertEquals(-1, longRef[0]);
     }
 
     /**
@@ -168,7 +168,7 @@ public class Callback_J_V_Test {
         System.out.println("release");
         Cleaner CLEANER = Cleaner.create();
 
-        final LongRef longRef = new LongRef();
+        final long[] longRef = new long[1];
         final Callback_J_V NULL_PTR = new Callback_J_V(NativeAddressHolder.NULL) {
             @Override
             protected void callback(long value) {
@@ -179,7 +179,7 @@ public class Callback_J_V_Test {
 
             @Override
             protected void callback(long value) {
-                longRef.value = value;
+                longRef[0] = value;
             }
 
         };
@@ -191,11 +191,11 @@ public class Callback_J_V_Test {
 
         assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(42);
-        assertEquals(42, longRef.value);
+        assertEquals(42, longRef[0]);
 
-        longRef.value = -1;
+        longRef[0] = -1;
         CallNative_J_V.wrap(getCallbackPtr()).call(42);
-        assertEquals(42, longRef.value);
+        assertEquals(42, longRef[0]);
 
         callback = null;
 

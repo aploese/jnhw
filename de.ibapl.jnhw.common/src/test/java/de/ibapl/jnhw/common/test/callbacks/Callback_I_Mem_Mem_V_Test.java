@@ -181,18 +181,18 @@ public class Callback_I_Mem_Mem_V_Test {
     @Test
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
-        final IntRef intref = new IntRef();
-        final ObjectRef<A> refA = new ObjectRef<>();
-        final ObjectRef<B> refB = new ObjectRef<>();
+        final int[] intref = new int[1];
+        final A[] refA = new A[1];
+        final B[] refB = new B[1];
         A a = new A();
         B b = new B();
         Callback_I_Mem_Mem_V_Impl<A, B> callback = new Callback_I_Mem_Mem_V_Impl<>() {
 
             @Override
             protected void callback(int value, A a, B b) {
-                intref.value = value;
-                refA.value = a;
-                refB.value = b;
+                intref[0] = value;
+                refA[0] = a;
+                refB[0] = b;
             }
 
             @Override
@@ -213,22 +213,22 @@ public class Callback_I_Mem_Mem_V_Test {
         assertEquals(getCallbackPtr(), callback);
         assertSame(Callback_I_Mem_Mem_V_Impl.find(getCallbackPtr()), callback);
         doCallTheCallback(42, a, b);
-        assertEquals(42, intref.value);
-        assertEquals(a, refA.value);
-        assertEquals(b, refB.value);
-        assertNotSame(a, refA.value);
-        assertNotSame(b, refB.value);
+        assertEquals(42, intref[0]);
+        assertEquals(a, refA[0]);
+        assertEquals(b, refB[0]);
+        assertNotSame(a, refA[0]);
+        assertNotSame(b, refB[0]);
 
-        intref.value = -1;
-        refA.value = null;
-        refB.value = null;
+        intref[0] = -1;
+        refA[0] = null;
+        refB[0] = null;
 
         CallNative_I_Mem_Mem_V.wrap(getCallbackPtr()).call(42, a, b);
-        assertEquals(42, intref.value);
-        assertEquals(a, refA.value);
-        assertEquals(b, refB.value);
-        assertNotSame(a, refA.value);
-        assertNotSame(b, refB.value);
+        assertEquals(42, intref[0]);
+        assertEquals(a, refA[0]);
+        assertEquals(b, refB[0]);
+        assertNotSame(a, refA[0]);
+        assertNotSame(b, refB[0]);
 
         callback = null;
 
@@ -240,9 +240,9 @@ public class Callback_I_Mem_Mem_V_Test {
         assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
-        intref.value = -1;
+        intref[0] = -1;
         doCallTheCallback(84, a, b);
-        assertEquals(-1, intref.value);
+        assertEquals(-1, intref[0]);
     }
 
     /**
@@ -252,12 +252,12 @@ public class Callback_I_Mem_Mem_V_Test {
     public void testReleaseByGarbageCollectorAndCleanup() throws Exception {
         System.out.println("release");
         Cleaner CLEANER = Cleaner.create();
-        final ObjectRef<A> refA = new ObjectRef<>();
-        final ObjectRef<B> refB = new ObjectRef<>();
+        final A[] refA = new A[1];
+        final B[] refB = new B[1];
         A a = new A();
         B b = new B();
 
-        final IntRef intref = new IntRef();
+        final int[] intref = new int[1];
         @SuppressWarnings("unchecked")
         final Callback_I_Mem_Mem_V<A, B> NULL_PTR = new Callback_I_Mem_Mem_V(NativeAddressHolder.NULL) {
             @Override
@@ -269,9 +269,9 @@ public class Callback_I_Mem_Mem_V_Test {
 
             @Override
             protected void callback(int value, A a, B b) {
-                intref.value = value;
-                refA.value = a;
-                refB.value = b;
+                intref[0] = value;
+                refA[0] = a;
+                refB[0] = b;
             }
 
             @Override
@@ -293,11 +293,11 @@ public class Callback_I_Mem_Mem_V_Test {
 
         assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(42, a, b);
-        assertEquals(42, intref.value);
-        assertEquals(a, refA.value);
-        assertEquals(b, refB.value);
-        assertNotSame(a, refA.value);
-        assertNotSame(b, refB.value);
+        assertEquals(42, intref[0]);
+        assertEquals(a, refA[0]);
+        assertEquals(b, refB[0]);
+        assertNotSame(a, refA[0]);
+        assertNotSame(b, refB[0]);
 
         callback = null;
 

@@ -314,7 +314,7 @@ extern "C" {
 #elif defined(_JNHW__time_t__IS__int32_t)
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "timer outside time_t(int32_t)");
-            return NULL;
+            return;
         }
         if (gmtime_r(__jlong2long_PTR(timer), (struct tm*) (uintptr_t) ptrResult)) {
 #else
@@ -337,7 +337,7 @@ extern "C" {
 #elif defined(_JNHW__time_t__IS__int32_t)
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "timer outside time_t(int32_t)");
-            return NULL;
+            return (jlong) (uintptr_t) NULL;
         }
         const struct tm *result = localtime(__jlong2long_PTR(timer));
 #else
@@ -363,9 +363,9 @@ extern "C" {
 #elif defined(_JNHW__time_t__IS__int32_t)
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "timer outside time_t(int32_t)");
-            return NULL;
+            return;
         }
-        if (localtime_r(__jlong2long_PTR(timer), _result)) {
+        if (localtime_r(__jlong2long_PTR(timer), (struct tm*) (uintptr_t) ptrResult)) {
 #else
 #error expected time_t is int32_t or int64_t
 #endif
@@ -467,7 +467,7 @@ extern "C" {
             return NULL;
         }
         char* _result = malloc((uint32_t) maxsize);
-        size_t count = strftime_l(_result, (uint32_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr, (locale_t*) (uintptr_t) ptrLocale);
+        size_t count = strftime_l(_result, (uint32_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr, *((locale_t*) (uintptr_t) ptrLocale));
 #else
 #error expected size_t is uint32_t or uint64_t
 #endif

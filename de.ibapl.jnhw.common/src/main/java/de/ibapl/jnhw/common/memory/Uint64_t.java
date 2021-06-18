@@ -38,6 +38,10 @@ public class Uint64_t extends NativeIntNumber {
         super(owner, offset, 8, setMem);
     }
 
+    public Uint64_t() {
+        super(8);
+    }
+
     @uint64_t
     public long uint64_t() {
         return MEM_ACCESS.uint64_t(this, 0);

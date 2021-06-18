@@ -38,6 +38,10 @@ public class Int16_t extends NativeIntNumber {
         super(owner, offset, 2, setMem);
     }
 
+    public Int16_t() {
+        super(2);
+    }
+
     @int16_t
     public short int16_t() {
         return MEM_ACCESS.int16_t(this, 0);

@@ -26,6 +26,7 @@ package de.ibapl.jnhw.common.references;
  * @author aploese
  * @param <T>
  */
+@Deprecated
 public class ObjectRef<T> {
 
     public volatile T value;

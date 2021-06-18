@@ -219,23 +219,6 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    read
-     * Signature: (ILde/ibapl/jnhw/common/references/ByteRef;)I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILde_ibapl_jnhw_common_references_ByteRef_2
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jobject byteRef) {
-        jbyte _valueRef;
-        //result can't be larger then int beacuase nByte is int, so do the conversation
-        const int result = (int) read(fd, &_valueRef, 1);
-        SET_BYTE_REF_VALUE(byteRef, _valueRef);
-        if (result == -1) {
-            throw_NativeErrorException(env, errno);
-        }
-        return result;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_Unistd
-     * Method:    read
      * Signature: (I)S
      */
     JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
@@ -441,25 +424,16 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    pipe
-     * Signature: (Lde/ibapl/jnhw/common/references/IntRef;Lde/ibapl/jnhw/common/references/IntRef;)V
+     * Signature: (JJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_pipe
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject read_fd_ref, jobject write_fd_ref) {
-        if (read_fd_ref == NULL) {
-            throw_NullPointerException(env, "read_fd_ref is null");
-            return;
-        }
-        if (write_fd_ref == NULL) {
-            throw_NullPointerException(env, "write_fd_ref is null");
-            return;
-        }
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrRead_fd_ref, jlong ptrWrite_fd_ref) {
         int fdes[2];
-        const int result = pipe(fdes);
-        SET_INT_REF_VALUE(read_fd_ref, fdes[0]);
-        SET_INT_REF_VALUE(write_fd_ref, fdes[1]);
-        if (result == -1) {
+        if (pipe(fdes) == -1) {
             throw_NativeErrorException(env, errno);
         }
+        *((int*) (uintptr_t) ptrRead_fd_ref) = fdes[0];
+        *((int*) (uintptr_t) ptrWrite_fd_ref) = fdes[1];
     }
 
     /*
