@@ -289,10 +289,10 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeD
 
 /*
  * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
- * Method:    __riscv__
+ * Method:    __riscv
  * Signature: ()Ljava/lang/Integer;
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1riscv_1_1
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1riscv
   (JNIEnv *, jclass);
 
 /*

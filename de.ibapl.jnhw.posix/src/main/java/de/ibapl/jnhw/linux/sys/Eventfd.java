@@ -25,6 +25,7 @@ import de.ibapl.jnhw.annotation.linux.sys.eventfd_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -47,19 +48,26 @@ public final class Eventfd {
      */
     static {
         LibJnhwPosixLoader.touch();
-
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+        switch (multiarchInfo.getOS()) {
             case LINUX:
                 HAVE_SYS_EVENTFD_H = true;
                 EFD_CLOEXEC = 02000000;
-                EFD_NONBLOCK = 00004000;
+                switch (multiarchInfo.getArch()) {
+                    case MIPS:
+                    case MIPS_64:
+                        EFD_NONBLOCK = 00000200;
+                        break;
+                    default:
+                        EFD_NONBLOCK = 00004000;
+                }
                 EFD_SEMAPHORE = 00000001;
                 break;
             default:
                 HAVE_SYS_EVENTFD_H = false;
-                EFD_CLOEXEC = 0;
-                EFD_NONBLOCK = 0;
-                EFD_SEMAPHORE = 0;
+                EFD_CLOEXEC = -1;
+                EFD_NONBLOCK = -1;
+                EFD_SEMAPHORE = -1;
         }
     }
 

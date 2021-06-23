@@ -422,7 +422,7 @@ public class SignalTest {
     }
 
     @BeforeAll
-    public static void checkBeforeAll_StructMcontect_t() throws Exception {
+    public static void checkBeforeAll_StructMcontext_t() throws Exception {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             return;
         }

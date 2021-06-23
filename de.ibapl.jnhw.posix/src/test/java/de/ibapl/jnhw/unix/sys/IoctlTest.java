@@ -158,7 +158,7 @@ public class IoctlTest {
     }
 
     @BeforeAll
-    public static void checkBeforeAll_UnistdDefines() throws Exception {
+    public static void checkBeforeAll_IoctlDefines() throws Exception {
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
             return;
         }

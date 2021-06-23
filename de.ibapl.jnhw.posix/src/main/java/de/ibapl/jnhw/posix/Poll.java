@@ -44,7 +44,7 @@ import java.io.IOException;
 @Include("#include <poll.h>")
 public final class Poll {
 
-    public static class LinuxDefines {
+    public static interface LinuxDefines {
 
         public final static boolean HAVE_POLL_H = true;
         public final static short POLLERR = 0x0008;
@@ -55,8 +55,18 @@ public final class Poll {
         public final static short POLLPRI = 0x0002;
         public final static short POLLRDBAND = 0x0080;
         public final static short POLLRDNORM = 0x0040;
+    }
+
+    public static interface Linux_NonMips_Defines {
+
         public final static short POLLWRBAND = 0x0200;
         public final static short POLLWRNORM = 0x0100;
+    }
+
+    public static interface Linux_Mips_Mips64_Defines {
+
+        public final static short POLLWRBAND = 0x0100;
+        public final static short POLLWRNORM = 0x0004;
     }
 
     /**
@@ -82,8 +92,16 @@ public final class Poll {
                 POLLPRI = LinuxDefines.POLLPRI;
                 POLLRDBAND = LinuxDefines.POLLRDBAND;
                 POLLRDNORM = LinuxDefines.POLLRDNORM;
-                POLLWRBAND = LinuxDefines.POLLWRBAND;
-                POLLWRNORM = LinuxDefines.POLLWRNORM;
+                switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                    case MIPS:
+                    case MIPS_64:
+                        POLLWRBAND = Linux_Mips_Mips64_Defines.POLLWRBAND;
+                        POLLWRNORM = Linux_Mips_Mips64_Defines.POLLWRNORM;
+                        break;
+                    default:
+                        POLLWRBAND = Linux_NonMips_Defines.POLLWRBAND;
+                        POLLWRNORM = Linux_NonMips_Defines.POLLWRNORM;
+                }
                 break;
             default:
                 throw new NoClassDefFoundError("No poll.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

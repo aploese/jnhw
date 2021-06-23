@@ -501,13 +501,13 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __riscv__
+     * Method:    __riscv
      * Signature: ()Ljava/lang/Integer;
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1riscv_1_1
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1riscv
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined( __riscv__)
-        return JnhwWrapInteger(env, __riscv__);
+#if defined( __riscv)
+        return JnhwWrapInteger(env, __riscv);
 #else
         return NULL;
 #endif

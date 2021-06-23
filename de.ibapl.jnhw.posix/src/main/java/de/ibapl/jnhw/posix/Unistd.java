@@ -23,7 +23,6 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;

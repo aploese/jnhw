@@ -39,6 +39,7 @@ import java.io.IOException;
 import de.ibapl.jnhw.common.memory.Uint8_t;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 
 /**
  * Wrapper around the {@code <termios.h>} header.
@@ -52,28 +53,13 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 @Include("#include <termios.h>")
 public final class Termios {
 
-    public static class LinuxDefines {
+    public static interface Linux_AllArchs_Defines {
 
-        /* c_cc characters */
         public final static int VINTR = 0;
         public final static int VQUIT = 1;
         public final static int VERASE = 2;
         public final static int VKILL = 3;
-        public final static int VEOF = 4;
-        public final static int VTIME = 5;
-        public final static int VMIN = 6;
-        //#define VSWTC 7
-        public final static int VSTART = 8;
-        public final static int VSTOP = 9;
-        public final static int VSUSP = 10;
-        public final static int VEOL = 11;
-        //#define VREPRINT 12
-        //#define VDISCARD 13
-        //#define VWERASE 14
-        //#define VLNEXT 15
-        //#define VEOL2 16
 
-        /* c_iflag bits */
         public final static int IGNBRK = 0000001;
         public final static int BRKINT = 0000002;
         public final static int IGNPAR = 0000004;
@@ -83,45 +69,20 @@ public final class Termios {
         public final static int INLCR = 0000100;
         public final static int IGNCR = 0000200;
         public final static int ICRNL = 0000400;
-        //#define IUCLC   0001000
-        public final static int IXON = 0002000;
         public final static int IXANY = 0004000;
-        public final static int IXOFF = 0010000;
-        //#define IMAXBEL 0020000
-        //#define IUTF8   0040000
-
-        /* c_oflag bits */
         public final static int OPOST = 0000001;
-        //#define OLCUC   0000002
-        public final static int ONLCR = 0000004;
         public final static int OCRNL = 0000010;
         public final static int ONOCR = 0000020;
         public final static int ONLRET = 0000040;
         public final static int OFILL = 0000100;
         public final static int OFDEL = 0000200;
-        public final static int NLDLY = 0000400;
         public final static int NL0 = 0000000;
         public final static int NL1 = 0000400;
-        public final static int CRDLY = 0003000;
         public final static int CR0 = 0000000;
-        public final static int CR1 = 0001000;
-        public final static int CR2 = 0002000;
-        public final static int CR3 = 0003000;
-        public final static int TABDLY = 0014000;
         public final static int TAB0 = 0000000;
-        public final static int TAB1 = 0004000;
-        public final static int TAB2 = 0010000;
-        public final static int TAB3 = 0014000;
-        //#define   XTABS 0014000
-        public final static int BSDLY = 0020000;
         public final static int BS0 = 0000000;
-        public final static int BS1 = 0020000;
-        public final static int VTDLY = 0040000;
         public final static int VT0 = 0000000;
-        public final static int VT1 = 0040000;
-        public final static int FFDLY = 0100000;
         public final static int FF0 = 0000000;
-        public final static int FF1 = 0100000;
 
         /* c_cflag bit meaning */
         //#define CBAUD   0010017
@@ -141,80 +102,179 @@ public final class Termios {
         public final static int B9600 = 0000015;
         public final static int B19200 = 0000016;
         public final static int B38400 = 0000017;
-        //#define EXTA B19200
-        //#define EXTB B38400
-        public final static int CSIZE = 0000060;
         public final static int CS5 = 0000000;
-        public final static int CS6 = 0000020;
-        public final static int CS7 = 0000040;
-        public final static int CS8 = 0000060;
-        public final static int CSTOPB = 0000100;
-        public final static int CREAD = 0000200;
-        public final static int PARENB = 0000400;
-        public final static int PARODD = 0001000;
-        public final static int HUPCL = 0002000;
-        public final static int CLOCAL = 0004000;
-        //#define CBAUDEX 0010000
-        //#define    BOTHER 0010000
-        public final static int B57600 = 0010001;
+        public final static int CRTSCTS = 020000000000;
+        public final static int ECHO = 0000010;
+        public final static int TCOOFF = 0;
+        public final static int TCOON = 1;
+        public final static int TCIOFF = 2;
+        public final static int TCION = 3;
+
+        public final static int TCIFLUSH = 0;
+        public final static int TCOFLUSH = 1;
+        public final static int TCIOFLUSH = 2;
+
+        public final static int NCCS = 32;
+
+    }
+
+    public static interface Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines {
+
+        public final static int B1000000 = 0010010;
         public final static int B115200 = 0010002;
+        public final static int B1152000 = 0010011;
+        public final static int B57600 = 0010001;
         public final static int B230400 = 0010003;
         public final static int B460800 = 0010004;
         public final static int B500000 = 0010005;
         public final static int B576000 = 0010006;
 
         public final static int B921600 = 0010007;
-        public final static int B1000000 = 0010010;
-        public final static int B1152000 = 0010011;
         public final static int B1500000 = 0010012;
         public final static int B2000000 = 0010013;
         public final static int B2500000 = 0010014;
         public final static int B3000000 = 0010015;
         public final static int B3500000 = 0010016;
         public final static int B4000000 = 0010017;
-        //#define CIBAUD    002003600000
-        public final static int CMSPAR = 010000000000;
-        public final static int CRTSCTS = 020000000000;
-        //#define IBSHIFT   16
-
-        /* c_lflag bits */
-        public final static int ISIG = 0000001;
-        public final static int ICANON = 0000002;
-        //#define XCASE   0000004
-        public final static int ECHO = 0000010;
+        public final static int CLOCAL = 0004000;
+        public final static int CSIZE = 0000060;
+        public final static int CREAD = 0000200;
+        public final static int CSTOPB = 0000100;
         public final static int ECHOE = 0000020;
         public final static int ECHOK = 0000040;
         public final static int ECHONL = 0000100;
+        public final static int FFDLY = 0100000;
+        public final static int FF1 = 0100000;
+        public final static int PARENB = 0000400;
+        public final static int PARODD = 0001000;
+        public final static int HUPCL = 0002000;
+        public final static int TABDLY = 0014000;
+        public final static int TAB1 = 0004000;
+        public final static int TAB2 = 0010000;
+        public final static int TAB3 = 0014000;
+        public final static int BSDLY = 0020000;
+        public final static int BS1 = 0020000;
+        public final static int CRDLY = 0003000;
+        public final static int CR1 = 0001000;
+        public final static int CR2 = 0002000;
+        public final static int CR3 = 0003000;
+        public final static int CS6 = 0000020;
+        public final static int CS7 = 0000040;
+        public final static int CS8 = 0000060;
+        public final static int ICANON = 0000002;
+        public final static int ISIG = 0000001;
+        public final static int IXOFF = 0010000;
+        public final static int IXON = 0002000;
+        public final static int NLDLY = 0000400;
         public final static int NOFLSH = 0000200;
-        public final static int TOSTOP = 0000400;
-        //#define ECHOCTL 0001000
-        //#define ECHOPRT 0002000
-        //#define ECHOKE  0004000
-        //#define FLUSHO  0010000
-        //#define PENDIN  0040000
+        public final static int ONLCR = 0000004;
+        public final static int VSTART = 8;
+        public final static int VSTOP = 9;
+        public final static int VSUSP = 10;
+        public final static int VTDLY = 0040000;
+        public final static int VT1 = 0040000;
+        public final static int VTIME = 5;
+
+    }
+
+    public static interface Linux_Ppc64_S390_Defines {
+
+        public final static int B1000000 = 23;
+        public final static int B115200 = 17;
+        public final static int B1152000 = 24;
+        public final static int B57600 = 16;
+        public final static int B230400 = 18;
+        public final static int B460800 = 19;
+        public final static int B500000 = 20;
+        public final static int B576000 = 21;
+        public final static int B921600 = 22;
+        public final static int B1500000 = 25;
+        public final static int B2000000 = 26;
+        public final static int B2500000 = 27;
+        public final static int B3000000 = 28;
+        public final static int B3500000 = 29;
+        public final static int B4000000 = 30;
+        public final static int CLOCAL = 32768;
+        public final static int CSIZE = 768;
+        public final static int CREAD = 2048;
+        public final static int CSTOPB = 1024;
+        public final static int ECHOE = 2;
+        public final static int ECHOK = 4;
+        public final static int ECHONL = 16;
+        public final static int FFDLY = 16384;
+        public final static int FF1 = 16384;
+        public final static int PARENB = 4096;
+        public final static int PARODD = 8192;
+        public final static int HUPCL = 16384;
+        public final static int TABDLY = 3072;
+        public final static int TAB1 = 1024;
+        public final static int TAB2 = 2048;
+        public final static int TAB3 = 3072;
+        public final static int BSDLY = 32768;
+        public final static int BS1 = 32768;
+        public final static int CRDLY = 12288;
+        public final static int CR1 = 4096;
+        public final static int CR2 = 8192;
+        public final static int CR3 = 12288;
+        public final static int CS6 = 256;
+        public final static int CS7 = 512;
+        public final static int CS8 = 768;
+        public final static int ICANON = 256;
+        public final static int IEXTEN = 1024;
+        public final static int ISIG = 128;
+        public final static int IXOFF = 1024;
+        public final static int IXON = 512;
+        public final static int NLDLY = 768;
+        public final static int NOFLSH = -2147483648;
+        public final static int ONLCR = 2;
+        public final static int TOSTOP = 4194304;
+        public final static int VMIN = 5;
+        public final static int VEOL = 6;
+        public final static int VSTART = 13;
+        public final static int VSTOP = 14;
+        public final static int VSUSP = 12;
+        public final static int VTDLY = 65536;
+        public final static int VT1 = 65536;
+        public final static int VTIME = 7;
+
+    }
+
+    public static interface Linux_Aarch64_Arm_I386_RiscV64_X86_64Defines {
+
         public final static int IEXTEN = 0100000;
-        //#define EXTPROC 0200000
+        public final static int TOSTOP = 0000400;
+        public final static int VMIN = 6;
+        public final static int VEOL = 11;
 
-        /* tcflow() and TCXONC use these */
-        public final static int TCOOFF = 0;
-        public final static int TCOON = 1;
-        public final static int TCIOFF = 2;
-        public final static int TCION = 3;
+    }
 
-        /* tcflush() and TCFLSH use these */
-        public final static int TCIFLUSH = 0;
-        public final static int TCOFLUSH = 1;
-        public final static int TCIOFLUSH = 2;
+    public static interface Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64Defines {
 
-        /* tcsetattr uses these */
+        public final static int VEOF = 4;
+
+        public final static int CMSPAR = 010000000000;
+
         public final static int TCSANOW = 0;
         public final static int TCSADRAIN = 1;
         public final static int TCSAFLUSH = 2;
 
-        public final static int NCCS = 32;
-
         public final static int _HAVE_STRUCT_TERMIOS_C_ISPEED = 1;
         public final static int _HAVE_STRUCT_TERMIOS_C_OSPEED = 1;
+    }
+
+    public static interface Linux_Mips_Mips64_Defines {
+
+        public final static int VEOF = 16;
+        public final static int VMIN = 4;
+        public final static int VEOL = 17;
+
+        public final static int IEXTEN = 0000400;
+        public final static int TCSANOW = 0x540E;
+        public final static int TCSADRAIN = 0x540F;
+        public final static int TCSAFLUSH = 0x5410;
+
+        public final static int TOSTOP = 0100000;
+
     }
 
     /**
@@ -222,152 +282,274 @@ public final class Termios {
      */
     static {
         LibJnhwPosixLoader.touch();
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+        switch (multiarchInfo.getOS()) {
             case LINUX:
 
-                _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.toIntDefine(LinuxDefines._HAVE_STRUCT_TERMIOS_C_ISPEED);
-                _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.toIntDefine(LinuxDefines._HAVE_STRUCT_TERMIOS_C_OSPEED);
+                B0 = Linux_AllArchs_Defines.B0;
 
-                B0 = LinuxDefines.B0;
+                B110 = Linux_AllArchs_Defines.B110;
+                B1200 = Linux_AllArchs_Defines.B1200;
+                B134 = Linux_AllArchs_Defines.B134;
+                B150 = Linux_AllArchs_Defines.B150;
+                B1800 = Linux_AllArchs_Defines.B1800;
+                B19200 = Linux_AllArchs_Defines.B19200;
+                B200 = Linux_AllArchs_Defines.B200;
+                B2400 = Linux_AllArchs_Defines.B2400;
+                B300 = Linux_AllArchs_Defines.B300;
+                B38400 = Linux_AllArchs_Defines.B38400;
+                B4800 = Linux_AllArchs_Defines.B4800;
+                B50 = Linux_AllArchs_Defines.B50;
+                B600 = Linux_AllArchs_Defines.B600;
 
-                B1000000 = IntDefine.toIntDefine(LinuxDefines.B1000000);
-                B110 = LinuxDefines.B110;
-                B115200 = LinuxDefines.B115200;
-                B1152000 = IntDefine.toIntDefine(LinuxDefines.B1152000);
-                B1200 = LinuxDefines.B1200;
-                B134 = LinuxDefines.B134;
-                B150 = LinuxDefines.B150;
-                B1500000 = IntDefine.toIntDefine(LinuxDefines.B1500000);
-                B1800 = LinuxDefines.B1800;
-                B19200 = LinuxDefines.B19200;
+                B75 = Linux_AllArchs_Defines.B75;
+                B9600 = Linux_AllArchs_Defines.B9600;
 
-                B200 = LinuxDefines.B200;
-                B2000000 = IntDefine.toIntDefine(LinuxDefines.B2000000);
-                B230400 = LinuxDefines.B230400;
-                B2400 = LinuxDefines.B2400;
-                B2500000 = IntDefine.toIntDefine(LinuxDefines.B2500000);
+                BRKINT = Linux_AllArchs_Defines.BRKINT;
+                BS0 = IntDefine.toIntDefine(Linux_AllArchs_Defines.BS0);
+                CR0 = IntDefine.toIntDefine(Linux_AllArchs_Defines.CR0);
 
-                B300 = LinuxDefines.B300;
-                B3000000 = IntDefine.toIntDefine(LinuxDefines.B3000000);
-                B3500000 = IntDefine.toIntDefine(LinuxDefines.B3500000);
-                B38400 = LinuxDefines.B38400;
+                switch (multiarchInfo.getArch()) {
+                    case AARCH64:
+                    case ARM:
+                    case I386:
+                    case MIPS:
+                    case MIPS_64:
+                    case RISC_V_64:
+                    case X86_64:
+                        B1000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B1000000);
+                        B115200 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B115200;
+                        B1152000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B1152000);
+                        B1500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B1500000);
+                        B2000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B2000000);
+                        B230400 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B230400;
+                        B2500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B2500000);
+                        B3000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B3000000);
+                        B3500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B3500000);
 
-                B4000000 = IntDefine.toIntDefine(LinuxDefines.B4000000);
-                B460800 = IntDefine.toIntDefine(LinuxDefines.B460800);
-                B4800 = LinuxDefines.B4800;
+                        B4000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B4000000);
+                        B460800 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B460800);
+                        B500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B500000);
+                        B57600 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B57600;
+                        B576000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B576000);
+                        B921600 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B921600);
+                        BS1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.BS1);
+                        BSDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.BSDLY);
 
-                B50 = LinuxDefines.B50;
-                B500000 = IntDefine.toIntDefine(LinuxDefines.B500000);
-                B57600 = LinuxDefines.B57600;
-                B576000 = IntDefine.toIntDefine(LinuxDefines.B576000);
+                        CLOCAL = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CLOCAL;
+                        CR1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CR1);
+                        CR2 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CR2);
+                        CR3 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CR3);
+                        CRDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CRDLY);
+                        CS6 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CS6;
+                        CS7 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CS7;
+                        CS8 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CS8;
+                        TAB1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.TAB1);
+                        TAB2 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.TAB2);
+                        TAB3 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.TAB3);
+                        TABDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.TABDLY);
+                        CREAD = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CREAD;
+                        CSIZE = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CSIZE;
+                        CSTOPB = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CSTOPB;
+                        ECHOE = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ECHOE;
+                        ECHOK = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ECHOK;
+                        ECHONL = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ECHONL;
+                        FF1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.FF1);
+                        FFDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.FFDLY);
 
-                B600 = LinuxDefines.B600;
+                        HUPCL = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.HUPCL;
+                        PARENB = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.PARENB;
+                        PARODD = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.PARODD;
+                        ICANON = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ICANON;
+                        ISIG = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ISIG;
+                        IXOFF = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.IXOFF;
+                        IXON = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.IXON;
+                        NLDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.NLDLY);
+                        NOFLSH = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.NOFLSH;
+                        ONLCR = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ONLCR;
+                        VSTART = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VSTART;
+                        VSTOP = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VSTOP;
+                        VSUSP = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VSUSP;
+                        VT1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VT1);
+                        VTDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VTDLY);
+                        VTIME = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VTIME;
 
-                B75 = LinuxDefines.B75;
+                        break;
+                    case POWER_PC_64:
+                    case S390_X:
+                        B1000000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B1000000);
+                        B115200 = Linux_Ppc64_S390_Defines.B115200;
+                        B1152000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B1152000);
+                        B1500000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B1500000);
+                        B2000000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B2000000);
+                        B230400 = Linux_Ppc64_S390_Defines.B230400;
+                        B2500000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B2500000);
+                        B3000000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B3000000);
+                        B3500000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B3500000);
 
-                B921600 = IntDefine.toIntDefine(LinuxDefines.B921600);
-                B9600 = LinuxDefines.B9600;
+                        B4000000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B4000000);
+                        B460800 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B460800);
+                        B500000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B500000);
+                        B57600 = Linux_Ppc64_S390_Defines.B57600;
+                        B576000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B576000);
+                        B921600 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B921600);
+                        BS1 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.BS1);
+                        BSDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.BSDLY);
 
-                BRKINT = LinuxDefines.BRKINT;
-                BS0 = IntDefine.toIntDefine(LinuxDefines.BS0);
-                BS1 = IntDefine.toIntDefine(LinuxDefines.BS1);
-                BSDLY = IntDefine.toIntDefine(LinuxDefines.BSDLY);
+                        CLOCAL = Linux_Ppc64_S390_Defines.CLOCAL;
+                        CR1 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.CR1);
+                        CR2 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.CR2);
+                        CR3 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.CR3);
+                        CRDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.CRDLY);
+                        CS6 = Linux_Ppc64_S390_Defines.CS6;
+                        CS7 = Linux_Ppc64_S390_Defines.CS7;
+                        CS8 = Linux_Ppc64_S390_Defines.CS8;
+                        TAB1 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.TAB1);
+                        TAB2 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.TAB2);
+                        TAB3 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.TAB3);
+                        TABDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.TABDLY);
+                        CREAD = Linux_Ppc64_S390_Defines.CREAD;
+                        CSIZE = Linux_Ppc64_S390_Defines.CSIZE;
+                        CSTOPB = Linux_Ppc64_S390_Defines.CSTOPB;
+                        ECHOE = Linux_Ppc64_S390_Defines.ECHOE;
+                        ECHOK = Linux_Ppc64_S390_Defines.ECHOK;
+                        ECHONL = Linux_Ppc64_S390_Defines.ECHONL;
+                        FF1 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.FF1);
+                        FFDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.FFDLY);
 
-                CLOCAL = LinuxDefines.CLOCAL;
-                CMSPAR = IntDefine.toIntDefine(LinuxDefines.CMSPAR);
-                CR0 = IntDefine.toIntDefine(LinuxDefines.CR0);
-                CR1 = IntDefine.toIntDefine(LinuxDefines.CR1);
-                CR2 = IntDefine.toIntDefine(LinuxDefines.CR2);
-                CR3 = IntDefine.toIntDefine(LinuxDefines.CR3);
-                CRDLY = IntDefine.toIntDefine(LinuxDefines.CRDLY);
-                CREAD = LinuxDefines.CREAD;
-                CRTSCTS = LinuxDefines.CRTSCTS;
-                CS5 = LinuxDefines.CS5;
-                CS6 = LinuxDefines.CS6;
-                CS7 = LinuxDefines.CS7;
-                CS8 = LinuxDefines.CS8;
-                CSIZE = LinuxDefines.CSIZE;
-                CSTOPB = LinuxDefines.CSTOPB;
+                        HUPCL = Linux_Ppc64_S390_Defines.HUPCL;
+                        PARENB = Linux_Ppc64_S390_Defines.PARENB;
+                        PARODD = Linux_Ppc64_S390_Defines.PARODD;
 
-                ECHO = LinuxDefines.ECHO;
-                ECHOE = LinuxDefines.ECHOE;
-                ECHOK = LinuxDefines.ECHOK;
-                ECHONL = LinuxDefines.ECHONL;
+                        ICANON = Linux_Ppc64_S390_Defines.ICANON;
+                        ISIG = Linux_Ppc64_S390_Defines.ISIG;
+                        IXOFF = Linux_Ppc64_S390_Defines.IXOFF;
+                        IXON = Linux_Ppc64_S390_Defines.IXON;
+                        NLDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.NLDLY);
+                        NOFLSH = Linux_Ppc64_S390_Defines.NOFLSH;
+                        ONLCR = Linux_Ppc64_S390_Defines.ONLCR;
+                        VSTART = Linux_Ppc64_S390_Defines.VSTART;
+                        VSTOP = Linux_Ppc64_S390_Defines.VSTOP;
+                        VSUSP = Linux_Ppc64_S390_Defines.VSUSP;
+                        VT1 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.VT1);
+                        VTDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.VTDLY);
+                        VTIME = Linux_Ppc64_S390_Defines.VTIME;
 
-                FF0 = IntDefine.toIntDefine(LinuxDefines.FF0);
-                FF1 = IntDefine.toIntDefine(LinuxDefines.FF1);
-                FFDLY = IntDefine.toIntDefine(LinuxDefines.FFDLY);
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No termios.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
+                CRTSCTS = Linux_AllArchs_Defines.CRTSCTS;
+                CS5 = Linux_AllArchs_Defines.CS5;
 
-                HUPCL = LinuxDefines.HUPCL;
+                ECHO = Linux_AllArchs_Defines.ECHO;
+
+                FF0 = IntDefine.toIntDefine(Linux_AllArchs_Defines.FF0);
                 HAVE_TERMIOS_H = true;
 
-                ICANON = LinuxDefines.ICANON;
-                ICRNL = LinuxDefines.ICRNL;
-                IEXTEN = LinuxDefines.IEXTEN;
-                IGNBRK = LinuxDefines.IGNBRK;
-                IGNCR = LinuxDefines.IGNCR;
-                IGNPAR = LinuxDefines.IGNPAR;
-                INLCR = LinuxDefines.INLCR;
-                INPCK = LinuxDefines.INPCK;
-                ISIG = LinuxDefines.ISIG;
-                ISTRIP = LinuxDefines.ISTRIP;
-                IXANY = LinuxDefines.IXANY;
-                IXOFF = LinuxDefines.IXOFF;
-                IXON = LinuxDefines.IXON;
+                ICRNL = Linux_AllArchs_Defines.ICRNL;
+                IGNBRK = Linux_AllArchs_Defines.IGNBRK;
+                IGNCR = Linux_AllArchs_Defines.IGNCR;
+                IGNPAR = Linux_AllArchs_Defines.IGNPAR;
+                INLCR = Linux_AllArchs_Defines.INLCR;
+                INPCK = Linux_AllArchs_Defines.INPCK;
+                ISTRIP = Linux_AllArchs_Defines.ISTRIP;
+                IXANY = Linux_AllArchs_Defines.IXANY;
 
-                NCCS = LinuxDefines.NCCS;
-                NL0 = IntDefine.toIntDefine(LinuxDefines.NL0);
-                NL1 = IntDefine.toIntDefine(LinuxDefines.NL1);
-                NLDLY = IntDefine.toIntDefine(LinuxDefines.NLDLY);
-                NOFLSH = LinuxDefines.NOFLSH;
+                NCCS = Linux_AllArchs_Defines.NCCS;
+                NL0 = IntDefine.toIntDefine(Linux_AllArchs_Defines.NL0);
+                NL1 = IntDefine.toIntDefine(Linux_AllArchs_Defines.NL1);
 
-                OCRNL = LinuxDefines.OCRNL;
-                OFDEL = IntDefine.toIntDefine(LinuxDefines.OFDEL);
-                OFILL = IntDefine.toIntDefine(LinuxDefines.OFILL);
-                ONLCR = LinuxDefines.ONLCR;
-                ONLRET = LinuxDefines.ONLRET;
-                ONOCR = LinuxDefines.ONOCR;
-                OPOST = LinuxDefines.OPOST;
+                OCRNL = Linux_AllArchs_Defines.OCRNL;
+                OFDEL = IntDefine.toIntDefine(Linux_AllArchs_Defines.OFDEL);
+                OFILL = IntDefine.toIntDefine(Linux_AllArchs_Defines.OFILL);
+                ONLRET = Linux_AllArchs_Defines.ONLRET;
+                ONOCR = Linux_AllArchs_Defines.ONOCR;
+                OPOST = Linux_AllArchs_Defines.OPOST;
 
-                PARENB = LinuxDefines.PARENB;
                 PAREXT = IntDefine.UNDEFINED;
-                PARMRK = LinuxDefines.PARMRK;
-                PARODD = LinuxDefines.PARODD;
+                PARMRK = Linux_AllArchs_Defines.PARMRK;
 
-                TAB0 = IntDefine.toIntDefine(LinuxDefines.TAB0);
-                TAB1 = IntDefine.toIntDefine(LinuxDefines.TAB1);
-                TAB2 = IntDefine.toIntDefine(LinuxDefines.TAB2);
-                TAB3 = IntDefine.toIntDefine(LinuxDefines.TAB3);
-                TABDLY = IntDefine.toIntDefine(LinuxDefines.TABDLY);
-                TCIFLUSH = LinuxDefines.TCIFLUSH;
-                TCIOFF = LinuxDefines.TCIOFF;
-                TCIOFLUSH = LinuxDefines.TCIOFLUSH;
-                TCION = LinuxDefines.TCION;
-                TCOFLUSH = LinuxDefines.TCOFLUSH;
-                TCOOFF = LinuxDefines.TCOOFF;
-                TCOON = LinuxDefines.TCOON;
-                TCSADRAIN = LinuxDefines.TCSADRAIN;
-                TCSAFLUSH = LinuxDefines.TCSAFLUSH;
-                TCSANOW = LinuxDefines.TCSANOW;
-                TOSTOP = LinuxDefines.TOSTOP;
+                TAB0 = IntDefine.toIntDefine(Linux_AllArchs_Defines.TAB0);
+                TCIFLUSH = Linux_AllArchs_Defines.TCIFLUSH;
+                TCIOFF = Linux_AllArchs_Defines.TCIOFF;
+                TCIOFLUSH = Linux_AllArchs_Defines.TCIOFLUSH;
+                TCION = Linux_AllArchs_Defines.TCION;
+                TCOFLUSH = Linux_AllArchs_Defines.TCOFLUSH;
+                TCOOFF = Linux_AllArchs_Defines.TCOOFF;
+                TCOON = Linux_AllArchs_Defines.TCOON;
+                VERASE = Linux_AllArchs_Defines.VERASE;
+                VINTR = Linux_AllArchs_Defines.VINTR;
+                VKILL = Linux_AllArchs_Defines.VKILL;
+                VQUIT = Linux_AllArchs_Defines.VQUIT;
+                VT0 = IntDefine.toIntDefine(Linux_AllArchs_Defines.VT0);
 
-                VEOF = LinuxDefines.VEOF;
-                VEOL = LinuxDefines.VEOL;
-                VERASE = LinuxDefines.VERASE;
-                VINTR = LinuxDefines.VINTR;
-                VKILL = LinuxDefines.VKILL;
-                VMIN = LinuxDefines.VMIN;
-                VQUIT = LinuxDefines.VQUIT;
-                VSTART = LinuxDefines.VSTART;
-                VSTOP = LinuxDefines.VSTOP;
-                VSUSP = LinuxDefines.VSUSP;
-                VT0 = IntDefine.toIntDefine(LinuxDefines.VT0);
-                VT1 = IntDefine.toIntDefine(LinuxDefines.VT1);
-                VTDLY = IntDefine.toIntDefine(LinuxDefines.VTDLY);
-                VTIME = LinuxDefines.VTIME;
+                switch (multiarchInfo.getArch()) {
+                    case MIPS:
+                    case MIPS_64:
+                        CMSPAR = IntDefine.UNDEFINED;
+                        TCSADRAIN = Linux_Mips_Mips64_Defines.TCSADRAIN;
+                        TCSAFLUSH = Linux_Mips_Mips64_Defines.TCSAFLUSH;
+                        TCSANOW = Linux_Mips_Mips64_Defines.TCSANOW;
+
+                        VEOF = Linux_Mips_Mips64_Defines.VEOF;
+
+                        _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.UNDEFINED;
+                        _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.UNDEFINED;
+                        break;
+                    case AARCH64:
+                    case ARM:
+                    case I386:
+                    case X86_64:
+                    case POWER_PC_64:
+                    case RISC_V_64:
+                    case S390_X:
+                        CMSPAR = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64Defines.CMSPAR);
+                        TCSADRAIN = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64Defines.TCSADRAIN;
+                        TCSAFLUSH = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64Defines.TCSAFLUSH;
+                        TCSANOW = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64Defines.TCSANOW;
+
+                        VEOF = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64Defines.VEOF;
+
+                        _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64Defines._HAVE_STRUCT_TERMIOS_C_ISPEED);
+                        _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64Defines._HAVE_STRUCT_TERMIOS_C_OSPEED);
+
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No termios.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
+                switch (multiarchInfo.getArch()) {
+                    case MIPS:
+                    case MIPS_64:
+                        TOSTOP = Linux_Mips_Mips64_Defines.TOSTOP;
+                        VEOL = Linux_Mips_Mips64_Defines.VEOL;
+                        IEXTEN = Linux_Mips_Mips64_Defines.IEXTEN;
+                        VMIN = Linux_Mips_Mips64_Defines.VMIN;
+                        break;
+                    case AARCH64:
+                    case ARM:
+                    case I386:
+                    case RISC_V_64:
+                    case X86_64:
+                        TOSTOP = Linux_Aarch64_Arm_I386_RiscV64_X86_64Defines.TOSTOP;
+                        VEOL = Linux_Aarch64_Arm_I386_RiscV64_X86_64Defines.VEOL;
+                        IEXTEN = Linux_Aarch64_Arm_I386_RiscV64_X86_64Defines.IEXTEN;
+                        VMIN = Linux_Aarch64_Arm_I386_RiscV64_X86_64Defines.VMIN;
+                        break;
+                    case POWER_PC_64:
+                    case S390_X:
+                        TOSTOP = Linux_Ppc64_S390_Defines.TOSTOP;
+                        VEOL = Linux_Ppc64_S390_Defines.VEOL;
+                        IEXTEN = Linux_Ppc64_S390_Defines.IEXTEN;
+                        VMIN = Linux_Ppc64_S390_Defines.VMIN;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No termios.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
+
                 break;
             default:
-                throw new NoClassDefFoundError("No unistd.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No termios.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
 
     }
@@ -1972,16 +2154,33 @@ public final class Termios {
          */
         static {
             LibJnhwPosixLoader.touch();
+            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+            alignof = Alignment.AT_4;
             offsetof_C_iflag = 0;
             offsetof_C_oflag = 4;
             offsetof_C_cflag = 8;
             offsetof_C_lflag = 12;
             offsetof_C_cc = 17;
             offsetof_C_line = 16;
-            offsetof_C_ispeed = 52;
-            offsetof_C_ospeed = 56;
-            sizeof = 60;
-            alignof = Alignment.AT_4;
+            switch (multiarchInfo.getOS()) {
+                case LINUX:
+                    switch (multiarchInfo.getArch()) {
+                        case MIPS:
+                        case MIPS_64:
+                            sizeof = 52;
+                            offsetof_C_ispeed = -1;
+                            offsetof_C_ospeed = -1;
+                            break;
+                        default:
+                            offsetof_C_ispeed = 52;
+                            offsetof_C_ospeed = 56;
+                            sizeof = 60;
+
+                    }
+                    break;
+                default:
+                    throw new NoClassDefFoundError("No termios.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+            }
         }
 
         /**

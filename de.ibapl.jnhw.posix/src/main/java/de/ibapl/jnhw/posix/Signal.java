@@ -46,6 +46,8 @@ import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.common.util.ObjectDefine;
+import de.ibapl.jnhw.libloader.Arch;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
@@ -63,7 +65,7 @@ import java.io.IOException;
 @Include("#include <signal.h>")
 public class Signal {
 
-    public static class LinuxDefines {
+    public static interface Linux_AllArchs_Defines {
 
         public final static int ILL_ILLOPC = 1;
         public final static int ILL_ILLOPN = 2;
@@ -107,29 +109,17 @@ public class Signal {
         public final static int POLL_PRI = 5;
         public final static int POLL_HUP = 6;
 
-        public final static int SI_USER = 0; //-1;
+        public final static int SI_USER = 0;
         public final static int SI_QUEUE = -1;
-        public final static int SI_TIMER = -2; //-1;
-        public final static int SI_ASYNCIO = -4; //-1;
-        public final static int SI_MESGQ = -3; //-1;
-
-        public final static int SIG_BLOCK = 0;
-        public final static int SIG_UNBLOCK = 1;
-        public final static int SIG_SETMASK = 2;
 
         public final static int SA_NOCLDSTOP = 1;
         public final static int SA_ONSTACK = 0x08000000;
         public final static int SA_RESETHAND = 0x80000000;
         public final static int SA_RESTART = 0x10000000;
-        public final static int SA_NOCLDWAIT = 2;
-        public final static int SA_SIGINFO = 4;
         public final static int SA_NODEFER = 0x40000000;
 
         public final static int SS_ONSTACK = 1;
         public final static int SS_DISABLE = 2;
-
-        public final static int MINSIGSTKSZ = 2048;
-        public final static int SIGSTKSZ = 8192;
 
         public final static FunctionPtr_I_V SIG_ERR = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(-1));
         public final static FunctionPtr_I_V SIG_DFL = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(0));
@@ -147,31 +137,102 @@ public class Signal {
         public final static int SIGFPE = 8;
         public final static int SIGSEGV = 11;
         public final static int SIGTERM = 15;
-        /* Historical signals specified by POSIX. */
         public final static int SIGHUP = 1;
         public final static int SIGQUIT = 3;
         public final static int SIGTRAP = 5;
         public final static int SIGKILL = 9;
-        public final static int SIGBUS = 7; //10;
-        public final static int SIGSYS = 31; //12;
         public final static int SIGPIPE = 13;
         public final static int SIGALRM = 14;
-        /* New(er) POSIX signals (1003.1-2008, 1003.1-2013).  */
-        public final static int SIGURG = 23; //16;
-        public final static int SIGSTOP = 19; //17;
-        public final static int SIGTSTP = 20; //18;
-        public final static int SIGCONT = 18; //19;
-        public final static int SIGCHLD = 17; //20;
+    }
+
+    public static interface Linux_Ppc64_S390_Defines {
+
+        public final static int MINSIGSTKSZ = 4096;
+    }
+
+    public static interface Linux_Aarc64_Defines {
+
+        public final static int MINSIGSTKSZ = 5120;
+    }
+
+    public static interface Linux_Aarc64_Ppc64_S390_Defines {
+
+        public final static int SIGSTKSZ = 16384;
+    }
+
+    public static interface Linux_Arm_I386_RiscV64_X86_64_Defines {
+
+        public final static int MINSIGSTKSZ = 2048;
+        public final static int SIGSTKSZ = 8192;
+    }
+
+    public static interface Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines {
+
+        public final static int SA_NOCLDWAIT = 2;
+        public final static int SA_SIGINFO = 4;
+
+        public final static int SI_TIMER = -2;
+        public final static int SI_ASYNCIO = -4;
+        public final static int SI_MESGQ = -3;
+
+        public final static int SIG_BLOCK = 0;
+        public final static int SIG_UNBLOCK = 1;
+        public final static int SIG_SETMASK = 2;
+
+        public final static int SIGBUS = 7;
+        public final static int SIGCHLD = 17;
+        public final static int SIGCONT = 18;
+        public final static int SIGPOLL = 29;
+        public final static int SIGPROF = 27;
+        public final static int SIGSTOP = 19;
+        public final static int SIGSYS = 31;
+        public final static int SIGTSTP = 20;
         public final static int SIGTTIN = 21;
         public final static int SIGTTOU = 22;
-        public final static int SIGPOLL = 29;//23;
+        public final static int SIGUSR1 = 10;
+        public final static int SIGUSR2 = 12;
+        public final static int SIGURG = 23;
+        public final static int SIGVTALRM = 26;
         public final static int SIGXCPU = 24;
         public final static int SIGXFSZ = 25;
-        public final static int SIGVTALRM = 26;
-        public final static int SIGPROF = 27;
-        public final static int SIGUSR1 = 10; //30;
-        public final static int SIGUSR2 = 12;//31;
 
+    }
+
+    public static interface Linux_Mips_Mips64_Defines {
+
+        public final static int SA_NOCLDWAIT = 65536;
+        public final static int SA_SIGINFO = 8;
+
+        public final static int SI_TIMER = -3;
+        public final static int SI_ASYNCIO = -2;
+        public final static int SI_MESGQ = -4;
+
+        public final static int SIG_BLOCK = 1;
+        public final static int SIG_UNBLOCK = 2;
+        public final static int SIG_SETMASK = 3;
+
+        public final static int SIGBUS = 10;
+        public final static int SIGCHLD = 18;
+        public final static int SIGCONT = 25;
+        public final static int SIGPOLL = 22;
+        public final static int SIGPROF = 29;
+        public final static int SIGSTOP = 23;
+        public final static int SIGTSTP = 24;
+        public final static int SIGSYS = 12;
+        public final static int SIGTTIN = 26;
+        public final static int SIGTTOU = 27;
+        public final static int SIGUSR1 = 16;
+        public final static int SIGUSR2 = 17;
+        public final static int SIGURG = 21;
+        public final static int SIGVTALRM = 28;
+        public final static int SIGXCPU = 30;
+        public final static int SIGXFSZ = 31;
+    }
+
+    public static interface Defines__AARCH64__LINUX__GNU extends Linux_AllArchs_Defines, Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines, Linux_Aarc64_Defines, Linux_Aarc64_Ppc64_S390_Defines {
+    }
+
+    public static interface Defines__MIPS_64__LINUX__GNU_ABI_64 extends Linux_AllArchs_Defines, Linux_Mips_Mips64_Defines {
     }
 
     /**
@@ -185,113 +246,188 @@ public class Signal {
      */
     static {
         LibJnhwPosixLoader.touch();
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+
+        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+        switch (multiarchInfo.getOS()) {
             case LINUX:
                 HAVE_SIGNAL_H = true;
 
-                BUS_ADRALN = LinuxDefines.BUS_ADRALN;
-                BUS_ADRERR = LinuxDefines.BUS_ADRERR;
-                BUS_OBJERR = LinuxDefines.BUS_OBJERR;
+                BUS_ADRALN = Linux_AllArchs_Defines.BUS_ADRALN;
+                BUS_ADRERR = Linux_AllArchs_Defines.BUS_ADRERR;
+                BUS_OBJERR = Linux_AllArchs_Defines.BUS_OBJERR;
 
-                CLD_CONTINUED = LinuxDefines.CLD_CONTINUED;
-                CLD_DUMPED = LinuxDefines.CLD_DUMPED;
-                CLD_EXITED = LinuxDefines.CLD_EXITED;
-                CLD_KILLED = LinuxDefines.CLD_KILLED;
-                CLD_STOPPED = LinuxDefines.CLD_STOPPED;
-                CLD_TRAPPED = LinuxDefines.CLD_TRAPPED;
+                CLD_CONTINUED = Linux_AllArchs_Defines.CLD_CONTINUED;
+                CLD_DUMPED = Linux_AllArchs_Defines.CLD_DUMPED;
+                CLD_EXITED = Linux_AllArchs_Defines.CLD_EXITED;
+                CLD_KILLED = Linux_AllArchs_Defines.CLD_KILLED;
+                CLD_STOPPED = Linux_AllArchs_Defines.CLD_STOPPED;
+                CLD_TRAPPED = Linux_AllArchs_Defines.CLD_TRAPPED;
 
-                FPE_FLTDIV = LinuxDefines.FPE_FLTDIV;
-                FPE_FLTINV = LinuxDefines.FPE_FLTINV;
-                FPE_FLTOVF = LinuxDefines.FPE_FLTOVF;
-                FPE_FLTRES = LinuxDefines.FPE_FLTRES;
-                FPE_FLTSUB = LinuxDefines.FPE_FLTSUB;
-                FPE_FLTUND = LinuxDefines.FPE_FLTUND;
-                FPE_INTDIV = LinuxDefines.FPE_INTDIV;
-                FPE_INTOVF = LinuxDefines.FPE_INTOVF;
+                FPE_FLTDIV = Linux_AllArchs_Defines.FPE_FLTDIV;
+                FPE_FLTINV = Linux_AllArchs_Defines.FPE_FLTINV;
+                FPE_FLTOVF = Linux_AllArchs_Defines.FPE_FLTOVF;
+                FPE_FLTRES = Linux_AllArchs_Defines.FPE_FLTRES;
+                FPE_FLTSUB = Linux_AllArchs_Defines.FPE_FLTSUB;
+                FPE_FLTUND = Linux_AllArchs_Defines.FPE_FLTUND;
+                FPE_INTDIV = Linux_AllArchs_Defines.FPE_INTDIV;
+                FPE_INTOVF = Linux_AllArchs_Defines.FPE_INTOVF;
 
-                ILL_BADSTK = LinuxDefines.ILL_BADSTK;
-                ILL_COPROC = LinuxDefines.ILL_COPROC;
-                ILL_ILLADR = LinuxDefines.ILL_ILLADR;
-                ILL_ILLOPC = LinuxDefines.ILL_ILLOPC;
-                ILL_ILLOPN = LinuxDefines.ILL_ILLOPN;
-                ILL_ILLTRP = LinuxDefines.ILL_ILLTRP;
-                ILL_PRVOPC = LinuxDefines.ILL_PRVOPC;
-                ILL_PRVREG = LinuxDefines.ILL_PRVREG;
+                ILL_BADSTK = Linux_AllArchs_Defines.ILL_BADSTK;
+                ILL_COPROC = Linux_AllArchs_Defines.ILL_COPROC;
+                ILL_ILLADR = Linux_AllArchs_Defines.ILL_ILLADR;
+                ILL_ILLOPC = Linux_AllArchs_Defines.ILL_ILLOPC;
+                ILL_ILLOPN = Linux_AllArchs_Defines.ILL_ILLOPN;
+                ILL_ILLTRP = Linux_AllArchs_Defines.ILL_ILLTRP;
+                ILL_PRVOPC = Linux_AllArchs_Defines.ILL_PRVOPC;
+                ILL_PRVREG = Linux_AllArchs_Defines.ILL_PRVREG;
+                switch (multiarchInfo.getArch()) {
+                    case AARCH64:
+                        MINSIGSTKSZ = Linux_Aarc64_Defines.MINSIGSTKSZ;
+                        break;
+                    case ARM:
+                    case I386:
+                    case RISC_V_64:
+                    case X86_64:
+                        MINSIGSTKSZ = Linux_Arm_I386_RiscV64_X86_64_Defines.MINSIGSTKSZ;
+                        break;
+                    case POWER_PC_64:
+                    case S390_X:
+                        MINSIGSTKSZ = Linux_Ppc64_S390_Defines.MINSIGSTKSZ;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No signal.h defines for MINSIGSTKSZ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
 
-                MINSIGSTKSZ = LinuxDefines.MINSIGSTKSZ;
+                POLL_ERR = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_ERR);
+                POLL_HUP = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_HUP);
+                POLL_IN = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_IN);
+                POLL_MSG = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_MSG);
+                POLL_OUT = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_OUT);
+                POLL_PRI = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_PRI);
 
-                POLL_ERR = IntDefine.toIntDefine(LinuxDefines.POLL_ERR);
-                POLL_HUP = IntDefine.toIntDefine(LinuxDefines.POLL_HUP);
-                POLL_IN = IntDefine.toIntDefine(LinuxDefines.POLL_IN);
-                POLL_MSG = IntDefine.toIntDefine(LinuxDefines.POLL_MSG);
-                POLL_OUT = IntDefine.toIntDefine(LinuxDefines.POLL_OUT);
-                POLL_PRI = IntDefine.toIntDefine(LinuxDefines.POLL_PRI);
+                SA_NOCLDSTOP = Linux_AllArchs_Defines.SA_NOCLDSTOP;
+                SA_NODEFER = Linux_AllArchs_Defines.SA_NODEFER;
+                SA_ONSTACK = Linux_AllArchs_Defines.SA_ONSTACK;
+                SA_RESETHAND = Linux_AllArchs_Defines.SA_RESETHAND;
+                SA_RESTART = Linux_AllArchs_Defines.SA_RESTART;
 
-                SA_NOCLDSTOP = LinuxDefines.SA_NOCLDSTOP;
-                SA_NOCLDWAIT = LinuxDefines.SA_NOCLDWAIT;
-                SA_NODEFER = LinuxDefines.SA_NODEFER;
-                SA_ONSTACK = LinuxDefines.SA_ONSTACK;
-                SA_RESETHAND = LinuxDefines.SA_RESETHAND;
-                SA_RESTART = LinuxDefines.SA_RESTART;
-                SA_SIGINFO = LinuxDefines.SA_SIGINFO;
+                SEGV_ACCERR = Linux_AllArchs_Defines.SEGV_ACCERR;
+                SEGV_MAPERR = Linux_AllArchs_Defines.SEGV_MAPERR;
 
-                SEGV_ACCERR = LinuxDefines.SEGV_ACCERR;
-                SEGV_MAPERR = LinuxDefines.SEGV_MAPERR;
+                SIGABRT = Linux_AllArchs_Defines.SIGABRT;
+                SIGALRM = Linux_AllArchs_Defines.SIGALRM;
 
-                SIGABRT = LinuxDefines.SIGABRT;
-                SIGALRM = LinuxDefines.SIGALRM;
-                SIGBUS = LinuxDefines.SIGBUS;
-                SIGCHLD = LinuxDefines.SIGCHLD;
-                SIGCONT = LinuxDefines.SIGCONT;
+                SIGEV_NONE = IntDefine.toIntDefine(Linux_AllArchs_Defines.SIGEV_NONE);
+                SIGEV_SIGNAL = IntDefine.toIntDefine(Linux_AllArchs_Defines.SIGEV_SIGNAL);
+                SIGEV_THREAD = IntDefine.toIntDefine(Linux_AllArchs_Defines.SIGEV_THREAD);
 
-                SIGEV_NONE = IntDefine.toIntDefine(LinuxDefines.SIGEV_NONE);
-                SIGEV_SIGNAL = IntDefine.toIntDefine(LinuxDefines.SIGEV_SIGNAL);
-                SIGEV_THREAD = IntDefine.toIntDefine(LinuxDefines.SIGEV_THREAD);
+                SIGFPE = Linux_AllArchs_Defines.SIGFPE;
+                SIGHUP = Linux_AllArchs_Defines.SIGHUP;
+                SIGILL = Linux_AllArchs_Defines.SIGILL;
+                SIGINT = Linux_AllArchs_Defines.SIGINT;
+                SIGKILL = Linux_AllArchs_Defines.SIGKILL;
+                SIGPIPE = Linux_AllArchs_Defines.SIGPIPE;
+                SIGQUIT = Linux_AllArchs_Defines.SIGQUIT;
+                SIGSEGV = Linux_AllArchs_Defines.SIGSEGV;
+                switch (multiarchInfo.getArch()) {
+                    case AARCH64:
+                    case POWER_PC_64:
+                    case S390_X:
+                        SIGSTKSZ = Linux_Aarc64_Ppc64_S390_Defines.SIGSTKSZ;
+                        break;
+                    case ARM:
+                    case I386:
+                    case RISC_V_64:
+                    case X86_64:
+                        SIGSTKSZ = Linux_Arm_I386_RiscV64_X86_64_Defines.SIGSTKSZ;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No signal.h defines for SIGSTKSZ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
+                SIGTERM = Linux_AllArchs_Defines.SIGTERM;
+                SIGTRAP = Linux_AllArchs_Defines.SIGTRAP;
+                SIG_DFL = Linux_AllArchs_Defines.SIG_DFL;
+                SIG_ERR = Linux_AllArchs_Defines.SIG_ERR;
+                SIG_HOLD = ObjectDefine.toObjectDefine(Linux_AllArchs_Defines.SIG_HOLD);
+                SIG_IGN = Linux_AllArchs_Defines.SIG_IGN;
+                SI_QUEUE = Linux_AllArchs_Defines.SI_QUEUE;
+                SI_USER = Linux_AllArchs_Defines.SI_USER;
 
-                SIGFPE = LinuxDefines.SIGFPE;
-                SIGHUP = LinuxDefines.SIGHUP;
-                SIGILL = LinuxDefines.SIGILL;
-                SIGINT = LinuxDefines.SIGINT;
-                SIGKILL = LinuxDefines.SIGKILL;
-                SIGPIPE = LinuxDefines.SIGPIPE;
-                SIGPOLL = IntDefine.toIntDefine(LinuxDefines.SIGPOLL);
-                SIGPROF = LinuxDefines.SIGPROF;
-                SIGQUIT = LinuxDefines.SIGQUIT;
-                SIGSEGV = LinuxDefines.SIGSEGV;
-                SIGSTKSZ = LinuxDefines.SIGSTKSZ;
-                SIGSTOP = LinuxDefines.SIGSTOP;
-                SIGSYS = LinuxDefines.SIGSYS;
-                SIGTERM = LinuxDefines.SIGTERM;
-                SIGTRAP = LinuxDefines.SIGTRAP;
-                SIGTSTP = LinuxDefines.SIGTSTP;
-                SIGTTIN = LinuxDefines.SIGTTIN;
-                SIGTTOU = LinuxDefines.SIGTTOU;
-                SIGURG = LinuxDefines.SIGURG;
-                SIGUSR1 = LinuxDefines.SIGUSR1;
-                SIGUSR2 = LinuxDefines.SIGUSR2;
-                SIGVTALRM = LinuxDefines.SIGVTALRM;
-                SIGXCPU = LinuxDefines.SIGXCPU;
-                SIGXFSZ = LinuxDefines.SIGXFSZ;
-                SIG_BLOCK = LinuxDefines.SIG_BLOCK;
-                SIG_DFL = LinuxDefines.SIG_DFL;
-                SIG_ERR = LinuxDefines.SIG_ERR;
-                SIG_HOLD = ObjectDefine.toObjectDefine(LinuxDefines.SIG_HOLD);
-                SIG_IGN = LinuxDefines.SIG_IGN;
-                SIG_SETMASK = LinuxDefines.SIG_SETMASK;
-                SIG_UNBLOCK = LinuxDefines.SIG_UNBLOCK;
+                SS_DISABLE = Linux_AllArchs_Defines.SS_DISABLE;
+                SS_ONSTACK = Linux_AllArchs_Defines.SS_ONSTACK;
 
-                SI_ASYNCIO = IntDefine.toIntDefine(LinuxDefines.SI_ASYNCIO);
-                SI_MESGQ = IntDefine.toIntDefine(LinuxDefines.SI_MESGQ);
-                SI_QUEUE = LinuxDefines.SI_QUEUE;
-                SI_TIMER = LinuxDefines.SI_TIMER;
-                SI_USER = LinuxDefines.SI_USER;
+                TRAP_BRKPT = Linux_AllArchs_Defines.TRAP_BRKPT;
+                TRAP_TRACE = Linux_AllArchs_Defines.TRAP_TRACE;
 
-                SS_DISABLE = LinuxDefines.SS_DISABLE;
-                SS_ONSTACK = LinuxDefines.SS_ONSTACK;
+                switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                    case MIPS:
+                    case MIPS_64:
+                        SA_NOCLDWAIT = Linux_Mips_Mips64_Defines.SA_NOCLDWAIT;
+                        SA_SIGINFO = Linux_Mips_Mips64_Defines.SA_SIGINFO;
 
-                TRAP_BRKPT = LinuxDefines.TRAP_BRKPT;
-                TRAP_TRACE = LinuxDefines.TRAP_TRACE;
+                        SIGBUS = Linux_Mips_Mips64_Defines.SIGBUS;
+                        SIGCHLD = Linux_Mips_Mips64_Defines.SIGCHLD;
+                        SIGCONT = Linux_Mips_Mips64_Defines.SIGCONT;
+                        SIGPOLL = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.SIGPOLL);
+                        SIGPROF = Linux_Mips_Mips64_Defines.SIGPROF;
+                        SIGSTOP = Linux_Mips_Mips64_Defines.SIGSTOP;
+                        SIGSYS = Linux_Mips_Mips64_Defines.SIGSYS;
+                        SIGTSTP = Linux_Mips_Mips64_Defines.SIGTSTP;
+                        SIGTTIN = Linux_Mips_Mips64_Defines.SIGTTIN;
+                        SIGTTOU = Linux_Mips_Mips64_Defines.SIGTTOU;
+                        SIGURG = Linux_Mips_Mips64_Defines.SIGURG;
+                        SIGUSR1 = Linux_Mips_Mips64_Defines.SIGUSR1;
+                        SIGUSR2 = Linux_Mips_Mips64_Defines.SIGUSR2;
+                        SIGVTALRM = Linux_Mips_Mips64_Defines.SIGVTALRM;
+                        SIGXCPU = Linux_Mips_Mips64_Defines.SIGXCPU;
+                        SIGXFSZ = Linux_Mips_Mips64_Defines.SIGXFSZ;
+                        SIG_BLOCK = Linux_Mips_Mips64_Defines.SIG_BLOCK;
 
+                        SIG_SETMASK = Linux_Mips_Mips64_Defines.SIG_SETMASK;
+                        SIG_UNBLOCK = Linux_Mips_Mips64_Defines.SIG_UNBLOCK;
+
+                        SI_ASYNCIO = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.SI_ASYNCIO);
+                        SI_MESGQ = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.SI_MESGQ);
+                        SI_TIMER = Linux_Mips_Mips64_Defines.SI_TIMER;
+                        break;
+                    case AARCH64:
+                    case ARM:
+                    case I386:
+                    case POWER_PC_64:
+                    case RISC_V_64:
+                    case S390_X:
+                    case X86_64:
+                        SA_NOCLDWAIT = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SA_NOCLDWAIT;
+                        SA_SIGINFO = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SA_SIGINFO;
+
+                        SIGBUS = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGBUS;
+                        SIGCHLD = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGCHLD;
+                        SIGCONT = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGCONT;
+                        SIGPOLL = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGPOLL);
+                        SIGPROF = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGPROF;
+                        SIGSTOP = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGSTOP;
+                        SIGSYS = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGSYS;
+                        SIGTSTP = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGTSTP;
+                        SIGTTIN = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGTTIN;
+                        SIGTTOU = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGTTOU;
+                        SIGURG = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGURG;
+                        SIGUSR1 = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGUSR1;
+                        SIGUSR2 = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGUSR2;
+                        SIGVTALRM = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGVTALRM;
+                        SIGXCPU = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGXCPU;
+                        SIGXFSZ = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGXFSZ;
+                        SIG_BLOCK = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIG_BLOCK;
+
+                        SIG_SETMASK = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIG_SETMASK;
+                        SIG_UNBLOCK = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIG_UNBLOCK;
+
+                        SI_ASYNCIO = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SI_ASYNCIO);
+                        SI_MESGQ = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SI_MESGQ);
+                        SI_TIMER = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SI_TIMER;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
                 break;
             default:
                 throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -403,6 +539,10 @@ public class Signal {
                         case POWER_PC_64:
                             alignof = Alignment.AT_8;
                             sizeof = 1272;
+                            break;
+                        case RISC_V_64:
+                            alignof = Alignment.AT_16;
+                            sizeof = 784;
                             break;
                         case S390_X:
                             alignof = Alignment.AT_8;
@@ -1338,26 +1478,34 @@ public class Signal {
                         case AARCH64:
                             alignof = Alignment.AT_8;
                             sizeof = 152;
-                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 8;
-                            offsetof_Sa_flags = -1;
-                            offsetof_Sa_sigaction = -1;
+                            offsetof_Sa_flags = 136;
+                            offsetof_Sa_sigaction = 0;
                             break;
                         case MIPS_64:
                             alignof = Alignment.AT_8;
                             sizeof = 152;
-                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_handler = 8;
                             offsetof_Sa_mask = 16;
-                            offsetof_Sa_flags = -1;
-                            offsetof_Sa_sigaction = -1;
+                            offsetof_Sa_flags = 0;
+                            offsetof_Sa_sigaction = 8;
                             break;
                         case POWER_PC_64:
                             alignof = Alignment.AT_8;
                             sizeof = 152;
-                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 8;
-                            offsetof_Sa_flags = -1;
-                            offsetof_Sa_sigaction = -1;
+                            offsetof_Sa_flags = 136;
+                            offsetof_Sa_sigaction = 0;
+                            break;
+                        case RISC_V_64:
+                            alignof = Alignment.AT_8;
+                            sizeof = 152;
+                            offsetof_Sa_handler = 0;
+                            offsetof_Sa_mask = 8;
+                            offsetof_Sa_flags = 136;
+                            offsetof_Sa_sigaction = 0;
                             break;
                         case S390_X:
                             alignof = Alignment.AT_8;
@@ -1690,7 +1838,7 @@ public class Signal {
                         case AARCH64:
                             alignof = Alignment.AT_16;
                             sizeof = 4560;
-                            offsetof_Uc_link = 0;
+                            offsetof_Uc_link = 8;
                             offsetof_Uc_sigmask = 40;
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 176;
@@ -1714,7 +1862,7 @@ public class Signal {
                         case MIPS_64:
                             alignof = Alignment.AT_8;
                             sizeof = 768;
-                            offsetof_Uc_link = 0;
+                            offsetof_Uc_link = 8;
                             offsetof_Uc_sigmask = 640;
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 40;
@@ -1730,10 +1878,18 @@ public class Signal {
                         case POWER_PC_64:
                             alignof = Alignment.AT_8;
                             sizeof = 1440;
-                            offsetof_Uc_link = 0;
+                            offsetof_Uc_link = 8;
                             offsetof_Uc_sigmask = 40;
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 168;
+                            break;
+                        case RISC_V_64:
+                            alignof = Alignment.AT_16;
+                            sizeof = 960;
+                            offsetof_Uc_link = 8;
+                            offsetof_Uc_sigmask = 40;
+                            offsetof_Uc_stack = 16;
+                            offsetof_Uc_mcontext = 176;
                             break;
                         case S390_X:
                             alignof = Alignment.AT_8;
@@ -1875,21 +2031,34 @@ public class Signal {
          */
         static {
             LibJnhwPosixLoader.touch();
-
-            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
-                case _32_BIT:
-                    alignof = Alignment.AT_4;
-                    sizeof = 12;
-                    offsetof_Ss_sp = 0;
-                    offsetof_Ss_size = 8;
-                    offsetof_Ss_flags = 4;
-                    break;
-                case _64_BIT:
-                    alignof = Alignment.AT_8;
-                    sizeof = 24;
-                    offsetof_Ss_sp = 0;
-                    offsetof_Ss_size = 16;
-                    offsetof_Ss_flags = 8;
+            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+            switch (multiarchInfo.getOS()) {
+                case LINUX:
+                    switch (multiarchInfo.getSizeOfPointer()) {
+                        case _32_BIT:
+                            alignof = Alignment.AT_4;
+                            sizeof = 12;
+                            offsetof_Ss_sp = 0;
+                            offsetof_Ss_size = 8;
+                            offsetof_Ss_flags = 4;
+                            break;
+                        case _64_BIT:
+                            alignof = Alignment.AT_8;
+                            sizeof = 24;
+                            offsetof_Ss_sp = 0;
+                            switch (multiarchInfo.getArch()) {
+                                case MIPS_64:
+                                    offsetof_Ss_size = 8;
+                                    offsetof_Ss_flags = 16;
+                                    break;
+                                default:
+                                    offsetof_Ss_size = 16;
+                                    offsetof_Ss_flags = 8;
+                            }
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
                     break;
                 default:
                     throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -2009,8 +2178,10 @@ public class Signal {
             switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
                 case LINUX:
                     sizeof = 128;
-                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
-                        case _32_BIT:
+                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                        case ARM:
+                        case I386:
+                        case MIPS:
                             alignof = Alignment.AT_4;
                             offsetof_Si_signo = 0;
                             offsetof_Si_code = 8;
@@ -2022,11 +2193,27 @@ public class Signal {
                             offsetof_Si_band = 12;
                             offsetof_Si_value = 20;
                             break;
-                        case _64_BIT:
+                        case AARCH64:
+                        case POWER_PC_64:
+                        case RISC_V_64:
+                        case S390_X:
+                        case X86_64:
                             alignof = Alignment.AT_8;
                             offsetof_Si_signo = 0;
                             offsetof_Si_code = 8;
                             offsetof_Si_errno = 4;
+                            offsetof_Si_pid = 16;
+                            offsetof_Si_uid = 20;
+                            offsetof_Si_addr = 16;
+                            offsetof_Si_status = 24;
+                            offsetof_Si_band = 16;
+                            offsetof_Si_value = 24;
+                            break;
+                        case MIPS_64:
+                            alignof = Alignment.AT_8;
+                            offsetof_Si_signo = 0;
+                            offsetof_Si_code = 4;
+                            offsetof_Si_errno = 8;
                             offsetof_Si_pid = 16;
                             offsetof_Si_uid = 20;
                             offsetof_Si_addr = 16;

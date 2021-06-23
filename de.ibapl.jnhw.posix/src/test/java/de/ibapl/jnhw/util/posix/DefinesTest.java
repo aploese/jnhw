@@ -113,7 +113,7 @@ public class DefinesTest {
 
         public final static native Integer __powerpc64__();
 
-        public final static native Integer __riscv__();
+        public final static native Integer __riscv();
 
         public final static native Integer __SH4__();
 

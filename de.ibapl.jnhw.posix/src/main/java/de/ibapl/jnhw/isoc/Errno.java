@@ -23,6 +23,7 @@ package de.ibapl.jnhw.isoc;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -37,11 +38,22 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <errno.h>")
 public abstract class Errno {
 
-    public static class LinuxDefines {
+    public static interface LinuxDefines {
 
         public final static int EDOM = 33;
-        public final static int EILSEQ = 84;
         public final static int ERANGE = 34;
+    }
+
+    public static interface Linux_NonMips_Defines {
+
+        public final static int EILSEQ = 84;
+
+    }
+
+    public static interface Linux_Mips_Defines {
+
+        public final static int EILSEQ = 88;
+
     }
 
     /**
@@ -55,12 +67,20 @@ public abstract class Errno {
      */
     static {
         LibJnhwPosixLoader.touch();
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+        switch (multiarchInfo.getOS()) {
             case LINUX:
                 HAVE_ERRNO_H = true;
                 EDOM = LinuxDefines.EDOM;
-                EILSEQ = LinuxDefines.EILSEQ;
                 ERANGE = LinuxDefines.ERANGE;
+                switch (multiarchInfo.getArch()) {
+                    case MIPS:
+                    case MIPS_64:
+                        EILSEQ = Linux_Mips_Defines.EILSEQ;
+                        break;
+                    default:
+                        EILSEQ = Linux_NonMips_Defines.EILSEQ;
+                }
                 break;
             default:
                 throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

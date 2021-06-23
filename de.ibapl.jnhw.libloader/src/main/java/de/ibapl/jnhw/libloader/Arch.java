@@ -35,6 +35,7 @@ public enum Arch {
     MIPS(SizeInBit._64_BIT, "mips", "%sel", "%s"),
     MIPS_64(SizeInBit._64_BIT, "mips64", "%sel", "%s"),
     POWER_PC_64(SizeInBit._64_BIT, "powerpc64", "%sle", "%s"),
+    RISC_V_64(SizeInBit._64_BIT, "riscv64", "%s", null),
     S390_X(SizeInBit._64_BIT, "s390x", null, "%s"),
     SPARC_64(SizeInBit._64_BIT, "sparc64", null, "%s");
 

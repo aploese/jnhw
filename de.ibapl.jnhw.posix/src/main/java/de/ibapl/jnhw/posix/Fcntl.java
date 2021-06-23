@@ -31,7 +31,6 @@ import de.ibapl.jnhw.annotation.posix.sys.types.off64_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.off_t;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
-import de.ibapl.jnhw.libloader.SizeInBit;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -50,7 +49,7 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <fcntl.h>")
 public final class Fcntl {
 
-    public static class LinuxDefines {
+    public static interface LinuxDefines {
 
         public final static int AT_EACCESS = 0x200;
         public final static int AT_FDCWD = -100;
@@ -62,30 +61,17 @@ public final class Fcntl {
         public final static int F_DUPFD_CLOEXEC = 1030;
         public final static int F_GETFD = 1;
         public final static int F_GETFL = 3;
-        public final static int F_GETLK = 5;
-        public final static int F_GETOWN = 9;
         public final static int F_RDLCK = 0;
         public final static int F_SETFD = 2;
         public final static int F_SETFL = 4;
         public final static int F_SETLK = 6;
         public final static int F_SETLKW = 7;
-        public final static int F_SETOWN = 8;
         public final static int F_UNLCK = 2;
         public final static int F_WRLCK = 1;
         public final static int O_ACCMODE = 0003;
-        public final static int O_APPEND = 02000;
-        public final static int O_ASYNC = 020000;
         public final static int O_CLOEXEC = 02000000;
-        public final static int O_CREAT = 0100;
-        public final static int O_DSYNC = 010000;
-        public final static int O_EXCL = 0200;
-        public final static int O_FSYNC = 04010000;
-        public final static int O_NOCTTY = 0400;
-        public final static int O_NONBLOCK = 04000;
         public final static int O_RDONLY = 00;
         public final static int O_RDWR = 02;
-        public final static int O_RSYNC = 04010000;
-        public final static int O_SYNC = 04010000;
         public final static int O_TRUNC = 01000;
         public final static int O_WRONLY = 01;
         public final static int POSIX_FADV_DONTNEED = 4;
@@ -96,25 +82,104 @@ public final class Fcntl {
         public final static int POSIX_FADV_WILLNEED = 3;
     }
 
-    public static class LinuxDefinesARM extends Aio.LinuxDefines {
+    public static interface Linux_I386_Defines {
+
+        public final static int O_LARGEFILE = 0100000;
+    }
+
+    public static interface Linux_Arm_Mips_Defines {
+
+        public final static int O_LARGEFILE = 0400000;
+    }
+
+    public static interface Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines {
+
+        public final static int O_LARGEFILE = 0;
+    }
+
+    public static interface Linux_NonMips_Defines {
+
+        public final static int F_GETLK = 5;
+        public final static int F_GETOWN = 9;
+        public final static int F_SETOWN = 8;
+        public final static int O_APPEND = 02000;
+        public final static int O_ASYNC = 020000;
+        public final static int O_CREAT = 0100;
+        public final static int O_DSYNC = 010000;
+        public final static int O_EXCL = 0200;
+        public final static int O_FSYNC = 04010000;
+        public final static int O_NOCTTY = 0400;
+        public final static int O_NONBLOCK = 04000;
+        public final static int O_RSYNC = 04010000;
+        public final static int O_SYNC = 04010000;
+    }
+
+    public static interface Linux_Aarch64_Arm_Defines {
 
         public final static int O_DIRECTORY = 040000;
-        public final static int O_LARGEFILE = 0400000;
         public final static int O_NOFOLLOW = 0100000;
     }
 
-    public static class LinuxDefinesI386 extends Aio.LinuxDefines {
+    public static interface Linux_Ppc64_S390_Defines {
+
+        public final static int O_DIRECTORY = 040000;
+        public final static int O_NOFOLLOW = 0100000;
+    }
+
+    public static interface Linux_RiscV64_Defines {
+
+        public final static int O_DIRECTORY = 65536;
+        public final static int O_NOFOLLOW = 131072;
+    }
+
+    public static interface Linux_I386_X86_64_Defines {
 
         public final static int O_DIRECTORY = 0200000;
-        public final static int O_LARGEFILE = 0100000;
         public final static int O_NOFOLLOW = 0400000;
     }
 
-    public static class LinuxDefinesX86_64 extends Aio.LinuxDefines {
+    public static interface Linux_Mips_Mips64_Defines {
+
+        public final static int F_GETLK = 14;
+        public final static int F_GETOWN = 23;
+        public final static int F_SETOWN = 24;
+        public final static int O_APPEND = 010;
+        public final static int O_ASYNC = 010000;
+        public final static int O_CREAT = 0400;
+        public final static int O_DSYNC = 020;
+        public final static int O_EXCL = 02000;
+        public final static int O_FSYNC = 040020;
+        public final static int O_NOCTTY = 04000;
+        public final static int O_NONBLOCK = 0200;
+        public final static int O_RSYNC = 040020;
+        public final static int O_SYNC = 040020;
 
         public final static int O_DIRECTORY = 0200000;
-        public final static int O_LARGEFILE = 0;
         public final static int O_NOFOLLOW = 0400000;
+    }
+
+    public static interface Defines_LINUX_ARM extends LinuxDefines, Linux_NonMips_Defines, Linux_Aarch64_Arm_Defines, Linux_Arm_Mips_Defines {
+
+    }
+
+    public static interface Defines_LINUX_ARM64 extends LinuxDefines, Linux_NonMips_Defines, Linux_Aarch64_Arm_Defines, Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines {
+
+    }
+
+    public static interface Defines_LINUX_I386 extends LinuxDefines, Linux_NonMips_Defines, Linux_I386_X86_64_Defines, Linux_I386_Defines {
+
+    }
+
+    public static interface Defines_LINUX_X86_64 extends LinuxDefines, Linux_NonMips_Defines, Linux_I386_X86_64_Defines, Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines {
+
+    }
+
+    public static interface Defines_LINUX_MIPS extends LinuxDefines, Linux_Mips_Mips64_Defines, Linux_Arm_Mips_Defines {
+
+    }
+
+    public static interface Defines_LINUX_MIPS64 extends LinuxDefines, Linux_Mips_Mips64_Defines, Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines {
+
     }
 
     /**
@@ -151,33 +216,20 @@ public final class Fcntl {
                 F_DUPFD_CLOEXEC = LinuxDefines.F_DUPFD_CLOEXEC;
                 F_GETFD = LinuxDefines.F_GETFD;
                 F_GETFL = LinuxDefines.F_GETFL;
-                F_GETLK = LinuxDefines.F_GETLK;
-                F_GETOWN = LinuxDefines.F_GETOWN;
                 F_RDLCK = LinuxDefines.F_RDLCK;
                 F_SETFD = LinuxDefines.F_SETFD;
                 F_SETFL = LinuxDefines.F_SETFL;
                 F_SETLK = LinuxDefines.F_SETLK;
                 F_SETLKW = LinuxDefines.F_SETLKW;
-                F_SETOWN = LinuxDefines.F_SETOWN;
                 F_UNLCK = LinuxDefines.F_UNLCK;
                 F_WRLCK = LinuxDefines.F_WRLCK;
 
                 O_ACCMODE = LinuxDefines.O_ACCMODE;
-                O_APPEND = LinuxDefines.O_APPEND;
-                O_ASYNC = IntDefine.toIntDefine(LinuxDefines.O_ASYNC);
                 O_CLOEXEC = LinuxDefines.O_CLOEXEC;
-                O_CREAT = LinuxDefines.O_CREAT;
-                O_DSYNC = IntDefine.toIntDefine(LinuxDefines.O_DSYNC);
-                O_EXCL = LinuxDefines.O_EXCL;
                 O_EXEC = IntDefine.UNDEFINED;
-                O_FSYNC = IntDefine.toIntDefine(LinuxDefines.O_FSYNC);
-                O_NOCTTY = LinuxDefines.O_NOCTTY;
-                O_NONBLOCK = LinuxDefines.O_NONBLOCK;
                 O_RDONLY = LinuxDefines.O_RDONLY;
                 O_RDWR = LinuxDefines.O_RDWR;
-                O_RSYNC = IntDefine.toIntDefine(LinuxDefines.O_RSYNC);
                 O_SEARCH = IntDefine.UNDEFINED;
-                O_SYNC = LinuxDefines.O_SYNC;
                 O_TRUNC = LinuxDefines.O_TRUNC;
                 O_TTY_INIT = IntDefine.UNDEFINED;
                 O_WRONLY = LinuxDefines.O_WRONLY;
@@ -190,20 +242,82 @@ public final class Fcntl {
                 POSIX_FADV_WILLNEED = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_WILLNEED);
 
                 switch (multiarchInfo.getArch()) {
-                    case ARM:
-                        O_DIRECTORY = LinuxDefinesARM.O_DIRECTORY;
-                        O_LARGEFILE = IntDefine.toIntDefine(LinuxDefinesARM.O_LARGEFILE);
-                        O_NOFOLLOW = LinuxDefinesARM.O_NOFOLLOW;
+                    case AARCH64:
+                    case MIPS_64:
+                    case POWER_PC_64:
+                    case RISC_V_64:
+                    case X86_64:
+                        O_LARGEFILE = IntDefine.toIntDefine(Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines.O_LARGEFILE);
                         break;
                     case I386:
-                        O_DIRECTORY = LinuxDefinesI386.O_DIRECTORY;
-                        O_LARGEFILE = IntDefine.toIntDefine(LinuxDefinesI386.O_LARGEFILE);
-                        O_NOFOLLOW = LinuxDefinesI386.O_NOFOLLOW;
+                        O_LARGEFILE = IntDefine.toIntDefine(Linux_I386_Defines.O_LARGEFILE);
                         break;
+                    case ARM:
+                    case MIPS:
+                        O_LARGEFILE = IntDefine.toIntDefine(Linux_Arm_Mips_Defines.O_LARGEFILE);
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No fcntl.h defines for " + multiarchInfo);
+                }
+
+                switch (multiarchInfo.getArch()) {
+                    case MIPS:
+                    case MIPS_64:
+                        F_GETLK = Linux_Mips_Mips64_Defines.F_GETLK;
+                        F_GETOWN = Linux_Mips_Mips64_Defines.F_GETOWN;
+                        F_SETOWN = Linux_Mips_Mips64_Defines.F_SETOWN;
+                        O_APPEND = Linux_Mips_Mips64_Defines.O_APPEND;
+                        O_ASYNC = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.O_ASYNC);
+                        O_CREAT = Linux_Mips_Mips64_Defines.O_CREAT;
+                        O_DSYNC = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.O_DSYNC);
+                        O_EXCL = Linux_Mips_Mips64_Defines.O_EXCL;
+                        O_FSYNC = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.O_FSYNC);
+                        O_NOCTTY = Linux_Mips_Mips64_Defines.O_NOCTTY;
+                        O_NONBLOCK = Linux_Mips_Mips64_Defines.O_NONBLOCK;
+                        O_RSYNC = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.O_RSYNC);
+                        O_SYNC = Linux_Mips_Mips64_Defines.O_SYNC;
+
+                        break;
+                    default:
+                        F_GETLK = Linux_NonMips_Defines.F_GETLK;
+                        F_GETOWN = Linux_NonMips_Defines.F_GETOWN;
+                        F_SETOWN = Linux_NonMips_Defines.F_SETOWN;
+                        O_APPEND = Linux_NonMips_Defines.O_APPEND;
+                        O_ASYNC = IntDefine.toIntDefine(Linux_NonMips_Defines.O_ASYNC);
+                        O_CREAT = Linux_NonMips_Defines.O_CREAT;
+                        O_DSYNC = IntDefine.toIntDefine(Linux_NonMips_Defines.O_DSYNC);
+                        O_EXCL = Linux_NonMips_Defines.O_EXCL;
+                        O_FSYNC = IntDefine.toIntDefine(Linux_NonMips_Defines.O_FSYNC);
+                        O_NOCTTY = Linux_NonMips_Defines.O_NOCTTY;
+                        O_NONBLOCK = Linux_NonMips_Defines.O_NONBLOCK;
+                        O_RSYNC = IntDefine.toIntDefine(Linux_NonMips_Defines.O_RSYNC);
+                        O_SYNC = Linux_NonMips_Defines.O_SYNC;
+
+                }
+                switch (multiarchInfo.getArch()) {
+                    case AARCH64:
+                    case ARM:
+                        O_DIRECTORY = Linux_Aarch64_Arm_Defines.O_DIRECTORY;
+                        O_NOFOLLOW = Linux_Aarch64_Arm_Defines.O_NOFOLLOW;
+                        break;
+                    case MIPS:
+                    case MIPS_64:
+                        O_DIRECTORY = Linux_Mips_Mips64_Defines.O_DIRECTORY;
+                        O_NOFOLLOW = Linux_Mips_Mips64_Defines.O_NOFOLLOW;
+                        break;
+                    case POWER_PC_64:
+                    case S390_X:
+                        O_DIRECTORY = Linux_Ppc64_S390_Defines.O_DIRECTORY;
+                        O_NOFOLLOW = Linux_Ppc64_S390_Defines.O_NOFOLLOW;
+                        break;
+                    case RISC_V_64:
+                        O_DIRECTORY = Linux_RiscV64_Defines.O_DIRECTORY;
+                        O_NOFOLLOW = Linux_RiscV64_Defines.O_NOFOLLOW;
+                        break;
+                    case I386:
                     case X86_64:
-                        O_DIRECTORY = LinuxDefinesX86_64.O_DIRECTORY;
-                        O_LARGEFILE = IntDefine.toIntDefine(LinuxDefinesX86_64.O_LARGEFILE);
-                        O_NOFOLLOW = LinuxDefinesX86_64.O_NOFOLLOW;
+                        O_DIRECTORY = Linux_I386_X86_64_Defines.O_DIRECTORY;
+                        O_NOFOLLOW = Linux_I386_X86_64_Defines.O_NOFOLLOW;
                         break;
                     default:
                         throw new NoClassDefFoundError("No fcntl.h defines for " + multiarchInfo);
@@ -897,8 +1011,5 @@ public final class Fcntl {
      * defined. returns an error code.
      */
     public final static native void posix_fallocate64(int fildes, @off64_t long offset, @off64_t long len) throws NativeErrorException, NoSuchNativeMethodException;
-
-    private Fcntl() {
-    }
 
 }

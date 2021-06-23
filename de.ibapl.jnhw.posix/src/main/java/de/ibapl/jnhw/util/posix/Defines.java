@@ -70,14 +70,14 @@ public class Defines {
         }
         __i386__ = arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __i686__ = arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        __mips__ = arch == Arch.MIPS ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __mips__ = (arch == Arch.MIPS) || (arch == Arch.MIPS_64) ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __mips64 = arch == Arch.MIPS_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __MIPSEB__ = ((arch == Arch.MIPS) || (arch == Arch.MIPS_64)) && e == Endianess.BIG ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __MIPSEL__ = ((arch == Arch.MIPS) || (arch == Arch.MIPS_64)) && e == Endianess.LITTLE ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        __MIPS_ARCH = (arch == Arch.MIPS) || (arch == Arch.MIPS_64) ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __MIPS_ARCH = arch == Arch.MIPS ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __powerpc__ = arch == Arch.POWER_PC_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __powerpc64__ = arch == Arch.POWER_PC_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        __riscv__ = IntDefine.UNDEFINED;
+        __riscv = arch == Arch.RISC_V_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __SH4__ = IntDefine.UNDEFINED;
         __s390__ = arch == Arch.S390_X ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __s390x__ = arch == Arch.S390_X ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
@@ -100,23 +100,41 @@ public class Defines {
         _XOPEN_SOURCE_EXTENDED = IntDefine.toIntDefine(1);
 
         switch (mi.getArch()) {
+            case AARCH64:
             case I386:
+            case MIPS_64:
             case X86_64:
+            case POWER_PC_64:
+            case RISC_V_64:
+            case S390_X:
                 __BIGGEST_ALIGNMENT__ = 16;
                 break;
             case ARM:
+            case MIPS:
                 __BIGGEST_ALIGNMENT__ = 8;
                 break;
             default:
                 throw new NoClassDefFoundError("No default value for __BIGGEST_ALIGNMENT__ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
 
-        __GLIBC_MINOR__ = IntDefine.toIntDefine(28);
+        __GLIBC_MINOR__ = mi == MultiarchInfo.RISC_V_64__LINUX__GNU ? IntDefine.toIntDefine(31) : IntDefine.toIntDefine(28);
         __GLIBC__ = IntDefine.toIntDefine(2);
         __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
 
         __ILP32__ = IntDefine.UNDEFINED; // glibc > 2.31? arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        __LP64__ = arch == Arch.X86_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        switch (arch) {
+            case AARCH64:
+            case MIPS_64:
+            case POWER_PC_64:
+            case RISC_V_64:
+            case S390_X:
+            case SPARC_64:
+            case X86_64:
+                __LP64__ = IntDefine.toIntDefine(1);
+                break;
+            default:
+                __LP64__ = IntDefine.UNDEFINED;
+        }
 
         __BYTE_ORDER__ = 1234;
         __ORDER_BIG_ENDIAN__ = 4321;
@@ -127,7 +145,7 @@ public class Defines {
         __SIZEOF_POINTER__ = mi.getSizeOfPointer().sizeInBit / 8;
 
         //Linux
-        __TIMESIZE = IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
+        __TIMESIZE = mi == MultiarchInfo.RISC_V_64__LINUX__GNU ? IntDefine.toIntDefine(64) : IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
 
         //Linux
         __WORDSIZE = IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
@@ -302,7 +320,7 @@ public class Defines {
     public final static IntDefine __MIPSEL__;
 
     @Define
-    public final static IntDefine __riscv__;
+    public final static IntDefine __riscv;
 
     @Define
     public final static IntDefine __s390__;

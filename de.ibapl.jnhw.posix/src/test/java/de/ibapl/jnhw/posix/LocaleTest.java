@@ -24,7 +24,6 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.annotation.posix.locale.locale_t;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
@@ -352,8 +351,9 @@ public class LocaleTest {
     public void testSetlocale() {
         System.out.println("setlocale");
         int category = 0;
-        String locale = "";
-        String result = Locale.setlocale(category, locale);
+        String result = Locale.setlocale(category, null);
+        Assertions.assertNotNull(result);
+        result = Locale.setlocale(category, "C");
         Assertions.assertNotNull(result);
     }
 

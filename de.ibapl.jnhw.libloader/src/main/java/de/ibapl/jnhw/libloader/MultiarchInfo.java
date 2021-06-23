@@ -40,6 +40,7 @@ public enum MultiarchInfo {
     MIPS_64__LINUX__GNU_ABI_64(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.BIG, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
     POWER_PC_64__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.BIG, Arch.POWER_PC_64, OS.LINUX, Abi.GNU),
     POWER_PC_64_LE__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.POWER_PC_64, OS.LINUX, Abi.GNU),
+    RISC_V_64__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.RISC_V_64, OS.LINUX, Abi.GNU),
     S390_X__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.BIG, Arch.S390_X, OS.LINUX, Abi.GNU),
     SPARC_64__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.BIG, Arch.SPARC_64, OS.LINUX, Abi.GNU),
     X86_64__WINDOWS__PE32_PLUS(SizeInBit._64_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.X86_64, OS.WINDOWS, Abi.PE32_PLUS),

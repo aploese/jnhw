@@ -269,6 +269,17 @@ public final class MultiarchTupelBuilder {
                     result.add(MultiarchInfo.POWER_PC_64__LINUX__GNU);
                     return result;
                 }
+            case "riscv64":
+                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of riscv64 linux\n" + listSystemProperties());
+                } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of riscv64 linux\n" + listSystemProperties());
+                } else {
+                    result.add(MultiarchInfo.RISC_V_64__LINUX__GNU);
+                    return result;
+                }
             case "s390x":
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(

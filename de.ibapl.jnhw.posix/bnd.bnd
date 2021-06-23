@@ -8,7 +8,8 @@ Export-Package: \
         de.ibapl.jnhw.isoc,\
 	de.ibapl.jnhw.linux.sys,\
 	de.ibapl.jnhw.posix,\
-	de.ibapl.jnhw.posix,sys,\
+	de.ibapl.jnhw.posix.sys,\
 	de.ibapl.jnhw.unix.sys,\
 	de.ibapl.jnhw.util.posix,\
-	de.ibapl.jnhw.x_open
+	de.ibapl.jnhw.util.posix.memory,\
+        de.ibapl.jnhw.x_open

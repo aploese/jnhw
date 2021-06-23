@@ -335,12 +335,13 @@ public class Pthread {
                             break;
                         case MIPS_64:
                         case POWER_PC_64:
+                        case RISC_V_64:
                         case S390_X:
                         case X86_64:
                             sizeof = 56;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No pthread.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No pthread.h linux defines for Pthread_attr_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
                 case FREE_BSD:
@@ -348,7 +349,7 @@ public class Pthread {
                     sizeof = 8;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No pthread.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No pthread.h OS defines for Pthread_attr_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
             switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
                 case _32_BIT:
@@ -358,7 +359,7 @@ public class Pthread {
                     alignof = Alignment.AT_8;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No pthread.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No pthread.h defines for Pthread_attr_t" + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
 
         }
