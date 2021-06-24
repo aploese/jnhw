@@ -493,8 +493,15 @@ public class AioTest {
 
                 });
 
+                //No read or write executed....
                 int errno = Aio.aio_error(aiocb);
-                assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+                    case FREE_BSD:
+                        assertEquals(Errno.EINVAL, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                        break;
+                    default:
+                        assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                }
                 Aio.aio_read(aiocb);
                 errno = Aio.aio_error(aiocb);
                 assertEquals(Errno.EINPROGRESS, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));

@@ -1171,8 +1171,8 @@ public class SignalTest {
             act.sa_flags(Signal.SA_SIGINFO);
             Signal.sigemptyset(act.sa_mask);
 
-            final Signal.Siginfo_t[] siginfo_tRef = new Signal.Siginfo_t[1];
-            final Signal.Ucontext_t[] opmRef = new Signal.Ucontext_t[1];
+            final Signal.Siginfo_t[] siginfo_tRef = new Signal.Siginfo_t[]{null};
+            final Signal.Ucontext_t[] opmRef = new Signal.Ucontext_t[]{null};
 
             Callback_I_Mem_Mem_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_Mem_Mem_V_Impl<>() {
 
@@ -1201,10 +1201,9 @@ public class SignalTest {
             act.sa_sigaction(sa_handler);
 
             final Signal.Sigaction oact = new Signal.Sigaction();
-            final Signal.Sigaction actOut = new Signal.Sigaction();
             Signal.sigaction(SIG, act, oact);
 
-            OpaqueMemory32 data = new Memory32Heap((OpaqueMemory32) null, 0, 128, SetMem.TO_0x00);
+            OpaqueMemory32 data = new Memory32Heap(null, 0, 128, SetMem.TO_0x00);
 
             Signal.Sigval sigval = new Signal.Sigval();
             sigval.sival_ptr(data);

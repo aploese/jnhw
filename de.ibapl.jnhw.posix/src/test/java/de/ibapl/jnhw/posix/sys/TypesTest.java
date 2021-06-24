@@ -105,8 +105,8 @@ public class TypesTest {
             case 2:
                 Assertions.assertEquals(Alignment.AT_2, PosixDataType.mode_t.baseDataType.ALIGN_OF);
                 assertEquals(BaseDataType.uint16_t, instance.getBaseDataType());
-                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x8070));
-                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x00008070));
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x00010000));
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(-1));
                 instance.setFromUnsignedInt((short) 0x8070);
                 assertEquals((short) 0x8070, instance.getAsUnsignedInt());
                 assertEquals(Integer.toUnsignedString(0x8070), instance.nativeToString());

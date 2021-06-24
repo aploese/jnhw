@@ -92,7 +92,7 @@ public enum PosixDataType {
                         throw new NoClassDefFoundError("can't get datatype of clock_t on " + mi);
                 }
             case FREE_BSD:
-                return BaseDataType.int64_t;
+                return BaseDataType.int32_t;
             default:
                 throw new NoClassDefFoundError("can't get datatype of clock_t on " + mi);
         }
@@ -178,7 +178,7 @@ public enum PosixDataType {
                         throw new NoClassDefFoundError("can't get linux datatype of size_t on " + mi);
                 }
             case FREE_BSD:
-                return BaseDataType.int64_t;
+                return BaseDataType.uint64_t;
             default:
                 throw new NoClassDefFoundError("can't get OS datatype of size_t on " + mi);
         }

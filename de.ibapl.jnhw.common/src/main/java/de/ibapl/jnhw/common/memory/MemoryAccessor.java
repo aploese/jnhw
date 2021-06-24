@@ -265,13 +265,12 @@ public interface MemoryAccessor {
             case 1:
                 if (value > 0x00ff) {
                     throw new IllegalArgumentException("value too big for uint8_t: " + value);
+                } else if (value < 0) {
+                    throw new IllegalArgumentException("value is negative: " + value);
                 }
                 uint8_t_FromShort(mem, offset, (short) value);
                 break;
             case 2:
-                if (value > 0x00ffff) {
-                    throw new IllegalArgumentException("value too big for uint16_t: " + value);
-                }
                 uint16_t_FromInt(mem, offset, value);
                 break;
             case 4:

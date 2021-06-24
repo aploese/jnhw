@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
-import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
@@ -900,10 +899,6 @@ public class TimeTest {
         }
 
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
-            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                Time.timer_delete(timerid);
-            });
-            assertEquals(Errno.EINVAL, nee.errno);
             //FreeBSD crashes here with a SIGSEGV ...
             fail("Placeholder to gracefully fail the test - Remove this to see if the vm still crashes as of now:  FreeBSD 12.1-RELEASE-p10 and openjdk15-15.0.0+36.1_1");
         } else {
