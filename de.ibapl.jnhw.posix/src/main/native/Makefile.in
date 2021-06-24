@@ -136,14 +136,13 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libjnhw_posix_la_DEPENDENCIES =  \
 	@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
-am_libjnhw_posix_la_OBJECTS = PosixDataType.lo jnhw-posix-jni.lo \
-	AioFunctions.lo Isoc_ErrnoFunctions.lo EventFdFunctions.lo \
-	FcntlFunctions.lo IoctlDefines.lo IoctlFunctions.lo \
-	LocaleFunctions.lo PollFunctions.lo PthreadFunctions.lo \
-	SchedFunctions.lo SignalFunctions.lo \
-	Callback__Sigval_int__V_Impl.lo StdioFunctions.lo \
-	StringHeaderFunctions.lo TermiosFunctions.lo TimeFunctions.lo \
-	UcontextFunctions.lo UnistdFunctions.lo
+am_libjnhw_posix_la_OBJECTS = jnhw-posix-jni.lo AioFunctions.lo \
+	Isoc_ErrnoFunctions.lo EventFdFunctions.lo FcntlFunctions.lo \
+	IoctlDefines.lo IoctlFunctions.lo LocaleFunctions.lo \
+	PollFunctions.lo PthreadFunctions.lo SchedFunctions.lo \
+	SignalFunctions.lo Callback__Sigval_int__V_Impl.lo \
+	StdioFunctions.lo StringHeaderFunctions.lo TermiosFunctions.lo \
+	TimeFunctions.lo UcontextFunctions.lo UnistdFunctions.lo
 libjnhw_posix_la_OBJECTS = $(am_libjnhw_posix_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -171,7 +170,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioFunctions.Plo \
 	./$(DEPDIR)/IoctlFunctions.Plo \
 	./$(DEPDIR)/Isoc_ErrnoFunctions.Plo \
 	./$(DEPDIR)/LocaleFunctions.Plo ./$(DEPDIR)/PollFunctions.Plo \
-	./$(DEPDIR)/PosixDataType.Plo ./$(DEPDIR)/PthreadFunctions.Plo \
+	./$(DEPDIR)/PthreadFunctions.Plo \
 	./$(DEPDIR)/SchedFunctions.Plo ./$(DEPDIR)/SignalFunctions.Plo \
 	./$(DEPDIR)/StdioFunctions.Plo \
 	./$(DEPDIR)/StringHeaderFunctions.Plo \
@@ -376,7 +375,6 @@ libjnhw_posix_la_LIBADD = \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libjnhw_posix_la_SOURCES = \
- PosixDataType.c \
  jnhw-posix-jni.c \
  AioFunctions.c \
  Isoc_ErrnoFunctions.c \
@@ -495,7 +493,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Isoc_ErrnoFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollFunctions.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PosixDataType.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SchedFunctions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalFunctions.Plo@am__quote@ # am--include-marker
@@ -675,7 +672,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
 	-rm -f ./$(DEPDIR)/LocaleFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
-	-rm -f ./$(DEPDIR)/PosixDataType.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo
@@ -740,7 +736,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Isoc_ErrnoFunctions.Plo
 	-rm -f ./$(DEPDIR)/LocaleFunctions.Plo
 	-rm -f ./$(DEPDIR)/PollFunctions.Plo
-	-rm -f ./$(DEPDIR)/PosixDataType.Plo
 	-rm -f ./$(DEPDIR)/PthreadFunctions.Plo
 	-rm -f ./$(DEPDIR)/SchedFunctions.Plo
 	-rm -f ./$(DEPDIR)/SignalFunctions.Plo

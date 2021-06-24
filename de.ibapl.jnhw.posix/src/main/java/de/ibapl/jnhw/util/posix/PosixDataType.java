@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 
 /**
  * The posix datatypes with their mapping to the base datatypes that we have
@@ -45,153 +46,226 @@ public enum PosixDataType {
     time_t(dataTypeOf__time_t()),
     uid_t(dataTypeOf__uid_t());
 
+    private static MultiarchInfo multiarchInfo;
+
+    static MultiarchInfo getMultiarchInfo() {
+        if (multiarchInfo == null) {
+            LibJnhwPosixLoader.touch();
+            multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+        }
+        return multiarchInfo;
+    }
+
     private PosixDataType(BaseDataType dataType) {
         this.baseDataType = dataType;
     }
 
-    private static native boolean JNHW__cc_t__IS__uint8_t();
-
-    private static native boolean JNHW__clock_t__IS__int64_t();
-
-    private static native boolean JNHW__clock_t__IS__int32_t();
-
-    private static native boolean JNHW__off_t__IS__int64_t();
-
-    private static native boolean JNHW__off_t__IS__int32_t();
-
-    private static native boolean JNHW__mode_t__IS__uint16_t();
-
-    private static native boolean JNHW__mode_t__IS__uint32_t();
-
-    private static native boolean JNHW__pid_t__IS__int32_t();
-
-    private static native boolean JNHW__speed_t__IS__uint32_t();
-
-    private static native boolean JNHW__size_t__IS__uint64_t();
-
-    private static native boolean JNHW__size_t__IS__uint32_t();
-
-    private static native boolean JNHW__ssize_t__IS__int64_t();
-
-    private static native boolean JNHW__ssize_t__IS__int32_t();
-
-    private static native boolean JNHW__tcflag_t__IS__uint32_t();
-
-    private static native boolean JNHW__time_t__IS__int64_t();
-
-    private static native boolean JNHW__time_t__IS__int32_t();
-
-    private static native boolean JNHW__uid_t__IS__uint32_t();
-
     private static BaseDataType dataTypeOf__CC_t() {
-        LibJnhwPosixLoader.touch();
-        if (JNHW__cc_t__IS__uint8_t()) {
-            return BaseDataType.uint8_t;
-        } else {
-            return null;
-        }
+        return dataTypeOf__CC_t(getMultiarchInfo());
+    }
+
+    public static BaseDataType dataTypeOf__CC_t(final MultiarchInfo mi) {
+        return BaseDataType.uint8_t;
     }
 
     private static BaseDataType dataTypeOf__clock_t() {
-        LibJnhwPosixLoader.touch();
-        if (JNHW__clock_t__IS__int64_t()) {
-            return BaseDataType.int64_t;
-        } else if (JNHW__clock_t__IS__int32_t()) {
-            return BaseDataType.int32_t;
-        } else {
-            return null;
+        return dataTypeOf__clock_t(getMultiarchInfo());
+    }
+
+    public static BaseDataType dataTypeOf__clock_t(final MultiarchInfo mi) {
+        switch (mi.getOS()) {
+            case LINUX:
+                switch (mi.getArch()) {
+                    case AARCH64:
+                        return BaseDataType.int64_t;
+                    case ARM:
+                    case I386:
+                    case MIPS:
+                        return BaseDataType.int32_t;
+                    case MIPS_64:
+                    case POWER_PC_64:
+                    case RISC_V_64:
+                    case S390_X:
+                    case X86_64:
+                        return BaseDataType.int64_t;
+                    default:
+                        throw new NoClassDefFoundError("can't get datatype of clock_t on " + mi);
+                }
+            case FREE_BSD:
+                return BaseDataType.int64_t;
+            default:
+                throw new NoClassDefFoundError("can't get datatype of clock_t on " + mi);
         }
+
     }
 
     private static BaseDataType dataTypeOf__mode_t() {
-        LibJnhwPosixLoader.touch();
-        if (JNHW__mode_t__IS__uint16_t()) {
-            return BaseDataType.uint16_t;
-        } else if (JNHW__mode_t__IS__uint32_t()) {
-            return BaseDataType.uint32_t;
-        } else {
-            return null;
+        return dataTypeOf__mode_t(getMultiarchInfo());
+    }
+
+    public static BaseDataType dataTypeOf__mode_t(final MultiarchInfo mi) {
+        switch (mi.getOS()) {
+            case LINUX:
+                return BaseDataType.uint32_t;
+            case FREE_BSD:
+                return BaseDataType.uint16_t;
+            case OPEN_BSD:
+                return BaseDataType.uint32_t;
+            default:
+                throw new NoClassDefFoundError("can't get OS datatype of mode_t on " + mi);
         }
     }
 
     private static BaseDataType dataTypeOf__off_t() {
-        LibJnhwPosixLoader.touch();
-        if (JNHW__off_t__IS__int64_t()) {
-            return BaseDataType.int64_t;
-        } else if (JNHW__off_t__IS__int32_t()) {
-            return BaseDataType.int32_t;
-        } else {
-            return null;
+        return dataTypeOf__off_t(getMultiarchInfo());
+    }
+
+    public static BaseDataType dataTypeOf__off_t(final MultiarchInfo mi) {
+        switch (mi.getOS()) {
+            case LINUX:
+                switch (mi.getArch()) {
+                    case AARCH64:
+                        return BaseDataType.int64_t;
+                    case ARM:
+                    case I386:
+                    case MIPS:
+                        return BaseDataType.int32_t;
+                    case MIPS_64:
+                    case POWER_PC_64:
+                    case RISC_V_64:
+                    case S390_X:
+                    case X86_64:
+                        return BaseDataType.int64_t;
+                    default:
+                        throw new NoClassDefFoundError("can't get linux datatype of off_t on " + mi);
+                }
+            case FREE_BSD:
+                return BaseDataType.int64_t;
+            default:
+                throw new NoClassDefFoundError("can't get OS datatype of off_t on " + mi);
         }
     }
 
     private static BaseDataType dataTypeOf__pid_t() {
-        LibJnhwPosixLoader.touch();
-        if (JNHW__pid_t__IS__int32_t()) {
-            return BaseDataType.int32_t;
-        } else {
-            return null;
-        }
+        return dataTypeOf__pid_t(getMultiarchInfo());
+    }
+
+    public static BaseDataType dataTypeOf__pid_t(final MultiarchInfo mi) {
+        return BaseDataType.int32_t;
     }
 
     private static BaseDataType dataTypeOf__size_t() {
-        LibJnhwPosixLoader.touch();
-        if (JNHW__size_t__IS__uint64_t()) {
-            return BaseDataType.uint64_t;
-        } else if (JNHW__size_t__IS__uint32_t()) {
-            return BaseDataType.uint32_t;
-        } else {
-            return null;
+        return dataTypeOf__size_t(getMultiarchInfo());
+    }
+
+    public static BaseDataType dataTypeOf__size_t(final MultiarchInfo mi) {
+        switch (mi.getOS()) {
+            case LINUX:
+                switch (mi.getArch()) {
+                    case AARCH64:
+                        return BaseDataType.uint64_t;
+                    case ARM:
+                    case I386:
+                    case MIPS:
+                        return BaseDataType.uint32_t;
+                    case MIPS_64:
+                    case POWER_PC_64:
+                    case RISC_V_64:
+                    case S390_X:
+                    case X86_64:
+                        return BaseDataType.uint64_t;
+                    default:
+                        throw new NoClassDefFoundError("can't get linux datatype of size_t on " + mi);
+                }
+            case FREE_BSD:
+                return BaseDataType.int64_t;
+            default:
+                throw new NoClassDefFoundError("can't get OS datatype of size_t on " + mi);
         }
     }
 
     private static BaseDataType dataTypeOf__speed_t() {
-        LibJnhwPosixLoader.touch();
-        if (JNHW__speed_t__IS__uint32_t()) {
-            return BaseDataType.uint32_t;
-        } else {
-            return null;
-        }
+        return dataTypeOf__speed_t(getMultiarchInfo());
+    }
+
+    public static BaseDataType dataTypeOf__speed_t(final MultiarchInfo mi) {
+        return BaseDataType.uint32_t;
     }
 
     private static BaseDataType dataTypeOf__ssize_t() {
-        LibJnhwPosixLoader.touch();
-        if (JNHW__ssize_t__IS__int64_t()) {
-            return BaseDataType.int64_t;
-        } else if (JNHW__ssize_t__IS__int32_t()) {
-            return BaseDataType.int32_t;
-        } else {
-            return null;
+        return dataTypeOf__ssize_t(getMultiarchInfo());
+    }
+
+    public static BaseDataType dataTypeOf__ssize_t(final MultiarchInfo mi) {
+        switch (mi.getOS()) {
+            case LINUX:
+                switch (mi.getArch()) {
+                    case AARCH64:
+                        return BaseDataType.int64_t;
+                    case ARM:
+                    case I386:
+                    case MIPS:
+                        return BaseDataType.int32_t;
+                    case MIPS_64:
+                    case POWER_PC_64:
+                    case RISC_V_64:
+                    case S390_X:
+                    case X86_64:
+                        return BaseDataType.int64_t;
+                    default:
+                        throw new NoClassDefFoundError("can't get linux datatype of ssize_t on " + mi);
+                }
+            case FREE_BSD:
+                return BaseDataType.int64_t;
+            default:
+                throw new NoClassDefFoundError("can't get OS datatype of ssize_t on " + mi);
         }
     }
 
     private static BaseDataType dataTypeOf__tcflag_t() {
-        LibJnhwPosixLoader.touch();
-        if (JNHW__tcflag_t__IS__uint32_t()) {
-            return BaseDataType.uint32_t;
-        } else {
-            return null;
-        }
+        return dataTypeOf__tcflag_t(getMultiarchInfo());
+    }
+
+    public static BaseDataType dataTypeOf__tcflag_t(final MultiarchInfo mi) {
+        return BaseDataType.uint32_t;
     }
 
     private static BaseDataType dataTypeOf__time_t() {
-        LibJnhwPosixLoader.touch();
-        if (JNHW__time_t__IS__int64_t()) {
-            return BaseDataType.int64_t;
-        } else if (JNHW__time_t__IS__int32_t()) {
-            return BaseDataType.int32_t;
-        } else {
-            return null;
+        return dataTypeOf__time_t(getMultiarchInfo());
+    }
+
+    public static BaseDataType dataTypeOf__time_t(final MultiarchInfo mi) {
+        switch (mi.getOS()) {
+            case LINUX:
+                switch (mi.getArch()) {
+                    case AARCH64:
+                        return BaseDataType.int64_t;
+                    case ARM:
+                    case I386:
+                    case MIPS:
+                        return BaseDataType.int32_t;
+                    case MIPS_64:
+                    case POWER_PC_64:
+                    case RISC_V_64:
+                    case S390_X:
+                    case X86_64:
+                        return BaseDataType.int64_t;
+                    default:
+                        throw new NoClassDefFoundError("can't get linux datatype of time_t on " + mi);
+                }
+            case FREE_BSD:
+                return BaseDataType.int64_t;
+            default:
+                throw new NoClassDefFoundError("can't get OS datatype of time_t on " + mi);
         }
     }
 
     private static BaseDataType dataTypeOf__uid_t() {
-        LibJnhwPosixLoader.touch();
-        if (JNHW__uid_t__IS__uint32_t()) {
-            return BaseDataType.uint32_t;
-        } else {
-            return null;
-        }
+        return dataTypeOf__uid_t(getMultiarchInfo());
+    }
+
+    public static BaseDataType dataTypeOf__uid_t(final MultiarchInfo mi) {
+        return BaseDataType.uint32_t;
     }
 
     public final BaseDataType baseDataType;

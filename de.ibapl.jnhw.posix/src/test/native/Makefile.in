@@ -147,13 +147,14 @@ libtests_la_LIBADD =
 am_libtests_la_OBJECTS = AioDefines.lo AioStructures.lo Defines.lo \
 	Isoc_ErrnoDefines.lo Posix_ErrnoDefines.lo EventFdDefines.lo \
 	FcntlDefines.lo PollDefines.lo PollStructures.lo \
-	PthreadDefines.lo PthreadStructures.lo LocaleDefines.lo \
-	LocaleTest.lo LocaleStructures.lo IoctlDefines.lo IoctlTest.lo \
-	SchedDefines.lo SchedStructures.lo SignalDefines.lo \
-	SignalStructures.lo StatDefines.lo StdioDefines.lo \
-	StringHeaderDefines.lo TermiosDefines.lo TermiosStructures.lo \
-	TimeDefines.lo TimeStructures.lo TypesDefines.lo \
-	UcontextDefines.lo UnistdDefines.lo
+	PosixDataTypeTest.lo PthreadDefines.lo PthreadStructures.lo \
+	LocaleDefines.lo LocaleStructures.lo LocaleTest.lo \
+	IoctlDefines.lo IoctlTest.lo SchedDefines.lo \
+	SchedStructures.lo SignalDefines.lo SignalStructures.lo \
+	StatDefines.lo StdioDefines.lo StringHeaderDefines.lo \
+	TermiosDefines.lo TermiosStructures.lo TimeDefines.lo \
+	TimeStructures.lo TypesDefines.lo UcontextDefines.lo \
+	UnistdDefines.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -178,6 +179,7 @@ am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
 	./$(DEPDIR)/LocaleDefines.Plo ./$(DEPDIR)/LocaleStructures.Plo \
 	./$(DEPDIR)/LocaleTest.Plo ./$(DEPDIR)/PollDefines.Plo \
 	./$(DEPDIR)/PollStructures.Plo \
+	./$(DEPDIR)/PosixDataTypeTest.Plo \
 	./$(DEPDIR)/Posix_ErrnoDefines.Plo \
 	./$(DEPDIR)/PthreadDefines.Plo \
 	./$(DEPDIR)/PthreadStructures.Plo ./$(DEPDIR)/SchedDefines.Plo \
@@ -399,11 +401,12 @@ libtests_la_SOURCES = \
  FcntlDefines.c \
  PollDefines.c \
  PollStructures.c \
+ PosixDataTypeTest.c \
  PthreadDefines.c \
  PthreadStructures.c \
  LocaleDefines.c \
- LocaleTest.c \
  LocaleStructures.c \
+ LocaleTest.c \
  IoctlDefines.c \
  IoctlTest.c \
  SchedDefines.c \
@@ -526,6 +529,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LocaleTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PollStructures.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PosixDataTypeTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Posix_ErrnoDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PthreadStructures.Plo@am__quote@ # am--include-marker
@@ -717,6 +721,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/LocaleTest.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo
+	-rm -f ./$(DEPDIR)/PosixDataTypeTest.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadStructures.Plo
@@ -793,6 +798,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/LocaleTest.Plo
 	-rm -f ./$(DEPDIR)/PollDefines.Plo
 	-rm -f ./$(DEPDIR)/PollStructures.Plo
+	-rm -f ./$(DEPDIR)/PosixDataTypeTest.Plo
 	-rm -f ./$(DEPDIR)/Posix_ErrnoDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadDefines.Plo
 	-rm -f ./$(DEPDIR)/PthreadStructures.Plo

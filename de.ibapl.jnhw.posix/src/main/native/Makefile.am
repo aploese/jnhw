@@ -16,7 +16,6 @@ libjnhw_posix_la_LIBADD = \
  @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libjnhw_posix_la_SOURCES = \
- PosixDataType.c \
  jnhw-posix-jni.c \
  AioFunctions.c \
  Isoc_ErrnoFunctions.c \

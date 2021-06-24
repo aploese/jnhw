@@ -27,11 +27,12 @@ libtests_la_SOURCES = \
  FcntlDefines.c \
  PollDefines.c \
  PollStructures.c \
+ PosixDataTypeTest.c \
  PthreadDefines.c \
  PthreadStructures.c \
  LocaleDefines.c \
- LocaleTest.c \
  LocaleStructures.c \
+ LocaleTest.c \
  IoctlDefines.c \
  IoctlTest.c \
  SchedDefines.c \

@@ -20,18 +20,18 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_util_posix_PosixDataType.h"
+#include "de_ibapl_jnhw_util_posix_PosixDataTypeTest.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__cc_t__IS__uint8_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1cc_1t_1_1IS_1_1uint8_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1cc_1t_1_1IS_1_1uint8_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__cc_t__IS__uint8_t
         return JNI_TRUE;
@@ -41,11 +41,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__clock_t__IS__int64_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1clock_1t_1_1IS_1_1int64_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1clock_1t_1_1IS_1_1int64_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__clock_t__IS__int64_t
         return JNI_TRUE;
@@ -55,11 +55,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__clock_t__IS__int32_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1clock_1t_1_1IS_1_1int32_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1clock_1t_1_1IS_1_1int32_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__clock_t__IS__int32_t
         return JNI_TRUE;
@@ -69,11 +69,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__off_t__IS__int64_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1off_1t_1_1IS_1_1int64_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1off_1t_1_1IS_1_1int64_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__off_t__IS__int64_t
         return JNI_TRUE;
@@ -83,11 +83,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__off_t__IS__int32_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1off_1t_1_1IS_1_1int32_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1off_1t_1_1IS_1_1int32_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__off_t__IS__int32_t
         return JNI_TRUE;
@@ -97,11 +97,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__mode_t__IS__uint16_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1mode_1t_1_1IS_1_1uint16_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1mode_1t_1_1IS_1_1uint16_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__mode_t__IS__uint16_t
         return JNI_TRUE;
@@ -111,11 +111,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__mode_t__IS__uint32_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1mode_1t_1_1IS_1_1uint32_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1mode_1t_1_1IS_1_1uint32_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__mode_t__IS__uint32_t
         return JNI_TRUE;
@@ -125,11 +125,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__pid_t__IS__int32_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1pid_1t_1_1IS_1_1int32_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1pid_1t_1_1IS_1_1int32_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__pid_t__IS__int32_t
         return JNI_TRUE;
@@ -139,11 +139,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__speed_t__IS__uint32_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1speed_1t_1_1IS_1_1uint32_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1speed_1t_1_1IS_1_1uint32_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__speed_t__IS__uint32_t
         return JNI_TRUE;
@@ -153,11 +153,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__size_t__IS__uint64_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1size_1t_1_1IS_1_1uint64_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1size_1t_1_1IS_1_1uint64_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__size_t__IS__uint64_t
         return JNI_TRUE;
@@ -167,11 +167,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__size_t__IS__uint32_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1size_1t_1_1IS_1_1uint32_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1size_1t_1_1IS_1_1uint32_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__size_t__IS__uint32_t
         return JNI_TRUE;
@@ -181,11 +181,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__ssize_t__IS__int64_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1ssize_1t_1_1IS_1_1int64_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1ssize_1t_1_1IS_1_1int64_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__ssize_t__IS__int64_t
         return JNI_TRUE;
@@ -195,11 +195,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__ssize_t__IS__int32_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1ssize_1t_1_1IS_1_1int32_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1ssize_1t_1_1IS_1_1int32_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__ssize_t__IS__int32_t
         return JNI_TRUE;
@@ -209,11 +209,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__tcflag_t__IS__uint32_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1tcflag_1t_1_1IS_1_1uint32_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1tcflag_1t_1_1IS_1_1uint32_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__tcflag_t__IS__uint32_t
         return JNI_TRUE;
@@ -223,11 +223,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__time_t__IS__int64_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1time_1t_1_1IS_1_1int64_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1time_1t_1_1IS_1_1int64_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__time_t__IS__int64_t
         return JNI_TRUE;
@@ -237,11 +237,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__time_t__IS__int32_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1time_1t_1_1IS_1_1int32_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1time_1t_1_1IS_1_1int32_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__time_t__IS__int32_t
         return JNI_TRUE;
@@ -251,11 +251,11 @@ extern "C" {
     }
 
     /*
-     * Class:     de_ibapl_jnhw_util_posix_PosixDataType
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__uid_t__IS__uint32_t
      * Signature: ()Z
      */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataType_JNHW_1_1uid_1t_1_1IS_1_1uint32_1t
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1uid_1t_1_1IS_1_1uint32_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__uid_t__IS__uint32_t
         return JNI_TRUE;
