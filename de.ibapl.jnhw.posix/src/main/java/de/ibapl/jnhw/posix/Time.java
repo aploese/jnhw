@@ -68,6 +68,17 @@ public class Time {
 
     }
 
+    public static class FreeBsdDefines {
+
+        public final static int CLOCKS_PER_SEC = 128;
+        public final static int CLOCK_MONOTONIC = 4;
+        public final static int CLOCK_PROCESS_CPUTIME_ID = 15;
+        public final static int CLOCK_REALTIME = 0;
+        public final static int CLOCK_THREAD_CPUTIME_ID = 14;
+        public final static int TIMER_ABSTIME = 1;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -83,13 +94,21 @@ public class Time {
         switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
             case LINUX:
                 HAVE_TIME_H = true;
-
                 CLOCKS_PER_SEC = LinuxDefines.CLOCKS_PER_SEC;
                 CLOCK_MONOTONIC = LinuxDefines.CLOCK_MONOTONIC;
                 CLOCK_PROCESS_CPUTIME_ID = LinuxDefines.CLOCK_PROCESS_CPUTIME_ID;
                 CLOCK_REALTIME = LinuxDefines.CLOCK_REALTIME;
                 CLOCK_THREAD_CPUTIME_ID = LinuxDefines.CLOCK_THREAD_CPUTIME_ID;
                 TIMER_ABSTIME = LinuxDefines.TIMER_ABSTIME;
+                break;
+            case FREE_BSD:
+                HAVE_TIME_H = true;
+                CLOCKS_PER_SEC = FreeBsdDefines.CLOCKS_PER_SEC;
+                CLOCK_MONOTONIC = FreeBsdDefines.CLOCK_MONOTONIC;
+                CLOCK_PROCESS_CPUTIME_ID = FreeBsdDefines.CLOCK_PROCESS_CPUTIME_ID;
+                CLOCK_REALTIME = FreeBsdDefines.CLOCK_REALTIME;
+                CLOCK_THREAD_CPUTIME_ID = FreeBsdDefines.CLOCK_THREAD_CPUTIME_ID;
+                TIMER_ABSTIME = FreeBsdDefines.TIMER_ABSTIME;
                 break;
             default:
                 throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

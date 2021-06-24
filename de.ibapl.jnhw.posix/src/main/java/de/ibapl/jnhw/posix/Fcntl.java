@@ -158,6 +158,57 @@ public final class Fcntl {
         public final static int O_NOFOLLOW = 0400000;
     }
 
+    public static interface FreeBsdDefines {
+
+        public final static int AT_EACCESS = 256;
+        public final static int AT_FDCWD = -100;
+        public final static int AT_REMOVEDIR = 2048;
+        public final static int AT_SYMLINK_FOLLOW = 0x400;
+        public final static int AT_SYMLINK_NOFOLLOW = 512;
+        public final static int FD_CLOEXEC = 1;
+        public final static int F_DUPFD = 0;
+        public final static int F_DUPFD_CLOEXEC = 17;
+        public final static int F_GETFD = 1;
+        public final static int F_GETFL = 3;
+        public final static int F_RDLCK = 1;
+        public final static int F_SETFD = 2;
+        public final static int F_SETFL = 4;
+        public final static int F_SETLK = 12;
+        public final static int F_SETLKW = 13;
+        public final static int F_UNLCK = 2;
+        public final static int F_WRLCK = 3;
+        public final static int O_ACCMODE = 0003;
+        public final static int O_CLOEXEC = 1048576;
+        public final static int O_EXEC = 262144;
+        public final static int O_RDONLY = 00;
+        public final static int O_RDWR = 02;
+        public final static int O_SEARCH = 262144;
+        public final static int O_TRUNC = 1024;
+        public final static int O_TTY_INIT = 524288;
+        public final static int O_WRONLY = 01;
+        public final static int POSIX_FADV_DONTNEED = 4;
+        public final static int POSIX_FADV_NOREUSE = 5;
+        public final static int POSIX_FADV_NORMAL = 0;
+        public final static int POSIX_FADV_RANDOM = 1;
+        public final static int POSIX_FADV_SEQUENTIAL = 2;
+        public final static int POSIX_FADV_WILLNEED = 3;
+
+        public final static int F_GETLK = 11;
+        public final static int F_GETOWN = 5;
+        public final static int F_SETOWN = 6;
+        public final static int O_APPEND = 8;
+        public final static int O_ASYNC = 64;
+        public final static int O_CREAT = 512;
+        public final static int O_DSYNC = 16777216;
+        public final static int O_EXCL = 2048;
+        public final static int O_FSYNC = 128;
+        public final static int O_NOCTTY = 32768;
+        public final static int O_NONBLOCK = 4;
+        public final static int O_SYNC = 128;
+        public final static int O_DIRECTORY = 131072;
+        public final static int O_NOFOLLOW = 256;
+    }
+
     public static interface Defines_LINUX_ARM extends LinuxDefines, Linux_NonMips_Defines, Linux_Aarch64_Arm_Defines, Linux_Arm_Mips_Defines {
 
     }
@@ -269,7 +320,7 @@ public final class Fcntl {
                         O_APPEND = Linux_Mips_Mips64_Defines.O_APPEND;
                         O_ASYNC = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.O_ASYNC);
                         O_CREAT = Linux_Mips_Mips64_Defines.O_CREAT;
-                        O_DSYNC = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.O_DSYNC);
+                        O_DSYNC = Linux_Mips_Mips64_Defines.O_DSYNC;
                         O_EXCL = Linux_Mips_Mips64_Defines.O_EXCL;
                         O_FSYNC = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.O_FSYNC);
                         O_NOCTTY = Linux_Mips_Mips64_Defines.O_NOCTTY;
@@ -285,7 +336,7 @@ public final class Fcntl {
                         O_APPEND = Linux_NonMips_Defines.O_APPEND;
                         O_ASYNC = IntDefine.toIntDefine(Linux_NonMips_Defines.O_ASYNC);
                         O_CREAT = Linux_NonMips_Defines.O_CREAT;
-                        O_DSYNC = IntDefine.toIntDefine(Linux_NonMips_Defines.O_DSYNC);
+                        O_DSYNC = Linux_NonMips_Defines.O_DSYNC;
                         O_EXCL = Linux_NonMips_Defines.O_EXCL;
                         O_FSYNC = IntDefine.toIntDefine(Linux_NonMips_Defines.O_FSYNC);
                         O_NOCTTY = Linux_NonMips_Defines.O_NOCTTY;
@@ -322,6 +373,64 @@ public final class Fcntl {
                     default:
                         throw new NoClassDefFoundError("No fcntl.h defines for " + multiarchInfo);
                 }
+                break;
+            case FREE_BSD:
+                HAVE_FCNTL_H = true;
+
+                AT_EACCESS = FreeBsdDefines.AT_EACCESS;
+                AT_FDCWD = FreeBsdDefines.AT_FDCWD;
+                AT_REMOVEDIR = FreeBsdDefines.AT_REMOVEDIR;
+                AT_SYMLINK_FOLLOW = FreeBsdDefines.AT_SYMLINK_FOLLOW;
+                AT_SYMLINK_NOFOLLOW = FreeBsdDefines.AT_SYMLINK_NOFOLLOW;
+
+                FD_CLOEXEC = FreeBsdDefines.FD_CLOEXEC;
+
+                F_DUPFD = FreeBsdDefines.F_DUPFD;
+                F_DUPFD_CLOEXEC = FreeBsdDefines.F_DUPFD_CLOEXEC;
+                F_GETFD = FreeBsdDefines.F_GETFD;
+                F_GETFL = FreeBsdDefines.F_GETFL;
+                F_RDLCK = FreeBsdDefines.F_RDLCK;
+                F_SETFD = FreeBsdDefines.F_SETFD;
+                F_SETFL = FreeBsdDefines.F_SETFL;
+                F_SETLK = FreeBsdDefines.F_SETLK;
+                F_SETLKW = FreeBsdDefines.F_SETLKW;
+                F_UNLCK = FreeBsdDefines.F_UNLCK;
+                F_WRLCK = FreeBsdDefines.F_WRLCK;
+
+                O_ACCMODE = FreeBsdDefines.O_ACCMODE;
+                O_CLOEXEC = FreeBsdDefines.O_CLOEXEC;
+                O_EXEC = IntDefine.toIntDefine(FreeBsdDefines.O_EXEC);
+                O_RDONLY = FreeBsdDefines.O_RDONLY;
+                O_RDWR = FreeBsdDefines.O_RDWR;
+                O_SEARCH = IntDefine.toIntDefine(FreeBsdDefines.O_SEARCH);
+                O_TRUNC = FreeBsdDefines.O_TRUNC;
+                O_TTY_INIT = IntDefine.toIntDefine(FreeBsdDefines.O_TTY_INIT);
+                O_WRONLY = FreeBsdDefines.O_WRONLY;
+                O_DIRECTORY = FreeBsdDefines.O_DIRECTORY;
+                O_NOFOLLOW = FreeBsdDefines.O_NOFOLLOW;
+
+                POSIX_FADV_DONTNEED = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_DONTNEED);
+                POSIX_FADV_NOREUSE = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_NOREUSE);
+                POSIX_FADV_NORMAL = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_NORMAL);
+                POSIX_FADV_RANDOM = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_RANDOM);
+                POSIX_FADV_SEQUENTIAL = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_SEQUENTIAL);
+                POSIX_FADV_WILLNEED = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_WILLNEED);
+
+                O_LARGEFILE = IntDefine.UNDEFINED;
+                F_GETLK = FreeBsdDefines.F_GETLK;
+                F_GETOWN = FreeBsdDefines.F_GETOWN;
+                F_SETOWN = FreeBsdDefines.F_SETOWN;
+                O_APPEND = FreeBsdDefines.O_APPEND;
+                O_ASYNC = IntDefine.toIntDefine(FreeBsdDefines.O_ASYNC);
+                O_CREAT = FreeBsdDefines.O_CREAT;
+                O_DSYNC = FreeBsdDefines.O_DSYNC;
+                O_EXCL = FreeBsdDefines.O_EXCL;
+                O_FSYNC = IntDefine.toIntDefine(FreeBsdDefines.O_FSYNC);
+                O_NOCTTY = FreeBsdDefines.O_NOCTTY;
+                O_NONBLOCK = FreeBsdDefines.O_NONBLOCK;
+                O_RSYNC = IntDefine.UNDEFINED;
+                O_SYNC = FreeBsdDefines.O_SYNC;
+
                 break;
             default:
                 throw new NoClassDefFoundError("No fcntl.h defines for " + multiarchInfo);
@@ -523,7 +632,7 @@ public final class Fcntl {
      *
      */
     @Define
-    public final static IntDefine O_DSYNC;
+    public final static int O_DSYNC;
 
     /**
      * <b>POSIX:</b> Exclusive use flag.

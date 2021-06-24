@@ -46,7 +46,11 @@ extern "C" {
         throw_NoSuchNativeMethodException(env, "getcontext");
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrUcp) {
+#if  defined(__FreeBSD__)
+        if (getcontext((ucontext_t*) (uintptr_t) ptrUcp)) {
+#else
         if (getcontext((struct ucontext_t*) (uintptr_t) ptrUcp)) {
+#endif
             throw_NativeErrorException(env, errno);
         }
 #endif
@@ -63,7 +67,11 @@ extern "C" {
         throw_NoSuchNativeMethodException(env, "setcontext");
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrUcp) {
+#if  defined(__FreeBSD__)
+        if (setcontext((ucontext_t*) (uintptr_t) ptrUcp)) {
+#else
         if (setcontext((struct ucontext_t*) (uintptr_t) ptrUcp)) {
+#endif
             throw_NativeErrorException(env, errno);
         }
 #endif
@@ -80,7 +88,11 @@ extern "C" {
         throw_NoSuchNativeMethodException(env, "swapcontext");
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrOucp, jlong ptrUcp) {
+#if  defined(__FreeBSD__)
+        if (swapcontext((ucontext_t*) (uintptr_t) ptrOucp, (ucontext_t*) (uintptr_t) ptrUcp)) {
+#else
         if (swapcontext((struct ucontext_t*) (uintptr_t) ptrOucp, (struct ucontext_t*) (uintptr_t) ptrUcp)) {
+#endif
             throw_NativeErrorException(env, errno);
         }
 #endif

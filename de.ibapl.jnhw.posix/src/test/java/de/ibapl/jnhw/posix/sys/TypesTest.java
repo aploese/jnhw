@@ -101,32 +101,35 @@ public class TypesTest {
     public void testMode_t() {
         Assertions.assertTrue(PosixDataType.mode_t.baseDataType.UNSIGNED);
         Types.Mode_t instance = new Types.Mode_t(null, 0, SetMem.TO_0x00);
-        if (PosixDataType.mode_t.baseDataType.SIZE_OF == 2) {
-            Assertions.assertEquals(Alignment.AT_2, PosixDataType.mode_t.baseDataType.ALIGN_OF);
-            assertEquals(BaseDataType.uint16_t, instance.getBaseDataType());
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x8070));
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x00008070));
-            instance.setFromUnsignedInt((short) 0x8070);
-            assertEquals((short) 0x8070, instance.getAsUnsignedInt());
-            assertEquals(Integer.toUnsignedString(0x8070), instance.nativeToString());
-            assertEquals("0x8070", instance.nativeToHexString());
-            //Test MAX_UINT16 + 1
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x00010000));
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(-1));
-        } else if (PosixDataType.mode_t.baseDataType.SIZE_OF == 4) {
-            Assertions.assertEquals(Alignment.AT_4, PosixDataType.mode_t.baseDataType.ALIGN_OF);
-            assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
-            instance.setFromUnsignedInt(0x80706050);
-            assertEquals(0x80706050, instance.getAsUnsignedInt());
-            assertEquals(Integer.toUnsignedString(0x80706050), instance.nativeToString());
-            assertEquals("0x80706050", instance.nativeToHexString());
-            //This is unsigned so this is really
-            instance.setFromUnsignedInt(-1);
-            assertEquals(-1, instance.getAsUnsignedInt());
-            assertEquals("4294967295", instance.nativeToString());
-            assertEquals("0xffffffff", instance.nativeToHexString());
-        } else {
-            fail();
+        switch (PosixDataType.mode_t.baseDataType.SIZE_OF) {
+            case 2:
+                Assertions.assertEquals(Alignment.AT_2, PosixDataType.mode_t.baseDataType.ALIGN_OF);
+                assertEquals(BaseDataType.uint16_t, instance.getBaseDataType());
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x8070));
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x00008070));
+                instance.setFromUnsignedInt((short) 0x8070);
+                assertEquals((short) 0x8070, instance.getAsUnsignedInt());
+                assertEquals(Integer.toUnsignedString(0x8070), instance.nativeToString());
+                assertEquals("0x8070", instance.nativeToHexString());
+                //Test MAX_UINT16 + 1
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x00010000));
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(-1));
+                break;
+            case 4:
+                Assertions.assertEquals(Alignment.AT_4, PosixDataType.mode_t.baseDataType.ALIGN_OF);
+                assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
+                instance.setFromUnsignedInt(0x80706050);
+                assertEquals(0x80706050, instance.getAsUnsignedInt());
+                assertEquals(Integer.toUnsignedString(0x80706050), instance.nativeToString());
+                assertEquals("0x80706050", instance.nativeToHexString());
+                //This is unsigned so this is really
+                instance.setFromUnsignedInt(-1);
+                assertEquals(-1, instance.getAsUnsignedInt());
+                assertEquals("4294967295", instance.nativeToString());
+                assertEquals("0xffffffff", instance.nativeToHexString());
+                break;
+            default:
+                fail();
         }
     }
 
@@ -136,24 +139,27 @@ public class TypesTest {
         Types.Off_t instance = new Types.Off_t(null, 0, SetMem.TO_0x00);
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
-        if (PosixDataType.off_t.baseDataType.SIZE_OF == 4) {
-            Assertions.assertEquals(Alignment.AT_4, PosixDataType.off_t.baseDataType.ALIGN_OF);
-            assertEquals(BaseDataType.int32_t, instance.getBaseDataType());
-            instance.setFromSignedLong(0x80706050);
-            assertEquals(0x80706050, instance.getAsSignedLong());
-            assertEquals(Integer.toString(0x80706050), instance.nativeToString());
-            assertEquals("0x80706050", instance.nativeToHexString());
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(1L + Integer.MAX_VALUE));
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
-        } else if (PosixDataType.off_t.baseDataType.SIZE_OF == 8) {
-            Assertions.assertEquals(Alignment.AT_8, PosixDataType.off_t.baseDataType.ALIGN_OF);
-            assertEquals(BaseDataType.int64_t, instance.getBaseDataType());
-            instance.setFromSignedLong(0x8070605040302010L);
-            assertEquals(0x8070605040302010L, instance.getAsSignedLong());
-            assertEquals(Long.toString(0x8070605040302010L), instance.nativeToString());
-            assertEquals("0x8070605040302010", instance.nativeToHexString());
-        } else {
-            fail();
+        switch (PosixDataType.off_t.baseDataType.SIZE_OF) {
+            case 4:
+                Assertions.assertEquals(Alignment.AT_4, PosixDataType.off_t.baseDataType.ALIGN_OF);
+                assertEquals(BaseDataType.int32_t, instance.getBaseDataType());
+                instance.setFromSignedLong(0x80706050);
+                assertEquals(0x80706050, instance.getAsSignedLong());
+                assertEquals(Integer.toString(0x80706050), instance.nativeToString());
+                assertEquals("0x80706050", instance.nativeToHexString());
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(1L + Integer.MAX_VALUE));
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
+                break;
+            case 8:
+                Assertions.assertEquals(Alignment.AT_8, PosixDataType.off_t.baseDataType.ALIGN_OF);
+                assertEquals(BaseDataType.int64_t, instance.getBaseDataType());
+                instance.setFromSignedLong(0x8070605040302010L);
+                assertEquals(0x8070605040302010L, instance.getAsSignedLong());
+                assertEquals(Long.toString(0x8070605040302010L), instance.nativeToString());
+                assertEquals("0x8070605040302010", instance.nativeToHexString());
+                break;
+            default:
+                fail();
         }
     }
 
@@ -173,32 +179,35 @@ public class TypesTest {
     public void testSize_t() {
         Assertions.assertTrue(PosixDataType.size_t.baseDataType.UNSIGNED);
         Types.Size_t instance = new Types.Size_t(null, 0, SetMem.TO_0x00);
-        if (PosixDataType.size_t.baseDataType.SIZE_OF == 4) {
-            Assertions.assertEquals(Alignment.AT_4, PosixDataType.size_t.baseDataType.ALIGN_OF);
-            assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(0x80706050));
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(0x0000000080706050));
-            instance.setFromUnsignedLong(0x80706050L);
-            assertEquals(0x80706050L, instance.getAsUnsignedLong());
-            assertEquals(Integer.toUnsignedString(0x80706050), instance.nativeToString());
-            assertEquals("0x80706050", instance.nativeToHexString());
-            //Test MAX_UINT32 + 1
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(0x0000000100000000L));
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
-        } else if (PosixDataType.size_t.baseDataType.SIZE_OF == 8) {
-            Assertions.assertEquals(Alignment.AT_8, PosixDataType.size_t.baseDataType.ALIGN_OF);
-            assertEquals(BaseDataType.uint64_t, instance.getBaseDataType());
-            instance.setFromUnsignedLong(0x8070605040302010L);
-            assertEquals(0x8070605040302010L, instance.getAsUnsignedLong());
-            assertEquals(Long.toUnsignedString(0x8070605040302010L), instance.nativeToString());
-            assertEquals("0x8070605040302010", instance.nativeToHexString());
-            //This is unsigned so this is really
-            instance.setFromUnsignedLong(-1L);
-            assertEquals(-1, instance.getAsUnsignedLong());
-            assertEquals("18446744073709551615", instance.nativeToString());
-            assertEquals("0xffffffffffffffff", instance.nativeToHexString());
-        } else {
-            fail();
+        switch (PosixDataType.size_t.baseDataType.SIZE_OF) {
+            case 4:
+                Assertions.assertEquals(Alignment.AT_4, PosixDataType.size_t.baseDataType.ALIGN_OF);
+                assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(0x80706050));
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(0x0000000080706050));
+                instance.setFromUnsignedLong(0x80706050L);
+                assertEquals(0x80706050L, instance.getAsUnsignedLong());
+                assertEquals(Integer.toUnsignedString(0x80706050), instance.nativeToString());
+                assertEquals("0x80706050", instance.nativeToHexString());
+                //Test MAX_UINT32 + 1
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(0x0000000100000000L));
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
+                break;
+            case 8:
+                Assertions.assertEquals(Alignment.AT_8, PosixDataType.size_t.baseDataType.ALIGN_OF);
+                assertEquals(BaseDataType.uint64_t, instance.getBaseDataType());
+                instance.setFromUnsignedLong(0x8070605040302010L);
+                assertEquals(0x8070605040302010L, instance.getAsUnsignedLong());
+                assertEquals(Long.toUnsignedString(0x8070605040302010L), instance.nativeToString());
+                assertEquals("0x8070605040302010", instance.nativeToHexString());
+                //This is unsigned so this is really
+                instance.setFromUnsignedLong(-1L);
+                assertEquals(-1, instance.getAsUnsignedLong());
+                assertEquals("18446744073709551615", instance.nativeToString());
+                assertEquals("0xffffffffffffffff", instance.nativeToHexString());
+                break;
+            default:
+                fail();
         }
     }
 

@@ -57,6 +57,26 @@ public class Stat {
 
     }
 
+    public static class FreeBsdDefines {
+
+        public final static int S_IRGRP = 32;
+        public final static int S_IROTH = 4;
+        public final static int S_IRUSR = 256;
+        public final static int S_IRWXG = 56;
+        public final static int S_IRWXO = 7;
+        public final static int S_IRWXU = 448;
+        public final static int S_ISGID = 1024;
+        public final static int S_ISUID = 2048;
+        public final static int S_ISVTX = 512;
+        public final static int S_IWGRP = 16;
+        public final static int S_IWOTH = 2;
+        public final static int S_IWUSR = 128;
+        public final static int S_IXGRP = 8;
+        public final static int S_IXOTH = 1;
+        public final static int S_IXUSR = 64;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -88,6 +108,24 @@ public class Stat {
                 S_IXOTH = LinuxDefines.S_IXOTH;
                 S_IXUSR = LinuxDefines.S_IXUSR;
 
+                break;
+            case FREE_BSD:
+                HAVE_SYS_STAT_H = true;
+                S_IRGRP = FreeBsdDefines.S_IRGRP;
+                S_IROTH = FreeBsdDefines.S_IROTH;
+                S_IRUSR = FreeBsdDefines.S_IRUSR;
+                S_IRWXG = FreeBsdDefines.S_IRWXG;
+                S_IRWXO = FreeBsdDefines.S_IRWXO;
+                S_IRWXU = FreeBsdDefines.S_IRWXU;
+                S_ISGID = FreeBsdDefines.S_ISGID;
+                S_ISUID = FreeBsdDefines.S_ISUID;
+                S_ISVTX = FreeBsdDefines.S_ISVTX;
+                S_IWGRP = FreeBsdDefines.S_IWGRP;
+                S_IWOTH = FreeBsdDefines.S_IWOTH;
+                S_IWUSR = FreeBsdDefines.S_IWUSR;
+                S_IXGRP = FreeBsdDefines.S_IXGRP;
+                S_IXOTH = FreeBsdDefines.S_IXOTH;
+                S_IXUSR = FreeBsdDefines.S_IXUSR;
                 break;
             default:
                 throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

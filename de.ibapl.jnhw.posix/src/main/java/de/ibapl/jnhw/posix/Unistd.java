@@ -68,6 +68,19 @@ public final class Unistd {
         public final static int STDOUT_FILENO = 1;
     }
 
+    public static class FreeBsdDefines {
+
+        public final static long _POSIX_VERSION = 200112;
+        public final static int SEEK_CUR = 1;
+        public final static int SEEK_DATA = 3;
+        public final static int SEEK_END = 2;
+        public final static int SEEK_HOLE = 4;
+        public final static int SEEK_SET = 0;
+        public final static int STDERR_FILENO = 2;
+        public final static int STDIN_FILENO = 0;
+        public final static int STDOUT_FILENO = 1;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -91,6 +104,18 @@ public final class Unistd {
                 STDERR_FILENO = LinuxDefines.STDERR_FILENO;
                 STDIN_FILENO = LinuxDefines.STDIN_FILENO;
                 STDOUT_FILENO = LinuxDefines.STDOUT_FILENO;
+                break;
+            case FREE_BSD:
+                HAVE_UNISTD_H = true;
+                _POSIX_VERSION = FreeBsdDefines._POSIX_VERSION;
+                SEEK_CUR = FreeBsdDefines.SEEK_CUR;
+                SEEK_DATA = IntDefine.toIntDefine(FreeBsdDefines.SEEK_DATA);
+                SEEK_END = FreeBsdDefines.SEEK_END;
+                SEEK_HOLE = IntDefine.toIntDefine(FreeBsdDefines.SEEK_HOLE);
+                SEEK_SET = FreeBsdDefines.SEEK_SET;
+                STDERR_FILENO = FreeBsdDefines.STDERR_FILENO;
+                STDIN_FILENO = FreeBsdDefines.STDIN_FILENO;
+                STDOUT_FILENO = FreeBsdDefines.STDOUT_FILENO;
                 break;
             default:
                 throw new NoClassDefFoundError("No unistd.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

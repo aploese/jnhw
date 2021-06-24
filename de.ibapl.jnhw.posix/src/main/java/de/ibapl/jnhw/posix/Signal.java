@@ -235,6 +235,115 @@ public class Signal {
     public static interface Defines__MIPS_64__LINUX__GNU_ABI_64 extends Linux_AllArchs_Defines, Linux_Mips_Mips64_Defines {
     }
 
+    public static interface FreeBsdDefines {
+
+        public final static int ILL_ILLOPC = 1;
+        public final static int ILL_ILLOPN = 2;
+        public final static int ILL_ILLADR = 3;
+        public final static int ILL_ILLTRP = 4;
+        public final static int ILL_PRVOPC = 5;
+        public final static int ILL_PRVREG = 6;
+        public final static int ILL_COPROC = 7;
+        public final static int ILL_BADSTK = 8;
+
+        public final static int FPE_INTDIV = 2;
+        public final static int FPE_INTOVF = 1;
+        public final static int FPE_FLTDIV = 3;
+        public final static int FPE_FLTOVF = 4;
+        public final static int FPE_FLTUND = 5;
+        public final static int FPE_FLTRES = 6;
+        public final static int FPE_FLTINV = 7;
+        public final static int FPE_FLTSUB = 8;
+
+        public final static int SEGV_MAPERR = 1;
+        public final static int SEGV_ACCERR = 2;
+
+        public final static int BUS_ADRALN = 1;
+        public final static int BUS_ADRERR = 2;
+        public final static int BUS_OBJERR = 3;
+
+        public final static int TRAP_BRKPT = 1;
+        public final static int TRAP_TRACE = 2;
+
+        public final static int CLD_EXITED = 1;
+        public final static int CLD_KILLED = 2;
+        public final static int CLD_DUMPED = 3;
+        public final static int CLD_TRAPPED = 4;
+        public final static int CLD_STOPPED = 5;
+        public final static int CLD_CONTINUED = 6;
+
+        public final static int POLL_IN = 1;
+        public final static int POLL_OUT = 2;
+        public final static int POLL_MSG = 3;
+        public final static int POLL_ERR = 4;
+        public final static int POLL_PRI = 5;
+        public final static int POLL_HUP = 6;
+
+        public final static int SI_USER = 65537;
+        public final static int SI_QUEUE = 65538;
+
+        public final static int SA_NOCLDSTOP = 8;
+        public final static int SA_ONSTACK = 1;
+        public final static int SA_RESETHAND = 4;
+        public final static int SA_RESTART = 2;
+        public final static int SA_NODEFER = 16;
+
+        public final static int SS_ONSTACK = 1;
+        public final static int SS_DISABLE = 4;
+
+        public final static FunctionPtr_I_V SIG_ERR = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(-1));
+        public final static FunctionPtr_I_V SIG_DFL = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(0));
+        public final static FunctionPtr_I_V SIG_IGN = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(1));
+        public final static FunctionPtr_I_V SIG_HOLD = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(3));
+
+        public final static int SIGEV_SIGNAL = 1;
+        public final static int SIGEV_NONE = 0;
+        public final static int SIGEV_THREAD = 2;
+
+        /* ISO C99 signals.  */
+        public final static int SIGINT = 2;
+        public final static int SIGILL = 4;
+        public final static int SIGABRT = 6;
+        public final static int SIGFPE = 8;
+        public final static int SIGSEGV = 11;
+        public final static int SIGTERM = 15;
+        public final static int SIGHUP = 1;
+        public final static int SIGQUIT = 3;
+        public final static int SIGTRAP = 5;
+        public final static int SIGKILL = 9;
+        public final static int SIGPIPE = 13;
+        public final static int SIGALRM = 14;
+        public final static int MINSIGSTKSZ = 2048;
+        public final static int SIGSTKSZ = 34816;
+
+        public final static int SA_NOCLDWAIT = 32;
+        public final static int SA_SIGINFO = 64;
+
+        public final static int SI_TIMER = 65539;
+        public final static int SI_ASYNCIO = 65540;
+        public final static int SI_MESGQ = 65541;
+
+        public final static int SIG_BLOCK = 1;
+        public final static int SIG_UNBLOCK = 2;
+        public final static int SIG_SETMASK = 3;
+
+        public final static int SIGBUS = 10;
+        public final static int SIGCHLD = 20;
+        public final static int SIGCONT = 19;
+        public final static int SIGPROF = 27;
+        public final static int SIGSTOP = 17;
+        public final static int SIGSYS = 12;
+        public final static int SIGTSTP = 18;
+        public final static int SIGTTIN = 21;
+        public final static int SIGTTOU = 22;
+        public final static int SIGUSR1 = 30;
+        public final static int SIGUSR2 = 31;
+        public final static int SIGURG = 16;
+        public final static int SIGVTALRM = 26;
+        public final static int SIGXCPU = 24;
+        public final static int SIGXFSZ = 25;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -295,7 +404,7 @@ public class Signal {
                         MINSIGSTKSZ = Linux_Ppc64_S390_Defines.MINSIGSTKSZ;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No signal.h defines for MINSIGSTKSZ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No signal.h linux defines for MINSIGSTKSZ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                 }
 
                 POLL_ERR = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_ERR);
@@ -342,7 +451,7 @@ public class Signal {
                         SIGSTKSZ = Linux_Arm_I386_RiscV64_X86_64_Defines.SIGSTKSZ;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No signal.h defines for SIGSTKSZ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No signal.h linux defines for SIGSTKSZ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                 }
                 SIGTERM = Linux_AllArchs_Defines.SIGTERM;
                 SIGTRAP = Linux_AllArchs_Defines.SIGTRAP;
@@ -426,11 +535,118 @@ public class Signal {
                         SI_TIMER = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SI_TIMER;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No signal.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                 }
                 break;
+            case FREE_BSD:
+                HAVE_SIGNAL_H = true;
+
+                BUS_ADRALN = FreeBsdDefines.BUS_ADRALN;
+                BUS_ADRERR = FreeBsdDefines.BUS_ADRERR;
+                BUS_OBJERR = FreeBsdDefines.BUS_OBJERR;
+
+                CLD_CONTINUED = FreeBsdDefines.CLD_CONTINUED;
+                CLD_DUMPED = FreeBsdDefines.CLD_DUMPED;
+                CLD_EXITED = FreeBsdDefines.CLD_EXITED;
+                CLD_KILLED = FreeBsdDefines.CLD_KILLED;
+                CLD_STOPPED = FreeBsdDefines.CLD_STOPPED;
+                CLD_TRAPPED = FreeBsdDefines.CLD_TRAPPED;
+
+                FPE_FLTDIV = FreeBsdDefines.FPE_FLTDIV;
+                FPE_FLTINV = FreeBsdDefines.FPE_FLTINV;
+                FPE_FLTOVF = FreeBsdDefines.FPE_FLTOVF;
+                FPE_FLTRES = FreeBsdDefines.FPE_FLTRES;
+                FPE_FLTSUB = FreeBsdDefines.FPE_FLTSUB;
+                FPE_FLTUND = FreeBsdDefines.FPE_FLTUND;
+                FPE_INTDIV = FreeBsdDefines.FPE_INTDIV;
+                FPE_INTOVF = FreeBsdDefines.FPE_INTOVF;
+
+                ILL_BADSTK = FreeBsdDefines.ILL_BADSTK;
+                ILL_COPROC = FreeBsdDefines.ILL_COPROC;
+                ILL_ILLADR = FreeBsdDefines.ILL_ILLADR;
+                ILL_ILLOPC = FreeBsdDefines.ILL_ILLOPC;
+                ILL_ILLOPN = FreeBsdDefines.ILL_ILLOPN;
+                ILL_ILLTRP = FreeBsdDefines.ILL_ILLTRP;
+                ILL_PRVOPC = FreeBsdDefines.ILL_PRVOPC;
+                ILL_PRVREG = FreeBsdDefines.ILL_PRVREG;
+                MINSIGSTKSZ = FreeBsdDefines.MINSIGSTKSZ;
+                POLL_ERR = IntDefine.toIntDefine(FreeBsdDefines.POLL_ERR);
+                POLL_HUP = IntDefine.toIntDefine(FreeBsdDefines.POLL_HUP);
+                POLL_IN = IntDefine.toIntDefine(FreeBsdDefines.POLL_IN);
+                POLL_MSG = IntDefine.toIntDefine(FreeBsdDefines.POLL_MSG);
+                POLL_OUT = IntDefine.toIntDefine(FreeBsdDefines.POLL_OUT);
+                POLL_PRI = IntDefine.toIntDefine(FreeBsdDefines.POLL_PRI);
+
+                SA_NOCLDSTOP = FreeBsdDefines.SA_NOCLDSTOP;
+                SA_NODEFER = FreeBsdDefines.SA_NODEFER;
+                SA_ONSTACK = FreeBsdDefines.SA_ONSTACK;
+                SA_RESETHAND = FreeBsdDefines.SA_RESETHAND;
+                SA_RESTART = FreeBsdDefines.SA_RESTART;
+
+                SEGV_ACCERR = FreeBsdDefines.SEGV_ACCERR;
+                SEGV_MAPERR = FreeBsdDefines.SEGV_MAPERR;
+
+                SIGABRT = FreeBsdDefines.SIGABRT;
+                SIGALRM = FreeBsdDefines.SIGALRM;
+
+                SIGEV_NONE = IntDefine.toIntDefine(FreeBsdDefines.SIGEV_NONE);
+                SIGEV_SIGNAL = IntDefine.toIntDefine(FreeBsdDefines.SIGEV_SIGNAL);
+                SIGEV_THREAD = IntDefine.toIntDefine(FreeBsdDefines.SIGEV_THREAD);
+
+                SIGFPE = FreeBsdDefines.SIGFPE;
+                SIGHUP = FreeBsdDefines.SIGHUP;
+                SIGILL = FreeBsdDefines.SIGILL;
+                SIGINT = FreeBsdDefines.SIGINT;
+                SIGKILL = FreeBsdDefines.SIGKILL;
+                SIGPIPE = FreeBsdDefines.SIGPIPE;
+                SIGQUIT = FreeBsdDefines.SIGQUIT;
+                SIGSEGV = FreeBsdDefines.SIGSEGV;
+                SIGSTKSZ = FreeBsdDefines.SIGSTKSZ;
+                SIGTERM = FreeBsdDefines.SIGTERM;
+                SIGTRAP = FreeBsdDefines.SIGTRAP;
+                SIG_DFL = FreeBsdDefines.SIG_DFL;
+                SIG_ERR = FreeBsdDefines.SIG_ERR;
+                SIG_HOLD = ObjectDefine.toObjectDefine(FreeBsdDefines.SIG_HOLD);
+                SIG_IGN = FreeBsdDefines.SIG_IGN;
+                SI_QUEUE = FreeBsdDefines.SI_QUEUE;
+                SI_USER = FreeBsdDefines.SI_USER;
+
+                SS_DISABLE = FreeBsdDefines.SS_DISABLE;
+                SS_ONSTACK = FreeBsdDefines.SS_ONSTACK;
+
+                TRAP_BRKPT = FreeBsdDefines.TRAP_BRKPT;
+                TRAP_TRACE = FreeBsdDefines.TRAP_TRACE;
+
+                SA_NOCLDWAIT = FreeBsdDefines.SA_NOCLDWAIT;
+                SA_SIGINFO = FreeBsdDefines.SA_SIGINFO;
+
+                SIGBUS = FreeBsdDefines.SIGBUS;
+                SIGCHLD = FreeBsdDefines.SIGCHLD;
+                SIGCONT = FreeBsdDefines.SIGCONT;
+                SIGPOLL = IntDefine.UNDEFINED;
+                SIGPROF = FreeBsdDefines.SIGPROF;
+                SIGSTOP = FreeBsdDefines.SIGSTOP;
+                SIGSYS = FreeBsdDefines.SIGSYS;
+                SIGTSTP = FreeBsdDefines.SIGTSTP;
+                SIGTTIN = FreeBsdDefines.SIGTTIN;
+                SIGTTOU = FreeBsdDefines.SIGTTOU;
+                SIGURG = FreeBsdDefines.SIGURG;
+                SIGUSR1 = FreeBsdDefines.SIGUSR1;
+                SIGUSR2 = FreeBsdDefines.SIGUSR2;
+                SIGVTALRM = FreeBsdDefines.SIGVTALRM;
+                SIGXCPU = FreeBsdDefines.SIGXCPU;
+                SIGXFSZ = FreeBsdDefines.SIGXFSZ;
+                SIG_BLOCK = FreeBsdDefines.SIG_BLOCK;
+
+                SIG_SETMASK = FreeBsdDefines.SIG_SETMASK;
+                SIG_UNBLOCK = FreeBsdDefines.SIG_UNBLOCK;
+
+                SI_ASYNCIO = IntDefine.toIntDefine(FreeBsdDefines.SI_ASYNCIO);
+                SI_MESGQ = IntDefine.toIntDefine(FreeBsdDefines.SI_MESGQ);
+                SI_TIMER = FreeBsdDefines.SI_TIMER;
+                break;
             default:
-                throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No signal.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
     }
 
@@ -553,7 +769,7 @@ public class Signal {
                             sizeof = 256;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
                 case FREE_BSD:
@@ -565,7 +781,7 @@ public class Signal {
                     sizeof = 0;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
 
         }
@@ -613,7 +829,7 @@ public class Signal {
                             alignof = Alignment.AT_8;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for sigset_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     sizeof = 128;
                     break;
@@ -626,7 +842,7 @@ public class Signal {
                     sizeof = 4;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for sigset_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
         }
 
@@ -833,7 +1049,7 @@ public class Signal {
                     sizeof = 8;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h defines for sigval " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
         }
 
@@ -964,7 +1180,7 @@ public class Signal {
                             offsetof_Sigev_notify_attributes = 24;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for sigevent " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
 
                     sizeof = 64;
@@ -978,14 +1194,14 @@ public class Signal {
                             alignof = Alignment.AT_8;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h free BSD defines for sigevent " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     sizeof = 80;
-                    offsetof_Sigev_notify = -1;
-                    offsetof_Sigev_signo = -1;
+                    offsetof_Sigev_notify = 0;
+                    offsetof_Sigev_signo = 4;
                     offsetof_Sigev_value = 8;
-                    offsetof_Sigev_notify_function = -1;
-                    offsetof_Sigev_notify_attributes = -1;
+                    offsetof_Sigev_notify_function = 16;
+                    offsetof_Sigev_notify_attributes = 24;
                     break;
                 case OPEN_BSD:
                     alignof = null;
@@ -997,7 +1213,7 @@ public class Signal {
                     offsetof_Sigev_notify_attributes = -1;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for sigevent " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
         }
 
@@ -1548,16 +1764,16 @@ public class Signal {
                             offsetof_Sa_sigaction = -1;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for sigaction " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
                 case FREE_BSD:
                     alignof = Alignment.AT_8;
                     sizeof = 32;
-                    offsetof_Sa_handler = -1;
-                    offsetof_Sa_mask = -1;
-                    offsetof_Sa_flags = -1;
-                    offsetof_Sa_sigaction = -1;
+                    offsetof_Sa_handler = 0;
+                    offsetof_Sa_mask = 12;
+                    offsetof_Sa_flags = 8;
+                    offsetof_Sa_sigaction = 0;
                     break;
                 case OPEN_BSD:
                     alignof = Alignment.AT_8;
@@ -1568,7 +1784,7 @@ public class Signal {
                     offsetof_Sa_sigaction = -1;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for sigaction " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
         }
 
@@ -1908,13 +2124,13 @@ public class Signal {
                             offsetof_Uc_mcontext = 40;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for ucontext_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
                 case FREE_BSD:
                     alignof = Alignment.AT_16;
                     sizeof = 880;
-                    offsetof_Uc_link = -1;
+                    offsetof_Uc_link = 816;
                     offsetof_Uc_sigmask = 0;
                     offsetof_Uc_stack = 824;
                     offsetof_Uc_mcontext = 16;
@@ -1928,7 +2144,7 @@ public class Signal {
                     offsetof_Uc_mcontext = -1;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for ucontext_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
 
         }
@@ -2057,11 +2273,18 @@ public class Signal {
                             }
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for stack_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
+                case FREE_BSD:
+                    alignof = Alignment.AT_8;
+                    sizeof = 24;
+                    offsetof_Ss_sp = 0;
+                    offsetof_Ss_size = 8;
+                    offsetof_Ss_flags = 16;
+                    break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for stack_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
         }
 
@@ -2222,21 +2445,21 @@ public class Signal {
                             offsetof_Si_value = 24;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for siginfo_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
                 case FREE_BSD:
                     sizeof = 80;
-                    alignof = Alignment.AT_4;
-                    offsetof_Si_signo = -1;
-                    offsetof_Si_code = -1;
-                    offsetof_Si_errno = -1;
-                    offsetof_Si_pid = -1;
-                    offsetof_Si_uid = -1;
-                    offsetof_Si_addr = -1;
-                    offsetof_Si_status = -1;
-                    offsetof_Si_band = -1;
-                    offsetof_Si_value = -1;
+                    alignof = Alignment.AT_8;
+                    offsetof_Si_signo = 0;
+                    offsetof_Si_code = 8;
+                    offsetof_Si_errno = 4;
+                    offsetof_Si_pid = 12;
+                    offsetof_Si_uid = 16;
+                    offsetof_Si_addr = 24;
+                    offsetof_Si_status = 20;
+                    offsetof_Si_band = 40;
+                    offsetof_Si_value = 32;
                     break;
                 case OPEN_BSD:
                     sizeof = 136;
@@ -2252,7 +2475,7 @@ public class Signal {
                     offsetof_Si_value = -1;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for siginfo_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
         }
 

@@ -1150,7 +1150,7 @@ extern "C" {
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOSTR
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__FreeBSD__) || defined(__OpenBSD__)
-#if defined(ENOSTR)
+#if !defined(ENOSTR)
         return NULL;
 #else
 #error "ENOSTR defined"

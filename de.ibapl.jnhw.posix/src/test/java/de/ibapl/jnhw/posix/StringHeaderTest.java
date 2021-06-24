@@ -110,7 +110,7 @@ public class StringHeaderTest {
             case FREE_BSD:
             case MAC_OS_X:
                 assertThrows(NoSuchNativeMethodException.class, () -> {
-                    StringHeader.strerror_l(Errno.EAGAIN, null);
+                    StringHeader.strerror_l(Errno.EAGAIN, Locale.Locale_t.locale_t_0());
                 });
                 break;
             default:

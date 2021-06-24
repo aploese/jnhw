@@ -435,7 +435,7 @@ extern "C" {
         return JnhwWrapInteger(env, B576000);
 #else
 #if !defined(B576000)
-        returnNULL;
+        return NULL;
 #else
 #error "B576000 defined"
 #endif

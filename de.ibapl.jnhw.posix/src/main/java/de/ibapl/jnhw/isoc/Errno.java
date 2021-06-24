@@ -56,6 +56,13 @@ public abstract class Errno {
 
     }
 
+    public static interface FreeBsdDefines {
+
+        public final static int EDOM = 33;
+        public final static int ERANGE = 34;
+        public final static int EILSEQ = 86;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -81,6 +88,12 @@ public abstract class Errno {
                     default:
                         EILSEQ = Linux_NonMips_Defines.EILSEQ;
                 }
+                break;
+            case FREE_BSD:
+                HAVE_ERRNO_H = true;
+                EDOM = FreeBsdDefines.EDOM;
+                ERANGE = FreeBsdDefines.ERANGE;
+                EILSEQ = FreeBsdDefines.EILSEQ;
                 break;
             default:
                 throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

@@ -50,7 +50,12 @@ public class StringHeader {
         LibJnhwPosixLoader.touch();
         switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
             case LINUX:
+            case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_STRING_H = true;
+                break;
+            case WINDOWS:
+                HAVE_STRING_H = false;
                 break;
             default:
                 throw new NoClassDefFoundError("No string.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

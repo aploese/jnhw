@@ -316,7 +316,7 @@ public class PthreadTest {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Pthread.pthread_setschedprio(null, 0);
+                    Pthread.pthread_setschedprio(Pthread.pthread_self(), 0);
                 });
                 break;
             default:

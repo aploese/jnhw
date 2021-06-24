@@ -88,7 +88,7 @@ public class FcntlTest {
 
         public final static native int O_DIRECTORY();
 
-        public final static native Integer O_DSYNC();
+        public final static native int O_DSYNC();
 
         public final static native int O_EXCL();
 

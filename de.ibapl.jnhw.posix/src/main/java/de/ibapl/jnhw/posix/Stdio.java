@@ -47,6 +47,15 @@ public class Stdio {
 
     }
 
+    public static class FreeBsdDefines {
+
+        public static final int EOF = -1;
+        public static final int SEEK_CUR = 1;
+        public static final int SEEK_END = 2;
+        public static final int SEEK_SET = 0;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -65,6 +74,13 @@ public class Stdio {
                 SEEK_CUR = LinuxDefines.SEEK_CUR;
                 SEEK_END = LinuxDefines.SEEK_END;
                 SEEK_SET = LinuxDefines.SEEK_SET;
+                break;
+            case FREE_BSD:
+                HAVE_STDIO_H = true;
+                EOF = FreeBsdDefines.EOF;
+                SEEK_CUR = FreeBsdDefines.SEEK_CUR;
+                SEEK_END = FreeBsdDefines.SEEK_END;
+                SEEK_SET = FreeBsdDefines.SEEK_SET;
                 break;
             default:
                 throw new NoClassDefFoundError("No stdio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

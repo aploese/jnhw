@@ -52,6 +52,13 @@ public class Sched {
         public final static int SCHED_RR = 2;
     }
 
+    public static class FreeBsdDefines {
+
+        public final static int SCHED_FIFO = 1;
+        public final static int SCHED_OTHER = 2;
+        public final static int SCHED_RR = 3;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -67,12 +74,17 @@ public class Sched {
         switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
             case LINUX:
                 HAVE_SCHED_H = true;
-
                 SCHED_FIFO = LinuxDefines.SCHED_FIFO;
                 SCHED_OTHER = LinuxDefines.SCHED_OTHER;
                 SCHED_RR = LinuxDefines.SCHED_RR;
                 SCHED_SPORADIC = IntDefine.UNDEFINED;
-
+                break;
+            case FREE_BSD:
+                HAVE_SCHED_H = true;
+                SCHED_FIFO = FreeBsdDefines.SCHED_FIFO;
+                SCHED_OTHER = FreeBsdDefines.SCHED_OTHER;
+                SCHED_RR = FreeBsdDefines.SCHED_RR;
+                SCHED_SPORADIC = IntDefine.UNDEFINED;
                 break;
             default:
                 throw new NoClassDefFoundError("No sched.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

@@ -30,6 +30,7 @@ import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
 import java.io.IOException;
@@ -65,6 +66,25 @@ public class Locale {
         public final static int LC_TIME_MASK = 4;
     }
 
+    public static class FreeBsdDefines {
+
+        public final static int LC_ALL = 0;
+        public final static int LC_ALL_MASK = 63;
+        public final static int LC_COLLATE = 1;
+        public final static int LC_COLLATE_MASK = 1;
+        public final static int LC_CTYPE = 2;
+        public final static int LC_CTYPE_MASK = 2;
+        public final static long LC_GLOBAL_LOCALE = -1;
+        public final static int LC_MESSAGES = 6;
+        public final static int LC_MESSAGES_MASK = 32;
+        public final static int LC_MONETARY = 3;
+        public final static int LC_MONETARY_MASK = 4;
+        public final static int LC_NUMERIC = 4;
+        public final static int LC_NUMERIC_MASK = 8;
+        public final static int LC_TIME = 5;
+        public final static int LC_TIME_MASK = 16;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -96,8 +116,26 @@ public class Locale {
                 LC_TIME = LinuxDefines.LC_TIME;
                 LC_TIME_MASK = LinuxDefines.LC_TIME_MASK;
                 break;
+            case FREE_BSD:
+                HAVE_LOCALE_H = true;
+                LC_ALL = FreeBsdDefines.LC_ALL;
+                LC_ALL_MASK = FreeBsdDefines.LC_ALL_MASK;
+                LC_COLLATE = FreeBsdDefines.LC_COLLATE;
+                LC_COLLATE_MASK = FreeBsdDefines.LC_COLLATE_MASK;
+                LC_CTYPE = FreeBsdDefines.LC_CTYPE;
+                LC_CTYPE_MASK = FreeBsdDefines.LC_CTYPE_MASK;
+                LC_GLOBAL_LOCALE = Locale_t.fromNativeValue(FreeBsdDefines.LC_GLOBAL_LOCALE);
+                LC_MESSAGES = FreeBsdDefines.LC_MESSAGES;
+                LC_MESSAGES_MASK = FreeBsdDefines.LC_MESSAGES_MASK;
+                LC_MONETARY = FreeBsdDefines.LC_MONETARY;
+                LC_MONETARY_MASK = FreeBsdDefines.LC_MONETARY_MASK;
+                LC_NUMERIC = FreeBsdDefines.LC_NUMERIC;
+                LC_NUMERIC_MASK = FreeBsdDefines.LC_NUMERIC_MASK;
+                LC_TIME = FreeBsdDefines.LC_TIME;
+                LC_TIME_MASK = FreeBsdDefines.LC_TIME_MASK;
+                break;
             default:
-                throw new NoClassDefFoundError("No locale.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No locale.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
     }
 
@@ -354,36 +392,72 @@ public class Locale {
          */
         static {
             LibJnhwPosixLoader.touch();
-            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
-                case _32_BIT:
-                    alignof = Alignment.AT_4;
-                    sizeof = 56;
-                    offsetof_Currency_symbol = 16;
-                    offsetof_Decimal_point = 0;
-                    offsetof_Frac_digits = 41;
-                    offsetof_Grouping = 8;
-                    offsetof_Int_curr_symbol = 12;
-                    offsetof_Int_frac_digits = 40;
-                    offsetof_Int_n_cs_precedes = 50;
-                    offsetof_Int_n_sep_by_space = 51;
-                    offsetof_Int_n_sign_posn = 53;
-                    offsetof_Int_p_cs_precedes = 48;
-                    offsetof_Int_p_sep_by_space = 49;
-                    offsetof_Int_p_sign_posn = 52;
-                    offsetof_Mon_decimal_point = 20;
-                    offsetof_Mon_grouping = 28;
-                    offsetof_Mon_thousands_sep = 24;
-                    offsetof_Negative_sign = 36;
-                    offsetof_N_cs_precedes = 44;
-                    offsetof_N_sep_by_space = 45;
-                    offsetof_N_sign_posn = 47;
-                    offsetof_Positive_sign = 32;
-                    offsetof_P_cs_precedes = 42;
-                    offsetof_P_sep_by_space = 43;
-                    offsetof_P_sign_posn = 46;
-                    offsetof_Thousands_sep = 4;
+            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+            switch (multiarchInfo.getOS()) {
+
+                case LINUX:
+                    switch (multiarchInfo.getSizeOfPointer()) {
+                        case _32_BIT:
+                            alignof = Alignment.AT_4;
+                            sizeof = 56;
+                            offsetof_Currency_symbol = 16;
+                            offsetof_Decimal_point = 0;
+                            offsetof_Frac_digits = 41;
+                            offsetof_Grouping = 8;
+                            offsetof_Int_curr_symbol = 12;
+                            offsetof_Int_frac_digits = 40;
+                            offsetof_Int_n_cs_precedes = 50;
+                            offsetof_Int_n_sep_by_space = 51;
+                            offsetof_Int_n_sign_posn = 53;
+                            offsetof_Int_p_cs_precedes = 48;
+                            offsetof_Int_p_sep_by_space = 49;
+                            offsetof_Int_p_sign_posn = 52;
+                            offsetof_Mon_decimal_point = 20;
+                            offsetof_Mon_grouping = 28;
+                            offsetof_Mon_thousands_sep = 24;
+                            offsetof_Negative_sign = 36;
+                            offsetof_N_cs_precedes = 44;
+                            offsetof_N_sep_by_space = 45;
+                            offsetof_N_sign_posn = 47;
+                            offsetof_Positive_sign = 32;
+                            offsetof_P_cs_precedes = 42;
+                            offsetof_P_sep_by_space = 43;
+                            offsetof_P_sign_posn = 46;
+                            offsetof_Thousands_sep = 4;
+                            break;
+                        case _64_BIT:
+                            alignof = Alignment.AT_8;
+                            sizeof = 96;
+                            offsetof_Currency_symbol = 32;
+                            offsetof_Decimal_point = 0;
+                            offsetof_Frac_digits = 81;
+                            offsetof_Grouping = 16;
+                            offsetof_Int_curr_symbol = 24;
+                            offsetof_Int_frac_digits = 80;
+                            offsetof_Int_n_cs_precedes = 90;
+                            offsetof_Int_n_sep_by_space = 91;
+                            offsetof_Int_n_sign_posn = 93;
+                            offsetof_Int_p_cs_precedes = 88;
+                            offsetof_Int_p_sep_by_space = 89;
+                            offsetof_Int_p_sign_posn = 92;
+                            offsetof_Mon_decimal_point = 40;
+                            offsetof_Mon_grouping = 56;
+                            offsetof_Mon_thousands_sep = 48;
+                            offsetof_Negative_sign = 72;
+                            offsetof_N_cs_precedes = 84;
+                            offsetof_N_sep_by_space = 85;
+                            offsetof_N_sign_posn = 87;
+                            offsetof_Positive_sign = 64;
+                            offsetof_P_cs_precedes = 82;
+                            offsetof_P_sep_by_space = 83;
+                            offsetof_P_sign_posn = 86;
+                            offsetof_Thousands_sep = 8;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No locale.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
                     break;
-                case _64_BIT:
+                case FREE_BSD:
                     alignof = Alignment.AT_8;
                     sizeof = 96;
                     offsetof_Currency_symbol = 32;
@@ -392,11 +466,11 @@ public class Locale {
                     offsetof_Grouping = 16;
                     offsetof_Int_curr_symbol = 24;
                     offsetof_Int_frac_digits = 80;
-                    offsetof_Int_n_cs_precedes = 90;
+                    offsetof_Int_n_cs_precedes = 89;
                     offsetof_Int_n_sep_by_space = 91;
                     offsetof_Int_n_sign_posn = 93;
                     offsetof_Int_p_cs_precedes = 88;
-                    offsetof_Int_p_sep_by_space = 89;
+                    offsetof_Int_p_sep_by_space = 90;
                     offsetof_Int_p_sign_posn = 92;
                     offsetof_Mon_decimal_point = 40;
                     offsetof_Mon_grouping = 56;
@@ -412,7 +486,7 @@ public class Locale {
                     offsetof_Thousands_sep = 8;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No locale.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No locale.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
         }
 

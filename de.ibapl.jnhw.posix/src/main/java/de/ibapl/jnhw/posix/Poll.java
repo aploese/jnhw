@@ -46,7 +46,6 @@ public final class Poll {
 
     public static interface LinuxDefines {
 
-        public final static boolean HAVE_POLL_H = true;
         public final static short POLLERR = 0x0008;
         public final static short POLLHUP = 0x0010;
         public final static short POLLIN = 0x0001;
@@ -69,6 +68,20 @@ public final class Poll {
         public final static short POLLWRNORM = 0x0004;
     }
 
+    public static interface FreeBsdDefines {
+
+        public final static short POLLERR = 0x0008;
+        public final static short POLLHUP = 0x0010;
+        public final static short POLLIN = 0x0001;
+        public final static short POLLNVAL = 0x0020;
+        public final static short POLLOUT = 0x0004;
+        public final static short POLLPRI = 0x0002;
+        public final static short POLLRDBAND = 0x0080;
+        public final static short POLLRDNORM = 0x0040;
+        public final static short POLLWRBAND = 0x0100;
+        public final static short POLLWRNORM = 0x0004;
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -83,7 +96,7 @@ public final class Poll {
 
         switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
             case LINUX:
-                HAVE_POLL_H = LinuxDefines.HAVE_POLL_H;
+                HAVE_POLL_H = true;
                 POLLERR = LinuxDefines.POLLERR;
                 POLLHUP = LinuxDefines.POLLHUP;
                 POLLIN = LinuxDefines.POLLIN;
@@ -102,6 +115,19 @@ public final class Poll {
                         POLLWRBAND = Linux_NonMips_Defines.POLLWRBAND;
                         POLLWRNORM = Linux_NonMips_Defines.POLLWRNORM;
                 }
+                break;
+            case FREE_BSD:
+                HAVE_POLL_H = true;
+                POLLERR = FreeBsdDefines.POLLERR;
+                POLLHUP = FreeBsdDefines.POLLHUP;
+                POLLIN = FreeBsdDefines.POLLIN;
+                POLLNVAL = FreeBsdDefines.POLLNVAL;
+                POLLOUT = FreeBsdDefines.POLLOUT;
+                POLLPRI = FreeBsdDefines.POLLPRI;
+                POLLRDBAND = FreeBsdDefines.POLLRDBAND;
+                POLLRDNORM = FreeBsdDefines.POLLRDNORM;
+                POLLWRBAND = FreeBsdDefines.POLLWRBAND;
+                POLLWRNORM = FreeBsdDefines.POLLWRNORM;
                 break;
             default:
                 throw new NoClassDefFoundError("No poll.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

@@ -69,6 +69,19 @@ public class Aio {
 
     }
 
+    public static class FreeBsdDefines {
+
+        public final static int AIO_ALLDONE = 3;
+        public final static int AIO_CANCELED = 1;
+        public final static int AIO_NOTCANCELED = 2;
+        public final static int LIO_NOP = 0;
+        public final static int LIO_NOWAIT = 0;
+        public final static int LIO_READ = 2;
+        public final static int LIO_WAIT = 1;
+        public final static int LIO_WRITE = 1;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -92,6 +105,18 @@ public class Aio {
                 LIO_READ = IntDefine.toIntDefine(LinuxDefines.LIO_READ);
                 LIO_WAIT = IntDefine.toIntDefine(LinuxDefines.LIO_WAIT);
                 LIO_WRITE = IntDefine.toIntDefine(LinuxDefines.LIO_WRITE);
+                break;
+            case FREE_BSD:
+                HAVE_AIO_H = true;
+
+                AIO_ALLDONE = IntDefine.toIntDefine(FreeBsdDefines.AIO_ALLDONE);
+                AIO_CANCELED = IntDefine.toIntDefine(FreeBsdDefines.AIO_CANCELED);
+                AIO_NOTCANCELED = IntDefine.toIntDefine(FreeBsdDefines.AIO_NOTCANCELED);
+                LIO_NOP = IntDefine.toIntDefine(FreeBsdDefines.LIO_NOP);
+                LIO_NOWAIT = IntDefine.toIntDefine(FreeBsdDefines.LIO_NOWAIT);
+                LIO_READ = IntDefine.toIntDefine(FreeBsdDefines.LIO_READ);
+                LIO_WAIT = IntDefine.toIntDefine(FreeBsdDefines.LIO_WAIT);
+                LIO_WRITE = IntDefine.toIntDefine(FreeBsdDefines.LIO_WRITE);
                 break;
             default:
                 throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -410,13 +435,13 @@ public class Aio {
                     }
                     break;
                 case FREE_BSD:
-                    offsetof_Aio_fildes = -1;
-                    offsetof_Aio_offset = -1;
-                    offsetof_Aio_buf = -1;
-                    offsetof_Aio_nbytes = -1;
-                    offsetof_Aio_reqprio = -1;
+                    offsetof_Aio_fildes = 0;
+                    offsetof_Aio_offset = 8;
+                    offsetof_Aio_buf = 16;
+                    offsetof_Aio_nbytes = 24;
+                    offsetof_Aio_reqprio = 52;
                     offsetof_Aio_sigevent = 80;
-                    offsetof_Aio_lio_opcode = -1;
+                    offsetof_Aio_lio_opcode = 48;
                     alignof = Alignment.AT_8;
                     sizeof = 160;
                     break;

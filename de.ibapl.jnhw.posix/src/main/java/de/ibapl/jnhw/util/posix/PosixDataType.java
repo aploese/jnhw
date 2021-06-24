@@ -33,7 +33,6 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
  * @author aploese
  */
 public enum PosixDataType {
-
     cc_t(dataTypeOf__CC_t()),
     clock_t(dataTypeOf__clock_t()),
     mode_t(dataTypeOf__mode_t()),

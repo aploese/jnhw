@@ -121,9 +121,9 @@ extern "C" {
      * Signature: (I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_IOCPARM_1LEN
-#if defined(__OpenBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint x) {
-        return IOCPARM_LEN((uint_32_t) x);
+        return IOCPARM_LEN((uint32_t) x);
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint nr) {
         throw_NoSuchNativeMethodException(env, "IOCPARM_LEN");
@@ -137,11 +137,14 @@ extern "C" {
      * Signature: (I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_IOCBASECMD
-#if defined(__OpenBSD__)
+#if defined(__FreeBSD__)
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint x) {
-        return IOCBASECMD((uint32_t) x)
+        return IOCBASECMD(x);
+#elif defined(__OpenBSD__)
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint x) {
+        return IOCBASECMD((uint32_t) x);
 #else
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint x){
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint x) {
         throw_NoSuchNativeMethodException(env, "IOCBASECMD");
         return -1;
 #endif
@@ -153,7 +156,7 @@ extern "C" {
      * Signature: (I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_IOCGROUP
-#if defined(__OpenBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint x) {
         return IOCGROUP((uint32_t) x);
 #else

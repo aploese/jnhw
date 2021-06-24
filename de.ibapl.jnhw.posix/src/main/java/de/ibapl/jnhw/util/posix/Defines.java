@@ -88,13 +88,13 @@ public class Defines {
 
         __APPLE__ = IntDefine.UNDEFINED;
         _BSD_SOURCE = IntDefine.UNDEFINED;
-        __FreeBSD__ = IntDefine.UNDEFINED;
+        __FreeBSD__ = os == OS.FREE_BSD ? IntDefine.toIntDefine(13) : IntDefine.UNDEFINED;
         __linux__ = os == OS.LINUX ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __OpenBSD__ = IntDefine.UNDEFINED;
 
         _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
-        _LARGEFILE64_SOURCE = IntDefine.toIntDefine(1);
-        _LARGEFILE_SOURCE = IntDefine.toIntDefine(1);
+        _LARGEFILE64_SOURCE = os == OS.FREE_BSD ? IntDefine.UNDEFINED : IntDefine.toIntDefine(1);
+        _LARGEFILE_SOURCE = os == OS.FREE_BSD ? IntDefine.UNDEFINED : IntDefine.toIntDefine(1);
         _POSIX_C_SOURCE = IntDefine.toIntDefine(200809);
         _XOPEN_SOURCE = IntDefine.toIntDefine(700);
         _XOPEN_SOURCE_EXTENDED = IntDefine.toIntDefine(1);
@@ -117,9 +117,28 @@ public class Defines {
                 throw new NoClassDefFoundError("No default value for __BIGGEST_ALIGNMENT__ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
 
-        __GLIBC_MINOR__ = mi == MultiarchInfo.RISC_V_64__LINUX__GNU ? IntDefine.toIntDefine(31) : IntDefine.toIntDefine(28);
-        __GLIBC__ = IntDefine.toIntDefine(2);
-        __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
+        switch (os) {
+            case LINUX:
+                switch (arch) {
+                    case RISC_V_64:
+                        __GLIBC_MINOR__ = IntDefine.toIntDefine(31);
+                        __GLIBC__ = IntDefine.toIntDefine(2);
+                        __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
+                        break;
+                    default:
+                        __GLIBC_MINOR__ = IntDefine.toIntDefine(28);
+                        __GLIBC__ = IntDefine.toIntDefine(2);
+                        __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
+                }
+                break;
+            case FREE_BSD:
+                __GLIBC_MINOR__ = IntDefine.UNDEFINED;
+                __GLIBC__ = IntDefine.UNDEFINED;
+                __GNU_LIBRARY__ = IntDefine.UNDEFINED;
+                break;
+            default:
+                throw new NoClassDefFoundError("No default value for __GLIBC__, __GLIBC_MINOR__ and __GNU_LIBRARY__ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
 
         __ILP32__ = IntDefine.UNDEFINED; // glibc > 2.31? arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         switch (arch) {

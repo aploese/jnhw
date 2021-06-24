@@ -58,6 +58,17 @@ public class Pthread {
 
     }
 
+    public static class FreeBsdDefines {
+
+        public final static int PTHREAD_EXPLICIT_SCHED = 0;
+        public final static int PTHREAD_INHERIT_SCHED = 4;
+        public final static int PTHREAD_CANCEL_DISABLE = 1;
+        public final static int PTHREAD_CANCEL_ENABLE = 0;
+        public final static int PTHREAD_CANCEL_DEFERRED = 0;
+        public final static int PTHREAD_CANCEL_ASYNCHRONOUS = 2;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      *
@@ -79,8 +90,17 @@ public class Pthread {
                 PTHREAD_EXPLICIT_SCHED = LinuxDefines.PTHREAD_EXPLICIT_SCHED;
                 PTHREAD_INHERIT_SCHED = LinuxDefines.PTHREAD_INHERIT_SCHED;
                 break;
+            case FREE_BSD:
+                HAVE_PTHREAD_H = true;
+                PTHREAD_CANCEL_ASYNCHRONOUS = FreeBsdDefines.PTHREAD_CANCEL_ASYNCHRONOUS;
+                PTHREAD_CANCEL_DEFERRED = FreeBsdDefines.PTHREAD_CANCEL_DEFERRED;
+                PTHREAD_CANCEL_DISABLE = FreeBsdDefines.PTHREAD_CANCEL_DISABLE;
+                PTHREAD_CANCEL_ENABLE = FreeBsdDefines.PTHREAD_CANCEL_ENABLE;
+                PTHREAD_EXPLICIT_SCHED = FreeBsdDefines.PTHREAD_EXPLICIT_SCHED;
+                PTHREAD_INHERIT_SCHED = FreeBsdDefines.PTHREAD_INHERIT_SCHED;
+                break;
             default:
-                throw new NoClassDefFoundError("No pthread.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No pthread.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
     }
 

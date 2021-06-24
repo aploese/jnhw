@@ -226,9 +226,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1
 /*
  * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
  * Method:    O_DSYNC
- * Signature: ()Ljava/lang/Integer;
+ * Signature: ()I
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1DSYNC
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1DSYNC
   (JNIEnv *, jclass);
 
 /*

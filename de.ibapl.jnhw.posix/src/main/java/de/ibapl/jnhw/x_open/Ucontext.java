@@ -51,6 +51,9 @@ public class Ucontext {
             case LINUX:
                 HAVE_UCONTEXT_H = true;
                 break;
+            case FREE_BSD:
+                HAVE_UCONTEXT_H = true;
+                break;
             default:
                 throw new NoClassDefFoundError("No ucontext.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }

@@ -64,7 +64,12 @@ public class Types {
         LibJnhwPosixLoader.touch();
         switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
             case LINUX:
+            case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_SYS_TYPES_H = true;
+                break;
+            case WINDOWS:
+                HAVE_SYS_TYPES_H = false;
                 break;
             default:
                 throw new NoClassDefFoundError("No sys/types.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

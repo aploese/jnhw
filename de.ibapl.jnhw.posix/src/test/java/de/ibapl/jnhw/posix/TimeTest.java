@@ -360,9 +360,14 @@ public class TimeTest {
         Time.clock_getres(Time.CLOCK_MONOTONIC, timespec);
 
         assertEquals(0, timespec.tv_sec());
-        //TODO virt env needs to be fixed
-        assertEquals(1, timespec.tv_nsec());
-
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case FREE_BSD:
+                //TODO virt env needs to be fixed??
+                assertEquals(280, timespec.tv_nsec());
+                break;
+            default:
+                assertEquals(1, timespec.tv_nsec());
+        }
         Time.clock_getres(Time.CLOCK_REALTIME);
     }
 
@@ -895,8 +900,12 @@ public class TimeTest {
         }
 
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
+            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                Time.timer_delete(timerid);
+            });
+            assertEquals(Errno.EINVAL, nee.errno);
             //FreeBSD crashes here with a SIGSEGV ...
-            fail("Praceholder to gracefully fail the test - Remove this to see if the vm still crashes as of now:  FreeBSD 12.1-RELEASE-p10 and openjdk15-15.0.0+36.1_1");
+            fail("Placeholder to gracefully fail the test - Remove this to see if the vm still crashes as of now:  FreeBSD 12.1-RELEASE-p10 and openjdk15-15.0.0+36.1_1");
         } else {
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                 Time.timer_delete(timerid);
@@ -922,7 +931,6 @@ public class TimeTest {
                     new Signal.Sigevent();
                 });
                 break;
-            case FREE_BSD:
             case MAC_OS_X:
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {

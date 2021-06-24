@@ -173,18 +173,21 @@ public class IoctlTest {
 
     @Test
     public void test_IOC() throws Exception {
-        final int value = Ioctl._IOC(Ioctl._IOC_NONE.get(), 'U', 22, 408);
         switch (NativeLibResolver.getOS()) {
             case LINUX:
-                Assertions.assertEquals(Ioctl._IOC_NONE.get(), Ioctl._IOC_DIR(value));
-                Assertions.assertEquals(22, Ioctl._IOC_NR(value));
-                Assertions.assertEquals(408, Ioctl._IOC_SIZE(value));
-                Assertions.assertEquals('U', Ioctl._IOC_TYPE(value));
+                final int linuxValue = Ioctl._IOC(Ioctl._IOC_NONE.get(), 'U', 22, 408);
+                Assertions.assertEquals(Ioctl._IOC_NONE.get(), Ioctl._IOC_DIR(linuxValue));
+                Assertions.assertEquals(22, Ioctl._IOC_NR(linuxValue));
+                Assertions.assertEquals(408, Ioctl._IOC_SIZE(linuxValue));
+                Assertions.assertEquals('U', Ioctl._IOC_TYPE(linuxValue));
                 break;
+            case FREE_BSD:
             case OPEN_BSD:
-                Assertions.assertEquals(-1, Ioctl.IOCPARM_LEN(value));
-                Assertions.assertEquals(-1, Ioctl.IOCGROUP(value));
-                Assertions.assertEquals(-1, Ioctl.IOCBASECMD(value));
+                final int bsdValue = Ioctl._IOC(Ioctl.IOC_VOID.get(), 'U', 22, 408);
+                Assertions.assertEquals(408, Ioctl.IOCPARM_LEN(bsdValue));
+                Assertions.assertEquals('U', Ioctl.IOCGROUP(bsdValue));
+                Assertions.assertEquals(536892694, Ioctl.IOCBASECMD(bsdValue));
+                break;
             default:
                 throw new RuntimeException("Implement OS: " + NativeLibResolver.getOS());
         }
@@ -200,10 +203,12 @@ public class IoctlTest {
                 Assertions.assertEquals(0, Ioctl._IOC_SIZE(value));
                 Assertions.assertEquals('U', Ioctl._IOC_TYPE(value));
                 break;
+            case FREE_BSD:
             case OPEN_BSD:
-                Assertions.assertEquals(-1, Ioctl.IOCPARM_LEN(value));
-                Assertions.assertEquals(-1, Ioctl.IOCGROUP(value));
-                Assertions.assertEquals(-1, Ioctl.IOCBASECMD(value));
+                Assertions.assertEquals(0, Ioctl.IOCPARM_LEN(value));
+                Assertions.assertEquals('U', Ioctl.IOCGROUP(value));
+                Assertions.assertEquals(536892673, Ioctl.IOCBASECMD(value));
+                break;
             default:
                 throw new RuntimeException("Implement OS: " + NativeLibResolver.getOS());
         }
@@ -217,13 +222,15 @@ public class IoctlTest {
             case LINUX:
                 Assertions.assertEquals(Ioctl._IOC_READ.get(), Ioctl._IOC_DIR(value));
                 Assertions.assertEquals(21, Ioctl._IOC_NR(value));
-                Assertions.assertEquals(4, Ioctl._IOC_SIZE(value));
+                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl._IOC_SIZE(value));
                 Assertions.assertEquals('U', Ioctl._IOC_TYPE(value));
                 break;
+            case FREE_BSD:
             case OPEN_BSD:
-                Assertions.assertEquals(-1, Ioctl.IOCPARM_LEN(value));
-                Assertions.assertEquals(-1, Ioctl.IOCGROUP(value));
-                Assertions.assertEquals(-1, Ioctl.IOCBASECMD(value));
+                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl.IOCPARM_LEN(value));
+                Assertions.assertEquals('U', Ioctl.IOCGROUP(value));
+                Assertions.assertEquals(1073763605, Ioctl.IOCBASECMD(value));
+                break;
             default:
                 throw new RuntimeException("Implement OS: " + NativeLibResolver.getOS());
         }
@@ -237,13 +244,15 @@ public class IoctlTest {
             case LINUX:
                 Assertions.assertEquals(Ioctl._IOC_WRITE.get(), Ioctl._IOC_DIR(value));
                 Assertions.assertEquals(65, Ioctl._IOC_NR(value));
-                Assertions.assertEquals(4, Ioctl._IOC_SIZE(value));
+                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl._IOC_SIZE(value));
                 Assertions.assertEquals('A', Ioctl._IOC_TYPE(value));
                 break;
+            case FREE_BSD:
             case OPEN_BSD:
-                Assertions.assertEquals(-1, Ioctl.IOCPARM_LEN(value));
-                Assertions.assertEquals(-1, Ioctl.IOCGROUP(value));
-                Assertions.assertEquals(-1, Ioctl.IOCBASECMD(value));
+                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl.IOCPARM_LEN(value));
+                Assertions.assertEquals('A', Ioctl.IOCGROUP(value));
+                Assertions.assertEquals(-2147466943, Ioctl.IOCBASECMD(value));
+                break;
             default:
                 throw new RuntimeException("Implement OS: " + NativeLibResolver.getOS());
         }
@@ -257,13 +266,15 @@ public class IoctlTest {
             case LINUX:
                 Assertions.assertEquals(Ioctl._IOC_READ.get() | Ioctl._IOC_WRITE.get(), Ioctl._IOC_DIR(value));
                 Assertions.assertEquals(7, Ioctl._IOC_NR(value));
-                Assertions.assertEquals(4, Ioctl._IOC_SIZE(value));
+                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl._IOC_SIZE(value));
                 Assertions.assertEquals('U', Ioctl._IOC_TYPE(value));
                 break;
+            case FREE_BSD:
             case OPEN_BSD:
-                Assertions.assertEquals(-1, Ioctl.IOCPARM_LEN(value));
-                Assertions.assertEquals(-1, Ioctl.IOCGROUP(value));
-                Assertions.assertEquals(-1, Ioctl.IOCBASECMD(value));
+                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl.IOCPARM_LEN(value));
+                Assertions.assertEquals('U', Ioctl.IOCGROUP(value));
+                Assertions.assertEquals(-1073720057, Ioctl.IOCBASECMD(value));
+                break;
             default:
                 throw new RuntimeException("Implement OS: " + NativeLibResolver.getOS());
         }

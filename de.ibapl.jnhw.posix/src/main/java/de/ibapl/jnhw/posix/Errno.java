@@ -316,6 +316,116 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
 
     }
 
+    public static interface FreeBsdDefines {
+
+        public final static int E2BIG = 1;
+
+        public final static int EACCES = 13;
+        public final static int EAGAIN = 35;
+
+        public final static int EBADF = 9;
+        public final static int EBUSY = 16;
+
+        public final static int ECHILD = 10;
+
+        public final static int EEXIST = 17;
+
+        public final static int EFAULT = 14;
+        public final static int EFBIG = 27;
+
+        public final static int EINTR = 4;
+        public final static int EINVAL = 22;
+        public final static int EIO = 5;
+        public final static int EISDIR = 21;
+
+        public final static int EMFILE = 24;
+        public final static int EMLINK = 31;
+
+        public final static int ENFILE = 23;
+        public final static int ENODEV = 19;
+        public final static int ENOENT = 2;
+        public final static int ENOEXEC = 8;
+        public final static int ENOLINK = 91;
+        public final static int ENOMEM = 12;
+        public final static int ENOSPC = 28;
+        public final static int ENOTBLK = 15;
+        public final static int ENOTDIR = 20;
+        public final static int ENOTTY = 25;
+        public final static int ENXIO = 6;
+
+        public final static int EPERM = 1;
+        public final static int EPIPE = 32;
+        public final static int EPROTO = 92;
+
+        public final static int EREMOTE = 71;
+        public final static int EROFS = 30;
+
+        public final static int ESPIPE = 29;
+        public final static int ESRCH = 3;
+
+        public final static int ETXTBSY = 26;
+
+        public final static int EWOULDBLOCK = 35;
+
+        public final static int EXDEV = 18;
+        public final static int EADDRINUSE = 48;
+        public final static int EADDRNOTAVAIL = 49;
+        public final static int EAFNOSUPPORT = 47;
+        public final static int EALREADY = 37;
+        public final static int EBADMSG = 89;
+        public final static int ECANCELED = 85;
+        public final static int ECONNABORTED = 53;
+        public final static int ECONNREFUSED = 61;
+        public final static int ECONNRESET = 54;
+
+        public final static int EDEADLK = 11;
+        public final static int EDESTADDRREQ = 39;
+        public final static int EDQUOT = 69;
+        public final static int EHOSTDOWN = 64;
+        public final static int EHOSTUNREACH = 65;
+
+        public final static int EIDRM = 82;
+        public final static int EINPROGRESS = 36;
+
+        public final static int EISCONN = 56;
+
+        public final static int ELOOP = 62;
+
+        public final static int EMSGSIZE = 40;
+        public final static int EMULTIHOP = 90;
+
+        public final static int ENAMETOOLONG = 63;
+        public final static int ENETDOWN = 50;
+        public final static int ENETRESET = 52;
+        public final static int ENETUNREACH = 51;
+        public final static int ENOBUFS = 55;
+        public final static int ENOLCK = 77;
+        public final static int ENOMSG = 83;
+        public final static int ENOPROTOOPT = 42;
+        public final static int ENOSYS = 78;
+        public final static int ENOTCONN = 57;
+        public final static int ENOTEMPTY = 66;
+        public final static int ENOTRECOVERABLE = 95;
+        public final static int ENOTSOCK = 38;
+        public final static int ENOTSUP = 45;
+
+        public final static int EOPNOTSUPP = 45;
+        public final static int EOVERFLOW = 84;
+        public final static int EOWNERDEAD = 96;
+
+        public final static int EPFNOSUPPORT = 46;
+        public final static int EPROTONOSUPPORT = 43;
+        public final static int EPROTOTYPE = 41;
+
+        public final static int ESHUTDOWN = 58;
+        public final static int ESOCKTNOSUPPORT = 44;
+        public final static int ESTALE = 70;
+        public final static int ETIMEDOUT = 60;
+        public final static int ETOOMANYREFS = 59;
+        public final static int EUSERS = 68;
+
+    }
+
     /**
      * Make sure the native lib is loaded
      */
@@ -669,6 +779,202 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
 
                 }
 
+                break;
+            case FREE_BSD:
+                E2BIG = FreeBsdDefines.E2BIG;
+
+                EACCES = FreeBsdDefines.EACCES;
+                EADV = IntDefine.UNDEFINED;
+
+                EAGAIN = FreeBsdDefines.EAGAIN;
+                EBADF = FreeBsdDefines.EBADF;
+                EBFONT = IntDefine.UNDEFINED;
+
+                EBUSY = FreeBsdDefines.EBUSY;
+
+                ECHILD = FreeBsdDefines.ECHILD;
+
+                ECOMM = IntDefine.UNDEFINED;
+
+                EDOTDOT = IntDefine.UNDEFINED;
+
+                EEXIST = FreeBsdDefines.EEXIST;
+
+                EFAULT = FreeBsdDefines.EFAULT;
+                EFBIG = FreeBsdDefines.EFBIG;
+
+                EINTR = FreeBsdDefines.EINTR;
+                EINVAL = FreeBsdDefines.EINVAL;
+                EIO = FreeBsdDefines.EIO;
+                EISDIR = FreeBsdDefines.EISDIR;
+                EMFILE = FreeBsdDefines.EMFILE;
+                EMLINK = FreeBsdDefines.EMLINK;
+                ENFILE = FreeBsdDefines.ENFILE;
+                ENODATA = IntDefine.UNDEFINED;
+                ENODEV = FreeBsdDefines.ENODEV;
+                ENOENT = FreeBsdDefines.ENOENT;
+                ENOEXEC = FreeBsdDefines.ENOEXEC;
+                ENOLINK = IntDefine.toIntDefine(FreeBsdDefines.ENOLINK);
+
+                ENOMEM = FreeBsdDefines.ENOMEM;
+                ENONET = IntDefine.UNDEFINED;
+
+                ENOPKG = IntDefine.UNDEFINED;
+
+                ENOSPC = FreeBsdDefines.ENOSPC;
+                ENOSR = IntDefine.UNDEFINED;
+
+                ENOSTR = IntDefine.UNDEFINED;
+
+                ENOTBLK = FreeBsdDefines.ENOTBLK;
+                ENOTDIR = FreeBsdDefines.ENOTDIR;
+                ENOTTY = FreeBsdDefines.ENOTTY;
+
+                ENXIO = FreeBsdDefines.ENXIO;
+
+                EPERM = FreeBsdDefines.EPERM;
+                EPIPE = FreeBsdDefines.EPIPE;
+                EPROTO = FreeBsdDefines.EPROTO;
+                EREMOTE = FreeBsdDefines.EREMOTE;
+
+                EROFS = FreeBsdDefines.EROFS;
+
+                ESPIPE = FreeBsdDefines.ESPIPE;
+                ESRCH = FreeBsdDefines.ESRCH;
+                ESRMNT = IntDefine.UNDEFINED;
+
+                ETIME = IntDefine.UNDEFINED;
+
+                ETXTBSY = FreeBsdDefines.ETXTBSY;
+
+                EWOULDBLOCK = FreeBsdDefines.EWOULDBLOCK;
+
+                EXDEV = FreeBsdDefines.EXDEV;
+                EADDRINUSE = FreeBsdDefines.EADDRINUSE;
+                EADDRNOTAVAIL = FreeBsdDefines.EADDRNOTAVAIL;
+                EAFNOSUPPORT = FreeBsdDefines.EAFNOSUPPORT;
+                EALREADY = FreeBsdDefines.EALREADY;
+
+                EBADE = IntDefine.UNDEFINED;
+                EBADFD = IntDefine.UNDEFINED;
+
+                EBADMSG = FreeBsdDefines.EBADMSG;
+                EBADR = IntDefine.UNDEFINED;
+
+                EBADRQC = IntDefine.UNDEFINED;
+
+                EBADSLT = IntDefine.UNDEFINED;
+
+                ECANCELED = FreeBsdDefines.ECANCELED;
+                ECHRNG = IntDefine.UNDEFINED;
+                ECONNABORTED = FreeBsdDefines.ECONNABORTED;
+                ECONNREFUSED = FreeBsdDefines.ECONNREFUSED;
+                ECONNRESET = FreeBsdDefines.ECONNRESET;
+
+                EDEADLK = FreeBsdDefines.EDEADLK;
+                EDEADLOCK = IntDefine.UNDEFINED;
+
+                EDESTADDRREQ = FreeBsdDefines.EDESTADDRREQ;
+
+                EDQUOT = FreeBsdDefines.EDQUOT;
+
+                EHOSTDOWN = FreeBsdDefines.EHOSTDOWN;
+                EHOSTUNREACH = FreeBsdDefines.EHOSTUNREACH;
+                EHWPOISON = IntDefine.UNDEFINED;
+
+                EIDRM = FreeBsdDefines.EIDRM;
+                EINPROGRESS = FreeBsdDefines.EINPROGRESS;
+                EISCONN = FreeBsdDefines.EISCONN;
+                EISNAM = IntDefine.UNDEFINED;
+
+                EKEYEXPIRED = IntDefine.UNDEFINED;
+
+                EKEYREJECTED = IntDefine.UNDEFINED;
+
+                EKEYREVOKED = IntDefine.UNDEFINED;
+
+                EL2HLT = IntDefine.UNDEFINED;
+
+                EL2NSYNC = IntDefine.UNDEFINED;
+
+                EL3HLT = IntDefine.UNDEFINED;
+
+                EL3RST = IntDefine.UNDEFINED;
+
+                ELIBACC = IntDefine.UNDEFINED;
+
+                ELIBBAD = IntDefine.UNDEFINED;
+
+                ELIBEXEC = IntDefine.UNDEFINED;
+
+                ELIBMAX = IntDefine.UNDEFINED;
+
+                ELIBSCN = IntDefine.UNDEFINED;
+
+                ELNRNG = IntDefine.UNDEFINED;
+
+                ELOOP = FreeBsdDefines.ELOOP;
+
+                EMEDIUMTYPE = IntDefine.UNDEFINED;
+
+                EMSGSIZE = FreeBsdDefines.EMSGSIZE;
+                EMULTIHOP = IntDefine.toIntDefine(FreeBsdDefines.EMULTIHOP);
+
+                ENAMETOOLONG = FreeBsdDefines.ENAMETOOLONG;
+                ENAVAIL = IntDefine.UNDEFINED;
+
+                ENETDOWN = FreeBsdDefines.ENETDOWN;
+                ENETRESET = FreeBsdDefines.ENETRESET;
+                ENETUNREACH = FreeBsdDefines.ENETUNREACH;
+
+                ENOANO = IntDefine.UNDEFINED;
+
+                ENOBUFS = FreeBsdDefines.ENOBUFS;
+                ENOCSI = IntDefine.UNDEFINED;
+                ENOKEY = IntDefine.UNDEFINED;
+
+                ENOLCK = FreeBsdDefines.ENOLCK;
+
+                ENOMEDIUM = IntDefine.UNDEFINED;
+
+                ENOMSG = FreeBsdDefines.ENOMSG;
+                ENOPROTOOPT = FreeBsdDefines.ENOPROTOOPT;
+                ENOSYS = FreeBsdDefines.ENOSYS;
+                ENOTCONN = FreeBsdDefines.ENOTCONN;
+                ENOTEMPTY = FreeBsdDefines.ENOTEMPTY;
+                ENOTNAM = IntDefine.UNDEFINED;
+
+                ENOTRECOVERABLE = FreeBsdDefines.ENOTRECOVERABLE;
+                ENOTSOCK = FreeBsdDefines.ENOTSOCK;
+                ENOTSUP = FreeBsdDefines.ENOTSUP;
+                ENOTUNIQ = IntDefine.UNDEFINED;
+
+                EOPNOTSUPP = FreeBsdDefines.EOPNOTSUPP;
+                EOVERFLOW = FreeBsdDefines.EOVERFLOW;
+                EOWNERDEAD = FreeBsdDefines.EOWNERDEAD;
+                EPFNOSUPPORT = FreeBsdDefines.EPFNOSUPPORT;
+                EPROTONOSUPPORT = FreeBsdDefines.EPROTONOSUPPORT;
+                EPROTOTYPE = FreeBsdDefines.EPROTOTYPE;
+
+                EREMCHG = IntDefine.UNDEFINED;
+                EREMOTEIO = IntDefine.UNDEFINED;
+
+                ERESTART = IntDefine.UNDEFINED;
+
+                ERFKILL = IntDefine.UNDEFINED;
+                ESHUTDOWN = FreeBsdDefines.ESHUTDOWN;
+                ESOCKTNOSUPPORT = FreeBsdDefines.ESOCKTNOSUPPORT;
+
+                ESTALE = FreeBsdDefines.ESTALE;
+                ESTRPIPE = IntDefine.UNDEFINED;
+                ETIMEDOUT = FreeBsdDefines.ETIMEDOUT;
+                ETOOMANYREFS = FreeBsdDefines.ETOOMANYREFS;
+                EUCLEAN = IntDefine.UNDEFINED;
+
+                EUNATCH = IntDefine.UNDEFINED;
+
+                EUSERS = FreeBsdDefines.EUSERS;
+                EXFULL = IntDefine.UNDEFINED;
                 break;
             default:
                 throw new NoClassDefFoundError("No errno.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
