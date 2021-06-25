@@ -40,6 +40,7 @@ import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.nio.ByteBuffer;
 
@@ -55,7 +56,7 @@ import java.nio.ByteBuffer;
 @Include("#include <unistd.h>")
 public final class Unistd {
 
-    public static class LinuxDefines {
+    public static interface LinuxDefines {
 
         public final static long _POSIX_VERSION = 200809L;
         public final static int SEEK_CUR = 1;
@@ -68,17 +69,27 @@ public final class Unistd {
         public final static int STDOUT_FILENO = 1;
     }
 
-    public static class FreeBsdDefines {
+    public static interface BsdDefines {
 
-        public final static long _POSIX_VERSION = 200112;
         public final static int SEEK_CUR = 1;
-        public final static int SEEK_DATA = 3;
         public final static int SEEK_END = 2;
-        public final static int SEEK_HOLE = 4;
         public final static int SEEK_SET = 0;
         public final static int STDERR_FILENO = 2;
         public final static int STDIN_FILENO = 0;
         public final static int STDOUT_FILENO = 1;
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
+
+        public final static long _POSIX_VERSION = 200112;
+        public final static int SEEK_DATA = 3;
+        public final static int SEEK_HOLE = 4;
+
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
+
+        public final static long _POSIX_VERSION = 200809;
     }
 
     /**
@@ -92,7 +103,8 @@ public final class Unistd {
      */
     static {
         LibJnhwPosixLoader.touch();
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+        switch (multiarchInfo.getOS()) {
             case LINUX:
                 HAVE_UNISTD_H = true;
                 _POSIX_VERSION = LinuxDefines._POSIX_VERSION;
@@ -106,16 +118,28 @@ public final class Unistd {
                 STDOUT_FILENO = LinuxDefines.STDOUT_FILENO;
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_UNISTD_H = true;
-                _POSIX_VERSION = FreeBsdDefines._POSIX_VERSION;
-                SEEK_CUR = FreeBsdDefines.SEEK_CUR;
-                SEEK_DATA = IntDefine.toIntDefine(FreeBsdDefines.SEEK_DATA);
-                SEEK_END = FreeBsdDefines.SEEK_END;
-                SEEK_HOLE = IntDefine.toIntDefine(FreeBsdDefines.SEEK_HOLE);
-                SEEK_SET = FreeBsdDefines.SEEK_SET;
-                STDERR_FILENO = FreeBsdDefines.STDERR_FILENO;
-                STDIN_FILENO = FreeBsdDefines.STDIN_FILENO;
-                STDOUT_FILENO = FreeBsdDefines.STDOUT_FILENO;
+                SEEK_CUR = BsdDefines.SEEK_CUR;
+                SEEK_END = BsdDefines.SEEK_END;
+                SEEK_SET = BsdDefines.SEEK_SET;
+                STDERR_FILENO = BsdDefines.STDERR_FILENO;
+                STDIN_FILENO = BsdDefines.STDIN_FILENO;
+                STDOUT_FILENO = BsdDefines.STDOUT_FILENO;
+                switch (multiarchInfo.getOS()) {
+                    case FREE_BSD:
+                        _POSIX_VERSION = FreeBsdDefines._POSIX_VERSION;
+                        SEEK_DATA = IntDefine.toIntDefine(FreeBsdDefines.SEEK_DATA);
+                        SEEK_HOLE = IntDefine.toIntDefine(FreeBsdDefines.SEEK_HOLE);
+                        break;
+                    case OPEN_BSD:
+                        _POSIX_VERSION = OpenBsdDefines._POSIX_VERSION;
+                        SEEK_DATA = IntDefine.UNDEFINED;
+                        SEEK_HOLE = IntDefine.UNDEFINED;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No unistd.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
                 break;
             default:
                 throw new NoClassDefFoundError("No unistd.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

@@ -57,7 +57,7 @@ import java.util.Objects;
 @Include("#include <time.h>")
 public class Time {
 
-    public static class LinuxDefines {
+    public static interface LinuxDefines {
 
         public final static int CLOCKS_PER_SEC = 1000000;
         public final static int CLOCK_MONOTONIC = 1;
@@ -68,14 +68,28 @@ public class Time {
 
     }
 
-    public static class FreeBsdDefines {
+    public static interface BsdDefines {
+
+        public final static int CLOCK_REALTIME = 0;
+        public final static int TIMER_ABSTIME = 1;
+
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
 
         public final static int CLOCKS_PER_SEC = 128;
         public final static int CLOCK_MONOTONIC = 4;
         public final static int CLOCK_PROCESS_CPUTIME_ID = 15;
-        public final static int CLOCK_REALTIME = 0;
         public final static int CLOCK_THREAD_CPUTIME_ID = 14;
-        public final static int TIMER_ABSTIME = 1;
+
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
+
+        public final static int CLOCKS_PER_SEC = 100;
+        public final static int CLOCK_MONOTONIC = 3;
+        public final static int CLOCK_PROCESS_CPUTIME_ID = 2;
+        public final static int CLOCK_THREAD_CPUTIME_ID = 4;
 
     }
 
@@ -90,8 +104,8 @@ public class Time {
      */
     static {
         LibJnhwPosixLoader.touch();
-
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+        switch (multiarchInfo.getOS()) {
             case LINUX:
                 HAVE_TIME_H = true;
                 CLOCKS_PER_SEC = LinuxDefines.CLOCKS_PER_SEC;
@@ -102,16 +116,29 @@ public class Time {
                 TIMER_ABSTIME = LinuxDefines.TIMER_ABSTIME;
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_TIME_H = true;
-                CLOCKS_PER_SEC = FreeBsdDefines.CLOCKS_PER_SEC;
-                CLOCK_MONOTONIC = FreeBsdDefines.CLOCK_MONOTONIC;
-                CLOCK_PROCESS_CPUTIME_ID = FreeBsdDefines.CLOCK_PROCESS_CPUTIME_ID;
-                CLOCK_REALTIME = FreeBsdDefines.CLOCK_REALTIME;
-                CLOCK_THREAD_CPUTIME_ID = FreeBsdDefines.CLOCK_THREAD_CPUTIME_ID;
-                TIMER_ABSTIME = FreeBsdDefines.TIMER_ABSTIME;
+                CLOCK_REALTIME = BsdDefines.CLOCK_REALTIME;
+                TIMER_ABSTIME = BsdDefines.TIMER_ABSTIME;
+                switch (multiarchInfo.getOS()) {
+                    case FREE_BSD:
+                        CLOCKS_PER_SEC = FreeBsdDefines.CLOCKS_PER_SEC;
+                        CLOCK_MONOTONIC = FreeBsdDefines.CLOCK_MONOTONIC;
+                        CLOCK_PROCESS_CPUTIME_ID = FreeBsdDefines.CLOCK_PROCESS_CPUTIME_ID;
+                        CLOCK_THREAD_CPUTIME_ID = FreeBsdDefines.CLOCK_THREAD_CPUTIME_ID;
+                        break;
+                    case OPEN_BSD:
+                        CLOCKS_PER_SEC = OpenBsdDefines.CLOCKS_PER_SEC;
+                        CLOCK_MONOTONIC = OpenBsdDefines.CLOCK_MONOTONIC;
+                        CLOCK_PROCESS_CPUTIME_ID = OpenBsdDefines.CLOCK_PROCESS_CPUTIME_ID;
+                        CLOCK_THREAD_CPUTIME_ID = OpenBsdDefines.CLOCK_THREAD_CPUTIME_ID;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No time.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
                 break;
             default:
-                throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No time.h Os defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
     }
 
@@ -555,11 +582,11 @@ public class Time {
      * @return the index of the character in{@code buf}, following the last
      * character parsed.
      */
-    public final static String strptime(String buf, String format, Tm tm) {
+    public final static int strptime(String buf, String format, Tm tm) {
         return strptime(buf, format, AbstractNativeMemory.getAddress(tm));
     }
 
-    private static native String strptime(String buf, String format, long tm);
+    private static native int strptime(String buf, String format, long tm);
 
     /**
      * <b>POSIX:</b>
@@ -1207,17 +1234,28 @@ public class Time {
         static {
             LibJnhwPosixLoader.touch();
             final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-            switch (multiarchInfo.getSizeOfPointer()) {
-                case _32_BIT:
+            switch (multiarchInfo.getOS()) {
+                case LINUX:
+                case FREE_BSD:
+                    switch (multiarchInfo.getSizeOfPointer()) {
+                        case _32_BIT:
+                            alignof = Alignment.AT_4;
+                            sizeof = 4;
+                            break;
+                        case _64_BIT:
+                            alignof = Alignment.AT_8;
+                            sizeof = 8;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
+                    break;
+                case OPEN_BSD:
                     alignof = Alignment.AT_4;
                     sizeof = 4;
                     break;
-                case _64_BIT:
-                    alignof = Alignment.AT_8;
-                    sizeof = 8;
-                    break;
                 default:
-                    throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No time.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
         }
 

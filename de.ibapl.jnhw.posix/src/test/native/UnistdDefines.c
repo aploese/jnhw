@@ -78,7 +78,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_SEEK_1DATA
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(SEEK_DATA)
 #error "SEEK_DATA defined"
@@ -105,7 +105,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_SEEK_1HOLE
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if defined(SEEK_HOLE)
 #error "SEEK_HOLE defined"

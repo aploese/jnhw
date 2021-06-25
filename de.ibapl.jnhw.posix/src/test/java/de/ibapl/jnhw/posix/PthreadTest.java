@@ -284,14 +284,17 @@ public class PthreadTest {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Pthread.pthread_setschedparam(null, 0, param);
         });
-        if (MULTIARCHTUPEL_BUILDER.getOS() == de.ibapl.jnhw.libloader.OS.LINUX) {
-            //TODO Why??? EINVAL
-            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case LINUX:
+            case OPEN_BSD:
+                //TODO Why??? EINVAL
+                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, param);
+                });
+                Assertions.assertEquals(Errno.EINVAL, nee.errno);
+                break;
+            default:
                 Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, param);
-            });
-            Assertions.assertEquals(Errno.EINVAL, nee.errno);
-        } else {
-            Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, param);
         }
 
         System.out.println("pthread_getschedparam");
@@ -304,7 +307,14 @@ public class PthreadTest {
         });
 
         int policy = Pthread.pthread_getschedparam(Pthread.pthread_self(), param);
-        Assertions.assertEquals(0, policy);
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+                //TODO WHY 2 ???
+                Assertions.assertEquals(2, policy);
+                break;
+            default:
+                Assertions.assertEquals(0, policy);
+        }
 
     }
 

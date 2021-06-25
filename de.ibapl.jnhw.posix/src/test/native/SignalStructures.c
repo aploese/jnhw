@@ -322,7 +322,11 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeSiginfo_1t_si_1band
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__OpenBSD__)
+        return -1;
+#else
         return offsetof(siginfo_t, si_band);
+#endif
     }
 
     /*

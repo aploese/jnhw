@@ -277,7 +277,7 @@ public final class Termios {
 
     }
 
-    public static interface FreeBsdDefines {
+    public static interface BsdDefines {
 
         public final static int VINTR = 8;
         public final static int VQUIT = 9;
@@ -296,10 +296,6 @@ public final class Termios {
         public final static int IXANY = 0004000;
         public final static int OPOST = 0000001;
         public final static int OCRNL = 16;
-        public final static int ONOCR = 32;
-        public final static int ONLRET = 64;
-        public final static int TAB0 = 0;
-        public final static int TAB3 = 4;
 
         /* c_cflag bit meaning */
         //#define CBAUD   0010017
@@ -320,7 +316,6 @@ public final class Termios {
         public final static int B19200 = 19200;
         public final static int B38400 = 38400;
         public final static int CS5 = 0000000;
-        public final static int CRTSCTS = 196608;
         public final static int ECHO = 0000010;
         public final static int TCOOFF = 1;
         public final static int TCOON = 2;
@@ -336,9 +331,6 @@ public final class Termios {
         public final static int B115200 = 115200;
         public final static int B57600 = 57600;
         public final static int B230400 = 230400;
-        public final static int B460800 = 460800;
-
-        public final static int B921600 = 921600;
         public final static int CLOCAL = 32768;
         public final static int CSIZE = 768;
         public final static int CREAD = 2048;
@@ -349,7 +341,6 @@ public final class Termios {
         public final static int PARENB = 4096;
         public final static int PARODD = 8192;
         public final static int HUPCL = 16384;
-        public final static int TABDLY = 4;
         public final static int CS6 = 256;
         public final static int CS7 = 512;
         public final static int CS8 = 768;
@@ -373,6 +364,26 @@ public final class Termios {
         public final static int TCSAFLUSH = 2;
 
         public final static int TOSTOP = 4194304;
+
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
+
+        public final static int B460800 = 460800;
+        public final static int B921600 = 921600;
+        public final static int CRTSCTS = 196608;
+        public final static int ONOCR = 32;
+        public final static int ONLRET = 64;
+        public final static int TAB0 = 0;
+        public final static int TAB3 = 4;
+        public final static int TABDLY = 4;
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
+
+        public final static int CRTSCTS = 65536;
+        public final static int ONOCR = 64;
+        public final static int ONLRET = 128;
 
     }
 
@@ -648,144 +659,159 @@ public final class Termios {
 
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
+                HAVE_TERMIOS_H = true;
+                B0 = BsdDefines.B0;
+                B110 = BsdDefines.B110;
+                B1200 = BsdDefines.B1200;
+                B134 = BsdDefines.B134;
+                B150 = BsdDefines.B150;
+                B1800 = BsdDefines.B1800;
+                B19200 = BsdDefines.B19200;
+                B200 = BsdDefines.B200;
+                B2400 = BsdDefines.B2400;
+                B300 = BsdDefines.B300;
+                B38400 = BsdDefines.B38400;
+                B4800 = BsdDefines.B4800;
+                B50 = BsdDefines.B50;
+                B600 = BsdDefines.B600;
 
-                B0 = FreeBsdDefines.B0;
+                B75 = BsdDefines.B75;
+                B9600 = BsdDefines.B9600;
 
-                B110 = FreeBsdDefines.B110;
-                B1200 = FreeBsdDefines.B1200;
-                B134 = FreeBsdDefines.B134;
-                B150 = FreeBsdDefines.B150;
-                B1800 = FreeBsdDefines.B1800;
-                B19200 = FreeBsdDefines.B19200;
-                B200 = FreeBsdDefines.B200;
-                B2400 = FreeBsdDefines.B2400;
-                B300 = FreeBsdDefines.B300;
-                B38400 = FreeBsdDefines.B38400;
-                B4800 = FreeBsdDefines.B4800;
-                B50 = FreeBsdDefines.B50;
-                B600 = FreeBsdDefines.B600;
-
-                B75 = FreeBsdDefines.B75;
-                B9600 = FreeBsdDefines.B9600;
-
-                BRKINT = FreeBsdDefines.BRKINT;
+                BRKINT = BsdDefines.BRKINT;
                 BS0 = IntDefine.UNDEFINED;
                 CR0 = IntDefine.UNDEFINED;
 
                 B1000000 = IntDefine.UNDEFINED;
-                B115200 = FreeBsdDefines.B115200;
+                B115200 = BsdDefines.B115200;
                 B1152000 = IntDefine.UNDEFINED;
                 B1500000 = IntDefine.UNDEFINED;
                 B2000000 = IntDefine.UNDEFINED;
-                B230400 = FreeBsdDefines.B230400;
+                B230400 = BsdDefines.B230400;
                 B2500000 = IntDefine.UNDEFINED;
                 B3000000 = IntDefine.UNDEFINED;
                 B3500000 = IntDefine.UNDEFINED;
 
                 B4000000 = IntDefine.UNDEFINED;
-                B460800 = IntDefine.toIntDefine(FreeBsdDefines.B460800);
                 B500000 = IntDefine.UNDEFINED;
-                B57600 = FreeBsdDefines.B57600;
+                B57600 = BsdDefines.B57600;
                 B576000 = IntDefine.UNDEFINED;
-                B921600 = IntDefine.toIntDefine(FreeBsdDefines.B921600);
                 BS1 = IntDefine.UNDEFINED;
                 BSDLY = IntDefine.UNDEFINED;
 
-                CLOCAL = FreeBsdDefines.CLOCAL;
+                CLOCAL = BsdDefines.CLOCAL;
                 CR1 = IntDefine.UNDEFINED;
                 CR2 = IntDefine.UNDEFINED;
                 CR3 = IntDefine.UNDEFINED;
                 CRDLY = IntDefine.UNDEFINED;
-                CS6 = FreeBsdDefines.CS6;
-                CS7 = FreeBsdDefines.CS7;
-                CS8 = FreeBsdDefines.CS8;
-                TAB0 = IntDefine.toIntDefine(FreeBsdDefines.TAB0);
+                CS6 = BsdDefines.CS6;
+                CS7 = BsdDefines.CS7;
+                CS8 = BsdDefines.CS8;
                 TAB1 = IntDefine.UNDEFINED;
                 TAB2 = IntDefine.UNDEFINED;
-                TAB3 = IntDefine.toIntDefine(FreeBsdDefines.TAB3);
-                TABDLY = IntDefine.toIntDefine(FreeBsdDefines.TABDLY);
-                CREAD = FreeBsdDefines.CREAD;
-                CSIZE = FreeBsdDefines.CSIZE;
-                CSTOPB = FreeBsdDefines.CSTOPB;
-                ECHOE = FreeBsdDefines.ECHOE;
-                ECHOK = FreeBsdDefines.ECHOK;
-                ECHONL = FreeBsdDefines.ECHONL;
+                CREAD = BsdDefines.CREAD;
+                CSIZE = BsdDefines.CSIZE;
+                CSTOPB = BsdDefines.CSTOPB;
+                ECHOE = BsdDefines.ECHOE;
+                ECHOK = BsdDefines.ECHOK;
+                ECHONL = BsdDefines.ECHONL;
                 FF1 = IntDefine.UNDEFINED;
                 FFDLY = IntDefine.UNDEFINED;
-                TOSTOP = FreeBsdDefines.TOSTOP;
-                VEOL = FreeBsdDefines.VEOL;
-                IEXTEN = FreeBsdDefines.IEXTEN;
-                VMIN = FreeBsdDefines.VMIN;
+                TOSTOP = BsdDefines.TOSTOP;
+                VEOL = BsdDefines.VEOL;
+                IEXTEN = BsdDefines.IEXTEN;
+                VMIN = BsdDefines.VMIN;
 
-                HUPCL = FreeBsdDefines.HUPCL;
-                PARENB = FreeBsdDefines.PARENB;
-                PARODD = FreeBsdDefines.PARODD;
-                ICANON = FreeBsdDefines.ICANON;
-                ISIG = FreeBsdDefines.ISIG;
-                IXOFF = FreeBsdDefines.IXOFF;
-                IXON = FreeBsdDefines.IXON;
+                HUPCL = BsdDefines.HUPCL;
+                PARENB = BsdDefines.PARENB;
+                PARODD = BsdDefines.PARODD;
+                ICANON = BsdDefines.ICANON;
+                ISIG = BsdDefines.ISIG;
+                IXOFF = BsdDefines.IXOFF;
+                IXON = BsdDefines.IXON;
                 NLDLY = IntDefine.UNDEFINED;
-                NOFLSH = FreeBsdDefines.NOFLSH;
-                ONLCR = FreeBsdDefines.ONLCR;
-                VSTART = FreeBsdDefines.VSTART;
-                VSTOP = FreeBsdDefines.VSTOP;
-                VSUSP = FreeBsdDefines.VSUSP;
+                NOFLSH = BsdDefines.NOFLSH;
+                ONLCR = BsdDefines.ONLCR;
+                VSTART = BsdDefines.VSTART;
+                VSTOP = BsdDefines.VSTOP;
+                VSUSP = BsdDefines.VSUSP;
                 VT1 = IntDefine.UNDEFINED;
                 VTDLY = IntDefine.UNDEFINED;
-                VTIME = FreeBsdDefines.VTIME;
-                CRTSCTS = FreeBsdDefines.CRTSCTS;
-                CS5 = FreeBsdDefines.CS5;
+                VTIME = BsdDefines.VTIME;
+                CS5 = BsdDefines.CS5;
 
-                ECHO = FreeBsdDefines.ECHO;
+                ECHO = BsdDefines.ECHO;
 
                 FF0 = IntDefine.UNDEFINED;
-                HAVE_TERMIOS_H = true;
 
-                ICRNL = FreeBsdDefines.ICRNL;
-                IGNBRK = FreeBsdDefines.IGNBRK;
-                IGNCR = FreeBsdDefines.IGNCR;
-                IGNPAR = FreeBsdDefines.IGNPAR;
-                INLCR = FreeBsdDefines.INLCR;
-                INPCK = FreeBsdDefines.INPCK;
-                ISTRIP = FreeBsdDefines.ISTRIP;
-                IXANY = FreeBsdDefines.IXANY;
+                ICRNL = BsdDefines.ICRNL;
+                IGNBRK = BsdDefines.IGNBRK;
+                IGNCR = BsdDefines.IGNCR;
+                IGNPAR = BsdDefines.IGNPAR;
+                INLCR = BsdDefines.INLCR;
+                INPCK = BsdDefines.INPCK;
+                ISTRIP = BsdDefines.ISTRIP;
+                IXANY = BsdDefines.IXANY;
 
-                NCCS = FreeBsdDefines.NCCS;
+                NCCS = BsdDefines.NCCS;
                 NL0 = IntDefine.UNDEFINED;
                 NL1 = IntDefine.UNDEFINED;
 
-                OCRNL = FreeBsdDefines.OCRNL;
+                OCRNL = BsdDefines.OCRNL;
                 OFDEL = IntDefine.UNDEFINED;
                 OFILL = IntDefine.UNDEFINED;
-                ONLRET = FreeBsdDefines.ONLRET;
-                ONOCR = FreeBsdDefines.ONOCR;
-                OPOST = FreeBsdDefines.OPOST;
+                OPOST = BsdDefines.OPOST;
 
                 PAREXT = IntDefine.UNDEFINED;
-                PARMRK = FreeBsdDefines.PARMRK;
+                PARMRK = BsdDefines.PARMRK;
 
-                TCIFLUSH = FreeBsdDefines.TCIFLUSH;
-                TCIOFF = FreeBsdDefines.TCIOFF;
-                TCIOFLUSH = FreeBsdDefines.TCIOFLUSH;
-                TCION = FreeBsdDefines.TCION;
-                TCOFLUSH = FreeBsdDefines.TCOFLUSH;
-                TCOOFF = FreeBsdDefines.TCOOFF;
-                TCOON = FreeBsdDefines.TCOON;
-                VERASE = FreeBsdDefines.VERASE;
-                VINTR = FreeBsdDefines.VINTR;
-                VKILL = FreeBsdDefines.VKILL;
-                VQUIT = FreeBsdDefines.VQUIT;
+                TCIFLUSH = BsdDefines.TCIFLUSH;
+                TCIOFF = BsdDefines.TCIOFF;
+                TCIOFLUSH = BsdDefines.TCIOFLUSH;
+                TCION = BsdDefines.TCION;
+                TCOFLUSH = BsdDefines.TCOFLUSH;
+                TCOOFF = BsdDefines.TCOOFF;
+                TCOON = BsdDefines.TCOON;
+                VERASE = BsdDefines.VERASE;
+                VINTR = BsdDefines.VINTR;
+                VKILL = BsdDefines.VKILL;
+                VQUIT = BsdDefines.VQUIT;
                 VT0 = IntDefine.UNDEFINED;
 
                 CMSPAR = IntDefine.UNDEFINED;
-                TCSADRAIN = FreeBsdDefines.TCSADRAIN;
-                TCSAFLUSH = FreeBsdDefines.TCSAFLUSH;
-                TCSANOW = FreeBsdDefines.TCSANOW;
+                TCSADRAIN = BsdDefines.TCSADRAIN;
+                TCSAFLUSH = BsdDefines.TCSAFLUSH;
+                TCSANOW = BsdDefines.TCSANOW;
 
-                VEOF = FreeBsdDefines.VEOF;
+                VEOF = BsdDefines.VEOF;
 
                 _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.UNDEFINED;
                 _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.UNDEFINED;
+                switch (multiarchInfo.getOS()) {
+                    case FREE_BSD:
+                        B460800 = IntDefine.toIntDefine(FreeBsdDefines.B460800);
+                        B921600 = IntDefine.toIntDefine(FreeBsdDefines.B921600);
+                        CRTSCTS = FreeBsdDefines.CRTSCTS;
+                        TAB0 = IntDefine.toIntDefine(FreeBsdDefines.TAB0);
+                        TAB3 = IntDefine.toIntDefine(FreeBsdDefines.TAB3);
+                        TABDLY = IntDefine.toIntDefine(FreeBsdDefines.TABDLY);
+                        ONLRET = FreeBsdDefines.ONLRET;
+                        ONOCR = FreeBsdDefines.ONOCR;
+                        break;
+                    case OPEN_BSD:
+                        B460800 = IntDefine.UNDEFINED;
+                        B921600 = IntDefine.UNDEFINED;
+                        CRTSCTS = OpenBsdDefines.CRTSCTS;
+                        TAB0 = IntDefine.UNDEFINED;
+                        TAB3 = IntDefine.UNDEFINED;
+                        TABDLY = IntDefine.UNDEFINED;
+                        ONLRET = OpenBsdDefines.ONLRET;
+                        ONOCR = OpenBsdDefines.ONOCR;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No termios.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
                 break;
             default:
                 throw new NoClassDefFoundError("No termios.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -2428,6 +2454,18 @@ public final class Termios {
                     offsetof_C_line = -1;
                     offsetof_C_ispeed = 36;
                     offsetof_C_ospeed = 40;
+                    break;
+                case OPEN_BSD:
+                    alignof = Alignment.AT_4;
+                    sizeof = 44;
+                    offsetof_C_iflag = 0;
+                    offsetof_C_oflag = 4;
+                    offsetof_C_cflag = 8;
+                    offsetof_C_lflag = 12;
+                    offsetof_C_cc = 16;
+                    offsetof_C_line = -1;
+                    offsetof_C_ispeed = -1;
+                    offsetof_C_ospeed = -1;
                     break;
                 default:
                     throw new NoClassDefFoundError("No termios.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

@@ -37,7 +37,7 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <sys/stat.h>")
 public class Stat {
 
-    public static class LinuxDefines {
+    public static interface LinuxDefines {
 
         public final static int S_IRGRP = 32;
         public final static int S_IROTH = 4;
@@ -57,7 +57,7 @@ public class Stat {
 
     }
 
-    public static class FreeBsdDefines {
+    public static interface BsdDefines {
 
         public final static int S_IRGRP = 32;
         public final static int S_IROTH = 4;
@@ -74,6 +74,14 @@ public class Stat {
         public final static int S_IXGRP = 8;
         public final static int S_IXOTH = 1;
         public final static int S_IXUSR = 64;
+
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
+
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
 
     }
 
@@ -110,22 +118,23 @@ public class Stat {
 
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_SYS_STAT_H = true;
-                S_IRGRP = FreeBsdDefines.S_IRGRP;
-                S_IROTH = FreeBsdDefines.S_IROTH;
-                S_IRUSR = FreeBsdDefines.S_IRUSR;
-                S_IRWXG = FreeBsdDefines.S_IRWXG;
-                S_IRWXO = FreeBsdDefines.S_IRWXO;
-                S_IRWXU = FreeBsdDefines.S_IRWXU;
-                S_ISGID = FreeBsdDefines.S_ISGID;
-                S_ISUID = FreeBsdDefines.S_ISUID;
-                S_ISVTX = FreeBsdDefines.S_ISVTX;
-                S_IWGRP = FreeBsdDefines.S_IWGRP;
-                S_IWOTH = FreeBsdDefines.S_IWOTH;
-                S_IWUSR = FreeBsdDefines.S_IWUSR;
-                S_IXGRP = FreeBsdDefines.S_IXGRP;
-                S_IXOTH = FreeBsdDefines.S_IXOTH;
-                S_IXUSR = FreeBsdDefines.S_IXUSR;
+                S_IRGRP = BsdDefines.S_IRGRP;
+                S_IROTH = BsdDefines.S_IROTH;
+                S_IRUSR = BsdDefines.S_IRUSR;
+                S_IRWXG = BsdDefines.S_IRWXG;
+                S_IRWXO = BsdDefines.S_IRWXO;
+                S_IRWXU = BsdDefines.S_IRWXU;
+                S_ISGID = BsdDefines.S_ISGID;
+                S_ISUID = BsdDefines.S_ISUID;
+                S_ISVTX = BsdDefines.S_ISVTX;
+                S_IWGRP = BsdDefines.S_IWGRP;
+                S_IWOTH = BsdDefines.S_IWOTH;
+                S_IWUSR = BsdDefines.S_IWUSR;
+                S_IXGRP = BsdDefines.S_IXGRP;
+                S_IXOTH = BsdDefines.S_IXOTH;
+                S_IXUSR = BsdDefines.S_IXUSR;
                 break;
             default:
                 throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

@@ -54,12 +54,12 @@ extern "C" {
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_StringHeader_strerror_1l
 #if defined(__APPLE__) || defined(__FreeBSD__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint errnum, __attribute__ ((unused)) jlong ptrLocale) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint errnum, __attribute__ ((unused)) jlong nativeLocale) {
         throw_NoSuchNativeMethodException(env, "strerror_l");
         return NULL;
 #else
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint errnum, jlong ptrLocale) {
-        const char *result = strerror_l(errnum, (locale_t) (uintptr_t) (ptrLocale));
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint errnum, jlong nativeLocale) {
+        const char *result = strerror_l(errnum, (locale_t) nativeLocale);
         if (result == NULL) {
             return NULL;
         } else {

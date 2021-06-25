@@ -142,7 +142,7 @@ extern "C" {
         return IOCBASECMD(x);
 #elif defined(__OpenBSD__)
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint x) {
-        return IOCBASECMD((uint32_t) x);
+        return (int32_t) IOCBASECMD((uint32_t) x);
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint x) {
         throw_NoSuchNativeMethodException(env, "IOCBASECMD");

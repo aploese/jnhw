@@ -56,7 +56,7 @@ import java.nio.ByteBuffer;
 @Include("#include <aio.h>")
 public class Aio {
 
-    public static class LinuxDefines {
+    public static interface LinuxDefines {
 
         public final static int AIO_ALLDONE = 2;
         public final static int AIO_CANCELED = 0;
@@ -69,7 +69,7 @@ public class Aio {
 
     }
 
-    public static class FreeBsdDefines {
+    public static interface FreeBsdDefines {
 
         public final static int AIO_ALLDONE = 3;
         public final static int AIO_CANCELED = 1;
@@ -108,7 +108,6 @@ public class Aio {
                 break;
             case FREE_BSD:
                 HAVE_AIO_H = true;
-
                 AIO_ALLDONE = IntDefine.toIntDefine(FreeBsdDefines.AIO_ALLDONE);
                 AIO_CANCELED = IntDefine.toIntDefine(FreeBsdDefines.AIO_CANCELED);
                 AIO_NOTCANCELED = IntDefine.toIntDefine(FreeBsdDefines.AIO_NOTCANCELED);
@@ -117,6 +116,18 @@ public class Aio {
                 LIO_READ = IntDefine.toIntDefine(FreeBsdDefines.LIO_READ);
                 LIO_WAIT = IntDefine.toIntDefine(FreeBsdDefines.LIO_WAIT);
                 LIO_WRITE = IntDefine.toIntDefine(FreeBsdDefines.LIO_WRITE);
+                break;
+            case OPEN_BSD:
+            case WINDOWS:
+                HAVE_AIO_H = false;
+                AIO_ALLDONE = IntDefine.UNDEFINED;
+                AIO_CANCELED = IntDefine.UNDEFINED;
+                AIO_NOTCANCELED = IntDefine.UNDEFINED;
+                LIO_NOP = IntDefine.UNDEFINED;
+                LIO_NOWAIT = IntDefine.UNDEFINED;
+                LIO_READ = IntDefine.UNDEFINED;
+                LIO_WAIT = IntDefine.UNDEFINED;
+                LIO_WRITE = IntDefine.UNDEFINED;
                 break;
             default:
                 throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -445,8 +456,19 @@ public class Aio {
                     alignof = Alignment.AT_8;
                     sizeof = 160;
                     break;
+                case OPEN_BSD:
+                    offsetof_Aio_fildes = -1;
+                    offsetof_Aio_offset = -1;
+                    offsetof_Aio_buf = -1;
+                    offsetof_Aio_nbytes = -1;
+                    offsetof_Aio_reqprio = -1;
+                    offsetof_Aio_sigevent = -1;
+                    offsetof_Aio_lio_opcode = -1;
+                    alignof = null;
+                    sizeof = 0;
+                    break;
                 default:
-                    throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No aio.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
             }
         }
 
@@ -470,7 +492,10 @@ public class Aio {
         }
 
         public Aiocb(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super(parent, offset, Aiocb.sizeof, setMem);
+            super(parent, offset, sizeof, setMem);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("aiocb");
+            }
             aio_sigevent = new Sigevent(this, Aiocb.offsetof_Aio_sigevent, SetMem.DO_NOT_SET);
         }
 
@@ -481,7 +506,10 @@ public class Aio {
          */
         @SuppressWarnings("unchecked")
         public Aiocb(NativeAddressHolder address) throws NoSuchNativeTypeException {
-            super(address, Aiocb.sizeof);
+            super(address, sizeof);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("aiocb");
+            }
             aio_sigevent = new Sigevent(this, Aiocb.offsetof_Aio_sigevent, SetMem.DO_NOT_SET);
         }
 
@@ -755,6 +783,9 @@ public class Aio {
 
         public Aiocbs(int arrayLength, OpaqueMemory32 parent, int offset, SetMem setMem) throws NoSuchNativeTypeException {
             super(arrayLength, parent, offset, setMem);
+            if (Aiocb.alignof == null) {
+                throw new NoSuchNativeTypeException("aiocb");
+            }
         }
 
     }

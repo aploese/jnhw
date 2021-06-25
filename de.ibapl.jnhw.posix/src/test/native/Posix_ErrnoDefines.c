@@ -828,7 +828,7 @@ extern "C" {
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EMULTIHOP
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__OpenBSD__)
-#if defined(EMULTIHOP)
+#if !defined(EMULTIHOP)
         return NULL;
 #else
 #error "EMULTIHOP defined"
@@ -1027,7 +1027,7 @@ extern "C" {
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOLINK
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined (__OpenBSD__)
-#if defined(ENOLINK)
+#if !defined(ENOLINK)
         return NULL;
 #else
 #error "ENOLINK defined"

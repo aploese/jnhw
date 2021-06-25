@@ -178,9 +178,9 @@ JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
 /*
  * Class:     de_ibapl_jnhw_posix_Time
  * Method:    strptime
- * Signature: (Ljava/lang/String;Ljava/lang/String;J)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;Ljava/lang/String;J)I
  */
-JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strptime
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_strptime
   (JNIEnv *, jclass, jstring, jstring, jlong);
 
 /*

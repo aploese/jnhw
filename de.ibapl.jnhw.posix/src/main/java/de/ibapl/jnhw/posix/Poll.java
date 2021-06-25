@@ -68,7 +68,7 @@ public final class Poll {
         public final static short POLLWRNORM = 0x0004;
     }
 
-    public static interface FreeBsdDefines {
+    public static interface BsdDefines {
 
         public final static short POLLERR = 0x0008;
         public final static short POLLHUP = 0x0010;
@@ -80,6 +80,14 @@ public final class Poll {
         public final static short POLLRDNORM = 0x0040;
         public final static short POLLWRBAND = 0x0100;
         public final static short POLLWRNORM = 0x0004;
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
+
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
+
     }
 
     /**
@@ -117,17 +125,18 @@ public final class Poll {
                 }
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_POLL_H = true;
-                POLLERR = FreeBsdDefines.POLLERR;
-                POLLHUP = FreeBsdDefines.POLLHUP;
-                POLLIN = FreeBsdDefines.POLLIN;
-                POLLNVAL = FreeBsdDefines.POLLNVAL;
-                POLLOUT = FreeBsdDefines.POLLOUT;
-                POLLPRI = FreeBsdDefines.POLLPRI;
-                POLLRDBAND = FreeBsdDefines.POLLRDBAND;
-                POLLRDNORM = FreeBsdDefines.POLLRDNORM;
-                POLLWRBAND = FreeBsdDefines.POLLWRBAND;
-                POLLWRNORM = FreeBsdDefines.POLLWRNORM;
+                POLLERR = BsdDefines.POLLERR;
+                POLLHUP = BsdDefines.POLLHUP;
+                POLLIN = BsdDefines.POLLIN;
+                POLLNVAL = BsdDefines.POLLNVAL;
+                POLLOUT = BsdDefines.POLLOUT;
+                POLLPRI = BsdDefines.POLLPRI;
+                POLLRDBAND = BsdDefines.POLLRDBAND;
+                POLLRDNORM = BsdDefines.POLLRDNORM;
+                POLLWRBAND = BsdDefines.POLLWRBAND;
+                POLLWRNORM = BsdDefines.POLLWRNORM;
                 break;
             default:
                 throw new NoClassDefFoundError("No poll.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

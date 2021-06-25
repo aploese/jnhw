@@ -234,7 +234,7 @@ public class Signal {
     public static interface Defines__MIPS_64__LINUX__GNU_ABI_64 extends Linux_AllArchs_Defines, Linux_Mips_Mips64_Defines {
     }
 
-    public static interface FreeBsdDefines {
+    public static interface BsdDefines {
 
         public final static int ILL_ILLOPC = 1;
         public final static int ILL_ILLOPN = 2;
@@ -245,8 +245,6 @@ public class Signal {
         public final static int ILL_COPROC = 7;
         public final static int ILL_BADSTK = 8;
 
-        public final static int FPE_INTDIV = 2;
-        public final static int FPE_INTOVF = 1;
         public final static int FPE_FLTDIV = 3;
         public final static int FPE_FLTOVF = 4;
         public final static int FPE_FLTUND = 5;
@@ -271,16 +269,6 @@ public class Signal {
         public final static int CLD_STOPPED = 5;
         public final static int CLD_CONTINUED = 6;
 
-        public final static int POLL_IN = 1;
-        public final static int POLL_OUT = 2;
-        public final static int POLL_MSG = 3;
-        public final static int POLL_ERR = 4;
-        public final static int POLL_PRI = 5;
-        public final static int POLL_HUP = 6;
-
-        public final static int SI_USER = 65537;
-        public final static int SI_QUEUE = 65538;
-
         public final static int SA_NOCLDSTOP = 8;
         public final static int SA_ONSTACK = 1;
         public final static int SA_RESETHAND = 4;
@@ -293,13 +281,7 @@ public class Signal {
         public final static FunctionPtr_I_V SIG_ERR = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(-1));
         public final static FunctionPtr_I_V SIG_DFL = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(0));
         public final static FunctionPtr_I_V SIG_IGN = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(1));
-        public final static FunctionPtr_I_V SIG_HOLD = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(3));
 
-        public final static int SIGEV_SIGNAL = 1;
-        public final static int SIGEV_NONE = 0;
-        public final static int SIGEV_THREAD = 2;
-
-        /* ISO C99 signals.  */
         public final static int SIGINT = 2;
         public final static int SIGILL = 4;
         public final static int SIGABRT = 6;
@@ -312,16 +294,9 @@ public class Signal {
         public final static int SIGKILL = 9;
         public final static int SIGPIPE = 13;
         public final static int SIGALRM = 14;
-        public final static int MINSIGSTKSZ = 2048;
-        public final static int SIGSTKSZ = 34816;
 
         public final static int SA_NOCLDWAIT = 32;
         public final static int SA_SIGINFO = 64;
-
-        public final static int SI_TIMER = 65539;
-        public final static int SI_ASYNCIO = 65540;
-        public final static int SI_MESGQ = 65541;
-
         public final static int SIG_BLOCK = 1;
         public final static int SIG_UNBLOCK = 2;
         public final static int SIG_SETMASK = 3;
@@ -341,6 +316,40 @@ public class Signal {
         public final static int SIGVTALRM = 26;
         public final static int SIGXCPU = 24;
         public final static int SIGXFSZ = 25;
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
+
+        public final static FunctionPtr_I_V SIG_HOLD = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(3));
+        public final static int SIGEV_SIGNAL = 1;
+        public final static int SIGEV_NONE = 0;
+        public final static int SIGEV_THREAD = 2;
+        public final static int MINSIGSTKSZ = 2048;
+        public final static int SIGSTKSZ = 34816;
+        public final static int FPE_INTDIV = 2;
+        public final static int FPE_INTOVF = 1;
+        public final static int POLL_IN = 1;
+        public final static int POLL_OUT = 2;
+        public final static int POLL_MSG = 3;
+        public final static int POLL_ERR = 4;
+        public final static int POLL_PRI = 5;
+        public final static int POLL_HUP = 6;
+        public final static int SI_USER = 65537;
+        public final static int SI_QUEUE = 65538;
+        public final static int SI_TIMER = 65539;
+        public final static int SI_ASYNCIO = 65540;
+        public final static int SI_MESGQ = 65541;
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
+
+        public final static int MINSIGSTKSZ = 12288;
+        public final static int SIGSTKSZ = 28672;
+        public final static int FPE_INTDIV = 1;
+        public final static int FPE_INTOVF = 2;
+        public final static int SI_USER = 0;
+        public final static int SI_QUEUE = -2;
+        public final static int SI_TIMER = -3;
     }
 
     /**
@@ -538,111 +547,138 @@ public class Signal {
                 }
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_SIGNAL_H = true;
 
-                BUS_ADRALN = FreeBsdDefines.BUS_ADRALN;
-                BUS_ADRERR = FreeBsdDefines.BUS_ADRERR;
-                BUS_OBJERR = FreeBsdDefines.BUS_OBJERR;
+                BUS_ADRALN = BsdDefines.BUS_ADRALN;
+                BUS_ADRERR = BsdDefines.BUS_ADRERR;
+                BUS_OBJERR = BsdDefines.BUS_OBJERR;
 
-                CLD_CONTINUED = FreeBsdDefines.CLD_CONTINUED;
-                CLD_DUMPED = FreeBsdDefines.CLD_DUMPED;
-                CLD_EXITED = FreeBsdDefines.CLD_EXITED;
-                CLD_KILLED = FreeBsdDefines.CLD_KILLED;
-                CLD_STOPPED = FreeBsdDefines.CLD_STOPPED;
-                CLD_TRAPPED = FreeBsdDefines.CLD_TRAPPED;
+                CLD_CONTINUED = BsdDefines.CLD_CONTINUED;
+                CLD_DUMPED = BsdDefines.CLD_DUMPED;
+                CLD_EXITED = BsdDefines.CLD_EXITED;
+                CLD_KILLED = BsdDefines.CLD_KILLED;
+                CLD_STOPPED = BsdDefines.CLD_STOPPED;
+                CLD_TRAPPED = BsdDefines.CLD_TRAPPED;
 
-                FPE_FLTDIV = FreeBsdDefines.FPE_FLTDIV;
-                FPE_FLTINV = FreeBsdDefines.FPE_FLTINV;
-                FPE_FLTOVF = FreeBsdDefines.FPE_FLTOVF;
-                FPE_FLTRES = FreeBsdDefines.FPE_FLTRES;
-                FPE_FLTSUB = FreeBsdDefines.FPE_FLTSUB;
-                FPE_FLTUND = FreeBsdDefines.FPE_FLTUND;
-                FPE_INTDIV = FreeBsdDefines.FPE_INTDIV;
-                FPE_INTOVF = FreeBsdDefines.FPE_INTOVF;
+                FPE_FLTDIV = BsdDefines.FPE_FLTDIV;
+                FPE_FLTINV = BsdDefines.FPE_FLTINV;
+                FPE_FLTOVF = BsdDefines.FPE_FLTOVF;
+                FPE_FLTRES = BsdDefines.FPE_FLTRES;
+                FPE_FLTSUB = BsdDefines.FPE_FLTSUB;
+                FPE_FLTUND = BsdDefines.FPE_FLTUND;
 
-                ILL_BADSTK = FreeBsdDefines.ILL_BADSTK;
-                ILL_COPROC = FreeBsdDefines.ILL_COPROC;
-                ILL_ILLADR = FreeBsdDefines.ILL_ILLADR;
-                ILL_ILLOPC = FreeBsdDefines.ILL_ILLOPC;
-                ILL_ILLOPN = FreeBsdDefines.ILL_ILLOPN;
-                ILL_ILLTRP = FreeBsdDefines.ILL_ILLTRP;
-                ILL_PRVOPC = FreeBsdDefines.ILL_PRVOPC;
-                ILL_PRVREG = FreeBsdDefines.ILL_PRVREG;
-                MINSIGSTKSZ = FreeBsdDefines.MINSIGSTKSZ;
-                POLL_ERR = IntDefine.toIntDefine(FreeBsdDefines.POLL_ERR);
-                POLL_HUP = IntDefine.toIntDefine(FreeBsdDefines.POLL_HUP);
-                POLL_IN = IntDefine.toIntDefine(FreeBsdDefines.POLL_IN);
-                POLL_MSG = IntDefine.toIntDefine(FreeBsdDefines.POLL_MSG);
-                POLL_OUT = IntDefine.toIntDefine(FreeBsdDefines.POLL_OUT);
-                POLL_PRI = IntDefine.toIntDefine(FreeBsdDefines.POLL_PRI);
+                ILL_BADSTK = BsdDefines.ILL_BADSTK;
+                ILL_COPROC = BsdDefines.ILL_COPROC;
+                ILL_ILLADR = BsdDefines.ILL_ILLADR;
+                ILL_ILLOPC = BsdDefines.ILL_ILLOPC;
+                ILL_ILLOPN = BsdDefines.ILL_ILLOPN;
+                ILL_ILLTRP = BsdDefines.ILL_ILLTRP;
+                ILL_PRVOPC = BsdDefines.ILL_PRVOPC;
+                ILL_PRVREG = BsdDefines.ILL_PRVREG;
 
-                SA_NOCLDSTOP = FreeBsdDefines.SA_NOCLDSTOP;
-                SA_NODEFER = FreeBsdDefines.SA_NODEFER;
-                SA_ONSTACK = FreeBsdDefines.SA_ONSTACK;
-                SA_RESETHAND = FreeBsdDefines.SA_RESETHAND;
-                SA_RESTART = FreeBsdDefines.SA_RESTART;
+                SA_NOCLDSTOP = BsdDefines.SA_NOCLDSTOP;
+                SA_NODEFER = BsdDefines.SA_NODEFER;
+                SA_ONSTACK = BsdDefines.SA_ONSTACK;
+                SA_RESETHAND = BsdDefines.SA_RESETHAND;
+                SA_RESTART = BsdDefines.SA_RESTART;
 
-                SEGV_ACCERR = FreeBsdDefines.SEGV_ACCERR;
-                SEGV_MAPERR = FreeBsdDefines.SEGV_MAPERR;
+                SEGV_ACCERR = BsdDefines.SEGV_ACCERR;
+                SEGV_MAPERR = BsdDefines.SEGV_MAPERR;
 
-                SIGABRT = FreeBsdDefines.SIGABRT;
-                SIGALRM = FreeBsdDefines.SIGALRM;
+                SIGABRT = BsdDefines.SIGABRT;
+                SIGALRM = BsdDefines.SIGALRM;
 
-                SIGEV_NONE = IntDefine.toIntDefine(FreeBsdDefines.SIGEV_NONE);
-                SIGEV_SIGNAL = IntDefine.toIntDefine(FreeBsdDefines.SIGEV_SIGNAL);
-                SIGEV_THREAD = IntDefine.toIntDefine(FreeBsdDefines.SIGEV_THREAD);
+                SIGFPE = BsdDefines.SIGFPE;
+                SIGHUP = BsdDefines.SIGHUP;
+                SIGILL = BsdDefines.SIGILL;
+                SIGINT = BsdDefines.SIGINT;
+                SIGKILL = BsdDefines.SIGKILL;
+                SIGPIPE = BsdDefines.SIGPIPE;
+                SIGQUIT = BsdDefines.SIGQUIT;
+                SIGSEGV = BsdDefines.SIGSEGV;
+                SIGTERM = BsdDefines.SIGTERM;
+                SIGTRAP = BsdDefines.SIGTRAP;
+                SIG_DFL = BsdDefines.SIG_DFL;
+                SIG_ERR = BsdDefines.SIG_ERR;
+                SIG_IGN = BsdDefines.SIG_IGN;
 
-                SIGFPE = FreeBsdDefines.SIGFPE;
-                SIGHUP = FreeBsdDefines.SIGHUP;
-                SIGILL = FreeBsdDefines.SIGILL;
-                SIGINT = FreeBsdDefines.SIGINT;
-                SIGKILL = FreeBsdDefines.SIGKILL;
-                SIGPIPE = FreeBsdDefines.SIGPIPE;
-                SIGQUIT = FreeBsdDefines.SIGQUIT;
-                SIGSEGV = FreeBsdDefines.SIGSEGV;
-                SIGSTKSZ = FreeBsdDefines.SIGSTKSZ;
-                SIGTERM = FreeBsdDefines.SIGTERM;
-                SIGTRAP = FreeBsdDefines.SIGTRAP;
-                SIG_DFL = FreeBsdDefines.SIG_DFL;
-                SIG_ERR = FreeBsdDefines.SIG_ERR;
-                SIG_HOLD = ObjectDefine.toObjectDefine(FreeBsdDefines.SIG_HOLD);
-                SIG_IGN = FreeBsdDefines.SIG_IGN;
-                SI_QUEUE = FreeBsdDefines.SI_QUEUE;
-                SI_USER = FreeBsdDefines.SI_USER;
+                SS_DISABLE = BsdDefines.SS_DISABLE;
+                SS_ONSTACK = BsdDefines.SS_ONSTACK;
 
-                SS_DISABLE = FreeBsdDefines.SS_DISABLE;
-                SS_ONSTACK = FreeBsdDefines.SS_ONSTACK;
+                TRAP_BRKPT = BsdDefines.TRAP_BRKPT;
+                TRAP_TRACE = BsdDefines.TRAP_TRACE;
 
-                TRAP_BRKPT = FreeBsdDefines.TRAP_BRKPT;
-                TRAP_TRACE = FreeBsdDefines.TRAP_TRACE;
+                SA_NOCLDWAIT = BsdDefines.SA_NOCLDWAIT;
+                SA_SIGINFO = BsdDefines.SA_SIGINFO;
 
-                SA_NOCLDWAIT = FreeBsdDefines.SA_NOCLDWAIT;
-                SA_SIGINFO = FreeBsdDefines.SA_SIGINFO;
-
-                SIGBUS = FreeBsdDefines.SIGBUS;
-                SIGCHLD = FreeBsdDefines.SIGCHLD;
-                SIGCONT = FreeBsdDefines.SIGCONT;
+                SIGBUS = BsdDefines.SIGBUS;
+                SIGCHLD = BsdDefines.SIGCHLD;
+                SIGCONT = BsdDefines.SIGCONT;
                 SIGPOLL = IntDefine.UNDEFINED;
-                SIGPROF = FreeBsdDefines.SIGPROF;
-                SIGSTOP = FreeBsdDefines.SIGSTOP;
-                SIGSYS = FreeBsdDefines.SIGSYS;
-                SIGTSTP = FreeBsdDefines.SIGTSTP;
-                SIGTTIN = FreeBsdDefines.SIGTTIN;
-                SIGTTOU = FreeBsdDefines.SIGTTOU;
-                SIGURG = FreeBsdDefines.SIGURG;
-                SIGUSR1 = FreeBsdDefines.SIGUSR1;
-                SIGUSR2 = FreeBsdDefines.SIGUSR2;
-                SIGVTALRM = FreeBsdDefines.SIGVTALRM;
-                SIGXCPU = FreeBsdDefines.SIGXCPU;
-                SIGXFSZ = FreeBsdDefines.SIGXFSZ;
-                SIG_BLOCK = FreeBsdDefines.SIG_BLOCK;
+                SIGPROF = BsdDefines.SIGPROF;
+                SIGSTOP = BsdDefines.SIGSTOP;
+                SIGSYS = BsdDefines.SIGSYS;
+                SIGTSTP = BsdDefines.SIGTSTP;
+                SIGTTIN = BsdDefines.SIGTTIN;
+                SIGTTOU = BsdDefines.SIGTTOU;
+                SIGURG = BsdDefines.SIGURG;
+                SIGUSR1 = BsdDefines.SIGUSR1;
+                SIGUSR2 = BsdDefines.SIGUSR2;
+                SIGVTALRM = BsdDefines.SIGVTALRM;
+                SIGXCPU = BsdDefines.SIGXCPU;
+                SIGXFSZ = BsdDefines.SIGXFSZ;
+                SIG_BLOCK = BsdDefines.SIG_BLOCK;
 
-                SIG_SETMASK = FreeBsdDefines.SIG_SETMASK;
-                SIG_UNBLOCK = FreeBsdDefines.SIG_UNBLOCK;
+                SIG_SETMASK = BsdDefines.SIG_SETMASK;
+                SIG_UNBLOCK = BsdDefines.SIG_UNBLOCK;
 
-                SI_ASYNCIO = IntDefine.toIntDefine(FreeBsdDefines.SI_ASYNCIO);
-                SI_MESGQ = IntDefine.toIntDefine(FreeBsdDefines.SI_MESGQ);
-                SI_TIMER = FreeBsdDefines.SI_TIMER;
+                switch (multiarchInfo.getOS()) {
+                    case FREE_BSD:
+                        FPE_INTDIV = FreeBsdDefines.FPE_INTDIV;
+                        FPE_INTOVF = FreeBsdDefines.FPE_INTOVF;
+                        MINSIGSTKSZ = FreeBsdDefines.MINSIGSTKSZ;
+                        POLL_ERR = IntDefine.toIntDefine(FreeBsdDefines.POLL_ERR);
+                        POLL_HUP = IntDefine.toIntDefine(FreeBsdDefines.POLL_HUP);
+                        POLL_IN = IntDefine.toIntDefine(FreeBsdDefines.POLL_IN);
+                        POLL_MSG = IntDefine.toIntDefine(FreeBsdDefines.POLL_MSG);
+                        POLL_OUT = IntDefine.toIntDefine(FreeBsdDefines.POLL_OUT);
+                        POLL_PRI = IntDefine.toIntDefine(FreeBsdDefines.POLL_PRI);
+                        SIGEV_NONE = IntDefine.toIntDefine(FreeBsdDefines.SIGEV_NONE);
+                        SIGEV_SIGNAL = IntDefine.toIntDefine(FreeBsdDefines.SIGEV_SIGNAL);
+                        SIGEV_THREAD = IntDefine.toIntDefine(FreeBsdDefines.SIGEV_THREAD);
+                        SIGSTKSZ = FreeBsdDefines.SIGSTKSZ;
+                        SIG_HOLD = ObjectDefine.toObjectDefine(FreeBsdDefines.SIG_HOLD);
+                        SI_QUEUE = FreeBsdDefines.SI_QUEUE;
+                        SI_USER = FreeBsdDefines.SI_USER;
+                        SI_ASYNCIO = IntDefine.toIntDefine(FreeBsdDefines.SI_ASYNCIO);
+                        SI_MESGQ = IntDefine.toIntDefine(FreeBsdDefines.SI_MESGQ);
+                        SI_TIMER = FreeBsdDefines.SI_TIMER;
+                        break;
+                    case OPEN_BSD:
+                        FPE_INTDIV = OpenBsdDefines.FPE_INTDIV;
+                        FPE_INTOVF = OpenBsdDefines.FPE_INTOVF;
+                        MINSIGSTKSZ = OpenBsdDefines.MINSIGSTKSZ;
+                        POLL_ERR = IntDefine.UNDEFINED;
+                        POLL_HUP = IntDefine.UNDEFINED;
+                        POLL_IN = IntDefine.UNDEFINED;
+                        POLL_MSG = IntDefine.UNDEFINED;
+                        POLL_OUT = IntDefine.UNDEFINED;
+                        POLL_PRI = IntDefine.UNDEFINED;
+                        SIGEV_NONE = IntDefine.UNDEFINED;
+                        SIGEV_SIGNAL = IntDefine.UNDEFINED;
+                        SIGEV_THREAD = IntDefine.UNDEFINED;
+                        SIGSTKSZ = OpenBsdDefines.SIGSTKSZ;
+                        SIG_HOLD = ObjectDefine.UNDEFINED;
+                        SI_QUEUE = OpenBsdDefines.SI_QUEUE;
+                        SI_USER = OpenBsdDefines.SI_USER;
+                        SI_ASYNCIO = IntDefine.UNDEFINED;
+                        SI_MESGQ = IntDefine.UNDEFINED;
+                        SI_TIMER = OpenBsdDefines.SI_TIMER;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No signal.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
                 break;
             default:
                 throw new NoClassDefFoundError("No signal.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -1777,10 +1813,10 @@ public class Signal {
                 case OPEN_BSD:
                     alignof = Alignment.AT_8;
                     sizeof = 16;
-                    offsetof_Sa_handler = -1;
-                    offsetof_Sa_mask = -1;
-                    offsetof_Sa_flags = -1;
-                    offsetof_Sa_sigaction = -1;
+                    offsetof_Sa_handler = 0;
+                    offsetof_Sa_mask = 8;
+                    offsetof_Sa_flags = 12;
+                    offsetof_Sa_sigaction = 0;
                     break;
                 default:
                     throw new NoClassDefFoundError("No signal.h OS defines for sigaction " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -2276,6 +2312,7 @@ public class Signal {
                     }
                     break;
                 case FREE_BSD:
+                case OPEN_BSD:
                     alignof = Alignment.AT_8;
                     sizeof = 24;
                     offsetof_Ss_sp = 0;
@@ -2462,16 +2499,16 @@ public class Signal {
                     break;
                 case OPEN_BSD:
                     sizeof = 136;
-                    alignof = Alignment.AT_4;
-                    offsetof_Si_signo = -1;
-                    offsetof_Si_code = -1;
-                    offsetof_Si_errno = -1;
-                    offsetof_Si_pid = -1;
-                    offsetof_Si_uid = -1;
-                    offsetof_Si_addr = -1;
-                    offsetof_Si_status = -1;
+                    alignof = Alignment.AT_8;
+                    offsetof_Si_signo = 0;
+                    offsetof_Si_code = 4;
+                    offsetof_Si_errno = 8;
+                    offsetof_Si_pid = 16;
+                    offsetof_Si_uid = 24;
+                    offsetof_Si_addr = 16;
+                    offsetof_Si_status = 40;
                     offsetof_Si_band = -1;
-                    offsetof_Si_value = -1;
+                    offsetof_Si_value = 32;
                     break;
                 default:
                     throw new NoClassDefFoundError("No signal.h OS defines for siginfo_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -2966,14 +3003,12 @@ public class Signal {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
-     * @throws NoSuchNativeMethodException if the method pthread_kill is not
-     * available natively.
      */
-    public final static void pthread_kill(Pthread.Pthread_t thread, int sig) throws NativeErrorException, NoSuchNativeMethodException {
+    public final static void pthread_kill(Pthread.Pthread_t thread, int sig) throws NativeErrorException {
         pthread_kill(AbstractNativeMemory.getAddress(thread), sig);
     }
 
-    private static native void pthread_kill(long ptrThread, int sig) throws NativeErrorException, NoSuchNativeMethodException;
+    private static native void pthread_kill(long ptrThread, int sig) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -3306,11 +3341,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static int sigwait(Sigset_t set) throws NativeErrorException {
-        return sigwait(AbstractNativeMemory.getAddress(set));
+    public final static int sigwait(Sigset_t set, int sig) throws NativeErrorException {
+        return sigwait(AbstractNativeMemory.getAddress(set), sig);
     }
 
-    private static native int sigwait(long ptrSet) throws NativeErrorException;
+    private static native int sigwait(long ptrSet, int sig) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>

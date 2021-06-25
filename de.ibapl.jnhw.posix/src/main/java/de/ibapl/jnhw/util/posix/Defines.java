@@ -87,14 +87,22 @@ public class Defines {
         __x86_64__ = arch == Arch.X86_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
 
         __APPLE__ = IntDefine.UNDEFINED;
-        _BSD_SOURCE = IntDefine.UNDEFINED;
+        _BSD_SOURCE = os == OS.OPEN_BSD ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __FreeBSD__ = os == OS.FREE_BSD ? IntDefine.toIntDefine(13) : IntDefine.UNDEFINED;
         __linux__ = os == OS.LINUX ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        __OpenBSD__ = IntDefine.UNDEFINED;
+        __OpenBSD__ = os == OS.OPEN_BSD ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
 
         _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
-        _LARGEFILE64_SOURCE = os == OS.FREE_BSD ? IntDefine.UNDEFINED : IntDefine.toIntDefine(1);
-        _LARGEFILE_SOURCE = os == OS.FREE_BSD ? IntDefine.UNDEFINED : IntDefine.toIntDefine(1);
+        switch (os) {
+            case FREE_BSD:
+            case OPEN_BSD:
+                _LARGEFILE64_SOURCE = IntDefine.UNDEFINED;
+                _LARGEFILE_SOURCE = IntDefine.UNDEFINED;
+                break;
+            default:
+                _LARGEFILE64_SOURCE = IntDefine.toIntDefine(1);
+                _LARGEFILE_SOURCE = IntDefine.toIntDefine(1);
+        }
         _POSIX_C_SOURCE = IntDefine.toIntDefine(200809);
         _XOPEN_SOURCE = IntDefine.toIntDefine(700);
         _XOPEN_SOURCE_EXTENDED = IntDefine.toIntDefine(1);
@@ -132,6 +140,7 @@ public class Defines {
                 }
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 __GLIBC_MINOR__ = IntDefine.UNDEFINED;
                 __GLIBC__ = IntDefine.UNDEFINED;
                 __GNU_LIBRARY__ = IntDefine.UNDEFINED;
@@ -166,8 +175,7 @@ public class Defines {
         //Linux
         __TIMESIZE = mi == MultiarchInfo.RISC_V_64__LINUX__GNU ? IntDefine.toIntDefine(64) : IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
 
-        //Linux
-        __WORDSIZE = IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
+        __WORDSIZE = os == OS.OPEN_BSD ? IntDefine.UNDEFINED : IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
 
     }
 

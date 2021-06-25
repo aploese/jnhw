@@ -197,7 +197,7 @@ public class SchedTest {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Sched.sched_rr_get_interval(Unistd.getpid(), null);
+                    Sched.sched_rr_get_interval(Unistd.getpid(), new Time.Timespec(SetMem.TO_0x00));
                 });
                 break;
             default:
@@ -236,11 +236,11 @@ public class SchedTest {
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
                         () -> {
-                            Sched.sched_setparam(Unistd.getpid(), null);
+                            Sched.sched_setparam(Unistd.getpid(), new Sched.Sched_param(SetMem.TO_0x00));
                         });
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
                         () -> {
-                            Sched.sched_getparam(Unistd.getpid(), null);
+                            Sched.sched_getparam(Unistd.getpid(), new Sched.Sched_param(SetMem.TO_0x00));
                         });
                 break;
             default:
@@ -273,13 +273,13 @@ public class SchedTest {
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
                         () -> {
-                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, null);
+                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, new Sched.Sched_param(SetMem.TO_0x00));
                         });
                 break;
             default:
                 Assertions.assertThrows(NullPointerException.class,
                         () -> {
-                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, null);
+                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, new Sched.Sched_param(SetMem.TO_0x00));
                         });
                 Sched.Sched_param param = new Sched.Sched_param(SetMem.TO_0x00);
                 if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {

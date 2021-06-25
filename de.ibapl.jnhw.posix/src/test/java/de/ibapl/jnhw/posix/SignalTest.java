@@ -431,7 +431,7 @@ public class SignalTest {
                     Assertions.assertEquals(NativeMcontext_t.sizeof(), Signal.Mcontext_t.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeMcontext_t.alignof(), Signal.Mcontext_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(NativeMcontext_t.alignof(), Signal.Mcontext_t.alignof == null ? 0 : Signal.Mcontext_t.alignof.alignof, "alignof");
                 }
         );
     }
@@ -480,7 +480,7 @@ public class SignalTest {
             Assertions.assertEquals(NativeSigevent.sizeof(), Signal.Sigevent.sizeof, "sizeof");
         },
                 () -> {
-                    Assertions.assertEquals(NativeSigevent.alignof(), Signal.Sigevent.alignof.alignof, "alignof");
+                    Assertions.assertEquals(NativeSigevent.alignof(), Signal.Sigevent.alignof == null ? 0 : Signal.Sigevent.alignof.alignof, "alignof");
                 },
                 () -> {
                     Assertions.assertEquals(NativeSigevent.sigev_notify(), Signal.Sigevent.offsetof_Sigev_notify, "offsetof_Sigev_notify");
@@ -599,7 +599,7 @@ public class SignalTest {
             Assertions.assertEquals(NativeUcontext_t.sizeof(), Signal.Ucontext_t.sizeof, "sizeof");
         },
                 () -> {
-                    Assertions.assertEquals(NativeUcontext_t.alignof(), Signal.Ucontext_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(NativeUcontext_t.alignof(), Signal.Ucontext_t.alignof == null ? 0 : Signal.Ucontext_t.alignof.alignof, "alignof");
                 },
                 () -> {
                     Assertions.assertEquals(NativeUcontext_t.uc_link(), Signal.Ucontext_t.offsetof_Uc_link, "offsetof_Uc_link");
@@ -761,6 +761,7 @@ public class SignalTest {
         final int sig = Signal.SIGCHLD; //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
         final Integer[] sigRef = new Integer[1];
+        final Throwable[] error = new Throwable[1];
         final Signal.Sigaction act = new Signal.Sigaction();
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
@@ -769,7 +770,7 @@ public class SignalTest {
             @Override
             protected void callback(int sig) {
                 sigRef[0] = sig;
-                System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
+                System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId() + " signal: " + sig);
             }
         };
         act.sa_handler(sa_handler);
@@ -780,17 +781,14 @@ public class SignalTest {
             Thread t = new Thread(() -> {
                 try {
                     System.out.println("pthread_t of thread: " + Pthread.pthread_self() + " Java thread ID: " + Thread.currentThread().getId());
-                    try {
-                        Signal.pthread_kill(Pthread.pthread_self(), sig);
-                    } catch (NoSuchNativeMethodException nsnme) {
-                        throw new RuntimeException(nsnme);
-                    }
+                    Signal.pthread_kill(Pthread.pthread_self(), sig);
                 } catch (NativeErrorException nee) {
-                    //no-op
+                    error[0] = nee;
                 }
             });
             t.start();
             t.join();
+            Assertions.assertNull(error[0]);
             assertEquals(sig, sigRef[0]);
         } finally {
             Signal.sigaction(sig, oact, null);
@@ -1164,7 +1162,7 @@ public class SignalTest {
         System.out.println("sigqueue");
         final int SIG = Signal.SIGUSR2;
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigqueue(Unistd.getpid(), SIG, null));
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigqueue(Unistd.getpid(), SIG, new Signal.Sigval()));
         } else {
 
             final Signal.Sigaction act = new Signal.Sigaction();
@@ -1256,9 +1254,6 @@ public class SignalTest {
     @Test
     public void testSigsuspend() throws Exception {
         System.out.println("sigsuspend");
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
-        }
         final int SIG = Signal.SIGALRM;
 
         final Callback_I_V_Impl funcHandler = new Callback_I_V_Impl() {
@@ -1298,8 +1293,18 @@ public class SignalTest {
     public void testSigtimedwait() throws Exception {
         System.out.println("sigtimedwait");
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
+            final Signal.Sigset_t set = new Signal.Sigset_t();
+            Signal.sigemptyset(set);
+            Signal.sigaddset(set, Signal.SIGALRM);
+            final Signal.Siginfo_t info = new Signal.Siginfo_t();
+            final Time.Timespec timeout = new Time.Timespec(SetMem.DO_NOT_SET);
+
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Signal.sigtimedwait(set, info, timeout);
+            });
+            return;
         }
+
         final int SIG = Signal.SIGALRM;
 
         final Signal.Sigset_t set = new Signal.Sigset_t();
@@ -1350,9 +1355,6 @@ public class SignalTest {
     @Test
     public void testSigwait() throws Exception {
         System.out.println("sigwait");
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
-        }
         final int SIG = Signal.SIGALRM;
 
         Signal.signal(SIG, Signal.SIG_DFL);
@@ -1369,11 +1371,11 @@ public class SignalTest {
 
             Signal.sigpending(testSet);
             Assertions.assertTrue(Signal.sigismember(testSet, SIG), "Signal must be pending");
-            final int signal = Signal.sigwait(set);
+            final int signal = Signal.sigwait(set, SIG);
             assertEquals(SIG, signal);
 
             Assertions.assertThrows(NullPointerException.class, () -> {
-                Signal.sigwait(null);
+                Signal.sigwait(null, SIG);
             });
         } finally {
             //Restore signal mask
@@ -1390,8 +1392,16 @@ public class SignalTest {
     @Test
     public void testSigwaitinfo() throws Exception {
         System.out.println("sigwaitinfo");
+
         if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            Assertions.fail("OPEN BSD will crash during test SIGALRM??");
+            final Signal.Sigset_t set = new Signal.Sigset_t();
+            Signal.sigemptyset(set);
+            Signal.sigaddset(set, Signal.SIGALRM);
+            final Signal.Siginfo_t info = new Signal.Siginfo_t();
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Signal.sigwaitinfo(set, info);
+            });
+            return;
         }
 
         final int SIG = Signal.SIGALRM;
@@ -1404,19 +1414,21 @@ public class SignalTest {
 
         Signal.sigprocmask(Signal.SIG_BLOCK, set, oset);
         try {
+            final Signal.Sigset_t testSet = new Signal.Sigset_t();
+            Signal.sigemptyset(testSet);
             /*
              If the test fails after raising the signal
              and before processing the signal in the test,
              the whole testsuite will crash!
              */
             Signal.raise(SIG);
-            final Signal.Sigset_t testSet = new Signal.Sigset_t();
-            Signal.sigemptyset(testSet);
-
             Signal.sigpending(testSet);
+
             Assertions.assertTrue(Signal.sigismember(testSet, SIG), "Signal must be pending");
+
             final Signal.Siginfo_t info = new Signal.Siginfo_t();
             final int signal = Signal.sigwaitinfo(set, info);
+
             assertEquals(SIG, signal);
             assertEquals(SIG, info.si_signo());
             if (MULTIARCHTUPEL_BUILDER.getOS() == de.ibapl.jnhw.libloader.OS.FREE_BSD) {
@@ -1427,10 +1439,11 @@ public class SignalTest {
             }
             //TODO more???
 
-            Signal.raise(SIG);
             Signal.sigemptyset(testSet);
 
+            Signal.raise(SIG);
             Signal.sigpending(testSet);
+
             Assertions.assertTrue(Signal.sigismember(testSet, SIG), "Signal must be pending");
             Signal.sigwaitinfo(set, null);
             Assertions.assertThrows(NullPointerException.class, () -> {

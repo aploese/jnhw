@@ -29,7 +29,6 @@ import de.ibapl.jnhw.common.callback.NativeRunnable;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
@@ -135,7 +134,9 @@ public class AioTest {
         }
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                fail("Assertions.assertNull(Aio.Aiocb.getLayoutOrThrow()");
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    new Aio.Aiocb();
+                });
                 break;
             default:
                 Assertions.assertAll(
@@ -235,8 +236,8 @@ public class AioTest {
         System.out.println("aio_cancel");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Aio.aio_cancel(null);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.aio_cancel(new Aio.Aiocb());
                 });
                 break;
             default:
@@ -266,8 +267,8 @@ public class AioTest {
         System.out.println("aio_error");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Aio.aio_error(null);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.aio_error(new Aio.Aiocb());
                 });
                 break;
             default:
@@ -295,8 +296,8 @@ public class AioTest {
         System.out.println("aio_fsync");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Aio.aio_fsync(0, null);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.aio_fsync(0, new Aio.Aiocb());
                 });
                 break;
             default:
@@ -322,8 +323,8 @@ public class AioTest {
         System.out.println("aio_read");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Aio.aio_read(null);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.aio_read(new Aio.Aiocb());
                 });
                 break;
             default:
@@ -436,8 +437,8 @@ public class AioTest {
         System.out.println("aio_read empty file");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Aio.aio_read(null);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.aio_read(new Aio.Aiocb());
                 });
                 break;
             default:
@@ -535,8 +536,8 @@ public class AioTest {
         System.out.println("aio_return");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Aio.aio_return(null);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.aio_return(new Aio.Aiocb());
                 });
                 break;
             default:
@@ -560,8 +561,8 @@ public class AioTest {
         System.out.println("aio_suspend");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Aio.aio_suspend(null, null);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.aio_suspend(new Aio.Aiocbs(0, SetMem.TO_0x00), new Time.Timespec(SetMem.TO_0x00));
                 });
                 break;
             default:
@@ -593,8 +594,8 @@ public class AioTest {
         System.out.println("aio_write");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Aio.aio_write(null);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.aio_write(new Aio.Aiocb());
                 });
                 break;
             default:
@@ -686,8 +687,8 @@ public class AioTest {
         System.out.println("lio_listio");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Aio.lio_listio(0, null, null);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.lio_listio(0, new Aio.Aiocbs(0, SetMem.TO_0x00), new Signal.Sigevent());
                 });
                 break;
             default:
@@ -727,8 +728,8 @@ public class AioTest {
         System.out.println("lio_listio");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Aio.lio_listio(0, null, null);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.lio_listio(0, new Aio.Aiocbs(0, SetMem.TO_0x00), new Signal.Sigevent());
                 });
                 break;
             default:
@@ -786,8 +787,8 @@ public class AioTest {
         System.out.println("aio_read");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Aio.aio_read(null);
+                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
+                    Aio.aio_read(new Aio.Aiocb());
                 });
                 break;
             default:

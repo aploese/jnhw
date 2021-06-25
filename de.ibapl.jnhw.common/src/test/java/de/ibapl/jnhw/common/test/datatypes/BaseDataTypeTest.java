@@ -299,6 +299,7 @@ public class BaseDataTypeTest {
                     assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INTPTR_T);
                     assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INTPTR_T);
                     break;
+                case X86_64__OPEN_BSD__BSD:
                 case X86_64__FREE_BSD__BSD:
                     //classical 64bit anything is at 8 byte aligned
                     assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);

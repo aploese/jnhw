@@ -31,6 +31,10 @@ extern "C" {
 #include <signal.h>
 #include <errno.h>
 #include <stdio.h>
+#if defined(__OpenBSD__)
+#include <pthread.h>
+    //for pthread_kill
+#endif
 
     JNHW_ASSERT__pid_t__IS__int32_t
 
@@ -127,15 +131,10 @@ extern "C" {
      * Signature: (JI)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Signal_pthread_1kill
-#if defined(__OpenBSD__)
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jlong ptrThread_id, __attribute__ ((unused)) jint sig) {
-        throw_NoSuchNativeMethodException(env, "pthread_kill");
-#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrThread_id, jint sig) {
         if (pthread_kill(*((pthread_t*) (uintptr_t) ptrThread_id), sig)) {
             throw_NativeErrorException(env, errno);
         }
-#endif
     }
 
     /*
@@ -410,7 +409,7 @@ extern "C" {
 #if defined(__OpenBSD__)
     (JNIEnv *env, __attribute__ ((unused)) jclass class, __attribute__ ((unused)) jint sig, __attribute__ ((unused)) jlong ptrDisp) {
         throw_NoSuchNativeMethodException(env, "sigset");
-        return NULL;
+        return (jlong) (uintptr_t) NULL;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass class, jint sig, jlong ptrDisp) {
         void* result;
@@ -469,17 +468,17 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Signal
      * Method:    sigwait
-     * Signature: (J)I
+     * Signature: (JI)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigwait
-    (JNIEnv *env, __attribute__ ((unused)) jclass class, jlong ptrSet) {
-        int sig;
+    (JNIEnv *env, __attribute__ ((unused)) jclass class, jlong ptrSet, jint sig) {
+        int _sig = sig;
 
-        if (sigwait((sigset_t*) (uintptr_t) ptrSet, &sig)) {
+        if (sigwait((sigset_t*) (uintptr_t) ptrSet, &_sig)) {
             throw_NativeErrorException(env, errno);
             return -1;
         }
-        return sig;
+        return _sig;
     }
 
     /*

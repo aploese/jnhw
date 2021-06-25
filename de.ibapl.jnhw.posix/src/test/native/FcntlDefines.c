@@ -281,10 +281,12 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1ASYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) || defined(__FreeBSD__)
+#if defined (__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)
         return JnhwWrapInteger(env, O_ASYNC);
 #else
-#if defined(O_ASYNC)
+#if !defined(O_ASYNC)
+        return NULL;
+#else
 #error "O_ASYNC defined"
 #endif
 #endif
@@ -365,10 +367,12 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1FSYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) || defined(__FreeBSD__)
+#if defined (__linux__) || defined(__FreeBSD__)|| defined(__OpenBSD__)
         return JnhwWrapInteger(env, O_FSYNC);
 #else
-#if defined(O_FSYNC)
+#if !defined(O_FSYNC)
+        return NULL;
+#else
 #error "O_FSYNC defined"
 #endif
 #endif
@@ -531,7 +535,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1DONTNEED
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_DONTNEED)
         return NULL;
@@ -549,7 +553,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1NOREUSE
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_NOREUSE)
         return NULL;
@@ -567,7 +571,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1NORMAL
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_NORMAL)
         return NULL;
@@ -585,7 +589,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1RANDOM
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_RANDOM)
         return NULL;
@@ -603,7 +607,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1SEQUENTIAL
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_SEQUENTIAL)
         return NULL;
@@ -621,7 +625,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1WILLNEED
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_WILLNEED)
         return NULL;

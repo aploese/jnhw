@@ -399,7 +399,7 @@ public class TimeTest {
             case OPEN_BSD:
             case MAC_OS_X:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Time.clock_nanosleep(0, 0, null, null);
+                    Time.clock_nanosleep(0, 0, new Time.Timespec(SetMem.TO_0x00));
                 });
                 break;
             default:
@@ -731,19 +731,19 @@ public class TimeTest {
         String result = Time.strftime(maxsize, format, timeptr);
         assertEquals("2020-02-19 16:03:47", result);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Time.strftime(-1, format, timeptr);
-        });
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.strftime(maxsize, null, timeptr);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.strftime(maxsize, format, null);
         });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Time.strftime(-1, format, timeptr);
+        });
     }
 
     /**
-     * Test of strftime method, of class Time.
+     * Test of strftime_l method, of class Time.
      */
     @Test
     public void testStrftime_l() throws Exception {
@@ -759,6 +759,7 @@ public class TimeTest {
         timeptr.tm_sec(47);
         Locale.Locale_t locale = Locale.duplocale(Locale.LC_GLOBAL_LOCALE);
         try {
+
             String result = Time.strftime_l(maxsize, format, timeptr, locale);
             assertEquals("2020-02-19 16:03:47", result);
 
@@ -788,9 +789,9 @@ public class TimeTest {
         String buf = "2020-01-27 09:12:57\nJNHW";
         String format = "%Y-%m-%d %H:%M:%S";
         Time.Tm tm = new Time.Tm(SetMem.DO_NOT_SET);
-        String expResult = "\nJNHW";
+        int expResult = buf.indexOf("\nJNHW");
 
-        String result = Time.strptime(buf, format, tm);
+        int result = Time.strptime(buf, format, tm);
         assertEquals(2020 - 1900, tm.tm_year());
         assertEquals(0, tm.tm_mon());
         assertEquals(27, tm.tm_mday());
@@ -806,14 +807,7 @@ public class TimeTest {
             assertEquals("Mon Jan 27 09:12:57 2020\n", Time.asctime(tm));
         }
 
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXStrptimeXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx");
-            for (byte b : result.getBytes()) {
-                System.err.println(String.format("%c  0x%02x", b, b));
-            }
-            System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXStrptimeXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx");
-        }
-        assertEquals(expResult, result, "Expected pointer to String in buf");
+        assertEquals(expResult, result, "Expected offset to String \"\\nJNHW\" in buf");
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.strptime(null, format, tm);
@@ -847,10 +841,10 @@ public class TimeTest {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Time.timer_create(0, null, null);
+                    Time.timer_create(0, new Time.Timer_t(SetMem.TO_0x00));
                 });
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Time.timer_delete(null);
+                    Time.timer_delete(new Time.Timer_t(SetMem.TO_0x00));
                 });
                 return;
             case MAC_OS_X:
@@ -859,10 +853,10 @@ public class TimeTest {
                     new Time.Timer_t(SetMem.TO_0x00);
                 });
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Time.timer_create(0, null, null);
+                    Time.timer_create(0, new Time.Timer_t(SetMem.TO_0x00));
                 });
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Time.timer_delete(null);
+                    Time.timer_delete(new Time.Timer_t(SetMem.TO_0x00));
                 });
                 return;
         }
@@ -1106,15 +1100,15 @@ public class TimeTest {
     @Test
     public void testTimer_t() throws Exception {
         Time.Timer_t timer_t = new Time.Timer_t(SetMem.TO_0x00);
-        switch (MULTIARCHTUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
+        switch (Time.Timer_t.sizeof) {
+            case 4:
                 Assertions.assertEquals("0x00000000", timer_t.nativeToString());
                 break;
-            case _64_BIT:
+            case 8:
                 Assertions.assertEquals("0x0000000000000000", timer_t.nativeToString());
                 break;
             default:
-                fail("Wordsize not supported");
+                fail("Timer_t.sizeof not supported");
         }
     }
 

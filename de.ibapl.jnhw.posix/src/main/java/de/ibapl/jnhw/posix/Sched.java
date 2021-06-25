@@ -45,18 +45,26 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <sched.h>")
 public class Sched {
 
-    public static class LinuxDefines {
+    public static interface LinuxDefines {
 
         public final static int SCHED_FIFO = 1;
         public final static int SCHED_OTHER = 0;
         public final static int SCHED_RR = 2;
     }
 
-    public static class FreeBsdDefines {
+    public static interface BsdDefines {
 
         public final static int SCHED_FIFO = 1;
         public final static int SCHED_OTHER = 2;
         public final static int SCHED_RR = 3;
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
+
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
+
     }
 
     /**
@@ -80,10 +88,11 @@ public class Sched {
                 SCHED_SPORADIC = IntDefine.UNDEFINED;
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_SCHED_H = true;
-                SCHED_FIFO = FreeBsdDefines.SCHED_FIFO;
-                SCHED_OTHER = FreeBsdDefines.SCHED_OTHER;
-                SCHED_RR = FreeBsdDefines.SCHED_RR;
+                SCHED_FIFO = BsdDefines.SCHED_FIFO;
+                SCHED_OTHER = BsdDefines.SCHED_OTHER;
+                SCHED_RR = BsdDefines.SCHED_RR;
                 SCHED_SPORADIC = IntDefine.UNDEFINED;
                 break;
             default:

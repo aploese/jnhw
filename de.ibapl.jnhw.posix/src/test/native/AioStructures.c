@@ -33,7 +33,7 @@ extern "C" {
 #endif
 #else
 #include <aio.h>
-#endif
+
     //for offsetof
 #include <stddef.h>
 
@@ -129,6 +129,8 @@ extern "C" {
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return offsetof(struct aiocb, aio_lio_opcode);
     }
+
+#endif
 
 #endif
 

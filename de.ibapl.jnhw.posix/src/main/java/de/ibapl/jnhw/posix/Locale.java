@@ -47,7 +47,7 @@ import java.io.IOException;
 @Include("#include <locale.h>")
 public class Locale {
 
-    public static class LinuxDefines {
+    public static interface LinuxDefines {
 
         public final static int LC_ALL = 6;
         public final static int LC_ALL_MASK = 8127;
@@ -66,23 +66,40 @@ public class Locale {
         public final static int LC_TIME_MASK = 4;
     }
 
-    public static class FreeBsdDefines {
+    public static interface BsdDefines {
 
         public final static int LC_ALL = 0;
-        public final static int LC_ALL_MASK = 63;
         public final static int LC_COLLATE = 1;
-        public final static int LC_COLLATE_MASK = 1;
         public final static int LC_CTYPE = 2;
-        public final static int LC_CTYPE_MASK = 2;
         public final static long LC_GLOBAL_LOCALE = -1;
         public final static int LC_MESSAGES = 6;
-        public final static int LC_MESSAGES_MASK = 32;
         public final static int LC_MONETARY = 3;
-        public final static int LC_MONETARY_MASK = 4;
         public final static int LC_NUMERIC = 4;
-        public final static int LC_NUMERIC_MASK = 8;
         public final static int LC_TIME = 5;
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
+
+        public final static int LC_ALL_MASK = 63;
+        public final static int LC_COLLATE_MASK = 1;
+        public final static int LC_CTYPE_MASK = 2;
+        public final static int LC_MESSAGES_MASK = 32;
+        public final static int LC_MONETARY_MASK = 4;
+        public final static int LC_NUMERIC_MASK = 8;
         public final static int LC_TIME_MASK = 16;
+
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
+
+        public final static int LC_ALL_MASK = 126;
+        public final static int LC_COLLATE_MASK = 2;
+        public final static int LC_CTYPE_MASK = 4;
+        public final static int LC_MESSAGES_MASK = 64;
+        public final static int LC_MONETARY_MASK = 8;
+        public final static int LC_NUMERIC_MASK = 16;
+        public final static int LC_TIME_MASK = 32;
+
     }
 
     /**
@@ -96,8 +113,8 @@ public class Locale {
      */
     static {
         LibJnhwPosixLoader.touch();
-
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+        switch (multiarchInfo.getOS()) {
             case LINUX:
                 HAVE_LOCALE_H = true;
                 LC_ALL = LinuxDefines.LC_ALL;
@@ -117,22 +134,38 @@ public class Locale {
                 LC_TIME_MASK = LinuxDefines.LC_TIME_MASK;
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_LOCALE_H = true;
-                LC_ALL = FreeBsdDefines.LC_ALL;
-                LC_ALL_MASK = FreeBsdDefines.LC_ALL_MASK;
-                LC_COLLATE = FreeBsdDefines.LC_COLLATE;
-                LC_COLLATE_MASK = FreeBsdDefines.LC_COLLATE_MASK;
-                LC_CTYPE = FreeBsdDefines.LC_CTYPE;
-                LC_CTYPE_MASK = FreeBsdDefines.LC_CTYPE_MASK;
-                LC_GLOBAL_LOCALE = Locale_t.fromNativeValue(FreeBsdDefines.LC_GLOBAL_LOCALE);
-                LC_MESSAGES = FreeBsdDefines.LC_MESSAGES;
-                LC_MESSAGES_MASK = FreeBsdDefines.LC_MESSAGES_MASK;
-                LC_MONETARY = FreeBsdDefines.LC_MONETARY;
-                LC_MONETARY_MASK = FreeBsdDefines.LC_MONETARY_MASK;
-                LC_NUMERIC = FreeBsdDefines.LC_NUMERIC;
-                LC_NUMERIC_MASK = FreeBsdDefines.LC_NUMERIC_MASK;
-                LC_TIME = FreeBsdDefines.LC_TIME;
-                LC_TIME_MASK = FreeBsdDefines.LC_TIME_MASK;
+                LC_ALL = BsdDefines.LC_ALL;
+                LC_COLLATE = BsdDefines.LC_COLLATE;
+                LC_CTYPE = BsdDefines.LC_CTYPE;
+                LC_GLOBAL_LOCALE = Locale_t.fromNativeValue(BsdDefines.LC_GLOBAL_LOCALE);
+                LC_MESSAGES = BsdDefines.LC_MESSAGES;
+                LC_MONETARY = BsdDefines.LC_MONETARY;
+                LC_NUMERIC = BsdDefines.LC_NUMERIC;
+                LC_TIME = BsdDefines.LC_TIME;
+                switch (multiarchInfo.getOS()) {
+                    case FREE_BSD:
+                        LC_ALL_MASK = FreeBsdDefines.LC_ALL_MASK;
+                        LC_COLLATE_MASK = FreeBsdDefines.LC_COLLATE_MASK;
+                        LC_CTYPE_MASK = FreeBsdDefines.LC_CTYPE_MASK;
+                        LC_MESSAGES_MASK = FreeBsdDefines.LC_MESSAGES_MASK;
+                        LC_MONETARY_MASK = FreeBsdDefines.LC_MONETARY_MASK;
+                        LC_NUMERIC_MASK = FreeBsdDefines.LC_NUMERIC_MASK;
+                        LC_TIME_MASK = FreeBsdDefines.LC_TIME_MASK;
+                        break;
+                    case OPEN_BSD:
+                        LC_ALL_MASK = OpenBsdDefines.LC_ALL_MASK;
+                        LC_COLLATE_MASK = OpenBsdDefines.LC_COLLATE_MASK;
+                        LC_CTYPE_MASK = OpenBsdDefines.LC_CTYPE_MASK;
+                        LC_MESSAGES_MASK = OpenBsdDefines.LC_MESSAGES_MASK;
+                        LC_MONETARY_MASK = OpenBsdDefines.LC_MONETARY_MASK;
+                        LC_NUMERIC_MASK = OpenBsdDefines.LC_NUMERIC_MASK;
+                        LC_TIME_MASK = OpenBsdDefines.LC_TIME_MASK;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No locale.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
                 break;
             default:
                 throw new NoClassDefFoundError("No locale.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -268,7 +301,7 @@ public class Locale {
         return new Locale_t(duplocale(locobj.nativeValue));
     }
 
-    private static native long duplocale(long ptrLocobj) throws NativeErrorException;
+    private static native long duplocale(long nativeLocobj) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -282,7 +315,7 @@ public class Locale {
         freelocale(locobj.nativeValue);
     }
 
-    private static native void freelocale(long ptrLocobj);
+    private static native void freelocale(long nativeLocobj);
 
     /**
      * <b>POSIX:</b>
@@ -318,7 +351,7 @@ public class Locale {
         return new Locale_t(newlocale(category_mask, locale, base.nativeValue));
     }
 
-    private static native long newlocale(int category_mask, String locale, long ptrBase) throws NativeErrorException;
+    private static native long newlocale(int category_mask, String locale, long nativeBase) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -351,7 +384,7 @@ public class Locale {
         return new Locale_t(uselocale(newloc.nativeValue));
     }
 
-    private static native long uselocale(long ptrNewloc) throws NativeErrorException;
+    private static native long uselocale(long nativeNewloc) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/locale.h.html">{@code structure
@@ -471,6 +504,34 @@ public class Locale {
                     offsetof_Int_n_sign_posn = 93;
                     offsetof_Int_p_cs_precedes = 88;
                     offsetof_Int_p_sep_by_space = 90;
+                    offsetof_Int_p_sign_posn = 92;
+                    offsetof_Mon_decimal_point = 40;
+                    offsetof_Mon_grouping = 56;
+                    offsetof_Mon_thousands_sep = 48;
+                    offsetof_Negative_sign = 72;
+                    offsetof_N_cs_precedes = 84;
+                    offsetof_N_sep_by_space = 85;
+                    offsetof_N_sign_posn = 87;
+                    offsetof_Positive_sign = 64;
+                    offsetof_P_cs_precedes = 82;
+                    offsetof_P_sep_by_space = 83;
+                    offsetof_P_sign_posn = 86;
+                    offsetof_Thousands_sep = 8;
+                    break;
+                case OPEN_BSD:
+                    alignof = Alignment.AT_8;
+                    sizeof = 96;
+                    offsetof_Currency_symbol = 32;
+                    offsetof_Decimal_point = 0;
+                    offsetof_Frac_digits = 81;
+                    offsetof_Grouping = 16;
+                    offsetof_Int_curr_symbol = 24;
+                    offsetof_Int_frac_digits = 80;
+                    offsetof_Int_n_cs_precedes = 90;
+                    offsetof_Int_n_sep_by_space = 91;
+                    offsetof_Int_n_sign_posn = 93;
+                    offsetof_Int_p_cs_precedes = 88;
+                    offsetof_Int_p_sep_by_space = 89;
                     offsetof_Int_p_sign_posn = 92;
                     offsetof_Mon_decimal_point = 40;
                     offsetof_Mon_grouping = 56;

@@ -30,6 +30,7 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
@@ -155,7 +156,7 @@ public final class Ioctl {
 
     }
 
-    public static interface FreeBsdDefines {
+    public static interface BsdDefines {
 
         public final static int TIOCCBRK = 536900730;
         public final static int TIOCM_DTR = 2;
@@ -184,9 +185,19 @@ public final class Ioctl {
         public final static int IOC_OUT = 1073741824;
         public final static int IOC_IN = -2147483648;
         public final static int IOCPARM_MASK = 8191;
-        public final static int IOCPARM_MAX = 8192;
         public final static int IOC_VOID = 536870912;
         public final static int IOC_DIRMASK = -536870912;
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
+
+        public final static int IOCPARM_MAX = 8192;
+
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
+
+        public final static int IOCPARM_MAX = 4096;
     }
 
     /**
@@ -335,19 +346,19 @@ public final class Ioctl {
                 }
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_SYS_IOCTL_H = true;
 
-                TIOCCBRK = FreeBsdDefines.TIOCCBRK;
-                TIOCM_DTR = FreeBsdDefines.TIOCM_DTR;
-                TIOCM_LE = FreeBsdDefines.TIOCM_LE;
-                TIOCM_RTS = FreeBsdDefines.TIOCM_RTS;
-                TIOCSBRK = FreeBsdDefines.TIOCSBRK;
+                TIOCCBRK = BsdDefines.TIOCCBRK;
+                TIOCM_DTR = BsdDefines.TIOCM_DTR;
+                TIOCM_LE = BsdDefines.TIOCM_LE;
+                TIOCM_RTS = BsdDefines.TIOCM_RTS;
+                TIOCSBRK = BsdDefines.TIOCSBRK;
 
-                IOCPARM_MASK = IntDefine.toIntDefine(FreeBsdDefines.IOCPARM_MASK);
-                IOCPARM_MAX = IntDefine.toIntDefine(FreeBsdDefines.IOCPARM_MAX);
-                IOC_VOID = IntDefine.toIntDefine(FreeBsdDefines.IOC_VOID);
-                IOC_INOUT = FreeBsdDefines.IOC_INOUT;
-                IOC_DIRMASK = IntDefine.toIntDefine(FreeBsdDefines.IOC_DIRMASK);
+                IOCPARM_MASK = IntDefine.toIntDefine(BsdDefines.IOCPARM_MASK);
+                IOC_VOID = IntDefine.toIntDefine(BsdDefines.IOC_VOID);
+                IOC_INOUT = BsdDefines.IOC_INOUT;
+                IOC_DIRMASK = IntDefine.toIntDefine(BsdDefines.IOC_DIRMASK);
 
                 _IOC_NRBITS = IntDefine.UNDEFINED;
                 _IOC_TYPEBITS = IntDefine.UNDEFINED;
@@ -358,27 +369,27 @@ public final class Ioctl {
                 _IOC_SIZESHIFT = IntDefine.UNDEFINED;
                 _IOC_READ = IntDefine.UNDEFINED;
                 IOCSIZE_SHIFT = IntDefine.UNDEFINED;
-                FIONREAD = FreeBsdDefines.FIONREAD;
-                TIOCEXCL = FreeBsdDefines.TIOCEXCL;
+                FIONREAD = BsdDefines.FIONREAD;
+                TIOCEXCL = BsdDefines.TIOCEXCL;
                 TIOCGICOUNT = IntDefine.UNDEFINED;
                 TIOCGSOFTCAR = IntDefine.UNDEFINED;
-                TIOCMBIC = FreeBsdDefines.TIOCMBIC;
-                TIOCMBIS = FreeBsdDefines.TIOCMBIS;
-                TIOCMGET = FreeBsdDefines.TIOCMGET;
+                TIOCMBIC = BsdDefines.TIOCMBIC;
+                TIOCMBIS = BsdDefines.TIOCMBIS;
+                TIOCMGET = BsdDefines.TIOCMGET;
                 TIOCMIWAIT = IntDefine.UNDEFINED;
-                TIOCMSET = FreeBsdDefines.TIOCMSET;
-                TIOCM_CAR = FreeBsdDefines.TIOCM_CAR;
-                TIOCM_CD = FreeBsdDefines.TIOCM_CD;
-                TIOCM_CTS = FreeBsdDefines.TIOCM_CTS;
-                TIOCM_DSR = FreeBsdDefines.TIOCM_DSR;
-                TIOCM_RI = FreeBsdDefines.TIOCM_RI;
-                TIOCM_RNG = FreeBsdDefines.TIOCM_RNG;
-                TIOCM_SR = FreeBsdDefines.TIOCM_SR;
-                TIOCM_ST = FreeBsdDefines.TIOCM_ST;
-                TIOCOUTQ = FreeBsdDefines.TIOCOUTQ;
+                TIOCMSET = BsdDefines.TIOCMSET;
+                TIOCM_CAR = BsdDefines.TIOCM_CAR;
+                TIOCM_CD = BsdDefines.TIOCM_CD;
+                TIOCM_CTS = BsdDefines.TIOCM_CTS;
+                TIOCM_DSR = BsdDefines.TIOCM_DSR;
+                TIOCM_RI = BsdDefines.TIOCM_RI;
+                TIOCM_RNG = BsdDefines.TIOCM_RNG;
+                TIOCM_SR = BsdDefines.TIOCM_SR;
+                TIOCM_ST = BsdDefines.TIOCM_ST;
+                TIOCOUTQ = BsdDefines.TIOCOUTQ;
                 TIOCSSOFTCAR = IntDefine.UNDEFINED;
-                IOC_OUT = FreeBsdDefines.IOC_OUT;
-                IOC_IN = FreeBsdDefines.IOC_IN;
+                IOC_OUT = BsdDefines.IOC_OUT;
+                IOC_IN = BsdDefines.IOC_IN;
                 _IOC_SIZEBITS = IntDefine.UNDEFINED;
                 _IOC_DIRBITS = IntDefine.UNDEFINED;
                 _IOC_SIZEMASK = IntDefine.UNDEFINED;
@@ -389,6 +400,16 @@ public final class Ioctl {
                 _IOC_WRITE = IntDefine.UNDEFINED;
 
                 IOCSIZE_MASK = IntDefine.UNDEFINED;
+                switch (multiarchInfo.getOS()) {
+                    case FREE_BSD:
+                        IOCPARM_MAX = IntDefine.toIntDefine(FreeBsdDefines.IOCPARM_MAX);
+                        break;
+                    case OPEN_BSD:
+                        IOCPARM_MAX = IntDefine.toIntDefine(OpenBsdDefines.IOCPARM_MAX);
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No ioctl.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
                 break;
             default:
                 throw new NoClassDefFoundError("No ioctl.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

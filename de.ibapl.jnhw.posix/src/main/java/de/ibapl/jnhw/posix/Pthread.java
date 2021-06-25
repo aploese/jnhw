@@ -47,7 +47,7 @@ import java.io.IOException;
 @Include("#include <pthread.h>")
 public class Pthread {
 
-    public static class LinuxDefines {
+    public static interface LinuxDefines {
 
         public final static int PTHREAD_EXPLICIT_SCHED = 1;
         public final static int PTHREAD_INHERIT_SCHED = 0;
@@ -58,7 +58,7 @@ public class Pthread {
 
     }
 
-    public static class FreeBsdDefines {
+    public static interface BsdDefines {
 
         public final static int PTHREAD_EXPLICIT_SCHED = 0;
         public final static int PTHREAD_INHERIT_SCHED = 4;
@@ -66,6 +66,14 @@ public class Pthread {
         public final static int PTHREAD_CANCEL_ENABLE = 0;
         public final static int PTHREAD_CANCEL_DEFERRED = 0;
         public final static int PTHREAD_CANCEL_ASYNCHRONOUS = 2;
+
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
+
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
 
     }
 
@@ -91,13 +99,14 @@ public class Pthread {
                 PTHREAD_INHERIT_SCHED = LinuxDefines.PTHREAD_INHERIT_SCHED;
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_PTHREAD_H = true;
-                PTHREAD_CANCEL_ASYNCHRONOUS = FreeBsdDefines.PTHREAD_CANCEL_ASYNCHRONOUS;
-                PTHREAD_CANCEL_DEFERRED = FreeBsdDefines.PTHREAD_CANCEL_DEFERRED;
-                PTHREAD_CANCEL_DISABLE = FreeBsdDefines.PTHREAD_CANCEL_DISABLE;
-                PTHREAD_CANCEL_ENABLE = FreeBsdDefines.PTHREAD_CANCEL_ENABLE;
-                PTHREAD_EXPLICIT_SCHED = FreeBsdDefines.PTHREAD_EXPLICIT_SCHED;
-                PTHREAD_INHERIT_SCHED = FreeBsdDefines.PTHREAD_INHERIT_SCHED;
+                PTHREAD_CANCEL_ASYNCHRONOUS = BsdDefines.PTHREAD_CANCEL_ASYNCHRONOUS;
+                PTHREAD_CANCEL_DEFERRED = BsdDefines.PTHREAD_CANCEL_DEFERRED;
+                PTHREAD_CANCEL_DISABLE = BsdDefines.PTHREAD_CANCEL_DISABLE;
+                PTHREAD_CANCEL_ENABLE = BsdDefines.PTHREAD_CANCEL_ENABLE;
+                PTHREAD_EXPLICIT_SCHED = BsdDefines.PTHREAD_EXPLICIT_SCHED;
+                PTHREAD_INHERIT_SCHED = BsdDefines.PTHREAD_INHERIT_SCHED;
                 break;
             default:
                 throw new NoClassDefFoundError("No pthread.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

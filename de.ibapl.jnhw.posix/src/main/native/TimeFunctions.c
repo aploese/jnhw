@@ -458,7 +458,7 @@ extern "C" {
 
 #if defined(_JNHW__size_t__IS__uint64_t)
         char* _result = malloc((uint64_t) maxsize);
-        size_t count = strftime_l(_result, (uint64_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr, *((locale_t*) (uintptr_t) ptrLocale));
+        size_t count = strftime_l(_result, (uint64_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr, (locale_t) ptrLocale);
 #elif defined(_JNHW__size_t__IS__uint32_t)
         if ((maxsize > UINT32_MAX) || (maxsize < 0)) {
             //release to avoid memory leaks
@@ -467,7 +467,7 @@ extern "C" {
             return NULL;
         }
         char* _result = malloc((uint32_t) maxsize);
-        size_t count = strftime_l(_result, (uint32_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr, *((locale_t*) (uintptr_t) ptrLocale));
+        size_t count = strftime_l(_result, (uint32_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr, (locale_t) ptrLocale);
 #else
 #error expected size_t is uint32_t or uint64_t
 #endif
@@ -481,31 +481,26 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Time
      * Method:    strptime
-     * Signature: (Ljava/lang/String;Ljava/lang/String;J)Ljava/lang/String;
+     * Signature: (Ljava/lang/String;Ljava/lang/String;J)I
      */
-    JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strptime
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_strptime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring buf, jstring format, jlong ptrTm) {
         if (buf == NULL) {
             throw_NullPointerException(env, "buf is NULL");
-            return NULL;
+            return -1;
         }
         if (format == NULL) {
             throw_NullPointerException(env, "format is NULL");
-            return NULL;
+            return -1;
         }
         const char* _buf = (*env)->GetStringUTFChars(env, buf, NULL);
         const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
 
-        char* result = strptime(_buf, _format, (struct tm*) (uintptr_t) ptrTm);
-
+        const char* ptrResult = strptime(_buf, _format, (struct tm*) (uintptr_t) ptrTm);
+        const intptr_t result = ptrResult - _buf;
         (*env)->ReleaseStringUTFChars(env, buf, _buf);
         (*env)->ReleaseStringUTFChars(env, format, _format);
-        if (result == NULL) {
-            return NULL;
-        } else {
-            return (*env)->NewStringUTF(env, result);
-        }
-
+        return (jint) result;
     }
 
     /*

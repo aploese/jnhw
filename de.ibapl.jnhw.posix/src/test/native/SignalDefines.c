@@ -348,7 +348,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeDefines_POLL_1IN
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if !defined(POLL_IN)
         return NULL;
@@ -366,7 +366,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeDefines_POLL_1OUT
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if !defined(POLL_OUT)
         return NULL;
@@ -384,7 +384,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeDefines_POLL_1MSG
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if !defined(POLL_MSG)
         return NULL;
@@ -402,7 +402,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeDefines_POLL_1ERR
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if !defined(POLL_ERR)
         return NULL;
@@ -420,7 +420,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeDefines_POLL_1PRI
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if !defined(POLL_PRI)
         return NULL;
@@ -438,7 +438,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeDefines_POLL_1HUP
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if !defined(POLL_HUP)
         return NULL;
@@ -486,7 +486,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeDefines_SI_1ASYNCIO
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if !defined(SI_ASYNCIO)
         return NULL;
@@ -682,7 +682,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Long;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeDefines_SIG_1HOLD0
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if !defined(SIG_HOLD)
         return NULL;
@@ -710,7 +710,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeDefines_SIGEV_1NONE
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if !defined(SIGEV_NONE)
         return NULL;
@@ -728,7 +728,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeDefines_SIGEV_1SIGNAL
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if !defined(SIGEV_SIGNAL)
         return NULL;
@@ -746,7 +746,7 @@ extern "C" {
      * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_SignalTest_00024NativeDefines_SIGEV_1THREAD
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
 #if defined(__OpenBSD__)
 #if !defined(SIGEV_THREAD)
         return NULL;

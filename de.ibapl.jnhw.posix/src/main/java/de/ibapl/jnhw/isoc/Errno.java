@@ -56,11 +56,20 @@ public abstract class Errno {
 
     }
 
-    public static interface FreeBsdDefines {
+    public static interface BsdDefines {
 
         public final static int EDOM = 33;
         public final static int ERANGE = 34;
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
+
         public final static int EILSEQ = 86;
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
+
+        public final static int EILSEQ = 84;
     }
 
     /**
@@ -92,8 +101,14 @@ public abstract class Errno {
             case FREE_BSD:
                 HAVE_ERRNO_H = true;
                 EDOM = FreeBsdDefines.EDOM;
-                ERANGE = FreeBsdDefines.ERANGE;
                 EILSEQ = FreeBsdDefines.EILSEQ;
+                ERANGE = FreeBsdDefines.ERANGE;
+                break;
+            case OPEN_BSD:
+                HAVE_ERRNO_H = true;
+                EDOM = OpenBsdDefines.EDOM;
+                EILSEQ = OpenBsdDefines.EILSEQ;
+                ERANGE = OpenBsdDefines.ERANGE;
                 break;
             default:
                 throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

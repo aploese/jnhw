@@ -218,10 +218,10 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigtimedwait
 /*
  * Class:     de_ibapl_jnhw_posix_Signal
  * Method:    sigwait
- * Signature: (J)I
+ * Signature: (JI)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Signal_sigwait
-  (JNIEnv *, jclass, jlong);
+  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Signal

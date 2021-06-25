@@ -27,23 +27,13 @@ extern "C" {
 #endif
 
     //We need the POSIX version ...
-#if !defined(HAVE_AIO_H) || !defined(_POSIX_VERSION)
+#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
+#include <aio.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
-     * Method:    HAVE_AIO_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_HAVE_1AIO_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
-
-#else
 #if defined(__OpenBSD__)
 #error OpenBSD and aio.h
-#else
-#include <aio.h>
+#endif
+
 #endif
 
     /*
@@ -53,90 +43,124 @@ extern "C" {
      */
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_HAVE_1AIO_1H
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
         return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
      * Method:    AIO_ALLDONE
-     * Signature: ()Lde/ibapl/jnhw/common/util/IntDefine;
+     * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_AIO_1ALLDONE
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
         return JnhwWrapInteger(env, AIO_ALLDONE);
+#else
+        return NULL;
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
      * Method:    AIO_CANCELED
-     * Signature: ()Lde/ibapl/jnhw/common/util/IntDefine;
+     * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_AIO_1CANCELED
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
         return JnhwWrapInteger(env, AIO_CANCELED);
+#else
+        return NULL;
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
      * Method:    AIO_NOTCANCELED
-     * Signature: ()Lde/ibapl/jnhw/common/util/IntDefine;
+     * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_AIO_1NOTCANCELED
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
         return JnhwWrapInteger(env, AIO_NOTCANCELED);
+#else
+        return NULL;
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
      * Method:    LIO_NOP
-     * Signature: ()Lde/ibapl/jnhw/common/util/IntDefine;
+     * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_LIO_1NOP
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
         return JnhwWrapInteger(env, LIO_NOP);
+#else
+        return NULL;
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
      * Method:    LIO_NOWAIT
-     * Signature: ()Lde/ibapl/jnhw/common/util/IntDefine;
+     * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_LIO_1NOWAIT
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
         return JnhwWrapInteger(env, LIO_NOWAIT);
+#else
+        return NULL;
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
      * Method:    LIO_READ
-     * Signature: ()Lde/ibapl/jnhw/common/util/IntDefine;
+     * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_LIO_1READ
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
         return JnhwWrapInteger(env, LIO_READ);
+#else
+        return NULL;
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
      * Method:    LIO_WAIT
-     * Signature: ()Lde/ibapl/jnhw/common/util/IntDefine;
+     * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_LIO_1WAIT
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
         return JnhwWrapInteger(env, LIO_WAIT);
+#else
+        return NULL;
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
      * Method:    LIO_WRITE
-     * Signature: ()Lde/ibapl/jnhw/common/util/IntDefine;
+     * Signature: ()Ljava/lang/Integer;
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_LIO_1WRITE
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
         return JnhwWrapInteger(env, LIO_WRITE);
-    }
-
+#else
+        return NULL;
 #endif
+    }
 
 #ifdef __cplusplus
 }

@@ -38,7 +38,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBAL_1LOCALE
     (JNIEnv *env, __attribute__ ((unused)) jobject clazz, jlong value) {
-        locale_t unwrapped = (locale_t) (uintptr_t) value;
+        locale_t unwrapped = (locale_t) value;
         if (LC_GLOBAL_LOCALE != unwrapped) {
             throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "Java_de_ibapl_jnhw_posix_LocaleTest_testNativelyLC_1GLOBAL_1LOCALE failed expected %p but was %p", LC_GLOBAL_LOCALE, unwrapped);
         }

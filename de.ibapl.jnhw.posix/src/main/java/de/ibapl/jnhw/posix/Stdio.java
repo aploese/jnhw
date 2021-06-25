@@ -38,7 +38,7 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <stdio.h>")
 public class Stdio {
 
-    public static class LinuxDefines {
+    public static interface LinuxDefines {
 
         public static final int EOF = -1;
         public static final int SEEK_CUR = 1;
@@ -47,12 +47,20 @@ public class Stdio {
 
     }
 
-    public static class FreeBsdDefines {
+    public static interface BsdDefines {
 
         public static final int EOF = -1;
         public static final int SEEK_CUR = 1;
         public static final int SEEK_END = 2;
         public static final int SEEK_SET = 0;
+
+    }
+
+    public static interface FreeBsdDefines extends BsdDefines {
+
+    }
+
+    public static interface OpenBsdDefines extends BsdDefines {
 
     }
 
@@ -76,11 +84,12 @@ public class Stdio {
                 SEEK_SET = LinuxDefines.SEEK_SET;
                 break;
             case FREE_BSD:
+            case OPEN_BSD:
                 HAVE_STDIO_H = true;
-                EOF = FreeBsdDefines.EOF;
-                SEEK_CUR = FreeBsdDefines.SEEK_CUR;
-                SEEK_END = FreeBsdDefines.SEEK_END;
-                SEEK_SET = FreeBsdDefines.SEEK_SET;
+                EOF = BsdDefines.EOF;
+                SEEK_CUR = BsdDefines.SEEK_CUR;
+                SEEK_END = BsdDefines.SEEK_END;
+                SEEK_SET = BsdDefines.SEEK_SET;
                 break;
             default:
                 throw new NoClassDefFoundError("No stdio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
