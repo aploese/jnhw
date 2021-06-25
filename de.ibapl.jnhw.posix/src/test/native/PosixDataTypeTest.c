@@ -25,6 +25,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    //We need the POSIX version ...
+#if defined(HAVE_SYS_TYPES_H) && defined(_POSIX_VERSION)
+#include <sys/types.h>
+#include <termios.h>
+#endif
 
     /*
      * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
@@ -262,6 +267,228 @@ extern "C" {
 #else
         return JNI_FALSE;
 #endif
+    }
+
+#define TEST_PATTERN 0x8000000080008080L;
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    cc_t__isUnsigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_cc_1t_1_1isUnsigned
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return 0 < (cc_t) - 1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    cc_t__AS_Uint64_t
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_cc_1t_1_1AS_1Uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uint64_t) (cc_t) TEST_PATTERN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    clock_t__isSigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_clock_1t_1_1isSigned
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return 0 > (clock_t) - 1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    clock_t__AS_Uint64_t
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_clock_1t_1_1AS_1Uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uint64_t) (clock_t) TEST_PATTERN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    mode_t__isUnsigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_mode_1t_1_1isUnsigned
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return 0 < (mode_t) - 1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    mode_t__AS_Uint64_t
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_mode_1t_1_1AS_1Uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uint64_t) (mode_t) TEST_PATTERN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    off_t__isSigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_off_1t_1_1isSigned
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return 0 > (off_t) - 1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    off_t__AS_Uint64_t
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_off_1t_1_1AS_1Uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uint64_t) (off_t) TEST_PATTERN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    pid_t__isSigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_pid_1t_1_1isSigned
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return 0 > (pid_t) - 1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    pid_t__AS_Uint64_t
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_pid_1t_1_1AS_1Uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uint64_t) (pid_t) TEST_PATTERN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    size_t__isUnsigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_size_1t_1_1isUnsigned
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return 0 < (size_t) - 1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    size_t__AS_Uint64_t
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_size_1t_1_1AS_1Uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uint64_t) (size_t) TEST_PATTERN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    speed_t__isUnsigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_speed_1t_1_1isUnsigned
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return 0 < (speed_t) - 1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    speed_t__AS_Uint64_t
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_speed_1t_1_1AS_1Uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uint64_t) (speed_t) TEST_PATTERN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    ssize_t__isSigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_ssize_1t_1_1isSigned
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return 0 > (ssize_t) - 1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    ssize_t__AS_Uint64_t
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_ssize_1t_1_1AS_1Uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uint64_t) (ssize_t) TEST_PATTERN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    tcflag_t__isUnsigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_tcflag_1t_1_1isUnsigned
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return 0 < (tcflag_t) - 1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    tcflag_t__AS_Uint64_t
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_tcflag_1t_1_1AS_1Uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uint64_t) (tcflag_t) TEST_PATTERN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    time_t__isSigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_time_1t_1_1isSigned
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return 0 > (time_t) - 1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    time_t__AS_Uint64_t
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_time_1t_1_1AS_1Uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uint64_t) (time_t) TEST_PATTERN;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    uid_t__isUnsigned
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_uid_1t_1_1isUnsigned
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return 0 < (uid_t) - 1;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    uid_t__AS_Uint64_t
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_uid_1t_1_1AS_1Uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uint64_t) (uid_t) TEST_PATTERN;
     }
 
 #ifdef __cplusplus

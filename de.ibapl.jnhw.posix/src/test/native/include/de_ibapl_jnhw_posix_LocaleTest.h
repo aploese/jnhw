@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_LocaleTest
+ * Method:    sizeof__locale_t
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_sizeof_1_1locale_1t
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_LocaleTest
  * Method:    testNativelyLC_GLOBAL_LOCALE
  * Signature: (J)V
  */

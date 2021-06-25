@@ -62,6 +62,11 @@ public abstract class OpaqueMemory32 extends AbstractNativeMemory implements Nat
         memset(mem, (byte) 0);
     }
 
+    public static <T extends OpaqueMemory32> T setMemTo(T mem, byte value) {
+        memset(mem, value);
+        return mem;
+    }
+
     public static void copy(byte[] src, int srcPos, OpaqueMemory32 dest, int destPos, int length) {
         MEM_ACCESS.copyMemory32(src, srcPos, dest, destPos, length);
     }

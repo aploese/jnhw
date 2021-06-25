@@ -42,11 +42,11 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_duplocale
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong nativeLocobj) {
-        const locale_t result = duplocale((locale_t) nativeLocobj);
+        const locale_t result = duplocale((locale_t) (uintptr_t) nativeLocobj);
         if (!result) {
             throw_NativeErrorException(env, errno);
         }
-        return (jlong) result;
+        return (jlong) (uintptr_t) result;
     }
 
     /*
@@ -56,7 +56,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Locale_freelocale
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong nativeLocobj) {
-        freelocale((locale_t) nativeLocobj);
+        freelocale((locale_t) (uintptr_t) nativeLocobj);
     }
 
     /*
@@ -66,7 +66,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_localeconv0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (jlong) localeconv();
+        return (jlong) (uintptr_t) localeconv();
     }
 
     /*
@@ -78,19 +78,19 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint category_mask, jstring locale, jlong nativeBase) {
         if (locale == NULL) {
             throw_NullPointerException(env, "locale is null.");
-            return (jlong) NULL;
+            return (jlong) (uintptr_t) NULL;
         }
-        if ((locale_t) nativeBase == LC_GLOBAL_LOCALE) {
+        if ((locale_t) (uintptr_t) nativeBase == LC_GLOBAL_LOCALE) {
             throw_IllegalArgumentException(env, "base is LC_GLOBAL_LOCALE");
             return (jlong) 0;
         }
         const char* _locale = (*env)->GetStringUTFChars(env, locale, NULL);
-        const locale_t result = newlocale(category_mask, _locale, (locale_t) nativeBase);
+        const locale_t result = newlocale(category_mask, _locale, (locale_t) (uintptr_t) nativeBase);
         (*env)->ReleaseStringUTFChars(env, locale, _locale);
         if (result == (locale_t) 0) {
             throw_NativeErrorException(env, errno);
         }
-        return (jlong) result;
+        return (jlong) (uintptr_t) result;
     }
 
     /*
@@ -119,11 +119,11 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_uselocale
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong nativeNewloc) {
-        const locale_t result = uselocale((locale_t) nativeNewloc);
+        const locale_t result = uselocale((locale_t) (uintptr_t) nativeNewloc);
         if (result == (locale_t) 0) {
             throw_NativeErrorException(env, errno);
         }
-        return (jlong) result;
+        return (jlong) (uintptr_t) result;
     }
 
 #endif

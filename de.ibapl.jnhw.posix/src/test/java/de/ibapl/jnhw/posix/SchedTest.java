@@ -216,7 +216,7 @@ public class SchedTest {
                         }
                         break;
                     case FREE_BSD:
-                        Assertions.assertEquals(94_000_000L, interval.tv_nsec(), "interval.tv_nsec()");
+                        Assertions.assertEquals(90_000_000L, interval.tv_nsec(), "interval.tv_nsec()");
                         break;
                     default:
                         Assertions.assertEquals(0L, interval.tv_nsec(), "I dont know what to expect ... so just assume 0 for interval.tv_nsec()");
@@ -279,7 +279,7 @@ public class SchedTest {
             default:
                 Assertions.assertThrows(NullPointerException.class,
                         () -> {
-                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, new Sched.Sched_param(SetMem.TO_0x00));
+                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, null);
                         });
                 Sched.Sched_param param = new Sched.Sched_param(SetMem.TO_0x00);
                 if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {

@@ -1165,12 +1165,13 @@ public class SignalTest {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigqueue(Unistd.getpid(), SIG, new Signal.Sigval()));
         } else {
 
-            final Signal.Sigaction act = new Signal.Sigaction();
+            final Signal.Sigaction act = OpaqueMemory32.setMemTo(new Signal.Sigaction(), (byte) 0);
             act.sa_flags(Signal.SA_SIGINFO);
             Signal.sigemptyset(act.sa_mask);
 
             final Signal.Siginfo_t[] siginfo_tRef = new Signal.Siginfo_t[]{null};
             final Signal.Ucontext_t[] opmRef = new Signal.Ucontext_t[]{null};
+            final Integer[] valueRef = new Integer[]{null};
 
             Callback_I_Mem_Mem_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_Mem_Mem_V_Impl<>() {
 
@@ -1178,6 +1179,7 @@ public class SignalTest {
                 protected void callback(int value, Signal.Siginfo_t a, Signal.Ucontext_t b) {
                     siginfo_tRef[0] = a;
                     opmRef[0] = b;
+                    valueRef[0] = value;
                 }
 
                 @Override
@@ -1201,7 +1203,7 @@ public class SignalTest {
             final Signal.Sigaction oact = new Signal.Sigaction();
             Signal.sigaction(SIG, act, oact);
 
-            OpaqueMemory32 data = new Memory32Heap(null, 0, 128, SetMem.TO_0x00);
+            final OpaqueMemory32 data = new Memory32Heap(null, 0, 128, SetMem.TO_0x00);
 
             Signal.Sigval sigval = new Signal.Sigval();
             sigval.sival_ptr(data);
@@ -1212,8 +1214,11 @@ public class SignalTest {
 
             System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef[0]);
             try {
-                Assertions.assertNotNull(siginfo_tRef[0]);
+                Assertions.assertNotNull(valueRef[0]);
                 Assertions.assertAll(
+                        () -> {
+                            Assertions.assertEquals(SIG, valueRef[0], "value");
+                        },
                         () -> {
                             Assertions.assertEquals(0, siginfo_tRef[0].si_errno(), "siginfo_tRef.value.si_errno()");
                         },

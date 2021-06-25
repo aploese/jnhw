@@ -107,8 +107,7 @@ public class TypesTest {
                 assertEquals(BaseDataType.uint16_t, instance.getBaseDataType());
                 assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x00010000));
                 assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(-1));
-                instance.setFromUnsignedInt((short) 0x8070);
-                assertEquals((short) 0x8070, instance.getAsUnsignedInt());
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt((short) 0x8070));
                 assertEquals(Integer.toUnsignedString(0x8070), instance.nativeToString());
                 assertEquals("0x8070", instance.nativeToHexString());
                 //Test MAX_UINT16 + 1

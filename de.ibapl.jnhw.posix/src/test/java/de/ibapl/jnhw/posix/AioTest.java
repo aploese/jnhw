@@ -540,16 +540,24 @@ public class AioTest {
                     Aio.aio_return(new Aio.Aiocb());
                 });
                 break;
+            case FREE_BSD: {
+                final Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_fildes(-1);
+
+                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    Aio.aio_return(aiocb);
+                });
+                assertEquals(Errno.EINVAL, nee.errno);
+            }
+            break;
+            case LINUX:
             default:
-                Aio.Aiocb aiocb = new Aio.Aiocb();
+                final Aio.Aiocb aiocb = new Aio.Aiocb();
                 aiocb.aio_fildes(-1);
 
                 long expResult = 0L;
                 long result = Aio.aio_return(aiocb);
                 assertEquals(expResult, result);
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Aio.aio_return(null);
-                });
         }
     }
 

@@ -885,7 +885,8 @@ public class Locale {
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/locale.h.html">{@code typedef
-     * locale_t}</a>.
+     * locale_t}</a>. This is basically a pointer which points to the real
+     * struct.
      *
      * @author aploese
      */

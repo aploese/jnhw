@@ -26,6 +26,7 @@ import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -142,11 +143,21 @@ public class LocaleTest {
         }
     }
 
+    public final static native long sizeof__locale_t();
+
+    static {
+        LibJnhwPosixTestLoader.touch();
+    }
+
     private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
-    @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-        LibJnhwPosixTestLoader.touch();
+    @Test
+    public static void testSizeof__locale_t() throws Exception {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+            return;
+        }
+        Assertions.assertTrue(sizeof__locale_t() > Defines.__SIZEOF_POINTER__, "sizeof locale_t must be >= sizeof uintptr_t");
+        DefinesTest.testDefines(Locale.class, NativeDefines.class, "HAVE_LOCALE_H");
     }
 
     @BeforeAll

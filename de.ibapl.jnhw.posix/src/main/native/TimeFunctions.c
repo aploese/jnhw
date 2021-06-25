@@ -458,7 +458,7 @@ extern "C" {
 
 #if defined(_JNHW__size_t__IS__uint64_t)
         char* _result = malloc((uint64_t) maxsize);
-        size_t count = strftime_l(_result, (uint64_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr, (locale_t) ptrLocale);
+        size_t count = strftime_l(_result, (uint64_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr, (locale_t) (uintptr_t) ptrLocale);
 #elif defined(_JNHW__size_t__IS__uint32_t)
         if ((maxsize > UINT32_MAX) || (maxsize < 0)) {
             //release to avoid memory leaks
@@ -467,7 +467,7 @@ extern "C" {
             return NULL;
         }
         char* _result = malloc((uint32_t) maxsize);
-        size_t count = strftime_l(_result, (uint32_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr, (locale_t) ptrLocale);
+        size_t count = strftime_l(_result, (uint32_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr, (locale_t) (uintptr_t) ptrLocale);
 #else
 #error expected size_t is uint32_t or uint64_t
 #endif

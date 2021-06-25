@@ -59,7 +59,7 @@ extern "C" {
         return NULL;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint errnum, jlong nativeLocale) {
-        const char *result = strerror_l(errnum, (locale_t) nativeLocale);
+        const char *result = strerror_l(errnum, (locale_t) (uintptr_t) nativeLocale);
         if (result == NULL) {
             return NULL;
         } else {
