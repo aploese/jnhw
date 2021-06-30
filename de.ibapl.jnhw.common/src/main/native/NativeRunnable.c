@@ -32,21 +32,21 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_common_callback_NativeRunnable
      * Method:    aquireObjectRef
-     * Signature: ()V
+     * Signature: (J)J
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callback_NativeRunnable_aquireObjectRef
-    (JNIEnv *env, jobject self) {
-        *UNWRAP_ABSTRACT_MEM_TO(jobject*, self) = (*env)->NewGlobalRef(env, self);
+    (JNIEnv *env, jobject self, jlong ptrAddress) {
+        *((jobject*) (uintptr_t) ptrAddress) = (*env)->NewGlobalRef(env, self);
     }
 
     /*
      * Class:     de_ibapl_jnhw_common_callback_NativeRunnable
      * Method:    releaseObjectRef
-     * Signature: ()V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callback_NativeRunnable_releaseObjectRef
-    (JNIEnv *env, jobject self) {
-        (*env)->DeleteGlobalRef(env, *UNWRAP_ABSTRACT_MEM_TO(jobject*, self));
+    (JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong ptrAddress) {
+        (*env)->DeleteGlobalRef(env, *((jobject*) (uintptr_t) ptrAddress));
     }
 
     /*
@@ -56,7 +56,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_callback_NativeRunnable_sizeOf_1ObjectRef
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return sizeof (jweak);
+        return sizeof (jobject);
     }
 
 #ifdef __cplusplus

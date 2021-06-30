@@ -21,12 +21,11 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.references.IntRef;
-import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.references.ObjectRef;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.Int32_t;
+import de.ibapl.jnhw.common.memory.Uint32_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,9 +50,9 @@ public class IoAPITest {
         final long COMPLETION_KEY = 0xCAFE;
         final Winnt.HANDLE completionPort = IoAPI.CreateIoCompletionPort(Winnt.HANDLE.INVALID_HANDLE_VALUE, Winnt.HANDLE.NULL, COMPLETION_KEY, 0);
         final Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
-        IntRef lpNumberOfBytesTransferred = new IntRef();
-        LongRef lpCompletionKey = new LongRef();
-        ObjectRef<NativeAddressHolder> lpOverlapped = new ObjectRef<>();
+        Int32_t lpNumberOfBytesTransferred = new Int32_t();
+        Uint32_t lpCompletionKey = new Uint32_t();
+        NativeAddressHolder<Minwinbase.OVERLAPPED> lpOverlapped;
         final int dwNumberOfBytesTransferred = 42;
         long dwMilliseconds = 5000;
         new Thread(() -> {
@@ -65,20 +64,20 @@ public class IoAPITest {
                 fail(ex);
             }
         }).start();
-        IoAPI.GetQueuedCompletionStatus(completionPort, lpNumberOfBytesTransferred, lpCompletionKey, lpOverlapped, dwMilliseconds);
+        lpOverlapped = IoAPI.GetQueuedCompletionStatus(completionPort, lpNumberOfBytesTransferred, lpCompletionKey, dwMilliseconds);
 
-        assertEquals(COMPLETION_KEY, lpCompletionKey.value);
-        lpCompletionKey.value = 0;
-        assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.value);
-        lpNumberOfBytesTransferred.value = 0;
-        assertTrue(OpaqueMemory32.isSameAddress(lpOverlapped.value, overlapped));
-        lpOverlapped.value = null;
+        assertEquals(COMPLETION_KEY, lpCompletionKey.uint32_t());
+        lpCompletionKey.uint32_t(0);
+        assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.int32_t());
+        lpNumberOfBytesTransferred.int32_t(0);
+        assertEquals(lpOverlapped, AbstractNativeMemory.toNativeAddressHolder(overlapped));
+        lpOverlapped = null;
 
         IoAPI.PostQueuedCompletionStatus(completionPort, dwNumberOfBytesTransferred, COMPLETION_KEY, null);
-        IoAPI.GetQueuedCompletionStatus(completionPort, lpNumberOfBytesTransferred, lpCompletionKey, lpOverlapped, dwMilliseconds);
-        assertEquals(COMPLETION_KEY, lpCompletionKey.value);
-        assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.value);
-        assertEquals(NativeAddressHolder.NULL, lpOverlapped.value);
+        lpOverlapped = IoAPI.GetQueuedCompletionStatus(completionPort, lpNumberOfBytesTransferred, lpCompletionKey, dwMilliseconds);
+        assertEquals(COMPLETION_KEY, lpCompletionKey.uint32_t());
+        assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.int32_t());
+        assertEquals(NativeAddressHolder.NULL, lpOverlapped);
     }
 
 }

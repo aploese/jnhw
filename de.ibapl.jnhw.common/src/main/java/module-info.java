@@ -35,6 +35,5 @@ module de.ibapl.jnhw.common {
     exports de.ibapl.jnhw.common.memory.layout;
     exports de.ibapl.jnhw.common.nativecall;
     exports de.ibapl.jnhw.common.nativepointer;
-    exports de.ibapl.jnhw.common.references;
     exports de.ibapl.jnhw.common.util;
 }

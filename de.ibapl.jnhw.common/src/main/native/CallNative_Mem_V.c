@@ -34,11 +34,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_common_nativecall_CallNative_Mem_V
      * Method:    call
-     * Signature: (Lde/ibapl/jnhw/common/memory/AbstractNativeMemory;)V
+     * Signature: (JJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1Mem_1V_call
-    (JNIEnv *env, jobject this, jobject a) {
-        (UNWRAP_NativeFunctionPointer_TO(void (*)(void*), this))(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(a));
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong ptrAddress, jlong ptrA) {
+        ((void (*)(void*))(uintptr_t) ptrAddress)((void*) (uintptr_t) ptrA);
     }
 
 #ifdef __cplusplus

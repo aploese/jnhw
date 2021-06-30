@@ -20,194 +20,186 @@ extern "C" {
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    CreateFileW
- * Signature: (Ljava/lang/String;IILde/ibapl/jnhw/winapi/Minwinbase/SECURITY_ATTRIBUTES;IILde/ibapl/jnhw/winapi/Winnt/HANDLE;)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+ * Signature: (Ljava/lang/String;IIJIIJ)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_CreateFileW
-  (JNIEnv *, jclass, jstring, jint, jint, jobject, jint, jint, jobject);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_CreateFileW
+  (JNIEnv *, jclass, jstring, jint, jint, jlong, jint, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    FlushFileBuffers
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_FlushFileBuffers
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    ReadFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;[BII)I
+ * Signature: (J[BII)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2_3BII
-  (JNIEnv *, jclass, jobject, jbyteArray, jint, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__J_3BII
+  (JNIEnv *, jclass, jlong, jbyteArray, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    ReadFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;II)I
+ * Signature: (JJII)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
-  (JNIEnv *, jclass, jobject, jobject, jint, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JJII
+  (JNIEnv *, jclass, jlong, jlong, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    ReadFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JI)I
+ * Signature: (JJJI)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JI
-  (JNIEnv *, jclass, jobject, jobject, jlong, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JJJI
+  (JNIEnv *, jclass, jlong, jlong, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    ReadFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/references/ByteRef;)I
+ * Signature: (JJIIJ)V
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_references_ByteRef_2
-  (JNIEnv *, jclass, jobject, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JJIIJ
+  (JNIEnv *, jclass, jlong, jlong, jint, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    ReadFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
+ * Signature: (JJJIJ)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
-  (JNIEnv *, jclass, jobject, jobject, jint, jint, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    ReadFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
-  (JNIEnv *, jclass, jobject, jobject, jlong, jint, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JJJIJ
+  (JNIEnv *, jclass, jlong, jlong, jlong, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    ReadFileEx
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase/LPOVERLAPPED_COMPLETION_ROUTINE;)V
+ * Signature: (JJIIJJ)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_LPOVERLAPPED_1COMPLETION_1ROUTINE_2
-  (JNIEnv *, jclass, jobject, jobject, jint, jint, jobject, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__JJIIJJ
+  (JNIEnv *, jclass, jlong, jlong, jint, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    ReadFileEx
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase/LPOVERLAPPED_COMPLETION_ROUTINE;)V
+ * Signature: (JJJIJJ)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_LPOVERLAPPED_1COMPLETION_1ROUTINE_2
-  (JNIEnv *, jclass, jobject, jobject, jlong, jint, jobject, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__JJJIJJ
+  (JNIEnv *, jclass, jlong, jlong, jlong, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    ReadFile_ArgsOK
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Ljava/nio/ByteBuffer;II)I
+ * Method:    ReadFile
+ * Signature: (JLjava/nio/ByteBuffer;II)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile_1ArgsOK__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Ljava_nio_ByteBuffer_2II
-  (JNIEnv *, jclass, jobject, jobject, jint, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JLjava_nio_ByteBuffer_2II
+  (JNIEnv *, jclass, jlong, jobject, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    ReadFile_ArgsOK
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Ljava/nio/ByteBuffer;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
+ * Method:    ReadFile
+ * Signature: (JLjava/nio/ByteBuffer;IIJ)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile_1ArgsOK__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Ljava_nio_ByteBuffer_2IILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
-  (JNIEnv *, jclass, jobject, jobject, jint, jint, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JLjava_nio_ByteBuffer_2IIJ
+  (JNIEnv *, jclass, jlong, jobject, jint, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    ReadFileEx_ArgsOK
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Ljava/nio/ByteBuffer;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase/LPOVERLAPPED_COMPLETION_ROUTINE;)V
+ * Method:    ReadFileEx
+ * Signature: (JLjava/nio/ByteBuffer;IIJJ)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx_1ArgsOK
-  (JNIEnv *, jclass, jobject, jobject, jint, jint, jobject, jobject);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    WriteFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;[BII)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2_3BII
-  (JNIEnv *, jclass, jobject, jbyteArray, jint, jint);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__JLjava_nio_ByteBuffer_2IIJJ
+  (JNIEnv *, jclass, jlong, jobject, jint, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    WriteFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;II)I
+ * Signature: (J[BII)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2II
-  (JNIEnv *, jclass, jobject, jobject, jint, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__J_3BII
+  (JNIEnv *, jclass, jlong, jbyteArray, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    WriteFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JI)I
+ * Signature: (JJII)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JI
-  (JNIEnv *, jclass, jobject, jobject, jlong, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJII
+  (JNIEnv *, jclass, jlong, jlong, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    WriteFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;B)I
+ * Signature: (JJJI)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2B
-  (JNIEnv *, jclass, jobject, jbyte);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJJI
+  (JNIEnv *, jclass, jlong, jlong, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    WriteFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
+ * Signature: (JB)I
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
-  (JNIEnv *, jclass, jobject, jobject, jint, jint, jobject);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JB
+  (JNIEnv *, jclass, jlong, jbyte);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    WriteFile
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
+ * Signature: (JJIIJ)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
-  (JNIEnv *, jclass, jobject, jobject, jlong, jint, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJIIJ
+  (JNIEnv *, jclass, jlong, jlong, jint, jint, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    WriteFile
+ * Signature: (JJJIJ)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJJIJ
+  (JNIEnv *, jclass, jlong, jlong, jlong, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    WriteFileEx
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase/LPOVERLAPPED_COMPLETION_ROUTINE;)V
+ * Signature: (JJIIJJ)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory32_2IILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_LPOVERLAPPED_1COMPLETION_1ROUTINE_2
-  (JNIEnv *, jclass, jobject, jobject, jint, jint, jobject, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__JJIIJJ
+  (JNIEnv *, jclass, jlong, jlong, jint, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    WriteFileEx
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/memory/OpaqueMemory64;JILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase/LPOVERLAPPED_COMPLETION_ROUTINE;)V
+ * Signature: (JJJIJJ)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Lde_ibapl_jnhw_common_memory_OpaqueMemory64_2JILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2Lde_ibapl_jnhw_winapi_Minwinbase_LPOVERLAPPED_1COMPLETION_1ROUTINE_2
-  (JNIEnv *, jclass, jobject, jobject, jlong, jint, jobject, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__JJJIJJ
+  (JNIEnv *, jclass, jlong, jlong, jlong, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    WriteFile_ArgsOK
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Ljava/nio/ByteBuffer;II)I
+ * Method:    WriteFile
+ * Signature: (JLjava/nio/ByteBuffer;II)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile_1ArgsOK__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Ljava_nio_ByteBuffer_2II
-  (JNIEnv *, jclass, jobject, jobject, jint, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JLjava_nio_ByteBuffer_2II
+  (JNIEnv *, jclass, jlong, jobject, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    WriteFile_ArgsOK
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Ljava/nio/ByteBuffer;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
+ * Method:    WriteFile
+ * Signature: (JLjava/nio/ByteBuffer;IIJ)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile_1ArgsOK__Lde_ibapl_jnhw_winapi_Winnt_HANDLE_2Ljava_nio_ByteBuffer_2IILde_ibapl_jnhw_winapi_Minwinbase_OVERLAPPED_2
-  (JNIEnv *, jclass, jobject, jobject, jint, jint, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JLjava_nio_ByteBuffer_2IIJ
+  (JNIEnv *, jclass, jlong, jobject, jint, jint, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    WriteFileEx_ArgsOK
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Ljava/nio/ByteBuffer;IILde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;Lde/ibapl/jnhw/winapi/Minwinbase/LPOVERLAPPED_COMPLETION_ROUTINE;)V
+ * Method:    WriteFileEx
+ * Signature: (JLjava/nio/ByteBuffer;IIJJ)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx_1ArgsOK
-  (JNIEnv *, jclass, jobject, jobject, jint, jint, jobject, jobject);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__JLjava_nio_ByteBuffer_2IIJJ
+  (JNIEnv *, jclass, jlong, jobject, jint, jint, jlong, jlong);
 
 #ifdef __cplusplus
 }

@@ -23,7 +23,6 @@ package de.ibapl.jnhw.common.test.callbacks;
 
 import de.ibapl.jnhw.common.callback.Callback_IJ_V;
 import de.ibapl.jnhw.common.callback.Callback_IJ_V_Impl;
-import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.nativecall.CallNative_IJ_V;
@@ -82,9 +81,17 @@ public class Callback_IJ_V_Test {
     public Callback_IJ_V_Test() {
     }
 
-    private static native FunctionPtr_IJ_V getCallbackPtr();
+    private static FunctionPtr_IJ_V getCallbackPtr() {
+        return new FunctionPtr_IJ_V(NativeAddressHolder.ofUintptr_t(getCallbackPtr0()));
+    }
 
-    private static native void setCallback(Callback_IJ_V callback);
+    private static native long getCallbackPtr0();
+
+    private static void setCallback(Callback_IJ_V callback) {
+        setCallback(NativeFunctionPointer.getNativeAddress(callback));
+    }
+
+    private static native void setCallback(long ptrCallback);
 
     private static native void doCallTheCallback(long value);
 
@@ -223,7 +230,7 @@ public class Callback_IJ_V_Test {
         System.out.println("release");
         Cleaner CLEANER = Cleaner.create();
 
-        final ObjectRef<Number> ref = new ObjectRef<>();
+        final Number[] ref = new Number[1];
         final Callback_IJ_V NULL_PTR = new Callback_IJ_V(NativeAddressHolder.NULL) {
             @Override
             protected void callback(int value) {
@@ -239,12 +246,12 @@ public class Callback_IJ_V_Test {
 
             @Override
             protected void callback(long value) {
-                ref.value = value;
+                ref[0] = value;
             }
 
             @Override
             protected void callback(int value) {
-                ref.value = value;
+                ref[0] = value;
             }
 
         };
@@ -258,30 +265,30 @@ public class Callback_IJ_V_Test {
         doCallTheCallback(CB_VALUE);
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(Integer.valueOf((int) CB_VALUE), ref.value);
+                assertEquals(Integer.valueOf((int) CB_VALUE), ref[0]);
                 break;
             case _64_BIT:
-                assertEquals(Long.valueOf(CB_VALUE), ref.value);
+                assertEquals(Long.valueOf(CB_VALUE), ref[0]);
                 break;
             default:
                 throw new RuntimeException("Unknown Wordsize " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
 
-        ref.value = -1;
+        ref[0] = -1;
 
         CallNative_IJ_V.wrap(getCallbackPtr()).call(CB_VALUE);
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(Integer.valueOf((int) CB_VALUE), ref.value);
+                assertEquals(Integer.valueOf((int) CB_VALUE), ref[0]);
                 break;
             case _64_BIT:
-                assertEquals(Long.valueOf(CB_VALUE), ref.value);
+                assertEquals(Long.valueOf(CB_VALUE), ref[0]);
                 break;
             default:
                 throw new RuntimeException("Unknown SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
         if (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer() == SizeInBit._32_BIT) {
-            ref.value = -1;
+            ref[0] = -1;
             assertThrows(IllegalArgumentException.class, () -> CallNative_IJ_V.wrap(getCallbackPtr()).call((long) Integer.MIN_VALUE - 1L));
             assertThrows(IllegalArgumentException.class, () -> CallNative_IJ_V.wrap(getCallbackPtr()).call(1L + Integer.MAX_VALUE));
         }

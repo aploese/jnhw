@@ -9,5 +9,4 @@ Export-Package: \
 	de.ibapl.jnhw.common.memory.layout,\
         de.ibapl.jnhw.common.nativecall,\
         de.ibapl.jnhw.common.nativepointer,\
-	de.ibapl.jnhw.common.references,\
 	de.ibapl.jnhw.common.util

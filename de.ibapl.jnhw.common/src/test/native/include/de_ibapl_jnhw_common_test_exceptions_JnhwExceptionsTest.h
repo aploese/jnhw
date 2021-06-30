@@ -41,42 +41,10 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsT
 
 /*
  * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
- * Method:    throwNullPointerException
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwNullPointerException
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
- * Method:    throwArrayIndexOutOfBoundsException
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwArrayIndexOutOfBoundsException
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
- * Method:    throwIndexOutOfBoundsException
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwIndexOutOfBoundsException
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
  * Method:    throwIllegalArgumentException
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwIllegalArgumentException
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
- * Method:    throwRuntimeException
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwRuntimeException
   (JNIEnv *, jclass);
 
 /*

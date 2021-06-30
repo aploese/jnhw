@@ -44,8 +44,4 @@ public class FunctionPtr_I_I_Mem_V<C extends AbstractNativeMemory> extends Nativ
         super(src);
     }
 
-    protected FunctionPtr_I_I_Mem_V(long nativeAddress) {
-        super(nativeAddress);
-    }
-
 }

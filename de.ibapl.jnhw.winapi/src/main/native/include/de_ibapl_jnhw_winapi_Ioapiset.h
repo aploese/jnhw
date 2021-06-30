@@ -10,34 +10,34 @@ extern "C" {
 /*
  * Class:     de_ibapl_jnhw_winapi_Ioapiset
  * Method:    CancelIo
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_CancelIo
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Ioapiset
  * Method:    CancelIoEx
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_CancelIoEx
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Ioapiset
  * Method:    GetOverlappedResult
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;Z)I
+ * Signature: (JJZ)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_GetOverlappedResult
-  (JNIEnv *, jclass, jobject, jobject, jboolean);
+  (JNIEnv *, jclass, jlong, jlong, jboolean);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Ioapiset
  * Method:    DeviceIoControl
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;ILde/ibapl/jnhw/common/memory/OpaqueMemory32;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)I
+ * Signature: (JIJIJIJ)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_DeviceIoControl
-  (JNIEnv *, jclass, jobject, jint, jobject, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jint, jlong, jint, jlong, jint, jlong);
 
 #ifdef __cplusplus
 }

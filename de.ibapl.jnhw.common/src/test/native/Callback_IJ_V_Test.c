@@ -44,21 +44,21 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_IJ_V_Tests
      * Method:    setCallback
-     * Signature: (Lde/ibapl/jnhw/common/memory/NativeCallback;)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1IJ_1V_1Test_setCallback
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
-        callbackPtr = UNWRAP_NativeFunctionPointer_TO(void (*)(uintptr_t), callback);
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong ptrCallback) {
+        callbackPtr = (void (*)(uintptr_t))(uintptr_t) ptrCallback;
     }
 
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_IJ_V_Tests
-     * Method:    getCallbackPtr
-     * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_IJ_V;
+     * Method:    getCallbackPtr0
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1IJ_1V_1Test_getCallbackPtr
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return CREATE_FunctionPtr_IJ_V(callbackPtr);
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1IJ_1V_1Test_getCallbackPtr0
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uintptr_t) callbackPtr;
     }
 
 #ifdef HAVE_WINDOWS_H
@@ -92,11 +92,11 @@ extern "C" {
 
         hThread = CreateThread(
                 NULL, // default security attributes
-                0, // use default stack size  
+                0, // use default stack size
                 thr_fn_IJ, // thread function name
-                &value, // argument to thread function 
-                0, // use default creation flags 
-                &dwThreadId); // returns the thread identifier 
+                &value, // argument to thread function
+                0, // use default creation flags
+                &dwThreadId); // returns the thread identifier
         if (hThread == NULL) {
             ExitProcess(3);
         }

@@ -23,14 +23,13 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
+import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
 import de.ibapl.jnhw.common.memory.Memory64Heap;
-import de.ibapl.jnhw.common.references.IntRef;
-import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.OpaqueMemory64;
+import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import java.io.File;
 import java.io.FileInputStream;
@@ -248,20 +247,18 @@ public class FileapiTest {
         byteBuffer.put(WRITE_VALUE);
         byteBuffer.flip();
 
-        IntRef lpNumberOfBytesTransferred = new IntRef();
-        LongRef lpCompletionKey = new LongRef();
-
-        ObjectRef<NativeAddressHolder> overlappedPtr = new ObjectRef<>();
+        Int32_t lpNumberOfBytesTransferred = new Int32_t();
+        Uint32_t lpCompletionKey = new Uint32_t();
 
         Fileapi.WriteFile(hFile, byteBuffer, overlapped);
 
-        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        NativeAddressHolder<Minwinbase.OVERLAPPED> overlappedPtr = IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, 1000);
 
-        Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(AbstractNativeMemory.isSameAddress(overlappedPtr.value, overlapped));
-        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
-        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
-        ByteBufferUtils.fixBufferPos(byteBuffer, lpNumberOfBytesTransferred.value);
+        Assertions.assertNotEquals(NativeAddressHolder.NULL, overlappedPtr);
+        Assertions.assertEquals(overlappedPtr, AbstractNativeMemory.toNativeAddressHolder(overlapped));
+        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.uint32_t_AsLong());
+        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.int32_t());
+        ByteBufferUtils.fixBufferPos(byteBuffer, lpNumberOfBytesTransferred.int32_t());
 
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
@@ -287,13 +284,13 @@ public class FileapiTest {
 
         Fileapi.ReadFile(hFile, byteBuffer, overlapped);
 
-        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        overlappedPtr = IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, 1000);
 
-        Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(AbstractNativeMemory.isSameAddress(overlappedPtr.value, overlapped));
-        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
-        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
-        ByteBufferUtils.fixBufferPos(byteBuffer, lpNumberOfBytesTransferred.value);
+        Assertions.assertNotEquals(NativeAddressHolder.NULL, overlappedPtr);
+        Assertions.assertEquals(overlappedPtr, AbstractNativeMemory.toNativeAddressHolder(overlapped));
+        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.uint32_t_AsLong());
+        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.int32_t());
+        ByteBufferUtils.fixBufferPos(byteBuffer, lpNumberOfBytesTransferred.int32_t());
 
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
@@ -657,19 +654,17 @@ public class FileapiTest {
         Memory32Heap opaqueMemory = new Memory32Heap((OpaqueMemory32) null, 0, 64, SetMem.TO_0x00);
         OpaqueMemory32.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
 
-        IntRef lpNumberOfBytesTransferred = new IntRef();
-        LongRef lpCompletionKey = new LongRef();
-
-        ObjectRef<NativeAddressHolder> overlappedPtr = new ObjectRef<>();
+        Int32_t lpNumberOfBytesTransferred = new Int32_t();
+        Uint32_t lpCompletionKey = new Uint32_t();
 
         Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
 
-        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        NativeAddressHolder<Minwinbase.OVERLAPPED> overlappedPtr = IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, 1000);
 
-        Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
-        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
-        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
+        Assertions.assertNotEquals(NativeAddressHolder.NULL, overlappedPtr);
+        Assertions.assertEquals(overlappedPtr, AbstractNativeMemory.toNativeAddressHolder(overlapped));
+        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.uint32_t_AsLong());
+        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.int32_t());
 
         Handleapi.CloseHandle(hFile);
 
@@ -693,12 +688,12 @@ public class FileapiTest {
 
         Fileapi.ReadFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
 
-        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        overlappedPtr = IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, 1000);
 
-        Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
-        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
-        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
+        Assertions.assertNotEquals(NativeAddressHolder.NULL, overlappedPtr);
+        Assertions.assertEquals(overlappedPtr, AbstractNativeMemory.toNativeAddressHolder(overlapped));
+        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.uint32_t_AsLong());
+        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.int32_t());
 
         Handleapi.CloseHandle(hFile);
         for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -722,19 +717,17 @@ public class FileapiTest {
         Memory64Heap opaqueMemory = new Memory64Heap((OpaqueMemory64) null, 0, 64, SetMem.TO_0x00);
         OpaqueMemory64.copy(opaqueMemory, 0, WRITE_VALUE, 0, WRITE_VALUE.length);
 
-        IntRef lpNumberOfBytesTransferred = new IntRef();
-        LongRef lpCompletionKey = new LongRef();
-
-        ObjectRef<NativeAddressHolder> overlappedPtr = new ObjectRef<>();
+        Int32_t lpNumberOfBytesTransferred = new Int32_t();
+        Uint32_t lpCompletionKey = new Uint32_t();
 
         Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
 
-        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        NativeAddressHolder<Minwinbase.OVERLAPPED> overlappedPtr = IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, 1000);
 
-        Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
-        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
-        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
+        Assertions.assertNotEquals(NativeAddressHolder.NULL, overlappedPtr);
+        Assertions.assertEquals(overlappedPtr, AbstractNativeMemory.toNativeAddressHolder(overlapped));
+        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.uint32_t_AsLong());
+        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.int32_t());
 
         Handleapi.CloseHandle(hFile);
 
@@ -758,12 +751,12 @@ public class FileapiTest {
 
         Fileapi.ReadFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
 
-        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        overlappedPtr = IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, 1000);
 
-        Assertions.assertNotNull(overlappedPtr.value);
-        Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
-        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
-        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.value);
+        Assertions.assertNotEquals(NativeAddressHolder.NULL, overlappedPtr);
+        Assertions.assertEquals(overlappedPtr, AbstractNativeMemory.toNativeAddressHolder(overlapped));
+        Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.uint32_t_AsLong());
+        Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.int32_t());
 
         Handleapi.CloseHandle(hFile);
         for (int i = 0; i < WRITE_VALUE.length; i++) {

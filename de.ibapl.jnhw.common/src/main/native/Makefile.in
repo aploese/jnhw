@@ -156,7 +156,7 @@ am_libexceptions_la_OBJECTS = JnhwExceptions.lo
 libexceptions_la_OBJECTS = $(am_libexceptions_la_OBJECTS)
 libjnhw_common_la_DEPENDENCIES = libexceptions.la libmemory.la \
 	libcallbacks.la libcallnative.la
-am_libjnhw_common_la_OBJECTS = LibJnhwCommonLoader.lo jnhw-common.lo
+am_libjnhw_common_la_OBJECTS = jnhw-common.lo
 libjnhw_common_la_OBJECTS = $(am_libjnhw_common_la_OBJECTS)
 libmemory_la_LIBADD =
 am_libmemory_la_OBJECTS = Alignment.lo BaseDataType.lo \
@@ -193,7 +193,6 @@ am__depfiles_remade = ./$(DEPDIR)/Alignment.Plo \
 	./$(DEPDIR)/Callback_NativeRunnable.Plo \
 	./$(DEPDIR)/JnhwExceptions.Plo \
 	./$(DEPDIR)/JnhwMemoryAccessor.Plo \
-	./$(DEPDIR)/LibJnhwCommonLoader.Plo \
 	./$(DEPDIR)/NativeRunnable.Plo \
 	./$(DEPDIR)/StructLayoutFactoryImplTest.Plo \
 	./$(DEPDIR)/UnsafeMemoryAccessor.Plo \
@@ -431,7 +430,6 @@ libmemory_la_SOURCES = \
  StructLayoutFactoryImplTest.c
 
 libjnhw_common_la_SOURCES = \
- LibJnhwCommonLoader.c \
  jnhw-common.c
 
 all: all-am
@@ -552,7 +550,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_NativeRunnable.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwExceptions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwMemoryAccessor.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LibJnhwCommonLoader.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NativeRunnable.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StructLayoutFactoryImplTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnsafeMemoryAccessor.Plo@am__quote@ # am--include-marker
@@ -755,7 +752,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/Callback_NativeRunnable.Plo
 	-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
 	-rm -f ./$(DEPDIR)/JnhwMemoryAccessor.Plo
-	-rm -f ./$(DEPDIR)/LibJnhwCommonLoader.Plo
 	-rm -f ./$(DEPDIR)/NativeRunnable.Plo
 	-rm -f ./$(DEPDIR)/StructLayoutFactoryImplTest.Plo
 	-rm -f ./$(DEPDIR)/UnsafeMemoryAccessor.Plo
@@ -822,7 +818,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/Callback_NativeRunnable.Plo
 	-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
 	-rm -f ./$(DEPDIR)/JnhwMemoryAccessor.Plo
-	-rm -f ./$(DEPDIR)/LibJnhwCommonLoader.Plo
 	-rm -f ./$(DEPDIR)/NativeRunnable.Plo
 	-rm -f ./$(DEPDIR)/StructLayoutFactoryImplTest.Plo
 	-rm -f ./$(DEPDIR)/UnsafeMemoryAccessor.Plo

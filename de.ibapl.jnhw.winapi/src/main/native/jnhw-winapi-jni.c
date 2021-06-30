@@ -25,70 +25,12 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    jclass dij_w_Winnt_HANDLE__GCR = NULL;
-    jfieldID dij_w_Winnt_HANDLE_value__FID = NULL;
-    jmethodID dij_w_Winnt_HANDLE_init__MID = NULL;
-
-    jclass dij_w_WinDef_HKEY__GCR = NULL;
-    jmethodID dij_w_WinDef_HKEY_init__MID = NULL;
-
-    jfieldID dij_w_Winnt_LPWSTR_bufferEnd__FID = NULL;
-    jfieldID dij_w_WinDef_LPBYTE_bufferEnd__FID = NULL;
 
     JNIEXPORT jint JNICALL
     JNI_OnLoad(JavaVM *jvm, __attribute__ ((unused)) void *reserved) {
         JNIEnv *env;
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
             return JNI_ERR;
-        }
-
-        if (dij_w_Winnt_LPWSTR_bufferEnd__FID == NULL) {
-            dij_w_Winnt_LPWSTR_bufferEnd__FID = getFieldId(env, dij_w_LPWSTR__CName, "bufferEnd", "I");
-            if (dij_w_Winnt_LPWSTR_bufferEnd__FID == NULL) {
-                return JNI_ERR;
-            }
-        }
-
-        if (dij_w_WinDef_LPBYTE_bufferEnd__FID == NULL) {
-            dij_w_WinDef_LPBYTE_bufferEnd__FID = getFieldId(env, dij_w_LPBYTE__CName, "bufferEnd", "I");
-            if (dij_w_WinDef_LPBYTE_bufferEnd__FID == NULL) {
-                return JNI_ERR;
-            }
-        }
-
-        if (dij_w_Winnt_HANDLE__GCR == NULL) {
-            dij_w_Winnt_HANDLE__GCR = getGlobalClassRef(env, dij_w_HANDLE__CName);
-            if (dij_w_Winnt_HANDLE__GCR == NULL) {
-                return JNI_ERR;
-            }
-        }
-
-        if (dij_w_Winnt_HANDLE_value__FID == NULL) {
-            dij_w_Winnt_HANDLE_value__FID = (*env)->GetFieldID(env, dij_w_Winnt_HANDLE__GCR, "value", "J");
-            if (dij_w_Winnt_HANDLE_value__FID == NULL) {
-                return JNI_ERR;
-            }
-        }
-
-        if (dij_w_Winnt_HANDLE_init__MID == NULL) {
-            dij_w_Winnt_HANDLE_init__MID = (*env)->GetMethodID(env, dij_w_Winnt_HANDLE__GCR, "<init>", "(J)V");
-            if (dij_w_Winnt_HANDLE_init__MID == NULL) {
-                return JNI_ERR;
-            }
-        }
-
-        if (dij_w_WinDef_HKEY__GCR == NULL) {
-            dij_w_WinDef_HKEY__GCR = getGlobalClassRef(env, dij_w_HKEY__CName);
-            if (dij_w_WinDef_HKEY__GCR == NULL) {
-                return JNI_ERR;
-            }
-        }
-
-        if (dij_w_WinDef_HKEY_init__MID == NULL) {
-            dij_w_WinDef_HKEY_init__MID = (*env)->GetMethodID(env, dij_w_WinDef_HKEY__GCR, "<init>", "(J)V");
-            if (dij_w_WinDef_HKEY_init__MID == NULL) {
-                return JNI_ERR;
-            }
         }
 
         return JNI_VERSION_10;
@@ -99,13 +41,6 @@ extern "C" {
         JNIEnv *env;
 
         if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_10)) {
-            deleteGlobalRef(env, &dij_w_Winnt_HANDLE__GCR);
-            dij_w_Winnt_HANDLE_value__FID = NULL;
-            dij_w_Winnt_HANDLE_init__MID = NULL;
-            deleteGlobalRef(env, &dij_w_WinDef_HKEY__GCR);
-            dij_w_WinDef_HKEY_init__MID = NULL;
-            dij_w_Winnt_LPWSTR_bufferEnd__FID = NULL;
-            dij_w_WinDef_LPBYTE_bufferEnd__FID = NULL;
         }
     }
 

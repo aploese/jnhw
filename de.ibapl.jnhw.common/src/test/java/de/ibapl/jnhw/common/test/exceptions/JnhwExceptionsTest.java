@@ -44,15 +44,7 @@ public class JnhwExceptionsTest {
 
     private static native void throwNoSuchNativeTypeMemberException() throws NoSuchNativeTypeMemberException;
 
-    private static native void throwNullPointerException() throws NullPointerException;
-
-    private static native void throwArrayIndexOutOfBoundsException() throws ArrayIndexOutOfBoundsException;
-
-    private static native void throwIndexOutOfBoundsException() throws IndexOutOfBoundsException;
-
     private static native void throwIllegalArgumentException() throws IllegalArgumentException;
-
-    private static native void throwRuntimeException() throws IllegalArgumentException;
 
     private static native void throwException(String className) throws Exception;
 
@@ -98,43 +90,11 @@ public class JnhwExceptionsTest {
     }
 
     @Test
-    public void testThrowNullPointerException() {
-        var ex = Assertions.assertThrows(NullPointerException.class, () -> {
-            throwNullPointerException();
-        });
-        Assertions.assertEquals("arg0", ex.getMessage());
-    }
-
-    @Test
-    public void testThrowArrayIndexOutOfBoundsException() {
-        var ex = Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            throwArrayIndexOutOfBoundsException();
-        });
-        Assertions.assertEquals("arg_array_index", ex.getMessage());
-    }
-
-    @Test
-    public void testThrowIndexOutOfBoundsException() {
-        var ex = Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            throwIndexOutOfBoundsException();
-        });
-        Assertions.assertEquals("arg_index", ex.getMessage());
-    }
-
-    @Test
     public void testThrowIllegalArgumentException() {
         var ex = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             throwIllegalArgumentException();
         });
         Assertions.assertEquals("arg_illegal", ex.getMessage());
-    }
-
-    @Test
-    public void testThrowRuntimeException() {
-        var ex = Assertions.assertThrows(RuntimeException.class, () -> {
-            throwRuntimeException();
-        });
-        Assertions.assertEquals("runtime 42", ex.getMessage());
     }
 
     @Test

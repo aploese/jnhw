@@ -27,13 +27,13 @@ import de.ibapl.jnhw.annotation.winapi.basetsd.WORD;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.MemoryAccessor;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.Int32_t;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
-import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
-import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
@@ -207,7 +207,11 @@ public abstract class Winbase {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final native static void ClearCommBreak(HANDLE hFile) throws NativeErrorException;
+    public final void ClearCommBreak(HANDLE hFile) throws NativeErrorException {
+        ClearCommBreak(HANDLE.getHandleValue(hFile));
+    }
+
+    private native static void ClearCommBreak(long ptrHFile) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-clearcommerror">ClearCommError</a>
@@ -228,8 +232,11 @@ public abstract class Winbase {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void ClearCommError(HANDLE hFile, IntRef lpErrors, COMSTAT lpStat) throws NativeErrorException;
+    public final static void ClearCommError(HANDLE hFile, Int32_t lpErrors, COMSTAT lpStat) throws NativeErrorException {
+        ClearCommError(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpErrors), AbstractNativeMemory.getAddress(lpStat));
+    }
 
+    private static native void ClearCommError(long ptrHFile, long ptrLpErrors, long ptrLpStat) throws NativeErrorException;
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-dcb/">DTR_CONTROL_DISABLE</a>
      * Disables the DTR line when the device is opened and leaves it disabled.
@@ -400,7 +407,11 @@ public abstract class Winbase {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void EscapeCommFunction(HANDLE hFile, int dwFunc) throws NativeErrorException;
+    public final static void EscapeCommFunction(HANDLE hFile, int dwFunc) throws NativeErrorException {
+        EscapeCommFunction(HANDLE.getHandleValue(hFile), dwFunc);
+    }
+
+    private static native void EscapeCommFunction(long ptrHFile, int dwFunc) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getcommmodemstatus">GetCommModemStatus</a>
@@ -417,7 +428,11 @@ public abstract class Winbase {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void GetCommModemStatus(HANDLE hFile, IntRef lpModemStat) throws NativeErrorException;
+    public final static void GetCommModemStatus(HANDLE hFile, Int32_t lpModemStat) throws NativeErrorException {
+        GetCommModemStatus(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpModemStat));
+    }
+
+    private static native void GetCommModemStatus(long ptrHFile, long ptrLpModemStat) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getcommstate">GetCommState</a>
@@ -433,7 +448,11 @@ public abstract class Winbase {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void GetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException;
+    public final static void GetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException {
+        GetCommModemStatus(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpDCB));
+    }
+
+    private static native void GetCommState(long ptrHFile, long ptrLpDCB) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getcommtimeouts">GetCommTimeouts</a>
@@ -449,8 +468,11 @@ public abstract class Winbase {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void GetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException;
+    public final static void GetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException {
+        GetCommTimeouts(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpCommTimeouts));
+    }
 
+    private static native void GetCommTimeouts(long ptrHFile, long ptrLpCommTimeouts) throws NativeErrorException;
     @Define
     public final static int INFINITE = 0xffffffff;
 
@@ -494,7 +516,11 @@ public abstract class Winbase {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void SetCommBreak(HANDLE hFile) throws NativeErrorException;
+    public final static void SetCommBreak(HANDLE hFile) throws NativeErrorException {
+        SetCommBreak(HANDLE.getHandleValue(hFile));
+    }
+
+    private static native void SetCommBreak(long ptrHFile) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setcommstate">SetCommState</a>
@@ -510,7 +536,11 @@ public abstract class Winbase {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void SetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException;
+    public final static void SetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException {
+        SetCommState(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpDCB));
+    }
+
+    private static native void SetCommState(long ptrHFile, long ptrLpDCB) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setcommtimeouts">SetCommTimeouts</a>
@@ -526,8 +556,11 @@ public abstract class Winbase {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void SetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException;
+    public final static void SetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException {
+        SetCommTimeouts(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpCommTimeouts));
+    }
 
+    private static native void SetCommTimeouts(long ptrHFile, long ptrLpCommTimeouts) throws NativeErrorException;
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject/">WAIT_FAILED</a>
      * The specified object is a mutex object that was not released by the
@@ -1364,7 +1397,11 @@ public abstract class Winbase {
      * indicates an error.
      */
     //TODO Test
-    public static native void SetFileCompletionNotificationModes(HANDLE hFile, byte uFlags) throws NativeErrorException;
+    public final static void SetFileCompletionNotificationModes(HANDLE hFile, byte uFlags) throws NativeErrorException {
+        SetFileCompletionNotificationModes(HANDLE.getHandleValue(hFile), uFlags);
+    }
+
+    private static native void SetFileCompletionNotificationModes(long ptrHFile, byte uFlags) throws NativeErrorException;
 
     /**
      * *
@@ -1379,6 +1416,9 @@ public abstract class Winbase {
      * indicates an error.
      */
     //TODO Test
-    public static native void BindIoCompletionCallback(HANDLE FileHandle, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE Function, int Flags) throws NativeErrorException;
+    public final static void BindIoCompletionCallback(HANDLE FileHandle, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE Function, int Flags) throws NativeErrorException {
+        BindIoCompletionCallback(HANDLE.getHandleValue(FileHandle), NativeFunctionPointer.getNativeAddress(Function), Flags);
+    }
 
+    private static native void BindIoCompletionCallback(long ptrFileHandle, long ptrFunction, int Flags) throws NativeErrorException;
 }

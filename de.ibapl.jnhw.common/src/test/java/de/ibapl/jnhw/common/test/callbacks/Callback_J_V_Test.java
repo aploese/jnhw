@@ -23,7 +23,6 @@ package de.ibapl.jnhw.common.test.callbacks;
 
 import de.ibapl.jnhw.common.callback.Callback_J_V;
 import de.ibapl.jnhw.common.callback.Callback_J_V_Impl;
-import de.ibapl.jnhw.common.references.LongRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.nativecall.CallNative_J_V;
@@ -64,9 +63,17 @@ public class Callback_J_V_Test {
     public Callback_J_V_Test() {
     }
 
-    private static native FunctionPtr_J_V getCallbackPtr();
+    private static FunctionPtr_J_V getCallbackPtr() {
+        return new FunctionPtr_J_V(NativeAddressHolder.ofUintptr_t(getCallbackPtr0()));
+    }
 
-    private static native void setCallback(Callback_J_V callback);
+    private static native long getCallbackPtr0();
+
+    private static void setCallback(Callback_J_V callback) {
+        setCallback(NativeFunctionPointer.getNativeAddress(callback));
+    }
+
+    private static native void setCallback(long callback);
 
     private static native void doCallTheCallback(long value);
 

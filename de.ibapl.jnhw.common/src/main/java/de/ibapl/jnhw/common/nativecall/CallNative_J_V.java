@@ -45,15 +45,6 @@ public class CallNative_J_V extends FunctionPtr_I_V {
         return new CallNative_J_V(src);
     }
 
-    /**
-     * Called from native code...
-     *
-     * @param nativeAddress
-     */
-    protected CallNative_J_V(long nativeAddress) {
-        super(nativeAddress);
-    }
-
     public CallNative_J_V(NativeFunctionPointer src) {
         super(src);
     }
@@ -67,5 +58,9 @@ public class CallNative_J_V extends FunctionPtr_I_V {
      *
      * @param value
      */
-    public native void call(long value);
+    public void call(long value) {
+        call(nativeAddress, value);
+    }
+
+    private static native void call(long ptrAddress, long value);
 }

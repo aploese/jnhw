@@ -42,7 +42,9 @@ import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
 /**
  * Wrapper around the {@code <stdio.h>} header.
@@ -454,7 +456,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static int read(int fildes, byte[] buf) throws NativeErrorException {
-        return read(fildes, buf, 0, buf.length);
+        return read0(fildes, buf, 0, buf.length);
     }
 
     /**
@@ -477,7 +479,12 @@ public final class Unistd {
      * indicates an error.
      */
     @ssize_t
-    public final static native int read(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
+    public final static int read(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException {
+        Objects.checkFromIndexSize(off, nbyte, buf.length);
+        return read0(fildes, buf, off, nbyte);
+    }
+
+    private static native int read0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -502,10 +509,10 @@ public final class Unistd {
     public final static int read(int fildes, ByteBuffer buffer) throws NativeErrorException {
         final int result;
         if (buffer.isDirect()) {
-            result = read_ArgsOK(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
+            result = read(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
         } else {
             if (buffer.hasArray()) {
-                result = read(fildes, buffer.array(), buffer.arrayOffset() + buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
+                result = read0(fildes, buffer.array(), buffer.arrayOffset() + buffer.position(), ByteBufferUtils.calcBufferReadBytes(buffer));
             } else {
                 throw new IllegalArgumentException("Can't handle ByteBuffer of class: " + buffer.getClass());
             }
@@ -538,10 +545,10 @@ public final class Unistd {
     @ssize_t
     public final static int read(int fildes, OpaqueMemory32 mem, int off, @size_t int nbyte) throws NativeErrorException {
         OpaqueMemory32.checkIndex(mem, off, nbyte);
-        return read_ArgsOK(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
+        return read(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
     }
 
-    private static native int read_ArgsOK(int fildes, long ptrMem, int off, int nbyte) throws NativeErrorException;
+    private static native int read(int fildes, long ptrMem, int off, int nbyte) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -567,10 +574,10 @@ public final class Unistd {
     @ssize_t
     public final static long read(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException {
         OpaqueMemory64.checkIndex(mem, off, nbyte);
-        return read_ArgsOK(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
+        return read(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
     }
 
-    private static native long read_ArgsOK(int fildes, long ptrMem, long off, long nbyte) throws NativeErrorException;
+    private static native long read(int fildes, long ptrMem, long off, long nbyte) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -589,7 +596,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static int read(int fildes, OpaqueMemory32 mem) throws NativeErrorException {
-        return read_ArgsOK(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
+        return read(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
     }
 
     /**
@@ -609,7 +616,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static long read(int fildes, OpaqueMemory64 mem) throws NativeErrorException {
-        return read_ArgsOK(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
+        return read(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
     }
 
     /**
@@ -629,7 +636,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static int read(int fildes, Int8_t data) throws NativeErrorException {
-        return read_ArgsOK(fildes, AbstractNativeMemory.getAddress(data), 0, 1);
+        return read(fildes, AbstractNativeMemory.getAddress(data), 0, 1);
     }
 
     /**
@@ -649,7 +656,7 @@ public final class Unistd {
      */
     public final static native short read(int fildes) throws NativeErrorException;
 
-    private static native int read_ArgsOK(int fildes, ByteBuffer buffer, int off, int nByte) throws NativeErrorException;
+    private static native int read(int fildes, ByteBuffer buffer, int off, int nByte) throws NativeErrorException;
 
     /**
      * <b>LINUX,APPLE,BSD:</b>
@@ -676,7 +683,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static int write(int fildes, byte[] buf) throws NativeErrorException {
-        return write(fildes, buf, 0, buf.length);
+        return write0(fildes, buf, 0, buf.length);
     }
 
     /**
@@ -701,10 +708,10 @@ public final class Unistd {
     @ssize_t
     public final static int write(int fildes, OpaqueMemory32 mem, int off, @size_t int nbyte) throws NativeErrorException {
         OpaqueMemory32.checkIndex(mem, off, nbyte);
-        return write_ArgsOK(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
+        return write(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
     }
 
-    private static native int write_ArgsOK(int fildes, long ptrMem, int off, int nbyte) throws NativeErrorException;
+    private static native int write(int fildes, long ptrMem, int off, int nbyte) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -728,10 +735,10 @@ public final class Unistd {
     @ssize_t
     public final static long write(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException, NoSuchNativeMethodException {
         OpaqueMemory64.checkIndex(mem, off, nbyte);
-        return write_ArgsOK(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
+        return write(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
     }
 
-    private static native long write_ArgsOK(int fildes, long ptrMem, long off, long nbyte) throws NativeErrorException, NoSuchNativeMethodException;
+    private static native long write(int fildes, long ptrMem, long off, long nbyte) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -748,7 +755,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static int write(int fildes, OpaqueMemory32 mem) throws NativeErrorException {
-        return write_ArgsOK(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
+        return write(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
     }
 
     /**
@@ -766,7 +773,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static long write(int fildes, OpaqueMemory64 mem) throws NativeErrorException, NoSuchNativeMethodException {
-        return write_ArgsOK(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
+        return write(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
     }
 
     /**
@@ -804,7 +811,12 @@ public final class Unistd {
      * indicates an error.
      */
     @ssize_t
-    public final static native int write(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
+    public final static int write(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException {
+        Objects.checkFromIndexSize(off, nbyte, buf.length);
+        return write0(fildes, buf, off, nbyte);
+    }
+
+    private static native int write0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -827,7 +839,7 @@ public final class Unistd {
     public final static int write(int fildes, ByteBuffer buffer) throws NativeErrorException {
         final int result;
         if (buffer.isDirect()) {
-            result = write_ArgsOK(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
+            result = write(fildes, buffer, buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
         } else {
             if (buffer.hasArray()) {
                 result = write(fildes, buffer.array(), buffer.arrayOffset() + buffer.position(), ByteBufferUtils.calcBufferWriteBytes(buffer));
@@ -840,7 +852,7 @@ public final class Unistd {
     }
 
     //We pass down ByteBuffer to get the native address and pass the other data onto the stack
-    private static native int write_ArgsOK(int fildes, ByteBuffer buffer, int off, int nByte) throws NativeErrorException;
+    private static native int write(int fildes, ByteBuffer buffer, int off, int nByte) throws NativeErrorException;
 
     public static boolean jnhwIsSingeByteRead(short nread) {
         return (nread & 0xFF00) == 0x0100;
@@ -878,7 +890,7 @@ public final class Unistd {
          */
         public final static @ssize_t
         int write(int fildes, byte[] buf) throws NativeErrorException {
-            return write(fildes, buf, 0, buf.length);
+            return write0(fildes, buf, 0, buf.length);
         }
 
         /**
@@ -895,7 +907,7 @@ public final class Unistd {
          */
         public final static @ssize_t
         int read(int fildes, byte[] buf) throws NativeErrorException {
-            return read(fildes, buf, 0, buf.length);
+            return read0(fildes, buf, 0, buf.length);
         }
 
         /**
@@ -917,8 +929,13 @@ public final class Unistd {
          * @throws NativeErrorException if the return value of the native
          * function indicates an error.
          */
-        public final static native @ssize_t
-        int read(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
+        @ssize_t
+        public final static int read(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException {
+            Objects.checkFromIndexSize(off, nbyte, buf.length);
+            return read0(fildes, buf, off, nbyte);
+        }
+
+        private static native int read0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
 
         /**
          * <b>POSIX:</b>
@@ -939,8 +956,12 @@ public final class Unistd {
          * @throws NativeErrorException if the return value of the native
          * function indicates an error.
          */
-        public final static native @ssize_t
-        int write(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
+        @ssize_t
+        public final static int write(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException {
+            Objects.checkFromIndexSize(off, nbyte, buf.length);
+            return write0(fildes, buf, off, nbyte);
+        }
 
+        private static native int write0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
     }
 }

@@ -35,7 +35,25 @@ import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
  */
 public class SimpeStructureImpl extends Struct32 implements SimpeStructure {
 
-    public static native Layout getNativeDefinedLayout(Class<Layout> clazz);
+    public static native long offsetFirst();
+
+    public static native long offsetSecond();
+
+    public static native long offsetThird();
+
+    public static native long offsetForth();
+
+    public static native long offsetFifth();
+
+    public static native long offsetSixth();
+
+    public static native long offsetSeventh();
+
+    public static native long offsetEigth();
+
+    public static native int sizeof();
+
+    public static native int alignof();
 
     static {
         LibJnhwCommonTestLoader.touch();
@@ -73,20 +91,6 @@ public class SimpeStructureImpl extends Struct32 implements SimpeStructure {
             offsetEighth = slf.uint64_t();
             alignment = slf.getAlignment();
             sizeof = (int) slf.getSizeof();
-        }
-
-        public Layout(long sizeof, int alignof) {
-            super();
-            offsetFirst = -1;
-            offsetSecond = -1;
-            offsetThird = -1;
-            offsetForth = -1;
-            offsetFifth = -1;
-            offsetSixth = -1;
-            offsetSeventh = -1;
-            offsetEighth = -1;
-            this.sizeof = (int) sizeof;
-            this.alignment = Alignment.fromAlignof(alignof);
         }
 
     }

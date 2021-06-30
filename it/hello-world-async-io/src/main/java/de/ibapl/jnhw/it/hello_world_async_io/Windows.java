@@ -22,11 +22,10 @@
 package de.ibapl.jnhw.it.hello_world_async_io;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.references.IntRef;
-import de.ibapl.jnhw.common.references.LongRef;
-import de.ibapl.jnhw.common.references.ObjectRef;
+import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.winapi.Fileapi;
 //Import only the needed define from the wrapper of processenv.h
 import de.ibapl.jnhw.winapi.Handleapi;
@@ -53,16 +52,14 @@ public class Windows {
         final long COMPLETION_KEY = 24;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        IntRef lpNumberOfBytesTransferred = new IntRef();
-        LongRef lpCompletionKey = new LongRef();
-
-        ObjectRef<NativeAddressHolder> overlappedPtr = new ObjectRef<>();
+        Int32_t lpNumberOfBytesTransferred = new Int32_t();
+        Uint32_t lpCompletionKey = new Uint32_t();
 
         Fileapi.WriteFile(hFile, aioBuffer, overlapped);
 
-        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        NativeAddressHolder<Minwinbase.OVERLAPPED> overlappedPtr = IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, 1000);
 
-        /*        
+        /*
         Assertions.assertNotNull(overlappedPtr.value);
         Assertions.assertTrue(OpaqueMemory32.isSameAddress(overlappedPtr.value, overlapped));
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.value);
@@ -83,7 +80,7 @@ public class Windows {
 
         Fileapi.ReadFile(hFile, aioBuffer, overlapped);
 
-        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
+        overlappedPtr = IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, 1000);
 
         /*
         Assertions.assertNotNull(overlappedPtr.value);

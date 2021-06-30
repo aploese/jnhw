@@ -73,7 +73,7 @@ public class NativeFunctionPointer {
         this.nativeAddress = nativeAddress;
     }
 
-    final long nativeAddress;
+    protected final long nativeAddress;
 
     @Override
     public int hashCode() {

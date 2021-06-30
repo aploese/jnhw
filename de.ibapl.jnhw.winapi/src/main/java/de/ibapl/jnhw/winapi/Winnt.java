@@ -519,7 +519,7 @@ public final class Winnt {
          */
         public final static HANDLE INVALID_HANDLE_VALUE = new HANDLE(INVALID_HANDLE_VALUE__VALUE);
 
-        private final long value;
+        protected final long value;
 
         protected HANDLE(long value) {
             this.value = value;
@@ -653,7 +653,9 @@ public final class Winnt {
 
         private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.baseDataType.SIZE_OF;
 
-        int bufferEnd;
+        static int getWCHAR_Length(LPWSTR value) {
+            return value.sizeInBytes / SIZE_OF_WCHAR;
+        }
 
         /**
          * Creates space for a Wide String (16 bit)
@@ -662,7 +664,6 @@ public final class Winnt {
          */
         public LPWSTR(int elementLength, SetMem setMem) {
             super((OpaqueMemory32) null, 0, elementLength * SIZE_OF_WCHAR, setMem);
-            bufferEnd = elementLength;
         }
 
         /**
@@ -670,17 +671,12 @@ public final class Winnt {
          *
          * @return
          */
-        public String getUnicodeString() {
+        public String getUnicodeString(int bufferEnd) {
             return MEM_ACCESS.getUnicodeString(this, 0, 0, bufferEnd);
         }
 
         public void clear() {
             OpaqueMemory32.clear(this);
-            bufferEnd = sizeInBytes / SIZE_OF_WCHAR;
-        }
-
-        public void resetBufferEnd() {
-            bufferEnd = sizeInBytes;
         }
 
     }

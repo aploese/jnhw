@@ -21,9 +21,7 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.callback.Callback_IJ_V;
-import de.ibapl.jnhw.common.references.IntRef;
-import de.ibapl.jnhw.common.references.LongRef;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,22 +53,22 @@ public class ProcessthreadsapiTest {
      * Test of QueueUserAPC method, of class Processthreadsapi.
      */
     @Test
-    public void testQueueUserAPC() {
+    public void testQueueUserAPC() throws NativeErrorException {
         System.out.println("QueueUserAPC");
-        final LongRef longRef = new LongRef();
-        final IntRef intRef = new IntRef();
+        final Long[] longRef = new Long[1];
+        final Integer[] intRef = new Integer[1];
 
         PAPCFUNC pfnAPC = new PAPCFUNC() {
             @Override
             protected void callback(long value) {
-                longRef.value = value;
-                intRef.value = -1;
+                longRef[0] = value;
+                intRef[0] = -1;
             }
 
             @Override
             protected void callback(int value) {
-                intRef.value = value;
-                longRef.value = -1;
+                intRef[0] = value;
+                longRef[0] = -1L;
             }
         };
 
@@ -93,8 +91,8 @@ public class ProcessthreadsapiTest {
 
         switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
             case _32_BIT:
-                assertEquals(-1, longRef.value);
-                assertEquals(42, intRef.value);
+                assertEquals(-1L, longRef[0]);
+                assertEquals(42, intRef[0]);
                 assertThrows(IllegalArgumentException.class, () -> {
                     Processthreadsapi.QueueUserAPC(pfnAPC, null, 1L + Integer.MAX_VALUE);
                 });
@@ -103,8 +101,8 @@ public class ProcessthreadsapiTest {
                 });
                 break;
             case _64_BIT:
-                assertEquals(-1, intRef.value);
-                assertEquals(42, longRef.value);
+                assertEquals(-1, intRef[0]);
+                assertEquals(42L, longRef[0]);
                 break;
             default:
                 throw new RuntimeException("Cant handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());

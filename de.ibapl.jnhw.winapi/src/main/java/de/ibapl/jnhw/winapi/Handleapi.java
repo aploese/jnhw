@@ -22,7 +22,6 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.LONG_PTR;
-import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
@@ -69,6 +68,9 @@ public abstract class Handleapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final native static void CloseHandle(HANDLE hObject) throws NativeErrorException;
+    public final static void CloseHandle(HANDLE hObject) throws NativeErrorException {
+        CloseHandle(HANDLE.getHandleValue(hObject));
+    }
 
+    private native static void CloseHandle(long ptrHObject) throws NativeErrorException;
 }

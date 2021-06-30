@@ -23,12 +23,12 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.WinDef.HKEY;
 import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
-import de.ibapl.jnhw.winapi.WinDef.PHKEY;
+import de.ibapl.jnhw.winapi.WinDef.LPDWORD;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
 
 /**
@@ -159,7 +159,11 @@ public abstract class Winreg {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void RegCloseKey(HKEY hKey) throws NativeErrorException;
+    public final static void RegCloseKey(HKEY hKey) throws NativeErrorException {
+        RegCloseKey(HKEY.getHandleValue(hKey));
+    }
+
+    final static native void RegCloseKey(long ptrHKey) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regenumvaluew">RegEnumValueW</a>
@@ -174,6 +178,10 @@ public abstract class Winreg {
      * be incremented for subsequent calls.
      * @param lpValueName A pointer to a buffer that receives the name of the
      * value as a null-terminated string.
+     * @param lpcchValueName A pointer to a variable that specifies the size of
+     * the buffer pointed to by the lpValueName parameter, in characters. When
+     * the function returns, the variable receives the number of characters
+     * stored in the buffer, not including the terminating null character.
      * @param lpType A pointer to a variable that receives a code indicating the
      * type of data stored in the specified value.
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types">Registry
@@ -194,12 +202,17 @@ public abstract class Winreg {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native long RegEnumValueW(HKEY hKey, int dwIndex, LPWSTR lpValueName, IntRef lpType, LPBYTE lpData) throws NativeErrorException;
+    public final static long RegEnumValueW(HKEY hKey, int dwIndex, LPWSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpType, LPBYTE lpData, LPDWORD lpccData) throws NativeErrorException {
+        return RegEnumValueW(HKEY.getHandleValue(hKey), dwIndex, AbstractNativeMemory.getAddress(lpValueName), AbstractNativeMemory.getAddress(lpcchValueName), AbstractNativeMemory.getAddress(lpType), AbstractNativeMemory.getAddress(lpData), AbstractNativeMemory.getAddress(lpccData));
+    }
+
+    private static native long RegEnumValueW(long ptrHKey, int dwIndex, long ptrLpValueName, long ptrLpcchValueName, long ptrLpType, long ptrLpData, long ptrLpccData) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regopenkeyexw">RegOpenKeyExW</a>
      * Opens the specified registry key. Note that key names are not case
-     * sensitive.
+     * sensitive. The RegistryHKEY is designd for try-with-resource it
+     * implements the interface AutoClosable.
      *
      * @param hKey a handle to an open registry key.
      * @param lpSubKey the name of the registry subkey to be opened.
@@ -209,7 +222,7 @@ public abstract class Winreg {
      * @param samDesired a mask that specifies the desired access rights to the
      * key to be opened. The function fails if the security descriptor of the
      * key does not permit the requested access for the calling process.
-     * @param phkResult a pointer to a variable that receives a handle to the
+     * @return phkResult a pointer to a variable that receives a handle to the
      * opened key.
      *
      * @throws NullPointerException if hKey or lpSubKey or phkResult is
@@ -218,6 +231,9 @@ public abstract class Winreg {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void RegOpenKeyExW(HKEY hKey, String lpSubKey, int ulOptions, int samDesired, PHKEY phkResult) throws NativeErrorException;
+    public final static WinDef.RegistryHKEY RegOpenKeyExW(HKEY hKey, String lpSubKey, int ulOptions, int samDesired) throws NativeErrorException {
+        return WinDef.RegistryHKEY.of(RegOpenKeyExW(HKEY.getHandleValue(hKey), lpSubKey, ulOptions, samDesired));
+    }
 
+    private static native long RegOpenKeyExW(long ptrHKey, String lpSubKey, int ulOptions, int samDesired) throws NativeErrorException;
 }

@@ -10,26 +10,26 @@ extern "C" {
 /*
  * Class:     de_ibapl_jnhw_winapi_Winreg
  * Method:    RegCloseKey
- * Signature: (Lde/ibapl/jnhw/winapi/WinDef/HKEY;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegCloseKey
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winreg
  * Method:    RegEnumValueW
- * Signature: (Lde/ibapl/jnhw/winapi/WinDef/HKEY;ILde/ibapl/jnhw/winapi/Winnt/LPWSTR;Lde/ibapl/jnhw/common/references/IntRef;Lde/ibapl/jnhw/winapi/WinDef/LPBYTE;)J
+ * Signature: (JIJJJJJ)J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegEnumValueW
-  (JNIEnv *, jclass, jobject, jint, jobject, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jint, jlong, jlong, jlong, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winreg
  * Method:    RegOpenKeyExW
- * Signature: (Lde/ibapl/jnhw/winapi/WinDef/HKEY;Ljava/lang/String;IILde/ibapl/jnhw/winapi/WinDef/PHKEY;)V
+ * Signature: (JLjava/lang/String;II)J
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegOpenKeyExW
-  (JNIEnv *, jclass, jobject, jstring, jint, jint, jobject);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Winreg_RegOpenKeyExW
+  (JNIEnv *, jclass, jlong, jstring, jint, jint);
 
 #ifdef __cplusplus
 }

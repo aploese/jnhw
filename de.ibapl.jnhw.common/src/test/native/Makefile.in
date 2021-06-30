@@ -145,15 +145,13 @@ am__v_lt_1 =
 libtests_la_LIBADD =
 am_libtests_la_OBJECTS =  \
 	AbstractNativeMemoryTest_NativeMemoryAlignment.lo \
-	ByteRefTest.lo ShortRefTest.lo IntRefTest.lo LongRefTest.lo \
-	ObjectRefTest.lo Callback_I_V_Test.lo Callback_J_V_Test.lo \
+	Callback_I_V_Test.lo Callback_J_V_Test.lo \
 	Callback_IJ_V_Test.lo \
 	Callback_I_I_PtrAbstractNativeMemory_V_Test.lo \
 	Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.lo \
 	Callback_PtrAbstractNativeMemory_V_Test.lo \
-	NativeRunnableTest.lo PointerArray32Test.lo FieldLayoutTest.lo \
-	StructLayoutTest.lo SimpeStructureImpl.lo \
-	JnhwExceptionsTest.lo
+	NativeRunnableTest.lo StructLayoutTest.lo \
+	SimpeStructureImpl.lo JnhwExceptionsTest.lo
 libtests_la_OBJECTS = $(am_libtests_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -171,18 +169,14 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AbstractNativeMemoryTest_NativeMemoryAlignment.Plo \
-	./$(DEPDIR)/ByteRefTest.Plo ./$(DEPDIR)/Callback_IJ_V_Test.Plo \
+	./$(DEPDIR)/Callback_IJ_V_Test.Plo \
 	./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Test.Plo \
 	./$(DEPDIR)/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.Plo \
 	./$(DEPDIR)/Callback_I_V_Test.Plo \
 	./$(DEPDIR)/Callback_J_V_Test.Plo \
 	./$(DEPDIR)/Callback_PtrAbstractNativeMemory_V_Test.Plo \
-	./$(DEPDIR)/FieldLayoutTest.Plo ./$(DEPDIR)/IntRefTest.Plo \
-	./$(DEPDIR)/JnhwExceptionsTest.Plo ./$(DEPDIR)/LongRefTest.Plo \
+	./$(DEPDIR)/JnhwExceptionsTest.Plo \
 	./$(DEPDIR)/NativeRunnableTest.Plo \
-	./$(DEPDIR)/ObjectRefTest.Plo \
-	./$(DEPDIR)/PointerArray32Test.Plo \
-	./$(DEPDIR)/ShortRefTest.Plo \
 	./$(DEPDIR)/SimpeStructureImpl.Plo \
 	./$(DEPDIR)/StructLayoutTest.Plo \
 	./$(DEPDIR)/libjnhw-common-test.Plo
@@ -376,11 +370,6 @@ noinst_LTLIBRARIES = libtests.la
 libjnhw_common_test_la_LIBADD = libtests.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 libtests_la_SOURCES = \
  AbstractNativeMemoryTest_NativeMemoryAlignment.c \
- ByteRefTest.c \
- ShortRefTest.c \
- IntRefTest.c \
- LongRefTest.c \
- ObjectRefTest.c \
  Callback_I_V_Test.c \
  Callback_J_V_Test.c \
  Callback_IJ_V_Test.c \
@@ -388,8 +377,6 @@ libtests_la_SOURCES = \
  Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.c \
  Callback_PtrAbstractNativeMemory_V_Test.c \
  NativeRunnableTest.c \
- PointerArray32Test.c \
- FieldLayoutTest.c \
  StructLayoutTest.c \
  SimpeStructureImpl.c \
  JnhwExceptionsTest.c
@@ -487,21 +474,14 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbstractNativeMemoryTest_NativeMemoryAlignment.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ByteRefTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_IJ_V_Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_V_Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_J_V_Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_PtrAbstractNativeMemory_V_Test.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FieldLayoutTest.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IntRefTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwExceptionsTest.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LongRefTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NativeRunnableTest.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ObjectRefTest.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PointerArray32Test.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ShortRefTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SimpeStructureImpl.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StructLayoutTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libjnhw-common-test.Plo@am__quote@ # am--include-marker
@@ -666,21 +646,14 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/AbstractNativeMemoryTest_NativeMemoryAlignment.Plo
-	-rm -f ./$(DEPDIR)/ByteRefTest.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_J_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_PtrAbstractNativeMemory_V_Test.Plo
-	-rm -f ./$(DEPDIR)/FieldLayoutTest.Plo
-	-rm -f ./$(DEPDIR)/IntRefTest.Plo
 	-rm -f ./$(DEPDIR)/JnhwExceptionsTest.Plo
-	-rm -f ./$(DEPDIR)/LongRefTest.Plo
 	-rm -f ./$(DEPDIR)/NativeRunnableTest.Plo
-	-rm -f ./$(DEPDIR)/ObjectRefTest.Plo
-	-rm -f ./$(DEPDIR)/PointerArray32Test.Plo
-	-rm -f ./$(DEPDIR)/ShortRefTest.Plo
 	-rm -f ./$(DEPDIR)/SimpeStructureImpl.Plo
 	-rm -f ./$(DEPDIR)/StructLayoutTest.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-common-test.Plo
@@ -730,21 +703,14 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/AbstractNativeMemoryTest_NativeMemoryAlignment.Plo
-	-rm -f ./$(DEPDIR)/ByteRefTest.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_J_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_PtrAbstractNativeMemory_V_Test.Plo
-	-rm -f ./$(DEPDIR)/FieldLayoutTest.Plo
-	-rm -f ./$(DEPDIR)/IntRefTest.Plo
 	-rm -f ./$(DEPDIR)/JnhwExceptionsTest.Plo
-	-rm -f ./$(DEPDIR)/LongRefTest.Plo
 	-rm -f ./$(DEPDIR)/NativeRunnableTest.Plo
-	-rm -f ./$(DEPDIR)/ObjectRefTest.Plo
-	-rm -f ./$(DEPDIR)/PointerArray32Test.Plo
-	-rm -f ./$(DEPDIR)/ShortRefTest.Plo
 	-rm -f ./$(DEPDIR)/SimpeStructureImpl.Plo
 	-rm -f ./$(DEPDIR)/StructLayoutTest.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-common-test.Plo

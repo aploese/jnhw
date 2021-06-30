@@ -40,90 +40,52 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_IoAPI
      * Method:    CreateIoCompletionPort
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winnt/HANDLE;JI)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+     * Signature: (JJJI)J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_CreateIoCompletionPort
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject FileHandle, jobject ExistingCompletionPort, jlong CompletionKey, jint NumberOfConcurrentThreads) {
-        if (FileHandle == NULL) {
-            throw_NullPointerException(env, "FileHandle is null.");
-            return NULL;
-        }
-        if (NumberOfConcurrentThreads < 0) {
-            throw_IllegalArgumentException(env, "NumberOfConcurrentThreads < 0");
-            return NULL;
-        }
-        HANDLE _ExistingCompletionPort = ExistingCompletionPort != NULL ? UNWRAP_HANDLE(ExistingCompletionPort) : NULL;
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_CreateIoCompletionPort
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrFileHandle, jlong ptrExistingCompletionPort, jlong CompletionKey, jint NumberOfConcurrentThreads) {
         //ULONG_PTR: On ix68 its 32 bit long and on x64 ist 64 bit long
-        HANDLE result = CreateIoCompletionPort(UNWRAP_HANDLE(FileHandle), _ExistingCompletionPort, (ULONG_PTR) CompletionKey, (uint32_t) NumberOfConcurrentThreads);
+        HANDLE result = CreateIoCompletionPort((HANDLE) (uintptr_t) ptrFileHandle, (HANDLE) (uintptr_t) ptrExistingCompletionPort, (ULONG_PTR) CompletionKey, (uint32_t) NumberOfConcurrentThreads);
         if (result == NULL) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
-            return NULL;
+            return (int64_t) (uintptr_t) NULL;
         }
-        return CREATE_HANDLE(result);
-
+        return (int64_t) (uintptr_t) result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_IoAPI
      * Method:    GetQueuedCompletionStatus
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/IntRef;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;J)V
+     * Signature: (JJJJ)J
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_GetQueuedCompletionStatus
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject CompletionPort, jobject lpNumberOfBytesTransferred, jobject lpCompletionKey, jobject lpOverlapped, jlong dwMilliseconds) {
-        if (CompletionPort == NULL) {
-            throw_NullPointerException(env, "CompletionPort is null.");
-            return;
-        }
-        if (lpNumberOfBytesTransferred == NULL) {
-            throw_NullPointerException(env, "lpNumberOfBytesTransferred is null.");
-            return;
-        }
-        if (lpCompletionKey == NULL) {
-            throw_NullPointerException(env, "lpCompletionKey is null.");
-            return;
-        }
-        if (lpOverlapped == NULL) {
-            throw_NullPointerException(env, "lpOverlapped is null.");
-            return;
-        }
-        if ((dwMilliseconds < 0) && ((uint32_t) dwMilliseconds != INFINITE)) {
-            throw_IllegalArgumentException(env, "dwMilliseconds < 0");
-            return;
-        }
-        DWORD _lpNumberOfBytesTransferred;
-        ULONG_PTR _lpCompletionKey; //ULONG_PTR: On ix68 its 32 bit long and on x64 ist 64 bit long
-        LPOVERLAPPED _lpOverlapped;
-        if (!GetQueuedCompletionStatus(UNWRAP_HANDLE(CompletionPort), &_lpNumberOfBytesTransferred, &_lpCompletionKey, &_lpOverlapped, (uint32_t) dwMilliseconds)) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_GetQueuedCompletionStatus
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrCompletionPort, jlong ptrLpNumberOfBytesTransferred, jlong ptrLpCompletionKey, jlong dwMilliseconds) {
+        LPOVERLAPPED lpOverlapped;
+        if (!GetQueuedCompletionStatus((HANDLE) (uintptr_t) ptrCompletionPort, (LPDWORD) (uintptr_t) ptrLpNumberOfBytesTransferred, (PULONG_PTR) (uintptr_t) ptrLpCompletionKey, &lpOverlapped, (uint32_t) dwMilliseconds)) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
-
-        SET_INT_REF_VALUE(lpNumberOfBytesTransferred, (int32_t) _lpNumberOfBytesTransferred);
-        SET_LONG_REF_VALUE(lpCompletionKey, (int64_t) _lpCompletionKey); //ULONG_PTR: On ix68 its 32 bit long and on x64 ist 64 bit long
-        SET_OBJECT_REF_VALUE(lpOverlapped, CREATE_NativeAddressHolder(_lpOverlapped));
+        return (int64_t) (uintptr_t) lpOverlapped;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_IoAPI
      * Method:    PostQueuedCompletionStatus
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;IJLde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
+     * Signature: (JIJJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_PostQueuedCompletionStatus
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject CompletionPort, jint dwNumberOfBytesTransferred, jlong dwCompletionKey, jobject lpOverlapped) {
-        if (CompletionPort == NULL) {
-            throw_NullPointerException(env, "CompletionPort is null.");
-            return;
-        }
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrCompletionPort, jint dwNumberOfBytesTransferred, jlong dwCompletionKey, jlong ptrLpOverlapped) {
 #if defined(_WIN64)
-        if (!PostQueuedCompletionStatus(UNWRAP_HANDLE(CompletionPort), (uint32_t) dwNumberOfBytesTransferred, (uint64_t) dwCompletionKey, UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped))) {
+
+        if (!PostQueuedCompletionStatus((HANDLE) (uintptr_t) ptrCompletionPort, (uint32_t) dwNumberOfBytesTransferred, (uint64_t) dwCompletionKey, (LPOVERLAPPED) (uintptr_t) ptrLpOverlapped)) {
 #elif defined(_WIN32)
         if ((dwCompletionKey > LONG_MAX) || (dwCompletionKey < LONG_MAX)) {
             throw_IllegalArgumentException(env, "dwCompletionKey out of bounds for 32 bit!");
             return;
         }
-        if (!PostQueuedCompletionStatus(UNWRAP_HANDLE(CompletionPort), (uint32_t) dwNumberOfBytesTransferred, (uint32_t) dwCompletionKey, UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped))) {
+        if (!PostQueuedCompletionStatus((HANDLE) (uintptr_t) ptrCompletionPort, (uint32_t) dwNumberOfBytesTransferred, (uint32_t) dwCompletionKey, (LPOVERLAPPED) (uintptr_t) ptrLpOverlapped)) {
 #else
 #error "no _WIN64 nor _WIN32 defined!"
-#endif            
+#endif
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }

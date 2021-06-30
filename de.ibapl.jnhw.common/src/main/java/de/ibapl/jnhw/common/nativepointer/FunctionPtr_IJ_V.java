@@ -43,8 +43,4 @@ public class FunctionPtr_IJ_V extends NativeFunctionPointer {
         super(src);
     }
 
-    protected FunctionPtr_IJ_V(long nativeAddress) {
-        super(nativeAddress);
-    }
-
 }

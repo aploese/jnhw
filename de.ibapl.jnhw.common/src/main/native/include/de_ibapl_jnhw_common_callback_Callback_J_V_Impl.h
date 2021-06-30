@@ -18,9 +18,9 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1J_1V_1Impl_i
 /*
  * Class:     de_ibapl_jnhw_common_callback_Callback_J_V_Impl
  * Method:    getNativeAddress
- * Signature: (I)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+ * Signature: (I)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1J_1V_1Impl_getNativeAddress
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1J_1V_1Impl_getNativeAddress
   (JNIEnv *, jclass, jint);
 
 /*

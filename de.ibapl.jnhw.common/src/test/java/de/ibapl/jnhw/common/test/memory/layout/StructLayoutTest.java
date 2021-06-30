@@ -139,7 +139,18 @@ public class StructLayoutTest {
 
     @Test
     public void testNativeLayout() {
-        SimpeStructureImpl.Layout nativeLayout = SimpeStructureImpl.getNativeDefinedLayout(SimpeStructureImpl.Layout.class);
+        SimpeStructureImpl.Layout nativeLayout = new SimpeStructureImpl.Layout();
+
+        Assertions.assertEquals(SimpeStructureImpl.offsetFirst(), nativeLayout.offsetFirst);
+        Assertions.assertEquals(SimpeStructureImpl.offsetSecond(), nativeLayout.offsetSecond);
+        Assertions.assertEquals(SimpeStructureImpl.offsetThird(), nativeLayout.offsetThird);
+        Assertions.assertEquals(SimpeStructureImpl.offsetForth(), nativeLayout.offsetForth);
+        Assertions.assertEquals(SimpeStructureImpl.offsetFifth(), nativeLayout.offsetFifth);
+        Assertions.assertEquals(SimpeStructureImpl.offsetSixth(), nativeLayout.offsetSixth);
+        Assertions.assertEquals(SimpeStructureImpl.offsetSeventh(), nativeLayout.offsetSeventh);
+        Assertions.assertEquals(SimpeStructureImpl.offsetEigth(), nativeLayout.offsetEighth);
+        Assertions.assertEquals(SimpeStructureImpl.sizeof(), nativeLayout.sizeof);
+        Assertions.assertEquals(SimpeStructureImpl.alignof(), nativeLayout.alignment.alignof);
 
         Assertions.assertEquals(0, nativeLayout.offsetFirst);
         Assertions.assertEquals(2, nativeLayout.offsetSecond);

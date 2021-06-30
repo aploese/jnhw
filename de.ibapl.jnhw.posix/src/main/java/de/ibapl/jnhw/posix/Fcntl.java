@@ -74,8 +74,6 @@ public final class Fcntl {
         public final static int O_RDWR = 02;
         public final static int O_TRUNC = 01000;
         public final static int O_WRONLY = 01;
-        public final static int POSIX_FADV_DONTNEED = 4;
-        public final static int POSIX_FADV_NOREUSE = 5;
         public final static int POSIX_FADV_NORMAL = 0;
         public final static int POSIX_FADV_RANDOM = 1;
         public final static int POSIX_FADV_SEQUENTIAL = 2;
@@ -120,13 +118,27 @@ public final class Fcntl {
         public final static int O_NOFOLLOW = 0100000;
     }
 
-    public static interface Linux_Ppc64_S390_Defines {
+    public static interface Linux_Ppc64_Defines {
 
         public final static int O_DIRECTORY = 040000;
         public final static int O_NOFOLLOW = 0100000;
     }
 
-    public static interface Linux_RiscV64_Defines {
+    public static interface Linux_S390_Defines {
+
+        public final static int POSIX_FADV_DONTNEED = 6;
+        public final static int POSIX_FADV_NOREUSE = 7;
+
+    }
+
+    public static interface Linux_NonS390_Defines {
+
+        public final static int POSIX_FADV_DONTNEED = 4;
+        public final static int POSIX_FADV_NOREUSE = 5;
+
+    }
+
+    public static interface Linux_RiscV64_S390_Defines {
 
         public final static int O_DIRECTORY = 65536;
         public final static int O_NOFOLLOW = 131072;
@@ -307,18 +319,27 @@ public final class Fcntl {
                 O_TTY_INIT = IntDefine.UNDEFINED;
                 O_WRONLY = LinuxDefines.O_WRONLY;
 
-                POSIX_FADV_DONTNEED = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_DONTNEED);
-                POSIX_FADV_NOREUSE = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_NOREUSE);
                 POSIX_FADV_NORMAL = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_NORMAL);
                 POSIX_FADV_RANDOM = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_RANDOM);
                 POSIX_FADV_SEQUENTIAL = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_SEQUENTIAL);
                 POSIX_FADV_WILLNEED = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_WILLNEED);
 
                 switch (multiarchInfo.getArch()) {
+                    case S390_X:
+                        POSIX_FADV_DONTNEED = IntDefine.toIntDefine(Linux_S390_Defines.POSIX_FADV_DONTNEED);
+                        POSIX_FADV_NOREUSE = IntDefine.toIntDefine(Linux_S390_Defines.POSIX_FADV_NOREUSE);
+                        break;
+                    default:
+                        POSIX_FADV_DONTNEED = IntDefine.toIntDefine(Linux_NonS390_Defines.POSIX_FADV_DONTNEED);
+                        POSIX_FADV_NOREUSE = IntDefine.toIntDefine(Linux_NonS390_Defines.POSIX_FADV_NOREUSE);
+                }
+
+                switch (multiarchInfo.getArch()) {
                     case AARCH64:
                     case MIPS_64:
                     case POWER_PC_64:
                     case RISC_V_64:
+                    case S390_X:
                     case X86_64:
                         O_LARGEFILE = IntDefine.toIntDefine(Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines.O_LARGEFILE);
                         break;
@@ -379,13 +400,13 @@ public final class Fcntl {
                         O_NOFOLLOW = Linux_Mips_Mips64_Defines.O_NOFOLLOW;
                         break;
                     case POWER_PC_64:
-                    case S390_X:
-                        O_DIRECTORY = Linux_Ppc64_S390_Defines.O_DIRECTORY;
-                        O_NOFOLLOW = Linux_Ppc64_S390_Defines.O_NOFOLLOW;
+                        O_DIRECTORY = Linux_Ppc64_Defines.O_DIRECTORY;
+                        O_NOFOLLOW = Linux_Ppc64_Defines.O_NOFOLLOW;
                         break;
                     case RISC_V_64:
-                        O_DIRECTORY = Linux_RiscV64_Defines.O_DIRECTORY;
-                        O_NOFOLLOW = Linux_RiscV64_Defines.O_NOFOLLOW;
+                    case S390_X:
+                        O_DIRECTORY = Linux_RiscV64_S390_Defines.O_DIRECTORY;
+                        O_NOFOLLOW = Linux_RiscV64_S390_Defines.O_NOFOLLOW;
                         break;
                     case I386:
                     case X86_64:

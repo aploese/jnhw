@@ -623,7 +623,7 @@ public class JnhwMemoryAccessor implements MemoryAccessor {
         return callJniGetStringLength(s);
     }
 
-    class JnhwMemoryCleaner implements Runnable {
+    static class JnhwMemoryCleaner implements Runnable {
 
         final long baseAddress;
 

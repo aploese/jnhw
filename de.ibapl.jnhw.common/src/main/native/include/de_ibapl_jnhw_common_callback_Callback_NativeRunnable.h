@@ -17,10 +17,10 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1NativeRunnab
 
 /*
  * Class:     de_ibapl_jnhw_common_callback_Callback_NativeRunnable
- * Method:    aquire
- * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+ * Method:    aquire0
+ * Signature: ()J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1NativeRunnable_aquire
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1NativeRunnable_aquire0
   (JNIEnv *, jclass);
 
 #ifdef __cplusplus

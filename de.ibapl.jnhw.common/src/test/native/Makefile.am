@@ -13,11 +13,6 @@ libjnhw_common_test_la_LIBADD = libtests.la @JNHW_COMMON_SRC_DIR@/libjnhw-common
 
 libtests_la_SOURCES = \
  AbstractNativeMemoryTest_NativeMemoryAlignment.c \
- ByteRefTest.c \
- ShortRefTest.c \
- IntRefTest.c \
- LongRefTest.c \
- ObjectRefTest.c \
  Callback_I_V_Test.c \
  Callback_J_V_Test.c \
  Callback_IJ_V_Test.c \
@@ -25,8 +20,6 @@ libtests_la_SOURCES = \
  Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.c \
  Callback_PtrAbstractNativeMemory_V_Test.c \
  NativeRunnableTest.c \
- PointerArray32Test.c \
- FieldLayoutTest.c \
  StructLayoutTest.c \
  SimpeStructureImpl.c \
  JnhwExceptionsTest.c

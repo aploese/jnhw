@@ -9,19 +9,19 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_IJ_V_Test
- * Method:    getCallbackPtr
- * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_IJ_V;
+ * Method:    getCallbackPtr0
+ * Signature: ()J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1IJ_1V_1Test_getCallbackPtr
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1IJ_1V_1Test_getCallbackPtr0
   (JNIEnv *, jclass);
 
 /*
  * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_IJ_V_Test
  * Method:    setCallback
- * Signature: (Lde/ibapl/jnhw/common/callback/Callback_IJ_V;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1IJ_1V_1Test_setCallback
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_IJ_V_Test

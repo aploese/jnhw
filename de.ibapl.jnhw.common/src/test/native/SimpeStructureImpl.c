@@ -36,45 +36,109 @@ extern "C" {
         int8_t fifth;
         int64_t sixth;
         int8_t seventh;
-        int64_t eighth;
+        int64_t eigth;
     };
 
-    /*
-     * Class:     de_ibapl_jnhw_common_memory_layout_SimpeStructureImpl
-     * Method:    getNativeDefinedLayout
-     * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/common/test/memory/layout/SimpeStructureImpl/Layout;
+        /*
+     * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+     * Method:    offsetFirst
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_getNativeDefinedLayout
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jclass structLayoutClass) {
-        jobject result = JnhwCreateStructLayout(env, structLayoutClass, sizeof (struct SimpleStructure), __alignof__ (struct SimpleStructure));
-        if (result == NULL) {
-            return NULL;
-        }
-        if (JnhwSetLongField(env, result, "offsetFirst", offsetof(struct SimpleStructure, first))) {
-            return result;
-        }
-        if (JnhwSetLongField(env, result, "offsetSecond", offsetof(struct SimpleStructure, second))) {
-            return result;
-        }
-        if (JnhwSetLongField(env, result, "offsetThird", offsetof(struct SimpleStructure, third))) {
-            return result;
-        }
-        if (JnhwSetLongField(env, result, "offsetForth", offsetof(struct SimpleStructure, forth))) {
-            return result;
-        }
-        if (JnhwSetLongField(env, result, "offsetFifth", offsetof(struct SimpleStructure, fifth))) {
-            return result;
-        }
-        if (JnhwSetLongField(env, result, "offsetSixth", offsetof(struct SimpleStructure, sixth))) {
-            return result;
-        }
-        if (JnhwSetLongField(env, result, "offsetSeventh", offsetof(struct SimpleStructure, seventh))) {
-            return result;
-        }
-        if (JnhwSetLongField(env, result, "offsetEighth", offsetof(struct SimpleStructure, eighth))) {
-            return result;
-        }
-        return result;
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetFirst
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct SimpleStructure, first);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+     * Method:    offsetSecond
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetSecond
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct SimpleStructure, second);
+
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+     * Method:    offsetThird
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetThird
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct SimpleStructure, third);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+     * Method:    offsetForth
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetForth
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct SimpleStructure, forth);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+     * Method:    offsetFifth
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetFifth
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct SimpleStructure, fifth);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+     * Method:    offsetSixth
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetSixth
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct SimpleStructure, sixth);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+     * Method:    offsetSeventh
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetSeventh
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct SimpleStructure, seventh);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+     * Method:    offsetEigth
+     * Signature: ()J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetEigth
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return offsetof(struct SimpleStructure, eigth);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+     * Method:    sizeof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_sizeof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return sizeof (struct SimpleStructure);
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+     * Method:    alignof
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_alignof
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return __alignof__ (struct SimpleStructure);
+
     }
 
 #ifdef __cplusplus

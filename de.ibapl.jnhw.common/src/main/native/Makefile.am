@@ -50,7 +50,6 @@ libmemory_la_SOURCES = \
  StructLayoutFactoryImplTest.c
 
 libjnhw_common_la_SOURCES = \
- LibJnhwCommonLoader.c \
  jnhw-common.c
 
 #hook into make all

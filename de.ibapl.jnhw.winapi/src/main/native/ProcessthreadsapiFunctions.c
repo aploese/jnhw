@@ -32,29 +32,21 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
      * Method:    QueueUserAPC
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt/PAPCFUNC;Lde/ibapl/jnhw/winapi/Winnt/HANDLE;J)V
+     * Signature: (JJJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_QueueUserAPC
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject pfnAPC, jobject hThread, jlong dwData) {
-        if (pfnAPC == NULL) {
-            throw_NullPointerException(env, "pfnAPC is null!");
-            return;
-        }
-        if (hThread == NULL) {
-            throw_NullPointerException(env, "hThread is null!");
-            return;
-        }
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrPfnAPC, jlong ptrHThread, jlong dwData) {
 #if defined(_WIN64)
-        if (QueueUserAPC(UNWRAP_NativeFunctionPointer_TO(PAPCFUNC, pfnAPC), UNWRAP_HANDLE(hThread), (uint64_t) dwData)) {
+        if (QueueUserAPC((PAPCFUNC) (uintptr_t) ptrPfnAPC, (HANDLE) (uintptr_t) ptrHThread, (uint64_t) dwData)) {
 #elif defined(_WIN32)
         if ((dwData > LONG_MAX) || (dwData < LONG_MAX)) {
             throw_IllegalArgumentException(env, "dwData out of bounds for 32 bit!");
             return;
         }
-        if (QueueUserAPC(UNWRAP_NativeFunctionPointer_TO(PAPCFUNC, pfnAPC), UNWRAP_HANDLE(hThread), (uint32_t) dwData)) {
+        if (QueueUserAPC((PAPCFUNC) (uintptr_t) ptrPfnAPC, (HANDLE) (uintptr_t) ptrHThread, (uint32_t) dwData)) {
 #else
 #error "no _WIN64 nor _WIN32 defined!"
-#endif            
+#endif
             return;
         } else {
             throw_NativeErrorException(env, (int32_t) GetLastError());
@@ -64,11 +56,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
      * Method:    GetCurrentThread
-     * Signature: ()Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_GetCurrentThread
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREATE_HANDLE(GetCurrentThread());
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_GetCurrentThread
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return (int64_t) (uintptr_t) GetCurrentThread();
     }
 
 #endif

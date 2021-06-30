@@ -144,7 +144,7 @@ public class Signal {
         public final static int SIGALRM = 14;
     }
 
-    public static interface Linux_Ppc64_S390_Defines {
+    public static interface Linux_Ppc64_Defines {
 
         public final static int MINSIGSTKSZ = 4096;
     }
@@ -154,12 +154,12 @@ public class Signal {
         public final static int MINSIGSTKSZ = 5120;
     }
 
-    public static interface Linux_Aarc64_Ppc64_S390_Defines {
+    public static interface Linux_Aarc64_Ppc64_Defines {
 
         public final static int SIGSTKSZ = 16384;
     }
 
-    public static interface Linux_Arm_I386_RiscV64_X86_64_Defines {
+    public static interface Linux_Arm_I386_RiscV64_S390_X86_64_Defines {
 
         public final static int MINSIGSTKSZ = 2048;
         public final static int SIGSTKSZ = 8192;
@@ -228,7 +228,7 @@ public class Signal {
         public final static int SIGXFSZ = 31;
     }
 
-    public static interface Defines__AARCH64__LINUX__GNU extends Linux_AllArchs_Defines, Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines, Linux_Aarc64_Defines, Linux_Aarc64_Ppc64_S390_Defines {
+    public static interface Defines__AARCH64__LINUX__GNU extends Linux_AllArchs_Defines, Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines, Linux_Aarc64_Defines, Linux_Aarc64_Ppc64_Defines {
     }
 
     public static interface Defines__MIPS_64__LINUX__GNU_ABI_64 extends Linux_AllArchs_Defines, Linux_Mips_Mips64_Defines {
@@ -404,12 +404,12 @@ public class Signal {
                     case ARM:
                     case I386:
                     case RISC_V_64:
+                    case S390_X:
                     case X86_64:
-                        MINSIGSTKSZ = Linux_Arm_I386_RiscV64_X86_64_Defines.MINSIGSTKSZ;
+                        MINSIGSTKSZ = Linux_Arm_I386_RiscV64_S390_X86_64_Defines.MINSIGSTKSZ;
                         break;
                     case POWER_PC_64:
-                    case S390_X:
-                        MINSIGSTKSZ = Linux_Ppc64_S390_Defines.MINSIGSTKSZ;
+                        MINSIGSTKSZ = Linux_Ppc64_Defines.MINSIGSTKSZ;
                         break;
                     default:
                         throw new NoClassDefFoundError("No signal.h linux defines for MINSIGSTKSZ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -449,14 +449,14 @@ public class Signal {
                 switch (multiarchInfo.getArch()) {
                     case AARCH64:
                     case POWER_PC_64:
-                    case S390_X:
-                        SIGSTKSZ = Linux_Aarc64_Ppc64_S390_Defines.SIGSTKSZ;
+                        SIGSTKSZ = Linux_Aarc64_Ppc64_Defines.SIGSTKSZ;
                         break;
                     case ARM:
                     case I386:
                     case RISC_V_64:
+                    case S390_X:
                     case X86_64:
-                        SIGSTKSZ = Linux_Arm_I386_RiscV64_X86_64_Defines.SIGSTKSZ;
+                        SIGSTKSZ = Linux_Arm_I386_RiscV64_S390_X86_64_Defines.SIGSTKSZ;
                         break;
                     default:
                         throw new NoClassDefFoundError("No signal.h linux defines for SIGSTKSZ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -3199,7 +3199,7 @@ public class Signal {
      * indicates an error.
      */
     public final static FunctionPtr_I_V signal(int sig, FunctionPtr_I_V func) throws NativeErrorException {
-        return FunctionPtr_I_V.ofUintptr_t((signal(sig, NativeFunctionPointer.getNativeAddressOrNULL(func))));
+        return new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t((signal(sig, NativeFunctionPointer.getNativeAddressOrNULL(func)))));
     }
 
     private static native long signal(int sig, long ptrFunc) throws NativeErrorException;
@@ -3289,7 +3289,7 @@ public class Signal {
      * natively.
      *///TODO args missing ....
     public final static FunctionPtr_I_V sigset(int sig, FunctionPtr_I_V disp) throws NativeErrorException, NoSuchNativeMethodException {
-        return FunctionPtr_I_V.ofUintptr_t(sigset(sig, NativeFunctionPointer.getNativeAddressOrNULL(disp)));
+        return new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(sigset(sig, NativeFunctionPointer.getNativeAddressOrNULL(disp))));
     }
 
     private static native long sigset(int sig, long ptrDisp) throws NativeErrorException, NoSuchNativeMethodException;

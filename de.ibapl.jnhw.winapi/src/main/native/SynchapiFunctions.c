@@ -32,19 +32,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    WaitForSingleObject
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;J)J
+     * Signature: (JJ)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForSingleObject
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hHandle, jlong dwMilliseconds) {
-        if (hHandle == NULL) {
-            throw_NullPointerException(env, "hHandle is null");
-            return ERROR_INVALID_PARAMETER;
-        }
-        if ((dwMilliseconds < 0) && ((uint32_t) dwMilliseconds != INFINITE)) {
-            throw_IllegalArgumentException(env, "dwMilliseconds < 0");
-            return ERROR_INVALID_PARAMETER;
-        }
-        DWORD result = WaitForSingleObject(UNWRAP_HANDLE(hHandle), (uint32_t) dwMilliseconds);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrHHandle, jlong dwMilliseconds) {
+        DWORD result = WaitForSingleObject((HANDLE) (uintptr_t) ptrHHandle, (uint32_t) dwMilliseconds);
         if (result == WAIT_FAILED) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
@@ -54,19 +46,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    WaitForSingleObjectEx
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;JZ)J
+     * Signature: (JJZ)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForSingleObjectEx
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hHandle, jlong dwMilliseconds, jboolean bAlertable) {
-        if (hHandle == NULL) {
-            throw_NullPointerException(env, "hHandle is null");
-            return ERROR_INVALID_PARAMETER;
-        }
-        if ((dwMilliseconds < 0) && ((uint32_t) dwMilliseconds != INFINITE)) {
-            throw_IllegalArgumentException(env, "dwMilliseconds < 0");
-            return ERROR_INVALID_PARAMETER;
-        }
-        DWORD result = WaitForSingleObjectEx(UNWRAP_HANDLE(hHandle), (uint32_t) dwMilliseconds, bAlertable);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrHHandle, jlong dwMilliseconds, jboolean bAlertable) {
+        DWORD result = WaitForSingleObjectEx((HANDLE) (uintptr_t) ptrHHandle, (uint32_t) dwMilliseconds, bAlertable);
         if (result == WAIT_FAILED) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
@@ -76,38 +60,34 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    CreateEventW
-     * Signature: (Lde/ibapl/jnhw/winapi/Minwinbase$SECURITY_ATTRIBUTES;ZZLjava/lang/String;)Lde/ibapl/jnhw/winapi/Winnt$HANDLE;
+     * Signature: (JZZLjava/lang/String;)J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_CreateEventW
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject lpEventAttributes, jboolean bManualReset, jboolean bInitialState, jstring lpName) {
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_CreateEventW
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrLpEventAttributes, jboolean bManualReset, jboolean bInitialState, jstring lpName) {
 
         LPCWSTR _lpName = lpName != NULL ? (*env)->GetStringChars(env, lpName, NULL) : NULL;
 
-        HANDLE result = CreateEventW(UNWRAP_LPSECURITY_ATTRIBUTES_OR_NULL(lpEventAttributes), bManualReset, bInitialState, _lpName);
+        HANDLE result = CreateEventW((LPSECURITY_ATTRIBUTES) (uintptr_t) ptrLpEventAttributes, bManualReset, bInitialState, _lpName);
         if (lpName != NULL) {
             (*env)->ReleaseStringChars(env, lpName, _lpName);
         }
 
         if (result == NULL) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
-            return NULL;
+            return (int64_t) (uintptr_t) NULL;
         }
-        return CREATE_HANDLE(result);
+        return (int64_t) (uintptr_t) result;
     }
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    SetEvent
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SetEvent
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hEvent) {
-        if (hEvent == NULL) {
-            throw_NullPointerException(env, "hEvent is null");
-            return;
-        }
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrHEvent) {
 
-        if (!SetEvent(UNWRAP_HANDLE(hEvent))) {
+        if (!SetEvent((HANDLE) (uintptr_t) ptrHEvent)) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
@@ -115,15 +95,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    ResetEvent
-     * Signature: ()V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_ResetEvent
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hEvent) {
-        if (hEvent == NULL) {
-            throw_NullPointerException(env, "hEvent is null");
-            return;
-        }
-        if (!ResetEvent(UNWRAP_HANDLE(hEvent))) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrHEvent) {
+        if (!ResetEvent((HANDLE) (uintptr_t) ptrHEvent)) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
@@ -145,11 +121,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    WaitForMultipleObjects_ArgsOK
-     * Signature: (ILde/ibapl/jnhw/PointerArray;ZJ)J
+     * Signature: (IJZJ)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjects_1ArgsOK
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jobject lpHandles, jboolean bWaitAll, jlong dwMilliseconds) {
-        DWORD result = WaitForMultipleObjects((uint32_t) nCount, UNWRAP_ABSTRACT_MEM_TO(const HANDLE *, lpHandles), bWaitAll, (uint32_t) dwMilliseconds);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jlong ptrLpHandles, jboolean bWaitAll, jlong dwMilliseconds) {
+        DWORD result = WaitForMultipleObjects((uint32_t) nCount, (PHANDLE) (uintptr_t) ptrLpHandles, bWaitAll, (uint32_t) dwMilliseconds);
         if (result == WAIT_FAILED) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
@@ -159,11 +135,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
      * Method:    WaitForMultipleObjectsEx_ArgsOK
-     * Signature: (ILde/ibapl/jnhw/common/memory/PointerArray32;ZJZ)J
+     * Signature: (IJZJZ)J
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjectsEx_1ArgsOK
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jobject lpHandles, jboolean bWaitAll, jlong dwMilliseconds, jboolean bAlertable) {
-        DWORD result = WaitForMultipleObjectsEx((uint32_t) nCount, UNWRAP_ABSTRACT_MEM_TO(const HANDLE *, lpHandles), bWaitAll, (uint32_t) dwMilliseconds, bAlertable);
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jlong ptrLpHandles, jboolean bWaitAll, jlong dwMilliseconds, jboolean bAlertable) {
+        DWORD result = WaitForMultipleObjectsEx((uint32_t) nCount, (PHANDLE) (uintptr_t) ptrLpHandles, bWaitAll, (uint32_t) dwMilliseconds, bAlertable);
         if (result == WAIT_FAILED) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }

@@ -21,9 +21,22 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import java.nio.charset.Charset;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinDefTest {
+
+    @Test
+    public void test_LPBYTE_stringValueOfNullTerminated() throws Exception {
+        byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
+        WinDef.LPBYTE lpByte = new WinDef.LPBYTE(64, AbstractNativeMemory.SetMem.TO_0x00);
+        OpaqueMemory32.copy(data, 0, lpByte, 0, data.length);
+        Assertions.assertEquals("HELLO WORLD!", WinDef.LPBYTE.getUnicodeString(lpByte, true, data.length));
+    }
 
 }

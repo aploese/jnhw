@@ -8,22 +8,22 @@
 extern "C" {
 #endif
 #undef de_ibapl_jnhw_common_callback_NativeRunnable_NULL
-#define de_ibapl_jnhw_common_callback_NativeRunnable_NULL 0LL
+#define de_ibapl_jnhw_common_callback_NativeRunnable_NULL 0i64
 /*
  * Class:     de_ibapl_jnhw_common_callback_NativeRunnable
  * Method:    aquireObjectRef
- * Signature: ()V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callback_NativeRunnable_aquireObjectRef
-  (JNIEnv *, jobject);
+  (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_common_callback_NativeRunnable
  * Method:    releaseObjectRef
- * Signature: ()V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_callback_NativeRunnable_releaseObjectRef
-  (JNIEnv *, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_common_callback_NativeRunnable

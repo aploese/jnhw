@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.util.posix;
 
-import de.ibapl.jnhw.common.callback.Callback_I_V;
 import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.callback.NativeCallToJava;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
@@ -52,7 +51,7 @@ public abstract class Callback__Sigval_int__V_Impl extends Callback__Sigval_int_
         return null;
     }
 
-    //TODO release globalRef on native side, if its not deeded anymore ....
+    //TODO release globalRef on native side, if its not needed anymore ....
     private static native void initNative();
 
     /**
@@ -99,13 +98,13 @@ public abstract class Callback__Sigval_int__V_Impl extends Callback__Sigval_int_
         }
     }
 
-    private static native NativeAddressHolder getNativeAddress(final int index);
+    private static native long getNativeAddress(final int index);
 
     private static synchronized NativeAddressHolder aquire(Callback__Sigval_int__V_Impl cb) {
         for (int i = 0; i < refs.length; i++) {
             if (refs[i].get() == null) {
                 refs[i] = new WeakReference(cb);
-                return getNativeAddress(i);
+                return NativeAddressHolder.ofUintptr_t(getNativeAddress(i));
             }
         }
         //Hint: Try run GC to free any??? or add more cbs...

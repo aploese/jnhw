@@ -20,6 +20,8 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
+#include <stddef.h>
+
 #include "de_ibapl_jnhw_common_callback_Callback_I_I_Mem_V_Impl.h"
 
 #include "jnhw-common.h"
@@ -50,7 +52,7 @@ extern "C" {
         if (Callback_Class == NULL) {
             return;
         }
-        trampoline_ID = (*env)->GetStaticMethodID(env, clazz, "trampoline", "(IIILde/ibapl/jnhw/common/memory/NativeAddressHolder;)V");
+        trampoline_ID = (*env)->GetStaticMethodID(env, clazz, "trampoline", "(IIIJ)V");
         if (trampoline_ID == NULL) {
             return;
         }
@@ -60,7 +62,7 @@ extern "C" {
     void _jnhw_trampoline_I_I_Mem_V__ ## index (int32_t a, int32_t b, void* ptr_c) { \
         JNIEnv *env; \
         (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL); \
-        (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, a, b, CREATE_NativeAddressHolder(ptr_c)); \
+        (*env)->CallStaticVoidMethod(env, Callback_Class, trampoline_ID, index, a, b, (int64_t)(uintptr_t)ptr_c); \
         (*jvm)->DetachCurrentThread(jvm); \
     }
 
@@ -76,12 +78,12 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_common_callback_Callback_I_I_Mem_V_Impl
      * Method:    getNativeAddress
-     * Signature: (I)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+     * Signature: (I)J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1I_1I_1Mem_1V_1Impl_getNativeAddress
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1I_1I_1Mem_1V_1Impl_getNativeAddress
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
         switch (index) {
-#define TRAMPOLINE_CASE(index) case index: return CREATE_NativeAddressHolder(&_jnhw_trampoline_I_I_Mem_V__ ## index);
+#define TRAMPOLINE_CASE(index) case index: return (int64_t)(uintptr_t)&_jnhw_trampoline_I_I_Mem_V__ ## index;
                 TRAMPOLINE_CASE(0);
                 TRAMPOLINE_CASE(1);
                 TRAMPOLINE_CASE(2);
@@ -92,7 +94,7 @@ extern "C" {
                 TRAMPOLINE_CASE(7);
             default:
                 throw_IllegalArgumentException(env, "index < 0 or index > MAX_CALL_BACKS");
-                return 0L;
+                return (int64_t) (uintptr_t) NULL;
         }
     }
 

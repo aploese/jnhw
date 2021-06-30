@@ -111,13 +111,13 @@ public abstract class Callback_IJ_V_Impl extends Callback_IJ_V implements Native
         }
     }
 
-    private static native NativeAddressHolder getNativeAddress(final int index);
+    private static native long getNativeAddress(final int index);
 
     private static synchronized NativeAddressHolder aquire(Callback_IJ_V_Impl cb) {
         for (int i = 0; i < refs.length; i++) {
             if (refs[i].get() == null) {
                 refs[i] = new WeakReference(cb);
-                return getNativeAddress(i);
+                return NativeAddressHolder.ofUintptr_t(getNativeAddress(i));
             }
         }
         //Hint: Try run GC to free any??? or add more cbs...

@@ -11,11 +11,83 @@ extern "C" {
 #define de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_NULL 0LL
 /*
  * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
- * Method:    getNativeDefinedLayout
- * Signature: (Ljava/lang/Class;)Lde/ibapl/jnhw/common/test/memory/layout/SimpeStructureImpl/Layout;
+ * Method:    offsetFirst
+ * Signature: ()J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_getNativeDefinedLayout
-  (JNIEnv *, jclass, jclass);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetFirst
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+ * Method:    offsetSecond
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetSecond
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+ * Method:    offsetThird
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetThird
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+ * Method:    offsetForth
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetForth
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+ * Method:    offsetFifth
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetFifth
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+ * Method:    offsetSixth
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetSixth
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+ * Method:    offsetSeventh
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetSeventh
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+ * Method:    offsetEigth
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_offsetEigth
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+ * Method:    sizeof
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_sizeof
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl
+ * Method:    alignof
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_SimpeStructureImpl_alignof
+  (JNIEnv *, jclass);
 
 #ifdef __cplusplus
 }

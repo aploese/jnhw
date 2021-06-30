@@ -37,8 +37,6 @@ public final class LibJnhwCommonLoader {
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
 
-    private static native boolean initNativeClasses();
-
     protected static void doSystemLoad(String absoluteLibName) {
         System.load(absoluteLibName);
     }
@@ -65,7 +63,6 @@ public final class LibJnhwCommonLoader {
         }
         LIB_JNHW_COMMON_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwCommonLoader::doSystemLoad);
         try {
-            initNativeClasses();
             synchronized (loadLock) {
                 if (LIB_JNHW_COMMON_LOAD_RESULT.isLoaded()) {
                     state = LoadState.SUCCESS;

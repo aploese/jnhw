@@ -28,17 +28,35 @@
 #define NO_SUCH_NATIVE_METHOD_EXCEPTION "de/ibapl/jnhw/common/exception/NoSuchNativeMethodException"
 #define NO_SUCH_NATIVE_TYPE_EXCEPTION "de/ibapl/jnhw/common/exception/NoSuchNativeTypeException"
 #define NO_SUCH_NATIVE_TYPE_MEMBER_EXCEPTION "de/ibapl/jnhw/common/exception/NoSuchNativeTypeMemberException"
-#define NULL_POINTER_EXCEPTION "java/lang/NullPointerException"
-#define ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/ArrayIndexOutOfBoundsException"
-#define INDEX_OUT_OF_BOUNDS_EXCEPTION "java/lang/IndexOutOfBoundsException"
 #define ILLEGAL_ARGUMENT_EXCEPTION "java/lang/IllegalArgumentException"
-#define RUNTIME_EXCEPTION "java/lang/RuntimeException"
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+    jclass JNICALL getGlobalClassRef(JNIEnv *env, const char* className) {
+        jclass clazz = (*env)->FindClass(env, className);
+        if (clazz == NULL) {
+            return NULL;
+        }
+
+        jclass result = (*env)->NewGlobalRef(env, clazz);
+        (*env)->DeleteLocalRef(env, clazz);
+        if (result == NULL) {
+            throw_Exception(env, RUNTIME_EXCEPTION_CLASS_NAME, "Cant get global ref for %s", className);
+            return NULL;
+        }
+        return result;
+
+    }
+
+    void JNICALL deleteGlobalRef(JNIEnv *env, jobject * classRef) {
+        if (*classRef != NULL) {
+            (*env)->DeleteGlobalRef(env, *classRef);
+            *classRef = NULL;
+        }
+    }
 
     static jclass NativeErrorExceptionClass = NULL;
     static jmethodID NativeErrorException_Init_ID = NULL;
@@ -47,11 +65,7 @@ extern "C" {
     static jclass NoSuchNativeTypeExceptionClass = NULL;
     static jclass NoSuchNativeTypeMemberExceptionClass = NULL;
     static jmethodID NoSuchNativeTypeMemberException_Init_ID = NULL;
-    static jclass NullPointerExceptionClass = NULL;
-    static jclass ArrayIndexOutOfBoundsExceptionClass = NULL;
-    static jclass IndexOutOfBoundsExceptionClass = NULL;
     static jclass IllegalArgumentExceptionClass = NULL;
-    static jclass RuntimeExceptionClass = NULL;
 
     jboolean initExceptions(JNIEnv* env) {
         if (NativeErrorExceptionClass == NULL) {
@@ -94,35 +108,9 @@ extern "C" {
             }
         }
 
-        if (NullPointerExceptionClass == NULL) {
-            NullPointerExceptionClass = getGlobalClassRef(env, NULL_POINTER_EXCEPTION);
-            if (NullPointerExceptionClass == NULL) {
-                return JNI_FALSE;
-            }
-        }
-        if (IndexOutOfBoundsExceptionClass == NULL) {
-            IndexOutOfBoundsExceptionClass = getGlobalClassRef(env, INDEX_OUT_OF_BOUNDS_EXCEPTION);
-            if (IndexOutOfBoundsExceptionClass == NULL) {
-                return JNI_FALSE;
-            }
-        }
-        if (ArrayIndexOutOfBoundsExceptionClass == NULL) {
-            ArrayIndexOutOfBoundsExceptionClass = getGlobalClassRef(env, ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION);
-            if (ArrayIndexOutOfBoundsExceptionClass == NULL) {
-                return JNI_FALSE;
-            }
-        }
-
         if (IllegalArgumentExceptionClass == NULL) {
             IllegalArgumentExceptionClass = getGlobalClassRef(env, ILLEGAL_ARGUMENT_EXCEPTION);
             if (IllegalArgumentExceptionClass == NULL) {
-                return JNI_FALSE;
-            }
-        }
-
-        if (RuntimeExceptionClass == NULL) {
-            RuntimeExceptionClass = getGlobalClassRef(env, RUNTIME_EXCEPTION);
-            if (RuntimeExceptionClass == NULL) {
                 return JNI_FALSE;
             }
         }
@@ -135,11 +123,7 @@ extern "C" {
         deleteGlobalRef(env, &NoSuchNativeMethodExceptionClass);
         deleteGlobalRef(env, &NoSuchNativeTypeExceptionClass);
         deleteGlobalRef(env, &NoSuchNativeTypeMemberExceptionClass);
-        deleteGlobalRef(env, &NullPointerExceptionClass);
-        deleteGlobalRef(env, &IndexOutOfBoundsExceptionClass);
-        deleteGlobalRef(env, &ArrayIndexOutOfBoundsExceptionClass);
         deleteGlobalRef(env, &IllegalArgumentExceptionClass);
-        deleteGlobalRef(env, &RuntimeExceptionClass);
     }
 
     JNIEXPORT void JNICALL throw_NoSuchNativeMethodException(JNIEnv* env, const char* methodName) {
@@ -160,18 +144,6 @@ extern "C" {
         (*env)->Throw(env, ioeEx);
     }
 
-    JNIEXPORT void JNICALL throw_NullPointerException(JNIEnv* env, const char* message) {
-        (*env)->ThrowNew(env, NullPointerExceptionClass, message);
-    }
-
-    JNIEXPORT void JNICALL throw_IndexOutOfBoundsException(JNIEnv* env, const char* message) {
-        (*env)->ThrowNew(env, IndexOutOfBoundsExceptionClass, message);
-    }
-
-    JNIEXPORT void JNICALL throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message) {
-        (*env)->ThrowNew(env, ArrayIndexOutOfBoundsExceptionClass, message);
-    }
-
     JNIEXPORT void JNICALL throw_IllegalArgumentException(JNIEnv* env, const char* message) {
         (*env)->ThrowNew(env, IllegalArgumentExceptionClass, message);
     }
@@ -189,15 +161,6 @@ extern "C" {
             (*env)->ThrowNew(env, exceptionClass, buf);
         }
         (*env)->PopLocalFrame(env, NULL);
-    }
-
-    JNIEXPORT void JNICALL throw_RuntimeException(JNIEnv* env, const char* fmt, ...) {
-        va_list ap;
-        char buf[1024] = {0};
-        va_start(ap, fmt);
-        vsnprintf(buf, sizeof (buf) - 1, fmt, ap);
-        va_end(ap);
-        (*env)->ThrowNew(env, RuntimeExceptionClass, buf);
     }
 
 #ifdef __cplusplus

@@ -24,6 +24,7 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -61,6 +62,23 @@ public abstract class WinDef {
 
     }
 
+    public static class RegistryHKEY extends HKEY implements AutoCloseable {
+
+        protected RegistryHKEY(long value) {
+            super(value);
+        }
+
+        public static RegistryHKEY of(long value) {
+            return new RegistryHKEY(value);
+        }
+
+        @Override
+        public void close() throws Exception {
+            Winreg.RegCloseKey(this.value);
+        }
+
+    }
+
     /**
      * Wrapper for
      * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#lpbyte">LPBYTE</a>.<p>
@@ -79,29 +97,29 @@ public abstract class WinDef {
          * @param lpData
          * @return
          */
-        public static String getUnicodeString(LPBYTE lpData, boolean isNullTerminated) {
+        public static String getUnicodeString(LPBYTE lpData, boolean isNullTerminated, int bufferEnd) {
             if (isNullTerminated) {
-                return MEM_ACCESS.getUnicodeString(lpData, 0, 0, lpData.bufferEnd / SIZE_OF_WCHAR - 1);
+                return MEM_ACCESS.getUnicodeString(lpData, 0, 0, bufferEnd / SIZE_OF_WCHAR - 1);
             } else {
-                return MEM_ACCESS.getUnicodeString(lpData, 0, 0, lpData.bufferEnd / SIZE_OF_WCHAR);
+                return MEM_ACCESS.getUnicodeString(lpData, 0, 0, bufferEnd / SIZE_OF_WCHAR);
             }
         }
 
-        int bufferEnd;
-
         public LPBYTE(int size, SetMem setMem) {
             super((OpaqueMemory32) null, 0, size, setMem);
-            bufferEnd = size;
         }
 
-        public void clear() {
-            OpaqueMemory32.clear(this);
-            bufferEnd = sizeInBytes;
-        }
+    }
 
-        public void resetBufferEnd() {
-            bufferEnd = sizeInBytes;
-        }
+    /**
+     * Wrapper for
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#lpdword">LPDWORD</a>.<p>
+     * A pointer to a DWORD.<br>
+     * This type is declared in WinDef.h as follows:<br>
+     * typedef DWORD *LPDWORD;
+     * </p>
+     */
+    public static class LPDWORD extends Uint32_t {
 
     }
 

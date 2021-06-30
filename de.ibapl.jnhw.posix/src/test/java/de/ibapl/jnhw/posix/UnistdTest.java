@@ -21,8 +21,6 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotation.int8_t;
-import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
@@ -209,11 +207,11 @@ public class UnistdTest {
                 Unistd.read(readFD.int32_t(), (byte[]) null, 0, 1);
             });
 
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 Unistd.read(readFD.int32_t(), new byte[8], 1, 10);
             });
 
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 Unistd.read(readFD.int32_t(), new byte[8], -3, 10);
             });
         } finally {
@@ -238,11 +236,11 @@ public class UnistdTest {
                 Unistd.write(writeFD.int32_t(), (byte[]) null, 0, 1);
             });
 
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 Unistd.write(writeFD.int32_t(), new byte[8], 1, 10);
             });
 
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 Unistd.write(writeFD.int32_t(), new byte[8], -3, 10);
             });
         } finally {

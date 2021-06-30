@@ -130,90 +130,90 @@ extern "C" {
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    ClearCommBreak
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommBreak
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    ClearCommError
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/references/IntRef;Lde/ibapl/jnhw/winapi/Winbase/COMSTAT;)V
+ * Signature: (JJJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_ClearCommError
-  (JNIEnv *, jclass, jobject, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    EscapeCommFunction
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;I)V
+ * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_EscapeCommFunction
-  (JNIEnv *, jclass, jobject, jint);
+  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    GetCommModemStatus
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/references/IntRef;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommModemStatus
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    GetCommState
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommState
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    GetCommTimeouts
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_GetCommTimeouts
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    SetCommBreak
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommBreak
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    SetCommState
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/DCB;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommState
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    SetCommTimeouts
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winbase/COMMTIMEOUTS;)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetCommTimeouts
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    SetFileCompletionNotificationModes
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;B)V
+ * Signature: (JB)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_SetFileCompletionNotificationModes
-  (JNIEnv *, jclass, jobject, jbyte);
+  (JNIEnv *, jclass, jlong, jbyte);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Winbase
  * Method:    BindIoCompletionCallback
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase/LPOVERLAPPED_COMPLETION_ROUTINE;I)V
+ * Signature: (JJI)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Winbase_BindIoCompletionCallback
-  (JNIEnv *, jclass, jobject, jobject, jint);
+  (JNIEnv *, jclass, jlong, jlong, jint);
 
 #ifdef __cplusplus
 }

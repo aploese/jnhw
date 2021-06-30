@@ -9,27 +9,27 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_I_Mem_V_Test
- * Method:    getCallbackPtr
- * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_I_Mem_V;
+ * Method:    getCallbackPtr0
+ * Signature: ()J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1I_1Mem_1V_1Test_getCallbackPtr
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1I_1Mem_1V_1Test_getCallbackPtr0
   (JNIEnv *, jclass);
 
 /*
  * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_I_Mem_V_Test
  * Method:    setCallback
- * Signature: (Lde/ibapl/jnhw/common/callback/Callback_I_I_Mem_V;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1I_1Mem_1V_1Test_setCallback
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_I_Mem_V_Test
  * Method:    doCallTheCallback
- * Signature: (IILde/ibapl/jnhw/common/test/callbacks/Callback_I_I_Mem_V_Test/C;)V
+ * Signature: (IIJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1I_1Mem_1V_1Test_doCallTheCallback
-  (JNIEnv *, jclass, jint, jint, jobject);
+  (JNIEnv *, jclass, jint, jint, jlong);
 
 #ifdef __cplusplus
 }

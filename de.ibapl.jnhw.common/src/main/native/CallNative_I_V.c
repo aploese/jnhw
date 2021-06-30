@@ -34,11 +34,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_common_nativecall_CallNative_I_V
      * Method:    call
-     * Signature: (I)V
+     * Signature: (JI)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1I_1V_call
-    (JNIEnv *env, jobject this, jint value) {
-        (UNWRAP_NativeFunctionPointer_TO(void (*)(int32_t), this))(value);
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong ptrAddress, jint value) {
+        ((void (*)(int32_t))(uintptr_t) ptrAddress)(value);
     }
 
 #ifdef __cplusplus

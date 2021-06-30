@@ -32,7 +32,8 @@ import java.util.logging.Level;
  */
 public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
 
-    final sun.misc.Unsafe unsafe;
+    final static sun.misc.Unsafe unsafe;
+    private final static Throwable unsfeThrows;
 
     @Override
     public void setMemory32(OpaqueMemory32 mem, byte value) {
@@ -129,7 +130,7 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
         uintptr_t_AtIndex(mem, offset, index, dest.address);
     }
 
-    class UnsafeMemoryCleaner implements Runnable {
+    static class UnsafeMemoryCleaner implements Runnable {
 
         final long baseAddress;
 
@@ -149,16 +150,28 @@ public abstract class UnsafeMemoryAccessor implements MemoryAccessor {
         }
     }
 
-    public UnsafeMemoryAccessor() {
+    static {
+        sun.misc.Unsafe result = null;
+        Throwable throwable = null;
         try {
+            //            this.unsafe = sun.misc.Unsafe.getUnsafe();
             Field f = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
             f.setAccessible(true);
-            this.unsafe = (sun.misc.Unsafe) f.get(null);
-            //            this.unsafe = sun.misc.Unsafe.getUnsafe();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            result = (sun.misc.Unsafe) f.get(null);
+            throwable = null;
+        } catch (Throwable t) {
+            result = null;
+            throwable = t;
         }
-    } //            this.unsafe = sun.misc.Unsafe.getUnsafe();
+        unsafe = result;
+        unsfeThrows = throwable;
+    }
+
+    public UnsafeMemoryAccessor() {
+        if (unsafe == null) {
+            throw new RuntimeException(unsfeThrows);
+        }
+    }
 
     @Override
     public byte int8_t(OpaqueMemory32 mem, long offset) {

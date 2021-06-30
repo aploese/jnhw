@@ -48,28 +48,6 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_unix_sys_Ioctl
      * Method:    ioctl
-     * Signature: (IILde/ibapl/jnhw/common/references/IntRef;)I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IILde_ibapl_jnhw_common_references_IntRef_2
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint request, jobject value) {
-
-        if (value == NULL) {
-            throw_NullPointerException(env, "value is null");
-            return -1;
-        }
-        const int _intRef = GET_INT_REF_VALUE(value);
-
-        const int result = ioctl(fd, (uint32_t) request, &_intRef);
-        SET_INT_REF_VALUE(value, _intRef);
-        if (result < 0) {
-            throw_NativeErrorException(env, errno);
-        }
-        return result;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_Ioctl
-     * Method:    ioctl
      * Signature: (IIJ)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__IIJ

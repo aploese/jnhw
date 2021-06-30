@@ -55,6 +55,9 @@ public class ProcessEnv {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native HANDLE GetStdHandle(int nStdHandle) throws NativeErrorException;
+    public final static HANDLE GetStdHandle(int nStdHandle) throws NativeErrorException {
+        return HANDLE.of(GetStdHandle0(nStdHandle));
+    }
 
+    private static native long GetStdHandle0(int nStdHandle) throws NativeErrorException;
 }

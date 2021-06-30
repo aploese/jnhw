@@ -46,8 +46,6 @@ public class PointerArray32Test {
         LibJnhwCommonTestLoader.touch();
     }
 
-    private static native int getCachedReferencesLength(PointerArray32 pointerArray);
-
     public PointerArray32Test() {
     }
 
@@ -149,18 +147,6 @@ public class PointerArray32Test {
                 return null;
             });
         });
-    }
-
-    @Test
-    public void testCachedPointerArrayLength() {
-        PointerArray32<OpaqueMemory32> instance = new PointerArray32<>(0, SetMem.TO_0x00);
-        Assertions.assertEquals(instance.length(), getCachedReferencesLength(instance));
-
-        instance = new PointerArray32(1, SetMem.TO_0x00);
-        Assertions.assertEquals(instance.length(), getCachedReferencesLength(instance));
-
-        instance = new PointerArray32(2, SetMem.TO_0x00);
-        Assertions.assertEquals(instance.length(), getCachedReferencesLength(instance));
     }
 
 }

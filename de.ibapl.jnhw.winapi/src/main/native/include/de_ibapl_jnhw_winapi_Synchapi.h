@@ -10,66 +10,66 @@ extern "C" {
 /*
  * Class:     de_ibapl_jnhw_winapi_Synchapi
  * Method:    CreateEventW
- * Signature: (Lde/ibapl/jnhw/winapi/Minwinbase/SECURITY_ATTRIBUTES;ZZLjava/lang/String;)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+ * Signature: (JZZLjava/lang/String;)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_CreateEventW
-  (JNIEnv *, jclass, jobject, jboolean, jboolean, jstring);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_CreateEventW
+  (JNIEnv *, jclass, jlong, jboolean, jboolean, jstring);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Synchapi
  * Method:    ResetEvent
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_ResetEvent
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Synchapi
  * Method:    SetEvent
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SetEvent
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Synchapi
  * Method:    WaitForSingleObject
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;J)J
+ * Signature: (JJ)J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForSingleObject
-  (JNIEnv *, jclass, jobject, jlong);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Synchapi
  * Method:    WaitForSingleObjectEx
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;JZ)J
+ * Signature: (JJZ)J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForSingleObjectEx
-  (JNIEnv *, jclass, jobject, jlong, jboolean);
+  (JNIEnv *, jclass, jlong, jlong, jboolean);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Synchapi
- * Method:    SleepEx
+ * Method:    SleepEx0
  * Signature: (JZ)J
  */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SleepEx
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SleepEx0
   (JNIEnv *, jclass, jlong, jboolean);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Synchapi
- * Method:    WaitForMultipleObjects_ArgsOK
- * Signature: (ILde/ibapl/jnhw/winapi/Winnt/ArrayOfHandle;ZJ)J
+ * Method:    WaitForMultipleObjects
+ * Signature: (IJZJ)J
  */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjects_1ArgsOK
-  (JNIEnv *, jclass, jint, jobject, jboolean, jlong);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjects
+  (JNIEnv *, jclass, jint, jlong, jboolean, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Synchapi
- * Method:    WaitForMultipleObjectsEx_ArgsOK
- * Signature: (ILde/ibapl/jnhw/winapi/Winnt/ArrayOfHandle;ZJZ)J
+ * Method:    WaitForMultipleObjectsEx
+ * Signature: (IJZJZ)J
  */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjectsEx_1ArgsOK
-  (JNIEnv *, jclass, jint, jobject, jboolean, jlong, jboolean);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjectsEx
+  (JNIEnv *, jclass, jint, jlong, jboolean, jlong, jboolean);
 
 #ifdef __cplusplus
 }

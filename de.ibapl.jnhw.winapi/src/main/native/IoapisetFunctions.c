@@ -32,22 +32,13 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Ioapiset
      * Method:    GetOverlappedResult
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;Z)I
+     * Signature: (JJZ)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_GetOverlappedResult
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpOverlapped, jboolean bWait) {
-        if (hFile == NULL) {
-            throw_NullPointerException(env, "hFile is null.");
-            return -1;
-        }
-        if (lpOverlapped == NULL) {
-            throw_NullPointerException(env, "lpOVERLAPPED is null.");
-            return -1;
-        }
-
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrHFile, jlong ptrLpOverlapped, jboolean bWait) {
         DWORD lpNumberOfBytesTransferred;
-        if (GetOverlappedResult(UNWRAP_HANDLE(hFile),
-                UNWRAP_LPOVERLAPPED(lpOverlapped),
+        if (GetOverlappedResult((HANDLE) (uintptr_t) ptrHFile,
+                (LPOVERLAPPED) (uintptr_t) ptrLpOverlapped,
                 &lpNumberOfBytesTransferred,
                 bWait)) {
             return (int32_t) lpNumberOfBytesTransferred;
@@ -60,21 +51,12 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Ioapiset
      * Method:    CancelIoEx
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;Lde/ibapl/jnhw/winapi/Minwinbase$OVERLAPPED;)V
+     * Signature: (JJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_CancelIoEx
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile, jobject lpOverlapped) {
-        if (hFile == NULL) {
-            throw_NullPointerException(env, "hFile is null.");
-            return;
-        }
-        if (lpOverlapped == NULL) {
-            throw_NullPointerException(env, "lpOVERLAPPED is null.");
-            return;
-        }
-
-        if (!CancelIoEx(UNWRAP_HANDLE(hFile),
-                UNWRAP_LPOVERLAPPED(lpOverlapped))) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrHFile, jlong ptrLpOverlapped) {
+        if (!CancelIoEx((HANDLE) (uintptr_t) ptrHFile,
+                (LPOVERLAPPED) (uintptr_t) ptrLpOverlapped)) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
@@ -82,42 +64,33 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Ioapiset
      * Method:    CancelIo
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_CancelIo
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hFile) {
-        if (hFile == NULL) {
-            throw_NullPointerException(env, "hFile is null.");
-            return;
-        }
-        if (!CancelIo(UNWRAP_HANDLE(hFile))) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrHFile) {
+        if (!CancelIo((HANDLE) (uintptr_t) ptrHFile)) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }
 
-/*
- * Class:     de_ibapl_jnhw_winapi_Ioapiset
- * Method:    DeviceIoControl
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;ILde/ibapl/jnhw/common/memory/OpaqueMemory32;Lde/ibapl/jnhw/common/memory/OpaqueMemory32;Lde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_DeviceIoControl
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hDevice, jint dwIoControlCode, jobject lpInBuffer,
-            jobject lpOutBuffer, jobject lpOverlapped) {
-        if (hDevice == NULL) {
-            throw_NullPointerException(env, "hDevice is null.");
-            return -1;
-        }
+    /*
+     * Class:     de_ibapl_jnhw_winapi_Ioapiset
+     * Method:    DeviceIoControl
+     * Signature: (JIJIJIJ)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_DeviceIoControl
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrHDevice, jint dwIoControlCode, jlong ptrLpInBuffer, jint nInBufferSize, jlong ptrLpOutBuffer, jint nOutBufferSize, jlong ptrLpOverlapped) {
         DWORD _BytesReturned;
 
-        if (!DeviceIoControl(UNWRAP_HANDLE(hDevice),
+        if (!DeviceIoControl((HANDLE) (uintptr_t) ptrHDevice,
                 (uint32_t) dwIoControlCode,
-                UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_OR_NULL(lpInBuffer),
-                lpInBuffer == NULL ? 0 : (uint32_t)SIZE_OF_OPAQUE_MEM_32(lpInBuffer),
-                UNWRAP_ABSTRACT_MEM_TO_VOID_PTR_OR_NULL(lpOutBuffer),
-                lpOutBuffer == NULL ? 0 : (uint32_t)SIZE_OF_OPAQUE_MEM_32(lpOutBuffer),
+                (void*) (uintptr_t) ptrLpInBuffer,
+                (uint32_t) nInBufferSize,
+                (void*) (uintptr_t) ptrLpOutBuffer,
+                (uint32_t) nOutBufferSize,
                 &_BytesReturned,
-                UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped))) {
-            if (((UNWRAP_LPOVERLAPPED_OR_NULL(lpOverlapped)) == NULL) || (GetLastError() != ERROR_IO_PENDING)) {
+                (LPOVERLAPPED) (uintptr_t) ptrLpOverlapped)) {
+            if ((((LPOVERLAPPED) (uintptr_t) ptrLpOverlapped) == NULL) || (GetLastError() != ERROR_IO_PENDING)) {
                 //if lpOverlapped is not NULL and GetLastError() == ERROR_IO_PENDING is not an error condition
                 throw_NativeErrorException(env, (int32_t) GetLastError());
             }

@@ -32,16 +32,16 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_ProcessEnv
      * Method:    GetStdHandle
-     * Signature: (IZ)Lde/ibapl/jnhw/winapi/Winnt$HANDLE;
+     * Signature: (IZ)J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_GetStdHandle
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_GetStdHandle
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nStdHandle) {
         HANDLE result = GetStdHandle((uint32_t) nStdHandle);
         if (result == INVALID_HANDLE_VALUE) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
-            return NULL;
+            return (int64_t) (uintptr_t) NULL;
         }
-        return CREATE_HANDLE(result);
+        return (int64_t) (uintptr_t) result;
     }
 
 #endif

@@ -27,7 +27,6 @@ import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.util.OutputStreamAppender;
 import de.ibapl.jnhw.posix.Aio;
 import de.ibapl.jnhw.posix.Errno;
@@ -46,7 +45,7 @@ public class Posix {
     long transmitted;
     final Aio.Aiocb<NativeRunnable> aiocb;
 
-    final ObjectRef objRef = new ObjectRef<>(null);
+    final Object[] objRef = new Object[1];
 
     //This is the callback to be called from the native side.
     final NativeRunnable callback = new NativeRunnable() {
@@ -69,7 +68,7 @@ public class Posix {
                 debug("NoSuchNativeMethodException within callback: " + nsnme);
             }
             synchronized (objRef) {
-                objRef.value = aiocb;
+                objRef[0] = aiocb;
                 objRef.notify();
             }
             debugThread("Leave callback");
@@ -110,19 +109,19 @@ public class Posix {
         //Aio.aio_fsync(Fcntl.O_DSYNC(), aiocb); // enabling this 9 bytes will be reported in callback. and the call back is called twice,
         //Wait debug is slow, so we are here before the callback finishes...
         synchronized (objRef) {
-            if (objRef.value == null) {
+            if (objRef[0] == null) {
                 debug("Wait for write callback to finish!");
                 objRef.wait(1000);
             }
         }
 
-        if (objRef.value != aiocb) {
+        if (objRef[0] != aiocb) {
             throw new RuntimeException("Excpected handler was called!");
         } else {
             debug("Data written");
         }
 
-        objRef.value = null;
+        objRef[0] = null;
         OpaqueMemory32.clear(aioBuffer);
 
         debug("Will now read");
@@ -135,14 +134,14 @@ public class Posix {
         //Aio.aio_fsync(Fcntl.O_DSYNC(), aiocb);
         //Wait debug is slow, so we are here before the callback finishes...
         synchronized (objRef) {
-            if (objRef.value == null) {
+            if (objRef[0] == null) {
                 debug("Wait for read callback to finish!");
                 objRef.wait(100);
             }
         }
 
-        if (objRef.value != aiocb) {
-            throw new RuntimeException("Excpected handler was called! " + objRef.value);
+        if (objRef[0] != aiocb) {
+            throw new RuntimeException("Excpected handler was called! " + objRef[0]);
         } else {
             debug("Data read");
         }

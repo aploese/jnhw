@@ -31,10 +31,6 @@ import java.util.function.Function;
  */
 public class FunctionPtr_I_V extends NativeFunctionPointer {
 
-    public static FunctionPtr_I_V ofUintptr_t(long nativeAddress) {
-        return new FunctionPtr_I_V(nativeAddress);
-    }
-
     protected <T extends FunctionPtr_I_V> FunctionPtr_I_V(Function<T, NativeAddressHolder> producer) {
         super(producer);
     }
@@ -45,10 +41,6 @@ public class FunctionPtr_I_V extends NativeFunctionPointer {
 
     public FunctionPtr_I_V(NativeAddressHolder src) {
         super(src);
-    }
-
-    protected FunctionPtr_I_V(long nativeAddress) {
-        super(nativeAddress);
     }
 
 }

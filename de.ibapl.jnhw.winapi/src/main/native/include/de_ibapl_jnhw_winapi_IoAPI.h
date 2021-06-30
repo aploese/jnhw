@@ -10,26 +10,26 @@ extern "C" {
 /*
  * Class:     de_ibapl_jnhw_winapi_IoAPI
  * Method:    CreateIoCompletionPort
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/winapi/Winnt/HANDLE;JI)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+ * Signature: (JJJI)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_CreateIoCompletionPort
-  (JNIEnv *, jclass, jobject, jobject, jlong, jint);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_CreateIoCompletionPort
+  (JNIEnv *, jclass, jlong, jlong, jlong, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_IoAPI
  * Method:    GetQueuedCompletionStatus
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;Lde/ibapl/jnhw/common/references/IntRef;Lde/ibapl/jnhw/common/references/LongRef;Lde/ibapl/jnhw/common/references/ObjectRef;J)V
+ * Signature: (JJJJ)J
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_GetQueuedCompletionStatus
-  (JNIEnv *, jclass, jobject, jobject, jobject, jobject, jlong);
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_GetQueuedCompletionStatus
+  (JNIEnv *, jclass, jlong, jlong, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_IoAPI
  * Method:    PostQueuedCompletionStatus
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;IJLde/ibapl/jnhw/winapi/Minwinbase/OVERLAPPED;)V
+ * Signature: (JIJJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_IoAPI_PostQueuedCompletionStatus
-  (JNIEnv *, jclass, jobject, jint, jlong, jobject);
+  (JNIEnv *, jclass, jlong, jint, jlong, jlong);
 
 #ifdef __cplusplus
 }

@@ -23,6 +23,7 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
@@ -57,7 +58,11 @@ public final class Ioapiset {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void CancelIo(HANDLE hFile) throws NativeErrorException;
+    public final static void CancelIo(HANDLE hFile) throws NativeErrorException {
+        CancelIo(HANDLE.getHandleValue(hFile));
+    }
+
+    private static native void CancelIo(long ptrHFile) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-cancelioex">CancelIoEx</a>
@@ -72,7 +77,11 @@ public final class Ioapiset {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void CancelIoEx(HANDLE hFile, OVERLAPPED lpOverlapped) throws NativeErrorException;
+    public final static void CancelIoEx(HANDLE hFile, OVERLAPPED lpOverlapped) throws NativeErrorException {
+        CancelIoEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpOverlapped));
+    }
+
+    private static native void CancelIoEx(long ptrHFile, long ptrLpOverlapped) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-getoverlappedresult">GetOverlappedResult</a>
@@ -96,7 +105,11 @@ public final class Ioapiset {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native int GetOverlappedResult(HANDLE hFile, OVERLAPPED lpOverlapped, boolean bWait) throws NativeErrorException;
+    public final static int GetOverlappedResult(HANDLE hFile, OVERLAPPED lpOverlapped, boolean bWait) throws NativeErrorException {
+        return GetOverlappedResult(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpOverlapped), bWait);
+    }
+
+    private static native int GetOverlappedResult(long ptrHFile, long ptrLpOverlapped, boolean bWait) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-getoverlappedresult">GetOverlappedResult</a>
@@ -126,7 +139,7 @@ public final class Ioapiset {
      * indicates an error.
      */
     public final static int GetOverlappedResult(HANDLE hFile, OVERLAPPED lpOverlapped, ByteBuffer lpBuffer, boolean bWait) throws NativeErrorException {
-        int numberOfBytesTransferred = GetOverlappedResult(hFile, lpOverlapped, bWait);
+        int numberOfBytesTransferred = GetOverlappedResult(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpOverlapped), bWait);
         lpBuffer.position(lpBuffer.position() + numberOfBytesTransferred);
         return numberOfBytesTransferred;
     }
@@ -148,11 +161,22 @@ public final class Ioapiset {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native int DeviceIoControl(HANDLE hDevice,
+    public final static int DeviceIoControl(HANDLE hDevice,
             int dwIoControlCode,
             OpaqueMemory32 lpInBuffer,
             OpaqueMemory32 lpOutBuffer,
             OVERLAPPED lpOverlapped
+    ) throws NativeErrorException {
+        return DeviceIoControl(HANDLE.getHandleValue(hDevice), dwIoControlCode, AbstractNativeMemory.getAddress(lpInBuffer), lpInBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOutBuffer), lpOutBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOverlapped));
+    }
+
+    private static native int DeviceIoControl(long ptrHDevice,
+            int dwIoControlCode,
+            long ptrLpInBuffer,
+            int nInBufferSize,
+            long ptrLpOutBuffer,
+            int nOutBufferSize,
+            long ptrLpOverlapped
     ) throws NativeErrorException;
 
 }

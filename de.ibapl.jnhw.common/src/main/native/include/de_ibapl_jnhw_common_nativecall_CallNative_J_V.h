@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     de_ibapl_jnhw_common_nativecall_CallNative_J_V
  * Method:    call
- * Signature: (J)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1J_1V_call
-  (JNIEnv *, jobject, jlong);
+  (JNIEnv *, jclass, jlong, jlong);
 
 #ifdef __cplusplus
 }

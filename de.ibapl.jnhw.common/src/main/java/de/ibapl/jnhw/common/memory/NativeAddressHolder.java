@@ -29,7 +29,7 @@ import de.ibapl.jnhw.common.util.JnhwFormater;
  *
  * @author aploese
  */
-public final class NativeAddressHolder {
+public final class NativeAddressHolder<T> {
 
     public final static NativeAddressHolder NULL = new NativeAddressHolder(0L);
 

@@ -9,10 +9,10 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_winapi_ProcessEnv
- * Method:    GetStdHandle
- * Signature: (I)Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+ * Method:    GetStdHandle0
+ * Signature: (I)J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_GetStdHandle
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_ProcessEnv_GetStdHandle0
   (JNIEnv *, jclass, jint);
 
 #ifdef __cplusplus

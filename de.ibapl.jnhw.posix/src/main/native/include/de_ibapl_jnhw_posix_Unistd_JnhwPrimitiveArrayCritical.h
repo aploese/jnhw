@@ -9,18 +9,18 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd_JnhwPrimitiveArrayCritical
- * Method:    read
+ * Method:    read0
  * Signature: (I[BII)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_00024JnhwPrimitiveArrayCritical_read
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_00024JnhwPrimitiveArrayCritical_read0
   (JNIEnv *, jclass, jint, jbyteArray, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd_JnhwPrimitiveArrayCritical
- * Method:    write
+ * Method:    write0
  * Signature: (I[BII)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_00024JnhwPrimitiveArrayCritical_write
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_00024JnhwPrimitiveArrayCritical_write0
   (JNIEnv *, jclass, jint, jbyteArray, jint, jint);
 
 #ifdef __cplusplus

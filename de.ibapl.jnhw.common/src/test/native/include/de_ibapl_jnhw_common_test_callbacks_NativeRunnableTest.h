@@ -9,27 +9,27 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
- * Method:    getCallbackPtr
- * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
+ * Method:    getCallbackPtr0
+ * Signature: ()J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_getCallbackPtr
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_getCallbackPtr0
   (JNIEnv *, jclass);
 
 /*
  * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
  * Method:    setCallback
- * Signature: (Lde/ibapl/jnhw/common/callback/Callback_NativeRunnable;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_setCallback
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
  * Method:    doCallTheCallback
- * Signature: (Lde/ibapl/jnhw/common/callback/NativeRunnable;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_doCallTheCallback
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest

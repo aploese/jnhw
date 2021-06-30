@@ -46,15 +46,6 @@ public class CallNative_Mem_V<A extends AbstractNativeMemory> extends FunctionPt
         return new CallNative_Mem_V(src);
     }
 
-    /**
-     * Called from native code...
-     *
-     * @param nativeAddress
-     */
-    protected CallNative_Mem_V(long nativeAddress) {
-        super(nativeAddress);
-    }
-
     public CallNative_Mem_V(NativeFunctionPointer src) {
         super(src);
     }
@@ -68,5 +59,9 @@ public class CallNative_Mem_V<A extends AbstractNativeMemory> extends FunctionPt
      *
      * @param value
      */
-    public native void call(A a);
+    public void call(A a) {
+        call(nativeAddress, AbstractNativeMemory.getAddress(a));
+    }
+
+    public native void call(long ptrAddress, long ptrA);
 }

@@ -36,6 +36,10 @@ public abstract class AbstractNativeMemory {
 
     public final static long NULL = 0L;
 
+    public static <T extends AbstractNativeMemory> NativeAddressHolder<T> toNativeAddressHolder(T value) {
+        return NativeAddressHolder.ofUintptr_t(((AbstractNativeMemory) value).baseAddress);
+    }
+
     public static enum SetMem {
         DO_NOT_SET(false, (byte) 0),
         TO_0x00(false, (byte) 0x00),

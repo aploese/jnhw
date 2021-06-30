@@ -32,33 +32,34 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
-     * Method:    getCallbackPtr
-     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;
+     * Method:    getCallbackPtr0
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_getCallbackPtr
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return CREATE_NativeFunctionPointer(callbackPtr);
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_getCallbackPtr0
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uintptr_t) callbackPtr;
     }
 
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
      * Method:    setCallback
-     * Signature: (Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_setCallback
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
-        callbackPtr = UNWRAP_NativeFunctionPointer_TO(void (*)(void*), callback);
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong ptrCallback) {
+        callbackPtr = (void (*)(void*)) (uintptr_t) ptrCallback;
     }
 
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest
      * Method:    doCallTheCallback
-     * Signature: (Lde/ibapl/jnhw/common/callbacks/NativeRunnable;)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_doCallTheCallback
-    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject a) {
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong ptrA) {
         //TODO deattachCurrentThread?
-        callbackPtr(UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(a));
+
+        callbackPtr((void*) (uintptr_t) ptrA);
         //TODO attachCurrentThread?
     }
 
@@ -70,6 +71,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_NativeRunnableTest_doCallRunnable
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject runnable) {
         //TODO deattachCurrentThread?
+
         callbackPtr(&runnable);
         //TODO attachCurrentThread?
     }

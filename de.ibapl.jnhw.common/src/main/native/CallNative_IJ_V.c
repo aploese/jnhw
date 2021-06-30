@@ -36,13 +36,13 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_common_nativecall_CallNative_IJ_V
      * Method:    call
-     * Signature: (J)V
+     * Signature: (JJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_nativecall_CallNative_1IJ_1V_call
-    (JNIEnv *env, jobject this, jlong value) {
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong ptrAddress, jlong value) {
 #if defined(__LP64__) || defined(_WIN64)
         static_assert(sizeof (intptr_t) == 8, "sizeof(intptr_t) != 8)");
-        (UNWRAP_NativeFunctionPointer_TO(void (*)(int64_t), this))(value);
+        ((void (*)(int64_t))(uintptr_t) ptrAddress)(value);
 #else
         static_assert(sizeof (intptr_t) == 4, "sizeof(intptr_t) != 4)");
         if (value > INT32_MAX) {
@@ -50,7 +50,7 @@ extern "C" {
         } else if (value < INT32_MIN) {
             throw_IllegalArgumentException(env, "value < INT32_MIN!");
         } else {
-            (UNWRAP_NativeFunctionPointer_TO(void (*)(int32_t), this))((int32_t) value);
+            ((void (*)(int32_t))(uintptr_t) ptrAddress)((int32_t) value);
         }
 #endif
     }

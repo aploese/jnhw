@@ -39,15 +39,7 @@ extern "C" {
 
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NoSuchNativeTypeException(JNIEnv* env, const char* type);
 
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_NullPointerException(JNIEnv* env, const char* message);
-
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_ArrayIndexOutOfBoundsException(JNIEnv* env, const char* message);
-
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_IndexOutOfBoundsException(JNIEnv* env, const char* message);
-
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_IllegalArgumentException(JNIEnv* env, const char* message);
-
-    _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_RuntimeException(JNIEnv* env, const char* fmt, ...);
 
     _JNHW_IMPORT_OR_EXPORT_ extern void JNICALL throw_Exception(JNIEnv* env, const char* exceptionName, const char* fmt, ...);
 

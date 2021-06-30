@@ -23,8 +23,6 @@ package de.ibapl.jnhw.common.test.callbacks;
 
 import de.ibapl.jnhw.common.callback.Callback_I_Mem_Mem_V;
 import de.ibapl.jnhw.common.callback.Callback_I_Mem_Mem_V_Impl;
-import de.ibapl.jnhw.common.references.ObjectRef;
-import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
@@ -88,11 +86,23 @@ public class Callback_I_Mem_Mem_V_Test {
     public Callback_I_Mem_Mem_V_Test() {
     }
 
-    private static native FunctionPtr_I_Mem_Mem_V getCallbackPtr();
+    private static FunctionPtr_I_Mem_Mem_V getCallbackPtr() {
+        return new FunctionPtr_I_Mem_Mem_V(NativeAddressHolder.ofUintptr_t(getCallbackPtr0()));
+    }
 
-    private static native void setCallback(Callback_I_Mem_Mem_V<A, B> callback);
+    private static native long getCallbackPtr0();
 
-    private static native void doCallTheCallback(int value, A a, B b);
+    private static void setCallback(Callback_I_Mem_Mem_V<A, B> callback) {
+        setCallback(NativeFunctionPointer.getNativeAddress(callback));
+    }
+
+    private static native void setCallback(long ptrCallback);
+
+    private static void doCallTheCallback(int value, A a, B b) {
+        doCallTheCallback(value, AbstractNativeMemory.getAddress(a), AbstractNativeMemory.getAddress(b));
+    }
+
+    private static native void doCallTheCallback(int value, long ptrA, long ptrB);
 
     private class DummyCB32 extends Callback_I_Mem_Mem_V_Impl<OpaqueMemory32, OpaqueMemory32> {
 

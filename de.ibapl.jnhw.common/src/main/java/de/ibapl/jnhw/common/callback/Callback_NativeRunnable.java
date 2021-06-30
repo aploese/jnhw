@@ -58,6 +58,10 @@ public class Callback_NativeRunnable extends NativeFunctionPointer implements Na
      *
      * @return
      */
-    private static native NativeAddressHolder aquire();
+    private static NativeAddressHolder aquire() {
+        return NativeAddressHolder.ofUintptr_t(aquire0());
+    }
+
+    private static native long aquire0();
 
 }

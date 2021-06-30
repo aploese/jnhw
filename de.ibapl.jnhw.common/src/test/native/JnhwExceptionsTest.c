@@ -69,52 +69,12 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
-     * Method:    throwNullPointerException
-     * Signature: ()V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwNullPointerException
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        throw_NullPointerException(env, "arg0");
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
-     * Method:    throwArrayIndexOutOfBoundsException
-     * Signature: ()V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwArrayIndexOutOfBoundsException
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        throw_ArrayIndexOutOfBoundsException(env, "arg_array_index");
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
-     * Method:    throwIndexOutOfBoundsException
-     * Signature: ()V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwIndexOutOfBoundsException
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        throw_IndexOutOfBoundsException(env, "arg_index");
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
      * Method:    throwIllegalArgumentException
      * Signature: ()V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwIllegalArgumentException
     (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         throw_IllegalArgumentException(env, "arg_illegal");
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest
-     * Method:    throwRuntimeException
-     * Signature: ()V
-     */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_exceptions_JnhwExceptionsTest_throwRuntimeException
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        throw_RuntimeException(env, "runtime %d", 42);
     }
 
     /*

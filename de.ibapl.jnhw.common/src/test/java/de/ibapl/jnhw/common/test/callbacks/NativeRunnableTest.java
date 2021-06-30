@@ -22,9 +22,10 @@
 package de.ibapl.jnhw.common.test.callbacks;
 
 import de.ibapl.jnhw.common.callback.Callback_NativeRunnable;
-import de.ibapl.jnhw.common.references.IntRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.callback.NativeRunnable;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
@@ -52,11 +53,23 @@ public class NativeRunnableTest {
     public NativeRunnableTest() {
     }
 
-    private static native NativeFunctionPointer getCallbackPtr();
+    private static NativeFunctionPointer getCallbackPtr() {
+        return new NativeFunctionPointer(NativeAddressHolder.ofUintptr_t(getCallbackPtr0()));
+    }
 
-    private static native void setCallback(Callback_NativeRunnable callback);
+    private static native long getCallbackPtr0();
 
-    private static native void doCallTheCallback(NativeRunnable a);
+    private static void setCallback(Callback_NativeRunnable callback) {
+        setCallback(NativeFunctionPointer.getNativeAddress(callback));
+    }
+
+    private static native void setCallback(long ptrCallback);
+
+    private static void doCallTheCallback(NativeRunnable a) {
+        doCallTheCallback(AbstractNativeMemory.getAddress(a));
+    }
+
+    private static native void doCallTheCallback(long ptrA);
 
     private static native void doCallRunnable(Runnable runnable);
 
@@ -68,11 +81,11 @@ public class NativeRunnableTest {
     @Test
     public void testCallback() {
         System.out.println("release");
-        final IntRef intRef = new IntRef(0);
+        final Integer[] intRef = new Integer[1];
         NativeRunnable nativeRunnable = new NativeRunnable() {
             @Override
             protected void callback() {
-                intRef.value = 42;
+                intRef[0] = 42;
             }
 
         };
@@ -85,7 +98,7 @@ public class NativeRunnableTest {
 
         doCallTheCallback(nativeRunnable);
 
-        assertEquals(42, intRef.value);
+        assertEquals(42, intRef[0]);
 
     }
 

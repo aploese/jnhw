@@ -26,6 +26,8 @@ import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import de.ibapl.jnhw.winapi.Winnt.PAPCFUNC;
 import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 
 /**
  * Wrapper around the
@@ -61,7 +63,11 @@ public abstract class Processthreadsapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, @ULONG_PTR long dwData);
+    public final static void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, @ULONG_PTR long dwData) throws NativeErrorException {
+        QueueUserAPC(NativeFunctionPointer.getNativeAddress(pfnAPC), HANDLE.getHandleValue(hThread), dwData);
+    }
+
+    public final static native void QueueUserAPC(long ptrPfnAPC, long ptrHThread, @ULONG_PTR long dwData) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthread">GetCurrentThread</a>
@@ -70,5 +76,9 @@ public abstract class Processthreadsapi {
      * @return a pseudo handle for the current thread.
      *
      */
-    public final static native HANDLE GetCurrentThread();
+    public final static HANDLE GetCurrentThread() {
+        return HANDLE.of(GetCurrentThread0());
+    }
+
+    private static native long GetCurrentThread0();
 }

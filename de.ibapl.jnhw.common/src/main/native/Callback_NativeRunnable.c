@@ -56,19 +56,19 @@ extern "C" {
     void _jnhw_callback_NativeRunnable_V__(void* ptr_a) {
         JNIEnv *env;
         (*jvm)->AttachCurrentThread(jvm, (void**) &env, NULL);
-        //Do not check with instanceof for NativeRunnable it may be to slow ...    
+        //Do not check with instanceof for NativeRunnable it may be to slow ...
         (*env)->CallVoidMethod(env, *(jobject*) ptr_a, callback_ID);
         (*jvm)->DetachCurrentThread(jvm);
     }
 
     /*
      * Class:     de_ibapl_jnhw_common_callback_Callback_NativeRunnable
-     * Method:    aquire
-     * Signature: ()Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+     * Method:    aquire0
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1NativeRunnable_aquire
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return CREATE_NativeAddressHolder(&_jnhw_callback_NativeRunnable_V__);
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_callback_Callback_1NativeRunnable_aquire0
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return (int64_t) (uintptr_t) & _jnhw_callback_NativeRunnable_V__;
     }
 
 #ifdef __cplusplus

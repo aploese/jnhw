@@ -46,10 +46,6 @@ public class CallNative_I_Mem_Mem_V<A extends AbstractNativeMemory, B extends Ab
         return new CallNative_I_Mem_Mem_V(src);
     }
 
-    protected CallNative_I_Mem_Mem_V(long nativeAddress) {
-        super(nativeAddress);
-    }
-
     public CallNative_I_Mem_Mem_V(NativeAddressHolder src) {
         super(src);
     }
@@ -63,5 +59,9 @@ public class CallNative_I_Mem_Mem_V<A extends AbstractNativeMemory, B extends Ab
      *
      * @param value
      */
-    public native void call(int value, A a, B b);
+    public void call(int value, A a, B b) {
+        call(nativeAddress, value, AbstractNativeMemory.getAddress(a), AbstractNativeMemory.getAddress(b));
+    }
+
+    private static native void call(long ptrAddress, int value, long ptrAa, long ptrB);
 }

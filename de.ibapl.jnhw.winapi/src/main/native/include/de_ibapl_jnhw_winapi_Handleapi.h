@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     de_ibapl_jnhw_winapi_Handleapi
  * Method:    CloseHandle
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/HANDLE;)V
+ * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Handleapi_CloseHandle
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jlong);
 
 #ifdef __cplusplus
 }

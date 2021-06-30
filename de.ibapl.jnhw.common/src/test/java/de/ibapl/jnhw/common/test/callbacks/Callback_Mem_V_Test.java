@@ -23,7 +23,6 @@ package de.ibapl.jnhw.common.test.callbacks;
 
 import de.ibapl.jnhw.common.callback.Callback_Mem_V;
 import de.ibapl.jnhw.common.callback.Callback_Mem_V_Impl;
-import de.ibapl.jnhw.common.references.ObjectRef;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Memory32Heap;
@@ -72,11 +71,23 @@ public class Callback_Mem_V_Test {
     public Callback_Mem_V_Test() {
     }
 
-    private static native FunctionPtr_Mem_V getCallbackPtr();
+    private static FunctionPtr_Mem_V getCallbackPtr() {
+        return new FunctionPtr_Mem_V(NativeAddressHolder.ofUintptr_t(getCallbackPtr0()));
+    }
 
-    private static native void setCallback(Callback_Mem_V<A> callback);
+    private static native long getCallbackPtr0();
 
-    private static native void doCallTheCallback(A a);
+    private static void setCallback(Callback_Mem_V<A> callback) {
+        setCallback(NativeFunctionPointer.getNativeAddress(callback));
+    }
+
+    private static native void setCallback(long ptrCallback);
+
+    private static void doCallTheCallback(A a) {
+        doCallTheCallback(AbstractNativeMemory.getAddress(a));
+    }
+
+    private static native void doCallTheCallback(long ptrA);
 
     private class DummyCB extends Callback_Mem_V_Impl<AbstractNativeMemory> {
 
@@ -139,13 +150,13 @@ public class Callback_Mem_V_Test {
     @Test
     public void testReleaseByGarbageCollector() {
         System.out.println("release");
-        final ObjectRef<A> refA = new ObjectRef<>();
+        final A[] refA = new A[1];
         A a = new A();
         Callback_Mem_V_Impl<A> callback = new Callback_Mem_V_Impl<>() {
 
             @Override
             protected void callback(A a) {
-                refA.value = a;
+                refA[0] = a;
             }
 
             @Override
@@ -162,13 +173,13 @@ public class Callback_Mem_V_Test {
         assertSame(Callback_Mem_V_Impl.find(getCallbackPtr()), callback);
 
         doCallTheCallback(a);
-        assertEquals(a, refA.value);
-        assertNotSame(a, refA.value);
+        assertEquals(a, refA[0]);
+        assertNotSame(a, refA[0]);
 
-        refA.value = null;
+        refA[0] = null;
         CallNative_Mem_V.wrap(getCallbackPtr()).call(a);
-        assertEquals(a, refA.value);
-        assertNotSame(a, refA.value);
+        assertEquals(a, refA[0]);
+        assertNotSame(a, refA[0]);
 
         callback = null;
 
@@ -180,9 +191,9 @@ public class Callback_Mem_V_Test {
         assertEquals(getCallbackPtr(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
-        refA.value = null;
+        refA[0] = null;
         doCallTheCallback(a);
-        assertNull(refA.value);
+        assertNull(refA[0]);
     }
 
     /**
@@ -192,7 +203,7 @@ public class Callback_Mem_V_Test {
     public void testReleaseByGarbageCollectorAndCleanup() throws Exception {
         System.out.println("release");
         Cleaner CLEANER = Cleaner.create();
-        final ObjectRef<A> refA = new ObjectRef<>();
+        final A[] refA = new A[1];
         A a = new A();
 
         @SuppressWarnings("unchecked")
@@ -206,7 +217,7 @@ public class Callback_Mem_V_Test {
 
             @Override
             protected void callback(A a) {
-                refA.value = a;
+                refA[0] = a;
             }
 
             @Override
@@ -223,8 +234,8 @@ public class Callback_Mem_V_Test {
 
         assertEquals(getCallbackPtr(), callback);
         doCallTheCallback(a);
-        assertEquals(a, refA.value);
-        assertNotSame(a, refA.value);
+        assertEquals(a, refA[0]);
+        assertNotSame(a, refA[0]);
 
         callback = null;
 

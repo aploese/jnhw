@@ -58,20 +58,24 @@ public abstract class NativeRunnable extends OpaqueMemory32 {
         }
     }
 
-    private native void aquireObjectRef();
+    private native void aquireObjectRef(long ptrBaseAddress);
 
     /**
      * release the object ref on the natice side to allow garbage collection of
      * this object
      */
     //TODO When???
-    public native void releaseObjectRef();
+    public void releaseObjectRef() {
+        releaseObjectRef(baseAddress);
+    }
+
+    private static native void releaseObjectRef(long ptrBaseAddress);
 
     public static native int sizeOf_ObjectRef();
 
     public NativeRunnable() {
         super(null, 0L, sizeOf_ObjectRef(), SetMem.DO_NOT_SET);
-        aquireObjectRef();
+        aquireObjectRef(baseAddress);
     }
 
     protected abstract void callback();

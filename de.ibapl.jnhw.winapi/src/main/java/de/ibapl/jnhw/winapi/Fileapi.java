@@ -24,9 +24,11 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.Int8_t;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.OpaqueMemory64;
-import de.ibapl.jnhw.common.references.ByteRef;
 import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
@@ -34,6 +36,7 @@ import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
 /**
  * Wrapper around the
@@ -125,7 +128,11 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native HANDLE CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException;
+    public final static HANDLE CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException {
+        return HANDLE.of(CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, AbstractNativeMemory.getAddressOrNULL(lpSecurityAttributes), dwCreationDisposition, dwFlagsAndAttributes, HANDLE.getHandleValue(hTemplateFile)));
+    }
+
+    private static native long CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, long ptrLpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, long prtHTemplateFile) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew">CreateFileW</a>
@@ -157,7 +164,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static HANDLE CreateFileW(File file, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException {
-        return CreateFileW(file.getAbsolutePath(), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+        return HANDLE.of(CreateFileW(file.getAbsolutePath(), dwDesiredAccess, dwShareMode, AbstractNativeMemory.getAddressOrNULL(lpSecurityAttributes), dwCreationDisposition, dwFlagsAndAttributes, HANDLE.getHandleValue(hTemplateFile)));
     }
 
     /**
@@ -172,7 +179,11 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void FlushFileBuffers(HANDLE hFile) throws NativeErrorException;
+    public final static void FlushFileBuffers(HANDLE hFile) throws NativeErrorException {
+        FlushFileBuffers(HANDLE.getHandleValue(hFile));
+    }
+
+    private static native void FlushFileBuffers(long ptrHFile) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
@@ -197,7 +208,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native int ReadFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToRead) throws NativeErrorException;
+    public final static int ReadFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToRead) throws NativeErrorException {
+        Objects.checkFromIndexSize(off, nNumberOfBytesToRead, lpBuffer.length);
+        return ReadFile(HANDLE.getHandleValue(hFile), lpBuffer, off, nNumberOfBytesToRead);
+    }
+
+    private static native int ReadFile(long ptrHFile, byte[] lpBuffer, int off, int nNumberOfBytesToRead) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
@@ -220,7 +236,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static int ReadFile(HANDLE hFile, byte[] lpBuffer) throws NativeErrorException {
-        return ReadFile(hFile, lpBuffer, 0, lpBuffer.length);
+        return ReadFile(HANDLE.getHandleValue(hFile), lpBuffer, 0, lpBuffer.length);
     }
 
     /**
@@ -246,7 +262,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native int ReadFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToRead) throws NativeErrorException;
+    public final static int ReadFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToRead) throws NativeErrorException {
+        OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
+        return ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead);
+    }
+
+    private static native int ReadFile(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToRead) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
@@ -265,13 +286,18 @@ public final class Fileapi {
      *
      * @throws NullPointerException if hFile or lpBuffer is {@code null}.
      *
-     * @throws ArrayIndexOutOfBoundsException if pos and nNumberOfBytesToRead
-     * are outside of lpBuffer.
+     * @throws IndexOutOfBoundsException if pos and nNumberOfBytesToRead are
+     * outside of lpBuffer.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native int ReadFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead) throws NativeErrorException;
+    public final static int ReadFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead) throws NativeErrorException {
+        OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
+        return ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead);
+    }
+
+    private static native int ReadFile(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToRead) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
@@ -290,7 +316,9 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native int ReadFile(HANDLE hFile, ByteRef b) throws NativeErrorException;
+    public final static int ReadFile(HANDLE hFile, Int8_t b) throws NativeErrorException {
+        return ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(b), 0, 1);
+    }
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
@@ -316,7 +344,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void ReadFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped) throws NativeErrorException;
+    public final static void ReadFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped) throws NativeErrorException {
+        OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
+        ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.getAddress(lpOverlapped));
+    }
+
+    private static native void ReadFile(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToRead, long ptrLpOverlapped) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
@@ -342,7 +375,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void ReadFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped) throws NativeErrorException;
+    public static void ReadFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped) throws NativeErrorException {
+        OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
+        ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.getAddress(lpOverlapped));
+    }
+
+    private static native void ReadFile(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToRead, long ptrLpOverlapped) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">ReadFile</a>
@@ -363,7 +401,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFile(HANDLE hFile, OpaqueMemory32 lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
-        ReadFile(hFile, lpBuffer, 0, lpBuffer.sizeInBytes, lpOverlapped);
+        ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOverlapped));
     }
 
     /**
@@ -383,14 +421,11 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFile(HANDLE hFile, ByteBuffer lpBuffer) throws NativeErrorException {
-        if (hFile == null) {
-            throw new NullPointerException("hFile is null!");
-        }
         int numberOfBytesRead;
         if (lpBuffer.isDirect()) {
-            numberOfBytesRead = ReadFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer));
+            numberOfBytesRead = ReadFile(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer));
         } else {
-            numberOfBytesRead = ReadFile(hFile, lpBuffer.array(), lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer));
+            numberOfBytesRead = ReadFile(HANDLE.getHandleValue(hFile), lpBuffer.array(), lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer));
         }
         lpBuffer.position(lpBuffer.position() + numberOfBytesRead);
     }
@@ -426,14 +461,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFile(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (hFile == null) {
-            throw new NullPointerException("hFile is null!");
-        }
-        if (lpOverlapped == null) {
-            throw new NullPointerException("lpOverlapped is null!");
-        }
         if (lpBuffer.isDirect()) {
-            ReadFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), lpOverlapped);
+            ReadFile(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), AbstractNativeMemory.getAddress(lpOverlapped));
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous read ....");
@@ -467,7 +496,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void ReadFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
+    public final static void ReadFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
+        OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
+        ReadFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+    }
+
+    private static native void ReadFileEx(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToRead, long ptrLpOverlapped, long ptrLpCompletionRoutine) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfileex">ReadFile</a>
@@ -496,7 +530,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void ReadFileEx(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
+    public final static void ReadFileEx(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
+        OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
+        ReadFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+    }
+
+    private static native void ReadFileEx(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToRead, long ptrLpOverlapped, long ptrLpCompletionRoutine) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfileex">ReadFile</a>
@@ -520,7 +559,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        ReadFileEx(hFile, lpBuffer, 0, lpBuffer.sizeInBytes, lpOverlapped, lpCompletionRoutine);
+        ReadFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
     }
 
     /**
@@ -557,28 +596,19 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFileEx(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        if (hFile == null) {
-            throw new NullPointerException("hFile is null!");
-        }
-        if (lpOverlapped == null) {
-            throw new NullPointerException("lpOverlapped is null!");
-        }
-        if (lpCompletionRoutine == null) {
-            throw new NullPointerException("lpCompletionRoutine");
-        }
         if (lpBuffer.isDirect()) {
-            ReadFileEx_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), lpOverlapped, lpCompletionRoutine);
+            ReadFileEx(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous read ....");
         }
     }
 
-    private static native int ReadFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToRead) throws NativeErrorException;
+    private static native int ReadFile(long ptrHFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToRead) throws NativeErrorException;
 
-    private static native void ReadFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped) throws NativeErrorException;
+    private static native void ReadFile(long ptrHFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToRead, long ptrLpOverlapped) throws NativeErrorException;
 
-    private static native void ReadFileEx_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
+    private static native void ReadFileEx(long ptrHFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToRead, long ptrLpOverlapped, long ptrLpCompletionRoutine) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
@@ -602,7 +632,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native int WriteFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException;
+    public final static int WriteFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException {
+        Objects.checkFromIndexSize(off, nNumberOfBytesToWrite, lpBuffer.length);
+        return WriteFile(off, lpBuffer, off, nNumberOfBytesToWrite);
+    }
+
+    private static native int WriteFile(long ptrHFile, byte[] lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
@@ -625,7 +660,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static int WriteFile(HANDLE hFile, byte[] lpBuffer) throws NativeErrorException {
-        return WriteFile(hFile, lpBuffer, 0, lpBuffer.length);
+        return WriteFile(HANDLE.getHandleValue(hFile), lpBuffer, 0, lpBuffer.length);
     }
 
     /**
@@ -650,7 +685,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native int WriteFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException;
+    public final static int WriteFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException {
+        OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
+        return WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite);
+    }
+
+    private static native int WriteFile(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
@@ -674,7 +714,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native int WriteFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite) throws NativeErrorException;
+    public final static int WriteFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite) throws NativeErrorException {
+        OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
+        return WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite);
+    }
+
+    private static native int WriteFile(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToWrite) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
@@ -689,7 +734,11 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native int WriteFile(HANDLE hFile, byte b) throws NativeErrorException;
+    public final static int WriteFile(HANDLE hFile, byte b) throws NativeErrorException {
+        return WriteFile(HANDLE.getHandleValue(hFile), b);
+    }
+
+    private static native int WriteFile(long ptrHFile, byte b) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
@@ -713,7 +762,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void WriteFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped) throws NativeErrorException;
+    public final static void WriteFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped) throws NativeErrorException {
+        OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
+        WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.getAddress(lpBuffer));
+    }
+
+    private static native void WriteFile(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToWrite, long lpOverlapped) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
@@ -737,7 +791,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void WriteFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped) throws NativeErrorException;
+    public final static void WriteFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped) throws NativeErrorException {
+        OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
+        WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.getAddress(lpOverlapped));
+    }
+
+    private static native void WriteFile(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToWrite, long ptrLpOverlapped) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
@@ -757,7 +816,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void WriteFile(HANDLE hFile, OpaqueMemory32 lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
-        WriteFile(hFile, lpBuffer, 0, lpBuffer.sizeInBytes, lpOverlapped);
+        WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOverlapped));
     }
 
     /**
@@ -776,12 +835,9 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, ByteBuffer lpBuffer) throws NativeErrorException {
-        if (hFile == null) {
-            throw new NullPointerException("hFile is null!");
-        }
         int numberOfBytesWritten;
         if (lpBuffer.isDirect()) {
-            numberOfBytesWritten = WriteFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer));
+            numberOfBytesWritten = WriteFile(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer));
         } else {
             if (lpBuffer.isReadOnly()) {
                 // see buffer.array() why we do this is here.
@@ -789,9 +845,9 @@ public final class Fileapi {
                 lpBuffer.get(_buf);
                 //We haven't written anything yet, so fix the position for now.
                 lpBuffer.position(lpBuffer.position() - _buf.length);
-                numberOfBytesWritten = WriteFile(hFile, _buf, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer));
+                numberOfBytesWritten = WriteFile(HANDLE.getHandleValue(hFile), _buf, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer));
             } else {
-                numberOfBytesWritten = WriteFile(hFile, lpBuffer.array(), lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer));
+                numberOfBytesWritten = WriteFile(HANDLE.getHandleValue(hFile), lpBuffer.array(), lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer));
             }
         }
         lpBuffer.position(lpBuffer.position() + numberOfBytesWritten);
@@ -829,14 +885,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (hFile == null) {
-            throw new NullPointerException("hFile is null!");
-        }
-        if (lpOverlapped == null) {
-            throw new NullPointerException("lpOverlapped is null!");
-        }
         if (lpBuffer.isDirect()) {
-            WriteFile_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), lpOverlapped);
+            WriteFile(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), AbstractNativeMemory.getAddress(lpOverlapped));
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous write ....");
@@ -868,7 +918,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void WriteFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
+    public final static void WriteFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
+        OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
+        WriteFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+    }
+
+    private static native void WriteFileEx(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToWrite, long ptrLpOverlapped, long ptrLpCompletionRoutine) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefileex">WriteFile</a>
@@ -895,7 +950,12 @@ public final class Fileapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void WriteFileEx(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
+    public final static void WriteFileEx(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
+        OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
+        WriteFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+    }
+
+    private static native void WriteFileEx(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToWrite, long ptrLpOverlapped, long ptrLpCompletionRoutine) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefileex">WriteFile</a>
@@ -918,7 +978,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void WriteFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        WriteFileEx(hFile, lpBuffer, 0, lpBuffer.sizeInBytes, lpOverlapped, lpCompletionRoutine);
+        WriteFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
     }
 
     /**
@@ -956,27 +1016,18 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFileEx(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        if (hFile == null) {
-            throw new NullPointerException("hFile is null!");
-        }
-        if (lpOverlapped == null) {
-            throw new NullPointerException("lpOverlapped is null!");
-        }
-        if (lpCompletionRoutine == null) {
-            throw new NullPointerException("lpCompletionRoutine");
-        }
         if (lpBuffer.isDirect()) {
-            WriteFileEx_ArgsOK(hFile, lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), lpOverlapped, lpCompletionRoutine);
+            WriteFileEx(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous write ....");
         }
     }
 
-    private static native int WriteFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException;
+    private static native int WriteFile(long ptrHFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException;
 
-    private static native void WriteFile_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped) throws NativeErrorException;
+    private static native void WriteFile(long ptrHFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToWrite, long ptrLpOverlapped) throws NativeErrorException;
 
-    private static native void WriteFileEx_ArgsOK(HANDLE hFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException;
+    private static native void WriteFileEx(long ptrHFile, ByteBuffer lpBuffer, int off, int nNumberOfBytesToWrite, long ptrLpOverlapped, long ptrLpCompletionRoutine) throws NativeErrorException;
 
 }

@@ -118,7 +118,7 @@ public final class Termios {
 
     }
 
-    public static interface Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines {
+    public static interface Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines {
 
         public final static int B1000000 = 0010010;
         public final static int B115200 = 0010002;
@@ -177,7 +177,7 @@ public final class Termios {
 
     }
 
-    public static interface Linux_Ppc64_S390_Defines {
+    public static interface Linux_Ppc64_Defines {
 
         public final static int B1000000 = 23;
         public final static int B115200 = 17;
@@ -426,124 +426,124 @@ public final class Termios {
                     case MIPS:
                     case MIPS_64:
                     case RISC_V_64:
+                    case S390_X:
                     case X86_64:
-                        B1000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B1000000);
-                        B115200 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B115200;
-                        B1152000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B1152000);
-                        B1500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B1500000);
-                        B2000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B2000000);
-                        B230400 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B230400;
-                        B2500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B2500000);
-                        B3000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B3000000);
-                        B3500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B3500000);
+                        B1000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B1000000);
+                        B115200 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B115200;
+                        B1152000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B1152000);
+                        B1500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B1500000);
+                        B2000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B2000000);
+                        B230400 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B230400;
+                        B2500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B2500000);
+                        B3000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B3000000);
+                        B3500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B3500000);
 
-                        B4000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B4000000);
-                        B460800 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B460800);
-                        B500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B500000);
-                        B57600 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B57600;
-                        B576000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B576000);
-                        B921600 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.B921600);
-                        BS1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.BS1);
-                        BSDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.BSDLY);
+                        B4000000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B4000000);
+                        B460800 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B460800);
+                        B500000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B500000);
+                        B57600 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B57600;
+                        B576000 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B576000);
+                        B921600 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.B921600);
+                        BS1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.BS1);
+                        BSDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.BSDLY);
 
-                        CLOCAL = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CLOCAL;
-                        CR1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CR1);
-                        CR2 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CR2);
-                        CR3 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CR3);
-                        CRDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CRDLY);
-                        CS6 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CS6;
-                        CS7 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CS7;
-                        CS8 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CS8;
-                        TAB1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.TAB1);
-                        TAB2 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.TAB2);
-                        TAB3 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.TAB3);
-                        TABDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.TABDLY);
-                        CREAD = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CREAD;
-                        CSIZE = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CSIZE;
-                        CSTOPB = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.CSTOPB;
-                        ECHOE = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ECHOE;
-                        ECHOK = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ECHOK;
-                        ECHONL = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ECHONL;
-                        FF1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.FF1);
-                        FFDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.FFDLY);
+                        CLOCAL = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.CLOCAL;
+                        CR1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.CR1);
+                        CR2 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.CR2);
+                        CR3 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.CR3);
+                        CRDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.CRDLY);
+                        CS6 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.CS6;
+                        CS7 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.CS7;
+                        CS8 = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.CS8;
+                        TAB1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.TAB1);
+                        TAB2 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.TAB2);
+                        TAB3 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.TAB3);
+                        TABDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.TABDLY);
+                        CREAD = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.CREAD;
+                        CSIZE = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.CSIZE;
+                        CSTOPB = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.CSTOPB;
+                        ECHOE = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.ECHOE;
+                        ECHOK = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.ECHOK;
+                        ECHONL = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.ECHONL;
+                        FF1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.FF1);
+                        FFDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.FFDLY);
 
-                        HUPCL = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.HUPCL;
-                        PARENB = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.PARENB;
-                        PARODD = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.PARODD;
-                        ICANON = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ICANON;
-                        ISIG = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ISIG;
-                        IXOFF = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.IXOFF;
-                        IXON = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.IXON;
-                        NLDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.NLDLY);
-                        NOFLSH = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.NOFLSH;
-                        ONLCR = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.ONLCR;
-                        VSTART = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VSTART;
-                        VSTOP = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VSTOP;
-                        VSUSP = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VSUSP;
-                        VT1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VT1);
-                        VTDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VTDLY);
-                        VTIME = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_X86_64_Defines.VTIME;
+                        HUPCL = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.HUPCL;
+                        PARENB = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.PARENB;
+                        PARODD = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.PARODD;
+                        ICANON = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.ICANON;
+                        ISIG = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.ISIG;
+                        IXOFF = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.IXOFF;
+                        IXON = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.IXON;
+                        NLDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.NLDLY);
+                        NOFLSH = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.NOFLSH;
+                        ONLCR = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.ONLCR;
+                        VSTART = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.VSTART;
+                        VSTOP = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.VSTOP;
+                        VSUSP = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.VSUSP;
+                        VT1 = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.VT1);
+                        VTDLY = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.VTDLY);
+                        VTIME = Linux_Aarch64_Arm_I386_Mips_Mips64_RiscV64_S390_X86_64_Defines.VTIME;
 
                         break;
                     case POWER_PC_64:
-                    case S390_X:
-                        B1000000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B1000000);
-                        B115200 = Linux_Ppc64_S390_Defines.B115200;
-                        B1152000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B1152000);
-                        B1500000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B1500000);
-                        B2000000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B2000000);
-                        B230400 = Linux_Ppc64_S390_Defines.B230400;
-                        B2500000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B2500000);
-                        B3000000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B3000000);
-                        B3500000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B3500000);
+                        B1000000 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B1000000);
+                        B115200 = Linux_Ppc64_Defines.B115200;
+                        B1152000 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B1152000);
+                        B1500000 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B1500000);
+                        B2000000 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B2000000);
+                        B230400 = Linux_Ppc64_Defines.B230400;
+                        B2500000 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B2500000);
+                        B3000000 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B3000000);
+                        B3500000 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B3500000);
 
-                        B4000000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B4000000);
-                        B460800 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B460800);
-                        B500000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B500000);
-                        B57600 = Linux_Ppc64_S390_Defines.B57600;
-                        B576000 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B576000);
-                        B921600 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.B921600);
-                        BS1 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.BS1);
-                        BSDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.BSDLY);
+                        B4000000 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B4000000);
+                        B460800 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B460800);
+                        B500000 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B500000);
+                        B57600 = Linux_Ppc64_Defines.B57600;
+                        B576000 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B576000);
+                        B921600 = IntDefine.toIntDefine(Linux_Ppc64_Defines.B921600);
+                        BS1 = IntDefine.toIntDefine(Linux_Ppc64_Defines.BS1);
+                        BSDLY = IntDefine.toIntDefine(Linux_Ppc64_Defines.BSDLY);
 
-                        CLOCAL = Linux_Ppc64_S390_Defines.CLOCAL;
-                        CR1 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.CR1);
-                        CR2 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.CR2);
-                        CR3 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.CR3);
-                        CRDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.CRDLY);
-                        CS6 = Linux_Ppc64_S390_Defines.CS6;
-                        CS7 = Linux_Ppc64_S390_Defines.CS7;
-                        CS8 = Linux_Ppc64_S390_Defines.CS8;
-                        TAB1 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.TAB1);
-                        TAB2 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.TAB2);
-                        TAB3 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.TAB3);
-                        TABDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.TABDLY);
-                        CREAD = Linux_Ppc64_S390_Defines.CREAD;
-                        CSIZE = Linux_Ppc64_S390_Defines.CSIZE;
-                        CSTOPB = Linux_Ppc64_S390_Defines.CSTOPB;
-                        ECHOE = Linux_Ppc64_S390_Defines.ECHOE;
-                        ECHOK = Linux_Ppc64_S390_Defines.ECHOK;
-                        ECHONL = Linux_Ppc64_S390_Defines.ECHONL;
-                        FF1 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.FF1);
-                        FFDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.FFDLY);
+                        CLOCAL = Linux_Ppc64_Defines.CLOCAL;
+                        CR1 = IntDefine.toIntDefine(Linux_Ppc64_Defines.CR1);
+                        CR2 = IntDefine.toIntDefine(Linux_Ppc64_Defines.CR2);
+                        CR3 = IntDefine.toIntDefine(Linux_Ppc64_Defines.CR3);
+                        CRDLY = IntDefine.toIntDefine(Linux_Ppc64_Defines.CRDLY);
+                        CS6 = Linux_Ppc64_Defines.CS6;
+                        CS7 = Linux_Ppc64_Defines.CS7;
+                        CS8 = Linux_Ppc64_Defines.CS8;
+                        TAB1 = IntDefine.toIntDefine(Linux_Ppc64_Defines.TAB1);
+                        TAB2 = IntDefine.toIntDefine(Linux_Ppc64_Defines.TAB2);
+                        TAB3 = IntDefine.toIntDefine(Linux_Ppc64_Defines.TAB3);
+                        TABDLY = IntDefine.toIntDefine(Linux_Ppc64_Defines.TABDLY);
+                        CREAD = Linux_Ppc64_Defines.CREAD;
+                        CSIZE = Linux_Ppc64_Defines.CSIZE;
+                        CSTOPB = Linux_Ppc64_Defines.CSTOPB;
+                        ECHOE = Linux_Ppc64_Defines.ECHOE;
+                        ECHOK = Linux_Ppc64_Defines.ECHOK;
+                        ECHONL = Linux_Ppc64_Defines.ECHONL;
+                        FF1 = IntDefine.toIntDefine(Linux_Ppc64_Defines.FF1);
+                        FFDLY = IntDefine.toIntDefine(Linux_Ppc64_Defines.FFDLY);
 
-                        HUPCL = Linux_Ppc64_S390_Defines.HUPCL;
-                        PARENB = Linux_Ppc64_S390_Defines.PARENB;
-                        PARODD = Linux_Ppc64_S390_Defines.PARODD;
+                        HUPCL = Linux_Ppc64_Defines.HUPCL;
+                        PARENB = Linux_Ppc64_Defines.PARENB;
+                        PARODD = Linux_Ppc64_Defines.PARODD;
 
-                        ICANON = Linux_Ppc64_S390_Defines.ICANON;
-                        ISIG = Linux_Ppc64_S390_Defines.ISIG;
-                        IXOFF = Linux_Ppc64_S390_Defines.IXOFF;
-                        IXON = Linux_Ppc64_S390_Defines.IXON;
-                        NLDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.NLDLY);
-                        NOFLSH = Linux_Ppc64_S390_Defines.NOFLSH;
-                        ONLCR = Linux_Ppc64_S390_Defines.ONLCR;
-                        VSTART = Linux_Ppc64_S390_Defines.VSTART;
-                        VSTOP = Linux_Ppc64_S390_Defines.VSTOP;
-                        VSUSP = Linux_Ppc64_S390_Defines.VSUSP;
-                        VT1 = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.VT1);
-                        VTDLY = IntDefine.toIntDefine(Linux_Ppc64_S390_Defines.VTDLY);
-                        VTIME = Linux_Ppc64_S390_Defines.VTIME;
+                        ICANON = Linux_Ppc64_Defines.ICANON;
+                        ISIG = Linux_Ppc64_Defines.ISIG;
+                        IXOFF = Linux_Ppc64_Defines.IXOFF;
+                        IXON = Linux_Ppc64_Defines.IXON;
+                        NLDLY = IntDefine.toIntDefine(Linux_Ppc64_Defines.NLDLY);
+                        NOFLSH = Linux_Ppc64_Defines.NOFLSH;
+                        ONLCR = Linux_Ppc64_Defines.ONLCR;
+                        VSTART = Linux_Ppc64_Defines.VSTART;
+                        VSTOP = Linux_Ppc64_Defines.VSTOP;
+                        VSUSP = Linux_Ppc64_Defines.VSUSP;
+                        VT1 = IntDefine.toIntDefine(Linux_Ppc64_Defines.VT1);
+                        VTDLY = IntDefine.toIntDefine(Linux_Ppc64_Defines.VTDLY);
+                        VTIME = Linux_Ppc64_Defines.VTIME;
 
                         break;
                     default:
@@ -648,10 +648,10 @@ public final class Termios {
                         break;
                     case POWER_PC_64:
                     case S390_X:
-                        TOSTOP = Linux_Ppc64_S390_Defines.TOSTOP;
-                        VEOL = Linux_Ppc64_S390_Defines.VEOL;
-                        IEXTEN = Linux_Ppc64_S390_Defines.IEXTEN;
-                        VMIN = Linux_Ppc64_S390_Defines.VMIN;
+                        TOSTOP = Linux_Ppc64_Defines.TOSTOP;
+                        VEOL = Linux_Ppc64_Defines.VEOL;
+                        IEXTEN = Linux_Ppc64_Defines.IEXTEN;
+                        VMIN = Linux_Ppc64_Defines.VMIN;
                         break;
                     default:
                         throw new NoClassDefFoundError("No termios.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

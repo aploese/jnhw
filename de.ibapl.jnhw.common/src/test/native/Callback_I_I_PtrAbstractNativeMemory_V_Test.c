@@ -32,32 +32,32 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_I_Mem_V_Test
-     * Method:    getCallbackPtr
-     * Signature: ()Lde/ibapl/jnhw/common/nativepointer/FunctionPtr_I_I_Mem_V;
+     * Method:    getCallbackPtr0
+     * Signature: ()J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1I_1Mem_1V_1Test_getCallbackPtr
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz) {
-        return CREATE_FunctionPtr_I_I_Mem_V(callbackPtr);
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1I_1Mem_1V_1Test_getCallbackPtr0
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+        return (int64_t) (uintptr_t) callbackPtr;
     }
 
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_I_Mem_V_Test
      * Method:    setCallback
-     * Signature: (Lde/ibapl/jnhw/common/memory/NativeFunctionPointer;)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1I_1Mem_1V_1Test_setCallback
-    (JNIEnv *env, __attribute__ ((unused))jclass clazz, jobject callback) {
-        callbackPtr = UNWRAP_NativeFunctionPointer_TO(void (*)(int32_t, int32_t, void*), callback);
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jlong ptrCallback) {
+        callbackPtr = (void (*)(int32_t, int32_t, void*))(uintptr_t) ptrCallback;
     }
 
     /*
      * Class:     de_ibapl_jnhw_common_test_callbacks_Callback_I_I_Mem_V_Test
      * Method:    doCallTheCallback
-     * Signature: (IILde/ibapl/jnhw/common/callbacks/Callback_I_I_Mem_V_Test/C;)V
+     * Signature: (IIJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_common_test_callbacks_Callback_1I_1I_1Mem_1V_1Test_doCallTheCallback
-    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jint a, jint b, jobject c) {
-        callbackPtr(a, b, UNWRAP_ABSTRACT_MEM_TO_VOID_PTR(c));
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz, jint a, jint b, jlong ptrC) {
+        callbackPtr(a, b, (void*) (uintptr_t) ptrC);
     }
 
 

@@ -10,17 +10,17 @@ extern "C" {
 /*
  * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
  * Method:    QueueUserAPC
- * Signature: (Lde/ibapl/jnhw/winapi/Winnt/PAPCFUNC;Lde/ibapl/jnhw/winapi/Winnt/HANDLE;J)V
+ * Signature: (JJJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_QueueUserAPC
-  (JNIEnv *, jclass, jobject, jobject, jlong);
+  (JNIEnv *, jclass, jlong, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
- * Method:    GetCurrentThread
- * Signature: ()Lde/ibapl/jnhw/winapi/Winnt/HANDLE;
+ * Method:    GetCurrentThread0
+ * Signature: ()J
  */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_GetCurrentThread
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_GetCurrentThread0
   (JNIEnv *, jclass);
 
 #ifdef __cplusplus

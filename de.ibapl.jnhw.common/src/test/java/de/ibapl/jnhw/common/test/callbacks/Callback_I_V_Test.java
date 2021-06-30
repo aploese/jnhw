@@ -63,9 +63,17 @@ public class Callback_I_V_Test {
     public Callback_I_V_Test() {
     }
 
-    private static native FunctionPtr_I_V getCallbackPtr();
+    private static FunctionPtr_I_V getCallbackPtr() {
+        return new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(getCallbackPtr0()));
+    }
 
-    private static native void setCallback(Callback_I_V callback);
+    private static native long getCallbackPtr0();
+
+    private static void setCallback(Callback_I_V callback) {
+        setCallback(NativeFunctionPointer.getNativeAddress(callback));
+    }
+
+    private static native void setCallback(long ptrCallback);
 
     private static native void doCallTheCallback(int value);
 

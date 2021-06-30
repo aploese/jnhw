@@ -114,8 +114,10 @@ public class Defines {
             case X86_64:
             case POWER_PC_64:
             case RISC_V_64:
-            case S390_X:
                 __BIGGEST_ALIGNMENT__ = 16;
+                break;
+            case S390_X:
+                __BIGGEST_ALIGNMENT__ = 8;
                 break;
             case ARM:
             case MIPS:
@@ -164,7 +166,16 @@ public class Defines {
                 __LP64__ = IntDefine.UNDEFINED;
         }
 
-        __BYTE_ORDER__ = 1234;
+        switch (mi.getEndianess()) {
+            case BIG:
+                __BYTE_ORDER__ = 4321;
+                break;
+            case LITTLE:
+                __BYTE_ORDER__ = 1234;
+                break;
+            default:
+                throw new NoClassDefFoundError("No default value for __BYTE_ORDER__  " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
         __ORDER_BIG_ENDIAN__ = 4321;
         __ORDER_LITTLE_ENDIAN__ = 1234;
         __ORDER_PDP_ENDIAN__ = 3412;

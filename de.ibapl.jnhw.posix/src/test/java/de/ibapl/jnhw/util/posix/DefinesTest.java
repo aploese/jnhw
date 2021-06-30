@@ -474,7 +474,6 @@ public class DefinesTest {
 
     @Test
     public void test__BYTE_ORDER__() throws Exception {
-        assertEquals(1234, Defines.__ORDER_LITTLE_ENDIAN__);
         switch (MULTIARCHTUPEL_BUILDER.getEndianess()) {
             case BIG:
                 assertEquals(Defines.__ORDER_BIG_ENDIAN__, Defines.__BYTE_ORDER__);

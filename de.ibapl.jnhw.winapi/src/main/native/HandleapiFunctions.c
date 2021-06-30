@@ -32,15 +32,11 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_winapi_Handleapi
      * Method:    CloseHandle
-     * Signature: (Lde/ibapl/jnhw/winapi/Winnt$HANDLE;)V
+     * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Handleapi_CloseHandle
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jobject hObject) {
-        if (hObject == NULL) {
-            throw_NullPointerException(env, "hObject is null");
-            return;
-        }
-        if (!CloseHandle(UNWRAP_HANDLE(hObject))) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrHObject) {
+        if (!CloseHandle((HANDLE) (uintptr_t) ptrHObject)) {
             throw_NativeErrorException(env, (int32_t) GetLastError());
         }
     }

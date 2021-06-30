@@ -29,7 +29,6 @@ extern "C" {
 #if defined(HAVE_SYS_TYPES_H) && defined(_POSIX_VERSION)
 #include <sys/types.h>
 #include <termios.h>
-#endif
 
     /*
      * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
@@ -490,6 +489,7 @@ extern "C" {
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return (int64_t) (uint64_t) (uid_t) TEST_PATTERN;
     }
+#endif
 
 #ifdef __cplusplus
 }

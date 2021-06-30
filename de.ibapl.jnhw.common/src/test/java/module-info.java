@@ -36,6 +36,5 @@ module de.ibapl.jnhw.common.test {
     exports de.ibapl.jnhw.common.test.exceptions;
     exports de.ibapl.jnhw.common.test.memory;
     exports de.ibapl.jnhw.common.test.memory.layout;
-    exports de.ibapl.jnhw.common.test.references;
 
 }

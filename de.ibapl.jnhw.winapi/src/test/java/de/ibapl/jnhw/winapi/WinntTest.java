@@ -49,10 +49,9 @@ public class WinntTest {
     @Test
     public void test_LPWSTR_stringValueOfNullTerminated() throws Exception {
         byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
-        WinDef.LPBYTE lpByte = new WinDef.LPBYTE(64, SetMem.TO_0x00);
-        OpaqueMemory32.copy(data, 0, lpByte, 0, data.length);
-        lpByte.bufferEnd = data.length;
-        Assertions.assertEquals("HELLO WORLD!", WinDef.LPBYTE.getUnicodeString(lpByte, true));
+        Winnt.LPWSTR lpWStr = new Winnt.LPWSTR(64, SetMem.TO_0x00);
+        OpaqueMemory32.copy(data, 0, lpWStr, 0, data.length);
+        Assertions.assertEquals("HELLO WORLD!", lpWStr.getUnicodeString(data.length));
     }
 
     @Test

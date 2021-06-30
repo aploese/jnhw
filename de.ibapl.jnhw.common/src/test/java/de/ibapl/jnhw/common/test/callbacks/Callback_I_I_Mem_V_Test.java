@@ -71,11 +71,23 @@ public class Callback_I_I_Mem_V_Test {
     public Callback_I_I_Mem_V_Test() {
     }
 
-    private static native FunctionPtr_I_I_Mem_V getCallbackPtr();
+    private static FunctionPtr_I_I_Mem_V getCallbackPtr() {
+        return new FunctionPtr_I_I_Mem_V(NativeAddressHolder.ofUintptr_t(getCallbackPtr0()));
+    }
 
-    private static native void setCallback(Callback_I_I_Mem_V<C> callback);
+    private static native long getCallbackPtr0();
 
-    private static native void doCallTheCallback(int a, int b, C c);
+    private static void setCallback(Callback_I_I_Mem_V<C> callback) {
+        setCallback(NativeFunctionPointer.getNativeAddress(callback));
+    }
+
+    private static native void setCallback(long ptrCallback);
+
+    private static void doCallTheCallback(int a, int b, C c) {
+        doCallTheCallback(a, b, AbstractNativeMemory.getAddress(c));
+    }
+
+    private static native void doCallTheCallback(int a, int b, long ptrC);
 
     private class DummyCB extends Callback_I_I_Mem_V_Impl<OpaqueMemory32> {
 

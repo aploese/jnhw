@@ -84,12 +84,12 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_util_posix_Callback__Sigval_int__V_Impl
      * Method:    getNativeAddress
-     * Signature: (I)Lde/ibapl/jnhw/common/memory/NativeAddressHolder;
+     * Signature: (I)J
      */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_Callback_1_1Sigval_1int_1_1V_1Impl_getNativeAddress
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_util_posix_Callback_1_1Sigval_1int_1_1V_1Impl_getNativeAddress
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint index) {
         switch (index) {
-#define TRAMPOLINE_CASE(index) case index: return CREATE_NativeAddressHolder(&_jnhw_trampoline_I_V__ ## index);
+#define TRAMPOLINE_CASE(index) case index: return (int64_t)(uintptr_t)&_jnhw_trampoline_I_V__ ## index;
                 TRAMPOLINE_CASE(0);
                 TRAMPOLINE_CASE(1);
                 TRAMPOLINE_CASE(2);
@@ -100,7 +100,7 @@ extern "C" {
                 TRAMPOLINE_CASE(7);
             default:
                 throw_IllegalArgumentException(env, "index < 0 or index > MAX_CALL_BACKS");
-                return NULL;
+                return (int64_t) (uintptr_t) NULL;
         }
     }
 

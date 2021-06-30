@@ -88,20 +88,20 @@ public abstract class Callback_I_I_Mem_V_Impl<C extends AbstractNativeMemory> ex
     }
 
     @SuppressWarnings("unused")
-    private static void trampoline(final int index, final int a, int b, final NativeAddressHolder c) {
+    private static void trampoline(final int index, final int a, int b, final long c) {
         try {
             final Callback_I_I_Mem_V_Impl ref = refs[index].get();
             if (ref == null) {
                 LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline(%d, %d, %d, %s)", index, a, b, c));
             } else {
-                ref.callback(a, b, ref.wrapC(c));
+                ref.callback(a, b, ref.wrapC(NativeAddressHolder.ofUintptr_t(c)));
             }
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline(%d, %d, %d, %s)", index, a, b, c), t);
         }
     }
 
-    private static native NativeAddressHolder getNativeAddress(final int index);
+    private static native long getNativeAddress(final int index);
 
     /**
      * TODO make arg of type
@@ -114,7 +114,7 @@ public abstract class Callback_I_I_Mem_V_Impl<C extends AbstractNativeMemory> ex
         for (int i = 0; i < refs.length; i++) {
             if (refs[i].get() == null) {
                 refs[i] = new WeakReference(cb);
-                return getNativeAddress(i);
+                return NativeAddressHolder.ofUintptr_t(getNativeAddress(i));
             }
         }
         //Hint: Try run GC to free any??? or add more cbs...
