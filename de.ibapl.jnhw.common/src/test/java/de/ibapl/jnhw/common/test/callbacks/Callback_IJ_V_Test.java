@@ -88,7 +88,7 @@ public class Callback_IJ_V_Test {
     private static native long getCallbackPtr0();
 
     private static void setCallback(Callback_IJ_V callback) {
-        setCallback(NativeFunctionPointer.getNativeAddress(callback));
+        setCallback(NativeFunctionPointer.toUintptr_t(callback));
     }
 
     private static native void setCallback(long ptrCallback);

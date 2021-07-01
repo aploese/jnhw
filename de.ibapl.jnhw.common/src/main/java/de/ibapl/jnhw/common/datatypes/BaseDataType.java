@@ -22,12 +22,9 @@
 package de.ibapl.jnhw.common.datatypes;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import static de.ibapl.jnhw.common.memory.layout.Alignment.*;
-import de.ibapl.jnhw.libloader.Endianess;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 
 /**
  *
@@ -111,7 +108,139 @@ public enum BaseDataType {
     public final static int __SIZE_OF_FLOAT;
     public final static int __SIZE_OF_DOUBLE;
     public final static int __SIZE_OF_LONG_DOUBLE;
-    public final static Endianess __ENDIANESS;
+
+    private final static int getSizeOf_long() {
+        LibJnhwCommonLoader.touch();
+        final MultiarchInfo mi = LibJnhwCommonLoader.getLoadResult().multiarchInfo;
+        switch (mi) {
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case MIPS__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+            case I386__LINUX__GNU:
+            case X86_64__WINDOWS__PE32_PLUS:
+                return 4;
+            case S390_X__LINUX__GNU:
+            case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case RISC_V_64__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+            case X86_64__OPEN_BSD__BSD:
+            case X86_64__FREE_BSD__BSD:
+                return 8;
+            default:
+                throw new RuntimeException("No Sizeof long values for multiarch: " + mi);
+
+        }
+
+    }
+
+    private final static int getSizeOf_float() {
+        final MultiarchInfo mi = LibJnhwCommonLoader.getLoadResult().multiarchInfo;
+        switch (mi) {
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case MIPS__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+            case I386__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case RISC_V_64__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+            case X86_64__WINDOWS__PE32_PLUS:
+            case X86_64__OPEN_BSD__BSD:
+            case X86_64__FREE_BSD__BSD:
+                return 4;
+            default:
+                throw new RuntimeException("No sizeof float values for multiarch: " + mi);
+
+        }
+    }
+
+    private final static int getSizeOf_double() {
+        final MultiarchInfo mi = LibJnhwCommonLoader.getLoadResult().multiarchInfo;
+        switch (mi) {
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case MIPS__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+            case I386__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case RISC_V_64__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+            case X86_64__WINDOWS__PE32_PLUS:
+            case X86_64__OPEN_BSD__BSD:
+            case X86_64__FREE_BSD__BSD:
+                return 8;
+            default:
+                throw new RuntimeException("No sizeof double values for multiarch: " + mi);
+
+        }
+    }
+
+    private final static int getSizeOf_long_double() {
+        final MultiarchInfo mi = LibJnhwCommonLoader.getLoadResult().multiarchInfo;
+        switch (mi) {
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case MIPS__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+                return 8;
+            case I386__LINUX__GNU:
+                return 12;
+            case S390_X__LINUX__GNU:
+            case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case RISC_V_64__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+            case X86_64__WINDOWS__PE32_PLUS:
+            case X86_64__OPEN_BSD__BSD:
+            case X86_64__FREE_BSD__BSD:
+                return 16;
+            default:
+                throw new RuntimeException("No sizeof long double values for multiarch: " + mi);
+
+        }
+    }
+
+    private final static int getSizeOfPointer() {
+        LibJnhwCommonLoader.touch();
+        final MultiarchInfo mi = LibJnhwCommonLoader.getLoadResult().multiarchInfo;
+        switch (mi) {
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
+            case MIPS__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+                return 4;
+            case AARCH64__LINUX__GNU:
+            case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case RISC_V_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+            case X86_64__WINDOWS__PE32_PLUS:
+            case X86_64__OPEN_BSD__BSD:
+            case X86_64__FREE_BSD__BSD:
+                return 8;
+            default:
+                throw new RuntimeException("No SizeOfPointer values for multiarch: " + mi);
+
+        }
+
+    }
 
     /**
      * this for gcc will be the define __BIGGEST_ALIGNMENT__
@@ -119,67 +248,11 @@ public enum BaseDataType {
     static {
         // This get called after the Constructor of BaseDataType...
         LibJnhwCommonLoader.touch();
-        __SIZE_OF_POINTER = getSizeOfPointer0();
-        __SIZE_OF_LONG = getSizeOf_long0();
-        __SIZE_OF_FLOAT = getSizeOf_float0();
-        __SIZE_OF_DOUBLE = getSizeOf_double0();
-        __SIZE_OF_LONG_DOUBLE = getSizeOf_long_double0();
-        final Uint64_t uint64_t = new Uint64_t(null, 0, SetMem.TO_0x00);
-        OpaqueMemory32.setByte(uint64_t, 0, (byte) 0x01);
-        OpaqueMemory32.setByte(uint64_t, 1, (byte) 0x02);
-        OpaqueMemory32.setByte(uint64_t, 2, (byte) 0x03);
-        OpaqueMemory32.setByte(uint64_t, 3, (byte) 0x04);
-        OpaqueMemory32.setByte(uint64_t, 4, (byte) 0x05);
-        OpaqueMemory32.setByte(uint64_t, 5, (byte) 0x06);
-        OpaqueMemory32.setByte(uint64_t, 6, (byte) 0x07);
-        OpaqueMemory32.setByte(uint64_t, 7, (byte) 0x08);
-        if (0x0807060504030201L == uint64_t.uint64_t()) {
-            __ENDIANESS = Endianess.LITTLE;
-        } else if (0x0102030405060708L == uint64_t.uint64_t()) {
-            __ENDIANESS = Endianess.BIG;
-        } else {
-            __ENDIANESS = null;
-            throw new IllegalStateException("Cant figure out the endianess for result: 0x" + uint64_t.nativeToHexString());
-        }
+        __SIZE_OF_POINTER = getSizeOfPointer();
+        __SIZE_OF_LONG = getSizeOf_long();
+        __SIZE_OF_FLOAT = getSizeOf_float();
+        __SIZE_OF_DOUBLE = getSizeOf_double();
+        __SIZE_OF_LONG_DOUBLE = getSizeOf_long_double();
     }
 
-    private final static native int getSizeOfPointer0();
-
-    private final static int getSizeOfPointer() {
-        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
-        LibJnhwCommonLoader.touch();
-        return getSizeOfPointer0();
-    }
-
-    private final static native int getSizeOf_long0();
-
-    private final static int getSizeOf_long() {
-        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
-        LibJnhwCommonLoader.touch();
-        return getSizeOf_long0();
-    }
-
-    private final static native int getSizeOf_float0();
-
-    private final static int getSizeOf_float() {
-        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
-        LibJnhwCommonLoader.touch();
-        return getSizeOf_float0();
-    }
-
-    private final static native int getSizeOf_double0();
-
-    private final static int getSizeOf_double() {
-        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
-        LibJnhwCommonLoader.touch();
-        return getSizeOf_double0();
-    }
-
-    private final static native int getSizeOf_long_double0();
-
-    private final static int getSizeOf_long_double() {
-        // this gets called befire any static initializers of the implementing class gets called ... enum stuff.
-        LibJnhwCommonLoader.touch();
-        return getSizeOf_long_double0();
-    }
 }

@@ -325,7 +325,7 @@ public class Sched {
      * available natively.
      */
     public final static void sched_getparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException {
-        sched_getparam(pid, AbstractNativeMemory.getAddress(param));
+        sched_getparam(pid, AbstractNativeMemory.toUintptr_t(param));
     }
 
     private static native void sched_getparam(@pid_t int pid, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
@@ -354,7 +354,7 @@ public class Sched {
      * is not available natively.
      */
     public final static void sched_rr_get_interval(@pid_t int pid, Time.Timespec interval) throws NativeErrorException, NoSuchNativeMethodException {
-        sched_rr_get_interval(pid, AbstractNativeMemory.getAddress(interval));
+        sched_rr_get_interval(pid, AbstractNativeMemory.toUintptr_t(interval));
     }
 
     private static native void sched_rr_get_interval(@pid_t int pid, long ptrInterval) throws NativeErrorException, NoSuchNativeMethodException;
@@ -370,7 +370,7 @@ public class Sched {
      * available natively.
      */
     public final static void sched_setparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException {
-        sched_setparam(pid, AbstractNativeMemory.getAddress(param));
+        sched_setparam(pid, AbstractNativeMemory.toUintptr_t(param));
     }
 
     private static native void sched_setparam(@pid_t int pid, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
@@ -386,7 +386,7 @@ public class Sched {
      * not available natively.
      */
     public final static int sched_setscheduler(@pid_t int pid, int policy, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException {
-        return sched_setscheduler(pid, policy, AbstractNativeMemory.getAddress(param));
+        return sched_setscheduler(pid, policy, AbstractNativeMemory.toUintptr_t(param));
     }
 
     private static native int sched_setscheduler(@pid_t int pid, int policy, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;

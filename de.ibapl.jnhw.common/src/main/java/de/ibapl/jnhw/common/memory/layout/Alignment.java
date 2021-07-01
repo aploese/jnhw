@@ -23,6 +23,7 @@ package de.ibapl.jnhw.common.memory.layout;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
 import java.lang.annotation.Native;
 
 /**
@@ -139,64 +140,192 @@ public enum Alignment {
     @Define
     public final static Alignment __BIGGEST_ALIGNMENT__;
 
-    @Native
-    private final static int REQ_ALIGNOF_INT8_T = 0x0001;
-    @Native
-    private final static int REQ_ALIGNOF_INT16_T = 0x0002;
-    @Native
-    private final static int REQ_ALIGNOF_INT32_T = 0x0003;
-    @Native
-    private final static int REQ_ALIGNOF_INT64_T = 0x0004;
-    @Native
-    private final static int REQ_ALIGNOF_INTPTR_T = 0x0005;
-    @Native
-    private final static int REQ_ALIGNOF_POINTER = 0x0006;
-    @Native
-    private final static int REQ_ALIGNOF_LONG = 0x0007;
-    @Native
-    private final static int REQ_ALIGNOF_FLOAT = 0x0008;
-    @Native
-    private final static int REQ_ALIGNOF_DOUBLE = 0x0009;
-    @Native
-    private final static int REQ_ALIGNOF_LONG_DOUBLE = 0x000a;
-
-    @Native
-    private final static int STRUCT_OFFSET = 0x0010;
-
-    @Native
-    private final static int REQ___BIGGEST_ALIGNMENT__ = 0x0300;
-
     static {
         // This get called after the Constructor of BaseDataType...
         LibJnhwCommonLoader.touch();
-        __ALIGN_OF_INT8_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT8_T));
-        __ALIGN_OF_INT16_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T));
-        __ALIGN_OF_INT32_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT32_T));
-        __ALIGN_OF_INT64_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T));
-        __ALIGN_OF_INTPTR_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INTPTR_T));
 
-        __ALIGN_OF_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER));
-        __ALIGN_OF_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG));
-        __ALIGN_OF_FLOAT = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_FLOAT));
-        __ALIGN_OF_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_DOUBLE));
-        __ALIGN_OF_LONG_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG_DOUBLE));
+        final MultiarchInfo mi = LibJnhwCommonLoader.getLoadResult().multiarchInfo;
+        switch (mi) {
+            case ARM__LINUX__GNU_EABI:
+            case ARM__LINUX__GNU_EABI_HF:
+            case MIPS__LINUX__GNU:
+            case MIPS_EL__LINUX__GNU:
+                //32 bit, but __BIGGEST_ALIGNMENT__ is 8
+                __BIGGEST_ALIGNMENT__ = Alignment.AT_8;
+                __ALIGN_OF_LONG = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_LONG = Alignment.AT_4;
+                __ALIGN_OF_POINTER = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_POINTER = Alignment.AT_4;
+                __ALIGN_OF_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_DOUBLE = Alignment.AT_4;
+                __ALIGN_OF_LONG_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_STRUCT_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_STRUCT_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_INTPTR_T = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_4;
+                break;
+            case I386__LINUX__GNU:
+                //classical 32bit anything is at 4 byte aligned
+                __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
+                __ALIGN_OF_LONG = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_LONG = Alignment.AT_4;
+                __ALIGN_OF_POINTER = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_POINTER = Alignment.AT_4;
+                __ALIGN_OF_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_DOUBLE = Alignment.AT_4;
+                __ALIGN_OF_LONG_DOUBLE = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.AT_4;
+                __ALIGN_OF_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_STRUCT_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_STRUCT_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT32_T = Alignment.AT_4;
+                //Why is int64_t alighned at 8, but in struct at 4 ????
+                __ALIGN_OF_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_4;
+                __ALIGN_OF_INTPTR_T = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_4;
+                break;
+            case S390_X__LINUX__GNU:
+                __BIGGEST_ALIGNMENT__ = Alignment.AT_8;
+                __ALIGN_OF_LONG = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG = Alignment.AT_8;
+                __ALIGN_OF_POINTER = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_POINTER = Alignment.AT_8;
+                __ALIGN_OF_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_LONG_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_STRUCT_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_STRUCT_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_INTPTR_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
+                break;
+            case MIPS_64__LINUX__GNU_ABI_64:
+            case MIPS_64_EL__LINUX__GNU_ABI_64:
+                __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
+                __ALIGN_OF_LONG = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG = Alignment.AT_8;
+                __ALIGN_OF_POINTER = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_POINTER = Alignment.AT_8;
+                __ALIGN_OF_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_LONG_DOUBLE = Alignment.AT_16;
+                __ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.AT_16;
+                __ALIGN_OF_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_STRUCT_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_STRUCT_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_INTPTR_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
+                break;
+            case AARCH64__LINUX__GNU:
+            case POWER_PC_64_LE__LINUX__GNU:
+            case RISC_V_64__LINUX__GNU:
+            case X86_64__LINUX__GNU:
+                //classical 64bit anything is at 8 byte aligned
+                __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
+                __ALIGN_OF_LONG = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG = Alignment.AT_8;
+                __ALIGN_OF_POINTER = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_POINTER = Alignment.AT_8;
+                __ALIGN_OF_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_LONG_DOUBLE = Alignment.AT_16;
+                __ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.AT_16;
+                __ALIGN_OF_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_STRUCT_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_STRUCT_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_INTPTR_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
+                break;
+            case X86_64__WINDOWS__PE32_PLUS:
+                //classical 64bit anything is at 8 byte aligned long is 4 bytes long ...
+                __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
+                __ALIGN_OF_LONG = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_LONG = Alignment.AT_4;
+                __ALIGN_OF_POINTER = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_POINTER = Alignment.AT_8;
+                __ALIGN_OF_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_DOUBLE = Alignment.AT_4;
+                __ALIGN_OF_LONG_DOUBLE = Alignment.AT_16;
+                __ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.AT_16;
+                __ALIGN_OF_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_STRUCT_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_STRUCT_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_INTPTR_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
+                break;
+            case X86_64__OPEN_BSD__BSD:
+            case X86_64__FREE_BSD__BSD:
+                //classical 64bit anything is at 8 byte aligned
+                __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
+                __ALIGN_OF_LONG = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG = Alignment.AT_8;
+                __ALIGN_OF_POINTER = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_POINTER = Alignment.AT_8;
+                __ALIGN_OF_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_FLOAT = Alignment.AT_4;
+                __ALIGN_OF_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_DOUBLE = Alignment.AT_8;
+                __ALIGN_OF_LONG_DOUBLE = Alignment.AT_16;
+                __ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.AT_16;
+                __ALIGN_OF_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_STRUCT_INT8_T = Alignment.AT_1;
+                __ALIGN_OF_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_STRUCT_INT16_T = Alignment.AT_2;
+                __ALIGN_OF_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT32_T = Alignment.AT_4;
+                __ALIGN_OF_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
+                __ALIGN_OF_INTPTR_T = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
+                break;
+            default:
+                throw new RuntimeException("No alignment values for multiarch: " + mi);
 
-        __ALIGN_OF_STRUCT_INT8_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT8_T | STRUCT_OFFSET));
-        __ALIGN_OF_STRUCT_INT16_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T | STRUCT_OFFSET));
-        __ALIGN_OF_STRUCT_INT32_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT32_T | STRUCT_OFFSET));
-        __ALIGN_OF_STRUCT_INT64_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T | STRUCT_OFFSET));
-        __ALIGN_OF_STRUCT_INTPTR_T = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INTPTR_T | STRUCT_OFFSET));
-
-        __ALIGN_OF_STRUCT_POINTER = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER | STRUCT_OFFSET));
-        __ALIGN_OF_STRUCT_LONG = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
-        __ALIGN_OF_STRUCT_FLOAT = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_FLOAT | STRUCT_OFFSET));
-        __ALIGN_OF_STRUCT_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET));
-        __ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG_DOUBLE | STRUCT_OFFSET));
-
-        __BIGGEST_ALIGNMENT__ = Alignment.fromAlignof(getFromNative(REQ___BIGGEST_ALIGNMENT__));
+        }
     }
-
-    private static native int getFromNative(int alignofReqXXX);
 
     /**
      * calculate the alignment of a field in a structure - the smalles alignment

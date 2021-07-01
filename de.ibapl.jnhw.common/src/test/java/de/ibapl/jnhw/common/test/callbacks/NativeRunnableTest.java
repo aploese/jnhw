@@ -60,13 +60,13 @@ public class NativeRunnableTest {
     private static native long getCallbackPtr0();
 
     private static void setCallback(Callback_NativeRunnable callback) {
-        setCallback(NativeFunctionPointer.getNativeAddress(callback));
+        setCallback(NativeFunctionPointer.toUintptr_t(callback));
     }
 
     private static native void setCallback(long ptrCallback);
 
     private static void doCallTheCallback(NativeRunnable a) {
-        doCallTheCallback(AbstractNativeMemory.getAddress(a));
+        doCallTheCallback(AbstractNativeMemory.toUintptr_t(a));
     }
 
     private static native void doCallTheCallback(long ptrA);

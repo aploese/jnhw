@@ -99,13 +99,33 @@ public class Defines {
                 _LARGEFILE64_SOURCE = IntDefine.UNDEFINED;
                 _LARGEFILE_SOURCE = IntDefine.UNDEFINED;
                 break;
-            default:
+            case LINUX:
                 _LARGEFILE64_SOURCE = IntDefine.toIntDefine(1);
                 _LARGEFILE_SOURCE = IntDefine.toIntDefine(1);
+                break;
+            case WINDOWS:
+                _LARGEFILE64_SOURCE = IntDefine.UNDEFINED;
+                _LARGEFILE_SOURCE = IntDefine.UNDEFINED;
+                break;
+            default:
+                throw new NoClassDefFoundError("No default value for _LARGEFILE64_SOURCE and _LARGEFILE_SOURCE " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
-        _POSIX_C_SOURCE = IntDefine.toIntDefine(200809);
-        _XOPEN_SOURCE = IntDefine.toIntDefine(700);
-        _XOPEN_SOURCE_EXTENDED = IntDefine.toIntDefine(1);
+        switch (os) {
+            case FREE_BSD:
+            case OPEN_BSD:
+            case LINUX:
+                _POSIX_C_SOURCE = IntDefine.toIntDefine(200809);
+                _XOPEN_SOURCE = IntDefine.toIntDefine(700);
+                _XOPEN_SOURCE_EXTENDED = IntDefine.toIntDefine(1);
+                break;
+            case WINDOWS:
+                _POSIX_C_SOURCE = IntDefine.UNDEFINED;
+                _XOPEN_SOURCE = IntDefine.UNDEFINED;
+                _XOPEN_SOURCE_EXTENDED = IntDefine.UNDEFINED;
+                break;
+            default:
+                throw new NoClassDefFoundError("No default value for _POSIX_C_SOURCE,_XOPEN_SOURCE and _XOPEN_SOURCE_EXTENDED " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
 
         switch (mi.getArch()) {
             case AARCH64:
@@ -147,25 +167,40 @@ public class Defines {
                 __GLIBC__ = IntDefine.UNDEFINED;
                 __GNU_LIBRARY__ = IntDefine.UNDEFINED;
                 break;
+            case WINDOWS:
+                __GLIBC_MINOR__ = IntDefine.UNDEFINED;
+                __GLIBC__ = IntDefine.UNDEFINED;
+                __GNU_LIBRARY__ = IntDefine.UNDEFINED;
+                break;
             default:
                 throw new NoClassDefFoundError("No default value for __GLIBC__, __GLIBC_MINOR__ and __GNU_LIBRARY__ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
 
         __ILP32__ = IntDefine.UNDEFINED; // glibc > 2.31? arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        switch (arch) {
-            case AARCH64:
-            case MIPS_64:
-            case POWER_PC_64:
-            case RISC_V_64:
-            case S390_X:
-            case SPARC_64:
-            case X86_64:
-                __LP64__ = IntDefine.toIntDefine(1);
+        switch (os) {
+            case WINDOWS:
+                __LP64__ = IntDefine.UNDEFINED;
                 break;
             default:
-                __LP64__ = IntDefine.UNDEFINED;
+                switch (arch) {
+                    case AARCH64:
+                    case MIPS_64:
+                    case POWER_PC_64:
+                    case RISC_V_64:
+                    case S390_X:
+                    case SPARC_64:
+                    case X86_64:
+                        __LP64__ = IntDefine.toIntDefine(1);
+                        break;
+                    case I386:
+                    case MIPS:
+                    case ARM:
+                        __LP64__ = IntDefine.UNDEFINED;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No default value for __LP64__  " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
         }
-
         switch (mi.getEndianess()) {
             case BIG:
                 __BYTE_ORDER__ = 4321;
@@ -186,7 +221,14 @@ public class Defines {
         //Linux
         __TIMESIZE = mi == MultiarchInfo.RISC_V_64__LINUX__GNU ? IntDefine.toIntDefine(64) : IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
 
-        __WORDSIZE = os == OS.OPEN_BSD ? IntDefine.UNDEFINED : IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
+        switch (os) {
+            case OPEN_BSD:
+            case WINDOWS:
+                __WORDSIZE = IntDefine.UNDEFINED;
+                break;
+            default:
+                __WORDSIZE = IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
+        }
 
     }
 

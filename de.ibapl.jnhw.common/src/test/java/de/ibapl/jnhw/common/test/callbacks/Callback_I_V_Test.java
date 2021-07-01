@@ -70,7 +70,7 @@ public class Callback_I_V_Test {
     private static native long getCallbackPtr0();
 
     private static void setCallback(Callback_I_V callback) {
-        setCallback(NativeFunctionPointer.getNativeAddress(callback));
+        setCallback(NativeFunctionPointer.toUintptr_t(callback));
     }
 
     private static native void setCallback(long ptrCallback);

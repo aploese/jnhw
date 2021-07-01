@@ -164,7 +164,7 @@ public class Pthread {
      */
     public final static Pthread_t pthread_self() {
         final Pthread_t result = new Pthread_t();
-        pthread_self(AbstractNativeMemory.getAddress(result));
+        pthread_self(AbstractNativeMemory.toUintptr_t(result));
         return result;
     }
 
@@ -176,7 +176,7 @@ public class Pthread {
      * - pthread_equal - compare thread IDs</a>.
      */
     public final static boolean pthread_equal(Pthread_t t1, Pthread_t t2) {
-        return pthread_equal(AbstractNativeMemory.getAddress(t1), AbstractNativeMemory.getAddress(t2));
+        return pthread_equal(AbstractNativeMemory.toUintptr_t(t1), AbstractNativeMemory.toUintptr_t(t2));
     }
 
     public final static native boolean pthread_equal(long ptrT1, long ptrT2);
@@ -195,7 +195,7 @@ public class Pthread {
      * indicates an error.
      */
     public final static int pthread_attr_getinheritsched(Pthread_attr_t attr) throws NativeErrorException {
-        return pthread_attr_getinheritsched(AbstractNativeMemory.getAddress(attr));
+        return pthread_attr_getinheritsched(AbstractNativeMemory.toUintptr_t(attr));
     }
 
     protected static native int pthread_attr_getinheritsched(long ptrAttr) throws NativeErrorException;
@@ -209,7 +209,7 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_attr_getschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException {
-        pthread_attr_getschedparam(AbstractNativeMemory.getAddress(attr), AbstractNativeMemory.getAddress(param));
+        pthread_attr_getschedparam(AbstractNativeMemory.toUintptr_t(attr), AbstractNativeMemory.toUintptr_t(param));
     }
 
     private static native void pthread_attr_getschedparam(long ptrAttr, long ptrParam) throws NativeErrorException;
@@ -224,7 +224,7 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_attr_setinheritsched(Pthread_attr_t attr, int inheritsched) throws NativeErrorException {
-        pthread_attr_setinheritsched(AbstractNativeMemory.getAddress(attr), inheritsched);
+        pthread_attr_setinheritsched(AbstractNativeMemory.toUintptr_t(attr), inheritsched);
     }
 
     private static native void pthread_attr_setinheritsched(long ptrAttr, int inheritsched) throws NativeErrorException;
@@ -238,7 +238,7 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_attr_setschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException {
-        pthread_attr_setschedparam(AbstractNativeMemory.getAddress(attr), AbstractNativeMemory.getAddress(param));
+        pthread_attr_setschedparam(AbstractNativeMemory.toUintptr_t(attr), AbstractNativeMemory.toUintptr_t(param));
     }
 
     private static native void pthread_attr_setschedparam(long ptrAttr, long ptrParam) throws NativeErrorException;
@@ -258,7 +258,7 @@ public class Pthread {
      * indicates an error.
      */
     public final static int pthread_getschedparam(Pthread_t thread, Sched.Sched_param param) throws NativeErrorException {
-        return pthread_getschedparam(AbstractNativeMemory.getAddress(thread), AbstractNativeMemory.getAddress(param));
+        return pthread_getschedparam(AbstractNativeMemory.toUintptr_t(thread), AbstractNativeMemory.toUintptr_t(param));
     }
 
     private static native int pthread_getschedparam(long ptrThread, long ptrParam) throws NativeErrorException;
@@ -273,7 +273,7 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_setschedparam(Pthread_t thread, int policy, Sched.Sched_param param) throws NativeErrorException {
-        pthread_setschedparam(AbstractNativeMemory.getAddress(thread), policy, AbstractNativeMemory.getAddress(param));
+        pthread_setschedparam(AbstractNativeMemory.toUintptr_t(thread), policy, AbstractNativeMemory.toUintptr_t(param));
     }
 
     private static native void pthread_setschedparam(long ptrThread, int policy, long ptrParam) throws NativeErrorException;
@@ -289,7 +289,7 @@ public class Pthread {
      * not available natively.
      */
     public final static void pthread_setschedprio(Pthread_t thread, int prio) throws NativeErrorException, NoSuchNativeMethodException {
-        pthread_setschedprio(AbstractNativeMemory.getAddress(thread), prio);
+        pthread_setschedprio(AbstractNativeMemory.toUintptr_t(thread), prio);
     }
 
     private static native void pthread_setschedprio(long ptrThread, int prio) throws NativeErrorException, NoSuchNativeMethodException;
@@ -304,7 +304,7 @@ public class Pthread {
      */
     @clockid_t
     public final static int pthread_getcpuclockid(Pthread_t thread_id) throws NativeErrorException {
-        return pthread_getcpuclockid(AbstractNativeMemory.getAddress(thread_id));
+        return pthread_getcpuclockid(AbstractNativeMemory.toUintptr_t(thread_id));
     }
 
     private static native int pthread_getcpuclockid(long ptrThread_id) throws NativeErrorException;
@@ -316,7 +316,7 @@ public class Pthread {
      * object</a>.
      */
     public final static void pthread_attr_destroy(Pthread_attr_t attr) {
-        pthread_attr_destroy(AbstractNativeMemory.getAddress(attr));
+        pthread_attr_destroy(AbstractNativeMemory.toUintptr_t(attr));
     }
 
     private static native void pthread_attr_destroy(long ptrAttr);
@@ -328,7 +328,7 @@ public class Pthread {
      * object</a>.
      */
     public final static void pthread_attr_init(Pthread_attr_t attr) {
-        pthread_attr_init(AbstractNativeMemory.getAddress(attr));
+        pthread_attr_init(AbstractNativeMemory.toUintptr_t(attr));
     }
 
     private static native void pthread_attr_init(long attr);
@@ -475,7 +475,7 @@ public class Pthread {
      * indicates an error.
      */
     final static void pthread_cancel(Pthread_t thread) throws NativeErrorException {
-        pthread_cancel(AbstractNativeMemory.getAddress(thread));
+        pthread_cancel(AbstractNativeMemory.toUintptr_t(thread));
     }
 
     private static native void pthread_cancel(long thread) throws NativeErrorException;

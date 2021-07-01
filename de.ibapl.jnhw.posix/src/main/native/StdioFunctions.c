@@ -67,15 +67,11 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Stdio
-     * Method:    remove
+     * Method:    remove0
      * Signature: (Ljava/lang/String)V
      */
-    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Stdio_remove
+    JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Stdio_remove0
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring path) {
-        if (path == NULL) {
-            throw_NullPointerException(env, "file is null.");
-            return;
-        }
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
         const int result = remove(_path);
         (*env)->ReleaseStringUTFChars(env, path, _path);

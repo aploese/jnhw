@@ -110,6 +110,12 @@ public abstract class Errno {
                 EILSEQ = OpenBsdDefines.EILSEQ;
                 ERANGE = OpenBsdDefines.ERANGE;
                 break;
+            case WINDOWS:
+                HAVE_ERRNO_H = false;
+                EDOM = 0;
+                EILSEQ = 0;
+                ERANGE = 0;
+                break;
             default:
                 throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }

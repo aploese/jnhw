@@ -106,10 +106,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
-     * Method:    SleepEx
+     * Method:    SleepEx0
      * Signature: (JZ)J
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SleepEx
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SleepEx0
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong dwMilliseconds, jboolean bAlertable) {
         if ((dwMilliseconds < 0) && ((uint32_t) dwMilliseconds != INFINITE)) {
             throw_IllegalArgumentException(env, "dwMilliseconds < 0");
@@ -120,10 +120,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
-     * Method:    WaitForMultipleObjects_ArgsOK
+     * Method:    WaitForMultipleObjects
      * Signature: (IJZJ)J
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjects_1ArgsOK
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjects
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jlong ptrLpHandles, jboolean bWaitAll, jlong dwMilliseconds) {
         DWORD result = WaitForMultipleObjects((uint32_t) nCount, (PHANDLE) (uintptr_t) ptrLpHandles, bWaitAll, (uint32_t) dwMilliseconds);
         if (result == WAIT_FAILED) {
@@ -134,10 +134,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Synchapi
-     * Method:    WaitForMultipleObjectsEx_ArgsOK
+     * Method:    WaitForMultipleObjectsEx
      * Signature: (IJZJZ)J
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjectsEx_1ArgsOK
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjectsEx
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint nCount, jlong ptrLpHandles, jboolean bWaitAll, jlong dwMilliseconds, jboolean bAlertable) {
         DWORD result = WaitForMultipleObjectsEx((uint32_t) nCount, (PHANDLE) (uintptr_t) ptrLpHandles, bWaitAll, (uint32_t) dwMilliseconds, bAlertable);
         if (result == WAIT_FAILED) {

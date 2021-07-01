@@ -33,6 +33,7 @@ public final class NativeAddressHolder<T> {
 
     public final static NativeAddressHolder NULL = new NativeAddressHolder(0L);
 
+    @uintptr_t
     final long address;
 
     /**
@@ -40,7 +41,7 @@ public final class NativeAddressHolder<T> {
      *
      * @param address
      */
-    protected NativeAddressHolder(long address) {
+    protected NativeAddressHolder(@uintptr_t long address) {
         this.address = address;
     }
 

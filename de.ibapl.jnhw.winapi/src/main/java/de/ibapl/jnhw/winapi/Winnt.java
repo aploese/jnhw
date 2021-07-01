@@ -586,6 +586,10 @@ public final class Winnt {
             return handle.value;
         }
 
+        public static long getHandleValueOrNULL(HANDLE handle) {
+            return handle == null ? NULL__VALUE : handle.value;
+        }
+
     }
 
     public static class ArrayOfHandle extends WinApiStruct32 {
@@ -671,8 +675,8 @@ public final class Winnt {
          *
          * @return
          */
-        public String getUnicodeString(int bufferEnd) {
-            return MEM_ACCESS.getUnicodeString(this, 0, 0, bufferEnd);
+        public String getUnicodeString(int elementLength) {
+            return MEM_ACCESS.getUnicodeString(this, 0, 0, elementLength);
         }
 
         public void clear() {

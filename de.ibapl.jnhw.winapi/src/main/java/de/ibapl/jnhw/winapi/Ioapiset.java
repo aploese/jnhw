@@ -78,7 +78,7 @@ public final class Ioapiset {
      * indicates an error.
      */
     public final static void CancelIoEx(HANDLE hFile, OVERLAPPED lpOverlapped) throws NativeErrorException {
-        CancelIoEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpOverlapped));
+        CancelIoEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpOverlapped));
     }
 
     private static native void CancelIoEx(long ptrHFile, long ptrLpOverlapped) throws NativeErrorException;
@@ -106,7 +106,7 @@ public final class Ioapiset {
      * indicates an error.
      */
     public final static int GetOverlappedResult(HANDLE hFile, OVERLAPPED lpOverlapped, boolean bWait) throws NativeErrorException {
-        return GetOverlappedResult(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpOverlapped), bWait);
+        return GetOverlappedResult(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpOverlapped), bWait);
     }
 
     private static native int GetOverlappedResult(long ptrHFile, long ptrLpOverlapped, boolean bWait) throws NativeErrorException;
@@ -139,7 +139,7 @@ public final class Ioapiset {
      * indicates an error.
      */
     public final static int GetOverlappedResult(HANDLE hFile, OVERLAPPED lpOverlapped, ByteBuffer lpBuffer, boolean bWait) throws NativeErrorException {
-        int numberOfBytesTransferred = GetOverlappedResult(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpOverlapped), bWait);
+        int numberOfBytesTransferred = GetOverlappedResult(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpOverlapped), bWait);
         lpBuffer.position(lpBuffer.position() + numberOfBytesTransferred);
         return numberOfBytesTransferred;
     }
@@ -167,7 +167,13 @@ public final class Ioapiset {
             OpaqueMemory32 lpOutBuffer,
             OVERLAPPED lpOverlapped
     ) throws NativeErrorException {
-        return DeviceIoControl(HANDLE.getHandleValue(hDevice), dwIoControlCode, AbstractNativeMemory.getAddress(lpInBuffer), lpInBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOutBuffer), lpOutBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOverlapped));
+        return DeviceIoControl(HANDLE.getHandleValue(hDevice),
+                dwIoControlCode,
+                AbstractNativeMemory.toUintptr_tOrNULL(lpInBuffer),
+                lpInBuffer == null ? 0 : lpInBuffer.sizeInBytes,
+                AbstractNativeMemory.toUintptr_t(lpOutBuffer),
+                lpOutBuffer == null ? 0 : lpOutBuffer.sizeInBytes,
+                AbstractNativeMemory.toUintptr_tOrNULL(lpOverlapped));
     }
 
     private static native int DeviceIoControl(long ptrHDevice,

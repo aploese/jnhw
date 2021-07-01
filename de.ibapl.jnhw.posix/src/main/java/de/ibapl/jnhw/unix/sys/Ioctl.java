@@ -769,11 +769,11 @@ public final class Ioctl {
      * indicates an error.
      */
     public final static int ioctl(int fd, int request, Int32_t value) throws NativeErrorException {
-        return ioctl(fd, request, AbstractNativeMemory.getAddress(value));
+        return ioctl(fd, request, AbstractNativeMemory.toUintptr_t(value));
     }
 
     public final static int ioctl(int fd, int request, OpaqueMemory32 value) throws NativeErrorException {
-        return ioctl(fd, request, AbstractNativeMemory.getAddress(value));
+        return ioctl(fd, request, AbstractNativeMemory.toUintptr_t(value));
     }
 
     private static native int ioctl(int fd, int request, long ptrValue) throws NativeErrorException;

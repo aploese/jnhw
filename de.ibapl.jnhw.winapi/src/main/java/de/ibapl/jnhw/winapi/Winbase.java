@@ -233,7 +233,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void ClearCommError(HANDLE hFile, Int32_t lpErrors, COMSTAT lpStat) throws NativeErrorException {
-        ClearCommError(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpErrors), AbstractNativeMemory.getAddress(lpStat));
+        ClearCommError(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpErrors), AbstractNativeMemory.toUintptr_t(lpStat));
     }
 
     private static native void ClearCommError(long ptrHFile, long ptrLpErrors, long ptrLpStat) throws NativeErrorException;
@@ -429,7 +429,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void GetCommModemStatus(HANDLE hFile, Int32_t lpModemStat) throws NativeErrorException {
-        GetCommModemStatus(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpModemStat));
+        GetCommModemStatus(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpModemStat));
     }
 
     private static native void GetCommModemStatus(long ptrHFile, long ptrLpModemStat) throws NativeErrorException;
@@ -449,7 +449,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void GetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException {
-        GetCommModemStatus(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpDCB));
+        GetCommModemStatus(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpDCB));
     }
 
     private static native void GetCommState(long ptrHFile, long ptrLpDCB) throws NativeErrorException;
@@ -469,7 +469,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void GetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException {
-        GetCommTimeouts(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpCommTimeouts));
+        GetCommTimeouts(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpCommTimeouts));
     }
 
     private static native void GetCommTimeouts(long ptrHFile, long ptrLpCommTimeouts) throws NativeErrorException;
@@ -537,7 +537,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void SetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException {
-        SetCommState(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpDCB));
+        SetCommState(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpDCB));
     }
 
     private static native void SetCommState(long ptrHFile, long ptrLpDCB) throws NativeErrorException;
@@ -557,7 +557,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void SetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException {
-        SetCommTimeouts(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpCommTimeouts));
+        SetCommTimeouts(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpCommTimeouts));
     }
 
     private static native void SetCommTimeouts(long ptrHFile, long ptrLpCommTimeouts) throws NativeErrorException;
@@ -1417,7 +1417,7 @@ public abstract class Winbase {
      */
     //TODO Test
     public final static void BindIoCompletionCallback(HANDLE FileHandle, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE Function, int Flags) throws NativeErrorException {
-        BindIoCompletionCallback(HANDLE.getHandleValue(FileHandle), NativeFunctionPointer.getNativeAddress(Function), Flags);
+        BindIoCompletionCallback(HANDLE.getHandleValue(FileHandle), NativeFunctionPointer.toUintptr_t(Function), Flags);
     }
 
     private static native void BindIoCompletionCallback(long ptrFileHandle, long ptrFunction, int Flags) throws NativeErrorException;

@@ -21,8 +21,12 @@
  */
 package de.ibapl.jnhw.common.test.datatypes;
 
+import de.ibapl.jnhw.common.*;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Uint64_t;
+import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.libloader.Endianess;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
@@ -35,357 +39,69 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BaseDataTypeTest {
 
+    static {
+        LibJnhwCommonTestLoader.touch();
+    }
+
+    private final static native int getSizeOfPointer();
+
+    private final static native int getSizeOf_long();
+
+    private final static native int getSizeOf_float();
+
+    private final static native int getSizeOf_double();
+
+    private final static native int getSizeOf_long_double();
+
     public BaseDataTypeTest() {
     }
 
     @Test
+    public void testEndianes() {
+        final MultiarchInfo mi = LibJnhwCommonLoader.getLoadResult().multiarchInfo;
+        final Uint64_t uint64_t = new Uint64_t(null, 0, AbstractNativeMemory.SetMem.TO_0x00);
+        OpaqueMemory32.setByte(uint64_t, 0, (byte) 0x01);
+        OpaqueMemory32.setByte(uint64_t, 1, (byte) 0x02);
+        OpaqueMemory32.setByte(uint64_t, 2, (byte) 0x03);
+        OpaqueMemory32.setByte(uint64_t, 3, (byte) 0x04);
+        OpaqueMemory32.setByte(uint64_t, 4, (byte) 0x05);
+        OpaqueMemory32.setByte(uint64_t, 5, (byte) 0x06);
+        OpaqueMemory32.setByte(uint64_t, 6, (byte) 0x07);
+        OpaqueMemory32.setByte(uint64_t, 7, (byte) 0x08);
+        if (0x0807060504030201L == uint64_t.uint64_t()) {
+            assertEquals(Endianess.LITTLE, mi.getEndianess());
+        } else if (0x0102030405060708L == uint64_t.uint64_t()) {
+            assertEquals(Endianess.BIG, mi.getEndianess());
+        } else {
+            fail("Can't figure out the endianess for result: 0x" + uint64_t.nativeToHexString() + " multiarchinfo: " + mi);
+        }
+
+    }
+
+    @Test
     public void testSizes() {
+        assertAll(
+                () -> {
+                    assertEquals(getSizeOf_long(), BaseDataType.__SIZE_OF_LONG, "__SIZE_OF_LONG");
+                }, () -> {
+                    assertEquals(getSizeOfPointer(), BaseDataType.__SIZE_OF_POINTER, "__SIZE_OF_POINTER");
+                }, () -> {
+                    assertEquals(getSizeOf_float(), BaseDataType.__SIZE_OF_FLOAT, "__SIZE_OF_FLOAT");
+                }, () -> {
+                    assertEquals(getSizeOf_double(), BaseDataType.__SIZE_OF_DOUBLE, "__SIZE_OF_DOUBLE");
+                }, () -> {
+                    assertEquals(getSizeOf_long_double(), BaseDataType.__SIZE_OF_LONG_DOUBLE, "__SIZE_OF_LONG_DOUBLE");
+                });
+
         MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
         for (MultiarchInfo mi : mtb.getMultiarchs()) {
-            assertEquals(mi.getSizeOfLong().sizeInBit, BaseDataType.__SIZE_OF_LONG * 8);
-            assertEquals(mi.getSizeOfPointer().sizeInBit, BaseDataType.__SIZE_OF_POINTER * 8);
-            assertEquals(mi.getEndianess(), BaseDataType.__ENDIANESS);
-            switch (mi) {
-                case ARM__LINUX__GNU_EABI:
-                case ARM__LINUX__GNU_EABI_HF:
-                case MIPS__LINUX__GNU:
-                case MIPS_EL__LINUX__GNU:
-                    assertEquals(Endianess.LITTLE, BaseDataType.__ENDIANESS);
-                    //32 bit, but __BIGGEST_ALIGNMENT__ is 8
-                    assertEquals(Alignment.AT_8, Alignment.__BIGGEST_ALIGNMENT__);
 
-                    assertEquals(4, BaseDataType.__SIZE_OF_LONG);
-                    assertEquals(4, BaseDataType.__SIZE_OF_POINTER);
-
-                    assertEquals(4, BaseDataType.__SIZE_OF_FLOAT);
-                    assertEquals(8, BaseDataType.__SIZE_OF_DOUBLE);
-                    assertEquals(8, BaseDataType.__SIZE_OF_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_LONG);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_LONG);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_POINTER);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_POINTER);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_FLOAT);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_FLOAT);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_DOUBLE);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_DOUBLE);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_LONG_DOUBLE);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_INT8_T);
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_STRUCT_INT8_T);
-
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_INT16_T);
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_STRUCT_INT16_T);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_INT32_T);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_INT32_T);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INT64_T);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INT64_T);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_INTPTR_T);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_INTPTR_T);
-                    break;
-                case I386__LINUX__GNU:
-                    //classical 32bit anything is at 4 byte aligned
-                    assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
-
-                    assertEquals(4, BaseDataType.__SIZE_OF_LONG);
-                    assertEquals(4, BaseDataType.__SIZE_OF_POINTER);
-
-                    assertEquals(4, BaseDataType.__SIZE_OF_FLOAT);
-                    assertEquals(8, BaseDataType.__SIZE_OF_DOUBLE);
-                    assertEquals(12, BaseDataType.__SIZE_OF_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_LONG);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_LONG);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_POINTER);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_POINTER);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_FLOAT);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_FLOAT);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_DOUBLE);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_DOUBLE);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_LONG_DOUBLE);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_INT8_T);
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_STRUCT_INT8_T);
-
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_INT16_T);
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_STRUCT_INT16_T);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_INT32_T);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_INT32_T);
-
-                    //Why is int64_t alighned at 8, but in struct at 4 ????
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INT64_T);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_INT64_T);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_INTPTR_T);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_INTPTR_T);
-                    break;
-                case S390_X__LINUX__GNU:
-                    assertEquals(Alignment.AT_8, Alignment.__BIGGEST_ALIGNMENT__);
-
-                    assertEquals(8, BaseDataType.__SIZE_OF_LONG);
-                    assertEquals(8, BaseDataType.__SIZE_OF_POINTER);
-
-                    assertEquals(4, BaseDataType.__SIZE_OF_FLOAT);
-                    assertEquals(8, BaseDataType.__SIZE_OF_DOUBLE);
-                    assertEquals(16, BaseDataType.__SIZE_OF_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_LONG);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_LONG);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_POINTER);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_POINTER);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_FLOAT);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_FLOAT);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_DOUBLE);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_DOUBLE);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_LONG_DOUBLE);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_INT8_T);
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_STRUCT_INT8_T);
-
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_INT16_T);
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_STRUCT_INT16_T);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_INT32_T);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_INT32_T);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INT64_T);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INT64_T);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INTPTR_T);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INTPTR_T);
-                    break;
-                case MIPS_64__LINUX__GNU_ABI_64:
-                case MIPS_64_EL__LINUX__GNU_ABI_64:
-                    assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
-
-                    assertEquals(8, BaseDataType.__SIZE_OF_LONG);
-                    assertEquals(8, BaseDataType.__SIZE_OF_POINTER);
-
-                    assertEquals(4, BaseDataType.__SIZE_OF_FLOAT);
-                    assertEquals(8, BaseDataType.__SIZE_OF_DOUBLE);
-                    assertEquals(16, BaseDataType.__SIZE_OF_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_LONG);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_LONG);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_POINTER);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_POINTER);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_FLOAT);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_FLOAT);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_DOUBLE);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_DOUBLE);
-
-                    assertEquals(Alignment.AT_16, Alignment.__ALIGN_OF_LONG_DOUBLE);
-                    assertEquals(Alignment.AT_16, Alignment.__ALIGN_OF_STRUCT_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_INT8_T);
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_STRUCT_INT8_T);
-
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_INT16_T);
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_STRUCT_INT16_T);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_INT32_T);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_INT32_T);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INT64_T);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INT64_T);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INTPTR_T);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INTPTR_T);
-                    break;
-                case AARCH64__LINUX__GNU:
-                case POWER_PC_64_LE__LINUX__GNU:
-                case RISC_V_64__LINUX__GNU:
-                case X86_64__LINUX__GNU:
-                    //classical 64bit anything is at 8 byte aligned
-                    assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
-
-                    assertEquals(8, BaseDataType.__SIZE_OF_LONG);
-                    assertEquals(8, BaseDataType.__SIZE_OF_POINTER);
-
-                    assertEquals(4, BaseDataType.__SIZE_OF_FLOAT);
-                    assertEquals(8, BaseDataType.__SIZE_OF_DOUBLE);
-                    assertEquals(16, BaseDataType.__SIZE_OF_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_LONG);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_LONG);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_POINTER);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_POINTER);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_FLOAT);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_FLOAT);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_DOUBLE);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_DOUBLE);
-
-                    assertEquals(Alignment.AT_16, Alignment.__ALIGN_OF_LONG_DOUBLE);
-                    assertEquals(Alignment.AT_16, Alignment.__ALIGN_OF_STRUCT_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_INT8_T);
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_STRUCT_INT8_T);
-
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_INT16_T);
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_STRUCT_INT16_T);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_INT32_T);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_INT32_T);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INT64_T);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INT64_T);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INTPTR_T);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INTPTR_T);
-                    break;
-                case X86_64__WINDOWS__PE32_PLUS:
-                    //classical 64bit anything is at 8 byte aligned long is 4 bytes long ...
-                    assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
-
-                    assertEquals(4, BaseDataType.__SIZE_OF_LONG);
-                    assertEquals(8, BaseDataType.__SIZE_OF_POINTER);
-
-                    assertEquals(4, BaseDataType.__SIZE_OF_FLOAT);
-                    assertEquals(8, BaseDataType.__SIZE_OF_DOUBLE);
-                    assertEquals(16, BaseDataType.__SIZE_OF_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_LONG);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_LONG);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_POINTER);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_POINTER);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_FLOAT);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_FLOAT);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_DOUBLE);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_DOUBLE);
-
-                    assertEquals(Alignment.AT_16, Alignment.__ALIGN_OF_LONG_DOUBLE);
-                    assertEquals(Alignment.AT_16, Alignment.__ALIGN_OF_STRUCT_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_INT8_T);
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_STRUCT_INT8_T);
-
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_INT16_T);
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_STRUCT_INT16_T);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_INT32_T);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_INT32_T);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INT64_T);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INT64_T);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INTPTR_T);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INTPTR_T);
-                    break;
-                case X86_64__OPEN_BSD__BSD:
-                case X86_64__FREE_BSD__BSD:
-                    //classical 64bit anything is at 8 byte aligned
-                    assertEquals(Alignment.AT_16, Alignment.__BIGGEST_ALIGNMENT__);
-
-                    assertEquals(8, BaseDataType.__SIZE_OF_LONG);
-                    assertEquals(8, BaseDataType.__SIZE_OF_POINTER);
-
-                    assertEquals(4, BaseDataType.__SIZE_OF_FLOAT);
-                    assertEquals(8, BaseDataType.__SIZE_OF_DOUBLE);
-                    assertEquals(16, BaseDataType.__SIZE_OF_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_LONG);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_LONG);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_POINTER);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_POINTER);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_FLOAT);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_FLOAT);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_DOUBLE);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_DOUBLE);
-
-                    assertEquals(Alignment.AT_16, Alignment.__ALIGN_OF_LONG_DOUBLE);
-                    assertEquals(Alignment.AT_16, Alignment.__ALIGN_OF_STRUCT_LONG_DOUBLE);
-
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_INT8_T);
-                    assertEquals(Alignment.AT_1, Alignment.__ALIGN_OF_STRUCT_INT8_T);
-
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_INT16_T);
-                    assertEquals(Alignment.AT_2, Alignment.__ALIGN_OF_STRUCT_INT16_T);
-
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_INT32_T);
-                    assertEquals(Alignment.AT_4, Alignment.__ALIGN_OF_STRUCT_INT32_T);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INT64_T);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INT64_T);
-
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_INTPTR_T);
-                    assertEquals(Alignment.AT_8, Alignment.__ALIGN_OF_STRUCT_INTPTR_T);
-                    break;
-                default:
-                    //sorry, but we need proof.... so test an commit results ....
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("No testvalues for multiarch:  ").append(mi).append("\n");
-                    sb.append("__BIGGEST_ALIGNMENT__       = ").append(Alignment.__BIGGEST_ALIGNMENT__).append("\n");
-
-                    sb.append("SIZE_OF_LONG                = ").append(BaseDataType.__SIZE_OF_LONG).append("\n");
-                    sb.append("SIZE_OF_POINTER             = ").append(BaseDataType.__SIZE_OF_POINTER).append("\n");
-
-                    sb.append("SIZE_OF_FLOAT               = ").append(BaseDataType.__SIZE_OF_FLOAT).append("\n");
-                    sb.append("SIZE_OF_DOUBLE              = ").append(BaseDataType.__SIZE_OF_DOUBLE).append("\n");
-                    sb.append("SIZE_OF_LONG_DOUBLE         = ").append(BaseDataType.__SIZE_OF_LONG_DOUBLE).append("\n");
-
-                    sb.append("ALIGN_OF_LONG               = ").append(Alignment.__ALIGN_OF_LONG).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_LONG        = ").append(Alignment.__ALIGN_OF_STRUCT_LONG).append("\n");
-
-                    sb.append("ALIGN_OF_POINTER            = ").append(Alignment.__ALIGN_OF_POINTER).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_POINTER     = ").append(Alignment.__ALIGN_OF_STRUCT_POINTER).append("\n");
-
-                    sb.append("ALIGN_OF_FLOAT              = ").append(Alignment.__ALIGN_OF_FLOAT).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_FLOAT       = ").append(Alignment.__ALIGN_OF_STRUCT_FLOAT).append("\n");
-
-                    sb.append("ALIGN_OF_DOUBLE             = ").append(Alignment.__ALIGN_OF_DOUBLE).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_DOUBLE      = ").append(Alignment.__ALIGN_OF_STRUCT_DOUBLE).append("\n");
-
-                    sb.append("ALIGN_OF_LONG_DOUBLE        = ").append(Alignment.__ALIGN_OF_LONG_DOUBLE).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_LONG_DOUBLE = ").append(Alignment.__ALIGN_OF_STRUCT_LONG_DOUBLE).append("\n");
-
-                    sb.append("ALIGN_OF_INT8_T             = ").append(Alignment.__ALIGN_OF_INT8_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT8_T      = ").append(Alignment.__ALIGN_OF_STRUCT_INT8_T).append("\n");
-
-                    sb.append("ALIGN_OF_INT16_T            = ").append(Alignment.__ALIGN_OF_INT16_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT16_T     = ").append(Alignment.__ALIGN_OF_STRUCT_INT16_T).append("\n");
-
-                    sb.append("ALIGN_OF_INT32_T            = ").append(Alignment.__ALIGN_OF_INT32_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT32_T     = ").append(Alignment.__ALIGN_OF_STRUCT_INT32_T).append("\n");
-
-                    sb.append("ALIGN_OF_INT64_T            = ").append(Alignment.__ALIGN_OF_INT64_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INT64_T     = ").append(Alignment.__ALIGN_OF_STRUCT_INT64_T).append("\n");
-
-                    sb.append("ALIGN_OF_INTPTR_T           = ").append(Alignment.__ALIGN_OF_INTPTR_T).append("\n");
-                    sb.append("ALIGN_OF_STRUCT_INTPTR_T    = ").append(Alignment.__ALIGN_OF_STRUCT_INTPTR_T).append("\n");
-
-                    fail(sb.toString());
-            }
+            assertAll(
+                    () -> {
+                        assertEquals(mi.getSizeOfLong().sizeInBit, BaseDataType.__SIZE_OF_LONG * 8, "__SIZE_OF_LONG");
+                    }, () -> {
+                        assertEquals(mi.getSizeOfPointer().sizeInBit, BaseDataType.__SIZE_OF_POINTER * 8, "__SIZE_OF_POINTER");
+                    });
         }
     }
 }

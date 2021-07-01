@@ -27,7 +27,9 @@ import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class ErrnoTest {
 
     public static class NativeDefines {

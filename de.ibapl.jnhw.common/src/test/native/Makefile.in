@@ -143,7 +143,8 @@ am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
 libtests_la_LIBADD =
-am_libtests_la_OBJECTS =  \
+am_libtests_la_OBJECTS = AlignmentTest.lo \
+	StructLayoutFactoryImplTest.lo BaseDataTypeTest.lo \
 	AbstractNativeMemoryTest_NativeMemoryAlignment.lo \
 	Callback_I_V_Test.lo Callback_J_V_Test.lo \
 	Callback_IJ_V_Test.lo \
@@ -169,6 +170,7 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AbstractNativeMemoryTest_NativeMemoryAlignment.Plo \
+	./$(DEPDIR)/AlignmentTest.Plo ./$(DEPDIR)/BaseDataTypeTest.Plo \
 	./$(DEPDIR)/Callback_IJ_V_Test.Plo \
 	./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Test.Plo \
 	./$(DEPDIR)/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.Plo \
@@ -178,6 +180,7 @@ am__depfiles_remade = ./$(DEPDIR)/AbstractNativeMemoryTest_NativeMemoryAlignment
 	./$(DEPDIR)/JnhwExceptionsTest.Plo \
 	./$(DEPDIR)/NativeRunnableTest.Plo \
 	./$(DEPDIR)/SimpeStructureImpl.Plo \
+	./$(DEPDIR)/StructLayoutFactoryImplTest.Plo \
 	./$(DEPDIR)/StructLayoutTest.Plo \
 	./$(DEPDIR)/libjnhw-common-test.Plo
 am__mv = mv -f
@@ -369,6 +372,9 @@ lib_LTLIBRARIES = libjnhw-common-test.la
 noinst_LTLIBRARIES = libtests.la
 libjnhw_common_test_la_LIBADD = libtests.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 libtests_la_SOURCES = \
+ AlignmentTest.c \
+ StructLayoutFactoryImplTest.c \
+ BaseDataTypeTest.c \
  AbstractNativeMemoryTest_NativeMemoryAlignment.c \
  Callback_I_V_Test.c \
  Callback_J_V_Test.c \
@@ -474,6 +480,8 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbstractNativeMemoryTest_NativeMemoryAlignment.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AlignmentTest.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BaseDataTypeTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_IJ_V_Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.Plo@am__quote@ # am--include-marker
@@ -483,6 +491,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwExceptionsTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NativeRunnableTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SimpeStructureImpl.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StructLayoutFactoryImplTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StructLayoutTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libjnhw-common-test.Plo@am__quote@ # am--include-marker
 
@@ -646,6 +655,8 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/AbstractNativeMemoryTest_NativeMemoryAlignment.Plo
+	-rm -f ./$(DEPDIR)/AlignmentTest.Plo
+	-rm -f ./$(DEPDIR)/BaseDataTypeTest.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.Plo
@@ -655,6 +666,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/JnhwExceptionsTest.Plo
 	-rm -f ./$(DEPDIR)/NativeRunnableTest.Plo
 	-rm -f ./$(DEPDIR)/SimpeStructureImpl.Plo
+	-rm -f ./$(DEPDIR)/StructLayoutFactoryImplTest.Plo
 	-rm -f ./$(DEPDIR)/StructLayoutTest.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-common-test.Plo
 	-rm -f Makefile
@@ -703,6 +715,8 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/AbstractNativeMemoryTest_NativeMemoryAlignment.Plo
+	-rm -f ./$(DEPDIR)/AlignmentTest.Plo
+	-rm -f ./$(DEPDIR)/BaseDataTypeTest.Plo
 	-rm -f ./$(DEPDIR)/Callback_IJ_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_I_PtrAbstractNativeMemory_V_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.Plo
@@ -712,6 +726,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/JnhwExceptionsTest.Plo
 	-rm -f ./$(DEPDIR)/NativeRunnableTest.Plo
 	-rm -f ./$(DEPDIR)/SimpeStructureImpl.Plo
+	-rm -f ./$(DEPDIR)/StructLayoutFactoryImplTest.Plo
 	-rm -f ./$(DEPDIR)/StructLayoutTest.Plo
 	-rm -f ./$(DEPDIR)/libjnhw-common-test.Plo
 	-rm -f Makefile

@@ -67,7 +67,7 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint fildes, __attribute__ ((unused)) jint cmd) {
         throw_NoSuchNativeMethodException(env, "fcntl64");
         return -1;
-#endif        
+#endif
     }
 
     /*
@@ -101,20 +101,16 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint fildes, __attribute__ ((unused)) jint cmd, __attribute__ ((unused)) jint vararg_0) {
         throw_NoSuchNativeMethodException(env, "fcntl64");
         return -1;
-#endif        
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    creat
+     * Method:    creat0
      * Signature: (Ljava/lang/String;I)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat0
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring path, jint mode) {
-        if (path == NULL) {
-            throw_NullPointerException(env, "path is null.");
-            return -1;
-        }
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
 #if defined(_JNHW__mode_t__IS__uint16_t)
         if ((mode > UINT16_MAX) || (mode < 0)) {
@@ -124,7 +120,7 @@ extern "C" {
 #elif defined(_JNHW__mode_t__IS__uint32_t)
 #else
 #error expected mode_t uint16_t or uint32_t
-#endif 
+#endif
         const int result = creat(_path, (mode_t) mode);
         (*env)->ReleaseStringUTFChars(env, path, _path);
         if (result == -1) {
@@ -135,16 +131,12 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    creat64
+     * Method:    creat64_0
      * Signature: (Ljava/lang/String;I)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat64
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat64_10
 #ifdef _LARGEFILE64_SOURCE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring path, jint mode) {
-        if (path == NULL) {
-            throw_NullPointerException(env, "path is null.");
-            return -1;
-        }
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
         const int result = creat64(_path, (uint32_t) mode);
 
@@ -157,21 +149,16 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) __attribute__ ((unused)) jstring path, __attribute__ ((unused)) jint mode) {
         throw_NoSuchNativeMethodException(env, "creat64");
         return -1;
-#endif        
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    open
+     * Method:    open0
      * Signature: (Ljava/lang/String;I)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open__Ljava_lang_String_2I
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open0__Ljava_lang_String_2I
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring path, jint oflag) {
-        if (path == NULL) {
-            throw_NullPointerException(env, "path is null.");
-            return -1;
-        }
-
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
         const int result = open(_path, oflag);
         (*env)->ReleaseStringUTFChars(env, path, _path);
@@ -183,16 +170,11 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    open
+     * Method:    open0
      * Signature: (Ljava/lang/String;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open__Ljava_lang_String_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open0__Ljava_lang_String_2II
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring path, jint oflag, jint mode) {
-        if (path == NULL) {
-            throw_NullPointerException(env, "path is null.");
-            return -1;
-        }
-
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
         const int result = open(_path, oflag, mode);
         (*env)->ReleaseStringUTFChars(env, path, _path);
@@ -204,16 +186,11 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    openat
+     * Method:    openat0
      * Signature: (ILjava/lang/String;I)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat__ILjava_lang_String_2I
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat0__ILjava_lang_String_2I
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jstring path, jint oflag) {
-        if (path == NULL) {
-            throw_NullPointerException(env, "path is null.");
-            return -1;
-        }
-
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
         const int result = openat(fd, _path, oflag);
         (*env)->ReleaseStringUTFChars(env, path, _path);
@@ -225,16 +202,11 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    openat
+     * Method:    openat0
      * Signature: (ILjava/lang/String;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat__ILjava_lang_String_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat0__ILjava_lang_String_2II
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jstring path, jint oflag, jint mode) {
-        if (path == NULL) {
-            throw_NullPointerException(env, "path is null.");
-            return -1;
-        }
-
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
         const int result = openat(fd, _path, oflag, mode);
         (*env)->ReleaseStringUTFChars(env, path, _path);
@@ -246,17 +218,12 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    open64
+     * Method:    open64_0
      * Signature: (Ljava/lang/String;I)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64__Ljava_lang_String_2I
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64_10__Ljava_lang_String_2I
 #ifdef _LARGEFILE64_SOURCE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring path, jint oflag) {
-        if (path == NULL) {
-            throw_NullPointerException(env, "path is null.");
-            return -1;
-        }
-
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
         const int result = open64(_path, oflag);
         (*env)->ReleaseStringUTFChars(env, path, _path);
@@ -268,22 +235,17 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jstring path, __attribute__ ((unused)) jint oflag) {
         throw_NoSuchNativeMethodException(env, "open64");
         return -1;
-#endif        
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    open64
+     * Method:    open64_0
      * Signature: (Ljava/lang/String;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64__Ljava_lang_String_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64_10__Ljava_lang_String_2II
 #ifdef _LARGEFILE64_SOURCE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring path, jint oflag, jint mode) {
-        if (path == NULL) {
-            throw_NullPointerException(env, "path is null.");
-            return -1;
-        }
-
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
         const int result = open64(_path, oflag, mode);
         (*env)->ReleaseStringUTFChars(env, path, _path);
@@ -295,22 +257,17 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jstring path, __attribute__ ((unused)) jint oflag, __attribute__ ((unused)) jint mode) {
         throw_NoSuchNativeMethodException(env, "open64");
         return -1;
-#endif        
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    openat64
+     * Method:    openat64_0
      * Signature: (ILjava/lang/String;I)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat64__ILjava_lang_String_2I
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat64_10__ILjava_lang_String_2I
 #ifdef _LARGEFILE64_SOURCE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jstring path, jint oflag) {
-        if (path == NULL) {
-            throw_NullPointerException(env, "path is null.");
-            return -1;
-        }
-
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
         const int result = openat64(fd, _path, oflag);
         (*env)->ReleaseStringUTFChars(env, path, _path);
@@ -322,22 +279,17 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fd, __attribute__ ((unused)) jstring path, __attribute__ ((unused)) jint oflag) {
         throw_NoSuchNativeMethodException(env, "openat64");
         return -1;
-#endif        
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Fcntl
-     * Method:    openat64
+     * Method:    openat64_0
      * Signature: (ILjava/lang/String;II)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat64__ILjava_lang_String_2II
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat64_10__ILjava_lang_String_2II
 #ifdef _LARGEFILE64_SOURCE
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, int fd, jstring path, jint oflag, jint mode) {
-        if (path == NULL) {
-            throw_NullPointerException(env, "path is null.");
-            return -1;
-        }
-
         const char* _path = (*env)->GetStringUTFChars(env, path, NULL);
         const int result = openat64(fd, _path, oflag, mode);
         (*env)->ReleaseStringUTFChars(env, path, _path);
@@ -349,7 +301,7 @@ extern "C" {
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fd, __attribute__ ((unused)) jstring path, __attribute__ ((unused)) jint oflag, __attribute__ ((unused)) jint mode) {
         throw_NoSuchNativeMethodException(env, "openat64");
         return -1;
-#endif        
+#endif
     }
 
     /*
@@ -375,7 +327,7 @@ extern "C" {
 #elif defined(_JNHW__off_t__IS__int64_t)
 #else
 #error expected off_t is int32_t or int64_t
-#endif 
+#endif
         const int result = posix_fadvise(fildes, (off_t) offset, (off_t) len, advice);
         if (result) {
             throw_NativeErrorException(env, result);
@@ -398,7 +350,7 @@ extern "C" {
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fildes, __attribute__ ((unused)) jlong offset, __attribute__ ((unused)) jlong len, __attribute__ ((unused)) jint advice) {
         throw_NoSuchNativeMethodException(env, "posix_fadvice");
-#endif        
+#endif
     }
 
     /*
@@ -424,7 +376,7 @@ extern "C" {
 #elif defined(_JNHW__off_t__IS__int64_t)
 #else
 #error expected off_t is int32_t or int64_t
-#endif 
+#endif
         const int result = posix_fallocate(fildes, (off_t) offset, (off_t) len);
         if (result) {
             throw_NativeErrorException(env, result);
@@ -447,7 +399,7 @@ extern "C" {
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) int fildes, __attribute__ ((unused)) jlong offset, __attribute__ ((unused)) jlong len) {
         throw_NoSuchNativeMethodException(env, "posix_fadvice");
-#endif        
+#endif
     }
 
 #ifdef __cplusplus

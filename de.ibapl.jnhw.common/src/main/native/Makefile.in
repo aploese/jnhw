@@ -159,9 +159,8 @@ libjnhw_common_la_DEPENDENCIES = libexceptions.la libmemory.la \
 am_libjnhw_common_la_OBJECTS = jnhw-common.lo
 libjnhw_common_la_OBJECTS = $(am_libjnhw_common_la_OBJECTS)
 libmemory_la_LIBADD =
-am_libmemory_la_OBJECTS = Alignment.lo BaseDataType.lo \
-	UnsafeMemoryAccessor.lo JnhwMemoryAccessor.lo \
-	StructLayoutFactoryImplTest.lo
+am_libmemory_la_OBJECTS = UnsafeMemoryAccessor.lo \
+	JnhwMemoryAccessor.lo
 libmemory_la_OBJECTS = $(am_libmemory_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -178,8 +177,7 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/Alignment.Plo \
-	./$(DEPDIR)/BaseDataType.Plo ./$(DEPDIR)/CallNative_IJ_V.Plo \
+am__depfiles_remade = ./$(DEPDIR)/CallNative_IJ_V.Plo \
 	./$(DEPDIR)/CallNative_I_I_Mem_V.Plo \
 	./$(DEPDIR)/CallNative_I_Mem_Mem_V.Plo \
 	./$(DEPDIR)/CallNative_I_V.Plo ./$(DEPDIR)/CallNative_J_V.Plo \
@@ -194,7 +192,6 @@ am__depfiles_remade = ./$(DEPDIR)/Alignment.Plo \
 	./$(DEPDIR)/JnhwExceptions.Plo \
 	./$(DEPDIR)/JnhwMemoryAccessor.Plo \
 	./$(DEPDIR)/NativeRunnable.Plo \
-	./$(DEPDIR)/StructLayoutFactoryImplTest.Plo \
 	./$(DEPDIR)/UnsafeMemoryAccessor.Plo \
 	./$(DEPDIR)/jnhw-common.Plo
 am__mv = mv -f
@@ -423,11 +420,8 @@ libcallnative_la_SOURCES = \
  CallNative_Mem_V.c
 
 libmemory_la_SOURCES = \
- Alignment.c \
- BaseDataType.c \
  UnsafeMemoryAccessor.c \
- JnhwMemoryAccessor.c \
- StructLayoutFactoryImplTest.c
+ JnhwMemoryAccessor.c
 
 libjnhw_common_la_SOURCES = \
  jnhw-common.c
@@ -533,8 +527,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Alignment.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BaseDataType.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CallNative_IJ_V.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CallNative_I_I_Mem_V.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CallNative_I_Mem_Mem_V.Plo@am__quote@ # am--include-marker
@@ -551,7 +543,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwExceptions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JnhwMemoryAccessor.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NativeRunnable.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StructLayoutFactoryImplTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UnsafeMemoryAccessor.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jnhw-common.Plo@am__quote@ # am--include-marker
 
@@ -735,9 +726,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/Alignment.Plo
-	-rm -f ./$(DEPDIR)/BaseDataType.Plo
-	-rm -f ./$(DEPDIR)/CallNative_IJ_V.Plo
+		-rm -f ./$(DEPDIR)/CallNative_IJ_V.Plo
 	-rm -f ./$(DEPDIR)/CallNative_I_I_Mem_V.Plo
 	-rm -f ./$(DEPDIR)/CallNative_I_Mem_Mem_V.Plo
 	-rm -f ./$(DEPDIR)/CallNative_I_V.Plo
@@ -753,7 +742,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
 	-rm -f ./$(DEPDIR)/JnhwMemoryAccessor.Plo
 	-rm -f ./$(DEPDIR)/NativeRunnable.Plo
-	-rm -f ./$(DEPDIR)/StructLayoutFactoryImplTest.Plo
 	-rm -f ./$(DEPDIR)/UnsafeMemoryAccessor.Plo
 	-rm -f ./$(DEPDIR)/jnhw-common.Plo
 	-rm -f Makefile
@@ -801,9 +789,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/Alignment.Plo
-	-rm -f ./$(DEPDIR)/BaseDataType.Plo
-	-rm -f ./$(DEPDIR)/CallNative_IJ_V.Plo
+		-rm -f ./$(DEPDIR)/CallNative_IJ_V.Plo
 	-rm -f ./$(DEPDIR)/CallNative_I_I_Mem_V.Plo
 	-rm -f ./$(DEPDIR)/CallNative_I_Mem_Mem_V.Plo
 	-rm -f ./$(DEPDIR)/CallNative_I_V.Plo
@@ -819,7 +805,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/JnhwExceptions.Plo
 	-rm -f ./$(DEPDIR)/JnhwMemoryAccessor.Plo
 	-rm -f ./$(DEPDIR)/NativeRunnable.Plo
-	-rm -f ./$(DEPDIR)/StructLayoutFactoryImplTest.Plo
 	-rm -f ./$(DEPDIR)/UnsafeMemoryAccessor.Plo
 	-rm -f ./$(DEPDIR)/jnhw-common.Plo
 	-rm -f Makefile

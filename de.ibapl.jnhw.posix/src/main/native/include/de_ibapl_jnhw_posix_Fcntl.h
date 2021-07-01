@@ -9,18 +9,18 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Fcntl
- * Method:    creat
+ * Method:    creat0
  * Signature: (Ljava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat0
   (JNIEnv *, jclass, jstring, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Fcntl
- * Method:    creat64
+ * Method:    creat64_0
  * Signature: (Ljava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat64
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_creat64_10
   (JNIEnv *, jclass, jstring, jint);
 
 /*
@@ -57,66 +57,66 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_fcntl64__III
 
 /*
  * Class:     de_ibapl_jnhw_posix_Fcntl
- * Method:    open
+ * Method:    open0
  * Signature: (Ljava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open__Ljava_lang_String_2I
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open0__Ljava_lang_String_2I
   (JNIEnv *, jclass, jstring, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Fcntl
- * Method:    open
+ * Method:    open0
  * Signature: (Ljava/lang/String;II)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open__Ljava_lang_String_2II
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open0__Ljava_lang_String_2II
   (JNIEnv *, jclass, jstring, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Fcntl
- * Method:    open64
+ * Method:    open64_0
  * Signature: (Ljava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64__Ljava_lang_String_2I
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64_10__Ljava_lang_String_2I
   (JNIEnv *, jclass, jstring, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Fcntl
- * Method:    open64
+ * Method:    open64_0
  * Signature: (Ljava/lang/String;II)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64__Ljava_lang_String_2II
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_open64_10__Ljava_lang_String_2II
   (JNIEnv *, jclass, jstring, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Fcntl
- * Method:    openat
+ * Method:    openat0
  * Signature: (ILjava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat__ILjava_lang_String_2I
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat0__ILjava_lang_String_2I
   (JNIEnv *, jclass, jint, jstring, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Fcntl
- * Method:    openat
+ * Method:    openat0
  * Signature: (ILjava/lang/String;II)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat__ILjava_lang_String_2II
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat0__ILjava_lang_String_2II
   (JNIEnv *, jclass, jint, jstring, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Fcntl
- * Method:    openat64
+ * Method:    openat64_0
  * Signature: (ILjava/lang/String;I)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat64__ILjava_lang_String_2I
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat64_10__ILjava_lang_String_2I
   (JNIEnv *, jclass, jint, jstring, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Fcntl
- * Method:    openat64
+ * Method:    openat64_0
  * Signature: (ILjava/lang/String;II)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat64__ILjava_lang_String_2II
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Fcntl_openat64_10__ILjava_lang_String_2II
   (JNIEnv *, jclass, jint, jstring, jint, jint);
 
 /*

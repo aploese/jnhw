@@ -78,6 +78,9 @@ public class IoAPITest {
         assertEquals(COMPLETION_KEY, lpCompletionKey.uint32_t());
         assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.int32_t());
         assertEquals(NativeAddressHolder.NULL, lpOverlapped);
+
+        Handleapi.CloseHandle(completionPort);
+
     }
 
 }

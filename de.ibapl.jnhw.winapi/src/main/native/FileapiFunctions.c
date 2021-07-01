@@ -68,7 +68,7 @@ extern "C" {
      * Method:    ReadFile
      * Signature: (J[BII)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile_J_3BII
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__J_3BII
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrHFile, jbyteArray lpBuffer, jint off, jint nNumberOfBytesToRead) {
         jbyte stackBuf[nNumberOfBytesToRead > MAX_STACK_BUF_SIZE ? 0 : nNumberOfBytesToRead];
         jbyte *_buf = NULL;

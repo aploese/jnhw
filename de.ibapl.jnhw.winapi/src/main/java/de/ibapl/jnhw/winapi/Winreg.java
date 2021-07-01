@@ -203,7 +203,7 @@ public abstract class Winreg {
      * indicates an error.
      */
     public final static long RegEnumValueW(HKEY hKey, int dwIndex, LPWSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpType, LPBYTE lpData, LPDWORD lpccData) throws NativeErrorException {
-        return RegEnumValueW(HKEY.getHandleValue(hKey), dwIndex, AbstractNativeMemory.getAddress(lpValueName), AbstractNativeMemory.getAddress(lpcchValueName), AbstractNativeMemory.getAddress(lpType), AbstractNativeMemory.getAddress(lpData), AbstractNativeMemory.getAddress(lpccData));
+        return RegEnumValueW(HKEY.getHandleValue(hKey), dwIndex, AbstractNativeMemory.toUintptr_t(lpValueName), AbstractNativeMemory.toUintptr_t(lpcchValueName), AbstractNativeMemory.toUintptr_t(lpType), AbstractNativeMemory.toUintptr_t(lpData), AbstractNativeMemory.toUintptr_t(lpccData));
     }
 
     private static native long RegEnumValueW(long ptrHKey, int dwIndex, long ptrLpValueName, long ptrLpcchValueName, long ptrLpType, long ptrLpData, long ptrLpccData) throws NativeErrorException;

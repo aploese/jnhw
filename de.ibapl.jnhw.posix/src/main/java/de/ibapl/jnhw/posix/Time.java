@@ -209,7 +209,7 @@ public class Time {
      * @return on succes the converted date and time, otherwise {@code null}
      */
     public final static String asctime(Tm tm) {
-        return asctime(AbstractNativeMemory.getAddress(tm));
+        return asctime(AbstractNativeMemory.toUintptr_t(tm));
     }
 
     private static native String asctime(long ptrTm);
@@ -229,7 +229,7 @@ public class Time {
         if (buf.sizeInBytes < 26) {
             throw new IllegalArgumentException("buf is too small 26 bytes are the minimum");
         }
-        return asctime_r(AbstractNativeMemory.getAddress(tm), AbstractNativeMemory.getAddress(buf));
+        return asctime_r(AbstractNativeMemory.toUintptr_t(tm), AbstractNativeMemory.toUintptr_t(buf));
     }
 
     private static native String asctime_r(long ptrTm, long ptrBuf);
@@ -273,7 +273,7 @@ public class Time {
      * indicates an error.
      */
     public final static void clock_getres(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException {
-        clock_getres(clock_id, AbstractNativeMemory.getAddress(timespec));
+        clock_getres(clock_id, AbstractNativeMemory.toUintptr_t(timespec));
     }
 
     public final static void clock_getres(@clockid_t int clock_id) throws NativeErrorException {
@@ -296,7 +296,7 @@ public class Time {
      * indicates an error.
      */
     public final static void clock_gettime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException {
-        clock_gettime(clock_id, AbstractNativeMemory.getAddress(timespec));
+        clock_gettime(clock_id, AbstractNativeMemory.toUintptr_t(timespec));
     }
 
     private static native void clock_gettime(int clock_id, long ptrTimespec) throws NativeErrorException;
@@ -318,11 +318,11 @@ public class Time {
      * available natively.
      */
     public final static void clock_nanosleep(@clockid_t int clock_id, int flags, Timespec rqtp, Timespec rmtp) throws NativeErrorException, NoSuchNativeMethodException {
-        clock_nanosleep(clock_id, flags, AbstractNativeMemory.getAddress(rqtp), AbstractNativeMemory.getAddress(rmtp));
+        clock_nanosleep(clock_id, flags, AbstractNativeMemory.toUintptr_t(rqtp), AbstractNativeMemory.toUintptr_t(rmtp));
     }
 
     public final static void clock_nanosleep(@clockid_t int clock_id, int flags, Timespec rqtp) throws NativeErrorException, NoSuchNativeMethodException {
-        clock_nanosleep(clock_id, flags, AbstractNativeMemory.getAddress(rqtp), AbstractNativeMemory.NULL);
+        clock_nanosleep(clock_id, flags, AbstractNativeMemory.toUintptr_t(rqtp), AbstractNativeMemory.NULL);
     }
 
     private static native void clock_nanosleep(@clockid_t int clock_id, int flags, long ptrRqtp, long ptrRmtp) throws NativeErrorException, NoSuchNativeMethodException;
@@ -341,7 +341,7 @@ public class Time {
      * indicates an error.
      */
     public final static void clock_settime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException {
-        clock_settime(clock_id, AbstractNativeMemory.getAddress(timespec));
+        clock_settime(clock_id, AbstractNativeMemory.toUintptr_t(timespec));
     }
 
     private static native void clock_settime(@clockid_t int clock_id, long ptrTimespec) throws NativeErrorException;
@@ -374,7 +374,7 @@ public class Time {
         if (buf.sizeInBytes < 26) {
             throw new IllegalArgumentException("buf is too small 26 bytes are the minimum");
         }
-        return ctime_r(clock, AbstractNativeMemory.getAddress(buf));
+        return ctime_r(clock, AbstractNativeMemory.toUintptr_t(buf));
     }
 
     private static native String ctime_r(@time_t long clock, long ptrBuf);
@@ -417,6 +417,9 @@ public class Time {
      * available natively.
      */
     public final static Tm getdate(String string) throws NativeErrorException, NoSuchNativeMethodException {
+        if (string == null) {
+            throw new NullPointerException("string is NULL");
+        }
         return new Tm(NativeAddressHolder.ofUintptr_t(getdate0(string)));
     }
 
@@ -451,7 +454,7 @@ public class Time {
      * indicates an error.
      */
     public final static void gmtime_r(@time_t long timer, Tm result) throws NativeErrorException {
-        gmtime_r(timer, AbstractNativeMemory.getAddress(result));
+        gmtime_r(timer, AbstractNativeMemory.toUintptr_t(result));
     }
 
     private static native void gmtime_r(@time_t long timer, long ptrResult) throws NativeErrorException;
@@ -487,7 +490,7 @@ public class Time {
      * indicates an error.
      */
     public final static void localtime_r(@time_t long timer, Tm result) throws NativeErrorException {
-        localtime_r(timer, AbstractNativeMemory.getAddress(result));
+        localtime_r(timer, AbstractNativeMemory.toUintptr_t(result));
     }
 
     private static native void localtime_r(@time_t long timer, long ptrResult) throws NativeErrorException;
@@ -506,7 +509,7 @@ public class Time {
      */
     @time_t
     public final static long mktime(Tm timeptr) throws NativeErrorException {
-        return mktime(AbstractNativeMemory.getAddress(timeptr));
+        return mktime(AbstractNativeMemory.toUintptr_t(timeptr));
     }
 
     private static native long mktime(long timeptr) throws NativeErrorException;
@@ -523,11 +526,11 @@ public class Time {
      * @throws NativeErrorException if the requested time has not elapsed.
      */
     public final static void nanosleep(Timespec rqtp, Timespec rmtp) throws NativeErrorException {
-        nanosleep(AbstractNativeMemory.getAddress(rqtp), AbstractNativeMemory.getAddress(rmtp));
+        nanosleep(AbstractNativeMemory.toUintptr_t(rqtp), AbstractNativeMemory.toUintptr_t(rmtp));
     }
 
     public final static void nanosleep(Timespec rqtp) throws NativeErrorException {
-        nanosleep(AbstractNativeMemory.getAddress(rqtp), AbstractNativeMemory.NULL);
+        nanosleep(AbstractNativeMemory.toUintptr_t(rqtp), AbstractNativeMemory.NULL);
     }
 
     private static native void nanosleep(long ptrRqtp, long ptrRmtp) throws NativeErrorException;
@@ -545,7 +548,13 @@ public class Time {
      * @return on succes the converted time otherwise {@code null}.
      */
     public final static String strftime(@size_t long maxsize, String format, Tm timeptr) {
-        return strftime(maxsize, format, AbstractNativeMemory.getAddress(timeptr));
+        if (maxsize < 0) {
+            throw new IllegalArgumentException("maxsize < 0");
+        }
+        if (format == null) {
+            throw new NullPointerException("format is NULL");
+        }
+        return strftime(maxsize, format, AbstractNativeMemory.toUintptr_t(timeptr));
     }
 
     private static native String strftime(@size_t long maxsize, String format, long timeptr);
@@ -564,7 +573,13 @@ public class Time {
      * @return on succes the converted time otherwise {@code null}.
      */
     public final static String strftime_l(@size_t long maxsize, String format, Tm timeptr, Locale.Locale_t locale) {
-        return strftime_l(maxsize, format, AbstractNativeMemory.getAddress(timeptr), Locale.Locale_t.getNativeValue(locale));
+        if (maxsize < 0) {
+            throw new IllegalArgumentException("maxsize < 0");
+        }
+        if (format == null) {
+            throw new NullPointerException("format is NULL");
+        }
+        return strftime_l(maxsize, format, AbstractNativeMemory.toUintptr_t(timeptr), Locale.Locale_t.getNativeValue(locale));
     }
 
     private static native String strftime_l(@size_t long maxsize, String format, long ptrTimeptr, long ptrLocale);
@@ -583,7 +598,13 @@ public class Time {
      * character parsed.
      */
     public final static int strptime(String buf, String format, Tm tm) {
-        return strptime(buf, format, AbstractNativeMemory.getAddress(tm));
+        if (buf == null) {
+            throw new NullPointerException("buf is NULL");
+        }
+        if (format == null) {
+            throw new NullPointerException("format is NULL");
+        }
+        return strptime(buf, format, AbstractNativeMemory.toUintptr_t(tm));
     }
 
     private static native int strptime(String buf, String format, long tm);
@@ -616,11 +637,11 @@ public class Time {
      * available natively.
      */
     public final static void timer_create(@clockid_t int clockid, Sigevent evp, Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_create(clockid, AbstractNativeMemory.getAddress(evp), AbstractNativeMemory.getAddress(timerid));
+        timer_create(clockid, AbstractNativeMemory.toUintptr_t(evp), AbstractNativeMemory.toUintptr_t(timerid));
     }
 
     public final static void timer_create(@clockid_t int clockid, Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_create(clockid, AbstractNativeMemory.NULL, AbstractNativeMemory.getAddress(timerid));
+        timer_create(clockid, AbstractNativeMemory.NULL, AbstractNativeMemory.toUintptr_t(timerid));
     }
 
     private static native void timer_create(@clockid_t int clockid, long ptrEvp, long ptrTimerid) throws NativeErrorException, NoSuchNativeMethodException;
@@ -637,7 +658,7 @@ public class Time {
      * available natively.
      */
     public final static void timer_delete(Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_delete(AbstractNativeMemory.getAddress(timerid));
+        timer_delete(AbstractNativeMemory.toUintptr_t(timerid));
     }
 
     private static native void timer_delete(long timerid) throws NativeErrorException, NoSuchNativeMethodException;
@@ -654,7 +675,7 @@ public class Time {
      * available natively.
      */
     public final static int timer_getoverrun(Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException {
-        return timer_getoverrun(AbstractNativeMemory.getAddress(timerid));
+        return timer_getoverrun(AbstractNativeMemory.toUintptr_t(timerid));
     }
 
     private static native int timer_getoverrun(long ptrTimerid) throws NativeErrorException, NoSuchNativeMethodException;
@@ -671,7 +692,7 @@ public class Time {
      * available natively.
      */
     public final static void timer_gettime(Timer_t timerid, Itimerspec value) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_gettime(AbstractNativeMemory.getAddress(timerid), AbstractNativeMemory.getAddress(value));
+        timer_gettime(AbstractNativeMemory.toUintptr_t(timerid), AbstractNativeMemory.toUintptr_t(value));
     }
 
     private static native void timer_gettime(long ptrTimerid, long ptrValue) throws NativeErrorException, NoSuchNativeMethodException;
@@ -686,11 +707,11 @@ public class Time {
      * indicates an error.
      */
     public final static void timer_settime(Timer_t timerid, int flags, Itimerspec value, Itimerspec ovalue) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_settime(AbstractNativeMemory.getAddress(timerid), flags, AbstractNativeMemory.getAddress(value), AbstractNativeMemory.getAddress(ovalue));
+        timer_settime(AbstractNativeMemory.toUintptr_t(timerid), flags, AbstractNativeMemory.toUintptr_t(value), AbstractNativeMemory.toUintptr_t(ovalue));
     }
 
     public final static void timer_settime(Timer_t timerid, int flags, Itimerspec value) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_settime(AbstractNativeMemory.getAddress(timerid), flags, AbstractNativeMemory.getAddress(value), AbstractNativeMemory.NULL);
+        timer_settime(AbstractNativeMemory.toUintptr_t(timerid), flags, AbstractNativeMemory.toUintptr_t(value), AbstractNativeMemory.NULL);
     }
 
     private static native void timer_settime(long ptrTimerid, int flags, long ptrValue, long ptrOvalue) throws NativeErrorException, NoSuchNativeMethodException;

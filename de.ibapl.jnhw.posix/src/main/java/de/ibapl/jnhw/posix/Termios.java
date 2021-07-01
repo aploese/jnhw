@@ -1799,7 +1799,7 @@ public final class Termios {
      */
     @speed_t
     public final static int cfgetispeed(StructTermios termios) {
-        return cfgetispeed(AbstractNativeMemory.getAddress(termios));
+        return cfgetispeed(AbstractNativeMemory.toUintptr_t(termios));
     }
 
     private static native int cfgetispeed(long ptrTermios);
@@ -1816,7 +1816,7 @@ public final class Termios {
      */
     @speed_t
     public final static int cfgetospeed(StructTermios termios) {
-        return cfgetospeed(AbstractNativeMemory.getAddress(termios));
+        return cfgetospeed(AbstractNativeMemory.toUintptr_t(termios));
     }
 
     private static native int cfgetospeed(long ptrTermios);
@@ -1833,7 +1833,7 @@ public final class Termios {
      * indicates an error.
      */
     public final static void cfsetispeed(StructTermios termios, @speed_t int speed) throws NativeErrorException {
-        cfsetispeed(AbstractNativeMemory.getAddress(termios), speed);
+        cfsetispeed(AbstractNativeMemory.toUintptr_t(termios), speed);
     }
 
     private static native void cfsetispeed(long ptrTermios, int speed) throws NativeErrorException;
@@ -1850,7 +1850,7 @@ public final class Termios {
      * indicates an error.
      */
     public final static void cfsetospeed(StructTermios termios, @speed_t int speed) throws NativeErrorException {
-        cfsetospeed(AbstractNativeMemory.getAddress(termios), speed);
+        cfsetospeed(AbstractNativeMemory.toUintptr_t(termios), speed);
     }
 
     private static native void cfsetospeed(long ptrTermios, int speed) throws NativeErrorException;
@@ -1865,7 +1865,7 @@ public final class Termios {
      * indicates an error.
      */
     public final static void cfsetspeed(StructTermios termios, @speed_t int speed) throws NativeErrorException {
-        cfsetspeed(AbstractNativeMemory.getAddress(termios), speed);
+        cfsetspeed(AbstractNativeMemory.toUintptr_t(termios), speed);
     }
 
     private static native void cfsetspeed(long ptrTermios, int speed) throws NativeErrorException;
@@ -1918,7 +1918,7 @@ public final class Termios {
      * indicates an error.
      */
     public final static void tcgetattr(int fildes, StructTermios termios) throws NativeErrorException {
-        tcgetattr(fildes, AbstractNativeMemory.getAddress(termios));
+        tcgetattr(fildes, AbstractNativeMemory.toUintptr_t(termios));
     }
 
     private static native void tcgetattr(int fildes, long ptrTermios) throws NativeErrorException;
@@ -1967,7 +1967,7 @@ public final class Termios {
      * indicates an error.
      */
     public final static void tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException {
-        tcsetattr(fildes, optional_actions, AbstractNativeMemory.getAddress(termios));
+        tcsetattr(fildes, optional_actions, AbstractNativeMemory.toUintptr_t(termios));
     }
 
     private static native void tcsetattr(int fildes, int optional_actions, long ptrTermios) throws NativeErrorException;

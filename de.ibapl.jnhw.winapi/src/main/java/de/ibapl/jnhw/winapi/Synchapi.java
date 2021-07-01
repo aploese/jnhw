@@ -72,7 +72,7 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException {
-        return HANDLE.of(CreateEventW(AbstractNativeMemory.getAddress(lpEventAttributes), bManualReset, bInitialState, lpName));
+        return HANDLE.of(CreateEventW(AbstractNativeMemory.toUintptr_tOrNULL(lpEventAttributes), bManualReset, bInitialState, lpName));
     }
 
     private static native long CreateEventW(long ptrLpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException;
@@ -134,10 +134,10 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static long WaitForMultipleObjects(ArrayOfHandle lpHandles, boolean bWaitAll, long dwMilliseconds) throws NativeErrorException {
-        if (dwMilliseconds < 0) {
+        if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForMultipleObjects(lpHandles.length, AbstractNativeMemory.getAddress(lpHandles), bWaitAll, dwMilliseconds);
+        return WaitForMultipleObjects(lpHandles.length, AbstractNativeMemory.toUintptr_t(lpHandles), bWaitAll, dwMilliseconds);
     }
 
     /**
@@ -170,10 +170,10 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static long WaitForMultipleObjectsEx(ArrayOfHandle lpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException {
-        if (dwMilliseconds < 0) {
+        if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForMultipleObjectsEx(lpHandles.length, AbstractNativeMemory.getAddress(lpHandles), bWaitAll, dwMilliseconds, bAlertable);
+        return WaitForMultipleObjectsEx(lpHandles.length, AbstractNativeMemory.toUintptr_t(lpHandles), bWaitAll, dwMilliseconds, bAlertable);
     }
 
     /**
@@ -191,10 +191,10 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static long WaitForSingleObject(HANDLE hHandle, long dwMilliseconds) throws NativeErrorException {
-        if (dwMilliseconds < 0) {
+        if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForSingleObject(dwMilliseconds, dwMilliseconds);
+        return WaitForSingleObject(HANDLE.getHandleValue(hHandle), dwMilliseconds);
     }
 
     private static native long WaitForSingleObject(long ptrHHandle, long dwMilliseconds) throws NativeErrorException;
@@ -221,7 +221,7 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static long WaitForSingleObjectEx(HANDLE hHandle, long dwMilliseconds, boolean bAlertable) throws NativeErrorException {
-        if (dwMilliseconds < 0) {
+        if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
         return WaitForSingleObjectEx(HANDLE.getHandleValue(hHandle), dwMilliseconds, bAlertable);
@@ -244,7 +244,7 @@ public abstract class Synchapi {
      *
      */
     public final static long SleepEx(long dwMilliseconds, boolean bAlertable) {
-        if (dwMilliseconds < 0) {
+        if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
         return SleepEx0(dwMilliseconds, bAlertable);

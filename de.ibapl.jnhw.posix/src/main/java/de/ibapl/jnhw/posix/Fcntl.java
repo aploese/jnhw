@@ -905,7 +905,14 @@ public final class Fcntl {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int creat(String path, @mode_t int mode) throws NativeErrorException;
+    public final static int creat(String path, @mode_t int mode) throws NativeErrorException {
+        if (path == null) {
+            throw new NullPointerException("path is null.");
+        }
+        return creat0(path, mode);
+    }
+
+    private static native int creat0(String path, @mode_t int mode) throws NativeErrorException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -919,7 +926,14 @@ public final class Fcntl {
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int creat64(String path, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int creat64(String path, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
+        if (path == null) {
+            throw new NullPointerException("path is null.");
+        }
+        return creat64_0(path, mode);
+    }
+
+    private static native int creat64_0(String path, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -995,7 +1009,14 @@ public final class Fcntl {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int open(String path, int oflag) throws NativeErrorException;
+    public final static int open(String path, int oflag) throws NativeErrorException {
+        if (path == null) {
+            throw new NullPointerException("path is null.");
+        }
+        return open0(path, oflag);
+    }
+
+    private static native int open0(String path, int oflag) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1012,7 +1033,14 @@ public final class Fcntl {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int open(String path, int oflag, @mode_t int mode) throws NativeErrorException;
+    public final static int open(String path, int oflag, @mode_t int mode) throws NativeErrorException {
+        if (path == null) {
+            throw new NullPointerException("path is null.");
+        }
+        return open0(path, oflag, mode);
+    }
+
+    private static native int open0(String path, int oflag, int mode) throws NativeErrorException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -1030,7 +1058,14 @@ public final class Fcntl {
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int open64(String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int open64(String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
+        if (path == null) {
+            throw new NullPointerException("path is null.");
+        }
+        return open64_0(path, oflag);
+    }
+
+    private static native int open64_0(String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -1049,7 +1084,14 @@ public final class Fcntl {
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int open64(String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int open64(String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
+        if (path == null) {
+            throw new NullPointerException("path is null.");
+        }
+        return open64_0(path, oflag, mode);
+    }
+
+    private static native int open64_0(String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      *
@@ -1068,7 +1110,14 @@ public final class Fcntl {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int openat(int fd, String path, int oflag) throws NativeErrorException;
+    public final static int openat(int fd, String path, int oflag) throws NativeErrorException {
+        if (path == null) {
+            throw new NullPointerException("path is null.");
+        }
+        return openat0(fd, path, oflag);
+    }
+
+    private static native int openat0(int fd, String path, int oflag) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1087,7 +1136,14 @@ public final class Fcntl {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int openat(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException;
+    public final static int openat(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException {
+        if (path == null) {
+            throw new NullPointerException("path is null.");
+        }
+        return openat0(fd, path, oflag, mode);
+    }
+
+    private static native int openat0(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -1107,7 +1163,14 @@ public final class Fcntl {
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int openat64(int fd, String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int openat64(int fd, String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
+        if (path == null) {
+            throw new NullPointerException("path is null.");
+        }
+        return openat64_0(fd, path, oflag);
+    }
+
+    private static native int openat64_0(int fd, String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -1128,7 +1191,14 @@ public final class Fcntl {
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int openat64(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int openat64(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
+        if (path == null) {
+            throw new NullPointerException("path is null.");
+        }
+        return openat64_0(fd, path, oflag, mode);
+    }
+
+    private static native int openat64_0(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>

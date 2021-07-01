@@ -259,10 +259,6 @@ extern "C" {
         return (jlong) (uintptr_t) NULL;
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring string) {
-        if (string == NULL) {
-            throw_NullPointerException(env, "string is NULL");
-            return (jlong) (uintptr_t) NULL;
-        }
         const char* _string = (*env)->GetStringUTFChars(env, string, NULL);
         const struct tm *tm = getdate(_string);
         (*env)->ReleaseStringUTFChars(env, string, _string);
@@ -408,16 +404,7 @@ extern "C" {
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong maxsize, jstring format, jlong ptrTimeptr) {
-        if (maxsize < 0) {
-            throw_IllegalArgumentException(env, "maxsize < 0");
-            return NULL;
-        }
-        if (format == NULL) {
-            throw_NullPointerException(env, "format is NULL");
-            return NULL;
-        }
         const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
-
 #if defined(_JNHW__size_t__IS__uint64_t)
         char* _result = malloc((uint64_t) maxsize);
         size_t count = strftime(_result, (uint64_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr);
@@ -446,16 +433,7 @@ extern "C" {
      */
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_strftime_1l
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong maxsize, jstring format, jlong ptrTimeptr, jlong ptrLocale) {
-        if (maxsize < 0) {
-            throw_IllegalArgumentException(env, "maxsize < 0");
-            return NULL;
-        }
-        if (format == NULL) {
-            throw_NullPointerException(env, "format is NULL");
-            return NULL;
-        }
         const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
-
 #if defined(_JNHW__size_t__IS__uint64_t)
         char* _result = malloc((uint64_t) maxsize);
         size_t count = strftime_l(_result, (uint64_t) maxsize, _format, (struct tm*) (uintptr_t) ptrTimeptr, (locale_t) (uintptr_t) ptrLocale);
@@ -485,14 +463,6 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_strptime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jstring buf, jstring format, jlong ptrTm) {
-        if (buf == NULL) {
-            throw_NullPointerException(env, "buf is NULL");
-            return -1;
-        }
-        if (format == NULL) {
-            throw_NullPointerException(env, "format is NULL");
-            return -1;
-        }
         const char* _buf = (*env)->GetStringUTFChars(env, buf, NULL);
         const char* _format = (*env)->GetStringUTFChars(env, format, NULL);
 

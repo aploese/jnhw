@@ -146,9 +146,6 @@ public class DefinesTest {
 
     @Test
     public void test_NativeDefines() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
-            return;
-        }
         DefinesTest.testDefines(Defines.class, NativeDefines.class, null);
     }
 

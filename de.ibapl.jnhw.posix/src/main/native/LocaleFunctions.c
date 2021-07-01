@@ -76,14 +76,6 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Locale_newlocale
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint category_mask, jstring locale, jlong nativeBase) {
-        if (locale == NULL) {
-            throw_NullPointerException(env, "locale is null.");
-            return (jlong) (uintptr_t) NULL;
-        }
-        if ((locale_t) (uintptr_t) nativeBase == LC_GLOBAL_LOCALE) {
-            throw_IllegalArgumentException(env, "base is LC_GLOBAL_LOCALE");
-            return (jlong) 0;
-        }
         const char* _locale = (*env)->GetStringUTFChars(env, locale, NULL);
         const locale_t result = newlocale(category_mask, _locale, (locale_t) (uintptr_t) nativeBase);
         (*env)->ReleaseStringUTFChars(env, locale, _locale);

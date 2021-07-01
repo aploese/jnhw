@@ -43,11 +43,8 @@ libcallnative_la_SOURCES = \
  CallNative_Mem_V.c
 
 libmemory_la_SOURCES = \
- Alignment.c \
- BaseDataType.c \
  UnsafeMemoryAccessor.c \
- JnhwMemoryAccessor.c \
- StructLayoutFactoryImplTest.c
+ JnhwMemoryAccessor.c
 
 libjnhw_common_la_SOURCES = \
  jnhw-common.c

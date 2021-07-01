@@ -129,7 +129,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static HANDLE CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException {
-        return HANDLE.of(CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, AbstractNativeMemory.getAddressOrNULL(lpSecurityAttributes), dwCreationDisposition, dwFlagsAndAttributes, HANDLE.getHandleValue(hTemplateFile)));
+        return HANDLE.of(CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, AbstractNativeMemory.toUintptr_tOrNULL(lpSecurityAttributes), dwCreationDisposition, dwFlagsAndAttributes, HANDLE.getHandleValue(hTemplateFile)));
     }
 
     private static native long CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, long ptrLpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, long prtHTemplateFile) throws NativeErrorException;
@@ -164,7 +164,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static HANDLE CreateFileW(File file, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException {
-        return HANDLE.of(CreateFileW(file.getAbsolutePath(), dwDesiredAccess, dwShareMode, AbstractNativeMemory.getAddressOrNULL(lpSecurityAttributes), dwCreationDisposition, dwFlagsAndAttributes, HANDLE.getHandleValue(hTemplateFile)));
+        return HANDLE.of(CreateFileW(file.getAbsolutePath(), dwDesiredAccess, dwShareMode, AbstractNativeMemory.toUintptr_tOrNULL(lpSecurityAttributes), dwCreationDisposition, dwFlagsAndAttributes, HANDLE.getHandleValueOrNULL(hTemplateFile)));
     }
 
     /**
@@ -264,7 +264,7 @@ public final class Fileapi {
      */
     public final static int ReadFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToRead) throws NativeErrorException {
         OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
-        return ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead);
+        return ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToRead);
     }
 
     private static native int ReadFile(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToRead) throws NativeErrorException;
@@ -294,7 +294,7 @@ public final class Fileapi {
      */
     public final static int ReadFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead) throws NativeErrorException {
         OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
-        return ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead);
+        return ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToRead);
     }
 
     private static native int ReadFile(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToRead) throws NativeErrorException;
@@ -317,7 +317,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static int ReadFile(HANDLE hFile, Int8_t b) throws NativeErrorException {
-        return ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(b), 0, 1);
+        return ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(b), 0, 1);
     }
 
     /**
@@ -346,7 +346,7 @@ public final class Fileapi {
      */
     public final static void ReadFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped) throws NativeErrorException {
         OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
-        ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.getAddress(lpOverlapped));
+        ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.toUintptr_t(lpOverlapped));
     }
 
     private static native void ReadFile(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToRead, long ptrLpOverlapped) throws NativeErrorException;
@@ -377,7 +377,7 @@ public final class Fileapi {
      */
     public static void ReadFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped) throws NativeErrorException {
         OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
-        ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.getAddress(lpOverlapped));
+        ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.toUintptr_t(lpOverlapped));
     }
 
     private static native void ReadFile(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToRead, long ptrLpOverlapped) throws NativeErrorException;
@@ -401,7 +401,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFile(HANDLE hFile, OpaqueMemory32 lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
-        ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOverlapped));
+        ReadFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.toUintptr_t(lpOverlapped));
     }
 
     /**
@@ -462,7 +462,7 @@ public final class Fileapi {
      */
     public final static void ReadFile(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
         if (lpBuffer.isDirect()) {
-            ReadFile(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), AbstractNativeMemory.getAddress(lpOverlapped));
+            ReadFile(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), AbstractNativeMemory.toUintptr_t(lpOverlapped));
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous read ....");
@@ -498,7 +498,7 @@ public final class Fileapi {
      */
     public final static void ReadFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
         OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
-        ReadFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+        ReadFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.toUintptr_t(lpOverlapped), NativeFunctionPointer.toUintptr_t(lpCompletionRoutine));
     }
 
     private static native void ReadFileEx(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToRead, long ptrLpOverlapped, long ptrLpCompletionRoutine) throws NativeErrorException;
@@ -532,7 +532,7 @@ public final class Fileapi {
      */
     public final static void ReadFileEx(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToRead, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
         OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToRead);
-        ReadFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+        ReadFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToRead, AbstractNativeMemory.toUintptr_t(lpOverlapped), NativeFunctionPointer.toUintptr_t(lpCompletionRoutine));
     }
 
     private static native void ReadFileEx(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToRead, long ptrLpOverlapped, long ptrLpCompletionRoutine) throws NativeErrorException;
@@ -559,7 +559,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        ReadFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+        ReadFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.toUintptr_t(lpOverlapped), NativeFunctionPointer.toUintptr_t(lpCompletionRoutine));
     }
 
     /**
@@ -597,7 +597,7 @@ public final class Fileapi {
      */
     public final static void ReadFileEx(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
         if (lpBuffer.isDirect()) {
-            ReadFileEx(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+            ReadFileEx(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferReadBytes(lpBuffer), AbstractNativeMemory.toUintptr_t(lpOverlapped), NativeFunctionPointer.toUintptr_t(lpCompletionRoutine));
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous read ....");
@@ -634,7 +634,7 @@ public final class Fileapi {
      */
     public final static int WriteFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException {
         Objects.checkFromIndexSize(off, nNumberOfBytesToWrite, lpBuffer.length);
-        return WriteFile(off, lpBuffer, off, nNumberOfBytesToWrite);
+        return WriteFile(HANDLE.getHandleValue(hFile), lpBuffer, off, nNumberOfBytesToWrite);
     }
 
     private static native int WriteFile(long ptrHFile, byte[] lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException;
@@ -687,7 +687,7 @@ public final class Fileapi {
      */
     public final static int WriteFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException {
         OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
-        return WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite);
+        return WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToWrite);
     }
 
     private static native int WriteFile(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToWrite) throws NativeErrorException;
@@ -716,7 +716,7 @@ public final class Fileapi {
      */
     public final static int WriteFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite) throws NativeErrorException {
         OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
-        return WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite);
+        return WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToWrite);
     }
 
     private static native int WriteFile(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToWrite) throws NativeErrorException;
@@ -764,10 +764,10 @@ public final class Fileapi {
      */
     public final static void WriteFile(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped) throws NativeErrorException {
         OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
-        WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.getAddress(lpBuffer));
+        WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.toUintptr_t(lpOverlapped));
     }
 
-    private static native void WriteFile(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToWrite, long lpOverlapped) throws NativeErrorException;
+    private static native void WriteFile(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToWrite, long ptrLpOverlapped) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile">WriteFile</a>
@@ -793,7 +793,7 @@ public final class Fileapi {
      */
     public final static void WriteFile(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped) throws NativeErrorException {
         OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
-        WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.getAddress(lpOverlapped));
+        WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.toUintptr_t(lpOverlapped));
     }
 
     private static native void WriteFile(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToWrite, long ptrLpOverlapped) throws NativeErrorException;
@@ -816,7 +816,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void WriteFile(HANDLE hFile, OpaqueMemory32 lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
-        WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOverlapped));
+        WriteFile(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.toUintptr_t(lpOverlapped));
     }
 
     /**
@@ -886,7 +886,7 @@ public final class Fileapi {
      */
     public final static void WriteFile(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped) throws NativeErrorException {
         if (lpBuffer.isDirect()) {
-            WriteFile(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), AbstractNativeMemory.getAddress(lpOverlapped));
+            WriteFile(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), AbstractNativeMemory.toUintptr_t(lpOverlapped));
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous write ....");
@@ -920,7 +920,7 @@ public final class Fileapi {
      */
     public final static void WriteFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, int off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
         OpaqueMemory32.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
-        WriteFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+        WriteFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.toUintptr_t(lpOverlapped), NativeFunctionPointer.toUintptr_t(lpCompletionRoutine));
     }
 
     private static native void WriteFileEx(long ptrHFile, long ptrLpBuffer, int off, int nNumberOfBytesToWrite, long ptrLpOverlapped, long ptrLpCompletionRoutine) throws NativeErrorException;
@@ -952,7 +952,7 @@ public final class Fileapi {
      */
     public final static void WriteFileEx(HANDLE hFile, OpaqueMemory64 lpBuffer, long off, int nNumberOfBytesToWrite, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
         OpaqueMemory64.checkIndex(lpBuffer, off, nNumberOfBytesToWrite);
-        WriteFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+        WriteFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), off, nNumberOfBytesToWrite, AbstractNativeMemory.toUintptr_t(lpOverlapped), NativeFunctionPointer.toUintptr_t(lpCompletionRoutine));
     }
 
     private static native void WriteFileEx(long ptrHFile, long ptrLpBuffer, long off, int nNumberOfBytesToWrite, long ptrLpOverlapped, long ptrLpCompletionRoutine) throws NativeErrorException;
@@ -978,7 +978,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void WriteFileEx(HANDLE hFile, OpaqueMemory32 lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        WriteFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.getAddress(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+        WriteFileEx(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpBuffer), 0, lpBuffer.sizeInBytes, AbstractNativeMemory.toUintptr_t(lpOverlapped), NativeFunctionPointer.toUintptr_t(lpCompletionRoutine));
     }
 
     /**
@@ -1017,7 +1017,7 @@ public final class Fileapi {
      */
     public final static void WriteFileEx(HANDLE hFile, ByteBuffer lpBuffer, OVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
         if (lpBuffer.isDirect()) {
-            WriteFileEx(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), AbstractNativeMemory.getAddress(lpOverlapped), NativeFunctionPointer.getNativeAddress(lpCompletionRoutine));
+            WriteFileEx(HANDLE.getHandleValue(hFile), lpBuffer, lpBuffer.position(), ByteBufferUtils.calcBufferWriteBytes(lpBuffer), AbstractNativeMemory.toUintptr_t(lpOverlapped), NativeFunctionPointer.toUintptr_t(lpCompletionRoutine));
         } else {
             // If Bytebuffer gets garbage collected the mem area would be dangeling somewhere ...
             throw new IllegalArgumentException("Can't wrap NonDirect byteBuffer for asynchronous write ....");

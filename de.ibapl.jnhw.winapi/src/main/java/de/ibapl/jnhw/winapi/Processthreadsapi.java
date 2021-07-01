@@ -64,7 +64,7 @@ public abstract class Processthreadsapi {
      * indicates an error.
      */
     public final static void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, @ULONG_PTR long dwData) throws NativeErrorException {
-        QueueUserAPC(NativeFunctionPointer.getNativeAddress(pfnAPC), HANDLE.getHandleValue(hThread), dwData);
+        QueueUserAPC(NativeFunctionPointer.toUintptr_t(pfnAPC), HANDLE.getHandleValue(hThread), dwData);
     }
 
     public final static native void QueueUserAPC(long ptrPfnAPC, long ptrHThread, @ULONG_PTR long dwData) throws NativeErrorException;

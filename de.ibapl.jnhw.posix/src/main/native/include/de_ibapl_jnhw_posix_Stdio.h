@@ -25,10 +25,10 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Stdio_putchar
 
 /*
  * Class:     de_ibapl_jnhw_posix_Stdio
- * Method:    remove
+ * Method:    remove0
  * Signature: (Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Stdio_remove
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Stdio_remove0
   (JNIEnv *, jclass, jstring);
 
 #ifdef __cplusplus

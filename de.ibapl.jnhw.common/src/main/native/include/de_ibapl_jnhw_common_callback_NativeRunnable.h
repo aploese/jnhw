@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 #undef de_ibapl_jnhw_common_callback_NativeRunnable_NULL
-#define de_ibapl_jnhw_common_callback_NativeRunnable_NULL 0i64
+#define de_ibapl_jnhw_common_callback_NativeRunnable_NULL 0LL
 /*
  * Class:     de_ibapl_jnhw_common_callback_NativeRunnable
  * Method:    aquireObjectRef

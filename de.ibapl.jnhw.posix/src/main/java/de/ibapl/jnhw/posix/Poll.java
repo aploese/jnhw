@@ -229,7 +229,7 @@ public final class Poll {
      * indicates an error.
      */
     public final static int poll(PollFds fds, int timeout) throws NativeErrorException {
-        return poll(AbstractNativeMemory.getAddress(fds), fds.length(), timeout);
+        return poll(AbstractNativeMemory.toUintptr_t(fds), fds.length(), timeout);
     }
 
     private static native int poll(long ptrFds, int elements, int timeout) throws NativeErrorException;
@@ -247,7 +247,7 @@ public final class Poll {
      * indicates an error.
      */
     public final static int poll(PollFd fd, int timeout) throws NativeErrorException {
-        return poll(AbstractNativeMemory.getAddress(fd), 1, timeout);
+        return poll(AbstractNativeMemory.toUintptr_t(fd), 1, timeout);
     }
 
     /**

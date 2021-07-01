@@ -224,7 +224,7 @@ public class Aio {
      * available natively.
      */
     public final static int aio_cancel(Aiocb aiocbp) throws NativeErrorException, NoSuchNativeMethodException {
-        return aio_cancel(aiocbp.aio_fildes(), AbstractNativeMemory.getAddress(aiocbp));
+        return aio_cancel(aiocbp.aio_fildes(), AbstractNativeMemory.toUintptr_t(aiocbp));
     }
 
     private static native int aio_cancel(int fildes, long ptrAiocbp) throws NativeErrorException, NoSuchNativeMethodException;
@@ -268,7 +268,7 @@ public class Aio {
      * available natively.
      */
     public final static int aio_error(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        return aio_error(AbstractNativeMemory.getAddress(aiocb));
+        return aio_error(AbstractNativeMemory.toUintptr_t(aiocb));
     }
 
     private static native int aio_error(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
@@ -287,7 +287,7 @@ public class Aio {
      * available natively.
      */
     public final static void aio_fsync(int op, Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        aio_fsync(op, AbstractNativeMemory.getAddress(aiocb));
+        aio_fsync(op, AbstractNativeMemory.toUintptr_t(aiocb));
     }
 
     private static native void aio_fsync(int op, long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
@@ -305,7 +305,7 @@ public class Aio {
      * available natively.
      */
     public final static void aio_read(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        aio_read(AbstractNativeMemory.getAddress(aiocb));
+        aio_read(AbstractNativeMemory.toUintptr_t(aiocb));
     }
 
     private static native void aio_read(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
@@ -327,7 +327,7 @@ public class Aio {
      */
     @ssize_t
     public final static long aio_return(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        return aio_return(AbstractNativeMemory.getAddress(aiocb));
+        return aio_return(AbstractNativeMemory.toUintptr_t(aiocb));
     }
 
     private static native long aio_return(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
@@ -346,7 +346,7 @@ public class Aio {
      * available natively.
      */
     public final static void aio_suspend(Aiocbs list, Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
-        aio_suspend(AbstractNativeMemory.getAddress(list), list.length(), AbstractNativeMemory.getSizeInBytes(timeout));
+        aio_suspend(AbstractNativeMemory.toUintptr_t(list), list.length(), AbstractNativeMemory.getSizeInBytes(timeout));
     }
 
     private static native void aio_suspend(long ptrList, int nent, long ptrTimeout) throws NativeErrorException, NoSuchNativeMethodException;
@@ -364,7 +364,7 @@ public class Aio {
      * available natively.
      */
     public final static void aio_write(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        aio_write(AbstractNativeMemory.getAddress(aiocb));
+        aio_write(AbstractNativeMemory.toUintptr_t(aiocb));
     }
 
     private static native void aio_write(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
@@ -384,11 +384,11 @@ public class Aio {
      * available natively.
      */
     public final static void lio_listio(int mode, Aiocbs list, Sigevent sig) throws NativeErrorException, NoSuchNativeMethodException {
-        lio_listio(mode, AbstractNativeMemory.getAddress(list), list.length(), AbstractNativeMemory.getAddress(sig));
+        lio_listio(mode, AbstractNativeMemory.toUintptr_t(list), list.length(), AbstractNativeMemory.toUintptr_t(sig));
     }
 
     public final static void lio_listio(int mode, Aiocbs list) throws NativeErrorException, NoSuchNativeMethodException {
-        lio_listio(mode, AbstractNativeMemory.getAddress(list), list.length(), 0);
+        lio_listio(mode, AbstractNativeMemory.toUintptr_t(list), list.length(), 0);
     }
 
     private static native void lio_listio(int mode, long ptrList, int nent, long ptrSig) throws NativeErrorException, NoSuchNativeMethodException;

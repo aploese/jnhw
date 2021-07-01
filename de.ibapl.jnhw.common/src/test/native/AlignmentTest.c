@@ -24,92 +24,92 @@
 
 #include <float.h>
 
-#include "de_ibapl_jnhw_common_memory_layout_Alignment.h"
+#include "de_ibapl_jnhw_common_test_memory_layout_AlignmentTest.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     /*
-     * Class:     de_ibapl_jnhw_common_memory_layout_Alignment
+     * Class:     de_ibapl_jnhw_common_test_memory_layout_AlignmentTest
      * Method:    getFromNative
      * Signature: (I)I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_memory_layout_Alignment_getFromNative
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_getFromNative
     (JNIEnv *env, __attribute__ ((unused))jclass clazz, jint req) {
         switch (req) {
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT8_T:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_INT8_T:
                 return __alignof__ (int8_t);
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT16_T:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_INT16_T:
                 return __alignof__ (int16_t);
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT32_T:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_INT32_T:
                 return __alignof__ (int32_t);
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT64_T:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_INT64_T:
                 return __alignof__ (int64_t);
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INTPTR_T:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_INTPTR_T:
                 return __alignof__ (intptr_t);
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_POINTER:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_POINTER:
                 return __alignof__ (void*);
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_LONG:
                 return __alignof__ (long);
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_FLOAT:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_FLOAT:
                 return __alignof__ (float);
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_DOUBLE:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_DOUBLE:
                 return __alignof__ (double);
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG_DOUBLE:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_LONG_DOUBLE:
                 return __alignof__ (long double);
 
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT8_T | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_INT8_T | de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_STRUCT_OFFSET:
                 return __alignof__ (struct {
                     int8_t member;
                 });
 
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT16_T | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_INT16_T | de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_STRUCT_OFFSET:
                 return __alignof__ (struct {
                     int16_t member;
                 });
 
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT32_T | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_INT32_T | de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_STRUCT_OFFSET:
                 return __alignof__ (struct {
                     int32_t member;
                 });
 
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INT64_T | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_INT64_T | de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_STRUCT_OFFSET:
                 return __alignof__ (struct {
                     int64_t member;
                 });
 
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_INTPTR_T | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_INTPTR_T | de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_STRUCT_OFFSET:
                 return __alignof__ (struct {
                     intptr_t member;
                 });
 
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_POINTER | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_POINTER | de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_STRUCT_OFFSET:
                 return __alignof__ (struct {
                     void* member;
                 });
 
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_LONG | de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_STRUCT_OFFSET:
                 return __alignof__ (struct {
                     long member;
                 });
 
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_FLOAT | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_FLOAT | de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_STRUCT_OFFSET:
                 return __alignof__ (struct {
                     float member;
                 });
 
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_DOUBLE | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_DOUBLE | de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_STRUCT_OFFSET:
                 return __alignof__ (struct {
                     double member;
                 });
 
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ_ALIGNOF_LONG_DOUBLE | de_ibapl_jnhw_common_memory_layout_Alignment_STRUCT_OFFSET:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ_ALIGNOF_LONG_DOUBLE | de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_STRUCT_OFFSET:
                 return __alignof__ (struct {
                     long double member;
                 });
 
-            case de_ibapl_jnhw_common_memory_layout_Alignment_REQ___BIGGEST_ALIGNMENT__:
+            case de_ibapl_jnhw_common_test_memory_layout_AlignmentTest_REQ___BIGGEST_ALIGNMENT__:
                 return __BIGGEST_ALIGNMENT__;
 
             default:

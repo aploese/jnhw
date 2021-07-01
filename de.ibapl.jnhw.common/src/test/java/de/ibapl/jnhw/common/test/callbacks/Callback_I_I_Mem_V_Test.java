@@ -78,13 +78,13 @@ public class Callback_I_I_Mem_V_Test {
     private static native long getCallbackPtr0();
 
     private static void setCallback(Callback_I_I_Mem_V<C> callback) {
-        setCallback(NativeFunctionPointer.getNativeAddress(callback));
+        setCallback(NativeFunctionPointer.toUintptr_t(callback));
     }
 
     private static native void setCallback(long ptrCallback);
 
     private static void doCallTheCallback(int a, int b, C c) {
-        doCallTheCallback(a, b, AbstractNativeMemory.getAddress(c));
+        doCallTheCallback(a, b, AbstractNativeMemory.toUintptr_t(c));
     }
 
     private static native void doCallTheCallback(int a, int b, long ptrC);

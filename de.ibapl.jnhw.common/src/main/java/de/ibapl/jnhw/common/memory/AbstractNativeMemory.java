@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.common.memory;
 
+import de.ibapl.jnhw.common.annotation.uintptr_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
@@ -87,11 +88,13 @@ public abstract class AbstractNativeMemory {
         return instance.getSizeInBytes();
     }
 
-    public final static long getAddress(final AbstractNativeMemory instance) {
+    @uintptr_t
+    public final static long toUintptr_t(final AbstractNativeMemory instance) {
         return instance.baseAddress;
     }
 
-    public final static long getAddressOrNULL(final AbstractNativeMemory instance) {
+    @uintptr_t
+    public final static long toUintptr_tOrNULL(final AbstractNativeMemory instance) {
         return (instance == null) ? AbstractNativeMemory.NULL : instance.baseAddress;
     }
 
@@ -181,6 +184,7 @@ public abstract class AbstractNativeMemory {
         }
     }
 
+    @uintptr_t
     protected final long baseAddress;
 
     public final AbstractNativeMemory parent;

@@ -75,7 +75,7 @@ public final class IoAPI {
         if (NumberOfConcurrentThreads < 0) {
             throw new IllegalArgumentException("NumberOfConcurrentThreads must >= 0!");
         }
-        return HANDLE.of(CreateIoCompletionPort(HANDLE.getHandleValue(FileHandle), HANDLE.getHandleValue(ExistingCompletionPort), CompletionKey, NumberOfConcurrentThreads));
+        return HANDLE.of(CreateIoCompletionPort(HANDLE.getHandleValue(FileHandle), HANDLE.getHandleValueOrNULL(ExistingCompletionPort), CompletionKey, NumberOfConcurrentThreads));
     }
 
     private static native long CreateIoCompletionPort(long ptrFileHandle, long ptrExistingCompletionPort, @ULONG_PTR long CompletionKey, int NumberOfConcurrentThreads) throws NativeErrorException;
@@ -106,10 +106,10 @@ public final class IoAPI {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds must be >= 0");
         }
-        return NativeAddressHolder.ofUintptr_t(GetQueuedCompletionStatus(HANDLE.getHandleValue(CompletionPort), AbstractNativeMemory.getAddress(lpNumberOfBytesTransferred), AbstractNativeMemory.getAddress(lpCompletionKey), dwMilliseconds));
+        return NativeAddressHolder.ofUintptr_t(GetQueuedCompletionStatus(HANDLE.getHandleValue(CompletionPort), AbstractNativeMemory.toUintptr_t(lpNumberOfBytesTransferred), AbstractNativeMemory.toUintptr_t(lpCompletionKey), dwMilliseconds));
     }
 
-    private static native long GetQueuedCompletionStatus(long ptrCompletionPort, long lpNumberOfBytesTransferred, long ptrLpCompletionKey, long dwMilliseconds) throws NativeErrorException;
+    private static native long GetQueuedCompletionStatus(long ptrCompletionPort, long ptrLpNumberOfBytesTransferred, long ptrLpCompletionKey, long dwMilliseconds) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-postqueuedcompletionstatus">PostQueuedCompletionStatus</a>
@@ -130,7 +130,7 @@ public final class IoAPI {
      * indicates an error.
      */
     public final static void PostQueuedCompletionStatus(HANDLE CompletionPort, int dwNumberOfBytesTransferred, @ULONG_PTR long dwCompletionKey, OVERLAPPED lpOverlapped) throws NativeErrorException {
-        PostQueuedCompletionStatus(HANDLE.getHandleValue(CompletionPort), dwNumberOfBytesTransferred, dwCompletionKey, AbstractNativeMemory.getAddress(lpOverlapped));
+        PostQueuedCompletionStatus(HANDLE.getHandleValue(CompletionPort), dwNumberOfBytesTransferred, dwCompletionKey, AbstractNativeMemory.toUintptr_tOrNULL(lpOverlapped));
     }
 
     private static native void PostQueuedCompletionStatus(long CompletionPort, int dwNumberOfBytesTransferred, @ULONG_PTR long dwCompletionKey, long ptrLpOverlapped) throws NativeErrorException;

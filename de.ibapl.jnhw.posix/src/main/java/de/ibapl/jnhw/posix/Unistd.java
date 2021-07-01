@@ -435,7 +435,7 @@ public final class Unistd {
      * indicates an error.
      */
     public final static void pipe(Int32_t read_fd, Int32_t write_fd) throws NativeErrorException {
-        pipe(AbstractNativeMemory.getAddress(read_fd), AbstractNativeMemory.getAddress(write_fd));
+        pipe(AbstractNativeMemory.toUintptr_t(read_fd), AbstractNativeMemory.toUintptr_t(write_fd));
     }
 
     public final static native void pipe(long ptrRead_fd, long ptrRwrite_fd) throws NativeErrorException;
@@ -545,7 +545,7 @@ public final class Unistd {
     @ssize_t
     public final static int read(int fildes, OpaqueMemory32 mem, int off, @size_t int nbyte) throws NativeErrorException {
         OpaqueMemory32.checkIndex(mem, off, nbyte);
-        return read(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
+        return read(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
     }
 
     private static native int read(int fildes, long ptrMem, int off, int nbyte) throws NativeErrorException;
@@ -574,7 +574,7 @@ public final class Unistd {
     @ssize_t
     public final static long read(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException {
         OpaqueMemory64.checkIndex(mem, off, nbyte);
-        return read(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
+        return read(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
     }
 
     private static native long read(int fildes, long ptrMem, long off, long nbyte) throws NativeErrorException;
@@ -596,7 +596,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static int read(int fildes, OpaqueMemory32 mem) throws NativeErrorException {
-        return read(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
+        return read(fildes, AbstractNativeMemory.toUintptr_t(mem), 0, mem.sizeInBytes);
     }
 
     /**
@@ -616,7 +616,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static long read(int fildes, OpaqueMemory64 mem) throws NativeErrorException {
-        return read(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
+        return read(fildes, AbstractNativeMemory.toUintptr_t(mem), 0, mem.sizeInBytes);
     }
 
     /**
@@ -636,7 +636,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static int read(int fildes, Int8_t data) throws NativeErrorException {
-        return read(fildes, AbstractNativeMemory.getAddress(data), 0, 1);
+        return read(fildes, AbstractNativeMemory.toUintptr_t(data), 0, 1);
     }
 
     /**
@@ -708,7 +708,7 @@ public final class Unistd {
     @ssize_t
     public final static int write(int fildes, OpaqueMemory32 mem, int off, @size_t int nbyte) throws NativeErrorException {
         OpaqueMemory32.checkIndex(mem, off, nbyte);
-        return write(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
+        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
     }
 
     private static native int write(int fildes, long ptrMem, int off, int nbyte) throws NativeErrorException;
@@ -735,7 +735,7 @@ public final class Unistd {
     @ssize_t
     public final static long write(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException, NoSuchNativeMethodException {
         OpaqueMemory64.checkIndex(mem, off, nbyte);
-        return write(fildes, AbstractNativeMemory.getAddress(mem), off, nbyte);
+        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
     }
 
     private static native long write(int fildes, long ptrMem, long off, long nbyte) throws NativeErrorException, NoSuchNativeMethodException;
@@ -755,7 +755,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static int write(int fildes, OpaqueMemory32 mem) throws NativeErrorException {
-        return write(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
+        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), 0, mem.sizeInBytes);
     }
 
     /**
@@ -773,7 +773,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static long write(int fildes, OpaqueMemory64 mem) throws NativeErrorException, NoSuchNativeMethodException {
-        return write(fildes, AbstractNativeMemory.getAddress(mem), 0, mem.sizeInBytes);
+        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), 0, mem.sizeInBytes);
     }
 
     /**

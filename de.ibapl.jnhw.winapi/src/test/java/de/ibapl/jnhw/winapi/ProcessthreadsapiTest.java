@@ -74,15 +74,13 @@ public class ProcessthreadsapiTest {
 
         HANDLE hThread = Processthreadsapi.GetCurrentThread();
 
-        NullPointerException npe = assertThrows(NullPointerException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             Processthreadsapi.QueueUserAPC(null, hThread, 0);
         });
-        assertEquals("pfnAPC is null!", npe.getMessage());
 
-        npe = assertThrows(NullPointerException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             Processthreadsapi.QueueUserAPC(pfnAPC, null, 0);
         });
-        assertEquals("hThread is null!", npe.getMessage());
 
         Processthreadsapi.QueueUserAPC(pfnAPC, hThread, 42);
 
@@ -105,7 +103,7 @@ public class ProcessthreadsapiTest {
                 assertEquals(42L, longRef[0]);
                 break;
             default:
-                throw new RuntimeException("Cant handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
+                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
         }
     }
 }

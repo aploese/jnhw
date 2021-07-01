@@ -60,7 +60,7 @@ public class CallNative_I_I_Mem_V<C extends AbstractNativeMemory> extends Functi
      * @param value
      */
     public void call(int a, int b, C c) {
-        call(nativeAddress, a, b, AbstractNativeMemory.getAddress(c));
+        call(nativeAddress, a, b, AbstractNativeMemory.toUintptr_t(c));
     }
 
     private static native void call(long ptrAddress, int a, int b, long ptrC);

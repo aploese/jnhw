@@ -2979,7 +2979,7 @@ public class Signal {
      * available natively.
      */
     public final static void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException {
-        psiginfo(AbstractNativeMemory.getAddress(pinfo), message);
+        psiginfo(AbstractNativeMemory.toUintptr_t(pinfo), message);
     }
 
     private static native void psiginfo(long ptrPinfo, String message) throws NativeErrorException, NoSuchNativeMethodException;
@@ -3005,7 +3005,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void pthread_kill(Pthread.Pthread_t thread, int sig) throws NativeErrorException {
-        pthread_kill(AbstractNativeMemory.getAddress(thread), sig);
+        pthread_kill(AbstractNativeMemory.toUintptr_t(thread), sig);
     }
 
     private static native void pthread_kill(long ptrThread, int sig) throws NativeErrorException;
@@ -3025,7 +3025,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void pthread_sigmask(int how, Sigset_t set, Sigset_t oset) throws NativeErrorException {
-        pthread_sigmask(how, AbstractNativeMemory.getAddressOrNULL(set), AbstractNativeMemory.getAddressOrNULL(oset));
+        pthread_sigmask(how, AbstractNativeMemory.toUintptr_tOrNULL(set), AbstractNativeMemory.toUintptr_tOrNULL(oset));
     }
 
     private static native void pthread_sigmask(int how, long ptrSet,
@@ -3054,7 +3054,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigaction(int sig, Sigaction act, Sigaction oact) throws NativeErrorException {
-        sigaction(sig, AbstractNativeMemory.getAddressOrNULL(act), AbstractNativeMemory.getAddressOrNULL(oact));
+        sigaction(sig, AbstractNativeMemory.toUintptr_tOrNULL(act), AbstractNativeMemory.toUintptr_tOrNULL(oact));
     }
 
     private static native void sigaction(int sig, long ptrAct, long ptrOact) throws NativeErrorException;
@@ -3069,7 +3069,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigaddset(Sigset_t set, int signo) throws NativeErrorException {
-        sigaddset(AbstractNativeMemory.getAddress(set), signo);
+        sigaddset(AbstractNativeMemory.toUintptr_t(set), signo);
     }
 
     private static native void sigaddset(long set, int signo) throws NativeErrorException;
@@ -3084,7 +3084,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigaltstack(Stack_t ss, Stack_t oss) throws NativeErrorException {
-        sigaltstack(AbstractNativeMemory.getAddressOrNULL(ss), AbstractNativeMemory.getAddressOrNULL(oss));
+        sigaltstack(AbstractNativeMemory.toUintptr_tOrNULL(ss), AbstractNativeMemory.toUintptr_tOrNULL(oss));
     }
 
     private static native void sigaltstack(long ptrSs, long ptrOss) throws NativeErrorException;
@@ -3099,7 +3099,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigdelset(Sigset_t set, int signo) throws NativeErrorException {
-        sigdelset(AbstractNativeMemory.getAddress(set), signo);
+        sigdelset(AbstractNativeMemory.toUintptr_t(set), signo);
     }
 
     private static native void sigdelset(long ptrSet, int signo) throws NativeErrorException;
@@ -3114,7 +3114,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigemptyset(Sigset_t set) throws NativeErrorException {
-        sigemptyset(AbstractNativeMemory.getAddress(set));
+        sigemptyset(AbstractNativeMemory.toUintptr_t(set));
     }
 
     private static native void sigemptyset(long ptrSet) throws NativeErrorException;
@@ -3129,7 +3129,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigfillset(Sigset_t set) throws NativeErrorException {
-        sigfillset(AbstractNativeMemory.getAddress(set));
+        sigfillset(AbstractNativeMemory.toUintptr_t(set));
     }
 
     private static native void sigfillset(long set) throws NativeErrorException;
@@ -3181,7 +3181,7 @@ public class Signal {
      * indicates an error.
      */
     public final static boolean sigismember(Sigset_t set, int signo) throws NativeErrorException {
-        return sigismember(AbstractNativeMemory.getAddress(set), signo);
+        return sigismember(AbstractNativeMemory.toUintptr_t(set), signo);
     }
 
     private static native boolean sigismember(long ptrSet, int signo) throws NativeErrorException;
@@ -3199,7 +3199,7 @@ public class Signal {
      * indicates an error.
      */
     public final static FunctionPtr_I_V signal(int sig, FunctionPtr_I_V func) throws NativeErrorException {
-        return new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t((signal(sig, NativeFunctionPointer.getNativeAddressOrNULL(func)))));
+        return new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t((signal(sig, NativeFunctionPointer.toUintptr_tOrNULL(func)))));
     }
 
     private static native long signal(int sig, long ptrFunc) throws NativeErrorException;
@@ -3227,7 +3227,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigpending(Sigset_t set) throws NativeErrorException {
-        sigpending(AbstractNativeMemory.getAddress(set));
+        sigpending(AbstractNativeMemory.toUintptr_t(set));
     }
 
     private static native void sigpending(long ptrSet) throws NativeErrorException;
@@ -3242,7 +3242,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigprocmask(int how, Sigset_t set, Sigset_t oset) throws NativeErrorException {
-        sigprocmask(how, AbstractNativeMemory.getAddressOrNULL(set), AbstractNativeMemory.getAddressOrNULL(oset));
+        sigprocmask(how, AbstractNativeMemory.toUintptr_tOrNULL(set), AbstractNativeMemory.toUintptr_tOrNULL(oset));
     }
 
     private static native void sigprocmask(int how, long ptrSet, long ptrOset) throws NativeErrorException;
@@ -3259,7 +3259,7 @@ public class Signal {
      * available natively.
      */
     public final static void sigqueue(@pid_t int pid, int signo, Sigval value) throws NativeErrorException, NoSuchNativeMethodException {
-        sigqueue(pid, signo, AbstractNativeMemory.getAddress(value));
+        sigqueue(pid, signo, AbstractNativeMemory.toUintptr_t(value));
     }
 
     private static native void sigqueue(int pid, int signo, long ptrValue) throws NativeErrorException, NoSuchNativeMethodException;
@@ -3289,7 +3289,7 @@ public class Signal {
      * natively.
      *///TODO args missing ....
     public final static FunctionPtr_I_V sigset(int sig, FunctionPtr_I_V disp) throws NativeErrorException, NoSuchNativeMethodException {
-        return new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(sigset(sig, NativeFunctionPointer.getNativeAddressOrNULL(disp))));
+        return new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(sigset(sig, NativeFunctionPointer.toUintptr_tOrNULL(disp))));
     }
 
     private static native long sigset(int sig, long ptrDisp) throws NativeErrorException, NoSuchNativeMethodException;
@@ -3304,7 +3304,7 @@ public class Signal {
      * is -1 an errno is other than EINTR.
      */
     public final static void sigsuspend(Sigset_t sigmask) throws NativeErrorException {
-        sigsuspend(AbstractNativeMemory.getAddress(sigmask));
+        sigsuspend(AbstractNativeMemory.toUintptr_t(sigmask));
     }
 
     private static native void sigsuspend(long ptrSigmask) throws NativeErrorException;
@@ -3322,7 +3322,7 @@ public class Signal {
      */
     public final static int sigtimedwait(Sigset_t set, Siginfo_t info,
             Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
-        return sigtimedwait(AbstractNativeMemory.getAddress(set), AbstractNativeMemory.getAddressOrNULL(info), AbstractNativeMemory.getAddress(timeout));
+        return sigtimedwait(AbstractNativeMemory.toUintptr_t(set), AbstractNativeMemory.toUintptr_tOrNULL(info), AbstractNativeMemory.toUintptr_t(timeout));
     }
 
     private static native int sigtimedwait(long ptrSet, long ptrInfo,
@@ -3342,7 +3342,7 @@ public class Signal {
      * indicates an error.
      */
     public final static int sigwait(Sigset_t set, int sig) throws NativeErrorException {
-        return sigwait(AbstractNativeMemory.getAddress(set), sig);
+        return sigwait(AbstractNativeMemory.toUintptr_t(set), sig);
     }
 
     private static native int sigwait(long ptrSet, int sig) throws NativeErrorException;
@@ -3359,7 +3359,7 @@ public class Signal {
      * available natively.
      */
     public final static int sigwaitinfo(Sigset_t set, Siginfo_t info) throws NativeErrorException, NoSuchNativeMethodException {
-        return sigwaitinfo(AbstractNativeMemory.getAddress(set), AbstractNativeMemory.getAddressOrNULL(info));
+        return sigwaitinfo(AbstractNativeMemory.toUintptr_t(set), AbstractNativeMemory.toUintptr_tOrNULL(info));
     }
 
     private static native int sigwaitinfo(long ptrSet, long ptrInfo) throws NativeErrorException, NoSuchNativeMethodException;

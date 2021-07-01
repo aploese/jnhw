@@ -25,12 +25,14 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
  * Test all symbolic constants XXX that are defined with #define XXX
  *
  * @author aploese
  */
+@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class PosixDataTypeTest {
 
     private static native boolean JNHW__cc_t__IS__uint8_t();

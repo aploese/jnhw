@@ -22,11 +22,8 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.condition.EnabledOnOs;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *

@@ -12,6 +12,9 @@ noinst_LTLIBRARIES = libtests.la
 libjnhw_common_test_la_LIBADD = libtests.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
 
 libtests_la_SOURCES = \
+ AlignmentTest.c \
+ StructLayoutFactoryImplTest.c \
+ BaseDataTypeTest.c \
  AbstractNativeMemoryTest_NativeMemoryAlignment.c \
  Callback_I_V_Test.c \
  Callback_J_V_Test.c \

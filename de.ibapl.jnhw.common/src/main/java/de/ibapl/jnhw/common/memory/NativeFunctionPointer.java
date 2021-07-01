@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.common.memory;
 
+import de.ibapl.jnhw.common.annotation.uintptr_t;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import java.io.IOException;
@@ -36,11 +37,13 @@ public class NativeFunctionPointer {
         return (ptr1 == ptr2) || (ptr1 != null && ptr1.nativeAddress == ptr2.nativeAddress);
     }
 
-    public static long getNativeAddress(NativeFunctionPointer nativeFunctionPointer) {
+    @uintptr_t
+    public static long toUintptr_t(NativeFunctionPointer nativeFunctionPointer) {
         return nativeFunctionPointer.nativeAddress;
     }
 
-    public static long getNativeAddressOrNULL(NativeFunctionPointer nativeFunctionPointer) {
+    @uintptr_t
+    public static long toUintptr_tOrNULL(NativeFunctionPointer nativeFunctionPointer) {
         return (nativeFunctionPointer == null) ? AbstractNativeMemory.NULL : nativeFunctionPointer.nativeAddress;
     }
 
@@ -69,10 +72,11 @@ public class NativeFunctionPointer {
         this.nativeAddress = src.nativeAddress;
     }
 
-    protected NativeFunctionPointer(long nativeAddress) {
+    private NativeFunctionPointer(@uintptr_t long nativeAddress) {
         this.nativeAddress = nativeAddress;
     }
 
+    @uintptr_t
     protected final long nativeAddress;
 
     @Override

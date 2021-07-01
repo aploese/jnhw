@@ -55,10 +55,10 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
-     * Method:    GetCurrentThread
+     * Method:    GetCurrentThread0
      * Signature: ()J
      */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_GetCurrentThread
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_GetCurrentThread0
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
         return (int64_t) (uintptr_t) GetCurrentThread();
     }

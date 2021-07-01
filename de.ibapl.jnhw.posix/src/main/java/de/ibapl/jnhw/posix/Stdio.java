@@ -158,6 +158,13 @@ public class Stdio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void remove(String path) throws NativeErrorException;
+    public final static void remove(String path) throws NativeErrorException {
+        if (path == null) {
+            throw new NullPointerException("file is null.");
+        }
+        remove0(path);
+    }
+
+    private static native void remove0(String path) throws NativeErrorException;
 
 }

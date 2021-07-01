@@ -348,6 +348,12 @@ public class Locale {
      * indicates an error.
      */
     public final static Locale_t newlocale(int category_mask, String locale, Locale_t base) throws NativeErrorException {
+        if (locale == null) {
+            throw new NullPointerException("locale is null.");
+        }
+        if (LC_GLOBAL_LOCALE.equals(base)) {
+            throw new IllegalArgumentException("base is LC_GLOBAL_LOCALE");
+        }
         return new Locale_t(newlocale(category_mask, locale, base.nativeValue));
     }
 

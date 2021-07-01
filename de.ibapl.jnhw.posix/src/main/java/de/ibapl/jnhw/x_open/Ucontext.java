@@ -68,7 +68,7 @@ public class Ucontext {
      * Get user context and store it in variable pointed to by UCP.
      */
     public final static void getcontext(Signal.Ucontext_t ucp) throws NativeErrorException {
-        getcontext(AbstractNativeMemory.getAddress(ucp));
+        getcontext(AbstractNativeMemory.toUintptr_t(ucp));
     }
 
     private static native void getcontext(long ptrUcp) throws NativeErrorException;
@@ -77,7 +77,7 @@ public class Ucontext {
      * Set user context from information of variable pointed to by UCP.
      */
     final static void setcontext(final Signal.Ucontext_t ucp) throws NativeErrorException {
-        setcontext(AbstractNativeMemory.getAddress(ucp));
+        setcontext(AbstractNativeMemory.toUintptr_t(ucp));
     }
 
     private static native void setcontext(final long ptrUcp) throws NativeErrorException;
@@ -87,7 +87,7 @@ public class Ucontext {
      * context from variable pointed to by UCP.
      */
     final static void swapcontext(Signal.Ucontext_t oucp, final Signal.Ucontext_t ucp) throws NativeErrorException {
-        swapcontext(AbstractNativeMemory.getAddress(oucp), AbstractNativeMemory.getAddress(ucp));
+        swapcontext(AbstractNativeMemory.toUintptr_t(oucp), AbstractNativeMemory.toUintptr_t(ucp));
     }
 
     private static native void swapcontext(long ptrOucp, final long ptrUcp) throws NativeErrorException;

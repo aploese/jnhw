@@ -22,63 +22,64 @@
 #define _JNHW_COMMON_IMPLEMENTATION_ 1
 #include "jnhw-common.h"
 
-#include "de_ibapl_jnhw_common_datatypes_BaseDataType.h"
+#include "de_ibapl_jnhw_common_test_datatypes_BaseDataTypeTest.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ON Win long is always int22_t
-#if __SIZEOF_POINTER__ != __SIZEOF_LONG__
-#error expected not to happen: __SIZEOF_POINTER__ != __SIZEOF_LONG__
-#endif
-*/
+    /* ON Win long is always int22_t
+    #if __SIZEOF_POINTER__ != __SIZEOF_LONG__
+    #error expected not to happen: __SIZEOF_POINTER__ != __SIZEOF_LONG__
+    #endif
+     */
+
     /*
-     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
-     * Method:    getSizeOfPointer0
+     * Class:     de_ibapl_jnhw_common_test_datatypes_BaseDataTypeTest
+     * Method:    getSizeOfPointer
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOfPointer0
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_datatypes_BaseDataTypeTest_getSizeOfPointer
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return sizeof (void*);
     }
 
-/*
-     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
-     * Method:    getSizeOf_long0
+    /*
+     * Class:     de_ibapl_jnhw_common_test_datatypes_BaseDataTypeTest
+     * Method:    getSizeOf_long
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOf_1long0
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_datatypes_BaseDataTypeTest_getSizeOf_1long
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return sizeof (long);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
-     * Method:    getSizeOf_float0
+     * Class:     de_ibapl_jnhw_common_test_datatypes_BaseDataTypeTest
+     * Method:    getSizeOf_float
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOf_1float0
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_datatypes_BaseDataTypeTest_getSizeOf_1float
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return sizeof (float);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
-     * Method:    getSizeOf_double0
+     * Class:     de_ibapl_jnhw_common_test_datatypes_BaseDataTypeTest
+     * Method:    getSizeOf_double
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOf_1double0
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_datatypes_BaseDataTypeTest_getSizeOf_1double
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return sizeof (double);
     }
 
     /*
-     * Class:     de_ibapl_jnhw_common_datatypes_BaseDataType
-     * Method:    getSizeOf_long_double0
+     * Class:     de_ibapl_jnhw_common_test_datatypes_BaseDataTypeTest
+     * Method:    getSizeOf_long_double
      * Signature: ()I
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_datatypes_BaseDataType_getSizeOf_1long_1double0
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_test_datatypes_BaseDataTypeTest_getSizeOf_1long_1double
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
         return sizeof (long double);
     }
