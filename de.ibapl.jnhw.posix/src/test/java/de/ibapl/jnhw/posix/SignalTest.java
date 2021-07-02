@@ -1115,6 +1115,7 @@ public class SignalTest {
         });
 
         Signal.Sigset_t set = new Signal.Sigset_t();
+        // Just make sure all bytes are set to 0 otherwise linux s390x may fail at byte comparision).
         OpaqueMemory32.clear(set);
         Signal.sigemptyset(set);
         Assertions.assertArrayEquals(new byte[Signal.Sigset_t.sizeof], OpaqueMemory32.toBytes(set));
