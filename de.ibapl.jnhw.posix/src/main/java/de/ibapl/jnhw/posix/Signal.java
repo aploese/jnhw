@@ -1761,10 +1761,10 @@ public class Signal {
                         case S390_X:
                             alignof = Alignment.AT_8;
                             sizeof = 152;
-                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 24;
-                            offsetof_Sa_flags = -1;
-                            offsetof_Sa_sigaction = -1;
+                            offsetof_Sa_flags = 12;
+                            offsetof_Sa_sigaction = 0;
                             break;
                         case X86_64:
                             alignof = Alignment.AT_8;
@@ -2145,7 +2145,7 @@ public class Signal {
                         case S390_X:
                             alignof = Alignment.AT_8;
                             sizeof = 512;
-                            offsetof_Uc_link = 0;
+                            offsetof_Uc_link = 8;
                             offsetof_Uc_sigmask = 384;
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 40;

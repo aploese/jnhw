@@ -239,7 +239,7 @@ public final class Termios {
 
     }
 
-    public static interface Linux_Aarch64_Arm_I386_RiscV64_X86_64Defines {
+    public static interface Linux_Aarch64_Arm_I386_RiscV64_S390_X86_64Defines {
 
         public final static int IEXTEN = 0100000;
         public final static int TOSTOP = 0000400;
@@ -640,14 +640,14 @@ public final class Termios {
                     case ARM:
                     case I386:
                     case RISC_V_64:
+                    case S390_X:
                     case X86_64:
-                        TOSTOP = Linux_Aarch64_Arm_I386_RiscV64_X86_64Defines.TOSTOP;
-                        VEOL = Linux_Aarch64_Arm_I386_RiscV64_X86_64Defines.VEOL;
-                        IEXTEN = Linux_Aarch64_Arm_I386_RiscV64_X86_64Defines.IEXTEN;
-                        VMIN = Linux_Aarch64_Arm_I386_RiscV64_X86_64Defines.VMIN;
+                        TOSTOP = Linux_Aarch64_Arm_I386_RiscV64_S390_X86_64Defines.TOSTOP;
+                        VEOL = Linux_Aarch64_Arm_I386_RiscV64_S390_X86_64Defines.VEOL;
+                        IEXTEN = Linux_Aarch64_Arm_I386_RiscV64_S390_X86_64Defines.IEXTEN;
+                        VMIN = Linux_Aarch64_Arm_I386_RiscV64_S390_X86_64Defines.VMIN;
                         break;
                     case POWER_PC_64:
-                    case S390_X:
                         TOSTOP = Linux_Ppc64_Defines.TOSTOP;
                         VEOL = Linux_Ppc64_Defines.VEOL;
                         IEXTEN = Linux_Ppc64_Defines.IEXTEN;

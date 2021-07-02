@@ -1115,7 +1115,9 @@ public class SignalTest {
         });
 
         Signal.Sigset_t set = new Signal.Sigset_t();
+        OpaqueMemory32.clear(set);
         Signal.sigemptyset(set);
+        Assertions.assertArrayEquals(new byte[Signal.Sigset_t.sizeof], OpaqueMemory32.toBytes(set));
         Signal.sigpending(set);
         assertEquals("[]", set.nativeToString());
         Assertions.assertArrayEquals(new byte[Signal.Sigset_t.sizeof], OpaqueMemory32.toBytes(set));

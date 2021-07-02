@@ -346,7 +346,7 @@ public class Aio {
      * available natively.
      */
     public final static void aio_suspend(Aiocbs list, Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
-        aio_suspend(AbstractNativeMemory.toUintptr_t(list), list.length(), AbstractNativeMemory.getSizeInBytes(timeout));
+        aio_suspend(AbstractNativeMemory.toUintptr_t(list), list.length(), AbstractNativeMemory.toUintptr_t(timeout));
     }
 
     private static native void aio_suspend(long ptrList, int nent, long ptrTimeout) throws NativeErrorException, NoSuchNativeMethodException;
