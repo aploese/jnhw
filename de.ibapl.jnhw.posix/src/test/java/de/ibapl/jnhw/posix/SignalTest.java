@@ -1214,7 +1214,7 @@ public class SignalTest {
 
             Thread.sleep(100);
 
-            System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef[0]);
+            System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef[0].nativeToString());
             try {
                 Assertions.assertNotNull(valueRef[0]);
                 Assertions.assertAll(
