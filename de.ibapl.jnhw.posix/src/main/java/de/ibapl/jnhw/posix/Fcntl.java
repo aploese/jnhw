@@ -85,9 +85,14 @@ public final class Fcntl {
         public final static int O_LARGEFILE = 0100000;
     }
 
-    public static interface Linux_Arm_Mips_Defines {
+    public static interface Linux_Arm_Defines {
 
         public final static int O_LARGEFILE = 0400000;
+    }
+
+    public static interface Linux_Mips_Defines {
+
+        public final static int O_LARGEFILE = 020000;
     }
 
     public static interface Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines {
@@ -243,7 +248,7 @@ public final class Fcntl {
 
     }
 
-    public static interface Defines_LINUX_ARM extends LinuxDefines, Linux_NonMips_Defines, Linux_Aarch64_Arm_Defines, Linux_Arm_Mips_Defines {
+    public static interface Defines_LINUX_ARM extends LinuxDefines, Linux_NonMips_Defines, Linux_Aarch64_Arm_Defines, Linux_Arm_Defines {
 
     }
 
@@ -259,7 +264,7 @@ public final class Fcntl {
 
     }
 
-    public static interface Defines_LINUX_MIPS extends LinuxDefines, Linux_Mips_Mips64_Defines, Linux_Arm_Mips_Defines {
+    public static interface Defines_LINUX_MIPS extends LinuxDefines, Linux_Mips_Mips64_Defines, Linux_Mips_Defines {
 
     }
 
@@ -343,12 +348,14 @@ public final class Fcntl {
                     case X86_64:
                         O_LARGEFILE = IntDefine.toIntDefine(Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines.O_LARGEFILE);
                         break;
+                    case ARM:
+                        O_LARGEFILE = IntDefine.toIntDefine(Linux_Arm_Defines.O_LARGEFILE);
+                        break;
                     case I386:
                         O_LARGEFILE = IntDefine.toIntDefine(Linux_I386_Defines.O_LARGEFILE);
                         break;
-                    case ARM:
                     case MIPS:
-                        O_LARGEFILE = IntDefine.toIntDefine(Linux_Arm_Mips_Defines.O_LARGEFILE);
+                        O_LARGEFILE = IntDefine.toIntDefine(Linux_Mips_Defines.O_LARGEFILE);
                         break;
                     default:
                         throw new NoClassDefFoundError("No fcntl.h defines for " + multiarchInfo);

@@ -415,20 +415,6 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __MIPS_ARCH
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1MIPS_1ARCH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__MIPS_ARCH)
-        return JnhwWrapInteger(env, __MIPS_ARCH);
-#else
-        return NULL;
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
      * Method:    __ORDER_BIG_ENDIAN__
      * Signature: ()I
      */

@@ -199,6 +199,9 @@ public class Signal {
 
     public static interface Linux_Mips_Mips64_Defines {
 
+        public final static int MINSIGSTKSZ = 2048;
+        public final static int SIGSTKSZ = 8192;
+
         public final static int SA_NOCLDWAIT = 65536;
         public final static int SA_SIGINFO = 8;
 
@@ -408,6 +411,10 @@ public class Signal {
                     case X86_64:
                         MINSIGSTKSZ = Linux_Arm_I386_RiscV64_S390_X86_64_Defines.MINSIGSTKSZ;
                         break;
+                    case MIPS:
+                    case MIPS_64:
+                        MINSIGSTKSZ = Linux_Mips_Mips64_Defines.MINSIGSTKSZ;
+                        break;
                     case POWER_PC_64:
                         MINSIGSTKSZ = Linux_Ppc64_Defines.MINSIGSTKSZ;
                         break;
@@ -457,6 +464,10 @@ public class Signal {
                     case S390_X:
                     case X86_64:
                         SIGSTKSZ = Linux_Arm_I386_RiscV64_S390_X86_64_Defines.SIGSTKSZ;
+                        break;
+                    case MIPS:
+                    case MIPS_64:
+                        SIGSTKSZ = Linux_Mips_Mips64_Defines.SIGSTKSZ;
                         break;
                     default:
                         throw new NoClassDefFoundError("No signal.h linux defines for SIGSTKSZ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -2440,11 +2451,22 @@ public class Signal {
                     switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
                         case ARM:
                         case I386:
-                        case MIPS:
                             alignof = Alignment.AT_4;
                             offsetof_Si_signo = 0;
                             offsetof_Si_code = 8;
                             offsetof_Si_errno = 4;
+                            offsetof_Si_pid = 12;
+                            offsetof_Si_uid = 16;
+                            offsetof_Si_addr = 12;
+                            offsetof_Si_status = 20;
+                            offsetof_Si_band = 12;
+                            offsetof_Si_value = 20;
+                            break;
+                        case MIPS:
+                            alignof = Alignment.AT_4;
+                            offsetof_Si_signo = 0;
+                            offsetof_Si_code = 4;
+                            offsetof_Si_errno = 8;
                             offsetof_Si_pid = 12;
                             offsetof_Si_uid = 16;
                             offsetof_Si_addr = 12;

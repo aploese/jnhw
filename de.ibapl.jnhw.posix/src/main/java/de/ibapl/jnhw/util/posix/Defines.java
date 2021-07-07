@@ -74,7 +74,6 @@ public class Defines {
         __mips64 = arch == Arch.MIPS_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __MIPSEB__ = ((arch == Arch.MIPS) || (arch == Arch.MIPS_64)) && e == Endianess.BIG ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __MIPSEL__ = ((arch == Arch.MIPS) || (arch == Arch.MIPS_64)) && e == Endianess.LITTLE ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        __MIPS_ARCH = arch == Arch.MIPS ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __powerpc__ = arch == Arch.POWER_PC_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __powerpc64__ = arch == Arch.POWER_PC_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __riscv = arch == Arch.RISC_V_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
@@ -389,9 +388,6 @@ public class Defines {
 
     @Define
     public final static IntDefine __mips64;
-
-    @Define
-    public final static IntDefine __MIPS_ARCH;
 
     @Define
     public final static IntDefine __MIPSEB__;

@@ -233,14 +233,6 @@ JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeD
 
 /*
  * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
- * Method:    __MIPS_ARCH
- * Signature: ()Ljava/lang/Integer;
- */
-JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1MIPS_1ARCH
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
  * Method:    __ORDER_BIG_ENDIAN__
  * Signature: ()I
  */

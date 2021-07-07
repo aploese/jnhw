@@ -99,8 +99,6 @@ public class DefinesTest {
 
         public final static native Integer __MIPSEL__();
 
-        public final static native Integer __MIPS_ARCH();
-
         public final static native int __ORDER_BIG_ENDIAN__();
 
         public final static native int __ORDER_LITTLE_ENDIAN__();
