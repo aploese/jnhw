@@ -1804,10 +1804,10 @@ public class Signal {
                         case MIPS:
                             alignof = Alignment.AT_4;
                             sizeof = 144;
-                            offsetof_Sa_handler = -1;
+                            offsetof_Sa_handler = 4;
                             offsetof_Sa_mask = 8;
-                            offsetof_Sa_flags = -1;
-                            offsetof_Sa_sigaction = -1;
+                            offsetof_Sa_flags = 0;
+                            offsetof_Sa_sigaction = 4;
                             break;
                         default:
                             throw new NoClassDefFoundError("No signal.h linux defines for sigaction " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -2121,6 +2121,14 @@ public class Signal {
                             offsetof_Uc_stack = 8;
                             offsetof_Uc_mcontext = 20;
                             break;
+                        case MIPS:
+                            alignof = Alignment.AT_8;
+                            sizeof = 744;
+                            offsetof_Uc_link = 4;
+                            offsetof_Uc_sigmask = 616;
+                            offsetof_Uc_stack = 8;
+                            offsetof_Uc_mcontext = 24;
+                            break;
                         case MIPS_64:
                             alignof = Alignment.AT_8;
                             sizeof = 768;
@@ -2128,14 +2136,6 @@ public class Signal {
                             offsetof_Uc_sigmask = 640;
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 40;
-                            break;
-                        case MIPS:
-                            alignof = Alignment.AT_8;
-                            sizeof = 744;
-                            offsetof_Uc_link = 0;
-                            offsetof_Uc_sigmask = 616;
-                            offsetof_Uc_stack = 8;
-                            offsetof_Uc_mcontext = 24;
                             break;
                         case POWER_PC_64:
                             alignof = Alignment.AT_8;
@@ -2301,8 +2301,15 @@ public class Signal {
                             alignof = Alignment.AT_4;
                             sizeof = 12;
                             offsetof_Ss_sp = 0;
-                            offsetof_Ss_size = 8;
-                            offsetof_Ss_flags = 4;
+                            switch (multiarchInfo.getArch()) {
+                                case MIPS:
+                                    offsetof_Ss_size = 4;
+                                    offsetof_Ss_flags = 8;
+                                    break;
+                                default:
+                                    offsetof_Ss_size = 8;
+                                    offsetof_Ss_flags = 4;
+                            }
                             break;
                         case _64_BIT:
                             alignof = Alignment.AT_8;

@@ -148,17 +148,9 @@ public class Defines {
 
         switch (os) {
             case LINUX:
-                switch (arch) {
-                    case RISC_V_64:
-                        __GLIBC_MINOR__ = IntDefine.toIntDefine(31);
-                        __GLIBC__ = IntDefine.toIntDefine(2);
-                        __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
-                        break;
-                    default:
-                        __GLIBC_MINOR__ = IntDefine.toIntDefine(28);
-                        __GLIBC__ = IntDefine.toIntDefine(2);
-                        __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
-                }
+                __GLIBC_MINOR__ = IntDefine.toIntDefine(28);
+                __GLIBC__ = IntDefine.toIntDefine(2);
+                __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
                 break;
             case FREE_BSD:
             case OPEN_BSD:
@@ -218,7 +210,7 @@ public class Defines {
         __SIZEOF_POINTER__ = mi.getSizeOfPointer().sizeInBit / 8;
 
         //Linux
-        __TIMESIZE = mi == MultiarchInfo.RISC_V_64__LINUX__GNU ? IntDefine.toIntDefine(64) : IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
+        __TIMESIZE = IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
 
         switch (os) {
             case OPEN_BSD:
