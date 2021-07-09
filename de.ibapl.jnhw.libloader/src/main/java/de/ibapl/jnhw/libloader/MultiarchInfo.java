@@ -34,6 +34,7 @@ public enum MultiarchInfo {
     ARM__LINUX__GNU_EABI_HF(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI_HF),
     ARM__LINUX__GNU_EABI(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI),
     AARCH64__LINUX__GNU(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.AARCH64, OS.LINUX, Abi.GNU),
+    AARCH64__OPEN_BSD__BSD(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.AARCH64, OS.OPEN_BSD, Abi.BSD),
     MIPS_EL__LINUX__GNU(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.MIPS, OS.LINUX, Abi.GNU),
     MIPS__LINUX__GNU(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.BIG, Arch.MIPS, OS.LINUX, Abi.GNU),
     MIPS_64_EL__LINUX__GNU_ABI_64(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),

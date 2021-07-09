@@ -364,6 +364,16 @@ public class TimeTest {
                 //TODO virt env needs to be fixed??
                 assertEquals(280, timespec.tv_nsec());
                 break;
+            case OPEN_BSD:
+                switch (MULTIARCHTUPEL_BUILDER.getArch()) {
+                    case AARCH64:
+                        //TODO virt env needs to be fixed??
+                        assertEquals(15, timespec.tv_nsec());
+                        break;
+                    default:
+                        assertEquals(1, timespec.tv_nsec());
+                }
+                break;
             default:
                 assertEquals(1, timespec.tv_nsec());
         }

@@ -120,15 +120,16 @@ public enum BaseDataType {
             case I386__LINUX__GNU:
             case X86_64__WINDOWS__PE32_PLUS:
                 return 4;
-            case S390_X__LINUX__GNU:
+            case AARCH64__LINUX__GNU:
+            case AARCH64__OPEN_BSD__BSD:
             case MIPS_64__LINUX__GNU_ABI_64:
             case MIPS_64_EL__LINUX__GNU_ABI_64:
-            case AARCH64__LINUX__GNU:
             case POWER_PC_64_LE__LINUX__GNU:
             case RISC_V_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
+            case X86_64__FREE_BSD__BSD:
             case X86_64__LINUX__GNU:
             case X86_64__OPEN_BSD__BSD:
-            case X86_64__FREE_BSD__BSD:
                 return 8;
             default:
                 throw new RuntimeException("No Sizeof long values for multiarch: " + mi);
@@ -140,17 +141,18 @@ public enum BaseDataType {
     private final static int getSizeOf_float() {
         final MultiarchInfo mi = LibJnhwCommonLoader.getLoadResult().multiarchInfo;
         switch (mi) {
+            case AARCH64__LINUX__GNU:
+            case AARCH64__OPEN_BSD__BSD:
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
             case MIPS__LINUX__GNU:
             case MIPS_EL__LINUX__GNU:
-            case I386__LINUX__GNU:
-            case S390_X__LINUX__GNU:
             case MIPS_64__LINUX__GNU_ABI_64:
             case MIPS_64_EL__LINUX__GNU_ABI_64:
-            case AARCH64__LINUX__GNU:
             case POWER_PC_64_LE__LINUX__GNU:
             case RISC_V_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
             case X86_64__LINUX__GNU:
             case X86_64__WINDOWS__PE32_PLUS:
             case X86_64__OPEN_BSD__BSD:
@@ -165,17 +167,18 @@ public enum BaseDataType {
     private final static int getSizeOf_double() {
         final MultiarchInfo mi = LibJnhwCommonLoader.getLoadResult().multiarchInfo;
         switch (mi) {
+            case AARCH64__LINUX__GNU:
+            case AARCH64__OPEN_BSD__BSD:
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
+            case I386__LINUX__GNU:
             case MIPS__LINUX__GNU:
             case MIPS_EL__LINUX__GNU:
-            case I386__LINUX__GNU:
-            case S390_X__LINUX__GNU:
             case MIPS_64__LINUX__GNU_ABI_64:
             case MIPS_64_EL__LINUX__GNU_ABI_64:
-            case AARCH64__LINUX__GNU:
             case POWER_PC_64_LE__LINUX__GNU:
             case RISC_V_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
             case X86_64__LINUX__GNU:
             case X86_64__WINDOWS__PE32_PLUS:
             case X86_64__OPEN_BSD__BSD:
@@ -197,12 +200,13 @@ public enum BaseDataType {
                 return 8;
             case I386__LINUX__GNU:
                 return 12;
-            case S390_X__LINUX__GNU:
+            case AARCH64__LINUX__GNU:
+            case AARCH64__OPEN_BSD__BSD:
             case MIPS_64__LINUX__GNU_ABI_64:
             case MIPS_64_EL__LINUX__GNU_ABI_64:
-            case AARCH64__LINUX__GNU:
             case POWER_PC_64_LE__LINUX__GNU:
             case RISC_V_64__LINUX__GNU:
+            case S390_X__LINUX__GNU:
             case X86_64__LINUX__GNU:
             case X86_64__WINDOWS__PE32_PLUS:
             case X86_64__OPEN_BSD__BSD:
@@ -225,6 +229,7 @@ public enum BaseDataType {
             case MIPS_EL__LINUX__GNU:
                 return 4;
             case AARCH64__LINUX__GNU:
+            case AARCH64__OPEN_BSD__BSD:
             case MIPS_64__LINUX__GNU_ABI_64:
             case MIPS_64_EL__LINUX__GNU_ABI_64:
             case POWER_PC_64_LE__LINUX__GNU:

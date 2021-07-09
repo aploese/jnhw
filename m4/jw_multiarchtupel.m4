@@ -38,6 +38,9 @@ AC_DEFUN([JW_MULTIARCHTUPEL],
 	x86_64)
         	JNHW_MULTIARCH_TUPEL="x86_64-openbsd-bsd"
 	;;
+	aarch64)
+        	JNHW_MULTIARCH_TUPEL="aarch64-openbsd-bsd"
+	;;
 	*)
         	fail not supported
 	;;

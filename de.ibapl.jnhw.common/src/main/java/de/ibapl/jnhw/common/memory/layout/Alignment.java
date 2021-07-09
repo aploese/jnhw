@@ -296,6 +296,7 @@ public enum Alignment {
                 __ALIGN_OF_INTPTR_T = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
                 break;
+            case AARCH64__OPEN_BSD__BSD:
             case X86_64__OPEN_BSD__BSD:
             case X86_64__FREE_BSD__BSD:
                 //classical 64bit anything is at 8 byte aligned
