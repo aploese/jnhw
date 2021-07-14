@@ -443,15 +443,26 @@ public class AioTest {
 
                 });
 
-                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
-                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+                    case DARWIN: {
+                        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                            Aio.aio_read(aiocb);
+                        });
+                        assertEquals(Errno.EAGAIN, nee.errno);
+                        //Stop the test here for darwin it cant handle aio with threaded callbacks
+                        return;
+                    }
+                    case FREE_BSD: {
+                        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                            Aio.aio_read(aiocb);
+                        });
+                        assertEquals(Errno.EINVAL, nee.errno);
+                        //Stop the test here for FreeBSD it cant handle aio with threaded callbacks
+                        return;
+                    }
+                    case LINUX:
+                    default:
                         Aio.aio_read(aiocb);
-                    });
-                    assertEquals(Errno.EAGAIN, nee.errno);
-                    //Stop the test here for darwin it cant handle aio with threaded callbacks
-                    return;
-                } else {
-                    Aio.aio_read(aiocb);
                 }
 
                 synchronized (objRef) {
@@ -626,30 +637,34 @@ public class AioTest {
                 });
 
                 //No read or write executed....
-                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
-                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                        Aio.aio_error(aiocb);
-                    });
-                    assertEquals(Errno.EINVAL, nee.errno);
-                } else {
-                    int errno = Aio.aio_error(aiocb);
-                    switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-                        case FREE_BSD:
-                            assertEquals(Errno.EINVAL, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
-                            break;
-                        default:
-                            assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+                    case DARWIN: {
+                        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                            Aio.aio_error(aiocb);
+                        });
+                        assertEquals(Errno.EINVAL, nee.errno);
+                        nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                            Aio.aio_read(aiocb);
+                        });
+                        assertEquals(Errno.EAGAIN, nee.errno);
+                        //Stop the test here for darwin it cant handle aio with threaded callbacks
+                        return;
                     }
-                }
-                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
-                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    case FREE_BSD: {
+                        int errno = Aio.aio_error(aiocb);
+                        assertEquals(Errno.EINVAL, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                            Aio.aio_read(aiocb);
+                        });
+                        assertEquals(Errno.EINVAL, nee.errno);
+                        //Stop the test here for FreeBSD it cant handle aio with threaded callbacks
+                        return;
+                    }
+                    case LINUX:
+                    default:
+                        int errno = Aio.aio_error(aiocb);
+                        assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
                         Aio.aio_read(aiocb);
-                    });
-                    assertEquals(Errno.EAGAIN, nee.errno);
-                    //Stop the test here for darwin it cant handle aio with threaded callbacks
-                    return;
-                } else {
-                    Aio.aio_read(aiocb);
                 }
 
                 int errno = Aio.aio_error(aiocb);
@@ -821,6 +836,7 @@ public class AioTest {
                             Aio.aio_suspend(new Aio.Aiocbs(0, SetMem.TO_0x00), new Time.Timespec(SetMem.TO_0x00));
                         });
                 return;
+            case LINUX:
             default: {
                 Aio.Aiocbs aiocbs = new Aio.Aiocbs(1, SetMem.DO_NOT_SET);
                 Aio.Aiocb aiocb = new Aio.Aiocb();
@@ -920,15 +936,26 @@ public class AioTest {
 
                 });
 
-                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
-                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+                    case DARWIN: {
+                        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                            Aio.aio_write(aiocb);
+                        });
+                        assertEquals(Errno.EAGAIN, nee.errno);
+                        //Stop the test here for darwin it cant handle aio with threaded callbacks
+                        return;
+                    }
+                    case FREE_BSD: {
+                        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                            Aio.aio_write(aiocb);
+                        });
+                        assertEquals(Errno.EINVAL, nee.errno);
+                        //Stop the test here for FreeBSD it cant handle aio with threaded callbacks
+                        return;
+                    }
+                    case LINUX:
+                    default:
                         Aio.aio_write(aiocb);
-                    });
-                    assertEquals(Errno.EAGAIN, nee.errno);
-                    //Stop the test here for darwin it cant handle aio with threaded callbacks
-                    return;
-                } else {
-                    Aio.aio_write(aiocb);
                 }
 
                 synchronized (intRef) {
@@ -1206,15 +1233,26 @@ public class AioTest {
 
                 };
                 aiocb.aio_sigevent.sigev_value.sival_ptr(callback);
-                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
-                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+                    case DARWIN: {
+                        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                            Aio.aio_read(aiocb);
+                        });
+                        assertEquals(Errno.EAGAIN, nee.errno);
+                        //Stop the test here for darwin it cant handle aio with threaded callbacks
+                        return;
+                    }
+                    case FREE_BSD: {
+                        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                            Aio.aio_read(aiocb);
+                        });
+                        assertEquals(Errno.EINVAL, nee.errno);
+                        //Stop the test here for FreeBSD it cant handle aio with threaded callbacks
+                        return;
+                    }
+                    case LINUX:
+                    default:
                         Aio.aio_read(aiocb);
-                    });
-                    assertEquals(Errno.EAGAIN, nee.errno);
-                    //Stop the test here for darwin it cant handle aio with threaded callbacks
-                    return;
-                } else {
-                    Aio.aio_read(aiocb);
                 }
 
                 synchronized (objRef) {
