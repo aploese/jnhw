@@ -163,7 +163,7 @@ extern "C" {
      * Signature: (J)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1getcpuclockid
-#if defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+#if defined(__APPLE__)
     (
             JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jlong ptrThread_id) {
         throw_NoSuchNativeMethodException(env, "pthread_getcpuclockid");

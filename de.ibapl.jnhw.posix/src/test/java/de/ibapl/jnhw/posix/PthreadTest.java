@@ -293,10 +293,14 @@ public class PthreadTest {
 
         final int sched_priority = param.sched_priority();
         param.sched_priority(Integer.MAX_VALUE);
-        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
             Pthread.pthread_setschedparam(Pthread.pthread_self(), policy, param);
-        });
-        Assertions.assertEquals(Errno.EINVAL, nee.errno);
+        } else {
+            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                Pthread.pthread_setschedparam(Pthread.pthread_self(), policy, param);
+            });
+            Assertions.assertEquals(Errno.EINVAL, nee.errno);
+        }
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, null);
