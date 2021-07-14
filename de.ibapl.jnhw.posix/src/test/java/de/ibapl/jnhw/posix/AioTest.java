@@ -668,7 +668,11 @@ public class AioTest {
                 }
 
                 int errno = Aio.aio_error(aiocb);
-                assertEquals(Errno.EINPROGRESS, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                if (errno == 0) {
+                    //no-op read already finished
+                } else {
+                    assertEquals(Errno.EINPROGRESS, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                }
 
                 synchronized (intRef) {
                     if (intRef[0] == null) {
