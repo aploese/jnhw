@@ -38,6 +38,7 @@ import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.timer_t;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
@@ -71,7 +72,15 @@ public class Time {
     public static interface BsdDefines {
 
         public final static int CLOCK_REALTIME = 0;
-        public final static int TIMER_ABSTIME = 1;
+
+    }
+
+    public static interface DarwinDefines extends BsdDefines {
+
+        public final static int CLOCKS_PER_SEC = 1000000;
+        public final static int CLOCK_MONOTONIC = 6;
+        public final static int CLOCK_PROCESS_CPUTIME_ID = 12;
+        public final static int CLOCK_THREAD_CPUTIME_ID = 16;
 
     }
 
@@ -81,6 +90,7 @@ public class Time {
         public final static int CLOCK_MONOTONIC = 4;
         public final static int CLOCK_PROCESS_CPUTIME_ID = 15;
         public final static int CLOCK_THREAD_CPUTIME_ID = 14;
+        public final static int TIMER_ABSTIME = 1;
 
     }
 
@@ -90,6 +100,7 @@ public class Time {
         public final static int CLOCK_MONOTONIC = 3;
         public final static int CLOCK_PROCESS_CPUTIME_ID = 2;
         public final static int CLOCK_THREAD_CPUTIME_ID = 4;
+        public final static int TIMER_ABSTIME = 1;
 
     }
 
@@ -113,25 +124,34 @@ public class Time {
                 CLOCK_PROCESS_CPUTIME_ID = LinuxDefines.CLOCK_PROCESS_CPUTIME_ID;
                 CLOCK_REALTIME = LinuxDefines.CLOCK_REALTIME;
                 CLOCK_THREAD_CPUTIME_ID = LinuxDefines.CLOCK_THREAD_CPUTIME_ID;
-                TIMER_ABSTIME = LinuxDefines.TIMER_ABSTIME;
+                TIMER_ABSTIME = IntDefine.toIntDefine(LinuxDefines.TIMER_ABSTIME);
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_TIME_H = true;
                 CLOCK_REALTIME = BsdDefines.CLOCK_REALTIME;
-                TIMER_ABSTIME = BsdDefines.TIMER_ABSTIME;
                 switch (multiarchInfo.getOS()) {
+                    case DARWIN:
+                        CLOCKS_PER_SEC = DarwinDefines.CLOCKS_PER_SEC;
+                        CLOCK_MONOTONIC = DarwinDefines.CLOCK_MONOTONIC;
+                        CLOCK_PROCESS_CPUTIME_ID = DarwinDefines.CLOCK_PROCESS_CPUTIME_ID;
+                        CLOCK_THREAD_CPUTIME_ID = DarwinDefines.CLOCK_THREAD_CPUTIME_ID;
+                        TIMER_ABSTIME = IntDefine.UNDEFINED;
+                        break;
                     case FREE_BSD:
                         CLOCKS_PER_SEC = FreeBsdDefines.CLOCKS_PER_SEC;
                         CLOCK_MONOTONIC = FreeBsdDefines.CLOCK_MONOTONIC;
                         CLOCK_PROCESS_CPUTIME_ID = FreeBsdDefines.CLOCK_PROCESS_CPUTIME_ID;
                         CLOCK_THREAD_CPUTIME_ID = FreeBsdDefines.CLOCK_THREAD_CPUTIME_ID;
+                        TIMER_ABSTIME = IntDefine.toIntDefine(FreeBsdDefines.TIMER_ABSTIME);
                         break;
                     case OPEN_BSD:
                         CLOCKS_PER_SEC = OpenBsdDefines.CLOCKS_PER_SEC;
                         CLOCK_MONOTONIC = OpenBsdDefines.CLOCK_MONOTONIC;
                         CLOCK_PROCESS_CPUTIME_ID = OpenBsdDefines.CLOCK_PROCESS_CPUTIME_ID;
                         CLOCK_THREAD_CPUTIME_ID = OpenBsdDefines.CLOCK_THREAD_CPUTIME_ID;
+                        TIMER_ABSTIME = IntDefine.toIntDefine(OpenBsdDefines.TIMER_ABSTIME);
                         break;
                     default:
                         throw new NoClassDefFoundError("No time.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -197,7 +217,7 @@ public class Time {
      *
      */
     @Define()
-    public final static int TIMER_ABSTIME;
+    public final static IntDefine TIMER_ABSTIME;
 
     /**
      * <b>POSIX:</b>
@@ -256,9 +276,11 @@ public class Time {
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
+     * @throws NoSuchNativeMethodException if the method clock_getcpuclockid is
+     * not available natively.
      */
     @clockid_t
-    public final static native int clock_getcpuclockid(@pid_t int pid) throws NativeErrorException;
+    public final static native int clock_getcpuclockid(@pid_t int pid) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -274,10 +296,6 @@ public class Time {
      */
     public final static void clock_getres(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException {
         clock_getres(clock_id, AbstractNativeMemory.toUintptr_t(timespec));
-    }
-
-    public final static void clock_getres(@clockid_t int clock_id) throws NativeErrorException {
-        clock_getres(clock_id, AbstractNativeMemory.NULL);
     }
 
     private static native void clock_getres(@clockid_t int clock_id, long ptrTimespec) throws NativeErrorException;
@@ -753,7 +771,7 @@ public class Time {
      */
     public static class Itimerspec extends Struct32 {
 
-        public final static long offsetof_It_interval = 0;
+        public final static long offsetof_It_interval;
         public final static long offsetof_It_value;
         public final static Alignment alignof;
         public final static int sizeof;
@@ -765,28 +783,44 @@ public class Time {
             LibJnhwPosixLoader.touch();
 
             final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-            switch (multiarchInfo.getSizeOfPointer()) {
-                case _32_BIT:
-                    offsetof_It_value = 8;
-                    alignof = Alignment.AT_4;
-                    sizeof = 16;
-                    break;
-                case _64_BIT:
-                    offsetof_It_value = 16;
-                    alignof = Alignment.AT_8;
-                    sizeof = 32;
+            switch (multiarchInfo.getOS()) {
+                case DARWIN:
+                    offsetof_It_interval = -1;
+                    offsetof_It_value = -1;
+                    alignof = null;
+                    sizeof = 0;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    offsetof_It_interval = 0;
+                    switch (multiarchInfo.getSizeOfPointer()) {
+                        case _32_BIT:
+                            offsetof_It_value = 8;
+                            alignof = Alignment.AT_4;
+                            sizeof = 16;
+                            break;
+                        case _64_BIT:
+                            offsetof_It_value = 16;
+                            alignof = Alignment.AT_8;
+                            sizeof = 32;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    }
             }
         }
 
         public Itimerspec(SetMem setMem) throws NoSuchNativeTypeException {
             this(null, 0, setMem);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Itimerspec");
+            }
         }
 
         public Itimerspec(OpaqueMemory32 owner, int offset, SetMem setMem) throws NoSuchNativeTypeException {
             super((OpaqueMemory32) owner, 0, Itimerspec.sizeof, setMem);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Itimerspec");
+            }
             it_interval = new Timespec(this, Itimerspec.offsetof_It_interval, SetMem.DO_NOT_SET);//mem is already initialized by parent
             it_value = new Timespec(this, Itimerspec.offsetof_It_value, SetMem.DO_NOT_SET);//mem is already initialized by parent
         }
@@ -1256,6 +1290,10 @@ public class Time {
             LibJnhwPosixLoader.touch();
             final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
             switch (multiarchInfo.getOS()) {
+                case DARWIN:
+                    alignof = null;
+                    sizeof = 0;
+                    break;
                 case LINUX:
                 case FREE_BSD:
                     switch (multiarchInfo.getSizeOfPointer()) {
@@ -1280,12 +1318,18 @@ public class Time {
             }
         }
 
-        public Timer_t(SetMem setMem) {
+        public Timer_t(SetMem setMem) throws NoSuchNativeTypeException {
             this(null, 0, setMem);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Timer_t");
+            }
         }
 
-        public Timer_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
+        public Timer_t(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
             super(parent, offset, Timer_t.sizeof, setMem);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Timer_t");
+            }
         }
 
         @Override
@@ -1301,7 +1345,7 @@ public class Time {
                 case 8:
                     return MEM_ACCESS.uint64_t_AsHex(this, 0);
                 default:
-                    throw new RuntimeException("cant handle Time_t antiveToString current size: " + Timer_t.sizeof);
+                    throw new RuntimeException("cant handle Time_t nativeToString current size: " + Timer_t.sizeof);
             }
         }
 

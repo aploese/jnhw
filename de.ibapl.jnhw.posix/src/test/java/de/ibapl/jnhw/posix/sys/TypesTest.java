@@ -72,28 +72,34 @@ public class TypesTest {
 
     @Test
     public void testClock_t() {
-        Assertions.assertFalse(PosixDataType.clock_t.baseDataType.UNSIGNED);
         Types.Clock_t instance = new Types.Clock_t(null, 0, SetMem.TO_0x00);
+        Assertions.assertEquals(PosixDataType.clock_t.baseDataType, instance.getBaseDataType());
+
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
-        if (PosixDataType.clock_t.baseDataType.SIZE_OF == 4) {
-            Assertions.assertEquals(Alignment.AT_4, PosixDataType.clock_t.baseDataType.ALIGN_OF);
-            assertEquals(BaseDataType.int32_t, instance.getBaseDataType());
-            instance.setFromSignedLong(0x80706050);
-            assertEquals(0x80706050, instance.getAsSignedLong());
-            assertEquals(Integer.toString(0x80706050), instance.nativeToString());
-            assertEquals("0x80706050", instance.nativeToHexString());
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(1L + Integer.MAX_VALUE));
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
-        } else if (PosixDataType.clock_t.baseDataType.SIZE_OF == 8) {
-            Assertions.assertEquals(Alignment.AT_8, PosixDataType.clock_t.baseDataType.ALIGN_OF);
-            assertEquals(BaseDataType.int64_t, instance.getBaseDataType());
-            instance.setFromSignedLong(0x8070605040302010L);
-            assertEquals(0x8070605040302010L, instance.getAsSignedLong());
-            assertEquals(Long.toString(0x8070605040302010L), instance.nativeToString());
-            assertEquals("0x8070605040302010", instance.nativeToHexString());
-        } else {
-            fail();
+        switch (PosixDataType.clock_t.baseDataType) {
+            case int32_t:
+                instance.setFromSignedLong(0x80706050);
+                assertEquals(0x80706050, instance.getAsSignedLong());
+                assertEquals(Integer.toString(0x80706050), instance.nativeToString());
+                assertEquals("0x80706050", instance.nativeToHexString());
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(1L + Integer.MAX_VALUE));
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
+                break;
+            case int64_t:
+                instance.setFromSignedLong(0x8070605040302010L);
+                assertEquals(0x8070605040302010L, instance.getAsSignedLong());
+                assertEquals(Long.toString(0x8070605040302010L), instance.nativeToString());
+                assertEquals("0x8070605040302010", instance.nativeToHexString());
+                break;
+            case uint64_t:
+                instance.setFromUnsignedLong(0x8070605040302010L);
+                assertEquals(0x8070605040302010L, instance.getAsUnsignedLong());
+                assertEquals(Long.toUnsignedString(0x8070605040302010L), instance.nativeToString());
+                assertEquals("0x8070605040302010", instance.nativeToHexString());
+                break;
+            default:
+                fail();
         }
     }
 

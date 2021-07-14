@@ -39,6 +39,8 @@ public class PosixDataTypeTest {
 
     private static native boolean JNHW__clock_t__IS__int64_t();
 
+    private static native boolean JNHW__clock_t__IS__uint64_t();
+
     private static native boolean JNHW__clock_t__IS__int32_t();
 
     private static native boolean JNHW__off_t__IS__int64_t();
@@ -53,6 +55,8 @@ public class PosixDataTypeTest {
 
     private static native boolean JNHW__speed_t__IS__uint32_t();
 
+    private static native boolean JNHW__speed_t__IS__uint64_t();
+
     private static native boolean JNHW__size_t__IS__uint64_t();
 
     private static native boolean JNHW__size_t__IS__uint32_t();
@@ -62,6 +66,8 @@ public class PosixDataTypeTest {
     private static native boolean JNHW__ssize_t__IS__int32_t();
 
     private static native boolean JNHW__tcflag_t__IS__uint32_t();
+
+    private static native boolean JNHW__tcflag_t__IS__uint64_t();
 
     private static native boolean JNHW__time_t__IS__int64_t();
 
@@ -130,15 +136,17 @@ public class PosixDataTypeTest {
 
     @Test
     public void testClock_t() {
-        assertTrue(clock_t__isSigned());
         if (JNHW__clock_t__IS__int32_t()) {
             assertEquals(PosixDataType.clock_t.baseDataType, BaseDataType.int32_t);
             assertEquals(0xFFFFFFFF80008080L, clock_t__AS_Uint64_t());
         } else if (JNHW__clock_t__IS__int64_t()) {
             assertEquals(PosixDataType.clock_t.baseDataType, BaseDataType.int64_t);
             assertEquals(0x8000000080008080L, clock_t__AS_Uint64_t());
+        } else if (JNHW__clock_t__IS__uint64_t()) {
+            assertEquals(PosixDataType.clock_t.baseDataType, BaseDataType.uint64_t);
+            assertEquals(0x8000000080008080L, clock_t__AS_Uint64_t());
         } else {
-            fail("clock_t is not datatype int32_t or int64_t");
+            fail("clock_t is not datatype int32_t or int64_t or uint64_t");
         }
     }
 
@@ -201,8 +209,11 @@ public class PosixDataTypeTest {
         if (JNHW__speed_t__IS__uint32_t()) {
             assertEquals(PosixDataType.speed_t.baseDataType, BaseDataType.uint32_t);
             assertEquals(0x0000000080008080L, speed_t__AS_Uint64_t());
+        } else if (JNHW__speed_t__IS__uint64_t()) {
+            assertEquals(PosixDataType.speed_t.baseDataType, BaseDataType.uint64_t);
+            assertEquals(0x8000000080008080L, speed_t__AS_Uint64_t());
         } else {
-            fail("speed_t is not datatype uint32_t");
+            fail("speed_t is not datatype uint32_t or uint64_t");
         }
     }
 
@@ -226,8 +237,11 @@ public class PosixDataTypeTest {
         if (JNHW__tcflag_t__IS__uint32_t()) {
             assertEquals(PosixDataType.tcflag_t.baseDataType, BaseDataType.uint32_t);
             assertEquals(0x0000000080008080L, tcflag_t__AS_Uint64_t());
+        } else if (JNHW__tcflag_t__IS__uint64_t()) {
+            assertEquals(PosixDataType.tcflag_t.baseDataType, BaseDataType.uint64_t);
+            assertEquals(0x8000000080008080L, tcflag_t__AS_Uint64_t());
         } else {
-            fail("tcflag_t is not datatype uint32_t");
+            fail("tcflag_t is not datatype uint32_t or uint64_t");
         }
     }
 

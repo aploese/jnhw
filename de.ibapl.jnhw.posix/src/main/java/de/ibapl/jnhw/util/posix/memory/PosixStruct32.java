@@ -109,6 +109,118 @@ public abstract class PosixStruct32 extends Struct32 {
 
     }
 
+    protected static class Accessor_Speed_t_As_uint64_t implements Accessor_speed_t {
+
+        @Override
+        public long speed_t(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint64_t(mem, offset);
+        }
+
+        @Override
+        public void speed_t(OpaqueMemory32 mem, long offset, long value) {
+            MEM_ACCESS.uint64_t(mem, offset, value);
+        }
+
+        @Override
+        public void speed_tFromInt(OpaqueMemory32 mem, long offset, int value) {
+            MEM_ACCESS.uint64_t(mem, offset, 0x00FFFFFFFFL & value);
+        }
+
+        @Override
+        public int speed_tAsInt(OpaqueMemory32 mem, long offset) {
+            final long result = MEM_ACCESS.uint64_t(mem, offset);
+            if ((result & 0xFFFFFFFF00000000L) == 0L) {
+                return (int) result;
+            } else {
+                throw new IllegalArgumentException("speed_t is lager than int: " + result);
+            }
+        }
+
+    }
+
+    protected static class Accessor_Speed_t_As_uint32_t implements Accessor_speed_t {
+
+        @Override
+        public long speed_t(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint32_t_AsLong(mem, offset);
+        }
+
+        @Override
+        public void speed_t(OpaqueMemory32 mem, long offset, long value) {
+            if (value > 0x00000000ffffffffL) {
+                throw new IllegalArgumentException("value too big for uint32_t: " + value);
+            }
+            MEM_ACCESS.uint32_t_FromLong(mem, offset, (int) value);
+        }
+
+        @Override
+        public void speed_tFromInt(OpaqueMemory32 mem, long offset, int value) {
+            MEM_ACCESS.uint32_t(mem, offset, value);
+        }
+
+        @Override
+        public int speed_tAsInt(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint32_t(mem, offset);
+        }
+
+    }
+
+    protected static class Accessor_Tcflag_t_As_uint64_t implements Accessor_tcflag_t {
+
+        @Override
+        public long tcflag_t(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint64_t(mem, offset);
+        }
+
+        @Override
+        public void tcflag_t(OpaqueMemory32 mem, long offset, long value) {
+            MEM_ACCESS.uint64_t(mem, offset, value);
+        }
+
+        @Override
+        public void tcflag_tFromInt(OpaqueMemory32 mem, long offset, int value) {
+            MEM_ACCESS.uint64_t(mem, offset, 0x00FFFFFFFFL & value);
+        }
+
+        @Override
+        public int tcflag_tAsInt(OpaqueMemory32 mem, long offset) {
+            final long result = MEM_ACCESS.uint64_t(mem, offset);
+            if ((result & 0xFFFFFFFF00000000L) == 0L) {
+                return (int) result;
+            } else {
+                throw new IllegalArgumentException("tcflag_t is lager than int: " + result);
+            }
+        }
+
+    }
+
+    protected static class Accessor_Tcflag_t_As_uint32_t implements Accessor_tcflag_t {
+
+        @Override
+        public long tcflag_t(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint32_t_AsLong(mem, offset);
+        }
+
+        @Override
+        public void tcflag_t(OpaqueMemory32 mem, long offset, long value) {
+            if (value > 0x00000000ffffffffL) {
+                throw new IllegalArgumentException("value too big for uint32_t: " + value);
+            }
+            MEM_ACCESS.uint32_t_FromLong(mem, offset, (int) value);
+        }
+
+        @Override
+        public void tcflag_tFromInt(OpaqueMemory32 mem, long offset, int value) {
+            MEM_ACCESS.uint32_t(mem, offset, value);
+        }
+
+        @Override
+        public int tcflag_tAsInt(OpaqueMemory32 mem, long offset) {
+            return MEM_ACCESS.uint32_t(mem, offset);
+        }
+
+    }
+
     protected static class Accessor_Time_t_As_int64_t implements Accessor_Time_t {
 
         @Override
@@ -165,6 +277,8 @@ public abstract class PosixStruct32 extends Struct32 {
     protected final static Accessor_Off_t ACCESSOR_OFF_T;
     protected final static Accessor_Pid_t ACCESSOR_PID_T;
     protected final static Accessor_Size_t ACCESSOR_SIZE_T;
+    protected final static Accessor_speed_t ACCESSOR_SPEED_T;
+    protected final static Accessor_tcflag_t ACCESSOR_TCFLAG_T;
     protected final static Accessor_Time_t ACCESSOR_TIME_T;
     protected final static Accessor_Uid_t ACCESSOR_UID_T;
 
@@ -192,6 +306,26 @@ public abstract class PosixStruct32 extends Struct32 {
                 break;
             case uint32_t:
                 ACCESSOR_SIZE_T = new Accessor_Size_t_As_uint32_t();
+                break;
+            default:
+                throw new IllegalStateException("size_t is neither int64_t nor int32_t");
+        }
+        switch (PosixDataType.speed_t.baseDataType) {
+            case uint64_t:
+                ACCESSOR_SPEED_T = new Accessor_Speed_t_As_uint64_t();
+                break;
+            case uint32_t:
+                ACCESSOR_SPEED_T = new Accessor_Speed_t_As_uint32_t();
+                break;
+            default:
+                throw new IllegalStateException("speed_t is neither int64_t nor int32_t");
+        }
+        switch (PosixDataType.tcflag_t.baseDataType) {
+            case uint64_t:
+                ACCESSOR_TCFLAG_T = new Accessor_Tcflag_t_As_uint64_t();
+                break;
+            case uint32_t:
+                ACCESSOR_TCFLAG_T = new Accessor_Tcflag_t_As_uint32_t();
                 break;
             default:
                 throw new IllegalStateException("size_t is neither int64_t nor int32_t");

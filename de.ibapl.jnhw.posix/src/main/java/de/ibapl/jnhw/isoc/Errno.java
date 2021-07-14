@@ -62,6 +62,11 @@ public abstract class Errno {
         public final static int ERANGE = 34;
     }
 
+    public static interface DarwinDefines extends BsdDefines {
+
+        public final static int EILSEQ = 92;
+    }
+
     public static interface FreeBsdDefines extends BsdDefines {
 
         public final static int EILSEQ = 86;
@@ -97,6 +102,12 @@ public abstract class Errno {
                     default:
                         EILSEQ = Linux_NonMips_Defines.EILSEQ;
                 }
+                break;
+            case DARWIN:
+                HAVE_ERRNO_H = true;
+                EDOM = DarwinDefines.EDOM;
+                EILSEQ = DarwinDefines.EILSEQ;
+                ERANGE = DarwinDefines.ERANGE;
                 break;
             case FREE_BSD:
                 HAVE_ERRNO_H = true;

@@ -6,7 +6,7 @@ AC_DEFUN([JW_LIB_PREFIX_SUFFIX],
         JNHW_LIBTOOL_LIB_SUFFIX="-\$(JNHW_VERSION).dll"
         JNHW_STRIP_FLAG="-s"
     ;;
-    darwin)
+    darwin*)
         JNHW_LIB_PREFIX="lib"
         JNHW_LIB_SUFFIX=".\$(JNHW_VERSION).dylib"
         JNHW_LIBTOOL_LIB_SUFFIX=".\$(JNHW_LIBTOOL_LIB_VERSION).dylib"

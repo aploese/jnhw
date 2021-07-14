@@ -1,6 +1,6 @@
 AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_TEST_HEADER_DIR@ -I @JNHW_POSIX_SRC_DIR@ -I @JNHW_COMMON_SRC_DIR@
 AM_CFLAGS = @CFLAGS@ @PTHREAD_CFLAGS@ -Wall -Wextra -Wconversion -Werror
-AM_LDFLAGS = -z noexecstack -no-undefined -static-libgcc -version-info @JNHW_VERSION_INFO@
+AM_LDFLAGS = -z noexecstack -no-undefined -version-info @JNHW_VERSION_INFO@
 AM_LIBS = @PTHREAD_LIBS@ @LIBS@
 AM_CC = @PTHREAD_CC@
 

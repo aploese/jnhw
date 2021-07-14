@@ -40,8 +40,8 @@ extern "C" {
 #include <xlocale.h>
 #endif
 
-    JNHW_ASSERT__clock_t__IS__int64_t__OR__int32_t
-    JNHW_ASSERT__clockid_t__IS__int32_t
+    JNHW_ASSERT__clock_t__IS__uint64__OR__int64_t__OR__int32_t
+    JNHW_ASSERT__clockid_t__IS__int32_t__OR__uint32_t
     JNHW_ASSERT__pid_t__IS__int32_t
     JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
     JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
@@ -83,15 +83,20 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_clock
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return clock();
+        return (int64_t) clock();
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Time
      * Method:    clock_getcpuclockid
-     * Signature: (I)V
+     * Signature: (I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getcpuclockid
+#if defined (__APPLE__)
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jint pid) {
+        throw_NoSuchNativeMethodException(env, "clock_getcpuclockid");
+        return -1;
+#else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint pid) {
         clockid_t _clock_id;
 
@@ -100,6 +105,7 @@ extern "C" {
         }
 
         return _clock_id;
+#endif
     }
 
     /*
@@ -109,7 +115,7 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1getres
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jlong ptrTimespec) {
-        if (clock_getres(clock_id, (struct timespec*) (uintptr_t) ptrTimespec)) {
+        if (clock_getres((clockid_t) clock_id, (struct timespec*) (uintptr_t) ptrTimespec)) {
             throw_NativeErrorException(env, errno);
         }
     }
@@ -121,9 +127,8 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1gettime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jlong ptrTimespec) {
-        if (clock_gettime(clock_id, (struct timespec*) (uintptr_t) ptrTimespec)) {
+        if (clock_gettime((clockid_t) clock_id, (struct timespec*) (uintptr_t) ptrTimespec)) {
             throw_NativeErrorException(env, errno);
-            return;
         }
     }
 
@@ -138,7 +143,7 @@ extern "C" {
         throw_NoSuchNativeMethodException(env, "clock_nanosleep");
 #else
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clockid, jint flags, jlong ptrRqtp, jlong ptrRmtp) {
-        if (clock_nanosleep(clockid, flags, (struct timespec*) (uintptr_t) ptrRqtp, (struct timespec*) (uintptr_t) ptrRmtp)) {
+        if (clock_nanosleep((clockid_t) clockid, flags, (struct timespec*) (uintptr_t) ptrRqtp, (struct timespec*) (uintptr_t) ptrRmtp)) {
             throw_NativeErrorException(env, errno);
         }
 #endif
@@ -151,9 +156,8 @@ extern "C" {
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_clock_1settime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint clock_id, jlong ptrTimespec) {
-        if (clock_settime(clock_id, (struct timespec*) (uintptr_t) ptrTimespec)) {
+        if (clock_settime((clockid_t) clock_id, (struct timespec*) (uintptr_t) ptrTimespec)) {
             throw_NativeErrorException(env, errno);
-            return;
         }
     }
 
@@ -165,7 +169,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_ctime
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong clock) {
 #if defined(_JNHW__time_t__IS__int64_t)
-        const char *result = ctime((int64_t *) & clock);
+        const char *result = ctime((time_t *) (int64_t *) & clock);
 #elif defined(_JNHW__time_t__IS__int32_t)
         if ((clock > INT32_MAX) || (clock < INT32_MIN)) {
             throw_IllegalArgumentException(env, "clock outside time_t(int32_t)");
@@ -190,7 +194,7 @@ extern "C" {
     JNIEXPORT jstring JNICALL Java_de_ibapl_jnhw_posix_Time_ctime_1r
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong clock, jlong ptrBuf) {
 #if defined(_JNHW__time_t__IS__int64_t)
-        const char *result = ctime_r((int64_t *) & clock, (void*) (uintptr_t) ptrBuf);
+        const char *result = ctime_r((time_t *) & clock, (void*) (uintptr_t) ptrBuf);
 #elif defined(_JNHW__time_t__IS__int32_t)
         if ((clock > INT32_MAX) || (clock < INT32_MIN)) {
             throw_IllegalArgumentException(env, "clock outside time_t(int32_t)");
@@ -280,7 +284,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime0
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
 #if defined(_JNHW__time_t__IS__int64_t)
-        const struct tm *tm = gmtime((int64_t *) & timer);
+        const struct tm *tm = gmtime((time_t *) & timer);
 #elif defined(_JNHW__time_t__IS__int32_t)
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "timer outside time_t(int32_t)");
@@ -306,7 +310,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime_1r
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer, jlong ptrResult) {
 #if defined(_JNHW__time_t__IS__int64_t)
-        if (gmtime_r((int64_t *) & timer, (struct tm*) (uintptr_t) ptrResult)) {
+        if (gmtime_r((time_t *) & timer, (struct tm*) (uintptr_t) ptrResult)) {
 #elif defined(_JNHW__time_t__IS__int32_t)
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "timer outside time_t(int32_t)");
@@ -329,7 +333,7 @@ extern "C" {
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_localtime0
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer) {
 #if defined(_JNHW__time_t__IS__int64_t)
-        const struct tm *result = localtime((int64_t *) & timer);
+        const struct tm *result = localtime((time_t *) & timer);
 #elif defined(_JNHW__time_t__IS__int32_t)
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "timer outside time_t(int32_t)");
@@ -355,7 +359,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_localtime_1r
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong timer, jlong ptrResult) {
 #if defined(_JNHW__time_t__IS__int64_t)
-        if (localtime_r((int64_t *) & timer, (struct tm*) (uintptr_t) ptrResult)) {
+        if (localtime_r((time_t *) & timer, (struct tm*) (uintptr_t) ptrResult)) {
 #elif defined(_JNHW__time_t__IS__int32_t)
         if ((timer > INT32_MAX) || (timer < INT32_MIN)) {
             throw_IllegalArgumentException(env, "timer outside time_t(int32_t)");

@@ -201,6 +201,14 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILjava_nio_ByteBuff
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    sysconf
+ * Signature: (I)J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_sysconf
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
  * Method:    usleep
  * Signature: (I)V
  */

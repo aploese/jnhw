@@ -85,7 +85,7 @@ public class StringHeaderTest {
                     assertEquals("Unknown error: -1", StringHeader.strerror(-1));
                     break;
                 case OPEN_BSD:
-                case MAC_OS_X:
+                case DARWIN:
                     assertEquals("Undefined error: 0", StringHeader.strerror(0));
                     assertEquals("Unknown error: 2147483647", StringHeader.strerror(Integer.MAX_VALUE));
                     assertEquals("Unknown error: -1", StringHeader.strerror(-1));
@@ -108,7 +108,7 @@ public class StringHeaderTest {
         System.out.println("strerror_l");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case FREE_BSD:
-            case MAC_OS_X:
+            case DARWIN:
                 assertThrows(NoSuchNativeMethodException.class, () -> {
                     StringHeader.strerror_l(Errno.EAGAIN, Locale.Locale_t.locale_t_0());
                 });
@@ -147,7 +147,7 @@ public class StringHeaderTest {
                     assertEquals("Signal 0", StringHeader.strsignal(0));
                     assertEquals("Unknown signal: 4294967295", StringHeader.strsignal(-1));
                     break;
-                case MAC_OS_X:
+                case DARWIN:
                     assertEquals("Segmentation fault: 11", StringHeader.strsignal(Signal.SIGSEGV));
                     assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));
                     assertEquals("Unknown signal: 0", StringHeader.strsignal(0));

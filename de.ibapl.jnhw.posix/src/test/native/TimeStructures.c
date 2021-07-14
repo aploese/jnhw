@@ -82,7 +82,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TimeTest_00024NativeItimerspec_alignof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+        return 0;
+#else
         return __alignof__ (struct itimerspec);
+#endif
     }
 
     /*
@@ -92,7 +96,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TimeTest_00024NativeItimerspec_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+        return 0;
+#else
         return sizeof (struct itimerspec);
+#endif
     }
 
     /*
@@ -102,7 +110,11 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_TimeTest_00024NativeItimerspec_it_1interval
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+        return -1;
+#else
         return offsetof(struct itimerspec, it_interval);
+#endif
     }
 
     /*
@@ -112,7 +124,11 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_TimeTest_00024NativeItimerspec_it_1value
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+        return -1;
+#else
         return offsetof(struct itimerspec, it_value);
+#endif
     }
 
     /*
@@ -122,7 +138,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TimeTest_00024NativeTimer_1t_alignof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+        return 0;
+#else
         return __alignof__ (timer_t);
+#endif
     }
 
     /*
@@ -132,7 +152,11 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TimeTest_00024NativeTimer_1t_sizeof
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+#if defined(__APPLE__)
+        return 0;
+#else
         return sizeof (timer_t);
+#endif
     }
 
     /*

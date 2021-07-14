@@ -83,6 +83,7 @@ public class Stdio {
                 SEEK_END = LinuxDefines.SEEK_END;
                 SEEK_SET = LinuxDefines.SEEK_SET;
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_STDIO_H = true;

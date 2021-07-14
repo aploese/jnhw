@@ -22,9 +22,11 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
+import de.ibapl.jnhw.posix.Errno;
 
 /**
  *
@@ -40,6 +42,7 @@ public final class LibJnhwPosixLoader {
 
     protected static void doSystemLoad(String absoluteLibName) {
         System.load(absoluteLibName);
+        NativeErrorException.ERRNO_SYMBOL_PROVIDER = Errno::getErrnoSymbol;
     }
 
     public static LoadResult getLoadResult() {

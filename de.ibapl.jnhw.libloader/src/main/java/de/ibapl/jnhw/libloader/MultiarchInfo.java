@@ -49,7 +49,7 @@ public enum MultiarchInfo {
     I386__WINDOWS__PE32(SizeInBit._32_BIT, SizeInBit._32_BIT, Endianess.LITTLE, Arch.I386, OS.WINDOWS, Abi.PE32),
     X86_64__FREE_BSD__BSD(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.FREE_BSD, Abi.BSD),
     X86_64__OPEN_BSD__BSD(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.OPEN_BSD, Abi.BSD),
-    X86_64__MAC_OS_X__BSD(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.MAC_OS_X, Abi.BSD);
+    X86_64__DARWIN__BSD(SizeInBit._64_BIT, SizeInBit._64_BIT, Endianess.LITTLE, Arch.X86_64, OS.DARWIN, Abi.BSD);
 
     private MultiarchInfo(SizeInBit sizeOfPointer, SizeInBit sizeOfLong, Endianess endianess, Arch arch, OS os, Abi abi) {
         this.arch = arch;

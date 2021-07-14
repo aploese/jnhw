@@ -60,6 +60,20 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    JNHW__clock_t__IS__uint64_t
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1clock_1t_1_1IS_1_1uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+#ifdef _JNHW__clock_t__IS__uint64_t
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__clock_t__IS__int32_t
      * Signature: ()Z
      */
@@ -158,6 +172,20 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    JNHW__speed_t__IS__uint64_t
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1speed_1t_1_1IS_1_1uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+#ifdef _JNHW__speed_t__IS__uint64_t
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
      * Method:    JNHW__size_t__IS__uint64_t
      * Signature: ()Z
      */
@@ -220,6 +248,20 @@ extern "C" {
     JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1tcflag_1t_1_1IS_1_1uint32_1t
     (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
 #ifdef _JNHW__tcflag_t__IS__uint32_t
+        return JNI_TRUE;
+#else
+        return JNI_FALSE;
+#endif
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_util_posix_PosixDataTypeTest
+     * Method:    JNHW__tcflag_t__IS__uint64_t
+     * Signature: ()Z
+     */
+    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_util_posix_PosixDataTypeTest_JNHW_1_1tcflag_1t_1_1IS_1_1uint64_1t
+    (__attribute__ ((unused))JNIEnv *env, __attribute__ ((unused))jclass clazz) {
+#ifdef _JNHW__tcflag_t__IS__uint64_t
         return JNI_TRUE;
 #else
         return JNI_FALSE;

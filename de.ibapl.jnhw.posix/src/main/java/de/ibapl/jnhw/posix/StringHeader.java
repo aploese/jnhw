@@ -49,9 +49,10 @@ public class StringHeader {
     static {
         LibJnhwPosixLoader.touch();
         switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
-            case LINUX:
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
+            case LINUX:
                 HAVE_STRING_H = true;
                 break;
             case WINDOWS:

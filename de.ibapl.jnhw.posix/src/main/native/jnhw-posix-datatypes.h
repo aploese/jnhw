@@ -22,7 +22,7 @@
 #include <stdint.h>
 #include <assert.h>
 
-//FreeBSD does not define _ISO_C_SOURCE 2011 if POSIX is set bug??? - so do not test datatypes on compile time... 
+//FreeBSD does not define _ISO_C_SOURCE 2011 if POSIX is set bug??? - so do not test datatypes on compile time...
 #if defined(__FreeBSD__) && !defined(__JNHW_TEST_POSIX_DATATYPES)
 #define JNHW_ASSERT_DATA_TYPES(t1, t2)
 #else
@@ -79,7 +79,7 @@
 #if __WORDSIZE_TIME64_COMPAT32 == 1
 #define _JNHW__clock_t__IS__int64_t 1
 #define _JNHW__time_t__IS__int64_t 1
-#elif __WORDSIZE_TIME64_COMPAT32 == 0 
+#elif __WORDSIZE_TIME64_COMPAT32 == 0
 #define _JNHW__clock_t__IS__int32_t 1
 #define _JNHW__time_t__IS__int32_t 1
 #else
@@ -98,15 +98,22 @@
 #define _JNHW__nfds_t__IS__uint32_t 1
 #endif
 
-#elif defined(__FreeBSD__)
+#elif defined(__FreeBSD__) || defined(__APPLE__)
 
 #define _JNHW__mode_t__IS__uint16_t 1
 #define _JNHW__gid_t__IS__uint32_t 1
 #define _JNHW__pid_t__IS__int32_t 1
-#define _JNHW__clockid_t__IS__int32_t 1
 #define _JNHW__uid_t__IS__uint32_t 1
+#if defined(__APPLE__)
+#define _JNHW__clockid_t__IS__uint32_t 1
+#define _JNHW__speed_t__IS__uint64_t 1
+#define _JNHW__tcflag_t__IS__uint64_t 1
+#else
+#define _JNHW__clockid_t__IS__int32_t 1
 #define _JNHW__speed_t__IS__uint32_t 1
 #define _JNHW__tcflag_t__IS__uint32_t 1
+#endif
+
 #define _JNHW__cc_t__IS__uint8_t 1
 #define _JNHW__nfds_t__IS__uint32_t 1
 
@@ -120,7 +127,11 @@
 #define _JNHW__ssize_t__IS__int64_t 1
 #define _JNHW__size_t__IS__uint64_t 1
 #define _JNHW__pthread_t__IS__uint64_t 1
+#if defined(__APPLE__)
+#define _JNHW__clock_t__IS__uint64_t 1
+#else
 #define _JNHW__clock_t__IS__int32_t 1
+#endif
 #define _JNHW__time_t__IS__int64_t 1
 #define _JNHW__timer_t__IS__uint64_t 1
 #endif
@@ -173,7 +184,9 @@
 #endif
 
 #if defined(_JNHW__clockid_t__IS__int32_t)
-#define JNHW_ASSERT__clockid_t__IS__int32_t JNHW_ASSERT_DATA_TYPES(clockid_t, int32_t)
+#define JNHW_ASSERT__clockid_t__IS__int32_t__OR__uint32_t JNHW_ASSERT_DATA_TYPES(clockid_t, int32_t)
+#elif defined(_JNHW__clockid_t__IS__uint32_t)
+#define JNHW_ASSERT__clockid_t__IS__int32_t__OR__uint32_t JNHW_ASSERT_DATA_TYPES(clockid_t, uint32_t)
 #else
 #error clockid_t
 #endif
@@ -184,14 +197,18 @@
 #error uid_t
 #endif
 
-#if defined(_JNHW__speed_t__IS__uint32_t)
-#define JNHW_ASSERT__speed_t__IS__uint32_t JNHW_ASSERT_DATA_TYPES(speed_t, uint32_t)
+#if defined(_JNHW__speed_t__IS__uint64_t)
+#define JNHW_ASSERT__speed_t__IS__uint32_t__OR__uint64_t JNHW_ASSERT_DATA_TYPES(speed_t, uint64_t)
+#elif defined(_JNHW__speed_t__IS__uint32_t)
+#define JNHW_ASSERT__speed_t__IS__uint32_t__OR__uint64_t JNHW_ASSERT_DATA_TYPES(speed_t, uint32_t)
 #else
 #error speed_t
 #endif
 
 #if defined(_JNHW__tcflag_t__IS__uint32_t)
-#define JNHW_ASSERT__tcflag_t__IS__uint32_t JNHW_ASSERT_DATA_TYPES(tcflag_t, uint32_t)
+#define JNHW_ASSERT__tcflag_t__IS__uint32_t__OR__uint64_t JNHW_ASSERT_DATA_TYPES(tcflag_t, uint32_t)
+#elif defined(_JNHW__tcflag_t__IS__uint64_t)
+#define JNHW_ASSERT__tcflag_t__IS__uint32_t__OR__uint64_t  JNHW_ASSERT_DATA_TYPES(tcflag_t, uint64_t)
 #else
 #error tcflag_t
 #endif
@@ -237,10 +254,12 @@
 #error pthread_t
 #endif
 
-#if defined(_JNHW__clock_t__IS__int64_t)
-#define JNHW_ASSERT__clock_t__IS__int64_t__OR__int32_t JNHW_ASSERT_DATA_TYPES(clock_t, int64_t)
+#if defined(_JNHW__clock_t__IS__uint64_t)
+#define JNHW_ASSERT__clock_t__IS__uint64__OR__int64_t__OR__int32_t JNHW_ASSERT_DATA_TYPES(clock_t, uint64_t)
+#elif defined(_JNHW__clock_t__IS__int64_t)
+#define JNHW_ASSERT__clock_t__IS__uint64__OR__int64_t__OR__int32_t JNHW_ASSERT_DATA_TYPES(clock_t, int64_t)
 #elif defined(_JNHW__clock_t__IS__int32_t)
-#define JNHW_ASSERT__clock_t__IS__int64_t__OR__int32_t JNHW_ASSERT_DATA_TYPES(clock_t, int32_t)
+#define JNHW_ASSERT__clock_t__IS__uint64__OR__int64_t__OR__int32_t JNHW_ASSERT_DATA_TYPES(clock_t, int32_t)
 #else
 #error clock_t
 #endif
@@ -296,7 +315,7 @@ JNHW_ASSERT__tcflag_t__IS__uint32_t
 JNHW_ASSERT__cc_t__IS__uint8_t
 
 #if defined(__linux__)
-#if defined(__aarch64__) && !defined(__arm__) 
+#if defined(__aarch64__) && !defined(__arm__)
 #if defined(__LP64__)
 #define JNHW_ARCH  "__aarch64__ __LP64__"
 #elif defined(__ILP32__)
@@ -356,7 +375,7 @@ JNHW_ASSERT__cc_t__IS__uint8_t
 #if __WORDSIZE_TIME64_COMPAT32 != 0
 #error __WORDSIZE_TIME64_COMPAT32 != 0
 #endif
-#if defined(__SYSCALL_WORDSIZE) 
+#if defined(__SYSCALL_WORDSIZE)
 #error __SYSCALL_WORDSIZE is defined
 #endif
 #else

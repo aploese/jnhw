@@ -60,6 +60,21 @@ public class Pthread {
 
     public static interface BsdDefines {
 
+    }
+
+    public static interface DarwinDefines extends BsdDefines {
+
+        public final static int PTHREAD_EXPLICIT_SCHED = 2;
+        public final static int PTHREAD_INHERIT_SCHED = 1;
+        public final static int PTHREAD_CANCEL_DISABLE = 0;
+        public final static int PTHREAD_CANCEL_ENABLE = 1;
+        public final static int PTHREAD_CANCEL_DEFERRED = 2;
+        public final static int PTHREAD_CANCEL_ASYNCHRONOUS = 0;
+
+    }
+
+    public static interface FreeBsd_OpenBsd_Defines extends BsdDefines {
+
         public final static int PTHREAD_EXPLICIT_SCHED = 0;
         public final static int PTHREAD_INHERIT_SCHED = 4;
         public final static int PTHREAD_CANCEL_DISABLE = 1;
@@ -69,11 +84,11 @@ public class Pthread {
 
     }
 
-    public static interface FreeBsdDefines extends BsdDefines {
+    public static interface FreeBsdDefines extends FreeBsd_OpenBsd_Defines {
 
     }
 
-    public static interface OpenBsdDefines extends BsdDefines {
+    public static interface OpenBsdDefines extends FreeBsd_OpenBsd_Defines {
 
     }
 
@@ -98,15 +113,24 @@ public class Pthread {
                 PTHREAD_EXPLICIT_SCHED = LinuxDefines.PTHREAD_EXPLICIT_SCHED;
                 PTHREAD_INHERIT_SCHED = LinuxDefines.PTHREAD_INHERIT_SCHED;
                 break;
+            case DARWIN:
+                HAVE_PTHREAD_H = true;
+                PTHREAD_CANCEL_ASYNCHRONOUS = DarwinDefines.PTHREAD_CANCEL_ASYNCHRONOUS;
+                PTHREAD_CANCEL_DEFERRED = DarwinDefines.PTHREAD_CANCEL_DEFERRED;
+                PTHREAD_CANCEL_DISABLE = DarwinDefines.PTHREAD_CANCEL_DISABLE;
+                PTHREAD_CANCEL_ENABLE = DarwinDefines.PTHREAD_CANCEL_ENABLE;
+                PTHREAD_EXPLICIT_SCHED = DarwinDefines.PTHREAD_EXPLICIT_SCHED;
+                PTHREAD_INHERIT_SCHED = DarwinDefines.PTHREAD_INHERIT_SCHED;
+                break;
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_PTHREAD_H = true;
-                PTHREAD_CANCEL_ASYNCHRONOUS = BsdDefines.PTHREAD_CANCEL_ASYNCHRONOUS;
-                PTHREAD_CANCEL_DEFERRED = BsdDefines.PTHREAD_CANCEL_DEFERRED;
-                PTHREAD_CANCEL_DISABLE = BsdDefines.PTHREAD_CANCEL_DISABLE;
-                PTHREAD_CANCEL_ENABLE = BsdDefines.PTHREAD_CANCEL_ENABLE;
-                PTHREAD_EXPLICIT_SCHED = BsdDefines.PTHREAD_EXPLICIT_SCHED;
-                PTHREAD_INHERIT_SCHED = BsdDefines.PTHREAD_INHERIT_SCHED;
+                PTHREAD_CANCEL_ASYNCHRONOUS = FreeBsd_OpenBsd_Defines.PTHREAD_CANCEL_ASYNCHRONOUS;
+                PTHREAD_CANCEL_DEFERRED = FreeBsd_OpenBsd_Defines.PTHREAD_CANCEL_DEFERRED;
+                PTHREAD_CANCEL_DISABLE = FreeBsd_OpenBsd_Defines.PTHREAD_CANCEL_DISABLE;
+                PTHREAD_CANCEL_ENABLE = FreeBsd_OpenBsd_Defines.PTHREAD_CANCEL_ENABLE;
+                PTHREAD_EXPLICIT_SCHED = FreeBsd_OpenBsd_Defines.PTHREAD_EXPLICIT_SCHED;
+                PTHREAD_INHERIT_SCHED = FreeBsd_OpenBsd_Defines.PTHREAD_INHERIT_SCHED;
                 break;
             default:
                 throw new NoClassDefFoundError("No pthread.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -301,13 +325,15 @@ public class Pthread {
      *
      * @param thread_id in
      * @return clock_id out
+     * @throws NoSuchNativeMethodException if the method pthread_getcpuclockid
+     * is not available natively.
      */
     @clockid_t
-    public final static int pthread_getcpuclockid(Pthread_t thread_id) throws NativeErrorException {
+    public final static int pthread_getcpuclockid(Pthread_t thread_id) throws NativeErrorException, NoSuchNativeMethodException {
         return pthread_getcpuclockid(AbstractNativeMemory.toUintptr_t(thread_id));
     }
 
-    private static native int pthread_getcpuclockid(long ptrThread_id) throws NativeErrorException;
+    private static native int pthread_getcpuclockid(long ptrThread_id) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -372,6 +398,9 @@ public class Pthread {
                         default:
                             throw new NoClassDefFoundError("No pthread.h linux defines for Pthread_attr_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
+                    break;
+                case DARWIN:
+                    sizeof = 64;
                     break;
                 case FREE_BSD:
                 case OPEN_BSD:

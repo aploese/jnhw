@@ -32,7 +32,8 @@ extern "C" {
     //for offsetof
 #include <stddef.h>
 
-    JNHW_ASSERT__tcflag_t__IS__uint32_t
+    JNHW_ASSERT__speed_t__IS__uint32_t__OR__uint64_t
+    JNHW_ASSERT__tcflag_t__IS__uint32_t__OR__uint64_t
     JNHW_ASSERT__cc_t__IS__uint8_t
 
     /*
@@ -112,7 +113,7 @@ extern "C" {
      */
     JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeStructTermios_c_1line
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__FreeBSD__) || defined(__OpenBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__)|| defined(__APPLE__)
         return -1;
 #else
         return offsetof(struct termios, c_line);

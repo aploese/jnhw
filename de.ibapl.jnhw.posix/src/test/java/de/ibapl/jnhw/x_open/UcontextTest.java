@@ -29,7 +29,6 @@ import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
@@ -67,15 +66,18 @@ public class UcontextTest {
      */
     @Test
     public void testGetcontext() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            assertThrows(NoSuchNativeTypeException.class, () -> Ucontext.getcontext(new Signal.Ucontext_t(SetMem.TO_0x00)));
-        } else {
-            assertThrows(NullPointerException.class, () -> Ucontext.getcontext(null));
-            Signal.Ucontext_t ucp = new Signal.Ucontext_t(SetMem.DO_NOT_SET);
-            Ucontext.getcontext(ucp);
-            StringBuilder sb = new StringBuilder();
-            ucp.nativeToString(sb, "", " ");
-            System.out.println("ucontext:" + sb.toString());
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+            case DARWIN:
+                assertThrows(NoSuchNativeTypeException.class, () -> Ucontext.getcontext(new Signal.Ucontext_t(SetMem.TO_0x00)));
+                break;
+            default:
+                assertThrows(NullPointerException.class, () -> Ucontext.getcontext(null));
+                Signal.Ucontext_t ucp = new Signal.Ucontext_t(SetMem.DO_NOT_SET);
+                Ucontext.getcontext(ucp);
+                StringBuilder sb = new StringBuilder();
+                ucp.nativeToString(sb, "", " ");
+                System.out.println("ucontext:" + sb.toString());
         }
     }
 
@@ -87,22 +89,25 @@ public class UcontextTest {
     @Test
     @Disabled
     public void testSetcontext() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.setcontext(null));
-        } else {
-            assertThrows(NullPointerException.class, () -> Ucontext.setcontext(null));
-            Signal.Ucontext_t ucp = new Signal.Ucontext_t(SetMem.DO_NOT_SET);
-            count = 0;
-            Ucontext.getcontext(ucp);
-            count++;
-            System.out.println("IN testGetcontext");
-            if (count < 10) {
-                System.out.println("will loop");
-                Ucontext.setcontext(ucp);
-            } else {
-                System.out.println("stop loop");
-            }
-            assertEquals(10, count);
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+            case DARWIN:
+                assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.setcontext(null));
+                break;
+            default:
+                assertThrows(NullPointerException.class, () -> Ucontext.setcontext(null));
+                Signal.Ucontext_t ucp = new Signal.Ucontext_t(SetMem.DO_NOT_SET);
+                count = 0;
+                Ucontext.getcontext(ucp);
+                count++;
+                System.out.println("IN testGetcontext");
+                if (count < 10) {
+                    System.out.println("will loop");
+                    Ucontext.setcontext(ucp);
+                } else {
+                    System.out.println("stop loop");
+                }
+                assertEquals(10, count);
         }
     }
 
@@ -112,15 +117,18 @@ public class UcontextTest {
     @Test
     @Disabled
     public void testSwapcontext() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.swapcontext(null, null));
-        } else {
-            fail("The test will crash the jvm - so stop here!");
-            System.out.println("swapcontext");
-            Signal.Ucontext_t oucp = null;
-            Signal.Ucontext_t ucp = null;
-            int expResult = 0;
-            Ucontext.swapcontext(oucp, ucp);
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+            case DARWIN:
+                assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.swapcontext(null, null));
+                break;
+            default:
+                fail("The test will crash the jvm - so stop here!");
+                System.out.println("swapcontext");
+                Signal.Ucontext_t oucp = null;
+                Signal.Ucontext_t ucp = null;
+                int expResult = 0;
+                Ucontext.swapcontext(oucp, ucp);
         }
     }
 

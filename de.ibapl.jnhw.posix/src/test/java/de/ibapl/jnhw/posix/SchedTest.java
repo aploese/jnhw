@@ -144,7 +144,7 @@ public class SchedTest {
             case OPEN_BSD:
                 Assertions.assertEquals(31, result);
                 break;
-            case MAC_OS_X:
+            case DARWIN:
                 Assertions.assertEquals(47, result);
                 break;
             default:
@@ -160,7 +160,7 @@ public class SchedTest {
         System.out.println("sched_get_priority_min");
         int result = Sched.sched_get_priority_min(Sched.SCHED_OTHER);
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case MAC_OS_X:
+            case DARWIN:
                 Assertions.assertEquals(15, result);
                 break;
             default:
@@ -176,7 +176,7 @@ public class SchedTest {
         System.out.println("sched_getscheduler");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-            case MAC_OS_X:
+            case DARWIN:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Sched.sched_getscheduler(Unistd.getpid());
                 });
@@ -195,7 +195,7 @@ public class SchedTest {
         System.out.println("sched_rr_get_interval");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-            case MAC_OS_X:
+            case DARWIN:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Sched.sched_rr_get_interval(Unistd.getpid(), new Time.Timespec(SetMem.TO_0x00));
                 });
@@ -233,7 +233,7 @@ public class SchedTest {
         System.out.println("sched_setparam");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-            case MAC_OS_X:
+            case DARWIN:
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
                         () -> {
                             Sched.sched_setparam(Unistd.getpid(), new Sched.Sched_param(SetMem.TO_0x00));
@@ -270,7 +270,7 @@ public class SchedTest {
         System.out.println("sched_setscheduler");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-            case MAC_OS_X:
+            case DARWIN:
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
                         () -> {
                             Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, new Sched.Sched_param(SetMem.TO_0x00));

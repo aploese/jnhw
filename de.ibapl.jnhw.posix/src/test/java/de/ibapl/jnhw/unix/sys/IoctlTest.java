@@ -181,6 +181,7 @@ public class IoctlTest {
                 Assertions.assertEquals(408, Ioctl._IOC_SIZE(linuxValue));
                 Assertions.assertEquals('U', Ioctl._IOC_TYPE(linuxValue));
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 final int bsdValue = Ioctl._IOC(Ioctl.IOC_VOID.get(), 'U', 22, 408);
@@ -203,6 +204,7 @@ public class IoctlTest {
                 Assertions.assertEquals(0, Ioctl._IOC_SIZE(value));
                 Assertions.assertEquals('U', Ioctl._IOC_TYPE(value));
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 Assertions.assertEquals(0, Ioctl.IOCPARM_LEN(value));
@@ -225,6 +227,7 @@ public class IoctlTest {
                 Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl._IOC_SIZE(value));
                 Assertions.assertEquals('U', Ioctl._IOC_TYPE(value));
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl.IOCPARM_LEN(value));
@@ -247,6 +250,7 @@ public class IoctlTest {
                 Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl._IOC_SIZE(value));
                 Assertions.assertEquals('A', Ioctl._IOC_TYPE(value));
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl.IOCPARM_LEN(value));
@@ -269,6 +273,7 @@ public class IoctlTest {
                 Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl._IOC_SIZE(value));
                 Assertions.assertEquals('U', Ioctl._IOC_TYPE(value));
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl.IOCPARM_LEN(value));

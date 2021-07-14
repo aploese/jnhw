@@ -58,9 +58,9 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TimeTest_00024NativeDefines_CLOC
 /*
  * Class:     de_ibapl_jnhw_posix_TimeTest_NativeDefines
  * Method:    TIMER_ABSTIME
- * Signature: ()I
+ * Signature: ()Ljava/lang/Integer;
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TimeTest_00024NativeDefines_TIMER_1ABSTIME
+JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TimeTest_00024NativeDefines_TIMER_1ABSTIME
   (JNIEnv *, jclass);
 
 #ifdef __cplusplus

@@ -25,6 +25,30 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines__
 
 /*
  * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
+ * Method:    _SC_AIO_LISTIO_MAX
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines__1SC_1AIO_1LISTIO_1MAX
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
+ * Method:    _SC_AIO_MAX
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines__1SC_1AIO_1MAX
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
+ * Method:    _SC_AIO_PRIO_DELTA_MAX
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines__1SC_1AIO_1PRIO_1DELTA_1MAX
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
  * Method:    SEEK_CUR
  * Signature: ()I
  */

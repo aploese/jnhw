@@ -30,51 +30,75 @@ extern "C" {
 #include <termios.h>
 #include <errno.h>
 
-    JNHW_ASSERT__speed_t__IS__uint32_t
+    JNHW_ASSERT__speed_t__IS__uint32_t__OR__uint64_t
     JNHW_ASSERT__pid_t__IS__int32_t
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfgetispeed
-     * Signature: (J)I
+     * Signature: (J)J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetispeed
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetispeed
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrStructTermios) {
-        return (int32_t) cfgetispeed((struct termios*) (uintptr_t) ptrStructTermios);
+        return (int64_t) cfgetispeed((struct termios*) (uintptr_t) ptrStructTermios);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfgetospeed
-     * Signature: (J)I
+     * Signature: (J)J
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetospeed
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetospeed
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrStructTermios) {
-        return (int32_t) cfgetospeed((struct termios*) (uintptr_t) ptrStructTermios);
+        return (int64_t) cfgetospeed((struct termios*) (uintptr_t) ptrStructTermios);
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfsetispeed
-     * Signature: (JI)V
+     * Signature: (JJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetispeed
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrStructTermios, jint speed) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrStructTermios, jlong speed) {
+#if defined(_JNHW__speed_t__IS__uint32_t)
+        if ((uint64_t) speed > UINT32_MAX) {
+            throw_IllegalArgumentException(env, "speed outside speed_t(uint32_t)");
+            return;
+        }
         if (cfsetispeed((struct termios*) (uintptr_t) ptrStructTermios, (uint32_t) speed)) {
             throw_NativeErrorException(env, errno);
         }
+#elif defined(_JNHW__speed_t__IS__uint64_t)
+        if (cfsetispeed((struct termios*) (uintptr_t) ptrStructTermios, (uint64_t) speed)) {
+            throw_NativeErrorException(env, errno);
+        }
+#else
+#error neither _JNHW__speed_t__IS__uint64_t nor _JNHW__speed_t__IS__uint32_t are defined
+#endif
     }
 
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfsetospeed
-     * Signature: (JI)V
+     * Signature: (JJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetospeed
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrStructTermios, jint speed) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrStructTermios, jlong speed) {
+#if defined(_JNHW__speed_t__IS__uint32_t)
+        if ((uint64_t) speed > UINT32_MAX) {
+            throw_IllegalArgumentException(env, "speed outside speed_t(uint32_t)");
+            return;
+        }
         if (cfsetospeed((struct termios*) (uintptr_t) ptrStructTermios, (uint32_t) speed)) {
             throw_NativeErrorException(env, errno);
         }
+#elif defined(_JNHW__speed_t__IS__uint64_t)
+        if (cfsetospeed((struct termios*) (uintptr_t) ptrStructTermios, (uint64_t) speed)) {
+            throw_NativeErrorException(env, errno);
+        }
+#else
+#error neither _JNHW__speed_t__IS__uint64_t nor _JNHW__speed_t__IS__uint32_t are defined
+#endif
     }
 
     /*
@@ -166,13 +190,25 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_Termios
      * Method:    cfsetspeed
-     * Signature: (JI)V
+     * Signature: (JJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetspeed
-    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrStructTermios, jint speed) {
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong ptrStructTermios, jlong speed) {
+#if defined(_JNHW__speed_t__IS__uint32_t)
+        if ((uint64_t) speed > UINT32_MAX) {
+            throw_IllegalArgumentException(env, "speed outside speed_t(uint32_t)");
+            return;
+        }
         if (cfsetspeed((struct termios*) (uintptr_t) ptrStructTermios, (uint32_t) speed)) {
             throw_NativeErrorException(env, errno);
         }
+#elif defined(_JNHW__speed_t__IS__uint64_t)
+        if (cfsetspeed((struct termios*) (uintptr_t) ptrStructTermios, (uint64_t) speed)) {
+            throw_NativeErrorException(env, errno);
+        }
+#else
+#error neither _JNHW__speed_t__IS__uint64_t nor _JNHW__speed_t__IS__uint32_t are defined
+#endif
     }
 
 

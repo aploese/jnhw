@@ -69,6 +69,19 @@ public class Aio {
 
     }
 
+    public static interface DarwinDefines {
+
+        public final static int AIO_ALLDONE = 1;
+        public final static int AIO_CANCELED = 2;
+        public final static int AIO_NOTCANCELED = 4;
+        public final static int LIO_NOP = 0;
+        public final static int LIO_NOWAIT = 1;
+        public final static int LIO_READ = 1;
+        public final static int LIO_WAIT = 2;
+        public final static int LIO_WRITE = 2;
+
+    }
+
     public static interface FreeBsdDefines {
 
         public final static int AIO_ALLDONE = 3;
@@ -105,6 +118,17 @@ public class Aio {
                 LIO_READ = IntDefine.toIntDefine(LinuxDefines.LIO_READ);
                 LIO_WAIT = IntDefine.toIntDefine(LinuxDefines.LIO_WAIT);
                 LIO_WRITE = IntDefine.toIntDefine(LinuxDefines.LIO_WRITE);
+                break;
+            case DARWIN:
+                HAVE_AIO_H = true;
+                AIO_ALLDONE = IntDefine.toIntDefine(DarwinDefines.AIO_ALLDONE);
+                AIO_CANCELED = IntDefine.toIntDefine(DarwinDefines.AIO_CANCELED);
+                AIO_NOTCANCELED = IntDefine.toIntDefine(DarwinDefines.AIO_NOTCANCELED);
+                LIO_NOP = IntDefine.toIntDefine(DarwinDefines.LIO_NOP);
+                LIO_NOWAIT = IntDefine.toIntDefine(DarwinDefines.LIO_NOWAIT);
+                LIO_READ = IntDefine.toIntDefine(DarwinDefines.LIO_READ);
+                LIO_WAIT = IntDefine.toIntDefine(DarwinDefines.LIO_WAIT);
+                LIO_WRITE = IntDefine.toIntDefine(DarwinDefines.LIO_WRITE);
                 break;
             case FREE_BSD:
                 HAVE_AIO_H = true;
@@ -215,8 +239,8 @@ public class Aio {
      * particular request to be canceled. If aiocbp is NULL, then all
      * outstanding cancelable asynchronous I/O requests against fildes shall be
      * canceled.
-     * @return {@link #AIO_CANCELED() } on succcess or {@link AIO_NOTCANCELED}
-     * if not all outstanding operations cant be cancelled.
+     * @return {@link #AIO_CANCELED } on succcess or {@link AIO_NOTCANCELED} if
+     * not all outstanding operations cant be cancelled.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -445,6 +469,17 @@ public class Aio {
                             throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
+                case DARWIN:
+                    offsetof_Aio_fildes = 0;
+                    offsetof_Aio_offset = 8;
+                    offsetof_Aio_buf = 16;
+                    offsetof_Aio_nbytes = 24;
+                    offsetof_Aio_reqprio = 32;
+                    offsetof_Aio_sigevent = 40;
+                    offsetof_Aio_lio_opcode = 72;
+                    alignof = Alignment.AT_8;
+                    sizeof = 80;
+                    break;
                 case FREE_BSD:
                     offsetof_Aio_fildes = 0;
                     offsetof_Aio_offset = 8;
@@ -480,11 +515,6 @@ public class Aio {
          */
         public final Sigevent<T> aio_sigevent;
         private Object aio_buf;
-
-        @SuppressWarnings("unchecked")
-        public Aiocb(OpaqueMemory32 owner, int offset) throws NoSuchNativeTypeException {
-            this(owner, offset, SetMem.DO_NOT_SET);
-        }
 
         @SuppressWarnings("unchecked")
         public Aiocb() throws NoSuchNativeTypeException {

@@ -274,14 +274,7 @@ public class LocaleTest {
     @Test
     public void testUnwrapLC_GLOBAL_LOCALE() throws Exception {
         System.out.println("testUnwrapLC_GLOBAL_LOCALE");
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                testNativelyLC_GLOBAL_LOCALE(Locale.Locale_t.getNativeValue(Locale.LC_GLOBAL_LOCALE));
-            });
-
-        } else {
-            testNativelyLC_GLOBAL_LOCALE(Locale.Locale_t.getNativeValue(Locale.LC_GLOBAL_LOCALE));
-        }
+        testNativelyLC_GLOBAL_LOCALE(Locale.Locale_t.getNativeValue(Locale.LC_GLOBAL_LOCALE));
     }
 
     /**

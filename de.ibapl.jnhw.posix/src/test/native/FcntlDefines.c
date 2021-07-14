@@ -281,7 +281,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1ASYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+#if defined (__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)  || defined(__APPLE__)
         return JnhwWrapInteger(env, O_ASYNC);
 #else
 #if !defined(O_ASYNC)
@@ -367,7 +367,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1FSYNC
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) || defined(__FreeBSD__)|| defined(__OpenBSD__)
+#if defined (__linux__) || defined(__FreeBSD__)|| defined(__OpenBSD__) || defined(__APPLE__)
         return JnhwWrapInteger(env, O_FSYNC);
 #else
 #if !defined(O_FSYNC)

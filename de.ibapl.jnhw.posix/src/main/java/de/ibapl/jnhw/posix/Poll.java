@@ -124,6 +124,7 @@ public final class Poll {
                         POLLWRNORM = Linux_NonMips_Defines.POLLWRNORM;
                 }
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_POLL_H = true;

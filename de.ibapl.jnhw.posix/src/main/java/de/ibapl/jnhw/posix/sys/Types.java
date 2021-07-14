@@ -30,14 +30,18 @@ import de.ibapl.jnhw.annotation.posix.sys.types.off_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.AsSignedLong;
 import de.ibapl.jnhw.common.memory.AsUnsignedInt;
 import de.ibapl.jnhw.common.memory.AsUnsignedLong;
 import de.ibapl.jnhw.common.memory.Int32_t;
+import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
+import java.io.IOException;
 
 /**
  * Wrapper around the {@code  <sys/stat.h>} header.
@@ -63,8 +67,9 @@ public class Types {
     static {
         LibJnhwPosixLoader.touch();
         switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
-            case LINUX:
+            case DARWIN:
             case FREE_BSD:
+            case LINUX:
             case OPEN_BSD:
                 HAVE_SYS_TYPES_H = true;
                 break;
@@ -123,12 +128,55 @@ public class Types {
     }
 
     @clock_t
-    public static class Clock_t extends AsSignedLong {
+    public static class Clock_t extends NativeIntNumber {
 
-        public Clock_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
-            super(PosixDataType.clock_t.baseDataType, owner, offset, setMem);
+        private final static BaseDataType dataType = PosixDataType.clock_t.baseDataType;
+
+        public Clock_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
+            super(owner, offset, dataType.SIZE_OF, setMem);
+            if (dataType.SIZE_OF > BaseDataType.int64_t.SIZE_OF) {
+                throw new IllegalArgumentException("Data type is too big, a smaller data type was expected");
+            }
         }
 
+        public long getAsSignedLong() {
+            return MEM_ACCESS.getSignedLongOf(this, 0, sizeInBytes);
+        }
+
+        public long getAsUnsignedLong() {
+            return MEM_ACCESS.getUnsignedLongOf(this, 0, sizeInBytes);
+        }
+
+        public void setFromSignedLong(long value) {
+            MEM_ACCESS.setSignedLongOf(this, 0, sizeInBytes, value);
+        }
+
+        public void setFromUnsignedLong(long value) {
+            MEM_ACCESS.setUnsignedLongOf(this, 0, sizeInBytes, value);
+        }
+
+        @Override
+        public String nativeToHexString() {
+            if (dataType.UNSIGNED) {
+                return MEM_ACCESS.getUnsignedLongOf_AsHex(this, 0, sizeInBytes);
+            } else {
+                return MEM_ACCESS.getSignedLongOf_AsHex(this, 0, sizeInBytes);
+            }
+        }
+
+        @Override
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+            if (dataType.UNSIGNED) {
+                sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(this, 0, sizeInBytes));
+            } else {
+                sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(this, 0, sizeInBytes));
+            }
+        }
+
+        @Override
+        public BaseDataType getBaseDataType() {
+            return dataType;
+        }
     }
 
     @time_t

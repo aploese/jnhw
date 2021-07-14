@@ -85,8 +85,10 @@
 #endif
 #elif defined(_JNHW__clock_t__IS__int64_t)
 #define JNHW_FORMAT_STRING_clock_t JNHW_FORMAT_STRING_int64_t
+#elif defined(_JNHW__clock_t__IS__uint64_t)
+#define JNHW_FORMAT_STRING_clock_t JNHW_FORMAT_STRING_uint64_t
 #else
-#error expected clock_t is int32_t or int64_t
+#error expected clock_t is int32_t or int64_t or uint64_t
 #endif
 
 #if defined(_JNHW__mode_t__IS__uint16_t)

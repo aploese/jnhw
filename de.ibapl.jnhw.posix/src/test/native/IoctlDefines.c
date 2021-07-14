@@ -362,7 +362,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOCPARM_1MASK
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__OpenBSD__) || defined (__FreeBSD__)
+#if defined (__OpenBSD__) || defined (__FreeBSD__) || defined(__APPLE__)
         return JnhwWrapInteger(env, IOCPARM_MASK);
 #elif !defined(IOCPARM_MASK)
         return NULL;
@@ -378,7 +378,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOCPARM_1MAX
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__OpenBSD__) || defined (__FreeBSD__)
+#if defined (__OpenBSD__) || defined (__FreeBSD__) || defined(__APPLE__)
         return JnhwWrapInteger(env, IOCPARM_MAX);
 #elif !defined(IOCPARM_MAX)
         return NULL;
@@ -394,7 +394,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOC_1VOID
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__OpenBSD__) || defined (__FreeBSD__)
+#if defined (__OpenBSD__) || defined (__FreeBSD__) || defined(__APPLE__)
         return JnhwWrapInteger(env, IOC_VOID);
 #elif !defined(IOC_VOID)
         return NULL;
@@ -420,7 +420,7 @@ extern "C" {
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOC_1IN
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__linux__) && (defined(__mips__) || defined(__powerpc__)) || defined(__FreeBSD__)|| defined(__OpenBSD__)
+#if defined (__linux__) && (defined(__mips__) || defined(__powerpc__)) || defined(__FreeBSD__)|| defined(__OpenBSD__) || defined(__APPLE__)
         return (int32_t) IOC_IN;
 #else
         return IOC_IN;
@@ -444,7 +444,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOC_1DIRMASK
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined (__OpenBSD__)|| defined (__FreeBSD__)
+#if defined (__OpenBSD__)|| defined (__FreeBSD__)|| defined(__APPLE__)
         return JnhwWrapInteger(env, (int32_t) IOC_DIRMASK);
 #elif !defined(IOC_DIRMASK)
         return NULL;

@@ -400,8 +400,6 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
         public final static int ENOTEMPTY = 66;
         public final static int ENOTSOCK = 38;
 
-        public final static int EOPNOTSUPP = 45;
-
         public final static int EPFNOSUPPORT = 46;
         public final static int EPROTONOSUPPORT = 43;
         public final static int EPROTOTYPE = 41;
@@ -412,6 +410,27 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
         public final static int ETIMEDOUT = 60;
         public final static int ETOOMANYREFS = 59;
         public final static int EUSERS = 68;
+
+    }
+
+    public static interface DarwinDefines extends BsdDefines {
+
+        public final static int EBADMSG = 94;
+        public final static int ECANCELED = 89;
+        public final static int EIDRM = 90;
+        public final static int EMULTIHOP = 95;
+        public final static int ENOLINK = 97;
+        public final static int ENOMSG = 91;
+        public final static int ENOTRECOVERABLE = 104;
+        public final static int ENOTSUP = 45;
+        public final static int EOVERFLOW = 84;
+        public final static int EOWNERDEAD = 105;
+        public final static int EPROTO = 100;
+        public final static int ENODATA = 96;
+        public final static int ENOSR = 98;
+        public final static int ENOSTR = 99;
+        public final static int EOPNOTSUPP = 102;
+        public final static int ETIME = 101;
 
     }
 
@@ -428,6 +447,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
         public final static int EOVERFLOW = 84;
         public final static int EOWNERDEAD = 96;
         public final static int EPROTO = 92;
+        public final static int EOPNOTSUPP = 45;
 
     }
 
@@ -444,6 +464,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
         public final static int EOVERFLOW = 87;
         public final static int EOWNERDEAD = 94;
         public final static int EPROTO = 95;
+        public final static int EOPNOTSUPP = 45;
 
     }
 
@@ -801,6 +822,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 }
 
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 E2BIG = BsdDefines.E2BIG;
@@ -832,7 +854,6 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 EMFILE = BsdDefines.EMFILE;
                 EMLINK = BsdDefines.EMLINK;
                 ENFILE = BsdDefines.ENFILE;
-                ENODATA = IntDefine.UNDEFINED;
                 ENODEV = BsdDefines.ENODEV;
                 ENOENT = BsdDefines.ENOENT;
                 ENOEXEC = BsdDefines.ENOEXEC;
@@ -843,9 +864,6 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 ENOPKG = IntDefine.UNDEFINED;
 
                 ENOSPC = BsdDefines.ENOSPC;
-                ENOSR = IntDefine.UNDEFINED;
-
-                ENOSTR = IntDefine.UNDEFINED;
 
                 ENOTBLK = BsdDefines.ENOTBLK;
                 ENOTDIR = BsdDefines.ENOTDIR;
@@ -862,8 +880,6 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 ESPIPE = BsdDefines.ESPIPE;
                 ESRCH = BsdDefines.ESRCH;
                 ESRMNT = IntDefine.UNDEFINED;
-
-                ETIME = IntDefine.UNDEFINED;
 
                 ETXTBSY = BsdDefines.ETXTBSY;
 
@@ -958,7 +974,6 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 ENOTSOCK = BsdDefines.ENOTSOCK;
                 ENOTUNIQ = IntDefine.UNDEFINED;
 
-                EOPNOTSUPP = BsdDefines.EOPNOTSUPP;
                 EPFNOSUPPORT = BsdDefines.EPFNOSUPPORT;
                 EPROTONOSUPPORT = BsdDefines.EPROTONOSUPPORT;
                 EPROTOTYPE = BsdDefines.EPROTOTYPE;
@@ -983,6 +998,26 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 EUSERS = BsdDefines.EUSERS;
                 EXFULL = IntDefine.UNDEFINED;
                 switch (multiarchInfo.getOS()) {
+                    case DARWIN:
+                        EMEDIUMTYPE = IntDefine.UNDEFINED;
+                        ENOMEDIUM = IntDefine.UNDEFINED;
+                        EPROTO = DarwinDefines.EPROTO;
+                        EBADMSG = DarwinDefines.EBADMSG;
+                        ECANCELED = DarwinDefines.ECANCELED;
+                        EIDRM = DarwinDefines.EIDRM;
+                        ENOLINK = IntDefine.toIntDefine(DarwinDefines.ENOLINK);
+                        ENOMSG = DarwinDefines.ENOMSG;
+                        EMULTIHOP = IntDefine.toIntDefine(DarwinDefines.EMULTIHOP);
+                        ENOTRECOVERABLE = DarwinDefines.ENOTRECOVERABLE;
+                        ENOTSUP = DarwinDefines.ENOTSUP;
+                        EOVERFLOW = DarwinDefines.EOVERFLOW;
+                        EOWNERDEAD = DarwinDefines.EOWNERDEAD;
+                        ENODATA = IntDefine.toIntDefine(DarwinDefines.ENODATA);
+                        EOPNOTSUPP = DarwinDefines.EOPNOTSUPP;
+                        ENOSR = IntDefine.toIntDefine(DarwinDefines.ENOSR);
+                        ENOSTR = IntDefine.toIntDefine(DarwinDefines.ENOSTR);
+                        ETIME = IntDefine.toIntDefine(DarwinDefines.ETIME);
+                        break;
                     case FREE_BSD:
                         EMEDIUMTYPE = IntDefine.UNDEFINED;
                         ENOMEDIUM = IntDefine.UNDEFINED;
@@ -997,6 +1032,11 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                         ENOTSUP = FreeBsdDefines.ENOTSUP;
                         EOVERFLOW = FreeBsdDefines.EOVERFLOW;
                         EOWNERDEAD = FreeBsdDefines.EOWNERDEAD;
+                        ENODATA = IntDefine.UNDEFINED;
+                        EOPNOTSUPP = FreeBsdDefines.EOPNOTSUPP;
+                        ENOSR = IntDefine.UNDEFINED;
+                        ENOSTR = IntDefine.UNDEFINED;
+                        ETIME = IntDefine.UNDEFINED;
                         break;
                     case OPEN_BSD:
                         EMEDIUMTYPE = IntDefine.toIntDefine(OpenBsdDefines.EMEDIUMTYPE);
@@ -1012,6 +1052,11 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                         ENOTSUP = OpenBsdDefines.ENOTSUP;
                         EOVERFLOW = OpenBsdDefines.EOVERFLOW;
                         EOWNERDEAD = OpenBsdDefines.EOWNERDEAD;
+                        ENODATA = IntDefine.UNDEFINED;
+                        EOPNOTSUPP = OpenBsdDefines.EOPNOTSUPP;
+                        ENOSR = IntDefine.UNDEFINED;
+                        ENOSTR = IntDefine.UNDEFINED;
+                        ETIME = IntDefine.UNDEFINED;
                         break;
                     default:
                         throw new NoClassDefFoundError("No errno.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);

@@ -121,7 +121,7 @@ extern "C" {
      * Signature: (I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_IOCPARM_1LEN
-#if defined(__FreeBSD__) || defined(__OpenBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__APPLE__)
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint x) {
         return IOCPARM_LEN((uint32_t) x);
 #else
@@ -137,7 +137,7 @@ extern "C" {
      * Signature: (I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_IOCBASECMD
-#if defined(__FreeBSD__)
+#if defined(__FreeBSD__)|| defined(__APPLE__)
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint x) {
         return IOCBASECMD(x);
 #elif defined(__OpenBSD__)
@@ -156,7 +156,7 @@ extern "C" {
      * Signature: (I)I
      */
     JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_IOCGROUP
-#if defined(__FreeBSD__) || defined(__OpenBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__)|| defined(__APPLE__)
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint x) {
         return IOCGROUP((uint32_t) x);
 #else

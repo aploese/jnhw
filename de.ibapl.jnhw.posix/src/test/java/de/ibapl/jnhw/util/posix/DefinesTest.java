@@ -304,7 +304,7 @@ public class DefinesTest {
 
             case FREE_BSD:
             case OPEN_BSD:
-            case MAC_OS_X:
+            case DARWIN:
             case WINDOWS:
                 assertFalse(Defines._LARGEFILE64_SOURCE.isDefined());
                 break;
@@ -335,7 +335,7 @@ public class DefinesTest {
 
             case FREE_BSD:
             case OPEN_BSD:
-            case MAC_OS_X:
+            case DARWIN:
             case WINDOWS:
                 assertFalse(Defines._LARGEFILE_SOURCE.isDefined());
                 break;
@@ -361,7 +361,7 @@ public class DefinesTest {
             case LINUX:
             case FREE_BSD:
             case OPEN_BSD:
-            case MAC_OS_X:
+            case DARWIN:
                 assertEquals(200809, Defines._POSIX_C_SOURCE.get());
                 break;
             case WINDOWS:
@@ -381,7 +381,7 @@ public class DefinesTest {
             case LINUX:
             case FREE_BSD:
             case OPEN_BSD:
-            case MAC_OS_X:
+            case DARWIN:
                 assertEquals(700, Defines._XOPEN_SOURCE.get());
                 break;
             case WINDOWS:
@@ -401,7 +401,7 @@ public class DefinesTest {
             case LINUX:
             case FREE_BSD:
             case OPEN_BSD:
-            case MAC_OS_X:
+            case DARWIN:
                 assertEquals(1, Defines._XOPEN_SOURCE_EXTENDED.get());
                 break;
             case WINDOWS:
@@ -417,7 +417,7 @@ public class DefinesTest {
      */
     @Test
     public void test__APPLE__() {
-        assertEquals(MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X, Defines.__APPLE__.isDefined());
+        assertEquals(MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN, Defines.__APPLE__.isDefined());
     }
 
     /**

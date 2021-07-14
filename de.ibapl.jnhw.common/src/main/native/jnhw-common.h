@@ -76,7 +76,7 @@ extern "C" {
 
 #if defined(__LP64__)
     //Unix 64 bit pointer
-#if defined(__OpenBSD__)
+#if defined(__OpenBSD__) || defined(__APPLE__)
 #define JNHW_FORMAT_STRING_int64_t "%lld"
 #define JNHW_FORMAT_STRING_uint64_t "%llu"
 #define JNHW_FORMAT_STRING_HEX_int64_t "0x%016llx"

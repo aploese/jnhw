@@ -24,7 +24,6 @@ package de.ibapl.jnhw.common.memory.layout;
 import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
-import java.lang.annotation.Native;
 
 /**
  *
@@ -297,8 +296,9 @@ public enum Alignment {
                 __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
                 break;
             case AARCH64__OPEN_BSD__BSD:
-            case X86_64__OPEN_BSD__BSD:
+            case X86_64__DARWIN__BSD:
             case X86_64__FREE_BSD__BSD:
+            case X86_64__OPEN_BSD__BSD:
                 //classical 64bit anything is at 8 byte aligned
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
                 __ALIGN_OF_LONG = Alignment.AT_8;

@@ -91,6 +91,8 @@ public enum PosixDataType {
                     default:
                         throw new NoClassDefFoundError("can't get datatype of clock_t on " + mi);
                 }
+            case DARWIN:
+                return BaseDataType.uint64_t;
             case FREE_BSD:
                 return BaseDataType.int32_t;
             case OPEN_BSD:
@@ -109,6 +111,7 @@ public enum PosixDataType {
         switch (mi.getOS()) {
             case LINUX:
                 return BaseDataType.uint32_t;
+            case DARWIN:
             case FREE_BSD:
                 return BaseDataType.uint16_t;
             case OPEN_BSD:
@@ -141,6 +144,7 @@ public enum PosixDataType {
                     default:
                         throw new NoClassDefFoundError("can't get linux datatype of off_t on " + mi);
                 }
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 return BaseDataType.int64_t;
@@ -180,6 +184,7 @@ public enum PosixDataType {
                     default:
                         throw new NoClassDefFoundError("can't get linux datatype of size_t on " + mi);
                 }
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 return BaseDataType.uint64_t;
@@ -193,7 +198,16 @@ public enum PosixDataType {
     }
 
     public static BaseDataType dataTypeOf__speed_t(final MultiarchInfo mi) {
-        return BaseDataType.uint32_t;
+        switch (mi.getOS()) {
+            case DARWIN:
+                return BaseDataType.uint64_t;
+            case FREE_BSD:
+            case LINUX:
+            case OPEN_BSD:
+                return BaseDataType.uint32_t;
+            default:
+                throw new NoClassDefFoundError("can't get OS datatype of speed_t on " + mi);
+        }
     }
 
     private static BaseDataType dataTypeOf__ssize_t() {
@@ -219,6 +233,7 @@ public enum PosixDataType {
                     default:
                         throw new NoClassDefFoundError("can't get linux datatype of ssize_t on " + mi);
                 }
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 return BaseDataType.int64_t;
@@ -232,7 +247,16 @@ public enum PosixDataType {
     }
 
     public static BaseDataType dataTypeOf__tcflag_t(final MultiarchInfo mi) {
-        return BaseDataType.uint32_t;
+        switch (mi.getOS()) {
+            case DARWIN:
+                return BaseDataType.uint64_t;
+            case FREE_BSD:
+            case LINUX:
+            case OPEN_BSD:
+                return BaseDataType.uint32_t;
+            default:
+                throw new NoClassDefFoundError("can't get OS datatype of tcflag_t on " + mi);
+        }
     }
 
     private static BaseDataType dataTypeOf__time_t() {
@@ -258,6 +282,7 @@ public enum PosixDataType {
                     default:
                         throw new NoClassDefFoundError("can't get linux datatype of time_t on " + mi);
                 }
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 return BaseDataType.int64_t;

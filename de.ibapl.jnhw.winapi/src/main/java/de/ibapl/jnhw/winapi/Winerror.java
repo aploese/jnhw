@@ -23,7 +23,11 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Wrapper around the
@@ -180,5 +184,36 @@ public abstract class Winerror {
      */
     @Define
     public final static int ERROR_MORE_DATA = 0x887A0003;
+
+    /**
+     * Translate the native errno to its symbolic constant name.
+     *
+     * @param errno
+     * @return
+     */
+    public final static String getErrnoSymbol(int errno) {
+        for (Field f : Winerror.class.getFields()) {
+            if (f.getAnnotation(Define.class) != null) {
+                try {
+                    Object res = (Object) f.get(Winerror.class);
+                    if (res instanceof Integer) {
+                        if (errno == ((Integer) res)) {
+                            return f.getName();
+                        } else if (res instanceof IntDefine) {
+                            final IntDefine i = (IntDefine) res;
+                            if (i.isDefined()) {
+                                if (errno == i.get()) {
+                                    return f.getName();
+                                }
+                            }
+                        }
+                    }
+                } catch (IllegalArgumentException | IllegalAccessException ex) {
+                    Logger.getLogger(Winerror.class.getName()).log(Level.SEVERE, "Unknown ex in Errno.getErrnoSymbol(int)", ex);
+                }
+            }
+        }
+        return "Unknown errno: " + errno;
+    }
 
 }

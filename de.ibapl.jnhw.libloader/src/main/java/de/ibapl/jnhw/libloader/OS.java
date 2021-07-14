@@ -32,7 +32,7 @@ public enum OS {
     SOLARIS("solaris", "lib%1$s.so.%2$d"),
     FREE_BSD("freebsd", "lib%1$s.so.%2$d"),
     OPEN_BSD("openbsd", "lib%1$s.so.%2$d"),
-    MAC_OS_X("macosx", "lib%1$s.%2$d.dylib");
+    DARWIN("darwin", "lib%1$s.%2$d.dylib");
 
     public final String osName;
     public final String formatLibNameString;

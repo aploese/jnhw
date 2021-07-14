@@ -13,10 +13,10 @@ AC_DEFUN([JW_MULTIARCHTUPEL],
             ;;
         esac
     ;;
-    darwin)
+    darwin*)
 	case "$host_cpu" in
 	x86_64)
-        	JNHW_MULTIARCH_TUPEL="x86_64-macosx-bsd"
+        	JNHW_MULTIARCH_TUPEL="x86_64-darwin-bsd"
 	;;
 	*)
         	fail not supported

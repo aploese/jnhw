@@ -299,14 +299,17 @@
                                 <exclude>jni-includes/**</exclude>
 
                                 <exclude>de.ibapl.jnhw.common/config.h</exclude>
+                                <exclude>de.ibapl.jnhw.common/.ccls-cache/**</exclude>
                                 <exclude>de.ibapl.jnhw.common/src/main/native/include/*.h</exclude>
                                 <exclude>de.ibapl.jnhw.common/src/test/native/include/*.h</exclude>
 
                                 <exclude>de.ibapl.jnhw.posix/config.h</exclude>
+                                <exclude>de.ibapl.jnhw.posix/.ccls-cache/**</exclude>
                                 <exclude>de.ibapl.jnhw.posix/src/main/native/include/*.h</exclude>
                                 <exclude>de.ibapl.jnhw.posix/src/test/native/include/*.h</exclude>
 
                                 <exclude>de.ibapl.jnhw.winapi/config.h</exclude>
+                                <exclude>de.ibapl.jnhw.winapi/.ccls-cache/**</exclude>
                                 <exclude>de.ibapl.jnhw.winapi/src/main/native/include/*.h</exclude>
                                 <exclude>de.ibapl.jnhw.winapi/src/test/native/include/*.h</exclude>
 

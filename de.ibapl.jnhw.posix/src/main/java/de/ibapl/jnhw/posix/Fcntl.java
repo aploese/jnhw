@@ -177,7 +177,6 @@ public final class Fcntl {
 
     public static interface BsdDefines {
 
-        public final static int AT_FDCWD = -100;
         public final static int FD_CLOEXEC = 1;
         public final static int F_DUPFD = 0;
         public final static int F_GETFD = 1;
@@ -199,15 +198,33 @@ public final class Fcntl {
         public final static int O_ASYNC = 64;
         public final static int O_CREAT = 512;
         public final static int O_FSYNC = 128;
-        public final static int O_NOCTTY = 32768;
         public final static int O_NONBLOCK = 4;
         public final static int O_SYNC = 128;
-        public final static int O_DIRECTORY = 131072;
         public final static int O_NOFOLLOW = 256;
+    }
+
+    public static interface DarwinDefines extends BsdDefines {
+
+        public final static int AT_FDCWD = -2;
+        public final static int AT_EACCESS = 16;
+        public final static int AT_REMOVEDIR = 128;
+        public final static int AT_SYMLINK_FOLLOW = 64;
+        public final static int AT_SYMLINK_NOFOLLOW = 32;
+        public final static int F_DUPFD_CLOEXEC = 67;
+        public final static int F_GETLK = 7;
+        public final static int F_SETLK = 8;
+        public final static int F_SETLKW = 9;
+        public final static int O_CLOEXEC = 16777216;
+        public final static int O_DSYNC = 4194304;
+        public final static int O_EXCL = 2048;
+        public final static int O_DIRECTORY = 1048576;
+        public final static int O_NOCTTY = 131072;
+
     }
 
     public static interface FreeBsdDefines extends BsdDefines {
 
+        public final static int AT_FDCWD = -100;
         public final static int AT_EACCESS = 256;
         public final static int AT_REMOVEDIR = 2048;
         public final static int AT_SYMLINK_FOLLOW = 0x400;
@@ -228,11 +245,14 @@ public final class Fcntl {
         public final static int POSIX_FADV_RANDOM = 1;
         public final static int POSIX_FADV_SEQUENTIAL = 2;
         public final static int POSIX_FADV_WILLNEED = 3;
+        public final static int O_DIRECTORY = 131072;
+        public final static int O_NOCTTY = 32768;
 
     }
 
     public static interface OpenBsdDefines extends BsdDefines {
 
+        public final static int AT_FDCWD = -100;
         public final static int AT_EACCESS = 1;
         public final static int AT_REMOVEDIR = 8;
         public final static int AT_SYMLINK_FOLLOW = 4;
@@ -245,6 +265,8 @@ public final class Fcntl {
         public final static int O_DSYNC = 128;
         public final static int O_EXCL = 2048;
         public final static int O_RSYNC = 128;
+        public final static int O_DIRECTORY = 131072;
+        public final static int O_NOCTTY = 32768;
 
     }
 
@@ -424,11 +446,10 @@ public final class Fcntl {
                         throw new NoClassDefFoundError("No fcntl.h defines for " + multiarchInfo);
                 }
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_FCNTL_H = true;
-
-                AT_FDCWD = BsdDefines.AT_FDCWD;
 
                 FD_CLOEXEC = BsdDefines.FD_CLOEXEC;
 
@@ -446,7 +467,6 @@ public final class Fcntl {
                 O_RDWR = BsdDefines.O_RDWR;
                 O_TRUNC = BsdDefines.O_TRUNC;
                 O_WRONLY = BsdDefines.O_WRONLY;
-                O_DIRECTORY = BsdDefines.O_DIRECTORY;
                 O_NOFOLLOW = BsdDefines.O_NOFOLLOW;
 
                 O_LARGEFILE = IntDefine.UNDEFINED;
@@ -456,11 +476,38 @@ public final class Fcntl {
                 O_ASYNC = IntDefine.toIntDefine(BsdDefines.O_ASYNC);
                 O_CREAT = BsdDefines.O_CREAT;
                 O_FSYNC = IntDefine.toIntDefine(BsdDefines.O_FSYNC);
-                O_NOCTTY = BsdDefines.O_NOCTTY;
                 O_NONBLOCK = BsdDefines.O_NONBLOCK;
                 O_SYNC = BsdDefines.O_SYNC;
                 switch (multiarchInfo.getOS()) {
+                    case DARWIN:
+                        AT_FDCWD = DarwinDefines.AT_FDCWD;
+                        AT_EACCESS = DarwinDefines.AT_EACCESS;
+                        AT_REMOVEDIR = DarwinDefines.AT_REMOVEDIR;
+                        AT_SYMLINK_FOLLOW = DarwinDefines.AT_SYMLINK_FOLLOW;
+                        AT_SYMLINK_NOFOLLOW = DarwinDefines.AT_SYMLINK_NOFOLLOW;
+                        F_DUPFD_CLOEXEC = DarwinDefines.F_DUPFD_CLOEXEC;
+                        F_SETLK = DarwinDefines.F_SETLK;
+                        F_SETLKW = DarwinDefines.F_SETLKW;
+                        O_NOCTTY = DarwinDefines.O_NOCTTY;
+                        O_CLOEXEC = DarwinDefines.O_CLOEXEC;
+                        POSIX_FADV_DONTNEED = IntDefine.UNDEFINED;
+                        POSIX_FADV_NOREUSE = IntDefine.UNDEFINED;
+                        POSIX_FADV_NORMAL = IntDefine.UNDEFINED;
+                        POSIX_FADV_RANDOM = IntDefine.UNDEFINED;
+                        POSIX_FADV_SEQUENTIAL = IntDefine.UNDEFINED;
+                        POSIX_FADV_WILLNEED = IntDefine.UNDEFINED;
+                        F_GETLK = DarwinDefines.F_GETLK;
+                        O_DIRECTORY = DarwinDefines.O_DIRECTORY;
+                        O_DSYNC = DarwinDefines.O_DSYNC;
+                        O_EXEC = IntDefine.UNDEFINED;
+                        O_EXCL = DarwinDefines.O_EXCL;
+                        O_RSYNC = IntDefine.UNDEFINED;
+                        O_SEARCH = IntDefine.UNDEFINED;
+                        O_TTY_INIT = IntDefine.UNDEFINED;
+
+                        break;
                     case FREE_BSD:
+                        AT_FDCWD = FreeBsdDefines.AT_FDCWD;
                         AT_EACCESS = FreeBsdDefines.AT_EACCESS;
                         AT_REMOVEDIR = FreeBsdDefines.AT_REMOVEDIR;
                         AT_SYMLINK_FOLLOW = FreeBsdDefines.AT_SYMLINK_FOLLOW;
@@ -468,6 +515,7 @@ public final class Fcntl {
                         F_DUPFD_CLOEXEC = FreeBsdDefines.F_DUPFD_CLOEXEC;
                         F_SETLK = FreeBsdDefines.F_SETLK;
                         F_SETLKW = FreeBsdDefines.F_SETLKW;
+                        O_NOCTTY = FreeBsdDefines.O_NOCTTY;
                         O_CLOEXEC = FreeBsdDefines.O_CLOEXEC;
                         POSIX_FADV_DONTNEED = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_DONTNEED);
                         POSIX_FADV_NOREUSE = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_NOREUSE);
@@ -477,6 +525,7 @@ public final class Fcntl {
                         POSIX_FADV_WILLNEED = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_WILLNEED);
                         F_GETLK = FreeBsdDefines.F_GETLK;
                         O_EXEC = IntDefine.toIntDefine(FreeBsdDefines.O_EXEC);
+                        O_DIRECTORY = FreeBsdDefines.O_DIRECTORY;
                         O_DSYNC = FreeBsdDefines.O_DSYNC;
                         O_EXCL = FreeBsdDefines.O_EXCL;
                         O_RSYNC = IntDefine.UNDEFINED;
@@ -484,6 +533,7 @@ public final class Fcntl {
                         O_TTY_INIT = IntDefine.toIntDefine(FreeBsdDefines.O_TTY_INIT);
                         break;
                     case OPEN_BSD:
+                        AT_FDCWD = OpenBsdDefines.AT_FDCWD;
                         AT_EACCESS = OpenBsdDefines.AT_EACCESS;
                         AT_REMOVEDIR = OpenBsdDefines.AT_REMOVEDIR;
                         AT_SYMLINK_FOLLOW = OpenBsdDefines.AT_SYMLINK_FOLLOW;
@@ -491,6 +541,7 @@ public final class Fcntl {
                         F_DUPFD_CLOEXEC = OpenBsdDefines.F_DUPFD_CLOEXEC;
                         F_SETLK = OpenBsdDefines.F_SETLK;
                         F_SETLKW = OpenBsdDefines.F_SETLKW;
+                        O_NOCTTY = OpenBsdDefines.O_NOCTTY;
                         O_CLOEXEC = OpenBsdDefines.O_CLOEXEC;
                         POSIX_FADV_DONTNEED = IntDefine.UNDEFINED;
                         POSIX_FADV_NOREUSE = IntDefine.UNDEFINED;
@@ -499,6 +550,7 @@ public final class Fcntl {
                         POSIX_FADV_SEQUENTIAL = IntDefine.UNDEFINED;
                         POSIX_FADV_WILLNEED = IntDefine.UNDEFINED;
                         F_GETLK = OpenBsdDefines.F_GETLK;
+                        O_DIRECTORY = OpenBsdDefines.O_DIRECTORY;
                         O_DSYNC = OpenBsdDefines.O_DSYNC;
                         O_EXEC = IntDefine.UNDEFINED;
                         O_EXCL = OpenBsdDefines.O_EXCL;

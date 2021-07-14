@@ -27,8 +27,6 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.Struct32;
 import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annotation.posix.termios.cc_t;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
@@ -36,10 +34,10 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.io.IOException;
-import de.ibapl.jnhw.common.memory.Uint8_t;
-import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.util.posix.PosixDataType;
+import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
 
 /**
  * Wrapper around the {@code <termios.h>} header.
@@ -47,6 +45,9 @@ import de.ibapl.jnhw.libloader.MultiarchInfo;
  * See specs at:
  * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html">termios.h
  * - define values for termios</a>.
+ *
+ * Darwin aka MacOS uses uint64_t for tcflag_t ans speed_t , but uses only 32
+ * bit - so we leave it for now at 32 bit access.
  *
  * @author aploese
  */
@@ -367,6 +368,37 @@ public final class Termios {
 
     }
 
+    public static interface DarwinDefines extends BsdDefines {
+
+        public final static int BS0 = 0;
+        public final static int BS1 = 32768;
+        public final static int BSDLY = 32768;
+        public final static int CR0 = 0;
+        public final static int CR1 = 4096;
+        public final static int CR2 = 8192;
+        public final static int CR3 = 12288;
+        public final static int CRDLY = 12288;
+        public final static int FF0 = 0;
+        public final static int FF1 = 16384;
+        public final static int FFDLY = 16384;
+        public final static int NL0 = 0;
+        public final static int NL1 = 256;
+        public final static int NLDLY = 768;
+        public final static int OFDEL = 131072;
+        public final static int OFILL = 128;
+        public final static int CRTSCTS = 196608;
+        public final static int ONOCR = 32;
+        public final static int ONLRET = 64;
+        public final static int TAB0 = 0;
+        public final static int TAB1 = 1024;
+        public final static int TAB2 = 2048;
+        public final static int TAB3 = 4;
+        public final static int TABDLY = 3076;
+        public final static int VT0 = 0;
+        public final static int VT1 = 65536;
+        public final static int VTDLY = 65536;
+    }
+
     public static interface FreeBsdDefines extends BsdDefines {
 
         public final static int B460800 = 460800;
@@ -658,6 +690,7 @@ public final class Termios {
                 }
 
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_TERMIOS_H = true;
@@ -680,8 +713,6 @@ public final class Termios {
                 B9600 = BsdDefines.B9600;
 
                 BRKINT = BsdDefines.BRKINT;
-                BS0 = IntDefine.UNDEFINED;
-                CR0 = IntDefine.UNDEFINED;
 
                 B1000000 = IntDefine.UNDEFINED;
                 B115200 = BsdDefines.B115200;
@@ -697,27 +728,17 @@ public final class Termios {
                 B500000 = IntDefine.UNDEFINED;
                 B57600 = BsdDefines.B57600;
                 B576000 = IntDefine.UNDEFINED;
-                BS1 = IntDefine.UNDEFINED;
-                BSDLY = IntDefine.UNDEFINED;
 
                 CLOCAL = BsdDefines.CLOCAL;
-                CR1 = IntDefine.UNDEFINED;
-                CR2 = IntDefine.UNDEFINED;
-                CR3 = IntDefine.UNDEFINED;
-                CRDLY = IntDefine.UNDEFINED;
                 CS6 = BsdDefines.CS6;
                 CS7 = BsdDefines.CS7;
                 CS8 = BsdDefines.CS8;
-                TAB1 = IntDefine.UNDEFINED;
-                TAB2 = IntDefine.UNDEFINED;
                 CREAD = BsdDefines.CREAD;
                 CSIZE = BsdDefines.CSIZE;
                 CSTOPB = BsdDefines.CSTOPB;
                 ECHOE = BsdDefines.ECHOE;
                 ECHOK = BsdDefines.ECHOK;
                 ECHONL = BsdDefines.ECHONL;
-                FF1 = IntDefine.UNDEFINED;
-                FFDLY = IntDefine.UNDEFINED;
                 TOSTOP = BsdDefines.TOSTOP;
                 VEOL = BsdDefines.VEOL;
                 IEXTEN = BsdDefines.IEXTEN;
@@ -730,21 +751,14 @@ public final class Termios {
                 ISIG = BsdDefines.ISIG;
                 IXOFF = BsdDefines.IXOFF;
                 IXON = BsdDefines.IXON;
-                NLDLY = IntDefine.UNDEFINED;
                 NOFLSH = BsdDefines.NOFLSH;
                 ONLCR = BsdDefines.ONLCR;
                 VSTART = BsdDefines.VSTART;
                 VSTOP = BsdDefines.VSTOP;
                 VSUSP = BsdDefines.VSUSP;
-                VT1 = IntDefine.UNDEFINED;
-                VTDLY = IntDefine.UNDEFINED;
                 VTIME = BsdDefines.VTIME;
                 CS5 = BsdDefines.CS5;
-
                 ECHO = BsdDefines.ECHO;
-
-                FF0 = IntDefine.UNDEFINED;
-
                 ICRNL = BsdDefines.ICRNL;
                 IGNBRK = BsdDefines.IGNBRK;
                 IGNCR = BsdDefines.IGNCR;
@@ -755,12 +769,8 @@ public final class Termios {
                 IXANY = BsdDefines.IXANY;
 
                 NCCS = BsdDefines.NCCS;
-                NL0 = IntDefine.UNDEFINED;
-                NL1 = IntDefine.UNDEFINED;
 
                 OCRNL = BsdDefines.OCRNL;
-                OFDEL = IntDefine.UNDEFINED;
-                OFILL = IntDefine.UNDEFINED;
                 OPOST = BsdDefines.OPOST;
 
                 PAREXT = IntDefine.UNDEFINED;
@@ -777,7 +787,6 @@ public final class Termios {
                 VINTR = BsdDefines.VINTR;
                 VKILL = BsdDefines.VKILL;
                 VQUIT = BsdDefines.VQUIT;
-                VT0 = IntDefine.UNDEFINED;
 
                 CMSPAR = IntDefine.UNDEFINED;
                 TCSADRAIN = BsdDefines.TCSADRAIN;
@@ -789,25 +798,99 @@ public final class Termios {
                 _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.UNDEFINED;
                 _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.UNDEFINED;
                 switch (multiarchInfo.getOS()) {
+                    case DARWIN:
+                        BS0 = IntDefine.toIntDefine(DarwinDefines.BS0);
+                        BS1 = IntDefine.toIntDefine(DarwinDefines.BS1);
+                        BSDLY = IntDefine.toIntDefine(DarwinDefines.BSDLY);
+                        CR0 = IntDefine.toIntDefine(DarwinDefines.CR0);
+                        CR1 = IntDefine.toIntDefine(DarwinDefines.CR1);
+                        CR2 = IntDefine.toIntDefine(DarwinDefines.CR2);
+                        CR3 = IntDefine.toIntDefine(DarwinDefines.CR3);
+                        CRDLY = IntDefine.toIntDefine(DarwinDefines.CRDLY);
+                        FF0 = IntDefine.toIntDefine(DarwinDefines.FF0);
+                        FF1 = IntDefine.toIntDefine(DarwinDefines.FF1);
+                        FFDLY = IntDefine.toIntDefine(DarwinDefines.FFDLY);
+                        NL0 = IntDefine.toIntDefine(DarwinDefines.NL0);
+                        NL1 = IntDefine.toIntDefine(DarwinDefines.NL1);
+                        NLDLY = IntDefine.toIntDefine(DarwinDefines.NLDLY);
+                        OFDEL = IntDefine.toIntDefine(DarwinDefines.OFDEL);
+                        OFILL = IntDefine.toIntDefine(DarwinDefines.OFILL);
+
+                        B460800 = IntDefine.UNDEFINED;
+                        B921600 = IntDefine.UNDEFINED;
+                        CRTSCTS = DarwinDefines.CRTSCTS;
+                        TAB0 = IntDefine.toIntDefine(DarwinDefines.TAB0);
+                        TAB1 = IntDefine.toIntDefine(DarwinDefines.TAB1);
+                        TAB2 = IntDefine.toIntDefine(DarwinDefines.TAB2);
+                        TAB3 = IntDefine.toIntDefine(DarwinDefines.TAB3);
+                        TABDLY = IntDefine.toIntDefine(DarwinDefines.TABDLY);
+                        ONLRET = DarwinDefines.ONLRET;
+                        ONOCR = DarwinDefines.ONOCR;
+                        VT0 = IntDefine.toIntDefine(DarwinDefines.VT0);
+                        VT1 = IntDefine.toIntDefine(DarwinDefines.VT1);
+                        VTDLY = IntDefine.toIntDefine(DarwinDefines.VTDLY);
+                        break;
                     case FREE_BSD:
+                        BS0 = IntDefine.UNDEFINED;
+                        BS1 = IntDefine.UNDEFINED;
+                        BSDLY = IntDefine.UNDEFINED;
+                        CR0 = IntDefine.UNDEFINED;
+                        CR1 = IntDefine.UNDEFINED;
+                        CR2 = IntDefine.UNDEFINED;
+                        CR3 = IntDefine.UNDEFINED;
+                        CRDLY = IntDefine.UNDEFINED;
+                        FF0 = IntDefine.UNDEFINED;
+                        FF1 = IntDefine.UNDEFINED;
+                        FFDLY = IntDefine.UNDEFINED;
+                        NL0 = IntDefine.UNDEFINED;
+                        NL1 = IntDefine.UNDEFINED;
+                        NLDLY = IntDefine.UNDEFINED;
+                        OFDEL = IntDefine.UNDEFINED;
+                        OFILL = IntDefine.UNDEFINED;
                         B460800 = IntDefine.toIntDefine(FreeBsdDefines.B460800);
                         B921600 = IntDefine.toIntDefine(FreeBsdDefines.B921600);
                         CRTSCTS = FreeBsdDefines.CRTSCTS;
                         TAB0 = IntDefine.toIntDefine(FreeBsdDefines.TAB0);
+                        TAB1 = IntDefine.UNDEFINED;
+                        TAB2 = IntDefine.UNDEFINED;
                         TAB3 = IntDefine.toIntDefine(FreeBsdDefines.TAB3);
                         TABDLY = IntDefine.toIntDefine(FreeBsdDefines.TABDLY);
                         ONLRET = FreeBsdDefines.ONLRET;
                         ONOCR = FreeBsdDefines.ONOCR;
+                        VT0 = IntDefine.UNDEFINED;
+                        VT1 = IntDefine.UNDEFINED;
+                        VTDLY = IntDefine.UNDEFINED;
                         break;
                     case OPEN_BSD:
+                        BS0 = IntDefine.UNDEFINED;
+                        BS1 = IntDefine.UNDEFINED;
+                        BSDLY = IntDefine.UNDEFINED;
+                        CR0 = IntDefine.UNDEFINED;
+                        CR1 = IntDefine.UNDEFINED;
+                        CR2 = IntDefine.UNDEFINED;
+                        CR3 = IntDefine.UNDEFINED;
+                        CRDLY = IntDefine.UNDEFINED;
+                        FF0 = IntDefine.UNDEFINED;
+                        FF1 = IntDefine.UNDEFINED;
+                        FFDLY = IntDefine.UNDEFINED;
+                        NL0 = IntDefine.UNDEFINED;
+                        NL1 = IntDefine.UNDEFINED;
+                        NLDLY = IntDefine.UNDEFINED;
+                        OFDEL = IntDefine.UNDEFINED;
+                        OFILL = IntDefine.UNDEFINED;
                         B460800 = IntDefine.UNDEFINED;
                         B921600 = IntDefine.UNDEFINED;
                         CRTSCTS = OpenBsdDefines.CRTSCTS;
                         TAB0 = IntDefine.UNDEFINED;
+                        TAB1 = IntDefine.UNDEFINED;
+                        TAB2 = IntDefine.UNDEFINED;
                         TAB3 = IntDefine.UNDEFINED;
                         TABDLY = IntDefine.UNDEFINED;
                         ONLRET = OpenBsdDefines.ONLRET;
                         ONOCR = OpenBsdDefines.ONOCR;
+                        VT0 = IntDefine.UNDEFINED;
+                        VT1 = IntDefine.UNDEFINED;
+                        VTDLY = IntDefine.UNDEFINED;
                         break;
                     default:
                         throw new NoClassDefFoundError("No termios.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -1798,11 +1881,11 @@ public final class Termios {
      * type speed_t representing the input speed.
      */
     @speed_t
-    public final static int cfgetispeed(StructTermios termios) {
+    public final static long cfgetispeed(StructTermios termios) {
         return cfgetispeed(AbstractNativeMemory.toUintptr_t(termios));
     }
 
-    private static native int cfgetispeed(long ptrTermios);
+    private static native long cfgetispeed(long ptrTermios);
 
     /**
      * <b>POSIX:</b>
@@ -1815,11 +1898,11 @@ public final class Termios {
      * type speed_t representing the output speed.
      */
     @speed_t
-    public final static int cfgetospeed(StructTermios termios) {
+    public final static long cfgetospeed(StructTermios termios) {
         return cfgetospeed(AbstractNativeMemory.toUintptr_t(termios));
     }
 
-    private static native int cfgetospeed(long ptrTermios);
+    private static native long cfgetospeed(long ptrTermios);
 
     /**
      * <b>POSIX:</b>
@@ -1832,11 +1915,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static void cfsetispeed(StructTermios termios, @speed_t int speed) throws NativeErrorException {
+    public final static void cfsetispeed(StructTermios termios, @speed_t long speed) throws NativeErrorException {
         cfsetispeed(AbstractNativeMemory.toUintptr_t(termios), speed);
     }
 
-    private static native void cfsetispeed(long ptrTermios, int speed) throws NativeErrorException;
+    private static native void cfsetispeed(long ptrTermios, long speed) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1849,11 +1932,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static void cfsetospeed(StructTermios termios, @speed_t int speed) throws NativeErrorException {
+    public final static void cfsetospeed(StructTermios termios, @speed_t long speed) throws NativeErrorException {
         cfsetospeed(AbstractNativeMemory.toUintptr_t(termios), speed);
     }
 
-    private static native void cfsetospeed(long ptrTermios, int speed) throws NativeErrorException;
+    private static native void cfsetospeed(long ptrTermios, long speed) throws NativeErrorException;
 
     /**
      * <b>Non POSIX:</b> set input and output spped at the same time.
@@ -1864,11 +1947,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static void cfsetspeed(StructTermios termios, @speed_t int speed) throws NativeErrorException {
+    public final static void cfsetspeed(StructTermios termios, @speed_t long speed) throws NativeErrorException {
         cfsetspeed(AbstractNativeMemory.toUintptr_t(termios), speed);
     }
 
-    private static native void cfsetspeed(long ptrTermios, int speed) throws NativeErrorException;
+    private static native void cfsetspeed(long ptrTermios, long speed) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1972,21 +2055,38 @@ public final class Termios {
 
     private static native void tcsetattr(int fildes, int optional_actions, long ptrTermios) throws NativeErrorException;
 
-    @cc_t
-    public static class Cc_t extends Uint8_t {
+    public static class Cc_t__Formatter {
 
-        public Cc_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
-            super(owner, offset, setMem);
+        public static void c_cc2String(Appendable sb, int index, byte c_cc) throws IOException {
+            sb.append(String.format(", c_cc[%s] = 0x%02x", toCcName(index), c_cc));
         }
 
-        /**
-         * This is a control character, maybe not printable
-         *
-         * @return
-         */
-        @Override
-        public String nativeToString() {
-            return String.valueOf((char) uint8_t());
+        public static String toCcName(int value) {
+            if (VEOF == value) {
+                return "VEOF";
+            } else if (VEOL == value) {
+                return "VEOL";
+            } else if (VERASE == value) {
+                return "VERASE";
+            } else if (VINTR == value) {
+                return "VINTR";
+            } else if (VKILL == value) {
+                return "VKILL";
+            } else if (VMIN == value) {
+                return "VMIN";
+            } else if (VQUIT == value) {
+                return "VQUIT";
+            } else if (VSTART == value) {
+                return "VSTART";
+            } else if (VSTOP == value) {
+                return "VSTOP";
+            } else if (VSUSP == value) {
+                return "VSUSP";
+            } else if (VTIME == value) {
+                return "VTIME";
+            } else {
+                return String.valueOf(value);
+            }
         }
 
     }
@@ -1994,10 +2094,9 @@ public final class Termios {
     /**
      * speed_t takes only symbolic constants, so the sign is of no relevance...
      */
-    @speed_t
-    public static class Speed_t extends Uint32_t {
+    public static class Speed_t_Formatter {
 
-        static String speed_tToString(int speed_t) {
+        public static String speed_tToString(int speed_t) {
             if (speed_t == B0) {
                 return "0";
             } else if (speed_t == B50) {
@@ -2065,19 +2164,9 @@ public final class Termios {
             }
         }
 
-        public Speed_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
-            super(owner, offset, setMem);
-        }
-
-        @Override
-        public String nativeToString() {
-            return speed_tToString(uint32_t());
-        }
-
     }
 
-    @tcflag_t
-    public static class Tcflag_t extends Uint32_t {
+    public static class Tcflag_t__Formatter {
 
         /**
          * Make sure the native lib is loaded ... this class is static, so we
@@ -2087,7 +2176,7 @@ public final class Termios {
             LibJnhwPosixLoader.touch();
         }
 
-        static public void c_cflag2String(Appendable sb, int c_cflag) throws IOException {
+        public static void c_cflag2String(Appendable sb, int c_cflag) throws IOException {
             if ((CSIZE & c_cflag) == CS5) {
                 sb.append("CS5 ");
                 c_cflag &= ~CS5;
@@ -2145,11 +2234,20 @@ public final class Termios {
                 }
             }
             if (c_cflag != 0) {
-                sb.append(String.format("0x%08x", c_cflag));
+                switch (PosixDataType.tcflag_t.baseDataType) {
+                    case uint32_t:
+                        sb.append(String.format("0x%08x", c_cflag));
+                        break;
+                    case uint64_t:
+                        sb.append(String.format("0x%016x", c_cflag));
+                        break;
+                    default:
+                        throw new RuntimeException("Can't handle PosixDataType.tcflag_t");
+                }
             }
         }
 
-        static public void c_iflag2String(Appendable sb, int c_iflag) throws IOException {
+        public static void c_iflag2String(Appendable sb, int c_iflag) throws IOException {
             if ((BRKINT & c_iflag) == BRKINT) {
                 sb.append("BRKINT ");
                 c_iflag &= ~BRKINT;
@@ -2199,11 +2297,20 @@ public final class Termios {
                 c_iflag &= ~PARMRK;
             }
             if (c_iflag != 0) {
-                sb.append(String.format("0x%08x", c_iflag));
+                switch (PosixDataType.tcflag_t.baseDataType) {
+                    case uint32_t:
+                        sb.append(String.format("0x%08x", c_iflag));
+                        break;
+                    case uint64_t:
+                        sb.append(String.format("0x%016x", c_iflag));
+                        break;
+                    default:
+                        throw new RuntimeException("Can't handle PosixDataType.tcflag_t");
+                }
             }
         }
 
-        static public void c_lflag2String(Appendable sb, int c_lflag) throws IOException {
+        public static void c_lflag2String(Appendable sb, int c_lflag) throws IOException {
             if ((ECHO & c_lflag) == ECHO) {
                 sb.append("ECHO ");
                 c_lflag &= ~ECHO;
@@ -2241,11 +2348,20 @@ public final class Termios {
                 c_lflag &= ~TOSTOP;
             }
             if (c_lflag != 0) {
-                sb.append(String.format("0x%08x", c_lflag));
+                switch (PosixDataType.tcflag_t.baseDataType) {
+                    case uint32_t:
+                        sb.append(String.format("0x%08x", c_lflag));
+                        break;
+                    case uint64_t:
+                        sb.append(String.format("0x%016x", c_lflag));
+                        break;
+                    default:
+                        throw new RuntimeException("Can't handle PosixDataType.tcflag_t");
+                }
             }
         }
 
-        static public void c_oflag2String(Appendable sb, int c_oflag) throws IOException {
+        public static void c_oflag2String(Appendable sb, int c_oflag) throws IOException {
             if ((OPOST & c_oflag) == OPOST) {
                 sb.append("OPOST ");
                 c_oflag &= ~OPOST;
@@ -2375,22 +2491,17 @@ public final class Termios {
                 }
             }
             if (c_oflag != 0) {
-                sb.append(String.format("0x%08x", c_oflag));
+                switch (PosixDataType.tcflag_t.baseDataType) {
+                    case uint32_t:
+                        sb.append(String.format("0x%08x", c_oflag));
+                        break;
+                    case uint64_t:
+                        sb.append(String.format("0x%016x", c_oflag));
+                        break;
+                    default:
+                        throw new RuntimeException("Can't handle PosixDataType.tcflag_t");
+                }
             }
-        }
-
-        public Tcflag_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
-            super(owner, offset, setMem);
-        }
-
-        /**
-         * the native value as hex string.
-         *
-         * @return
-         */
-        @Override
-        public String nativeToString() {
-            return nativeToHexString();
         }
 
     }
@@ -2401,7 +2512,7 @@ public final class Termios {
      *
      * @author aploese
      */
-    public final static class StructTermios extends Struct32 {
+    public final static class StructTermios extends PosixStruct32 {
 
         public final static long offsetof_C_iflag;
         public final static long offsetof_C_oflag;
@@ -2443,6 +2554,18 @@ public final class Termios {
 
                     }
                     break;
+                case DARWIN:
+                    alignof = Alignment.AT_8;
+                    sizeof = 72;
+                    offsetof_C_iflag = 0;
+                    offsetof_C_oflag = 8;
+                    offsetof_C_cflag = 16;
+                    offsetof_C_lflag = 24;
+                    offsetof_C_cc = 32;
+                    offsetof_C_line = -1;
+                    offsetof_C_ispeed = 56;
+                    offsetof_C_ospeed = 64;
+                    break;
                 case FREE_BSD:
                     alignof = Alignment.AT_4;
                     sizeof = 44;
@@ -2480,7 +2603,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_iflag() {
-            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_iflag);
+            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(this, StructTermios.offsetof_C_iflag);
         }
 
         /**
@@ -2490,7 +2613,7 @@ public final class Termios {
          * @param value the value of c_iflag to be set natively.
          */
         public void c_iflag(@tcflag_t int value) {
-            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_iflag, value);
+            ACCESSOR_TCFLAG_T.tcflag_tFromInt(this, StructTermios.offsetof_C_iflag, value);
         }
 
         /**
@@ -2501,7 +2624,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_oflag() {
-            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_oflag);
+            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(this, StructTermios.offsetof_C_oflag);
         }
 
         /**
@@ -2511,7 +2634,7 @@ public final class Termios {
          * @param value the value of c_oflag to be set natively.
          */
         public void c_oflag(@tcflag_t int value) {
-            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_oflag, value);
+            ACCESSOR_TCFLAG_T.tcflag_tFromInt(this, StructTermios.offsetof_C_oflag, value);
         }
 
         /**
@@ -2522,7 +2645,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_cflag() {
-            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_cflag);
+            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(this, StructTermios.offsetof_C_cflag);
         }
 
         /**
@@ -2532,7 +2655,7 @@ public final class Termios {
          * @param value the value of c_cflag to be set natively.
          */
         public void c_cflag(@tcflag_t int value) {
-            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_cflag, value);
+            ACCESSOR_TCFLAG_T.tcflag_tFromInt(this, StructTermios.offsetof_C_cflag, value);
         }
 
         /**
@@ -2543,7 +2666,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_lflag() {
-            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_lflag);
+            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(this, StructTermios.offsetof_C_lflag);
         }
 
         /**
@@ -2553,7 +2676,7 @@ public final class Termios {
          * @param value the value of c_lflag to be set natively.
          */
         public void c_lflag(@tcflag_t int value) {
-            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_lflag, value);
+            ACCESSOR_TCFLAG_T.tcflag_tFromInt(this, StructTermios.offsetof_C_lflag, value);
         }
 
         /**
@@ -2627,7 +2750,7 @@ public final class Termios {
             if (StructTermios.offsetof_C_ispeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_ispeed);
+            return ACCESSOR_SPEED_T.speed_tAsInt(this, StructTermios.offsetof_C_ispeed);
         }
 
         /**
@@ -2642,7 +2765,7 @@ public final class Termios {
             if (StructTermios.offsetof_C_ispeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_ispeed, value);
+            ACCESSOR_SPEED_T.speed_tFromInt(this, StructTermios.offsetof_C_ispeed, value);
         }
 
         /**
@@ -2658,7 +2781,7 @@ public final class Termios {
             if (StructTermios.offsetof_C_ospeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            return MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_ospeed);
+            return ACCESSOR_SPEED_T.speed_tAsInt(this, StructTermios.offsetof_C_ospeed);
         }
 
         /**
@@ -2673,7 +2796,7 @@ public final class Termios {
             if (StructTermios.offsetof_C_ospeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            MEM_ACCESS.uint32_t(this, StructTermios.offsetof_C_ospeed, value);
+            ACCESSOR_SPEED_T.speed_tFromInt(this, StructTermios.offsetof_C_ospeed, value);
         }
 
         public StructTermios() {
@@ -2685,59 +2808,45 @@ public final class Termios {
             super(parent, offset, StructTermios.sizeof, setMem);
         }
 
-        public static String toCcName(int value) {
-            if (VEOF == value) {
-                return "VEOF";
-            } else if (VEOL == value) {
-                return "VEOL";
-            } else if (VERASE == value) {
-                return "VERASE";
-            } else if (VINTR == value) {
-                return "VINTR";
-            } else if (VKILL == value) {
-                return "VKILL";
-            } else if (VMIN == value) {
-                return "VMIN";
-            } else if (VQUIT == value) {
-                return "VQUIT";
-            } else if (VSTART == value) {
-                return "VSTART";
-            } else if (VSTOP == value) {
-                return "VSTOP";
-            } else if (VSUSP == value) {
-                return "VSUSP";
-            } else if (VTIME == value) {
-                return "VTIME";
-            } else {
-                return String.valueOf(value);
-            }
-        }
-
-        static public void c_cc2String(Appendable sb, int index, byte c_cc) throws IOException {
-            sb.append(String.format(", c_cc[%s] = 0x%02x", toCcName(index), c_cc));
-        }
-
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            jsb.appendMember("c_iflag", "[", (sbu) -> Tcflag_t.c_iflag2String(sbu, c_iflag()), "]");
-            jsb.appendMember("c_oflag", "[", (sbu) -> Tcflag_t.c_oflag2String(sb, c_oflag()), "]");
-            jsb.appendMember("c_cflag", "[", (sbu) -> Tcflag_t.c_cflag2String(sb, c_cflag()), "]");
-            jsb.appendMember("c_lflag", "[", (sbu) -> Tcflag_t.c_lflag2String(sb, c_lflag()), "]");
+            jsb.appendMember("c_iflag", "[", (sbu) -> Tcflag_t__Formatter.c_iflag2String(sbu, c_iflag()), "]");
+            jsb.appendMember("c_oflag", "[", (sbu) -> Tcflag_t__Formatter.c_oflag2String(sb, c_oflag()), "]");
+            jsb.appendMember("c_cflag", "[", (sbu) -> Tcflag_t__Formatter.c_cflag2String(sb, c_cflag()), "]");
+            jsb.appendMember("c_lflag", "[", (sbu) -> Tcflag_t__Formatter.c_lflag2String(sb, c_lflag()), "]");
             try {
                 jsb.appendHexByteMember("c_line", c_line());
             } catch (NoSuchNativeTypeMemberException nstme) {
             }
             try {
-                jsb.appendHexIntMember("c_ispeed", c_ispeed());
+                switch (PosixDataType.speed_t.baseDataType) {
+                    case uint32_t:
+                        jsb.appendHexIntMember("c_ispeed", (int) c_ispeed());
+                        break;
+                    case uint64_t:
+                        jsb.appendHexLongMember("c_ispeed", c_ispeed());
+                        break;
+                    default:
+                        throw new RuntimeException("Can't handle PosixDataType.speed_t for c_ispeed");
+                }
             } catch (NoSuchNativeTypeMemberException nstme) {
             }
             try {
-                jsb.appendHexIntMember("c_ospeed", c_ospeed());
+                switch (PosixDataType.speed_t.baseDataType) {
+                    case uint32_t:
+                        jsb.appendHexIntMember("c_ospeed", (int) c_ospeed());
+                        break;
+                    case uint64_t:
+                        jsb.appendHexLongMember("c_ospeed", c_ospeed());
+                        break;
+                    default:
+                        throw new RuntimeException("Can't handle PosixDataType.speed_t for c_ospeed");
+                }
             } catch (NoSuchNativeTypeMemberException nstme) {
             }
             for (int i = 0; i < NCCS; i++) {
-                c_cc2String(sb, i, c_cc(i));
+                Cc_t__Formatter.c_cc2String(sb, i, c_cc(i));
             }
             jsb.close();
         }

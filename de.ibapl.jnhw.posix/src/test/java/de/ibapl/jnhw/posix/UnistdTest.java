@@ -56,6 +56,12 @@ public class UnistdTest {
 
         public final static native long _POSIX_VERSION();
 
+        public final static native int _SC_AIO_LISTIO_MAX();
+
+        public final static native int _SC_AIO_MAX();
+
+        public final static native int _SC_AIO_PRIO_DELTA_MAX();
+
         public final static native int SEEK_CUR();
 
         public final static native Integer SEEK_DATA();

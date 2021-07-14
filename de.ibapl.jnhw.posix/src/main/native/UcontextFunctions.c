@@ -41,7 +41,7 @@ extern "C" {
      * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_getcontext
-#if defined(__OpenBSD__)
+#if defined(__OpenBSD__) || defined(__APPLE__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jlong ptrUcp) {
         throw_NoSuchNativeMethodException(env, "getcontext");
 #else
@@ -62,7 +62,7 @@ extern "C" {
      * Signature: (J)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_setcontext
-#if defined(__OpenBSD__)
+#if defined(__OpenBSD__) || defined(__APPLE__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jlong ptrUcp) {
         throw_NoSuchNativeMethodException(env, "setcontext");
 #else
@@ -83,7 +83,7 @@ extern "C" {
      * Signature: (JJ)V
      */
     JNIEXPORT void JNICALL Java_de_ibapl_jnhw_x_1open_Ucontext_swapcontext
-#if defined(__OpenBSD__)
+#if defined(__OpenBSD__) || defined(__APPLE__)
     (JNIEnv *env, __attribute__ ((unused)) jclass clazz, __attribute__ ((unused)) jlong ptrOucp, __attribute__ ((unused)) jlong ptrUcp) {
         throw_NoSuchNativeMethodException(env, "swapcontext");
 #else

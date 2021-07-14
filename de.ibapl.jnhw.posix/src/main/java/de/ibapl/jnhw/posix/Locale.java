@@ -78,6 +78,18 @@ public class Locale {
         public final static int LC_TIME = 5;
     }
 
+    public static interface DarwinDefines extends BsdDefines {
+
+        public final static int LC_ALL_MASK = 63;
+        public final static int LC_COLLATE_MASK = 1;
+        public final static int LC_CTYPE_MASK = 2;
+        public final static int LC_MESSAGES_MASK = 4;
+        public final static int LC_MONETARY_MASK = 8;
+        public final static int LC_NUMERIC_MASK = 16;
+        public final static int LC_TIME_MASK = 32;
+
+    }
+
     public static interface FreeBsdDefines extends BsdDefines {
 
         public final static int LC_ALL_MASK = 63;
@@ -133,6 +145,7 @@ public class Locale {
                 LC_TIME = LinuxDefines.LC_TIME;
                 LC_TIME_MASK = LinuxDefines.LC_TIME_MASK;
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_LOCALE_H = true;
@@ -145,6 +158,15 @@ public class Locale {
                 LC_NUMERIC = BsdDefines.LC_NUMERIC;
                 LC_TIME = BsdDefines.LC_TIME;
                 switch (multiarchInfo.getOS()) {
+                    case DARWIN:
+                        LC_ALL_MASK = DarwinDefines.LC_ALL_MASK;
+                        LC_COLLATE_MASK = DarwinDefines.LC_COLLATE_MASK;
+                        LC_CTYPE_MASK = DarwinDefines.LC_CTYPE_MASK;
+                        LC_MESSAGES_MASK = DarwinDefines.LC_MESSAGES_MASK;
+                        LC_MONETARY_MASK = DarwinDefines.LC_MONETARY_MASK;
+                        LC_NUMERIC_MASK = DarwinDefines.LC_NUMERIC_MASK;
+                        LC_TIME_MASK = DarwinDefines.LC_TIME_MASK;
+                        break;
                     case FREE_BSD:
                         LC_ALL_MASK = FreeBsdDefines.LC_ALL_MASK;
                         LC_COLLATE_MASK = FreeBsdDefines.LC_COLLATE_MASK;
@@ -496,6 +518,7 @@ public class Locale {
                             throw new NoClassDefFoundError("No locale.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
+                case DARWIN:
                 case FREE_BSD:
                     alignof = Alignment.AT_8;
                     sizeof = 96;

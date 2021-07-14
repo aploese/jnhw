@@ -61,6 +61,9 @@ public final class Unistd {
     public static interface LinuxDefines {
 
         public final static long _POSIX_VERSION = 200809L;
+        public final static int _SC_AIO_LISTIO_MAX = 23;
+        public final static int _SC_AIO_MAX = 24;
+        public final static int _SC_AIO_PRIO_DELTA_MAX = 25;
         public final static int SEEK_CUR = 1;
         public final static int SEEK_DATA = 3;
         public final static int SEEK_END = 2;
@@ -73,12 +76,23 @@ public final class Unistd {
 
     public static interface BsdDefines {
 
+        public final static int _SC_AIO_LISTIO_MAX = 42;
+        public final static int _SC_AIO_MAX = 43;
+        public final static int _SC_AIO_PRIO_DELTA_MAX = 44;
         public final static int SEEK_CUR = 1;
         public final static int SEEK_END = 2;
         public final static int SEEK_SET = 0;
         public final static int STDERR_FILENO = 2;
         public final static int STDIN_FILENO = 0;
         public final static int STDOUT_FILENO = 1;
+    }
+
+    public static interface DarwinDefines extends BsdDefines {
+
+        public final static long _POSIX_VERSION = 200112;
+        public final static int SEEK_DATA = 4;
+        public final static int SEEK_HOLE = 3;
+
     }
 
     public static interface FreeBsdDefines extends BsdDefines {
@@ -110,6 +124,9 @@ public final class Unistd {
             case LINUX:
                 HAVE_UNISTD_H = true;
                 _POSIX_VERSION = LinuxDefines._POSIX_VERSION;
+                _SC_AIO_LISTIO_MAX = LinuxDefines._SC_AIO_LISTIO_MAX;
+                _SC_AIO_MAX = LinuxDefines._SC_AIO_MAX;
+                _SC_AIO_PRIO_DELTA_MAX = LinuxDefines._SC_AIO_PRIO_DELTA_MAX;
                 SEEK_CUR = LinuxDefines.SEEK_CUR;
                 SEEK_DATA = IntDefine.toIntDefine(LinuxDefines.SEEK_DATA);
                 SEEK_END = LinuxDefines.SEEK_END;
@@ -119,9 +136,13 @@ public final class Unistd {
                 STDIN_FILENO = LinuxDefines.STDIN_FILENO;
                 STDOUT_FILENO = LinuxDefines.STDOUT_FILENO;
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_UNISTD_H = true;
+                _SC_AIO_LISTIO_MAX = BsdDefines._SC_AIO_LISTIO_MAX;
+                _SC_AIO_MAX = BsdDefines._SC_AIO_MAX;
+                _SC_AIO_PRIO_DELTA_MAX = BsdDefines._SC_AIO_PRIO_DELTA_MAX;
                 SEEK_CUR = BsdDefines.SEEK_CUR;
                 SEEK_END = BsdDefines.SEEK_END;
                 SEEK_SET = BsdDefines.SEEK_SET;
@@ -129,6 +150,11 @@ public final class Unistd {
                 STDIN_FILENO = BsdDefines.STDIN_FILENO;
                 STDOUT_FILENO = BsdDefines.STDOUT_FILENO;
                 switch (multiarchInfo.getOS()) {
+                    case DARWIN:
+                        _POSIX_VERSION = DarwinDefines._POSIX_VERSION;
+                        SEEK_DATA = IntDefine.toIntDefine(DarwinDefines.SEEK_DATA);
+                        SEEK_HOLE = IntDefine.toIntDefine(DarwinDefines.SEEK_HOLE);
+                        break;
                     case FREE_BSD:
                         _POSIX_VERSION = FreeBsdDefines._POSIX_VERSION;
                         SEEK_DATA = IntDefine.toIntDefine(FreeBsdDefines.SEEK_DATA);
@@ -151,12 +177,33 @@ public final class Unistd {
     public final static boolean HAVE_UNISTD_H;
 
     /**
+     * <b>POSIX:</b> variable: {AIO_LISTIO_MAX}.
+     *
+     */
+    @Define
+    public final static int _SC_AIO_LISTIO_MAX;
+
+    /**
+     * <b>POSIX:</b> variable: {AIO_MAX}.
+     *
+     */
+    @Define
+    public final static int _SC_AIO_MAX;
+
+    /**
+     * <b>POSIX:</b> variable: {AIO_PRIO_DELTA_MAX}.
+     *
+     */
+    @Define
+    public final static int _SC_AIO_PRIO_DELTA_MAX;
+
+    /**
      * <b>POSIX:</b>seek relative to current position. This must be the same
      * value as {@link de.ibapl.jnhw.posix.Stdio.SEEK_CUR()}.
      *
      */
     @Define
-    public static int SEEK_CUR;
+    public final static int SEEK_CUR;
 
     /**
      * <b>Linux,Apple:</b> Adjust the file offset to the next location in the
@@ -164,7 +211,7 @@ public final class Unistd {
      *
      */
     @Define
-    public static IntDefine SEEK_DATA;
+    public final static IntDefine SEEK_DATA;
 
     /**
      * <b>POSIX:</b> Seek relative to end-of-file. This must be the same value
@@ -172,7 +219,7 @@ public final class Unistd {
      *
      */
     @Define
-    public static int SEEK_END;
+    public final static int SEEK_END;
 
     /**
      * <b>POSIX:</b> Adjust the file offset to the next hole in the file greater
@@ -180,7 +227,7 @@ public final class Unistd {
      *
      */
     @Define
-    public static IntDefine SEEK_HOLE;
+    public final static IntDefine SEEK_HOLE;
 
     /**
      * <b>POSIX:</b> Seek relative to start-of-file. This must be the same value
@@ -188,7 +235,7 @@ public final class Unistd {
      *
      */
     @Define
-    public static int SEEK_SET;
+    public final static int SEEK_SET;
 
     /**
      * <b>POSIX:</b> File number of stderr; 2.
@@ -657,6 +704,20 @@ public final class Unistd {
     public final static native short read(int fildes) throws NativeErrorException;
 
     private static native int read(int fildes, ByteBuffer buffer, int off, int nByte) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/sysconf.html">pwrite,
+     * sysconf - get configurable system variables</a>.
+     *
+     * @param name the name argument represents the system variable to be
+     * queried.
+     * @return the current variable value on the system.
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    @ssize_t
+    public final static native long sysconf(int name) throws NativeErrorException;
 
     /**
      * <b>LINUX,APPLE,BSD:</b>

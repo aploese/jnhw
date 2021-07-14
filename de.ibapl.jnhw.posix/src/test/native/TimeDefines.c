@@ -104,11 +104,18 @@ extern "C" {
     /*
      * Class:     de_ibapl_jnhw_posix_TimeTest_NativeDefines
      * Method:    TIMER_ABSTIME
-     * Signature: ()I
+     * Signature: ()Ljava/lang/Integer;
      */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TimeTest_00024NativeDefines_TIMER_1ABSTIME
+    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TimeTest_00024NativeDefines_TIMER_1ABSTIME
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIMER_ABSTIME;
+#if defined(__APPLE__)
+#if defined(TIMER_ABSTIME)
+#error "TIMER_ABSTIME defined"
+#endif
+        return NULL;
+#else
+        return JnhwWrapInteger(env, TIMER_ABSTIME);
+#endif
     }
 
 #endif

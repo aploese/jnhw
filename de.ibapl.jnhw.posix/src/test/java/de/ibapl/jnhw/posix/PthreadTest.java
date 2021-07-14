@@ -184,9 +184,9 @@ public class PthreadTest {
     @Test
     public void testPthread_getcpuclockid() throws Exception {
         System.out.println("pthread_getcpuclockid");
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.MAC_OS_X) {
+        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Pthread.pthread_getcpuclockid(null);
+                Pthread.pthread_getcpuclockid(Pthread.pthread_self());
             });
         } else {
             int clock_id;
@@ -252,19 +252,20 @@ public class PthreadTest {
         Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
         Pthread.pthread_attr_init(attr);
         try {
+            System.out.println("pthread_attr_getinheritsched");
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Pthread.pthread_attr_getinheritsched(null);
+            });
+            final int inheritsched = Pthread.pthread_attr_getinheritsched(attr);
+            Assertions.assertEquals(Pthread.PTHREAD_INHERIT_SCHED, inheritsched);
+
             System.out.println("pthread_attr_setinheritsched");
 
             Assertions.assertThrows(NullPointerException.class, () -> {
                 Pthread.pthread_attr_setinheritsched(null, 0);
             });
 
-            Pthread.pthread_attr_setinheritsched(attr, 0);
-            System.out.println("pthread_attr_getinheritsched");
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Pthread.pthread_attr_getinheritsched(null);
-            });
-            int result = Pthread.pthread_attr_getinheritsched(attr);
-            Assertions.assertEquals(0, result);
+            Pthread.pthread_attr_setinheritsched(attr, Pthread.PTHREAD_EXPLICIT_SCHED);
         } finally {
             Pthread.pthread_attr_destroy(attr);
         }
@@ -273,27 +274,6 @@ public class PthreadTest {
     @Test
     public void testPthread_setget_schedparam() throws NativeErrorException {
         Sched.Sched_param param = new Sched.Sched_param(SetMem.TO_0x00);
-        param.sched_priority(127);
-
-        System.out.println("pthread_setschedparam");
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, null);
-        });
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_setschedparam(null, 0, param);
-        });
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case LINUX:
-            case OPEN_BSD:
-                //TODO Why??? EINVAL
-                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, param);
-                });
-                Assertions.assertEquals(Errno.EINVAL, nee.errno);
-                break;
-            default:
-                Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, param);
-        }
 
         System.out.println("pthread_getschedparam");
 
@@ -305,14 +285,26 @@ public class PthreadTest {
         });
 
         int policy = Pthread.pthread_getschedparam(Pthread.pthread_self(), param);
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case OPEN_BSD:
-                //TODO WHY 2 ???
-                Assertions.assertEquals(2, policy);
-                break;
-            default:
-                Assertions.assertEquals(0, policy);
-        }
+        Assertions.assertEquals(Sched.SCHED_OTHER, policy);
+
+        System.out.println("pthread_setschedparam");
+
+        Pthread.pthread_setschedparam(Pthread.pthread_self(), policy, param);
+
+        final int sched_priority = param.sched_priority();
+        param.sched_priority(Integer.MAX_VALUE);
+        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+            Pthread.pthread_setschedparam(Pthread.pthread_self(), policy, param);
+        });
+        Assertions.assertEquals(Errno.EINVAL, nee.errno);
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, null);
+        });
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Pthread.pthread_setschedparam(null, 0, param);
+        });
 
     }
 
@@ -322,7 +314,7 @@ public class PthreadTest {
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case FREE_BSD:
             case OPEN_BSD:
-            case MAC_OS_X:
+            case DARWIN:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Pthread.pthread_setschedprio(Pthread.pthread_self(), 0);
                 });

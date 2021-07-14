@@ -345,6 +345,7 @@ public final class Ioctl {
                         throw new NoClassDefFoundError("No ioctl.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                 }
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_SYS_IOCTL_H = true;
@@ -401,6 +402,7 @@ public final class Ioctl {
 
                 IOCSIZE_MASK = IntDefine.UNDEFINED;
                 switch (multiarchInfo.getOS()) {
+                    case DARWIN:
                     case FREE_BSD:
                         IOCPARM_MAX = IntDefine.toIntDefine(FreeBsdDefines.IOCPARM_MAX);
                         break;
@@ -661,8 +663,8 @@ public final class Ioctl {
         switch (NativeLibResolver.getOS()) {
             case LINUX:
                 return _IOC(_IOC_READ.get(), type, nr, size);
+            case DARWIN:
             case FREE_BSD:
-                return _IOC(IOC_OUT, type, nr, size);
             case OPEN_BSD:
                 return _IOC(IOC_OUT, type, nr, size);
             default:
@@ -682,8 +684,8 @@ public final class Ioctl {
         switch (NativeLibResolver.getOS()) {
             case LINUX:
                 return _IOC(_IOC_WRITE.get(), type, nr, size);
+            case DARWIN:
             case FREE_BSD:
-                return _IOC(IOC_IN, type, nr, size);
             case OPEN_BSD:
                 return _IOC(IOC_IN, type, nr, size);
             default:
@@ -703,8 +705,8 @@ public final class Ioctl {
         switch (NativeLibResolver.getOS()) {
             case LINUX:
                 return _IOC(_IOC_READ.get() | _IOC_WRITE.get(), type, nr, size);
+            case DARWIN:
             case FREE_BSD:
-                return _IOC(IOC_INOUT, type, nr, size);
             case OPEN_BSD:
                 return _IOC(IOC_INOUT, type, nr, size);
             default:

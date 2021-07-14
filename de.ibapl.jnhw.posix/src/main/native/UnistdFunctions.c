@@ -152,6 +152,21 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_Unistd
+     * Method:    sysconf
+     * Signature: (I)J
+     */
+    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_sysconf
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint name) {
+        errno = 0;
+        int64_t result = sysconf(name);
+        if ((result == -1) && (errno != 0)) {
+            throw_NativeErrorException(env, errno);
+        }
+        return result;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_Unistd
      * Method:    read
      * Signature: (IJII)I
      */

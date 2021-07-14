@@ -13090,10 +13090,10 @@ case "$host_os" in
             ;;
         esac
     ;;
-    darwin)
+    darwin*)
 	case "$host_cpu" in
 	x86_64)
-        	JNHW_MULTIARCH_TUPEL="x86_64-macosx-bsd"
+        	JNHW_MULTIARCH_TUPEL="x86_64-darwin-bsd"
 	;;
 	*)
         	fail not supported
@@ -13148,7 +13148,7 @@ case "$host_os" in
         JNHW_LIBTOOL_LIB_SUFFIX="-\$(JNHW_VERSION).dll"
         JNHW_STRIP_FLAG="-s"
     ;;
-    darwin)
+    darwin*)
         JNHW_LIB_PREFIX="lib"
         JNHW_LIB_SUFFIX=".\$(JNHW_VERSION).dylib"
         JNHW_LIBTOOL_LIB_SUFFIX=".\$(JNHW_LIBTOOL_LIB_VERSION).dylib"

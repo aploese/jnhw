@@ -242,7 +242,7 @@ public final class NativeLibResolver {
                     new Object[]{libName, classPathLibURL.toString()});
             // On MacOS we can't load the lib directly, we must fix first the internal id and
             // lib path ... only copy to tmp and fix the path solves this
-            if (getOS() != OS.MAC_OS_X) {
+            if (getOS() != OS.DARWIN) {
                 try {
                     consumer.accept(classPathLibName);
                     LOG.log(Level.INFO, "\"{0}\" loaded via System.load(\"{1}\")",
@@ -260,7 +260,7 @@ public final class NativeLibResolver {
                 File tmpLib = copyToNativeLibDir(classPathLibURL, formattedLibName);
                 classPathLibName = tmpLib.getAbsolutePath();
 
-                if (getOS() == OS.MAC_OS_X) {
+                if (getOS() == OS.DARWIN) {
                     URL classPathLibHelperURL = consumer.getClass().getResource(libResourceName + ".sh");
                     if (classPathLibHelperURL != null) {
                         String helperName = formattedLibName + ".sh";

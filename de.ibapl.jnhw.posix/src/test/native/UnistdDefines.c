@@ -64,6 +64,36 @@ extern "C" {
 
     /*
      * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
+     * Method:    _SC_AIO_LISTIO_MAX
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines__1SC_1AIO_1LISTIO_1MAX
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return _SC_AIO_LISTIO_MAX;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
+     * Method:    _SC_AIO_MAX
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines__1SC_1AIO_1MAX
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return _SC_AIO_MAX;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
+     * Method:    _SC_AIO_PRIO_DELTA_MAX
+     * Signature: ()I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines__1SC_1AIO_1PRIO_1DELTA_1MAX
+    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+        return _SC_AIO_PRIO_DELTA_MAX;
+    }
+
+    /*
+     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
      * Method:    SEEK_CUR
      * Signature: ()I
      */
@@ -79,7 +109,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_SEEK_1DATA
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__) || defined(__OpenBSD__)
+#if defined(__OpenBSD__)
 #if defined(SEEK_DATA)
 #error "SEEK_DATA defined"
 #endif
@@ -106,7 +136,7 @@ extern "C" {
      */
     JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_SEEK_1HOLE
     (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__APPLE__) || defined(__OpenBSD__)
+#if defined(__OpenBSD__)
 #if defined(SEEK_HOLE)
 #error "SEEK_HOLE defined"
 #endif

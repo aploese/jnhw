@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -235,26 +236,36 @@ public class AioTest {
     public void testAio_cancel() throws Exception {
         System.out.println("aio_cancel");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case DARWIN: {
+                Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+                aiocb.aio_fildes(-1);
+
+                int result = Aio.aio_cancel(aiocb);
+                assertEquals(Aio.AIO_ALLDONE.get(), result);
+
+                result = Aio.aio_cancel(-1);
+                assertEquals(Aio.AIO_ALLDONE.get(), result);
+            }
+            break;
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
                     Aio.aio_cancel(new Aio.Aiocb());
                 });
                 break;
             default:
-
-                Aio.Aiocb aiocbp = new Aio.Aiocb();
-                aiocbp.aio_fildes(-1);
+                Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+                aiocb.aio_fildes(-1);
 
                 NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    Aio.aio_cancel(aiocbp);
+                    Aio.aio_cancel(aiocb);
                 });
-
                 assertEquals(Errno.EBADF, nee.errno);
 
                 nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                     Aio.aio_cancel(-1);
                 });
-
                 assertEquals(Errno.EBADF, nee.errno);
         }
     }
@@ -266,26 +277,43 @@ public class AioTest {
     public void testAio_error() throws Exception {
         System.out.println("aio_error");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.aio_error(new Aio.Aiocb());
-                });
-                break;
-            default:
+            case DARWIN: {
                 Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+                aiocb.aio_fildes(-1);
+                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
+                        () -> {
+                            Aio.aio_error(aiocb);
+                        });
+                assertEquals(Errno.EINVAL, nee.errno);
+            }
+            break;
+            case FREE_BSD: {
+                Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
                 int result = Aio.aio_error(aiocb);
-                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
-                    assertEquals(Errno.EINVAL, result);
-                } else {
-                    assertEquals(0, result);
-                }
+                assertEquals(Errno.EINVAL, result);
+            }
+            break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> {
+                            Aio.aio_error(new Aio.Aiocb());
+                        });
+                return;
+            default:
+                Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+                aiocb.aio_fildes(-1);
 
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Aio.aio_error(null);
-                });
+                int result = Aio.aio_error(aiocb);
+                assertEquals(0, result);
         }
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Aio.aio_error(null);
+        });
     }
 
     /**
@@ -295,13 +323,26 @@ public class AioTest {
     public void testAio_fsync() throws Exception {
         System.out.println("aio_fsync");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case DARWIN: {
+                Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+                aiocb.aio_fildes(-1);
+
+                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    Aio.aio_fsync(Fcntl.O_SYNC, aiocb);
+                });
+
+                assertEquals(Errno.EWOULDBLOCK, nee.errno);
+            }
+            break;
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
                     Aio.aio_fsync(0, new Aio.Aiocb());
                 });
-                break;
+                return;
             default:
                 Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
                 NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
@@ -309,10 +350,10 @@ public class AioTest {
                 });
 
                 assertEquals(Errno.EBADF, nee.errno);
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Aio.aio_fsync(0, null);
-                });
         }
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Aio.aio_fsync(0, null);
+        });
     }
 
     /**
@@ -323,9 +364,10 @@ public class AioTest {
         System.out.println("aio_read");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.aio_read(new Aio.Aiocb());
-                });
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> {
+                            Aio.aio_read(new Aio.Aiocb());
+                        });
                 break;
             default:
                 //Clean up references to Callbacks
@@ -341,12 +383,16 @@ public class AioTest {
                 fw.close();
 
                 final Aio.Aiocb<Aio.Aiocb> aiocb = new Aio.Aiocb<>();
+                aiocb.aio_reqprio((int) Unistd.sysconf(Unistd._SC_AIO_PRIO_DELTA_MAX));
+
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
                 aioBuffer.clear();
                 aiocb.aio_buf(aioBuffer);
                 assertEquals(0, aioBuffer.position());
+                assertEquals(1024, aioBuffer.remaining());
+                assertEquals(1024, aiocb.aio_nbytes());
 
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD.get());
                 aiocb.aio_sigevent.sigev_value.sival_ptr(aiocb);
@@ -397,7 +443,16 @@ public class AioTest {
 
                 });
 
-                Aio.aio_read(aiocb);
+                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                        Aio.aio_read(aiocb);
+                    });
+                    assertEquals(Errno.EAGAIN, nee.errno);
+                    //Stop the test here for darwin it cant handle aio with threaded callbacks
+                    return;
+                } else {
+                    Aio.aio_read(aiocb);
+                }
 
                 synchronized (objRef) {
                     if (objRef[0] == null) {
@@ -423,9 +478,84 @@ public class AioTest {
 
                 Assertions.assertArrayEquals(HELLO_WORLD.getBytes(), result);
 
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Aio.aio_read(null);
+                Assertions.assertThrows(NullPointerException.class,
+                        () -> {
+                            Aio.aio_read(null);
+                        });
+        }
+    }
+
+    /**
+     * Test of aio_read method, of class Aio.
+     */
+    @Test
+    public void testAio_read_ByteBuffer_NoSignal() throws Exception {
+        System.out.println("aio_read");
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> {
+                            Aio.aio_read(new Aio.Aiocb());
+                        });
+                break;
+            default:
+
+                final String HELLO_WORLD = "Hello world!\n";
+
+                File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
+                FileWriter fw = new FileWriter(tmpFile);
+                fw.append(HELLO_WORLD);
+                fw.flush();
+                fw.close();
+
+                final Aio.Aiocb<Aio.Aiocb> aiocb = new Aio.Aiocb<>();
+
+                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
+                final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
+
+                aioBuffer.clear();
+                aiocb.aio_buf(aioBuffer);
+                assertEquals(0, aioBuffer.position());
+                assertEquals(1024, aioBuffer.remaining());
+                assertEquals(1024, aiocb.aio_nbytes());
+
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+
+                System.out.println("aio_read Pthread_t: " + Pthread.pthread_self());
+                System.out.println("aio_read currentThread: " + Thread.currentThread());
+
+                Aio.aio_read(aiocb);
+
+                Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+                    int result;
+                    do {
+                        result = Aio.aio_error(aiocb);
+                        if (result == Errno.EINPROGRESS) {
+                            //no-op just wait
+                        } else if (result == 0) {
+                            break;
+                        } else {
+                            fail("testAio_write_Buffer_NoSignal errno: " + Errno.getErrnoSymbol(result));
+                        }
+                    } while (result == 0);
                 });
+                long bytesWritten = Aio.aio_return(aiocb);
+                aioBuffer.position(aioBuffer.position() + (int) bytesWritten);
+
+                Unistd.close(aiocb.aio_fildes());
+
+                assertEquals(HELLO_WORLD.length(), aioBuffer.position());
+
+                byte[] result = new byte[HELLO_WORLD.length()];
+                aioBuffer.flip();
+                aioBuffer.get(result);
+
+                Assertions.assertArrayEquals(HELLO_WORLD.getBytes(), result);
+
+                Assertions.assertThrows(NullPointerException.class,
+                        () -> {
+                            Aio.aio_read(null);
+                        });
         }
     }
 
@@ -437,9 +567,10 @@ public class AioTest {
         System.out.println("aio_read empty file");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.aio_read(new Aio.Aiocb());
-                });
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> {
+                            Aio.aio_read(new Aio.Aiocb());
+                        });
                 break;
             default:
                 //Clean up references to Callbacks
@@ -495,16 +626,33 @@ public class AioTest {
                 });
 
                 //No read or write executed....
-                int errno = Aio.aio_error(aiocb);
-                switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-                    case FREE_BSD:
-                        assertEquals(Errno.EINVAL, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
-                        break;
-                    default:
-                        assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                        Aio.aio_error(aiocb);
+                    });
+                    assertEquals(Errno.EINVAL, nee.errno);
+                } else {
+                    int errno = Aio.aio_error(aiocb);
+                    switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+                        case FREE_BSD:
+                            assertEquals(Errno.EINVAL, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                            break;
+                        default:
+                            assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                    }
                 }
-                Aio.aio_read(aiocb);
-                errno = Aio.aio_error(aiocb);
+                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                        Aio.aio_read(aiocb);
+                    });
+                    assertEquals(Errno.EAGAIN, nee.errno);
+                    //Stop the test here for darwin it cant handle aio with threaded callbacks
+                    return;
+                } else {
+                    Aio.aio_read(aiocb);
+                }
+
+                int errno = Aio.aio_error(aiocb);
                 assertEquals(Errno.EINPROGRESS, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
 
                 synchronized (intRef) {
@@ -529,30 +677,114 @@ public class AioTest {
     }
 
     /**
+     * Test of aio_read method, of class Aio.
+     */
+    @Test
+    public void testAio_readEmpty_NoSignal() throws Exception {
+        System.out.println("aio_read empty file");
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> {
+                            Aio.aio_read(new Aio.Aiocb());
+                        });
+                break;
+            default:
+                File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
+
+                final Aio.Aiocb<Struct32> aiocb = new Aio.Aiocb<>();
+                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
+                final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
+
+                aioBuffer.clear();
+                aiocb.aio_buf(aioBuffer);
+                assertEquals(0, aioBuffer.position());
+
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+
+                System.out.println("aio_read Pthread_t: " + Pthread.pthread_self());
+                System.out.println("aio_read currentThread: " + Thread.currentThread());
+
+                //No read or write executed....
+                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                        Aio.aio_error(aiocb);
+                    });
+                    assertEquals(Errno.EINVAL, nee.errno);
+                } else {
+                    int errno = Aio.aio_error(aiocb);
+                    switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+                        case FREE_BSD:
+                            assertEquals(Errno.EINVAL, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                            break;
+                        default:
+                            assertEquals(0, errno, "Got errno from aio_read: " + Errno.getErrnoSymbol(errno) + ": " + StringHeader.strerror(errno));
+                    }
+                }
+                Aio.aio_read(aiocb);
+
+                Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+                    int result;
+                    do {
+                        result = Aio.aio_error(aiocb);
+                        if (result == Errno.EINPROGRESS) {
+                            //no-op just wait
+                        } else if (result == 0) {
+                            break;
+                        } else {
+                            fail("testAio_write_Buffer_NoSignal errno: " + Errno.getErrnoSymbol(result));
+                        }
+                    } while (result == 0);
+                });
+                long bytesWritten = Aio.aio_return(aiocb);
+                assertEquals(0, bytesWritten);
+                assertEquals(0, aioBuffer.position());
+
+                Unistd.close(aiocb.aio_fildes());
+        }
+    }
+
+    /**
      * Test of aio_return method, of class Aio. is tested in read/write too
      */
     @Test
     public void testAio_return() throws Exception {
         System.out.println("aio_return");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.aio_return(new Aio.Aiocb());
-                });
-                break;
-            case FREE_BSD: {
+            case DARWIN: {
                 final Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
+                long expResult = 0L;
                 NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                     Aio.aio_return(aiocb);
                 });
                 assertEquals(Errno.EINVAL, nee.errno);
             }
             break;
+            case FREE_BSD: {
+                final Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+                aiocb.aio_fildes(-1);
+
+                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
+                        () -> {
+                            Aio.aio_return(aiocb);
+                        });
+                assertEquals(Errno.EINVAL, nee.errno);
+            }
+            break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> {
+                            Aio.aio_return(new Aio.Aiocb());
+                        });
+                break;
             case LINUX:
             default:
                 final Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
                 long expResult = 0L;
@@ -568,30 +800,55 @@ public class AioTest {
     public void testAio_suspend() throws Exception {
         System.out.println("aio_suspend");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.aio_suspend(new Aio.Aiocbs(0, SetMem.TO_0x00), new Time.Timespec(SetMem.TO_0x00));
-                });
-                break;
-            default:
+            case DARWIN: {
                 Aio.Aiocbs aiocbs = new Aio.Aiocbs(1, SetMem.DO_NOT_SET);
                 Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 aiocbs.set(0, aiocb);
+                Time.Timespec timeout = new Time.Timespec(SetMem.TO_0x00);
+                timeout.tv_sec(1);
 
+                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    Aio.aio_suspend(aiocbs, timeout);
+                });
+                assertEquals(Errno.EINVAL, nee.errno);
+            }
+            break;
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> {
+                            Aio.aio_suspend(new Aio.Aiocbs(0, SetMem.TO_0x00), new Time.Timespec(SetMem.TO_0x00));
+                        });
+                return;
+            default: {
+                Aio.Aiocbs aiocbs = new Aio.Aiocbs(1, SetMem.DO_NOT_SET);
+                Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+                aiocb.aio_fildes(-1);
+                aiocbs.set(0, aiocb);
                 Time.Timespec timeout = new Time.Timespec(SetMem.TO_0x00);
                 timeout.tv_sec(1);
 
                 //Just a dry run....
                 Aio.aio_suspend(aiocbs, timeout);
-
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Aio.aio_suspend(null, timeout);
-                });
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Aio.aio_suspend(aiocbs, null);
-                });
+            }
         }
+
+        Aio.Aiocbs aiocbs = new Aio.Aiocbs(1, SetMem.DO_NOT_SET);
+        Aio.Aiocb aiocb = new Aio.Aiocb();
+        aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+        aiocb.aio_fildes(-1);
+        aiocbs.set(0, aiocb);
+        Time.Timespec timeout = new Time.Timespec(SetMem.TO_0x00);
+        timeout.tv_sec(1);
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Aio.aio_suspend(null, timeout);
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Aio.aio_suspend(aiocbs, null);
+        });
     }
 
     /**
@@ -602,9 +859,10 @@ public class AioTest {
         System.out.println("aio_write");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.aio_write(new Aio.Aiocb());
-                });
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> {
+                            Aio.aio_write(new Aio.Aiocb());
+                        });
                 break;
             default:
                 //Clean up references to Callbacks
@@ -662,7 +920,16 @@ public class AioTest {
 
                 });
 
-                Aio.aio_write(aiocb);
+                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                        Aio.aio_write(aiocb);
+                    });
+                    assertEquals(Errno.EAGAIN, nee.errno);
+                    //Stop the test here for darwin it cant handle aio with threaded callbacks
+                    return;
+                } else {
+                    Aio.aio_write(aiocb);
+                }
 
                 synchronized (intRef) {
                     if (intRef[0] == null) {
@@ -675,6 +942,69 @@ public class AioTest {
                 } else {
                     assertEquals(Integer.valueOf(SIVAL_INT), intRef[0]);
                 }
+
+                Unistd.close(aiocb.aio_fildes());
+                FileReader fr = new FileReader(tmpFile);
+                BufferedReader br = new BufferedReader(fr);
+                String result = br.readLine() + '\n';
+                assertEquals(HELLO_WORLD, result);
+                Assertions.assertThrows(NullPointerException.class, () -> {
+                    Aio.aio_write(null);
+                });
+        }
+    }
+
+    /**
+     * Test of aio_write method, of class Aio.
+     */
+    @Test
+    public void testAio_write_Buffer_NoSignal() throws Exception {
+        System.out.println("aio_write");
+        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            case OPEN_BSD:
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> {
+                            Aio.aio_write(new Aio.Aiocb());
+                        });
+                break;
+            default:
+                final String HELLO_WORLD = "Hello world!\n";
+
+                File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
+
+                final Aio.Aiocb<Struct32> aiocb = new Aio.Aiocb();
+                aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
+                final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
+                aioBuffer.put(HELLO_WORLD.getBytes());
+
+                aioBuffer.flip();
+                aiocb.aio_buf(aioBuffer);
+                assertEquals(HELLO_WORLD.length(), aiocb.aio_nbytes());
+                assertEquals(0, aioBuffer.position());
+                assertEquals(HELLO_WORLD.length(), aioBuffer.remaining());
+
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+
+                System.out.println("aio_write Pthread_t: " + Pthread.pthread_self());
+                System.out.println("aio_write currentThread: " + Thread.currentThread());
+
+                Aio.aio_write(aiocb);
+
+                Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+                    int result;
+                    do {
+                        result = Aio.aio_error(aiocb);
+                        if (result == Errno.EINPROGRESS) {
+                            //no-op just wait
+                        } else if (result == 0) {
+                            break;
+                        } else {
+                            fail("testAio_write_Buffer_NoSignal errno: " + Errno.getErrnoSymbol(result));
+                        }
+                    } while (result == 0);
+                });
+                long bytesWritten = Aio.aio_return(aiocb);
+                assertEquals(HELLO_WORLD.length(), bytesWritten);
 
                 Unistd.close(aiocb.aio_fildes());
                 FileReader fr = new FileReader(tmpFile);
@@ -703,27 +1033,49 @@ public class AioTest {
                 //Clean up references to Callbacks
                 System.gc();
 
-                Aio.Aiocbs list = new Aio.Aiocbs(1, SetMem.DO_NOT_SET);
+                final Aio.Aiocbs list = new Aio.Aiocbs(1, SetMem.DO_NOT_SET);
                 Aio.Aiocb aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 list.set(0, aiocb);
 
-                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    Aio.lio_listio(Aio.LIO_WAIT.get(), list);
-                });
-                assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
-
+                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
+                    final boolean[] lock = new boolean[]{false};
+                    new Thread(() -> {
+                        try {
+                            Aio.lio_listio(Aio.LIO_WAIT.get(), list);
+                        } catch (Throwable t) {
+                            fail(t);
+                        }
+                        synchronized (lock) {
+                            lock[0] = true;
+                            lock.notifyAll();
+                        }
+                    }).start();
+                    synchronized (lock) {
+                        lock.wait(1000);
+                    }
+                    Assertions.assertFalse(lock[0]);
+                } else {
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                        Aio.lio_listio(Aio.LIO_WAIT.get(), list);
+                    });
+                    assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
+                }
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Aio.lio_listio(Aio.LIO_WAIT.get(), null);
                 });
 
                 if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
-                    nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                         Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);
                     });
                     assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
                 } else {
-                    Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);
+                    //Darwin ignores Aio.LIO_NOWAIT so we enforce a timeout here
+                    Assertions.assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
+                        Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);
+                    });
                 }
         }
     }
@@ -754,6 +1106,7 @@ public class AioTest {
                 fw.close();
 
                 final Aio.Aiocb<Aio.Aiocb> aiocb = new Aio.Aiocb();
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 aiocb.aio_lio_opcode(Aio.LIO_READ.get());
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
@@ -795,9 +1148,10 @@ public class AioTest {
         System.out.println("aio_read");
         switch (MULTIARCHTUPEL_BUILDER.getOS()) {
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.aio_read(new Aio.Aiocb());
-                });
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> {
+                            Aio.aio_read(new Aio.Aiocb());
+                        });
                 break;
             default:
                 //Clean up references to Callbacks
@@ -852,7 +1206,16 @@ public class AioTest {
 
                 };
                 aiocb.aio_sigevent.sigev_value.sival_ptr(callback);
-                Aio.aio_read(aiocb);
+                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                        Aio.aio_read(aiocb);
+                    });
+                    assertEquals(Errno.EAGAIN, nee.errno);
+                    //Stop the test here for darwin it cant handle aio with threaded callbacks
+                    return;
+                } else {
+                    Aio.aio_read(aiocb);
+                }
 
                 synchronized (objRef) {
                     if (objRef[0] == null) {
@@ -872,9 +1235,10 @@ public class AioTest {
 
                 Assertions.assertArrayEquals(HELLO_WORLD.getBytes(), result);
 
-                Assertions.assertThrows(NullPointerException.class, () -> {
-                    Aio.aio_read(null);
-                });
+                Assertions.assertThrows(NullPointerException.class,
+                        () -> {
+                            Aio.aio_read(null);
+                        });
         }
     }
 

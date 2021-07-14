@@ -240,20 +240,6 @@ public class Signal {
     public static interface BsdDefines {
 
         public final static int ILL_ILLOPC = 1;
-        public final static int ILL_ILLOPN = 2;
-        public final static int ILL_ILLADR = 3;
-        public final static int ILL_ILLTRP = 4;
-        public final static int ILL_PRVOPC = 5;
-        public final static int ILL_PRVREG = 6;
-        public final static int ILL_COPROC = 7;
-        public final static int ILL_BADSTK = 8;
-
-        public final static int FPE_FLTDIV = 3;
-        public final static int FPE_FLTOVF = 4;
-        public final static int FPE_FLTUND = 5;
-        public final static int FPE_FLTRES = 6;
-        public final static int FPE_FLTINV = 7;
-        public final static int FPE_FLTSUB = 8;
 
         public final static int SEGV_MAPERR = 1;
         public final static int SEGV_ACCERR = 2;
@@ -321,6 +307,43 @@ public class Signal {
         public final static int SIGXFSZ = 25;
     }
 
+    public static interface DarwinDefines extends BsdDefines {
+
+        public final static FunctionPtr_I_V SIG_HOLD = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(5));
+        public final static int SIGEV_SIGNAL = 1;
+        public final static int SIGEV_NONE = 0;
+        public final static int SIGEV_THREAD = 3;
+        public final static int MINSIGSTKSZ = 32768;
+        public final static int SIGSTKSZ = 131072;
+        public final static int FPE_INTDIV = 7;
+        public final static int FPE_INTOVF = 8;
+        public final static int POLL_IN = 1;
+        public final static int POLL_OUT = 2;
+        public final static int POLL_MSG = 3;
+        public final static int POLL_ERR = 4;
+        public final static int POLL_PRI = 5;
+        public final static int POLL_HUP = 6;
+        public final static int SI_USER = 65537;
+        public final static int SI_QUEUE = 65538;
+        public final static int SI_TIMER = 65539;
+        public final static int SI_ASYNCIO = 65540;
+        public final static int SI_MESGQ = 65541;
+        public final static int ILL_ILLOPN = 4;
+        public final static int ILL_ILLADR = 5;
+        public final static int ILL_ILLTRP = 2;
+        public final static int ILL_PRVOPC = 3;
+        public final static int ILL_PRVREG = 6;
+        public final static int ILL_COPROC = 7;
+        public final static int ILL_BADSTK = 8;
+
+        public final static int FPE_FLTDIV = 1;
+        public final static int FPE_FLTOVF = 2;
+        public final static int FPE_FLTUND = 3;
+        public final static int FPE_FLTRES = 4;
+        public final static int FPE_FLTINV = 5;
+        public final static int FPE_FLTSUB = 6;
+    }
+
     public static interface FreeBsdDefines extends BsdDefines {
 
         public final static FunctionPtr_I_V SIG_HOLD = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(3));
@@ -342,6 +365,20 @@ public class Signal {
         public final static int SI_TIMER = 65539;
         public final static int SI_ASYNCIO = 65540;
         public final static int SI_MESGQ = 65541;
+        public final static int ILL_ILLOPN = 2;
+        public final static int ILL_ILLADR = 3;
+        public final static int ILL_ILLTRP = 4;
+        public final static int ILL_PRVOPC = 5;
+        public final static int ILL_PRVREG = 6;
+        public final static int ILL_COPROC = 7;
+        public final static int ILL_BADSTK = 8;
+
+        public final static int FPE_FLTDIV = 3;
+        public final static int FPE_FLTOVF = 4;
+        public final static int FPE_FLTUND = 5;
+        public final static int FPE_FLTRES = 6;
+        public final static int FPE_FLTINV = 7;
+        public final static int FPE_FLTSUB = 8;
     }
 
     public static interface OpenBsdDefines extends BsdDefines {
@@ -353,6 +390,20 @@ public class Signal {
         public final static int SI_USER = 0;
         public final static int SI_QUEUE = -2;
         public final static int SI_TIMER = -3;
+        public final static int ILL_ILLOPN = 2;
+        public final static int ILL_ILLADR = 3;
+        public final static int ILL_ILLTRP = 4;
+        public final static int ILL_PRVOPC = 5;
+        public final static int ILL_PRVREG = 6;
+        public final static int ILL_COPROC = 7;
+        public final static int ILL_BADSTK = 8;
+
+        public final static int FPE_FLTDIV = 3;
+        public final static int FPE_FLTOVF = 4;
+        public final static int FPE_FLTUND = 5;
+        public final static int FPE_FLTRES = 6;
+        public final static int FPE_FLTINV = 7;
+        public final static int FPE_FLTSUB = 8;
     }
 
     /**
@@ -557,6 +608,7 @@ public class Signal {
                         throw new NoClassDefFoundError("No signal.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                 }
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_SIGNAL_H = true;
@@ -571,22 +623,6 @@ public class Signal {
                 CLD_KILLED = BsdDefines.CLD_KILLED;
                 CLD_STOPPED = BsdDefines.CLD_STOPPED;
                 CLD_TRAPPED = BsdDefines.CLD_TRAPPED;
-
-                FPE_FLTDIV = BsdDefines.FPE_FLTDIV;
-                FPE_FLTINV = BsdDefines.FPE_FLTINV;
-                FPE_FLTOVF = BsdDefines.FPE_FLTOVF;
-                FPE_FLTRES = BsdDefines.FPE_FLTRES;
-                FPE_FLTSUB = BsdDefines.FPE_FLTSUB;
-                FPE_FLTUND = BsdDefines.FPE_FLTUND;
-
-                ILL_BADSTK = BsdDefines.ILL_BADSTK;
-                ILL_COPROC = BsdDefines.ILL_COPROC;
-                ILL_ILLADR = BsdDefines.ILL_ILLADR;
-                ILL_ILLOPC = BsdDefines.ILL_ILLOPC;
-                ILL_ILLOPN = BsdDefines.ILL_ILLOPN;
-                ILL_ILLTRP = BsdDefines.ILL_ILLTRP;
-                ILL_PRVOPC = BsdDefines.ILL_PRVOPC;
-                ILL_PRVREG = BsdDefines.ILL_PRVREG;
 
                 SA_NOCLDSTOP = BsdDefines.SA_NOCLDSTOP;
                 SA_NODEFER = BsdDefines.SA_NODEFER;
@@ -645,6 +681,43 @@ public class Signal {
                 SIG_UNBLOCK = BsdDefines.SIG_UNBLOCK;
 
                 switch (multiarchInfo.getOS()) {
+                    case DARWIN:
+                        FPE_INTDIV = DarwinDefines.FPE_INTDIV;
+                        FPE_INTOVF = DarwinDefines.FPE_INTOVF;
+                        MINSIGSTKSZ = DarwinDefines.MINSIGSTKSZ;
+                        POLL_ERR = IntDefine.toIntDefine(DarwinDefines.POLL_ERR);
+                        POLL_HUP = IntDefine.toIntDefine(DarwinDefines.POLL_HUP);
+                        POLL_IN = IntDefine.toIntDefine(DarwinDefines.POLL_IN);
+                        POLL_MSG = IntDefine.toIntDefine(DarwinDefines.POLL_MSG);
+                        POLL_OUT = IntDefine.toIntDefine(DarwinDefines.POLL_OUT);
+                        POLL_PRI = IntDefine.toIntDefine(DarwinDefines.POLL_PRI);
+                        SIGEV_NONE = IntDefine.toIntDefine(DarwinDefines.SIGEV_NONE);
+                        SIGEV_SIGNAL = IntDefine.toIntDefine(DarwinDefines.SIGEV_SIGNAL);
+                        SIGEV_THREAD = IntDefine.toIntDefine(DarwinDefines.SIGEV_THREAD);
+                        SIGSTKSZ = DarwinDefines.SIGSTKSZ;
+                        SIG_HOLD = ObjectDefine.toObjectDefine(DarwinDefines.SIG_HOLD);
+                        SI_QUEUE = DarwinDefines.SI_QUEUE;
+                        SI_USER = DarwinDefines.SI_USER;
+                        SI_ASYNCIO = IntDefine.toIntDefine(DarwinDefines.SI_ASYNCIO);
+                        SI_MESGQ = IntDefine.toIntDefine(DarwinDefines.SI_MESGQ);
+                        SI_TIMER = DarwinDefines.SI_TIMER;
+                        FPE_FLTDIV = DarwinDefines.FPE_FLTDIV;
+                        FPE_FLTINV = DarwinDefines.FPE_FLTINV;
+                        FPE_FLTOVF = DarwinDefines.FPE_FLTOVF;
+                        FPE_FLTRES = DarwinDefines.FPE_FLTRES;
+                        FPE_FLTSUB = DarwinDefines.FPE_FLTSUB;
+                        FPE_FLTUND = DarwinDefines.FPE_FLTUND;
+
+                        ILL_BADSTK = DarwinDefines.ILL_BADSTK;
+                        ILL_COPROC = DarwinDefines.ILL_COPROC;
+                        ILL_ILLADR = DarwinDefines.ILL_ILLADR;
+                        ILL_ILLOPC = DarwinDefines.ILL_ILLOPC;
+                        ILL_ILLOPN = DarwinDefines.ILL_ILLOPN;
+                        ILL_ILLTRP = DarwinDefines.ILL_ILLTRP;
+                        ILL_PRVOPC = DarwinDefines.ILL_PRVOPC;
+                        ILL_PRVREG = DarwinDefines.ILL_PRVREG;
+
+                        break;
                     case FREE_BSD:
                         FPE_INTDIV = FreeBsdDefines.FPE_INTDIV;
                         FPE_INTOVF = FreeBsdDefines.FPE_INTOVF;
@@ -665,6 +738,22 @@ public class Signal {
                         SI_ASYNCIO = IntDefine.toIntDefine(FreeBsdDefines.SI_ASYNCIO);
                         SI_MESGQ = IntDefine.toIntDefine(FreeBsdDefines.SI_MESGQ);
                         SI_TIMER = FreeBsdDefines.SI_TIMER;
+                        FPE_FLTDIV = FreeBsdDefines.FPE_FLTDIV;
+                        FPE_FLTINV = FreeBsdDefines.FPE_FLTINV;
+                        FPE_FLTOVF = FreeBsdDefines.FPE_FLTOVF;
+                        FPE_FLTRES = FreeBsdDefines.FPE_FLTRES;
+                        FPE_FLTSUB = FreeBsdDefines.FPE_FLTSUB;
+                        FPE_FLTUND = FreeBsdDefines.FPE_FLTUND;
+
+                        ILL_BADSTK = FreeBsdDefines.ILL_BADSTK;
+                        ILL_COPROC = FreeBsdDefines.ILL_COPROC;
+                        ILL_ILLADR = FreeBsdDefines.ILL_ILLADR;
+                        ILL_ILLOPC = FreeBsdDefines.ILL_ILLOPC;
+                        ILL_ILLOPN = FreeBsdDefines.ILL_ILLOPN;
+                        ILL_ILLTRP = FreeBsdDefines.ILL_ILLTRP;
+                        ILL_PRVOPC = FreeBsdDefines.ILL_PRVOPC;
+                        ILL_PRVREG = FreeBsdDefines.ILL_PRVREG;
+
                         break;
                     case OPEN_BSD:
                         FPE_INTDIV = OpenBsdDefines.FPE_INTDIV;
@@ -686,6 +775,22 @@ public class Signal {
                         SI_ASYNCIO = IntDefine.UNDEFINED;
                         SI_MESGQ = IntDefine.UNDEFINED;
                         SI_TIMER = OpenBsdDefines.SI_TIMER;
+                        FPE_FLTDIV = OpenBsdDefines.FPE_FLTDIV;
+                        FPE_FLTINV = OpenBsdDefines.FPE_FLTINV;
+                        FPE_FLTOVF = OpenBsdDefines.FPE_FLTOVF;
+                        FPE_FLTRES = OpenBsdDefines.FPE_FLTRES;
+                        FPE_FLTSUB = OpenBsdDefines.FPE_FLTSUB;
+                        FPE_FLTUND = OpenBsdDefines.FPE_FLTUND;
+
+                        ILL_BADSTK = OpenBsdDefines.ILL_BADSTK;
+                        ILL_COPROC = OpenBsdDefines.ILL_COPROC;
+                        ILL_ILLADR = OpenBsdDefines.ILL_ILLADR;
+                        ILL_ILLOPC = OpenBsdDefines.ILL_ILLOPC;
+                        ILL_ILLOPN = OpenBsdDefines.ILL_ILLOPN;
+                        ILL_ILLTRP = OpenBsdDefines.ILL_ILLTRP;
+                        ILL_PRVOPC = OpenBsdDefines.ILL_PRVOPC;
+                        ILL_PRVREG = OpenBsdDefines.ILL_PRVREG;
+
                         break;
                     default:
                         throw new NoClassDefFoundError("No signal.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
@@ -818,6 +923,10 @@ public class Signal {
                             throw new NoClassDefFoundError("No signal.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
+                case DARWIN:
+                    alignof = Alignment.AT_8;
+                    sizeof = 8;
+                    break;
                 case FREE_BSD:
                     alignof = Alignment.AT_16;
                     sizeof = 800;
@@ -878,6 +987,10 @@ public class Signal {
                             throw new NoClassDefFoundError("No signal.h linux defines for sigset_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     sizeof = 128;
+                    break;
+                case DARWIN:
+                    alignof = Alignment.AT_4;
+                    sizeof = 4;
                     break;
                 case FREE_BSD:
                     alignof = Alignment.AT_4;
@@ -1206,9 +1319,10 @@ public class Signal {
          */
         static {
             LibJnhwPosixLoader.touch();
-            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            final MultiarchInfo mi = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+            switch (mi.getOS()) {
                 case LINUX:
-                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
+                    switch (mi.getSizeOfPointer()) {
                         case _32_BIT:
                             alignof = Alignment.AT_4;
                             offsetof_Sigev_notify = 8;
@@ -1226,13 +1340,13 @@ public class Signal {
                             offsetof_Sigev_notify_attributes = 24;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h linux defines for sigevent " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for sigevent " + mi);
                     }
 
                     sizeof = 64;
                     break;
-                case FREE_BSD:
-                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
+                case DARWIN:
+                    switch (mi.getSizeOfPointer()) {
                         case _32_BIT:
                             alignof = Alignment.AT_4;
                             break;
@@ -1240,7 +1354,25 @@ public class Signal {
                             alignof = Alignment.AT_8;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h free BSD defines for sigevent " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h free BSD defines for sigevent " + mi);
+                    }
+                    sizeof = 32;
+                    offsetof_Sigev_notify = 0;
+                    offsetof_Sigev_signo = 4;
+                    offsetof_Sigev_value = 8;
+                    offsetof_Sigev_notify_function = 16;
+                    offsetof_Sigev_notify_attributes = 24;
+                    break;
+                case FREE_BSD:
+                    switch (mi.getSizeOfPointer()) {
+                        case _32_BIT:
+                            alignof = Alignment.AT_4;
+                            break;
+                        case _64_BIT:
+                            alignof = Alignment.AT_8;
+                            break;
+                        default:
+                            throw new NoClassDefFoundError("No signal.h free BSD defines for sigevent " + mi);
                     }
                     sizeof = 80;
                     offsetof_Sigev_notify = 0;
@@ -1259,7 +1391,7 @@ public class Signal {
                     offsetof_Sigev_notify_attributes = -1;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h OS defines for sigevent " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for sigevent " + mi);
             }
         }
 
@@ -1813,6 +1945,14 @@ public class Signal {
                             throw new NoClassDefFoundError("No signal.h linux defines for sigaction " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
+                case DARWIN:
+                    alignof = Alignment.AT_8;
+                    sizeof = 16;
+                    offsetof_Sa_handler = 0;
+                    offsetof_Sa_mask = 8;
+                    offsetof_Sa_flags = 12;
+                    offsetof_Sa_sigaction = 0;
+                    break;
                 case FREE_BSD:
                     alignof = Alignment.AT_8;
                     sizeof = 32;
@@ -2173,6 +2313,14 @@ public class Signal {
                             throw new NoClassDefFoundError("No signal.h linux defines for ucontext_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
+                case DARWIN:
+                    alignof = null;
+                    sizeof = 0;
+                    offsetof_Uc_link = -1;
+                    offsetof_Uc_sigmask = -1;
+                    offsetof_Uc_stack = -1;
+                    offsetof_Uc_mcontext = -1;
+                    break;
                 case FREE_BSD:
                     alignof = Alignment.AT_16;
                     sizeof = 880;
@@ -2329,6 +2477,7 @@ public class Signal {
                             throw new NoClassDefFoundError("No signal.h linux defines for stack_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
                     break;
+                case DARWIN:
                 case FREE_BSD:
                 case OPEN_BSD:
                     alignof = Alignment.AT_8;
@@ -2512,6 +2661,19 @@ public class Signal {
                         default:
                             throw new NoClassDefFoundError("No signal.h linux defines for siginfo_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
                     }
+                    break;
+                case DARWIN:
+                    sizeof = 104;
+                    alignof = Alignment.AT_8;
+                    offsetof_Si_signo = 0;
+                    offsetof_Si_code = 8;
+                    offsetof_Si_errno = 4;
+                    offsetof_Si_pid = 12;
+                    offsetof_Si_uid = 16;
+                    offsetof_Si_addr = 24;
+                    offsetof_Si_status = 20;
+                    offsetof_Si_band = 40;
+                    offsetof_Si_value = 32;
                     break;
                 case FREE_BSD:
                     sizeof = 80;

@@ -31,7 +31,11 @@ extern "C" {
 
 #include <locale.h>
 
-        /*
+#if defined (__APPLE__)
+#include <xlocale.h>
+#endif
+
+    /*
      * Class:     de_ibapl_jnhw_posix_LocaleTest
      * Method:    sizeof__locale_t
      * Signature: ()J

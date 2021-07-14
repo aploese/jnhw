@@ -127,6 +127,7 @@ public enum BaseDataType {
             case POWER_PC_64_LE__LINUX__GNU:
             case RISC_V_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
+            case X86_64__DARWIN__BSD:
             case X86_64__FREE_BSD__BSD:
             case X86_64__LINUX__GNU:
             case X86_64__OPEN_BSD__BSD:
@@ -153,10 +154,11 @@ public enum BaseDataType {
             case POWER_PC_64_LE__LINUX__GNU:
             case RISC_V_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
-            case X86_64__LINUX__GNU:
-            case X86_64__WINDOWS__PE32_PLUS:
-            case X86_64__OPEN_BSD__BSD:
+            case X86_64__DARWIN__BSD:
             case X86_64__FREE_BSD__BSD:
+            case X86_64__LINUX__GNU:
+            case X86_64__OPEN_BSD__BSD:
+            case X86_64__WINDOWS__PE32_PLUS:
                 return 4;
             default:
                 throw new RuntimeException("No sizeof float values for multiarch: " + mi);
@@ -179,10 +181,11 @@ public enum BaseDataType {
             case POWER_PC_64_LE__LINUX__GNU:
             case RISC_V_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
-            case X86_64__LINUX__GNU:
-            case X86_64__WINDOWS__PE32_PLUS:
-            case X86_64__OPEN_BSD__BSD:
+            case X86_64__DARWIN__BSD:
             case X86_64__FREE_BSD__BSD:
+            case X86_64__LINUX__GNU:
+            case X86_64__OPEN_BSD__BSD:
+            case X86_64__WINDOWS__PE32_PLUS:
                 return 8;
             default:
                 throw new RuntimeException("No sizeof double values for multiarch: " + mi);
@@ -207,10 +210,11 @@ public enum BaseDataType {
             case POWER_PC_64_LE__LINUX__GNU:
             case RISC_V_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
-            case X86_64__LINUX__GNU:
-            case X86_64__WINDOWS__PE32_PLUS:
-            case X86_64__OPEN_BSD__BSD:
+            case X86_64__DARWIN__BSD:
             case X86_64__FREE_BSD__BSD:
+            case X86_64__LINUX__GNU:
+            case X86_64__OPEN_BSD__BSD:
+            case X86_64__WINDOWS__PE32_PLUS:
                 return 16;
             default:
                 throw new RuntimeException("No sizeof long double values for multiarch: " + mi);
@@ -235,10 +239,11 @@ public enum BaseDataType {
             case POWER_PC_64_LE__LINUX__GNU:
             case RISC_V_64__LINUX__GNU:
             case S390_X__LINUX__GNU:
-            case X86_64__LINUX__GNU:
-            case X86_64__WINDOWS__PE32_PLUS:
-            case X86_64__OPEN_BSD__BSD:
+            case X86_64__DARWIN__BSD:
             case X86_64__FREE_BSD__BSD:
+            case X86_64__LINUX__GNU:
+            case X86_64__OPEN_BSD__BSD:
+            case X86_64__WINDOWS__PE32_PLUS:
                 return 8;
             default:
                 throw new RuntimeException("No SizeOfPointer values for multiarch: " + mi);

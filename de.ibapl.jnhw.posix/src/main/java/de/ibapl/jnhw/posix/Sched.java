@@ -54,16 +54,29 @@ public class Sched {
 
     public static interface BsdDefines {
 
-        public final static int SCHED_FIFO = 1;
-        public final static int SCHED_OTHER = 2;
-        public final static int SCHED_RR = 3;
+    }
+
+    public static interface DarwinDefines extends BsdDefines {
+
+        public final static int SCHED_FIFO = 4;
+        public final static int SCHED_OTHER = 1;
+        public final static int SCHED_RR = 2;
+
     }
 
     public static interface FreeBsdDefines extends BsdDefines {
 
+        public final static int SCHED_FIFO = 1;
+        public final static int SCHED_OTHER = 2;
+        public final static int SCHED_RR = 3;
+
     }
 
     public static interface OpenBsdDefines extends BsdDefines {
+
+        public final static int SCHED_FIFO = 1;
+        public final static int SCHED_OTHER = 2;
+        public final static int SCHED_RR = 3;
 
     }
 
@@ -87,12 +100,25 @@ public class Sched {
                 SCHED_RR = LinuxDefines.SCHED_RR;
                 SCHED_SPORADIC = IntDefine.UNDEFINED;
                 break;
+            case DARWIN:
+                HAVE_SCHED_H = true;
+                SCHED_FIFO = DarwinDefines.SCHED_FIFO;
+                SCHED_OTHER = DarwinDefines.SCHED_OTHER;
+                SCHED_RR = DarwinDefines.SCHED_RR;
+                SCHED_SPORADIC = IntDefine.UNDEFINED;
+                break;
             case FREE_BSD:
+                HAVE_SCHED_H = true;
+                SCHED_FIFO = FreeBsdDefines.SCHED_FIFO;
+                SCHED_OTHER = FreeBsdDefines.SCHED_OTHER;
+                SCHED_RR = FreeBsdDefines.SCHED_RR;
+                SCHED_SPORADIC = IntDefine.UNDEFINED;
+                break;
             case OPEN_BSD:
                 HAVE_SCHED_H = true;
-                SCHED_FIFO = BsdDefines.SCHED_FIFO;
-                SCHED_OTHER = BsdDefines.SCHED_OTHER;
-                SCHED_RR = BsdDefines.SCHED_RR;
+                SCHED_FIFO = OpenBsdDefines.SCHED_FIFO;
+                SCHED_OTHER = OpenBsdDefines.SCHED_OTHER;
+                SCHED_RR = OpenBsdDefines.SCHED_RR;
                 SCHED_SPORADIC = IntDefine.UNDEFINED;
                 break;
             default:
@@ -120,7 +146,13 @@ public class Sched {
          */
         static {
             LibJnhwPosixLoader.touch();
-            sizeof = 4;
+            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+                case DARWIN:
+                    sizeof = 8;
+                    break;
+                default:
+                    sizeof = 4;
+            }
             alignof = Alignment.AT_4;
             offsetof_Sched_priority = 0;
             offsetof_Sched_ss_init_budget = -1;

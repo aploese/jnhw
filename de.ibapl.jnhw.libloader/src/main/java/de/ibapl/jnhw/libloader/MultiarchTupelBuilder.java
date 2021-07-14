@@ -380,7 +380,7 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.cpu.endian of x86_64 Mac OS X\n" + listSystemProperties());
                 } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
-                    result.add(MultiarchInfo.X86_64__MAC_OS_X__BSD);
+                    result.add(MultiarchInfo.X86_64__DARWIN__BSD);
                     return result;
                 } else {
                     throw new UnsupportedOperationException(

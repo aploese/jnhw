@@ -117,6 +117,7 @@ public class Stat {
                 S_IXUSR = LinuxDefines.S_IXUSR;
 
                 break;
+            case DARWIN:
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_SYS_STAT_H = true;
@@ -137,7 +138,7 @@ public class Stat {
                 S_IXUSR = BsdDefines.S_IXUSR;
                 break;
             default:
-                throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No sys/stat.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
     }
 

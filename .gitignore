@@ -38,3 +38,6 @@ Makefile
 *.o
 *.lo
 *.la
+.ccls-cache/
+
+

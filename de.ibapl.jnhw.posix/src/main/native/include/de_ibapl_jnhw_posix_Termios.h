@@ -10,42 +10,42 @@ extern "C" {
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    cfgetispeed
- * Signature: (J)I
+ * Signature: (J)J
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetispeed
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetispeed
   (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    cfgetospeed
- * Signature: (J)I
+ * Signature: (J)J
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetospeed
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Termios_cfgetospeed
   (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    cfsetispeed
- * Signature: (JI)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetispeed
-  (JNIEnv *, jclass, jlong, jint);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    cfsetospeed
- * Signature: (JI)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetospeed
-  (JNIEnv *, jclass, jlong, jint);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Termios
  * Method:    cfsetspeed
- * Signature: (JI)V
+ * Signature: (JJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Termios_cfsetspeed
-  (JNIEnv *, jclass, jlong, jint);
+  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Termios

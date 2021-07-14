@@ -21,6 +21,9 @@
  */
 package de.ibapl.jnhw.common.exception;
 
+import java.util.HashMap;
+import java.util.function.IntFunction;
+
 /**
  * This exceptions is thrown if the jni native code detects an error. The error
  * number POSIX|ISO C call errno and Windows API call GetLastError() will be
@@ -33,14 +36,32 @@ package de.ibapl.jnhw.common.exception;
  */
 public class NativeErrorException extends Exception {
 
+    public static IntFunction<String> ERRNO_SYMBOL_PROVIDER;
+
+    private final static HashMap<Integer, String> ERRNO_SYMBOL_MAP = new HashMap<>();
+
+    private final static String formatDefaultMessage(final int errno) {
+        String symbol = ERRNO_SYMBOL_MAP.get(errno);
+        if (symbol == null) {
+            if (ERRNO_SYMBOL_PROVIDER != null) {
+                symbol = ERRNO_SYMBOL_PROVIDER.apply(errno);
+                ERRNO_SYMBOL_MAP.put(errno, symbol);
+            } else {
+                symbol = String.valueOf(errno);
+                ERRNO_SYMBOL_MAP.put(errno, symbol);
+            }
+        }
+        return "Native error: " + symbol;
+    }
+
     /**
      *
      */
     private static final long serialVersionUID = 4007403267388096526L;
     public final int errno;
 
-    public NativeErrorException(int errno) {
-        super("Native error: " + errno);
+    public NativeErrorException(final int errno) {
+        super(formatDefaultMessage(errno));
         this.errno = errno;
     }
 
@@ -48,4 +69,5 @@ public class NativeErrorException extends Exception {
         super(msg);
         this.errno = errno;
     }
+
 }

@@ -48,10 +48,13 @@ public class Ucontext {
     static {
         LibJnhwPosixLoader.touch();
         switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
-            case LINUX:
-                HAVE_UCONTEXT_H = true;
+            case DARWIN:
+                HAVE_UCONTEXT_H = false;
                 break;
             case FREE_BSD:
+                HAVE_UCONTEXT_H = true;
+                break;
+            case LINUX:
                 HAVE_UCONTEXT_H = true;
                 break;
             case OPEN_BSD:
