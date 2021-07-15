@@ -59,6 +59,20 @@ extern "C" {
         return result;
     }
 
+    /*
+     * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+     * Method:    ioctl_ReturnValue
+     * Signature: (III)I
+     */
+    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl_1ReturnValue
+    (JNIEnv *env, __attribute__ ((unused)) jclass clazz, jint fd, jint request, jint value) {
+        const int result = ioctl(fd, (uint32_t) request, &value);
+        if (result < 0) {
+            throw_NativeErrorException(env, errno);
+        }
+        return value;
+    }
+
 #ifdef __cplusplus
 }
 #endif

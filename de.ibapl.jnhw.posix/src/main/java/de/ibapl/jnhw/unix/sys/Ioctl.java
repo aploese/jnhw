@@ -753,6 +753,21 @@ public final class Ioctl {
     public final static native int ioctl(int fd, int request) throws NativeErrorException;
 
     /**
+     * An optimize version of {@link  ioctl(int fd, int request, Int32_t value)}
+     * the value parameter is passed in and returned instead of the returned
+     * value from the call to ioctl.
+     *
+     * @param fd an open file descriptor
+     * @param request a device-dependent request code.
+     * @param value the value to pass to ioctl.
+     * @return the param value read from the device. The value is obtained by
+     * calling ioctl(fd, request, &value).
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native int ioctl_ReturnValue(int fd, int request, int value) throws NativeErrorException;
+
+    /**
      * The {@code  ioctl()} system call manipulates the underlying device
      * parameters of special files. In particular, many operating
      * characteristics of character special files (e.g., terminals) may be

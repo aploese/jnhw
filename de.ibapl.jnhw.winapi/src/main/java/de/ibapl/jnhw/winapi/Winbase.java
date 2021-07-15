@@ -233,7 +233,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void ClearCommError(HANDLE hFile, Int32_t lpErrors, COMSTAT lpStat) throws NativeErrorException {
-        ClearCommError(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpErrors), AbstractNativeMemory.toUintptr_t(lpStat));
+        ClearCommError(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpErrors), AbstractNativeMemory.toUintptr_tOrNULL(lpStat));
     }
 
     private static native void ClearCommError(long ptrHFile, long ptrLpErrors, long ptrLpStat) throws NativeErrorException;

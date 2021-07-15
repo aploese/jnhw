@@ -89,6 +89,14 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl__II
 
 /*
  * Class:     de_ibapl_jnhw_unix_sys_Ioctl
+ * Method:    ioctl_ReturnValue
+ * Signature: (III)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_Ioctl_ioctl_1ReturnValue
+  (JNIEnv *, jclass, jint, jint, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_unix_sys_Ioctl
  * Method:    ioctl
  * Signature: (IIJ)I
  */
