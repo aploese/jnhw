@@ -635,6 +635,19 @@ public class UnistdTest {
      * @throws Exception
      */
     @Test
+    public void testSysconf() throws Exception {
+        System.out.println("sysconf(_SC_AIO_LISTIO_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_LISTIO_MAX));
+        System.out.println("sysconf(_SC_AIO_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_MAX));
+        System.out.println("sysconf(_SC_AIO_PRIO_DELTA_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_PRIO_DELTA_MAX));
+    }
+
+    /**
+     * The size of the buffer would exceed the available stack space... th vm
+     * would crash
+     *
+     * @throws Exception
+     */
+    @Test
     public void testWriteReadByteBuffer10MB() throws Exception {
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_RDWR);
         ByteBuffer buffer = ByteBuffer.allocateDirect(10_000_000);

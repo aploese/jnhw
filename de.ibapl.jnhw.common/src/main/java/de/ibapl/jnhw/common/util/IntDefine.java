@@ -47,6 +47,11 @@ public abstract class IntDefine {
         public boolean isEqualsTo(int value) {
             return false;
         }
+
+        @Override
+        public boolean isEqualsTo(long value) {
+            return false;
+        }
     };
 
     final static class IntDefined extends IntDefine {
@@ -71,6 +76,11 @@ public abstract class IntDefine {
         public boolean isEqualsTo(int value) {
             return this.value == value;
         }
+
+        @Override
+        public boolean isEqualsTo(long value) {
+            return this.value == value;
+        }
     }
 
     public abstract boolean isDefined();
@@ -79,4 +89,5 @@ public abstract class IntDefine {
 
     public abstract boolean isEqualsTo(int value);
 
+    public abstract boolean isEqualsTo(long value);
 }

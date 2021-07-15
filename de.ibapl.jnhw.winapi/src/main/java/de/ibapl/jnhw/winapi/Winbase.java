@@ -207,7 +207,7 @@ public abstract class Winbase {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final void ClearCommBreak(HANDLE hFile) throws NativeErrorException {
+    public final static void ClearCommBreak(HANDLE hFile) throws NativeErrorException {
         ClearCommBreak(HANDLE.getHandleValue(hFile));
     }
 
