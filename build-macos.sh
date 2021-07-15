@@ -4,4 +4,4 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-16.0.1.jdk/Contents/Home/
 ./configure --with-jni-include-dir="$JAVA_HOME/include/ $JAVA_HOME/include/darwin/"  || exit 1
  make clean  || exit 1
 make  || exit 1
-/Users/user/maven/bin/mvn --fail-never -X test && mvn install
+/Users/user/maven/bin/mvn install
