@@ -49,11 +49,11 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 @Include("minwinbase.h")
 public class Minwinbase {
 
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
+    public abstract static class LPOVERLAPPED_COMPLETION_ROUTINE extends Callback_I_I_Mem_V_Impl<OVERLAPPED> {
+
+        @Override
+        protected abstract void callback(int dwErrorCode, int dwNumberOfBytesTransfered, OVERLAPPED lpOverlapped);
+
     }
 
     /**
@@ -69,9 +69,9 @@ public class Minwinbase {
 
                 public static class DUMMYSTRUCTNAMELayout extends StructLayout {
 
+                    public final static Alignment alignment;
                     public final static long Offset;
                     public final static long OffsetHigh;
-                    public final static Alignment alignment;
                     public final static int sizeof;
 
                     static {
@@ -84,9 +84,9 @@ public class Minwinbase {
 
                 }
 
-                public final static long Pointer;
-                public final static long DUMMYSTRUCTNAME;
                 public final static Alignment alignment;
+                public final static long DUMMYSTRUCTNAME;
+                public final static long Pointer;
                 public final static int sizeof;
 
                 static {
@@ -99,14 +99,14 @@ public class Minwinbase {
 
             }
 
+            public final static Alignment alignment;
+            public final static long DUMMYUNIONNAME;
+            public final static long hEvent;
             public final static long Internal;
             public final static long InternalHigh;
-            public final static long DUMMYUNIONNAME;
             public final static long Offset;
             public final static long OffsetHigh;
             public final static long Pointer;
-            public final static long hEvent;
-            public final static Alignment alignment;
             public final static int sizeof;
 
             static {
@@ -123,6 +123,29 @@ public class Minwinbase {
                 alignment = slf.getAlignment();
             }
 
+        }
+
+        public OVERLAPPED() {
+            //always clean field Pointer must be zero!
+            super((OpaqueMemory32) null, 0, Layout.sizeof, SetMem.TO_0x00);
+        }
+
+        public OVERLAPPED(NativeAddressHolder addressHolder) {
+            super(addressHolder, Layout.sizeof);
+        }
+
+        /**
+         * @return the native value of hEvent;
+         */
+        public HANDLE hEvent() {
+            return ACCESSOR_HANDLE.HANDLE(this, Layout.hEvent);
+        }
+
+        /**
+         * @param hEvent the value of hEvent to be set natively.
+         */
+        public void hEvent(HANDLE hEvent) {
+            ACCESSOR_HANDLE.HANDLE(this, Layout.hEvent, hEvent);
         }
 
         /**
@@ -196,36 +219,6 @@ public class Minwinbase {
             return ACCESSOR_PVOID.PVOID(this, Layout.InternalHigh);
         }
 
-        /**
-         * @param hEvent the value of hEvent to be set natively.
-         */
-        public void hEvent(HANDLE hEvent) {
-            ACCESSOR_HANDLE.HANDLE(this, Layout.hEvent, hEvent);
-        }
-
-        /**
-         * @return the native value of hEvent;
-         */
-        public HANDLE hEvent() {
-            return ACCESSOR_HANDLE.HANDLE(this, Layout.hEvent);
-        }
-
-        public OVERLAPPED() {
-            //always clean field Pointer must be zero!
-            super((OpaqueMemory32) null, 0, Layout.sizeof, SetMem.TO_0x00);
-        }
-
-        public OVERLAPPED(NativeAddressHolder addressHolder) {
-            super(addressHolder, Layout.sizeof);
-        }
-
-    }
-
-    public abstract static class LPOVERLAPPED_COMPLETION_ROUTINE extends Callback_I_I_Mem_V_Impl<OVERLAPPED> {
-
-        @Override
-        protected abstract void callback(int dwErrorCode, int dwNumberOfBytesTransfered, OVERLAPPED lpOverlapped);
-
     }
 
     /**
@@ -237,10 +230,10 @@ public class Minwinbase {
 
         public static class Layout extends StructLayout {
 
-            public final static long nLength;
-            public final static long lpSecurityDescriptor;
-            public final static long bInheritHandle;
             public final static Alignment alignment;
+            public final static long bInheritHandle;
+            public final static long lpSecurityDescriptor;
+            public final static long nLength;
             public final static int sizeof;
 
             static {
@@ -261,25 +254,8 @@ public class Minwinbase {
             LibJnhwWinApiLoader.touch();
         }
 
-        /**
-         * @return the native value of nLength;
-         */
-        @DWORD
-        public final long nLength() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.nLength);
-        }
-
-        public final void nLength(@DWORD long nLength) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.nLength, nLength);
-        }
-
-        @PVOID
-        public NativeAddressHolder lpSecurityDescriptor() {
-            return ACCESSOR_PVOID.PVOID(this, Layout.lpSecurityDescriptor);
-        }
-
-        public void lpSecurityDescriptor(@PVOID NativeAddressHolder lpSecurityDescriptor) {
-            ACCESSOR_PVOID.PVOID(this, Layout.lpSecurityDescriptor, lpSecurityDescriptor);
+        public SECURITY_ATTRIBUTES() {
+            super((OpaqueMemory32) null, 0, Layout.sizeof, SetMem.TO_0x00);
         }
 
         /**
@@ -294,10 +270,34 @@ public class Minwinbase {
             ACCESSOR_BOOL.BOOL(this, Layout.bInheritHandle, bInheritHandle);
         }
 
-        public SECURITY_ATTRIBUTES() {
-            super((OpaqueMemory32) null, 0, Layout.sizeof, SetMem.TO_0x00);
+        @PVOID
+        public NativeAddressHolder lpSecurityDescriptor() {
+            return ACCESSOR_PVOID.PVOID(this, Layout.lpSecurityDescriptor);
         }
 
+        public void lpSecurityDescriptor(@PVOID NativeAddressHolder lpSecurityDescriptor) {
+            ACCESSOR_PVOID.PVOID(this, Layout.lpSecurityDescriptor, lpSecurityDescriptor);
+        }
+
+        /**
+         * @return the native value of nLength;
+         */
+        @DWORD
+        public final long nLength() {
+            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.nLength);
+        }
+
+        public final void nLength(@DWORD long nLength) {
+            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.nLength, nLength);
+        }
+
+    }
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
     };
 
 }

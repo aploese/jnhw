@@ -37,6 +37,203 @@ import de.ibapl.jnhw.libloader.OS;
  */
 public class Defines {
 
+    @Define
+    public final static IntDefine __aarch64__;
+
+    @Define
+    public final static IntDefine __alpha__;
+
+    @Define
+    public final static IntDefine __amd64__;
+
+    /**
+     */
+    @Define
+    public final static IntDefine __APPLE__;
+
+    @Define
+    public final static IntDefine __arm__;
+
+    @Define
+    public final static IntDefine __ARM_ARCH;
+
+    /**
+     * The biggest alignemnt used. If sizeof(struct) is bigger than
+     * {@code __BIGGEST_ALIGNMENT__} use an address that is a multiple of
+     * {@code __BIGGEST_ALIGNMENT__} as {@code baseaddress}.
+     *
+     * @return
+     */
+    @Define
+    public final static int __BIGGEST_ALIGNMENT__;
+
+    @Define
+    public final static int __BYTE_ORDER__;
+
+    /**
+     * the major version at compile time
+     */
+    @Define
+    public final static IntDefine __FreeBSD__;
+
+    @Define
+    public final static IntDefine __GLIBC__;
+
+    @Define
+    public final static IntDefine __GLIBC_MINOR__;
+
+    @Define
+    public final static IntDefine __GNU_LIBRARY__;
+
+    @Define
+    public final static IntDefine __i386__;
+
+    @Define
+    public final static IntDefine __i686__;
+
+    @Define
+    public final static IntDefine __ILP32__;
+
+    @Define
+    public final static IntDefine __linux__;
+
+    @Define
+    public final static IntDefine __LP64__;
+
+    @Define
+    public final static IntDefine __mips__;
+
+    @Define
+    public final static IntDefine __mips64;
+
+    @Define
+    public final static IntDefine __MIPSEB__;
+
+    @Define
+    public final static IntDefine __MIPSEL__;
+
+    /**
+     *
+     */
+    @Define
+    public final static IntDefine __OpenBSD__;
+
+    @Define
+    public final static int __ORDER_BIG_ENDIAN__;
+
+    @Define
+    public final static int __ORDER_LITTLE_ENDIAN__;
+
+    @Define
+    public final static int __ORDER_PDP_ENDIAN__;
+
+    @Define
+    public final static IntDefine __powerpc__;
+
+    @Define
+    public final static IntDefine __powerpc64__;
+
+    @Define
+    public final static IntDefine __riscv;
+
+    @Define
+    public final static IntDefine __s390__;
+
+    @Define
+    public final static IntDefine __s390x__;
+
+    @Define
+    public final static IntDefine __sh__;
+
+    @Define
+    public final static IntDefine __SH4__;
+
+    @Define
+    public final static int __SIZEOF_LONG__;
+
+    @Define
+    public final static int __SIZEOF_POINTER__;
+
+    @Define
+    public final static IntDefine __sparc__;
+
+    @Define
+    public final static IntDefine __sparc64__;
+
+    /**
+     * size of time_t glibc bits/timesize.h
+     *
+     */
+    @Define
+    public final static IntDefine __TIMESIZE;
+
+    /**
+     * Its defined at different places: glibc: bits/wordsize.h FreeBSD:
+     * sys/stdint.h
+     *
+     * but not at OpenBSD
+     *
+     * so we keep his here for the moment. _POSIX_C_SOURCE
+     *
+     */
+    @Define
+    public final static IntDefine __WORDSIZE;
+
+    @Define
+    public final static IntDefine __x86_64__;
+
+    @Define
+    public final static IntDefine _BSD_SOURCE;
+
+    /**
+     * maybe defined in jnhw-posix.h
+     *
+     */
+    @Define
+    public final static IntDefine _FILE_OFFSET_BITS;
+
+    /**
+     * maybe defined in jnhw-posix.h
+     *
+     */
+    @Define
+    public final static IntDefine _LARGEFILE_SOURCE;
+
+    /**
+     * maybe defined in jnhw-posix.h
+     *
+     * _LARGEFILE64_SOURCE was defined at native compile time. If
+     * _LARGEFILE64_SOURCE was defined then all largefile64 functions (i.e.
+     * open64, read64, fseek64, ...) are available.
+     *
+     *
+     * time of the native code.
+     *
+     */
+    @Define
+    public final static IntDefine _LARGEFILE64_SOURCE;
+
+    /**
+     * maybe defined in jnhw-posix.h
+     *
+     */
+    @Define
+    public final static IntDefine _POSIX_C_SOURCE;
+
+    /**
+     * maybe defined in jnhw-posix.h
+     *
+     */
+    @Define
+    public final static IntDefine _XOPEN_SOURCE;
+
+    /**
+     * maybe defined in jnhw-posix.h
+     *
+     */
+    @Define
+    public final static IntDefine _XOPEN_SOURCE_EXTENDED;
+
     /**
      * Make sure the native lib is loaded
      *
@@ -225,202 +422,5 @@ public class Defines {
         }
 
     }
-
-    /**
-     * maybe defined in jnhw-posix.h
-     *
-     */
-    @Define
-    public final static IntDefine _LARGEFILE_SOURCE;
-
-    /**
-     * maybe defined in jnhw-posix.h
-     *
-     * _LARGEFILE64_SOURCE was defined at native compile time. If
-     * _LARGEFILE64_SOURCE was defined then all largefile64 functions (i.e.
-     * open64, read64, fseek64, ...) are available.
-     *
-     *
-     * time of the native code.
-     *
-     */
-    @Define
-    public final static IntDefine _LARGEFILE64_SOURCE;
-
-    /**
-     */
-    @Define
-    public final static IntDefine __APPLE__;
-
-    /**
-     * the major version at compile time
-     */
-    @Define
-    public final static IntDefine __FreeBSD__;
-
-    /**
-     *
-     */
-    @Define
-    public final static IntDefine __OpenBSD__;
-
-    /**
-     * Its defined at different places: glibc: bits/wordsize.h FreeBSD:
-     * sys/stdint.h
-     *
-     * but not at OpenBSD
-     *
-     * so we keep his here for the moment. _POSIX_C_SOURCE
-     *
-     */
-    @Define
-    public final static IntDefine __WORDSIZE;
-
-    /**
-     * size of time_t glibc bits/timesize.h
-     *
-     */
-    @Define
-    public final static IntDefine __TIMESIZE;
-
-    @Define
-    public final static IntDefine __GNU_LIBRARY__;
-
-    @Define
-    public final static IntDefine __GLIBC__;
-
-    @Define
-    public final static IntDefine __GLIBC_MINOR__;
-
-    @Define
-    public final static int __SIZEOF_LONG__;
-
-    @Define
-    public final static int __SIZEOF_POINTER__;
-
-    @Define
-    public final static IntDefine __LP64__;
-
-    @Define
-    public final static IntDefine __ILP32__;
-
-    /**
-     * The biggest alignemnt used. If sizeof(struct) is bigger than
-     * {@code __BIGGEST_ALIGNMENT__} use an address that is a multiple of
-     * {@code __BIGGEST_ALIGNMENT__} as {@code baseaddress}.
-     *
-     * @return
-     */
-    @Define
-    public final static int __BIGGEST_ALIGNMENT__;
-
-    @Define
-    public final static int __ORDER_LITTLE_ENDIAN__;
-
-    @Define
-    public final static int __ORDER_BIG_ENDIAN__;
-
-    @Define
-    public final static int __ORDER_PDP_ENDIAN__;
-
-    @Define
-    public final static int __BYTE_ORDER__;
-
-    /**
-     * maybe defined in jnhw-posix.h
-     *
-     */
-    @Define
-    public final static IntDefine _FILE_OFFSET_BITS;
-
-    @Define
-    public final static IntDefine _BSD_SOURCE;
-
-    /**
-     * maybe defined in jnhw-posix.h
-     *
-     */
-    @Define
-    public final static IntDefine _POSIX_C_SOURCE;
-
-    /**
-     * maybe defined in jnhw-posix.h
-     *
-     */
-    @Define
-    public final static IntDefine _XOPEN_SOURCE;
-
-    /**
-     * maybe defined in jnhw-posix.h
-     *
-     */
-    @Define
-    public final static IntDefine _XOPEN_SOURCE_EXTENDED;
-
-    @Define
-    public final static IntDefine __linux__;
-
-    @Define
-    public final static IntDefine __aarch64__;
-
-    @Define
-    public final static IntDefine __alpha__;
-
-    @Define
-    public final static IntDefine __arm__;
-
-    @Define
-    public final static IntDefine __ARM_ARCH;
-
-    @Define
-    public final static IntDefine __powerpc__;
-
-    @Define
-    public final static IntDefine __powerpc64__;
-
-    @Define
-    public final static IntDefine __mips__;
-
-    @Define
-    public final static IntDefine __mips64;
-
-    @Define
-    public final static IntDefine __MIPSEB__;
-
-    @Define
-    public final static IntDefine __MIPSEL__;
-
-    @Define
-    public final static IntDefine __riscv;
-
-    @Define
-    public final static IntDefine __s390__;
-
-    @Define
-    public final static IntDefine __s390x__;
-
-    @Define
-    public final static IntDefine __sh__;
-
-    @Define
-    public final static IntDefine __SH4__;
-
-    @Define
-    public final static IntDefine __sparc__;
-
-    @Define
-    public final static IntDefine __sparc64__;
-
-    @Define
-    public final static IntDefine __i386__;
-
-    @Define
-    public final static IntDefine __i686__;
-
-    @Define
-    public final static IntDefine __amd64__;
-
-    @Define
-    public final static IntDefine __x86_64__;
 
 }

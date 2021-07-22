@@ -25,19 +25,19 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_CancelIoEx
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Ioapiset
- * Method:    GetOverlappedResult
- * Signature: (JJZ)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_GetOverlappedResult
-  (JNIEnv *, jclass, jlong, jlong, jboolean);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Ioapiset
  * Method:    DeviceIoControl
  * Signature: (JIJIJIJ)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_DeviceIoControl
   (JNIEnv *, jclass, jlong, jint, jlong, jint, jlong, jint, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Ioapiset
+ * Method:    GetOverlappedResult
+ * Signature: (JJZ)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Ioapiset_GetOverlappedResult
+  (JNIEnv *, jclass, jlong, jlong, jboolean);
 
 #ifdef __cplusplus
 }

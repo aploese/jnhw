@@ -32,50 +32,12 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 public class SynchapiTest {
 
     @Test
-    public void testWaitForSingleTimeout() throws Exception {
-        final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
-        Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
-            long result = Synchapi.WaitForSingleObject(hEvent, 100);
-            Assertions.assertEquals(Winerror.WAIT_TIMEOUT, result);
-            return null;
+    public void testSleepEx() throws Exception {
+        Synchapi.SleepEx(10, false);
+        Synchapi.SleepEx(10, true);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Synchapi.SleepEx(-10, true);
         });
-        Handleapi.CloseHandle(hEvent);
-    }
-
-    @Test
-    public void testWaitForSingleTimeoutEx() throws Exception {
-        final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
-        Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
-            long result = Synchapi.WaitForSingleObjectEx(hEvent, 100, false);
-            Assertions.assertEquals(Winerror.WAIT_TIMEOUT, result);
-            return null;
-        });
-        Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
-            long result = Synchapi.WaitForSingleObjectEx(hEvent, 100, true);
-            Assertions.assertEquals(Winerror.WAIT_TIMEOUT, result);
-            return null;
-        });
-        Handleapi.CloseHandle(hEvent);
-    }
-
-    @Test
-    public void testWaitForSingleSignaled() throws Exception {
-        final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
-        Assertions.assertTimeoutPreemptively(Duration.ofMillis(5000), () -> {
-            new Thread(() -> {
-                try {
-                    Thread.sleep(100);
-                    Synchapi.SetEvent(hEvent);
-                } catch (InterruptedException | NativeErrorException ie) {
-                    throw new RuntimeException(ie);
-                }
-
-            }).start();
-            long result = Synchapi.WaitForSingleObject(hEvent, 1000);
-            Assertions.assertEquals(Winbase.WAIT_OBJECT_0, result);
-            return null;
-        });
-        Handleapi.CloseHandle(hEvent);
     }
 
     @Test
@@ -121,12 +83,50 @@ public class SynchapiTest {
     }
 
     @Test
-    public void testSleepEx() throws Exception {
-        Synchapi.SleepEx(10, false);
-        Synchapi.SleepEx(10, true);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Synchapi.SleepEx(-10, true);
+    public void testWaitForSingleSignaled() throws Exception {
+        final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
+        Assertions.assertTimeoutPreemptively(Duration.ofMillis(5000), () -> {
+            new Thread(() -> {
+                try {
+                    Thread.sleep(100);
+                    Synchapi.SetEvent(hEvent);
+                } catch (InterruptedException | NativeErrorException ie) {
+                    throw new RuntimeException(ie);
+                }
+
+            }).start();
+            long result = Synchapi.WaitForSingleObject(hEvent, 1000);
+            Assertions.assertEquals(Winbase.WAIT_OBJECT_0, result);
+            return null;
         });
+        Handleapi.CloseHandle(hEvent);
+    }
+
+    @Test
+    public void testWaitForSingleTimeout() throws Exception {
+        final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
+        Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
+            long result = Synchapi.WaitForSingleObject(hEvent, 100);
+            Assertions.assertEquals(Winerror.WAIT_TIMEOUT, result);
+            return null;
+        });
+        Handleapi.CloseHandle(hEvent);
+    }
+
+    @Test
+    public void testWaitForSingleTimeoutEx() throws Exception {
+        final Winnt.HANDLE hEvent = Synchapi.CreateEventW(null, true, false, null);
+        Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
+            long result = Synchapi.WaitForSingleObjectEx(hEvent, 100, false);
+            Assertions.assertEquals(Winerror.WAIT_TIMEOUT, result);
+            return null;
+        });
+        Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
+            long result = Synchapi.WaitForSingleObjectEx(hEvent, 100, true);
+            Assertions.assertEquals(Winerror.WAIT_TIMEOUT, result);
+            return null;
+        });
+        Handleapi.CloseHandle(hEvent);
     }
 
 }

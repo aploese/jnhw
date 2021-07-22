@@ -52,6 +52,15 @@ public abstract class Winreg {
     public final static HKEY HKEY_CLASSES_ROOT = new HKEY(0x80000000L);
 
     /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_CONFIG</a>
+     * Registry entries subordinate to this key define types (or classes) of
+     * documents and the properties associated with those types.
+     *
+     */
+    @Define
+    public final static HKEY HKEY_CURRENT_CONFIG = new HKEY(0x80000005L);
+
+    /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER</a>
      * Registry entries subordinate to this key define types (or classes) of
      * documents and the properties associated with those types.
@@ -59,6 +68,24 @@ public abstract class Winreg {
      */
     @Define
     public final static HKEY HKEY_CURRENT_USER = new HKEY(0x80000001L);
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER_LOCAL_SETTINGS</a>
+     * Registry entries subordinate to this key define preferences of the
+     * current user that are local to the machine.
+     *
+     */
+    @Define
+    public final static HKEY HKEY_CURRENT_USER_LOCAL_SETTINGS = new HKEY(0x80000007L);
+
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CLASSES_ROOT</a>
+     * Registry entries subordinate to this key define types (or classes) of
+     * documents and the properties associated with those types.
+     *
+     */
+    @Define
+    public final static HKEY HKEY_DYN_DATA = new HKEY(0x80000006L);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_LOCAL_MACHINE</a>
@@ -71,16 +98,6 @@ public abstract class Winreg {
     public final static HKEY HKEY_LOCAL_MACHINE = new HKEY(0x80000002L);
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_USERS</a>
-     * Registry entries subordinate to this key define the default user
-     * configuration for new users on the local computer and the user
-     * configuration for the current user.
-     *
-     */
-    @Define
-    public final static HKEY HKEY_USERS = new HKEY(0x80000003L);
-
-    /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_DATA</a>
      * Registry entries subordinate to this key allow you to access performance
      * data.
@@ -88,15 +105,6 @@ public abstract class Winreg {
      */
     @Define
     public final static HKEY HKEY_PERFORMANCE_DATA = new HKEY(0x80000004L);
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_TEXT</a>
-     * Registry entries subordinate to this key reference the text strings that
-     * describe counters in US English.
-     *
-     */
-    @Define
-    public final static HKEY HKEY_PERFORMANCE_TEXT = new HKEY(0x80000050L);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_NLSTEXT</a>
@@ -109,31 +117,23 @@ public abstract class Winreg {
     public final static HKEY HKEY_PERFORMANCE_NLSTEXT = new HKEY(0x80000060L);
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_CONFIG</a>
-     * Registry entries subordinate to this key define types (or classes) of
-     * documents and the properties associated with those types.
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_TEXT</a>
+     * Registry entries subordinate to this key reference the text strings that
+     * describe counters in US English.
      *
      */
     @Define
-    public final static HKEY HKEY_CURRENT_CONFIG = new HKEY(0x80000005L);
+    public final static HKEY HKEY_PERFORMANCE_TEXT = new HKEY(0x80000050L);
 
     /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CLASSES_ROOT</a>
-     * Registry entries subordinate to this key define types (or classes) of
-     * documents and the properties associated with those types.
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_USERS</a>
+     * Registry entries subordinate to this key define the default user
+     * configuration for new users on the local computer and the user
+     * configuration for the current user.
      *
      */
     @Define
-    public final static HKEY HKEY_DYN_DATA = new HKEY(0x80000006L);
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER_LOCAL_SETTINGS</a>
-     * Registry entries subordinate to this key define preferences of the
-     * current user that are local to the machine.
-     *
-     */
-    @Define
-    public final static HKEY HKEY_CURRENT_USER_LOCAL_SETTINGS = new HKEY(0x80000007L);
+    public final static HKEY HKEY_USERS = new HKEY(0x80000003L);
 
     /**
      * Make sure the native lib is loaded

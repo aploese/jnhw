@@ -19,21 +19,11 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.util.posix.memory;
-
-import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-
 /**
+ * Annontations for datatypes of stdio.h.
  *
- * @author aploese
+ * See types.h at:
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html">stdio.h</a>
+ *
  */
-@pid_t
-public interface Accessor_Pid_t {
-
-    @pid_t
-    int pid_t(OpaqueMemory32 mem, long offset);
-
-    void pid_t(OpaqueMemory32 mem, long offset, @pid_t int value);
-
-}
+package de.ibapl.jnhw.annotation.posix.stdio;

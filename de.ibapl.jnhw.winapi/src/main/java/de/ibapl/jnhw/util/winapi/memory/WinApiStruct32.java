@@ -34,14 +34,6 @@ import de.ibapl.jnhw.winapi.Winnt;
  */
 public class WinApiStruct32 extends Struct32 {
 
-    /**
-     * Make sure the native lib is loaded ... this class is static, so we have
-     * to
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
-
     protected static class Accessor_BOOL_As_int32_t implements Accessor_BOOL {
 
         @Override
@@ -170,22 +162,23 @@ public class WinApiStruct32 extends Struct32 {
 
     }
 
-    public WinApiStruct32(NativeAddressHolder nativeAddressHolder, int sizeInBytes) {
-        super(nativeAddressHolder, sizeInBytes);
-    }
-
-    public WinApiStruct32(AbstractNativeMemory owner, long offset, int sizeInBytes, SetMem setMem) {
-        super(owner, offset, sizeInBytes, setMem);
-    }
-
     protected final static Accessor_BOOL ACCESSOR_BOOL;
+
     protected final static Accessor_BYTE ACCESSOR_BYTE;
+
     protected final static Accessor_DWORD ACCESSOR_DWORD;
+
     protected final static Accessor_HANDLE ACCESSOR_HANDLE;
     protected final static Accessor_PVOID ACCESSOR_PVOID;
     protected final static Accessor_ULONG_PTR ACCESSOR_ULONG_PTR;
     protected final static Accessor_WORD ACCESSOR_WORD;
-
+    /**
+     * Make sure the native lib is loaded ... this class is static, so we have
+     * to
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
     static {
         ACCESSOR_BOOL = new Accessor_BOOL_As_int32_t();
         ACCESSOR_BYTE = new Accessor_BYTE_As_uint8_t();
@@ -194,5 +187,12 @@ public class WinApiStruct32 extends Struct32 {
         ACCESSOR_PVOID = new Accessor_PVOID_As_uintptr_t();
         ACCESSOR_ULONG_PTR = new Accessor_ULONG_PTR_As_uintptr_t();
         ACCESSOR_WORD = new Accessor_WORD_As_uint16_t();
+    }
+    public WinApiStruct32(AbstractNativeMemory owner, long offset, int sizeInBytes, SetMem setMem) {
+        super(owner, offset, sizeInBytes, setMem);
+    }
+
+    public WinApiStruct32(NativeAddressHolder nativeAddressHolder, int sizeInBytes) {
+        super(nativeAddressHolder, sizeInBytes);
     }
 }

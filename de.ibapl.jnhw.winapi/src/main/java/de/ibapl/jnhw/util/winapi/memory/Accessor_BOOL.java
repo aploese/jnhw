@@ -31,9 +31,9 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 @BOOL
 public interface Accessor_BOOL {
 
-    void BOOL(OpaqueMemory32 mem, long offset, @BOOL boolean value);
-
     @BOOL
     boolean BOOL(OpaqueMemory32 mem, long offset);
+
+    void BOOL(OpaqueMemory32 mem, long offset, @BOOL boolean value);
 
 }

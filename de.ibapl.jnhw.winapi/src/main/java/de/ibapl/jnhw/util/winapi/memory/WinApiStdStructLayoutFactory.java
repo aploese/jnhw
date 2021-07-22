@@ -39,28 +39,28 @@ public class WinApiStdStructLayoutFactory extends StructLayoutFactoryImpl {
         super(type, alignment);
     }
 
-    public long ULONG_PTR() {
-        return uintptr_t();
-    }
-
-    public long DWORD() {
-        return uint32_t();
-    }
-
-    public long PVOID() {
-        return uintptr_t();
-    }
-
-    public long HANDLE() {
-        return uintptr_t();
-    }
-
     public long BOOL() {
         return int32_t();
     }
 
     public long BYTE() {
         return uint8_t();
+    }
+
+    public long DWORD() {
+        return uint32_t();
+    }
+
+    public long HANDLE() {
+        return uintptr_t();
+    }
+
+    public long PVOID() {
+        return uintptr_t();
+    }
+
+    public long ULONG_PTR() {
+        return uintptr_t();
     }
 
     public long WORD() {

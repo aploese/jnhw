@@ -31,9 +31,9 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 @uid_t
 public interface Accessor_Uid_t {
 
-    void uid_t(OpaqueMemory32 mem, long offset, @uid_t long value);
-
     @uid_t
     long uid_t(OpaqueMemory32 mem, long offset);
+
+    void uid_t(OpaqueMemory32 mem, long offset, @uid_t long value);
 
 }

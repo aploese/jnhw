@@ -43,14 +43,8 @@ public class Off_t extends NativeIntNumber implements Accessor_Off_t {
     }
 
     @Override
-    public void off_t(OpaqueMemory32 mem, long offset, @off_t long value) {
-        PosixStruct32.ACCESSOR_OFF_T.off_t(mem, offset, value);
-    }
-
-    @Override
-    @off_t
-    public long off_t(OpaqueMemory32 mem, long offset) {
-        return PosixStruct32.ACCESSOR_OFF_T.off_t(mem, offset);
+    public BaseDataType getBaseDataType() {
+        return dataType;
     }
 
     @Override
@@ -64,8 +58,14 @@ public class Off_t extends NativeIntNumber implements Accessor_Off_t {
     }
 
     @Override
-    public BaseDataType getBaseDataType() {
-        return dataType;
+    @off_t
+    public long off_t(OpaqueMemory32 mem, long offset) {
+        return PosixStruct32.ACCESSOR_OFF_T.off_t(mem, offset);
+    }
+
+    @Override
+    public void off_t(OpaqueMemory32 mem, long offset, @off_t long value) {
+        PosixStruct32.ACCESSOR_OFF_T.off_t(mem, offset, value);
     }
 
 }

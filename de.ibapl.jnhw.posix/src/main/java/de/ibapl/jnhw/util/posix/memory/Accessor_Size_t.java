@@ -31,9 +31,9 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 @size_t
 public interface Accessor_Size_t {
 
-    void size_t(OpaqueMemory32 mem, long offset, @size_t long value);
-
     @size_t
     long size_t(OpaqueMemory32 mem, long offset);
+
+    void size_t(OpaqueMemory32 mem, long offset, @size_t long value);
 
 }

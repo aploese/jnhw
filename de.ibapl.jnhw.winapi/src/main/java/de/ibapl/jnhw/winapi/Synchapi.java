@@ -47,6 +47,8 @@ public abstract class Synchapi {
         LibJnhwWinApiLoader.touch();
     }
 
+    private static native long CreateEventW(long ptrLpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException;
+
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-createeventw">CreateEventW</a>
      * Creates or opens a named or unnamed event object.
@@ -74,8 +76,6 @@ public abstract class Synchapi {
     public final static HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException {
         return HANDLE.of(CreateEventW(AbstractNativeMemory.toUintptr_tOrNULL(lpEventAttributes), bManualReset, bInitialState, lpName));
     }
-
-    private static native long CreateEventW(long ptrLpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-resetevent">ResetEvent</a>
@@ -112,6 +112,29 @@ public abstract class Synchapi {
     private static native void SetEvent(long ptrHEvent) throws NativeErrorException;
 
     /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-sleepex">SleepEx</a>
+     * Sets the specified event object to the signaled state.
+     *
+     * @param dwMilliseconds The time interval for which execution is to be
+     * suspended, in milliseconds.
+     *
+     * @param bAlertable enable/disable APC.
+     * @return The return value is zero if the specified time interval expired.
+     *
+     * The return value is WAIT_IO_COMPLETION if the function returned due to
+     * one or more I/O completion callback functions.
+     *
+     */
+    public final static long SleepEx(long dwMilliseconds, boolean bAlertable) {
+        if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
+            throw new IllegalArgumentException("dwMilliseconds < 0");
+        }
+        return SleepEx0(dwMilliseconds, bAlertable);
+    }
+
+    private static native long SleepEx0(long dwMilliseconds, boolean bAlertable);
+
+    /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects">WaitForSingleObject</a>
      * Waits until one or all of the specified objects are in the signaled state
      * or the time-out interval elapses.
@@ -139,6 +162,8 @@ public abstract class Synchapi {
         }
         return WaitForMultipleObjects(lpHandles.length, AbstractNativeMemory.toUintptr_t(lpHandles), bWaitAll, dwMilliseconds);
     }
+
+    private static native long WaitForMultipleObjects(int nCount, long ptrLpHandles, boolean bWaitAll, long dwMilliseconds) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjectsex">WaitForSingleObjectEx</a>
@@ -175,6 +200,8 @@ public abstract class Synchapi {
         }
         return WaitForMultipleObjectsEx(lpHandles.length, AbstractNativeMemory.toUintptr_t(lpHandles), bWaitAll, dwMilliseconds, bAlertable);
     }
+
+    private static native long WaitForMultipleObjectsEx(int nCount, long ptrLpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject">WaitForSingleObject</a>
@@ -228,31 +255,4 @@ public abstract class Synchapi {
     }
 
     private static native long WaitForSingleObjectEx(long ptrHHandle, long dwMilliseconds, boolean bAlertable) throws NativeErrorException;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-sleepex">SleepEx</a>
-     * Sets the specified event object to the signaled state.
-     *
-     * @param dwMilliseconds The time interval for which execution is to be
-     * suspended, in milliseconds.
-     *
-     * @param bAlertable enable/disable APC.
-     * @return The return value is zero if the specified time interval expired.
-     *
-     * The return value is WAIT_IO_COMPLETION if the function returned due to
-     * one or more I/O completion callback functions.
-     *
-     */
-    public final static long SleepEx(long dwMilliseconds, boolean bAlertable) {
-        if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
-            throw new IllegalArgumentException("dwMilliseconds < 0");
-        }
-        return SleepEx0(dwMilliseconds, bAlertable);
-    }
-
-    private static native long SleepEx0(long dwMilliseconds, boolean bAlertable);
-
-    private static native long WaitForMultipleObjects(int nCount, long ptrLpHandles, boolean bWaitAll, long dwMilliseconds) throws NativeErrorException;
-
-    private static native long WaitForMultipleObjectsEx(int nCount, long ptrLpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException;
 }

@@ -48,18 +48,6 @@ public enum PosixDataType {
 
     private static MultiarchInfo multiarchInfo;
 
-    static MultiarchInfo getMultiarchInfo() {
-        if (multiarchInfo == null) {
-            LibJnhwPosixLoader.touch();
-            multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-        }
-        return multiarchInfo;
-    }
-
-    private PosixDataType(BaseDataType dataType) {
-        this.baseDataType = dataType;
-    }
-
     private static BaseDataType dataTypeOf__CC_t() {
         return dataTypeOf__CC_t(getMultiarchInfo());
     }
@@ -299,6 +287,18 @@ public enum PosixDataType {
         return BaseDataType.uint32_t;
     }
 
+    static MultiarchInfo getMultiarchInfo() {
+        if (multiarchInfo == null) {
+            LibJnhwPosixLoader.touch();
+            multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+        }
+        return multiarchInfo;
+    }
+
     public final BaseDataType baseDataType;
+
+    private PosixDataType(BaseDataType dataType) {
+        this.baseDataType = dataType;
+    }
 
 }

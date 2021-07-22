@@ -33,26 +33,26 @@ import de.ibapl.jnhw.winapi.Winbase;
 @DWORD
 public interface Accessor_DWORD {
 
-    void DWORD(OpaqueMemory32 mem, long offset, @DWORD int value);
-
-    void DWORD_FromLong(OpaqueMemory32 mem, long offset, @DWORD long value);
-
     @DWORD
     int DWORD(OpaqueMemory32 mem, long offset);
 
+    void DWORD(OpaqueMemory32 mem, long offset, @DWORD int value);
+
     @DWORD
     long DWORD_AsLong(OpaqueMemory32 mem, long offset);
+
+    void DWORD_FromLong(OpaqueMemory32 mem, long offset, @DWORD long value);
 
     default boolean getBitAt(OpaqueMemory32 mem, long offset, int bitpos) {
         return MemoryAccessor.getBitInInt(DWORD(mem, offset), bitpos);
     }
 
-    default void setBitAt(OpaqueMemory32 mem, long offset, int bitpos, boolean bit) {
-        DWORD(mem, offset, MemoryAccessor.setBitInInt(DWORD(mem, offset), bitpos, bit));
-    }
-
     default int getBits(OpaqueMemory32 mem, long offset, int bitpos, int bitsize) {
         return MemoryAccessor.getBitsInInt(DWORD(mem, offset), bitpos, bitsize);
+    }
+
+    default void setBitAt(OpaqueMemory32 mem, long offset, int bitpos, boolean bit) {
+        DWORD(mem, offset, MemoryAccessor.setBitInInt(DWORD(mem, offset), bitpos, bit));
     }
 
     default void setBits(OpaqueMemory32 mem, long offset, int bitpos, int bitsize, int value) {

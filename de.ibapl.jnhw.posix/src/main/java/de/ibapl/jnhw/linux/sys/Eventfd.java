@@ -38,6 +38,32 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 public final class Eventfd {
 
     /**
+     * <b>Linux:</b> Set the close-on-exec (FD_CLOEXEC) flag on the new file
+     * descriptor.
+     *
+     */
+    @Define
+    public final static int EFD_CLOEXEC;
+
+    /**
+     * <b>Linux:</b> Set the O_NONBLOCK file status flag on the open file
+     * description (see open(2)) referred to by the new file descriptor..
+     *
+     */
+    @Define
+    public final static int EFD_NONBLOCK;
+
+    /**
+     * <b>Linux:</b> Provide semaphore-like semantics for reads from the new
+     * file descriptor.
+     *
+     */
+    @Define
+    public final static int EFD_SEMAPHORE;
+
+    public final static boolean HAVE_SYS_EVENTFD_H;
+
+    /**
      * Make sure the native lib is loaded
      *
      * @implNote The actual value for the define fields are injected by
@@ -70,32 +96,6 @@ public final class Eventfd {
                 EFD_SEMAPHORE = -1;
         }
     }
-
-    /**
-     * <b>Linux:</b> Set the close-on-exec (FD_CLOEXEC) flag on the new file
-     * descriptor.
-     *
-     */
-    @Define
-    public final static int EFD_CLOEXEC;
-
-    /**
-     * <b>Linux:</b> Set the O_NONBLOCK file status flag on the open file
-     * description (see open(2)) referred to by the new file descriptor..
-     *
-     */
-    @Define
-    public final static int EFD_NONBLOCK;
-
-    /**
-     * <b>Linux:</b> Provide semaphore-like semantics for reads from the new
-     * file descriptor.
-     *
-     */
-    @Define
-    public final static int EFD_SEMAPHORE;
-
-    public final static boolean HAVE_SYS_EVENTFD_H;
 
     /**
      * <b>Linux:</b> eventfd - create a file descriptor for event notification.

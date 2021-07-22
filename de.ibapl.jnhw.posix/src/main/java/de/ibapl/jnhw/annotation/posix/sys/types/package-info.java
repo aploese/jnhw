@@ -23,7 +23,7 @@
  * Annontations for datatypes of sys/types.h.
  *
  * See types.h at:
- * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">sys/types.h
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html">sys/types.h</a>
  *
  */
 package de.ibapl.jnhw.annotation.posix.sys.types;

@@ -33,22 +33,6 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_SetEvent
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Synchapi
- * Method:    WaitForSingleObject
- * Signature: (JJ)J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForSingleObject
-  (JNIEnv *, jclass, jlong, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Synchapi
- * Method:    WaitForSingleObjectEx
- * Signature: (JJZ)J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForSingleObjectEx
-  (JNIEnv *, jclass, jlong, jlong, jboolean);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Synchapi
  * Method:    SleepEx0
  * Signature: (JZ)J
  */
@@ -70,6 +54,22 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObject
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForMultipleObjectsEx
   (JNIEnv *, jclass, jint, jlong, jboolean, jlong, jboolean);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Synchapi
+ * Method:    WaitForSingleObject
+ * Signature: (JJ)J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForSingleObject
+  (JNIEnv *, jclass, jlong, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Synchapi
+ * Method:    WaitForSingleObjectEx
+ * Signature: (JJZ)J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Synchapi_WaitForSingleObjectEx
+  (JNIEnv *, jclass, jlong, jlong, jboolean);
 
 #ifdef __cplusplus
 }

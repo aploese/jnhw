@@ -55,6 +55,121 @@ import java.io.IOException;
 @Include("#include <sys/types.h>")
 public class Types {
 
+    @clock_t
+    public static class Clock_t extends NativeIntNumber {
+
+        private final static BaseDataType dataType = PosixDataType.clock_t.baseDataType;
+
+        public Clock_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
+            super(owner, offset, dataType.SIZE_OF, setMem);
+            if (dataType.SIZE_OF > BaseDataType.int64_t.SIZE_OF) {
+                throw new IllegalArgumentException("Data type is too big, a smaller data type was expected");
+            }
+        }
+
+        public long getAsSignedLong() {
+            return MEM_ACCESS.getSignedLongOf(this, 0, sizeInBytes);
+        }
+
+        public long getAsUnsignedLong() {
+            return MEM_ACCESS.getUnsignedLongOf(this, 0, sizeInBytes);
+        }
+
+        @Override
+        public BaseDataType getBaseDataType() {
+            return dataType;
+        }
+
+        @Override
+        public String nativeToHexString() {
+            if (dataType.UNSIGNED) {
+                return MEM_ACCESS.getUnsignedLongOf_AsHex(this, 0, sizeInBytes);
+            } else {
+                return MEM_ACCESS.getSignedLongOf_AsHex(this, 0, sizeInBytes);
+            }
+        }
+
+        @Override
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+            if (dataType.UNSIGNED) {
+                sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(this, 0, sizeInBytes));
+            } else {
+                sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(this, 0, sizeInBytes));
+            }
+        }
+
+        public void setFromSignedLong(long value) {
+            MEM_ACCESS.setSignedLongOf(this, 0, sizeInBytes, value);
+        }
+
+        public void setFromUnsignedLong(long value) {
+            MEM_ACCESS.setUnsignedLongOf(this, 0, sizeInBytes, value);
+        }
+    }
+
+    @mode_t
+    public static class Mode_t extends AsUnsignedInt {
+
+        public Mode_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
+            super(PosixDataType.mode_t.baseDataType, owner, offset, setMem);
+        }
+
+    }
+
+    @off_t
+    public static class Off_t extends AsSignedLong {
+
+        public Off_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
+            super(PosixDataType.off_t.baseDataType, owner, offset, setMem);
+        }
+
+    }
+
+    @pid_t
+    public static class Pid_t extends Int32_t {
+
+        public Pid_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
+            super(owner, offset, setMem);
+        }
+
+    }
+
+    @size_t
+    public static class Size_t extends AsUnsignedLong {
+
+        public Size_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
+            super(PosixDataType.size_t.baseDataType, owner, offset, setMem);
+        }
+    }
+
+    @ssize_t
+    public static class Ssize_t extends AsSignedLong {
+
+        public Ssize_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
+            super(PosixDataType.ssize_t.baseDataType, owner, offset, setMem);
+        }
+
+    }
+
+    @time_t
+    public static class Time_t extends AsSignedLong {
+
+        public Time_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
+            super(PosixDataType.time_t.baseDataType, owner, offset, setMem);
+        }
+
+    }
+
+    @uid_t
+    public static class Uid_t extends Uint32_t {
+
+        public Uid_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
+            super(owner, offset, setMem);
+        }
+    }
+
+    public final static boolean HAVE_SYS_TYPES_H;
+
     /**
      * Make sure the native lib is loaded
      *
@@ -78,121 +193,6 @@ public class Types {
                 break;
             default:
                 throw new NoClassDefFoundError("No sys/types.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
-        }
-    }
-
-    public final static boolean HAVE_SYS_TYPES_H;
-
-    @off_t
-    public static class Off_t extends AsSignedLong {
-
-        public Off_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
-            super(PosixDataType.off_t.baseDataType, owner, offset, setMem);
-        }
-
-    }
-
-    @mode_t
-    public static class Mode_t extends AsUnsignedInt {
-
-        public Mode_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
-            super(PosixDataType.mode_t.baseDataType, owner, offset, setMem);
-        }
-
-    }
-
-    @ssize_t
-    public static class Ssize_t extends AsSignedLong {
-
-        public Ssize_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
-            super(PosixDataType.ssize_t.baseDataType, owner, offset, setMem);
-        }
-
-    }
-
-    @size_t
-    public static class Size_t extends AsUnsignedLong {
-
-        public Size_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
-            super(PosixDataType.size_t.baseDataType, owner, offset, setMem);
-        }
-    }
-
-    @pid_t
-    public static class Pid_t extends Int32_t {
-
-        public Pid_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
-            super(owner, offset, setMem);
-        }
-
-    }
-
-    @clock_t
-    public static class Clock_t extends NativeIntNumber {
-
-        private final static BaseDataType dataType = PosixDataType.clock_t.baseDataType;
-
-        public Clock_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
-            super(owner, offset, dataType.SIZE_OF, setMem);
-            if (dataType.SIZE_OF > BaseDataType.int64_t.SIZE_OF) {
-                throw new IllegalArgumentException("Data type is too big, a smaller data type was expected");
-            }
-        }
-
-        public long getAsSignedLong() {
-            return MEM_ACCESS.getSignedLongOf(this, 0, sizeInBytes);
-        }
-
-        public long getAsUnsignedLong() {
-            return MEM_ACCESS.getUnsignedLongOf(this, 0, sizeInBytes);
-        }
-
-        public void setFromSignedLong(long value) {
-            MEM_ACCESS.setSignedLongOf(this, 0, sizeInBytes, value);
-        }
-
-        public void setFromUnsignedLong(long value) {
-            MEM_ACCESS.setUnsignedLongOf(this, 0, sizeInBytes, value);
-        }
-
-        @Override
-        public String nativeToHexString() {
-            if (dataType.UNSIGNED) {
-                return MEM_ACCESS.getUnsignedLongOf_AsHex(this, 0, sizeInBytes);
-            } else {
-                return MEM_ACCESS.getSignedLongOf_AsHex(this, 0, sizeInBytes);
-            }
-        }
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            if (dataType.UNSIGNED) {
-                sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(this, 0, sizeInBytes));
-            } else {
-                sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(this, 0, sizeInBytes));
-            }
-        }
-
-        @Override
-        public BaseDataType getBaseDataType() {
-            return dataType;
-        }
-    }
-
-    @time_t
-    public static class Time_t extends AsSignedLong {
-
-        public Time_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
-            super(PosixDataType.time_t.baseDataType, owner, offset, setMem);
-        }
-
-    }
-
-    @uid_t
-    public static class Uid_t extends Uint32_t {
-
-        public Uid_t(OpaqueMemory32 owner, int offset, SetMem setMem) {
-            super(owner, offset, setMem);
         }
     }
 

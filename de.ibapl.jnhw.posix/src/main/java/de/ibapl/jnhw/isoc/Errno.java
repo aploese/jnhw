@@ -38,24 +38,6 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <errno.h>")
 public abstract class Errno {
 
-    public static interface LinuxDefines {
-
-        public final static int EDOM = 33;
-        public final static int ERANGE = 34;
-    }
-
-    public static interface Linux_NonMips_Defines {
-
-        public final static int EILSEQ = 84;
-
-    }
-
-    public static interface Linux_Mips_Defines {
-
-        public final static int EILSEQ = 88;
-
-    }
-
     public static interface BsdDefines {
 
         public final static int EDOM = 33;
@@ -72,10 +54,50 @@ public abstract class Errno {
         public final static int EILSEQ = 86;
     }
 
+    public static interface Linux_Mips_Defines {
+
+        public final static int EILSEQ = 88;
+    }
+
+    public static interface Linux_NonMips_Defines {
+
+        public final static int EILSEQ = 84;
+
+    }
+
+    public static interface LinuxDefines {
+
+        public final static int EDOM = 33;
+        public final static int ERANGE = 34;
+    }
+
     public static interface OpenBsdDefines extends BsdDefines {
 
         public final static int EILSEQ = 84;
     }
+
+    /**
+     * ISOC,POSIX: Mathematics argument out of domain of function.
+     *
+     */
+    @Define
+    public final static int EDOM;
+
+    /**
+     * ISOC,POSIX: Illegal byte sequence.
+     *
+     */
+    @Define
+    public final static int EILSEQ;
+
+    /**
+     * ISOC,POSIX: Result too large.
+     *
+     */
+    @Define
+    public final static int ERANGE;
+
+    public final static boolean HAVE_ERRNO_H;
 
     /**
      * Make sure the native lib is loaded
@@ -131,29 +153,6 @@ public abstract class Errno {
                 throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
     }
-
-    /**
-     * ISOC,POSIX: Mathematics argument out of domain of function.
-     *
-     */
-    @Define
-    public final static int EDOM;
-
-    /**
-     * ISOC,POSIX: Illegal byte sequence.
-     *
-     */
-    @Define
-    public final static int EILSEQ;
-
-    /**
-     * ISOC,POSIX: Result too large.
-     *
-     */
-    @Define
-    public final static int ERANGE;
-
-    public final static boolean HAVE_ERRNO_H;
 
     /**
      * Read access to {@code errno}.

@@ -41,27 +41,40 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <sys/ioctl.h>")
 public final class Ioctl {
 
-    public static interface Linux_AllArchs_Defines {
+    public static interface BsdDefines {
 
-        public final static int TIOCCBRK = 21544;
+        public final static int FIONREAD = 1074030207;
+        public final static int IOC_DIRMASK = -536870912;
+        public final static int IOC_IN = -2147483648;
+        public final static int IOC_INOUT = -1073741824;
+        public final static int IOC_OUT = 1073741824;
+        public final static int IOC_VOID = 536870912;
+        public final static int IOCPARM_MASK = 8191;
+        public final static int IOCSIZE_SHIFT = 16;
+        public final static int TIOCCBRK = 536900730;
+        public final static int TIOCEXCL = 536900621;
+        public final static int TIOCM_CAR = 64;
+        public final static int TIOCM_CD = 64;
+        public final static int TIOCM_CTS = 32;
+        public final static int TIOCM_DSR = 256;
         public final static int TIOCM_DTR = 2;
         public final static int TIOCM_LE = 1;
+        public final static int TIOCM_RI = 128;
+        public final static int TIOCM_RNG = 128;
         public final static int TIOCM_RTS = 4;
-        public final static int TIOCSBRK = 21543;
+        public final static int TIOCM_SR = 16;
+        public final static int TIOCM_ST = 8;
+        public final static int TIOCMBIC = -2147191701;
+        public final static int TIOCMBIS = -2147191700;
+        public final static int TIOCMGET = 1074033770;
+        public final static int TIOCMSET = -2147191699;
+        public final static int TIOCOUTQ = 1074033779;
+        public final static int TIOCSBRK = 536900731;
+    }
 
-        public final static int IOC_INOUT = -1073741824;
+    public static interface FreeBsdDefines extends BsdDefines {
 
-        public final static int _IOC_NRBITS = 8;
-        public final static int _IOC_TYPEBITS = 8;
-        public final static int _IOC_NRMASK = 255;
-        public final static int _IOC_TYPEMASK = 255;
-        public final static int _IOC_NRSHIFT = 0;
-        public final static int _IOC_TYPESHIFT = 8;
-        public final static int _IOC_SIZESHIFT = 16;
-
-        public final static int _IOC_READ = 2;
-
-        public final static int IOCSIZE_SHIFT = 16;
+        public final static int IOCPARM_MAX = 8192;
     }
 
     public static interface Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines {
@@ -69,11 +82,6 @@ public final class Ioctl {
         public final static int TIOCEXCL = 21516;
         public final static int TIOCGICOUNT = 21597;
         public final static int TIOCGSOFTCAR = 21529;
-        public final static int TIOCMBIC = 21527;
-        public final static int TIOCMBIS = 21526;
-        public final static int TIOCMGET = 21525;
-        public final static int TIOCMIWAIT = 21596;
-        public final static int TIOCMSET = 21528;
         public final static int TIOCM_CAR = 64;
         public final static int TIOCM_CD = 64;
         public final static int TIOCM_CTS = 32;
@@ -82,55 +90,65 @@ public final class Ioctl {
         public final static int TIOCM_RNG = 128;
         public final static int TIOCM_SR = 16;
         public final static int TIOCM_ST = 8;
+        public final static int TIOCMBIC = 21527;
+        public final static int TIOCMBIS = 21526;
+        public final static int TIOCMGET = 21525;
+        public final static int TIOCMIWAIT = 21596;
+        public final static int TIOCMSET = 21528;
         public final static int TIOCSSOFTCAR = 21530;
-
     }
 
     public static interface Linux_Aarch64_Arm_I386_RiscV64_S390_X86_64_Defines {
 
-        public final static int FIONREAD = 21531;
-        public final static int TIOCOUTQ = 21521;
-        public final static int IOC_OUT = -2147483648;
-        public final static int IOC_IN = 1073741824;
-        public final static int _IOC_SIZEBITS = 14;
         public final static int _IOC_DIRBITS = 2;
-        public final static int _IOC_SIZEMASK = 16383;
         public final static int _IOC_DIRMASK = 3;
         public final static int _IOC_DIRSHIFT = 30;
         public final static int _IOC_NONE = 0;
+        public final static int _IOC_SIZEBITS = 14;
+        public final static int _IOC_SIZEMASK = 16383;
         public final static int _IOC_WRITE = 1;
+        public final static int FIONREAD = 21531;
+        public final static int IOC_IN = 1073741824;
+        public final static int IOC_OUT = -2147483648;
         public final static int IOCSIZE_MASK = 1073676288;
-
+        public final static int TIOCOUTQ = 21521;
     }
 
-    public static interface Linux_Ppc64_Defines {
+    public static interface Linux_AllArchs_Defines {
 
-        public final static int FIONREAD = 1074030207;
-        public final static int TIOCOUTQ = 1074033779;
-        public final static int IOC_OUT = 1073741824;
-        public final static int IOC_IN = -2147483648;
-        public final static int _IOC_SIZEBITS = 13;
-        public final static int _IOC_DIRBITS = 3;
-        public final static int _IOC_SIZEMASK = 8191;
-        public final static int _IOC_DIRMASK = 7;
-        public final static int _IOC_DIRSHIFT = 29;
-        public final static int _IOC_NONE = 1;
-        public final static int _IOC_WRITE = 4;
-        public final static int IOCSIZE_MASK = 536805376;
-
+        public final static int _IOC_NRBITS = 8;
+        public final static int _IOC_NRMASK = 255;
+        public final static int _IOC_NRSHIFT = 0;
+        public final static int _IOC_READ = 2;
+        public final static int _IOC_SIZESHIFT = 16;
+        public final static int _IOC_TYPEBITS = 8;
+        public final static int _IOC_TYPEMASK = 255;
+        public final static int _IOC_TYPESHIFT = 8;
+        public final static int IOC_INOUT = -1073741824;
+        public final static int IOCSIZE_SHIFT = 16;
+        public final static int TIOCCBRK = 21544;
+        public final static int TIOCM_DTR = 2;
+        public final static int TIOCM_LE = 1;
+        public final static int TIOCM_RTS = 4;
+        public final static int TIOCSBRK = 21543;
     }
 
     public static interface Linux_Mips_Mips64_Defines {
 
+        public final static int _IOC_DIRBITS = 3;
+        public final static int _IOC_DIRMASK = 7;
+        public final static int _IOC_DIRSHIFT = 29;
+        public final static int _IOC_NONE = 1;
+        public final static int _IOC_SIZEBITS = 13;
+        public final static int _IOC_SIZEMASK = 8191;
+        public final static int _IOC_WRITE = 4;
         public final static int FIONREAD = 18047;
+        public final static int IOC_IN = -2147483648;
+        public final static int IOC_OUT = 1073741824;
+        public final static int IOCSIZE_MASK = 536805376;
         public final static int TIOCEXCL = 29709;
         public final static int TIOCGICOUNT = 21650;
         public final static int TIOCGSOFTCAR = 21633;
-        public final static int TIOCMBIC = 29724;
-        public final static int TIOCMBIS = 29723;
-        public final static int TIOCMGET = 29725;
-        public final static int TIOCMIWAIT = 21649;
-        public final static int TIOCMSET = 29722;
         public final static int TIOCM_CAR = 256;
         public final static int TIOCM_CD = 256;
         public final static int TIOCM_CTS = 64;
@@ -139,65 +157,265 @@ public final class Ioctl {
         public final static int TIOCM_RNG = 512;
         public final static int TIOCM_SR = 32;
         public final static int TIOCM_ST = 16;
+        public final static int TIOCMBIC = 29724;
+        public final static int TIOCMBIS = 29723;
+        public final static int TIOCMGET = 29725;
+        public final static int TIOCMIWAIT = 21649;
+        public final static int TIOCMSET = 29722;
         public final static int TIOCOUTQ = 29810;
-        public final static int IOC_OUT = 1073741824;
-        public final static int IOC_IN = -2147483648;
-        public final static int _IOC_SIZEBITS = 13;
+        public final static int TIOCSSOFTCAR = 21634;
+    }
+
+    public static interface Linux_Ppc64_Defines {
+
         public final static int _IOC_DIRBITS = 3;
-        public final static int _IOC_SIZEMASK = 8191;
         public final static int _IOC_DIRMASK = 7;
         public final static int _IOC_DIRSHIFT = 29;
         public final static int _IOC_NONE = 1;
+        public final static int _IOC_SIZEBITS = 13;
+        public final static int _IOC_SIZEMASK = 8191;
         public final static int _IOC_WRITE = 4;
-
-        public final static int TIOCSSOFTCAR = 21634;
-        public final static int IOCSIZE_MASK = 536805376;
-
-    }
-
-    public static interface BsdDefines {
-
-        public final static int TIOCCBRK = 536900730;
-        public final static int TIOCM_DTR = 2;
-        public final static int TIOCM_LE = 1;
-        public final static int TIOCM_RTS = 4;
-        public final static int TIOCSBRK = 536900731;
-
-        public final static int IOC_INOUT = -1073741824;
-
-        public final static int IOCSIZE_SHIFT = 16;
-        public final static int TIOCEXCL = 536900621;
-        public final static int TIOCMBIC = -2147191701;
-        public final static int TIOCMBIS = -2147191700;
-        public final static int TIOCMGET = 1074033770;
-        public final static int TIOCMSET = -2147191699;
-        public final static int TIOCM_CAR = 64;
-        public final static int TIOCM_CD = 64;
-        public final static int TIOCM_CTS = 32;
-        public final static int TIOCM_DSR = 256;
-        public final static int TIOCM_RI = 128;
-        public final static int TIOCM_RNG = 128;
-        public final static int TIOCM_SR = 16;
-        public final static int TIOCM_ST = 8;
         public final static int FIONREAD = 1074030207;
-        public final static int TIOCOUTQ = 1074033779;
-        public final static int IOC_OUT = 1073741824;
         public final static int IOC_IN = -2147483648;
-        public final static int IOCPARM_MASK = 8191;
-        public final static int IOC_VOID = 536870912;
-        public final static int IOC_DIRMASK = -536870912;
-    }
-
-    public static interface FreeBsdDefines extends BsdDefines {
-
-        public final static int IOCPARM_MAX = 8192;
-
+        public final static int IOC_OUT = 1073741824;
+        public final static int IOCSIZE_MASK = 536805376;
+        public final static int TIOCOUTQ = 1074033779;
     }
 
     public static interface OpenBsdDefines extends BsdDefines {
 
         public final static int IOCPARM_MAX = 4096;
     }
+
+    @Define
+    public final static IntDefine _IOC_DIRBITS;
+
+    @Define
+    public final static IntDefine _IOC_DIRMASK;
+
+    @Define
+    public final static IntDefine _IOC_DIRSHIFT;
+
+    @Define
+    public final static IntDefine _IOC_NONE;
+
+    @Define
+    public final static IntDefine _IOC_NRBITS;
+
+    @Define
+    public final static IntDefine _IOC_NRMASK;
+
+    @Define
+    public final static IntDefine _IOC_NRSHIFT;
+
+    @Define
+    public final static IntDefine _IOC_READ;
+
+    @Define
+    public final static IntDefine _IOC_SIZEBITS;
+
+    @Define
+    public final static IntDefine _IOC_SIZEMASK;
+
+    @Define
+    public final static IntDefine _IOC_SIZESHIFT;
+
+    @Define
+    public final static IntDefine _IOC_TYPEBITS;
+
+    @Define
+    public final static IntDefine _IOC_TYPEMASK;
+
+    @Define
+    public final static IntDefine _IOC_TYPESHIFT;
+
+    @Define
+    public final static IntDefine _IOC_WRITE;
+
+    /**
+     * <b>Non POSIX:</b> Get the number of bytes in the input buffer..
+     *
+     */
+    @Define
+    public final static int FIONREAD;
+
+    public final static boolean HAVE_SYS_IOCTL_H;
+
+    @Define
+    public final static IntDefine IOC_DIRMASK;
+
+    @Define
+    public final static int IOC_IN;
+
+    @Define
+    public final static int IOC_INOUT;
+
+    @Define
+    public final static int IOC_OUT;
+
+    @Define
+    public final static IntDefine IOC_VOID;
+
+    @Define
+    public final static IntDefine IOCPARM_MASK;
+
+    @Define
+    public final static IntDefine IOCPARM_MAX;
+
+    /* ...and for the drivers/sound files... */
+    @Define
+    public final static IntDefine IOCSIZE_MASK;
+
+    @Define
+    public final static IntDefine IOCSIZE_SHIFT;
+    /**
+     * <b>Non POSIX:</b> Turn break off, that is, stop sending zero bits.
+     *
+     */
+    @Define
+    public final static int TIOCCBRK;
+    /**
+     * <b>Non POSIX:</b> Put the terminal into exclusive mode..
+     *
+     */
+    @Define
+    public final static int TIOCEXCL;
+    /**
+     * <b>Linux:</b> Get counts of input serial line interrupts (DCD, RI, DSR,
+     * CTS).
+     *
+     */
+    @Define
+    public final static IntDefine TIOCGICOUNT;
+    /**
+     * <b>Linux:</b> ("Get software carrier flag") Get the status of the CLOCAL
+     * flag in the c_cflag field of the termios structure.
+     *
+     */
+    @Define
+    public final static IntDefine TIOCGSOFTCAR;
+    /**
+     * <b>Non POSIX:</b>DCD (data carrier detect) .
+     *
+     */
+    @Define
+    public final static int TIOCM_CAR;
+    /**
+     * <b>Non POSIX:</b> {@link TIOCM_CAR}.
+     *
+     */
+    @Define
+    public final static int TIOCM_CD;
+
+    /**
+     * <b>Non POSIX:</b> CTS (clear to send).
+     *
+     */
+    @Define
+    public final static int TIOCM_CTS;
+    /**
+     * <b>Non POSIX:</b> DSR (data set ready).
+     *
+     */
+    @Define
+    public final static int TIOCM_DSR;
+    /**
+     * <b>Non POSIX:</b> DTR (data terminal ready).
+     *
+     */
+    @Define
+    public final static int TIOCM_DTR;
+    /**
+     * <b>Non POSIX:</b> DSR (data set ready/line enable).
+     *
+     */
+    @Define
+    public final static int TIOCM_LE;
+    /**
+     * <b>Non POSIX:</b> {@link TIOCM_RNG}.
+     *
+     */
+    @Define
+    public final static int TIOCM_RI;
+    /**
+     * <b>Non POSIX:</b> RNG (ring).
+     *
+     */
+    @Define
+    public final static int TIOCM_RNG;
+    /**
+     * <b>Non POSIX:</b> RTS (request to send).
+     *
+     */
+    @Define
+    public final static int TIOCM_RTS;
+    /**
+     * <b>Non POSIX:</b> Secondary RXD (receive).
+     *
+     */
+    @Define
+    public final static int TIOCM_SR;
+    /**
+     * <b>Non POSIX:</b> Secondary TXD (transmit).
+     *
+     */
+    @Define
+    public final static int TIOCM_ST;
+    /**
+     * <b>Non POSIX:</b> Clear the indicated modem bits.
+     *
+     */
+    @Define
+    public final static int TIOCMBIC;
+    /**
+     * <b>Non POSIX:</b> Set the indicated modem bits.
+     *
+     */
+    @Define
+    public final static int TIOCMBIS;
+    /**
+     * <b>Non POSIX:</b> Get the status of modem bits.
+     *
+     */
+    @Define
+    public final static int TIOCMGET;
+
+    /**
+     * <b>Linux:</b> Wait for any of the 4 modem bits (DCD, RI, DSR, CTS) to
+     * change.
+     *
+     */
+    @Define
+    public final static IntDefine TIOCMIWAIT;
+
+    /**
+     * <b>Non POSIX:</b> Set the status of modem bits.
+     *
+     */
+    @Define
+    public final static int TIOCMSET;
+
+    /**
+     * <b>Non POSIX:</b> Get the number of bytes in the output buffer.
+     *
+     */
+    @Define
+    public final static int TIOCOUTQ;
+
+    /**
+     * <b>Non POSIX:</b> Turn break on, that is, start sending zero bits.
+     *
+     */
+    @Define
+    public final static int TIOCSBRK;
+
+    /**
+     * <b>Linux:</b> ("Set software carrier flag") Set the CLOCAL flag in the
+     * termios structure when *argp is nonzero, and clear it otherwise.
+     *
+     */
+    @Define
+    public final static IntDefine TIOCSSOFTCAR;
 
     /**
      * Make sure the native lib is loaded
@@ -418,231 +636,6 @@ public final class Ioctl {
         }
     }
 
-    /**
-     * <b>Non POSIX:</b> Get the number of bytes in the input buffer..
-     *
-     */
-    @Define
-    public final static int FIONREAD;
-
-    public final static boolean HAVE_SYS_IOCTL_H;
-
-    /**
-     * <b>Non POSIX:</b> Turn break off, that is, stop sending zero bits.
-     *
-     */
-    @Define
-    public final static int TIOCCBRK;
-
-    /**
-     * <b>Non POSIX:</b> Put the terminal into exclusive mode..
-     *
-     */
-    @Define
-    public final static int TIOCEXCL;
-
-    /**
-     * <b>Linux:</b> Get counts of input serial line interrupts (DCD, RI, DSR,
-     * CTS).
-     *
-     */
-    @Define
-    public final static IntDefine TIOCGICOUNT;
-
-    /**
-     * <b>Linux:</b> ("Get software carrier flag") Get the status of the CLOCAL
-     * flag in the c_cflag field of the termios structure.
-     *
-     */
-    @Define
-    public final static IntDefine TIOCGSOFTCAR;
-
-    /**
-     * <b>Non POSIX:</b> Clear the indicated modem bits.
-     *
-     */
-    @Define
-    public final static int TIOCMBIC;
-
-    /**
-     * <b>Non POSIX:</b> Set the indicated modem bits.
-     *
-     */
-    @Define
-    public final static int TIOCMBIS;
-
-    /**
-     * <b>Non POSIX:</b> Get the status of modem bits.
-     *
-     */
-    @Define
-    public final static int TIOCMGET;
-
-    /**
-     * <b>Linux:</b> Wait for any of the 4 modem bits (DCD, RI, DSR, CTS) to
-     * change.
-     *
-     */
-    @Define
-    public final static IntDefine TIOCMIWAIT;
-
-    /**
-     * <b>Non POSIX:</b> Set the status of modem bits.
-     *
-     */
-    @Define
-    public final static int TIOCMSET;
-
-    /**
-     * <b>Non POSIX:</b>DCD (data carrier detect) .
-     *
-     */
-    @Define
-    public final static int TIOCM_CAR;
-
-    /**
-     * <b>Non POSIX:</b> {@link TIOCM_CAR}.
-     *
-     */
-    @Define
-    public final static int TIOCM_CD;
-
-    /**
-     * <b>Non POSIX:</b> CTS (clear to send).
-     *
-     */
-    @Define
-    public final static int TIOCM_CTS;
-
-    /**
-     * <b>Non POSIX:</b> DSR (data set ready).
-     *
-     */
-    @Define
-    public final static int TIOCM_DSR;
-
-    /**
-     * <b>Non POSIX:</b> DTR (data terminal ready).
-     *
-     */
-    @Define
-    public final static int TIOCM_DTR;
-
-    /**
-     * <b>Non POSIX:</b> DSR (data set ready/line enable).
-     *
-     */
-    @Define
-    public final static int TIOCM_LE;
-
-    /**
-     * <b>Non POSIX:</b> {@link TIOCM_RNG}.
-     *
-     */
-    @Define
-    public final static int TIOCM_RI;
-
-    /**
-     * <b>Non POSIX:</b> RNG (ring).
-     *
-     */
-    @Define
-    public final static int TIOCM_RNG;
-
-    /**
-     * <b>Non POSIX:</b> RTS (request to send).
-     *
-     */
-    @Define
-    public final static int TIOCM_RTS;
-
-    /**
-     * <b>Non POSIX:</b> Secondary RXD (receive).
-     *
-     */
-    @Define
-    public final static int TIOCM_SR;
-
-    /**
-     * <b>Non POSIX:</b> Secondary TXD (transmit).
-     *
-     */
-    @Define
-    public final static int TIOCM_ST;
-
-    /**
-     * <b>Non POSIX:</b> Get the number of bytes in the output buffer.
-     *
-     */
-    @Define
-    public final static int TIOCOUTQ;
-
-    /**
-     * <b>Non POSIX:</b> Turn break on, that is, start sending zero bits.
-     *
-     */
-    @Define
-    public final static int TIOCSBRK;
-
-    @Define
-    public final static IntDefine IOCPARM_MASK;
-    @Define
-    public final static IntDefine IOCPARM_MAX;
-    @Define
-    public final static IntDefine IOC_VOID;
-    @Define
-    public final static int IOC_OUT;
-    @Define
-    public final static int IOC_IN;
-    @Define
-    public final static int IOC_INOUT;
-    @Define
-    public final static IntDefine IOC_DIRMASK;
-
-    @Define
-    public final static IntDefine _IOC_NRBITS;
-    @Define
-    public final static IntDefine _IOC_TYPEBITS;
-    @Define
-    public final static IntDefine _IOC_SIZEBITS;
-    @Define
-    public final static IntDefine _IOC_DIRBITS;
-    @Define
-    public final static IntDefine _IOC_NRMASK;
-    @Define
-    public final static IntDefine _IOC_TYPEMASK;
-    @Define
-    public final static IntDefine _IOC_SIZEMASK;
-    @Define
-    public final static IntDefine _IOC_DIRMASK;
-    @Define
-    public final static IntDefine _IOC_NRSHIFT;
-    @Define
-    public final static IntDefine _IOC_TYPESHIFT;
-    @Define
-    public final static IntDefine _IOC_SIZESHIFT;
-    @Define
-    public final static IntDefine _IOC_DIRSHIFT;
-
-    @Define
-    public final static IntDefine _IOC_READ;
-
-    @Define
-    public final static IntDefine _IOC_WRITE;
-
-    @Define
-    public final static IntDefine _IOC_NONE;
-
-    /**
-     * <b>Linux:</b> ("Set software carrier flag") Set the CLOCAL flag in the
-     * termios structure when *argp is nonzero, and clear it otherwise.
-     *
-     */
-    @Define
-    public final static IntDefine TIOCSSOFTCAR;
-
-    public final static native int _IOC(int dir, char type, int nr, int size);
-
     /*
  * Used to create numbers.
  *
@@ -650,6 +643,17 @@ public final class Ioctl {
  * means userland is reading and kernel is writing.
      */
     public final static native int _IO(char type, int nr);
+
+    public final static native int _IOC(int dir, char type, int nr, int size);
+
+    /* used to decode ioctl numbers.. */
+    public final static native int _IOC_DIR(int nr) throws NoSuchMethodException;
+
+    public final static native int _IOC_NR(int nr) throws NoSuchMethodException;
+
+    public final static native int _IOC_SIZE(int nr) throws NoSuchMethodException;
+
+    public final static native char _IOC_TYPE(int nr) throws NoSuchMethodException;
 
     /**
      * Fallback to calc ioctl use calculated siste instead of natice type
@@ -714,27 +718,11 @@ public final class Ioctl {
         }
     }
 
-
-    /* used to decode ioctl numbers.. */
-    public final static native int _IOC_DIR(int nr) throws NoSuchMethodException;
-
-    public final static native char _IOC_TYPE(int nr) throws NoSuchMethodException;
-
-    public final static native int _IOC_NR(int nr) throws NoSuchMethodException;
-
-    public final static native int _IOC_SIZE(int nr) throws NoSuchMethodException;
-
-    public final static native int IOCPARM_LEN(int x) throws NoSuchMethodException;
-
     public final static native int IOCBASECMD(int x) throws NoSuchMethodException;
 
     public final static native int IOCGROUP(int x) throws NoSuchMethodException;
 
-    /* ...and for the drivers/sound files... */
-    @Define
-    public final static IntDefine IOCSIZE_MASK;
-    @Define
-    public final static IntDefine IOCSIZE_SHIFT;
+    public final static native int IOCPARM_LEN(int x) throws NoSuchMethodException;
 
     /**
      * The {@code  ioctl()} system call manipulates the underlying device
@@ -751,21 +739,6 @@ public final class Ioctl {
      * indicates an error.
      */
     public final static native int ioctl(int fd, int request) throws NativeErrorException;
-
-    /**
-     * An optimize version of {@link  ioctl(int fd, int request, Int32_t value)}
-     * the value parameter is passed in and returned instead of the returned
-     * value from the call to ioctl.
-     *
-     * @param fd an open file descriptor
-     * @param request a device-dependent request code.
-     * @param value the value to pass to ioctl.
-     * @return the param value read from the device. The value is obtained by
-     * calling ioctl(fd, request, &value).
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    public final static native int ioctl_ReturnValue(int fd, int request, int value) throws NativeErrorException;
 
     /**
      * The {@code  ioctl()} system call manipulates the underlying device
@@ -789,11 +762,26 @@ public final class Ioctl {
         return ioctl(fd, request, AbstractNativeMemory.toUintptr_t(value));
     }
 
+    private static native int ioctl(int fd, int request, long ptrValue) throws NativeErrorException;
+
     public final static int ioctl(int fd, int request, OpaqueMemory32 value) throws NativeErrorException {
         return ioctl(fd, request, AbstractNativeMemory.toUintptr_t(value));
     }
 
-    private static native int ioctl(int fd, int request, long ptrValue) throws NativeErrorException;
+    /**
+     * An optimize version of {@link  ioctl(int fd, int request, Int32_t value)}
+     * the value parameter is passed in and returned instead of the returned
+     * value from the call to ioctl.
+     *
+     * @param fd an open file descriptor
+     * @param request a device-dependent request code.
+     * @param value the value to pass to ioctl.
+     * @return the param value read from the device. The value is obtained by
+     * calling ioctl(fd, request, &value).
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native int ioctl_ReturnValue(int fd, int request, int value) throws NativeErrorException;
 
     private Ioctl() {
 

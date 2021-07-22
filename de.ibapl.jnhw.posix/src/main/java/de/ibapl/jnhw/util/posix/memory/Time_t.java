@@ -43,14 +43,8 @@ public class Time_t extends NativeIntNumber implements Accessor_Time_t {
     }
 
     @Override
-    public void time_t(OpaqueMemory32 mem, long offset, @time_t long value) {
-        PosixStruct32.ACCESSOR_TIME_T.time_t(mem, offset, value);
-    }
-
-    @Override
-    @time_t
-    public long time_t(OpaqueMemory32 mem, long offset) {
-        return PosixStruct32.ACCESSOR_TIME_T.time_t(mem, offset);
+    public BaseDataType getBaseDataType() {
+        return dataType;
     }
 
     @Override
@@ -64,8 +58,14 @@ public class Time_t extends NativeIntNumber implements Accessor_Time_t {
     }
 
     @Override
-    public BaseDataType getBaseDataType() {
-        return dataType;
+    @time_t
+    public long time_t(OpaqueMemory32 mem, long offset) {
+        return PosixStruct32.ACCESSOR_TIME_T.time_t(mem, offset);
+    }
+
+    @Override
+    public void time_t(OpaqueMemory32 mem, long offset, @time_t long value) {
+        PosixStruct32.ACCESSOR_TIME_T.time_t(mem, offset, value);
     }
 
 }

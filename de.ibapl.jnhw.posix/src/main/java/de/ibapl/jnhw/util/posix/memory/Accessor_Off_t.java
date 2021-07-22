@@ -31,9 +31,9 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 @off_t
 public interface Accessor_Off_t {
 
-    void off_t(OpaqueMemory32 mem, long offset, @off_t long value);
-
     @off_t
     long off_t(OpaqueMemory32 mem, long offset);
+
+    void off_t(OpaqueMemory32 mem, long offset, @off_t long value);
 
 }

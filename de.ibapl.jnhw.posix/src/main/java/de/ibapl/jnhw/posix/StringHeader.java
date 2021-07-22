@@ -37,6 +37,8 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <string.h>")
 public class StringHeader {
 
+    public final static boolean HAVE_STRING_H;
+
     /**
      * Make sure the native lib is loaded
      *
@@ -62,8 +64,6 @@ public class StringHeader {
                 throw new NoClassDefFoundError("No string.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
     }
-
-    public final static boolean HAVE_STRING_H;
 
     /**
      * <b>POSIX:</b>

@@ -31,9 +31,9 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 @time_t
 public interface Accessor_Time_t {
 
-    void time_t(OpaqueMemory32 mem, long offset, @time_t long value);
-
     @time_t
     long time_t(OpaqueMemory32 mem, long offset);
+
+    void time_t(OpaqueMemory32 mem, long offset, @time_t long value);
 
 }

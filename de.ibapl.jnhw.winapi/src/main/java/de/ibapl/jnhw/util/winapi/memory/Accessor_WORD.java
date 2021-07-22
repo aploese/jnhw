@@ -33,14 +33,14 @@ import de.ibapl.jnhw.winapi.Winbase;
 @WORD
 public interface Accessor_WORD {
 
-    void WORD(OpaqueMemory32 mem, long offset, @WORD short value);
-
-    void WORD_FromInt(OpaqueMemory32 mem, long offset, @WORD int value);
-
     @WORD
     short WORD(OpaqueMemory32 mem, long offset);
 
+    void WORD(OpaqueMemory32 mem, long offset, @WORD short value);
+
     @WORD
     int WORD_AsInt(OpaqueMemory32 mem, long offset);
+
+    void WORD_FromInt(OpaqueMemory32 mem, long offset, @WORD int value);
 
 }

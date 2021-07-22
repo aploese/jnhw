@@ -23,7 +23,7 @@
  * Annontations for datatypes of poll.h.
  *
  * See types.h at:
- * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">poll.h
+ * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">poll.h</a>
  *
  */
 package de.ibapl.jnhw.annotation.posix.poll;

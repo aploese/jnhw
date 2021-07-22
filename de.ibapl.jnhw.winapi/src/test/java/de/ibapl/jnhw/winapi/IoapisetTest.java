@@ -71,6 +71,36 @@ public class IoapisetTest {
     }
 
     /**
+     * Test of DeviceIoControl method, of class Ioapiset.
+     */
+    @Test
+    public void testDeviceIoControl() throws Exception {
+        System.out.println("DeviceIoControl");
+        File file = File.createTempFile("JNHW_Ioapiset_DeviceIoControl", ".txt");
+        Winnt.HANDLE hDevice = Fileapi.CreateFileW(file,
+                Winnt.GENERIC_WRITE,
+                0,
+                null,
+                Fileapi.OPEN_EXISTING,
+                0,
+                null);
+
+        Memory32Heap lpOutBuffer = new Memory32Heap(null, 0, 128, SetMem.TO_0x00);
+
+        int lpBytesReturned = Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, lpOutBuffer, null);
+
+        assertEquals(2, lpBytesReturned);
+        Uint16_t uint16_t = new Uint16_t(lpOutBuffer, 0, SetMem.DO_NOT_SET);
+        assertEquals(Winnt.COMPRESSION_FORMAT_NONE, uint16_t.uint16_t());
+
+        Uint8_t uint8_t = new Uint8_t(null, 0, SetMem.TO_0x00);
+        NativeErrorException nee = assertThrows(NativeErrorException.class, () -> Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, uint8_t, null));
+        assertEquals(Winerror.ERROR_INVALID_PARAMETER, nee.errno);
+
+        Handleapi.CloseHandle(hDevice);
+    }
+
+    /**
      * Test of GetOverlappedResult method, of class Ioapiset.
      */
     @Test
@@ -103,36 +133,6 @@ public class IoapisetTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of DeviceIoControl method, of class Ioapiset.
-     */
-    @Test
-    public void testDeviceIoControl() throws Exception {
-        System.out.println("DeviceIoControl");
-        File file = File.createTempFile("JNHW_Ioapiset_DeviceIoControl", ".txt");
-        Winnt.HANDLE hDevice = Fileapi.CreateFileW(file,
-                Winnt.GENERIC_WRITE,
-                0,
-                null,
-                Fileapi.OPEN_EXISTING,
-                0,
-                null);
-
-        Memory32Heap lpOutBuffer = new Memory32Heap(null, 0, 128, SetMem.TO_0x00);
-
-        int lpBytesReturned = Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, lpOutBuffer, null);
-
-        assertEquals(2, lpBytesReturned);
-        Uint16_t uint16_t = new Uint16_t(lpOutBuffer, 0, SetMem.DO_NOT_SET);
-        assertEquals(Winnt.COMPRESSION_FORMAT_NONE, uint16_t.uint16_t());
-
-        Uint8_t uint8_t = new Uint8_t(null, 0, SetMem.TO_0x00);
-        NativeErrorException nee = assertThrows(NativeErrorException.class, () -> Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, uint8_t, null));
-        assertEquals(Winerror.ERROR_INVALID_PARAMETER, nee.errno);
-
-        Handleapi.CloseHandle(hDevice);
     }
 
 }

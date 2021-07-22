@@ -21,13 +21,6 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.OpaqueMemory64;
-import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.annotation.posix.sys.types.gid_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.off64_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.off_t;
@@ -36,13 +29,19 @@ import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.ssize_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.useconds_t;
+import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Int8_t;
+import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.OpaqueMemory64;
+import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
@@ -57,22 +56,6 @@ import java.util.Objects;
  */
 @Include("#include <unistd.h>")
 public final class Unistd {
-
-    public static interface LinuxDefines {
-
-        public final static long _POSIX_VERSION = 200809L;
-        public final static int _SC_AIO_LISTIO_MAX = 23;
-        public final static int _SC_AIO_MAX = 24;
-        public final static int _SC_AIO_PRIO_DELTA_MAX = 25;
-        public final static int SEEK_CUR = 1;
-        public final static int SEEK_DATA = 3;
-        public final static int SEEK_END = 2;
-        public final static int SEEK_HOLE = 4;
-        public final static int SEEK_SET = 0;
-        public final static int STDERR_FILENO = 2;
-        public final static int STDIN_FILENO = 0;
-        public final static int STDOUT_FILENO = 1;
-    }
 
     public static interface BsdDefines {
 
@@ -92,7 +75,6 @@ public final class Unistd {
         public final static long _POSIX_VERSION = 200112;
         public final static int SEEK_DATA = 4;
         public final static int SEEK_HOLE = 3;
-
     }
 
     public static interface FreeBsdDefines extends BsdDefines {
@@ -100,13 +82,216 @@ public final class Unistd {
         public final static long _POSIX_VERSION = 200112;
         public final static int SEEK_DATA = 3;
         public final static int SEEK_HOLE = 4;
+    }
 
+    public static abstract class JnhwPrimitiveArrayCritical {
+
+        static {
+            LibJnhwPosixLoader.touch();
+        }
+
+        /**
+         * <b>POSIX:</b>
+         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
+         * read - read from a file</a>.
+         *
+         * @param fildes a valid file descriptor open for reading
+         * @param buf the byte array into which all bytes are to be transferred.
+         * @return The number of bytes read, possibly zero.
+         *
+         * @throws NativeErrorException if the return value of the native
+         * function indicates an error.
+         */
+        public final static @ssize_t
+        int read(int fildes, byte[] buf) throws NativeErrorException {
+            return read0(fildes, buf, 0, buf.length);
+        }
+
+        /**
+         * <b>POSIX:</b>
+         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
+         * read - read from a file</a>.
+         *
+         * @param fildes a valid file descriptor open for reading
+         * @param buf the byte array into which bytes are to be transferred.
+         * @param off the start offset in {@code buf} to which the data is
+         * transferred.
+         * @param nbyte the maximum number of bytes to read.
+         * @return The number of bytes read, possibly zero.
+         *
+         * @throws NullPointerException if {@code buf} is null.
+         * @throws ArrayIndexOutOfBoundsException if {@code off} or
+         * {@code nByte} out of bounds.
+         *
+         * @throws NativeErrorException if the return value of the native
+         * function indicates an error.
+         */
+        @ssize_t
+        public final static int read(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException {
+            Objects.checkFromIndexSize(off, nbyte, buf.length);
+            return read0(fildes, buf, off, nbyte);
+        }
+
+        private static native int read0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
+
+        /**
+         * <b>POSIX:</b>
+         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
+         * write - write on a file</a>.
+         *
+         * @param fildes a valid file descriptor open for writing
+         * @param buf The byte array from which all bytes are to be retrieved
+         * for writing.
+         * @return The number of bytes written, possibly zero.
+         *
+         * @throws NativeErrorException if the return value of the native
+         * function indicates an error.
+         */
+        public final static @ssize_t
+        int write(int fildes, byte[] buf) throws NativeErrorException {
+            return write0(fildes, buf, 0, buf.length);
+        }
+
+        /**
+         * <b>POSIX:</b>
+         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
+         * write - write on a file</a>.
+         *
+         * @param fildes a valid file descriptor open for writing
+         * @param buf The byte array from which the bytes are to be retrieved
+         * for writing.
+         * @param off the start offset in {@code buf}.
+         * @param nbyte the number of bytes to write.
+         * @return The number of bytes written, possibly zero.
+         *
+         * @throws NullPointerException if {@code buf} is null.
+         * @throws ArrayIndexOutOfBoundsException if {@code off} or
+         * {@code nByte} out of bounds.
+         *
+         * @throws NativeErrorException if the return value of the native
+         * function indicates an error.
+         */
+        @ssize_t
+        public final static int write(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException {
+            Objects.checkFromIndexSize(off, nbyte, buf.length);
+            return write0(fildes, buf, off, nbyte);
+        }
+
+        private static native int write0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
+    }
+
+    public static interface LinuxDefines {
+
+        public final static long _POSIX_VERSION = 200809L;
+        public final static int _SC_AIO_LISTIO_MAX = 23;
+        public final static int _SC_AIO_MAX = 24;
+        public final static int _SC_AIO_PRIO_DELTA_MAX = 25;
+        public final static int SEEK_CUR = 1;
+        public final static int SEEK_DATA = 3;
+        public final static int SEEK_END = 2;
+        public final static int SEEK_HOLE = 4;
+        public final static int SEEK_SET = 0;
+        public final static int STDERR_FILENO = 2;
+        public final static int STDIN_FILENO = 0;
+        public final static int STDOUT_FILENO = 1;
     }
 
     public static interface OpenBsdDefines extends BsdDefines {
 
         public final static long _POSIX_VERSION = 200809;
     }
+
+    /**
+     * <b>POSIX:</b> Integer value indicating version of this standard
+     * (C-language binding) to which the implementation conforms.
+     *
+     */
+    @Define
+    public final static long _POSIX_VERSION;
+
+    /**
+     * <b>POSIX:</b> variable: {AIO_LISTIO_MAX}.
+     *
+     */
+    @Define
+    public final static int _SC_AIO_LISTIO_MAX;
+
+    /**
+     * <b>POSIX:</b> variable: {AIO_MAX}.
+     *
+     */
+    @Define
+    public final static int _SC_AIO_MAX;
+
+    /**
+     * <b>POSIX:</b> variable: {AIO_PRIO_DELTA_MAX}.
+     *
+     */
+    @Define
+    public final static int _SC_AIO_PRIO_DELTA_MAX;
+
+    public final static boolean HAVE_UNISTD_H;
+
+    /**
+     * <b>POSIX:</b>seek relative to current position. This must be the same
+     * value as {@link de.ibapl.jnhw.posix.Stdio.SEEK_CUR()}.
+     *
+     */
+    @Define
+    public final static int SEEK_CUR;
+
+    /**
+     * <b>Linux,Apple:</b> Adjust the file offset to the next location in the
+     * file greater than or equal to offset containing data.
+     *
+     */
+    @Define
+    public final static IntDefine SEEK_DATA;
+
+    /**
+     * <b>POSIX:</b> Seek relative to end-of-file. This must be the same value
+     * as {@link de.ibapl.jnhw.posix.Stdio.SEEK_END}.
+     *
+     */
+    @Define
+    public final static int SEEK_END;
+
+    /**
+     * <b>POSIX:</b> Adjust the file offset to the next hole in the file greater
+     * than or equal to offset.
+     *
+     */
+    @Define
+    public final static IntDefine SEEK_HOLE;
+
+    /**
+     * <b>POSIX:</b> Seek relative to start-of-file. This must be the same value
+     * as {@link de.ibapl.jnhw.posix.Stdio.SEEK_SET}.
+     *
+     */
+    @Define
+    public final static int SEEK_SET;
+
+    /**
+     * <b>POSIX:</b> File number of stderr; 2.
+     *
+     */
+    @Define
+    public final static int STDERR_FILENO;
+
+    /**
+     * <b>POSIX:</b> File number of stdin; 0.
+     *
+     */
+    @Define
+    public final static int STDIN_FILENO;
+
+    /**
+     * <b>POSIX:</b> File number of stdout; 1.
+     *
+     */
+    @Define
+    public final static int STDOUT_FILENO;
 
     /**
      * Make sure the native lib is loaded
@@ -174,98 +359,6 @@ public final class Unistd {
         }
     }
 
-    public final static boolean HAVE_UNISTD_H;
-
-    /**
-     * <b>POSIX:</b> variable: {AIO_LISTIO_MAX}.
-     *
-     */
-    @Define
-    public final static int _SC_AIO_LISTIO_MAX;
-
-    /**
-     * <b>POSIX:</b> variable: {AIO_MAX}.
-     *
-     */
-    @Define
-    public final static int _SC_AIO_MAX;
-
-    /**
-     * <b>POSIX:</b> variable: {AIO_PRIO_DELTA_MAX}.
-     *
-     */
-    @Define
-    public final static int _SC_AIO_PRIO_DELTA_MAX;
-
-    /**
-     * <b>POSIX:</b>seek relative to current position. This must be the same
-     * value as {@link de.ibapl.jnhw.posix.Stdio.SEEK_CUR()}.
-     *
-     */
-    @Define
-    public final static int SEEK_CUR;
-
-    /**
-     * <b>Linux,Apple:</b> Adjust the file offset to the next location in the
-     * file greater than or equal to offset containing data.
-     *
-     */
-    @Define
-    public final static IntDefine SEEK_DATA;
-
-    /**
-     * <b>POSIX:</b> Seek relative to end-of-file. This must be the same value
-     * as {@link de.ibapl.jnhw.posix.Stdio.SEEK_END}.
-     *
-     */
-    @Define
-    public final static int SEEK_END;
-
-    /**
-     * <b>POSIX:</b> Adjust the file offset to the next hole in the file greater
-     * than or equal to offset.
-     *
-     */
-    @Define
-    public final static IntDefine SEEK_HOLE;
-
-    /**
-     * <b>POSIX:</b> Seek relative to start-of-file. This must be the same value
-     * as {@link de.ibapl.jnhw.posix.Stdio.SEEK_SET}.
-     *
-     */
-    @Define
-    public final static int SEEK_SET;
-
-    /**
-     * <b>POSIX:</b> File number of stderr; 2.
-     *
-     */
-    @Define
-    public final static int STDERR_FILENO;
-
-    /**
-     * <b>POSIX:</b> File number of stdin; 0.
-     *
-     */
-    @Define
-    public final static int STDIN_FILENO;
-
-    /**
-     * <b>POSIX:</b> File number of stdout; 1.
-     *
-     */
-    @Define
-    public final static int STDOUT_FILENO;
-
-    /**
-     * <b>POSIX:</b> Integer value indicating version of this standard
-     * (C-language binding) to which the implementation conforms.
-     *
-     */
-    @Define
-    public final static long _POSIX_VERSION;
-
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/close.html">close
@@ -291,51 +384,11 @@ public final class Unistd {
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getgid.html">getgid
-     * - get the real group ID</a>.
-     *
-     * @return the real group ID
-     */
-    public final native static @gid_t
-    int getgid();
-
-    /**
-     * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getegid.html">getegid
      * - get the effective group ID</a>.
      */
     public final native static @gid_t
     int getegid();
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setgid.html">setgid
-     * - set group ID</a>.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    public final native static void setgid(@gid_t int gid) throws NativeErrorException;
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setegid.html">setegid
-     * - set effective user ID</a>.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    public final native static void setegid(@gid_t int gid) throws NativeErrorException;
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setregid.html">setregid
-     * - set real and effective group IDs</a>.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    public final native static void setregid(@gid_t int rgid, @gid_t int egid) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -347,13 +400,13 @@ public final class Unistd {
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/seteuid.html">seteuid
-     * - set effective user ID</a>.
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getgid.html">getgid
+     * - get the real group ID</a>.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
+     * @return the real group ID
      */
-    public final native static void seteuid(@uid_t int uid) throws NativeErrorException;
+    public final native static @gid_t
+    int getgid();
 
     /**
      * <b>POSIX:</b>
@@ -381,31 +434,23 @@ public final class Unistd {
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setreuid.html">setreuid
-     * - set real and effective user IDs</a>.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    public final native static void setreuid(@uid_t int ruid, @uid_t int euid) throws NativeErrorException;
-
-    /**
-     * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getuid.html">getuid
      * - get a real user ID</a>.
      */
     public final native static @uid_t
     int getuid();
 
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setuid.html">setuid
-     * - set user ID</a>.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    public final native static void setuid(@uid_t int uid) throws NativeErrorException;
+    public static boolean jnhwIsSingeByteRead(short nread) {
+        return (nread & 0xFF00) == 0x0100;
+    }
+
+    public static byte jnhwSingeByteReadToByte(short nread) {
+        return (byte) (nread & 0xFF);
+    }
+
+    public static int jnhwSingeByteReadToInt(short nread) {
+        return nread & 0x00FF;
+    }
 
     /**
      * <b>POSIX:</b>
@@ -489,6 +534,23 @@ public final class Unistd {
 
     /**
      * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/read.html">pread,
+     * read - read from a file</a>.
+     *
+     *
+     * @param fildes a valid file descriptor open for reading
+     * @return the unsigned byte in the low byte and the length in the upper
+     * byte. if nothing was read the value of the lower byte is unspecific, the
+     * length must be 0.
+     *
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static native short read(int fildes) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
      * read - read from a file</a>.
      *
@@ -531,8 +593,6 @@ public final class Unistd {
         return read0(fildes, buf, off, nbyte);
     }
 
-    private static native int read0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
-
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
@@ -568,61 +628,29 @@ public final class Unistd {
         return result;
     }
 
+    private static native int read(int fildes, ByteBuffer buffer, int off, int nByte) throws NativeErrorException;
+
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/read.html">pread,
      * read - read from a file</a>.
      *
      * @param fildes a valid file descriptor open for reading
-     * @param mem the {@link OpaqueMemory32} into which bytes are to be
+     * @param data the {@link ByteRef} into which the single byte is to be
      * transferred.
-     * @param off the start offset in {@code mem} to which the data is
-     * transferred.
-     * @param nbyte the maximum number of bytes to read.
-     * @return The number of bytes read, possibly zero.
+     * @return On succes 1.
      *
-     * @throws NullPointerException if {@code mem} is null.
-     *
-     * @throws ArrayIndexOutOfBoundsException if {@code off} or {@code nByte}
-     * out of bounds.
+     * @throws NullPointerException if {@code data} is null.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
     @ssize_t
-    public final static int read(int fildes, OpaqueMemory32 mem, int off, @size_t int nbyte) throws NativeErrorException {
-        OpaqueMemory32.checkIndex(mem, off, nbyte);
-        return read(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
+    public final static int read(int fildes, Int8_t data) throws NativeErrorException {
+        return read(fildes, AbstractNativeMemory.toUintptr_t(data), 0, 1);
     }
 
     private static native int read(int fildes, long ptrMem, int off, int nbyte) throws NativeErrorException;
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
-     * read - read from a file</a>.
-     *
-     * @param fildes a valid file descriptor open for reading
-     * @param mem the {@link OpaqueMemory64} into which bytes are to be
-     * transferred.
-     * @param off the start offset in {@code mem} to which the data is
-     * transferred.
-     * @param nbyte the maximum number of bytes to read.
-     * @return The number of bytes read, possibly zero.
-     *
-     * @throws NullPointerException if {@code mem} is null.
-     *
-     * @throws ArrayIndexOutOfBoundsException if {@code off} or {@code nByte}
-     * out of bounds.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    @ssize_t
-    public final static long read(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException {
-        OpaqueMemory64.checkIndex(mem, off, nbyte);
-        return read(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
-    }
 
     private static native long read(int fildes, long ptrMem, long off, long nbyte) throws NativeErrorException;
 
@@ -652,6 +680,33 @@ public final class Unistd {
      * read - read from a file</a>.
      *
      * @param fildes a valid file descriptor open for reading
+     * @param mem the {@link OpaqueMemory32} into which bytes are to be
+     * transferred.
+     * @param off the start offset in {@code mem} to which the data is
+     * transferred.
+     * @param nbyte the maximum number of bytes to read.
+     * @return The number of bytes read, possibly zero.
+     *
+     * @throws NullPointerException if {@code mem} is null.
+     *
+     * @throws ArrayIndexOutOfBoundsException if {@code off} or {@code nByte}
+     * out of bounds.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    @ssize_t
+    public final static int read(int fildes, OpaqueMemory32 mem, int off, @size_t int nbyte) throws NativeErrorException {
+        OpaqueMemory32.checkIndex(mem, off, nbyte);
+        return read(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
+    }
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
+     * read - read from a file</a>.
+     *
+     * @param fildes a valid file descriptor open for reading
      * @param mem the {@link OpaqueMemory32} into which all bytes are to be
      * transferred.
      * @return The number of bytes read, possibly zero.
@@ -668,42 +723,92 @@ public final class Unistd {
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/read.html">pread,
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
      * read - read from a file</a>.
      *
      * @param fildes a valid file descriptor open for reading
-     * @param data the {@link ByteRef} into which the single byte is to be
+     * @param mem the {@link OpaqueMemory64} into which bytes are to be
      * transferred.
-     * @return On succes 1.
+     * @param off the start offset in {@code mem} to which the data is
+     * transferred.
+     * @param nbyte the maximum number of bytes to read.
+     * @return The number of bytes read, possibly zero.
      *
-     * @throws NullPointerException if {@code data} is null.
+     * @throws NullPointerException if {@code mem} is null.
+     *
+     * @throws ArrayIndexOutOfBoundsException if {@code off} or {@code nByte}
+     * out of bounds.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
     @ssize_t
-    public final static int read(int fildes, Int8_t data) throws NativeErrorException {
-        return read(fildes, AbstractNativeMemory.toUintptr_t(data), 0, 1);
+    public final static long read(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException {
+        OpaqueMemory64.checkIndex(mem, off, nbyte);
+        return read(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
     }
+
+    private static native int read0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/read.html">pread,
-     * read - read from a file</a>.
-     *
-     *
-     * @param fildes a valid file descriptor open for reading
-     * @return the unsigned byte in the low byte and the length in the upper
-     * byte. if nothing was read the value of the lower byte is unspecific, the
-     * length must be 0.
-     *
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setegid.html">setegid
+     * - set effective user ID</a>.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native short read(int fildes) throws NativeErrorException;
+    public final native static void setegid(@gid_t int gid) throws NativeErrorException;
 
-    private static native int read(int fildes, ByteBuffer buffer, int off, int nByte) throws NativeErrorException;
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/seteuid.html">seteuid
+     * - set effective user ID</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final native static void seteuid(@uid_t int uid) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setgid.html">setgid
+     * - set group ID</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final native static void setgid(@gid_t int gid) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setregid.html">setregid
+     * - set real and effective group IDs</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final native static void setregid(@gid_t int rgid, @gid_t int egid) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setreuid.html">setreuid
+     * - set real and effective user IDs</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final native static void setreuid(@uid_t int ruid, @uid_t int euid) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setuid.html">setuid
+     * - set user ID</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final native static void setuid(@uid_t int uid) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -736,6 +841,21 @@ public final class Unistd {
      * write - write on a file</a>.
      *
      * @param fildes a valid file descriptor open for writing
+     * @param data The single byte to write.
+     * @return on succes 1.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    @ssize_t
+    public final static native int write(int fildes, byte data) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
+     * write - write on a file</a>.
+     *
+     * @param fildes a valid file descriptor open for writing
      * @param buf The byte array from which all bytes are to be retrieved for
      * writing.
      * @return The number of bytes written, possibly zero.
@@ -746,111 +866,6 @@ public final class Unistd {
     public final static int write(int fildes, byte[] buf) throws NativeErrorException {
         return write0(fildes, buf, 0, buf.length);
     }
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
-     * write - write on a file</a>.
-     *
-     * @param fildes a valid file descriptor open for writing
-     * @param mem The {link OpaqueMemory} from which the bytes are to be
-     * retrieved for writing.
-     * @param off the start offset in {@code mem}.
-     * @param nbyte the number of bytes to write.
-     * @return The number of bytes written, possibly zero.
-     *
-     * @throws NullPointerException if {@code mem} is null.
-     * @throws ArrayIndexOutOfBoundsException if {@code off} or {@code nByte}
-     * out of bounds.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    @ssize_t
-    public final static int write(int fildes, OpaqueMemory32 mem, int off, @size_t int nbyte) throws NativeErrorException {
-        OpaqueMemory32.checkIndex(mem, off, nbyte);
-        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
-    }
-
-    private static native int write(int fildes, long ptrMem, int off, int nbyte) throws NativeErrorException;
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
-     * write - write on a file</a>.
-     *
-     * @param fildes a valid file descriptor open for writing
-     * @param mem The {link OpaqueMemory} from which the bytes are to be
-     * retrieved for writing.
-     * @param off the start offset in {@code mem}.
-     * @param nbyte the number of bytes to write.
-     * @return The number of bytes written, possibly zero.
-     *
-     * @throws NullPointerException if {@code mem} is null.
-     * @throws ArrayIndexOutOfBoundsException if {@code off} or {@code nByte}
-     * out of bounds.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    @ssize_t
-    public final static long write(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException, NoSuchNativeMethodException {
-        OpaqueMemory64.checkIndex(mem, off, nbyte);
-        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
-    }
-
-    private static native long write(int fildes, long ptrMem, long off, long nbyte) throws NativeErrorException, NoSuchNativeMethodException;
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
-     * write - write on a file</a>.
-     *
-     * @param fildes a valid file descriptor open for writing
-     * @param mem The {link OpaqueMemory} from which all bytes are to be
-     * retrieved for writing.
-     * @return The number of bytes written, possibly zero.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    @ssize_t
-    public final static int write(int fildes, OpaqueMemory32 mem) throws NativeErrorException {
-        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), 0, mem.sizeInBytes);
-    }
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
-     * write - write on a file</a>.
-     *
-     * @param fildes a valid file descriptor open for writing
-     * @param mem The {link OpaqueMemory} from which all bytes are to be
-     * retrieved for writing.
-     * @return The number of bytes written, possibly zero.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    @ssize_t
-    public final static long write(int fildes, OpaqueMemory64 mem) throws NativeErrorException, NoSuchNativeMethodException {
-        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), 0, mem.sizeInBytes);
-    }
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
-     * write - write on a file</a>.
-     *
-     * @param fildes a valid file descriptor open for writing
-     * @param data The single byte to write.
-     * @return on succes 1.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    @ssize_t
-    public final static native int write(int fildes, byte data) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -876,8 +891,6 @@ public final class Unistd {
         Objects.checkFromIndexSize(off, nbyte, buf.length);
         return write0(fildes, buf, off, nbyte);
     }
-
-    private static native int write0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -915,114 +928,98 @@ public final class Unistd {
     //We pass down ByteBuffer to get the native address and pass the other data onto the stack
     private static native int write(int fildes, ByteBuffer buffer, int off, int nByte) throws NativeErrorException;
 
-    public static boolean jnhwIsSingeByteRead(short nread) {
-        return (nread & 0xFF00) == 0x0100;
+    private static native int write(int fildes, long ptrMem, int off, int nbyte) throws NativeErrorException;
+
+    private static native long write(int fildes, long ptrMem, long off, long nbyte) throws NativeErrorException, NoSuchNativeMethodException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
+     * write - write on a file</a>.
+     *
+     * @param fildes a valid file descriptor open for writing
+     * @param mem The {link OpaqueMemory} from which all bytes are to be
+     * retrieved for writing.
+     * @return The number of bytes written, possibly zero.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    @ssize_t
+    public final static int write(int fildes, OpaqueMemory32 mem) throws NativeErrorException {
+        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), 0, mem.sizeInBytes);
     }
 
-    public static byte jnhwSingeByteReadToByte(short nread) {
-        return (byte) (nread & 0xFF);
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
+     * write - write on a file</a>.
+     *
+     * @param fildes a valid file descriptor open for writing
+     * @param mem The {link OpaqueMemory} from which the bytes are to be
+     * retrieved for writing.
+     * @param off the start offset in {@code mem}.
+     * @param nbyte the number of bytes to write.
+     * @return The number of bytes written, possibly zero.
+     *
+     * @throws NullPointerException if {@code mem} is null.
+     * @throws ArrayIndexOutOfBoundsException if {@code off} or {@code nByte}
+     * out of bounds.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    @ssize_t
+    public final static int write(int fildes, OpaqueMemory32 mem, int off, @size_t int nbyte) throws NativeErrorException {
+        OpaqueMemory32.checkIndex(mem, off, nbyte);
+        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
     }
 
-    public static int jnhwSingeByteReadToInt(short nread) {
-        return nread & 0x00FF;
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
+     * write - write on a file</a>.
+     *
+     * @param fildes a valid file descriptor open for writing
+     * @param mem The {link OpaqueMemory} from which all bytes are to be
+     * retrieved for writing.
+     * @return The number of bytes written, possibly zero.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    @ssize_t
+    public final static long write(int fildes, OpaqueMemory64 mem) throws NativeErrorException, NoSuchNativeMethodException {
+        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), 0, mem.sizeInBytes);
     }
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
+     * write - write on a file</a>.
+     *
+     * @param fildes a valid file descriptor open for writing
+     * @param mem The {link OpaqueMemory} from which the bytes are to be
+     * retrieved for writing.
+     * @param off the start offset in {@code mem}.
+     * @param nbyte the number of bytes to write.
+     * @return The number of bytes written, possibly zero.
+     *
+     * @throws NullPointerException if {@code mem} is null.
+     * @throws ArrayIndexOutOfBoundsException if {@code off} or {@code nByte}
+     * out of bounds.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    @ssize_t
+    public final static long write(int fildes, OpaqueMemory64 mem, long off, @size_t long nbyte) throws NativeErrorException, NoSuchNativeMethodException {
+        OpaqueMemory64.checkIndex(mem, off, nbyte);
+        return write(fildes, AbstractNativeMemory.toUintptr_t(mem), off, nbyte);
+    }
+
+    private static native int write0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
 
     private Unistd() {
-    }
-
-    public static abstract class JnhwPrimitiveArrayCritical {
-
-        static {
-            LibJnhwPosixLoader.touch();
-        }
-
-        /**
-         * <b>POSIX:</b>
-         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
-         * write - write on a file</a>.
-         *
-         * @param fildes a valid file descriptor open for writing
-         * @param buf The byte array from which all bytes are to be retrieved
-         * for writing.
-         * @return The number of bytes written, possibly zero.
-         *
-         * @throws NativeErrorException if the return value of the native
-         * function indicates an error.
-         */
-        public final static @ssize_t
-        int write(int fildes, byte[] buf) throws NativeErrorException {
-            return write0(fildes, buf, 0, buf.length);
-        }
-
-        /**
-         * <b>POSIX:</b>
-         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
-         * read - read from a file</a>.
-         *
-         * @param fildes a valid file descriptor open for reading
-         * @param buf the byte array into which all bytes are to be transferred.
-         * @return The number of bytes read, possibly zero.
-         *
-         * @throws NativeErrorException if the return value of the native
-         * function indicates an error.
-         */
-        public final static @ssize_t
-        int read(int fildes, byte[] buf) throws NativeErrorException {
-            return read0(fildes, buf, 0, buf.length);
-        }
-
-        /**
-         * <b>POSIX:</b>
-         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pread,
-         * read - read from a file</a>.
-         *
-         * @param fildes a valid file descriptor open for reading
-         * @param buf the byte array into which bytes are to be transferred.
-         * @param off the start offset in {@code buf} to which the data is
-         * transferred.
-         * @param nbyte the maximum number of bytes to read.
-         * @return The number of bytes read, possibly zero.
-         *
-         * @throws NullPointerException if {@code buf} is null.
-         * @throws ArrayIndexOutOfBoundsException if {@code off} or
-         * {@code nByte} out of bounds.
-         *
-         * @throws NativeErrorException if the return value of the native
-         * function indicates an error.
-         */
-        @ssize_t
-        public final static int read(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException {
-            Objects.checkFromIndexSize(off, nbyte, buf.length);
-            return read0(fildes, buf, off, nbyte);
-        }
-
-        private static native int read0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
-
-        /**
-         * <b>POSIX:</b>
-         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/write.html">pwrite,
-         * write - write on a file</a>.
-         *
-         * @param fildes a valid file descriptor open for writing
-         * @param buf The byte array from which the bytes are to be retrieved
-         * for writing.
-         * @param off the start offset in {@code buf}.
-         * @param nbyte the number of bytes to write.
-         * @return The number of bytes written, possibly zero.
-         *
-         * @throws NullPointerException if {@code buf} is null.
-         * @throws ArrayIndexOutOfBoundsException if {@code off} or
-         * {@code nByte} out of bounds.
-         *
-         * @throws NativeErrorException if the return value of the native
-         * function indicates an error.
-         */
-        @ssize_t
-        public final static int write(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException {
-            Objects.checkFromIndexSize(off, nbyte, buf.length);
-            return write0(fildes, buf, off, nbyte);
-        }
-
-        private static native int write0(int fildes, byte[] buf, int off, @size_t int nbyte) throws NativeErrorException;
     }
 }

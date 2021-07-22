@@ -38,31 +38,59 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <stdio.h>")
 public class Stdio {
 
-    public static interface LinuxDefines {
-
-        public static final int EOF = -1;
-        public static final int SEEK_CUR = 1;
-        public static final int SEEK_END = 2;
-        public static final int SEEK_SET = 0;
-
-    }
-
     public static interface BsdDefines {
 
         public static final int EOF = -1;
         public static final int SEEK_CUR = 1;
         public static final int SEEK_END = 2;
         public static final int SEEK_SET = 0;
-
     }
 
     public static interface FreeBsdDefines extends BsdDefines {
 
     }
 
+    public static interface LinuxDefines {
+
+        public static final int EOF = -1;
+        public static final int SEEK_CUR = 1;
+        public static final int SEEK_END = 2;
+        public static final int SEEK_SET = 0;
+    }
+
     public static interface OpenBsdDefines extends BsdDefines {
 
     }
+
+    /**
+     * <b>POSIX:</b>End-of-file return value.
+     *
+     */
+    @Define
+    public static int EOF;
+
+    public final static boolean HAVE_STDIO_H;
+
+    /**
+     * <b>POSIX:</b>seek relative to current position.
+     *
+     */
+    @Define
+    public static int SEEK_CUR;
+
+    /**
+     * <b>POSIX:</b> Seek relative to end-of-file.
+     *
+     */
+    @Define
+    public static int SEEK_END;
+
+    /**
+     * <b>POSIX:</b> Seek relative to start-of-file.
+     *
+     */
+    @Define
+    public static int SEEK_SET;
 
     /**
      * Make sure the native lib is loaded
@@ -96,36 +124,6 @@ public class Stdio {
                 throw new NoClassDefFoundError("No stdio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
         }
     }
-
-    public final static boolean HAVE_STDIO_H;
-
-    /**
-     * <b>POSIX:</b>seek relative to current position.
-     *
-     */
-    @Define
-    public static int SEEK_CUR;
-
-    /**
-     * <b>POSIX:</b>End-of-file return value.
-     *
-     */
-    @Define
-    public static int EOF;
-
-    /**
-     * <b>POSIX:</b> Seek relative to end-of-file.
-     *
-     */
-    @Define
-    public static int SEEK_END;
-
-    /**
-     * <b>POSIX:</b> Seek relative to start-of-file.
-     *
-     */
-    @Define
-    public static int SEEK_SET;
 
     /**
      * <b>POSIX:</b>

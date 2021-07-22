@@ -31,9 +31,9 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 @ULONG_PTR
 public interface Accessor_ULONG_PTR {
 
-    void ULONG_PTR(OpaqueMemory32 mem, long offset, @ULONG_PTR long value);
-
     @ULONG_PTR
     long ULONG_PTR(OpaqueMemory32 mem, long offset);
+
+    void ULONG_PTR(OpaqueMemory32 mem, long offset, @ULONG_PTR long value);
 
 }

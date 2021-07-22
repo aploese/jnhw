@@ -43,67 +43,11 @@ import java.util.logging.Logger;
 public abstract class Winerror {
 
     /**
-     * Make sure the native lib is loaded
-     *
-     * @implNote The actual value for the define fields are injected by
-     * initFields. The static initialization block is used to set the value here
-     * to communicate that this static final fields are not statically foldable.
-     * {
-     * @see String#COMPACT_STRINGS}
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
-
-    /**
-     * The operation completed successfully.
-     *
-     */
-    @Define
-    public final static int ERROR_SUCCESS = 0;
-
-    /**
      * Access is denied.
      *
      */
     @Define
     public final static int ERROR_ACCESS_DENIED = 5;
-
-    /**
-     * The system cannot read from the specified device.
-     *
-     */
-    @Define
-    public final static int ERROR_GEN_FAILURE = 31;
-
-    /**
-     * The process cannot access the file because it is being used by another
-     * process.
-     *
-     */
-    @Define
-    public final static int ERROR_SHARING_VIOLATION = 32;
-
-    /**
-     * The file exists.
-     *
-     */
-    @Define
-    public final static int ERROR_FILE_EXISTS = 80;
-
-    /**
-     * The specified network password is not correct.
-     *
-     */
-    @Define
-    public final static int ERROR_INVALID_PARAMETER = 87;
-
-    /**
-     * The specified procedure could not be found.
-     *
-     */
-    @Define
-    public final static int ERROR_PROC_NOT_FOUND = 127;
 
     /**
      * Cannot create a file when that file already exists.
@@ -113,28 +57,39 @@ public abstract class Winerror {
     public final static int ERROR_ALREADY_EXISTS = 183;
 
     /**
-     * All pipe instances are busy.
+     * The file exists.
      *
      */
     @Define
-    public final static int ERROR_PIPE_BUSY = 231;
+    public final static int ERROR_FILE_EXISTS = 80;
 
     /**
-     * The wait operation timed out.
-     *
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject/">WAIT_TIMEOUT</a>
-     * The time-out interval elapsed, and the object's state is nonsignaled.
+     * The system cannot find the file specified.
      *
      */
     @Define
-    public final static int WAIT_TIMEOUT = 258;
+    public final static int ERROR_FILE_NOT_FOUND = 0x88790002;
 
     /**
-     * No more data is available.
+     * The system cannot read from the specified device.
      *
      */
     @Define
-    public final static int ERROR_NO_MORE_ITEMS = 259;
+    public final static int ERROR_GEN_FAILURE = 31;
+
+    /**
+     * The handle is invalid.
+     *
+     */
+    @Define
+    public final static int ERROR_INVALID_HANDLE = 1609;
+
+    /**
+     * The specified network password is not correct.
+     *
+     */
+    @Define
+    public final static int ERROR_INVALID_PARAMETER = 87;
 
     /**
      * Overlapped I/O event is not in a signaled state.
@@ -151,6 +106,20 @@ public abstract class Winerror {
     public final static int ERROR_IO_PENDING = 997;
 
     /**
+     * More data is available.
+     *
+     */
+    @Define
+    public final static int ERROR_MORE_DATA = 0x887A0003;
+
+    /**
+     * No more data is available.
+     *
+     */
+    @Define
+    public final static int ERROR_NO_MORE_ITEMS = 259;
+
+    /**
      * Invalid access to memory location.
      *
      */
@@ -165,25 +134,56 @@ public abstract class Winerror {
     public final static int ERROR_NOT_FOUND = 1168;
 
     /**
-     * The handle is invalid.
+     * All pipe instances are busy.
      *
      */
     @Define
-    public final static int ERROR_INVALID_HANDLE = 1609;
+    public final static int ERROR_PIPE_BUSY = 231;
 
     /**
-     * The system cannot find the file specified.
+     * The specified procedure could not be found.
      *
      */
     @Define
-    public final static int ERROR_FILE_NOT_FOUND = 0x88790002;
+    public final static int ERROR_PROC_NOT_FOUND = 127;
 
     /**
-     * More data is available.
+     * The process cannot access the file because it is being used by another
+     * process.
      *
      */
     @Define
-    public final static int ERROR_MORE_DATA = 0x887A0003;
+    public final static int ERROR_SHARING_VIOLATION = 32;
+
+    /**
+     * The operation completed successfully.
+     *
+     */
+    @Define
+    public final static int ERROR_SUCCESS = 0;
+
+    /**
+     * The wait operation timed out.
+     *
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject/">WAIT_TIMEOUT</a>
+     * The time-out interval elapsed, and the object's state is nonsignaled.
+     *
+     */
+    @Define
+    public final static int WAIT_TIMEOUT = 258;
+
+    /**
+     * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
+    }
 
     /**
      * Translate the native errno to its symbolic constant name.

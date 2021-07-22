@@ -37,26 +37,6 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <sys/stat.h>")
 public class Stat {
 
-    public static interface LinuxDefines {
-
-        public final static int S_IRGRP = 32;
-        public final static int S_IROTH = 4;
-        public final static int S_IRUSR = 256;
-        public final static int S_IRWXG = 56;
-        public final static int S_IRWXO = 7;
-        public final static int S_IRWXU = 448;
-        public final static int S_ISGID = 1024;
-        public final static int S_ISUID = 2048;
-        public final static int S_ISVTX = 512;
-        public final static int S_IWGRP = 16;
-        public final static int S_IWOTH = 2;
-        public final static int S_IWUSR = 128;
-        public final static int S_IXGRP = 8;
-        public final static int S_IXOTH = 1;
-        public final static int S_IXUSR = 64;
-
-    }
-
     public static interface BsdDefines {
 
         public final static int S_IRGRP = 32;
@@ -74,72 +54,33 @@ public class Stat {
         public final static int S_IXGRP = 8;
         public final static int S_IXOTH = 1;
         public final static int S_IXUSR = 64;
-
     }
 
     public static interface FreeBsdDefines extends BsdDefines {
 
     }
 
-    public static interface OpenBsdDefines extends BsdDefines {
+    public static interface LinuxDefines {
 
+        public final static int S_IRGRP = 32;
+        public final static int S_IROTH = 4;
+        public final static int S_IRUSR = 256;
+        public final static int S_IRWXG = 56;
+        public final static int S_IRWXO = 7;
+        public final static int S_IRWXU = 448;
+        public final static int S_ISGID = 1024;
+        public final static int S_ISUID = 2048;
+        public final static int S_ISVTX = 512;
+        public final static int S_IWGRP = 16;
+        public final static int S_IWOTH = 2;
+        public final static int S_IWUSR = 128;
+        public final static int S_IXGRP = 8;
+        public final static int S_IXOTH = 1;
+        public final static int S_IXUSR = 64;
     }
 
-    /**
-     * Make sure the native lib is loaded
-     *
-     * @implNote The actual value for the define fields are injected by
-     * initFields. The static initialization block is used to set the value here
-     * to communicate that this static final fields are not statically foldable.
-     * {
-     * @see String#COMPACT_STRINGS}
-     */
-    static {
-        LibJnhwPosixLoader.touch();
+    public static interface OpenBsdDefines extends BsdDefines {
 
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
-            case LINUX:
-                HAVE_SYS_STAT_H = true;
-                S_IRGRP = LinuxDefines.S_IRGRP;
-                S_IROTH = LinuxDefines.S_IROTH;
-                S_IRUSR = LinuxDefines.S_IRUSR;
-                S_IRWXG = LinuxDefines.S_IRWXG;
-                S_IRWXO = LinuxDefines.S_IRWXO;
-                S_IRWXU = LinuxDefines.S_IRWXU;
-                S_ISGID = LinuxDefines.S_ISGID;
-                S_ISUID = LinuxDefines.S_ISUID;
-                S_ISVTX = LinuxDefines.S_ISVTX;
-                S_IWGRP = LinuxDefines.S_IWGRP;
-                S_IWOTH = LinuxDefines.S_IWOTH;
-                S_IWUSR = LinuxDefines.S_IWUSR;
-                S_IXGRP = LinuxDefines.S_IXGRP;
-                S_IXOTH = LinuxDefines.S_IXOTH;
-                S_IXUSR = LinuxDefines.S_IXUSR;
-
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-                HAVE_SYS_STAT_H = true;
-                S_IRGRP = BsdDefines.S_IRGRP;
-                S_IROTH = BsdDefines.S_IROTH;
-                S_IRUSR = BsdDefines.S_IRUSR;
-                S_IRWXG = BsdDefines.S_IRWXG;
-                S_IRWXO = BsdDefines.S_IRWXO;
-                S_IRWXU = BsdDefines.S_IRWXU;
-                S_ISGID = BsdDefines.S_ISGID;
-                S_ISUID = BsdDefines.S_ISUID;
-                S_ISVTX = BsdDefines.S_ISVTX;
-                S_IWGRP = BsdDefines.S_IWGRP;
-                S_IWOTH = BsdDefines.S_IWOTH;
-                S_IWUSR = BsdDefines.S_IWUSR;
-                S_IXGRP = BsdDefines.S_IXGRP;
-                S_IXOTH = BsdDefines.S_IXOTH;
-                S_IXUSR = BsdDefines.S_IXUSR;
-                break;
-            default:
-                throw new NoClassDefFoundError("No sys/stat.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
-        }
     }
 
     public final static boolean HAVE_SYS_STAT_H;
@@ -255,6 +196,63 @@ public class Stat {
      */
     @Define
     public final static int S_IXUSR;
+
+    /**
+     * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
+     */
+    static {
+        LibJnhwPosixLoader.touch();
+
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_SYS_STAT_H = true;
+                S_IRGRP = LinuxDefines.S_IRGRP;
+                S_IROTH = LinuxDefines.S_IROTH;
+                S_IRUSR = LinuxDefines.S_IRUSR;
+                S_IRWXG = LinuxDefines.S_IRWXG;
+                S_IRWXO = LinuxDefines.S_IRWXO;
+                S_IRWXU = LinuxDefines.S_IRWXU;
+                S_ISGID = LinuxDefines.S_ISGID;
+                S_ISUID = LinuxDefines.S_ISUID;
+                S_ISVTX = LinuxDefines.S_ISVTX;
+                S_IWGRP = LinuxDefines.S_IWGRP;
+                S_IWOTH = LinuxDefines.S_IWOTH;
+                S_IWUSR = LinuxDefines.S_IWUSR;
+                S_IXGRP = LinuxDefines.S_IXGRP;
+                S_IXOTH = LinuxDefines.S_IXOTH;
+                S_IXUSR = LinuxDefines.S_IXUSR;
+
+                break;
+            case DARWIN:
+            case FREE_BSD:
+            case OPEN_BSD:
+                HAVE_SYS_STAT_H = true;
+                S_IRGRP = BsdDefines.S_IRGRP;
+                S_IROTH = BsdDefines.S_IROTH;
+                S_IRUSR = BsdDefines.S_IRUSR;
+                S_IRWXG = BsdDefines.S_IRWXG;
+                S_IRWXO = BsdDefines.S_IRWXO;
+                S_IRWXU = BsdDefines.S_IRWXU;
+                S_ISGID = BsdDefines.S_ISGID;
+                S_ISUID = BsdDefines.S_ISUID;
+                S_ISVTX = BsdDefines.S_ISVTX;
+                S_IWGRP = BsdDefines.S_IWGRP;
+                S_IWOTH = BsdDefines.S_IWOTH;
+                S_IWUSR = BsdDefines.S_IWUSR;
+                S_IXGRP = BsdDefines.S_IXGRP;
+                S_IXOTH = BsdDefines.S_IXOTH;
+                S_IXUSR = BsdDefines.S_IXUSR;
+                break;
+            default:
+                throw new NoClassDefFoundError("No sys/stat.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
+    }
 
     private Stat() {
 

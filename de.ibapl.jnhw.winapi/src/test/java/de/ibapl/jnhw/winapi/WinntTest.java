@@ -37,11 +37,6 @@ public class WinntTest {
     private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     @Test
-    public void testMAXDWORD() throws Exception {
-        assertEquals(0x00000000FFFFFFFFL, Winnt.MAXDWORD);
-    }
-
-    @Test
     public void test_INVALID_HANDLE_VALUE() throws Exception {
         Winnt.HANDLE ivh = Handleapi.INVALID_HANDLE_VALUE;
         Assertions.assertTrue(ivh.is_INVALID_HANDLE_VALUE());
@@ -67,6 +62,11 @@ public class WinntTest {
         Assertions.assertEquals(Winnt.HANDLE.NULL, aoh.get(0));
         Assertions.assertEquals(h1, aoh.get(1));
         Assertions.assertEquals(h2, aoh.get(2));
+    }
+
+    @Test
+    public void testMAXDWORD() throws Exception {
+        assertEquals(0x00000000FFFFFFFFL, Winnt.MAXDWORD);
     }
 
 }

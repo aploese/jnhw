@@ -9,19 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    pthread_self
+ * Method:    pthread_attr_destroy
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1self
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1destroy
   (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    pthread_equal
- * Signature: (JJ)Z
- */
-JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1equal
-  (JNIEnv *, jclass, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
@@ -41,6 +33,14 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1getschedp
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
+ * Method:    pthread_attr_init
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1init
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_attr_setinheritsched
  * Signature: (JI)V
  */
@@ -57,11 +57,59 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1setschedp
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
+ * Method:    pthread_cancel
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1cancel
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Pthread
+ * Method:    pthread_equal
+ * Signature: (JJ)Z
+ */
+JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1equal
+  (JNIEnv *, jclass, jlong, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Pthread
+ * Method:    pthread_getcpuclockid
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1getcpuclockid
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_getschedparam
  * Signature: (JJ)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1getschedparam
   (JNIEnv *, jclass, jlong, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Pthread
+ * Method:    pthread_self
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1self
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Pthread
+ * Method:    pthread_setcancelstate
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1setcancelstate
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Pthread
+ * Method:    pthread_setcanceltype
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1setcanceltype
+  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
@@ -81,59 +129,11 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1setschedprio
 
 /*
  * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    pthread_getcpuclockid
- * Signature: (J)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1getcpuclockid
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    pthread_attr_destroy
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1destroy
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    pthread_attr_init
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1attr_1init
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    pthread_cancel
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1cancel
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
  * Method:    pthread_testcancel
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1testcancel
   (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    pthread_setcancelstate
- * Signature: (I)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1setcancelstate
-  (JNIEnv *, jclass, jint);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Pthread
- * Method:    pthread_setcanceltype
- * Signature: (I)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Pthread_pthread_1setcanceltype
-  (JNIEnv *, jclass, jint);
 
 #ifdef __cplusplus
 }

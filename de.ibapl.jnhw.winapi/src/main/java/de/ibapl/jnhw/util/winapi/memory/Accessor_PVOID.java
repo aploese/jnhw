@@ -32,9 +32,9 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 @PVOID
 public interface Accessor_PVOID {
 
-    void PVOID(OpaqueMemory32 mem, long offset, @PVOID NativeAddressHolder value);
-
     @PVOID
     NativeAddressHolder PVOID(OpaqueMemory32 mem, long offset);
+
+    void PVOID(OpaqueMemory32 mem, long offset, @PVOID NativeAddressHolder value);
 
 }

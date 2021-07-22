@@ -24,9 +24,9 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.annotation.posix.locale.locale_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
@@ -46,25 +46,6 @@ import java.io.IOException;
  */
 @Include("#include <locale.h>")
 public class Locale {
-
-    public static interface LinuxDefines {
-
-        public final static int LC_ALL = 6;
-        public final static int LC_ALL_MASK = 8127;
-        public final static int LC_COLLATE = 3;
-        public final static int LC_COLLATE_MASK = 8;
-        public final static int LC_CTYPE = 0;
-        public final static int LC_CTYPE_MASK = 1;
-        public final static long LC_GLOBAL_LOCALE = -1;
-        public final static int LC_MESSAGES = 5;
-        public final static int LC_MESSAGES_MASK = 32;
-        public final static int LC_MONETARY = 4;
-        public final static int LC_MONETARY_MASK = 16;
-        public final static int LC_NUMERIC = 1;
-        public final static int LC_NUMERIC_MASK = 2;
-        public final static int LC_TIME = 2;
-        public final static int LC_TIME_MASK = 4;
-    }
 
     public static interface BsdDefines {
 
@@ -102,318 +83,6 @@ public class Locale {
 
     }
 
-    public static interface OpenBsdDefines extends BsdDefines {
-
-        public final static int LC_ALL_MASK = 126;
-        public final static int LC_COLLATE_MASK = 2;
-        public final static int LC_CTYPE_MASK = 4;
-        public final static int LC_MESSAGES_MASK = 64;
-        public final static int LC_MONETARY_MASK = 8;
-        public final static int LC_NUMERIC_MASK = 16;
-        public final static int LC_TIME_MASK = 32;
-
-    }
-
-    /**
-     * Make sure the native lib is loaded
-     *
-     * @implNote The actual value for the define fields are injected by
-     * initFields. The static initialization block is used to set the value here
-     * to communicate that this static final fields are not statically foldable.
-     * {
-     * @see String#COMPACT_STRINGS}
-     */
-    static {
-        LibJnhwPosixLoader.touch();
-        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-        switch (multiarchInfo.getOS()) {
-            case LINUX:
-                HAVE_LOCALE_H = true;
-                LC_ALL = LinuxDefines.LC_ALL;
-                LC_ALL_MASK = LinuxDefines.LC_ALL_MASK;
-                LC_COLLATE = LinuxDefines.LC_COLLATE;
-                LC_COLLATE_MASK = LinuxDefines.LC_COLLATE_MASK;
-                LC_CTYPE = LinuxDefines.LC_CTYPE;
-                LC_CTYPE_MASK = LinuxDefines.LC_CTYPE_MASK;
-                LC_GLOBAL_LOCALE = Locale_t.fromNativeValue(LinuxDefines.LC_GLOBAL_LOCALE);
-                LC_MESSAGES = LinuxDefines.LC_MESSAGES;
-                LC_MESSAGES_MASK = LinuxDefines.LC_MESSAGES_MASK;
-                LC_MONETARY = LinuxDefines.LC_MONETARY;
-                LC_MONETARY_MASK = LinuxDefines.LC_MONETARY_MASK;
-                LC_NUMERIC = LinuxDefines.LC_NUMERIC;
-                LC_NUMERIC_MASK = LinuxDefines.LC_NUMERIC_MASK;
-                LC_TIME = LinuxDefines.LC_TIME;
-                LC_TIME_MASK = LinuxDefines.LC_TIME_MASK;
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-                HAVE_LOCALE_H = true;
-                LC_ALL = BsdDefines.LC_ALL;
-                LC_COLLATE = BsdDefines.LC_COLLATE;
-                LC_CTYPE = BsdDefines.LC_CTYPE;
-                LC_GLOBAL_LOCALE = Locale_t.fromNativeValue(BsdDefines.LC_GLOBAL_LOCALE);
-                LC_MESSAGES = BsdDefines.LC_MESSAGES;
-                LC_MONETARY = BsdDefines.LC_MONETARY;
-                LC_NUMERIC = BsdDefines.LC_NUMERIC;
-                LC_TIME = BsdDefines.LC_TIME;
-                switch (multiarchInfo.getOS()) {
-                    case DARWIN:
-                        LC_ALL_MASK = DarwinDefines.LC_ALL_MASK;
-                        LC_COLLATE_MASK = DarwinDefines.LC_COLLATE_MASK;
-                        LC_CTYPE_MASK = DarwinDefines.LC_CTYPE_MASK;
-                        LC_MESSAGES_MASK = DarwinDefines.LC_MESSAGES_MASK;
-                        LC_MONETARY_MASK = DarwinDefines.LC_MONETARY_MASK;
-                        LC_NUMERIC_MASK = DarwinDefines.LC_NUMERIC_MASK;
-                        LC_TIME_MASK = DarwinDefines.LC_TIME_MASK;
-                        break;
-                    case FREE_BSD:
-                        LC_ALL_MASK = FreeBsdDefines.LC_ALL_MASK;
-                        LC_COLLATE_MASK = FreeBsdDefines.LC_COLLATE_MASK;
-                        LC_CTYPE_MASK = FreeBsdDefines.LC_CTYPE_MASK;
-                        LC_MESSAGES_MASK = FreeBsdDefines.LC_MESSAGES_MASK;
-                        LC_MONETARY_MASK = FreeBsdDefines.LC_MONETARY_MASK;
-                        LC_NUMERIC_MASK = FreeBsdDefines.LC_NUMERIC_MASK;
-                        LC_TIME_MASK = FreeBsdDefines.LC_TIME_MASK;
-                        break;
-                    case OPEN_BSD:
-                        LC_ALL_MASK = OpenBsdDefines.LC_ALL_MASK;
-                        LC_COLLATE_MASK = OpenBsdDefines.LC_COLLATE_MASK;
-                        LC_CTYPE_MASK = OpenBsdDefines.LC_CTYPE_MASK;
-                        LC_MESSAGES_MASK = OpenBsdDefines.LC_MESSAGES_MASK;
-                        LC_MONETARY_MASK = OpenBsdDefines.LC_MONETARY_MASK;
-                        LC_NUMERIC_MASK = OpenBsdDefines.LC_NUMERIC_MASK;
-                        LC_TIME_MASK = OpenBsdDefines.LC_TIME_MASK;
-                        break;
-                    default:
-                        throw new NoClassDefFoundError("No locale.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
-                }
-                break;
-            default:
-                throw new NoClassDefFoundError("No locale.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
-        }
-    }
-
-    public final static boolean HAVE_LOCALE_H;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_ALL;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_ALL_MASK;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_COLLATE;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_COLLATE_MASK;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_CTYPE;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_CTYPE_MASK;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static Locale_t LC_GLOBAL_LOCALE;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_MESSAGES;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_MESSAGES_MASK;
-
-    /**
-     * The LC_MONETARY category shall define the rules and symbols that are used
-     * to format monetary numeric information.
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07_03_03">{@code LC_MONETARY}</a>.
-     *
-     */
-    @Define
-    public final static int LC_MONETARY;
-
-    /**
-     * The LC_MONETARY category shall define the rules and symbols that are used
-     * to format monetary numeric information.
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07_03_03">{@code LC_MONETARY}</a>.
-     *
-     */
-    @Define
-    public final static int LC_MONETARY_MASK;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_NUMERIC;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_NUMERIC_MASK;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_TIME;
-
-    /**
-     * <b>POSIX:</b> XXX
-     *
-     */
-    @Define
-    public final static int LC_TIME_MASK;
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/duplocale.html">duplocale
-     * - duplicate a locale object</a>.
-     *
-     *
-     * @param locobj a valid locale object handle.
-     * @return a copy of {@code locobj}
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    public final static Locale_t duplocale(Locale_t locobj) throws NativeErrorException {
-        return new Locale_t(duplocale(locobj.nativeValue));
-    }
-
-    private static native long duplocale(long nativeLocobj) throws NativeErrorException;
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/freelocale.html">freelocale
-     * - free resources allocated for a locale object</a>.
-     *
-     * @param locobj a valid locale object handle.
-     *
-     */
-    public final static void freelocale(Locale_t locobj) {
-        freelocale(locobj.nativeValue);
-    }
-
-    private static native void freelocale(long nativeLocobj);
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/localeconv.html">localeconv
-     * - return locale-specific information</a>.
-     *
-     *
-     * @return The localeconv() function shall return a pointer to the filled-in
-     * object.
-     */
-    public final static Lconv localeconv() {
-        return new Lconv(NativeAddressHolder.ofUintptr_t(localeconv0()));
-    }
-
-    private static native long localeconv0();
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/newlocale.html">newlocale
-     * - create or modify a locale object</a>.
-     *
-     *
-     * @param category_mask the locale categories to be set or modified.
-     * @param locale the locale from which the data specified in category_mask
-     * is taken.
-     * @param base the base locale object handle to be used.
-     * @return on successful completion, a valid locale object handle.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    public final static Locale_t newlocale(int category_mask, String locale, Locale_t base) throws NativeErrorException {
-        if (locale == null) {
-            throw new NullPointerException("locale is null.");
-        }
-        if (LC_GLOBAL_LOCALE.equals(base)) {
-            throw new IllegalArgumentException("base is LC_GLOBAL_LOCALE");
-        }
-        return new Locale_t(newlocale(category_mask, locale, base.nativeValue));
-    }
-
-    private static native long newlocale(int category_mask, String locale, long nativeBase) throws NativeErrorException;
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setlocale.html">setlocale
-     * - set program locale</a>.
-     *
-     * @param category the category to set.
-     * @param locale the locale to use for the given {@code category}
-     * @return on successful completion, the string associated with the
-     * specified category for the new locale. otherwise {@code null}
-     */
-    public final static native String setlocale(int category, String locale);
-
-    /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/uselocale.html">uselocale
-     * - use locale in current thread</a>.
-     *
-     *
-     * @param newloc the new thread-local locale to set. If 0 nothing will be
-     * changed, but the current locale is returned.
-     * @return a handle for the thread-local locale that was in use as the
-     * current locale for the calling thread on entry to the function, or
-     * LC_GLOBAL_LOCALE if no thread-local locale was in use.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    public final static Locale_t uselocale(Locale_t newloc) throws NativeErrorException {
-        return new Locale_t(uselocale(newloc.nativeValue));
-    }
-
-    private static native long uselocale(long nativeNewloc) throws NativeErrorException;
-
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/locale.h.html">{@code structure
      * lconv}</a>.
@@ -422,7 +91,6 @@ public class Locale {
     public static final class Lconv extends PosixStruct32 {
 
         public final static Alignment alignof;
-        public final static int sizeof;
         public final static long offsetof_Currency_symbol;
         public final static long offsetof_Decimal_point;
         public final static long offsetof_Frac_digits;
@@ -438,15 +106,16 @@ public class Locale {
         public final static long offsetof_Mon_decimal_point;
         public final static long offsetof_Mon_grouping;
         public final static long offsetof_Mon_thousands_sep;
-        public final static long offsetof_Negative_sign;
         public final static long offsetof_N_cs_precedes;
         public final static long offsetof_N_sep_by_space;
         public final static long offsetof_N_sign_posn;
-        public final static long offsetof_Positive_sign;
+        public final static long offsetof_Negative_sign;
         public final static long offsetof_P_cs_precedes;
         public final static long offsetof_P_sep_by_space;
         public final static long offsetof_P_sign_posn;
+        public final static long offsetof_Positive_sign;
         public final static long offsetof_Thousands_sep;
+        public final static int sizeof;
 
         /**
          * Make sure the native lib is loaded
@@ -590,36 +259,6 @@ public class Locale {
 
         public Lconv(NativeAddressHolder addressHolder) {
             super(addressHolder, Lconv.sizeof);
-        }
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            jsb.appendStringMember("currency_symbol", currency_symbol());
-            jsb.appendStringMember("decimal_point", decimal_point());
-            jsb.appendShortMember("frac_digits", frac_digits());
-            jsb.appendStringMember("grouping", grouping());
-            jsb.appendStringMember("int_curr_symbol", int_curr_symbol());
-            jsb.appendShortMember("int_frac_digits", int_frac_digits());
-            jsb.appendShortMember("int_n_cs_precedes", int_n_cs_precedes());
-            jsb.appendShortMember("int_n_sep_by_space", int_n_sep_by_space());
-            jsb.appendShortMember("int_n_sign_posn", int_n_sign_posn());
-            jsb.appendShortMember("int_p_cs_precedes", int_p_cs_precedes());
-            jsb.appendShortMember("int_p_sep_by_space", int_p_sep_by_space());
-            jsb.appendShortMember("int_p_sign_posn", int_p_sign_posn());
-            jsb.appendStringMember("mon_decimal_point", mon_decimal_point());
-            jsb.appendStringMember("mon_grouping", mon_grouping());
-            jsb.appendStringMember("mon_thousands_sep", mon_thousands_sep());
-            jsb.appendShortMember("n_cs_precedes", n_cs_precedes());
-            jsb.appendShortMember("n_sep_by_space", n_sep_by_space());
-            jsb.appendShortMember("n_sign_posn", n_sign_posn());
-            jsb.appendStringMember("negative_sign", negative_sign());
-            jsb.appendShortMember("p_cs_precedes", p_cs_precedes());
-            jsb.appendShortMember("p_sep_by_space", p_sep_by_space());
-            jsb.appendShortMember("p_sign_posn", p_sign_posn());
-            jsb.appendStringMember("positive_sign", positive_sign());
-            jsb.appendStringMember("thousands_sep", thousands_sep());
-            jsb.close();
         }
 
         /**
@@ -803,18 +442,6 @@ public class Locale {
         }
 
         /**
-         * A string that shall be used to indicate a negative-valued formatted
-         * monetary quantity.
-         * <b>POSIX:</b>
-         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07_03_03">{@code LC_MONETARY}</a>.
-         *
-         * @return the native value of negative_sign.
-         */
-        public final String negative_sign() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Negative_sign);
-        }
-
-        /**
          * An integer set to 1 if the currency_symbol precedes the value for a
          * monetary quantity with a negative value, and set to 0 if the symbol
          * succeeds the value.
@@ -852,16 +479,46 @@ public class Locale {
             return MEM_ACCESS.int16_t(this, Lconv.offsetof_N_sign_posn);
         }
 
+        @Override
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            jsb.appendStringMember("currency_symbol", currency_symbol());
+            jsb.appendStringMember("decimal_point", decimal_point());
+            jsb.appendShortMember("frac_digits", frac_digits());
+            jsb.appendStringMember("grouping", grouping());
+            jsb.appendStringMember("int_curr_symbol", int_curr_symbol());
+            jsb.appendShortMember("int_frac_digits", int_frac_digits());
+            jsb.appendShortMember("int_n_cs_precedes", int_n_cs_precedes());
+            jsb.appendShortMember("int_n_sep_by_space", int_n_sep_by_space());
+            jsb.appendShortMember("int_n_sign_posn", int_n_sign_posn());
+            jsb.appendShortMember("int_p_cs_precedes", int_p_cs_precedes());
+            jsb.appendShortMember("int_p_sep_by_space", int_p_sep_by_space());
+            jsb.appendShortMember("int_p_sign_posn", int_p_sign_posn());
+            jsb.appendStringMember("mon_decimal_point", mon_decimal_point());
+            jsb.appendStringMember("mon_grouping", mon_grouping());
+            jsb.appendStringMember("mon_thousands_sep", mon_thousands_sep());
+            jsb.appendShortMember("n_cs_precedes", n_cs_precedes());
+            jsb.appendShortMember("n_sep_by_space", n_sep_by_space());
+            jsb.appendShortMember("n_sign_posn", n_sign_posn());
+            jsb.appendStringMember("negative_sign", negative_sign());
+            jsb.appendShortMember("p_cs_precedes", p_cs_precedes());
+            jsb.appendShortMember("p_sep_by_space", p_sep_by_space());
+            jsb.appendShortMember("p_sign_posn", p_sign_posn());
+            jsb.appendStringMember("positive_sign", positive_sign());
+            jsb.appendStringMember("thousands_sep", thousands_sep());
+            jsb.close();
+        }
+
         /**
-         * A string that shall be used to indicate a non-negative-valued
-         * formatted monetary quantity.
+         * A string that shall be used to indicate a negative-valued formatted
+         * monetary quantity.
          * <b>POSIX:</b>
          * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07_03_03">{@code LC_MONETARY}</a>.
          *
-         * @return the native value of positive_sign.
+         * @return the native value of negative_sign.
          */
-        public final String positive_sign() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Positive_sign);
+        public final String negative_sign() {
+            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Negative_sign);
         }
 
         /**
@@ -903,6 +560,18 @@ public class Locale {
         }
 
         /**
+         * A string that shall be used to indicate a non-negative-valued
+         * formatted monetary quantity.
+         * <b>POSIX:</b>
+         * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07_03_03">{@code LC_MONETARY}</a>.
+         *
+         * @return the native value of positive_sign.
+         */
+        public final String positive_sign() {
+            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Positive_sign);
+        }
+
+        /**
          *
          * @return the native value of thousands_sep.
          */
@@ -910,6 +579,25 @@ public class Locale {
             return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Thousands_sep);
         }
 
+    }
+
+    public static interface LinuxDefines {
+
+        public final static int LC_ALL = 6;
+        public final static int LC_ALL_MASK = 8127;
+        public final static int LC_COLLATE = 3;
+        public final static int LC_COLLATE_MASK = 8;
+        public final static int LC_CTYPE = 0;
+        public final static int LC_CTYPE_MASK = 1;
+        public final static long LC_GLOBAL_LOCALE = -1;
+        public final static int LC_MESSAGES = 5;
+        public final static int LC_MESSAGES_MASK = 32;
+        public final static int LC_MONETARY = 4;
+        public final static int LC_MONETARY_MASK = 16;
+        public final static int LC_NUMERIC = 1;
+        public final static int LC_NUMERIC_MASK = 2;
+        public final static int LC_TIME = 2;
+        public final static int LC_TIME_MASK = 4;
     }
 
     /**
@@ -930,12 +618,6 @@ public class Locale {
             return locale.nativeValue;
         }
 
-        private final long nativeValue;
-
-        private Locale_t(long nativeValue) {
-            this.nativeValue = nativeValue;
-        }
-
         /**
          *
          * @return (locale_t)0
@@ -944,11 +626,10 @@ public class Locale {
             return new Locale_t(0);
         }
 
-        @Override
-        public int hashCode() {
-            int hash = 7;
-            hash = 73 * hash + (int) (this.nativeValue ^ (this.nativeValue >>> 32));
-            return hash;
+        private final long nativeValue;
+
+        private Locale_t(long nativeValue) {
+            this.nativeValue = nativeValue;
         }
 
         @Override
@@ -967,9 +648,328 @@ public class Locale {
         }
 
         @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 73 * hash + (int) (this.nativeValue ^ (this.nativeValue >>> 32));
+            return hash;
+        }
+
+        @Override
         public String toString() {
             return "{nativeValue : " + JnhwFormater.formatAddress(nativeValue) + "}";
         }
 
     }
+
+    public static interface OpenBsdDefines extends BsdDefines {
+
+        public final static int LC_ALL_MASK = 126;
+        public final static int LC_COLLATE_MASK = 2;
+        public final static int LC_CTYPE_MASK = 4;
+        public final static int LC_MESSAGES_MASK = 64;
+        public final static int LC_MONETARY_MASK = 8;
+        public final static int LC_NUMERIC_MASK = 16;
+        public final static int LC_TIME_MASK = 32;
+
+    }
+
+    public final static boolean HAVE_LOCALE_H;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_ALL;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_ALL_MASK;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_COLLATE;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_COLLATE_MASK;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_CTYPE;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_CTYPE_MASK;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static Locale_t LC_GLOBAL_LOCALE;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_MESSAGES;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_MESSAGES_MASK;
+
+    /**
+     * The LC_MONETARY category shall define the rules and symbols that are used
+     * to format monetary numeric information.
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07_03_03">{@code LC_MONETARY}</a>.
+     *
+     */
+    @Define
+    public final static int LC_MONETARY;
+
+    /**
+     * The LC_MONETARY category shall define the rules and symbols that are used
+     * to format monetary numeric information.
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07_03_03">{@code LC_MONETARY}</a>.
+     *
+     */
+    @Define
+    public final static int LC_MONETARY_MASK;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_NUMERIC;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_NUMERIC_MASK;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_TIME;
+
+    /**
+     * <b>POSIX:</b> XXX
+     *
+     */
+    @Define
+    public final static int LC_TIME_MASK;
+
+    /**
+     * Make sure the native lib is loaded
+     *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
+     */
+    static {
+        LibJnhwPosixLoader.touch();
+        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
+        switch (multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_LOCALE_H = true;
+                LC_ALL = LinuxDefines.LC_ALL;
+                LC_ALL_MASK = LinuxDefines.LC_ALL_MASK;
+                LC_COLLATE = LinuxDefines.LC_COLLATE;
+                LC_COLLATE_MASK = LinuxDefines.LC_COLLATE_MASK;
+                LC_CTYPE = LinuxDefines.LC_CTYPE;
+                LC_CTYPE_MASK = LinuxDefines.LC_CTYPE_MASK;
+                LC_GLOBAL_LOCALE = Locale_t.fromNativeValue(LinuxDefines.LC_GLOBAL_LOCALE);
+                LC_MESSAGES = LinuxDefines.LC_MESSAGES;
+                LC_MESSAGES_MASK = LinuxDefines.LC_MESSAGES_MASK;
+                LC_MONETARY = LinuxDefines.LC_MONETARY;
+                LC_MONETARY_MASK = LinuxDefines.LC_MONETARY_MASK;
+                LC_NUMERIC = LinuxDefines.LC_NUMERIC;
+                LC_NUMERIC_MASK = LinuxDefines.LC_NUMERIC_MASK;
+                LC_TIME = LinuxDefines.LC_TIME;
+                LC_TIME_MASK = LinuxDefines.LC_TIME_MASK;
+                break;
+            case DARWIN:
+            case FREE_BSD:
+            case OPEN_BSD:
+                HAVE_LOCALE_H = true;
+                LC_ALL = BsdDefines.LC_ALL;
+                LC_COLLATE = BsdDefines.LC_COLLATE;
+                LC_CTYPE = BsdDefines.LC_CTYPE;
+                LC_GLOBAL_LOCALE = Locale_t.fromNativeValue(BsdDefines.LC_GLOBAL_LOCALE);
+                LC_MESSAGES = BsdDefines.LC_MESSAGES;
+                LC_MONETARY = BsdDefines.LC_MONETARY;
+                LC_NUMERIC = BsdDefines.LC_NUMERIC;
+                LC_TIME = BsdDefines.LC_TIME;
+                switch (multiarchInfo.getOS()) {
+                    case DARWIN:
+                        LC_ALL_MASK = DarwinDefines.LC_ALL_MASK;
+                        LC_COLLATE_MASK = DarwinDefines.LC_COLLATE_MASK;
+                        LC_CTYPE_MASK = DarwinDefines.LC_CTYPE_MASK;
+                        LC_MESSAGES_MASK = DarwinDefines.LC_MESSAGES_MASK;
+                        LC_MONETARY_MASK = DarwinDefines.LC_MONETARY_MASK;
+                        LC_NUMERIC_MASK = DarwinDefines.LC_NUMERIC_MASK;
+                        LC_TIME_MASK = DarwinDefines.LC_TIME_MASK;
+                        break;
+                    case FREE_BSD:
+                        LC_ALL_MASK = FreeBsdDefines.LC_ALL_MASK;
+                        LC_COLLATE_MASK = FreeBsdDefines.LC_COLLATE_MASK;
+                        LC_CTYPE_MASK = FreeBsdDefines.LC_CTYPE_MASK;
+                        LC_MESSAGES_MASK = FreeBsdDefines.LC_MESSAGES_MASK;
+                        LC_MONETARY_MASK = FreeBsdDefines.LC_MONETARY_MASK;
+                        LC_NUMERIC_MASK = FreeBsdDefines.LC_NUMERIC_MASK;
+                        LC_TIME_MASK = FreeBsdDefines.LC_TIME_MASK;
+                        break;
+                    case OPEN_BSD:
+                        LC_ALL_MASK = OpenBsdDefines.LC_ALL_MASK;
+                        LC_COLLATE_MASK = OpenBsdDefines.LC_COLLATE_MASK;
+                        LC_CTYPE_MASK = OpenBsdDefines.LC_CTYPE_MASK;
+                        LC_MESSAGES_MASK = OpenBsdDefines.LC_MESSAGES_MASK;
+                        LC_MONETARY_MASK = OpenBsdDefines.LC_MONETARY_MASK;
+                        LC_NUMERIC_MASK = OpenBsdDefines.LC_NUMERIC_MASK;
+                        LC_TIME_MASK = OpenBsdDefines.LC_TIME_MASK;
+                        break;
+                    default:
+                        throw new NoClassDefFoundError("No locale.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                }
+                break;
+            default:
+                throw new NoClassDefFoundError("No locale.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
+    }
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/duplocale.html">duplocale
+     * - duplicate a locale object</a>.
+     *
+     *
+     * @param locobj a valid locale object handle.
+     * @return a copy of {@code locobj}
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static Locale_t duplocale(Locale_t locobj) throws NativeErrorException {
+        return new Locale_t(duplocale(locobj.nativeValue));
+    }
+
+    private static native long duplocale(long nativeLocobj) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/freelocale.html">freelocale
+     * - free resources allocated for a locale object</a>.
+     *
+     * @param locobj a valid locale object handle.
+     *
+     */
+    public final static void freelocale(Locale_t locobj) {
+        freelocale(locobj.nativeValue);
+    }
+
+    private static native void freelocale(long nativeLocobj);
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/localeconv.html">localeconv
+     * - return locale-specific information</a>.
+     *
+     *
+     * @return The localeconv() function shall return a pointer to the filled-in
+     * object.
+     */
+    public final static Lconv localeconv() {
+        return new Lconv(NativeAddressHolder.ofUintptr_t(localeconv0()));
+    }
+
+    private static native long localeconv0();
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/newlocale.html">newlocale
+     * - create or modify a locale object</a>.
+     *
+     *
+     * @param category_mask the locale categories to be set or modified.
+     * @param locale the locale from which the data specified in category_mask
+     * is taken.
+     * @param base the base locale object handle to be used.
+     * @return on successful completion, a valid locale object handle.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static Locale_t newlocale(int category_mask, String locale, Locale_t base) throws NativeErrorException {
+        if (locale == null) {
+            throw new NullPointerException("locale is null.");
+        }
+        if (LC_GLOBAL_LOCALE.equals(base)) {
+            throw new IllegalArgumentException("base is LC_GLOBAL_LOCALE");
+        }
+        return new Locale_t(newlocale(category_mask, locale, base.nativeValue));
+    }
+
+    private static native long newlocale(int category_mask, String locale, long nativeBase) throws NativeErrorException;
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setlocale.html">setlocale
+     * - set program locale</a>.
+     *
+     * @param category the category to set.
+     * @param locale the locale to use for the given {@code category}
+     * @return on successful completion, the string associated with the
+     * specified category for the new locale. otherwise {@code null}
+     */
+    public final static native String setlocale(int category, String locale);
+
+    /**
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/uselocale.html">uselocale
+     * - use locale in current thread</a>.
+     *
+     *
+     * @param newloc the new thread-local locale to set. If 0 nothing will be
+     * changed, but the current locale is returned.
+     * @return a handle for the thread-local locale that was in use as the
+     * current locale for the calling thread on entry to the function, or
+     * LC_GLOBAL_LOCALE if no thread-local locale was in use.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static Locale_t uselocale(Locale_t newloc) throws NativeErrorException {
+        return new Locale_t(uselocale(newloc.nativeValue));
+    }
+
+    private static native long uselocale(long nativeNewloc) throws NativeErrorException;
 }

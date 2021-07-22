@@ -113,14 +113,6 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_getdate0
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
- * Method:    gmtime0
- * Signature: (J)J
- */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime0
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Time
  * Method:    gmtime_r
  * Signature: (JJ)V
  */
@@ -129,10 +121,10 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime_1r
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time
- * Method:    localtime0
+ * Method:    gmtime0
  * Signature: (J)J
  */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_localtime0
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_gmtime0
   (JNIEnv *, jclass, jlong);
 
 /*
@@ -142,6 +134,14 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_localtime0
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Time_localtime_1r
   (JNIEnv *, jclass, jlong, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Time
+ * Method:    localtime0
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Time_localtime0
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Time

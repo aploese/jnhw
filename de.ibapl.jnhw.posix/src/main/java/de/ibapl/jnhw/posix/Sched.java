@@ -45,13 +45,6 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <sched.h>")
 public class Sched {
 
-    public static interface LinuxDefines {
-
-        public final static int SCHED_FIFO = 1;
-        public final static int SCHED_OTHER = 0;
-        public final static int SCHED_RR = 2;
-    }
-
     public static interface BsdDefines {
 
     }
@@ -72,58 +65,19 @@ public class Sched {
 
     }
 
+    public static interface LinuxDefines {
+
+        public final static int SCHED_FIFO = 1;
+        public final static int SCHED_OTHER = 0;
+        public final static int SCHED_RR = 2;
+    }
+
     public static interface OpenBsdDefines extends BsdDefines {
 
         public final static int SCHED_FIFO = 1;
         public final static int SCHED_OTHER = 2;
         public final static int SCHED_RR = 3;
 
-    }
-
-    /**
-     * Make sure the native lib is loaded
-     *
-     * @implNote The actual value for the define fields are injected by
-     * initFields. The static initialization block is used to set the value here
-     * to communicate that this static final fields are not statically foldable.
-     * {
-     * @see String#COMPACT_STRINGS}
-     */
-    static {
-        LibJnhwPosixLoader.touch();
-
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
-            case LINUX:
-                HAVE_SCHED_H = true;
-                SCHED_FIFO = LinuxDefines.SCHED_FIFO;
-                SCHED_OTHER = LinuxDefines.SCHED_OTHER;
-                SCHED_RR = LinuxDefines.SCHED_RR;
-                SCHED_SPORADIC = IntDefine.UNDEFINED;
-                break;
-            case DARWIN:
-                HAVE_SCHED_H = true;
-                SCHED_FIFO = DarwinDefines.SCHED_FIFO;
-                SCHED_OTHER = DarwinDefines.SCHED_OTHER;
-                SCHED_RR = DarwinDefines.SCHED_RR;
-                SCHED_SPORADIC = IntDefine.UNDEFINED;
-                break;
-            case FREE_BSD:
-                HAVE_SCHED_H = true;
-                SCHED_FIFO = FreeBsdDefines.SCHED_FIFO;
-                SCHED_OTHER = FreeBsdDefines.SCHED_OTHER;
-                SCHED_RR = FreeBsdDefines.SCHED_RR;
-                SCHED_SPORADIC = IntDefine.UNDEFINED;
-                break;
-            case OPEN_BSD:
-                HAVE_SCHED_H = true;
-                SCHED_FIFO = OpenBsdDefines.SCHED_FIFO;
-                SCHED_OTHER = OpenBsdDefines.SCHED_OTHER;
-                SCHED_RR = OpenBsdDefines.SCHED_RR;
-                SCHED_SPORADIC = IntDefine.UNDEFINED;
-                break;
-            default:
-                throw new NoClassDefFoundError("No sched.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
-        }
     }
 
     /**
@@ -134,12 +88,12 @@ public class Sched {
     public static class Sched_param extends Struct32 {
 
         public final static Alignment alignof;
-        public final static int sizeof;
         public final static long offsetof_Sched_priority;
-        public final static long offsetof_Sched_ss_low_priority;
-        public final static long offsetof_Sched_ss_repl_period;
         public final static long offsetof_Sched_ss_init_budget;
+        public final static long offsetof_Sched_ss_low_priority;
         public final static long offsetof_Sched_ss_max_repl;
+        public final static long offsetof_Sched_ss_repl_period;
+        public final static int sizeof;
 
         /**
          * Make sure the native lib is loaded
@@ -161,14 +115,30 @@ public class Sched {
             offsetof_Sched_ss_repl_period = -1;
         }
 
-        public Sched_param(SetMem setMem) {
-            this(null, 0, setMem);
-        }
+        /**
+         * Initial budget for sporadic server.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sched.h.html">{@code structure
+         * sched_param}</a>.
+         *
+         */
+        private final Time.Timespec sched_ss_init_budget;
+
+        /**
+         * Replenishment period for sporadic server.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sched.h.html">{@code structure
+         * sched_param}</a>.
+         *
+         */
+        private final Time.Timespec sched_ss_repl_period;
 
         public Sched_param(AbstractNativeMemory parent, long offset, SetMem setMem) {
             super(parent, offset, Sched_param.sizeof, setMem);
             sched_ss_init_budget = Sched_param.offsetof_Sched_ss_init_budget == -1 ? null : new Time.Timespec(this, Sched_param.offsetof_Sched_ss_init_budget, SetMem.DO_NOT_SET);//mem is already initialized by parent
             sched_ss_repl_period = Sched_param.offsetof_Sched_ss_repl_period == -1 ? null : new Time.Timespec(this, Sched_param.offsetof_Sched_ss_repl_period, SetMem.DO_NOT_SET);//mem is already initialized by parent
+        }
+
+        public Sched_param(SetMem setMem) {
+            this(null, 0, setMem);
         }
 
         /**
@@ -200,7 +170,6 @@ public class Sched {
                 return sched_ss_init_budget;
             }
         }
-
         /**
          * Low scheduling priority for sporadic server.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sched.h.html">{@code structure
@@ -235,21 +204,6 @@ public class Sched {
             }
             MEM_ACCESS.int32_t(this, Sched_param.offsetof_Sched_ss_low_priority, sched_ss_low_priority);
         }
-        /**
-         * Replenishment period for sporadic server.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sched.h.html">{@code structure
-         * sched_param}</a>.
-         *
-         */
-        private final Time.Timespec sched_ss_repl_period;
-
-        /**
-         * Initial budget for sporadic server.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sched.h.html">{@code structure
-         * sched_param}</a>.
-         *
-         */
-        private final Time.Timespec sched_ss_init_budget;
 
         /**
          * Maximum pending replenishments for sporadic server.
@@ -306,6 +260,13 @@ public class Sched {
     public final static int SCHED_FIFO;
 
     /**
+     * <b>POSIX[PS|TPS]:</b> Another scheduling policy.
+     *
+     */
+    @Define
+    public final static int SCHED_OTHER;
+
+    /**
      * <b>POSIX[PS|TPS]:</b> Round robin scheduling policy.
      *
      */
@@ -320,11 +281,50 @@ public class Sched {
     public final static IntDefine SCHED_SPORADIC;
 
     /**
-     * <b>POSIX[PS|TPS]:</b> Another scheduling policy.
+     * Make sure the native lib is loaded
      *
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
-    @Define
-    public final static int SCHED_OTHER;
+    static {
+        LibJnhwPosixLoader.touch();
+
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_SCHED_H = true;
+                SCHED_FIFO = LinuxDefines.SCHED_FIFO;
+                SCHED_OTHER = LinuxDefines.SCHED_OTHER;
+                SCHED_RR = LinuxDefines.SCHED_RR;
+                SCHED_SPORADIC = IntDefine.UNDEFINED;
+                break;
+            case DARWIN:
+                HAVE_SCHED_H = true;
+                SCHED_FIFO = DarwinDefines.SCHED_FIFO;
+                SCHED_OTHER = DarwinDefines.SCHED_OTHER;
+                SCHED_RR = DarwinDefines.SCHED_RR;
+                SCHED_SPORADIC = IntDefine.UNDEFINED;
+                break;
+            case FREE_BSD:
+                HAVE_SCHED_H = true;
+                SCHED_FIFO = FreeBsdDefines.SCHED_FIFO;
+                SCHED_OTHER = FreeBsdDefines.SCHED_OTHER;
+                SCHED_RR = FreeBsdDefines.SCHED_RR;
+                SCHED_SPORADIC = IntDefine.UNDEFINED;
+                break;
+            case OPEN_BSD:
+                HAVE_SCHED_H = true;
+                SCHED_FIFO = OpenBsdDefines.SCHED_FIFO;
+                SCHED_OTHER = OpenBsdDefines.SCHED_OTHER;
+                SCHED_RR = OpenBsdDefines.SCHED_RR;
+                SCHED_SPORADIC = IntDefine.UNDEFINED;
+                break;
+            default:
+                throw new NoClassDefFoundError("No sched.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
+    }
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -346,6 +346,8 @@ public class Sched {
      */
     public final static native int sched_get_priority_min(int policy) throws NativeErrorException;
 
+    private static native void sched_getparam(@pid_t int pid, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
+
     /**
      * <b>POSIX[TPS]:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/sched_getparam.html">sched_getparam
@@ -360,8 +362,6 @@ public class Sched {
         sched_getparam(pid, AbstractNativeMemory.toUintptr_t(param));
     }
 
-    private static native void sched_getparam(@pid_t int pid, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
-
     /**
      * <b>POSIX[TPS]:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/sched_getscheduler.html">sched_getscheduler
@@ -374,6 +374,8 @@ public class Sched {
      * not available natively.
      */
     public final static native int sched_getscheduler(@pid_t int pid) throws NativeErrorException, NoSuchNativeMethodException;
+
+    private static native void sched_rr_get_interval(@pid_t int pid, long ptrInterval) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -389,7 +391,7 @@ public class Sched {
         sched_rr_get_interval(pid, AbstractNativeMemory.toUintptr_t(interval));
     }
 
-    private static native void sched_rr_get_interval(@pid_t int pid, long ptrInterval) throws NativeErrorException, NoSuchNativeMethodException;
+    private static native void sched_setparam(@pid_t int pid, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -405,7 +407,7 @@ public class Sched {
         sched_setparam(pid, AbstractNativeMemory.toUintptr_t(param));
     }
 
-    private static native void sched_setparam(@pid_t int pid, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
+    private static native int sched_setscheduler(@pid_t int pid, int policy, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -420,8 +422,6 @@ public class Sched {
     public final static int sched_setscheduler(@pid_t int pid, int policy, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException {
         return sched_setscheduler(pid, policy, AbstractNativeMemory.toUintptr_t(param));
     }
-
-    private static native int sched_setscheduler(@pid_t int pid, int policy, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>

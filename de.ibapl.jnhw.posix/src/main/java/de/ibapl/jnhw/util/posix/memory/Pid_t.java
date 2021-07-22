@@ -43,14 +43,8 @@ public class Pid_t extends NativeIntNumber implements Accessor_Pid_t {
     }
 
     @Override
-    public void pid_t(OpaqueMemory32 mem, long offset, @pid_t int value) {
-        PosixStruct32.ACCESSOR_PID_T.pid_t(mem, offset, value);
-    }
-
-    @Override
-    @pid_t
-    public int pid_t(OpaqueMemory32 mem, long offset) {
-        return PosixStruct32.ACCESSOR_PID_T.pid_t(mem, offset);
+    public BaseDataType getBaseDataType() {
+        return dataType;
     }
 
     @Override
@@ -64,8 +58,14 @@ public class Pid_t extends NativeIntNumber implements Accessor_Pid_t {
     }
 
     @Override
-    public BaseDataType getBaseDataType() {
-        return dataType;
+    @pid_t
+    public int pid_t(OpaqueMemory32 mem, long offset) {
+        return PosixStruct32.ACCESSOR_PID_T.pid_t(mem, offset);
+    }
+
+    @Override
+    public void pid_t(OpaqueMemory32 mem, long offset, @pid_t int value) {
+        PosixStruct32.ACCESSOR_PID_T.pid_t(mem, offset, value);
     }
 
 }

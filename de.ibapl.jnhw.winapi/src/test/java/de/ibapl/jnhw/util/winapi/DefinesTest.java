@@ -109,32 +109,20 @@ public class DefinesTest {
 
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testIoapisetDefines() throws Exception {
-        testDefines(Ioapiset.class);
-    }
-
-    @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testIoAPIDefines() throws Exception {
         testDefines(IoAPI.class);
     }
 
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testIoapisetDefines() throws Exception {
+        testDefines(Ioapiset.class);
+    }
+
+    @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testMinwinbaseDefines() throws Exception {
         testDefines(Minwinbase.class);
-    }
-
-    @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testWinDefDefines() throws Exception {
-        testDefines(WinDef.class);
-    }
-
-    @Test
-    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-    public void testWinioctlDefines() throws Exception {
-        testDefines(Winioctl.class);
     }
 
     @Test
@@ -163,8 +151,20 @@ public class DefinesTest {
 
     @Test
     @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testWinDefDefines() throws Exception {
+        testDefines(WinDef.class);
+    }
+
+    @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
     public void testWinerrorDefines() throws Exception {
         testDefines(Winerror.class);
+    }
+
+    @Test
+    @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+    public void testWinioctlDefines() throws Exception {
+        testDefines(Winioctl.class);
     }
 
     @Test

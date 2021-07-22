@@ -44,30 +44,6 @@ import java.io.IOException;
 @Include("#include <poll.h>")
 public final class Poll {
 
-    public static interface LinuxDefines {
-
-        public final static short POLLERR = 0x0008;
-        public final static short POLLHUP = 0x0010;
-        public final static short POLLIN = 0x0001;
-        public final static short POLLNVAL = 0x0020;
-        public final static short POLLOUT = 0x0004;
-        public final static short POLLPRI = 0x0002;
-        public final static short POLLRDBAND = 0x0080;
-        public final static short POLLRDNORM = 0x0040;
-    }
-
-    public static interface Linux_NonMips_Defines {
-
-        public final static short POLLWRBAND = 0x0200;
-        public final static short POLLWRNORM = 0x0100;
-    }
-
-    public static interface Linux_Mips_Mips64_Defines {
-
-        public final static short POLLWRBAND = 0x0100;
-        public final static short POLLWRNORM = 0x0004;
-    }
-
     public static interface BsdDefines {
 
         public final static short POLLERR = 0x0008;
@@ -86,62 +62,214 @@ public final class Poll {
 
     }
 
+    public static interface Linux_Mips_Mips64_Defines {
+
+        public final static short POLLWRBAND = 0x0100;
+        public final static short POLLWRNORM = 0x0004;
+    }
+
+    public static interface Linux_NonMips_Defines {
+
+        public final static short POLLWRBAND = 0x0200;
+        public final static short POLLWRNORM = 0x0100;
+    }
+
+    public static interface LinuxDefines {
+
+        public final static short POLLERR = 0x0008;
+        public final static short POLLHUP = 0x0010;
+        public final static short POLLIN = 0x0001;
+        public final static short POLLNVAL = 0x0020;
+        public final static short POLLOUT = 0x0004;
+        public final static short POLLPRI = 0x0002;
+        public final static short POLLRDBAND = 0x0080;
+        public final static short POLLRDNORM = 0x0040;
+    }
+
     public static interface OpenBsdDefines extends BsdDefines {
 
     }
 
     /**
-     * Make sure the native lib is loaded
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+     * pollfd}</a>.
      *
-     * @implNote The actual value for the define fields are injected by
-     * initFields. The static initialization block is used to set the value here
-     * to communicate that this static final fields are not statically foldable.
-     * {
-     * @see String#COMPACT_STRINGS}
      */
-    static {
-        LibJnhwPosixLoader.touch();
+    public final static class PollFd extends Struct32 {
 
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
-            case LINUX:
-                HAVE_POLL_H = true;
-                POLLERR = LinuxDefines.POLLERR;
-                POLLHUP = LinuxDefines.POLLHUP;
-                POLLIN = LinuxDefines.POLLIN;
-                POLLNVAL = LinuxDefines.POLLNVAL;
-                POLLOUT = LinuxDefines.POLLOUT;
-                POLLPRI = LinuxDefines.POLLPRI;
-                POLLRDBAND = LinuxDefines.POLLRDBAND;
-                POLLRDNORM = LinuxDefines.POLLRDNORM;
-                switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
-                    case MIPS:
-                    case MIPS_64:
-                        POLLWRBAND = Linux_Mips_Mips64_Defines.POLLWRBAND;
-                        POLLWRNORM = Linux_Mips_Mips64_Defines.POLLWRNORM;
-                        break;
-                    default:
-                        POLLWRBAND = Linux_NonMips_Defines.POLLWRBAND;
-                        POLLWRNORM = Linux_NonMips_Defines.POLLWRNORM;
-                }
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-                HAVE_POLL_H = true;
-                POLLERR = BsdDefines.POLLERR;
-                POLLHUP = BsdDefines.POLLHUP;
-                POLLIN = BsdDefines.POLLIN;
-                POLLNVAL = BsdDefines.POLLNVAL;
-                POLLOUT = BsdDefines.POLLOUT;
-                POLLPRI = BsdDefines.POLLPRI;
-                POLLRDBAND = BsdDefines.POLLRDBAND;
-                POLLRDNORM = BsdDefines.POLLRDNORM;
-                POLLWRBAND = BsdDefines.POLLWRBAND;
-                POLLWRNORM = BsdDefines.POLLWRNORM;
-                break;
-            default:
-                throw new NoClassDefFoundError("No poll.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        public final static Alignment alignof = Alignment.AT_4;
+        public final static long offsetof_Events = 4;
+        public final static long offsetof_Fd = 0;
+        public final static long offsetof_Revents = 6;
+        public final static int sizeof = 8;
+
+        private static void event2String(Appendable sb, short event) throws IOException {
+            if ((POLLIN & event) == POLLIN) {
+                sb.append("POLLIN ");
+                event &= ~POLLIN;
+            }
+            if ((POLLPRI & event) == POLLPRI) {
+                sb.append("POLLPRI ");
+                event &= ~POLLPRI;
+            }
+            if ((POLLOUT & event) == POLLOUT) {
+                sb.append("POLLOUT ");
+                event &= ~POLLOUT;
+            }
+            if ((POLLRDNORM & event) == POLLRDNORM) {
+                sb.append("POLLRDNORM ");
+                event &= ~POLLRDNORM;
+            }
+            if ((POLLRDBAND & event) == POLLRDBAND) {
+                sb.append("POLLRDBAND ");
+                event &= ~POLLRDBAND;
+            }
+            if ((POLLWRNORM & event) == POLLWRNORM) {
+                sb.append("POLLWRNORM ");
+                event &= ~POLLWRNORM;
+            }
+            if ((POLLWRBAND & event) == POLLWRBAND) {
+                sb.append("POLLWRBAND ");
+                event &= ~POLLWRBAND;
+            }
+            if ((POLLERR & event) == POLLERR) {
+                sb.append("POLLERR ");
+                event &= ~POLLERR;
+            }
+            if ((POLLHUP & event) == POLLHUP) {
+                sb.append("POLLHUP ");
+                event &= ~POLLHUP;
+            }
+            if ((POLLIN & event) == POLLIN) {
+                sb.append("POLLIN ");
+                event &= ~POLLIN;
+            }
+            if ((POLLNVAL & event) == POLLNVAL) {
+                sb.append("POLLNVAL ");
+                event &= ~POLLNVAL;
+            }
+            if (event != 0) {
+                sb.append(String.format("0x%04x", event));
+            }
         }
+
+        public PollFd() {
+            this(null, 0, SetMem.DO_NOT_SET);
+        }
+
+        public PollFd(AbstractNativeMemory owner, long offset) {
+            this(owner, offset, SetMem.DO_NOT_SET);
+        }
+
+        public PollFd(AbstractNativeMemory parent, long offset, SetMem setMem) {
+            super(parent, offset, PollFd.sizeof, setMem);
+        }
+
+        /**
+         * The input event flags.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
+         *
+         * @return the native value of events;
+         */
+        public short events() {
+            return MEM_ACCESS.uint16_t(this, PollFd.offsetof_Events);
+        }
+
+        /**
+         * The input event flags.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
+         *
+         * @param events the value of events to be set natively.
+         */
+        public void events(short events) {
+            MEM_ACCESS.uint16_t(this, PollFd.offsetof_Events, events);
+        }
+
+        /**
+         * The file descriptor being polled.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
+         *
+         * @return the native value of fd;
+         */
+        public int fd() {
+            return MEM_ACCESS.int32_t(this, PollFd.offsetof_Fd);
+        }
+
+        /**
+         * The file descriptor being polled.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
+         *
+         * @param fd the value of fd to be set natively.
+         */
+        public void fd(int fd) {
+            MEM_ACCESS.int32_t(this, PollFd.offsetof_Fd, fd);
+        }
+
+        @Override
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
+            jsb.appendIntMember("fd", fd());
+            jsb.appendMember("events", "[", (sbu) -> event2String(sbu, events()), "]");
+            jsb.appendMember("revents", "[", (sbu) -> event2String(sbu, revents()), "]");
+            jsb.close();
+        }
+
+        /**
+         * The output event flags.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
+         *
+         * @return the native value of revents;
+         */
+        public short revents() {
+            return MEM_ACCESS.uint16_t(this, PollFd.offsetof_Revents);
+        }
+
+        /**
+         * The output event flags.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+         * pollfd}</a>.
+         *
+         * @param revents the value of revents to be set natively.
+         */
+        public void revents(short revents) {
+            MEM_ACCESS.uint16_t(this, PollFd.offsetof_Revents, revents);
+        }
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+     * pollfd}</a>.
+     *
+     */
+    public static class PollFds extends StructArray32<PollFd> {
+
+        /**
+         * Make sure the native lib is loaded ... this class is static, so we
+         * have to
+         */
+        static {
+            LibJnhwPosixLoader.touch();
+        }
+
+        private static PollFd createAtOffset(AbstractNativeMemory parent, long offset) {
+            return new PollFd(parent, offset);
+        }
+
+        public PollFds(AbstractNativeMemory parent, long offset, int arraylength) {
+            //get uninitialized mem we need to set this anyway ...
+            super(parent, offset, new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof, SetMem.DO_NOT_SET);
+        }
+
+        public PollFds(int arraylength) {
+            //get uninitialized mem we need to set this anyway ...
+            super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof, SetMem.DO_NOT_SET);
+        }
+
     }
 
     public final static boolean HAVE_POLL_H;
@@ -218,19 +346,57 @@ public final class Poll {
     public final static short POLLWRNORM;
 
     /**
-     * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/poll.html">poll
-     * - input/output multiplexing</a>.
+     * Make sure the native lib is loaded
      *
-     * @param fds an array of pollfd.
-     * @param timeout the timeout in milliseconds.
-     * @return the native result.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
+     * @implNote The actual value for the define fields are injected by
+     * initFields. The static initialization block is used to set the value here
+     * to communicate that this static final fields are not statically foldable.
+     * {
+     * @see String#COMPACT_STRINGS}
      */
-    public final static int poll(PollFds fds, int timeout) throws NativeErrorException {
-        return poll(AbstractNativeMemory.toUintptr_t(fds), fds.length(), timeout);
+    static {
+        LibJnhwPosixLoader.touch();
+
+        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            case LINUX:
+                HAVE_POLL_H = true;
+                POLLERR = LinuxDefines.POLLERR;
+                POLLHUP = LinuxDefines.POLLHUP;
+                POLLIN = LinuxDefines.POLLIN;
+                POLLNVAL = LinuxDefines.POLLNVAL;
+                POLLOUT = LinuxDefines.POLLOUT;
+                POLLPRI = LinuxDefines.POLLPRI;
+                POLLRDBAND = LinuxDefines.POLLRDBAND;
+                POLLRDNORM = LinuxDefines.POLLRDNORM;
+                switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                    case MIPS:
+                    case MIPS_64:
+                        POLLWRBAND = Linux_Mips_Mips64_Defines.POLLWRBAND;
+                        POLLWRNORM = Linux_Mips_Mips64_Defines.POLLWRNORM;
+                        break;
+                    default:
+                        POLLWRBAND = Linux_NonMips_Defines.POLLWRBAND;
+                        POLLWRNORM = Linux_NonMips_Defines.POLLWRNORM;
+                }
+                break;
+            case DARWIN:
+            case FREE_BSD:
+            case OPEN_BSD:
+                HAVE_POLL_H = true;
+                POLLERR = BsdDefines.POLLERR;
+                POLLHUP = BsdDefines.POLLHUP;
+                POLLIN = BsdDefines.POLLIN;
+                POLLNVAL = BsdDefines.POLLNVAL;
+                POLLOUT = BsdDefines.POLLOUT;
+                POLLPRI = BsdDefines.POLLPRI;
+                POLLRDBAND = BsdDefines.POLLRDBAND;
+                POLLRDNORM = BsdDefines.POLLRDNORM;
+                POLLWRBAND = BsdDefines.POLLWRBAND;
+                POLLWRNORM = BsdDefines.POLLWRNORM;
+                break;
+            default:
+                throw new NoClassDefFoundError("No poll.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+        }
     }
 
     private static native int poll(long ptrFds, int elements, int timeout) throws NativeErrorException;
@@ -252,185 +418,19 @@ public final class Poll {
     }
 
     /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
-     * pollfd}</a>.
+     * <b>POSIX:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/poll.html">poll
+     * - input/output multiplexing</a>.
      *
-     */
-    public final static class PollFd extends Struct32 {
-
-        public final static long offsetof_Fd = 0;
-        public final static long offsetof_Events = 4;
-        public final static long offsetof_Revents = 6;
-        public final static Alignment alignof = Alignment.AT_4;
-        public final static int sizeof = 8;
-
-        public PollFd(AbstractNativeMemory owner, long offset) {
-            this(owner, offset, SetMem.DO_NOT_SET);
-        }
-
-        public PollFd() {
-            this(null, 0, SetMem.DO_NOT_SET);
-        }
-
-        public PollFd(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, PollFd.sizeof, setMem);
-        }
-
-        /**
-         * The input event flags.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
-         * pollfd}</a>.
-         *
-         * @return the native value of events;
-         */
-        public short events() {
-            return MEM_ACCESS.uint16_t(this, PollFd.offsetof_Events);
-        }
-
-        /**
-         * The input event flags.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
-         * pollfd}</a>.
-         *
-         * @param events the value of events to be set natively.
-         */
-        public void events(short events) {
-            MEM_ACCESS.uint16_t(this, PollFd.offsetof_Events, events);
-        }
-
-        /**
-         * The file descriptor being polled.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
-         * pollfd}</a>.
-         *
-         * @return the native value of fd;
-         */
-        public int fd() {
-            return MEM_ACCESS.int32_t(this, PollFd.offsetof_Fd);
-        }
-
-        /**
-         * The file descriptor being polled.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
-         * pollfd}</a>.
-         *
-         * @param fd the value of fd to be set natively.
-         */
-        public void fd(int fd) {
-            MEM_ACCESS.int32_t(this, PollFd.offsetof_Fd, fd);
-        }
-
-        /**
-         * The output event flags.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
-         * pollfd}</a>.
-         *
-         * @return the native value of revents;
-         */
-        public short revents() {
-            return MEM_ACCESS.uint16_t(this, PollFd.offsetof_Revents);
-        }
-
-        /**
-         * The output event flags.
-         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
-         * pollfd}</a>.
-         *
-         * @param revents the value of revents to be set natively.
-         */
-        public void revents(short revents) {
-            MEM_ACCESS.uint16_t(this, PollFd.offsetof_Revents, revents);
-        }
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            jsb.appendIntMember("fd", fd());
-            jsb.appendMember("events", "[", (sbu) -> event2String(sbu, events()), "]");
-            jsb.appendMember("revents", "[", (sbu) -> event2String(sbu, revents()), "]");
-            jsb.close();
-        }
-
-        private static void event2String(Appendable sb, short event) throws IOException {
-            if ((POLLIN & event) == POLLIN) {
-                sb.append("POLLIN ");
-                event &= ~POLLIN;
-            }
-            if ((POLLPRI & event) == POLLPRI) {
-                sb.append("POLLPRI ");
-                event &= ~POLLPRI;
-            }
-            if ((POLLOUT & event) == POLLOUT) {
-                sb.append("POLLOUT ");
-                event &= ~POLLOUT;
-            }
-            if ((POLLRDNORM & event) == POLLRDNORM) {
-                sb.append("POLLRDNORM ");
-                event &= ~POLLRDNORM;
-            }
-            if ((POLLRDBAND & event) == POLLRDBAND) {
-                sb.append("POLLRDBAND ");
-                event &= ~POLLRDBAND;
-            }
-            if ((POLLWRNORM & event) == POLLWRNORM) {
-                sb.append("POLLWRNORM ");
-                event &= ~POLLWRNORM;
-            }
-            if ((POLLWRBAND & event) == POLLWRBAND) {
-                sb.append("POLLWRBAND ");
-                event &= ~POLLWRBAND;
-            }
-            if ((POLLERR & event) == POLLERR) {
-                sb.append("POLLERR ");
-                event &= ~POLLERR;
-            }
-            if ((POLLHUP & event) == POLLHUP) {
-                sb.append("POLLHUP ");
-                event &= ~POLLHUP;
-            }
-            if ((POLLIN & event) == POLLIN) {
-                sb.append("POLLIN ");
-                event &= ~POLLIN;
-            }
-            if ((POLLNVAL & event) == POLLNVAL) {
-                sb.append("POLLNVAL ");
-                event &= ~POLLNVAL;
-            }
-            if (event != 0) {
-                sb.append(String.format("0x%04x", event));
-            }
-        }
-    }
-
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
-     * pollfd}</a>.
+     * @param fds an array of pollfd.
+     * @param timeout the timeout in milliseconds.
+     * @return the native result.
      *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
      */
-    public static class PollFds extends StructArray32<PollFd> {
-
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-        }
-
-        public PollFds(int arraylength) {
-            //get uninitialized mem we need to set this anyway ...
-            super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof, SetMem.DO_NOT_SET);
-        }
-
-        public PollFds(AbstractNativeMemory parent, long offset, int arraylength) {
-            //get uninitialized mem we need to set this anyway ...
-            super(parent, offset, new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof, SetMem.DO_NOT_SET);
-        }
-
-        private static PollFd createAtOffset(AbstractNativeMemory parent, long offset) {
-            return new PollFd(parent, offset);
-        }
-
+    public final static int poll(PollFds fds, int timeout) throws NativeErrorException {
+        return poll(AbstractNativeMemory.toUintptr_t(fds), fds.length(), timeout);
     }
 
 }

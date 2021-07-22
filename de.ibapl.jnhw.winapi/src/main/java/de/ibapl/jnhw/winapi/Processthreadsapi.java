@@ -47,6 +47,21 @@ public abstract class Processthreadsapi {
     }
 
     /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthread">GetCurrentThread</a>
+     * Retrieves a pseudo handle for the calling thread.
+     *
+     * @return a pseudo handle for the current thread.
+     *
+     */
+    public final static HANDLE GetCurrentThread() {
+        return HANDLE.of(GetCurrentThread0());
+    }
+
+    private static native long GetCurrentThread0();
+
+    public final static native void QueueUserAPC(long ptrPfnAPC, long ptrHThread, @ULONG_PTR long dwData) throws NativeErrorException;
+
+    /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-queueuserapc">QueueUserAPC</a>
      * Adds a user-mode asynchronous procedure call (APC) object to the APC
      * queue of the specified thread.
@@ -66,19 +81,4 @@ public abstract class Processthreadsapi {
     public final static void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, @ULONG_PTR long dwData) throws NativeErrorException {
         QueueUserAPC(NativeFunctionPointer.toUintptr_t(pfnAPC), HANDLE.getHandleValue(hThread), dwData);
     }
-
-    public final static native void QueueUserAPC(long ptrPfnAPC, long ptrHThread, @ULONG_PTR long dwData) throws NativeErrorException;
-
-    /**
-     * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthread">GetCurrentThread</a>
-     * Retrieves a pseudo handle for the calling thread.
-     *
-     * @return a pseudo handle for the current thread.
-     *
-     */
-    public final static HANDLE GetCurrentThread() {
-        return HANDLE.of(GetCurrentThread0());
-    }
-
-    private static native long GetCurrentThread0();
 }

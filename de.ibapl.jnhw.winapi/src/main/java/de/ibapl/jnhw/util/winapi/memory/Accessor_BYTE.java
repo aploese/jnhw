@@ -31,14 +31,14 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 @BYTE
 public interface Accessor_BYTE {
 
-    void BYTE(OpaqueMemory32 mem, long offset, @BYTE byte value);
-
-    void BYTE_FromShort(OpaqueMemory32 mem, long offset, @BYTE short value);
-
     @BYTE
     byte BYTE(OpaqueMemory32 mem, long offset);
 
+    void BYTE(OpaqueMemory32 mem, long offset, @BYTE byte value);
+
     @BYTE
     short BYTE_AsShort(OpaqueMemory32 mem, long offset);
+
+    void BYTE_FromShort(OpaqueMemory32 mem, long offset, @BYTE short value);
 
 }

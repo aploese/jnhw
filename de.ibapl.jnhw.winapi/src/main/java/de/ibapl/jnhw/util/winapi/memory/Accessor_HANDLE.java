@@ -31,9 +31,9 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 @de.ibapl.jnhw.annotation.winapi.basetsd.HANDLE
 public interface Accessor_HANDLE {
 
-    void HANDLE(OpaqueMemory32 mem, long offset, @de.ibapl.jnhw.annotation.winapi.basetsd.HANDLE HANDLE value);
-
     @de.ibapl.jnhw.annotation.winapi.basetsd.HANDLE
     HANDLE HANDLE(OpaqueMemory32 mem, long offset);
+
+    void HANDLE(OpaqueMemory32 mem, long offset, @de.ibapl.jnhw.annotation.winapi.basetsd.HANDLE HANDLE value);
 
 }

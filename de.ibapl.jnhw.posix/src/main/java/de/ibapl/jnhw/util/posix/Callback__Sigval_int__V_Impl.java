@@ -39,21 +39,6 @@ public abstract class Callback__Sigval_int__V_Impl extends Callback__Sigval_int_
 
     private static final WeakReference<Callback__Sigval_int__V_Impl> refs[];
 
-    public static Callback__Sigval_int__V_Impl find(NativeFunctionPointer callbackPtr) {
-        for (WeakReference<Callback__Sigval_int__V_Impl> wr : refs) {
-            Callback__Sigval_int__V_Impl cb = wr.get();
-            if (cb != null) {
-                if (cb.equals(callbackPtr)) {
-                    return cb;
-                }
-            }
-        }
-        return null;
-    }
-
-    //TODO release globalRef on native side, if its not needed anymore ....
-    private static native void initNative();
-
     /**
      * Make sure the native lib is loaded
      */
@@ -64,6 +49,17 @@ public abstract class Callback__Sigval_int__V_Impl extends Callback__Sigval_int_
         for (int i = 0; i < refs.length; i++) {
             refs[i] = new WeakReference(null);
         }
+    }
+
+    private static synchronized NativeAddressHolder aquire(Callback__Sigval_int__V_Impl cb) {
+        for (int i = 0; i < refs.length; i++) {
+            if (refs[i].get() == null) {
+                refs[i] = new WeakReference(cb);
+                return NativeAddressHolder.ofUintptr_t(getNativeAddress(i));
+            }
+        }
+        //Hint: Try run GC to free any??? or add more cbs...
+        throw new RuntimeException("No more Callbacks available! max: " + MAX_CALL_BACKS() + " reached");
     }
 
     /**
@@ -81,9 +77,24 @@ public abstract class Callback__Sigval_int__V_Impl extends Callback__Sigval_int_
         return result;
     }
 
-    public Callback__Sigval_int__V_Impl() {
-        super(Callback__Sigval_int__V_Impl::aquire);
+    public static Callback__Sigval_int__V_Impl find(NativeFunctionPointer callbackPtr) {
+        for (WeakReference<Callback__Sigval_int__V_Impl> wr : refs) {
+            Callback__Sigval_int__V_Impl cb = wr.get();
+            if (cb != null) {
+                if (cb.equals(callbackPtr)) {
+                    return cb;
+                }
+            }
+        }
+        return null;
     }
+
+    private static native long getNativeAddress(final int index);
+
+    //TODO release globalRef on native side, if its not needed anymore ....
+    private static native void initNative();
+
+    public static native int MAX_CALL_BACKS();
 
     private static void trampoline(final int index, final int value) {
         try {
@@ -98,19 +109,8 @@ public abstract class Callback__Sigval_int__V_Impl extends Callback__Sigval_int_
         }
     }
 
-    private static native long getNativeAddress(final int index);
-
-    private static synchronized NativeAddressHolder aquire(Callback__Sigval_int__V_Impl cb) {
-        for (int i = 0; i < refs.length; i++) {
-            if (refs[i].get() == null) {
-                refs[i] = new WeakReference(cb);
-                return NativeAddressHolder.ofUintptr_t(getNativeAddress(i));
-            }
-        }
-        //Hint: Try run GC to free any??? or add more cbs...
-        throw new RuntimeException("No more Callbacks available! max: " + MAX_CALL_BACKS() + " reached");
+    public Callback__Sigval_int__V_Impl() {
+        super(Callback__Sigval_int__V_Impl::aquire);
     }
-
-    public static native int MAX_CALL_BACKS();
 
 }

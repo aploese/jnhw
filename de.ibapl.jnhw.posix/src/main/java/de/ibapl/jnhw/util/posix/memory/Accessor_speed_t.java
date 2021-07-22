@@ -31,14 +31,14 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 @speed_t
 public interface Accessor_speed_t {
 
-    void speed_t(OpaqueMemory32 mem, long offset, @speed_t long value);
-
-    void speed_tFromInt(OpaqueMemory32 mem, long offset, @speed_t int value);
-
     @speed_t
     long speed_t(OpaqueMemory32 mem, long offset);
 
+    void speed_t(OpaqueMemory32 mem, long offset, @speed_t long value);
+
     @speed_t
     int speed_tAsInt(OpaqueMemory32 mem, long offset);
+
+    void speed_tFromInt(OpaqueMemory32 mem, long offset, @speed_t int value);
 
 }

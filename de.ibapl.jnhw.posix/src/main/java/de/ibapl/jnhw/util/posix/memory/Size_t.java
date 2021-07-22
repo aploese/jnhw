@@ -43,14 +43,8 @@ public class Size_t extends NativeIntNumber implements Accessor_Size_t {
     }
 
     @Override
-    public void size_t(OpaqueMemory32 mem, long offset, @size_t long value) {
-        PosixStruct32.ACCESSOR_TIME_T.time_t(mem, offset, value);
-    }
-
-    @Override
-    @size_t
-    public long size_t(OpaqueMemory32 mem, long offset) {
-        return PosixStruct32.ACCESSOR_TIME_T.time_t(mem, offset);
+    public BaseDataType getBaseDataType() {
+        return dataType;
     }
 
     @Override
@@ -64,8 +58,14 @@ public class Size_t extends NativeIntNumber implements Accessor_Size_t {
     }
 
     @Override
-    public BaseDataType getBaseDataType() {
-        return dataType;
+    @size_t
+    public long size_t(OpaqueMemory32 mem, long offset) {
+        return PosixStruct32.ACCESSOR_TIME_T.time_t(mem, offset);
+    }
+
+    @Override
+    public void size_t(OpaqueMemory32 mem, long offset, @size_t long value) {
+        PosixStruct32.ACCESSOR_TIME_T.time_t(mem, offset, value);
     }
 
 }

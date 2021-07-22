@@ -34,23 +34,23 @@ public enum WinApiDataType {
     BOOL(BaseDataType.int32_t),
     DWORD(BaseDataType.uint32_t),
     HANDLE(BaseDataType.intptr_t),
-    ULONG_PTR(BaseDataType.uintptr_t),
-    WCHAR(BaseDataType.uint16_t),
     //Pointer of types
     PHANDLE(BaseDataType.uintptr_t, HANDLE),
-    PVOID(BaseDataType.uintptr_t);
+    PVOID(BaseDataType.uintptr_t),
+    ULONG_PTR(BaseDataType.uintptr_t),
+    WCHAR(BaseDataType.uint16_t);
+
+    public final BaseDataType baseDataType;
+
+    public final WinApiDataType pointerOf;
 
     private WinApiDataType(BaseDataType dataType) {
         this.baseDataType = dataType;
         this.pointerOf = null;
     }
-
     private WinApiDataType(BaseDataType dataType, WinApiDataType pointerOf) {
         this.baseDataType = dataType;
         this.pointerOf = pointerOf;
     }
-
-    public final BaseDataType baseDataType;
-    public final WinApiDataType pointerOf;
 
 }

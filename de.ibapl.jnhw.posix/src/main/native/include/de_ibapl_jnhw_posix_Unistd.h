@@ -25,43 +25,11 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_fsync
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    getgid
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getgid
-  (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
  * Method:    getegid
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getegid
   (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    setgid
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setgid
-  (JNIEnv *, jclass, jint);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    setegid
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setegid
-  (JNIEnv *, jclass, jint);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    setregid
- * Signature: (II)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setregid
-  (JNIEnv *, jclass, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
@@ -73,11 +41,11 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_geteuid
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    seteuid
- * Signature: (I)V
+ * Method:    getgid
+ * Signature: ()I
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_seteuid
-  (JNIEnv *, jclass, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getgid
+  (JNIEnv *, jclass);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
@@ -105,27 +73,11 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getppid
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    setreuid
- * Signature: (II)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setreuid
-  (JNIEnv *, jclass, jint, jint);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
  * Method:    getuid
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_getuid
   (JNIEnv *, jclass);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    setuid
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setuid
-  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
@@ -161,11 +113,19 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_pipe
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    read0
- * Signature: (I[BII)I
+ * Method:    read
+ * Signature: (I)S
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read0
-  (JNIEnv *, jclass, jint, jbyteArray, jint, jint);
+JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    read
+ * Signature: (ILjava/nio/ByteBuffer;II)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILjava_nio_ByteBuffer_2II
+  (JNIEnv *, jclass, jint, jobject, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
@@ -185,19 +145,59 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__IJJJ
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    read
- * Signature: (I)S
+ * Method:    read0
+ * Signature: (I[BII)I
  */
-JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__I
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read0
+  (JNIEnv *, jclass, jint, jbyteArray, jint, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    setegid
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setegid
   (JNIEnv *, jclass, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    read
- * Signature: (ILjava/nio/ByteBuffer;II)I
+ * Method:    seteuid
+ * Signature: (I)V
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_read__ILjava_nio_ByteBuffer_2II
-  (JNIEnv *, jclass, jint, jobject, jint, jint);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_seteuid
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    setgid
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setgid
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    setregid
+ * Signature: (II)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setregid
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    setreuid
+ * Signature: (II)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setreuid
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    setuid
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_setuid
+  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
@@ -218,6 +218,22 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_posix_Unistd_usleep
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
  * Method:    write
+ * Signature: (IB)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__IB
+  (JNIEnv *, jclass, jint, jbyte);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    write
+ * Signature: (ILjava/nio/ByteBuffer;II)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILjava_nio_ByteBuffer_2II
+  (JNIEnv *, jclass, jint, jobject, jint, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_posix_Unistd
+ * Method:    write
  * Signature: (IJII)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__IJII
@@ -233,27 +249,11 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__IJJJ
 
 /*
  * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    write
- * Signature: (IB)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__IB
-  (JNIEnv *, jclass, jint, jbyte);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
  * Method:    write0
  * Signature: (I[BII)I
  */
 JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write0
   (JNIEnv *, jclass, jint, jbyteArray, jint, jint);
-
-/*
- * Class:     de_ibapl_jnhw_posix_Unistd
- * Method:    write
- * Signature: (ILjava/nio/ByteBuffer;II)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_Unistd_write__ILjava_nio_ByteBuffer_2II
-  (JNIEnv *, jclass, jint, jobject, jint, jint);
 
 #ifdef __cplusplus
 }

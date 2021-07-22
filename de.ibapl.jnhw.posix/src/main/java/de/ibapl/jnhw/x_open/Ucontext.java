@@ -36,6 +36,8 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 @Include("#include <ucontext.h>")
 public class Ucontext {
 
+    public final static boolean HAVE_UCONTEXT_H;
+
     /**
      * Make sure the native lib is loaded
      *
@@ -65,7 +67,7 @@ public class Ucontext {
         }
     }
 
-    public final static boolean HAVE_UCONTEXT_H;
+    private static native void getcontext(long ptrUcp) throws NativeErrorException;
 
     /**
      * Get user context and store it in variable pointed to by UCP.
@@ -74,7 +76,7 @@ public class Ucontext {
         getcontext(AbstractNativeMemory.toUintptr_t(ucp));
     }
 
-    private static native void getcontext(long ptrUcp) throws NativeErrorException;
+    private static native void setcontext(final long ptrUcp) throws NativeErrorException;
 
     /**
      * Set user context from information of variable pointed to by UCP.
@@ -83,7 +85,7 @@ public class Ucontext {
         setcontext(AbstractNativeMemory.toUintptr_t(ucp));
     }
 
-    private static native void setcontext(final long ptrUcp) throws NativeErrorException;
+    private static native void swapcontext(long ptrOucp, final long ptrUcp) throws NativeErrorException;
 
     /**
      * Save current context in context variable pointed to by OUCP and set
@@ -92,8 +94,6 @@ public class Ucontext {
     final static void swapcontext(Signal.Ucontext_t oucp, final Signal.Ucontext_t ucp) throws NativeErrorException {
         swapcontext(AbstractNativeMemory.toUintptr_t(oucp), AbstractNativeMemory.toUintptr_t(ucp));
     }
-
-    private static native void swapcontext(long ptrOucp, final long ptrUcp) throws NativeErrorException;
 
     /* Manipulate user context UCP to continue with calling functions FUNC
    and the ARGC-1 parameters following ARGC when the context is used

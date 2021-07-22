@@ -7,14 +7,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#undef de_ibapl_jnhw_winapi_Fileapi_CREATE_NEW
-#define de_ibapl_jnhw_winapi_Fileapi_CREATE_NEW 1L
 #undef de_ibapl_jnhw_winapi_Fileapi_CREATE_ALWAYS
 #define de_ibapl_jnhw_winapi_Fileapi_CREATE_ALWAYS 2L
-#undef de_ibapl_jnhw_winapi_Fileapi_OPEN_EXISTING
-#define de_ibapl_jnhw_winapi_Fileapi_OPEN_EXISTING 3L
+#undef de_ibapl_jnhw_winapi_Fileapi_CREATE_NEW
+#define de_ibapl_jnhw_winapi_Fileapi_CREATE_NEW 1L
 #undef de_ibapl_jnhw_winapi_Fileapi_OPEN_ALWAYS
 #define de_ibapl_jnhw_winapi_Fileapi_OPEN_ALWAYS 4L
+#undef de_ibapl_jnhw_winapi_Fileapi_OPEN_EXISTING
+#define de_ibapl_jnhw_winapi_Fileapi_OPEN_EXISTING 3L
 #undef de_ibapl_jnhw_winapi_Fileapi_TRUNCATE_EXISTING
 #define de_ibapl_jnhw_winapi_Fileapi_TRUNCATE_EXISTING 5L
 /*
@@ -44,18 +44,26 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__J_3BII
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    ReadFile
- * Signature: (JJII)I
+ * Signature: (JLjava/nio/ByteBuffer;II)I
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JJII
-  (JNIEnv *, jclass, jlong, jlong, jint, jint);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JLjava_nio_ByteBuffer_2II
+  (JNIEnv *, jclass, jlong, jobject, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    ReadFile
- * Signature: (JJJI)I
+ * Signature: (JLjava/nio/ByteBuffer;IIJ)V
  */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JJJI
-  (JNIEnv *, jclass, jlong, jlong, jlong, jint);
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JLjava_nio_ByteBuffer_2IIJ
+  (JNIEnv *, jclass, jlong, jobject, jint, jint, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    ReadFile
+ * Signature: (JJII)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JJII
+  (JNIEnv *, jclass, jlong, jlong, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
@@ -68,10 +76,26 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JJIIJ
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    ReadFile
+ * Signature: (JJJI)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JJJI
+  (JNIEnv *, jclass, jlong, jlong, jlong, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    ReadFile
  * Signature: (JJJIJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JJJIJ
   (JNIEnv *, jclass, jlong, jlong, jlong, jint, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    ReadFileEx
+ * Signature: (JLjava/nio/ByteBuffer;IIJJ)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__JLjava_nio_ByteBuffer_2IIJJ
+  (JNIEnv *, jclass, jlong, jobject, jint, jint, jlong, jlong);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
@@ -91,54 +115,6 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__JJJIJJ
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    ReadFile
- * Signature: (JLjava/nio/ByteBuffer;II)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JLjava_nio_ByteBuffer_2II
-  (JNIEnv *, jclass, jlong, jobject, jint, jint);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    ReadFile
- * Signature: (JLjava/nio/ByteBuffer;IIJ)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFile__JLjava_nio_ByteBuffer_2IIJ
-  (JNIEnv *, jclass, jlong, jobject, jint, jint, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    ReadFileEx
- * Signature: (JLjava/nio/ByteBuffer;IIJJ)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_ReadFileEx__JLjava_nio_ByteBuffer_2IIJJ
-  (JNIEnv *, jclass, jlong, jobject, jint, jint, jlong, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    WriteFile
- * Signature: (J[BII)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__J_3BII
-  (JNIEnv *, jclass, jlong, jbyteArray, jint, jint);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    WriteFile
- * Signature: (JJII)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJII
-  (JNIEnv *, jclass, jlong, jlong, jint, jint);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    WriteFile
- * Signature: (JJJI)I
- */
-JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJJI
-  (JNIEnv *, jclass, jlong, jlong, jlong, jint);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    WriteFile
  * Signature: (JB)I
  */
@@ -148,34 +124,10 @@ JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JB
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    WriteFile
- * Signature: (JJIIJ)V
+ * Signature: (J[BII)I
  */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJIIJ
-  (JNIEnv *, jclass, jlong, jlong, jint, jint, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    WriteFile
- * Signature: (JJJIJ)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJJIJ
-  (JNIEnv *, jclass, jlong, jlong, jlong, jint, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    WriteFileEx
- * Signature: (JJIIJJ)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__JJIIJJ
-  (JNIEnv *, jclass, jlong, jlong, jint, jint, jlong, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Fileapi
- * Method:    WriteFileEx
- * Signature: (JJJIJJ)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__JJJIJJ
-  (JNIEnv *, jclass, jlong, jlong, jlong, jint, jlong, jlong);
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__J_3BII
+  (JNIEnv *, jclass, jlong, jbyteArray, jint, jint);
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
@@ -195,11 +147,59 @@ JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JLjava_nio_B
 
 /*
  * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    WriteFile
+ * Signature: (JJII)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJII
+  (JNIEnv *, jclass, jlong, jlong, jint, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    WriteFile
+ * Signature: (JJIIJ)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJIIJ
+  (JNIEnv *, jclass, jlong, jlong, jint, jint, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    WriteFile
+ * Signature: (JJJI)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJJI
+  (JNIEnv *, jclass, jlong, jlong, jlong, jint);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    WriteFile
+ * Signature: (JJJIJ)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFile__JJJIJ
+  (JNIEnv *, jclass, jlong, jlong, jlong, jint, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
  * Method:    WriteFileEx
  * Signature: (JLjava/nio/ByteBuffer;IIJJ)V
  */
 JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__JLjava_nio_ByteBuffer_2IIJJ
   (JNIEnv *, jclass, jlong, jobject, jint, jint, jlong, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    WriteFileEx
+ * Signature: (JJIIJJ)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__JJIIJJ
+  (JNIEnv *, jclass, jlong, jlong, jint, jint, jlong, jlong);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Fileapi
+ * Method:    WriteFileEx
+ * Signature: (JJJIJJ)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Fileapi_WriteFileEx__JJJIJJ
+  (JNIEnv *, jclass, jlong, jlong, jlong, jint, jlong, jlong);
 
 #ifdef __cplusplus
 }

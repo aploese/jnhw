@@ -40,13 +40,6 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 public abstract class WinDef {
 
     /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
-
-    /**
      * Wrapper for
      * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#hkey">HKEY</a>.<p>
      * A handle to a registry key.<br>
@@ -58,23 +51,6 @@ public abstract class WinDef {
 
         public HKEY(long value) {
             super(value);
-        }
-
-    }
-
-    public static class RegistryHKEY extends HKEY implements AutoCloseable {
-
-        protected RegistryHKEY(long value) {
-            super(value);
-        }
-
-        public static RegistryHKEY of(long value) {
-            return new RegistryHKEY(value);
-        }
-
-        @Override
-        public void close() throws Exception {
-            Winreg.RegCloseKey(this.value);
         }
 
     }
@@ -140,18 +116,42 @@ public abstract class WinDef {
         }
 
         @Override
-        public HKEY dereference() {
-            return (HKEY) super.dereference();
+        protected HKEY createTarget(long value) {
+            return new HKEY(value);
         }
 
         @Override
-        protected HKEY createTarget(long value) {
-            return new HKEY(value);
+        public HKEY dereference() {
+            return (HKEY) super.dereference();
         }
 
         public void setFromHKEY(HKEY target) {
             setFromHANDLE(target);
         }
 
+    }
+
+    public static class RegistryHKEY extends HKEY implements AutoCloseable {
+
+        public static RegistryHKEY of(long value) {
+            return new RegistryHKEY(value);
+        }
+
+        protected RegistryHKEY(long value) {
+            super(value);
+        }
+
+        @Override
+        public void close() throws Exception {
+            Winreg.RegCloseKey(this.value);
+        }
+
+    }
+
+    /**
+     * Make sure the native lib is loaded
+     */
+    static {
+        LibJnhwWinApiLoader.touch();
     }
 }

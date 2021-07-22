@@ -31,14 +31,14 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 @tcflag_t
 public interface Accessor_tcflag_t {
 
-    void tcflag_t(OpaqueMemory32 mem, long offset, @tcflag_t long value);
-
-    void tcflag_tFromInt(OpaqueMemory32 mem, long offset, @tcflag_t int value);
-
     @tcflag_t
     long tcflag_t(OpaqueMemory32 mem, long offset);
 
+    void tcflag_t(OpaqueMemory32 mem, long offset, @tcflag_t long value);
+
     @tcflag_t
     int tcflag_tAsInt(OpaqueMemory32 mem, long offset);
+
+    void tcflag_tFromInt(OpaqueMemory32 mem, long offset, @tcflag_t int value);
 
 }

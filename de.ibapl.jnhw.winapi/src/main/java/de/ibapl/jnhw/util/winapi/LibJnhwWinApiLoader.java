@@ -35,8 +35,8 @@ import de.ibapl.jnhw.winapi.Winerror;
 public final class LibJnhwWinApiLoader {
 
     public final static String LIB_JNHW_WINAPI = "jnhw-winapi";
-    public final static int LIB_JNHW_WINAPI_VERSION = 3;
     private static LoadResult LIB_JNHW_WINAPI_LOAD_RESULT;
+    public final static int LIB_JNHW_WINAPI_VERSION = 3;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
 
@@ -45,7 +45,8 @@ public final class LibJnhwWinApiLoader {
         NativeErrorException.ERRNO_SYMBOL_PROVIDER = Winerror::getErrnoSymbol;
     }
 
-    private LibJnhwWinApiLoader() {
+    public static LoadResult getLoadResult() {
+        return LIB_JNHW_WINAPI_LOAD_RESULT;
     }
 
     /**
@@ -77,8 +78,7 @@ public final class LibJnhwWinApiLoader {
         return state;
     }
 
-    public static LoadResult getLoadResult() {
-        return LIB_JNHW_WINAPI_LOAD_RESULT;
+    private LibJnhwWinApiLoader() {
     }
 
 }

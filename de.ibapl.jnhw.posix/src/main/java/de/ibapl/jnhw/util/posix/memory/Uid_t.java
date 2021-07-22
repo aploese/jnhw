@@ -43,14 +43,8 @@ public class Uid_t extends NativeIntNumber implements Accessor_Uid_t {
     }
 
     @Override
-    public void uid_t(OpaqueMemory32 mem, long offset, @uid_t long value) {
-        PosixStruct32.ACCESSOR_UID_T.uid_t(mem, offset, value);
-    }
-
-    @Override
-    @uid_t
-    public long uid_t(OpaqueMemory32 mem, long offset) {
-        return PosixStruct32.ACCESSOR_UID_T.uid_t(mem, offset);
+    public BaseDataType getBaseDataType() {
+        return dataType;
     }
 
     @Override
@@ -64,8 +58,14 @@ public class Uid_t extends NativeIntNumber implements Accessor_Uid_t {
     }
 
     @Override
-    public BaseDataType getBaseDataType() {
-        return dataType;
+    @uid_t
+    public long uid_t(OpaqueMemory32 mem, long offset) {
+        return PosixStruct32.ACCESSOR_UID_T.uid_t(mem, offset);
+    }
+
+    @Override
+    public void uid_t(OpaqueMemory32 mem, long offset, @uid_t long value) {
+        PosixStruct32.ACCESSOR_UID_T.uid_t(mem, offset, value);
     }
 
 }

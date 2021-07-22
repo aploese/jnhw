@@ -60,15 +60,15 @@ public class ProcessthreadsapiTest {
 
         PAPCFUNC pfnAPC = new PAPCFUNC() {
             @Override
-            protected void callback(long value) {
-                longRef[0] = value;
-                intRef[0] = -1;
-            }
-
-            @Override
             protected void callback(int value) {
                 intRef[0] = value;
                 longRef[0] = -1L;
+            }
+
+            @Override
+            protected void callback(long value) {
+                longRef[0] = value;
+                intRef[0] = -1;
             }
         };
 

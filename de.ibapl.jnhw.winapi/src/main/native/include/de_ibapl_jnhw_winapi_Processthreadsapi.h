@@ -9,19 +9,19 @@ extern "C" {
 #endif
 /*
  * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
- * Method:    QueueUserAPC
- * Signature: (JJJ)V
- */
-JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_QueueUserAPC
-  (JNIEnv *, jclass, jlong, jlong, jlong);
-
-/*
- * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
  * Method:    GetCurrentThread0
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_GetCurrentThread0
   (JNIEnv *, jclass);
+
+/*
+ * Class:     de_ibapl_jnhw_winapi_Processthreadsapi
+ * Method:    QueueUserAPC
+ * Signature: (JJJ)V
+ */
+JNIEXPORT void JNICALL Java_de_ibapl_jnhw_winapi_Processthreadsapi_QueueUserAPC
+  (JNIEnv *, jclass, jlong, jlong, jlong);
 
 #ifdef __cplusplus
 }
