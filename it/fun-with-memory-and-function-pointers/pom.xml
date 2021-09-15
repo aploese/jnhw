@@ -4,7 +4,7 @@
     <parent>
         <groupId>de.ibapl.jnhw.it</groupId>
         <artifactId>jnhw-it</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>fun-with-memory-and-function-pointers</artifactId>
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>de.ibapl.jnhw</groupId>
             <artifactId>de.ibapl.jnhw.common</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.0</version>
         </dependency>
     </dependencies>
 	
