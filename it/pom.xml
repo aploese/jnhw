@@ -6,10 +6,10 @@
     <parent>
         <groupId>de.ibapl.jnhw</groupId>
         <artifactId>jnhw</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <inceptionYear>2019</inceptionYear>
     <name>JNHW-Examples</name>
