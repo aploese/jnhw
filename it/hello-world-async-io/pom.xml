@@ -5,13 +5,13 @@
     <parent>
         <groupId>de.ibapl.jnhw.it</groupId>
         <artifactId>jnhw-it</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>de.ibapl.jnhw.it</groupId>
     <artifactId>hello-world-async-io</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>JNHW-Example: Hello World / AsyncIO</name>
@@ -20,12 +20,12 @@
         <dependency>
             <groupId>de.ibapl.jnhw</groupId>
             <artifactId>de.ibapl.jnhw.posix</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.ibapl.jnhw</groupId>
             <artifactId>de.ibapl.jnhw.winapi</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 	
