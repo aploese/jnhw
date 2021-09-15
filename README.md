@@ -22,7 +22,7 @@ Add this dependency for POSIX.
 <dependency>
     <groupId>de.ibapl.jnhw</groupId>
     <artifactId>de.ibapl.jnhw.posix</artifactId>
-    <version>2.0.1</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 and this for the Windows API
@@ -31,7 +31,7 @@ and this for the Windows API
 <dependency>
     <groupId>de.ibapl.jnhw</groupId>
     <artifactId>de.ibapl.jnhw.winapi</artifactId>
-    <version>2.0.1</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 # Usage
