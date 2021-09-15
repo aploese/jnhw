@@ -4,7 +4,7 @@
     <parent>
         <groupId>de.ibapl.jnhw.it</groupId>
         <artifactId>jnhw-it</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.0.0</version>
         <relativePath>../</relativePath>
     </parent>
     <artifactId>jnhw-jna-jnr</artifactId>
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>de.ibapl.jnhw</groupId>
             <artifactId>de.ibapl.jnhw.posix</artifactId>
-            <version>3.0.1-SNAPSHOT</version>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.jnr</groupId>
