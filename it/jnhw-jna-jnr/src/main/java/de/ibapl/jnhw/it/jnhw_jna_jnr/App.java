@@ -41,6 +41,17 @@ public class App {
     final static int ROUNDS = 10_000_000;
 
     public static void main(String[] args) {
+        System.out.println("clock_settime");
+        System.out.println("JNHW");
+        assert de.ibapl.jnhw.posix.Errno.EPERM == Jnhw.clock_settime(de.ibapl.jnhw.posix.Time.CLOCK_REALTIME);
+        System.out.println("JNA");
+        assert de.ibapl.jnhw.posix.Errno.EPERM == Jna.clock_settime(de.ibapl.jnhw.posix.Time.CLOCK_REALTIME);
+        System.out.println("JNR");
+        assert de.ibapl.jnhw.posix.Errno.EPERM == Jnr.clock_settime(de.ibapl.jnhw.posix.Time.CLOCK_REALTIME);
+        System.out.println("FFM");
+        assert de.ibapl.jnhw.posix.Errno.EPERM == Ffm.clock_settime(de.ibapl.jnhw.posix.Time.CLOCK_REALTIME);
+        System.out.println("clock_settime done");
+
         try {
             MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
             if (mtb.getOS() == OS.WINDOWS) {
@@ -57,6 +68,9 @@ public class App {
             //Jnhw.runFullTest_DirectAllocation(ROUNDS);
             printResult("JNHW runFullTest", start);
             start = System.nanoTime();
+            Ffm.runFullTest(ROUNDS);
+            printResult("FFM  runFullTest", start);
+            start = System.nanoTime();
             Jnr.runFullTest(ROUNDS);
             printResult("JNR  runFullTest", start);
             start = System.nanoTime();
@@ -67,6 +81,9 @@ public class App {
             start = System.nanoTime();
             Jnhw.clock_gettime(ROUNDS);
             printResult("JNHW clock_gettime", start);
+            start = System.nanoTime();
+            Ffm.clock_gettime(ROUNDS);
+            printResult("FFM  clock_gettime", start);
             start = System.nanoTime();
             Jnr.clock_gettime(ROUNDS);
             printResult("JNR  clock_gettime", start);
@@ -82,6 +99,9 @@ public class App {
             //Jnhw.mem_DirectAllocation(ROUNDS);
             printResult("JNHW mem", start);
             start = System.nanoTime();
+            Ffm.mem(ROUNDS);
+            printResult("FFM  mem", start);
+            start = System.nanoTime();
             Jnr.mem(ROUNDS);
             printResult("JNR  mem", start);
             start = System.nanoTime();
@@ -93,6 +113,9 @@ public class App {
             Jnhw.get(ROUNDS);
             printResult("JNHW get", start);
             start = System.nanoTime();
+            Ffm.get(ROUNDS);
+            printResult("FFM  get", start);
+            start = System.nanoTime();
             Jnr.get(ROUNDS);
             printResult("JNR  get", start);
             start = System.nanoTime();
@@ -103,6 +126,9 @@ public class App {
             start = System.nanoTime();
             Jnhw.set(ROUNDS);
             printResult("JNHW set", start);
+            start = System.nanoTime();
+            Ffm.set(ROUNDS);
+            printResult("FFM  set", start);
             start = System.nanoTime();
             Jnr.set(ROUNDS);
             printResult("JNR  set", start);

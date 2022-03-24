@@ -22,48 +22,28 @@
 package de.ibapl.jnhw.syscall.linux.sysfs;
 
 import de.ibapl.jnhw.syscall.linux.annotation.Path;
-import java.lang.ref.WeakReference;
+import java.io.File;
 
 /**
  *
  * @author aploese
  */
-@Path("/sys/bus/")
-public class Bus {
+@Path("/sys/bus/usb-serial/devices/*")
+public class UsbSerialDevice {
 
-    private static WeakReference<UsbBus> usb;
-    private static WeakReference<UsbSerialBus> usb_serial;
+    private final File sysFsDir;
 
-    @Path("/sys/bus/usb/")
-    public static UsbBus usb() {
-        UsbBus result;
-        if (usb == null) {
-            result = new UsbBus();
-            usb = new WeakReference<>(result);
-        } else {
-            result = usb.get();
-            if (result == null) {
-                result = new UsbBus();
-                usb = new WeakReference<>(result);
-            }
-        }
-        return result;
+    private UsbSerialDevice(File sysFsDir) {
+        this.sysFsDir = sysFsDir;
     }
 
-    @Path("/sys/bus/usb-serial/")
-    public static UsbSerialBus usb_serial() {
-        UsbSerialBus result;
-        if (usb_serial == null) {
-            result = new UsbSerialBus();
-            usb_serial = new WeakReference<>(result);
-        } else {
-            result = usb_serial.get();
-            if (result == null) {
-                result = new UsbSerialBus();
-                usb_serial = new WeakReference<>(result);
-            }
-        }
-        return result;
+    public File getSysDir() {
+        return sysFsDir;
     }
+    
+        public static UsbSerialDevice toUsbSerialDevice(File sysFsDir) {
+            return new UsbSerialDevice(sysFsDir);
+    }
+
 
 }

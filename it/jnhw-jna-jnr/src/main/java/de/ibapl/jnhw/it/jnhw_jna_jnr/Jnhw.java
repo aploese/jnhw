@@ -84,6 +84,16 @@ public class Jnhw {
         }
     }
 
+    public static int clock_settime(final int clock) {
+        final Time.Timespec timespec = new Time.Timespec(SetMem.DO_NOT_SET);
+        try {
+            Time.clock_settime(clock, timespec);
+            throw new RuntimeException("Expected error");
+        } catch (NativeErrorException nee) {
+            return nee.errno;
+        }
+    }
+
     static volatile long val;
 
     public static void get(final int count) {

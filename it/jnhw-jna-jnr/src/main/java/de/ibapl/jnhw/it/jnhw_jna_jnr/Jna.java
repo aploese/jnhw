@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.it.jnhw_jna_jnr;
 
+import com.sun.jna.LastErrorException;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Structure;
@@ -41,9 +42,10 @@ public class Jna {
 
     public interface LibC extends Library {
 
-        int clock_gettime(int clock_id, Timespec timespec);
+        int clock_gettime(int clock_id, Timespec timespec) throws LastErrorException;
 
-        int errno();
+        int clock_settime(int clock_id, Timespec timespec) throws LastErrorException;
+
     }
 
     static LibC libc = (LibC) Native.load("c", LibC.class);
@@ -53,9 +55,7 @@ public class Jna {
 
         for (int i = 0; i < count; i++) {
             Timespec timespec = new Timespec();
-            if (libc.clock_gettime(CLOCK_MONOTONIC, timespec) != 0) {
-                throw new RuntimeException("Errno: " + libc.errno());
-            }
+            libc.clock_gettime(CLOCK_MONOTONIC, timespec);
             final long val = timespec.tv_sec;
             timespec.tv_sec = timespec.tv_nsec;
             timespec.tv_nsec = val;
@@ -75,6 +75,16 @@ public class Jna {
         final Timespec timespec = new Timespec();
         for (int i = 0; i < count; i++) {
             libc.clock_gettime(CLOCK_MONOTONIC, timespec);
+        }
+    }
+
+    public static int clock_settime(final int clock) {
+        final Timespec timespec = new Timespec();
+        try {
+            libc.clock_settime(clock, timespec);
+            throw new RuntimeException("Expected error");
+        } catch (LastErrorException lee) {
+            return lee.getErrorCode();
         }
     }
 

@@ -22,46 +22,27 @@
 package de.ibapl.jnhw.syscall.linux.sysfs;
 
 import de.ibapl.jnhw.syscall.linux.annotation.Path;
-import java.lang.ref.WeakReference;
+import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 
 /**
  *
  * @author aploese
  */
-@Path("/sys/bus/")
-public class Bus {
+@Path("/sys/bus/usb-serial/")
+public class UsbSerialBus {
 
-    private static WeakReference<UsbBus> usb;
-    private static WeakReference<UsbSerialBus> usb_serial;
-
-    @Path("/sys/bus/usb/")
-    public static UsbBus usb() {
-        UsbBus result;
-        if (usb == null) {
-            result = new UsbBus();
-            usb = new WeakReference<>(result);
-        } else {
-            result = usb.get();
-            if (result == null) {
-                result = new UsbBus();
-                usb = new WeakReference<>(result);
-            }
+    @Path("/sys/bus/usb-serial/devices")
+    public Collection<UsbSerialDevice> devices() {
+        File devices = new File("/sys/bus/usb-serial/devices");
+        if (!devices.exists()) {
+            return Collections.EMPTY_LIST;
         }
-        return result;
-    }
-
-    @Path("/sys/bus/usb-serial/")
-    public static UsbSerialBus usb_serial() {
-        UsbSerialBus result;
-        if (usb_serial == null) {
-            result = new UsbSerialBus();
-            usb_serial = new WeakReference<>(result);
-        } else {
-            result = usb_serial.get();
-            if (result == null) {
-                result = new UsbSerialBus();
-                usb_serial = new WeakReference<>(result);
-            }
+        LinkedList<UsbSerialDevice> result = new LinkedList<>();
+        for (File f : devices.listFiles()) {
+            result.add(UsbSerialDevice.toUsbSerialDevice(f));
         }
         return result;
     }

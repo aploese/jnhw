@@ -46,7 +46,8 @@ public class Jnr {
 
         int clock_gettime(int clock_id, @Out @Transient Timespec timespec);
 
-        int errno();
+        int clock_settime(int clock_id, @Out @Transient Timespec timespec);
+
     }
 
     static LibC libc = LibraryLoader.create(LibC.class).load("c");
@@ -58,7 +59,7 @@ public class Jnr {
         for (int i = 0; i < count; i++) {
             Timespec timespec = new Timespec(runtime);
             if (libc.clock_gettime(CLOCK_MONOTONIC, timespec) != 0) {
-                throw new RuntimeException("Errno: " + libc.errno());
+                throw new RuntimeException("Errno: " + runtime.getLastError());
             }
             final long val = timespec.tv_sec.longValue();
             timespec.tv_sec.set(timespec.tv_nsec.longValue());
@@ -78,7 +79,18 @@ public class Jnr {
         final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC;
         final Timespec timespec = new Timespec(runtime);
         for (int i = 0; i < count; i++) {
-            libc.clock_gettime(CLOCK_MONOTONIC, timespec);
+            if (libc.clock_gettime(CLOCK_MONOTONIC, timespec) != 0) {
+                throw new RuntimeException("Errno: " + runtime.getLastError());
+            }
+        }
+    }
+
+    public static int clock_settime(final int clock) {
+        final Timespec timespec = new Timespec(runtime);
+        if (libc.clock_settime(clock, timespec) != 0) {
+            return runtime.getLastError();
+        } else {
+            throw new RuntimeException("Expected error");
         }
     }
 

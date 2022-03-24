@@ -23,6 +23,7 @@ package de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb;
 
 import de.ibapl.jnhw.syscall.linux.sysfs.SysFs;
 import de.ibapl.jnhw.syscall.linux.sysfs.UsbDevice;
+import de.ibapl.jnhw.syscall.linux.sysfs.UsbSerialDevice;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,6 +53,18 @@ public class Ch9__Usb_device_descriptorTest {
                     assertEquals(dev.idVendor(), ((Ch9.Usb_device_descriptor) descriptor).idVendor());
                 }
             }
+        }
+
+    }
+    
+    /**
+     * Test of usb_endpoint_dir_in method, of class Ch9.
+     */
+    @Test
+    public void testUsb_Serial_device_descriptor() throws Exception {
+        System.out.println("test usb-serial device_descriptor");
+        for (UsbSerialDevice dev : SysFs.bus().usb_serial().devices()) {
+            System.out.println("SysFs dir: \"" + dev.getSysDir() + "\" links to device dir: \"" + dev.getSysDir().getCanonicalPath() + "\"");
         }
 
     }
