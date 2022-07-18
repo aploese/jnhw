@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,16 +21,20 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.common.memory.Int32_t;
+import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jdk.incubator.foreign.ResourceScope;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -42,54 +46,9 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class PthreadTest {
 
-    public static class NativeDefines {
-
-        public final static native boolean HAVE_PTHREAD_H();
-
-        public final static native int PTHREAD_EXPLICIT_SCHED();
-
-        public final static native int PTHREAD_INHERIT_SCHED();
-
-        public final static native int PTHREAD_CANCEL_DISABLE();
-
-        public final static native int PTHREAD_CANCEL_ENABLE();
-
-        public final static native int PTHREAD_CANCEL_DEFERRED();
-
-        public final static native int PTHREAD_CANCEL_ASYNCHRONOUS();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-
-    public static class NativePthread_attr_t {
-
-        public final static native int alignof();
-
-        public final static native int sizeof();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-
-    public static class NativePthread_t {
-
-        public final static native int alignof();
-
-        public final static native int sizeof();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-
-    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
-
     @BeforeAll
     public static void checkBeforeAll_HAVE_PTHREAD_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Pthread.HAVE_PTHREAD_H, "not expected to have pthread.h");
         } else {
             Assertions.assertTrue(Pthread.HAVE_PTHREAD_H, "expected to have pthread.h");
@@ -98,40 +57,52 @@ public class PthreadTest {
 
     @BeforeAll
     public static void checkBeforeAll_PthreadDefines() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
-        DefinesTest.testDefines(Pthread.class, NativeDefines.class, "HAVE_PTHREAD_H");
+        DefinesTest.testDefines(Pthread.class, "HAVE_PTHREAD_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_NativePthread_attr_t() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(NativePthread_attr_t.sizeof(), Pthread.Pthread_attr_t.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Pthread_attr_t_sizeof"), Pthread.Pthread_attr_t.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(NativePthread_attr_t.alignof(), Pthread.Pthread_attr_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Pthread_attr_t_alignof"), Pthread.Pthread_attr_t.alignof.alignof, "alignof");
                 }
         );
     }
 
     @BeforeAll
     public static void checkBeforeAll_NativePthread_t() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(NativePthread_t.sizeof(), Pthread.Pthread_t.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Pthread_t_sizeof"), Pthread.Pthread_t.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(NativePthread_t.alignof(), Pthread.Pthread_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Pthread_t_alignof"), Pthread.Pthread_t.alignof.alignof, "alignof");
                 }
         );
+    }
+
+    private ResourceScope scope;
+
+    @BeforeEach
+    public void setUp() {
+        scope = ResourceScope.newConfinedScope();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        scope.close();
     }
 
     /**
@@ -140,7 +111,7 @@ public class PthreadTest {
     @Test
     public void testPthread_self() {
         System.out.println("pthread_self");
-        Pthread.Pthread_t result = Pthread.pthread_self();
+        Pthread.Pthread_t result = Pthread.pthread_self(scope);
         Assertions.assertNotNull(result);
         System.out.println("PTHREAD ID: " + result);
     }
@@ -152,22 +123,31 @@ public class PthreadTest {
     public void testPthread_equal() throws Exception {
         System.out.println("pthread_equal");
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_equal(null, Pthread.pthread_self());
+            Pthread.pthread_equal(null, Pthread.pthread_self(scope));
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_equal(Pthread.pthread_self(), null);
+            Pthread.pthread_equal(Pthread.pthread_self(scope), null);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
             Pthread.pthread_equal(null, null);
         });
-        final Pthread.Pthread_t t1 = Pthread.pthread_self();
-        final Pthread.Pthread_t t2 = Pthread.pthread_self();
+        final Pthread.Pthread_t t1 = Pthread.pthread_self(scope);
+        final Pthread.Pthread_t t2 = Pthread.pthread_self(scope);
 
         Assertions.assertTrue(Pthread.pthread_equal(t1, t2));
 
         final Pthread.Pthread_t[] objectRef = new Pthread.Pthread_t[1];
+//        final ResourceScope sharedScope = scope;
+//        final ResourceScope sharedScope = ResourceScope.newSharedScope();
+//        scope.keepAlive(sharedScope);
         Thread t3 = new Thread(() -> {
-            objectRef[0] = Pthread.pthread_self();
+            try {
+                //TODO move outside - currently junit will crash
+                final ResourceScope sharedScope = ResourceScope.newSharedScope();
+                objectRef[0] = Pthread.pthread_self(sharedScope);
+            } catch (Throwable t) {
+                Assertions.fail(t);
+            }
         });
         t3.start();
         t3.join();
@@ -184,32 +164,32 @@ public class PthreadTest {
     @Test
     public void testPthread_getcpuclockid() throws Exception {
         System.out.println("pthread_getcpuclockid");
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN) {
+        Types.Clockid_t clock_id = Types.Clockid_t.allocateNative(scope);
+        if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Pthread.pthread_getcpuclockid(Pthread.pthread_self());
+                Pthread.pthread_getcpuclockid(Pthread.pthread_self(scope), clock_id);
             });
         } else {
-            int clock_id;
             Assertions.assertThrows(NullPointerException.class, () -> {
-                Pthread.pthread_getcpuclockid(null);
+                Pthread.pthread_getcpuclockid(null, clock_id);
             });
 
-//This will crach with SIGSEV
-//            clock_id = Pthread.pthread_getcpuclockid(new Pthread.Pthread_t(NativeAddressHolder.ofUintptr_t(1024)));
-            clock_id = Pthread.pthread_getcpuclockid(Pthread.pthread_self());
+//This will crash with SIGSEV
+//            Pthread.pthread_getcpuclockid(Pthread.Pthread_t.ofAddress(MemoryAddress.ofLong(1024), scope), clock_id);
+            Pthread.pthread_getcpuclockid(Pthread.pthread_self(scope), clock_id);
         }
     }
 
     @Test
     public void testPthread_t() {
-        Pthread.Pthread_t pthread_t = new Pthread.Pthread_t();
+        Pthread.Pthread_t pthread_t = Pthread.Pthread_t.allocateNative(scope);
         Assertions.assertNotNull(pthread_t.toString());
         Assertions.assertNotNull(pthread_t.nativeToString());
     }
 
     @Test
-    public void testPthread_attr_t() {
-        Pthread.Pthread_attr_t pthread_attr_t = new Pthread.Pthread_attr_t();
+    public void testPthread_attr_t() throws Exception {
+        Pthread.Pthread_attr_t pthread_attr_t = Pthread.Pthread_attr_t.allocateNative(scope);
         Pthread.pthread_attr_init(pthread_attr_t);
         Assertions.assertNotNull(pthread_attr_t.toString());
         Assertions.assertNotNull(pthread_attr_t.nativeToString());
@@ -218,9 +198,9 @@ public class PthreadTest {
 
     @Test
     public void testPthread_attr_setget_schedparam() throws Exception {
-        Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
+        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(scope);
         Pthread.pthread_attr_init(attr);
-        Sched.Sched_param param = new Sched.Sched_param(SetMem.TO_0x00);
+        Sched.Sched_param param = Sched.Sched_param.allocateNative(scope);
         param.sched_priority(0); //TODO Any other will give a EINVAL ????
         try {
             System.out.println("pthread_attr_setschedparam ");
@@ -233,7 +213,7 @@ public class PthreadTest {
             Pthread.pthread_attr_setschedparam(attr, param);
 
             System.out.println("pthread_attr_getschedparam");
-            Sched.Sched_param param1 = new Sched.Sched_param(SetMem.TO_0x00);
+            Sched.Sched_param param1 = Sched.Sched_param.allocateNative(scope);
             Assertions.assertThrows(NullPointerException.class, () -> {
                 Pthread.pthread_attr_getschedparam(null, param1);
             });
@@ -249,15 +229,16 @@ public class PthreadTest {
 
     @Test
     public void testPthread_attr_setget_inheritsched() throws Exception {
-        Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
+        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(scope);
         Pthread.pthread_attr_init(attr);
+        Int32_t inheritsched = Int32_t.allocateNative(scope);
         try {
             System.out.println("pthread_attr_getinheritsched");
             Assertions.assertThrows(NullPointerException.class, () -> {
-                Pthread.pthread_attr_getinheritsched(null);
+                Pthread.pthread_attr_getinheritsched(null, inheritsched);
             });
-            final int inheritsched = Pthread.pthread_attr_getinheritsched(attr);
-            Assertions.assertEquals(Pthread.PTHREAD_INHERIT_SCHED, inheritsched);
+            Pthread.pthread_attr_getinheritsched(attr, inheritsched);
+            Assertions.assertEquals(Pthread.PTHREAD_INHERIT_SCHED, inheritsched.int32_t());
 
             System.out.println("pthread_attr_setinheritsched");
 
@@ -273,37 +254,39 @@ public class PthreadTest {
 
     @Test
     public void testPthread_setget_schedparam() throws NativeErrorException {
-        Sched.Sched_param param = new Sched.Sched_param(SetMem.TO_0x00);
+        Sched.Sched_param param = Sched.Sched_param.allocateNative(scope);
+        Int32_t policy = Int32_t.allocateNative(scope);
 
         System.out.println("pthread_getschedparam");
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_getschedparam(Pthread.pthread_self(), null);
+            Pthread.pthread_getschedparam(Pthread.pthread_self(scope), policy, null);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_getschedparam(null, param);
+            Pthread.pthread_getschedparam(null, policy, param);
         });
 
-        int policy = Pthread.pthread_getschedparam(Pthread.pthread_self(), param);
-        Assertions.assertEquals(Sched.SCHED_OTHER, policy);
+        Pthread.pthread_getschedparam(Pthread.pthread_self(scope), policy, param);
+        Assertions.assertEquals(Sched.SCHED_OTHER, policy.int32_t());
 
         System.out.println("pthread_setschedparam");
 
-        Pthread.pthread_setschedparam(Pthread.pthread_self(), policy, param);
+        Pthread.pthread_setschedparam(Pthread.pthread_self(scope), policy.int32_t(), param);
 
-        final int sched_priority = param.sched_priority();
         param.sched_priority(Integer.MAX_VALUE);
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.OPEN_BSD) {
-            Pthread.pthread_setschedparam(Pthread.pthread_self(), policy, param);
+        if (MultiarchTupelBuilder.getOS() == OS.OPEN_BSD) {
+            Pthread.pthread_setschedparam(Pthread.pthread_self(scope), policy.int32_t(), param);
         } else {
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                Pthread.pthread_setschedparam(Pthread.pthread_self(), policy, param);
+                //TODO we must set this here oterwise error will not be EINVAL but ENOENT
+                Errno.errno(0);
+                Pthread.pthread_setschedparam(Pthread.pthread_self(scope), policy.int32_t(), param);
             });
             Assertions.assertEquals(Errno.EINVAL, nee.errno);
         }
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_setschedparam(Pthread.pthread_self(), 0, null);
+            Pthread.pthread_setschedparam(Pthread.pthread_self(scope), 0, null);
         });
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -315,19 +298,19 @@ public class PthreadTest {
     @Test
     public void testPthread_setschedprio() throws Exception {
         System.out.println("pthread_setschedprio(");
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case FREE_BSD:
             case OPEN_BSD:
             case DARWIN:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Pthread.pthread_setschedprio(Pthread.pthread_self(), 0);
+                    Pthread.pthread_setschedprio(Pthread.pthread_self(scope), 0);
                 });
                 break;
             default:
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Pthread.pthread_setschedprio(null, 0);
                 });
-                Pthread.pthread_setschedprio(Pthread.pthread_self(), 0);
+                Pthread.pthread_setschedprio(Pthread.pthread_self(scope), 0);
         }
     }
 
@@ -336,15 +319,17 @@ public class PthreadTest {
     //TODO What is going on?
     public void testPthread_t_Cancel() throws Exception {
         System.out.println("Start testPthread_t_Cancel");
-        Pthread.Pthread_t me = Pthread.pthread_self();
+        Pthread.Pthread_t me = Pthread.pthread_self(scope);
+        Int32_t oldstate = Int32_t.allocateNative(scope);
+        Int32_t oldtype = Int32_t.allocateNative(scope);
 
-        int oldCancelstate = Pthread.pthread_setcancelstate(Pthread.PTHREAD_CANCEL_DISABLE);
-        Pthread.pthread_setcancelstate(oldCancelstate);
-        Assertions.assertEquals(Pthread.PTHREAD_CANCEL_ENABLE, oldCancelstate);
+        Pthread.pthread_setcancelstate(Pthread.PTHREAD_CANCEL_DISABLE, oldstate);
+        Pthread.pthread_setcancelstate(oldstate.int32_t(), oldstate);
+        Assertions.assertEquals(Pthread.PTHREAD_CANCEL_ENABLE, oldstate);
 
-        int oldCanceltype = Pthread.pthread_setcanceltype(Pthread.PTHREAD_CANCEL_ASYNCHRONOUS);
-        Pthread.pthread_setcanceltype(oldCanceltype);
-        Assertions.assertEquals(Pthread.PTHREAD_CANCEL_DEFERRED, oldCanceltype);
+        Pthread.pthread_setcanceltype(Pthread.PTHREAD_CANCEL_ASYNCHRONOUS, oldtype);
+        Pthread.pthread_setcanceltype(oldtype.int32_t(), oldtype);
+        Assertions.assertEquals(Pthread.PTHREAD_CANCEL_DEFERRED, oldtype);
 
         Assertions.assertThrows(NullPointerException.class, () -> Pthread.pthread_cancel(null));
 
@@ -354,7 +339,7 @@ public class PthreadTest {
             try {
                 Pthread.pthread_testcancel();
 
-                objectRef[0] = Pthread.pthread_self();
+                objectRef[0] = Pthread.pthread_self(scope);
                 synchronized (objectRef) {
                     objectRef.notifyAll();
                 }

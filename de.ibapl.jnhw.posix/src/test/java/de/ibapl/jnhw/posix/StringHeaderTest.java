@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,20 +38,9 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class StringHeaderTest {
 
-    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
-
-    public static class NativeDefines {
-
-        public final static native boolean HAVE_STRING_H();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-
     @BeforeAll
     public static void checkBeforeAll_HAVE_STRING_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(StringHeader.HAVE_STRING_H, "not expected to have string.h");
         } else {
             Assertions.assertTrue(StringHeader.HAVE_STRING_H, "expected to have string.h");
@@ -60,10 +49,10 @@ public class StringHeaderTest {
 
     @BeforeAll
     public static void checkBeforeAll_StdioDefines() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
-        DefinesTest.testDefines(StringHeader.class, NativeDefines.class, "HAVE_STRING_H");
+        DefinesTest.testDefines(StringHeader.class, "HAVE_STRING_H");
     }
 
     /**
@@ -74,11 +63,11 @@ public class StringHeaderTest {
         System.out.println("strerror");
 
         //Fallback to "C" locale so that the test can succeed on any machine
-        final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.locale_t_0());
+        final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.LOCALE_T_0);
         final Locale.Locale_t oldLocale = Locale.uselocale(locale);
         try {
             assertEquals("Invalid argument", StringHeader.strerror(Errno.EINVAL));
-            switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case FREE_BSD:
                     assertEquals("No error: 0", StringHeader.strerror(0));
                     assertEquals("Unknown error: 2147483647", StringHeader.strerror(Integer.MAX_VALUE));
@@ -106,11 +95,11 @@ public class StringHeaderTest {
     @Test
     public void testStrerror_l() throws Exception {
         System.out.println("strerror_l");
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case FREE_BSD:
             case DARWIN:
                 assertThrows(NoSuchNativeMethodException.class, () -> {
-                    StringHeader.strerror_l(Errno.EAGAIN, Locale.Locale_t.locale_t_0());
+                    StringHeader.strerror_l(Errno.EAGAIN, Locale.Locale_t.LOCALE_T_0);
                 });
                 break;
             default:
@@ -118,7 +107,7 @@ public class StringHeaderTest {
                     StringHeader.strerror_l(Errno.EAGAIN, null);
                 });
                 //Use "C" locale so that the test can succeed on any machine
-                final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.locale_t_0());
+                final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.LOCALE_T_0);
                 assertEquals("Resource temporarily unavailable", StringHeader.strerror_l(Errno.EAGAIN, locale));
         }
     }
@@ -131,10 +120,10 @@ public class StringHeaderTest {
         System.out.println("strsignal");
 
         //Fallback to "C" locale so that the test can succeed on any machine
-        final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.locale_t_0());
+        final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.LOCALE_T_0);
         final Locale.Locale_t oldLocale = Locale.uselocale(locale);
         try {
-            switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case FREE_BSD:
                     assertEquals("Segmentation fault", StringHeader.strsignal(Signal.SIGSEGV));
                     assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));

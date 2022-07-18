@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,9 +21,8 @@
  */
 package de.ibapl.jnhw.common.memory.layout;
 
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 
 /**
  *
@@ -73,7 +72,7 @@ public enum Alignment {
 
     /**
      * AT_X enumn members will override this, it is basically an unsigned
-     * fivision by zero so there ip potential to optimize..
+     * division by zero so there is potential to optimize..
      *
      * @param unaligned
      * @return
@@ -106,8 +105,14 @@ public enum Alignment {
         }
     }
 
+    public final static Alignment __ALIGN_OF_INT;
+    public final static Alignment __ALIGN_OF_STRUCT_INT;
+
     public final static Alignment __ALIGN_OF_LONG;
     public final static Alignment __ALIGN_OF_STRUCT_LONG;
+
+    public final static Alignment __ALIGN_OF_LONG_LONG;
+    public final static Alignment __ALIGN_OF_STRUCT_LONG_LONG;
 
     public final static Alignment __ALIGN_OF_POINTER;
     public final static Alignment __ALIGN_OF_STRUCT_POINTER;
@@ -141,18 +146,20 @@ public enum Alignment {
 
     static {
         // This get called after the Constructor of BaseDataType...
-        LibJnhwCommonLoader.touch();
 
-        final MultiarchInfo mi = LibJnhwCommonLoader.getLoadResult().multiarchInfo;
-        switch (mi) {
+        switch (MultiarchTupelBuilder.getMultiarch()) {
             case ARM__LINUX__GNU_EABI:
             case ARM__LINUX__GNU_EABI_HF:
             case MIPS__LINUX__GNU:
             case MIPS_EL__LINUX__GNU:
                 //32 bit, but __BIGGEST_ALIGNMENT__ is 8
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_8;
+                __ALIGN_OF_INT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT = Alignment.AT_4;
                 __ALIGN_OF_LONG = Alignment.AT_4;
                 __ALIGN_OF_STRUCT_LONG = Alignment.AT_4;
+                __ALIGN_OF_LONG_LONG = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG_LONG = Alignment.AT_8;
                 __ALIGN_OF_POINTER = Alignment.AT_4;
                 __ALIGN_OF_STRUCT_POINTER = Alignment.AT_4;
                 __ALIGN_OF_FLOAT = Alignment.AT_4;
@@ -175,8 +182,12 @@ public enum Alignment {
             case I386__LINUX__GNU:
                 //classical 32bit anything is at 4 byte aligned
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
+                __ALIGN_OF_INT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT = Alignment.AT_4;
                 __ALIGN_OF_LONG = Alignment.AT_4;
                 __ALIGN_OF_STRUCT_LONG = Alignment.AT_4;
+                __ALIGN_OF_LONG_LONG = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG_LONG = Alignment.AT_8;
                 __ALIGN_OF_POINTER = Alignment.AT_4;
                 __ALIGN_OF_STRUCT_POINTER = Alignment.AT_4;
                 __ALIGN_OF_FLOAT = Alignment.AT_4;
@@ -199,8 +210,12 @@ public enum Alignment {
                 break;
             case S390_X__LINUX__GNU:
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_8;
+                __ALIGN_OF_INT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT = Alignment.AT_4;
                 __ALIGN_OF_LONG = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_LONG = Alignment.AT_8;
+                __ALIGN_OF_LONG_LONG = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG_LONG = Alignment.AT_8;
                 __ALIGN_OF_POINTER = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_POINTER = Alignment.AT_8;
                 __ALIGN_OF_FLOAT = Alignment.AT_4;
@@ -223,8 +238,12 @@ public enum Alignment {
             case MIPS_64__LINUX__GNU_ABI_64:
             case MIPS_64_EL__LINUX__GNU_ABI_64:
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
+                __ALIGN_OF_INT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT = Alignment.AT_4;
                 __ALIGN_OF_LONG = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_LONG = Alignment.AT_8;
+                __ALIGN_OF_LONG_LONG = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG_LONG = Alignment.AT_8;
                 __ALIGN_OF_POINTER = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_POINTER = Alignment.AT_8;
                 __ALIGN_OF_FLOAT = Alignment.AT_4;
@@ -250,8 +269,12 @@ public enum Alignment {
             case X86_64__LINUX__GNU:
                 //classical 64bit anything is at 8 byte aligned
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
+                __ALIGN_OF_INT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT = Alignment.AT_4;
                 __ALIGN_OF_LONG = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_LONG = Alignment.AT_8;
+                __ALIGN_OF_LONG_LONG = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG_LONG = Alignment.AT_8;
                 __ALIGN_OF_POINTER = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_POINTER = Alignment.AT_8;
                 __ALIGN_OF_FLOAT = Alignment.AT_4;
@@ -274,8 +297,12 @@ public enum Alignment {
             case X86_64__WINDOWS__PE32_PLUS:
                 //classical 64bit anything is at 8 byte aligned long is 4 bytes long ...
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
+                __ALIGN_OF_INT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT = Alignment.AT_4;
                 __ALIGN_OF_LONG = Alignment.AT_4;
                 __ALIGN_OF_STRUCT_LONG = Alignment.AT_4;
+                __ALIGN_OF_LONG_LONG = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG_LONG = Alignment.AT_8;
                 __ALIGN_OF_POINTER = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_POINTER = Alignment.AT_8;
                 __ALIGN_OF_FLOAT = Alignment.AT_4;
@@ -301,8 +328,12 @@ public enum Alignment {
             case X86_64__OPEN_BSD__BSD:
                 //classical 64bit anything is at 8 byte aligned
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
+                __ALIGN_OF_INT = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_INT = Alignment.AT_4;
                 __ALIGN_OF_LONG = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_LONG = Alignment.AT_8;
+                __ALIGN_OF_LONG_LONG = Alignment.AT_8;
+                __ALIGN_OF_STRUCT_LONG_LONG = Alignment.AT_8;
                 __ALIGN_OF_POINTER = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_POINTER = Alignment.AT_8;
                 __ALIGN_OF_FLOAT = Alignment.AT_4;
@@ -323,7 +354,7 @@ public enum Alignment {
                 __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
                 break;
             default:
-                throw new RuntimeException("No alignment values for multiarch: " + mi);
+                throw new RuntimeException("No alignment values for multiarch: " + MultiarchTupelBuilder.getMultiarch());
 
         }
     }

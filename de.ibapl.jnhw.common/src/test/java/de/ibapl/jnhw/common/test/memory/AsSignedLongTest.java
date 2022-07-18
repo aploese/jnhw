@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,7 +25,8 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AsSignedLong;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -33,16 +34,15 @@ import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
  */
 public class AsSignedLongTest {
 
-    public AsSignedLongTest() {
-    }
-
     @Test
     public void testNative() {
-        AsSignedLong instance = new AsSignedLong(BaseDataType.int32_t, null, 0, SetMem.TO_0x00);
-        instance.setFromSignedLong(-33);
-        assertEquals(-33, instance.getAsSignedLong());
-        assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(Long.MAX_VALUE));
-        assertThrows(IllegalArgumentException.class, () -> new AsSignedLong(BaseDataType.uint8_t, null, 0, SetMem.DO_NOT_SET));
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            AsSignedLong instance = AsSignedLong.allocateNative(BaseDataType.int32_t, rs);
+            instance.setFromSignedLong(-33);
+            assertEquals(-33, instance.getAsSignedLong());
+            assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(Long.MAX_VALUE));
+            assertThrows(IllegalArgumentException.class, () -> new AsSignedLong(BaseDataType.uint8_t, MemorySegment.allocateNative(BaseDataType.uint8_t.SIZE_OF, rs), 0));
+        }
     }
 
 }

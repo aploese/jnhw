@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,192 +20,83 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_LocaleTest_NativeDefines.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
     //We need the POSIX version ...
 #if !defined(HAVE_LOCALE_H) || !defined(_POSIX_VERSION)
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    HAVE_LOCALE_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_HAVE_1LOCALE_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
+int getValueOf_HAVE_LOCALE_H() {
+    return 0;
+}
+
 #else
 #include <locale.h>
 #if defined (__APPLE__)
 #include <xlocale.h>
 #endif
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    HAVE_LOCALE_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_HAVE_1LOCALE_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_ALL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1ALL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_ALL;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_ALL_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1ALL_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_ALL_MASK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_COLLATE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1COLLATE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_COLLATE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_COLLATE_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1COLLATE_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_COLLATE_MASK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_CTYPE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1CTYPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_CTYPE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_CTYPE_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1CTYPE_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_CTYPE_MASK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_GLOBAL_LOCALE0
-     * Signature: ()J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1GLOBAL_1LOCALE0
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (intptr_t) LC_GLOBAL_LOCALE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_MESSAGES
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1MESSAGES
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_MESSAGES;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_MESSAGES_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1MESSAGES_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_MESSAGES_MASK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_MONETARY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1MONETARY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_MONETARY;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_MONETARY_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1MONETARY_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_MONETARY_MASK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_NUMERIC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1NUMERIC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_NUMERIC;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_NUMERIC_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1NUMERIC_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_NUMERIC_MASK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_TIME
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1TIME
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_TIME;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_LocaleTest_NativeDefines
-     * Method:    LC_TIME_MASK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_LocaleTest_00024NativeDefines_LC_1TIME_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return LC_TIME_MASK;
-    }
-
-#endif
-
-#ifdef __cplusplus
+int getValueOf_HAVE_LOCALE_H() {
+    return 1;
 }
+
+
+int getValueOf_LC_ALL() {
+    return LC_ALL;
+}
+
+int getValueOf_LC_ALL_MASK() {
+    return LC_ALL_MASK;
+}
+
+int getValueOf_LC_COLLATE() {
+    return LC_COLLATE;
+}
+
+int getValueOf_LC_COLLATE_MASK() {
+    return LC_COLLATE_MASK;
+}
+
+int getValueOf_LC_CTYPE() {
+    return LC_CTYPE;
+}
+
+int getValueOf_LC_CTYPE_MASK() {
+    return LC_CTYPE_MASK;
+}
+
+ locale_t getValueOf_LC_GLOBAL_LOCALE() {
+    return LC_GLOBAL_LOCALE;
+}
+
+int getValueOf_LC_MESSAGES() {
+    return LC_MESSAGES;
+}
+
+int getValueOf_LC_MESSAGES_MASK() {
+    return LC_MESSAGES_MASK;
+}
+
+int getValueOf_LC_MONETARY() {
+    return LC_MONETARY;
+}
+
+int getValueOf_LC_MONETARY_MASK() {
+    return LC_MONETARY_MASK;
+}
+
+int getValueOf_LC_NUMERIC() {
+    return LC_NUMERIC;
+}
+
+int getValueOf_LC_NUMERIC_MASK() {
+    return LC_NUMERIC_MASK;
+}
+
+int getValueOf_LC_TIME() {
+    return LC_TIME;
+}
+
+int getValueOf_LC_TIME_MASK() {
+    return LC_TIME_MASK;
+}
+
 #endif

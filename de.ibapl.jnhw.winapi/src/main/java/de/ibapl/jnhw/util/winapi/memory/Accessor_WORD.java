@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,9 +22,7 @@
 package de.ibapl.jnhw.util.winapi.memory;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.WORD;
-import de.ibapl.jnhw.common.memory.MemoryAccessor;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.winapi.Winbase;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -34,13 +32,13 @@ import de.ibapl.jnhw.winapi.Winbase;
 public interface Accessor_WORD {
 
     @WORD
-    short WORD(OpaqueMemory32 mem, long offset);
+    short WORD(MemorySegment memorySegment, long offset);
 
-    void WORD(OpaqueMemory32 mem, long offset, @WORD short value);
+    void WORD(MemorySegment memorySegment, long offset, @WORD short value);
 
     @WORD
-    int WORD_AsInt(OpaqueMemory32 mem, long offset);
+    int WORD_AsInt(MemorySegment memorySegment, long offset);
 
-    void WORD_FromInt(OpaqueMemory32 mem, long offset, @WORD int value);
+    void WORD_FromInt(MemorySegment memorySegment, long offset, @WORD int value);
 
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,9 @@
  */
 package de.ibapl.jnhw.common.util;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.SizeInBit;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.SizeInBit;
+import jdk.incubator.foreign.MemoryAddress;
 
 /**
  *
@@ -30,14 +31,40 @@ import de.ibapl.jnhw.libloader.SizeInBit;
  */
 public class JnhwFormater {
 
-    private final static SizeInBit POINTER_SIZE = new MultiarchTupelBuilder().getSizeOfPointer();
+    private final static SizeInBit POINTER_SIZE = MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer;
 
     /**
-     * formats an Address accorfing to 32 or 64 bit
+     * formats an Address according to 32 or 64 bit
      *
      * @param address
      * @return
      */
+    public static String formatAddress(MemoryAddress address) {
+        switch (POINTER_SIZE) {
+            case _64_BIT:
+                return String.format("0x%016x", address.toRawLongValue());
+            case _32_BIT:
+                final long upper32 = address.toRawLongValue() & 0xFFFFFFFF00000000L;
+                final long lower32 = address.toRawLongValue() & 0x00000000FFFFFFFFL;
+                if (upper32 == 0L) {
+                    return String.format("0x%08x", lower32);
+                } else {
+                    //Error?? on 32 bit we got the upper 32 set??
+                    return String.format("0x(!>>>)%08x(<<<!)%08x", upper32 >>> 32, lower32);
+                }
+            default:
+                throw new RuntimeException("UnknownWordsize");
+        }
+
+    }
+
+    /**
+     * formats an Address according to 32 or 64 bit
+     *
+     * @param address
+     * @return
+     */
+    @Deprecated
     public static String formatAddress(long address) {
         switch (POINTER_SIZE) {
             case _64_BIT:

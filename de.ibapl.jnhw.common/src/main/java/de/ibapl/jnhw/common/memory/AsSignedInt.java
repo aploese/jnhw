@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,6 +23,8 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -32,8 +34,12 @@ public class AsSignedInt extends NativeIntNumber {
 
     private final BaseDataType dataType;
 
-    public AsSignedInt(BaseDataType nativeType, AbstractNativeMemory owner, long offset, SetMem setMem) {
-        super(owner, offset, nativeType.SIZE_OF, setMem);
+    public static AsSignedInt allocateNative(BaseDataType nativeType, ResourceScope rs) {
+        return new AsSignedInt(nativeType, MemorySegment.allocateNative(nativeType.SIZE_OF, rs), 0);
+    }
+
+    public AsSignedInt(BaseDataType nativeType, MemorySegment memorySegment, long offset) {
+        super(memorySegment, offset, nativeType.SIZE_OF);
         if (nativeType.UNSIGNED) {
             throw new IllegalArgumentException("Data type is unsigned, but a signed data type was expected");
         }
@@ -43,22 +49,26 @@ public class AsSignedInt extends NativeIntNumber {
         dataType = nativeType;
     }
 
+    public static AsSignedInt map(BaseDataType nativeType, OpaqueMemory mem, long offset) {
+        return new AsSignedInt(nativeType, mem.memorySegment, offset);
+    }
+
     public int getAsSignedInt() {
-        return MEM_ACCESS.getSignedIntOf(this, 0, sizeInBytes);
+        return MEM_ACCESS.getSignedIntOf(memorySegment, 0, dataType.SIZE_OF);
     }
 
     public void setFromSignedInt(int value) {
-        MEM_ACCESS.setSignedIntOf(this, 0, sizeInBytes, value);
+        MEM_ACCESS.setSignedIntOf(memorySegment, 0, dataType.SIZE_OF, value);
     }
 
     @Override
     public String nativeToHexString() {
-        return MEM_ACCESS.getSignedIntOf_AsHex(this, 0, sizeInBytes);
+        return MEM_ACCESS.getSignedIntOf_AsHex(memorySegment, 0, dataType.SIZE_OF);
     }
 
     @Override
     public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(MEM_ACCESS.getSignedIntOf_nativeToString(this, 0, sizeInBytes));
+        sb.append(MEM_ACCESS.getSignedIntOf_nativeToString(memorySegment, 0, dataType.SIZE_OF));
     }
 
     @Override

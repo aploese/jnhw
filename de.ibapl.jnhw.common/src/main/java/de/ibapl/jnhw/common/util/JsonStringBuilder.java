@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,12 +21,12 @@
  */
 package de.ibapl.jnhw.common.util;
 
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.common.memory.StructArray32;
+import de.ibapl.jnhw.common.memory.Struct;
+import de.ibapl.jnhw.common.memory.MemoryArray;
 import java.io.IOException;
 import java.util.function.IntFunction;
+import jdk.incubator.foreign.MemoryAddress;
 
 /**
  *
@@ -124,6 +124,12 @@ public class JsonStringBuilder {
         sb.append(valueFormatter.apply(value));
     }
 
+    public void appendAddressMember(String name, MemoryAddress value) throws IOException {
+        appendMemberName(name);
+        sb.append(JnhwFormater.formatAddress(value));
+    }
+
+    @Deprecated
     public void appendAddressMember(String name, long value) throws IOException {
         appendMemberName(name);
         sb.append(JnhwFormater.formatAddress(value));
@@ -208,12 +214,7 @@ public class JsonStringBuilder {
         sb.append('\"').append(value).append('\"');
     }
 
-    public void appendNativeAddressHolderMember(String name, NativeAddressHolder value) throws IOException {
-        appendMemberName(name);
-        sb.append(value.toString());
-    }
-
-    public void appendStruct32Member(String name, Struct32 value) throws IOException {
+    public void appendStruct32Member(String name, Struct value) throws IOException {
         appendMemberName(name);
         if (value == null) {
             sb.append("null");
@@ -222,7 +223,7 @@ public class JsonStringBuilder {
         }
     }
 
-    public void appendStructArray32Member(String name, StructArray32<?> array) throws IOException {
+    public void appendStructArray32Member(String name, MemoryArray<?> array) throws IOException {
         appendMemberName(name);
         if (array == null) {
             sb.append("null");

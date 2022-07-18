@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,11 +20,6 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_sys_TypesTest_NativeDefines.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
     /*
     off_t
@@ -47,29 +42,14 @@ extern "C" {
     //We need the POSIX version ...
 #if !defined(HAVE_SYS_TYPES_H) || !defined(_POSIX_VERSION)
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_TypesTest_NativeDefines
-     * Method:    HAVE_SYS_TYPES_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_TypesTest_00024NativeDefines_HAVE_1SYS_1TYPES_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
+int getValueOf_HAVE_SYS_TYPES_H() {
+    return 0;
+}
 #else
 #include <sys/types.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_sys_TypesTest_NativeDefines
-     * Method:    HAVE_SYS_TYPES_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_sys_TypesTest_00024NativeDefines_HAVE_1SYS_1TYPES_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
-
-#endif
-#ifdef __cplusplus
+int getValueOf_HAVE_SYS_TYPES_H() {
+    return 1;
 }
+
 #endif

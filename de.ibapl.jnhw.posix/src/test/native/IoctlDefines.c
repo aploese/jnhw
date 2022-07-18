@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,23 +20,12 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #ifndef HAVE_SYS_IOCTL_H
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    HAVE_SYS_IOCTL_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_HAVE_1SYS_1IOCTL_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
+int getValueOf_HAVE_SYS_IOCTL_H() {
+    return 0;
+}
 #else
 #include <sys/ioctl.h>
 #ifdef  __OpenBSD__
@@ -44,699 +33,417 @@ extern "C" {
 #include <sys/param.h>
 #endif
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    HAVE_SYS_IOCTL_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_HAVE_1SYS_1IOCTL_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
+int getValueOf_HAVE_SYS_IOCTL_H() {
+    return 1;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    FIONREAD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_FIONREAD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int getValueOf_FIONREAD() {
 #if defined(__linux__) && defined(__sh__)
-        return (int32_t) FIONREAD))
+    return (int32_t) FIONREAD))
 #else
-        return FIONREAD;
+    return FIONREAD;
 #endif
-    }
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCCBRK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCCBRK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCCBRK;
-    }
+int getValueOf_TIOCCBRK() {
+    return TIOCCBRK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCEXCL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCEXCL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCEXCL;
-    }
+int getValueOf_TIOCEXCL() {
+    return TIOCEXCL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCGICOUNT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCGICOUNT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_TIOCGICOUNT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, TIOCGICOUNT);
+    *value = TIOCGICOUNT;
 #elif !defined(TIOCGICOUNT)
-        return NULL;
+    value = NULL;
 #else
 #error "TIOCGICOUNT defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCGSOFTCAR
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCGSOFTCAR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_TIOCGSOFTCAR(int* value) {
 #if defined (__linux__)
 #if defined(__sh__)
-        return JnhwWrapInteger(env, (int32_t) TIOCGSOFTCAR);
+    *value = (int32_t) TIOCGSOFTCAR;
 #else
-        return JnhwWrapInteger(env, TIOCGSOFTCAR);
+    *value =TIOCGSOFTCAR;
 #endif
 #elif !defined(TIOCGSOFTCAR)
-        return NULL;
+    value = NULL;
 #else
 #error "TIOCGSOFTCAR defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCMBIC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCMBIC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int getValueOf_TIOCMBIC() {
 #if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && defined(__sparc__))
-        //Just force the conversation or check at runtime sizeof??
-        return (int32_t) TIOCMBIC;
+    //Just force the conversation or check at runtime sizeof??
+    return (int32_t) TIOCMBIC;
 #else
-        return TIOCMBIC;
+    return TIOCMBIC;
 #endif
-    }
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCMBIS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCMBIS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int getValueOf_TIOCMBIS() {
 #if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && defined(__sparc__))
-        //Just force the conversation or check at runtime sizeof??
-        return (int32_t) TIOCMBIS;
+    //Just force the conversation or check at runtime sizeof??
+    return (int32_t) TIOCMBIS;
 #else
-        return TIOCMBIS;
+    return TIOCMBIS;
 #endif
-    }
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCMGET
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCMGET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int getValueOf_TIOCMGET() {
 #if defined(__linux__) && defined(__sh__)
-        return (int32_t) TIOCMGET;
+    return (int32_t) TIOCMGET;
 #else
-        return TIOCMGET;
+    return TIOCMGET;
 #endif
-    }
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCMIWAIT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCMIWAIT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_TIOCMIWAIT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, TIOCMIWAIT);
+    *value = TIOCMIWAIT;
 #elif !defined(TIOCMIWAIT)
-        return NULL;
+    value = NULL;
 #else
 #error "TIOCMIWAIT defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCMSET
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCMSET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int getValueOf_TIOCMSET() {
 #if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && defined(__sparc__))
-        //Just force the conversation or check at runtime sizeof??
-        return (int32_t) TIOCMSET;
+    //Just force the conversation or check at runtime sizeof??
+    return (int32_t) TIOCMSET;
 #else
-        return TIOCMSET;
+    return TIOCMSET;
 #endif
-    }
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCM_CAR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCM_1CAR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCM_CAR;
-    }
+int getValueOf_TIOCM_CAR() {
+    return TIOCM_CAR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCM_CD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCM_1CD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCM_CD;
-    }
+int getValueOf_TIOCM_CD() {
+    return TIOCM_CD;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCM_CTS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCM_1CTS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCM_CTS;
-    }
+int getValueOf_TIOCM_CTS() {
+    return TIOCM_CTS;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCM_DSR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCM_1DSR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCM_DSR;
-    }
+int getValueOf_TIOCM_DSR() {
+    return TIOCM_DSR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCM_DTR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCM_1DTR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCM_DTR;
-    }
+int getValueOf_TIOCM_DTR() {
+    return TIOCM_DTR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCM_LE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCM_1LE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCM_LE;
-    }
+int getValueOf_TIOCM_LE() {
+    return TIOCM_LE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCM_RI
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCM_1RI
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCM_RI;
-    }
+int getValueOf_TIOCM_RI() {
+    return TIOCM_RI;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCM_RNG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCM_1RNG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCM_RNG;
-    }
+int getValueOf_TIOCM_RNG() {
+    return TIOCM_RNG;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCM_RTS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCM_1RTS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCM_RTS;
-    }
+int getValueOf_TIOCM_RTS() {
+    return TIOCM_RTS;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCM_SR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCM_1SR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCM_SR;
-    }
+int getValueOf_TIOCM_SR() {
+    return TIOCM_SR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCM_ST
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCM_1ST
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCM_ST;
-    }
+int getValueOf_TIOCM_ST() {
+    return TIOCM_ST;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCOUTQ
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCOUTQ
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int getValueOf_TIOCOUTQ() {
 #if defined(__linux__) && defined(__sh__)
-        return (int32_t) TIOCOUTQ;
+    return (int32_t) TIOCOUTQ;
 #else
-        return TIOCOUTQ;
+    return TIOCOUTQ;
 #endif
-    }
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCSBRK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCSBRK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TIOCSBRK;
-    }
+int getValueOf_TIOCSBRK() {
+    return TIOCSBRK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    TIOCSSOFTCAR
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_TIOCSSOFTCAR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_TIOCSSOFTCAR(int* value) {
 #if defined (__linux__)
 #if defined (__linux__)
-        return JnhwWrapInteger(env, (int32_t) TIOCSSOFTCAR);
+    *value = (int32_t) TIOCSSOFTCAR;
 #else
-        return JnhwWrapInteger(env, TIOCSSOFTCAR);
+    *value = TIOCSSOFTCAR;
 #endif
 #else
 #if !defined(TIOCSSOFTCAR)
-        return NULL;
+    value = NULL;
 #else
 #error "TIOCSSOFTCAR defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    IOCPARM_MASK
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOCPARM_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_IOCPARM_MASK(int* value) {
 #if defined (__OpenBSD__) || defined (__FreeBSD__) || defined(__APPLE__)
-        return JnhwWrapInteger(env, IOCPARM_MASK);
+    *value = IOCPARM_MASK;
 #elif !defined(IOCPARM_MASK)
-        return NULL;
+    value = NULL;
 #else
 #error "IOCPARM_MASK defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    IOCPARM_MAX
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOCPARM_1MAX
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_IOCPARM_MAX(int* value) {
 #if defined (__OpenBSD__) || defined (__FreeBSD__) || defined(__APPLE__)
-        return JnhwWrapInteger(env, IOCPARM_MAX);
+    *value = IOCPARM_MAX;
 #elif !defined(IOCPARM_MAX)
-        return NULL;
+    value = NULL;
 #else
 #error "IOCPARM_MAX defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    IOC_VOID
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOC_1VOID
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_IOC_VOID(int* value) {
 #if defined (__OpenBSD__) || defined (__FreeBSD__) || defined(__APPLE__)
-        return JnhwWrapInteger(env, IOC_VOID);
+    *value = IOC_VOID;
 #elif !defined(IOC_VOID)
-        return NULL;
+    value = NULL;
 #else
 #error "IOC_VOID defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    IOC_OUT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOC_1OUT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int32_t) IOC_OUT;
-    }
+int getValueOf_IOC_OUT() {
+    return (int32_t) IOC_OUT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    IOC_IN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOC_1IN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int getValueOf_IOC_IN() {
 #if defined (__linux__) && (defined(__mips__) || defined(__powerpc__)) || defined(__FreeBSD__)|| defined(__OpenBSD__) || defined(__APPLE__)
-        return (int32_t) IOC_IN;
+    return (int32_t) IOC_IN;
 #else
-        return IOC_IN;
+    return IOC_IN;
 #endif
-    }
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    IOC_INOUT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOC_1INOUT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int32_t) IOC_INOUT;
-    }
+int getValueOf_IOC_INOUT() {
+    return (int32_t) IOC_INOUT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    IOC_DIRMASK
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOC_1DIRMASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_IOC_DIRMASK(int* value) {
 #if defined (__OpenBSD__)|| defined (__FreeBSD__)|| defined(__APPLE__)
-        return JnhwWrapInteger(env, (int32_t) IOC_DIRMASK);
+    *value = (int32_t) IOC_DIRMASK;
 #elif !defined(IOC_DIRMASK)
-        return NULL;
+    value = NULL;
 #else
 #error "IOC_DIRMASK defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_NRBITS
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1NRBITS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_NRBITS(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_NRBITS);
+    *value = _IOC_NRBITS;
 #elif !defined(_IOC_NRBITS)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_NRBITS defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_TYPEBITS
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1TYPEBITS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_TYPEBITS(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_TYPEBITS);
+    *value = _IOC_TYPEBITS;
 #elif !defined(_IOC_TYPEBITS)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_TYPEBITS defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_SIZEBITS
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1SIZEBITS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_SIZEBITS(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_SIZEBITS);
+    *value = _IOC_SIZEBITS;
 #elif !defined(_IOC_SIZEBITS)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_SIZEBITS defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_DIRBITS
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1DIRBITS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_DIRBITS(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_DIRBITS);
+    *value = _IOC_DIRBITS;
 #elif !defined(_IOC_DIRBITS)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_DIRBITS defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_NRMASK
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1NRMASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_NRMASK(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_NRMASK);
+    *value = _IOC_NRMASK;
 #elif !defined(_IOC_NRMASK)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_NRMASK defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_TYPEMASK
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1TYPEMASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_TYPEMASK(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_TYPEMASK);
+    *value = _IOC_TYPEMASK;
 #elif !defined(_IOC_TYPEMASK)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_TYPEMASK defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_SIZEMASK
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1SIZEMASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+
+int* tryGetValueOf__IOC_SIZEMASK(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_SIZEMASK);
+    *value = _IOC_SIZEMASK;
 #elif !defined(_IOC_SIZEMASK)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_SIZEMASK defined"
 #endif
+    return value;
+}
 
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_DIRMASK
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1DIRMASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_DIRMASK(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_DIRMASK);
+    *value = _IOC_DIRMASK;
 #elif !defined(_IOC_DIRMASK)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_DIRMASK defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_NRSHIFT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1NRSHIFT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_NRSHIFT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_NRSHIFT);
+    *value = _IOC_NRSHIFT;
 #elif !defined(_IOC_NRSHIFT)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_NRSHIFT defined"
 #endif
+    return value;
+}
 
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_TYPESHIFT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1TYPESHIFT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_TYPESHIFT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_TYPESHIFT);
+    *value = _IOC_TYPESHIFT;
 #elif !defined(_IOC_TYPESHIFT)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_TYPESHIFT defined"
 #endif
+    return value;
+}
 
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_SIZESHIFT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1SIZESHIFT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_SIZESHIFT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_SIZESHIFT);
+    *value = _IOC_SIZESHIFT;
 #elif !defined(_IOC_SIZESHIFT)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_SIZESHIFT defined"
 #endif
+    return value;
+}
 
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_DIRSHIFT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1DIRSHIFT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_DIRSHIFT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_DIRSHIFT);
+    *value = _IOC_DIRSHIFT;
 #elif !defined(_IOC_DIRSHIFT)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_DIRSHIFT defined"
 #endif
+    return value;
+}
 
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_NONE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1NONE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_NONE(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_NONE);
+    *value = _IOC_NONE;
 #elif !defined(_IOC_NONE)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_NONE defined"
 #endif
+    return value;
+}
 
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_READ
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1READ
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_READ(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_READ);
+    *value = _IOC_READ;
 #elif !defined(_IOC_READ)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_READ defined"
 #endif
+    return value;
+}
 
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    _IOC_WRITE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines__1IOC_1WRITE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__IOC_WRITE(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, _IOC_WRITE);
+    *value = _IOC_WRITE;
 #elif !defined(_IOC_WRITE)
-        return NULL;
+    value = NULL;
 #else
 #error "_IOC_WRITE defined"
 #endif
+    return value;
+}
 
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    IOCSIZE_MASK
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOCSIZE_1MASK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_IOCSIZE_MASK(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, IOCSIZE_MASK);
+    *value = IOCSIZE_MASK;
 #elif !defined(IOCSIZE_MASK)
-        return NULL;
+    value = NULL;
 #else
 #error "IOCSIZE_MASK defined"
 #endif
+    return value;
+}
 
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest_NativeDefines
-     * Method:    IOCSIZE_SHIFT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_00024NativeDefines_IOCSIZE_1SHIFT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_IOCSIZE_SHIFT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, IOCSIZE_SHIFT);
+    *value = IOCSIZE_SHIFT;
 #elif !defined(IOCSIZE_SHIFT)
-        return NULL;
+    value = NULL;
 #else
 #error "IOCSIZE_SHIFT defined"
 #endif
-    }
-
-#endif
-
-
-#ifdef __cplusplus
+    return value;
 }
+
 #endif

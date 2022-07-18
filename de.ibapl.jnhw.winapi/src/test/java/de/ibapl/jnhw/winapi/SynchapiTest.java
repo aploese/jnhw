@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,14 +22,28 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import java.time.Duration;
+import jdk.incubator.foreign.ResourceScope;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SynchapiTest {
+
+    private ResourceScope scope;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        scope = ResourceScope.newConfinedScope();
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        scope.close();
+    }
 
     @Test
     public void testSleepEx() throws Exception {
@@ -44,7 +58,7 @@ public class SynchapiTest {
     public void testWaitForMultipleSignaled() throws Exception {
         final Winnt.HANDLE hEvent1 = Synchapi.CreateEventW(null, true, false, null);
         final Winnt.HANDLE hEvent2 = Synchapi.CreateEventW(null, true, false, null);
-        final Winnt.ArrayOfHandle handles = new Winnt.ArrayOfHandle(2, SetMem.DO_NOT_SET);
+        final Winnt.ArrayOfHandle handles = Winnt.ArrayOfHandle.allocateNative(2, scope);
         handles.set(0, hEvent1);
         handles.set(1, hEvent2);
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(5000), () -> {
@@ -69,7 +83,7 @@ public class SynchapiTest {
     public void testWaitForMultipleTimeout() throws Exception {
         final Winnt.HANDLE hEvent1 = Synchapi.CreateEventW(null, true, false, null);
         final Winnt.HANDLE hEvent2 = Synchapi.CreateEventW(null, true, false, null);
-        final Winnt.ArrayOfHandle handles = new Winnt.ArrayOfHandle(2, SetMem.DO_NOT_SET);
+        final Winnt.ArrayOfHandle handles = Winnt.ArrayOfHandle.allocateNative(2, scope);
         handles.set(0, hEvent1);
         handles.set(1, hEvent2);
 

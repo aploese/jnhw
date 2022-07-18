@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,20 +21,20 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import jdk.incubator.foreign.ResourceScope;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  *
@@ -43,49 +43,11 @@ import org.junit.jupiter.api.BeforeAll;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SchedTest {
 
-    public static class NativeDefines {
-
-        public final static native boolean HAVE_SCHED_H();
-
-        public final static native int SCHED_FIFO();
-
-        public final static native int SCHED_OTHER();
-
-        public final static native int SCHED_RR();
-
-        public final static native Integer SCHED_SPORADIC();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-
-    public static class NativeSched_param {
-
-        public final static native int alignof();
-
-        public final static native int sizeof();
-
-        public final static native long sched_priority();
-
-        public final static native long sched_ss_low_priority();
-
-        public final static native long sched_ss_repl_period();
-
-        public final static native long sched_ss_init_budget();
-
-        public final static native long sched_ss_max_repl();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-
-    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
+    private ResourceScope scope;
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SCHED_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Sched.HAVE_SCHED_H, "not expected to have sched.h");
         } else {
             Assertions.assertTrue(Sched.HAVE_SCHED_H, "expected to have sched.h");
@@ -94,40 +56,50 @@ public class SchedTest {
 
     @BeforeAll
     public static void checkBeforeAll_SchedDefines() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
-        DefinesTest.testDefines(Sched.class, NativeDefines.class, "HAVE_SCHED_H");
+        DefinesTest.testDefines(Sched.class, "HAVE_SCHED_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_NativeSched_param() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(NativeSched_param.sizeof(), Sched.Sched_param.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_sizeof"), Sched.Sched_param.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeSched_param.alignof(), Sched.Sched_param.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_alignof"), Sched.Sched_param.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeSched_param.sched_priority(), Sched.Sched_param.offsetof_Sched_priority, "offsetof_Sched_priority");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_offsetof_sched_priority"), Sched.Sched_param.offsetof_Sched_priority, "offsetof_Sched_priority");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeSched_param.sched_ss_init_budget(), Sched.Sched_param.offsetof_Sched_ss_init_budget, "offsetof_Sched_ss_init_budget");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_offsetof_sched_ss_init_budget"), Sched.Sched_param.offsetof_Sched_ss_init_budget, "offsetof_Sched_ss_init_budget");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeSched_param.sched_ss_low_priority(), Sched.Sched_param.offsetof_Sched_ss_low_priority, "offsetof_Sched_ss_low_priority");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_offsetof_sched_ss_low_priority"), Sched.Sched_param.offsetof_Sched_ss_low_priority, "offsetof_Sched_ss_low_priority");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeSched_param.sched_ss_max_repl(), Sched.Sched_param.offsetof_Sched_ss_max_repl, "offsetof_Sched_ss_max_repl");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_offsetof_sched_ss_max_repl"), Sched.Sched_param.offsetof_Sched_ss_max_repl, "offsetof_Sched_ss_max_repl");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeSched_param.sched_ss_repl_period(), Sched.Sched_param.offsetof_Sched_ss_repl_period, "offsetof_Sched_ss_repl_period");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_offsetof_sched_ss_repl_period"), Sched.Sched_param.offsetof_Sched_ss_repl_period, "offsetof_Sched_ss_repl_period");
                 }
         );
+    }
+
+    @BeforeEach
+    public void setUp() {
+        scope = ResourceScope.newConfinedScope();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        scope.close();
     }
 
     /**
@@ -137,7 +109,7 @@ public class SchedTest {
     public void testSched_get_priority_max() throws Exception {
         System.out.println("sched_get_priority_max");
         int result = Sched.sched_get_priority_max(Sched.SCHED_OTHER);
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case FREE_BSD:
                 Assertions.assertEquals(103, result);
                 break;
@@ -159,7 +131,7 @@ public class SchedTest {
     public void testSched_get_priority_min() throws Exception {
         System.out.println("sched_get_priority_min");
         int result = Sched.sched_get_priority_min(Sched.SCHED_OTHER);
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN:
                 Assertions.assertEquals(15, result);
                 break;
@@ -174,7 +146,7 @@ public class SchedTest {
     @Test
     public void testSched_getscheduler() throws Exception {
         System.out.println("sched_getscheduler");
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
             case DARWIN:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
@@ -193,11 +165,11 @@ public class SchedTest {
     @Test
     public void testSched_rr_get_interval() throws Exception {
         System.out.println("sched_rr_get_interval");
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
             case DARWIN:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Sched.sched_rr_get_interval(Unistd.getpid(), new Time.Timespec(SetMem.TO_0x00));
+                    Sched.sched_rr_get_interval(Unistd.getpid(), Time.Timespec.allocateNative(scope));
                 });
                 break;
             default:
@@ -205,9 +177,9 @@ public class SchedTest {
                     Sched.sched_rr_get_interval(Unistd.getpid(), null);
                 });
 
-                Time.Timespec interval = new Time.Timespec(SetMem.DO_NOT_SET);
+                Time.Timespec interval = Time.Timespec.allocateNative(scope);
                 Sched.sched_rr_get_interval(Unistd.getpid(), interval);
-                switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+                switch (MultiarchTupelBuilder.getOS()) {
                     case LINUX:
                         if ((0L != interval.tv_nsec())
                                 && (8_000_000L != interval.tv_nsec())
@@ -231,16 +203,16 @@ public class SchedTest {
     @Test
     public void testSched_setgetparam() throws Exception {
         System.out.println("sched_setparam");
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
             case DARWIN:
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
                         () -> {
-                            Sched.sched_setparam(Unistd.getpid(), new Sched.Sched_param(SetMem.TO_0x00));
+                            Sched.sched_setparam(Unistd.getpid(), Sched.Sched_param.allocateNative(scope));
                         });
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
                         () -> {
-                            Sched.sched_getparam(Unistd.getpid(), new Sched.Sched_param(SetMem.TO_0x00));
+                            Sched.sched_getparam(Unistd.getpid(), Sched.Sched_param.allocateNative(scope));
                         });
                 break;
             default:
@@ -252,9 +224,9 @@ public class SchedTest {
                         () -> {
                             Sched.sched_getparam(Unistd.getpid(), null);
                         });
-                Sched.Sched_param param = new Sched.Sched_param(SetMem.DO_NOT_SET);
+                Sched.Sched_param param = Sched.Sched_param.allocateNative(scope);
                 param.sched_priority(0);
-                Sched.Sched_param param1 = new Sched.Sched_param(SetMem.DO_NOT_SET);
+                Sched.Sched_param param1 = Sched.Sched_param.allocateNative(scope);
 
                 Sched.sched_setparam(Unistd.getpid(), param);
                 Sched.sched_getparam(Unistd.getpid(), param1);
@@ -268,12 +240,12 @@ public class SchedTest {
     @Test
     public void testSched_setscheduler() throws Exception {
         System.out.println("sched_setscheduler");
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
             case DARWIN:
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
                         () -> {
-                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, new Sched.Sched_param(SetMem.TO_0x00));
+                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, Sched.Sched_param.allocateNative(scope));
                         });
                 break;
             default:
@@ -281,8 +253,8 @@ public class SchedTest {
                         () -> {
                             Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, null);
                         });
-                Sched.Sched_param param = new Sched.Sched_param(SetMem.TO_0x00);
-                if (MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD) {
+                Sched.Sched_param param = Sched.Sched_param.allocateNative(scope);
+                if (MultiarchTupelBuilder.getOS() == OS.FREE_BSD) {
                     //Any idea why this is so?
                     NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
                             () -> {
@@ -314,7 +286,7 @@ public class SchedTest {
     public void teststruct_sched_param() throws Exception {
         System.out.println("struct sched_param");
         int memberSum = 0;
-        Sched.Sched_param sched_param = new Sched.Sched_param(SetMem.DO_NOT_SET);
+        Sched.Sched_param sched_param = Sched.Sched_param.allocateNative(scope);
         sched_param.sched_priority(1);
         memberSum += sched_param.sched_priority();
         try {

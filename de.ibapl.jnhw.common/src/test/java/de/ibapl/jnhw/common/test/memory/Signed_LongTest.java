@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,12 +22,13 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.common.memory.Int64_t;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import de.ibapl.jnhw.common.memory.Int32_t;
+import de.ibapl.jnhw.common.memory.Int64_t;
 import de.ibapl.jnhw.common.memory.Signed_Long;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -35,45 +36,45 @@ import de.ibapl.jnhw.common.memory.Signed_Long;
  */
 public class Signed_LongTest {
 
-    public Signed_LongTest() {
-    }
-
     @Test
-
     public void testNative() {
-        Signed_Long instance = new Signed_Long(null, 0, SetMem.DO_NOT_SET);
-        long input64 = 0x8070605040302010L;
-        if (BaseDataType.__SIZE_OF_LONG == 8) {
-            instance.signed_long(input64);
-            assertEquals(input64, instance.signed_long());
-        } else {
-            //Big Endian so the layout of the bytes is different.... from Little Endian
-            instance.signed_long(input64 >> 32); // shift with sign
-            assertEquals(input64 >> 32, instance.signed_long());
-        }
-        instance.signed_long(-33);
-        assertEquals(-33, instance.signed_long());
-        if (BaseDataType.__SIZE_OF_LONG == 8) {
-            instance.signed_long(input64);
-            assertEquals(input64, instance.signed_long());
-        } else {
-            assertThrows(IllegalArgumentException.class, () -> instance.signed_long(input64));
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Signed_Long instance = Signed_Long.allocateNative(rs);
+            long input64 = 0x8070605040302010L;
+            if (BaseDataType.C_long.SIZE_OF == 8) {
+                instance.signed_long(input64);
+                assertEquals(input64, instance.signed_long());
+            } else {
+                //Big Endian so the layout of the bytes is different.... from Little Endian
+                instance.signed_long(input64 >> 32); // shift with sign
+                assertEquals(input64 >> 32, instance.signed_long());
+            }
+            instance.signed_long(-33);
+            assertEquals(-33, instance.signed_long());
+            if (BaseDataType.C_long.SIZE_OF == 8) {
+                instance.signed_long(input64);
+                assertEquals(input64, instance.signed_long());
+            } else {
+                assertThrows(IllegalArgumentException.class, () -> instance.signed_long(input64));
+            }
         }
     }
 
     @Test
     public void testNativeToString() {
-        Signed_Long instance = new Signed_Long(null, 0, SetMem.TO_0x00);
-        if (BaseDataType.__SIZE_OF_LONG == 8) {
-            Int64_t int64_t = new Int64_t(instance, 0, SetMem.DO_NOT_SET);
-            int64_t.int64_t(0xfffffffffffffffeL);
-            assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
-            assertEquals("0xfffffffffffffffe", instance.nativeToHexString());
-        } else {
-            Int32_t int32_t = new Int32_t(instance, 0, SetMem.DO_NOT_SET);
-            int32_t.int32_t(0xfffffffe);
-            assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
-            assertEquals("0xfffffffe", instance.nativeToHexString());
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Signed_Long instance = new Signed_Long(MemorySegment.allocateNative(Signed_Long.DATA_TYPE.SIZE_OF, rs), 0);
+            if (BaseDataType.C_long.SIZE_OF == 8) {
+                Int64_t int64_t = Int64_t.map(instance, 0);
+                int64_t.int64_t(0xfffffffffffffffeL);
+                assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
+                assertEquals("0xfffffffffffffffe", instance.nativeToHexString());
+            } else {
+                Int32_t int32_t = Int32_t.map(instance, 0);
+                int32_t.int32_t(0xfffffffe);
+                assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());
+                assertEquals("0xfffffffe", instance.nativeToHexString());
+            }
         }
     }
 }

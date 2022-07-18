@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,11 +21,11 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
-import de.ibapl.jnhw.common.callback.Callback_I_V;
-import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
-import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
+import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
+import de.ibapl.jnhw.common.upcall.Callback__V___I;
 import de.ibapl.jnhw.posix.Signal;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -37,8 +37,8 @@ public class SimpleSignalHandler extends SignalHandler {
         super(signalToRaise, signalAction);
     }
 
-    private FunctionPtr_I_V originalHandler;
-    private Callback_I_V callback_I_V = new Callback_I_V_Impl() {
+    private FunctionPtr__V___I originalHandler;
+    private Callback__V___I callback_I_V = new Callback__V___I() {
         @Override
         protected void callback(int value) {
             System.out.print("\n\n********Caught Signal " + value + " in thread: " + Thread.currentThread() + "\n");
@@ -49,7 +49,9 @@ public class SimpleSignalHandler extends SignalHandler {
                     System.exit(value);
                     break;
                 case PRINT_MSG_AND_CALL_OLD_HANDLER:
-                    CallNative_I_V.wrap(originalHandler).call(value);
+                    try (ResourceScope rs = ResourceScope.newConfinedScope()) {
+                    new JnhwMi__V___I(originalHandler.toAddressable(), rs).invoke__V__sI(value);
+                    }
                     break;
                 default:
                     thrownInHandler = new RuntimeException("Can't handle signalAction: " + signalAction);

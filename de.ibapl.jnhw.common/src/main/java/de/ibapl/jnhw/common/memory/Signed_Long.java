@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,6 +23,8 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * teh datatype signed long
@@ -31,34 +33,41 @@ import java.io.IOException;
  */
 public class Signed_Long extends NativeIntNumber {
 
-    private final BaseDataType dataType;
+    public final static BaseDataType DATA_TYPE = BaseDataType.C_long;
 
-    public Signed_Long(AbstractNativeMemory owner, long offset, SetMem setMem) {
-        super(owner, offset, BaseDataType.__SIZE_OF_LONG, setMem);
-        dataType = BaseDataType.getSigned_Long_Mapping();
+    public static Signed_Long allocateNative(ResourceScope rs) {
+        return new Signed_Long(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, rs), 0);
+    }
+
+    public Signed_Long(MemorySegment memorySegment, long offset) {
+        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
+    }
+
+    public static Signed_Long map(OpaqueMemory mem, long offset) {
+        return new Signed_Long(mem.memorySegment, offset);
     }
 
     public long signed_long() {
-        return MEM_ACCESS.signed_long(this, 0);
+        return MEM_ACCESS.signed_long(memorySegment, 0);
     }
 
     public void signed_long(long value) {
-        MEM_ACCESS.signed_long(this, 0, value);
+        MEM_ACCESS.signed_long(memorySegment, 0, value);
     }
 
     @Override
     public String nativeToHexString() {
-        return MEM_ACCESS.getSignedLongOf_AsHex(this, 0, sizeInBytes);
+        return MEM_ACCESS.getSignedLongOf_AsHex(memorySegment, 0, DATA_TYPE.SIZE_OF);
     }
 
     @Override
     public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(this, 0, sizeInBytes));
+        sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(memorySegment, 0, DATA_TYPE.SIZE_OF));
     }
 
     @Override
     public BaseDataType getBaseDataType() {
-        return dataType;
+        return DATA_TYPE;
     }
 
 }

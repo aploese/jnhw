@@ -1,4 +1,4 @@
-AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_TEST_HEADER_DIR@ -I @JNHW_POSIX_SRC_DIR@ -I @JNHW_COMMON_SRC_DIR@
+AM_CPPFLAGS =
 AM_CFLAGS = @CFLAGS@ @PTHREAD_CFLAGS@ -Wall -Wextra -Wconversion -Werror
 AM_LDFLAGS = -z noexecstack -no-undefined -version-info @JNHW_VERSION_INFO@
 AM_LIBS = @PTHREAD_LIBS@ @LIBS@
@@ -12,29 +12,26 @@ lib_LTLIBRARIES = libjnhw-posix-test.la
 noinst_LTLIBRARIES = libtests.la
 
 libjnhw_posix_test_la_LIBADD = \
-libtests.la \
-@JNHW_POSIX_SRC_DIR@/libjnhw-posix.la \
-@JNHW_COMMON_SRC_DIR@/libjnhw-common.la
-
+libtests.la
 
 libtests_la_SOURCES = \
  AioDefines.c \
  AioStructures.c \
  Defines.c \
- Isoc_ErrnoDefines.c \
- Posix_ErrnoDefines.c \
  EventFdDefines.c \
  FcntlDefines.c \
- PollDefines.c \
- PollStructures.c \
- PosixDataTypeTest.c \
- PthreadDefines.c \
- PthreadStructures.c \
+ IoctlDefines.c \
+ IoctlTest.c \
+ Isoc_ErrnoDefines.c \
  LocaleDefines.c \
  LocaleStructures.c \
  LocaleTest.c \
- IoctlDefines.c \
- IoctlTest.c \
+ PollDefines.c \
+ PollStructures.c \
+ PosixDataTypeTest.c \
+ Posix_ErrnoDefines.c \
+ PthreadDefines.c \
+ PthreadStructures.c \
  SchedDefines.c \
  SchedStructures.c \
  SignalDefines.c \
@@ -47,8 +44,8 @@ libtests_la_SOURCES = \
  TimeDefines.c \
  TimeStructures.c \
  TypesDefines.c \
- UcontextDefines.c \
- UnistdDefines.c
+ UnistdDefines.c \
+ UcontextDefines.c
 
 #hook into make all
 all-local: $(LIB_JNHW_POSIX_TEST_RES_NAME)

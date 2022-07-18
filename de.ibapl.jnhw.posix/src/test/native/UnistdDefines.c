@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -19,176 +19,75 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_UnistdTest_NativeDefines.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-    //We need the POSIX version ...
+//We need the POSIX version ...
 #if !defined(HAVE_UNISTD_H) || !defined(_POSIX_VERSION)
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    HAVE_UNISTD_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_HAVE_1UNISTD_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
+int getValueOf_HAVE_UNISTD_H() {
+    return 0;
+}
+
 #else
 #include <unistd.h>
 #include <errno.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    HAVE_UNISTD_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_HAVE_1UNISTD_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
+int getValueOf_HAVE_UNISTD_H() {
+    return 1;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    _POSIX_VERSION
-     * Signature: ()J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines__1POSIX_1VERSION
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return _POSIX_VERSION;
-    }
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    _SC_AIO_LISTIO_MAX
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines__1SC_1AIO_1LISTIO_1MAX
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return _SC_AIO_LISTIO_MAX;
-    }
+long getValueOf__POSIX_VERSION() {
+    return _POSIX_VERSION;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    _SC_AIO_MAX
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines__1SC_1AIO_1MAX
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return _SC_AIO_MAX;
-    }
+int getValueOf__SC_AIO_LISTIO_MAX() {
+    return _SC_AIO_LISTIO_MAX;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    _SC_AIO_PRIO_DELTA_MAX
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines__1SC_1AIO_1PRIO_1DELTA_1MAX
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return _SC_AIO_PRIO_DELTA_MAX;
-    }
+int getValueOf__SC_AIO_MAX() {
+    return _SC_AIO_MAX;
+}
+int getValueOf__SC_AIO_PRIO_DELTA_MAX() {
+    return _SC_AIO_PRIO_DELTA_MAX;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    SEEK_CUR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_SEEK_1CUR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_CUR;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    SEEK_DATA
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_SEEK_1DATA
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_SEEK_DATA(int* value) {
 #if defined(__OpenBSD__)
 #if defined(SEEK_DATA)
 #error "SEEK_DATA defined"
 #endif
-        return NULL;
+    value = NULL;
 #else
-        return JnhwWrapInteger(env, SEEK_DATA);
+    *value = SEEK_DATA;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    SEEK_END
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_SEEK_1END
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_END;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    SEEK_HOLE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_SEEK_1HOLE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_SEEK_HOLE(int* value) {
 #if defined(__OpenBSD__)
 #if defined(SEEK_HOLE)
 #error "SEEK_HOLE defined"
 #endif
-        return NULL;
+    value = NULL;
 #else
-        return JnhwWrapInteger(env, SEEK_HOLE);
+    *value = SEEK_HOLE;
 #endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    SEEK_SET
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_SEEK_1SET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_SET;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    STDERR_FILENO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_STDERR_1FILENO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return STDERR_FILENO;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    STDIN_FILENO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_STDIN_1FILENO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return STDIN_FILENO;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_UnistdTest_NativeDefines
-     * Method:    STDOUT_FILENO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_UnistdTest_00024NativeDefines_STDOUT_1FILENO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return STDOUT_FILENO;
-    }
-
-
-#endif
-
-#ifdef __cplusplus
+    return value;
 }
+
+int getValueOf_STDERR_FILENO() {
+    return STDERR_FILENO;
+}
+
+int getValueOf_STDIN_FILENO() {
+    return STDIN_FILENO;
+}
+
+int getValueOf_STDOUT_FILENO() {
+    return STDOUT_FILENO;
+}
+
+
 #endif

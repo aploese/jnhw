@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,13 +23,12 @@
 package de.ibapl.jnhw.syscall.linux.include.linux.usb;
 
 import de.ibapl.jnhw.common.annotation.Packed;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb.AbstractDescriptor;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__be16;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
-import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__le16;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -165,12 +164,12 @@ public class Uas {
             public final static byte sizeof = Reserved + __U8; //TODO ERROR? a descriptor has USB_DT_PIPE_USAGE with blength == 5 ???
         }
 
-        public Usb_pipe_usage_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Layout.sizeof, setMem);
+        public Usb_pipe_usage_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
-        public Usb_pipe_usage_descriptor(AbstractNativeMemory parent, long offset, int sizeInBytes, SetMem setMem) {
-            super(parent, offset, sizeInBytes, setMem);
+        public Usb_pipe_usage_descriptor(MemorySegment memorySegment, long offset, int sizeInBytes) {
+            super(memorySegment, offset, sizeInBytes);
             if (sizeInBytes < Layout.sizeof) {
                 throw new IllegalArgumentException("sizeInBytes too small");
             }
@@ -178,12 +177,12 @@ public class Uas {
 
         @__u8
         public byte bPipeID() {
-            return ACCESSOR___U8.__u8(this, Layout.bPipeID);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bPipeID);
         }
 
         @__u8
         public byte Reserved() {
-            return ACCESSOR___U8.__u8(this, Layout.Reserved);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.Reserved);
         }
 
         @Override

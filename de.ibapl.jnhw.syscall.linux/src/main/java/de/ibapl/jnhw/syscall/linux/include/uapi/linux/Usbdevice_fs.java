@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -50,19 +50,17 @@
 /* --------------------------------------------------------------------- */
 package de.ibapl.jnhw.syscall.linux.include.uapi.linux;
 
-import de.ibapl.jnhw.common.annotation.AlignOf;
 import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.common.annotation.SizeOf;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.common.memory.StructArray32;
+import de.ibapl.jnhw.common.memory.MemoryArray;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.memory.Struct;
 import static de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
 import static de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u16;
 import static de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u32;
 import de.ibapl.jnhw.unix.sys.Ioctl;
 import java.nio.ByteBuffer;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
 
 public final class Usbdevice_fs {
 
@@ -71,10 +69,10 @@ public final class Usbdevice_fs {
     }
 
     /* usbdevfs ioctl codes */
-    public abstract static class Usbdevfs_ctrltransfer extends Struct32 {
+    public abstract static class Usbdevfs_ctrltransfer extends Struct {
 
-        public Usbdevfs_ctrltransfer(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_ctrltransfer(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         /**
@@ -115,15 +113,15 @@ public final class Usbdevice_fs {
         /* in milliseconds */
         public abstract void timeout(@__u32 int timeout);
 
-        public abstract NativeAddressHolder data();
+        public abstract MemoryAddress data();
 
-        public abstract void data(OpaqueMemory32 data);
+        public abstract void data(OpaqueMemory data);
     };
 
-    public abstract static class Usbdevfs_bulktransfer extends Struct32 {
+    public abstract static class Usbdevfs_bulktransfer extends Struct {
 
-        public Usbdevfs_bulktransfer(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_bulktransfer(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         private Object data;
@@ -139,7 +137,7 @@ public final class Usbdevice_fs {
 
         public abstract void timeout(long timeout);
 
-        public void data(OpaqueMemory32 data) {
+        public void data(OpaqueMemory data) {
             if (data == null) {
                 //          dataOpaqueMemory32(null, 0, 0);
             } else {
@@ -148,7 +146,7 @@ public final class Usbdevice_fs {
             this.data = data;
         }
 
-        public void data(OpaqueMemory32 data, int off, int len) {
+        public void data(OpaqueMemory data, int off, int len) {
             if (data == null) {
                 if (off != 0) {
                     throw new IllegalArgumentException("off must be 0");
@@ -158,10 +156,10 @@ public final class Usbdevice_fs {
                 }
                 //        dataOpaqueMemory32(null, 0, 0);
             } else {
-                if ((off < 0) || (off >= data.sizeInBytes)) {
+                if ((off < 0) || (off >= data.sizeof())) {
                     throw new IllegalArgumentException("off not in range");
                 }
-                if ((len < 0) || (len >= data.sizeInBytes)) {
+                if ((len < 0) || (len >= data.sizeof())) {
                     throw new IllegalArgumentException("aio_nbytes not in range");
                 }
                 //      dataOpaqueMemory32(data, off, len);
@@ -179,10 +177,10 @@ public final class Usbdevice_fs {
         }
     };
 
-    public abstract static class Usbdevfs_setinterface extends Struct32 {
+    public abstract static class Usbdevfs_setinterface extends Struct {
 
-        public Usbdevfs_setinterface(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_setinterface(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         public abstract int interface_();
@@ -191,25 +189,25 @@ public final class Usbdevice_fs {
 
     };
 
-    public abstract static class Usbdevfs_disconnectsignal extends Struct32 {
+    public abstract static class Usbdevfs_disconnectsignal extends Struct {
 
-        public Usbdevfs_disconnectsignal(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_disconnectsignal(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         public abstract int signr();
 
-        public abstract NativeAddressHolder context();
+        public abstract MemoryAddress context();
 
     };
 
     public final static byte USBDEVFS_MAXDRIVERNAME = (byte) 255;
 
     public abstract static class Usbdevfs_getdriver
-            extends Struct32 {
+            extends Struct {
 
-        public Usbdevfs_getdriver(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_getdriver(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         public abstract int interface_();
@@ -218,10 +216,10 @@ public final class Usbdevice_fs {
 
     };
 
-    public abstract static class Usbdevfs_connectinfo extends Struct32 {
+    public abstract static class Usbdevfs_connectinfo extends Struct {
 
-        public Usbdevfs_connectinfo(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_connectinfo(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         public abstract int devnum();
@@ -230,10 +228,10 @@ public final class Usbdevice_fs {
 
     };
 
-    public abstract static class Usbdevfs_conninfo_ex extends Struct32 {
+    public abstract static class Usbdevfs_conninfo_ex extends Struct {
 
-        public Usbdevfs_conninfo_ex(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_conninfo_ex(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         /* Size of the structure from the kernel's */
@@ -285,10 +283,10 @@ public final class Usbdevice_fs {
     public final static byte USBDEVFS_URB_TYPE_CONTROL = 2;
     public final static byte USBDEVFS_URB_TYPE_BULK = 3;
 
-    public abstract static class Usbdevfs_iso_packet_desc extends Struct32 {
+    public abstract static class Usbdevfs_iso_packet_desc extends Struct {
 
-        public Usbdevfs_iso_packet_desc(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_iso_packet_desc(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         public abstract long length();
@@ -298,10 +296,10 @@ public final class Usbdevice_fs {
         public abstract int status();
     };
 
-    public abstract static class Usbdevfs_urb extends Struct32 {
+    public abstract static class Usbdevfs_urb extends Struct {
 
-        public Usbdevfs_urb(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_urb(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
             iso_frame_desc = null;
             throw new RuntimeException("Implement me!");
         }
@@ -314,7 +312,7 @@ public final class Usbdevice_fs {
 
         public abstract int flags();
 
-        public abstract NativeAddressHolder buffer();
+        public abstract MemoryAddress buffer();
 
         public abstract int buffer_length();
 
@@ -336,15 +334,15 @@ public final class Usbdevice_fs {
 				  or 0 if none should be sent. */
         public abstract int signr();
 
-        public abstract NativeAddressHolder usercontext();
-        final StructArray32<Usbdevfs_iso_packet_desc> iso_frame_desc;
+        public abstract MemoryAddress usercontext();
+        final MemoryArray<Usbdevfs_iso_packet_desc> iso_frame_desc;
     };
 
     /* ioctls for talking directly to drivers */
-    public abstract static class Usbdevfs_ioctl extends Struct32 {
+    public abstract static class Usbdevfs_ioctl extends Struct {
 
-        public Usbdevfs_ioctl(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_ioctl(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         /* interface 0..N ; negative numbers reserved */
@@ -355,15 +353,15 @@ public final class Usbdevice_fs {
         public abstract int ioctl_code();
 
         /* param buffer (in, or out) */
-        public abstract NativeAddressHolder data();
+        public abstract MemoryAddress data();
     };
 
     /* You can do most things with hubs just through control messages,
  * except find out what device connects to what port. */
-    public abstract static class Usbdevfs_hub_portinfo extends Struct32 {
+    public abstract static class Usbdevfs_hub_portinfo extends Struct {
 
-        public Usbdevfs_hub_portinfo(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_hub_portinfo(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         /* number of downstream ports in this hub */
@@ -391,10 +389,10 @@ public final class Usbdevice_fs {
     /* disconnect-and-claim except when the driver matches the driver field */
     public final static byte USBDEVFS_DISCONNECT_CLAIM_EXCEPT_DRIVER = 0x02;
 
-    public abstract static class Usbdevfs_disconnect_claim extends Struct32 {
+    public abstract static class Usbdevfs_disconnect_claim extends Struct {
 
-        public Usbdevfs_disconnect_claim(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_disconnect_claim(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         public abstract int interface_();
@@ -404,10 +402,10 @@ public final class Usbdevice_fs {
         public abstract String driver();
     };
 
-    public abstract static class Usbdevfs_streams extends Struct32 {
+    public abstract static class Usbdevfs_streams extends Struct {
 
-        public Usbdevfs_streams(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usbdevfs_streams(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         /* Not used by USBDEVFS_FREE_STREAMS */

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.util.posix.memory;
 
 import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -32,8 +32,8 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 public interface Accessor_Time_t {
 
     @time_t
-    long time_t(OpaqueMemory32 mem, long offset);
+    long time_t(MemorySegment memorySegment, long offset);
 
-    void time_t(OpaqueMemory32 mem, long offset, @time_t long value);
+    void time_t(MemorySegment memorySegment, long offset, @time_t long value);
 
 }

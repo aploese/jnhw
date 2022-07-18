@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,654 +20,329 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_FcntlTest_NativeDefines.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
     //We need the POSIX version ...
 #if !defined(HAVE_FCNTL_H) || !defined(_POSIX_VERSION)
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    HAVE_FCNTL_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_HAVE_1FCNTL_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
+int getValueOf_HAVE_FCNTL_H() {
+    return 0;
+}
+
 #else
 #include <fcntl.h>
-#include <unistd.h>
+//#include <unistd.h>
     // include POSIX OH (Optional Header) as well, to make FreeBSD happy.
-#include <sys/stat.h>
+//#include <sys/stat.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    HAVE_FCNTL_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_HAVE_1FCNTL_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
+int getValueOf_HAVE_FCNTL_H() {
+    return 1;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    AT_EACCESS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_AT_1EACCESS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return AT_EACCESS;
-    }
+int getValueOf_AT_EACCESS() {
+    return AT_EACCESS;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    AT_FDCWD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_AT_1FDCWD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return AT_FDCWD;
-    }
+int getValueOf_AT_FDCWD() {
+    return AT_FDCWD;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    AT_REMOVEDIR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_AT_1REMOVEDIR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return AT_REMOVEDIR;
-    }
+int getValueOf_AT_REMOVEDIR() {
+    return AT_REMOVEDIR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    AT_SYMLINK_FOLLOW
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_AT_1SYMLINK_1FOLLOW
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return AT_SYMLINK_FOLLOW;
-    }
+int getValueOf_AT_SYMLINK_FOLLOW() {
+    return AT_SYMLINK_FOLLOW;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    AT_SYMLINK_NOFOLLOW
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_AT_1SYMLINK_1NOFOLLOW
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return AT_SYMLINK_NOFOLLOW;
-    }
+int getValueOf_AT_SYMLINK_NOFOLLOW() {
+    return AT_SYMLINK_NOFOLLOW;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    FD_CLOEXEC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_FD_1CLOEXEC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return FD_CLOEXEC;
-    }
+int getValueOf_FD_CLOEXEC() {
+    return FD_CLOEXEC;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_DUPFD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1DUPFD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_DUPFD;
-    }
+int getValueOf_F_DUPFD() {
+    return F_DUPFD;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_DUPFD_CLOEXEC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1DUPFD_1CLOEXEC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_DUPFD_CLOEXEC;
-    }
+int getValueOf_F_DUPFD_CLOEXEC() {
+    return F_DUPFD_CLOEXEC;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_GETFD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1GETFD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_GETFD;
-    }
+int getValueOf_F_GETFD() {
+    return F_GETFD;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_GETFL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1GETFL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_GETFL;
-    }
+int getValueOf_F_GETFL() {
+    return F_GETFL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_GETLK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1GETLK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_GETLK;
-    }
+int getValueOf_F_GETLK() {
+    return F_GETLK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_GETOWN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1GETOWN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_GETOWN;
-    }
+int getValueOf_F_GETOWN() {
+    return F_GETOWN;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_RDLCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1RDLCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_RDLCK;
-    }
+int getValueOf_F_RDLCK() {
+    return F_RDLCK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_SETFD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1SETFD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_SETFD;
-    }
+int getValueOf_F_SETFD() {
+    return F_SETFD;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_SETFL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1SETFL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_SETFL;
-    }
+int getValueOf_F_SETFL() {
+    return F_SETFL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_SETLK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1SETLK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_SETLK;
-    }
+int getValueOf_F_SETLK() {
+    return F_SETLK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_SETLKW
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1SETLKW
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_SETLKW;
-    }
+int getValueOf_F_SETLKW() {
+    return F_SETLKW;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_SETOWN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1SETOWN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_SETOWN;
-    }
+int getValueOf_F_SETOWN() {
+    return F_SETOWN;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_UNLCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1UNLCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_UNLCK;
-    }
+int getValueOf_F_UNLCK() {
+    return F_UNLCK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    F_WRLCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_F_1WRLCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return F_WRLCK;
-    }
+int getValueOf_F_WRLCK() {
+    return F_WRLCK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_ACCMODE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1ACCMODE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_ACCMODE;
-    }
+int getValueOf_O_ACCMODE() {
+    return O_ACCMODE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_APPEND
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1APPEND
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_APPEND;
-    }
+int getValueOf_O_APPEND() {
+    return O_APPEND;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_ASYNC
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1ASYNC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_O_ASYNC(int* value) {
 #if defined (__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)  || defined(__APPLE__)
-        return JnhwWrapInteger(env, O_ASYNC);
+    *value = O_ASYNC;
 #else
 #if !defined(O_ASYNC)
-        return NULL;
+    value = NULL;
 #else
 #error "O_ASYNC defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_CLOEXEC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1CLOEXEC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_CLOEXEC;
-    }
+int getValueOf_O_CLOEXEC() {
+    return O_CLOEXEC;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_CREAT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1CREAT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_CREAT;
-    }
+int getValueOf_O_CREAT() {
+    return O_CREAT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_DIRECTORY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1DIRECTORY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_DIRECTORY;
-    }
+int getValueOf_O_DIRECTORY() {
+    return O_DIRECTORY;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_DSYNC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1DSYNC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_DSYNC;
-    }
+int getValueOf_O_DSYNC() {
+    return O_DSYNC;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_EXCL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1EXCL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_EXCL;
-    }
+int getValueOf_O_EXCL() {
+    return O_EXCL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_EXEC
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1EXEC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_O_EXEC(int* value) {
 #if defined (__linux__) || defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(O_EXEC)
-        return NULL;
+    value = NULL;
 #else
 #error "O_EXEC defined"
 #endif
 #else
-        return JnhwWrapInteger(env, O_EXEC);
+    *value = O_EXEC;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_FSYNC
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1FSYNC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_O_FSYNC(int* value) {
 #if defined (__linux__) || defined(__FreeBSD__)|| defined(__OpenBSD__) || defined(__APPLE__)
-        return JnhwWrapInteger(env, O_FSYNC);
+    *value = O_FSYNC;
 #else
 #if !defined(O_FSYNC)
-        return NULL;
+    value = NULL;
 #else
 #error "O_FSYNC defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_LARGEFILE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1LARGEFILE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_O_LARGEFILE(int* value) {
 #if defined (_LARGEFILE64_SOURCE)
-        return JnhwWrapInteger(env, O_LARGEFILE);
+    *value = O_LARGEFILE;
 #else
 #if defined(O_LARGEFILE)
 #error "O_LARGEFILE defined"
 #endif
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_NOCTTY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1NOCTTY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_NOCTTY;
-    }
+int getValueOf_O_NOCTTY() {
+    return O_NOCTTY;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_NOFOLLOW
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1NOFOLLOW
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_NOFOLLOW;
-    }
+int getValueOf_O_NOFOLLOW() {
+    return O_NOFOLLOW;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_NONBLOCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1NONBLOCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_NONBLOCK;
-    }
+int getValueOf_O_NONBLOCK() {
+    return O_NONBLOCK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_RDONLY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1RDONLY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_RDONLY;
-    }
+int getValueOf_O_RDONLY() {
+    return O_RDONLY;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_RDWR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1RDWR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_RDWR;
-    }
+int getValueOf_O_RDWR() {
+    return O_RDWR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_RSYNC
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1RSYNC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_O_RSYNC(int* value) {
 #if defined (__APPLE__) || defined (__FreeBSD__)
 #if !defined(O_RSYNC)
-        return NULL;
+    value = NULL;
 #else
 #error "O_RSYNC defined"
 #endif
 #else
-        return JnhwWrapInteger(env, O_RSYNC);
+    *value = O_RSYNC;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_SEARCH
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1SEARCH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_O_SEARCH(int* value) {
 #if defined (__linux__) || defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(O_SEARCH)
-        return NULL;
+    value = NULL;
 #else
 #error "O_SEARCH defined"
 #endif
 #else
-        return JnhwWrapInteger(env, O_SEARCH);
+    *value = O_SEARCH;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_SYNC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1SYNC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_SYNC;
-    }
+int getValueOf_O_SYNC() {
+    return O_SYNC;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_TRUNC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1TRUNC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_TRUNC;
-    }
+int getValueOf_O_TRUNC() {
+    return O_TRUNC;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_TTY_INIT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1TTY_1INIT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_O_TTY_INIT(int* value) {
 #if defined (__linux__) || defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(O_TTY_INIT)
-        return NULL;
+    value = NULL;
 #else
 #error "O_TTY_INIT defined"
 #endif
 #else
-        return JnhwWrapInteger(env, O_TTY_INIT);
+    *value = O_TTY_INIT;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    O_WRONLY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_O_1WRONLY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return O_WRONLY;
-    }
+int getValueOf_O_WRONLY() {
+    return O_WRONLY;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    POSIX_FADV_DONTNEED
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1DONTNEED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_POSIX_FADV_DONTNEED(int* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_DONTNEED)
-        return NULL;
+    value = NULL;
 #else
 #error "POSIX_FADV_DONTNEED defined"
 #endif
 #else
-        return JnhwWrapInteger(env, POSIX_FADV_DONTNEED);
+    *value = POSIX_FADV_DONTNEED;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    POSIX_FADV_NOREUSE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1NOREUSE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_POSIX_FADV_NOREUSE(int* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_NOREUSE)
-        return NULL;
+    value = NULL;
 #else
 #error "POSIX_FADV_NOREUSE defined"
 #endif
 #else
-        return JnhwWrapInteger(env, POSIX_FADV_NOREUSE);
+    *value = POSIX_FADV_NOREUSE;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    POSIX_FADV_NORMAL
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1NORMAL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_POSIX_FADV_NORMAL(int* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_NORMAL)
-        return NULL;
+    value = NULL;
 #else
 #error "POSIX_FADV_NORMAL defined"
 #endif
 #else
-        return JnhwWrapInteger(env, POSIX_FADV_NORMAL);
+    *value = POSIX_FADV_NORMAL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    POSIX_FADV_RANDOM
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1RANDOM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_POSIX_FADV_RANDOM(int* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_RANDOM)
-        return NULL;
+    value = NULL;
 #else
 #error "POSIX_FADV_RANDOM defined"
 #endif
 #else
-        return JnhwWrapInteger(env, POSIX_FADV_RANDOM);
+    *value = POSIX_FADV_RANDOM;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    POSIX_FADV_SEQUENTIAL
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1SEQUENTIAL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_POSIX_FADV_SEQUENTIAL(int* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_SEQUENTIAL)
-        return NULL;
+    value = NULL;
 #else
 #error "POSIX_FADV_SEQUENTIAL defined"
 #endif
 #else
-        return JnhwWrapInteger(env, POSIX_FADV_SEQUENTIAL);
+    *value = POSIX_FADV_SEQUENTIAL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    POSIX_FADV_WILLNEED
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_POSIX_1FADV_1WILLNEED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_POSIX_FADV_WILLNEED(int* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_WILLNEED)
-        return NULL;
+    value = NULL;
 #else
 #error "POSIX_FADV_WILLNEED defined"
 #endif
 #else
-        return JnhwWrapInteger(env, POSIX_FADV_WILLNEED);
+    *value = POSIX_FADV_WILLNEED;
 #endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    SEEK_CUR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_SEEK_1CUR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_CUR;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    SEEK_END
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_SEEK_1END
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_END;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_FcntlTest_NativeDefines
-     * Method:    SEEK_SET
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_FcntlTest_00024NativeDefines_SEEK_1SET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return SEEK_SET;
-    }
-
-#endif
-#ifdef __cplusplus
+    return value;
 }
+
 #endif

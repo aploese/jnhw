@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,38 +20,17 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_x_open_UcontextTest_NativeDefines.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #ifndef HAVE_UCONTEXT_H
 
-    /*
-     * Class:     de_ibapl_jnhw_x_open_UcontextTest_NativeDefines
-     * Method:    HAVE_UCONTEXT_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_x_1open_UcontextTest_00024NativeDefines_HAVE_1UCONTEXT_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
+int getValueOf_HAVE_UCONTEXT_H() {
+    return 0;
+}
 #else
 #include <ucontext.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_x_open_UcontextTest_NativeDefines
-     * Method:    HAVE_UCONTEXT_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_x_1open_UcontextTest_00024NativeDefines_HAVE_1UCONTEXT_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
-
-#endif
-
-#ifdef __cplusplus
+int getValueOf_HAVE_UCONTEXT_H() {
+    return 1;
 }
+
 #endif

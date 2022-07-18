@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,17 +21,18 @@
  */
 package de.ibapl.jnhw.x_open;
 
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
-import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import jdk.incubator.foreign.ResourceScope;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -42,23 +43,24 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class UcontextTest {
 
-    public static class NativeDefines {
-
-        public final static native boolean HAVE_UCONTEXT_H();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-
-    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
-
     @BeforeAll
     public static void checkBeforeAll_UcontextDefines() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
-        DefinesTest.testDefines(Ucontext.class, NativeDefines.class, "HAVE_UCONTEXT_H");
+        DefinesTest.testDefines(Ucontext.class, "HAVE_UCONTEXT_H");
+    }
+
+    private ResourceScope scope;
+
+    @BeforeEach
+    public void setUp() {
+        scope = ResourceScope.newConfinedScope();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        scope.close();
     }
 
     /**
@@ -66,14 +68,14 @@ public class UcontextTest {
      */
     @Test
     public void testGetcontext() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
             case DARWIN:
-                assertThrows(NoSuchNativeTypeException.class, () -> Ucontext.getcontext(new Signal.Ucontext_t(SetMem.TO_0x00)));
+                assertThrows(NoSuchNativeTypeException.class, () -> Ucontext.getcontext(Signal.Ucontext_t.tryAllocateNative(scope)));
                 break;
             default:
                 assertThrows(NullPointerException.class, () -> Ucontext.getcontext(null));
-                Signal.Ucontext_t ucp = new Signal.Ucontext_t(SetMem.DO_NOT_SET);
+                Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(scope);
                 Ucontext.getcontext(ucp);
                 StringBuilder sb = new StringBuilder();
                 ucp.nativeToString(sb, "", " ");
@@ -89,14 +91,14 @@ public class UcontextTest {
     @Test
     @Disabled
     public void testSetcontext() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
             case DARWIN:
                 assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.setcontext(null));
                 break;
             default:
                 assertThrows(NullPointerException.class, () -> Ucontext.setcontext(null));
-                Signal.Ucontext_t ucp = new Signal.Ucontext_t(SetMem.DO_NOT_SET);
+                Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(scope);
                 count = 0;
                 Ucontext.getcontext(ucp);
                 count++;
@@ -117,7 +119,7 @@ public class UcontextTest {
     @Test
     @Disabled
     public void testSwapcontext() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
             case DARWIN:
                 assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.swapcontext(null, null));

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,12 +24,19 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.callback.Callback_IJ_V_Impl;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.memory.OpaquePointer;
+import de.ibapl.jnhw.common.upcall.Callback__V__MA;
+import de.ibapl.jnhw.util.winapi.CallbackFactoryPAPCFUNC;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
-import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
+import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
+import java.util.function.Function;
+import jdk.incubator.foreign.Addressable;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * Wrapper around the
@@ -42,12 +49,16 @@ import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
 @Include("winnt.h")
 public final class Winnt {
 
-    public static class ArrayOfHandle extends WinApiStruct32 {
+    public static class ArrayOfHandle extends WinApiStruct {
 
         public final int length;
 
-        public ArrayOfHandle(int length, SetMem setMem) {
-            super((OpaqueMemory32) null, 0, length * WinApiDataType.HANDLE.baseDataType.SIZE_OF, setMem);
+        public static ArrayOfHandle allocateNative(int length, ResourceScope rs) {
+            return new ArrayOfHandle(MemorySegment.allocateNative(length * WinApiDataType.HANDLE.SIZE_OF, rs), length);
+        }
+
+        public ArrayOfHandle(MemorySegment memorySegment, int length) {
+            super(memorySegment, 0, length * WinApiDataType.HANDLE.SIZE_OF);
             this.length = length;
         }
 
@@ -57,7 +68,7 @@ public final class Winnt {
             } else if (i >= length) {
                 throw new IllegalArgumentException("i >= length");
             }
-            return new HANDLE(MEM_ACCESS.intptr_t_AtIndex(this, 0, i));
+            return new HANDLE(MEM_ACCESS.intptr_t_AtIndex(memorySegment, i));
         }
 
         @Override
@@ -81,7 +92,7 @@ public final class Winnt {
             } else if (i >= length) {
                 throw new IllegalArgumentException("i >= length");
             }
-            MEM_ACCESS.intptr_t_AtIndex(this, 0, i, element.value);
+            MEM_ACCESS.intptr_t_AtIndex(memorySegment, i, element);
         }
 
     }
@@ -94,37 +105,32 @@ public final class Winnt {
      * typedef PVOID HANDLE; LONG_PTR is used for INVALID_HANDLE_VALUE == -1.
      * </p>
      */
-    public static class HANDLE {
+    public static class HANDLE extends OpaquePointer<HANDLE> {
 
-        final static long INVALID_HANDLE_VALUE__VALUE = -1L;
+        protected final static long _INVALID_HANDLE_VALUE = -1L;
         /**
-         * Handleapi.INVALID_HANDLE_VALUE()
+         * Handleapi.INVALID_HANDLE_VALUE
          */
-        public final static HANDLE INVALID_HANDLE_VALUE = new HANDLE(INVALID_HANDLE_VALUE__VALUE);
+        public final static HANDLE INVALID_HANDLE_VALUE = new HANDLE(MemoryAddress.ofLong(_INVALID_HANDLE_VALUE));
 
-        final static long NULL__VALUE = 0L;
-        public final static HANDLE NULL = new HANDLE(NULL__VALUE);
+        public final static HANDLE NULL = new HANDLE(MemoryAddress.NULL);
 
-        public static long getHandleValue(HANDLE handle) {
-            return handle.value;
-        }
-
-        public static long getHandleValueOrNULL(HANDLE handle) {
-            return handle == null ? NULL__VALUE : handle.value;
-        }
-
-        public static HANDLE of(long value) {
-            if (value == 0L) {
+        public static HANDLE of(MemoryAddress value) {
+            if (value == MemoryAddress.NULL) {
                 return NULL;
+            } else if (value.toRawLongValue() == _INVALID_HANDLE_VALUE) {
+                return INVALID_HANDLE_VALUE;
             } else {
                 return new HANDLE(value);
             }
         }
 
-        protected final long value;
+        public static boolean isInvalid(MemoryAddress value) {
+            return _INVALID_HANDLE_VALUE == value.toRawLongValue();
+        }
 
-        protected HANDLE(long value) {
-            this.value = value;
+        protected HANDLE(MemoryAddress value) {
+            super(value);
         }
 
         /**
@@ -145,35 +151,27 @@ public final class Winnt {
                 return false;
             }
             final HANDLE other = (HANDLE) obj;
-            return this.value == other.value;
+            return this.nativeValue == other.nativeValue;
         }
 
         @Override
         public int hashCode() {
             int hash = 5;
-            hash = 11 * hash + (int) (this.value ^ (this.value >>> 32));
+            hash = 11 * hash + (int) (this.nativeValue.toRawLongValue() ^ (this.nativeValue.toRawLongValue() >>> 32));
             return hash;
         }
 
-        public boolean is_INVALID_HANDLE_VALUE() {
-            return value == INVALID_HANDLE_VALUE__VALUE;
+        public final boolean is_INVALID_HANDLE_VALUE() {
+            return nativeValue.toRawLongValue() == _INVALID_HANDLE_VALUE;
         }
 
-        public boolean is_NULL() {
-            return value == NULL__VALUE;
-        }
-
-        public boolean isNot_INVALID_HANDLE_VALUE() {
-            return value != INVALID_HANDLE_VALUE__VALUE;
-        }
-
-        public boolean isNot_NULL() {
-            return value != NULL__VALUE;
+        public final boolean isNot_INVALID_HANDLE_VALUE() {
+            return nativeValue.toRawLongValue() != _INVALID_HANDLE_VALUE;
         }
 
         @Override
         public String toString() {
-            return String.format("{value = 0x%08x}", value);
+            return String.format("{value = 0x%08x}", nativeValue.toRawLongValue());
         }
 
     }
@@ -195,25 +193,29 @@ public final class Winnt {
      * of valid bytes in the buffer and must be set if the amount of valid bytes
      * changed.
      */
-    public static class LPWSTR extends WinApiStruct32 {
+    public static class LPWSTR extends WinApiStruct {
 
-        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.baseDataType.SIZE_OF;
+        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
+
+        public static LPWSTR allocateNative(int stringLength, ResourceScope scope) {
+            return new LPWSTR(MemorySegment.allocateNative(stringLength * SIZE_OF_WCHAR, scope), 0, stringLength);
+        }
 
         static int getWCHAR_Length(LPWSTR value) {
-            return value.sizeInBytes / SIZE_OF_WCHAR;
+            return (int) (value.sizeof() / SIZE_OF_WCHAR);
         }
 
         /**
          * Creates space for a Wide String (16 bit)
          *
-         * @param elementLength
+         * @param stringLength
          */
-        public LPWSTR(int elementLength, SetMem setMem) {
-            super((OpaqueMemory32) null, 0, elementLength * SIZE_OF_WCHAR, setMem);
+        public LPWSTR(MemorySegment memorySegment, long offset, int stringLength) {
+            super(memorySegment, offset, stringLength * SIZE_OF_WCHAR);
         }
 
         public void clear() {
-            OpaqueMemory32.clear(this);
+            OpaqueMemory.clear(this);
         }
 
         /**
@@ -221,27 +223,25 @@ public final class Winnt {
          *
          * @return
          */
-        public String getUnicodeString(int elementLength) {
-            return MEM_ACCESS.getUnicodeString(this, 0, 0, elementLength);
+        public String getUnicodeString(int stringLength) {
+            return MEM_ACCESS.getUnicodeString(memorySegment, 0, stringLength);
         }
 
     }
 
-    public abstract static class PAPCFUNC extends Callback_IJ_V_Impl {
+    public abstract static class PAPCFUNC extends Callback__V__MA<OpaqueMemory> {
 
-        /**
-         * this will be called from the native code on 64 bit.
-         *
-         * @param value
-         */
-        protected abstract void callback(@ULONG_PTR int value);
+        protected <T extends PAPCFUNC> PAPCFUNC(Function<T, MemoryAddress> producer) {
+            super(producer);
+        }
 
-        /**
-         * this will be called from the native code on 32 bit.
-         *
-         * @param value
-         */
-        protected abstract void callback(@ULONG_PTR long value);
+        public PAPCFUNC(MemoryAddress src) {
+            super(src);
+        }
+
+        public PAPCFUNC() {
+            super();
+        }
 
     }
 
@@ -253,27 +253,35 @@ public final class Winnt {
      * typedef HANDLE *PHANDLE;
      * </p>
      */
-    public static class PHANDLE extends OpaqueMemory32 {
+    public static class PHANDLE extends OpaqueMemory {
+
+        public static PHANDLE allocateNative(ResourceScope rs) {
+            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, rs), 0);
+        }
+
+        public static PHANDLE allocateNative(HANDLE value, ResourceScope rs) {
+            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, rs), 0, value);
+        }
 
         @FunctionalInterface
         protected static interface CreateHandler {
 
-            HANDLE create(long value);
+            HANDLE create(MemoryAddress value);
 
         }
 
-        private final static int SIZE_OF = WinApiDataType.PHANDLE.baseDataType.SIZE_OF;
+        protected final static int SIZE_OF = WinApiDataType.PHANDLE.SIZE_OF;
 
         HANDLE cachedHandle;
 
-        protected PHANDLE(CreateHandler handler) {
-            super((OpaqueMemory32) null, 0, SIZE_OF, SetMem.TO_0x00);
-            cachedHandle = handler.create(getHandleValue());
+        public PHANDLE(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, SIZE_OF);
+            cachedHandle = createTarget(getHandleValue());
         }
 
-        protected PHANDLE(HANDLE handle) {
-            super((OpaqueMemory32) null, 0, SIZE_OF, SetMem.DO_NOT_SET);
-            setHandleValue(handle.value);
+        public PHANDLE(MemorySegment memorySegment, long offset, HANDLE handle) {
+            super(memorySegment, offset, SIZE_OF);
+            setHandleValue(handle.toAddressable());
             cachedHandle = handle;
         }
 
@@ -283,13 +291,13 @@ public final class Winnt {
          * @param value
          * @return
          */
-        protected HANDLE createTarget(long value) {
-            return new HANDLE(value);
+        protected HANDLE createTarget(MemoryAddress value) {
+            return HANDLE.of(value);
         }
 
         public HANDLE dereference() {
-            final long currentValue = MEM_ACCESS.intptr_t(this, 0);
-            if (cachedHandle.value != currentValue) {
+            final MemoryAddress currentValue = MEM_ACCESS.intptr_t(memorySegment, 0);
+            if (cachedHandle.toAddressable().address() != currentValue) {
                 //cached is not valid anymore, create new one...
                 cachedHandle = createTarget(currentValue);
             }
@@ -298,16 +306,16 @@ public final class Winnt {
 
         @Override
         public BaseDataType getBaseDataType() {
-            return WinApiDataType.PHANDLE.baseDataType;
+            return WinApiDataType.PHANDLE;
         }
 
-        private long getHandleValue() {
-            return MEM_ACCESS.intptr_t(this, 0);
+        private MemoryAddress getHandleValue() {
+            return MEM_ACCESS.intptr_t(memorySegment, 0);
         }
 
         @Override
         public String nativeToHexString() {
-            return MEM_ACCESS.intptr_t_AsHex(this, 0);
+            return MEM_ACCESS.intptr_t_AsHex(memorySegment, 0);
         }
 
         @Override
@@ -316,11 +324,11 @@ public final class Winnt {
         }
 
         public void setFromHANDLE(HANDLE target) {
-            setHandleValue(((HANDLE) target).value);
+            setHandleValue(target.toAddressable());
         }
 
-        private void setHandleValue(long value) {
-            MEM_ACCESS.intptr_t(this, 0, value);
+        private void setHandleValue(Addressable value) {
+            MEM_ACCESS.intptr_t(memorySegment, 0, value);
         }
 
     }
@@ -767,18 +775,5 @@ public final class Winnt {
      */
     @Define
     public final static int KEY_EXECUTE = ((KEY_READ) & (~SYNCHRONIZE));
-
-    /**
-     * Make sure the native lib is loaded
-     *
-     * @implNote The actual value for the define fields are injected by
-     * initFields. The static initialization block is used to set the value here
-     * to communicate that this static final fields are not statically foldable.
-     * {
-     * @see String#COMPACT_STRINGS}
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
 
 }

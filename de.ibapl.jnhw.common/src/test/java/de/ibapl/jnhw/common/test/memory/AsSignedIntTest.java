@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,9 +23,10 @@ package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AsSignedInt;
-import org.junit.jupiter.api.Test;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -33,17 +34,15 @@ import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
  */
 public class AsSignedIntTest {
 
-    public AsSignedIntTest() {
-    }
-
     @Test
     public void testNative() {
-        AsSignedInt instance = new AsSignedInt(BaseDataType.int16_t, null, 0, SetMem.TO_0x00);
-        short expResult = 0x2010;
-        instance.setFromSignedInt(expResult);
-        assertEquals(expResult, instance.getAsSignedInt());
-        assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedInt(Integer.MAX_VALUE));
-        assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, null, 0, SetMem.DO_NOT_SET));
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            AsSignedInt instance = AsSignedInt.allocateNative(BaseDataType.int16_t, rs);
+            short expResult = 0x2010;
+            instance.setFromSignedInt(expResult);
+            assertEquals(expResult, instance.getAsSignedInt());
+            assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedInt(Integer.MAX_VALUE));
+            assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, MemorySegment.allocateNative(BaseDataType.uint8_t.SIZE_OF, rs), 0));
+        }
     }
-
 }

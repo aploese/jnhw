@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,8 +23,14 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
 
 /**
  * Wrapper around the {@code <stdio.h>} header.
@@ -93,8 +99,6 @@ public class Stdio {
     public static int SEEK_SET;
 
     /**
-     * Make sure the native lib is loaded
-     *
      * @implNote The actual value for the define fields are injected by
      * initFields. The static initialization block is used to set the value here
      * to communicate that this static final fields are not statically foldable.
@@ -102,8 +106,7 @@ public class Stdio {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_STDIO_H = true;
                 EOF = LinuxDefines.EOF;
@@ -121,9 +124,23 @@ public class Stdio {
                 SEEK_SET = BsdDefines.SEEK_SET;
                 break;
             default:
-                throw new NoClassDefFoundError("No stdio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No stdio.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
+
+    private final static JnhwMh_sI___V getchar = JnhwMh_sI___V.of(
+            "getchar",
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI putchar = JnhwMh_sI__sI.of(
+            "putchar",
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI___A remove = JnhwMh_sI___A.of(
+            "remove",
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer);
 
     /**
      * <b>POSIX:</b>
@@ -133,7 +150,13 @@ public class Stdio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native char getchar() throws NativeErrorException;
+    public static char getchar() throws NativeErrorException {
+        final int result = getchar.invoke_sI___V();
+        if (result == EOF) {
+            throw new NativeErrorException(Errno.errno());
+        }
+        return (char) result;
+    }
 
     /**
      * <b>POSIX:</b>
@@ -143,7 +166,12 @@ public class Stdio {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public static native void putchar(char c) throws NativeErrorException;
+    public static void putchar(char c) throws NativeErrorException {
+        final int result = putchar.invoke_sI__sI(c);
+        if (result == EOF) {
+            throw new NativeErrorException(Errno.errno());
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -152,18 +180,20 @@ public class Stdio {
      *
      * @param path the pathname naming the file.
      *
-     * @throws NullPointerException if {@code file} is {@code null}.
+     * @throws NullPointerException if {@code path} is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
     public final static void remove(String path) throws NativeErrorException {
-        if (path == null) {
-            throw new NullPointerException("file is null.");
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+            _path.setUtf8String(0, path);
+            int result = remove.invoke_sI___A(_path);
+            if (result != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
         }
-        remove0(path);
     }
-
-    private static native void remove0(String path) throws NativeErrorException;
 
 }

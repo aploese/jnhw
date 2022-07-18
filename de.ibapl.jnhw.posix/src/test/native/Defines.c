@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,635 +20,390 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines.h"
 
 #include <stdint.h>
 #include <unistd.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    _BSD_SOURCE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1BSD_1SOURCE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__BSD_SOURCE(int* value) {
 #if defined (_BSD_SOURCE)
-        return JnhwWrapInteger(env, _BSD_SOURCE);
+    *value = _BSD_SOURCE;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    _FILE_OFFSET_BITS
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1FILE_1OFFSET_1BITS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__FILE_OFFSET_BITS(int* value) {
 #if defined (_FILE_OFFSET_BITS)
-        return JnhwWrapInteger(env, _FILE_OFFSET_BITS);
+    *value = _FILE_OFFSET_BITS;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    _LARGEFILE64_SOURCE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1LARGEFILE64_1SOURCE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__LARGEFILE64_SOURCE(int* value) {
 #if defined(_LARGEFILE64_SOURCE)
-        return JnhwWrapInteger(env, _LARGEFILE64_SOURCE);
+    *value = _LARGEFILE64_SOURCE;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    _LARGEFILE_SOURCE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1LARGEFILE_1SOURCE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__LARGEFILE_SOURCE(int* value) {
 #if defined(_LARGEFILE_SOURCE)
-        return JnhwWrapInteger(env, _LARGEFILE_SOURCE);
+    *value = _LARGEFILE_SOURCE;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    _POSIX_C_SOURCE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1POSIX_1C_1SOURCE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__POSIX_C_SOURCE(int* value) {
 #if defined (_POSIX_C_SOURCE)
-        return JnhwWrapInteger(env, _POSIX_C_SOURCE);
+    *value = _POSIX_C_SOURCE;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    _XOPEN_SOURCE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1XOPEN_1SOURCE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__XOPEN_SOURCE(int* value) {
 #if defined (_XOPEN_SOURCE)
-        return JnhwWrapInteger(env, _XOPEN_SOURCE);
+    *value = _XOPEN_SOURCE;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    _XOPEN_SOURCE_EXTENDED
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1XOPEN_1SOURCE_1EXTENDED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__XOPEN_SOURCE_EXTENDED(int* value) {
 #if defined (_XOPEN_SOURCE_EXTENDED)
-        return JnhwWrapInteger(env, _XOPEN_SOURCE_EXTENDED);
+    *value = _XOPEN_SOURCE_EXTENDED;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __aarch64__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1aarch64_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___aarch64__(int* value) {
 #if defined(__aarch64__)
-        return JnhwWrapInteger(env, __aarch64__);
+    *value = __aarch64__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __alpha__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1alpha_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___alpha__(int* value) {
 #if defined(__alpha__)
-        return JnhwWrapInteger(env, __alpha__);
+    *value = __alpha__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __amd64__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1amd64_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___amd64__(int* value) {
 #if defined(__amd64__)
-        return JnhwWrapInteger(env, __amd64__);
+    *value = __amd64__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __APPLE__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1APPLE_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___APPLE__(int* value) {
 #if defined(__APPLE__)
-        return JnhwWrapInteger(env, __APPLE__);
+    *value = __APPLE__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __arm__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1arm_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___arm__(int* value) {
 #if defined(__arm__)
-        return JnhwWrapInteger(env, __arm__);
+    *value = __arm__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __ARM_ARCH
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1ARM_1ARCH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___ARM_ARCH(int* value) {
 #if defined(__ARM_ARCH)
-        return JnhwWrapInteger(env, __ARM_ARCH);
+    *value = __ARM_ARCH;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __BIGGEST_ALIGNMENT__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1BIGGEST_1ALIGNMENT_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __BIGGEST_ALIGNMENT__;
-    }
+int getValueOf___BIGGEST_ALIGNMENT__() {
+    return __BIGGEST_ALIGNMENT__;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __BYTE_ORDER__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1BYTE_1ORDER_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __BYTE_ORDER__;
-    }
+int getValueOf___BYTE_ORDER__() {
+    return __BYTE_ORDER__;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __FreeBSD__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1FreeBSD_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___FreeBSD__(int* value) {
 #if defined(__FreeBSD__)
-        return JnhwWrapInteger(env, __FreeBSD__);
+    *value = __FreeBSD__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __GLIBC_MINOR__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1GLIBC_1MINOR_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___GLIBC_MINOR__(int* value) {
 #if defined(__GLIBC_MINOR__)
-        return JnhwWrapInteger(env, __GLIBC_MINOR__);
+    *value = __GLIBC_MINOR__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __GLIBC__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1GLIBC_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___GLIBC__(int* value) {
 #if defined(__GLIBC__)
-        return JnhwWrapInteger(env, __GLIBC__);
+    *value = __GLIBC__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __GNU_LIBRARY__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1GNU_1LIBRARY_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___GNU_LIBRARY__(int* value) {
 #if defined(__GNU_LIBRARY__)
-        return JnhwWrapInteger(env, __GNU_LIBRARY__);
+    *value = __GNU_LIBRARY__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __i386__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1i386_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___i386__(int* value) {
 #if defined(__i386__)
-        return JnhwWrapInteger(env, __i386__);
+    *value = __i386__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __i686__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1i686_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___i686__(int* value) {
 #if defined(__i686__)
-        return JnhwWrapInteger(env, __i686__);
+    *value = __i686__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __ILP32__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1ILP32_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___ILP32__(int* value) {
 #if defined (__ILP32__)
-        return JnhwWrapInteger(env, __ILP32__);
+    *value = __ILP32__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __linux__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1linux_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___linux__(int* value) {
 #if defined(__linux__)
-        return JnhwWrapInteger(env, __linux__);
+    *value = __linux__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __LP64__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1LP64_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___LP64__(int* value) {
 #if defined (__LP64__)
-        return JnhwWrapInteger(env, __LP64__);
+    *value = __LP64__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __mips__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1mips_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___mips__(int* value) {
 #if defined(__mips__)
-        return JnhwWrapInteger(env, __mips__);
+    *value = __mips__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __mips64
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1mips64
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___mips64(int* value) {
 #if defined(__mips64)
-        return JnhwWrapInteger(env, __mips64);
+    *value = __mips64;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __MIPSEB__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1MIPSEB_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___MIPSEB__(int* value) {
 #if defined(__MIPSEB__)
-        return JnhwWrapInteger(env, __MIPSEB__);
+    *value = __MIPSEB__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __MIPSEL__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1MIPSEL_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___MIPSEL__(int* value) {
 #if defined(__MIPSEL__)
-        return JnhwWrapInteger(env, __MIPSEL__);
+    *value = __MIPSEL__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __ORDER_BIG_ENDIAN__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1ORDER_1BIG_1ENDIAN_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __ORDER_BIG_ENDIAN__;
-    }
+int getValueOf___ORDER_BIG_ENDIAN__() {
+    return __ORDER_BIG_ENDIAN__;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __ORDER_LITTLE_ENDIAN__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1ORDER_1LITTLE_1ENDIAN_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __ORDER_LITTLE_ENDIAN__;
-    }
+int getValueOf___ORDER_LITTLE_ENDIAN__() {
+    return __ORDER_LITTLE_ENDIAN__;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __ORDER_PDP_ENDIAN__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1ORDER_1PDP_1ENDIAN_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __ORDER_PDP_ENDIAN__;
-    }
+int getValueOf___ORDER_PDP_ENDIAN__() {
+    return __ORDER_PDP_ENDIAN__;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __OpenBSD__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1OpenBSD_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___OpenBSD__(int* value) {
 #if defined(__OpenBSD__)
-        return JnhwWrapInteger(env, __OpenBSD__);
+    *value = __OpenBSD__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __powerpc__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1powerpc_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___powerpc__(int* value) {
 #if defined(__powerpc__)
-        return JnhwWrapInteger(env, __powerpc__);
+    *value = __powerpc__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __powerpc64__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1powerpc64_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___powerpc64__(int* value) {
 #if defined(__powerpc64__)
-        return JnhwWrapInteger(env, __powerpc64__);
+    *value = __powerpc64__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __riscv
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1riscv
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___riscv(int* value) {
 #if defined( __riscv)
-        return JnhwWrapInteger(env, __riscv);
+    *value = __riscv;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __SH4__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1SH4_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___SH4__(int* value) {
 #if defined(__SH4__)
-        return JnhwWrapInteger(env, __SH4__);
+    *value = __SH4__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __SIZEOF_LONG__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1SIZEOF_1LONG_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __SIZEOF_LONG__;
-    }
+int getValueOf___SIZEOF_LONG__() {
+    return __SIZEOF_LONG__;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __SIZEOF_POINTER__
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1SIZEOF_1POINTER_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __SIZEOF_POINTER__;
-    }
+int getValueOf___SIZEOF_POINTER__() {
+    return __SIZEOF_POINTER__;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __s390__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1s390_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___s390__(int* value) {
 #if defined(__s390__)
-        return JnhwWrapInteger(env, __s390__);
+    *value = __s390__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __s390x__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1s390x_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___s390x__(int* value) {
 #if defined(__s390x__)
-        return JnhwWrapInteger(env, __s390x__);
+    *value = __s390x__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __sh__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1sh_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___sh__(int* value) {
 #if defined(__sh__)
-        return JnhwWrapInteger(env, __sh__);
+    *value = __sh__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __sparc64__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1sparc64_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___sparc64__(int* value) {
 #if defined(__sparc64__)
-        return JnhwWrapInteger(env, __sparc64__);
+    *value = __sparc64__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __sparc__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1sparc_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___sparc__(int* value) {
 #if defined(__sparc__)
-        return JnhwWrapInteger(env, __sparc__);
+    *value = __sparc__;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __TIMESIZE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1TIMESIZE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___TIMESIZE(int* value) {
 #if defined(__TIMESIZE)
-        return JnhwWrapInteger(env, __TIMESIZE);
+    *value = __TIMESIZE;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __WORDSIZE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1WORDSIZE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf___WORDSIZE(int* value) {
 #if defined (__WIN32__) || defined(__OpenBSD__)
 #if !defined(__WORDSIZE)
-        return NULL;
+    value = NULL;
 #else
 #error "__WORDSIZE defined"
 #endif
 #else
-        return JnhwWrapInteger(env, __WORDSIZE);
+    *value = __WORDSIZE;
 #endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_util_posix_DefinesTest_NativeDefines
-     * Method:    __x86_64__
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_util_posix_DefinesTest_00024NativeDefines__1_1x86_164_1_1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__x86_64__)
-        return JnhwWrapInteger(env, __x86_64__);
-#else
-        return NULL;
-#endif
-    }
-
-#ifdef __cplusplus
+    return value;
 }
+
+int* tryGetValueOf___x86_64__(int* value) {
+#if defined(__x86_64__)
+    *value = __x86_64__;
+#else
+    value = NULL;
 #endif
+    return value;
+}

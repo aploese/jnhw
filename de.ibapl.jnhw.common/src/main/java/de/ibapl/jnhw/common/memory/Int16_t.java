@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,40 +24,47 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.annotation.int16_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
  * @author aploese
  */
 @int16_t
-public class Int16_t extends NativeIntNumber {
+public class Int16_t extends NativeIntNumber<Short> {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.int16_t;
 
-    public Int16_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
-        super(owner, offset, 2, setMem);
+    public static Int16_t allocateNative(ResourceScope rs) {
+        return new Int16_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, rs), 0);
     }
 
-    public Int16_t() {
-        super(2);
+    public Int16_t(MemorySegment memorySegment, long offset) {
+        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
+    }
+
+    public static Int16_t map(OpaqueMemory mem, long offset) {
+        return new Int16_t(mem.memorySegment, offset);
     }
 
     @int16_t
     public short int16_t() {
-        return MEM_ACCESS.int16_t(this, 0);
+        return MEM_ACCESS.int16_t(memorySegment, 0);
     }
 
     public void int16_t(@int16_t short value) {
-        MEM_ACCESS.int16_t(this, 0, value);
+        MEM_ACCESS.int16_t(memorySegment, 0, value);
     }
 
+    @Override
     public String nativeToHexString() {
-        return MEM_ACCESS.int16_t_AsHex(this, 0);
+        return MEM_ACCESS.int16_t_AsHex(memorySegment, 0);
     }
 
     @Override
     public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(MEM_ACCESS.int16_t_nativeToString(this, 0));
+        sb.append(MEM_ACCESS.int16_t_nativeToString(memorySegment, 0));
     }
 
     @Override

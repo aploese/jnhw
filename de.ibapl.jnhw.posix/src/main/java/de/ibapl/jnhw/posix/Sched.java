@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,14 +24,21 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___V;
 import de.ibapl.jnhw.common.util.IntDefine;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import de.ibapl.jnhw.util.posix.PosixDataType;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
 
 /**
  * Wrapper around the {@code <pthread.h>} header.
@@ -85,7 +92,7 @@ public class Sched {
      * sched_param}</a>.
      *
      */
-    public static class Sched_param extends Struct32 {
+    public final static class Sched_param extends Struct {
 
         public final static Alignment alignof;
         public final static long offsetof_Sched_priority;
@@ -95,12 +102,8 @@ public class Sched {
         public final static long offsetof_Sched_ss_repl_period;
         public final static int sizeof;
 
-        /**
-         * Make sure the native lib is loaded
-         */
         static {
-            LibJnhwPosixLoader.touch();
-            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case DARWIN:
                     sizeof = 8;
                     break;
@@ -113,6 +116,10 @@ public class Sched {
             offsetof_Sched_ss_low_priority = -1;
             offsetof_Sched_ss_max_repl = -1;
             offsetof_Sched_ss_repl_period = -1;
+        }
+
+        public final static Sched_param allocateNative(ResourceScope scope) {
+            return new Sched_param(MemorySegment.allocateNative(sizeof, scope), 0);
         }
 
         /**
@@ -131,14 +138,10 @@ public class Sched {
          */
         private final Time.Timespec sched_ss_repl_period;
 
-        public Sched_param(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Sched_param.sizeof, setMem);
-            sched_ss_init_budget = Sched_param.offsetof_Sched_ss_init_budget == -1 ? null : new Time.Timespec(this, Sched_param.offsetof_Sched_ss_init_budget, SetMem.DO_NOT_SET);//mem is already initialized by parent
-            sched_ss_repl_period = Sched_param.offsetof_Sched_ss_repl_period == -1 ? null : new Time.Timespec(this, Sched_param.offsetof_Sched_ss_repl_period, SetMem.DO_NOT_SET);//mem is already initialized by parent
-        }
-
-        public Sched_param(SetMem setMem) {
-            this(null, 0, setMem);
+        public Sched_param(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Sched_param.sizeof);
+            sched_ss_init_budget = Sched_param.offsetof_Sched_ss_init_budget == -1 ? null : new Time.Timespec(this.memorySegment, Sched_param.offsetof_Sched_ss_init_budget);
+            sched_ss_repl_period = Sched_param.offsetof_Sched_ss_repl_period == -1 ? null : new Time.Timespec(this.memorySegment, Sched_param.offsetof_Sched_ss_repl_period);
         }
 
         /**
@@ -149,7 +152,7 @@ public class Sched {
          * @return the native value of sched_priority.
          */
         public int sched_priority() {
-            return MEM_ACCESS.int32_t(this, Sched_param.offsetof_Sched_priority);
+            return MEM_ACCESS.int32_t(memorySegment, Sched_param.offsetof_Sched_priority);
         }
 
         /**
@@ -160,7 +163,7 @@ public class Sched {
          * @param sched_priority the value of sched_priority to be set natively.
          */
         public void sched_priority(int sched_priority) {
-            MEM_ACCESS.int32_t(this, Sched_param.offsetof_Sched_priority, sched_priority);
+            MEM_ACCESS.int32_t(memorySegment, Sched_param.offsetof_Sched_priority, sched_priority);
         }
 
         public Time.Timespec sched_ss_init_budget() throws NoSuchNativeTypeMemberException {
@@ -170,6 +173,7 @@ public class Sched {
                 return sched_ss_init_budget;
             }
         }
+
         /**
          * Low scheduling priority for sporadic server.
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sched.h.html">{@code structure
@@ -184,7 +188,7 @@ public class Sched {
             if (Sched_param.offsetof_Sched_ss_low_priority == -1) {
                 throw new NoSuchNativeTypeMemberException("sched_param", "sched_ss_low_priority");
             }
-            return MEM_ACCESS.int32_t(this, Sched_param.offsetof_Sched_ss_low_priority);
+            return MEM_ACCESS.int32_t(memorySegment, Sched_param.offsetof_Sched_ss_low_priority);
         }
 
         /**
@@ -202,7 +206,7 @@ public class Sched {
             if (Sched_param.offsetof_Sched_ss_low_priority == -1) {
                 throw new NoSuchNativeTypeMemberException("sched_param", "sched_ss_low_priority");
             }
-            MEM_ACCESS.int32_t(this, Sched_param.offsetof_Sched_ss_low_priority, sched_ss_low_priority);
+            MEM_ACCESS.int32_t(memorySegment, Sched_param.offsetof_Sched_ss_low_priority, sched_ss_low_priority);
         }
 
         /**
@@ -219,7 +223,7 @@ public class Sched {
             if (Sched_param.offsetof_Sched_ss_max_repl == -1) {
                 throw new NoSuchNativeTypeMemberException("sched_param", "sched_ss_max_repl");
             }
-            return MEM_ACCESS.int32_t(this, Sched_param.offsetof_Sched_ss_max_repl);
+            return MEM_ACCESS.int32_t(memorySegment, Sched_param.offsetof_Sched_ss_max_repl);
         }
 
         /**
@@ -237,7 +241,7 @@ public class Sched {
             if (Sched_param.offsetof_Sched_ss_max_repl == -1) {
                 throw new NoSuchNativeTypeMemberException("sched_param", "sched_ss_max_repl");
             }
-            MEM_ACCESS.int32_t(this, Sched_param.offsetof_Sched_ss_max_repl, sched_ss_max_repl);
+            MEM_ACCESS.int32_t(memorySegment, Sched_param.offsetof_Sched_ss_max_repl, sched_ss_max_repl);
         }
 
         public Time.Timespec sched_ss_repl_period() throws NoSuchNativeTypeMemberException {
@@ -281,8 +285,6 @@ public class Sched {
     public final static IntDefine SCHED_SPORADIC;
 
     /**
-     * Make sure the native lib is loaded
-     *
      * @implNote The actual value for the define fields are injected by
      * initFields. The static initialization block is used to set the value here
      * to communicate that this static final fields are not statically foldable.
@@ -290,9 +292,8 @@ public class Sched {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
 
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_SCHED_H = true;
                 SCHED_FIFO = LinuxDefines.SCHED_FIFO;
@@ -322,8 +323,67 @@ public class Sched {
                 SCHED_SPORADIC = IntDefine.UNDEFINED;
                 break;
             default:
-                throw new NoClassDefFoundError("No sched.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No sched.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
+    }
+
+    private final static JnhwMh_sI__sI sched_get_priority_max = JnhwMh_sI__sI.of(
+            "sched_get_priority_max",
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI sched_get_priority_min = JnhwMh_sI__sI.of(
+            "sched_get_priority_min",
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI__A sched_getparam = JnhwMh_sI__sI__A.ofOrNull(
+            "sched_getparam",
+            BaseDataType.C_int,
+            PosixDataType.pid_t,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__sI sched_getscheduler = JnhwMh_sI__sI.ofOrNull(
+            "sched_getscheduler",
+            BaseDataType.C_int,
+            PosixDataType.pid_t);
+
+    private final static JnhwMh_sI__sI__A sched_rr_get_interval = JnhwMh_sI__sI__A.ofOrNull(
+            "sched_rr_get_interval",
+            BaseDataType.C_int,
+            PosixDataType.pid_t,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__sI__A sched_setparam = JnhwMh_sI__sI__A.ofOrNull(
+            "sched_setparam",
+            BaseDataType.C_int,
+            PosixDataType.pid_t,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh_sI__sI_sI__A sched_setscheduler = JnhwMh_sI__sI_sI__A.ofOrNull(
+            "sched_setscheduler",
+            BaseDataType.C_int,
+            PosixDataType.pid_t,
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh__V___V sched_yield = JnhwMh__V___V.of(
+            "sched_yield");
+
+    /**
+     * <b>POSIX[TPS]:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/sched_get_priority_max.html">sched_get_priority_max,
+     * sched_get_priority_min - get priority limits (REALTIME)</a>.
+     *
+     * @throws NativeErrorException if the return value of the native function
+     * indicates an error.
+     */
+    public final static int sched_get_priority_max(int policy) throws NativeErrorException {
+        final int result = sched_get_priority_max.invoke_sI__sI(policy);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        }
+        return result;
     }
 
     /**
@@ -334,19 +394,13 @@ public class Sched {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int sched_get_priority_max(int policy) throws NativeErrorException;
-
-    /**
-     * <b>POSIX[TPS]:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/sched_get_priority_max.html">sched_get_priority_max,
-     * sched_get_priority_min - get priority limits (REALTIME)</a>.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     */
-    public final static native int sched_get_priority_min(int policy) throws NativeErrorException;
-
-    private static native void sched_getparam(@pid_t int pid, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int sched_get_priority_min(int policy) throws NativeErrorException {
+        final int result = sched_get_priority_min.invoke_sI__sI(policy);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        }
+        return result;
+    }
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -359,7 +413,17 @@ public class Sched {
      * available natively.
      */
     public final static void sched_getparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException {
-        sched_getparam(pid, AbstractNativeMemory.toUintptr_t(param));
+        try {
+            if (sched_getparam.invoke_sI__sI__P(pid, param) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (sched_getparam == null) {
+                throw new NoSuchNativeMethodException("sched_getparam");
+            } else {
+                throw npe;
+            }
+        }
     }
 
     /**
@@ -373,9 +437,21 @@ public class Sched {
      * @throws NoSuchNativeMethodException if the method sched_getscheduler is
      * not available natively.
      */
-    public final static native int sched_getscheduler(@pid_t int pid) throws NativeErrorException, NoSuchNativeMethodException;
-
-    private static native void sched_rr_get_interval(@pid_t int pid, long ptrInterval) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int sched_getscheduler(@pid_t int pid) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            final int result = sched_getscheduler.invoke_sI__sI(pid);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            }
+            return result;
+        } catch (NullPointerException npe) {
+            if (sched_getscheduler == null) {
+                throw new NoSuchNativeMethodException("sched_getscheduler");
+            } else {
+                throw npe;
+            }
+        }
+    }
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -388,10 +464,18 @@ public class Sched {
      * is not available natively.
      */
     public final static void sched_rr_get_interval(@pid_t int pid, Time.Timespec interval) throws NativeErrorException, NoSuchNativeMethodException {
-        sched_rr_get_interval(pid, AbstractNativeMemory.toUintptr_t(interval));
+        try {
+            if (sched_rr_get_interval.invoke_sI__sI__P(pid, interval) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (sched_rr_get_interval == null) {
+                throw new NoSuchNativeMethodException("sched_rr_get_interval");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native void sched_setparam(@pid_t int pid, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -404,10 +488,18 @@ public class Sched {
      * available natively.
      */
     public final static void sched_setparam(@pid_t int pid, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException {
-        sched_setparam(pid, AbstractNativeMemory.toUintptr_t(param));
+        try {
+            if (sched_setparam.invoke_sI__sI__P(pid, param) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (sched_setparam == null) {
+                throw new NoSuchNativeMethodException("sched_setparam");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native int sched_setscheduler(@pid_t int pid, int policy, long ptrParam) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX[TPS]:</b>
@@ -420,7 +512,19 @@ public class Sched {
      * not available natively.
      */
     public final static int sched_setscheduler(@pid_t int pid, int policy, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException {
-        return sched_setscheduler(pid, policy, AbstractNativeMemory.toUintptr_t(param));
+        try {
+            final int result = sched_setscheduler.invoke_sI__sI_sI_P(pid, policy, param);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            }
+            return result;
+        } catch (NullPointerException npe) {
+            if (sched_setscheduler == null) {
+                throw new NoSuchNativeMethodException("sched_setscheduler");
+            } else {
+                throw npe;
+            }
+        }
     }
 
     /**
@@ -431,6 +535,8 @@ public class Sched {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void sched_yield() throws NativeErrorException;
+    public final static void sched_yield() throws NativeErrorException {
+        sched_yield.invoke__V___V();
+    }
 
 }

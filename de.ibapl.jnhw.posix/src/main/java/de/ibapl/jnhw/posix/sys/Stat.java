@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,7 +23,7 @@ package de.ibapl.jnhw.posix.sys;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 
 /**
  * Wrapper around the {@code  <sys/stat.h>} header.
@@ -198,7 +198,6 @@ public class Stat {
     public final static int S_IXUSR;
 
     /**
-     * Make sure the native lib is loaded
      *
      * @implNote The actual value for the define fields are injected by
      * initFields. The static initialization block is used to set the value here
@@ -207,9 +206,7 @@ public class Stat {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
-
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_SYS_STAT_H = true;
                 S_IRGRP = LinuxDefines.S_IRGRP;
@@ -250,7 +247,7 @@ public class Stat {
                 S_IXUSR = BsdDefines.S_IXUSR;
                 break;
             default:
-                throw new NoClassDefFoundError("No sys/stat.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No sys/stat.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 

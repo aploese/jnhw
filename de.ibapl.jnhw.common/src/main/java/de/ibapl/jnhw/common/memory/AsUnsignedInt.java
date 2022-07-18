@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,8 +22,9 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.MEM_ACCESS;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -31,10 +32,14 @@ import java.io.IOException;
  */
 public class AsUnsignedInt extends NativeIntNumber {
 
+    public static AsUnsignedInt allocateNative(BaseDataType nativeType, ResourceScope rs) {
+        return new AsUnsignedInt(nativeType, MemorySegment.allocateNative(nativeType.SIZE_OF, rs), 0);
+    }
+
     private final BaseDataType dataType;
 
-    public AsUnsignedInt(BaseDataType nativeType, AbstractNativeMemory owner, long offset, SetMem setMem) {
-        super(owner, offset, nativeType.SIZE_OF, setMem);
+    public AsUnsignedInt(BaseDataType nativeType, MemorySegment memorySegment, long offset) {
+        super(memorySegment, offset, nativeType.SIZE_OF);
         if (!nativeType.UNSIGNED) {
             throw new IllegalArgumentException("Data type is signed, but an unsigned data type was expected");
         }
@@ -44,22 +49,26 @@ public class AsUnsignedInt extends NativeIntNumber {
         dataType = nativeType;
     }
 
+    public static AsUnsignedInt map(BaseDataType nativeType, OpaqueMemory mem, long offset) {
+        return new AsUnsignedInt(nativeType, mem.memorySegment, offset);
+    }
+
     public int getAsUnsignedInt() {
-        return MEM_ACCESS.getUnsignedIntOf(this, 0, sizeInBytes);
+        return MEM_ACCESS.getUnsignedIntOf(memorySegment, 0, dataType.SIZE_OF);
     }
 
     public void setFromUnsignedInt(int value) {
-        MEM_ACCESS.setUnsignedIntOf(this, 0, sizeInBytes, value);
+        MEM_ACCESS.setUnsignedIntOf(memorySegment, 0, dataType.SIZE_OF, value);
     }
 
     @Override
     public String nativeToHexString() {
-        return MEM_ACCESS.getUnsignedIntOf_AsHex(this, 0, sizeInBytes);
+        return MEM_ACCESS.getUnsignedIntOf_AsHex(memorySegment, 0, dataType.SIZE_OF);
     }
 
     @Override
     public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(MEM_ACCESS.getUnsignedIntOf_nativeToString(this, 0, sizeInBytes));
+        sb.append(MEM_ACCESS.getUnsignedIntOf_nativeToString(memorySegment, 0, dataType.SIZE_OF));
     }
 
     @Override

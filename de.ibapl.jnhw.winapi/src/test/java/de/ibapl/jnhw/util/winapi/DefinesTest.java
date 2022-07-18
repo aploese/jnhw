@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -51,8 +51,6 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
  * @author aploese
  */
 public class DefinesTest {
-
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public static void testDefines(Class clazz) throws Exception {
         System.out.println(clazz.getName() + " Defines: >>>");
@@ -179,4 +177,5 @@ public class DefinesTest {
         testDefines(Winreg.class);
     }
 
+//    TODO WinapiDataTypes
 }

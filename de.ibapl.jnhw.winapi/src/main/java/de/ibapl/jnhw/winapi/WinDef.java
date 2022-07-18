@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,12 +22,15 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.Uint32_t;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * Wrapper around the
@@ -49,7 +52,21 @@ public abstract class WinDef {
      */
     public static class HKEY extends HANDLE {
 
-        public HKEY(long value) {
+        public final static HKEY NULL = new HKEY(MemoryAddress.NULL);
+
+        public final static HKEY INVALID_HANDLE_VALUE = new HKEY(MemoryAddress.ofLong(_INVALID_HANDLE_VALUE));
+
+        public static HKEY of(MemoryAddress value) {
+            if (value == MemoryAddress.NULL) {
+                return NULL;
+            } else if (value.toRawLongValue() == _INVALID_HANDLE_VALUE) {
+                return INVALID_HANDLE_VALUE;
+            } else {
+                return new HKEY(value);
+            }
+        }
+
+        protected HKEY(MemoryAddress value) {
             super(value);
         }
 
@@ -63,9 +80,13 @@ public abstract class WinDef {
      * typedef BYTE far *LPBYTE;
      * </p>
      */
-    public static class LPBYTE extends Struct32 {
+    public static class LPBYTE extends OpaqueMemory<Byte> {
 
-        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.baseDataType.SIZE_OF;
+        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
+
+        public static LPBYTE allocateNative(int size, ResourceScope rs) {
+            return new LPBYTE(MemorySegment.allocateNative(size, rs), 0, size);
+        }
 
         /**
          * if isNullTerminated do skip the last two 0 bytes aka the last 0 char.
@@ -75,14 +96,19 @@ public abstract class WinDef {
          */
         public static String getUnicodeString(LPBYTE lpData, boolean isNullTerminated, int bufferEnd) {
             if (isNullTerminated) {
-                return MEM_ACCESS.getUnicodeString(lpData, 0, 0, bufferEnd / SIZE_OF_WCHAR - 1);
+                return MEM_ACCESS.getUnicodeString(OpaqueMemory.getMemorySegment(lpData), 0, bufferEnd / SIZE_OF_WCHAR - 1);
             } else {
-                return MEM_ACCESS.getUnicodeString(lpData, 0, 0, bufferEnd / SIZE_OF_WCHAR);
+                return MEM_ACCESS.getUnicodeString(OpaqueMemory.getMemorySegment(lpData), 0, bufferEnd / SIZE_OF_WCHAR);
             }
         }
 
-        public LPBYTE(int size, SetMem setMem) {
-            super((OpaqueMemory32) null, 0, size, setMem);
+        public LPBYTE(MemorySegment memorySegment, long offset, int size) {
+            super(memorySegment, offset, size);
+        }
+
+        @Override
+        public BaseDataType getBaseDataType() {
+            return BaseDataType.uint8_t;
         }
 
     }
@@ -97,6 +123,65 @@ public abstract class WinDef {
      */
     public static class LPDWORD extends Uint32_t {
 
+        public static LPDWORD allocateNative(ResourceScope rs) {
+            return new LPDWORD(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, rs), 0);
+        }
+
+        public LPDWORD(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset);
+        }
+
+    }
+
+    /**
+     * Wrapper for
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#lpbyte">LPBYTE</a>.<p>
+     * A pointer to a BYTE.<br>
+     * This type is declared in WinDef.h as follows:<br>
+     * typedef BYTE far *LPBYTE;
+     * </p>
+     */
+    public static class LPWSTR extends Struct {
+
+        public static LPWSTR wrap(String value, boolean isNullTerminated, ResourceScope scope) {
+            final int length = value.length() * 2 + (isNullTerminated ? 2 : 0);
+            final LPWSTR result = new LPWSTR(MemorySegment.allocateNative(length, scope), 0, length);
+            result.setString(value, isNullTerminated);
+            return result;
+        }
+
+        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
+
+        /**
+         * if isNullTerminated do skip the last two 0 bytes aka the last 0 char.
+         *
+         */
+        public String getString(boolean isNullTerminated, int bufferEnd) {
+            if (isNullTerminated) {
+                return MEM_ACCESS.getUnicodeString(memorySegment, 0, bufferEnd / SIZE_OF_WCHAR - 1);
+            } else {
+                return MEM_ACCESS.getUnicodeString(memorySegment, 0, bufferEnd / SIZE_OF_WCHAR);
+            }
+        }
+
+        /**
+         * if isNullTerminated do skip the last two 0 bytes aka the last 0 char.
+         *
+         */
+        public void setString(String value, boolean isNullTerminated) {
+            if (isNullTerminated) {
+                MEM_ACCESS.setUnicodeString(memorySegment, 0, value.length(), value);
+                //write the trailing 0
+                MEM_ACCESS.uint16_t(memorySegment, value.length() * SIZE_OF_WCHAR, (short) 0);
+            } else {
+                MEM_ACCESS.setUnicodeString(memorySegment, 0, value.length(), value);
+            }
+        }
+
+        public LPWSTR(MemorySegment memorySegment, long offset, int size) {
+            super(memorySegment, offset, size);
+        }
+
     }
 
     /**
@@ -107,17 +192,27 @@ public abstract class WinDef {
      * typedef HKEY *PHKEY;
      * </p>
      */
-    public static class PHKEY extends Winnt.PHANDLE {
+    public final static class PHKEY extends Winnt.PHANDLE {
 
-        public PHKEY() {
-            super((value) -> {
-                return new HKEY(value);
-            });
+        public static PHKEY allocateNative(ResourceScope rs) {
+            return new PHKEY(MemorySegment.allocateNative(SIZE_OF, rs), 0);
+        }
+
+        public static PHKEY allocateNative(HKEY value, ResourceScope rs) {
+            return new PHKEY(MemorySegment.allocateNative(SIZE_OF, rs), 0, value);
+        }
+
+        public PHKEY(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset);
+        }
+
+        public PHKEY(MemorySegment memorySegment, long offset, HKEY value) {
+            super(memorySegment, offset, value);
         }
 
         @Override
-        protected HKEY createTarget(long value) {
-            return new HKEY(value);
+        protected HKEY createTarget(MemoryAddress value) {
+            return HKEY.of(value);
         }
 
         @Override
@@ -131,27 +226,4 @@ public abstract class WinDef {
 
     }
 
-    public static class RegistryHKEY extends HKEY implements AutoCloseable {
-
-        public static RegistryHKEY of(long value) {
-            return new RegistryHKEY(value);
-        }
-
-        protected RegistryHKEY(long value) {
-            super(value);
-        }
-
-        @Override
-        public void close() throws Exception {
-            Winreg.RegCloseKey(this.value);
-        }
-
-    }
-
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
 }

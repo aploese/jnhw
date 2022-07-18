@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,148 +20,131 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_AioTest_NativeDefines.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+//We need the POSIX version ...
+#if !defined(HAVE_AIO_H) || !defined(_POSIX_VERSION)
 
-    //We need the POSIX version ...
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-#include <aio.h>
+int getValueOf_HAVE_AIO_H() {
+    return 0;
+}
+
+#else
 
 #if defined(__OpenBSD__)
 #error OpenBSD and aio.h
 #endif
 
-#endif
+#include <aio.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
-     * Method:    HAVE_AIO_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_HAVE_1AIO_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-        return JNI_TRUE;
-#else
-        return JNI_FALSE;
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
-     * Method:    AIO_ALLDONE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_AIO_1ALLDONE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-        return JnhwWrapInteger(env, AIO_ALLDONE);
-#else
-        return NULL;
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
-     * Method:    AIO_CANCELED
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_AIO_1CANCELED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-        return JnhwWrapInteger(env, AIO_CANCELED);
-#else
-        return NULL;
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
-     * Method:    AIO_NOTCANCELED
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_AIO_1NOTCANCELED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-        return JnhwWrapInteger(env, AIO_NOTCANCELED);
-#else
-        return NULL;
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
-     * Method:    LIO_NOP
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_LIO_1NOP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-        return JnhwWrapInteger(env, LIO_NOP);
-#else
-        return NULL;
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
-     * Method:    LIO_NOWAIT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_LIO_1NOWAIT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-        return JnhwWrapInteger(env, LIO_NOWAIT);
-#else
-        return NULL;
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
-     * Method:    LIO_READ
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_LIO_1READ
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-        return JnhwWrapInteger(env, LIO_READ);
-#else
-        return NULL;
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
-     * Method:    LIO_WAIT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_LIO_1WAIT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-        return JnhwWrapInteger(env, LIO_WAIT);
-#else
-        return NULL;
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_AioTest_NativeDefines
-     * Method:    LIO_WRITE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_AioTest_00024NativeDefines_LIO_1WRITE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(HAVE_AIO_H) && defined(_POSIX_VERSION)
-        return JnhwWrapInteger(env, LIO_WRITE);
-#else
-        return NULL;
-#endif
-    }
-
-#ifdef __cplusplus
+int getValueOf_HAVE_AIO_H() {
+    return 1;
 }
+
+
+int* tryGetValueOf_AIO_ALLDONE(int* value) {
+#if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
+    *value = AIO_ALLDONE;
+#else
+#if !defined(AIO_ALLDONE)
+    value = NULL;
+#else
+#error "AIO_ALLDONE defined"
+#endif
+#endif
+    return value;
+}
+
+int* tryGetValueOf_AIO_CANCELED(int* value) {
+#if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
+    *value = AIO_CANCELED;
+#else
+#if !defined(AIO_CANCELED)
+    value = NULL;
+#else
+#error "AIO_CANCELED defined"
+#endif
+#endif
+    return value;
+}
+
+
+int* tryGetValueOf_AIO_NOTCANCELED(int* value) {
+#if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
+    *value = AIO_NOTCANCELED;
+#else
+#if !defined(AIO_NOTCANCELED)
+    value = NULL;
+#else
+#error "AIO_NOTCANCELED defined"
+#endif
+#endif
+    return value;
+}
+
+
+int* tryGetValueOf_LIO_NOP(int* value) {
+#if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
+    *value = LIO_NOP;
+#else
+#if !defined(LIO_NOP)
+    value = NULL;
+#else
+#error "LIO_NOP defined"
+#endif
+#endif
+    return value;
+}
+
+int* tryGetValueOf_LIO_NOWAIT(int* value) {
+#if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
+    *value = LIO_NOWAIT;
+#else
+#if !defined(LIO_NOWAIT)
+    value = NULL;
+#else
+#error "LIO_NOWAIT defined"
+#endif
+#endif
+    return value;
+}
+
+int* tryGetValueOf_LIO_READ(int* value) {
+#if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
+    *value = LIO_READ;
+#else
+#if !defined(LIO_READ)
+    value = NULL;
+#else
+#error "LIO_READ defined"
+#endif
+#endif
+    return value;
+}
+
+int* tryGetValueOf_LIO_WAIT(int* value) {
+#if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
+    *value = LIO_WAIT;
+#else
+#if !defined(LIO_WAIT)
+    value = NULL;
+#else
+#error "LIO_WAIT defined"
+#endif
+#endif
+    return value;
+}
+
+int* tryGetValueOf_LIO_WRITE(int* value) {
+#if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
+    *value = LIO_WRITE;
+#else
+#if !defined(LIO_WRITE)
+    value = NULL;
+#else
+#error "LIO_WRITE defined"
+#endif
+#endif
+    return value;
+}
+
 #endif

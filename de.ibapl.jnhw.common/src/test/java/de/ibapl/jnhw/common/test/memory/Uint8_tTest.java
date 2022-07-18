@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,11 +21,13 @@
  */
 package de.ibapl.jnhw.common.test.memory;
 
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Uint8_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -57,21 +59,25 @@ public class Uint8_tTest {
      */
     @Test
     public void testRawUint8_t() {
-        Uint8_t instance = new Uint8_t(null, 0, SetMem.TO_0x00);
-        byte expResult = 0x10;
-        instance.uint8_t(expResult);
-        assertEquals(expResult, instance.uint8_t());
-        instance.uint8_t((byte) -1);
-        assertEquals(0x00ff, instance.uint8_t_AsShort());
-        assertThrows(IllegalArgumentException.class, () -> instance.uint8_t_FromShort((short) -1));
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Uint8_t instance = Uint8_t.allocateNative(rs);
+            byte expResult = 0x10;
+            instance.uint8_t(expResult);
+            assertEquals(expResult, instance.uint8_t());
+            instance.uint8_t((byte) -1);
+            assertEquals(0x00ff, instance.uint8_t_AsShort());
+            assertThrows(IllegalArgumentException.class, () -> instance.uint8_t_FromShort((short) -1));
+        }
     }
 
     @Test
     public void testNativeToString() {
-        Uint8_t instance = new Uint8_t(null, 0, SetMem.TO_0x00);
-        instance.uint8_t((byte) -2);
-        assertEquals(String.valueOf(0x00FF & -2), instance.nativeToString());
-        assertEquals(String.valueOf(Byte.toUnsignedInt((byte) -2)), instance.nativeToString());
-        assertEquals("0xfe", instance.nativeToHexString());
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Uint8_t instance = new Uint8_t(MemorySegment.allocateNative(BaseDataType.uint8_t.SIZE_OF, rs), 0);
+            instance.uint8_t((byte) -2);
+            assertEquals(String.valueOf(0x00FF & -2), instance.nativeToString());
+            assertEquals(String.valueOf(Byte.toUnsignedInt((byte) -2)), instance.nativeToString());
+            assertEquals("0xfe", instance.nativeToHexString());
+        }
     }
 }

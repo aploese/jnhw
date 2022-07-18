@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.it.jnhw_jna_jnr;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 
 /**
  * Compare JNHW JNR and JNA create a timespec struct and call
@@ -53,8 +53,7 @@ public class App {
         System.out.println("clock_settime done");
 
         try {
-            MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
-            if (mtb.getOS() == OS.WINDOWS) {
+            if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
                 throw new RuntimeException();
             }
 
@@ -68,7 +67,8 @@ public class App {
             //Jnhw.runFullTest_DirectAllocation(ROUNDS);
             printResult("JNHW runFullTest", start);
             start = System.nanoTime();
-            Ffm.runFullTest(ROUNDS);
+            Ffm.runFullTest_HeapAllocated(ROUNDS);
+            //Ffm.runFullTest_DirectAllocation(ROUNDS);
             printResult("FFM  runFullTest", start);
             start = System.nanoTime();
             Jnr.runFullTest(ROUNDS);

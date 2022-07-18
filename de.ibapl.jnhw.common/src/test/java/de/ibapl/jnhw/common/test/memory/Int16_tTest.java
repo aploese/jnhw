@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,20 +21,19 @@
  */
 package de.ibapl.jnhw.common.test.memory;
 
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Int16_t;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  *
  * @author aploese
  */
 public class Int16_tTest {
-
-    public Int16_tTest() {
-    }
 
     /**
      * Test of sizeofInt16_t method, of class Int16_t.
@@ -57,17 +56,21 @@ public class Int16_tTest {
      */
     @Test
     public void testRawInt16_t() {
-        Int16_t instance = new Int16_t(null, 0, SetMem.TO_0x00);
-        short expResult = 0x2010;
-        instance.int16_t(expResult);
-        assertEquals(expResult, instance.int16_t());
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Int16_t instance = Int16_t.allocateNative(rs);
+            short expResult = 0x2010;
+            instance.int16_t(expResult);
+            assertEquals(expResult, instance.int16_t());
+        }
     }
 
     @Test
     public void testNativeToString() {
-        Int16_t instance = new Int16_t(null, 0, SetMem.TO_0x00);
-        instance.int16_t((short) -2);
-        assertEquals("-2", instance.nativeToString());
-        assertEquals("0xfffe", instance.nativeToHexString());
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Int16_t instance = new Int16_t(MemorySegment.allocateNative(BaseDataType.int16_t.SIZE_OF, rs), 0);
+            instance.int16_t((short) -2);
+            assertEquals("-2", instance.nativeToString());
+            assertEquals("0xfffe", instance.nativeToHexString());
+        }
     }
 }

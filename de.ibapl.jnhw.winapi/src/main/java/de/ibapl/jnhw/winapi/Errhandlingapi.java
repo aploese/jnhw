@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,7 +22,9 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__sI;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___V;
 
 /**
  * Wrapper around the
@@ -34,12 +36,13 @@ import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 @Include("errhandlingapi.h")
 public abstract class Errhandlingapi {
 
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
+    private final static JnhwMh_sI___V GetLastError = JnhwMh_sI___V.of(
+            "GetLastError",
+            WinApiDataType.DWORD);
+
+    private final static JnhwMh__V__sI SetLastError = JnhwMh__V__sI.of(
+            "SetLastError",
+            WinApiDataType.DWORD);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror">GetLastError</a>
@@ -57,13 +60,17 @@ public abstract class Errhandlingapi {
      * have been set; some functions set the last-error code to 0 on success and
      * others do not.
      */
-    public final static native int GetLastError();
+    public final static int GetLastError() {
+        return GetLastError.invoke_sI___V();
+    }
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-setlasterror">GetLastError</a>
      * Sets the last-error code for the calling thread.
      *
      */
-    public final static native void SetLastError(int dwErrCode);
+    public final static void SetLastError(int dwErrCode) {
+        SetLastError.invoke__V__sI(dwErrCode);
+    }
 
 }

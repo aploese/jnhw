@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,6 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 /**
@@ -31,8 +29,6 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
  */
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class BaseTsdTest {
-
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
 
     public BaseTsdTest() {
     }

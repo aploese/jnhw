@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,17 @@
  */
 package de.ibapl.jnhw.util.posix;
 
+import static de.ibapl.jnhw.common.datatypes.Arch.I386;
+import static de.ibapl.jnhw.common.datatypes.Arch.MIPS;
+import static de.ibapl.jnhw.common.datatypes.Arch.POWER_PC_64;
+import static de.ibapl.jnhw.common.datatypes.Arch.RISC_V_64;
+import static de.ibapl.jnhw.common.datatypes.Arch.S390_X;
+import static de.ibapl.jnhw.common.datatypes.Arch.X86_64;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import static de.ibapl.jnhw.common.datatypes.OS.FREE_BSD;
+import static de.ibapl.jnhw.common.datatypes.OS.LINUX;
+import static de.ibapl.jnhw.common.datatypes.OS.OPEN_BSD;
 
 /**
  * The posix datatypes with their mapping to the base datatypes that we have
@@ -33,272 +42,178 @@ import de.ibapl.jnhw.libloader.MultiarchInfo;
  *
  * @author aploese
  */
-public enum PosixDataType {
-    cc_t(dataTypeOf__CC_t()),
-    clock_t(dataTypeOf__clock_t()),
-    mode_t(dataTypeOf__mode_t()),
-    off_t(dataTypeOf__off_t()),
-    pid_t(dataTypeOf__pid_t()),
-    size_t(dataTypeOf__size_t()),
-    speed_t(dataTypeOf__speed_t()),
-    ssize_t(dataTypeOf__ssize_t()),
-    tcflag_t(dataTypeOf__tcflag_t()),
-    time_t(dataTypeOf__time_t()),
-    uid_t(dataTypeOf__uid_t());
+public interface PosixDataType {
 
-    private static MultiarchInfo multiarchInfo;
+    public final static BaseDataType cc_t = BaseDataType.uint8_t;
 
-    private static BaseDataType dataTypeOf__CC_t() {
-        return dataTypeOf__CC_t(getMultiarchInfo());
-    }
+    public final static BaseDataType clock_t = switch (MultiarchTupelBuilder.getOS()) {
+        case LINUX ->
+            switch (MultiarchTupelBuilder.getArch()) {
+                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+                    BaseDataType.int64_t;
+                case ARM, I386, MIPS ->
+                    BaseDataType.int32_t;
+                default ->
+                    throw new NoClassDefFoundError("can't get datatype of clock_t on " + MultiarchTupelBuilder.getMultiarch());
+            };
+        case DARWIN ->
+            BaseDataType.uint64_t;
+        case FREE_BSD ->
+            BaseDataType.int32_t;
+        case OPEN_BSD ->
+            BaseDataType.int64_t;
+        default ->
+            throw new NoClassDefFoundError("can't get datatype of clock_t on " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    public static BaseDataType dataTypeOf__CC_t(final MultiarchInfo mi) {
-        return BaseDataType.uint8_t;
-    }
+    public final static BaseDataType clockid_t = BaseDataType.int32_t;
+    public final static BaseDataType clockid_t_ptr = BaseDataType.C_pointer;
+    public final static BaseDataType gid_t = BaseDataType.uint32_t;
 
-    private static BaseDataType dataTypeOf__clock_t() {
-        return dataTypeOf__clock_t(getMultiarchInfo());
-    }
+    public final static BaseDataType locale_t = BaseDataType.C_pointer;
 
-    public static BaseDataType dataTypeOf__clock_t(final MultiarchInfo mi) {
-        switch (mi.getOS()) {
-            case LINUX:
-                switch (mi.getArch()) {
-                    case AARCH64:
-                        return BaseDataType.int64_t;
-                    case ARM:
-                    case I386:
-                    case MIPS:
-                        return BaseDataType.int32_t;
-                    case MIPS_64:
-                    case POWER_PC_64:
-                    case RISC_V_64:
-                    case S390_X:
-                    case X86_64:
-                        return BaseDataType.int64_t;
-                    default:
-                        throw new NoClassDefFoundError("can't get datatype of clock_t on " + mi);
-                }
-            case DARWIN:
-                return BaseDataType.uint64_t;
-            case FREE_BSD:
-                return BaseDataType.int32_t;
-            case OPEN_BSD:
-                return BaseDataType.int64_t;
-            default:
-                throw new NoClassDefFoundError("can't get datatype of clock_t on " + mi);
-        }
+    public final static BaseDataType mode_t = switch (MultiarchTupelBuilder.getOS()) {
+        case LINUX ->
+            BaseDataType.uint32_t;
+        case DARWIN, FREE_BSD ->
+            BaseDataType.uint16_t;
+        case OPEN_BSD ->
+            BaseDataType.uint32_t;
+        default ->
+            throw new NoClassDefFoundError("can't get OS datatype of mode_t on " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    }
+    public final static BaseDataType nfds_t = switch (MultiarchTupelBuilder.getOS()) {
+        case LINUX ->
+            switch (MultiarchTupelBuilder.getArch()) {
+                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+                    BaseDataType.uint64_t;
+                case ARM, I386, MIPS ->
+                    BaseDataType.uint32_t;
+                default ->
+                    throw new NoClassDefFoundError("can't get linux datatype of nfds_t on " + MultiarchTupelBuilder.getMultiarch());
+            };
+        case DARWIN, FREE_BSD, OPEN_BSD ->
+            BaseDataType.uint64_t;
+        default ->
+            throw new NoClassDefFoundError("can't get OS datatype of nfds_t on " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    private static BaseDataType dataTypeOf__mode_t() {
-        return dataTypeOf__mode_t(getMultiarchInfo());
-    }
+    public final static BaseDataType off_t = switch (MultiarchTupelBuilder.getOS()) {
+        case LINUX ->
+            switch (MultiarchTupelBuilder.getArch()) {
+                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+                    BaseDataType.int64_t;
+                case ARM, I386, MIPS ->
+                    BaseDataType.int32_t;
+                default ->
+                    throw new NoClassDefFoundError("can't get linux datatype of off_t on " + MultiarchTupelBuilder.getMultiarch());
+            };
+        case DARWIN, FREE_BSD, OPEN_BSD ->
+            BaseDataType.int64_t;
+        default ->
+            throw new NoClassDefFoundError("can't get OS datatype of off_t on " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    public static BaseDataType dataTypeOf__mode_t(final MultiarchInfo mi) {
-        switch (mi.getOS()) {
-            case LINUX:
-                return BaseDataType.uint32_t;
-            case DARWIN:
-            case FREE_BSD:
-                return BaseDataType.uint16_t;
-            case OPEN_BSD:
-                return BaseDataType.uint32_t;
-            default:
-                throw new NoClassDefFoundError("can't get OS datatype of mode_t on " + mi);
-        }
-    }
+    public final static BaseDataType pid_t = BaseDataType.int32_t;
 
-    private static BaseDataType dataTypeOf__off_t() {
-        return dataTypeOf__off_t(getMultiarchInfo());
-    }
+    public final static BaseDataType pthread_t = switch (MultiarchTupelBuilder.getOS()) {
+        case LINUX ->
+            BaseDataType.C_unsigned_long_int;
+        case FREE_BSD, OPEN_BSD ->
+            BaseDataType.struct;
+        default ->
+            throw new NoClassDefFoundError("can't get OS datatype of pthread_t on " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    public static BaseDataType dataTypeOf__off_t(final MultiarchInfo mi) {
-        switch (mi.getOS()) {
-            case LINUX:
-                switch (mi.getArch()) {
-                    case AARCH64:
-                        return BaseDataType.int64_t;
-                    case ARM:
-                    case I386:
-                    case MIPS:
-                        return BaseDataType.int32_t;
-                    case MIPS_64:
-                    case POWER_PC_64:
-                    case RISC_V_64:
-                    case S390_X:
-                    case X86_64:
-                        return BaseDataType.int64_t;
-                    default:
-                        throw new NoClassDefFoundError("can't get linux datatype of off_t on " + mi);
-                }
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-                return BaseDataType.int64_t;
-            default:
-                throw new NoClassDefFoundError("can't get OS datatype of off_t on " + mi);
-        }
-    }
+    public final static BaseDataType pthread_attr_t = switch (MultiarchTupelBuilder.getOS()) {
+        case LINUX ->
+            BaseDataType.struct;
+        case FREE_BSD, OPEN_BSD ->
+            BaseDataType.C_struct_pointer;
+        default ->
+            throw new NoClassDefFoundError("can't get OS datatype of pthread_attr_t on " + MultiarchTupelBuilder.getMultiarch());
+    };
+    public final static BaseDataType pthread_attr_t_pointer = BaseDataType.C_pointer;
 
-    private static BaseDataType dataTypeOf__pid_t() {
-        return dataTypeOf__pid_t(getMultiarchInfo());
-    }
+    public final static BaseDataType size_t = switch (MultiarchTupelBuilder.getOS()) {
+        case LINUX ->
+            switch (MultiarchTupelBuilder.getArch()) {
+                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+                    BaseDataType.uint64_t;
+                case ARM, I386, MIPS ->
+                    BaseDataType.uint32_t;
+                default ->
+                    throw new NoClassDefFoundError("can't get linux datatype of size_t on " + MultiarchTupelBuilder.getMultiarch());
+            };
+        case DARWIN, FREE_BSD, OPEN_BSD ->
+            BaseDataType.uint64_t;
+        default ->
+            throw new NoClassDefFoundError("can't get OS datatype of size_t on " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    public static BaseDataType dataTypeOf__pid_t(final MultiarchInfo mi) {
-        return BaseDataType.int32_t;
-    }
+    public final static BaseDataType speed_t = switch (MultiarchTupelBuilder.getOS()) {
+        case DARWIN ->
+            BaseDataType.uint64_t;
+        case FREE_BSD, LINUX, OPEN_BSD ->
+            BaseDataType.uint32_t;
+        default ->
+            throw new NoClassDefFoundError("can't get OS datatype of speed_t on " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    private static BaseDataType dataTypeOf__size_t() {
-        return dataTypeOf__size_t(getMultiarchInfo());
-    }
+    public final static BaseDataType ssize_t = switch (MultiarchTupelBuilder.getOS()) {
+        case LINUX ->
+            switch (MultiarchTupelBuilder.getArch()) {
+                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+                    BaseDataType.int64_t;
+                case ARM, I386, MIPS ->
+                    BaseDataType.int32_t;
+                default ->
+                    throw new NoClassDefFoundError("can't get linux datatype of ssize_t on " + MultiarchTupelBuilder.getMultiarch());
+            };
+        case DARWIN, FREE_BSD, OPEN_BSD ->
+            BaseDataType.int64_t;
+        default ->
+            throw new NoClassDefFoundError("can't get OS datatype of ssize_t on " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    public static BaseDataType dataTypeOf__size_t(final MultiarchInfo mi) {
-        switch (mi.getOS()) {
-            case LINUX:
-                switch (mi.getArch()) {
-                    case AARCH64:
-                        return BaseDataType.uint64_t;
-                    case ARM:
-                    case I386:
-                    case MIPS:
-                        return BaseDataType.uint32_t;
-                    case MIPS_64:
-                    case POWER_PC_64:
-                    case RISC_V_64:
-                    case S390_X:
-                    case X86_64:
-                        return BaseDataType.uint64_t;
-                    default:
-                        throw new NoClassDefFoundError("can't get linux datatype of size_t on " + mi);
-                }
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-                return BaseDataType.uint64_t;
-            default:
-                throw new NoClassDefFoundError("can't get OS datatype of size_t on " + mi);
-        }
-    }
+    public final static BaseDataType tcflag_t = switch (MultiarchTupelBuilder.getOS()) {
+        case DARWIN ->
+            BaseDataType.uint64_t;
+        case FREE_BSD, LINUX, OPEN_BSD ->
+            BaseDataType.uint32_t;
+        default ->
+            throw new NoClassDefFoundError("can't get OS datatype of tcflag_t on " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    private static BaseDataType dataTypeOf__speed_t() {
-        return dataTypeOf__speed_t(getMultiarchInfo());
-    }
+    public final static BaseDataType time_t = switch (MultiarchTupelBuilder.getOS()) {
+        case LINUX ->
+            switch (MultiarchTupelBuilder.getArch()) {
+                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+                    BaseDataType.int64_t;
+                case ARM, I386, MIPS ->
+                    BaseDataType.int32_t;
+                default ->
+                    throw new NoClassDefFoundError("can't get linux datatype of time_t on " + MultiarchTupelBuilder.getMultiarch());
+            };
+        case DARWIN, FREE_BSD,OPEN_BSD ->
+            BaseDataType.int64_t;
+        default ->
+            throw new NoClassDefFoundError("can't get OS datatype of time_t on " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    public static BaseDataType dataTypeOf__speed_t(final MultiarchInfo mi) {
-        switch (mi.getOS()) {
-            case DARWIN:
-                return BaseDataType.uint64_t;
-            case FREE_BSD:
-            case LINUX:
-            case OPEN_BSD:
-                return BaseDataType.uint32_t;
-            default:
-                throw new NoClassDefFoundError("can't get OS datatype of speed_t on " + mi);
-        }
-    }
+    public final static BaseDataType timer_t = switch (MultiarchTupelBuilder.getOS()) {
+        case DARWIN ->
+            null;
+        case LINUX, FREE_BSD ->
+            BaseDataType.C_pointer;
+        case OPEN_BSD ->
+            BaseDataType.int32_t;
+        default ->
+            throw new NoClassDefFoundError("No time.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    private static BaseDataType dataTypeOf__ssize_t() {
-        return dataTypeOf__ssize_t(getMultiarchInfo());
-    }
-
-    public static BaseDataType dataTypeOf__ssize_t(final MultiarchInfo mi) {
-        switch (mi.getOS()) {
-            case LINUX:
-                switch (mi.getArch()) {
-                    case AARCH64:
-                        return BaseDataType.int64_t;
-                    case ARM:
-                    case I386:
-                    case MIPS:
-                        return BaseDataType.int32_t;
-                    case MIPS_64:
-                    case POWER_PC_64:
-                    case RISC_V_64:
-                    case S390_X:
-                    case X86_64:
-                        return BaseDataType.int64_t;
-                    default:
-                        throw new NoClassDefFoundError("can't get linux datatype of ssize_t on " + mi);
-                }
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-                return BaseDataType.int64_t;
-            default:
-                throw new NoClassDefFoundError("can't get OS datatype of ssize_t on " + mi);
-        }
-    }
-
-    private static BaseDataType dataTypeOf__tcflag_t() {
-        return dataTypeOf__tcflag_t(getMultiarchInfo());
-    }
-
-    public static BaseDataType dataTypeOf__tcflag_t(final MultiarchInfo mi) {
-        switch (mi.getOS()) {
-            case DARWIN:
-                return BaseDataType.uint64_t;
-            case FREE_BSD:
-            case LINUX:
-            case OPEN_BSD:
-                return BaseDataType.uint32_t;
-            default:
-                throw new NoClassDefFoundError("can't get OS datatype of tcflag_t on " + mi);
-        }
-    }
-
-    private static BaseDataType dataTypeOf__time_t() {
-        return dataTypeOf__time_t(getMultiarchInfo());
-    }
-
-    public static BaseDataType dataTypeOf__time_t(final MultiarchInfo mi) {
-        switch (mi.getOS()) {
-            case LINUX:
-                switch (mi.getArch()) {
-                    case AARCH64:
-                        return BaseDataType.int64_t;
-                    case ARM:
-                    case I386:
-                    case MIPS:
-                        return BaseDataType.int32_t;
-                    case MIPS_64:
-                    case POWER_PC_64:
-                    case RISC_V_64:
-                    case S390_X:
-                    case X86_64:
-                        return BaseDataType.int64_t;
-                    default:
-                        throw new NoClassDefFoundError("can't get linux datatype of time_t on " + mi);
-                }
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-                return BaseDataType.int64_t;
-            default:
-                throw new NoClassDefFoundError("can't get OS datatype of time_t on " + mi);
-        }
-    }
-
-    private static BaseDataType dataTypeOf__uid_t() {
-        return dataTypeOf__uid_t(getMultiarchInfo());
-    }
-
-    public static BaseDataType dataTypeOf__uid_t(final MultiarchInfo mi) {
-        return BaseDataType.uint32_t;
-    }
-
-    static MultiarchInfo getMultiarchInfo() {
-        if (multiarchInfo == null) {
-            LibJnhwPosixLoader.touch();
-            multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-        }
-        return multiarchInfo;
-    }
-
-    public final BaseDataType baseDataType;
-
-    private PosixDataType(BaseDataType dataType) {
-        this.baseDataType = dataType;
-    }
+    public final static BaseDataType struct_pollfd_array = BaseDataType.C_struct_array;
+    public final static BaseDataType uid_t = BaseDataType.uint32_t;
 
 }

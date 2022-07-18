@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,17 +21,11 @@
  */
 package de.ibapl.jnhw.common.test;
 
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
 import de.ibapl.jnhw.libloader.LoadState;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class LibJnhwLoaderTest {
-
-    @Test
-    public void testLibComonIsLoaded() throws Exception {
-        Assertions.assertEquals(LoadState.SUCCESS, LibJnhwCommonLoader.touch());
-    }
 
     @Test
     public void testLibCommonTestIsLoaded() throws Exception {

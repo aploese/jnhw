@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.it.posixsignal.posix_signal.SignalHandler.ThreadingModel;
 import de.ibapl.jnhw.it.posixsignal.posix_signal.SignalHandler.SignalAction;
@@ -37,8 +37,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
-        if (mtb.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             throw new RuntimeException("No POSIX system!");
         }
         //set a shutdown hook

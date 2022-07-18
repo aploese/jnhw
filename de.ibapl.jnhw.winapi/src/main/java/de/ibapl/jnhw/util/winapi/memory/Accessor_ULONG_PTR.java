@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,7 +22,9 @@
 package de.ibapl.jnhw.util.winapi.memory;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import jdk.incubator.foreign.Addressable;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -32,8 +34,8 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 public interface Accessor_ULONG_PTR {
 
     @ULONG_PTR
-    long ULONG_PTR(OpaqueMemory32 mem, long offset);
+    MemoryAddress ULONG_PTR(MemorySegment memorySegment, long offset);
 
-    void ULONG_PTR(OpaqueMemory32 mem, long offset, @ULONG_PTR long value);
+    void ULONG_PTR(MemorySegment memorySegment, long offset, @ULONG_PTR Addressable value);
 
 }

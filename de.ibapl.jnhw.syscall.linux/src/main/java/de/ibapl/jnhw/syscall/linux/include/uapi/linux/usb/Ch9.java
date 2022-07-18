@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -54,10 +54,7 @@
 package de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb;
 
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
@@ -70,8 +67,8 @@ import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__le16;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__le32;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u16;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
-import de.ibapl.jnhw.syscall.linux.util.memory.LinuxSyscallStruct32;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -276,7 +273,7 @@ public interface Ch9 {
      * most devices, interfaces don't coordinate with each other, so such
      * requests may be made at any time.
      */
-    public abstract static class Usb_ctrlrequest extends Struct32 {
+    public abstract static class Usb_ctrlrequest extends Struct {
 
         public static final class Layout extends StructLayout {
 
@@ -307,33 +304,33 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ctrlrequest(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_ctrlrequest(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
         public byte bRequestType() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bRequestType);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bRequestType);
         }
 
         @__u8
         public byte bRequest() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bRequest);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bRequest);
         }
 
         @__le16
         public short wValue() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.wValue);
+            return MEM_ACCESS.uint16_t(memorySegment, LAYOUT.wValue);
         }
 
         @__le16
         public int wIndex() {
-            return MEM_ACCESS.uint16_t_AsInt(this, LAYOUT.wIndex);
+            return MEM_ACCESS.uint16_t_AsInt(memorySegment, LAYOUT.wIndex);
         }
 
         @__le16
         public int wLength() {
-            return MEM_ACCESS.uint16_t_AsInt(this, LAYOUT.wLength);
+            return MEM_ACCESS.uint16_t_AsInt(memorySegment, LAYOUT.wLength);
         }
     }
 
@@ -402,8 +399,8 @@ public interface Ch9 {
             public final static byte sizeof = _sizeof;
         }
 
-        public Usb_descriptor_header(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Layout.sizeof, setMem);
+        public Usb_descriptor_header(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         @Override
@@ -416,46 +413,41 @@ public interface Ch9 {
          *
          * @return
          */
-        public AbstractDescriptor toDescriptor() {
-            if (parent instanceof OpaqueMemory32) {
-                //no-op
-            } else {
-                throw new IllegalArgumentException("memoryOwner must be OpaqueMemory32, but was: " + parent);
-            }
+        public AbstractDescriptor toDescriptor(MemorySegment memorySegment, long currentPos) {
             AbstractDescriptor result;
             switch (bDescriptorType()) {
                 case USB_DT_DEVICE:
-                    result = new Usb_device_descriptor(parent, getOffset(), SetMem.DO_NOT_SET);
+                    result = new Usb_device_descriptor(memorySegment, currentPos);
                     break;
                 case USB_DT_CONFIG:
-                    result = new Usb_config_descriptor(parent, getOffset(), SetMem.DO_NOT_SET);
+                    result = new Usb_config_descriptor(memorySegment, currentPos);
                     break;
                 /*
                 case USB_DT_STRING:
                     throw new RuntimeException("Not implemented");
                  */
                 case USB_DT_INTERFACE:
-                    result = new Usb_interface_descriptor(parent, getOffset(), SetMem.DO_NOT_SET);
+                    result = new Usb_interface_descriptor(memorySegment, currentPos);
                     break;
                 case USB_DT_ENDPOINT:
-                    result = new Usb_endpoint_descriptor(parent, getOffset(), bLength(), SetMem.DO_NOT_SET);
+                    result = new Usb_endpoint_descriptor(memorySegment, currentPos, bLength());
                     break;
                 case USB_DT_WIRE_ADAPTER:
-                    result = new Hid.Hid_descriptor(parent, getOffset(), bLength(), SetMem.DO_NOT_SET);
+                    result = new Hid.Hid_descriptor(memorySegment, currentPos, bLength());
                     break;
                 case USB_DT_SS_ENDPOINT_COMP:
-                    result = new Usb_ss_ep_comp_descriptor(parent, getOffset(), SetMem.DO_NOT_SET);
+                    result = new Usb_ss_ep_comp_descriptor(memorySegment, currentPos);
                     break;
                 case USB_DT_PIPE_USAGE:
-                    result = new Uas.Usb_pipe_usage_descriptor(parent, getOffset(), bLength(), SetMem.DO_NOT_SET);
+                    result = new Uas.Usb_pipe_usage_descriptor(memorySegment, currentPos, bLength());
                     break;
                 case USB_DT_INTERFACE_ASSOCIATION:
-                    result = new Usb_interface_assoc_descriptor(parent, getOffset(), SetMem.DO_NOT_SET);
+                    result = new Usb_interface_assoc_descriptor(memorySegment, currentPos);
                     break;
                 default:
-                    result = new UsbUnknownDescriptor(parent, getOffset(), bLength(), SetMem.DO_NOT_SET);
+                    result = new UsbUnknownDescriptor(memorySegment, currentPos, bLength());
             }
-            if (result.sizeInBytes != bLength()) {
+            if (result.sizeof() != bLength()) {
                 throw new RuntimeException("bLength mismatch");
             }
             return result;
@@ -493,68 +485,68 @@ public interface Ch9 {
 
         public final static byte USB_DT_DEVICE_SIZE = 18;
 
-        public Usb_device_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Layout.sizeof, setMem);
+        public Usb_device_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         @__le16
         public short bcdUSB() {
-            return ACCESSOR___LE16.__le16(this, Layout.bcdUSB);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, Layout.bcdUSB);
         }
 
         @__u8
         public byte bDeviceClass() {
-            return ACCESSOR___U8.__u8(this, Layout.bDeviceClass);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bDeviceClass);
         }
 
         @__u8
         public byte bDeviceSubClass() {
-            return ACCESSOR___U8.__u8(this, Layout.bDeviceSubClass);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bDeviceSubClass);
         }
 
         @__u8
         public byte bDeviceProtocol() {
-            return ACCESSOR___U8.__u8(this, Layout.bDeviceProtocol);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bDeviceProtocol);
         }
 
         @__u8
         public byte bMaxPacketSize0() {
-            return ACCESSOR___U8.__u8(this, Layout.bMaxPacketSize0);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bMaxPacketSize0);
         }
 
         @__le16
         public short idVendor() {
-            return ACCESSOR___LE16.__le16(this, Layout.idVendor);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, Layout.idVendor);
         }
 
         @__le16
         public short idProduct() {
-            return ACCESSOR___LE16.__le16(this, Layout.idProduct);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, Layout.idProduct);
         }
 
         @__le16
         public short bcdDevice() {
-            return ACCESSOR___LE16.__le16(this, Layout.bcdDevice);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, Layout.bcdDevice);
         }
 
         @__u8
         public byte iManufacturer() {
-            return ACCESSOR___U8.__u8(this, Layout.iManufacturer);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.iManufacturer);
         }
 
         @__u8
         public byte iProduct() {
-            return ACCESSOR___U8.__u8(this, Layout.iProduct);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.iProduct);
         }
 
         @__u8
         public byte iSerialNumber() {
-            return ACCESSOR___U8.__u8(this, Layout.iSerialNumber);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.iSerialNumber);
         }
 
         @__u8
         public short bNumConfigurations() {
-            return ACCESSOR___U8.__u8(this, Layout.bNumConfigurations);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bNumConfigurations);
         }
 
         @Override
@@ -631,38 +623,38 @@ public interface Ch9 {
 
         public final static byte USB_DT_CONFIG_SIZE = 9;
 
-        public Usb_config_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Layout.sizeof, setMem);
+        public Usb_config_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         @__le16
         public int wTotalLength() {
-            return ACCESSOR___LE16.__le16_AsInt(this, Layout.wTotalLength);
+            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, Layout.wTotalLength);
         }
 
         @__u8
         public short bNumInterfaces() {
-            return ACCESSOR___U8.__u8_AsShort(this, Layout.bNumInterfaces);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bNumInterfaces);
         }
 
         @__u8
         public byte bConfigurationValue() {
-            return ACCESSOR___U8.__u8(this, Layout.bConfigurationValue);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bConfigurationValue);
         }
 
         @__u8
         public byte iConfiguration() {
-            return ACCESSOR___U8.__u8(this, Layout.iConfiguration);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.iConfiguration);
         }
 
         @__u8
         public byte bmAttributes() {
-            return ACCESSOR___U8.__u8(this, Layout.bmAttributes);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bmAttributes);
         }
 
         @__u8
         public short bMaxPower() {
-            return ACCESSOR___U8.__u8(this, Layout.bMaxPower);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bMaxPower);
         }
 
         @Override
@@ -704,8 +696,8 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_string_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_string_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         /* UTF-16LE encoded */
@@ -742,43 +734,43 @@ public interface Ch9 {
 
         public final static byte USB_DT_INTERFACE_SIZE = 9;
 
-        public Usb_interface_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Layout.sizeof, setMem);
+        public Usb_interface_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         @__u8
         public short bInterfaceNumber() {
-            return ACCESSOR___U8.__u8_AsShort(this, Layout.bInterfaceNumber);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bInterfaceNumber);
         }
 
         @__u8
         public byte bAlternateSetting() {
-            return ACCESSOR___U8.__u8(this, Layout.bAlternateSetting);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bAlternateSetting);
         }
 
         @__u8
         public short bNumEndpoints() {
-            return ACCESSOR___U8.__u8_AsShort(this, Layout.bNumEndpoints);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bNumEndpoints);
         }
 
         @__u8
         public short bInterfaceClass() {
-            return ACCESSOR___U8.__u8_AsShort(this, Layout.bInterfaceClass);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bInterfaceClass);
         }
 
         @__u8
         public short bInterfaceSubClass() {
-            return ACCESSOR___U8.__u8_AsShort(this, Layout.bInterfaceClass);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bInterfaceClass);
         }
 
         @__u8
         public short bInterfaceProtocol() {
-            return ACCESSOR___U8.__u8_AsShort(this, Layout.bInterfaceProtocol);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bInterfaceProtocol);
         }
 
         @__u8
         public byte iInterface() {
-            return ACCESSOR___U8.__u8(this, Layout.iInterface);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.iInterface);
         }
 
         @Override
@@ -816,8 +808,8 @@ public interface Ch9 {
         /* Audio extension */
         public final static byte USB_DT_ENDPOINT_AUDIO_SIZE = 9;
 
-        public Usb_endpoint_descriptor(AbstractNativeMemory parent, long offset, int size, SetMem setMem) {
-            super(parent, offset, size, setMem);
+        public Usb_endpoint_descriptor(MemorySegment memorySegment, long offset, int size) {
+            super(memorySegment, offset, size);
             if ((size == USB_DT_ENDPOINT_SIZE) || (size == USB_DT_ENDPOINT_AUDIO_SIZE)) {
                 //no-op
             } else {
@@ -827,22 +819,22 @@ public interface Ch9 {
 
         @__u8
         public short bEndpointAddress() {
-            return ACCESSOR___U8.__u8_AsShort(this, Layout.bEndpointAddress);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bEndpointAddress);
         }
 
         @__u8
         public byte bmAttributes() {
-            return ACCESSOR___U8.__u8(this, Layout.bmAttributes);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bmAttributes);
         }
 
         @__le16
         public int wMaxPacketSize() {
-            return ACCESSOR___LE16.__le16_AsInt(this, Layout.wMaxPacketSize);
+            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, Layout.wMaxPacketSize);
         }
 
         @__u8
         public short bInterval() {
-            return ACCESSOR___U8.__u8_AsShort(this, Layout.bInterval);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bInterval);
         }
 
         /* NOTE:  these two are _only_ in audio endpoints. */
@@ -855,8 +847,8 @@ public interface Ch9 {
          */
         @__u8
         public byte bRefresh() {
-            if (sizeInBytes == USB_DT_ENDPOINT_AUDIO_SIZE) {
-                return ACCESSOR___U8.__u8(this, Layout.bRefresh);
+            if (sizeof() == USB_DT_ENDPOINT_AUDIO_SIZE) {
+                return MEM_ACCESS.uint8_t(memorySegment, Layout.bRefresh);
             } else {
                 throw new IllegalStateException("Not an audio endpoint");
             }
@@ -870,8 +862,8 @@ public interface Ch9 {
          */
         @__u8
         public byte bSynchAddress() {
-            if (sizeInBytes == USB_DT_ENDPOINT_AUDIO_SIZE) {
-                return ACCESSOR___U8.__u8(this, Layout.bSynchAddress);
+            if (sizeof() == USB_DT_ENDPOINT_AUDIO_SIZE) {
+                return MEM_ACCESS.uint8_t(memorySegment, Layout.bSynchAddress);
             } else {
                 throw new IllegalStateException("Not an audio endpoint");
             }
@@ -883,7 +875,7 @@ public interface Ch9 {
             jsb.appendByteMember("bmAttributes", bmAttributes());
             jsb.appendIntMember("wMaxPacketSize", wMaxPacketSize());
             jsb.appendShortMember("bInterval", bInterval());
-            if (sizeInBytes == USB_DT_ENDPOINT_AUDIO_SIZE) {
+            if (sizeof() == USB_DT_ENDPOINT_AUDIO_SIZE) {
                 jsb.appendByteMember("bRefresh", bRefresh());
                 jsb.appendByteMember("bSynchAddress", bSynchAddress());
             }
@@ -1146,8 +1138,8 @@ public interface Ch9 {
          *
          * /*-------------------------------------------------------------------------
          */
-        public Usb_ssp_isoc_ep_comp_descriptor(AbstractNativeMemory parent, long offset, int sizeInBytes, SetMem setMem) {
-            super(parent, offset, sizeInBytes, setMem);
+        public Usb_ssp_isoc_ep_comp_descriptor(MemorySegment memorySegment, long offset, int sizeInBytes) {
+            super(memorySegment, offset, sizeInBytes);
         }
 
         /**
@@ -1181,23 +1173,23 @@ public interface Ch9 {
 
         public final static byte USB_DT_SS_EP_COMP_SIZE = 6;
 
-        public Usb_ss_ep_comp_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Layout.sizeof, setMem);
+        public Usb_ss_ep_comp_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         @__u8
         public short bMaxBurst() {
-            return ACCESSOR___U8.__u8_AsShort(this, Layout.bMaxBurst);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bMaxBurst);
         }
 
         @__u8
         public byte bmAttributes() {
-            return ACCESSOR___U8.__u8(this, Layout.bmAttributes);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bmAttributes);
         }
 
         @__le16
         public int wBytesPerInterval() {
-            return ACCESSOR___LE16.__le16_AsInt(this, Layout.wBytesPerInterval);
+            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, Layout.wBytesPerInterval);
         }
 
         @Override
@@ -1269,43 +1261,43 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_qualifier_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_qualifier_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__le16
         public short bcdUSB() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.bcdUSB);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.bcdUSB);
         }
 
         @__u8
         public byte bDeviceClass() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bDeviceClass);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bDeviceClass);
         }
 
         @__u8
         public byte bDeviceSubClass() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bDeviceSubClass);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bDeviceSubClass);
         }
 
         @__u8
         public byte bDeviceProtocol() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bDeviceProtocol);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bDeviceProtocol);
         }
 
         @__u8
         public short bMaxPacketSize0() {
-            return MEM_ACCESS.uint8_t_AsShort(this, LAYOUT.bMaxPacketSize0);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, LAYOUT.bMaxPacketSize0);
         }
 
         @__u8
         public short bNumConfigurations() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bNumConfigurations);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bNumConfigurations);
         }
 
         @__u8
         public byte bRESERVED() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bRESERVED);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bRESERVED);
         }
     }
 
@@ -1327,14 +1319,14 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_otg_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_otg_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         /* support for HNP, SRP, etc */
         @__u8
         public byte bmAttributes() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bmAttributes);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmAttributes);
         }
     }
 
@@ -1355,19 +1347,19 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_otg20_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_otg20_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
         public byte bmAttributes() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bmAttributes);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmAttributes);
         }
 
         /* support for HNP, SRP and ADP, etc */
         @__le16
         public short bcdOTG() {
-            return MEM_ACCESS.int16_t(this, LAYOUT.bcdOTG);
+            return MEM_ACCESS_LE.int16_t(memorySegment, LAYOUT.bcdOTG);
         }
         /* OTG and EH supplement release number
 				 * in binary-coded decimal(i.e. 2.0 is 0200H)
@@ -1403,19 +1395,19 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_debug_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_debug_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         /* bulk endpoints with 8 byte maxpacket */
         @__u8
         public byte bDebugInEndpoint() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bDebugInEndpoint);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bDebugInEndpoint);
         }
 
         @__u8
         public byte bDebugOutEndpoint() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bDebugOutEndpoint);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bDebugOutEndpoint);
         }
     }
 
@@ -1438,38 +1430,38 @@ public interface Ch9 {
             public final static byte sizeof = iFunction + __U8;
         }
 
-        public Usb_interface_assoc_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Layout.sizeof, setMem);
+        public Usb_interface_assoc_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         @__u8
         public byte bFirstInterface() {
-            return ACCESSOR___U8.__u8(this, Layout.bFirstInterface);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bFirstInterface);
         }
 
         @__u8
         public short bInterfaceCount() {
-            return ACCESSOR___U8.__u8(this, Layout.bInterfaceCount);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bInterfaceCount);
         }
 
         @__u8
         public byte bFunctionClass() {
-            return ACCESSOR___U8.__u8(this, Layout.bFunctionClass);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bFunctionClass);
         }
 
         @__u8
         public byte bFunctionSubClass() {
-            return ACCESSOR___U8.__u8(this, Layout.bFunctionSubClass);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bFunctionSubClass);
         }
 
         @__u8
         public byte bFunctionProtocol() {
-            return ACCESSOR___U8.__u8(this, Layout.bFunctionProtocol);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bFunctionProtocol);
         }
 
         @__u8
         public byte iFunction() {
-            return ACCESSOR___U8.__u8(this, Layout.iFunction);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.iFunction);
         }
 
         @Override
@@ -1505,18 +1497,18 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_security_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_security_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__le16
         public int wTotalLength() {
-            return MEM_ACCESS.uint16_t_AsInt(this, LAYOUT.wTotalLength);
+            return MEM_ACCESS.uint16_t_AsInt(memorySegment, LAYOUT.wTotalLength);
         }
 
         @__u8
         public short bNumEncryptionTypes() {
-            return MEM_ACCESS.int8_t(this, LAYOUT.bNumEncryptionTypes);
+            return MEM_ACCESS.int8_t(memorySegment, LAYOUT.bNumEncryptionTypes);
         }
     }
 
@@ -1543,8 +1535,8 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_key_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_key_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
@@ -1578,13 +1570,13 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_encryption_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_encryption_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
         public byte bEncryptionType() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bEncryptionType);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bEncryptionType);
         }
         public final static byte USB_ENC_TYPE_UNSECURE = 0;
         /* non-wireless mode */
@@ -1597,12 +1589,12 @@ public interface Ch9 {
         /* use in SET_ENCRYPTION */
         @__u8
         public byte bEncryptionValue() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bEncryptionValue);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bEncryptionValue);
         }
 
         @__u8
         public byte bAuthKeyIndex() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bAuthKeyIndex);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bAuthKeyIndex);
         }
     }
 
@@ -1628,18 +1620,18 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_bos_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_bos_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__le16
         public int wTotalLength() {
-            return MEM_ACCESS.uint16_t_AsInt(this, LAYOUT.wTotalLength);
+            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.wTotalLength);
         }
 
         @__u8
         public byte bNumDeviceCaps() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bNumDeviceCaps);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bNumDeviceCaps);
         }
     }
 
@@ -1657,8 +1649,8 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_dev_cap_header(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_dev_cap_header(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
     }
@@ -1690,13 +1682,13 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_wireless_cap_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_wireless_cap_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
         public byte bmAttributes() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bmAttributes);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmAttributes);
         }
 
         public final static byte USB_WIRELESS_P2P_DRD = (1 << 1);
@@ -1708,7 +1700,7 @@ public interface Ch9 {
         /* bit rates, Mbps */
         @__le16
         public short wPHYRates() {
-            return MEM_ACCESS.uint8_t_AsShort(this, LAYOUT.wPHYRates);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.wPHYRates);
         }
         /* always set */
         public final static byte USB_WIRELESS_PHY_53 = (1 << 0);
@@ -1725,23 +1717,23 @@ public interface Ch9 {
         /* TFI power levels */
         @__u8
         public byte bmTFITXPowerInfo() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bmTFITXPowerInfo);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmTFITXPowerInfo);
         }
 
         /* FFI power levels */
         @__u8
         public byte bmFFITXPowerInfo() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bmFFITXPowerInfo);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmFFITXPowerInfo);
         }
 
         @__le16
         public short bmBandGroup() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.bmBandGroup);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.bmBandGroup);
         }
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bReserved);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved);
         }
     }
 
@@ -1765,13 +1757,13 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ext_cap_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_ext_cap_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__le32
         public int bmAttributes() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.bmAttributes);
+            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.bmAttributes);
         }
         /* supports LPM */
         public final static byte USB_LPM_SUPPORT = (1 << 1);
@@ -1830,20 +1822,20 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ss_cap_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_ss_cap_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
         public byte bmAttributes() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bmAttributes);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmAttributes);
         }
         /* supports LTM */
         public final static byte USB_LTM_SUPPORT = (1 << 1);
 
         @__le16
         public int wSpeedSupported() {
-            return MEM_ACCESS.uint16_t_AsInt(this, LAYOUT.wSpeedSupported);
+            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.wSpeedSupported);
         }
         /* Low speed operation */
         public final static byte USB_LOW_SPEED_OPERATION = (1);
@@ -1856,17 +1848,17 @@ public interface Ch9 {
 
         @__u8
         public byte bFunctionalitySupport() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bFunctionalitySupport);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bFunctionalitySupport);
         }
 
         @__u8
         public byte bU1devExitLat() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bU1devExitLat);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bU1devExitLat);
         }
 
         @__le16
         public byte bU2DevExitLat() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bU2DevExitLat);
+            return MEM_ACCESS_LE.uint8_t(memorySegment, LAYOUT.bU2DevExitLat);
         }
     }
 
@@ -1894,13 +1886,13 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ss_container_id_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_ss_container_id_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.ContainerID);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.ContainerID);
         }
 
         /* 128-bit number */
@@ -1938,18 +1930,18 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ssp_cap_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_ssp_cap_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bReserved);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved);
         }
 
         @__le32
         public int bmAttributes() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.bmAttributes);
+            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.bmAttributes);
         }
         /* sublink speed entries */
         public final static short USB_SSP_SUBLINK_SPEED_ATTRIBS = (0x1f << 0);
@@ -1958,7 +1950,7 @@ public interface Ch9 {
 
         @__le16
         public short wFunctionalitySupport() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.wFunctionalitySupport);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.wFunctionalitySupport);
         }
         public final static short USB_SSP_MIN_SUBLINK_SPEED_ATTRIBUTE_ID = (0xf);
         public final static short USB_SSP_MIN_RX_LANE_COUNT = (0xf << 8);
@@ -1966,7 +1958,7 @@ public interface Ch9 {
 
         @__le16
         public short wReserved() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.wReserved);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.wReserved);
         }
 
         /* list of sublink speed attrib entries */
@@ -2025,18 +2017,18 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_pd_cap_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_pd_cap_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bReserved);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved);
         }
 
         @__le32
         public int bmAttributes() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.bmAttributes);
+            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.bmAttributes);
         }
         /* supports Battery Charging specification */
         public final static byte USB_PD_CAP_BATTERY_CHARGING = (1 << 1);
@@ -2058,27 +2050,27 @@ public interface Ch9 {
         /* Bit zero refers to the UFP of the device */
         @__le16
         public int bmProviderPorts() {
-            return MEM_ACCESS.uint16_t_AsInt(this, LAYOUT.bmProviderPorts);
+            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.bmProviderPorts);
         }
 
         @__le16
         public int bmConsumerPorts() {
-            return MEM_ACCESS.uint16_t_AsInt(this, LAYOUT.bmConsumerPorts);
+            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.bmConsumerPorts);
         }
 
         @__le16
         public short bcdBCVersion() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.bcdBCVersion);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.bcdBCVersion);
         }
 
         @__le16
         public short bcdPDVersion() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.bcdPDVersion);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.bcdPDVersion);
         }
 
         @__le16
         public short bcdUSBTypeCVersion() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.bcdUSBTypeCVersion);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.bcdUSBTypeCVersion);
         }
     }
 
@@ -2112,36 +2104,36 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_pd_cap_battery_info_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_pd_cap_battery_info_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         /* Index of string descriptor shall contain the user friendly name for this battery */
         @__u8
         public byte iBattery() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.iBattery);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.iBattery);
         }
 
         /* Index of string descriptor shall contain the Serial Number String for this battery */
         @__u8
         public byte iSerial() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.iSerial);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.iSerial);
         }
 
         @__u8
         public byte iManufacturer() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.iManufacturer);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.iManufacturer);
         }
 
         /* uniquely identifies this battery in status Messages */
         @__u8
         public byte bBatteryId() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bBatteryId);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bBatteryId);
         }
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bReserved);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved);
         }
 
         /*
@@ -2152,7 +2144,7 @@ public interface Ch9 {
  /* in mWh */
         @__le32
         public int dwChargedThreshold() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.dwChargedThreshold);
+            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwChargedThreshold);
         }
 
         /*
@@ -2163,19 +2155,19 @@ public interface Ch9 {
  /* in mWh */
         @__le32
         public long dwWeakThreshold() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.dwWeakThreshold);
+            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwWeakThreshold);
         }
 
         /* in mWh */
         @__le32
         public long dwBatteryDesignCapacity() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.dwBatteryDesignCapacity);
+            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwBatteryDesignCapacity);
         }
 
         /* in mWh */
         @__le32
         public long dwBatteryLastFullchargeCapacity() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.dwBatteryLastFullchargeCapacity);
+            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwBatteryLastFullchargeCapacity);
         }
     }
 
@@ -2207,18 +2199,18 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_pd_cap_consumer_port_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_pd_cap_consumer_port_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bReserved);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved);
         }
 
         @__u8
         public byte bmCapabilities() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bmCapabilities);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmCapabilities);
         }
         /* port will oerate under: */
  /* BC */
@@ -2231,36 +2223,36 @@ public interface Ch9 {
         /* in 50mV units */
         @__le16
         public int wMinVoltage() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.wMinVoltage);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.wMinVoltage);
         }
 
         /* in 50mV units */
         @__le16
         public int wMaxVoltage() {
-            return MEM_ACCESS.uint16_t(this, LAYOUT.wMaxVoltage);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.wMaxVoltage);
         }
 
         @__u16
         public short wReserved() {
-            return MEM_ACCESS.int16_t(this, LAYOUT.wReserved);
+            return MEM_ACCESS_LE.int16_t(memorySegment, LAYOUT.wReserved);
         }
 
         /* in 10 mW - operating at steady state */
         @__le32
         public long dwMaxOperatingPower() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.dwMaxOperatingPower);
+            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwMaxOperatingPower);
         }
 
         /* in 10mW units - operating at peak power */
         @__le32
         public long dwMaxPeakPower() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.dwMaxPeakPower);
+            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwMaxPeakPower);
         }
 
         /* in 100ms units - duration of peak */
         @__le32
         public long dwMaxPeakPowerTime() {
-            return MEM_ACCESS.uint32_t(this, LAYOUT.dwMaxPeakPowerTime);
+            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwMaxPeakPowerTime);
         }
 
         public final static int USB_PD_CAP_CONSUMER_UNKNOWN_PEAK_POWER_TIME = 0xffff;
@@ -2288,18 +2280,18 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_pd_cap_provider_port_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_pd_cap_provider_port_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
         public byte bReserved1() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bReserved1);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved1);
         }
 
         @__u8
         public byte bmCapabilities() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bmCapabilities);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmCapabilities);
         }
         /* port will oerate under: */
  /* BC */
@@ -2311,12 +2303,12 @@ public interface Ch9 {
 
         @__u8
         public short bNumOfPDObjects() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bNumOfPDObjects);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bNumOfPDObjects);
         }
 
         @__u8
         public byte bReserved2() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bReserved2);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved2);
         }
 
         @__le32
@@ -2340,8 +2332,8 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_ptm_cap_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_ptm_cap_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
     }
@@ -2385,38 +2377,38 @@ public interface Ch9 {
 
         protected final static Layout LAYOUT = new Layout();
 
-        public Usb_wireless_ep_comp_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, LAYOUT.getSizeof(), setMem);
+        public Usb_wireless_ep_comp_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, LAYOUT.getSizeof());
         }
 
         @__u8
         public short bMaxBurst() {
-            return MEM_ACCESS.uint8_t_AsShort(this, LAYOUT.bMaxBurst);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, LAYOUT.bMaxBurst);
         }
 
         @__u8
         public short bMaxSequence() {
-            return MEM_ACCESS.uint8_t_AsShort(this, LAYOUT.bMaxSequence);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, LAYOUT.bMaxSequence);
         }
 
         @__le16
         public int wMaxStreamDelay() {
-            return MEM_ACCESS.uint16_t_AsInt(this, LAYOUT.wMaxStreamDelay);
+            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.wMaxStreamDelay);
         }
 
         @__le16
         public int wOverTheAirPacketSize() {
-            return MEM_ACCESS.uint16_t_AsInt(this, LAYOUT.wOverTheAirPacketSize);
+            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.wOverTheAirPacketSize);
         }
 
         @__u8
         public short bOverTheAirInterval() {
-            return MEM_ACCESS.uint8_t_AsShort(this, LAYOUT.bOverTheAirInterval);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, LAYOUT.bOverTheAirInterval);
         }
 
         @__u8
         public byte bmCompAttributes() {
-            return MEM_ACCESS.uint8_t(this, LAYOUT.bmCompAttributes);
+            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmCompAttributes);
         }
         /* in bmCompAttributes */
         public final static byte USB_ENDPOINT_SWITCH_MASK = 0x03;
@@ -2431,7 +2423,7 @@ public interface Ch9 {
  * host and a device for connection set up, mutual authentication, and
  * exchanging short lived session keys.  The handshake depends on a CC.
      */
-    public final static class Usb_handshake extends LinuxSyscallStruct32 {
+    public final static class Usb_handshake extends Struct {
 
         public final class Layout {
 
@@ -2450,44 +2442,51 @@ public interface Ch9 {
             public final static byte sizeof = MIC + sizeof_MIC;
         }
 
-        public Usb_handshake(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Layout.sizeof, setMem);
+        public Usb_handshake(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         @__u8
         public short bMessageNumber() {
-            return ACCESSOR___U8.__u8_AsShort(this, Layout.bMessageNumber);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bMessageNumber);
         }
 
         @__u8
         public byte bStatus() {
-            return ACCESSOR___U8.__u8(this, Layout.bStatus);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bStatus);
         }
 
         @__u8
         public byte[] tTKID() {
-            return ACCESSOR___U8.__u8_Array(this, Layout.tTKID, Layout.sizeof_tTKID);
+            final byte[] result = new byte[Layout.sizeof_tTKID];
+            MEM_ACCESS.copyMemory(memorySegment, Layout.tTKID, result, 0, Layout.sizeof_tTKID);
+            return result;
         }
 
         @__u8
         public byte bReserved() {
-            return ACCESSOR___U8.__u8(this, Layout.bReserved);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bReserved);
         }
 
         @__u8
         public byte[] CDID() {
-            return ACCESSOR___U8.__u8_Array(this, Layout.CDID, Layout.sizeof_CDID);
+            final byte[] result = new byte[Layout.sizeof_CDID];
+            MEM_ACCESS.copyMemory(memorySegment, Layout.CDID, result, 0, Layout.sizeof_CDID);
+            return result;
         }
 
         @__u8
         public byte[] nonce() {
-            return ACCESSOR___U8.__u8_Array(this, Layout.nonce, Layout.sizeof_nonce);
-
+            final byte[] result = new byte[Layout.sizeof_nonce];
+            MEM_ACCESS.copyMemory(memorySegment, Layout.nonce, result, 0, Layout.sizeof_nonce);
+            return result;
         }
 
         @__u8
         public byte[] MIC() {
-            return ACCESSOR___U8.__u8_Array(this, Layout.MIC, Layout.sizeof_MIC);
+            final byte[] result = new byte[Layout.sizeof_MIC];
+            MEM_ACCESS.copyMemory(memorySegment, Layout.MIC, result, 0, Layout.sizeof_MIC);
+            return result;
         }
     }
 
@@ -2497,7 +2496,7 @@ public interface Ch9 {
  * A CC may also be set up using non-wireless secure channels (including
  * wired USB!), and some devices may support CCs with multiple hosts.
      */
-    public abstract static class Usb_connection_context extends Struct32 {
+    public abstract static class Usb_connection_context extends Struct {
 
         public final class Layout {
 
@@ -2511,8 +2510,8 @@ public interface Ch9 {
             public final static byte sizeof = CK + sizeof_CK;
         }
 
-        public Usb_connection_context(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Layout.sizeof, setMem);
+        public Usb_connection_context(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         /* persistent host id */
@@ -2609,10 +2608,10 @@ public interface Ch9 {
     public final static byte USB3_LPM_U2_MAX_TIMEOUT = (byte) 0xFE;
     public final static byte USB3_LPM_DEVICE_INITIATED = (byte) 0xFF;
 
-    public abstract static class Usb_set_sel_req extends Struct32 {
+    public abstract static class Usb_set_sel_req extends Struct {
 
-        public Usb_set_sel_req(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, -1, setMem);
+        public Usb_set_sel_req(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, -1);
         }
 
         @__u8

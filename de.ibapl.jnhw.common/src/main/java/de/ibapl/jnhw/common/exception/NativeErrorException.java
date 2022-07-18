@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,6 +22,8 @@
 package de.ibapl.jnhw.common.exception;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.IntFunction;
 
 /**
@@ -34,19 +36,23 @@ import java.util.function.IntFunction;
  *
  * @author aploese
  */
-public class NativeErrorException extends Exception {
+public class NativeErrorException extends NativeException {
 
-    public static IntFunction<String> ERRNO_SYMBOL_PROVIDER;
+    private static List<IntFunction<String>> ERRNO_SYMBOL_PROVIDERS = new LinkedList<>();
 
     private final static HashMap<Integer, String> ERRNO_SYMBOL_MAP = new HashMap<>();
 
     private final static String formatDefaultMessage(final int errno) {
         String symbol = ERRNO_SYMBOL_MAP.get(errno);
         if (symbol == null) {
-            if (ERRNO_SYMBOL_PROVIDER != null) {
-                symbol = ERRNO_SYMBOL_PROVIDER.apply(errno);
-                ERRNO_SYMBOL_MAP.put(errno, symbol);
-            } else {
+            for (IntFunction<String> provider : ERRNO_SYMBOL_PROVIDERS) {
+                symbol = provider.apply(errno);
+                if (symbol != null) {
+                    ERRNO_SYMBOL_MAP.put(errno, symbol);
+                    break;
+                }
+            }
+            if (symbol == null) {
                 symbol = String.valueOf(errno);
                 ERRNO_SYMBOL_MAP.put(errno, symbol);
             }
@@ -68,6 +74,10 @@ public class NativeErrorException extends Exception {
     public NativeErrorException(int errno, String msg) {
         super(msg);
         this.errno = errno;
+    }
+
+    public static void addErrSymbolProvider(IntFunction<String> provider) {
+        ERRNO_SYMBOL_PROVIDERS.add(provider);
     }
 
 }

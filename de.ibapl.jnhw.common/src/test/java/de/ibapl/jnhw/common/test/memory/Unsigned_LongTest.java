@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,9 +25,11 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
+import de.ibapl.jnhw.common.memory.AsUnsignedLong;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Unsigned_Long;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -35,47 +37,60 @@ import de.ibapl.jnhw.common.memory.Unsigned_Long;
  */
 public class Unsigned_LongTest {
 
-    public Unsigned_LongTest() {
-    }
-
     @Test
     public void testNative() {
-        Unsigned_Long instance = new Unsigned_Long(null, 0, SetMem.TO_0x00);
-        final long input = 0x8070605040302010L;
-        if (BaseDataType.__SIZE_OF_LONG == 8) {
-            instance.unsigned_long(input);
-            assertEquals(input, instance.unsigned_long());
-        } else {
-            //Big Endian so the layout of the bytes is different.... from Little Endian
-            instance.unsigned_long(input >>> 32); // shift without sign
-            assertEquals(input >>> 32, instance.unsigned_long());
-        }
-        instance.unsigned_long(33);
-        assertEquals(33, instance.unsigned_long());
-        if (BaseDataType.__SIZE_OF_LONG == 8) {
-            instance.unsigned_long(input);
-            assertEquals(input, instance.unsigned_long());
-            instance.unsigned_long(-1);
-            assertEquals(-1, instance.unsigned_long());
-        } else {
-            assertThrows(IllegalArgumentException.class, () -> instance.unsigned_long(input));
-            assertThrows(IllegalArgumentException.class, () -> instance.unsigned_long(-1));
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Unsigned_Long instance = Unsigned_Long.allocateNative(rs);
+            final long input = 0x8070605040302010L;
+            if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
+                instance.unsigned_long(input);
+                assertEquals(input, instance.unsigned_long());
+            } else {
+                //Big Endian so the layout of the bytes is different.... from Little Endian
+                instance.unsigned_long(input >>> 32); // shift without sign
+                assertEquals(input >>> 32, instance.unsigned_long());
+            }
+            instance.unsigned_long(33);
+            assertEquals(33, instance.unsigned_long());
+            if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
+                instance.unsigned_long(input);
+                assertEquals(input, instance.unsigned_long());
+                instance.unsigned_long(-1);
+                assertEquals(-1, instance.unsigned_long());
+            } else {
+                assertThrows(IllegalArgumentException.class, () -> instance.unsigned_long(input));
+                assertThrows(IllegalArgumentException.class, () -> instance.unsigned_long(-1));
+            }
         }
     }
 
     @Test
     public void testNativeToString() {
-        Unsigned_Long instance = new Unsigned_Long(null, 0, SetMem.TO_0x00);
-        if (BaseDataType.__SIZE_OF_LONG == 8) {
-            Uint64_t uint64_t = new Uint64_t(instance, 0, SetMem.DO_NOT_SET);
-            uint64_t.uint64_t(0xfffffffffffffffeL);
-            assertEquals(Long.toUnsignedString(0xfffffffffffffffeL), instance.nativeToString());
-            assertEquals("0xfffffffffffffffe", instance.nativeToHexString());
-        } else {
-            Uint32_t uint32_t = new Uint32_t(instance, 0, SetMem.DO_NOT_SET);
-            uint32_t.uint32_t(0xfffffffe);
-            assertEquals(Long.toString(0xfffffffeL), instance.nativeToString());
-            assertEquals("0xfffffffe", instance.nativeToHexString());
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Unsigned_Long instance = new Unsigned_Long(MemorySegment.allocateNative(BaseDataType.C_unsigned_long.SIZE_OF, rs), 0);
+            if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
+                Uint64_t uint64_t = Uint64_t.map(instance, 0);
+                uint64_t.uint64_t(0xfffffffffffffffeL);
+                assertEquals(Long.toUnsignedString(0xfffffffffffffffeL), instance.nativeToString());
+                assertEquals("0xfffffffffffffffe", instance.nativeToHexString());
+            } else {
+                Uint32_t uint32_t = Uint32_t.map(instance, 0);
+                uint32_t.uint32_t(0xfffffffe);
+                assertEquals(Long.toString(0xfffffffeL), instance.nativeToString());
+                assertEquals("0xfffffffe", instance.nativeToHexString());
+            }
         }
     }
+
+    @Test
+    public void testNative_1() {
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, MemorySegment.allocateNative(BaseDataType.uint32_t.SIZE_OF, rs), 0);
+            instance.setFromUnsignedLong(33);
+            assertEquals(33, instance.getAsUnsignedLong());
+            assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
+            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, MemorySegment.allocateNative(BaseDataType.int8_t.SIZE_OF, rs), 0));
+        }
+    }
+
 }

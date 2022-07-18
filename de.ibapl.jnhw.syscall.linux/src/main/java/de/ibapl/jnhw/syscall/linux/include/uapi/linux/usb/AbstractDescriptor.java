@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb;
 
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
@@ -29,12 +29,12 @@ import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.syscall.linux.annotation.SysFs;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types;
-import de.ibapl.jnhw.syscall.linux.util.memory.LinuxSyscallStruct32;
 import de.ibapl.jnhw.syscall.linux.util.memory.PacketLayout;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
 
 @SysFs("/sys/bus/usb/devices/*/descriptors")
-public abstract class AbstractDescriptor extends LinuxSyscallStruct32 {
+public abstract class AbstractDescriptor extends Struct {
 
     public static class Layout extends PacketLayout {
 
@@ -73,18 +73,18 @@ public abstract class AbstractDescriptor extends LinuxSyscallStruct32 {
         return String.format("%x.%02x", (bcdValue >> 8), (bcdValue & 0x00FF));
     }
 
-    public AbstractDescriptor(AbstractNativeMemory parent, long offset, int sizeInBytes, SetMem setMem) {
-        super(parent, offset, sizeInBytes, setMem);
+    public AbstractDescriptor(MemorySegment memorySegment, long offset, int sizeInBytes) {
+        super(memorySegment, offset, sizeInBytes);
     }
 
     @Types.__u8
     public final short bLength() {
-        return ACCESSOR___U8.__u8_AsShort(this, Layout.bLength);
+        return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bLength);
     }
 
     @Types.__u8
     public final byte bDescriptorType() {
-        return ACCESSOR___U8.__u8(this, Layout.bDescriptorType);
+        return MEM_ACCESS.uint8_t(memorySegment, Layout.bDescriptorType);
     }
 
     protected abstract void nativeToString(JsonStringBuilder jsb, String indentPrefix, String indent) throws IOException;

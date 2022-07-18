@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,10 +22,9 @@
 package de.ibapl.jnhw.it.jnhw_jna_jnr;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.common.memory.Memory32Heap;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.posix.Time;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -35,24 +34,28 @@ public class Jnhw {
 
     public static void runFullTest_HeapAllocated(final int count) throws NativeErrorException {
         final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
-        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, Time.Timespec.sizeof, SetMem.DO_NOT_SET);
-        for (int i = 0; i < count; i++) {
-            final Time.Timespec timespec = new Time.Timespec(heap, 0, SetMem.DO_NOT_SET);
-            Time.clock_gettime(CLOCK_MONOTONIC, timespec);
-            final long val = timespec.tv_sec();
-            timespec.tv_sec(timespec.tv_nsec());
-            timespec.tv_nsec(val);
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            final MemoryHeap heap = MemoryHeap.allocateNative(Time.Timespec.sizeof, rs);
+            for (int i = 0; i < count; i++) {
+                final Time.Timespec timespec = new Time.Timespec(heap, 0);
+                Time.clock_gettime(CLOCK_MONOTONIC, timespec);
+                final long val = timespec.tv_sec();
+                timespec.tv_sec(timespec.tv_nsec());
+                timespec.tv_nsec(val);
+            }
         }
     }
 
     public static void runFullTest_DirectAllocation(final int count) throws NativeErrorException {
         final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
         for (int i = 0; i < count; i++) {
-            final Time.Timespec timespec = new Time.Timespec(SetMem.DO_NOT_SET);
-            Time.clock_gettime(CLOCK_MONOTONIC, timespec);
-            final long val = timespec.tv_sec();
-            timespec.tv_sec(timespec.tv_nsec());
-            timespec.tv_nsec(val);
+            try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+                final Time.Timespec timespec = Time.Timespec.allocateNative(rs);
+                Time.clock_gettime(CLOCK_MONOTONIC, timespec);
+                final long val = timespec.tv_sec();
+                timespec.tv_sec(timespec.tv_nsec());
+                timespec.tv_nsec(val);
+            }
         }
     }
 
@@ -64,51 +67,63 @@ public class Jnhw {
      * @param count
      */
     public static void mem_HeapAllocated(final int count) {
-        final Memory32Heap heap = new Memory32Heap(null, 0, Time.Timespec.sizeof, SetMem.DO_NOT_SET);
-        for (int i = 0; i < count; i++) {
-            ts = new Time.Timespec(heap, 0, SetMem.DO_NOT_SET);
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            final MemoryHeap heap = MemoryHeap.allocateNative(Time.Timespec.sizeof, rs);
+            for (int i = 0; i < count; i++) {
+                ts = new Time.Timespec(heap, 0);
+            }
         }
     }
 
     public static void mem_DirectAllocation(final int count) {
         for (int i = 0; i < count; i++) {
-            ts = new Time.Timespec(SetMem.DO_NOT_SET);
+            try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+                ts = Time.Timespec.allocateNative(rs);
+            }
         }
     }
 
     public static void clock_gettime(final int count) throws NativeErrorException {
-        final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
-        final Time.Timespec timespec = new Time.Timespec(SetMem.DO_NOT_SET);
-        for (int i = 0; i < count; i++) {
-            Time.clock_gettime(CLOCK_MONOTONIC, timespec);
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
+            final Time.Timespec timespec = Time.Timespec.allocateNative(rs);
+            for (int i = 0; i < count; i++) {
+                Time.clock_gettime(CLOCK_MONOTONIC, timespec);
+            }
         }
     }
 
     public static int clock_settime(final int clock) {
-        final Time.Timespec timespec = new Time.Timespec(SetMem.DO_NOT_SET);
-        try {
-            Time.clock_settime(clock, timespec);
-            throw new RuntimeException("Expected error");
-        } catch (NativeErrorException nee) {
-            return nee.errno;
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            final Time.Timespec timespec = Time.Timespec.allocateNative(rs);
+            try {
+                Time.clock_settime(clock, timespec);
+                throw new RuntimeException("Expected error");
+            } catch (NativeErrorException nee) {
+                return nee.errno;
+            }
         }
     }
 
     static volatile long val;
 
     public static void get(final int count) {
-        final Time.Timespec timespec = new Time.Timespec(SetMem.DO_NOT_SET);
-        for (int i = 0; i < count; i++) {
-            val = timespec.tv_sec();
-            val = timespec.tv_nsec();
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            final Time.Timespec timespec = Time.Timespec.allocateNative(rs);
+            for (int i = 0; i < count; i++) {
+                val = timespec.tv_sec();
+                val = timespec.tv_nsec();
+            }
         }
     }
 
     public static void set(final int count) {
-        final Time.Timespec timespec = new Time.Timespec(SetMem.DO_NOT_SET);
-        for (int i = 0; i < count; i++) {
-            timespec.tv_sec(val);
-            timespec.tv_nsec(val);
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            final Time.Timespec timespec = Time.Timespec.allocateNative(rs);
+            for (int i = 0; i < count; i++) {
+                timespec.tv_sec(val);
+                timespec.tv_nsec(val);
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,10 +22,14 @@
 package de.ibapl.jnhw.x_open;
 
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
+import de.ibapl.jnhw.posix.Errno;
 import de.ibapl.jnhw.posix.Signal;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 
 /**
  * Wrapper around the {@code  <ucontext.h>} header.
@@ -48,8 +52,7 @@ public class Ucontext {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN:
                 HAVE_UCONTEXT_H = false;
                 break;
@@ -63,36 +66,72 @@ public class Ucontext {
                 HAVE_UCONTEXT_H = false;
                 break;
             default:
-                throw new NoClassDefFoundError("No ucontext.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No ucontext.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 
-    private static native void getcontext(long ptrUcp) throws NativeErrorException;
+    private final static JnhwMh_sI___A getcontext = JnhwMh_sI___A.ofOrNull(
+            "getcontext",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh_sI___A setcontext = JnhwMh_sI___A.ofOrNull(
+            "setcontext",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh_sI___A__A swapcontext = JnhwMh_sI___A__A.ofOrNull(
+            "swapcontext",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_const_struct_pointer);
 
     /**
      * Get user context and store it in variable pointed to by UCP.
      */
-    public final static void getcontext(Signal.Ucontext_t ucp) throws NativeErrorException {
-        getcontext(AbstractNativeMemory.toUintptr_t(ucp));
+    public final static void getcontext(Signal.Ucontext_t ucp) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            if (getcontext.invoke_sI___P(ucp) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (getcontext == null) {
+                throw new NoSuchNativeMethodException("getcontext");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native void setcontext(final long ptrUcp) throws NativeErrorException;
 
     /**
      * Set user context from information of variable pointed to by UCP.
      */
-    final static void setcontext(final Signal.Ucontext_t ucp) throws NativeErrorException {
-        setcontext(AbstractNativeMemory.toUintptr_t(ucp));
+    final static void setcontext(final Signal.Ucontext_t ucp) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            if (setcontext.invoke_sI___P(ucp) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (setcontext == null) {
+                throw new NoSuchNativeMethodException("setcontext");
+            }
+        }
     }
-
-    private static native void swapcontext(long ptrOucp, final long ptrUcp) throws NativeErrorException;
 
     /**
      * Save current context in context variable pointed to by OUCP and set
      * context from variable pointed to by UCP.
      */
-    final static void swapcontext(Signal.Ucontext_t oucp, final Signal.Ucontext_t ucp) throws NativeErrorException {
-        swapcontext(AbstractNativeMemory.toUintptr_t(oucp), AbstractNativeMemory.toUintptr_t(ucp));
+    final static void swapcontext(Signal.Ucontext_t oucp, final Signal.Ucontext_t ucp) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            if (swapcontext.invoke_sI___P__P(oucp, ucp) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (swapcontext == null) {
+                throw new NoSuchNativeMethodException("swapcontext");
+            }
+        }
     }
 
     /* Manipulate user context UCP to continue with calling functions FUNC

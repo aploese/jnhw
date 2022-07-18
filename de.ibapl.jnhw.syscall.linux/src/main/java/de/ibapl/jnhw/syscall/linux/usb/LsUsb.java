@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,6 +27,7 @@ import de.ibapl.jnhw.syscall.linux.sysfs.UsbDevice;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -47,16 +48,18 @@ public class LsUsb {
     }
 
     private void listLong() {
-        for (UsbDevice dev : SysFs.bus().usb().devices()) {
-            System.out.println("SysFs dir: \"" + dev.getSysDir() + "\"");
-            System.out.println(dev.toShortString());
-            for (AbstractDescriptor descr : dev.descriptors()) {
-                try {
-                    descr.nativeToString(System.out, " ", " ");
-                } catch (IOException ex) {
-                    Logger.getLogger(LsUsb.class.getName()).log(Level.SEVERE, null, ex);
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            for (UsbDevice dev : SysFs.bus().usb().devices()) {
+                System.out.println("SysFs dir: \"" + dev.getSysDir() + "\"");
+                System.out.println(dev.toShortString());
+                for (AbstractDescriptor descr : dev.descriptors(scope)) {
+                    try {
+                        descr.nativeToString(System.out, " ", " ");
+                    } catch (IOException ex) {
+                        Logger.getLogger(LsUsb.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    System.out.println();
                 }
-                System.out.println();
             }
         }
     }

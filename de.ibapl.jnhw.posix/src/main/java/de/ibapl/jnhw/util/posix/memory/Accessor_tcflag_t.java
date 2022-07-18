@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.util.posix.memory;
 
 import de.ibapl.jnhw.annotation.posix.termios.tcflag_t;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -32,13 +32,13 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 public interface Accessor_tcflag_t {
 
     @tcflag_t
-    long tcflag_t(OpaqueMemory32 mem, long offset);
+    long tcflag_t(MemorySegment memorySegment, long offset);
 
-    void tcflag_t(OpaqueMemory32 mem, long offset, @tcflag_t long value);
+    void tcflag_t(MemorySegment memorySegment, long offset, @tcflag_t long value);
 
     @tcflag_t
-    int tcflag_tAsInt(OpaqueMemory32 mem, long offset);
+    int tcflag_tAsInt(MemorySegment memorySegment, long offset);
 
-    void tcflag_tFromInt(OpaqueMemory32 mem, long offset, @tcflag_t int value);
+    void tcflag_tFromInt(MemorySegment memorySegment, long offset, @tcflag_t int value);
 
 }

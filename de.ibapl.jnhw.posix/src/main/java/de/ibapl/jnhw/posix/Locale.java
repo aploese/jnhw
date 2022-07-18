@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,16 +24,23 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.annotation.posix.locale.locale_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.memory.OpaquePointer;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
+import de.ibapl.jnhw.util.posix.PosixDataType;
+import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___A;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -52,7 +59,7 @@ public class Locale {
         public final static int LC_ALL = 0;
         public final static int LC_COLLATE = 1;
         public final static int LC_CTYPE = 2;
-        public final static long LC_GLOBAL_LOCALE = -1;
+        public final static Locale_t LC_GLOBAL_LOCALE = Locale_t.of(MemoryAddress.ofLong(-1));
         public final static int LC_MESSAGES = 6;
         public final static int LC_MONETARY = 3;
         public final static int LC_NUMERIC = 4;
@@ -88,7 +95,7 @@ public class Locale {
      * lconv}</a>.
      *
      */
-    public static final class Lconv extends PosixStruct32 {
+    public static final class Lconv extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Currency_symbol;
@@ -121,13 +128,10 @@ public class Locale {
          * Make sure the native lib is loaded
          */
         static {
-            LibJnhwPosixLoader.touch();
-            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-            switch (multiarchInfo.getOS()) {
-
+            switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX:
-                    switch (multiarchInfo.getSizeOfPointer()) {
-                        case _32_BIT:
+                    switch (MultiarchTupelBuilder.getMemoryModel()) {
+                        case ILP32:
                             alignof = Alignment.AT_4;
                             sizeof = 56;
                             offsetof_Currency_symbol = 16;
@@ -155,7 +159,7 @@ public class Locale {
                             offsetof_P_sign_posn = 46;
                             offsetof_Thousands_sep = 4;
                             break;
-                        case _64_BIT:
+                        case LP64:
                             alignof = Alignment.AT_8;
                             sizeof = 96;
                             offsetof_Currency_symbol = 32;
@@ -184,7 +188,7 @@ public class Locale {
                             offsetof_Thousands_sep = 8;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No locale.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No locale.h linux defines for " + MultiarchTupelBuilder.getMultiarch());
                     }
                     break;
                 case DARWIN:
@@ -245,20 +249,16 @@ public class Locale {
                     offsetof_Thousands_sep = 8;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No locale.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No locale.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
             }
         }
 
-        public Lconv() {
-            this(null, 0, SetMem.DO_NOT_SET);
+        public Lconv(MemoryAddress memoryAddress, ResourceScope scope) {
+            super(MemorySegment.ofAddress(memoryAddress, Lconv.sizeof, scope), 0, Lconv.sizeof);
         }
 
-        public Lconv(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Lconv.sizeof, setMem);
-        }
-
-        public Lconv(NativeAddressHolder addressHolder) {
-            super(addressHolder, Lconv.sizeof);
+        public Lconv(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Lconv.sizeof);
         }
 
         /**
@@ -269,7 +269,7 @@ public class Locale {
          * @return the native value of currency_symbol.
          */
         public final String currency_symbol() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Currency_symbol);
+            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Currency_symbol);
         }
 
         /**
@@ -277,7 +277,7 @@ public class Locale {
          * @return the native value of decimal_point.
          */
         public final String decimal_point() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Decimal_point);
+            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Decimal_point);
         }
 
         /**
@@ -290,7 +290,7 @@ public class Locale {
          * @return the native value of frac_digits.
          */
         public final short frac_digits() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_Frac_digits);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_Frac_digits);
         }
 
         /**
@@ -298,7 +298,7 @@ public class Locale {
          * @return the native value of grouping.
          */
         public final String grouping() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Grouping);
+            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Grouping);
         }
 
         /**
@@ -309,7 +309,7 @@ public class Locale {
          * @return the native value of int_curr_symbol.
          */
         public final String int_curr_symbol() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Int_curr_symbol);
+            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Int_curr_symbol);
         }
 
         /**
@@ -322,7 +322,7 @@ public class Locale {
          * @return the native value of int_frac_digits.
          */
         public final short int_frac_digits() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_Int_frac_digits);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_Int_frac_digits);
         }
 
         /**
@@ -335,7 +335,7 @@ public class Locale {
          * @return the native value of int_n_cs_precedes.
          */
         public final short int_n_cs_precedes() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_Int_n_cs_precedes);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_Int_n_cs_precedes);
         }
 
         /**
@@ -348,7 +348,7 @@ public class Locale {
          * @return the native value of int_n_sep_by_space.
          */
         public final short int_n_sep_by_space() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_Int_n_sep_by_space);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_Int_n_sep_by_space);
         }
 
         /**
@@ -361,7 +361,7 @@ public class Locale {
          * @return the native value of int_n_sign_posn.
          */
         public final short int_n_sign_posn() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_Int_n_sign_posn);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_Int_n_sign_posn);
         }
 
         /**
@@ -374,7 +374,7 @@ public class Locale {
          * @return the native value of int_p_cs_precedes.
          */
         public final short int_p_cs_precedes() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_Int_p_cs_precedes);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_Int_p_cs_precedes);
         }
 
         /**
@@ -387,7 +387,7 @@ public class Locale {
          * @return the native value of int_p_sep_by_space.
          */
         public final short int_p_sep_by_space() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_Int_p_sep_by_space);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_Int_p_sep_by_space);
         }
 
         /**
@@ -400,7 +400,7 @@ public class Locale {
          * @return the native value of int_p_sign_posn.
          */
         public final short int_p_sign_posn() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_Int_p_sign_posn);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_Int_p_sign_posn);
         }
 
         /**
@@ -413,7 +413,7 @@ public class Locale {
          * @return the native value of mon_decimal_point.
          */
         public final String mon_decimal_point() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Mon_decimal_point);
+            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Mon_decimal_point);
         }
 
         /**
@@ -425,7 +425,7 @@ public class Locale {
          * @return the native value of mon_grouping.
          */
         public final String mon_grouping() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Mon_grouping);
+            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Mon_grouping);
         }
 
         /**
@@ -438,7 +438,7 @@ public class Locale {
          * @return the native value of mon_thousands_sep.
          */
         public final String mon_thousands_sep() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Mon_thousands_sep);
+            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Mon_thousands_sep);
         }
 
         /**
@@ -451,7 +451,7 @@ public class Locale {
          * @return the native value of n_cs_precedes.
          */
         public final short n_cs_precedes() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_N_cs_precedes);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_N_cs_precedes);
         }
 
         /**
@@ -464,7 +464,7 @@ public class Locale {
          * @return the native value of n_sep_by_space.
          */
         public final short n_sep_by_space() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_N_sep_by_space);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_N_sep_by_space);
         }
 
         /**
@@ -476,7 +476,7 @@ public class Locale {
          * @return the native value of n_sign_posn.
          */
         public final short n_sign_posn() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_N_sign_posn);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_N_sign_posn);
         }
 
         @Override
@@ -518,7 +518,7 @@ public class Locale {
          * @return the native value of negative_sign.
          */
         public final String negative_sign() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Negative_sign);
+            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Negative_sign);
         }
 
         /**
@@ -531,7 +531,7 @@ public class Locale {
          * @return the native value of p_cs_precedes.
          */
         public final short p_cs_precedes() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_P_cs_precedes);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_P_cs_precedes);
         }
 
         /**
@@ -544,7 +544,7 @@ public class Locale {
          * @return the native value of p_sep_by_space.
          */
         public final short p_sep_by_space() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_P_sep_by_space);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_P_sep_by_space);
         }
 
         /**
@@ -556,7 +556,7 @@ public class Locale {
          * @return the native value of p_sign_posn.
          */
         public final short p_sign_posn() {
-            return MEM_ACCESS.int16_t(this, Lconv.offsetof_P_sign_posn);
+            return MEM_ACCESS.int16_t(memorySegment, Lconv.offsetof_P_sign_posn);
         }
 
         /**
@@ -568,7 +568,7 @@ public class Locale {
          * @return the native value of positive_sign.
          */
         public final String positive_sign() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Positive_sign);
+            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Positive_sign);
         }
 
         /**
@@ -576,7 +576,7 @@ public class Locale {
          * @return the native value of thousands_sep.
          */
         public final String thousands_sep() {
-            return MEM_ACCESS.getUTF_8String(this, Lconv.offsetof_Thousands_sep);
+            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Thousands_sep);
         }
 
     }
@@ -589,7 +589,7 @@ public class Locale {
         public final static int LC_COLLATE_MASK = 8;
         public final static int LC_CTYPE = 0;
         public final static int LC_CTYPE_MASK = 1;
-        public final static long LC_GLOBAL_LOCALE = -1;
+        public final static Locale_t LC_GLOBAL_LOCALE = Locale_t.of(MemoryAddress.ofLong(-1));
         public final static int LC_MESSAGES = 5;
         public final static int LC_MESSAGES_MASK = 32;
         public final static int LC_MONETARY = 4;
@@ -608,55 +608,20 @@ public class Locale {
      * @author aploese
      */
     @locale_t
-    public static class Locale_t {
+    public static class Locale_t extends OpaquePointer<Locale_t> {
 
-        public final static Locale_t fromNativeValue(final long nativeValue) {
-            return new Locale_t(nativeValue);
-        }
+        public final static Locale_t LOCALE_T_0 = new Locale_t(MemoryAddress.NULL);
 
-        public final static long getNativeValue(final Locale_t locale) {
-            return locale.nativeValue;
-        }
-
-        /**
-         *
-         * @return (locale_t)0
-         */
-        public static Locale_t locale_t_0() {
-            return new Locale_t(0);
-        }
-
-        private final long nativeValue;
-
-        private Locale_t(long nativeValue) {
-            this.nativeValue = nativeValue;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
+        public static Locale_t of(MemoryAddress address) {
+            if (MemoryAddress.NULL == address) {
+                return LOCALE_T_0;
+            } else {
+                return new Locale_t(address);
             }
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final Locale_t other = (Locale_t) obj;
-            return this.nativeValue == other.nativeValue;
         }
 
-        @Override
-        public int hashCode() {
-            int hash = 7;
-            hash = 73 * hash + (int) (this.nativeValue ^ (this.nativeValue >>> 32));
-            return hash;
-        }
-
-        @Override
-        public String toString() {
-            return "{nativeValue : " + JnhwFormater.formatAddress(nativeValue) + "}";
+        private Locale_t(MemoryAddress nativeValue) {
+            super(nativeValue);
         }
 
     }
@@ -796,9 +761,7 @@ public class Locale {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
-        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-        switch (multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_LOCALE_H = true;
                 LC_ALL = LinuxDefines.LC_ALL;
@@ -807,7 +770,7 @@ public class Locale {
                 LC_COLLATE_MASK = LinuxDefines.LC_COLLATE_MASK;
                 LC_CTYPE = LinuxDefines.LC_CTYPE;
                 LC_CTYPE_MASK = LinuxDefines.LC_CTYPE_MASK;
-                LC_GLOBAL_LOCALE = Locale_t.fromNativeValue(LinuxDefines.LC_GLOBAL_LOCALE);
+                LC_GLOBAL_LOCALE = LinuxDefines.LC_GLOBAL_LOCALE;
                 LC_MESSAGES = LinuxDefines.LC_MESSAGES;
                 LC_MESSAGES_MASK = LinuxDefines.LC_MESSAGES_MASK;
                 LC_MONETARY = LinuxDefines.LC_MONETARY;
@@ -824,12 +787,12 @@ public class Locale {
                 LC_ALL = BsdDefines.LC_ALL;
                 LC_COLLATE = BsdDefines.LC_COLLATE;
                 LC_CTYPE = BsdDefines.LC_CTYPE;
-                LC_GLOBAL_LOCALE = Locale_t.fromNativeValue(BsdDefines.LC_GLOBAL_LOCALE);
+                LC_GLOBAL_LOCALE = BsdDefines.LC_GLOBAL_LOCALE;
                 LC_MESSAGES = BsdDefines.LC_MESSAGES;
                 LC_MONETARY = BsdDefines.LC_MONETARY;
                 LC_NUMERIC = BsdDefines.LC_NUMERIC;
                 LC_TIME = BsdDefines.LC_TIME;
-                switch (multiarchInfo.getOS()) {
+                switch (MultiarchTupelBuilder.getOS()) {
                     case DARWIN:
                         LC_ALL_MASK = DarwinDefines.LC_ALL_MASK;
                         LC_COLLATE_MASK = DarwinDefines.LC_COLLATE_MASK;
@@ -858,13 +821,44 @@ public class Locale {
                         LC_TIME_MASK = OpenBsdDefines.LC_TIME_MASK;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No locale.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No locale.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
                 break;
             default:
-                throw new NoClassDefFoundError("No locale.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No locale.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
+
+    private final static JnhwMh_MA___A duplocale = JnhwMh_MA___A.of(
+            "duplocale",
+            PosixDataType.locale_t,
+            PosixDataType.locale_t);
+
+    private final static JnhwMh__V___A freelocale = JnhwMh__V___A.of(
+            "freelocale",
+            PosixDataType.locale_t);
+
+    private final static JnhwMh_MA___V localeconv = JnhwMh_MA___V.of(
+            "localeconv",
+            BaseDataType.C_pointer);
+
+    private final static JnhwMh__A__sI__A__A newlocale = JnhwMh__A__sI__A__A.of(
+            "newlocale",
+            PosixDataType.locale_t,
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer,
+            PosixDataType.locale_t);
+
+    private final static JnhwMh__A__sI__A setlocale = JnhwMh__A__sI__A.of(
+            "setlocale",
+            BaseDataType.C_char_pointer,
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer);
+
+    private final static JnhwMh_MA___A uselocale = JnhwMh_MA___A.of(
+            "uselocale",
+            PosixDataType.locale_t,
+            PosixDataType.locale_t);
 
     /**
      * <b>POSIX:</b>
@@ -879,10 +873,8 @@ public class Locale {
      * indicates an error.
      */
     public final static Locale_t duplocale(Locale_t locobj) throws NativeErrorException {
-        return new Locale_t(duplocale(locobj.nativeValue));
+        return new Locale_t(duplocale.invoke_MA__P(locobj));
     }
-
-    private static native long duplocale(long nativeLocobj) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -893,10 +885,8 @@ public class Locale {
      *
      */
     public final static void freelocale(Locale_t locobj) {
-        freelocale(locobj.nativeValue);
+        freelocale.invoke__V___P(locobj);
     }
-
-    private static native void freelocale(long nativeLocobj);
 
     /**
      * <b>POSIX:</b>
@@ -907,11 +897,9 @@ public class Locale {
      * @return The localeconv() function shall return a pointer to the filled-in
      * object.
      */
-    public final static Lconv localeconv() {
-        return new Lconv(NativeAddressHolder.ofUintptr_t(localeconv0()));
+    public final static Lconv localeconv(ResourceScope scope) {
+        return new Lconv(localeconv.invoke_MA___V(), scope);
     }
-
-    private static native long localeconv0();
 
     /**
      * <b>POSIX:</b>
@@ -929,16 +917,19 @@ public class Locale {
      * indicates an error.
      */
     public final static Locale_t newlocale(int category_mask, String locale, Locale_t base) throws NativeErrorException {
-        if (locale == null) {
-            throw new NullPointerException("locale is null.");
-        }
         if (LC_GLOBAL_LOCALE.equals(base)) {
             throw new IllegalArgumentException("base is LC_GLOBAL_LOCALE");
         }
-        return new Locale_t(newlocale(category_mask, locale, base.nativeValue));
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _locale = MemorySegment.allocateNative(locale.length() + 1, scope);
+            _locale.setUtf8String(0, locale);
+            final MemoryAddress resultAdr = newlocale.invoke_MA__sI_A_P(category_mask, _locale, base);
+            if (resultAdr == MemoryAddress.NULL) {
+                throw new NativeErrorException(Errno.errno());
+            }
+            return new Locale_t(resultAdr);
+        }
     }
-
-    private static native long newlocale(int category_mask, String locale, long nativeBase) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -950,7 +941,23 @@ public class Locale {
      * @return on successful completion, the string associated with the
      * specified category for the new locale. otherwise {@code null}
      */
-    public final static native String setlocale(int category, String locale);
+    public final static String setlocale(int category, String locale) {
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            final MemoryAddress resultAdr;
+            if (locale == null) {
+                resultAdr = setlocale.invoke_MA__sI_A(category, MemoryAddress.NULL);
+            } else {
+                MemorySegment _locale = MemorySegment.allocateNative(locale.length() + 1, scope);
+                _locale.setUtf8String(0, locale);
+                resultAdr = setlocale.invoke_MA__sI_A(category, _locale);
+            }
+            if (resultAdr == MemoryAddress.NULL) {
+                return null;
+            } else {
+                return resultAdr.getUtf8String(0);
+            }
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -968,8 +975,12 @@ public class Locale {
      * indicates an error.
      */
     public final static Locale_t uselocale(Locale_t newloc) throws NativeErrorException {
-        return new Locale_t(uselocale(newloc.nativeValue));
+        final MemoryAddress resultAdr = uselocale.invoke_MA__P(newloc);
+        if (resultAdr == MemoryAddress.NULL) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return new Locale_t(resultAdr);
+        }
     }
 
-    private static native long uselocale(long nativeNewloc) throws NativeErrorException;
 }

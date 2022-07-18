@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,15 +21,16 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
-import de.ibapl.jnhw.common.callback.Callback_I_Mem_Mem_V_Impl;
+import de.ibapl.jnhw.common.downcall.JnhwMi__V___I__A__A;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.nativecall.CallNative_I_Mem_Mem_V;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
 import de.ibapl.jnhw.common.util.OutputStreamAppender;
 import de.ibapl.jnhw.posix.Signal;
+import de.ibapl.jnhw.x_open.Ucontext;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -37,21 +38,25 @@ import java.util.logging.Logger;
  */
 public class SigactionSignalHandler extends SignalHandler {
 
-    final Signal.Sigaction act = new Signal.Sigaction<>();
-    final Signal.Sigaction oact = new Signal.Sigaction();
-    Callback_I_Mem_Mem_V_Impl<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback_I_Mem_Mem_V_Impl<>() {
+    final ResourceScope scope = ResourceScope.newSharedScope();
+
+    final Signal.Sigaction act = Signal.Sigaction.allocateNative(scope);
+    final Signal.Sigaction oact = Signal.Sigaction.allocateNative(scope);
+    Callback__V___I_MA_MA<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback__V___I_MA_MA<>() {
 
         @Override
-        protected void callback(int value, Signal.Siginfo_t siginfo, Signal.Ucontext_t ucontext) {
+        protected void callback(int value, MemoryAddress siginfoPtr, MemoryAddress ucontextPtr) {
             try {
                 OutputStreamAppender sb = new OutputStreamAppender(System.out);
                 sb.append("\n\n********Caught Signal " + value + " in thread: " + Thread.currentThread() + "\n");
 
                 sb.append("siginfo: ");
+                final Signal.Siginfo_t siginfo = Signal.Siginfo_t.ofAddress(siginfoPtr, scope);
                 siginfo.nativeToString(sb, "", " ");
                 sb.append("\n");
 
                 sb.append("ucontext: ");
+                final Signal.Ucontext_t ucontext = Signal.Ucontext_t.tryOfAddress(ucontextPtr, scope);
                 ucontext.nativeToString(sb, "", " ");
                 sb.append("\n");
 
@@ -62,30 +67,18 @@ public class SigactionSignalHandler extends SignalHandler {
                         System.exit(value);
                         break;
                     case PRINT_MSG_AND_CALL_OLD_HANDLER:
-                        CallNative_I_Mem_Mem_V.wrap(oact.sa_sigaction()).call(value, siginfo, ucontext);
-                        break;
+                        try (ResourceScope rs = ResourceScope.newConfinedScope()){
+                        new JnhwMi__V___I__A__A(oact.sa_sigaction().toAddressable(), rs).invoke__V__sI__P__P(value, siginfo, ucontext);
+                        }                        break;
                     default:
                         thrownInHandler = new RuntimeException("Can't handle signalAction: " + signalAction);
                 }
                 signalHandled = true;
-            } catch (IOException ioe) {
-                thrownInHandler = ioe;
+            } catch (NoSuchNativeTypeException | IOException ex) {
+                thrownInHandler = ex;
             }
         }
 
-        @Override
-        protected Signal.Siginfo_t wrapA(NativeAddressHolder address) {
-            return new Signal.Siginfo_t(address);
-        }
-
-        @Override
-        protected Signal.Ucontext_t wrapB(NativeAddressHolder address) {
-            try {
-                return new Signal.Ucontext_t(address);
-            } catch (NoSuchNativeTypeException nste) {
-                throw new RuntimeException(nste);
-            }
-        }
     };
 
     public SigactionSignalHandler(int signalToRaise, SignalAction signalAction) {

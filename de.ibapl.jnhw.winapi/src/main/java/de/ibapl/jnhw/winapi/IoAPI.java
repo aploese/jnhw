@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,14 +23,16 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A__A_uL_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A__A_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A_uI_uL__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.Int32_t;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.memory.Uint32_t;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
-import de.ibapl.jnhw.winapi.Minwinbase.OVERLAPPED;
+import de.ibapl.jnhw.common.memory.UintPtr_t;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
+import de.ibapl.jnhw.winapi.Minwinbase.LPOVERLAPPED;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import jdk.incubator.foreign.MemoryAddress;
 
 /**
  * Wrapper around the
@@ -42,12 +44,30 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 @Include("IoAPI.h")
 public final class IoAPI {
 
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
+    private final static JnhwMh_MA___A__A_uL_uI CreateIoCompletionPort = JnhwMh_MA___A__A_uL_uI.of(
+            "CreateIoCompletionPort",
+            WinApiDataType.HANDLE,
+            WinApiDataType.HANDLE,
+            WinApiDataType.HANDLE,
+            WinApiDataType.ULONG_PTR,
+            WinApiDataType.DWORD);
+
+    private final static JnhwMh__B___A__A__A__A_uI GetQueuedCompletionStatus = JnhwMh__B___A__A__A__A_uI.of(
+            "GetQueuedCompletionStatus",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE,
+            WinApiDataType.LPDWORD,
+            WinApiDataType.PULONG_PTR,
+            WinApiDataType.LPOVERLAPPED,
+            WinApiDataType.DWORD);
+
+    private final static JnhwMh__B___A_uI_uL__A PostQueuedCompletionStatus = JnhwMh__B___A_uI_uL__A.of(
+            "PostQueuedCompletionStatus",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE,
+            WinApiDataType.DWORD,
+            WinApiDataType.ULONG_PTR,
+            WinApiDataType.LPOVERLAPPED);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/fileio/createiocompletionport">CreateIoCompletionPort</a>
@@ -75,10 +95,16 @@ public final class IoAPI {
         if (NumberOfConcurrentThreads < 0) {
             throw new IllegalArgumentException("NumberOfConcurrentThreads must >= 0!");
         }
-        return HANDLE.of(CreateIoCompletionPort(HANDLE.getHandleValue(FileHandle), HANDLE.getHandleValueOrNULL(ExistingCompletionPort), CompletionKey, NumberOfConcurrentThreads));
+        final MemoryAddress result = CreateIoCompletionPort.invoke_MA___P__P_uL_uI(
+                FileHandle,
+                ExistingCompletionPort != null ? ExistingCompletionPort : Pointer.NULL,
+                CompletionKey,
+                NumberOfConcurrentThreads);
+        if (result == MemoryAddress.NULL) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
+        return HANDLE.of(result);
     }
-
-    private static native long CreateIoCompletionPort(long ptrFileHandle, long ptrExistingCompletionPort, @ULONG_PTR long CompletionKey, int NumberOfConcurrentThreads) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-getqueuedcompletionstatus">GetQueuedCompletionStatus</a>
@@ -91,25 +117,31 @@ public final class IoAPI {
      * @param lpCompletionKey A pointer to a variable that receives the
      * completion key value associated with the file handle whose I/O operation
      * has completed.
-     * @param dwMilliseconds The number of milliseconds that the caller is
-     * willing to wait for a completion packet to appear at the completion port.
-     * @throws NullPointerException if hFile or lpBuffer is {@code null}.
-     *
-     * @return lpOverlapped A pointer to a variable that receives the address of
+     * @param lpOverlapped A pointer to a variable that receives the address of
      * the OVERLAPPED structure that was specified when the completed I/O
      * operation was started.
+     * @param dwMilliseconds The number of milliseconds that the caller is
+     * willing to wait for a completion packet to appear at the completion port.
+     *
+     * @throws NullPointerException if CompletionPort, lpCompletionKey or
+     * lpOverlapped is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static NativeAddressHolder<OVERLAPPED> GetQueuedCompletionStatus(HANDLE CompletionPort, Int32_t lpNumberOfBytesTransferred, @ULONG_PTR Uint32_t lpCompletionKey, long dwMilliseconds) throws NativeErrorException {
+    public final static void GetQueuedCompletionStatus(HANDLE CompletionPort, WinDef.LPDWORD lpNumberOfBytesTransferred, BaseTsd.PULONG_PTR lpCompletionKey, UintPtr_t<LPOVERLAPPED> lpOverlapped, long dwMilliseconds) throws NativeErrorException {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds must be >= 0");
         }
-        return NativeAddressHolder.ofUintptr_t(GetQueuedCompletionStatus(HANDLE.getHandleValue(CompletionPort), AbstractNativeMemory.toUintptr_t(lpNumberOfBytesTransferred), AbstractNativeMemory.toUintptr_t(lpCompletionKey), dwMilliseconds));
+        if (!GetQueuedCompletionStatus.invoke__B___P__P__P__P_uI(
+                CompletionPort,
+                lpNumberOfBytesTransferred,
+                lpCompletionKey,
+                lpOverlapped,
+                dwMilliseconds)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native long GetQueuedCompletionStatus(long ptrCompletionPort, long ptrLpNumberOfBytesTransferred, long ptrLpCompletionKey, long dwMilliseconds) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-postqueuedcompletionstatus">PostQueuedCompletionStatus</a>
@@ -129,9 +161,14 @@ public final class IoAPI {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static void PostQueuedCompletionStatus(HANDLE CompletionPort, int dwNumberOfBytesTransferred, @ULONG_PTR long dwCompletionKey, OVERLAPPED lpOverlapped) throws NativeErrorException {
-        PostQueuedCompletionStatus(HANDLE.getHandleValue(CompletionPort), dwNumberOfBytesTransferred, dwCompletionKey, AbstractNativeMemory.toUintptr_tOrNULL(lpOverlapped));
+    public final static void PostQueuedCompletionStatus(HANDLE CompletionPort, int dwNumberOfBytesTransferred, @ULONG_PTR long dwCompletionKey, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
+        if (!PostQueuedCompletionStatus.invoke__B___P_uI_uL__P(
+                CompletionPort,
+                dwNumberOfBytesTransferred,
+                dwCompletionKey,
+                lpOverlapped != null ? lpOverlapped : Pointer.NULL)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
 
-    private static native void PostQueuedCompletionStatus(long CompletionPort, int dwNumberOfBytesTransferred, @ULONG_PTR long dwCompletionKey, long ptrLpOverlapped) throws NativeErrorException;
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,9 +22,8 @@
 package de.ibapl.jnhw.syscall.linux.sysfs;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.common.memory.Memory32Heap;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.MemoryHeap;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.posix.Fcntl;
 import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.syscall.linux.annotation.Path;
@@ -43,6 +42,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -105,8 +106,8 @@ public class UsbDevice {
     }
 
     private String readFile(File f) {
-        try (Reader r = new FileReader(f)) {
-            try (BufferedReader br = new BufferedReader(r)) {
+        try ( Reader r = new FileReader(f)) {
+            try ( BufferedReader br = new BufferedReader(r)) {
                 return br.readLine();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -119,12 +120,12 @@ public class UsbDevice {
     private class DeviceIterator implements Iterator<AbstractDescriptor> {
 
         // get 1 page of kernel memory - this is also the size od descriptors ...
-        private final OpaqueMemory32 mem;
+        private final MemorySegment mem;
         private int currentPos = 0;
-        private int length;
+        private long length;
 
-        protected DeviceIterator() {
-            mem = new Memory32Heap(null, 0, 1024 * 64, SetMem.DO_NOT_SET);
+        protected DeviceIterator(ResourceScope scope) {
+            mem = MemorySegment.allocateNative(1024 * 64, scope);
             try {
                 final int fd = Fcntl.open(new File(sysFsDir, "descriptors").getAbsolutePath(), Fcntl.O_RDONLY);
                 try {
@@ -147,12 +148,12 @@ public class UsbDevice {
 
         @Override
         public AbstractDescriptor next() {
-            Ch9.Usb_descriptor_header header = new Ch9.Usb_descriptor_header(mem, currentPos, SetMem.DO_NOT_SET);
+            Ch9.Usb_descriptor_header header = new Ch9.Usb_descriptor_header(mem, currentPos);
             try {
-                return header.toDescriptor();
+                return header.toDescriptor(mem, currentPos);
             } catch (Exception ex) {
                 Logger.getLogger("d.i.j.s.l.UsbDevice").log(Level.SEVERE, "Decode USB descriptor", ex);
-                return new UsbUnknownDescriptor(mem, currentPos, header.bLength(), SetMem.DO_NOT_SET);
+                return new UsbUnknownDescriptor(mem, currentPos, header.bLength());
             } finally {
                 currentPos += header.bLength();
             }
@@ -160,8 +161,8 @@ public class UsbDevice {
         }
     }
 
-    public Iterable<AbstractDescriptor> descriptors() {
-        return () -> new DeviceIterator();
+    public Iterable<AbstractDescriptor> descriptors(ResourceScope scope) {
+        return () -> new DeviceIterator(scope);
     }
 
     public File getSysDir() {

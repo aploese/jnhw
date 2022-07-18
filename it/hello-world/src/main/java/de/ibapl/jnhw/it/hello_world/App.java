@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.it.hello_world;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 
 /**
  * Hello world!
@@ -31,8 +31,7 @@ import de.ibapl.jnhw.libloader.OS;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
-        if (mtb.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Windows.sayHello();
         } else {
             Posix.sayHello();

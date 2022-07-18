@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,6 +24,8 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.annotation.uint64_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -34,31 +36,35 @@ public class Uint64_t extends NativeIntNumber {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.uint64_t;
 
-    public Uint64_t(AbstractNativeMemory owner, long offset, SetMem setMem) {
-        super(owner, offset, 8, setMem);
+    public static Uint64_t allocateNative(ResourceScope rs) {
+        return new Uint64_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, rs), 0);
     }
 
-    public Uint64_t() {
-        super(8);
+    public Uint64_t(MemorySegment memorySegment, long offset) {
+        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
+    }
+
+    public static Uint64_t map(OpaqueMemory mem, long offset) {
+        return new Uint64_t(mem.memorySegment, offset);
     }
 
     @uint64_t
     public long uint64_t() {
-        return MEM_ACCESS.uint64_t(this, 0);
+        return MEM_ACCESS.uint64_t(memorySegment, 0);
     }
 
     public void uint64_t(@uint64_t long value) {
-        MEM_ACCESS.uint64_t(this, 0, value);
+        MEM_ACCESS.uint64_t(memorySegment, 0, value);
     }
 
     @Override
     public String nativeToHexString() {
-        return MEM_ACCESS.uint64_t_AsHex(this, 0);
+        return MEM_ACCESS.uint64_t_AsHex(memorySegment, 0);
     }
 
     @Override
     public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(MEM_ACCESS.uint64_t_nativeToString(this, 0));
+        sb.append(MEM_ACCESS.uint64_t_nativeToString(memorySegment, 0));
     }
 
     @Override

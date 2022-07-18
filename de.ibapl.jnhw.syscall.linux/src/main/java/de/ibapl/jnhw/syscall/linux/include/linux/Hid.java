@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,15 +22,15 @@
 package de.ibapl.jnhw.syscall.linux.include.linux;
 
 import de.ibapl.jnhw.common.annotation.Packed;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.StructArray32;
+import de.ibapl.jnhw.common.memory.MemoryArray;
+import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb.AbstractDescriptor;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__le16;
-import de.ibapl.jnhw.syscall.linux.util.memory.LinuxSyscallStruct32;
 import de.ibapl.jnhw.syscall.linux.util.memory.PacketLayout;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -39,7 +39,7 @@ import java.io.IOException;
 public class Hid {
 
     @Packed
-    public final static class Hid_class_descriptor extends LinuxSyscallStruct32 {
+    public final static class Hid_class_descriptor extends Struct {
 
         public final static class Layout extends PacketLayout {
 
@@ -49,18 +49,18 @@ public class Hid {
             public final static byte sizeof = wDescriptorLength + __LE16;
         }
 
-        public Hid_class_descriptor(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Layout.sizeof, setMem);
+        public Hid_class_descriptor(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         @__u8
         public byte bDescriptorType() {
-            return ACCESSOR___U8.__u8(this, Layout.bDescriptorType);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bDescriptorType);
         }
 
         @__le16
         public int wDescriptorLength() {
-            return ACCESSOR___LE16.__le16_AsInt(this, Layout.wDescriptorLength);
+            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, Layout.wDescriptorLength);
         }
 
         @Override
@@ -73,20 +73,14 @@ public class Hid {
 
     }
 
-    public static class Hid_class_descriptors extends StructArray32<Hid_class_descriptor> {
+    public static class Hid_class_descriptors extends MemoryArray<Hid_class_descriptor> {
 
-        public Hid_class_descriptors(int arraylength) {
-            //get uninitialized mem we need to set this anyway ...
-            super(new Hid_class_descriptor[arraylength], Hid_class_descriptors::createAtOffset, Hid_class_descriptor.Layout.sizeof, SetMem.DO_NOT_SET);
+        public Hid_class_descriptors(MemorySegment memorySegment, long offset, int arraylength) {
+            super(memorySegment, offset, new Hid_class_descriptor[arraylength], Hid_class_descriptors::createAtOffset, Hid_class_descriptor.Layout.sizeof);
         }
 
-        public Hid_class_descriptors(AbstractNativeMemory parent, long offset, int arraylength) {
-            //get uninitialized mem we need to set this anyway ...
-            super(parent, offset, new Hid_class_descriptor[arraylength], Hid_class_descriptors::createAtOffset, Hid_class_descriptor.Layout.sizeof, SetMem.DO_NOT_SET);
-        }
-
-        private static Hid_class_descriptor createAtOffset(AbstractNativeMemory parent, long offset) {
-            return new Hid_class_descriptor(parent, offset, SetMem.DO_NOT_SET);
+        private static Hid_class_descriptor createAtOffset(MemorySegment memorySegment, long elementOffset, int index) {
+            return new Hid_class_descriptor(memorySegment, elementOffset);
         }
 
     }
@@ -107,30 +101,30 @@ public class Hid {
 
         public static final int MIN_SIZEOF = 9;
 
-        public Hid_descriptor(AbstractNativeMemory parent, long offset, int size, SetMem setMem) {
-            super(parent, offset, size, setMem);
+        public Hid_descriptor(MemorySegment memorySegment, long offset, int size) {
+            super(memorySegment, offset, size);
             if ((size < MIN_SIZEOF) && (size < bLength())) {
                 throw new RuntimeException("size is too small");
             }
-            desc = new Hid_class_descriptors(this, Layout.desc, bNumDescriptors());
+            desc = new Hid_class_descriptors(memorySegment, Layout.desc, bNumDescriptors());
         }
 
         @__le16
         public short bcdHID() {
-            return ACCESSOR___LE16.__le16(this, Layout.bcdHID);
+            return MEM_ACCESS_LE.uint16_t(memorySegment, Layout.bcdHID);
         }
 
         @__u8
         public byte bCountryCode() {
-            return ACCESSOR___U8.__u8(this, Layout.bCountryCode);
+            return MEM_ACCESS.uint8_t(memorySegment, Layout.bCountryCode);
         }
 
         @__u8
         public short bNumDescriptors() {
-            return ACCESSOR___U8.__u8_AsShort(this, Layout.bNumDescriptors);
+            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bNumDescriptors);
         }
 
-        public StructArray32<Hid_class_descriptor> desc;
+        public MemoryArray<Hid_class_descriptor> desc;
 
         @Override
         protected void nativeToString(JsonStringBuilder jsb, String indentPrefix, String indent) throws IOException {

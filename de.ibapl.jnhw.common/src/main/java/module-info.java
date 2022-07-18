@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,18 +22,16 @@
 module de.ibapl.jnhw.common {
     requires transitive java.logging;
 
-    requires transitive de.ibapl.jnhw.libloader;
+    requires jdk.incubator.foreign;
 
-    requires jdk.unsupported;
-
-    exports de.ibapl.jnhw.common;
     exports de.ibapl.jnhw.common.annotation;
-    exports de.ibapl.jnhw.common.callback;
     exports de.ibapl.jnhw.common.datatypes;
+    exports de.ibapl.jnhw.common.downcall;
+    exports de.ibapl.jnhw.common.downcall.wrapper;
     exports de.ibapl.jnhw.common.exception;
     exports de.ibapl.jnhw.common.memory;
     exports de.ibapl.jnhw.common.memory.layout;
-    exports de.ibapl.jnhw.common.nativecall;
     exports de.ibapl.jnhw.common.nativepointer;
+    exports de.ibapl.jnhw.common.upcall;
     exports de.ibapl.jnhw.common.util;
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,12 +21,12 @@
  */
 package de.ibapl.jnhw.it.hello_world_async_io;
 
-import de.ibapl.jnhw.common.callback.Callback_NativeRunnable;
-import de.ibapl.jnhw.common.callback.NativeRunnable;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.MemoryHeap;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.upcall.Callback__V__MA;
 import de.ibapl.jnhw.common.util.OutputStreamAppender;
 import de.ibapl.jnhw.posix.Aio;
 import de.ibapl.jnhw.posix.Errno;
@@ -38,21 +38,25 @@ import de.ibapl.jnhw.posix.Unistd;
 import java.io.File;
 //Import only the needed method from the wrapper of iso c's unistd.h.h
 import java.io.IOException;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 public class Posix {
 
     final boolean isDebug;
     long transmitted;
-    final Aio.Aiocb<NativeRunnable> aiocb;
+    final ResourceScope scope = ResourceScope.newSharedScope();
+    final Aio.Aiocb<Aio.Aiocb> aiocb;
 
     final Object[] objRef = new Object[1];
 
     //This is the callback to be called from the native side.
-    final NativeRunnable callback = new NativeRunnable() {
+    final Callback__V__MA<Aio.Aiocb> callback = new Callback__V__MA<>() {
 
         @Override
         @SuppressWarnings("unchecked")
-        protected void callback() {
+        protected void callback(MemoryAddress address) {
             debugThread("Enter callback");
             try {
                 int errno = Aio.aio_error(aiocb);
@@ -63,7 +67,11 @@ public class Posix {
                     debugThread("Got errno from aio_read or aio_write: " + Errno.getErrnoSymbol(errno) + ", " + StringHeader.strerror(errno));
                 }
             } catch (NativeErrorException nee) {
-                debug("Got errno within callback: " + Errno.getErrnoSymbol(nee.errno) + ", " + StringHeader.strerror(nee.errno));
+                try {
+                    debug("Got errno within callback: " + Errno.getErrnoSymbol(nee.errno) + ", " + StringHeader.strerror(nee.errno));
+                } catch (NativeErrorException nee1) {
+                    debug("Got errno within callback: " + Errno.getErrnoSymbol(nee.errno));
+                }
             } catch (NoSuchNativeMethodException nsnme) {
                 debug("NoSuchNativeMethodException within callback: " + nsnme);
             }
@@ -79,13 +87,13 @@ public class Posix {
     public Posix(boolean isDebug) {
         this.isDebug = isDebug;
         try {
-            aiocb = new Aio.Aiocb<>();
+            aiocb = Aio.Aiocb.tryAllocateNative(scope);
         } catch (NoSuchNativeTypeException nsnte) {
             throw new RuntimeException(nsnte);
         }
     }
 
-    public void aio(File file, OpaqueMemory32 aioBuffer) throws NativeErrorException, NoSuchNativeMethodException, NoSuchNativeTypeException, IOException, InterruptedException {
+    public void aio(File file, MemorySegment aioBuffer) throws NativeErrorException, NoSuchNativeMethodException, NoSuchNativeTypeException, IOException, InterruptedException {
         debugThread("Write/Read in thread: ");
 
         aiocb.aio_fildes(Fcntl.open(file.getAbsolutePath(), Fcntl.O_RDWR));
@@ -94,10 +102,9 @@ public class Posix {
             throw new RuntimeException("Not defined Signal.SIGEV_THREAD!");
         }
         aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_THREAD.get());
-        aiocb.aio_sigevent.sigev_notify_function(Callback_NativeRunnable.INSTANCE);
-        aiocb.aio_sigevent.sigev_value.sival_ptr(callback);
+        aiocb.aio_sigevent.sigev_notify_function(callback);
 
-        debugAiocb(aioBuffer);
+        debugAiocb(MemoryHeap.wrap(aioBuffer));
 
         debug("Will now write");
 
@@ -122,7 +129,7 @@ public class Posix {
         }
 
         objRef[0] = null;
-        OpaqueMemory32.clear(aioBuffer);
+        aioBuffer.fill((byte) 0);
 
         debug("Will now read");
 
@@ -149,7 +156,7 @@ public class Posix {
         //Close the handle
         Unistd.close(aiocb.aio_fildes());
 
-        printBuffer(aioBuffer);
+        printBuffer(MemoryHeap.wrap(aioBuffer));
     }
 
     private void debug(String msg) {
@@ -161,12 +168,12 @@ public class Posix {
 
     private void debugThread(String msg) {
         if (isDebug) {
-            System.out.append(msg).append(" thread: ").append(Thread.currentThread().toString()).append(" pthread_t: ").println(Pthread.pthread_self().nativeToString());
+            System.out.append(msg).append(" thread: ").append(Thread.currentThread().toString()).append(" pthread_t: ").println(Pthread.pthread_self(scope).nativeToString());
             System.out.flush();
         }
     }
 
-    private void debugAiocb(OpaqueMemory32 aioBuffer) {
+    private void debugAiocb(OpaqueMemory aioBuffer) {
         if (isDebug) {
             try {
                 OutputStreamAppender osa = new OutputStreamAppender(System.out);
@@ -176,14 +183,17 @@ public class Posix {
                 osa.append("aiocb : ");
                 aiocb.nativeToString(osa, "", " ");
                 osa.append("\n");
-                final Pthread.Pthread_attr_t sigev_notify_attributes = aiocb.aio_sigevent.sigev_notify_attributes((address, parent) -> new Pthread.Pthread_attr_t(address));
+                final Pthread.Pthread_attr_t sigev_notify_attributes = aiocb.aio_sigevent.sigev_notify_attributes(
+                        (address, _scope, parent) -> Pthread.Pthread_attr_t.ofAddress(address, _scope),
+                        scope
+                );
                 if (sigev_notify_attributes != null) {
                     osa.append("aiocb.aio_sigevent.sigev_notify_attributes : ");
                     sigev_notify_attributes.nativeToString(osa, "", " ");
                     osa.append("\n");
                 }
                 osa.append("native callback same address as aiocb.aio_sigevent.sigev_notify_function: ");
-                Callback_NativeRunnable.INSTANCE.nativeToString(osa, "", " ");
+                callback.nativeToString(osa, "", " ");
                 osa.append("\n");
                 System.out.flush();
             } catch (IOException e) {
@@ -192,10 +202,10 @@ public class Posix {
         }
     }
 
-    private void printBuffer(OpaqueMemory32 aioBuffer) {
-        StringBuilder sb = new StringBuilder(aioBuffer.sizeInBytes);
-        for (int i = 0; i < aioBuffer.sizeInBytes; i++) {
-            sb.append((char) OpaqueMemory32.getByte(aioBuffer, i));
+    private void printBuffer(OpaqueMemory aioBuffer) {
+        StringBuilder sb = new StringBuilder((int) aioBuffer.sizeof());
+        for (int i = 0; i < aioBuffer.sizeof(); i++) {
+            sb.append((char) OpaqueMemory.getByte(aioBuffer, i));
         }
 
         System.out.println(sb.toString());

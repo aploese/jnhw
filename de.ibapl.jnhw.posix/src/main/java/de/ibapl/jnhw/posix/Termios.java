@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -29,15 +29,22 @@ import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annotation.posix.termios.cc_t;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.io.IOException;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.util.posix.PosixDataType;
-import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
+import de.ibapl.jnhw.util.posix.memory.PosixStruct;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uL___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL;
 
 /**
  * Wrapper around the {@code <termios.h>} header.
@@ -509,7 +516,7 @@ public final class Termios {
      *
      * @author aploese
      */
-    public final static class StructTermios extends PosixStruct32 {
+    public final static class StructTermios extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_C_cc;
@@ -522,13 +529,8 @@ public final class Termios {
         public final static long offsetof_C_ospeed;
         public final static int sizeof;
 
-        /**
-         * Make sure the native lib is loaded
-         */
         static {
-            LibJnhwPosixLoader.touch();
-            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-            switch (multiarchInfo.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX:
                     alignof = Alignment.AT_4;
                     offsetof_C_iflag = 0;
@@ -537,7 +539,7 @@ public final class Termios {
                     offsetof_C_lflag = 12;
                     offsetof_C_cc = 17;
                     offsetof_C_line = 16;
-                    switch (multiarchInfo.getArch()) {
+                    switch (MultiarchTupelBuilder.getArch()) {
                         case MIPS:
                         case MIPS_64:
                             sizeof = 52;
@@ -588,17 +590,16 @@ public final class Termios {
                     offsetof_C_ospeed = -1;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No termios.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No termios.h defines for " + MultiarchTupelBuilder.getMultiarch());
             }
         }
 
-        public StructTermios() {
-            // get unitialized mem
-            this(null, 0, SetMem.DO_NOT_SET);
+        public final static StructTermios allocateNative(ResourceScope scope) {
+            return new StructTermios(MemorySegment.allocateNative(sizeof, scope), 0);
         }
 
-        public StructTermios(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, StructTermios.sizeof, setMem);
+        public StructTermios(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, StructTermios.sizeof);
         }
 
         /**
@@ -613,7 +614,7 @@ public final class Termios {
             if ((index < 0) || (index >= NCCS)) {
                 throw new ArrayIndexOutOfBoundsException(index);
             }
-            return MEM_ACCESS.uint8_t(this, StructTermios.offsetof_C_cc + index);
+            return MEM_ACCESS.uint8_t(memorySegment, StructTermios.offsetof_C_cc + index);
         }
 
         /**
@@ -627,7 +628,7 @@ public final class Termios {
             if ((index < 0) || (index >= NCCS)) {
                 throw new ArrayIndexOutOfBoundsException(index);
             }
-            MEM_ACCESS.uint8_t(this, StructTermios.offsetof_C_cc + index, value);
+            MEM_ACCESS.uint8_t(memorySegment, StructTermios.offsetof_C_cc + index, value);
         }
 
         /**
@@ -638,7 +639,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_cflag() {
-            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(this, StructTermios.offsetof_C_cflag);
+            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(memorySegment, StructTermios.offsetof_C_cflag);
         }
 
         /**
@@ -648,7 +649,7 @@ public final class Termios {
          * @param value the value of c_cflag to be set natively.
          */
         public void c_cflag(@tcflag_t int value) {
-            ACCESSOR_TCFLAG_T.tcflag_tFromInt(this, StructTermios.offsetof_C_cflag, value);
+            ACCESSOR_TCFLAG_T.tcflag_tFromInt(memorySegment, StructTermios.offsetof_C_cflag, value);
         }
 
         /**
@@ -659,7 +660,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_iflag() {
-            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(this, StructTermios.offsetof_C_iflag);
+            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(memorySegment, StructTermios.offsetof_C_iflag);
         }
 
         /**
@@ -669,7 +670,7 @@ public final class Termios {
          * @param value the value of c_iflag to be set natively.
          */
         public void c_iflag(@tcflag_t int value) {
-            ACCESSOR_TCFLAG_T.tcflag_tFromInt(this, StructTermios.offsetof_C_iflag, value);
+            ACCESSOR_TCFLAG_T.tcflag_tFromInt(memorySegment, StructTermios.offsetof_C_iflag, value);
         }
 
         /**
@@ -685,7 +686,7 @@ public final class Termios {
             if (StructTermios.offsetof_C_ispeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            return ACCESSOR_SPEED_T.speed_tAsInt(this, StructTermios.offsetof_C_ispeed);
+            return ACCESSOR_SPEED_T.speed_tAsInt(memorySegment, StructTermios.offsetof_C_ispeed);
         }
 
         /**
@@ -700,7 +701,7 @@ public final class Termios {
             if (StructTermios.offsetof_C_ispeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            ACCESSOR_SPEED_T.speed_tFromInt(this, StructTermios.offsetof_C_ispeed, value);
+            ACCESSOR_SPEED_T.speed_tFromInt(memorySegment, StructTermios.offsetof_C_ispeed, value);
         }
 
         /**
@@ -711,7 +712,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_lflag() {
-            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(this, StructTermios.offsetof_C_lflag);
+            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(memorySegment, StructTermios.offsetof_C_lflag);
         }
 
         /**
@@ -721,7 +722,7 @@ public final class Termios {
          * @param value the value of c_lflag to be set natively.
          */
         public void c_lflag(@tcflag_t int value) {
-            ACCESSOR_TCFLAG_T.tcflag_tFromInt(this, StructTermios.offsetof_C_lflag, value);
+            ACCESSOR_TCFLAG_T.tcflag_tFromInt(memorySegment, StructTermios.offsetof_C_lflag, value);
         }
 
         /**
@@ -736,7 +737,7 @@ public final class Termios {
             if (StructTermios.offsetof_C_line == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_line");
             }
-            return MEM_ACCESS.uint8_t(this, StructTermios.offsetof_C_line);
+            return MEM_ACCESS.uint8_t(memorySegment, StructTermios.offsetof_C_line);
         }
 
         /**
@@ -750,7 +751,7 @@ public final class Termios {
             if (StructTermios.offsetof_C_line == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_line");
             }
-            MEM_ACCESS.uint8_t(this, StructTermios.offsetof_C_line, value);
+            MEM_ACCESS.uint8_t(memorySegment, StructTermios.offsetof_C_line, value);
         }
 
         /**
@@ -761,7 +762,7 @@ public final class Termios {
          */
         @tcflag_t
         public int c_oflag() {
-            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(this, StructTermios.offsetof_C_oflag);
+            return ACCESSOR_TCFLAG_T.tcflag_tAsInt(memorySegment, StructTermios.offsetof_C_oflag);
         }
 
         /**
@@ -771,7 +772,7 @@ public final class Termios {
          * @param value the value of c_oflag to be set natively.
          */
         public void c_oflag(@tcflag_t int value) {
-            ACCESSOR_TCFLAG_T.tcflag_tFromInt(this, StructTermios.offsetof_C_oflag, value);
+            ACCESSOR_TCFLAG_T.tcflag_tFromInt(memorySegment, StructTermios.offsetof_C_oflag, value);
         }
 
         /**
@@ -787,7 +788,7 @@ public final class Termios {
             if (StructTermios.offsetof_C_ospeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            return ACCESSOR_SPEED_T.speed_tAsInt(this, StructTermios.offsetof_C_ospeed);
+            return ACCESSOR_SPEED_T.speed_tAsInt(memorySegment, StructTermios.offsetof_C_ospeed);
         }
 
         /**
@@ -802,7 +803,7 @@ public final class Termios {
             if (StructTermios.offsetof_C_ospeed == -1) {
                 throw new NoSuchNativeTypeMemberException("termios", "c_ispeed");
             }
-            ACCESSOR_SPEED_T.speed_tFromInt(this, StructTermios.offsetof_C_ospeed, value);
+            ACCESSOR_SPEED_T.speed_tFromInt(memorySegment, StructTermios.offsetof_C_ospeed, value);
         }
 
         @Override
@@ -817,7 +818,7 @@ public final class Termios {
             } catch (NoSuchNativeTypeMemberException nstme) {
             }
             try {
-                switch (PosixDataType.speed_t.baseDataType) {
+                switch (PosixDataType.speed_t) {
                     case uint32_t:
                         jsb.appendHexIntMember("c_ispeed", (int) c_ispeed());
                         break;
@@ -830,7 +831,7 @@ public final class Termios {
             } catch (NoSuchNativeTypeMemberException nstme) {
             }
             try {
-                switch (PosixDataType.speed_t.baseDataType) {
+                switch (PosixDataType.speed_t) {
                     case uint32_t:
                         jsb.appendHexIntMember("c_ospeed", (int) c_ospeed());
                         break;
@@ -850,14 +851,6 @@ public final class Termios {
     }
 
     public static class Tcflag_t__Formatter {
-
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-        }
 
         public static void c_cflag2String(Appendable sb, int c_cflag) throws IOException {
             if ((CSIZE & c_cflag) == CS5) {
@@ -917,7 +910,7 @@ public final class Termios {
                 }
             }
             if (c_cflag != 0) {
-                switch (PosixDataType.tcflag_t.baseDataType) {
+                switch (PosixDataType.tcflag_t) {
                     case uint32_t:
                         sb.append(String.format("0x%08x", c_cflag));
                         break;
@@ -980,7 +973,7 @@ public final class Termios {
                 c_iflag &= ~PARMRK;
             }
             if (c_iflag != 0) {
-                switch (PosixDataType.tcflag_t.baseDataType) {
+                switch (PosixDataType.tcflag_t) {
                     case uint32_t:
                         sb.append(String.format("0x%08x", c_iflag));
                         break;
@@ -1031,7 +1024,7 @@ public final class Termios {
                 c_lflag &= ~TOSTOP;
             }
             if (c_lflag != 0) {
-                switch (PosixDataType.tcflag_t.baseDataType) {
+                switch (PosixDataType.tcflag_t) {
                     case uint32_t:
                         sb.append(String.format("0x%08x", c_lflag));
                         break;
@@ -1174,7 +1167,7 @@ public final class Termios {
                 }
             }
             if (c_oflag != 0) {
-                switch (PosixDataType.tcflag_t.baseDataType) {
+                switch (PosixDataType.tcflag_t) {
                     case uint32_t:
                         sb.append(String.format("0x%08x", c_oflag));
                         break;
@@ -2157,13 +2150,8 @@ public final class Termios {
     @cc_t
     public final static int VTIME;
 
-    /**
-     * Make sure the native lib is loaded
-     */
     static {
-        LibJnhwPosixLoader.touch();
-        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-        switch (multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
 
                 B0 = Linux_AllArchs_Defines.B0;
@@ -2189,7 +2177,7 @@ public final class Termios {
                 BS0 = IntDefine.toIntDefine(Linux_AllArchs_Defines.BS0);
                 CR0 = IntDefine.toIntDefine(Linux_AllArchs_Defines.CR0);
 
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case AARCH64:
                     case ARM:
                     case I386:
@@ -2317,7 +2305,7 @@ public final class Termios {
 
                         break;
                     default:
-                        throw new NoClassDefFoundError("No termios.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No termios.h linux defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
                 CRTSCTS = Linux_AllArchs_Defines.CRTSCTS;
                 CS5 = Linux_AllArchs_Defines.CS5;
@@ -2364,7 +2352,7 @@ public final class Termios {
                 VQUIT = Linux_AllArchs_Defines.VQUIT;
                 VT0 = IntDefine.toIntDefine(Linux_AllArchs_Defines.VT0);
 
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case MIPS:
                     case MIPS_64:
                         CMSPAR = IntDefine.UNDEFINED;
@@ -2396,9 +2384,9 @@ public final class Termios {
 
                         break;
                     default:
-                        throw new NoClassDefFoundError("No termios.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No termios.h linux defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case MIPS:
                     case MIPS_64:
                         TOSTOP = Linux_Mips_Mips64_Defines.TOSTOP;
@@ -2424,7 +2412,7 @@ public final class Termios {
                         VMIN = Linux_Ppc64_Defines.VMIN;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No termios.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No termios.h linux defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
 
                 break;
@@ -2535,7 +2523,7 @@ public final class Termios {
 
                 _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.UNDEFINED;
                 _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.UNDEFINED;
-                switch (multiarchInfo.getOS()) {
+                switch (MultiarchTupelBuilder.getOS()) {
                     case DARWIN:
                         BS0 = IntDefine.toIntDefine(DarwinDefines.BS0);
                         BS1 = IntDefine.toIntDefine(DarwinDefines.BS1);
@@ -2631,16 +2619,83 @@ public final class Termios {
                         VTDLY = IntDefine.UNDEFINED;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No termios.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No termios.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
                 break;
             default:
-                throw new NoClassDefFoundError("No termios.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No termios.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
         }
 
     }
 
-    private static native long cfgetispeed(long ptrTermios);
+    private final static JnhwMh_uL___A cfgetispeed = JnhwMh_uL___A.of(
+            "cfgetispeed",
+            PosixDataType.speed_t,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh_uL___A cfgetospeed = JnhwMh_uL___A.of(
+            "cfgetospeed",
+            PosixDataType.speed_t,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh_sI___A_uL cfsetispeed = JnhwMh_sI___A_uL.of(
+            "cfsetispeed",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            PosixDataType.speed_t);
+
+    private final static JnhwMh_sI___A_uL cfsetospeed = JnhwMh_sI___A_uL.of(
+            "cfsetospeed",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            PosixDataType.speed_t);
+
+    private final static JnhwMh_sI___A_uL cfsetspeed = JnhwMh_sI___A_uL.of(
+            "cfsetspeed",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            PosixDataType.speed_t);
+
+    private final static JnhwMh_sI__sI tcdrain = JnhwMh_sI__sI.of(
+            "tcdrain",
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI_sI tcflow = JnhwMh_sI__sI_sI.of(
+            "tcflow",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI_sI tcflush = JnhwMh_sI__sI_sI.of(
+            "tcflush",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI__A tcgetattr = JnhwMh_sI__sI__A.of(
+            "tcgetattr",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__sI tcgetsid = JnhwMh_sI__sI.of(
+            "tcgetsid",
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI_sI tcsendbreak = JnhwMh_sI__sI_sI.of(
+            "tcsendbreak",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI_sI__A tcsetattr = JnhwMh_sI__sI_sI__A.of(
+            "tcsetattr",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer);
 
     /**
      * <b>POSIX:</b>
@@ -2654,10 +2709,8 @@ public final class Termios {
      */
     @speed_t
     public final static long cfgetispeed(StructTermios termios) {
-        return cfgetispeed(AbstractNativeMemory.toUintptr_t(termios));
+        return cfgetispeed.invoke_uL___P(termios);
     }
-
-    private static native long cfgetospeed(long ptrTermios);
 
     /**
      * <b>POSIX:</b>
@@ -2671,10 +2724,8 @@ public final class Termios {
      */
     @speed_t
     public final static long cfgetospeed(StructTermios termios) {
-        return cfgetospeed(AbstractNativeMemory.toUintptr_t(termios));
+        return cfgetospeed.invoke_uL___P(termios);
     }
-
-    private static native void cfsetispeed(long ptrTermios, long speed) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2688,10 +2739,10 @@ public final class Termios {
      * indicates an error.
      */
     public final static void cfsetispeed(StructTermios termios, @speed_t long speed) throws NativeErrorException {
-        cfsetispeed(AbstractNativeMemory.toUintptr_t(termios), speed);
+        if (cfsetispeed.invoke_sI___P_uL(termios, speed) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native void cfsetospeed(long ptrTermios, long speed) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -2705,10 +2756,10 @@ public final class Termios {
      * indicates an error.
      */
     public final static void cfsetospeed(StructTermios termios, @speed_t long speed) throws NativeErrorException {
-        cfsetospeed(AbstractNativeMemory.toUintptr_t(termios), speed);
+        if (cfsetospeed.invoke_sI___P_uL(termios, speed) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native void cfsetspeed(long ptrTermios, long speed) throws NativeErrorException;
 
     /**
      * <b>Non POSIX:</b> set input and output spped at the same time.
@@ -2720,7 +2771,9 @@ public final class Termios {
      * indicates an error.
      */
     public final static void cfsetspeed(StructTermios termios, @speed_t long speed) throws NativeErrorException {
-        cfsetspeed(AbstractNativeMemory.toUintptr_t(termios), speed);
+        if (cfsetspeed.invoke_sI___P_uL(termios, speed) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
 
     /**
@@ -2732,7 +2785,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void tcdrain(int fildes) throws NativeErrorException;
+    public final static void tcdrain(int fildes) throws NativeErrorException {
+        if (tcdrain.invoke_sI__sI(fildes) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -2745,7 +2802,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void tcflow(int fildes, int action) throws NativeErrorException;
+    public final static void tcflow(int fildes, int action) throws NativeErrorException {
+        if (tcflow.invoke_sI__sI_sI(fildes, action) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -2758,9 +2819,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void tcflush(int fildes, int queue_selector) throws NativeErrorException;
-
-    private static native void tcgetattr(int fildes, long ptrTermios) throws NativeErrorException;
+    public final static void tcflush(int fildes, int queue_selector) throws NativeErrorException {
+        if (tcflush.invoke_sI__sI_sI(fildes, queue_selector) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -2773,7 +2836,9 @@ public final class Termios {
      * indicates an error.
      */
     public final static void tcgetattr(int fildes, StructTermios termios) throws NativeErrorException {
-        tcgetattr(fildes, AbstractNativeMemory.toUintptr_t(termios));
+        if (tcgetattr.invoke_sI__sI__P(fildes, termios) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
 
     /**
@@ -2789,7 +2854,14 @@ public final class Termios {
      * indicates an error.
      */
     @pid_t
-    public final static native int tcgetsid(int fildes) throws NativeErrorException;
+    public final static int tcgetsid(int fildes) throws NativeErrorException {
+        final int result = tcgetsid.invoke_sI__sI(fildes);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -2805,9 +2877,11 @@ public final class Termios {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void tcsendbreak(int fildes, int duration) throws NativeErrorException;
-
-    private static native void tcsetattr(int fildes, int optional_actions, long ptrTermios) throws NativeErrorException;
+    public final static void tcsendbreak(int fildes, int duration) throws NativeErrorException {
+        if (tcsendbreak.invoke_sI__sI_sI(fildes, duration) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -2822,7 +2896,7 @@ public final class Termios {
      * indicates an error.
      */
     public final static void tcsetattr(int fildes, int optional_actions, StructTermios termios) throws NativeErrorException {
-        tcsetattr(fildes, optional_actions, AbstractNativeMemory.toUintptr_t(termios));
+        tcsetattr.invoke_sI__sI_sI_P(fildes, optional_actions, termios);
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,49 +20,94 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_unix_sys_IoctlTest.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 #if defined(HAVE_SYS_IOCTL_H)
 
 #include <sys/ioctl.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest
-     * Method:    get_IOR_int32_t
-     * Signature: (CI)I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_get_1IOR_1int32_1t
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jobject clazz, jchar c, jint value) {
-        return (int32_t) _IOR((uint32_t) c, (uint32_t) value, int32_t);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest
-     * Method:    get_IOW_int32_t
-     * Signature: (CI)I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_get_1IOW_1int32_1t
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jobject clazz, jchar c, jint value) {
-        return (int32_t) _IOW((uint32_t) c, (uint32_t) value, int32_t);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_unix_sys_IoctlTest
-     * Method:    get_IOWR_int32_t
-     * Signature: (CI)I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_unix_sys_IoctlTest_get_1IOWR_1int32_1t
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jobject clazz, jchar c, jint value) {
-        return (int32_t) _IOWR((uint32_t) c, (uint32_t) value, int32_t);
-    }
-
-
-
-#ifdef __cplusplus
+int get_IOR_int32_t(char arg1, int arg2) {
+    return (int32_t) _IOR((uint32_t) arg1, (uint32_t) arg2, int32_t);
 }
+
+int get_IOW_int32_t(char arg1, int arg2) {
+    return (int32_t) _IOW((uint32_t) arg1, (uint32_t) arg2, int32_t);
+}
+
+int get_IOWR_int32_t(char arg1, int arg2) {
+    return (int32_t) _IOWR((uint32_t) arg1, (uint32_t) arg2, int32_t);
+}
+
+int get_IO(char arg1, int arg2) {
+    return (int32_t) _IO((uint32_t) arg1, (uint32_t) arg2);
+}
+
+int get_IOC(int arg1, char arg2, int arg3, int arg4) {
+    return (int32_t) _IOC((uint32_t) arg1, (uint32_t) arg2, (uint32_t) arg3, (uint32_t) arg4);
+}
+
+int* tryGet_IOC_DIR(int* result, int arg1) {
+#if defined(__linux__)
+    *result = (int32_t) _IOC_DIR((uint32_t) arg1);
+#else
+    result = NULL;
 #endif
+    return result;
+}
+
+int* tryGet_IOC_NR(int* result, int arg1) {
+#if defined(__linux__)
+    *result = (int32_t) _IOC_NR((uint32_t) arg1);
+#else
+    result = NULL;
+#endif
+    return result;
+}
+
+int* tryGet_IOC_SIZE(int* result, int arg1) {
+#if defined(__linux__)
+    *result = (int32_t) _IOC_SIZE((uint32_t) arg1);
+#else
+    result = NULL;
+#endif
+    return result;
+}
+
+int* tryGet_IOC_TYPE(int* result, int arg1) {
+#if defined(__linux__)
+    *result = (int32_t) _IOC_TYPE((uint32_t) arg1);
+#else
+    result = NULL;
+#endif
+    return result;
+}
+
+int* tryGet_IOCPARM_LEN(int* result, __attribute__ ((unused))int arg1) {
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__APPLE__)
+    *result = IOCPARM_LEN((uint32_t) arg1);
+#else
+    result = NULL;
+#endif
+    return result;
+}
+
+int* tryGet_IOCBASECMD(int* result, __attribute__ ((unused))int arg1) {
+#if defined(__FreeBSD__)|| defined(__APPLE__)
+    *result = IOCBASECMD(arg1);
+#elif defined(__OpenBSD__)
+    *result = (int32_t) IOCBASECMD((uint32_t) arg1);
+#else
+    result = NULL;
+#endif
+    return result;
+}
+
+int* tryGet_IOCGROUP(int* result, __attribute__ ((unused))int arg1) {
+#if defined(__FreeBSD__) || defined(__OpenBSD__)|| defined(__APPLE__)
+    *result = IOCGROUP((uint32_t) arg1);
+#else
+    result = NULL;
+#endif
+    return result;
+}
+
 
 #endif

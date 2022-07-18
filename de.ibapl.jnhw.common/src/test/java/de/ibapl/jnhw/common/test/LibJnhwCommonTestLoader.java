@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,10 +21,18 @@
  */
 package de.ibapl.jnhw.common.test;
 
-import de.ibapl.jnhw.common.LibJnhwCommonLoader;
+import java.lang.invoke.MethodHandle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
+import jdk.incubator.foreign.CLinker;
+import jdk.incubator.foreign.FunctionDescriptor;
+import jdk.incubator.foreign.NativeSymbol;
+import jdk.incubator.foreign.SymbolLookup;
+import jdk.incubator.foreign.ValueLayout;
 
 /**
  *
@@ -34,9 +42,14 @@ public final class LibJnhwCommonTestLoader {
 
     public final static String LIB_JNHW_COMMON_TEST = "jnhw-common-test";
     private static LoadResult LIB_JNHW_COMMON_TEST_LOAD_RESULT;
-    public final static int LIB_JNHW_COMMON_TEST_VERSION = 3;
+    public final static int LIB_JNHW_COMMON_TEST_VERSION = 4;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
+    private final static CLinker C_LINKER = CLinker.systemCLinker();
+
+    static {
+        LibJnhwCommonTestLoader.touch();
+    }
 
     protected static void doSystemLoad(String absoluteLibName) {
         System.load(absoluteLibName);
@@ -59,12 +72,7 @@ public final class LibJnhwCommonTestLoader {
             }
             state = LoadState.LOADING;
         }
-        if (LoadState.SUCCESS == LibJnhwCommonLoader.touch()) {
-            LIB_JNHW_COMMON_TEST_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON_TEST, LIB_JNHW_COMMON_TEST_VERSION, LibJnhwCommonTestLoader::doSystemLoad);
-        } else {
-            //Just mark the error a dependant lib was not properly loaded
-            LIB_JNHW_COMMON_TEST_LOAD_RESULT = LibJnhwCommonLoader.getLoadResult();
-        }
+        LIB_JNHW_COMMON_TEST_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON_TEST, LIB_JNHW_COMMON_TEST_VERSION, LibJnhwCommonTestLoader::doSystemLoad);
         synchronized (loadLock) {
             if (LIB_JNHW_COMMON_TEST_LOAD_RESULT.isLoaded()) {
                 state = LoadState.SUCCESS;
@@ -73,6 +81,26 @@ public final class LibJnhwCommonTestLoader {
             }
         }
         return state;
+    }
+
+    public static MethodHandle downcallHandle(String name, FunctionDescriptor function) {
+        try {
+            SymbolLookup loaderLookup = SymbolLookup.loaderLookup();
+            NativeSymbol symbol = loaderLookup.lookup(name).get();
+            return C_LINKER.downcallHandle(symbol, function);
+        } catch (Throwable t) {
+            Logger.getLogger("d.i.j.c.t.LibJnhwCommonTestLoader").log(Level.SEVERE, name, t);
+            return null;
+        }
+    }
+
+    public static int invokeExact_Int_V(String name) {
+        final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.JAVA_INT));
+        try {
+            return (int) handle.invokeExact();
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        }
     }
 
     private LibJnhwCommonTestLoader() {

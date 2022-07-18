@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,12 +22,16 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.memory.UintPtr_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import de.ibapl.jnhw.winapi.Winnt.PAPCFUNC;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import jdk.incubator.foreign.ResourceScope;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.condition.EnabledOnOs;
+import jdk.incubator.foreign.MemoryAddress;
 
 /**
  *
@@ -36,7 +40,17 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class ProcessthreadsapiTest {
 
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
+    private ResourceScope scope;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        scope = ResourceScope.newConfinedScope();
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        scope.close();
+    }
 
     public ProcessthreadsapiTest() {
     }
@@ -55,55 +69,33 @@ public class ProcessthreadsapiTest {
     @Test
     public void testQueueUserAPC() throws NativeErrorException {
         System.out.println("QueueUserAPC");
-        final Long[] longRef = new Long[1];
-        final Integer[] intRef = new Integer[1];
+        final MemoryAddress[] ref = new MemoryAddress[1];
 
-        PAPCFUNC pfnAPC = new PAPCFUNC() {
-            @Override
-            protected void callback(int value) {
-                intRef[0] = value;
-                longRef[0] = -1L;
-            }
+        Winnt.PAPCFUNC pfnAPC = new Winnt.PAPCFUNC() {
 
             @Override
-            protected void callback(long value) {
-                longRef[0] = value;
-                intRef[0] = -1;
+            public void callback(MemoryAddress address) {
+                ref[0] = address;
             }
         };
 
         HANDLE hThread = Processthreadsapi.GetCurrentThread();
+        UintPtr_t dwData = UintPtr_t.allocateNative(scope);
 
         assertThrows(NullPointerException.class, () -> {
-            Processthreadsapi.QueueUserAPC(null, hThread, 0);
+            Processthreadsapi.QueueUserAPC(null, hThread, dwData);
         });
 
         assertThrows(NullPointerException.class, () -> {
-            Processthreadsapi.QueueUserAPC(pfnAPC, null, 0);
+            Processthreadsapi.QueueUserAPC(pfnAPC, null, dwData);
         });
 
-        Processthreadsapi.QueueUserAPC(pfnAPC, hThread, 42);
+        dwData.set(MemoryAddress.ofLong(42));
+        Processthreadsapi.QueueUserAPC(pfnAPC, hThread, dwData);
 
         long result = Synchapi.SleepEx(100, true);
         assertEquals(Winbase.WAIT_IO_COMPLETION, result);
 
-        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
-                assertEquals(-1L, longRef[0]);
-                assertEquals(42, intRef[0]);
-                assertThrows(IllegalArgumentException.class, () -> {
-                    Processthreadsapi.QueueUserAPC(pfnAPC, null, 1L + Integer.MAX_VALUE);
-                });
-                assertThrows(IllegalArgumentException.class, () -> {
-                    Processthreadsapi.QueueUserAPC(pfnAPC, null, Integer.MIN_VALUE - 1L);
-                });
-                break;
-            case _64_BIT:
-                assertEquals(-1, intRef[0]);
-                assertEquals(42L, longRef[0]);
-                break;
-            default:
-                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
-        }
+        assertEquals(42, ref[0].toRawLongValue());
     }
 }

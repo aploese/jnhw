@@ -1,12 +1,13 @@
 -noimportjava: true
 Export-Package: \
-	de.ibapl.jnhw.common,\
 	de.ibapl.jnhw.common.annotation,\
-	de.ibapl.jnhw.common.callback,\
 	de.ibapl.jnhw.common.datatypes,\
+        de.ibapl.jnhw.common.downcall,\
+        de.ibapl.jnhw.common.downcall.wrapper,\
 	de.ibapl.jnhw.common.exception,\
 	de.ibapl.jnhw.common.memory,\
 	de.ibapl.jnhw.common.memory.layout,\
-        de.ibapl.jnhw.common.nativecall,\
+        de.ibapl.jnhw.common.methodhandles,\
         de.ibapl.jnhw.common.nativepointer,\
+	de.ibapl.jnhw.common.upcall,\
 	de.ibapl.jnhw.common.util

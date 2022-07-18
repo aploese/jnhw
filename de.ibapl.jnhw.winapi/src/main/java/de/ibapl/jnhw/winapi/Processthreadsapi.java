@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,12 +22,15 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import de.ibapl.jnhw.winapi.Winnt.PAPCFUNC;
 import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
+import de.ibapl.jnhw.common.memory.UintPtr_t;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
+import jdk.incubator.foreign.MemoryAddress;
 
 /**
  * Wrapper around the
@@ -39,12 +42,16 @@ import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 @Include("processthreadsapi.h")
 public abstract class Processthreadsapi {
 
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
+    private final static JnhwMh_MA___V GetCurrentThread = JnhwMh_MA___V.of(
+            "GetCurrentThread",
+            WinApiDataType.HANDLE);
+
+    private final static JnhwMh__B___A__A__A QueueUserAPC = JnhwMh__B___A__A__A.of(
+            "QueueUserAPC",
+            WinApiDataType.BOOL,
+            WinApiDataType.PAPCFUNC,
+            WinApiDataType.HANDLE,
+            WinApiDataType.ULONG_PTR);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthread">GetCurrentThread</a>
@@ -54,12 +61,8 @@ public abstract class Processthreadsapi {
      *
      */
     public final static HANDLE GetCurrentThread() {
-        return HANDLE.of(GetCurrentThread0());
+        return HANDLE.of(GetCurrentThread.invoke_MA___V());
     }
-
-    private static native long GetCurrentThread0();
-
-    public final static native void QueueUserAPC(long ptrPfnAPC, long ptrHThread, @ULONG_PTR long dwData) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-queueuserapc">QueueUserAPC</a>
@@ -78,7 +81,9 @@ public abstract class Processthreadsapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, @ULONG_PTR long dwData) throws NativeErrorException {
-        QueueUserAPC(NativeFunctionPointer.toUintptr_t(pfnAPC), HANDLE.getHandleValue(hThread), dwData);
+    public final static void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, @ULONG_PTR UintPtr_t dwData) throws NativeErrorException {
+        if (!QueueUserAPC.invoke__B___P__P__P(pfnAPC, hThread, dwData)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
 }

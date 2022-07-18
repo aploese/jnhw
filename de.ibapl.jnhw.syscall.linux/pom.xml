@@ -4,7 +4,7 @@
     <parent>
         <groupId>de.ibapl.jnhw</groupId>
         <artifactId>jnhw</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>4.0.0-SNAPSHOT</version>
     </parent>
     <groupId>de.ibapl.jnhw.syscall</groupId>
     <artifactId>de.ibapl.jnhw.syscall.linux</artifactId>
@@ -14,18 +14,13 @@
     <dependencies>
         <dependency>
             <groupId>de.ibapl.jnhw</groupId>
-            <artifactId>de.ibapl.jnhw.libloader</artifactId>
-            <version>3.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>de.ibapl.jnhw</groupId>
             <artifactId>de.ibapl.jnhw.common</artifactId>
-            <version>3.0.1-SNAPSHOT</version>
+            <version>4.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.ibapl.jnhw</groupId>
             <artifactId>de.ibapl.jnhw.posix</artifactId>
-            <version>3.0.1-SNAPSHOT</version>
+            <version>4.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -74,6 +69,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkCount>1</forkCount>
+                    <reuseForks>false</reuseForks>
+                    <skipAfterFailureCount>10</skipAfterFailureCount>
+                    <argLine>--enable-preview</argLine>
+                    <argLine>--enable-native-access=de.ibapl.jnhw.common,de.ibapl.jnhw.posix,ALL-UNNAMED</argLine>
+                </configuration>
             </plugin>
         </plugins>
     </build>

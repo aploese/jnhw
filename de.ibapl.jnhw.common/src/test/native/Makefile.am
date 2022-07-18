@@ -1,4 +1,4 @@
-AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_TEST_HEADER_DIR@ -I @JNHW_COMMON_SRC_DIR@
+AM_CPPFLAGS = 
 AM_CFLAGS = -Wall -Wextra -Wconversion -Werror
 AM_LDFLAGS = -z noexecstack -no-undefined -version-info @JNHW_VERSION_INFO@
 
@@ -9,23 +9,20 @@ lib_LTLIBRARIES = libjnhw-common-test.la
 
 noinst_LTLIBRARIES = libtests.la
 
-libjnhw_common_test_la_LIBADD = libtests.la @JNHW_COMMON_SRC_DIR@/libjnhw-common.la
+libjnhw_common_test_la_LIBADD = libtests.la
 
 libtests_la_SOURCES = \
- AlignmentTest.c \
+ Callback__V__MA_Test.c \
+ Callback__V___I_Test.c \
+ Callback__V___I_MA_MA_Test.c \
+ Callback__V___I__I_MA_Test.c \
+ Callback__V___L_Test.c \
+ SizeAndAlignmentOfBaseDataTypes.c \
  StructLayoutFactoryImplTest.c \
- BaseDataTypeTest.c \
- AbstractNativeMemoryTest_NativeMemoryAlignment.c \
- Callback_I_V_Test.c \
- Callback_J_V_Test.c \
- Callback_IJ_V_Test.c \
- Callback_I_I_PtrAbstractNativeMemory_V_Test.c \
- Callback_I_PtrAbstractNativeMemory_PtrAbstractNativeMemory_V_Test.c \
- Callback_PtrAbstractNativeMemory_V_Test.c \
- NativeRunnableTest.c \
- StructLayoutTest.c \
- SimpeStructureImpl.c \
- JnhwExceptionsTest.c
+ Struct__s_i8_i16.c \
+ Struct__s_i8_i32.c \
+ Struct__s_i8_i64.c \
+ TestStructures.c
 
 #hook into make all
 all-local: $(LIB_JNHW_COMMON_TEST_RES_NAME)

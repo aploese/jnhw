@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,58 +20,25 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_PthreadTest_NativePthread_attr_t.h"
-#include "de_ibapl_jnhw_posix_PthreadTest_NativePthread_t.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #ifdef _POSIX_VERSION
 #include <pthread.h>
 #include <unistd.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativePthread_attr_t
-     * Method:    alignof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativePthread_1attr_1t_alignof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __alignof__ (pthread_attr_t);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativePthread_attr_t
-     * Method:    sizeof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativePthread_1attr_1t_sizeof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return sizeof (pthread_attr_t);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativePthread_t
-     * Method:    alignof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativePthread_1t_alignof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __alignof__ (pthread_t);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativePthread_t
-     * Method:    sizeof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativePthread_1t_sizeof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return sizeof (pthread_t);
-    }
-
-#endif
-#ifdef __cplusplus
+int Pthread_attr_t_alignof() {
+    return __alignof__ (pthread_attr_t);
 }
+
+int Pthread_attr_t_sizeof() {
+    return sizeof (pthread_attr_t);
+}
+
+int Pthread_t_alignof() {
+    return __alignof__ (pthread_t);
+}
+
+int Pthread_t_sizeof() {
+    return sizeof (pthread_t);
+}
+
 #endif

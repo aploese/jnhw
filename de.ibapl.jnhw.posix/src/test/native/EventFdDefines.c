@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,70 +20,31 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_linux_sys_EventfdTest_NativeDefines.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #ifndef HAVE_SYS_EVENTFD_H
 
-    /*
-     * Class:     de_ibapl_jnhw_linux_sys_EventfdTest_NativeDefines
-     * Method:    HAVE_SYS_EVENTFD_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_linux_sys_EventfdTest_00024NativeDefines_HAVE_1SYS_1EVENTFD_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
+int getValueOf_HAVE_SYS_EVENTFD_H() {
+    return 0;
+}
+
 #else
 #include <sys/eventfd.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_linux_sys_EventfdTest_NativeDefines
-     * Method:    HAVE_SYS_EVENTFD_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_linux_sys_EventfdTest_00024NativeDefines_HAVE_1SYS_1EVENTFD_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_linux_sys_EventfdTest_NativeDefines
-     * Method:    EFD_CLOEXEC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_EventfdTest_00024NativeDefines_EFD_1CLOEXEC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EFD_CLOEXEC;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_linux_sys_EventfdTest_NativeDefines
-     * Method:    EFD_NONBLOCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_EventfdTest_00024NativeDefines_EFD_1NONBLOCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EFD_NONBLOCK;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_linux_sys_EventfdTest_NativeDefines
-     * Method:    EFD_SEMAPHORE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_linux_sys_EventfdTest_00024NativeDefines_EFD_1SEMAPHORE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EFD_SEMAPHORE;
-    }
-
-
-#endif
-
-#ifdef __cplusplus
+int getValueOf_HAVE_SYS_EVENTFD_H() {
+    return 1;
 }
-#endif
 
+int getValueOf_EFD_CLOEXEC() {
+    return EFD_CLOEXEC;
+}
+
+int getValueOf_EFD_NONBLOCK() {
+    return EFD_NONBLOCK;
+}
+
+int getValueOf_EFD_SEMAPHORE() {
+    return EFD_SEMAPHORE;
+}
+
+
+#endif

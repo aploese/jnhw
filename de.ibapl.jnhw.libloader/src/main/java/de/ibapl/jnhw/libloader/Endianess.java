@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -32,10 +32,6 @@ public enum Endianess {
     LITTLE;
 
     /**
-     * Assuming there is only BIG and LITTLE, true means it is big endian and
-     * false means it is little endian. this will be removed if other
-     * endianesses are supported.
-     *
      * @return
      */
     public boolean isBigEndian() {
@@ -44,6 +40,20 @@ public enum Endianess {
                 return true;
             case LITTLE:
                 return false;
+            default:
+                throw new IllegalStateException("Expected only to have BIG and LITTLE but not: " + this);
+        }
+    }
+
+    /**
+     * @return
+     */
+    public boolean isLittleEndian() {
+        switch (this) {
+            case BIG:
+                return false;
+            case LITTLE:
+                return true;
             default:
                 throw new IllegalStateException("Expected only to have BIG and LITTLE but not: " + this);
         }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,30 +21,56 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.annotation.posix.sys.types.clock_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.clockid_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.timer_t;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
+import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NativeException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.memory.IntPtr_t;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A___A__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL__A__A__A;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
+import de.ibapl.jnhw.posix.Signal.Sigevent;
+import de.ibapl.jnhw.posix.sys.Types;
+import de.ibapl.jnhw.posix.sys.Types.Clockid_t;
+import de.ibapl.jnhw.util.posix.LibrtLoader;
+import de.ibapl.jnhw.util.posix.PosixDataType;
+import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
 import java.util.Objects;
+import jdk.incubator.foreign.CLinker;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.NativeSymbol;
+import jdk.incubator.foreign.ResourceScope;
+import jdk.incubator.foreign.ValueLayout;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_sI__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__D__sL_sL;
 
 /**
  * Wrapper around the {@code <time.h>} header.
@@ -86,7 +112,7 @@ public class Time {
      * itimerspec}</a>.
      *
      */
-    public static class Itimerspec extends Struct32 {
+    public final static class Itimerspec extends Struct {
 
         public final static Alignment alignof;
         public final static long offsetof_It_interval;
@@ -97,10 +123,8 @@ public class Time {
          * Make sure the native lib is loaded
          */
         static {
-            LibJnhwPosixLoader.touch();
 
-            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-            switch (multiarchInfo.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case DARWIN:
                     offsetof_It_interval = -1;
                     offsetof_It_value = -1;
@@ -109,23 +133,29 @@ public class Time {
                     break;
                 default:
                     offsetof_It_interval = 0;
-                    switch (multiarchInfo.getSizeOfPointer()) {
-                        case _32_BIT:
+                    switch (MultiarchTupelBuilder.getMemoryModel()) {
+                        case ILP32:
                             offsetof_It_value = 8;
                             alignof = Alignment.AT_4;
                             sizeof = 16;
                             break;
-                        case _64_BIT:
+                        case LP64:
                             offsetof_It_value = 16;
                             alignof = Alignment.AT_8;
                             sizeof = 32;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No time.h defines for " + MultiarchTupelBuilder.getMultiarch());
                     }
             }
         }
 
+        public final static Itimerspec tryAllocateNative(ResourceScope ms) throws NoSuchNativeTypeException {
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Itimerspec");
+            }
+            return new Itimerspec(MemorySegment.allocateNative(sizeof, ms), 0);
+        }
         /**
          * Timer period. After the timer expires after it_value, it will fire
          * periodically with the it_interval value.
@@ -144,20 +174,13 @@ public class Time {
          */
         public final Timespec it_value;
 
-        public Itimerspec(OpaqueMemory32 owner, int offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super((OpaqueMemory32) owner, 0, Itimerspec.sizeof, setMem);
+        public Itimerspec(MemorySegment memorySegment, int offset) throws NoSuchNativeTypeException {
+            super(memorySegment, offset, Itimerspec.sizeof);
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Itimerspec");
             }
-            it_interval = new Timespec(this, Itimerspec.offsetof_It_interval, SetMem.DO_NOT_SET);//mem is already initialized by parent
-            it_value = new Timespec(this, Itimerspec.offsetof_It_value, SetMem.DO_NOT_SET);//mem is already initialized by parent
-        }
-
-        public Itimerspec(SetMem setMem) throws NoSuchNativeTypeException {
-            this(null, 0, setMem);
-            if (alignof == null) {
-                throw new NoSuchNativeTypeException("Itimerspec");
-            }
+            it_interval = new Timespec(this.memorySegment, Itimerspec.offsetof_It_interval);
+            it_value = new Timespec(this.memorySegment, Itimerspec.offsetof_It_value);
         }
 
         @Override
@@ -216,81 +239,85 @@ public class Time {
     }
 
     /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html">{@code typedef
-     * pthread_t}</a>.
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/time.h.html">{@code typedef
+     * timer_t}</a>.
      *
      * @author aploese
      */
     @timer_t
-    public static final class Timer_t extends Struct32 {
+    public static final class Timer_t extends OpaqueMemory {
 
-        public final static Alignment alignof;
-        public final static int sizeof;
+        public final static Alignment alignof = PosixDataType.timer_t.ALIGN_OF;
+        public final static int sizeof = PosixDataType.timer_t.SIZE_OF;
 
-        /**
-         * Make sure the native lib is loaded
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-            switch (multiarchInfo.getOS()) {
-                case DARWIN:
-                    alignof = null;
-                    sizeof = 0;
-                    break;
-                case LINUX:
-                case FREE_BSD:
-                    switch (multiarchInfo.getSizeOfPointer()) {
-                        case _32_BIT:
-                            alignof = Alignment.AT_4;
-                            sizeof = 4;
-                            break;
-                        case _64_BIT:
-                            alignof = Alignment.AT_8;
-                            sizeof = 8;
-                            break;
-                        default:
-                            throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
-                    }
-                    break;
-                case OPEN_BSD:
-                    alignof = Alignment.AT_4;
-                    sizeof = 4;
-                    break;
+        public final static Timer_t tryAllocateNative(ResourceScope ms) throws NoSuchNativeTypeException {
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Timer_t");
+            }
+            return new Timer_t(MemorySegment.allocateNative(sizeof, ms), 0);
+        }
+
+        public final static Timer_t ofAddress(MemoryAddress address, ResourceScope ms) throws NoSuchNativeTypeException {
+            return new Timer_t(MemorySegment.ofAddress(address, sizeof, ms), 0);
+        }
+
+        public Timer_t(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
+            super(memorySegment, offset, Timer_t.sizeof);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Timer_t");
+            }
+        }
+
+        @Override
+        public String nativeToHexString() {
+            switch (PosixDataType.timer_t) {
+                case intptr_t:
+                    return MEM_ACCESS.intptr_t_AsHex(memorySegment, 0);
+                case int32_t:
+                    return MEM_ACCESS.int32_t_AsHex(memorySegment, 0);
                 default:
-                    throw new NoClassDefFoundError("No time.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
-            }
-        }
-
-        public Timer_t(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super(parent, offset, Timer_t.sizeof, setMem);
-            if (alignof == null) {
-                throw new NoSuchNativeTypeException("Timer_t");
-            }
-        }
-
-        public Timer_t(SetMem setMem) throws NoSuchNativeTypeException {
-            this(null, 0, setMem);
-            if (alignof == null) {
-                throw new NoSuchNativeTypeException("Timer_t");
+                    throw new AssertionError("unknown datatype of timer_t");
             }
         }
 
         @Override
         public String nativeToString() {
-            switch (Timer_t.sizeof) {
-                case 4:
-                    return MEM_ACCESS.uint32_t_AsHex(this, 0);
-                case 8:
-                    return MEM_ACCESS.uint64_t_AsHex(this, 0);
-                default:
-                    throw new RuntimeException("cant handle Time_t nativeToString current size: " + Timer_t.sizeof);
-            }
+            return MEM_ACCESS.intptr_t_nativeToString(memorySegment, 0);
         }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             sb.append(nativeToString());
+        }
+
+        @Override
+        public BaseDataType getBaseDataType() {
+            return PosixDataType.timer_t;
+        }
+
+    }
+
+    public final static class PtrTimer_t extends IntPtr_t<Timer_t> {
+
+        public static PtrTimer_t tryAllocateNative(ResourceScope ms) throws NoSuchNativeTypeException {
+            if (Timer_t.alignof == null) {
+                throw new NoSuchNativeTypeException("Timer_t");
+            }
+            return new PtrTimer_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+        }
+
+        public PtrTimer_t(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset);
+        }
+
+        public Timer_t get(final ResourceScope scope) {
+            return get((address, _scope, parent) -> {
+                try {
+                    return Timer_t.ofAddress(address, _scope);
+                } catch (NoSuchNativeTypeException e) {
+                    throw new RuntimeException(e);
+                }
+            }, scope);
         }
 
     }
@@ -300,7 +327,7 @@ public class Time {
      * timespec}</a>.
      *
      */
-    public static class Timespec extends PosixStruct32 {
+    public final static class Timespec extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Tv_nsec;
@@ -308,30 +335,32 @@ public class Time {
         public final static int sizeof;
 
         static {
-            LibJnhwPosixLoader.touch();
-            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-            switch (multiarchInfo.getSizeOfPointer()) {
-                case _32_BIT:
+            switch (MultiarchTupelBuilder.getMemoryModel()) {
+                case ILP32:
                     offsetof_Tv_nsec = 4;
                     alignof = Alignment.AT_4;
                     sizeof = 8;
                     break;
-                case _64_BIT:
+                case LP64:
                     offsetof_Tv_nsec = 8;
                     alignof = Alignment.AT_8;
                     sizeof = 16;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No time.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No time.h defines for " + MultiarchTupelBuilder.getMultiarch());
             }
         }
 
-        public Timespec(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Timespec.sizeof, setMem);
+        public final static Timespec allocateNative(ResourceScope ms) {
+            return new Timespec(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public Timespec(SetMem setMem) {
-            this(null, 0, setMem);
+        public Timespec(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Timespec.sizeof);
+        }
+
+        public Timespec(OpaqueMemory mem, long offset) {
+            super(mem, offset, Timespec.sizeof);
         }
 
         @Override
@@ -376,7 +405,7 @@ public class Time {
          * @return the native value of tv_nsec.
          */
         public long tv_nsec() {
-            return MEM_ACCESS.signed_long(this, Timespec.offsetof_Tv_nsec);
+            return MEM_ACCESS.signed_long(memorySegment, Timespec.offsetof_Tv_nsec);
         }
 
         /**
@@ -387,7 +416,7 @@ public class Time {
          * @param tv_nsec the value of tv_nsec to be set natively.
          */
         public void tv_nsec(long tv_nsec) {
-            MEM_ACCESS.signed_long(this, Timespec.offsetof_Tv_nsec, tv_nsec);
+            MEM_ACCESS.signed_long(memorySegment, Timespec.offsetof_Tv_nsec, tv_nsec);
         }
 
         /**
@@ -399,7 +428,7 @@ public class Time {
          */
         @time_t
         public long tv_sec() {
-            return ACCESSOR_TIME_T.time_t(this, Timespec.offsetof_Tv_sec);
+            return ACCESSOR_TIME_T.time_t(memorySegment, Timespec.offsetof_Tv_sec);
         }
 
         /**
@@ -410,7 +439,7 @@ public class Time {
          * @param tv_sec the value of tv_sec to be set natively.
          */
         public void tv_sec(@time_t long tv_sec) {
-            ACCESSOR_TIME_T.time_t(this, Timespec.offsetof_Tv_sec, tv_sec);
+            ACCESSOR_TIME_T.time_t(memorySegment, Timespec.offsetof_Tv_sec, tv_sec);
         }
 
     }
@@ -420,7 +449,7 @@ public class Time {
      * tm}</a>.
      *
      */
-    public static class Tm extends Struct32 {
+    public final static class Tm extends Struct {
 
         public final static Alignment alignof;
         public final static long offsetof_Tm_hour;
@@ -435,9 +464,7 @@ public class Time {
         public final static int sizeof;
 
         static {
-            LibJnhwPosixLoader.touch();
 
-            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
             offsetof_Tm_min = 4;
             offsetof_Tm_hour = 8;
             offsetof_Tm_mday = 12;
@@ -446,30 +473,30 @@ public class Time {
             offsetof_Tm_wday = 24;
             offsetof_Tm_yday = 28;
             offsetof_Tm_isdst = 32;
-            switch (multiarchInfo.getSizeOfPointer()) {
-                case _32_BIT:
+            switch (MultiarchTupelBuilder.getMemoryModel()) {
+                case ILP32:
                     alignof = Alignment.AT_4;
                     sizeof = 44;
                     break;
-                case _64_BIT:
+                case LP64:
                     alignof = Alignment.AT_8;
                     sizeof = 56;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No time.h defines for " + multiarchInfo);
+                    throw new NoClassDefFoundError("No time.h defines for " + MultiarchTupelBuilder.getMultiarch());
             }
         }
 
-        public Tm(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Tm.sizeof, setMem);
+        public final static Tm allocateNative(ResourceScope scope) {
+            return new Tm(MemorySegment.allocateNative(sizeof, scope), 0);
         }
 
-        public Tm(NativeAddressHolder addressHolder) {
-            super(addressHolder, Tm.sizeof);
+        public Tm(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Tm.sizeof);
         }
 
-        public Tm(SetMem setMem) {
-            this(null, 0, setMem);
+        public Tm(MemoryAddress baseAddress, ResourceScope scope) {
+            super(baseAddress, scope, Tm.sizeof);
         }
 
         @Override
@@ -495,7 +522,7 @@ public class Time {
          * @return the native value of tm_hour.
          */
         public int tm_hour() {
-            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_hour);
+            return MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_hour);
         }
 
         /**
@@ -506,7 +533,7 @@ public class Time {
          * @param tm_hour the value of tm_hour to be set natively.
          */
         public void tm_hour(int tm_hour) {
-            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_hour, tm_hour);
+            MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_hour, tm_hour);
         }
 
         /**
@@ -517,7 +544,7 @@ public class Time {
          * @return the native value of tm_isdst.
          */
         public int tm_isdst() {
-            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_isdst);
+            return MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_isdst);
         }
 
         /**
@@ -528,7 +555,7 @@ public class Time {
          * @param tm_isdst the value of tm_isdst to be set natively.
          */
         public void tm_isdst(int tm_isdst) {
-            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_isdst, tm_isdst);
+            MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_isdst, tm_isdst);
         }
 
         /**
@@ -539,7 +566,7 @@ public class Time {
          * @return the native value of tm_mday.
          */
         public int tm_mday() {
-            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_mday);
+            return MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_mday);
         }
 
         /**
@@ -550,7 +577,7 @@ public class Time {
          * @param tm_mday the value of tm_mday to be set natively.
          */
         public void tm_mday(int tm_mday) {
-            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_mday, tm_mday);
+            MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_mday, tm_mday);
         }
 
         /**
@@ -561,7 +588,7 @@ public class Time {
          * @return the native value of tm_min.
          */
         public int tm_min() {
-            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_min);
+            return MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_min);
         }
 
         /**
@@ -572,7 +599,7 @@ public class Time {
          * @param tm_min the value of tm_min to be set natively.
          */
         public void tm_min(int tm_min) {
-            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_min, tm_min);
+            MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_min, tm_min);
         }
 
         /**
@@ -583,7 +610,7 @@ public class Time {
          * @return the native value of tm_mon.
          */
         public int tm_mon() {
-            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_mon);
+            return MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_mon);
         }
 
         /**
@@ -594,7 +621,7 @@ public class Time {
          * @param tm_mon the value of tm_mon to be set natively.
          */
         public void tm_mon(int tm_mon) {
-            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_mon, tm_mon);
+            MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_mon, tm_mon);
         }
 
         /**
@@ -605,7 +632,7 @@ public class Time {
          * @return the native value of tm_sec.
          */
         public int tm_sec() {
-            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_sec);
+            return MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_sec);
         }
 
         /**
@@ -616,7 +643,7 @@ public class Time {
          * @param tm_sec the value of tm_sec to be set natively.
          */
         public void tm_sec(int tm_sec) {
-            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_sec, tm_sec);
+            MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_sec, tm_sec);
         }
 
         /**
@@ -627,7 +654,7 @@ public class Time {
          * @return the native value of tm_wday.
          */
         public int tm_wday() {
-            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_wday);
+            return MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_wday);
         }
 
         /**
@@ -638,7 +665,7 @@ public class Time {
          * @param tm_wday the value of tm_wday to be set natively.
          */
         public void tm_wday(int tm_wday) {
-            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_wday, tm_wday);
+            MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_wday, tm_wday);
         }
 
         /**
@@ -649,7 +676,7 @@ public class Time {
          * @return the native value of tm_yday.
          */
         public int tm_yday() {
-            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_yday);
+            return MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_yday);
         }
 
         /**
@@ -660,7 +687,7 @@ public class Time {
          * @param tm_yday the value of tm_yday to be set natively.
          */
         public void tm_yday(int tm_yday) {
-            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_yday, tm_yday);
+            MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_yday, tm_yday);
         }
 
         /**
@@ -671,7 +698,7 @@ public class Time {
          * @return the native value of tm_year.
          */
         public int tm_year() {
-            return MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_year);
+            return MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_year);
         }
 
         /**
@@ -682,7 +709,7 @@ public class Time {
          * @param tm_year the value of tm_year to be set natively.
          */
         public void tm_year(int tm_year) {
-            MEM_ACCESS.int32_t(this, Tm.offsetof_Tm_year, tm_year);
+            MEM_ACCESS.int32_t(memorySegment, Tm.offsetof_Tm_year, tm_year);
         }
 
     }
@@ -695,6 +722,7 @@ public class Time {
      *
      */
     @Define()
+    @clockid_t
     public final static int CLOCK_MONOTONIC;
 
     /**
@@ -703,6 +731,7 @@ public class Time {
      *
      */
     @Define()
+    @clockid_t
     public final static int CLOCK_PROCESS_CPUTIME_ID;
 
     /**
@@ -711,6 +740,7 @@ public class Time {
      *
      */
     @Define()
+    @clockid_t
     public final static int CLOCK_REALTIME;
 
     /**
@@ -719,6 +749,7 @@ public class Time {
      *
      */
     @Define()
+    @clockid_t
     public final static int CLOCK_THREAD_CPUTIME_ID;
 
     /**
@@ -754,9 +785,7 @@ public class Time {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
-        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-        switch (multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_TIME_H = true;
                 CLOCKS_PER_SEC = LinuxDefines.CLOCKS_PER_SEC;
@@ -771,7 +800,7 @@ public class Time {
             case OPEN_BSD:
                 HAVE_TIME_H = true;
                 CLOCK_REALTIME = BsdDefines.CLOCK_REALTIME;
-                switch (multiarchInfo.getOS()) {
+                switch (MultiarchTupelBuilder.getOS()) {
                     case DARWIN:
                         CLOCKS_PER_SEC = DarwinDefines.CLOCKS_PER_SEC;
                         CLOCK_MONOTONIC = DarwinDefines.CLOCK_MONOTONIC;
@@ -794,15 +823,180 @@ public class Time {
                         TIMER_ABSTIME = IntDefine.toIntDefine(OpenBsdDefines.TIMER_ABSTIME);
                         break;
                     default:
-                        throw new NoClassDefFoundError("No time.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No time.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
                 break;
             default:
-                throw new NoClassDefFoundError("No time.h Os defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No time.h Os defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 
-    private static native String asctime(long ptrTm);
+    private final static JnhwMh_MA___A asctime = JnhwMh_MA___A.of(
+            "asctime",
+            BaseDataType.C_char_pointer,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh_MA___A__A asctime_r = JnhwMh_MA___A__A.of(
+            "asctime_r",
+            BaseDataType.C_char_pointer,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_char_pointer);
+
+    private final static JnhwMh_sL___V clock = JnhwMh_sL___V.of(
+            "clock",
+            PosixDataType.clock_t);
+
+    private final static JnhwMh_sI__sI__A clock_getcpuclockid = JnhwMh_sI__sI__A.ofOrNull(
+            "clock_getcpuclockid",
+            BaseDataType.C_int,
+            PosixDataType.pid_t,
+            PosixDataType.clockid_t_ptr);
+
+    private final static JnhwMh_sI__sI__A clock_getres = JnhwMh_sI__sI__A.of(
+            "clock_getres",
+            BaseDataType.C_int,
+            PosixDataType.clockid_t,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__sI__A clock_gettime = JnhwMh_sI__sI__A.of(
+            "clock_gettime",
+            BaseDataType.C_int,
+            PosixDataType.clockid_t,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__sI_sI__A__A clock_nanosleep = JnhwMh_sI__sI_sI__A__A.ofOrNull(
+            "clock_nanosleep",
+            BaseDataType.C_int,
+            PosixDataType.clockid_t,
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__sI__A clock_settime = JnhwMh_sI__sI__A.of(
+            "clock_settime",
+            BaseDataType.C_int,
+            PosixDataType.clockid_t,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh_MA___A ctime = JnhwMh_MA___A.of(
+            "ctime",
+            BaseDataType.C_char_pointer,
+            BaseDataType.C_const_pointer);
+
+    private final static JnhwMh_MA___A__A ctime_r = JnhwMh_MA___A__A.of(
+            "ctime_r",
+            BaseDataType.C_char_pointer,
+            BaseDataType.C_const_pointer,
+            BaseDataType.C_char_pointer);
+
+    private final static JnhwMh__D__sL_sL difftime = JnhwMh__D__sL_sL.of(
+            "difftime",
+            BaseDataType._double,
+            PosixDataType.time_t,
+            PosixDataType.time_t);
+
+    private final static JnhwMh_MA___A getdate = JnhwMh_MA___A.ofOrNull(
+            "getdate",
+            BaseDataType.C_struct_pointer,
+            BaseDataType.C_char_pointer);
+
+    private final static JnhwMh_MA___A gmtime = JnhwMh_MA___A.of(
+            "gmtime",
+            BaseDataType.C_struct_pointer,
+            BaseDataType.C_pointer);
+
+    private final static JnhwMh_MA___A__A gmtime_r = JnhwMh_MA___A__A.of(
+            "gmtime_r",
+            BaseDataType.C_struct_pointer,
+            BaseDataType.C_pointer,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_MA___A localtime = JnhwMh_MA___A.of(
+            "localtime",
+            BaseDataType.C_struct_pointer,
+            BaseDataType.C_pointer);
+
+    private final static JnhwMh_MA___A__A localtime_r = JnhwMh_MA___A__A.of(
+            "localtime_r",
+            BaseDataType.C_struct_pointer,
+            BaseDataType.C_pointer,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sL___A mktime = JnhwMh_sL___A.of(
+            "mktime",
+            PosixDataType.time_t,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI___A__A nanosleep = JnhwMh_sI___A__A.of(
+            "nanosleep",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI___A_uL__A__A strftime = JnhwMh_sI___A_uL__A__A.of(
+            "strftime",
+            BaseDataType.C_int,
+            BaseDataType.C_char_pointer,
+            PosixDataType.size_t,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh_sI___A_uL__A__A__A strftime_l = JnhwMh_sI___A_uL__A__A__A.of(
+            "strftime_l",
+            BaseDataType.C_int,
+            BaseDataType.C_char_pointer,
+            PosixDataType.size_t,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh__A___A__A__A strptime = JnhwMh__A___A__A__A.of(
+            "strptime",
+            BaseDataType.C_char_pointer,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sL___A time = JnhwMh_sL___A.of(
+            "time",
+            PosixDataType.time_t,
+            BaseDataType.C_pointer);
+
+//needs librt.so
+    private final static JnhwMh_sI__sI__A__A timer_create = JnhwMh_sI__sI__A__A.ofOrNull(LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "timer_create",
+            BaseDataType.C_int,
+            PosixDataType.clockid_t,
+            BaseDataType.C_struct_pointer,
+            BaseDataType.C_pointer);
+
+    //TODO OpenBSD timer_t is int32_t not intptr_t
+    private final static JnhwMh_sI___A timer_delete = JnhwMh_sI___A.ofOrNull(LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "timer_delete",
+            BaseDataType.C_int,
+            PosixDataType.timer_t);
+
+    private final static JnhwMh_sI___A timer_getoverrun = JnhwMh_sI___A.ofOrNull(LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "timer_getoverrun",
+            BaseDataType.C_int,
+            PosixDataType.timer_t);
+
+    private final static JnhwMh_sI___A__A timer_gettime = JnhwMh_sI___A__A.ofOrNull(LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "timer_gettime",
+            BaseDataType.C_int,
+            PosixDataType.timer_t,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI___A_sI__A__A timer_settime = JnhwMh_sI___A_sI__A__A.ofOrNull(LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "timer_settime",
+            BaseDataType.C_int,
+            PosixDataType.timer_t,
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh__V___V tzset = JnhwMh__V___V.of(
+            "tzset");
 
     /**
      * <b>POSIX:</b>
@@ -814,10 +1008,13 @@ public class Time {
      * @return on succes the converted date and time, otherwise {@code null}
      */
     public final static String asctime(Tm tm) {
-        return asctime(AbstractNativeMemory.toUintptr_t(tm));
+        final MemoryAddress resultAdr = asctime.invoke_MA__P(tm);
+        if (resultAdr == MemoryAddress.NULL) {
+            return null;
+        } else {
+            return resultAdr.getUtf8String(0);
+        }
     }
-
-    private static native String asctime_r(long ptrTm, long ptrBuf);
 
     /**
      * <b>POSIX:</b>
@@ -830,11 +1027,16 @@ public class Time {
      *
      * @return on succes the converted date and time, otherwise {@code null}
      */
-    public final static String asctime_r(Tm tm, OpaqueMemory32 buf) {
-        if (buf.sizeInBytes < 26) {
+    public final static String asctime_r(Tm tm, OpaqueMemory buf) {
+        if (buf.sizeof() < 26) {
             throw new IllegalArgumentException("buf is too small 26 bytes are the minimum");
         }
-        return asctime_r(AbstractNativeMemory.toUintptr_t(tm), AbstractNativeMemory.toUintptr_t(buf));
+        final MemoryAddress resultAdr = asctime_r.invoke_MA___P__P(tm, buf);
+        if (resultAdr == MemoryAddress.NULL) {
+            return null;
+        } else {
+            return resultAdr.getUtf8String(0);
+        }
     }
 
     /**
@@ -845,7 +1047,9 @@ public class Time {
      * @return the processor time used by the process.
      */
     @clock_t
-    public final static native long clock();
+    public final static long clock() {
+        return clock.invoke_sL___V();
+    }
 
     /**
      * <b>POSIX:</b>
@@ -855,17 +1059,27 @@ public class Time {
      *
      * @param pid the pid to get the cpu time of. If zero the pid of the calling
      * process is used.
-     * @return param clock_id the clock ID of the pid will be placed here.
+     * @param clock_id the clock ID of the pid will be placed here.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      * @throws NoSuchNativeMethodException if the method clock_getcpuclockid is
      * not available natively.
      */
-    @clockid_t
-    public final static native int clock_getcpuclockid(@pid_t int pid) throws NativeErrorException, NoSuchNativeMethodException;
-
-    private static native void clock_getres(@clockid_t int clock_id, long ptrTimespec) throws NativeErrorException;
+    public final static void clock_getcpuclockid(@pid_t int pid, Clockid_t clock_id) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            int result = clock_getcpuclockid.invoke_sI__sI__P(pid, clock_id);
+            if (result != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (clock_getcpuclockid == null) {
+                throw new NoSuchNativeMethodException("clock_getcpuclockid");
+            } else {
+                throw npe;
+            }
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -880,10 +1094,10 @@ public class Time {
      * indicates an error.
      */
     public final static void clock_getres(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException {
-        clock_getres(clock_id, AbstractNativeMemory.toUintptr_t(timespec));
+        if (clock_getres.invoke_sI__sI__P(clock_id, timespec) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native void clock_gettime(int clock_id, long ptrTimespec) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -899,13 +1113,23 @@ public class Time {
      * indicates an error.
      */
     public final static void clock_gettime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException {
-        clock_gettime(clock_id, AbstractNativeMemory.toUintptr_t(timespec));
+        if (clock_gettime.invoke_sI__sI__P(clock_id, timespec) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
 
-    private static native void clock_nanosleep(@clockid_t int clock_id, int flags, long ptrRqtp, long ptrRmtp) throws NativeErrorException, NoSuchNativeMethodException;
-
     public final static void clock_nanosleep(@clockid_t int clock_id, int flags, Timespec rqtp) throws NativeErrorException, NoSuchNativeMethodException {
-        clock_nanosleep(clock_id, flags, AbstractNativeMemory.toUintptr_t(rqtp), AbstractNativeMemory.NULL);
+        try {
+            if (clock_nanosleep.invoke_sI__sI_sI__A__A(clock_id, flags, rqtp, Pointer.NULL) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (clock_nanosleep == null) {
+                throw new NoSuchNativeMethodException("clock_nanosleep");
+            } else {
+                throw npe;
+            }
+        }
     }
 
     /**
@@ -925,10 +1149,18 @@ public class Time {
      * available natively.
      */
     public final static void clock_nanosleep(@clockid_t int clock_id, int flags, Timespec rqtp, Timespec rmtp) throws NativeErrorException, NoSuchNativeMethodException {
-        clock_nanosleep(clock_id, flags, AbstractNativeMemory.toUintptr_t(rqtp), AbstractNativeMemory.toUintptr_t(rmtp));
+        try {
+            if (clock_nanosleep.invoke_sI__sI_sI__A__A(clock_id, flags, rqtp, rmtp) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (clock_nanosleep == null) {
+                throw new NoSuchNativeMethodException("clock_nanosleep");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native void clock_settime(@clockid_t int clock_id, long ptrTimespec) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -944,7 +1176,9 @@ public class Time {
      * indicates an error.
      */
     public final static void clock_settime(@clockid_t int clock_id, Timespec timespec) throws NativeErrorException {
-        clock_settime(clock_id, AbstractNativeMemory.toUintptr_t(timespec));
+        if (clock_settime.invoke_sI__sI__P(clock_id, timespec) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
 
     /**
@@ -957,9 +1191,15 @@ public class Time {
      *
      * @return on succes the converted time, otherwise {@code null}
      */
-    public final static native String ctime(@time_t long clock);
+    public final static String ctime(Types.Time_t clock) {
+        final MemoryAddress resultAdr = ctime.invoke_MA__P(clock);
+        if (resultAdr == MemoryAddress.NULL) {
+            return null;
+        } else {
+            return resultAdr.getUtf8String(0);
+        }
 
-    private static native String ctime_r(@time_t long clock, long ptrBuf);
+    }
 
     /**
      * <b>POSIX:</b>
@@ -973,11 +1213,16 @@ public class Time {
      *
      * @return on succes the converted time, otherwise {@code null}
      */
-    public final static String ctime_r(@time_t long clock, OpaqueMemory32 buf) {
-        if (buf.sizeInBytes < 26) {
+    public final static String ctime_r(Types.Time_t clock, OpaqueMemory buf) {
+        if (buf.sizeof() < 26) {
             throw new IllegalArgumentException("buf is too small 26 bytes are the minimum");
         }
-        return ctime_r(clock, AbstractNativeMemory.toUintptr_t(buf));
+        final MemoryAddress resultAdr = ctime_r.invoke_MA___P__P(clock, buf);
+        if (resultAdr == MemoryAddress.NULL) {
+            return null;
+        } else {
+            return resultAdr.getUtf8String(0);
+        }
     }
 
     /**
@@ -985,11 +1230,16 @@ public class Time {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/daylight.html">daylight,
      * timezone, tzname, tzset - set timezone conversion information</a>.
      *
-     * @return the native value of daylight.
-     * @throws NoSuchNativeMethodException if the method daylight is not
-     * available natively.
      */
-    public final static native int daylight() throws NoSuchNativeMethodException;
+    public final static int daylight() {
+        return daylight.address().get(ValueLayout.JAVA_INT, 0);
+    }
+
+    private final static NativeSymbol daylight;
+
+    static {
+        daylight = CLinker.systemCLinker().lookup("daylight").get();
+    }
 
     /**
      * <b>POSIX:</b>
@@ -1001,7 +1251,25 @@ public class Time {
      * @param time0
      * @return time1 - time0 expressed in seconds as a type double.
      */
-    public final static native double difftime(@time_t long time1, @time_t long time0);
+    public final static double difftime(@time_t long time1, @time_t long time0) {
+        return difftime.invoke__D__sL_sL(time1, time0);
+    }
+
+    /**
+     * <b>POSIX.XSI:</b>
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getdate_err.html">daylight,
+     * timezone, tzname, tzset - set timezone conversion information</a>.
+     *
+     */
+    public final static int getdate_err() {
+        return getdate_err.address().get(ValueLayout.JAVA_INT, 0);
+    }
+
+    private final static NativeSymbol getdate_err;
+
+    static {
+        getdate_err = CLinker.systemCLinker().lookup("getdate_err").get();
+    }
 
     /**
      * <b>POSIX:</b>
@@ -1012,19 +1280,30 @@ public class Time {
      *
      * @return Upon successful completion, a pointer to a struct tm.
      *
-     * @throws de.ibapl.jnhw.common.exception.NativeErrorException returns the
+     * @throws NativeException. The error wil be set in getdate_err with the
      * getdate_err error codes.
      * @throws NoSuchNativeMethodException if the method getdate is not
      * available natively.
      */
-    public final static Tm getdate(String string) throws NativeErrorException, NoSuchNativeMethodException {
-        if (string == null) {
-            throw new NullPointerException("string is NULL");
+    public final static Tm getdate(String string) throws NativeException, NoSuchNativeMethodException {
+        try ( ResourceScope ms = ResourceScope.newConfinedScope()) {
+            MemorySegment _string = MemorySegment.allocateNative(string.length() + 1, ms);
+            _string.setUtf8String(0, string);
+            final MemoryAddress result = getdate.invoke_MA__A(_string);
+            if (result == MemoryAddress.NULL) {
+                throw new NativeException("getdate");
+            } else {
+                // getdate returns static memory - so do not attempt to free it...
+                return new Tm(result, ResourceScope.globalScope());
+            }
+        } catch (NullPointerException npe) {
+            if (getdate == null) {
+                throw new NoSuchNativeMethodException("getdate");
+            } else {
+                throw npe;
+            }
         }
-        return new Tm(NativeAddressHolder.ofUintptr_t(getdate0(string)));
     }
-
-    private static native long getdate0(String string) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -1036,11 +1315,15 @@ public class Time {
      *
      * @return
      */
-    public final static Tm gmtime(@time_t long timer) {
-        return new Tm(NativeAddressHolder.ofUintptr_t(gmtime0(timer)));
+    public final static Tm gmtime(Types.Time_t timer) throws NativeErrorException {
+        final MemoryAddress result = gmtime.invoke_MA__P(timer);
+        if (result == MemoryAddress.NULL) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            // gmtime returns static memory - so do not attempt to free it...
+            return new Tm(result, ResourceScope.globalScope());
+        }
     }
-
-    private static native void gmtime_r(@time_t long timer, long ptrResult) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1054,11 +1337,12 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static void gmtime_r(@time_t long timer, Tm result) throws NativeErrorException {
-        gmtime_r(timer, AbstractNativeMemory.toUintptr_t(result));
+    public final static void gmtime_r(Types.Time_t timer, Tm result) throws NativeErrorException {
+        final MemoryAddress _result = gmtime_r.invoke_MA___P__P(timer, result);
+        if (_result == MemoryAddress.NULL) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native long gmtime0(@time_t long timer);
 
     /**
      * <b>POSIX:</b>
@@ -1073,11 +1357,15 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static Tm localtime(@time_t long timer) throws NativeErrorException {
-        return new Tm(NativeAddressHolder.ofUintptr_t(localtime0(timer)));
+    public final static Tm localtime(Types.Time_t timer) throws NativeErrorException {
+        final MemoryAddress result = localtime.invoke_MA__P(timer);
+        if (result == MemoryAddress.NULL) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            // localtime returns static memory - so do not attempt to free it...
+            return new Tm(result, ResourceScope.globalScope());
+        }
     }
-
-    private static native void localtime_r(@time_t long timer, long ptrResult) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1090,13 +1378,12 @@ public class Time {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static void localtime_r(@time_t long timer, Tm result) throws NativeErrorException {
-        localtime_r(timer, AbstractNativeMemory.toUintptr_t(result));
+    public final static void localtime_r(Types.Time_t timer, Tm result) throws NativeErrorException {
+        final MemoryAddress _result = localtime_r.invoke_MA___P__P(timer, result);
+        if (_result == MemoryAddress.NULL) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native long localtime0(@time_t long timer) throws NativeErrorException;
-
-    private static native long mktime(long timeptr) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -1112,13 +1399,17 @@ public class Time {
      */
     @time_t
     public final static long mktime(Tm timeptr) throws NativeErrorException {
-        return mktime(AbstractNativeMemory.toUintptr_t(timeptr));
+        final long result = mktime.invoke_sL___P(timeptr);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        }
+        return result;
     }
 
-    private static native void nanosleep(long ptrRqtp, long ptrRmtp) throws NativeErrorException;
-
     public final static void nanosleep(Timespec rqtp) throws NativeErrorException {
-        nanosleep(AbstractNativeMemory.toUintptr_t(rqtp), AbstractNativeMemory.NULL);
+        if (nanosleep.invoke_sI___P__P(rqtp, Pointer.NULL) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
 
     /**
@@ -1133,10 +1424,10 @@ public class Time {
      * @throws NativeErrorException if the requested time has not elapsed.
      */
     public final static void nanosleep(Timespec rqtp, Timespec rmtp) throws NativeErrorException {
-        nanosleep(AbstractNativeMemory.toUintptr_t(rqtp), AbstractNativeMemory.toUintptr_t(rmtp));
+        if (nanosleep.invoke_sI___P__P(rqtp, rmtp) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native String strftime(@size_t long maxsize, String format, long timeptr);
 
     /**
      * <b>POSIX:</b>
@@ -1151,16 +1442,18 @@ public class Time {
      * @return on succes the converted time otherwise {@code null}.
      */
     public final static String strftime(@size_t long maxsize, String format, Tm timeptr) {
-        if (maxsize < 0) {
-            throw new IllegalArgumentException("maxsize < 0");
+        try ( ResourceScope ms = ResourceScope.newConfinedScope()) {
+            MemorySegment s = MemorySegment.allocateNative(maxsize, ms);
+            MemorySegment _format = MemorySegment.allocateNative(format.length() + 1, ms);
+            _format.setUtf8String(0, format);
+            final int result = strftime.invoke_sI__A_uL_A_P(s, maxsize, _format, timeptr);
+            if (result == 0) {
+                return null;
+            } else {
+                return s.getUtf8String(0);
+            }
         }
-        if (format == null) {
-            throw new NullPointerException("format is NULL");
-        }
-        return strftime(maxsize, format, AbstractNativeMemory.toUintptr_t(timeptr));
     }
-
-    private static native String strftime_l(@size_t long maxsize, String format, long ptrTimeptr, long ptrLocale);
 
     /**
      * <b>POSIX:</b>
@@ -1176,16 +1469,18 @@ public class Time {
      * @return on succes the converted time otherwise {@code null}.
      */
     public final static String strftime_l(@size_t long maxsize, String format, Tm timeptr, Locale.Locale_t locale) {
-        if (maxsize < 0) {
-            throw new IllegalArgumentException("maxsize < 0");
+        try ( ResourceScope ms = ResourceScope.newConfinedScope()) {
+            MemorySegment s = MemorySegment.allocateNative(maxsize, ms);
+            MemorySegment _format = MemorySegment.allocateNative(format.length() + 1, ms);
+            _format.setUtf8String(0, format);
+            final int result = strftime_l.invoke_sI__A_uL_A_P_P(s, maxsize, _format, timeptr, locale);
+            if (result == 0) {
+                return null;
+            } else {
+                return s.getUtf8String(0);
+            }
         }
-        if (format == null) {
-            throw new NullPointerException("format is NULL");
-        }
-        return strftime_l(maxsize, format, AbstractNativeMemory.toUintptr_t(timeptr), Locale.Locale_t.getNativeValue(locale));
     }
-
-    private static native int strptime(String buf, String format, long tm);
 
     /**
      * <b>POSIX:</b>
@@ -1200,14 +1495,19 @@ public class Time {
      * @return the index of the character in{@code buf}, following the last
      * character parsed.
      */
-    public final static int strptime(String buf, String format, Tm tm) {
-        if (buf == null) {
-            throw new NullPointerException("buf is NULL");
+    public final static String strptime(String buf, String format, Tm tm) {
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _format = MemorySegment.allocateNative(format.length() + 1, scope);
+            _format.setUtf8String(0, format);
+            MemorySegment _buf = MemorySegment.allocateNative(buf.length() + 1, scope);
+            _buf.setUtf8String(0, buf);
+            final MemoryAddress result = strptime.invoke_MA__A_A_P(_buf, _format, tm);
+            if (result == MemoryAddress.NULL) {
+                return null;
+            } else {
+                return result.getUtf8String(0);
+            }
         }
-        if (format == null) {
-            throw new NullPointerException("format is NULL");
-        }
-        return strptime(buf, format, AbstractNativeMemory.toUintptr_t(tm));
     }
 
     /**
@@ -1221,9 +1521,13 @@ public class Time {
      * indicates an error.
      */
     @time_t
-    public final static native long time() throws NativeErrorException;
-
-    private static native void timer_create(@clockid_t int clockid, long ptrEvp, long ptrTimerid) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static long time() throws NativeErrorException {
+        final long result = time.invoke_sL___P(Pointer.NULL);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        }
+        return result;
+    }
 
     /**
      * <b>POSIX:</b>
@@ -1239,15 +1543,35 @@ public class Time {
      * @throws NoSuchNativeMethodException if the method timer_create is not
      * available natively.
      */
-    public final static void timer_create(@clockid_t int clockid, Sigevent evp, Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_create(clockid, AbstractNativeMemory.toUintptr_t(evp), AbstractNativeMemory.toUintptr_t(timerid));
+    public final static void timer_create(@clockid_t int clockid, Sigevent evp, PtrTimer_t timerid) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            final int result = timer_create.invoke_sI__sI__P__P(clockid, evp, timerid);
+            if (result != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (timer_create == null) {
+                throw new NoSuchNativeMethodException("timer_create");
+            } else {
+                throw npe;
+            }
+        }
     }
 
-    public final static void timer_create(@clockid_t int clockid, Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_create(clockid, AbstractNativeMemory.NULL, AbstractNativeMemory.toUintptr_t(timerid));
+    public final static void timer_create(@clockid_t int clockid, PtrTimer_t timerid) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            final int result = timer_create.invoke_sI__sI__P__P(clockid, Pointer.NULL, timerid);
+            if (result != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (timer_create == null) {
+                throw new NoSuchNativeMethodException("timer_create");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native void timer_delete(long timerid) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -1261,10 +1585,19 @@ public class Time {
      * available natively.
      */
     public final static void timer_delete(Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_delete(AbstractNativeMemory.toUintptr_t(timerid));
+        try {
+            final int result = timer_delete.invoke_sI___P(timerid);
+            if (result != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (timer_delete == null) {
+                throw new NoSuchNativeMethodException("timer_delete");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native int timer_getoverrun(long ptrTimerid) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -1277,11 +1610,23 @@ public class Time {
      * @throws NoSuchNativeMethodException if the method timer_getoverrun is not
      * available natively.
      */
-    public final static int timer_getoverrun(Timer_t timerid) throws NativeErrorException, NoSuchNativeMethodException {
-        return timer_getoverrun(AbstractNativeMemory.toUintptr_t(timerid));
+    public final static int timer_getoverrun(Timer_t timerid
+    ) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            final int result = timer_getoverrun.invoke_sI___P(timerid);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
+        } catch (NullPointerException npe) {
+            if (timer_create == null) {
+                throw new NoSuchNativeMethodException("timer_delete");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native void timer_gettime(long ptrTimerid, long ptrValue) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -1295,13 +1640,33 @@ public class Time {
      * available natively.
      */
     public final static void timer_gettime(Timer_t timerid, Itimerspec value) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_gettime(AbstractNativeMemory.toUintptr_t(timerid), AbstractNativeMemory.toUintptr_t(value));
+        try {
+            final int result = timer_gettime.invoke_sI___P__P(timerid, value);
+            if (result != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (timer_gettime == null) {
+                throw new NoSuchNativeMethodException("timer_gettime");
+            } else {
+                throw npe;
+            }
+        }
     }
 
-    private static native void timer_settime(long ptrTimerid, int flags, long ptrValue, long ptrOvalue) throws NativeErrorException, NoSuchNativeMethodException;
-
     public final static void timer_settime(Timer_t timerid, int flags, Itimerspec value) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_settime(AbstractNativeMemory.toUintptr_t(timerid), flags, AbstractNativeMemory.toUintptr_t(value), AbstractNativeMemory.NULL);
+        try {
+            final int result = timer_settime.invoke_sI___P_sI__P__P(timerid, flags, value, Pointer.NULL);
+            if (result != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (timer_settime == null) {
+                throw new NoSuchNativeMethodException("timer_settime");
+            } else {
+                throw npe;
+            }
+        }
     }
 
     /**
@@ -1314,7 +1679,18 @@ public class Time {
      * indicates an error.
      */
     public final static void timer_settime(Timer_t timerid, int flags, Itimerspec value, Itimerspec ovalue) throws NativeErrorException, NoSuchNativeMethodException {
-        timer_settime(AbstractNativeMemory.toUintptr_t(timerid), flags, AbstractNativeMemory.toUintptr_t(value), AbstractNativeMemory.toUintptr_t(ovalue));
+        try {
+            final int result = timer_settime.invoke_sI___P_sI__P__P(timerid, flags, value, ovalue);
+            if (result != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (timer_settime == null) {
+                throw new NoSuchNativeMethodException("timer_settime");
+            } else {
+                throw npe;
+            }
+        }
     }
 
     /**
@@ -1326,7 +1702,15 @@ public class Time {
      * @throws NoSuchNativeMethodException if the method timezone is not
      * available natively.
      */
-    public final static native long timezone() throws NoSuchNativeMethodException;
+    public final static long timezone() {
+        return timezone.address().get(ValueLayout.JAVA_LONG, 0);
+    }
+
+    private final static NativeSymbol timezone;
+
+    static {
+        timezone = CLinker.systemCLinker().lookup("timezone").get();
+    }
 
     /**
      * <b>POSIX:</b>
@@ -1336,7 +1720,19 @@ public class Time {
      * @return the native value of tzname.
      *
      */
-    public final static native String[] tzname();
+    public final static String[] tzname() {
+        final String[] result = new String[2];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = tzname.address().getUtf8String(i * BaseDataType.C_pointer.SIZE_OF);
+        }
+        return result;
+    }
+
+    private final static NativeSymbol tzname;
+
+    static {
+        tzname = CLinker.systemCLinker().lookup("tzname").get();
+    }
 
     /**
      * <b>POSIX:</b>
@@ -1345,6 +1741,8 @@ public class Time {
      *
      *
      */
-    public final static native void tzset();
+    public final static void tzset() {
+        tzset.invoke__V___V();
+    }
 
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,11 +21,11 @@
  */
 package de.ibapl.jnhw.it.hello_world_async_io;
 
-import de.ibapl.jnhw.common.memory.Memory32Heap;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 import java.io.File;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * Hello world!
@@ -34,15 +34,17 @@ import java.io.File;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        String STRING_TO_WRITE = "\n\t\tHello World! - AIO from POSIX\n\n";
-        final OpaqueMemory32 aioBuffer = Memory32Heap.of(STRING_TO_WRITE.getBytes());
-        final File file = File.createTempFile("JNHW-Win-aio", "txt");
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            String STRING_TO_WRITE = "\n\t\tHello World! - AIO from POSIX\n\n";
+            final MemorySegment aioBuffer = MemorySegment.allocateNative(STRING_TO_WRITE.length() + 1, rs);
+            aioBuffer.setUtf8String(0, STRING_TO_WRITE);
+            final File file = File.createTempFile("JNHW-Win-aio", "txt");
 
-        MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
-        if (mtb.getOS() == OS.WINDOWS) {
-            Windows.aio(file, aioBuffer, true);
-        } else {
-            new Posix(true).aio(file, aioBuffer);
+            if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+                Windows.aio(file, aioBuffer, true);
+            } else {
+                new Posix(true).aio(file, aioBuffer);
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,7 +23,6 @@ package de.ibapl.jnhw.common.test.memory.layout;
 
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
-import java.lang.annotation.Native;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,69 +32,75 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class AlignmentTest {
 
-    static {
-        LibJnhwCommonTestLoader.touch();
+    private int alignOf_int8_t() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_int8_t");
     }
 
-    @Native
-    private final static int REQ_ALIGNOF_INT8_T = 0x0001;
-    @Native
-    private final static int REQ_ALIGNOF_INT16_T = 0x0002;
-    @Native
-    private final static int REQ_ALIGNOF_INT32_T = 0x0003;
-    @Native
-    private final static int REQ_ALIGNOF_INT64_T = 0x0004;
-    @Native
-    private final static int REQ_ALIGNOF_INTPTR_T = 0x0005;
-    @Native
-    private final static int REQ_ALIGNOF_POINTER = 0x0006;
-    @Native
-    private final static int REQ_ALIGNOF_LONG = 0x0007;
-    @Native
-    private final static int REQ_ALIGNOF_FLOAT = 0x0008;
-    @Native
-    private final static int REQ_ALIGNOF_DOUBLE = 0x0009;
-    @Native
-    private final static int REQ_ALIGNOF_LONG_DOUBLE = 0x000a;
+    private int alignOf_int16_t() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_int16_t");
+    }
 
-    @Native
-    private final static int STRUCT_OFFSET = 0x0010;
+    private int alignOf_int32_t() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_int32_t");
+    }
 
-    @Native
-    private final static int REQ___BIGGEST_ALIGNMENT__ = 0x0300;
+    private int alignOf_int64_t() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_int64_t");
+    }
 
-    private static native int getFromNative(int alignofReqXXX);
+    private int alignOf_intptr_t() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_intptr_t");
+    }
 
-    public AlignmentTest() {
+    private int alignOf_pointer() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_pointer");
+    }
+
+    private int alignOf_int() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_int");
+    }
+
+    private int alignOf_long() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_long");
+    }
+
+    private int alignOf_long_long() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_long_long");
+    }
+
+    private int alignOf_float() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_float");
+    }
+
+    private int alignOf_double() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_double");
+    }
+
+    private int alignOf_long_double() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_long_double");
+    }
+
+    private int get__BIGGEST_ALIGNMENT__() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("get__BIGGEST_ALIGNMENT__");
     }
 
     @Test
     public void testValues() {
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT8_T)), Alignment.__ALIGN_OF_INT8_T);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T)), Alignment.__ALIGN_OF_INT16_T);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT32_T)), Alignment.__ALIGN_OF_INT32_T);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T)), Alignment.__ALIGN_OF_INT64_T);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INTPTR_T)), Alignment.__ALIGN_OF_INTPTR_T);
+        assertEquals(Alignment.fromAlignof(alignOf_int8_t()), Alignment.__ALIGN_OF_INT8_T);
+        assertEquals(Alignment.fromAlignof(alignOf_int16_t()), Alignment.__ALIGN_OF_INT16_T);
+        assertEquals(Alignment.fromAlignof(alignOf_int32_t()), Alignment.__ALIGN_OF_INT32_T);
+        assertEquals(Alignment.fromAlignof(alignOf_int64_t()), Alignment.__ALIGN_OF_INT64_T);
+        assertEquals(Alignment.fromAlignof(alignOf_intptr_t()), Alignment.__ALIGN_OF_INTPTR_T);
 
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER)), Alignment.__ALIGN_OF_POINTER);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG)), Alignment.__ALIGN_OF_LONG);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_FLOAT)), Alignment.__ALIGN_OF_FLOAT);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_DOUBLE)), Alignment.__ALIGN_OF_DOUBLE);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG_DOUBLE)), Alignment.__ALIGN_OF_LONG_DOUBLE);
+        assertEquals(Alignment.fromAlignof(alignOf_pointer()), Alignment.__ALIGN_OF_POINTER);
+        assertEquals(Alignment.fromAlignof(alignOf_int()), Alignment.__ALIGN_OF_INT);
+        assertEquals(Alignment.fromAlignof(alignOf_long()), Alignment.__ALIGN_OF_LONG);
+        assertEquals(Alignment.fromAlignof(alignOf_long_long()), Alignment.__ALIGN_OF_LONG_LONG);
+        assertEquals(Alignment.fromAlignof(alignOf_float()), Alignment.__ALIGN_OF_FLOAT);
+        assertEquals(Alignment.fromAlignof(alignOf_double()), Alignment.__ALIGN_OF_DOUBLE);
+        assertEquals(Alignment.fromAlignof(alignOf_long_double()), Alignment.__ALIGN_OF_LONG_DOUBLE);
 
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT8_T | STRUCT_OFFSET)), Alignment.__ALIGN_OF_STRUCT_INT8_T);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT16_T | STRUCT_OFFSET)), Alignment.__ALIGN_OF_STRUCT_INT16_T);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT32_T | STRUCT_OFFSET)), Alignment.__ALIGN_OF_STRUCT_INT32_T);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INT64_T | STRUCT_OFFSET)), Alignment.__ALIGN_OF_STRUCT_INT64_T);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_INTPTR_T | STRUCT_OFFSET)), Alignment.__ALIGN_OF_STRUCT_INTPTR_T);
-
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_POINTER | STRUCT_OFFSET)), Alignment.__ALIGN_OF_STRUCT_POINTER);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET)), Alignment.__ALIGN_OF_STRUCT_LONG);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_FLOAT | STRUCT_OFFSET)), Alignment.__ALIGN_OF_STRUCT_FLOAT);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG | STRUCT_OFFSET)), Alignment.__ALIGN_OF_STRUCT_DOUBLE);
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ_ALIGNOF_LONG_DOUBLE | STRUCT_OFFSET)), Alignment.__ALIGN_OF_STRUCT_LONG_DOUBLE);
-
-        assertEquals(Alignment.fromAlignof(getFromNative(REQ___BIGGEST_ALIGNMENT__)), Alignment.__BIGGEST_ALIGNMENT__);
+        assertEquals(Alignment.fromAlignof(get__BIGGEST_ALIGNMENT__()), Alignment.__BIGGEST_ALIGNMENT__);
     }
 
 }

@@ -3,18 +3,18 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.ibapl.jnhw</groupId>
     <artifactId>jnhw</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <inceptionYear>2019</inceptionYear>
     <name>JNHW</name>
     <url>https://github.com/aploese/jnhw/</url>
     <description>Java Native Header Wrapper
-        a small and safe JNI wrapper for native code access like JNA,JNR but without the overhead.
+        a small and safe Java Foreign Function &amp; Memory API wrapper for native code access like JNI,JNA,JNR but without the overhead.
     </description>
 
     <properties>
-        <compile.source>11</compile.source>
-        <compile.target>11</compile.target>
+        <compile.source>18</compile.source>
+        <compile.target>18</compile.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -77,22 +77,23 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <scope>test</scope>
-                <version>5.7.2</version>
+                <version>5.9.0-M1</version><!--last running 5.5.2-->
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
                 <scope>test</scope>
-                <version>5.7.2</version>
+                <version>5.9.0-M1</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-params</artifactId>
                 <scope>test</scope>
-                <version>5.7.2</version>
+                <version>5.9.0-M1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -101,54 +102,47 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-enforcer-plugin</artifactId>
-                  <version>3.0.0</version>
-                  <executions>
-                    <execution>
-                      <id>enforce-maven</id>
-                      <goals>
-                        <goal>enforce</goal>
-                      </goals>
-                      <configuration>
-                        <rules>
-                          <requireMavenVersion>
-                            <version>3.6</version>
-                          </requireMavenVersion>
-                        </rules>    
-                      </configuration>
-                    </execution>
-                  </executions>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <executions>
+                        <execution>
+                            <id>enforce-maven</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <requireMavenVersion>
+                                        <version>3.6</version>
+                                    </requireMavenVersion>
+                                </rules>    
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M5</version>
-                    <configuration>
-                        <forkCount>1</forkCount>
-                        <reuseForks>false</reuseForks>
-                        <skipAfterFailureCount>10</skipAfterFailureCount>
-                    </configuration>
+                    <version>3.0.0-M7</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>3.0.0</version>
+                    <configuration>
+                        <arguments>--enable-preview --enable-native-access=de.ibapl.jnhw.posix</arguments>                    
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <version>3.10.1</version>
                     <configuration>
                         <source>${compile.source}</source>
-                        <target>${compile.target}</target>
+                        <release>${compile.target}</release>
                         <encoding>${project.build.sourceEncoding}</encoding>
                         <showDeprecation>true</showDeprecation>
-                        <compilerArgs>
-                            <!--arg>-verbose</arg-->
-                            <!--arg>-Xlint:all</arg-->
-                            <!--arg>-Xlint:all,-options,-path</arg-->
-                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -162,7 +156,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.2.2</version>
                     <configuration>
                         <archive>
                             <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -172,7 +166,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>3.0.0-M4</version>
+                    <version>3.0.0-M6</version>
                     <configuration>
                         <localCheckout>true</localCheckout>
                         <pushChanges>false</pushChanges>
@@ -200,7 +194,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.3.1</version>
+                    <version>3.4.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -210,7 +204,7 @@
                 <plugin>
                     <groupId>biz.aQute.bnd</groupId>
                     <artifactId>bnd-maven-plugin</artifactId>
-                    <version>5.3.0</version>
+                    <version>6.3.1</version>
                     <executions>
                         <execution>
                             <goals>
@@ -223,12 +217,12 @@
                 <plugin>
                     <groupId>biz.aQute.bnd</groupId>
                     <artifactId>bnd-testing-maven-plugin</artifactId>
-                    <version>5.3.0</version>
+                    <version>6.3.1</version>
                 </plugin>
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>4.3.0</version>
+                    <version>4.7.0.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -245,6 +239,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${compile.source}</source>
+                    <target>${compile.target}</target>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>biz.aQute.bnd</groupId>
@@ -282,7 +280,7 @@
                     <aggregate>true</aggregate>
                     <strictCheck>true</strictCheck>
                     <properties>
-                        <copyright-range>${project.inceptionYear}-2021</copyright-range>
+                        <copyright-range>${project.inceptionYear}-2022</copyright-range>
                     </properties>
                 </configuration>
                 <executions>
@@ -324,22 +322,14 @@
 
                                 <exclude>de.ibapl.jnhw.common/config.h</exclude>
                                 <exclude>de.ibapl.jnhw.common/.ccls-cache/**</exclude>
-                                <exclude>de.ibapl.jnhw.common/src/main/native/include/*.h</exclude>
-                                <exclude>de.ibapl.jnhw.common/src/test/native/include/*.h</exclude>
-
+                          
                                 <exclude>de.ibapl.jnhw.posix/config.h</exclude>
                                 <exclude>de.ibapl.jnhw.posix/.ccls-cache/**</exclude>
-                                <exclude>de.ibapl.jnhw.posix/src/main/native/include/*.h</exclude>
-                                <exclude>de.ibapl.jnhw.posix/src/test/native/include/*.h</exclude>
-
+                          
                                 <exclude>de.ibapl.jnhw.winapi/config.h</exclude>
                                 <exclude>de.ibapl.jnhw.winapi/.ccls-cache/**</exclude>
-                                <exclude>de.ibapl.jnhw.winapi/src/main/native/include/*.h</exclude>
-                                <exclude>de.ibapl.jnhw.winapi/src/test/native/include/*.h</exclude>
-
+                          
                                 <exclude>de.ibapl.jnhw.syscall.linux/config.h</exclude>
-                                <exclude>de.ibapl.jnhw.syscall.linux/src/main/native/include/*.h</exclude>
-                                <exclude>de.ibapl.jnhw.syscall.linux/src/test/native/include/*.h</exclude>
                                 <exclude>de.ibapl.jnhw.syscall.linux/src/main/linux-source/**</exclude>
 
                             </excludes>
@@ -363,4 +353,15 @@
             </build>
         </profile>
     </profiles>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <configLocation>config/sun_checks.xml</configLocation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

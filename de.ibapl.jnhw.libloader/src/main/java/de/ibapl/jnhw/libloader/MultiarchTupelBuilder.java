@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -35,6 +35,8 @@ import java.util.Set;
  */
 public final class MultiarchTupelBuilder {
 
+    private final static MultiarchTupelBuilder INSTANCE = new MultiarchTupelBuilder();
+
     private SizeInBit sun_arch_data_modelAsWordsize() {
         switch (sun_arch_data_model) {
             case "32":
@@ -57,16 +59,12 @@ public final class MultiarchTupelBuilder {
         }
     }
 
-    public SizeInBit getSizeOfPointer() {
-        return cachedMultiarchinfo.getSizeOfPointer();
+    public static MemoryModel getMemoryModel() {
+        return INSTANCE.cachedMultiarchinfo.getMemoryModel();
     }
 
-    public SizeInBit getSizeOfLong() {
-        return cachedMultiarchinfo.getSizeOfLong();
-    }
-
-    public Arch getArch() {
-        return cachedMultiarchinfo.getArch();
+    public static Arch getArch() {
+        return INSTANCE.cachedMultiarchinfo.getArch();
     }
 
     // known system properties
@@ -81,7 +79,7 @@ public final class MultiarchTupelBuilder {
     private final MultiarchInfo cachedMultiarchinfo;
     private final Set<MultiarchInfo> multiarchinfos;
 
-    public MultiarchTupelBuilder() {
+    MultiarchTupelBuilder() {
         super();
         sun_os_patch_level = System.getProperty("sun.os.patch.level");
         os_arch = System.getProperty("os.arch");
@@ -429,16 +427,16 @@ public final class MultiarchTupelBuilder {
         }
     }
 
-    public OS getOS() {
-        return cachedMultiarchinfo.getOS();
+    public static OS getOS() {
+        return INSTANCE.cachedMultiarchinfo.getOS();
     }
 
-    public Endianess getEndianess() {
-        return cachedMultiarchinfo.getEndianess();
+    public static Endianess getEndianess() {
+        return INSTANCE.cachedMultiarchinfo.getEndianess();
     }
 
-    public boolean isBigEndian() {
-        return getEndianess().isBigEndian();
+    public static boolean isBigEndian() {
+        return INSTANCE.getEndianess().isBigEndian();
     }
 
     public static String listSystemProperties() {
@@ -449,8 +447,12 @@ public final class MultiarchTupelBuilder {
         return sb.toString();
     }
 
-    public Collection<MultiarchInfo> getMultiarchs() {
-        return multiarchinfos;
+    public static Collection<MultiarchInfo> getMultiarchs() {
+        return INSTANCE.multiarchinfos;
+    }
+
+    public static MultiarchInfo getMultiarch() {
+        return INSTANCE.multiarchinfos.iterator().next();
     }
 
 }

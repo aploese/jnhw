@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -26,12 +26,24 @@ import de.ibapl.jnhw.annotation.posix.sys.types.off64_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.off_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.IntDefine;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.posix.sys.Stat;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import de.ibapl.jnhw.util.posix.PosixDataType;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sL_sL_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sL_sL;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI_uI;
 
 /**
  * Wrapper around the {@code <fcntl.h>} header.
@@ -677,8 +689,6 @@ public final class Fcntl {
     public final static int SEEK_SET;
 
     /**
-     * Make sure the native lib is loaded
-     *
      * @implNote The actual value for the define fields are injected by
      * initFields. The static initialization block is used to set the value here
      * to communicate that this static final fields are not statically foldable.
@@ -686,15 +696,11 @@ public final class Fcntl {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
-
-        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-
         SEEK_CUR = Stdio.SEEK_CUR;
         SEEK_END = Stdio.SEEK_END;
         SEEK_SET = Stdio.SEEK_SET;
 
-        switch (multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_FCNTL_H = true;
 
@@ -733,7 +739,7 @@ public final class Fcntl {
                 POSIX_FADV_SEQUENTIAL = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_SEQUENTIAL);
                 POSIX_FADV_WILLNEED = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_WILLNEED);
 
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case S390_X:
                         POSIX_FADV_DONTNEED = IntDefine.toIntDefine(Linux_S390_Defines.POSIX_FADV_DONTNEED);
                         POSIX_FADV_NOREUSE = IntDefine.toIntDefine(Linux_S390_Defines.POSIX_FADV_NOREUSE);
@@ -743,7 +749,7 @@ public final class Fcntl {
                         POSIX_FADV_NOREUSE = IntDefine.toIntDefine(Linux_NonS390_Defines.POSIX_FADV_NOREUSE);
                 }
 
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case AARCH64:
                     case MIPS_64:
                     case POWER_PC_64:
@@ -762,10 +768,10 @@ public final class Fcntl {
                         O_LARGEFILE = IntDefine.toIntDefine(Linux_Mips_Defines.O_LARGEFILE);
                         break;
                     default:
-                        throw new NoClassDefFoundError("No fcntl.h defines for " + multiarchInfo);
+                        throw new NoClassDefFoundError("No fcntl.h defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
 
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case MIPS:
                     case MIPS_64:
                         F_GETLK = Linux_Mips_Mips64_Defines.F_GETLK;
@@ -799,7 +805,7 @@ public final class Fcntl {
                         O_SYNC = Linux_NonMips_Defines.O_SYNC;
 
                 }
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case AARCH64:
                     case ARM:
                         O_DIRECTORY = Linux_Aarch64_Arm_Defines.O_DIRECTORY;
@@ -825,7 +831,7 @@ public final class Fcntl {
                         O_NOFOLLOW = Linux_I386_X86_64_Defines.O_NOFOLLOW;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No fcntl.h defines for " + multiarchInfo);
+                        throw new NoClassDefFoundError("No fcntl.h defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
                 break;
             case DARWIN:
@@ -860,7 +866,7 @@ public final class Fcntl {
                 O_FSYNC = IntDefine.toIntDefine(BsdDefines.O_FSYNC);
                 O_NONBLOCK = BsdDefines.O_NONBLOCK;
                 O_SYNC = BsdDefines.O_SYNC;
-                switch (multiarchInfo.getOS()) {
+                switch (MultiarchTupelBuilder.getOS()) {
                     case DARWIN:
                         AT_EACCESS = DarwinDefines.AT_EACCESS;
                         AT_FDCWD = DarwinDefines.AT_FDCWD;
@@ -940,13 +946,137 @@ public final class Fcntl {
                         POSIX_FADV_WILLNEED = IntDefine.UNDEFINED;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No fcntl.h BSD defines for " + multiarchInfo);
+                        throw new NoClassDefFoundError("No fcntl.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
                 break;
             default:
-                throw new NoClassDefFoundError("No fcntl.h defines for " + multiarchInfo);
+                throw new NoClassDefFoundError("No fcntl.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
+
+    private final static JnhwMh_sI__A_uI creat = JnhwMh_sI__A_uI.of(
+            "creat",
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer,
+            PosixDataType.mode_t);
+
+    private final static JnhwMh_sI__A_uI creat64 = JnhwMh_sI__A_uI.ofOrNull(
+            "creat64",
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer,
+            PosixDataType.mode_t);
+
+    private final static JnhwMh_sI__sI_sI fcntl = JnhwMh_sI__sI_sI.of(
+            "fcntl",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI_sI fcntl64 = JnhwMh_sI__sI_sI.ofOrNull(
+            "fcntl64",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI_sI_sI fcntl__with_1vararg = JnhwMh_sI__sI_sI_sI.ofOrNull(
+            "fcntl",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI_sI_sI fcntl64__with_1vararg = JnhwMh_sI__sI_sI_sI.ofOrNull(
+            "fcntl64",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__A_sI open = JnhwMh_sI__A_sI.of(
+            "open",
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__A_sI open64 = JnhwMh_sI__A_sI.of(
+            "open64",
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__A_sI_uI open__with_ModeArg = JnhwMh_sI__A_sI_uI.of(
+            "open",
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_int,
+            PosixDataType.mode_t);
+
+    private final static JnhwMh_sI__A_sI_uI open64__with_ModeArg = JnhwMh_sI__A_sI_uI.of(
+            "open64",
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_int,
+            PosixDataType.mode_t);
+
+    private final static JnhwMh_sI__sI__A_sI openat = JnhwMh_sI__sI__A_sI.of(
+            "openat",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI__A_sI_uI openat__with_ModeArg = JnhwMh_sI__sI__A_sI_uI.of(
+            "openat",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_int,
+            PosixDataType.mode_t);
+
+    private final static JnhwMh_sI__sI__A_sI openat64 = JnhwMh_sI__sI__A_sI.ofOrNull(
+            "openat64",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI__A_sI_uI openat64__with_ModeArg = JnhwMh_sI__sI__A_sI_uI.ofOrNull(
+            "openat64",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer,
+            BaseDataType.C_int,
+            PosixDataType.mode_t);
+
+    private final static JnhwMh_sI__sI_sL_sL_sI posix_fadvise = JnhwMh_sI__sI_sL_sL_sI.ofOrNull(
+            "posix_fadvise",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            PosixDataType.off_t,
+            PosixDataType.off_t,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI_sL_sL_sI posix_fadvise64 = JnhwMh_sI__sI_sL_sL_sI.of(
+            "posix_fadvise64",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            PosixDataType.off_t,
+            PosixDataType.off_t,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI_sL_sL posix_fallocate = JnhwMh_sI__sI_sL_sL.of(
+            "posix_fallocate",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            PosixDataType.off_t,
+            PosixDataType.off_t);
+
+    private final static JnhwMh_sI__sI_sL_sL posix_fallocate64 = JnhwMh_sI__sI_sL_sL.of(
+            "posix_fallocate64",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            PosixDataType.off_t,
+            PosixDataType.off_t);
 
     /**
      * <b>POSIX:</b>
@@ -957,19 +1087,18 @@ public final class Fcntl {
      * @param mode the file access modes from {@link Stat}.
      * @return a handle to the opend file.
      *
-     * @throws NullPointerException if {@code file} is {@code null}.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      */
     public final static int creat(String path, @mode_t int mode) throws NativeErrorException {
-        if (path == null) {
-            throw new NullPointerException("path is null.");
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+            _path.setUtf8String(0, path);
+            final int result = creat.invoke_sI__A_uI(_path, mode);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            }
+            return result;
         }
-        return creat0(path, mode);
     }
-
-    private static native int creat0(String path, @mode_t int mode) throws NativeErrorException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -978,20 +1107,27 @@ public final class Fcntl {
      * @param mode the file access modes from {@link Stat}.
      * @return a handle to the opend file.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
     public final static int creat64(String path, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        if (path == null) {
-            throw new NullPointerException("path is null.");
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+            _path.setUtf8String(0, path);
+            final int result = creat64.invoke_sI__A_uI(_path, mode);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            }
+            return result;
+        } catch (NullPointerException npe) {
+            if (creat64 == null) {
+                throw new NoSuchNativeMethodException("creat64");
+            } else {
+                throw npe;
+            }
         }
-        return creat64_0(path, mode);
     }
 
-    private static native int creat64_0(String path, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
-
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/fcntl.html">fcntl
@@ -1004,7 +1140,14 @@ public final class Fcntl {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int fcntl(int fildes, int cmd) throws NativeErrorException;
+    public final static int fcntl(int fildes, int cmd) throws NativeErrorException {
+        final int result = fcntl.invoke_sI__sI_sI(fildes, cmd);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -1019,7 +1162,14 @@ public final class Fcntl {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int fcntl(int fildes, int cmd, int vararg_0) throws NativeErrorException;
+    public final static int fcntl(int fildes, int cmd, int vararg_0) throws NativeErrorException {
+        final int result = fcntl__with_1vararg.invoke_sI__sI_sI_sI(fildes, cmd, vararg_0);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
+        }
+    }
 
     /**
      *
@@ -1029,12 +1179,25 @@ public final class Fcntl {
      * @param cmd the available values for cmd are defined in fcntl.h.
      * @return the value returned shall depend on cmd.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int fcntl64(int fildes, int cmd) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int fcntl64(int fildes, int cmd) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            final int result = fcntl64.invoke_sI__sI_sI(fildes, cmd);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
+        } catch (NullPointerException npe) {
+            if (fcntl64 == null) {
+                throw new NoSuchNativeMethodException("fcntl64");
+            } else {
+                throw npe;
+            }
+        }
+    }
 
     /**
      *
@@ -1045,12 +1208,25 @@ public final class Fcntl {
      * @param vararg_0 the arg for some cmd.
      * @return the value returned shall depend on cmd.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
-    public final static native int fcntl64(int fildes, int cmd, int vararg_0) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static int fcntl64(int fildes, int cmd, int vararg_0) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            final int result = fcntl64__with_1vararg.invoke_sI__sI_sI_sI(fildes, cmd, vararg_0);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
+        } catch (NullPointerException npe) {
+            if (fcntl64__with_1vararg == null) {
+                throw new NoSuchNativeMethodException("fcntl64");
+            } else {
+                throw npe;
+            }
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -1060,17 +1236,21 @@ public final class Fcntl {
      * @param path the pathname naming the file.
      * @param oflag the open flags.
      * @return a handle to the opend file.
-     *
-     * @throws NullPointerException if {@code file} is {@code null}.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
     public final static int open(String path, int oflag) throws NativeErrorException {
-        if (path == null) {
-            throw new NullPointerException("path is null.");
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+            _path.setUtf8String(0, path);
+            final int result = open.invoke_sI__A_sI(_path, oflag);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
         }
-        return open0(path, oflag);
     }
 
     /**
@@ -1083,21 +1263,18 @@ public final class Fcntl {
      * @param mode the file access modes from {@link Stat}.
      * @return a handle to the opend file.
      *
-     * @throws NullPointerException if {@code file} is {@code null}.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      */
     public final static int open(String path, int oflag, @mode_t int mode) throws NativeErrorException {
-        if (path == null) {
-            throw new NullPointerException("path is null.");
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+            _path.setUtf8String(0, path);
+            final int result = open__with_ModeArg.invoke_sI__A_sI_uI(_path, oflag, mode);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            }
+            return result;
         }
-        return open0(path, oflag, mode);
     }
-
-    private static native int open0(String path, int oflag) throws NativeErrorException;
-
-    private static native int open0(String path, int oflag, int mode) throws NativeErrorException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -1110,16 +1287,25 @@ public final class Fcntl {
      *
      * @throws NullPointerException if {@code file} is {@code null}.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
     public final static int open64(String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
-        if (path == null) {
-            throw new NullPointerException("path is null.");
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+            _path.setUtf8String(0, path);
+            final int result = open64.invoke_sI__A_sI(_path, oflag);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            }
+            return result;
+        } catch (NullPointerException npe) {
+            if (open64 == null) {
+                throw new NoSuchNativeMethodException("open64");
+            } else {
+                throw npe;
+            }
         }
-        return open64_0(path, oflag);
     }
 
     /**
@@ -1134,21 +1320,27 @@ public final class Fcntl {
      *
      * @throws NullPointerException if {@code file} is {@code null}.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
     public final static int open64(String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        if (path == null) {
-            throw new NullPointerException("path is null.");
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+            _path.setUtf8String(0, path);
+            final int result = open64__with_ModeArg.invoke_sI__A_sI_uI(_path, oflag, mode);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
+        } catch (NullPointerException npe) {
+            if (open64__with_ModeArg == null) {
+                throw new NoSuchNativeMethodException("open64");
+            } else {
+                throw npe;
+            }
         }
-        return open64_0(path, oflag, mode);
     }
-
-    private static native int open64_0(String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException;
-
-    private static native int open64_0(String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      *
@@ -1164,14 +1356,18 @@ public final class Fcntl {
      *
      * @throws NullPointerException if {@code file} is {@code null}.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      */
     public final static int openat(int fd, String path, int oflag) throws NativeErrorException {
-        if (path == null) {
-            throw new NullPointerException("path is null.");
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+            _path.setUtf8String(0, path);
+            final int result = openat.invoke_sI__sI_A_sI(fd, _path, oflag);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
         }
-        return openat0(fd, path, oflag);
     }
 
     /**
@@ -1186,21 +1382,19 @@ public final class Fcntl {
      * @param mode the file access modes from {@link Stat}.
      * @return a handle to the opend file.
      *
-     * @throws NullPointerException if {@code file} is {@code null}.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      */
     public final static int openat(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException {
-        if (path == null) {
-            throw new NullPointerException("path is null.");
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+            _path.setUtf8String(0, path);
+            final int result = openat__with_ModeArg.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
         }
-        return openat0(fd, path, oflag, mode);
     }
-
-    private static native int openat0(int fd, String path, int oflag) throws NativeErrorException;
-
-    private static native int openat0(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException;
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -1213,18 +1407,26 @@ public final class Fcntl {
      * @param oflag the open flags.
      * @return a handle to the opend file.
      *
-     * @throws NullPointerException if {@code file} is {@code null}.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
     public final static int openat64(int fd, String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
-        if (path == null) {
-            throw new NullPointerException("path is null.");
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+            _path.setUtf8String(0, path);
+            final int result = openat64.invoke_sI__sI_A_sI(fd, _path, oflag);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
+        } catch (NullPointerException npe) {
+            if (openat64 == null) {
+                throw new NoSuchNativeMethodException("openat64");
+            } else {
+                throw npe;
+            }
         }
-        return openat64_0(fd, path, oflag);
     }
 
     /**
@@ -1239,24 +1441,27 @@ public final class Fcntl {
      * @param mode the file access modes from {@link Stat}.
      * @return a handle to the opend file.
      *
-     * @throws NullPointerException if {@code file} is {@code null}.
-     *
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
     public final static int openat64(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        if (path == null) {
-            throw new NullPointerException("path is null.");
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+            _path.setUtf8String(0, path);
+            final int result = openat64__with_ModeArg.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            }
+            return result;
+        } catch (NullPointerException npe) {
+            if (openat64__with_ModeArg == null) {
+                throw new NoSuchNativeMethodException("openat64");
+            } else {
+                throw npe;
+            }
         }
-        return openat64_0(fd, path, oflag, mode);
     }
 
-    private static native int openat64_0(int fd, String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException;
-
-    private static native int openat64_0(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException;
-
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/posix_fadvise.html">posix_fadvise
@@ -1268,10 +1473,21 @@ public final class Fcntl {
      * @param advice the advice to be applied to the data is specified by the
      * advice parameter.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * returns an error code.
+     * @throws NoSuchNativeMethodException
      */
-    public final static native void posix_fadvise(int fildes, @off_t long offset, @off_t long len, int advice) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void posix_fadvise(int fildes, @off_t long offset, @off_t long len, int advice) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            if (posix_fadvise.invoke_sI__sI_sL_sL_sI(fildes, offset, len, advice) == -1) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (posix_fadvise == null) {
+                throw new NoSuchNativeMethodException("posix_fadvise");
+            } else {
+                throw npe;
+            }
+        }
+    }
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -1284,12 +1500,21 @@ public final class Fcntl {
      * @param advice the advice to be applied to the data is specified by the
      * advice parameter.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * returns an error code.
-     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
-     * defined.
+     * @throws NoSuchNativeMethodException
      */
-    public final static native void posix_fadvise64(int fildes, @off64_t long offset, @off64_t long len, int advice) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void posix_fadvise64(int fildes, @off64_t long offset, @off64_t long len, int advice) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            if (posix_fadvise64.invoke_sI__sI_sL_sL_sI(fildes, offset, len, advice) == -1) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (posix_fadvise64 == null) {
+                throw new NoSuchNativeMethodException("posix_fadvise64");
+            } else {
+                throw npe;
+            }
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -1300,10 +1525,21 @@ public final class Fcntl {
      * @param offset the offset.
      * @param len the length.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * returns an error code.
+     * @throws NoSuchNativeMethodException
      */
-    public final static native void posix_fallocate(int fildes, @off_t long offset, @off_t long len) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void posix_fallocate(int fildes, @off_t long offset, @off_t long len) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            if (posix_fallocate.invoke_sI__sI_sL_sL(fildes, offset, len) == -1) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (posix_fallocate == null) {
+                throw new NoSuchNativeMethodException("posix_fallocate");
+            } else {
+                throw npe;
+            }
+        }
+    }
 
     /**
      * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
@@ -1314,10 +1550,20 @@ public final class Fcntl {
      * @param offset the offset.
      * @param len the length.
      *
-     * @throws NativeErrorException if the return value of the native function
-     * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
-     * defined. returns an error code.
+     * @throws NoSuchNativeMethodException
      */
-    public final static native void posix_fallocate64(int fildes, @off64_t long offset, @off64_t long len) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void posix_fallocate64(int fildes, @off64_t long offset, @off64_t long len) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            if (posix_fallocate64.invoke_sI__sI_sL_sL(fildes, offset, len) == -1) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (posix_fallocate64 == null) {
+                throw new NoSuchNativeMethodException("posix_fallocate64");
+            } else {
+                throw npe;
+            }
+        }
+    }
 
 }

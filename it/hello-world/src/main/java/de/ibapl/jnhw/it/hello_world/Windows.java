@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -28,12 +28,17 @@ import static de.ibapl.jnhw.winapi.Winbase.STD_OUTPUT_HANDLE;
 import static de.ibapl.jnhw.winapi.ProcessEnv.GetStdHandle;
 //Import only the needed method from the wrapper of fileapi.h
 import static de.ibapl.jnhw.winapi.Fileapi.WriteFile;
+import static de.ibapl.jnhw.winapi.WinDef.LPDWORD;
+import jdk.incubator.foreign.ResourceScope;
 
 public class Windows {
 
     public static void sayHello() throws NativeErrorException {
-        int bytesWritten = WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), "Hello World! from WIN API\n".getBytes());
-        System.out.println("Bytes written: " + bytesWritten);
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            LPDWORD bytesWritten = LPDWORD.allocateNative(scope);
+            WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), "Hello World! from WIN API\n".getBytes(), bytesWritten);
+            System.out.println("Bytes written: " + bytesWritten.uint32_t());
+        }
     }
 
 }

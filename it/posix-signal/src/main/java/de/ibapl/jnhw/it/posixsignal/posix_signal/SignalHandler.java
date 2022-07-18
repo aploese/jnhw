@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,9 +21,12 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
+import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.downcall.JnhwMi__I___V;
+import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
 import de.ibapl.jnhw.posix.Signal;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -138,12 +141,11 @@ public abstract class SignalHandler {
     }
 
     private void doForceSignal() {
-        try {
+        try (ResourceScope rs = ResourceScope.newConfinedScope()){
             System.out.println("force Signal " + signalToRaise + " in thread: " + Thread.currentThread());
             //We will call a NULL pointer on the native side. So we will force a segmentation violation.
-            NativeAddressHolder nah = NativeAddressHolder.NULL;
-            CallNative_I_V callNative_I_V = new CallNative_I_V(nah);
-            callNative_I_V.call(42);
+            JnhwMi__V___I callNative__V___I = new JnhwMi__V___I(MemoryAddress.NULL, rs);
+            callNative__V___I.invoke__V__sI(42);
         } catch (Throwable t) {
             thrownInHandler = t;
         }

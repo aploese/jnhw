@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,67 +21,26 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import de.ibapl.jnhw.util.posix.PosixDataType;
+import jdk.incubator.foreign.ResourceScope;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class PollTest {
 
-    public static class NativeDefines {
-
-        public final static native boolean HAVE_POLL_H();
-
-        public final static native short POLLERR();
-
-        public final static native short POLLHUP();
-
-        public final static native short POLLIN();
-
-        public final static native short POLLNVAL();
-
-        public final static native short POLLOUT();
-
-        public final static native short POLLPRI();
-
-        public final static native short POLLRDBAND();
-
-        public final static native short POLLRDNORM();
-
-        public final static native short POLLWRBAND();
-
-        public final static native short POLLWRNORM();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-
-    public static class NativePollFd {
-
-        public final static native int alignof();
-
-        public final static native int sizeof();
-
-        public final static native long fd();
-
-        public final static native long events();
-
-        public final static native long revents();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
-
     @BeforeAll
     public static void checkBeforeAll_HAVE_POLL_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Poll.HAVE_POLL_H, "not expected to have poll.h");
         } else {
             Assertions.assertTrue(Poll.HAVE_POLL_H, "expected to have poll.h");
@@ -90,38 +49,50 @@ public class PollTest {
 
     @BeforeAll
     public static void checkBeforeAll_PollDefines() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
-        DefinesTest.testDefines(Poll.class, NativeDefines.class, "HAVE_POLL_H");
+        DefinesTest.testDefines(Poll.class, "HAVE_POLL_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructPollFd() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
         Assertions.assertAll(() -> {
-            Assertions.assertEquals(NativePollFd.sizeof(), Poll.PollFd.sizeof, "sizeof");
+            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("PollFd_sizeof"), Poll.PollFd.sizeof, "sizeof");
         },
                 () -> {
-                    Assertions.assertEquals(NativePollFd.alignof(), Poll.PollFd.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("PollFd_alignof"), Poll.PollFd.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(NativePollFd.fd(), Poll.PollFd.offsetof_Fd, "offsetof_Fd");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("PollFd_offsetof_fd"), Poll.PollFd.offsetof_Fd, "offsetof_Fd");
                 },
                 () -> {
-                    Assertions.assertEquals(NativePollFd.events(), Poll.PollFd.offsetof_Events, "offsetof_Events");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("PollFd_offsetof_events"), Poll.PollFd.offsetof_Events, "offsetof_Events");
                 },
                 () -> {
-                    Assertions.assertEquals(NativePollFd.revents(), Poll.PollFd.offsetof_Revents, "offsetof_Revents");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("PollFd_offsetof_revents"), Poll.PollFd.offsetof_Revents, "offsetof_Revents");
                 }
         );
     }
 
+    private ResourceScope scope;
+
+    @BeforeEach
+    public void setUp() {
+        scope = ResourceScope.newConfinedScope();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        scope.close();
+    }
+
     @Test
     public void testCreatePollFd() throws Exception {
-        Poll.PollFds pollFds = new Poll.PollFds(2);
+        Poll.PollFds pollFds = Poll.PollFds.allocateNative(scope, 2);
     }
 
     @Test
@@ -129,9 +100,23 @@ public class PollTest {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Poll.poll((Poll.PollFd) null, 1000);
         });
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Poll.poll((Poll.PollFd) null, 1000);
-        });
+    }
+
+    @Test
+    public void testNfds_t() {
+        Assertions.assertEquals(8, PosixDataType.nfds_t.SIZE_OF);
+        Assertions.assertEquals(Alignment.AT_8, PosixDataType.nfds_t.ALIGN_OF);
+        Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
+        Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(scope);
+        instance.setFromUnsignedLong(0x8070605040302010L);
+        assertEquals(0x8070605040302010L, instance.getAsUnsignedLong());
+        assertEquals(Long.toUnsignedString(0x8070605040302010L), instance.nativeToString());
+        assertEquals("0x8070605040302010", instance.nativeToHexString());
+        //This is unsigned so this is really
+        instance.setFromUnsignedLong(-1L);
+        assertEquals(-1, instance.getAsUnsignedLong());
+        assertEquals("18446744073709551615", instance.nativeToString());
+        assertEquals("0xffffffffffffffff", instance.nativeToHexString());
     }
 
 }

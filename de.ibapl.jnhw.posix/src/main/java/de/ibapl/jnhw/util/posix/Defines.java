@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,11 +22,12 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.datatypes.Arch;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.Endianess;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.util.IntDefine;
-import de.ibapl.jnhw.libloader.Arch;
-import de.ibapl.jnhw.libloader.Endianess;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
-import de.ibapl.jnhw.libloader.OS;
 
 /**
  * get the defines with gcc: create an empty file c.c run
@@ -235,7 +236,6 @@ public class Defines {
     public final static IntDefine _XOPEN_SOURCE_EXTENDED;
 
     /**
-     * Make sure the native lib is loaded
      *
      * @implNote The actual value for the define fields are injected by
      * initFields. The static initialization block is used to set the value here
@@ -244,12 +244,10 @@ public class Defines {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
 
-        final MultiarchInfo mi = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-        final Arch arch = mi.getArch();
-        final OS os = mi.getOS();
-        final Endianess e = mi.getEndianess();
+        final Arch arch = MultiarchTupelBuilder.getArch();
+        final OS os = MultiarchTupelBuilder.getOS();
+        final Endianess e = MultiarchTupelBuilder.getEndianess();
 
         __aarch64__ = arch == Arch.AARCH64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __alpha__ = IntDefine.UNDEFINED;
@@ -305,7 +303,7 @@ public class Defines {
                 _LARGEFILE_SOURCE = IntDefine.UNDEFINED;
                 break;
             default:
-                throw new NoClassDefFoundError("No default value for _LARGEFILE64_SOURCE and _LARGEFILE_SOURCE " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No default value for _LARGEFILE64_SOURCE and _LARGEFILE_SOURCE " + MultiarchTupelBuilder.getMultiarch());
         }
         switch (os) {
             case DARWIN:
@@ -322,10 +320,10 @@ public class Defines {
                 _XOPEN_SOURCE_EXTENDED = IntDefine.UNDEFINED;
                 break;
             default:
-                throw new NoClassDefFoundError("No default value for _POSIX_C_SOURCE,_XOPEN_SOURCE and _XOPEN_SOURCE_EXTENDED " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No default value for _POSIX_C_SOURCE,_XOPEN_SOURCE and _XOPEN_SOURCE_EXTENDED " + MultiarchTupelBuilder.getMultiarch());
         }
 
-        switch (mi.getArch()) {
+        switch (arch) {
             case AARCH64:
             case I386:
             case MIPS_64:
@@ -342,12 +340,12 @@ public class Defines {
                 __BIGGEST_ALIGNMENT__ = 8;
                 break;
             default:
-                throw new NoClassDefFoundError("No default value for __BIGGEST_ALIGNMENT__ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No default value for __BIGGEST_ALIGNMENT__ " + MultiarchTupelBuilder.getMultiarch());
         }
 
         switch (os) {
             case LINUX:
-                __GLIBC_MINOR__ = IntDefine.toIntDefine(28);
+                __GLIBC_MINOR__ = IntDefine.toIntDefine(33);
                 __GLIBC__ = IntDefine.toIntDefine(2);
                 __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
                 break;
@@ -364,7 +362,7 @@ public class Defines {
                 __GNU_LIBRARY__ = IntDefine.UNDEFINED;
                 break;
             default:
-                throw new NoClassDefFoundError("No default value for __GLIBC__, __GLIBC_MINOR__ and __GNU_LIBRARY__ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No default value for __GLIBC__, __GLIBC_MINOR__ and __GNU_LIBRARY__ " + MultiarchTupelBuilder.getMultiarch());
         }
 
         __ILP32__ = IntDefine.UNDEFINED; // glibc > 2.31? arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
@@ -389,10 +387,10 @@ public class Defines {
                         __LP64__ = IntDefine.UNDEFINED;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No default value for __LP64__  " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No default value for __LP64__  " + MultiarchTupelBuilder.getMultiarch());
                 }
         }
-        switch (mi.getEndianess()) {
+        switch (e) {
             case BIG:
                 __BYTE_ORDER__ = 4321;
                 break;
@@ -400,17 +398,23 @@ public class Defines {
                 __BYTE_ORDER__ = 1234;
                 break;
             default:
-                throw new NoClassDefFoundError("No default value for __BYTE_ORDER__  " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No default value for __BYTE_ORDER__  " + MultiarchTupelBuilder.getMultiarch());
         }
         __ORDER_BIG_ENDIAN__ = 4321;
         __ORDER_LITTLE_ENDIAN__ = 1234;
         __ORDER_PDP_ENDIAN__ = 3412;
 
-        __SIZEOF_LONG__ = mi.getSizeOfLong().sizeInBit / 8;
-        __SIZEOF_POINTER__ = mi.getSizeOfPointer().sizeInBit / 8;
+        __SIZEOF_LONG__ = MultiarchTupelBuilder.getMemoryModel().sizeOf_long.sizeInByte;
+        __SIZEOF_POINTER__ = MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer.sizeInByte;
 
         //Linux
-        __TIMESIZE = IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
+        __TIMESIZE = switch (os) {
+            case LINUX ->
+                IntDefine.toIntDefine(BaseDataType.uint64_t.SIZE_OF * 8);
+            default ->
+                throw new NoClassDefFoundError("No default value for __TIMESIZE  " + MultiarchTupelBuilder.getMultiarch());
+        };
+        // __TIMESIZE = IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
 
         switch (os) {
             case OPEN_BSD:
@@ -418,7 +422,7 @@ public class Defines {
                 __WORDSIZE = IntDefine.UNDEFINED;
                 break;
             default:
-                __WORDSIZE = IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
+                __WORDSIZE = IntDefine.toIntDefine(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer.sizeInBit);
         }
 
     }

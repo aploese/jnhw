@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.common.test;
 
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.util.JnhwFormater;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
@@ -32,14 +32,12 @@ import org.junit.jupiter.api.Test;
  */
 public class JnhwFormaterTest {
 
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-
     public JnhwFormaterTest() {
     }
 
     @Test
     public void testFormatAddress() {
-        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
+        switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
             case _64_BIT:
                 assertEquals("0xfedcba9876543210", JnhwFormater.formatAddress(0xfedcba9876543210L));
                 break;

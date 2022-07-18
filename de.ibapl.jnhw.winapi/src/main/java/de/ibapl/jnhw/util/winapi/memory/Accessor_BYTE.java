@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.util.winapi.memory;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.BYTE;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -32,13 +32,13 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 public interface Accessor_BYTE {
 
     @BYTE
-    byte BYTE(OpaqueMemory32 mem, long offset);
+    byte BYTE(MemorySegment memorySegment, long offset);
 
-    void BYTE(OpaqueMemory32 mem, long offset, @BYTE byte value);
+    void BYTE(MemorySegment memorySegment, long offset, @BYTE byte value);
 
     @BYTE
-    short BYTE_AsShort(OpaqueMemory32 mem, long offset);
+    short BYTE_AsShort(MemorySegment memorySegment, long offset);
 
-    void BYTE_FromShort(OpaqueMemory32 mem, long offset, @BYTE short value);
+    void BYTE_FromShort(MemorySegment memorySegment, long offset, @BYTE short value);
 
 }

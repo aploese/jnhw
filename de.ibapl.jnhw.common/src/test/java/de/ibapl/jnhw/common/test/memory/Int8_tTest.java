@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,20 +21,19 @@
  */
 package de.ibapl.jnhw.common.test.memory;
 
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Int8_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
  * @author aploese
  */
 public class Int8_tTest {
-
-    public Int8_tTest() {
-    }
 
     /**
      * Test of sizeofInt8_t method, of class Int8_t.
@@ -57,17 +56,21 @@ public class Int8_tTest {
      */
     @Test
     public void testRawInt8_t() {
-        Int8_t instance = new Int8_t(null, 0, SetMem.TO_0x00);
-        byte expResult = 0x10;
-        instance.int8_t(expResult);
-        assertEquals(expResult, instance.int8_t());
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Int8_t instance = Int8_t.allocateNative(rs);
+            byte expResult = 0x10;
+            instance.int8_t(expResult);
+            assertEquals(expResult, instance.int8_t());
+        }
     }
 
     @Test
     public void testNativeToString() {
-        Int8_t instance = new Int8_t(null, 0, SetMem.TO_0x00);
-        instance.int8_t((byte) -2);
-        assertEquals("-2", instance.nativeToString());
-        assertEquals("0xfe", instance.nativeToHexString());
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Int8_t instance = new Int8_t(MemorySegment.allocateNative(BaseDataType.int8_t.SIZE_OF, rs), 0);
+            instance.int8_t((byte) -2);
+            assertEquals("-2", instance.nativeToString());
+            assertEquals("0xfe", instance.nativeToHexString());
+        }
     }
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,139 +20,60 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_PollTest_NativeDefines.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-    //We need the POSIX version ...
+//We need the POSIX version ...
 #if !defined(HAVE_POLL_H) || !defined(_POSIX_VERSION)
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    HAVE_POLL_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_HAVE_1POLL_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
+int getValueOf_HAVE_POLL_H() {
+    return 0;
+}
+
 #else
 
 #include <poll.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    HAVE_POLL_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_HAVE_1POLL_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    POLLERR
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_POLLERR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLERR;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    POLLHUP
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_POLLHUP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLHUP;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    POLLIN
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_POLLIN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLIN;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    POLLNVAL
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_POLLNVAL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLNVAL;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    POLLOUT
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_POLLOUT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLOUT;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    POLLPRI
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_POLLPRI
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLPRI;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    POLLRDBAND
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_POLLRDBAND
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLRDBAND;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    POLLRDNORM
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_POLLRDNORM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLRDNORM;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    POLLWRBAND
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_POLLWRBAND
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLWRBAND;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PollTest_NativeDefines
-     * Method:    POLLWRNORM
-     * Signature: ()S
-     */
-    JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_posix_PollTest_00024NativeDefines_POLLWRNORM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return POLLWRNORM;
-    }
-
-#endif
-#ifdef __cplusplus
+int getValueOf_HAVE_POLL_H() {
+    return 1;
 }
+
+int getValueOf_POLLERR() {
+    return POLLERR;
+}
+
+int getValueOf_POLLHUP() {
+    return POLLHUP;
+}
+
+int getValueOf_POLLIN() {
+    return POLLIN;
+}
+
+int getValueOf_POLLNVAL() {
+    return POLLNVAL;
+}
+
+int getValueOf_POLLOUT() {
+    return POLLOUT;
+}
+
+int getValueOf_POLLPRI() {
+    return POLLPRI;
+}
+
+int getValueOf_POLLRDBAND() {
+    return POLLRDBAND;
+}
+
+int getValueOf_POLLRDNORM() {
+    return POLLRDNORM;
+}
+
+int getValueOf_POLLWRBAND() {
+    return POLLWRBAND;
+}
+
+int getValueOf_POLLWRNORM() {
+    return POLLWRNORM;
+}
+
 #endif

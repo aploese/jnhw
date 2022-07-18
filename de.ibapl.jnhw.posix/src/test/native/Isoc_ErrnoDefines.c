@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,68 +20,30 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_isoc_ErrnoTest_NativeDefines.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #ifndef HAVE_ERRNO_H
 
-    /*
-     * Class:     de_ibapl_jnhw_isoc_ErrnoTest_NativeDefines
-     * Method:    HAVE_ERRNO_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_isoc_ErrnoTest_00024NativeDefines_HAVE_1ERRNO_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
+int getValueOf_HAVE_ERRNO_H() {
+    return 0;
+}
+
 #else
 #include <errno.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_isoc_ErrnoTest_NativeDefines
-     * Method:    HAVE_ERRNO_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_isoc_ErrnoTest_00024NativeDefines_HAVE_1ERRNO_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_isoc_ErrnoTest_NativeDefines
-     * Method:    EDOM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_isoc_ErrnoTest_00024NativeDefines_EDOM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EDOM;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_isoc_ErrnoTest_NativeDefines
-     * Method:    EILSEQ
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_isoc_ErrnoTest_00024NativeDefines_EILSEQ
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EILSEQ;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_isoc_ErrnoTest_NativeDefines
-     * Method:    ERANGE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_isoc_ErrnoTest_00024NativeDefines_ERANGE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ERANGE;
-    }
-
-#endif
-
-#ifdef __cplusplus
+int getValueOf_HAVE_ERRNO_H() {
+    return 1;
 }
+
+int getValueOf_EDOM() {
+    return EDOM;
+}
+
+int getValueOf_EILSEQ() {
+    return EILSEQ;
+}
+
+int getValueOf_ERANGE() {
+    return ERANGE;
+}
+
 #endif

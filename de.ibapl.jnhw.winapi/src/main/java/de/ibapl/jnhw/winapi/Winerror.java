@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,7 +24,6 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.util.IntDefine;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -171,19 +170,6 @@ public abstract class Winerror {
      */
     @Define
     public final static int WAIT_TIMEOUT = 258;
-
-    /**
-     * Make sure the native lib is loaded
-     *
-     * @implNote The actual value for the define fields are injected by
-     * initFields. The static initialization block is used to set the value here
-     * to communicate that this static final fields are not statically foldable.
-     * {
-     * @see String#COMPACT_STRINGS}
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
 
     /**
      * Translate the native errno to its symbolic constant name.

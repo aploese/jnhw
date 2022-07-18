@@ -1,6 +1,7 @@
 /*
+/*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,6 +24,8 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -30,10 +33,14 @@ import java.io.IOException;
  */
 public class AsSignedLong extends NativeIntNumber {
 
+    public static AsSignedLong allocateNative(BaseDataType nativeType, ResourceScope rs) {
+        return new AsSignedLong(nativeType, MemorySegment.allocateNative(nativeType.SIZE_OF, rs), 0);
+    }
+
     private final BaseDataType dataType;
 
-    public AsSignedLong(BaseDataType nativeType, AbstractNativeMemory owner, long offset, SetMem setMem) {
-        super(owner, offset, nativeType.SIZE_OF, setMem);
+    public AsSignedLong(BaseDataType nativeType, MemorySegment memorySegment, long offset) {
+        super(memorySegment, offset, nativeType.SIZE_OF);
         if (nativeType.UNSIGNED) {
             throw new IllegalArgumentException("Data type is unsigned, but a signed data type was expected");
         }
@@ -43,22 +50,26 @@ public class AsSignedLong extends NativeIntNumber {
         dataType = nativeType;
     }
 
+    public static AsSignedLong map(BaseDataType nativeType, OpaqueMemory mem, long offset) {
+        return new AsSignedLong(nativeType, mem.memorySegment, offset);
+    }
+
     public long getAsSignedLong() {
-        return MEM_ACCESS.getSignedLongOf(this, 0, sizeInBytes);
+        return MEM_ACCESS.getSignedLongOf(memorySegment, 0, dataType.SIZE_OF);
     }
 
     public void setFromSignedLong(long value) {
-        MEM_ACCESS.setSignedLongOf(this, 0, sizeInBytes, value);
+        MEM_ACCESS.setSignedLongOf(memorySegment, 0, dataType.SIZE_OF, value);
     }
 
     @Override
     public String nativeToHexString() {
-        return MEM_ACCESS.getSignedLongOf_AsHex(this, 0, sizeInBytes);
+        return MEM_ACCESS.getSignedLongOf_AsHex(memorySegment, 0, dataType.SIZE_OF);
     }
 
     @Override
     public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(this, 0, sizeInBytes));
+        sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(memorySegment, 0, dataType.SIZE_OF));
     }
 
     @Override

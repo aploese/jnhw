@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,7 +23,8 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA__uI;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
 /**
@@ -36,12 +37,10 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 @Include("processenv.h")
 public class ProcessEnv {
 
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
+    private final static JnhwMh_MA__uI GetStdHandle = JnhwMh_MA__uI.of(
+            "GetStdHandle",
+            WinApiDataType.HANDLE,
+            WinApiDataType.DWORD);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/console/getstdhandle">GetStdHandle</a>
@@ -56,8 +55,7 @@ public class ProcessEnv {
      * indicates an error.
      */
     public final static HANDLE GetStdHandle(int nStdHandle) throws NativeErrorException {
-        return HANDLE.of(GetStdHandle0(nStdHandle));
+        return HANDLE.of(GetStdHandle.invoke_MA__uI(nStdHandle));
     }
 
-    private static native long GetStdHandle0(int nStdHandle) throws NativeErrorException;
 }

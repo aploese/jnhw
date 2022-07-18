@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,9 +24,20 @@ package de.ibapl.jnhw.linux.sys;
 import de.ibapl.jnhw.annotation.linux.sys.eventfd_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.annotation.Unsigned;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.memory.Uint64_t;
+import static de.ibapl.jnhw.common.memory.Uint64_t.DATA_TYPE;
+import de.ibapl.jnhw.isoc.Errno;
+import de.ibapl.jnhw.util.linux.LinuxDataType;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__uI_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_uL;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
 
 /**
  * Wrapper around the linux {@code <sys/eventfd.h>} header. execute
@@ -36,6 +47,23 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
  */
 @Include("#include <sys/eventfd.h>")
 public final class Eventfd {
+
+    @eventfd_t
+    public final static class PtrEventfd_t extends Uint64_t {
+
+        public static PtrEventfd_t allocateNative(ResourceScope ms) {
+            return new PtrEventfd_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+        }
+
+        public PtrEventfd_t(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset);
+        }
+
+        public static PtrEventfd_t map(OpaqueMemory mem, long offset) {
+            return new PtrEventfd_t(OpaqueMemory.getMemorySegment(mem), offset);
+        }
+
+    }
 
     /**
      * <b>Linux:</b> Set the close-on-exec (FD_CLOEXEC) flag on the new file
@@ -64,8 +92,6 @@ public final class Eventfd {
     public final static boolean HAVE_SYS_EVENTFD_H;
 
     /**
-     * Make sure the native lib is loaded
-     *
      * @implNote The actual value for the define fields are injected by
      * initFields. The static initialization block is used to set the value here
      * to communicate that this static final fields are not statically foldable.
@@ -73,13 +99,11 @@ public final class Eventfd {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
-        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-        switch (multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_SYS_EVENTFD_H = true;
                 EFD_CLOEXEC = 02000000;
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case MIPS:
                     case MIPS_64:
                         EFD_NONBLOCK = 00000200;
@@ -97,6 +121,24 @@ public final class Eventfd {
         }
     }
 
+    private final static JnhwMh_sI__uI_sI eventfd = JnhwMh_sI__uI_sI.of(
+            "eventfd",
+            BaseDataType.C_int,
+            BaseDataType.C_unsigned_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI__A eventfd_read = JnhwMh_sI__sI__A.of(
+            "eventfd_read",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            LinuxDataType.eventfd_t_pointer);
+
+    private final static JnhwMh_sI__sI_uL eventfd_write = JnhwMh_sI__sI_uL.of(
+            "eventfd_write",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            LinuxDataType.eventfd_t);
+
     /**
      * <b>Linux:</b> eventfd - create a file descriptor for event notification.
      * eventfd creates an "eventfd object" that can be used as an event
@@ -111,20 +153,31 @@ public final class Eventfd {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native int eventfd(int count, int flags) throws NativeErrorException;
+    public final static int eventfd(@Unsigned long count, int flags) throws NativeErrorException {
+        if (count < 0) {
+            throw new IllegalArgumentException("count > max unsigned int");
+        }
+        final int result = eventfd.invoke_sI__uI_sI((int) count, flags);
+        if (result < 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
+        return result;
+    }
 
     /**
      * Additional glibc feature to make read from an eventfd simpler.
      *
      * @param fd a valid file descriptor from a call to {@code  eventfd}.
-     * @return the 2. parameter of the catice call value a 8 byte buffer to hold
-     * the readed value.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native @eventfd_t
-    long eventfd_read(int fd) throws NativeErrorException;
+    public final static void eventfd_read(int fd, PtrEventfd_t value) throws NativeErrorException {
+        final int result = eventfd_read.invoke_sI__sI__P(fd, value);
+        if (result != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
+    }
 
     /**
      * Additional glibc feature to make write to an eventfd simpler.
@@ -134,7 +187,13 @@ public final class Eventfd {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void eventfd_write(int fd, @eventfd_t long value) throws NativeErrorException;
+    public final static void eventfd_write(int fd, @Unsigned @eventfd_t long value) throws NativeErrorException {
+        final int result = eventfd_write.invoke_sI__sI_uL(fd, value);
+        if (result != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
+
+    }
 
     private Eventfd() {
 

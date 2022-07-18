@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,32 +21,50 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Int32_t;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
 import de.ibapl.jnhw.winapi.WinDef.LPDWORD;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
+import jdk.incubator.foreign.ResourceScope;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinregTest {
 
+    private ResourceScope scope;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        scope = ResourceScope.newConfinedScope();
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        scope.close();
+    }
+
     @Test
     public void testRegOpenKey() throws Exception {
         String testKeyStr = "HARDWARE\\DESCRIPTION\\System";
-        try (WinDef.RegistryHKEY testKey = Winreg.RegOpenKeyExW(Winreg.HKEY_LOCAL_MACHINE, testKeyStr, 0, Winnt.KEY_READ)) {
+        WinDef.PHKEY phkResult = WinDef.PHKEY.allocateNative(scope);
+        Winreg.RegOpenKeyExW(Winreg.HKEY_LOCAL_MACHINE, testKeyStr, 0, Winnt.KEY_READ, phkResult);
+        WinDef.HKEY testKey = phkResult.dereference();
+        try {
             Assertions.assertFalse(testKey.is_INVALID_HANDLE_VALUE(), "RegistryHKEY is not valid");
             int dwIndex = 0;
-            LPWSTR lpValueName = new LPWSTR(256, SetMem.TO_0x00);
-            LPDWORD lpcchValueName = new LPDWORD();
+            LPWSTR lpValueName = LPWSTR.allocateNative(256, scope);
+            LPDWORD lpcchValueName = LPDWORD.allocateNative(scope);
             lpcchValueName.uint32_t(LPWSTR.getWCHAR_Length(lpValueName));
-            LPBYTE lpData = new LPBYTE(256, SetMem.TO_0x00);
-            LPDWORD lpccData = new LPDWORD();
-            lpccData.uint32_t(lpData.sizeInBytes);
-            LPDWORD lpType = new LPDWORD();
+            LPBYTE lpData = LPBYTE.allocateNative(256, scope);
+            LPDWORD lpccData = LPDWORD.allocateNative(scope);
+            lpccData.uint32_t((int) lpData.sizeof());
+            LPDWORD lpType = LPDWORD.allocateNative(scope);
             boolean collecting = true;
             do {
                 long result = Winreg.RegEnumValueW(testKey, dwIndex, lpValueName, lpcchValueName, lpType, lpData, lpccData);
@@ -63,14 +81,16 @@ public class WinregTest {
                             System.out.println(" ... Winnt.Reg*:" + lpType.uint32_t());
                     }
                     lpcchValueName.uint32_t(LPWSTR.getWCHAR_Length(lpValueName));
-                    lpccData.uint32_t(lpData.sizeInBytes);
+                    lpccData.uint32_t((int) lpData.sizeof());
                     dwIndex++;
                 } else if (result == Winerror.ERROR_NO_MORE_ITEMS) {
                     collecting = false;
                 } else if (result == Winerror.ERROR_MORE_DATA) {
-                    lpccData.uint32_t(lpData.sizeInBytes);
+                    lpccData.uint32_t((int) lpData.sizeof());
                 }
             } while (collecting);
+        } finally {
+            Winreg.RegCloseKey(testKey);
         }
     }
 

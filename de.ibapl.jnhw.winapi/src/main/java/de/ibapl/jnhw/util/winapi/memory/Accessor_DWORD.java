@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,8 +23,7 @@ package de.ibapl.jnhw.util.winapi.memory;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.DWORD;
 import de.ibapl.jnhw.common.memory.MemoryAccessor;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.winapi.Winbase;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -34,29 +33,29 @@ import de.ibapl.jnhw.winapi.Winbase;
 public interface Accessor_DWORD {
 
     @DWORD
-    int DWORD(OpaqueMemory32 mem, long offset);
+    int DWORD(MemorySegment memorySegment, long offset);
 
-    void DWORD(OpaqueMemory32 mem, long offset, @DWORD int value);
+    void DWORD(MemorySegment memorySegment, long offset, @DWORD int value);
 
     @DWORD
-    long DWORD_AsLong(OpaqueMemory32 mem, long offset);
+    long DWORD_AsLong(MemorySegment memorySegment, long offset);
 
-    void DWORD_FromLong(OpaqueMemory32 mem, long offset, @DWORD long value);
+    void DWORD_FromLong(MemorySegment memorySegment, long offset, @DWORD long value);
 
-    default boolean getBitAt(OpaqueMemory32 mem, long offset, int bitpos) {
-        return MemoryAccessor.getBitInInt(DWORD(mem, offset), bitpos);
+    default boolean getBitAt(MemorySegment memorySegment, long offset, int bitpos) {
+        return MemoryAccessor.getBitInInt(DWORD(memorySegment, offset), bitpos);
     }
 
-    default int getBits(OpaqueMemory32 mem, long offset, int bitpos, int bitsize) {
-        return MemoryAccessor.getBitsInInt(DWORD(mem, offset), bitpos, bitsize);
+    default int getBits(MemorySegment memorySegment, long offset, int bitpos, int bitsize) {
+        return MemoryAccessor.getBitsInInt(DWORD(memorySegment, offset), bitpos, bitsize);
     }
 
-    default void setBitAt(OpaqueMemory32 mem, long offset, int bitpos, boolean bit) {
-        DWORD(mem, offset, MemoryAccessor.setBitInInt(DWORD(mem, offset), bitpos, bit));
+    default void setBitAt(MemorySegment memorySegment, long offset, int bitpos, boolean bit) {
+        DWORD(memorySegment, offset, MemoryAccessor.setBitInInt(DWORD(memorySegment, offset), bitpos, bit));
     }
 
-    default void setBits(OpaqueMemory32 mem, long offset, int bitpos, int bitsize, int value) {
-        DWORD(mem, offset, MemoryAccessor.setBitsInInt(DWORD(mem, offset), bitpos, bitsize, value));
+    default void setBits(MemorySegment memorySegment, long offset, int bitpos, int bitsize, int value) {
+        DWORD(memorySegment, offset, MemoryAccessor.setBitsInInt(DWORD(memorySegment, offset), bitpos, bitsize, value));
     }
 
 }

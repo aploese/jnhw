@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,6 +23,8 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * teh datatype unsigned long
@@ -31,34 +33,41 @@ import java.io.IOException;
  */
 public class Unsigned_Long extends NativeIntNumber {
 
-    private final BaseDataType dataType;
+    public final static BaseDataType DATA_TYPE = BaseDataType.C_unsigned_long;
 
-    public Unsigned_Long(AbstractNativeMemory owner, long offset, SetMem setMem) {
-        super(owner, offset, BaseDataType.__SIZE_OF_LONG, setMem);
-        dataType = BaseDataType.getUnsigned_Long_Mapping();
+    public static Unsigned_Long allocateNative(ResourceScope rs) {
+        return new Unsigned_Long(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, rs), 0);
+    }
+
+    public Unsigned_Long(MemorySegment memorySegment, long offset) {
+        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
+    }
+
+    public static Unsigned_Long map(OpaqueMemory mem, long offset) {
+        return new Unsigned_Long(mem.memorySegment, offset);
     }
 
     public long unsigned_long() {
-        return MEM_ACCESS.unsigned_long(this, 0);
+        return MEM_ACCESS.unsigned_long(memorySegment, 0);
     }
 
     public void unsigned_long(long value) {
-        MEM_ACCESS.unsigned_long(this, 0, value);
+        MEM_ACCESS.unsigned_long(memorySegment, 0, value);
     }
 
     @Override
     public String nativeToHexString() {
-        return MEM_ACCESS.getUnsignedLongOf_AsHex(this, 0, sizeInBytes);
+        return MEM_ACCESS.getUnsignedLongOf_AsHex(memorySegment, 0, DATA_TYPE.SIZE_OF);
     }
 
     @Override
     public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(this, 0, sizeInBytes));
+        sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(memorySegment, 0, DATA_TYPE.SIZE_OF));
     }
 
     @Override
     public BaseDataType getBaseDataType() {
-        return dataType;
+        return DATA_TYPE;
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,16 +21,23 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.annotation.posix.poll.nfds_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.Struct32;
-import de.ibapl.jnhw.common.memory.StructArray32;
+import de.ibapl.jnhw.common.memory.AsUnsignedLong;
+import de.ibapl.jnhw.common.memory.MemoryArray;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL_sI;
 
 /**
  * Wrapper around the {@code <poll.h>} header.
@@ -62,13 +69,21 @@ public final class Poll {
 
     }
 
+    public static interface OpenBsdDefines extends BsdDefines {
+
+    }
+
+    public static interface DarwinDefines extends BsdDefines {
+
+    }
+
     public static interface Linux_Mips_Mips64_Defines {
 
         public final static short POLLWRBAND = 0x0100;
         public final static short POLLWRNORM = 0x0004;
     }
 
-    public static interface Linux_NonMips_Defines {
+    public static interface Linux_NON_Mips_Mips64_Defines {
 
         public final static short POLLWRBAND = 0x0200;
         public final static short POLLWRNORM = 0x0100;
@@ -86,16 +101,12 @@ public final class Poll {
         public final static short POLLRDNORM = 0x0040;
     }
 
-    public static interface OpenBsdDefines extends BsdDefines {
-
-    }
-
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
      * pollfd}</a>.
      *
      */
-    public final static class PollFd extends Struct32 {
+    public final static class PollFd extends Struct {
 
         public final static Alignment alignof = Alignment.AT_4;
         public final static long offsetof_Events = 4;
@@ -153,16 +164,8 @@ public final class Poll {
             }
         }
 
-        public PollFd() {
-            this(null, 0, SetMem.DO_NOT_SET);
-        }
-
-        public PollFd(AbstractNativeMemory owner, long offset) {
-            this(owner, offset, SetMem.DO_NOT_SET);
-        }
-
-        public PollFd(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, PollFd.sizeof, setMem);
+        public PollFd(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, PollFd.sizeof);
         }
 
         /**
@@ -173,7 +176,7 @@ public final class Poll {
          * @return the native value of events;
          */
         public short events() {
-            return MEM_ACCESS.uint16_t(this, PollFd.offsetof_Events);
+            return MEM_ACCESS.uint16_t(memorySegment, PollFd.offsetof_Events);
         }
 
         /**
@@ -184,7 +187,7 @@ public final class Poll {
          * @param events the value of events to be set natively.
          */
         public void events(short events) {
-            MEM_ACCESS.uint16_t(this, PollFd.offsetof_Events, events);
+            MEM_ACCESS.uint16_t(memorySegment, PollFd.offsetof_Events, events);
         }
 
         /**
@@ -195,7 +198,7 @@ public final class Poll {
          * @return the native value of fd;
          */
         public int fd() {
-            return MEM_ACCESS.int32_t(this, PollFd.offsetof_Fd);
+            return MEM_ACCESS.int32_t(memorySegment, PollFd.offsetof_Fd);
         }
 
         /**
@@ -206,7 +209,7 @@ public final class Poll {
          * @param fd the value of fd to be set natively.
          */
         public void fd(int fd) {
-            MEM_ACCESS.int32_t(this, PollFd.offsetof_Fd, fd);
+            MEM_ACCESS.int32_t(memorySegment, PollFd.offsetof_Fd, fd);
         }
 
         @Override
@@ -226,7 +229,7 @@ public final class Poll {
          * @return the native value of revents;
          */
         public short revents() {
-            return MEM_ACCESS.uint16_t(this, PollFd.offsetof_Revents);
+            return MEM_ACCESS.uint16_t(memorySegment, PollFd.offsetof_Revents);
         }
 
         /**
@@ -237,7 +240,7 @@ public final class Poll {
          * @param revents the value of revents to be set natively.
          */
         public void revents(short revents) {
-            MEM_ACCESS.uint16_t(this, PollFd.offsetof_Revents, revents);
+            MEM_ACCESS.uint16_t(memorySegment, PollFd.offsetof_Revents, revents);
         }
     }
 
@@ -246,28 +249,36 @@ public final class Poll {
      * pollfd}</a>.
      *
      */
-    public static class PollFds extends StructArray32<PollFd> {
+    @nfds_t
+    public static class Nfds_t extends AsUnsignedLong {
 
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
+        public final static Nfds_t allocateNative(ResourceScope scope) {
+            return new Nfds_t(MemorySegment.allocateNative(PosixDataType.nfds_t.SIZE_OF, scope), 0);
         }
 
-        private static PollFd createAtOffset(AbstractNativeMemory parent, long offset) {
-            return new PollFd(parent, offset);
+        public Nfds_t(MemorySegment memorySegment, int offset) {
+            super(PosixDataType.nfds_t, memorySegment, offset);
         }
 
-        public PollFds(AbstractNativeMemory parent, long offset, int arraylength) {
-            //get uninitialized mem we need to set this anyway ...
-            super(parent, offset, new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof, SetMem.DO_NOT_SET);
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/poll.h.html">{@code structure
+     * pollfd}</a>.
+     *
+     */
+    public final static class PollFds extends MemoryArray<PollFd> {
+
+        private static PollFd createAtOffset(MemorySegment memorySegment, long elementoffset, int index) {
+            return new PollFd(memorySegment, elementoffset);
         }
 
-        public PollFds(int arraylength) {
-            //get uninitialized mem we need to set this anyway ...
-            super(new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof, SetMem.DO_NOT_SET);
+        public final static PollFds allocateNative(ResourceScope scope, int arraylength) {
+            return new PollFds(MemorySegment.allocateNative(PollFd.sizeof * arraylength, scope), 0, arraylength);
+        }
+
+        public PollFds(MemorySegment memorySegment, long offset, int arraylength) {
+            super(memorySegment, offset, new PollFd[arraylength], PollFds::createAtOffset, PollFd.sizeof);
         }
 
     }
@@ -346,8 +357,6 @@ public final class Poll {
     public final static short POLLWRNORM;
 
     /**
-     * Make sure the native lib is loaded
-     *
      * @implNote The actual value for the define fields are injected by
      * initFields. The static initialization block is used to set the value here
      * to communicate that this static final fields are not statically foldable.
@@ -355,9 +364,7 @@ public final class Poll {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
-
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_POLL_H = true;
                 POLLERR = LinuxDefines.POLLERR;
@@ -368,15 +375,15 @@ public final class Poll {
                 POLLPRI = LinuxDefines.POLLPRI;
                 POLLRDBAND = LinuxDefines.POLLRDBAND;
                 POLLRDNORM = LinuxDefines.POLLRDNORM;
-                switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case MIPS:
                     case MIPS_64:
                         POLLWRBAND = Linux_Mips_Mips64_Defines.POLLWRBAND;
                         POLLWRNORM = Linux_Mips_Mips64_Defines.POLLWRNORM;
                         break;
                     default:
-                        POLLWRBAND = Linux_NonMips_Defines.POLLWRBAND;
-                        POLLWRNORM = Linux_NonMips_Defines.POLLWRNORM;
+                        POLLWRBAND = Linux_NON_Mips_Mips64_Defines.POLLWRBAND;
+                        POLLWRNORM = Linux_NON_Mips_Mips64_Defines.POLLWRNORM;
                 }
                 break;
             case DARWIN:
@@ -395,11 +402,16 @@ public final class Poll {
                 POLLWRNORM = BsdDefines.POLLWRNORM;
                 break;
             default:
-                throw new NoClassDefFoundError("No poll.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No poll.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 
-    private static native int poll(long ptrFds, int elements, int timeout) throws NativeErrorException;
+    private final static JnhwMh_sI___A_uL_sI poll = JnhwMh_sI___A_uL_sI.of(
+            "poll",
+            BaseDataType.C_int,
+            PosixDataType.struct_pollfd_array,
+            PosixDataType.nfds_t,
+            BaseDataType.C_int);
 
     /**
      * <b>POSIX:</b>
@@ -414,7 +426,12 @@ public final class Poll {
      * indicates an error.
      */
     public final static int poll(PollFd fd, int timeout) throws NativeErrorException {
-        return poll(AbstractNativeMemory.toUintptr_t(fd), 1, timeout);
+        final int result = poll.invoke_sI___P_uL_sI(fd, 1, timeout);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
+        }
     }
 
     /**
@@ -430,7 +447,12 @@ public final class Poll {
      * indicates an error.
      */
     public final static int poll(PollFds fds, int timeout) throws NativeErrorException {
-        return poll(AbstractNativeMemory.toUintptr_t(fds), fds.length(), timeout);
+        final int result = poll.invoke_sI___P_uL_sI(fds, fds.length(), timeout);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
+        }
     }
 
 }

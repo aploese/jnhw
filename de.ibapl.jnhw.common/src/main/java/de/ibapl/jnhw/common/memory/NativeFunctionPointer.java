@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,68 +21,49 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.annotation.uintptr_t;
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.function.Function;
+import jdk.incubator.foreign.Addressable;
+import jdk.incubator.foreign.MemoryAddress;
 
 /**
  *
  * @author aploese
  */
-public class NativeFunctionPointer {
+public class NativeFunctionPointer implements Pointer {
 
-    public static boolean isSameAddress(NativeFunctionPointer ptr1, NativeFunctionPointer ptr2) {
-        return (ptr1 == ptr2) || (ptr1 != null && ptr1.nativeAddress == ptr2.nativeAddress);
+    @Override
+    public final Addressable toAddressable() {
+        return memoryAddress;
     }
 
-    @uintptr_t
-    public static long toUintptr_t(NativeFunctionPointer nativeFunctionPointer) {
-        return nativeFunctionPointer.nativeAddress;
+    public final MemoryAddress toAddress() {
+        return memoryAddress;
     }
 
-    @uintptr_t
-    public static long toUintptr_tOrNULL(NativeFunctionPointer nativeFunctionPointer) {
-        return (nativeFunctionPointer == null) ? AbstractNativeMemory.NULL : nativeFunctionPointer.nativeAddress;
-    }
-
-    public static NativeAddressHolder toNativeAddressHolder(NativeFunctionPointer nativeFunctionPointer) {
-        return new NativeAddressHolder(nativeFunctionPointer.nativeAddress);
-    }
-
-    public static NativeFunctionPointer wrap(NativeFunctionPointer nativeFunctionPointer) {
-        return new NativeFunctionPointer(nativeFunctionPointer.nativeAddress);
-    }
-
-    public static NativeFunctionPointer wrap(NativeAddressHolder nativePointer) {
-        return new NativeFunctionPointer(nativePointer.address);
+    public static NativeFunctionPointer wrap(MemoryAddress memoryAddress) {
+        return new NativeFunctionPointer(memoryAddress);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends NativeFunctionPointer> NativeFunctionPointer(Function<T, NativeAddressHolder> producer) {
-        this.nativeAddress = producer.apply((T) this).address;
+    public <T extends NativeFunctionPointer> NativeFunctionPointer(Function<T, MemoryAddress> producer) {
+        this.memoryAddress = producer.apply((T) this);
     }
 
-    public NativeFunctionPointer(NativeAddressHolder src) {
-        this.nativeAddress = src.address;
+    public NativeFunctionPointer(MemoryAddress src) {
+        this.memoryAddress = src;
     }
 
-    public NativeFunctionPointer(NativeFunctionPointer src) {
-        this.nativeAddress = src.nativeAddress;
-    }
-
-    private NativeFunctionPointer(@uintptr_t long nativeAddress) {
-        this.nativeAddress = nativeAddress;
-    }
-
-    @uintptr_t
-    protected final long nativeAddress;
+    protected final MemoryAddress memoryAddress;
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + (int) (this.nativeAddress ^ (this.nativeAddress >>> 32));
+        int hash = 5;
+        hash = 89 * hash + Objects.hashCode(this.memoryAddress);
         return hash;
     }
 
@@ -91,28 +72,38 @@ public class NativeFunctionPointer {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof NativeFunctionPointer)) {
+        if (obj instanceof NativeFunctionPointer other) {
+            return Objects.equals(this.memoryAddress, other.memoryAddress);
+        } else {
             return false;
         }
-        final NativeFunctionPointer other = (NativeFunctionPointer) obj;
-        return this.nativeAddress == other.nativeAddress;
+    }
+
+    @Override
+    public final boolean is_NULL() {
+        return memoryAddress == MemoryAddress.NULL;
+    }
+
+    @Override
+    public final boolean is_Not_NULL() {
+        return memoryAddress != MemoryAddress.NULL;
     }
 
     @Override
     public String toString() {
-        return "{nativeAddress : " + JnhwFormater.formatAddress(nativeAddress) + "}";
+        return "{nativeAddress : " + JnhwFormater.formatAddress(memoryAddress.toRawLongValue()) + "}";
     }
 
     public void nativeToString(Appendable sb, String INDENT_PREFIX, String INDENT) throws IOException {
         JsonStringBuilder jsb = new JsonStringBuilder(sb, INDENT_PREFIX, INDENT);
-        jsb.appendAddressMember("nativeAddress", nativeAddress);
+        jsb.appendAddressMember("nativeAddress", memoryAddress.toRawLongValue());
         jsb.close();
     }
 
     @FunctionalInterface
     public interface Producer<A extends NativeFunctionPointer> {
 
-        A produce(NativeAddressHolder nativeAddressHolder);
+        A produce(MemoryAddress address);
     }
 
 }

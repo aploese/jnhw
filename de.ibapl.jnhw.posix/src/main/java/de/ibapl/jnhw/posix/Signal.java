@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -26,31 +26,50 @@ import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.callback.Callback_I_Mem_Mem_V;
-import de.ibapl.jnhw.common.callback.Callback_I_V;
-import de.ibapl.jnhw.common.callback.Callback_Mem_V;
-import de.ibapl.jnhw.common.callback.Callback_NativeRunnable;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
+import de.ibapl.jnhw.common.upcall.Callback__V___I;
+import de.ibapl.jnhw.common.upcall.Callback__V__MA;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.downcall.JnhwMethodInvoker;
+import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.Struct32;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_Mem_Mem_V;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMethodHandle;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I_MA_MA;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.common.util.ObjectDefine;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.posix.Time.Timespec;
-import de.ibapl.jnhw.util.posix.Callback__Sigval_int__V;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
+import de.ibapl.jnhw.util.posix.LibrtLoader;
+import de.ibapl.jnhw.util.posix.PosixDataType;
+import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
+import jdk.incubator.foreign.FunctionDescriptor;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import jdk.incubator.foreign.SymbolLookup;
+import jdk.incubator.foreign.ValueLayout;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A__A;
 
 /**
  * Wrapper around the {@code <signal.h>} header.
@@ -63,6 +82,48 @@ import java.io.IOException;
  */
 @Include("#include <signal.h>")
 public class Signal {
+
+    private static interface JnhwPthreadKill extends JnhwMethodHandle {
+
+        static class JnhwMethodInvoker_Int_Long_Int extends JnhwMethodInvoker implements JnhwPthreadKill {
+
+            public JnhwMethodInvoker_Int_Long_Int(SymbolLookup symbolLookup, String name) {
+                super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT));
+            }
+
+            @Override
+            public int invokeExact(Pthread.Pthread_t thread, int sig) {
+                try {
+                    return (int) methodHandle.invokeExact(thread.asUint64_t(), sig);
+                } catch (Throwable t) {
+                    throw createRuntimeExceptionInvoke(t);
+                }
+            }
+
+        }
+
+        public static JnhwPthreadKill of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {
+            switch (result) {
+                case int32_t:
+                    switch (arg1) {
+                        case uint64_t:
+                            switch (arg2) {
+                                case int32_t:
+                                    return new JnhwMethodInvoker_Int_Long_Int(symbolLookup, name);
+                                default:
+                                    throw new IllegalArgumentException("arg2 unexpected data type: " + name + " " + arg2);
+                            }
+                        default:
+                            throw new IllegalArgumentException("arg1 unexpected data type: " + name + " " + arg1);
+                    }
+                default:
+                    throw new IllegalArgumentException("result unexpected data type: " + name + " " + result);
+            }
+        }
+
+        int invokeExact(Pthread.Pthread_t thread, int sig);
+
+    }
 
     public static interface BsdDefines {
 
@@ -92,10 +153,10 @@ public class Signal {
         public final static int SEGV_MAPERR = 1;
 
         public final static int SIG_BLOCK = 1;
-        public final static FunctionPtr_I_V SIG_DFL = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(0));
+        public final static FunctionPtr__V___I SIG_DFL = new FunctionPtr__V___I(MemoryAddress.ofLong(0));
 
-        public final static FunctionPtr_I_V SIG_ERR = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(-1));
-        public final static FunctionPtr_I_V SIG_IGN = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(1));
+        public final static FunctionPtr__V___I SIG_ERR = new FunctionPtr__V___I(MemoryAddress.ofLong(-1));
+        public final static FunctionPtr__V___I SIG_IGN = new FunctionPtr__V___I(MemoryAddress.ofLong(1));
         public final static int SIG_SETMASK = 3;
 
         public final static int SIG_UNBLOCK = 2;
@@ -164,7 +225,7 @@ public class Signal {
         public final static int SI_QUEUE = 65538;
         public final static int SI_TIMER = 65539;
         public final static int SI_USER = 65537;
-        public final static FunctionPtr_I_V SIG_HOLD = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(5));
+        public final static FunctionPtr__V___I SIG_HOLD = new FunctionPtr__V___I(MemoryAddress.ofLong(5));
         public final static int SIGEV_NONE = 0;
         public final static int SIGEV_SIGNAL = 1;
         public final static int SIGEV_THREAD = 3;
@@ -208,7 +269,7 @@ public class Signal {
         public final static int SI_TIMER = 65539;
 
         public final static int SI_USER = 65537;
-        public final static FunctionPtr_I_V SIG_HOLD = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(3));
+        public final static FunctionPtr__V___I SIG_HOLD = new FunctionPtr__V___I(MemoryAddress.ofLong(3));
         public final static int SIGEV_NONE = 0;
         public final static int SIGEV_SIGNAL = 1;
         public final static int SIGEV_THREAD = 2;
@@ -295,10 +356,10 @@ public class Signal {
         public final static int SEGV_MAPERR = 1;
         public final static int SI_QUEUE = -1;
         public final static int SI_USER = 0;
-        public final static FunctionPtr_I_V SIG_DFL = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(0));
-        public final static FunctionPtr_I_V SIG_ERR = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(-1));
-        public final static FunctionPtr_I_V SIG_HOLD = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(2));
-        public final static FunctionPtr_I_V SIG_IGN = new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(1));
+        public final static FunctionPtr__V___I SIG_DFL = new FunctionPtr__V___I(MemoryAddress.ofLong(0));
+        public final static FunctionPtr__V___I SIG_ERR = new FunctionPtr__V___I(MemoryAddress.ofLong(-1));
+        public final static FunctionPtr__V___I SIG_HOLD = new FunctionPtr__V___I(MemoryAddress.ofLong(2));
+        public final static FunctionPtr__V___I SIG_IGN = new FunctionPtr__V___I(MemoryAddress.ofLong(1));
         public final static int SIGABRT = 6;
         public final static int SIGALRM = 14;
         public final static int SIGEV_NONE = 1;
@@ -367,7 +428,7 @@ public class Signal {
      *
      * @author aploese
      */
-    public static final class Mcontext_t extends Struct32 {
+    public static final class Mcontext_t extends Struct {
 
         public final static Alignment alignof;
         public final static int sizeof;
@@ -376,11 +437,9 @@ public class Signal {
          * Make sure the native lib is loaded
          */
         static {
-            LibJnhwPosixLoader.touch();
-
-            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX:
-                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                    switch (MultiarchTupelBuilder.getArch()) {
                         case AARCH64:
                             alignof = Alignment.AT_16;
                             sizeof = 4384;
@@ -418,7 +477,7 @@ public class Signal {
                             sizeof = 256;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for " + MultiarchTupelBuilder.getMultiarch());
                     }
                     break;
                 case DARWIN:
@@ -434,24 +493,24 @@ public class Signal {
                     sizeof = 0;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
             }
 
         }
 
-        public Mcontext_t() throws NoSuchNativeTypeException {
-            this(null, 0, SetMem.DO_NOT_SET);
-        }
-
-        public Mcontext_t(AbstractNativeMemory owner, long offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super(owner, offset, Mcontext_t.sizeof, setMem);
+        public final static Mcontext_t tryAllocateNative(ResourceScope scope) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Mcontext_t");
             }
+            return new Mcontext_t(MemorySegment.allocateNative(sizeof, scope), 0);
         }
 
-        public Mcontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, Mcontext_t.sizeof);
+        public static Mcontext_t tryOfAddress(MemoryAddress baseAddress, ResourceScope scope) throws NoSuchNativeTypeException {
+            return new Mcontext_t(MemorySegment.ofAddress(baseAddress, Mcontext_t.sizeof, scope), 0);
+        }
+
+        public Mcontext_t(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
+            super(memorySegment, offset, Mcontext_t.sizeof);
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Mcontext_t");
             }
@@ -490,7 +549,7 @@ public class Signal {
      *
      * @param <T>
      */
-    public static class Sigaction<T extends OpaqueMemory32> extends Struct32 {
+    public final static class Sigaction<T extends OpaqueMemory> extends Struct {
 
         public final static Alignment alignof;
         public final static long offsetof_Sa_flags;
@@ -503,11 +562,9 @@ public class Signal {
          * Make sure the native lib is loaded
          */
         static {
-            LibJnhwPosixLoader.touch();
-
-            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX:
-                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                    switch (MultiarchTupelBuilder.getArch()) {
                         case AARCH64:
                             alignof = Alignment.AT_8;
                             sizeof = 152;
@@ -581,7 +638,7 @@ public class Signal {
                             offsetof_Sa_sigaction = 4;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h linux defines for sigaction " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for sigaction " + MultiarchTupelBuilder.getMultiarch());
                     }
                     break;
                 case DARWIN:
@@ -609,8 +666,12 @@ public class Signal {
                     offsetof_Sa_sigaction = 0;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h OS defines for sigaction " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for sigaction " + MultiarchTupelBuilder.getMultiarch());
             }
+        }
+
+        public final static Sigaction allocateNative(ResourceScope scope) {
+            return new Sigaction(MemorySegment.allocateNative(sizeof, scope), 0);
         }
 
         private NativeFunctionPointer cachedHandlerOrAction;
@@ -624,13 +685,9 @@ public class Signal {
          */
         public final Sigset_t sa_mask;
 
-        public Sigaction() {
-            this(null, 0, SetMem.DO_NOT_SET);
-        }
-
-        public Sigaction(AbstractNativeMemory parent, int offset, SetMem setMem) {
-            super(parent, offset, Sigaction.sizeof, setMem);
-            sa_mask = new Sigset_t(this, Sigaction.offsetof_Sa_mask, SetMem.DO_NOT_SET);
+        public Sigaction(MemorySegment memorySegment, int offset) {
+            super(memorySegment, offset, Sigaction.sizeof);
+            sa_mask = new Sigset_t(this.memorySegment, Sigaction.offsetof_Sa_mask);
         }
 
         @Override
@@ -651,7 +708,7 @@ public class Signal {
          * @return the native value of sa_flags.
          */
         public int sa_flags() {
-            return MEM_ACCESS.int32_t(this, Sigaction.offsetof_Sa_flags);
+            return MEM_ACCESS.int32_t(memorySegment, Sigaction.offsetof_Sa_flags);
         }
 
         /**
@@ -662,7 +719,7 @@ public class Signal {
          * @param sa_flags the value of sa_flags to be set natively.
          */
         public void sa_flags(int sa_flags) {
-            MEM_ACCESS.int32_t(this, Sigaction.offsetof_Sa_flags, sa_flags);
+            MEM_ACCESS.int32_t(memorySegment, Sigaction.offsetof_Sa_flags, sa_flags);
         }
 
         /**
@@ -672,13 +729,13 @@ public class Signal {
          *
          * @return the native value of sa_handler.
          */
-        public FunctionPtr_I_V sa_handler() {
-            return new FunctionPtr_I_V(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Sigaction.offsetof_Sa_handler));
+        public FunctionPtr__V___I sa_handler() {
+            return new FunctionPtr__V___I(MEM_ACCESS.uintptr_t(memorySegment, Sigaction.offsetof_Sa_handler));
         }
 
-        public void sa_handler(FunctionPtr_I_V sa_handler) {
+        public void sa_handler(FunctionPtr__V___I sa_handler) {
             cachedHandlerOrAction = sa_handler;
-            MEM_ACCESS.uintptr_t(this, Sigaction.offsetof_Sa_handler, sa_handler);
+            MEM_ACCESS.uintptr_t(memorySegment, Sigaction.offsetof_Sa_handler, sa_handler);
         }
 
         /**
@@ -691,11 +748,11 @@ public class Signal {
          * @return the native value of sa_handler if the cached value match
          * otherwise an exception is thrown.
          */
-        public Callback_I_V sa_handlerAsCallback_I_V() {
+        public Callback__V___I sa_handlerAsCallback_I_V() {
             final NativeFunctionPointer sa_handler = sa_handler();
-            if (cachedHandlerOrAction instanceof Callback_I_V) {
-                if (NativeFunctionPointer.isSameAddress(sa_handler, cachedHandlerOrAction)) {
-                    return (Callback_I_V) cachedHandlerOrAction;
+            if (cachedHandlerOrAction instanceof Callback__V___I) {
+                if (Pointer.isSameAddress(sa_handler, cachedHandlerOrAction)) {
+                    return (Callback__V___I) cachedHandlerOrAction;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
@@ -711,13 +768,13 @@ public class Signal {
          *
          * @return the native value of sa_sigaction.
          */
-        public final FunctionPtr_I_Mem_Mem_V sa_sigaction() {
-            return new FunctionPtr_I_Mem_Mem_V(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Sigaction.offsetof_Sa_sigaction));
+        public final FunctionPtr__V___I_MA_MA sa_sigaction() {
+            return new FunctionPtr__V___I_MA_MA(MEM_ACCESS.uintptr_t(memorySegment, Sigaction.offsetof_Sa_sigaction));
         }
 
-        public <T extends OpaqueMemory32> void sa_sigaction(FunctionPtr_I_Mem_Mem_V<Siginfo_t, T> sa_sigaction) {
+        public <T extends OpaqueMemory> void sa_sigaction(FunctionPtr__V___I_MA_MA<Siginfo_t, T> sa_sigaction) {
             cachedHandlerOrAction = sa_sigaction;
-            MEM_ACCESS.uintptr_t(this, Sigaction.offsetof_Sa_sigaction, sa_sigaction);
+            MEM_ACCESS.uintptr_t(memorySegment, Sigaction.offsetof_Sa_sigaction, sa_sigaction);
         }
 
         /**
@@ -731,11 +788,11 @@ public class Signal {
          * otherwise an exception is thrown.
          */
         @SuppressWarnings("unchecked")
-        public Callback_I_Mem_Mem_V<Siginfo_t, T> sa_sigactionAsCallback_I_Mem_Mem_V() {
+        public Callback__V___I_MA_MA<Siginfo_t, T> sa_sigactionAsCallback_I_Mem_Mem_V() {
             final NativeFunctionPointer sa_sigaction = sa_sigaction();
-            if (cachedHandlerOrAction instanceof Callback_I_Mem_Mem_V) {
-                if (NativeFunctionPointer.isSameAddress(sa_sigaction, cachedHandlerOrAction)) {
-                    return (Callback_I_Mem_Mem_V) cachedHandlerOrAction;
+            if (cachedHandlerOrAction instanceof Callback__V___I_MA_MA) {
+                if (Pointer.isSameAddress(sa_sigaction, cachedHandlerOrAction)) {
+                    return (Callback__V___I_MA_MA) cachedHandlerOrAction;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
@@ -754,7 +811,7 @@ public class Signal {
      * JavaCallback class ???
      *
      */
-    public static final class Sigevent<T extends OpaqueMemory32> extends Struct32 {
+    public static final class Sigevent<T extends OpaqueMemory> extends Struct {
 
         public final static Alignment alignof;
         public final static long offsetof_Sigev_notify;
@@ -764,16 +821,11 @@ public class Signal {
         public final static long offsetof_Sigev_value;
         public final static int sizeof;
 
-        /**
-         * Make sure the native lib is loaded
-         */
         static {
-            LibJnhwPosixLoader.touch();
-            final MultiarchInfo mi = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-            switch (mi.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX:
-                    switch (mi.getSizeOfPointer()) {
-                        case _32_BIT:
+                    switch (MultiarchTupelBuilder.getMemoryModel()) {
+                        case ILP32:
                             alignof = Alignment.AT_4;
                             offsetof_Sigev_notify = 8;
                             offsetof_Sigev_signo = 4;
@@ -781,7 +833,7 @@ public class Signal {
                             offsetof_Sigev_notify_function = 12;
                             offsetof_Sigev_notify_attributes = 16;
                             break;
-                        case _64_BIT:
+                        case LP64:
                             alignof = Alignment.AT_8;
                             offsetof_Sigev_notify = 12;
                             offsetof_Sigev_signo = 8;
@@ -790,21 +842,21 @@ public class Signal {
                             offsetof_Sigev_notify_attributes = 24;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h linux defines for sigevent " + mi);
+                            throw new NoClassDefFoundError("No signal.h linux defines for sigevent " + MultiarchTupelBuilder.getMultiarch());
                     }
 
                     sizeof = 64;
                     break;
                 case DARWIN:
-                    switch (mi.getSizeOfPointer()) {
-                        case _32_BIT:
+                    switch (MultiarchTupelBuilder.getMemoryModel()) {
+                        case ILP32:
                             alignof = Alignment.AT_4;
                             break;
-                        case _64_BIT:
+                        case LP64:
                             alignof = Alignment.AT_8;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h free BSD defines for sigevent " + mi);
+                            throw new NoClassDefFoundError("No signal.h free BSD defines for sigevent " + MultiarchTupelBuilder.getMultiarch());
                     }
                     sizeof = 32;
                     offsetof_Sigev_notify = 0;
@@ -814,15 +866,15 @@ public class Signal {
                     offsetof_Sigev_notify_attributes = 24;
                     break;
                 case FREE_BSD:
-                    switch (mi.getSizeOfPointer()) {
-                        case _32_BIT:
+                    switch (MultiarchTupelBuilder.getMemoryModel()) {
+                        case ILP32:
                             alignof = Alignment.AT_4;
                             break;
-                        case _64_BIT:
+                        case LP64:
                             alignof = Alignment.AT_8;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h free BSD defines for sigevent " + mi);
+                            throw new NoClassDefFoundError("No signal.h free BSD defines for sigevent " + MultiarchTupelBuilder.getMultiarch());
                     }
                     sizeof = 80;
                     offsetof_Sigev_notify = 0;
@@ -841,7 +893,7 @@ public class Signal {
                     offsetof_Sigev_notify_attributes = -1;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h OS defines for sigevent " + mi);
+                    throw new NoClassDefFoundError("No signal.h OS defines for sigevent " + MultiarchTupelBuilder.getMultiarch());
             }
         }
 
@@ -857,6 +909,18 @@ public class Signal {
                 return String.format("0x%08x", value);
             }
         }
+
+        public static <T extends OpaqueMemory> Sigevent<T> tryAllocateNative(ResourceScope scope) throws NoSuchNativeTypeException {
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Sigevent");
+            }
+            return new Sigevent(MemorySegment.allocateNative(sizeof, scope), 0);
+        }
+
+        public static <T extends OpaqueMemory> Sigevent<T> tryOfAddress(MemoryAddress baseAddress, ResourceScope scope) throws NoSuchNativeTypeException {
+            return new Sigevent<>(MemorySegment.ofAddress(baseAddress, Sigevent.sizeof, scope), 0);
+        }
+
         private Pthread.Pthread_attr_t sigev_notify_attributes;
         private NativeFunctionPointer sigev_notify_function;
 
@@ -868,26 +932,12 @@ public class Signal {
          */
         public final Sigval<T> sigev_value;
 
-        @SuppressWarnings("unchecked")
-        public Sigevent() throws NoSuchNativeTypeException {
-            this(null, 0, SetMem.TO_0x00);
-        }
-
-        public Sigevent(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super(parent, offset, Sigevent.sizeof, setMem);
+        public Sigevent(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
+            super(memorySegment, offset, Sigevent.sizeof);
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Sigevent");
             }
-            sigev_value = new Sigval(this, Sigevent.offsetof_Sigev_value, SetMem.DO_NOT_SET);
-        }
-
-        @SuppressWarnings("unchecked")
-        public Sigevent(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, Sigevent.sizeof);
-            if (alignof == null) {
-                throw new NoSuchNativeTypeException("Sigevent");
-            }
-            sigev_value = new Sigval(this, Sigevent.offsetof_Sigev_value, SetMem.DO_NOT_SET);
+            sigev_value = new Sigval(this.memorySegment, Sigevent.offsetof_Sigev_value);
         }
 
         @Override
@@ -896,7 +946,7 @@ public class Signal {
             jsb.appendIntMember("sigev_notify", sigev_notify(), (value) -> sigev_notify2String(value));
             jsb.appendIntMember("sigev_signo", sigev_signo(), (value) -> Signal.sigNumber2String(value));
             //We do not dereference the pointer - just the memory address will do nicely.
-            jsb.appendNativeAddressHolderMember("sigev_notify_attributes", sigev_notify_attributes());
+            jsb.appendAddressMember("sigev_notify_attributes", sigev_notify_attributes());
             jsb.appendFunctionPtrMember("sigev_notify_function", sigev_notify_function);
             jsb.appendStruct32Member("sigev_value", sigev_value);
             jsb.close();
@@ -910,27 +960,27 @@ public class Signal {
          * @return the native value of sigev_notify.
          */
         public int sigev_notify() {
-            return MEM_ACCESS.int32_t(this, Sigevent.offsetof_Sigev_notify);
+            return MEM_ACCESS.int32_t(memorySegment, Sigevent.offsetof_Sigev_notify);
         }
 
         public void sigev_notify(int value) {
-            MEM_ACCESS.int32_t(this, Sigevent.offsetof_Sigev_notify, value);
+            MEM_ACCESS.int32_t(memorySegment, Sigevent.offsetof_Sigev_notify, value);
         }
 
-        protected NativeAddressHolder sigev_notify_attributes() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Sigevent.offsetof_Sigev_notify_attributes);
+        protected MemoryAddress sigev_notify_attributes() {
+            return MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_attributes);
         }
 
-        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemory32Producer<Pthread.Pthread_attr_t, Sigevent> producer) {
-            final NativeAddressHolder sigev_notify_attributesAddress = sigev_notify_attributes();
+        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemoryProducer<Pthread.Pthread_attr_t, Sigevent> producer, ResourceScope scope) {
+            final MemoryAddress sigev_notify_attributesAddress = sigev_notify_attributes();
             if (sigev_notify_attributes != null) {
-                if (!OpaqueMemory32.isSameAddress(sigev_notify_attributesAddress, sigev_notify_attributes)) {
-                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, this);
+                if (!OpaqueMemory.isSameAddress(sigev_notify_attributesAddress, sigev_notify_attributes)) {
+                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, scope, this);
                 }
                 return sigev_notify_attributes;
             } else {
-                if (!sigev_notify_attributesAddress.isNULL()) {
-                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, this);
+                if (!sigev_notify_attributesAddress.equals(MemoryAddress.NULL)) {
+                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, scope, this);
                 }
                 return sigev_notify_attributes;
             }
@@ -938,69 +988,44 @@ public class Signal {
 
         public void sigev_notify_attributes(Pthread.Pthread_attr_t value) {
             this.sigev_notify_attributes = value;
-            MEM_ACCESS.uintptr_t(this, Sigevent.offsetof_Sigev_notify_attributes, value);
+            MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_attributes, OpaqueMemory.getMemorySegment(value));
         }
 
         public NativeFunctionPointer sigev_notify_function() {
-            return new NativeFunctionPointer(MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Sigevent.offsetof_Sigev_notify_function));
+            return new NativeFunctionPointer(MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_function));
         }
 
-        /**
-         * Even if we can get away with an int we dont do this. BIG ENDIAN will
-         * acces the other half of the union sigval.sival_ptr for
-         * sigval.sival_int.
-         *
-         * @param sigev_notify_function
-         * @throws NoSuchNativeTypeException
-         */
-        public final void sigev_notify_function(Callback__Sigval_int__V sigev_notify_function) {
+        public final void sigev_notify_function(Callback__V__MA<T> sigev_notify_function) {
             this.sigev_notify_function = sigev_notify_function;
-            MEM_ACCESS.uintptr_t(this, Sigevent.offsetof_Sigev_notify_function, sigev_notify_function);
+            MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_function, sigev_notify_function);
         }
 
-        public final void sigev_notify_function(Callback_Mem_V<T> sigev_notify_function) {
-            this.sigev_notify_function = sigev_notify_function;
-            MEM_ACCESS.uintptr_t(this, Sigevent.offsetof_Sigev_notify_function, sigev_notify_function);
-        }
-
-        public final void sigev_notify_function(Callback_NativeRunnable sigev_notify_function) {
-            this.sigev_notify_function = sigev_notify_function;
-            MEM_ACCESS.uintptr_t(this, Sigevent.offsetof_Sigev_notify_function, sigev_notify_function);
-        }
-
-        public final Callback__Sigval_int__V sigev_notify_functionAsCallback__Sigval_int__V() {
-            if (sigev_notify_function instanceof Callback__Sigval_int__V) {
-                if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
-                    return (Callback__Sigval_int__V) sigev_notify_function;
+        public final Callback__V__MA sigev_notify_functionAsCallback__V_Adr() {
+            if (sigev_notify_function instanceof Callback__V__MA result) {
+                if (Pointer.isSameAddress(sigev_notify_function(), result)) {
+                    return result;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
             } else {
-                throw new RuntimeException("cached sigev_notify_function is not the class Callback__Sigval_int__V");
+                throw new RuntimeException("cached sigev_notify_function is not the class Callback_V_Adr");
             }
         }
 
-        public final Callback_NativeRunnable sigev_notify_functionAsCallback_NativeRunnable() {
-            if (sigev_notify_function instanceof Callback_NativeRunnable) {
-                if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
-                    return (Callback_NativeRunnable) sigev_notify_function;
-                } else {
-                    throw new RuntimeException("TODO not the same address");
-                }
-            } else {
-                throw new RuntimeException("cached sigev_notify_function is not the class Callback_NativeRunnable");
-            }
+        public final void sigev_notify_function(Callback__V___I sigev_notify_function) {
+            this.sigev_notify_function = sigev_notify_function;
+            MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_function, sigev_notify_function);
         }
 
-        public final Callback_Mem_V sigev_notify_functionAsCallback_PtrOpaqueMemory_V() {
-            if (sigev_notify_function instanceof Callback_Mem_V) {
-                if (NativeFunctionPointer.isSameAddress(sigev_notify_function(), sigev_notify_function)) {
-                    return (Callback_Mem_V) sigev_notify_function;
+        public final Callback__V___I sigev_notify_functionAsCallback__V_I() {
+            if (sigev_notify_function instanceof Callback__V___I result) {
+                if (Pointer.isSameAddress(sigev_notify_function(), result)) {
+                    return result;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
             } else {
-                throw new RuntimeException("cached sigev_notify_function is not the class Callback_Mem_V");
+                throw new RuntimeException("cached sigev_notify_function is not the class Callback_V_Adr");
             }
         }
 
@@ -1011,11 +1036,11 @@ public class Signal {
          * @return the native value of sigev_signo.
          */
         public int sigev_signo() {
-            return MEM_ACCESS.int32_t(this, Sigevent.offsetof_Sigev_signo);
+            return MEM_ACCESS.int32_t(memorySegment, Sigevent.offsetof_Sigev_signo);
         }
 
         public void sigev_signo(int value) {
-            MEM_ACCESS.int32_t(this, Sigevent.offsetof_Sigev_signo, value);
+            MEM_ACCESS.int32_t(memorySegment, Sigevent.offsetof_Sigev_signo, value);
         }
 
     }
@@ -1025,7 +1050,7 @@ public class Signal {
      * siginfo_t}</a>.
      *
      */
-    public static class Siginfo_t<T extends OpaqueMemory32> extends PosixStruct32 {
+    public final static class Siginfo_t<T extends OpaqueMemory> extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Si_addr;
@@ -1043,12 +1068,11 @@ public class Signal {
          * Make sure the native lib is loaded
          */
         static {
-            LibJnhwPosixLoader.touch();
 
-            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX:
                     sizeof = 128;
-                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                    switch (MultiarchTupelBuilder.getArch()) {
                         case ARM:
                         case I386:
                             alignof = Alignment.AT_4;
@@ -1103,7 +1127,7 @@ public class Signal {
                             offsetof_Si_value = 24;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h linux defines for siginfo_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for siginfo_t " + MultiarchTupelBuilder.getMultiarch());
                     }
                     break;
                 case DARWIN:
@@ -1146,7 +1170,7 @@ public class Signal {
                     offsetof_Si_value = 32;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h OS defines for siginfo_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for siginfo_t " + MultiarchTupelBuilder.getMultiarch());
             }
         }
 
@@ -1158,29 +1182,23 @@ public class Signal {
          */
         public final Sigval<T> si_value;
 
-        public Siginfo_t() {
-            this(null, 0, SetMem.DO_NOT_SET);
+        public static <T extends OpaqueMemory> Siginfo_t<T> allocateNative(ResourceScope scope) {
+            return new Siginfo_t<T>(MemorySegment.allocateNative(sizeof, scope), 0);
         }
 
-        public Siginfo_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Siginfo_t.sizeof, setMem);
-            si_value = new Sigval(this, Siginfo_t.offsetof_Si_value, SetMem.DO_NOT_SET);
+        public static <T extends OpaqueMemory> Siginfo_t<T> ofAddress(MemoryAddress address, ResourceScope scope) {
+            return new Siginfo_t<>(MemorySegment.ofAddress(address, Siginfo_t.sizeof, scope), 0);
         }
 
-        /**
-         * Create a wrapper around some unknown mem - it will NOT be freed
-         *
-         * @param address
-         */
-        public Siginfo_t(NativeAddressHolder address) {
-            super(address, Siginfo_t.sizeof);
-            si_value = new Sigval(this, Siginfo_t.offsetof_Si_value, SetMem.DO_NOT_SET);
+        public Siginfo_t(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Siginfo_t.sizeof);
+            si_value = new Sigval(this.memorySegment, Siginfo_t.offsetof_Si_value);
         }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            jsb.appendNativeAddressHolderMember("si_addr", si_addr());
+            jsb.appendAddressMember("si_addr", si_addr());
             try {
                 jsb.appendHexLongMember("si_band", si_band());
             } catch (NoSuchNativeTypeMemberException nsntme) {
@@ -1200,8 +1218,8 @@ public class Signal {
          *
          * @return the native value of si_addr.
          */
-        public final NativeAddressHolder si_addr() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Siginfo_t.offsetof_Si_addr);
+        public final MemoryAddress si_addr() {
+            return MEM_ACCESS.uintptr_t(memorySegment, Siginfo_t.offsetof_Si_addr);
         }
 
         /**
@@ -1215,7 +1233,7 @@ public class Signal {
             if (Siginfo_t.offsetof_Si_band == -1) {
                 throw new NoSuchNativeTypeMemberException("siginfo_t", "si_band");
             }
-            return MEM_ACCESS.signed_long(this, Siginfo_t.offsetof_Si_band);
+            return MEM_ACCESS.signed_long(memorySegment, Siginfo_t.offsetof_Si_band);
         }
 
         /**
@@ -1226,7 +1244,7 @@ public class Signal {
          * @return the native value of si_code.
          */
         public final int si_code() {
-            return MEM_ACCESS.int32_t(this, Siginfo_t.offsetof_Si_code);
+            return MEM_ACCESS.int32_t(memorySegment, Siginfo_t.offsetof_Si_code);
         }
 
         /**
@@ -1238,7 +1256,7 @@ public class Signal {
          * @return the native value of si_errno.
          */
         public final int si_errno() {
-            return MEM_ACCESS.int32_t(this, Siginfo_t.offsetof_Si_errno);
+            return MEM_ACCESS.int32_t(memorySegment, Siginfo_t.offsetof_Si_errno);
         }
 
         /**
@@ -1250,7 +1268,7 @@ public class Signal {
          */
         @pid_t
         public final int si_pid() {
-            return ACCESSOR_PID_T.pid_t(this, Siginfo_t.offsetof_Si_pid);
+            return ACCESSOR_PID_T.pid_t(memorySegment, Siginfo_t.offsetof_Si_pid);
         }
 
         /**
@@ -1261,7 +1279,7 @@ public class Signal {
          * @return the native value of si_signo.
          */
         public final int si_signo() {
-            return MEM_ACCESS.int32_t(this, Siginfo_t.offsetof_Si_signo);
+            return MEM_ACCESS.int32_t(memorySegment, Siginfo_t.offsetof_Si_signo);
         }
 
         /**
@@ -1272,7 +1290,7 @@ public class Signal {
          * @return the native value of si_status.
          */
         public final int si_status() {
-            return MEM_ACCESS.int32_t(this, Siginfo_t.offsetof_Si_status);
+            return MEM_ACCESS.int32_t(memorySegment, Siginfo_t.offsetof_Si_status);
         }
 
         /**
@@ -1284,33 +1302,29 @@ public class Signal {
          */
         @uid_t
         public final long si_uid() {
-            return ACCESSOR_UID_T.uid_t(this, Siginfo_t.offsetof_Si_uid);
+            return ACCESSOR_UID_T.uid_t(memorySegment, Siginfo_t.offsetof_Si_uid);
         }
 
     }
 
-    public static final class Sigset_t extends Struct32 {
+    public static final class Sigset_t extends Struct {
 
         public final static Alignment alignof;
         public final static int sizeof;
 
-        /**
-         * Make sure the native lib is loaded
-         */
         static {
-            LibJnhwPosixLoader.touch();
 
-            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX:
-                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
-                        case _32_BIT:
+                    switch (MultiarchTupelBuilder.getMemoryModel()) {
+                        case ILP32:
                             alignof = Alignment.AT_4;
                             break;
-                        case _64_BIT:
+                        case LP64:
                             alignof = Alignment.AT_8;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h linux defines for sigset_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for sigset_t " + MultiarchTupelBuilder.getMultiarch());
                     }
                     sizeof = 128;
                     break;
@@ -1327,16 +1341,16 @@ public class Signal {
                     sizeof = 4;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h OS defines for sigset_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for sigset_t " + MultiarchTupelBuilder.getMultiarch());
             }
         }
 
-        public Sigset_t() {
-            this(null, 0, SetMem.DO_NOT_SET);
+        public final static Sigset_t allocateNative(ResourceScope scope) {
+            return new Sigset_t(MemorySegment.allocateNative(sizeof, scope), 0);
         }
 
-        public Sigset_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Sigset_t.sizeof, setMem);
+        public Sigset_t(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Sigset_t.sizeof);
         }
 
         private void maybeDoFormatBeforeFirst(Appendable sb, boolean first, final String indent) throws IOException {
@@ -1511,52 +1525,48 @@ public class Signal {
      * sigval}</a>.
      *
      */
-    public static final class Sigval<T extends OpaqueMemory32> extends Struct32 {
+    public static final class Sigval<T extends OpaqueMemory> extends Struct {
 
         public final static Alignment alignof;
         public final static long offsetof_Sival_int = 0;
         public final static long offsetof_Sival_ptr = 0;
         public final static int sizeof;
 
-        /**
-         * Make sure the native lib is loaded
-         */
         static {
-            LibJnhwPosixLoader.touch();
 
-            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getSizeOfPointer()) {
-                case _32_BIT:
+            switch (MultiarchTupelBuilder.getMemoryModel()) {
+                case ILP32:
                     alignof = Alignment.AT_4;
                     sizeof = 4;
                     break;
-                case _64_BIT:
+                case LP64:
                     alignof = Alignment.AT_8;
                     sizeof = 8;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h defines for sigval " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h defines for sigval " + MultiarchTupelBuilder.getMultiarch());
             }
+        }
+
+        public static <T extends OpaqueMemory> Sigval<T> allocateNative(ResourceScope scope) {
+            return new Sigval(MemorySegment.allocateNative(sizeof, scope), 0);
+        }
+
+        public static <T extends OpaqueMemory> Sigval<T> ofAddress(MemoryAddress baseAddress, ResourceScope scope) {
+            return new Sigval<>(MemorySegment.ofAddress(baseAddress, Sigval.sizeof, scope), 0);
         }
 
         private T sival_ptr;
 
-        public Sigval() {
-            this(null, 0, SetMem.DO_NOT_SET);
-        }
-
-        public Sigval(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Sigval.sizeof, setMem);
-        }
-
-        public Sigval(NativeAddressHolder baseAddress) {
-            super(baseAddress, Sigval.sizeof);
+        public Sigval(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Sigval.sizeof);
         }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             jsb.appendIntMember("sival_int", sival_int());
-            jsb.appendNativeAddressHolderMember("sival_ptr", sival_ptr());
+            jsb.appendAddressMember("sival_ptr", sival_ptr());
             jsb.close();
         }
 
@@ -1568,7 +1578,7 @@ public class Signal {
          * @return the native value of sival_int.
          */
         public int sival_int() {
-            return MEM_ACCESS.int32_t(this, Sigval.offsetof_Sival_int);
+            return MEM_ACCESS.int32_t(memorySegment, Sigval.offsetof_Sival_int);
         }
 
         /**
@@ -1579,11 +1589,11 @@ public class Signal {
          * @param sival_int the value of sival_int to be set natively.
          */
         public void sival_int(int sival_int) {
-            MEM_ACCESS.int32_t(this, Sigval.offsetof_Sival_int, sival_int);
+            MEM_ACCESS.int32_t(memorySegment, Sigval.offsetof_Sival_int, sival_int);
         }
 
-        private NativeAddressHolder sival_ptr() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, offsetof_Sival_ptr);
+        private MemoryAddress sival_ptr() {
+            return MEM_ACCESS.uintptr_t(memorySegment, offsetof_Sival_ptr);
         }
 
         /**
@@ -1593,16 +1603,16 @@ public class Signal {
          *
          * @return the native value of sival_ptr.
          */
-        public T sival_ptr(OpaqueMemory32Producer<T, Sigval<T>> producer) {
-            final NativeAddressHolder baseAddress = sival_ptr();
+        public T sival_ptr(OpaqueMemoryProducer<T, Sigval<T>> producer, ResourceScope scope) {
+            final MemoryAddress baseAddress = sival_ptr();
             if (sival_ptr != null) {
-                if (!OpaqueMemory32.isSameAddress(baseAddress, sival_ptr)) {
-                    sival_ptr = producer.produce(baseAddress, this);
+                if (!OpaqueMemory.isSameAddress(baseAddress, sival_ptr)) {
+                    sival_ptr = producer.produce(baseAddress, scope, this);
                 }
                 return sival_ptr;
             } else {
-                if (!baseAddress.isNULL()) {
-                    sival_ptr = producer.produce(baseAddress, this);
+                if (!MemoryAddress.NULL.equals(baseAddress)) {
+                    sival_ptr = producer.produce(baseAddress, scope, this);
                 }
                 return sival_ptr;
             }
@@ -1617,7 +1627,7 @@ public class Signal {
          */
         public final void sival_ptr(T sival_ptr) {
             this.sival_ptr = sival_ptr;
-            MEM_ACCESS.uintptr_t(this, Sigval.offsetof_Sival_ptr, sival_ptr);
+            MEM_ACCESS.uintptr_t(memorySegment, Sigval.offsetof_Sival_ptr, sival_ptr.toAddressable());
         }
 
     }
@@ -1627,7 +1637,7 @@ public class Signal {
      * stack_t}</a>.
      *
      */
-    public static class Stack_t<T extends OpaqueMemory32> extends PosixStruct32 {
+    public final static class Stack_t<T extends OpaqueMemory> extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Ss_flags;
@@ -1635,20 +1645,15 @@ public class Signal {
         public final static long offsetof_Ss_sp;
         public final static int sizeof;
 
-        /**
-         * Make sure the native lib is loaded
-         */
         static {
-            LibJnhwPosixLoader.touch();
-            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-            switch (multiarchInfo.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX:
-                    switch (multiarchInfo.getSizeOfPointer()) {
-                        case _32_BIT:
+                    switch (MultiarchTupelBuilder.getMemoryModel()) {
+                        case ILP32:
                             alignof = Alignment.AT_4;
                             sizeof = 12;
                             offsetof_Ss_sp = 0;
-                            switch (multiarchInfo.getArch()) {
+                            switch (MultiarchTupelBuilder.getArch()) {
                                 case MIPS:
                                     offsetof_Ss_size = 4;
                                     offsetof_Ss_flags = 8;
@@ -1658,11 +1663,11 @@ public class Signal {
                                     offsetof_Ss_flags = 4;
                             }
                             break;
-                        case _64_BIT:
+                        case LP64:
                             alignof = Alignment.AT_8;
                             sizeof = 24;
                             offsetof_Ss_sp = 0;
-                            switch (multiarchInfo.getArch()) {
+                            switch (MultiarchTupelBuilder.getArch()) {
                                 case MIPS_64:
                                     offsetof_Ss_size = 8;
                                     offsetof_Ss_flags = 16;
@@ -1673,7 +1678,7 @@ public class Signal {
                             }
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h linux defines for stack_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for stack_t " + MultiarchTupelBuilder.getMultiarch());
                     }
                     break;
                 case DARWIN:
@@ -1686,8 +1691,12 @@ public class Signal {
                     offsetof_Ss_flags = 16;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h OS defines for stack_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for stack_t " + MultiarchTupelBuilder.getMultiarch());
             }
+        }
+
+        public final static <T extends OpaqueMemory> Stack_t<T> allocateNative(ResourceScope scope) {
+            return new Stack_t(MemorySegment.allocateNative(sizeof, scope), 0);
         }
 
         /**
@@ -1697,26 +1706,22 @@ public class Signal {
          * @param ss_sp
          * @return
          */
-        public static <T extends OpaqueMemory32> Stack_t<T> of(int ss_flags, T ss_sp) {
-            Stack_t<T> result = new Stack_t<>();
+        public static <T extends OpaqueMemory> Stack_t<T> allocateNativeAndInit(ResourceScope scope, int ss_flags, T ss_sp) {
+            final Stack_t<T> result = allocateNative(scope);
             result.ss_flags(ss_flags);
             result.ss_sp(ss_sp);
-            result.ss_size(ss_sp.sizeInBytes);
+            result.ss_size(ss_sp.sizeof());
             return result;
         }
 
-        public Stack_t() {
-            this(null, 0, SetMem.DO_NOT_SET);
-        }
-
-        public Stack_t(AbstractNativeMemory parent, long offset, SetMem setMem) {
-            super(parent, offset, Stack_t.sizeof, setMem);
+        public Stack_t(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Stack_t.sizeof);
         }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            jsb.appendNativeAddressHolderMember("ss_sp", ss_sp0());
+            jsb.appendAddressMember("ss_sp", ss_sp0());
             jsb.appendLongMember("ss_size", ss_size());
             jsb.appendHexIntMember("ss_flags", ss_flags());
             jsb.close();
@@ -1730,11 +1735,11 @@ public class Signal {
          * @return the native value of ss_flags.
          */
         public final int ss_flags() {
-            return MEM_ACCESS.int32_t(this, Stack_t.offsetof_Ss_flags);
+            return MEM_ACCESS.int32_t(memorySegment, Stack_t.offsetof_Ss_flags);
         }
 
         private void ss_flags(int ss_flags) {
-            MEM_ACCESS.int32_t(this, Stack_t.offsetof_Ss_flags, ss_flags);
+            MEM_ACCESS.int32_t(memorySegment, Stack_t.offsetof_Ss_flags, ss_flags);
         }
 
         /**
@@ -1746,11 +1751,11 @@ public class Signal {
          */
         @size_t
         public final long ss_size() {
-            return ACCESSOR_SIZE_T.size_t(this, Stack_t.offsetof_Ss_size);
+            return ACCESSOR_SIZE_T.size_t(memorySegment, Stack_t.offsetof_Ss_size);
         }
 
         private void ss_size(@size_t long ss_size) {
-            ACCESSOR_SIZE_T.size_t(this, Stack_t.offsetof_Ss_size, ss_size);
+            ACCESSOR_SIZE_T.size_t(memorySegment, Stack_t.offsetof_Ss_size, ss_size);
         }
 
         /**
@@ -1761,16 +1766,16 @@ public class Signal {
          * @return the native value of ss_sp.
          */
         //TODO this is a Pointer
-        public final T ss_sp(OpaqueMemory32Producer<T, Stack_t<T>> producer) {
-            return producer.produce(ss_sp0(), this);
+        public final T ss_sp(OpaqueMemoryProducer<T, Stack_t<T>> producer, ResourceScope scope) {
+            return producer.produce(ss_sp0(), scope, this);
         }
 
         private void ss_sp(T ss_sp) {
-            MEM_ACCESS.uintptr_t(this, Stack_t.offsetof_Ss_sp, ss_sp);
+            MEM_ACCESS.uintptr_t(memorySegment, Stack_t.offsetof_Ss_sp, OpaqueMemory.getMemorySegment(ss_sp));
         }
 
-        private NativeAddressHolder ss_sp0() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Stack_t.offsetof_Ss_sp);
+        private MemoryAddress ss_sp0() {
+            return MEM_ACCESS.uintptr_t(memorySegment, Stack_t.offsetof_Ss_sp);
         }
 
     }
@@ -1780,7 +1785,7 @@ public class Signal {
      * ucontext_t}</a>.
      *
      */
-    public static class Ucontext_t extends Struct32 {
+    public final static class Ucontext_t extends Struct {
 
         public final static Alignment alignof;
         public final static long offsetof_Uc_link;
@@ -1789,15 +1794,11 @@ public class Signal {
         public final static long offsetof_Uc_stack;
         public final static int sizeof;
 
-        /**
-         * Make sure the native lib is loaded
-         */
         static {
-            LibJnhwPosixLoader.touch();
 
-            switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX:
-                    switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                    switch (MultiarchTupelBuilder.getArch()) {
                         case AARCH64:
                             alignof = Alignment.AT_16;
                             sizeof = 4560;
@@ -1871,7 +1872,7 @@ public class Signal {
                             offsetof_Uc_mcontext = 40;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No signal.h linux defines for ucontext_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No signal.h linux defines for ucontext_t " + MultiarchTupelBuilder.getMultiarch());
                     }
                     break;
                 case DARWIN:
@@ -1899,7 +1900,7 @@ public class Signal {
                     offsetof_Uc_mcontext = -1;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No signal.h OS defines for ucontext_t " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No signal.h OS defines for ucontext_t " + MultiarchTupelBuilder.getMultiarch());
             }
 
         }
@@ -1928,34 +1929,31 @@ public class Signal {
          */
         public final Stack_t uc_stack;
 
-        public Ucontext_t(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super(parent, offset, Ucontext_t.sizeof, setMem);
+        public static Ucontext_t tryAllocateNative(ResourceScope scope) throws NoSuchNativeTypeException {
             if (Ucontext_t.alignof == null) {
                 throw new NoSuchNativeTypeException("Ucontext_t");
             }
-            uc_sigmask = new Sigset_t(this, Ucontext_t.offsetof_Uc_sigmask, SetMem.DO_NOT_SET);
-            uc_stack = new Stack_t(this, Ucontext_t.offsetof_Uc_stack, SetMem.DO_NOT_SET);
-            uc_mcontext = new Mcontext_t(this, Ucontext_t.offsetof_Uc_mcontext, SetMem.DO_NOT_SET);
+            return new Ucontext_t(MemorySegment.allocateNative(sizeof, scope), 0);
         }
 
-        public Ucontext_t(NativeAddressHolder baseAddress) throws NoSuchNativeTypeException {
-            super(baseAddress, Ucontext_t.sizeof);
+        public static Ucontext_t tryOfAddress(MemoryAddress baseAddress, ResourceScope scope) throws NoSuchNativeTypeException {
+            return new Ucontext_t(MemorySegment.ofAddress(baseAddress, Ucontext_t.sizeof, scope), 0);
+        }
+
+        public Ucontext_t(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
+            super(memorySegment, offset, Ucontext_t.sizeof);
             if (Ucontext_t.alignof == null) {
                 throw new NoSuchNativeTypeException("Ucontext_t");
             }
-            uc_sigmask = new Sigset_t(this, Ucontext_t.offsetof_Uc_sigmask, SetMem.DO_NOT_SET);
-            uc_stack = new Stack_t(this, Ucontext_t.offsetof_Uc_stack, SetMem.DO_NOT_SET);
-            uc_mcontext = new Mcontext_t(this, Ucontext_t.offsetof_Uc_mcontext, SetMem.DO_NOT_SET);
-        }
-
-        public Ucontext_t(SetMem setMem) throws NoSuchNativeTypeException {
-            this(null, 0, setMem);
+            uc_sigmask = new Sigset_t(this.memorySegment, Ucontext_t.offsetof_Uc_sigmask);
+            uc_stack = new Stack_t(this.memorySegment, Ucontext_t.offsetof_Uc_stack);
+            uc_mcontext = new Mcontext_t(this.memorySegment, Ucontext_t.offsetof_Uc_mcontext);
         }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            jsb.appendNativeAddressHolderMember("uc_link: ", uc_link0());
+            jsb.appendAddressMember("uc_link: ", uc_link0());
             jsb.appendStruct32Member("uc_sigmask", uc_sigmask);
             jsb.appendStruct32Member("uc_stack", uc_stack);
             jsb.appendStruct32Member("uc_mcontext", uc_mcontext);
@@ -1968,8 +1966,8 @@ public class Signal {
          * ucontext_t}</a>.
          *
          */
-        public final Ucontext_t uc_link(OpaqueMemory32Producer<Ucontext_t, Ucontext_t> producer) {
-            return producer.produce(uc_link0(), this);
+        public final Ucontext_t uc_link(OpaqueMemoryProducer<Ucontext_t, Ucontext_t> producer, ResourceScope scope) {
+            return producer.produce(uc_link0(), scope, this);
         }
 
         /**
@@ -1979,8 +1977,8 @@ public class Signal {
          *
          * @return the native value of uc_link.
          */
-        private NativeAddressHolder uc_link0() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Ucontext_t.offsetof_Uc_link);
+        private MemoryAddress uc_link0() {
+            return MEM_ACCESS.uintptr_t(memorySegment, Ucontext_t.offsetof_Uc_link);
         }
 
     }
@@ -2337,28 +2335,28 @@ public class Signal {
      *
      */
     @Define()
-    public final static FunctionPtr_I_V SIG_DFL;
+    public final static FunctionPtr__V___I SIG_DFL;
 
     /**
      * <b>POSIX:</b> Return value from signal() in case of error.
      *
      */
     @Define()
-    public final static FunctionPtr_I_V SIG_ERR;
+    public final static FunctionPtr__V___I SIG_ERR;
 
     /**
      * <b>POSIX:</b> Request that signal be held.
      *
      */
     @Define()
-    public final static ObjectDefine<FunctionPtr_I_V> SIG_HOLD;
+    public final static ObjectDefine<FunctionPtr__V___I> SIG_HOLD;
 
     /**
      * <b>POSIX:</b> Request that signal be ignored.
      *
      */
     @Define()
-    public final static FunctionPtr_I_V SIG_IGN;
+    public final static FunctionPtr__V___I SIG_IGN;
 
     /**
      * <b>POSIX:</b> The resulting set is the signal set pointed to by the
@@ -2658,8 +2656,6 @@ public class Signal {
     public final static int TRAP_TRACE;
 
     /**
-     * Make sure the native lib is loaded
-     *
      * @implNote The actual value for the define fields are injected by
      * initFields. The static initialization block is used to set the value here
      * to communicate that this static final fields are not statically foldable.
@@ -2667,10 +2663,7 @@ public class Signal {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
-
-        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-        switch (multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_SIGNAL_H = true;
 
@@ -2702,7 +2695,7 @@ public class Signal {
                 ILL_ILLTRP = Linux_AllArchs_Defines.ILL_ILLTRP;
                 ILL_PRVOPC = Linux_AllArchs_Defines.ILL_PRVOPC;
                 ILL_PRVREG = Linux_AllArchs_Defines.ILL_PRVREG;
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case AARCH64:
                         MINSIGSTKSZ = Linux_Aarc64_Defines.MINSIGSTKSZ;
                         break;
@@ -2721,7 +2714,7 @@ public class Signal {
                         MINSIGSTKSZ = Linux_Ppc64_Defines.MINSIGSTKSZ;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No signal.h linux defines for MINSIGSTKSZ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No signal.h linux defines for MINSIGSTKSZ " + MultiarchTupelBuilder.getMultiarch());
                 }
 
                 POLL_ERR = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_ERR);
@@ -2755,7 +2748,7 @@ public class Signal {
                 SIGPIPE = Linux_AllArchs_Defines.SIGPIPE;
                 SIGQUIT = Linux_AllArchs_Defines.SIGQUIT;
                 SIGSEGV = Linux_AllArchs_Defines.SIGSEGV;
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case AARCH64:
                     case POWER_PC_64:
                         SIGSTKSZ = Linux_Aarc64_Ppc64_Defines.SIGSTKSZ;
@@ -2772,7 +2765,7 @@ public class Signal {
                         SIGSTKSZ = Linux_Mips_Mips64_Defines.SIGSTKSZ;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No signal.h linux defines for SIGSTKSZ " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No signal.h linux defines for SIGSTKSZ " + MultiarchTupelBuilder.getMultiarch());
                 }
                 SIGTERM = Linux_AllArchs_Defines.SIGTERM;
                 SIGTRAP = Linux_AllArchs_Defines.SIGTRAP;
@@ -2789,7 +2782,7 @@ public class Signal {
                 TRAP_BRKPT = Linux_AllArchs_Defines.TRAP_BRKPT;
                 TRAP_TRACE = Linux_AllArchs_Defines.TRAP_TRACE;
 
-                switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case MIPS:
                     case MIPS_64:
                         SA_NOCLDWAIT = Linux_Mips_Mips64_Defines.SA_NOCLDWAIT;
@@ -2856,7 +2849,7 @@ public class Signal {
                         SI_TIMER = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SI_TIMER;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No signal.h linux defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No signal.h linux defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
                 break;
             case DARWIN:
@@ -2931,7 +2924,7 @@ public class Signal {
                 SIG_SETMASK = BsdDefines.SIG_SETMASK;
                 SIG_UNBLOCK = BsdDefines.SIG_UNBLOCK;
 
-                switch (multiarchInfo.getOS()) {
+                switch (MultiarchTupelBuilder.getOS()) {
                     case DARWIN:
                         FPE_INTDIV = DarwinDefines.FPE_INTDIV;
                         FPE_INTOVF = DarwinDefines.FPE_INTOVF;
@@ -3044,13 +3037,178 @@ public class Signal {
 
                         break;
                     default:
-                        throw new NoClassDefFoundError("No signal.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No signal.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
                 break;
             default:
-                throw new NoClassDefFoundError("No signal.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No signal.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
+
+    private final static JnhwMh_sI__sI_sI kill = JnhwMh_sI__sI_sI.of(
+            "kill",
+            BaseDataType.C_int,
+            PosixDataType.pid_t,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI_sI killpg = JnhwMh_sI__sI_sI.of(
+            "killpg",
+            BaseDataType.C_int,
+            PosixDataType.pid_t,
+            BaseDataType.C_int);
+
+    private final static JnhwMh__V___A__A psiginfo = JnhwMh__V___A__A.ofOrNull(
+            "psiginfo",
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_const_char_pointer);
+
+    private final static JnhwMh__V__sI__A psignal = JnhwMh__V__sI__A.ofOrNull(
+            "psignal",
+            BaseDataType.C_int,
+            BaseDataType.C_const_char_pointer);
+
+    private final static JnhwPthreadKill pthread_kill = JnhwPthreadKill.of(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "pthread_kill",
+            BaseDataType.C_int,
+            PosixDataType.pthread_t,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI__A__A pthread_sigmask = JnhwMh_sI__sI__A__A.of(
+            "pthread_sigmask",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__sI raise = JnhwMh_sI__sI.of(
+            "raise",
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI__A__A sigaction = JnhwMh_sI__sI__A__A.of(
+            "sigaction",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__A_sI sigaddset = JnhwMh_sI__A_sI.of(
+            "sigaddset",
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI___A__A sigaltstack = JnhwMh_sI___A__A.of(
+            "sigaltstack",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__A_sI sigdelset = JnhwMh_sI__A_sI.of(
+            "sigdelset",
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI___A sigemptyset = JnhwMh_sI___A.of(
+            "sigemptyset",
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI___A sigfillset = JnhwMh_sI___A.of(
+            "sigfillset",
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__sI sighold = JnhwMh_sI__sI.ofOrNull(
+            "sighold",
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI sigignore = JnhwMh_sI__sI.ofOrNull(
+            "sigignore",
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__sI_sI siginterrupt = JnhwMh_sI__sI_sI.of(
+            "siginterrupt",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI__A_sI sigismember = JnhwMh_sI__A_sI.of(
+            "sigismember",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_int);
+
+    private final static JnhwMh__A__sI__A signal = JnhwMh__A__sI__A.of(
+            "signal",
+            BaseDataType.C_pointer,
+            BaseDataType.C_int,
+            BaseDataType.C_pointer);
+
+    private final static JnhwMh_sI__sI sigpause = JnhwMh_sI__sI.ofOrNull(
+            "sigpause",
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh_sI___A sigpending = JnhwMh_sI___A.of(
+            "sigpending",
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__sI__A__A sigprocmask = JnhwMh_sI__sI__A__A.of(
+            "sigprocmask",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_struct_pointer);
+
+    //sigval is union of int and pointer, so pointer will do here
+    //TODO splitint call with int and pointer? BIG/LITTLE ENDIAN???
+    private final static JnhwMh_sI__sI_sI__A sigqueue = JnhwMh_sI__sI_sI__A.ofOrNull(
+            "sigqueue",
+            BaseDataType.C_int,
+            PosixDataType.pid_t,
+            BaseDataType.C_int,
+            BaseDataType.C_pointer);
+
+    private final static JnhwMh_sI__sI sigrelse = JnhwMh_sI__sI.ofOrNull(
+            "sigrelse",
+            BaseDataType.C_int,
+            BaseDataType.C_int);
+
+    private final static JnhwMh__A__sI__A sigset = JnhwMh__A__sI__A.ofOrNull(
+            "sigset",
+            BaseDataType.C_pointer,
+            BaseDataType.C_int,
+            BaseDataType.C_pointer);
+
+    private final static JnhwMh_sI___A sigsuspend = JnhwMh_sI___A.of(
+            "sigsuspend",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh_sI___A__A__A sigtimedwait = JnhwMh_sI___A__A__A.ofOrNull(
+            "sigtimedwait",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_struct_pointer,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh_sI___A__A sigwait = JnhwMh_sI___A__A.of(
+            "sigwait",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_int_pointer);
+
+    private final static JnhwMh_sI___A__A sigwaitinfo = JnhwMh_sI___A__A.ofOrNull(
+            "sigwaitinfo",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer,
+            BaseDataType.C_int_pointer);
 
     /**
      * <b>POSIX:</b>
@@ -3063,7 +3221,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void kill(@pid_t int pid, int sig) throws NativeErrorException;
+    public final static void kill(@pid_t int pid, int sig) throws NativeErrorException {
+        if (kill.invoke_sI__sI_sI(pid, sig) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -3076,9 +3238,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void killpg(@pid_t int pgrp, int sig) throws NativeErrorException;
-
-    private static native void psiginfo(long ptrPinfo, String message) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void killpg(@pid_t int pgrp, int sig) throws NativeErrorException {
+        if (killpg.invoke_sI__sI_sI(pgrp, sig) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -3092,7 +3256,26 @@ public class Signal {
      * available natively.
      */
     public final static void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException {
-        psiginfo(AbstractNativeMemory.toUintptr_t(pinfo), message);
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            if (message == null) {
+                message = "";
+            }
+            MemorySegment _message = MemorySegment.allocateNative(message.length() + 1, scope);
+            _message.setUtf8String(0, message);
+            final int old_errno = Errno.errno();
+            Errno.errno(0);
+            psiginfo.invoke_V__P_A(pinfo, _message);
+            if (Errno.errno() != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+            Errno.errno(old_errno);
+        } catch (NullPointerException npe) {
+            if (psiginfo == null) {
+                throw new NoSuchNativeMethodException("psiginfo");
+            } else {
+                throw npe;
+            }
+        }
     }
 
     /**
@@ -3104,9 +3287,22 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void psignal(int signum, String message) throws NativeErrorException;
-
-    private static native void pthread_kill(long ptrThread, int sig) throws NativeErrorException;
+    public final static void psignal(int signum, String message) throws NativeErrorException {
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            if (message == null) {
+                message = "";
+            }
+            MemorySegment _message = MemorySegment.allocateNative(message.length() + 1, scope);
+            _message.setUtf8String(0, message);
+            final int old_errno = Errno.errno();
+            Errno.errno(0);
+            psignal.invoke__V__sI__A(signum, _message);
+            if (Errno.errno() != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+            Errno.errno(old_errno);
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -3115,14 +3311,14 @@ public class Signal {
      *
      *
      * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
+     * indicates an error. This return value is the error number.
      */
     public final static void pthread_kill(Pthread.Pthread_t thread, int sig) throws NativeErrorException {
-        pthread_kill(AbstractNativeMemory.toUintptr_t(thread), sig);
+        final int result = pthread_kill.invokeExact(thread, sig);
+        if (result != 0) {
+            throw new NativeErrorException(result);
+        }
     }
-
-    private static native void pthread_sigmask(int how, long ptrSet,
-            long ptrOset) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -3139,7 +3335,9 @@ public class Signal {
      * indicates an error.
      */
     public final static void pthread_sigmask(int how, Sigset_t set, Sigset_t oset) throws NativeErrorException {
-        pthread_sigmask(how, AbstractNativeMemory.toUintptr_tOrNULL(set), AbstractNativeMemory.toUintptr_tOrNULL(oset));
+        if (pthread_sigmask.invoke_sI__sI__P__P(how, set != null ? set : Pointer.NULL, oset != null ? oset : Pointer.NULL) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
 
     /**
@@ -3153,9 +3351,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void raise(int sig) throws NativeErrorException;
-
-    private static native void sigaction(int sig, long ptrAct, long ptrOact) throws NativeErrorException;
+    public final static void raise(int sig) throws NativeErrorException {
+        if (raise.invoke_sI__sI(sig) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -3167,10 +3367,10 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigaction(int sig, Sigaction act, Sigaction oact) throws NativeErrorException {
-        sigaction(sig, AbstractNativeMemory.toUintptr_tOrNULL(act), AbstractNativeMemory.toUintptr_tOrNULL(oact));
+        if (sigaction.invoke_sI__sI__P__P(sig, act != null ? act : Pointer.NULL, oact != null ? oact : Pointer.NULL) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native void sigaddset(long set, int signo) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -3182,10 +3382,10 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigaddset(Sigset_t set, int signo) throws NativeErrorException {
-        sigaddset(AbstractNativeMemory.toUintptr_t(set), signo);
+        if (sigaddset.invoke_sI__P_sI(set, signo) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native void sigaltstack(long ptrSs, long ptrOss) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -3197,10 +3397,10 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigaltstack(Stack_t ss, Stack_t oss) throws NativeErrorException {
-        sigaltstack(AbstractNativeMemory.toUintptr_tOrNULL(ss), AbstractNativeMemory.toUintptr_tOrNULL(oss));
+        if (sigaltstack.invoke_sI___P__P(ss != null ? ss : Pointer.NULL, oss != null ? oss : Pointer.NULL) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native void sigdelset(long ptrSet, int signo) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -3212,10 +3412,10 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigdelset(Sigset_t set, int signo) throws NativeErrorException {
-        sigdelset(AbstractNativeMemory.toUintptr_t(set), signo);
+        if (sigdelset.invoke_sI__P_sI(set, signo) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native void sigemptyset(long ptrSet) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -3227,10 +3427,10 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigemptyset(Sigset_t set) throws NativeErrorException {
-        sigemptyset(AbstractNativeMemory.toUintptr_t(set));
+        if (sigemptyset.invoke_sI___P(set) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native void sigfillset(long set) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -3242,7 +3442,9 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigfillset(Sigset_t set) throws NativeErrorException {
-        sigfillset(AbstractNativeMemory.toUintptr_t(set));
+        if (sigfillset.invoke_sI___P(set) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
 
     /**
@@ -3256,7 +3458,19 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sighold is not
      * available natively.
      */
-    public final static native void sighold(int sig) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void sighold(int sig) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            if (sighold.invoke_sI__sI(sig) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (sighold == null) {
+                throw new NoSuchNativeMethodException("sighold");
+            } else {
+                throw npe;
+            }
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -3269,7 +3483,19 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigignore is not
      * available natively.
      */
-    public final static native void sigignore(int sig) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void sigignore(int sig) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            if (sigignore.invoke_sI__sI(sig) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (sigignore == null) {
+                throw new NoSuchNativeMethodException("sigignore");
+            } else {
+                throw npe;
+            }
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -3280,9 +3506,11 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static native void siginterrupt(int sig, boolean flag) throws NativeErrorException;
-
-    private static native boolean sigismember(long ptrSet, int signo) throws NativeErrorException;
+    public final static void siginterrupt(int sig, boolean flag) throws NativeErrorException {
+        if (siginterrupt.invoke_sI__sI_sI(sig, flag ? 1 : 0) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -3294,7 +3522,16 @@ public class Signal {
      * indicates an error.
      */
     public final static boolean sigismember(Sigset_t set, int signo) throws NativeErrorException {
-        return sigismember(AbstractNativeMemory.toUintptr_t(set), signo);
+        switch (sigismember.invoke_sI__P_sI(set, signo)) {
+            case -1:
+                throw new NativeErrorException(Errno.errno());
+            case 0:
+                return false;
+            case 1:
+                return true;
+            default:
+                throw new RuntimeException("Unexpected result from: sigismember(" + signo + ")");
+        }
     }
 
     /**
@@ -3309,11 +3546,14 @@ public class Signal {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static FunctionPtr_I_V signal(int sig, FunctionPtr_I_V func) throws NativeErrorException {
-        return new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t((signal(sig, NativeFunctionPointer.toUintptr_tOrNULL(func)))));
+    public final static FunctionPtr__V___I signal(int sig, FunctionPtr__V___I func) throws NativeErrorException {
+        MemoryAddress result = signal.invoke_MA__sI_P(sig, func != null ? func : Pointer.NULL);
+        if (SIG_ERR.toAddressable().equals(result)) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return new FunctionPtr__V___I(result);
+        }
     }
-
-    private static native long signal(int sig, long ptrFunc) throws NativeErrorException;
 
     public static String sigNumber2String(int signalNumber) {
         if (Signal.SIGABRT == signalNumber) {
@@ -3388,9 +3628,26 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigpause is not
      * available natively.
      */
-    public final static native void sigpause(int sig) throws NativeErrorException, NoSuchNativeMethodException;
-
-    private static native void sigpending(long ptrSet) throws NativeErrorException;
+    public final static void sigpause(int sig) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            final int result = sigpause.invoke_sI__sI(sig);
+            if (result == -1) {
+                if (Errno.errno() == Errno.EINTR) {
+                    //no-op, just return
+                } else {
+                    throw new NativeErrorException(Errno.errno());
+                }
+            } else {
+                throw new RuntimeException("Result of sigpause not excpected: " + result);
+            }
+        } catch (NullPointerException npe) {
+            if (sigpause == null) {
+                throw new NoSuchNativeMethodException("sigpause");
+            } else {
+                throw npe;
+            }
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -3402,10 +3659,10 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigpending(Sigset_t set) throws NativeErrorException {
-        sigpending(AbstractNativeMemory.toUintptr_t(set));
+        if (sigpending.invoke_sI___P(set) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native void sigprocmask(int how, long ptrSet, long ptrOset) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -3417,10 +3674,10 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigprocmask(int how, Sigset_t set, Sigset_t oset) throws NativeErrorException {
-        sigprocmask(how, AbstractNativeMemory.toUintptr_tOrNULL(set), AbstractNativeMemory.toUintptr_tOrNULL(oset));
+        if (sigprocmask.invoke_sI__sI__P__P(how, set != null ? set : Pointer.NULL, oset != null ? oset : Pointer.NULL) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native void sigqueue(int pid, int signo, long ptrValue) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -3434,7 +3691,16 @@ public class Signal {
      * available natively.
      */
     public final static void sigqueue(@pid_t int pid, int signo, Sigval value) throws NativeErrorException, NoSuchNativeMethodException {
-        sigqueue(pid, signo, AbstractNativeMemory.toUintptr_t(value));
+        //TODO is this right?? int and pointer???
+        try {
+            if (sigqueue.invoke_sI__sI_sI_A(pid, signo, value.sival_ptr()) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (sigqueue == null) {
+                throw new NoSuchNativeMethodException("sigqueue");
+            }
+        }
     }
 
     /**
@@ -3448,7 +3714,20 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigrelse is not
      * available natively.
      */
-    public final static native void sigrelse(int sig) throws NativeErrorException, NoSuchNativeMethodException;
+    public final static void sigrelse(int sig) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            if (sigrelse.invoke_sI__sI(sig) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (sigrelse == null) {
+                throw new NoSuchNativeMethodException("sigrelse");
+            } else {
+                throw npe;
+            }
+
+        }
+    }
 
     /**
      * <b>POSIX:</b>
@@ -3461,13 +3740,22 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigset is not available
      * natively.
      *///TODO args missing ....
-    public final static FunctionPtr_I_V sigset(int sig, FunctionPtr_I_V disp) throws NativeErrorException, NoSuchNativeMethodException {
-        return new FunctionPtr_I_V(NativeAddressHolder.ofUintptr_t(sigset(sig, NativeFunctionPointer.toUintptr_tOrNULL(disp))));
+    public final static FunctionPtr__V___I sigset(int sig, FunctionPtr__V___I disp) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            final MemoryAddress result = sigset.invoke_MA__sI_P(sig, disp != null ? disp : Pointer.NULL);
+            if (SIG_ERR.toAddressable().equals(result)) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return new FunctionPtr__V___I(result);
+            }
+        } catch (NullPointerException npe) {
+            if (sigset == null) {
+                throw new NoSuchNativeMethodException("sigset");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native long sigset(int sig, long ptrDisp) throws NativeErrorException, NoSuchNativeMethodException;
-
-    private static native void sigsuspend(long ptrSigmask) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -3479,11 +3767,15 @@ public class Signal {
      * is -1 an errno is other than EINTR.
      */
     public final static void sigsuspend(Sigset_t sigmask) throws NativeErrorException {
-        sigsuspend(AbstractNativeMemory.toUintptr_t(sigmask));
+        //TODO if not set to 0 it will not have EINTR!?.
+        Errno.errno(0);
+        if (sigsuspend.invoke_sI___P(sigmask) == -1) {
+            final int errno = Errno.errno();
+            if (errno != Errno.EINTR) {
+                throw new NativeErrorException(errno);
+            }
+        }
     }
-
-    private static native int sigtimedwait(long ptrSet, long ptrInfo,
-            long ptrTimeout) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -3496,12 +3788,22 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigtimedwait is not
      * available natively.
      */
-    public final static int sigtimedwait(Sigset_t set, Siginfo_t info,
-            Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
-        return sigtimedwait(AbstractNativeMemory.toUintptr_t(set), AbstractNativeMemory.toUintptr_tOrNULL(info), AbstractNativeMemory.toUintptr_t(timeout));
+    public final static int sigtimedwait(Sigset_t set, Siginfo_t info, Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
+        try {
+            final int result = sigtimedwait.invoke_sI___P__P__P(set, info != null ? info : Pointer.NULL, timeout);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
+        } catch (NullPointerException npe) {
+            if (sigtimedwait == null) {
+                throw new NoSuchNativeMethodException("sigtimedwait");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native int sigwait(long ptrSet, int sig) throws NativeErrorException;
 
     /**
      * <b>POSIX:</b>
@@ -3511,16 +3813,14 @@ public class Signal {
      *
      * @param set
      *
-     * @return the signal number of the received signal.
-     *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static int sigwait(Sigset_t set, int sig) throws NativeErrorException {
-        return sigwait(AbstractNativeMemory.toUintptr_t(set), sig);
+    public final static void sigwait(Sigset_t set, Int32_t sig) throws NativeErrorException {
+        if (sigwait.invoke_sI___P__P(set, sig) != 0) {
+            throw new NativeErrorException(Errno.errno());
+        }
     }
-
-    private static native int sigwaitinfo(long ptrSet, long ptrInfo) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -3534,6 +3834,19 @@ public class Signal {
      * available natively.
      */
     public final static int sigwaitinfo(Sigset_t set, Siginfo_t info) throws NativeErrorException, NoSuchNativeMethodException {
-        return sigwaitinfo(AbstractNativeMemory.toUintptr_t(set), AbstractNativeMemory.toUintptr_tOrNULL(info));
+        try {
+            final int result = sigwaitinfo.invoke_sI___P__P(set, info != null ? info : Pointer.NULL);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
+        } catch (NullPointerException npe) {
+            if (sigwaitinfo == null) {
+                throw new NoSuchNativeMethodException("sigwaitinfo");
+            } else {
+                throw npe;
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,8 +22,8 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.common.memory.Memory32Heap;
+import de.ibapl.jnhw.common.memory.MemoryHeap;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Uint16_t;
 import de.ibapl.jnhw.common.memory.Uint8_t;
 import java.nio.ByteBuffer;
@@ -32,6 +32,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.Disabled;
 import java.io.File;
+import jdk.incubator.foreign.ResourceScope;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  *
@@ -39,6 +42,18 @@ import java.io.File;
  */
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class IoapisetTest {
+
+    private ResourceScope scope;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        scope = ResourceScope.newConfinedScope();
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        scope.close();
+    }
 
     public IoapisetTest() {
     }
@@ -64,7 +79,7 @@ public class IoapisetTest {
     public void testCancelIoEx() throws Exception {
         System.out.println("CancelIoEx");
         Winnt.HANDLE hFile = null;
-        Minwinbase.OVERLAPPED lpOverlapped = null;
+        Minwinbase.LPOVERLAPPED lpOverlapped = null;
         Ioapiset.CancelIoEx(hFile, lpOverlapped);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -85,16 +100,18 @@ public class IoapisetTest {
                 0,
                 null);
 
-        Memory32Heap lpOutBuffer = new Memory32Heap(null, 0, 128, SetMem.TO_0x00);
+        MemoryHeap lpOutBuffer = new MemoryHeap(null, 0, 128);
 
-        int lpBytesReturned = Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, lpOutBuffer, null);
+        WinDef.LPDWORD lpBytesReturned = WinDef.LPDWORD.allocateNative(scope);
+
+        Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, lpOutBuffer, lpBytesReturned, null);
 
         assertEquals(2, lpBytesReturned);
-        Uint16_t uint16_t = new Uint16_t(lpOutBuffer, 0, SetMem.DO_NOT_SET);
+        Uint16_t uint16_t = new Uint16_t(OpaqueMemory.getMemorySegment(lpOutBuffer), 0);
         assertEquals(Winnt.COMPRESSION_FORMAT_NONE, uint16_t.uint16_t());
 
-        Uint8_t uint8_t = new Uint8_t(null, 0, SetMem.TO_0x00);
-        NativeErrorException nee = assertThrows(NativeErrorException.class, () -> Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, uint8_t, null));
+        Uint8_t uint8_t = Uint8_t.allocateNative(scope);
+        NativeErrorException nee = assertThrows(NativeErrorException.class, () -> Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, uint8_t, lpBytesReturned, null));
         assertEquals(Winerror.ERROR_INVALID_PARAMETER, nee.errno);
 
         Handleapi.CloseHandle(hDevice);
@@ -108,11 +125,12 @@ public class IoapisetTest {
     public void testGetOverlappedResult_3args() throws Exception {
         System.out.println("GetOverlappedResult");
         Winnt.HANDLE hFile = null;
-        Minwinbase.OVERLAPPED lpOverlapped = null;
+        Minwinbase.LPOVERLAPPED lpOverlapped = null;
         boolean bWait = false;
         int expResult = 0;
-        int result = Ioapiset.GetOverlappedResult(hFile, lpOverlapped, bWait);
-        assertEquals(expResult, result);
+        WinDef.LPDWORD lpBytesReturned = WinDef.LPDWORD.allocateNative(scope);
+        Ioapiset.GetOverlappedResult(hFile, lpOverlapped, lpBytesReturned, bWait);
+        assertEquals(expResult, lpBytesReturned.uint32_t());
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -125,12 +143,13 @@ public class IoapisetTest {
     public void testGetOverlappedResult_4args() throws Exception {
         System.out.println("GetOverlappedResult");
         Winnt.HANDLE hFile = null;
-        Minwinbase.OVERLAPPED lpOverlapped = null;
+        Minwinbase.LPOVERLAPPED lpOverlapped = null;
         ByteBuffer lpBuffer = null;
         boolean bWait = false;
         int expResult = 0;
-        int result = Ioapiset.GetOverlappedResult(hFile, lpOverlapped, lpBuffer, bWait);
-        assertEquals(expResult, result);
+        WinDef.LPDWORD lpBytesReturned = WinDef.LPDWORD.allocateNative(scope);
+        Ioapiset.GetOverlappedResult(hFile, lpOverlapped, lpBuffer, lpBytesReturned, bWait);
+        assertEquals(expResult, lpBytesReturned.uint32_t());
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

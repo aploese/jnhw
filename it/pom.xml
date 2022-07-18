@@ -6,10 +6,10 @@
     <parent>
         <groupId>de.ibapl.jnhw</groupId>
         <artifactId>jnhw</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>4.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <inceptionYear>2019</inceptionYear>
     <name>JNHW-Examples</name>
@@ -17,7 +17,6 @@
     <description>Code examples for JNHW</description>
 
     <modules>
-        <module>hello-world</module>
         <module>hello-world-async-io</module>
         <module>posix-signal</module>
         <module>posix-graceful-exit-sigsegv</module>
@@ -33,6 +32,16 @@
                 <plugin>
                     <groupId>biz.aQute.bnd</groupId>
                     <artifactId>bnd-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <compilerArgs>
+                            <arg>--enable-preview</arg>
+                            <arg>--add-modules=jdk.incubator.foreign</arg>
+                        </compilerArgs>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>

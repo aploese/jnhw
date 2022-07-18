@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,12 +22,22 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import de.ibapl.jnhw.winapi.Winnt.ArrayOfHandle;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.ResourceScope;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A__B__B__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___A_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI__A_uI_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI__A_uI_uI_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___A_uI__B;
 
 /**
  * Wrapper around the
@@ -40,14 +50,59 @@ import de.ibapl.jnhw.winapi.Winnt.ArrayOfHandle;
 @Include("synchapi.h")
 public abstract class Synchapi {
 
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
+    private final static JnhwMh_MA___A__B__B__A CreateEventW = JnhwMh_MA___A__B__B__A.of(
+            "CreateEventW",
+            WinApiDataType.HANDLE,
+            WinApiDataType.LPSECURITY_ATTRIBUTES,
+            WinApiDataType.BOOL,
+            WinApiDataType.BOOL,
+            WinApiDataType.LPCWSTR);
 
-    private static native long CreateEventW(long ptrLpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException;
+    private final static JnhwMh__B___A ResetEvent = JnhwMh__B___A.of(
+            "ResetEvent",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE);
+
+    private final static JnhwMh__B___A SetEvent = JnhwMh__B___A.of(
+            "SetEvent",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE);
+
+    private final static JnhwMh_uI__uI_sI SleepEx = JnhwMh_uI__uI_sI.of(
+            "SleepEx",
+            WinApiDataType.DWORD,
+            WinApiDataType.DWORD,
+            WinApiDataType.BOOL);
+
+    private final static JnhwMh_uI__uI__A_uI_uI WaitForMultipleObjects = JnhwMh_uI__uI__A_uI_uI.of(
+            "WaitForMultipleObjects",
+            WinApiDataType.DWORD,
+            WinApiDataType.DWORD,
+            WinApiDataType.const_HANDLE_pointer,
+            WinApiDataType.BOOL,
+            WinApiDataType.DWORD);
+
+    private final static JnhwMh_uI__uI__A_uI_uI_uI WaitForMultipleObjectsEx = JnhwMh_uI__uI__A_uI_uI_uI.of(
+            "WaitForMultipleObjectsEx",
+            WinApiDataType.DWORD,
+            WinApiDataType.DWORD,
+            WinApiDataType.const_HANDLE_pointer,
+            WinApiDataType.BOOL,
+            WinApiDataType.DWORD,
+            WinApiDataType.BOOL);
+
+    private final static JnhwMh_uI___A_uI WaitForSingleObject = JnhwMh_uI___A_uI.of(
+            "WaitForSingleObject",
+            WinApiDataType.DWORD,
+            WinApiDataType.HANDLE,
+            WinApiDataType.DWORD);
+
+    private final static JnhwMh_uI___A_uI__B WaitForSingleObjectEx = JnhwMh_uI___A_uI__B.of(
+            "WaitForSingleObjectEx",
+            WinApiDataType.DWORD,
+            WinApiDataType.HANDLE,
+            WinApiDataType.DWORD,
+            WinApiDataType.BOOL);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-createeventw">CreateEventW</a>
@@ -74,7 +129,18 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException {
-        return HANDLE.of(CreateEventW(AbstractNativeMemory.toUintptr_tOrNULL(lpEventAttributes), bManualReset, bInitialState, lpName));
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            WinDef.LPWSTR _lpName = WinDef.LPWSTR.wrap(lpName, true, scope);
+            MemoryAddress result = CreateEventW.invoke_MA___P__B__B__P(
+                    lpEventAttributes != null ? lpEventAttributes : Pointer.NULL,
+                    bManualReset,
+                    bInitialState,
+                    _lpName);
+            if (result == MemoryAddress.NULL) {
+                throw new NativeErrorException(Errhandlingapi.GetLastError());
+            }
+            return HANDLE.of(result);
+        }
     }
 
     /**
@@ -89,10 +155,10 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static void ResetEvent(HANDLE hEvent) throws NativeErrorException {
-        ResetEvent(HANDLE.getHandleValue(hEvent));
+        if (!ResetEvent.invoke__B___P(hEvent)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void ResetEvent(long ptrHEvent) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-setevent">SetEvent</a>
@@ -106,10 +172,10 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static void SetEvent(HANDLE hEvent) throws NativeErrorException {
-        SetEvent(HANDLE.getHandleValue(hEvent));
+        if (!SetEvent.invoke__B___P(hEvent)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void SetEvent(long ptrHEvent) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-sleepex">SleepEx</a>
@@ -129,10 +195,8 @@ public abstract class Synchapi {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return SleepEx0(dwMilliseconds, bAlertable);
+        return SleepEx.invoke_uL__uL__B(dwMilliseconds, bAlertable);
     }
-
-    private static native long SleepEx0(long dwMilliseconds, boolean bAlertable);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects">WaitForSingleObject</a>
@@ -160,10 +224,12 @@ public abstract class Synchapi {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForMultipleObjects(lpHandles.length, AbstractNativeMemory.toUintptr_t(lpHandles), bWaitAll, dwMilliseconds);
+        return WaitForMultipleObjects.invoke_uL__uI__P__B_uL(
+                lpHandles.length,
+                lpHandles,
+                bWaitAll,
+                dwMilliseconds);
     }
-
-    private static native long WaitForMultipleObjects(int nCount, long ptrLpHandles, boolean bWaitAll, long dwMilliseconds) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjectsex">WaitForSingleObjectEx</a>
@@ -194,14 +260,17 @@ public abstract class Synchapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static long WaitForMultipleObjectsEx(ArrayOfHandle lpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException {
+    public final static int WaitForMultipleObjectsEx(ArrayOfHandle lpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForMultipleObjectsEx(lpHandles.length, AbstractNativeMemory.toUintptr_t(lpHandles), bWaitAll, dwMilliseconds, bAlertable);
+        return WaitForMultipleObjectsEx.invoke_uI__uI__P__B_uL__B(
+                lpHandles.length,
+                lpHandles,
+                bWaitAll,
+                dwMilliseconds,
+                bAlertable);
     }
-
-    private static native long WaitForMultipleObjectsEx(int nCount, long ptrLpHandles, boolean bWaitAll, long dwMilliseconds, boolean bAlertable) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject">WaitForSingleObject</a>
@@ -217,14 +286,14 @@ public abstract class Synchapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static long WaitForSingleObject(HANDLE hHandle, long dwMilliseconds) throws NativeErrorException {
+    public final static int WaitForSingleObject(HANDLE hHandle, long dwMilliseconds) throws NativeErrorException {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForSingleObject(HANDLE.getHandleValue(hHandle), dwMilliseconds);
+        return WaitForSingleObject.invoke_uI__P_uL(
+                hHandle,
+                dwMilliseconds);
     }
-
-    private static native long WaitForSingleObject(long ptrHHandle, long dwMilliseconds) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobjectex">WaitForSingleObjectEx</a>
@@ -247,12 +316,14 @@ public abstract class Synchapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static long WaitForSingleObjectEx(HANDLE hHandle, long dwMilliseconds, boolean bAlertable) throws NativeErrorException {
+    public final static int WaitForSingleObjectEx(HANDLE hHandle, long dwMilliseconds, boolean bAlertable) throws NativeErrorException {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForSingleObjectEx(HANDLE.getHandleValue(hHandle), dwMilliseconds, bAlertable);
+        return WaitForSingleObjectEx.invoke_uI__P_uL_B(
+                hHandle,
+                dwMilliseconds,
+                bAlertable);
     }
 
-    private static native long WaitForSingleObjectEx(long ptrHHandle, long dwMilliseconds, boolean bAlertable) throws NativeErrorException;
 }

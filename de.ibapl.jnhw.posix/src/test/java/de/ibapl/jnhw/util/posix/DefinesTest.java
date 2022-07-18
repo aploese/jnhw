@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,13 +22,12 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.ObjectDefine;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -41,213 +40,110 @@ import org.junit.jupiter.api.function.Executable;
  */
 public class DefinesTest {
 
-    public static class NativeDefines {
+    @FunctionalInterface
+    public interface ObjectResolver {
 
-        public final static native Integer _BSD_SOURCE();
-
-        public final static native Integer _FILE_OFFSET_BITS();
-
-        public final static native Integer _LARGEFILE64_SOURCE();
-
-        public final static native Integer _LARGEFILE_SOURCE();
-
-        public final static native Integer _POSIX_C_SOURCE();
-
-        public final static native Integer _XOPEN_SOURCE();
-
-        public final static native Integer _XOPEN_SOURCE_EXTENDED();
-
-        public final static native Integer __aarch64__();
-
-        public final static native Integer __alpha__();
-
-        public final static native Integer __amd64__();
-
-        public final static native Integer __APPLE__();
-
-        public final static native Integer __arm__();
-
-        public final static native Integer __ARM_ARCH();
-
-        public final static native int __BIGGEST_ALIGNMENT__();
-
-        public final static native int __BYTE_ORDER__();
-
-        public final static native Integer __FreeBSD__();
-
-        public final static native Integer __GLIBC_MINOR__();
-
-        public final static native Integer __GLIBC__();
-
-        public final static native Integer __GNU_LIBRARY__();
-
-        public final static native Integer __i386__();
-
-        public final static native Integer __i686__();
-
-        public final static native Integer __ILP32__();
-
-        public final static native Integer __linux__();
-
-        public final static native Integer __LP64__();
-
-        public final static native Integer __mips__();
-
-        public final static native Integer __mips64();
-
-        public final static native Integer __MIPSEB__();
-
-        public final static native Integer __MIPSEL__();
-
-        public final static native int __ORDER_BIG_ENDIAN__();
-
-        public final static native int __ORDER_LITTLE_ENDIAN__();
-
-        public final static native int __ORDER_PDP_ENDIAN__();
-
-        public final static native Integer __OpenBSD__();
-
-        public final static native Integer __powerpc__();
-
-        public final static native Integer __powerpc64__();
-
-        public final static native Integer __riscv();
-
-        public final static native Integer __SH4__();
-
-        public final static native int __SIZEOF_LONG__();
-
-        public final static native int __SIZEOF_POINTER__();
-
-        public final static native Integer __s390__();
-
-        public final static native Integer __s390x__();
-
-        public final static native Integer __sh__();
-
-        public final static native Integer __sparc64__();
-
-        public final static native Integer __sparc__();
-
-        public final static native Integer __TIMESIZE();
-
-        public final static native Integer __WORDSIZE();
-
-        public final static native Integer __x86_64__();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
+        Object invoke(String name);
     }
-
-    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
 
     @Test
     public void test_NativeDefines() throws Exception {
-        DefinesTest.testDefines(Defines.class, NativeDefines.class, null);
+        DefinesTest.testDefines(Defines.class, null);
     }
 
-    public static void testDefines(Class javaDefines, Class nativeDefines, String haveHeaderName) throws Exception {
+    public static void testDefines(Class javaDefines, String haveHeaderName) throws Exception {
+        testDefines(javaDefines, haveHeaderName, null);
+    }
 
+    public static void testDefines(Class javaDefines, String haveHeaderName, ObjectResolver objectResolver) throws Exception {
         Stream.Builder<Executable> streamBuilder = Stream.builder();
 
         for (Field f : javaDefines.getFields()) {
             if (f.getAnnotation(Define.class) != null) {
                 final Class type = f.getType();
-                try {
-                    Method nativeDefine = nativeDefines.getMethod(f.getName());
-                    if (Long.class.equals(type) || Integer.class.equals(type) || Short.class.equals(type) || Byte.class.equals(type)) {
+                if (Long.class.equals(type) || Integer.class.equals(type) || Short.class.equals(type) || Byte.class.equals(type)) {
+                    throw new AssertionError("Unexpected type " + type + " for " + f.getName());
+                } else if (long.class.equals(type)) {
+                    streamBuilder.accept(() -> {
+                        assertEquals(LibJnhwPosixTestLoader.getLongDefine(f.getName()), f.getLong(javaDefines), f.getName());
+                    });
+                } else if (int.class.equals(type)) {
+                    streamBuilder.accept(() -> {
+                        assertEquals(LibJnhwPosixTestLoader.getIntDefine(f.getName()), f.getInt(javaDefines), f.getName());
+                    });
+                } else if (short.class.equals(type)) {
+                    streamBuilder.accept(() -> {
+                        assertEquals(LibJnhwPosixTestLoader.getShortDefine(f.getName()), f.getShort(javaDefines), f.getName());
+                    });
+                } else if (byte.class.equals(type)) {
+                    streamBuilder.accept(() -> {
+                        assertEquals(LibJnhwPosixTestLoader.getByteDefine(f.getName()), f.getByte(javaDefines), f.getName());
+                    });
+                } else if (IntDefine.class.equals(type)) {
+                    IntDefine def = (IntDefine) f.get(javaDefines);
+                    Integer nativeResult = LibJnhwPosixTestLoader.getClassIntegerDefine(f.getName());
+                    if (nativeResult == null) {
                         streamBuilder.accept(() -> {
-                            assertEquals(f.get(javaDefines), nativeDefine.invoke(nativeDefines), f.getName());
+                            assertFalse(((IntDefine) f.get(javaDefines)).isDefined(), () -> {
+                                return f.getName() + " is defined";
+                            });
                         });
-                    } else if (long.class.equals(type)) {
-                        streamBuilder.accept(() -> {
-                            assertEquals((Long) nativeDefine.invoke(nativeDefines), f.getLong(javaDefines), f.getName());
-                        });
-                    } else if (int.class.equals(type)) {
-                        streamBuilder.accept(() -> {
-                            assertEquals((Integer) nativeDefine.invoke(nativeDefines), f.getInt(javaDefines), f.getName());
-                        });
-                    } else if (short.class.equals(type)) {
-                        streamBuilder.accept(() -> {
-                            assertEquals((Short) nativeDefine.invoke(nativeDefines), f.getShort(javaDefines), f.getName());
-                        });
-                    } else if (byte.class.equals(type)) {
-                        streamBuilder.accept(() -> {
-                            assertEquals((Byte) nativeDefine.invoke(nativeDefines), f.getByte(javaDefines), f.getName());
-                        });
-                    } else if (IntDefine.class.equals(type)) {
-                        IntDefine def = (IntDefine) f.get(javaDefines);
-                        Integer nativeResult = (Integer) nativeDefine.invoke(nativeDefines);
-                        if (nativeResult == null) {
-                            streamBuilder.accept(() -> {
-                                assertFalse(((IntDefine) f.get(javaDefines)).isDefined(), () -> {
-                                    return f.getName() + " is defined";
-                                });
-                            });
-                        } else {
-                            streamBuilder.accept(() -> {
-                                assertTrue(((IntDefine) f.get(javaDefines)).isDefined(), () -> {
-                                    return f.getName() + " is not defined";
-                                });
-                                assertEquals(nativeResult, ((IntDefine) f.get(javaDefines)).get(), f.getName());
-                            });
-                        }
-                    } else if (ObjectDefine.class.equals(type)) {
-                        ObjectDefine def = (ObjectDefine) f.get(javaDefines);
-                        Object nativeResult = (Object) nativeDefine.invoke(nativeDefines);
-                        if (nativeResult == null) {
-                            streamBuilder.accept(() -> {
-                                assertFalse(((ObjectDefine) f.get(javaDefines)).isDefined(), () -> {
-                                    return f.getName() + " is defined";
-                                });
-                            });
-                        } else {
-                            streamBuilder.accept(() -> {
-                                assertTrue(((ObjectDefine) f.get(javaDefines)).isDefined(), () -> {
-                                    return f.getName() + " is not defined";
-                                });
-                                assertEquals(nativeResult, ((ObjectDefine) f.get(javaDefines)).get(), f.getName());
-                            });
-                        }
-                    } else if (Object.class.isAssignableFrom(type)) {
-                        Object def = f.get(javaDefines);
-                        Object nativeResult = nativeDefine.invoke(nativeDefines);
-                        if (nativeResult == null) {
-                            streamBuilder.accept(() -> {
-                                assertNull(f.get(javaDefines), () -> {
-                                    return f.getName() + " is defined";
-                                });
-                            });
-                        } else {
-                            streamBuilder.accept(() -> {
-                                assertEquals(nativeResult, f.get(javaDefines), f.getName());
-                            });
-                        }
                     } else {
                         streamBuilder.accept(() -> {
-                            fail("Implement Any Define! " + f.getName() + " " + type);
+                            assertTrue(((IntDefine) f.get(javaDefines)).isDefined(), () -> {
+                                return f.getName() + " is not defined";
+                            });
+                            assertEquals(nativeResult, ((IntDefine) f.get(javaDefines)).get(), f.getName());
                         });
                     }
-                } catch (NoSuchMethodException nsme) {
-                    streamBuilder.accept(() -> {
-                        fail("Not found in nativeDefines: " + f.getName(), nsme);
-                    });
+                } else if (ObjectDefine.class.equals(type)) {
+                    ObjectDefine def = (ObjectDefine) f.get(javaDefines);
+                    if (objectResolver == null) {
+                        throw new IllegalArgumentException("No objectResolver for: " + f.getName());
+                    }
+                    ObjectDefine nativeResult = (ObjectDefine) objectResolver.invoke(f.getName());
+                    if (nativeResult.isDefined()) {
+                        streamBuilder.accept(() -> {
+                            assertTrue(((ObjectDefine) f.get(javaDefines)).isDefined(), () -> {
+                                return f.getName() + " is not defined";
+                            });
+                            assertEquals(nativeResult.get(), ((ObjectDefine) f.get(javaDefines)).get(), f.getName());
+                        });
+                    } else {
+                        streamBuilder.accept(() -> {
+                            assertFalse(((ObjectDefine) f.get(javaDefines)).isDefined(), () -> {
+                                return f.getName() + " is defined";
+                            });
+                            assertEquals(nativeResult, ((ObjectDefine) f.get(javaDefines)).get(), f.getName());
+                        });
 
+                    }
+                } else if (Object.class.isAssignableFrom(type)) {
+                    Object def = f.get(javaDefines);
+                    if (objectResolver == null) {
+                        throw new IllegalArgumentException("No objectResolver for: " + f.getName());
+                    }
+                    Object nativeResult = objectResolver.invoke(f.getName());
+                    if (nativeResult == null) {
+                        streamBuilder.accept(() -> {
+                            assertNull(f.get(javaDefines), () -> {
+                                return f.getName() + " is not null";
+                            });
+                        });
+                    } else {
+                        streamBuilder.accept(() -> {
+                            assertEquals(nativeResult, f.get(javaDefines), f.getName());
+                        });
+                    }
+                } else {
+                    streamBuilder.accept(() -> {
+                        fail("Implement Any Define! " + f.getName() + " " + type);
+                    });
                 }
             } else if (haveHeaderName.equals(f.getName())) {
-                try {
-                    final Method nativeDefine = nativeDefines.getMethod(f.getName());
-                    streamBuilder.accept(() -> {
-                        assertEquals((Boolean) nativeDefine.invoke(nativeDefines), f.getBoolean(javaDefines), haveHeaderName);
-                    });
-                } catch (NoSuchMethodException nsme) {
-                    streamBuilder.accept(() -> {
-                        fail("Not found in nativeDefines: " + f.getName(), nsme);
-                    });
-
-                }
-
+                streamBuilder.accept(() -> {
+                    assertEquals(LibJnhwPosixTestLoader.getIntDefine(f.getName()) != 0, f.getBoolean(javaDefines), haveHeaderName);
+                });
             }
         }
         assertAll(streamBuilder.build());
@@ -287,7 +183,7 @@ public class DefinesTest {
      */
     @Test
     public void test_LARGEFILE64_SOURCE() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 switch (Defines.__SIZEOF_LONG__) {
                     case 4:
@@ -309,7 +205,7 @@ public class DefinesTest {
                 assertFalse(Defines._LARGEFILE64_SOURCE.isDefined());
                 break;
             default:
-                fail("No testcase for OS: " + MULTIARCHTUPEL_BUILDER.getOS());
+                fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
     }
 
@@ -318,7 +214,7 @@ public class DefinesTest {
      */
     @Test
     public void test_LARGEFILE_SOURCE() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 switch (Defines.__SIZEOF_LONG__) {
                     case 4:
@@ -340,7 +236,7 @@ public class DefinesTest {
                 assertFalse(Defines._LARGEFILE_SOURCE.isDefined());
                 break;
             default:
-                fail("No testcase for OS: " + MULTIARCHTUPEL_BUILDER.getOS());
+                fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
     }
 
@@ -357,7 +253,7 @@ public class DefinesTest {
      */
     @Test
     public void test_POSIX_C_SOURCE() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
             case FREE_BSD:
             case OPEN_BSD:
@@ -368,7 +264,7 @@ public class DefinesTest {
                 assertFalse(Defines._POSIX_C_SOURCE.isDefined());
                 break;
             default:
-                fail("No testcase for OS: " + MULTIARCHTUPEL_BUILDER.getOS());
+                fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
     }
 
@@ -377,7 +273,7 @@ public class DefinesTest {
      */
     @Test
     public void test_XOPEN_SOURCE() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
             case FREE_BSD:
             case OPEN_BSD:
@@ -388,7 +284,7 @@ public class DefinesTest {
                 assertFalse(Defines._XOPEN_SOURCE.isDefined());
                 break;
             default:
-                fail("No testcase for OS: " + MULTIARCHTUPEL_BUILDER.getOS());
+                fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
     }
 
@@ -397,7 +293,7 @@ public class DefinesTest {
      */
     @Test
     public void test_XOPEN_SOURCE_EXTENDED() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
             case FREE_BSD:
             case OPEN_BSD:
@@ -408,7 +304,7 @@ public class DefinesTest {
                 assertFalse(Defines._XOPEN_SOURCE_EXTENDED.isDefined());
                 break;
             default:
-                fail("No testcase for OS: " + MULTIARCHTUPEL_BUILDER.getOS());
+                fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
     }
 
@@ -417,7 +313,7 @@ public class DefinesTest {
      */
     @Test
     public void test__APPLE__() {
-        assertEquals(MULTIARCHTUPEL_BUILDER.getOS() == OS.DARWIN, Defines.__APPLE__.isDefined());
+        assertEquals(MultiarchTupelBuilder.getOS() == OS.DARWIN, Defines.__APPLE__.isDefined());
     }
 
     /**
@@ -425,7 +321,7 @@ public class DefinesTest {
      */
     @Test
     public void test__FreeBSD__() {
-        assertEquals(MULTIARCHTUPEL_BUILDER.getOS() == OS.FREE_BSD, Defines.__FreeBSD__.isDefined());
+        assertEquals(MultiarchTupelBuilder.getOS() == OS.FREE_BSD, Defines.__FreeBSD__.isDefined());
     }
 
     /**
@@ -433,14 +329,13 @@ public class DefinesTest {
      */
     @Test
     public void test__WORDSIZE() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getOS()) {
-            case OPEN_BSD:
-            case WINDOWS:
+        switch (MultiarchTupelBuilder.getOS()) {
+            case OPEN_BSD, WINDOWS ->
                 assertFalse(Defines.__WORDSIZE.isDefined());
-                break;
-            default:
-                assertEquals(MULTIARCHTUPEL_BUILDER.getSizeOfPointer().sizeInBit, Defines.__WORDSIZE.get(), "size of pointer != wordsize");
-                assertEquals(MULTIARCHTUPEL_BUILDER.getSizeOfLong().sizeInBit, Defines.__WORDSIZE.get(), "size of long != wordsize");
+            default -> {
+                assertEquals(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer.sizeInBit, Defines.__WORDSIZE.get(), "size of pointer != wordsize");
+                assertEquals(MultiarchTupelBuilder.getMemoryModel().sizeOf_long.sizeInBit, Defines.__WORDSIZE.get(), "size of long != wordsize");
+            }
         }
     }
 
@@ -449,7 +344,7 @@ public class DefinesTest {
      */
     @Test
     public void test__linux__() {
-        assertEquals(MULTIARCHTUPEL_BUILDER.getOS() == OS.LINUX, Defines.__linux__.isDefined());
+        assertEquals(MultiarchTupelBuilder.getOS() == OS.LINUX, Defines.__linux__.isDefined());
     }
 
     @Test
@@ -469,7 +364,7 @@ public class DefinesTest {
 
     @Test
     public void test__BYTE_ORDER__() throws Exception {
-        switch (MULTIARCHTUPEL_BUILDER.getEndianess()) {
+        switch (MultiarchTupelBuilder.getEndianess()) {
             case BIG:
                 assertEquals(Defines.__ORDER_BIG_ENDIAN__, Defines.__BYTE_ORDER__);
                 break;
@@ -484,9 +379,6 @@ public class DefinesTest {
         if (Defines.__GNU_LIBRARY__.isDefined()) {
             assertTrue(Defines.__GLIBC__.isDefined(), "__GLIBC__");
             assertTrue(Defines.__GLIBC_MINOR__.isDefined(), "__GLIBC_MINOR__");
-            assertEquals(MULTIARCHTUPEL_BUILDER.getSizeOfLong().sizeInBit, Defines.__WORDSIZE.get());
-            assertEquals(MULTIARCHTUPEL_BUILDER.getSizeOfPointer().sizeInBit, Defines.__WORDSIZE.get());
-            //assertEquals(new MultiarchTupelBuilder().getWordSize().sizeInBit, Defines.__TIMESIZE());
         }
     }
 

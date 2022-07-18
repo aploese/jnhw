@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,9 +23,9 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.util.IntDefine;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -339,7 +339,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
 
     public static interface LinuxDefines {
 
-        public final static int E2BIG = 1;
+        public final static int E2BIG = 7;
         public final static int EACCES = 13;
         public final static int EADV = 68;
         public final static int EAGAIN = 11;
@@ -1325,14 +1325,8 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
     @Define
     public final static IntDefine EXFULL;
 
-    /**
-     * Make sure the native lib is loaded
-     */
     static {
-        LibJnhwPosixLoader.touch();
-        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-
-        switch (multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 E2BIG = LinuxDefines.E2BIG;
                 EACCES = LinuxDefines.EACCES;
@@ -1381,7 +1375,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 ETXTBSY = LinuxDefines.ETXTBSY;
                 EWOULDBLOCK = LinuxDefines.EWOULDBLOCK;
                 EXDEV = LinuxDefines.EXDEV;
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case MIPS:
                     case MIPS_64:
                         EADDRINUSE = Linux_Mips_Mips64_Defines.EADDRINUSE;
@@ -1470,7 +1464,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                         EXFULL = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.EXFULL);
                         break;
                     default:
-                        switch (multiarchInfo.getArch()) {
+                        switch (MultiarchTupelBuilder.getArch()) {
                             case AARCH64:
                             case ARM:
                             case I386:
@@ -1483,7 +1477,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                                 EDEADLOCK = IntDefine.toIntDefine(Linux_Ppc64_Defines.EDEADLOCK);
                                 break;
                             default:
-                                throw new NoClassDefFoundError("No errno.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                                throw new NoClassDefFoundError("No errno.h defines for " + MultiarchTupelBuilder.getMultiarch());
                         }
                         EADDRINUSE = Linux_NonMips_Defines.EADDRINUSE;
                         EADDRNOTAVAIL = Linux_NonMips_Defines.EADDRNOTAVAIL;
@@ -1686,7 +1680,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 EWOULDBLOCK = BsdDefines.EWOULDBLOCK;
                 EXDEV = BsdDefines.EXDEV;
                 EXFULL = IntDefine.UNDEFINED;
-                switch (multiarchInfo.getOS()) {
+                switch (MultiarchTupelBuilder.getOS()) {
                     case DARWIN:
                         EMEDIUMTYPE = IntDefine.UNDEFINED;
                         ENOMEDIUM = IntDefine.UNDEFINED;
@@ -1748,12 +1742,16 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                         ETIME = IntDefine.UNDEFINED;
                         break;
                     default:
-                        throw new NoClassDefFoundError("No errno.h BSD defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                        throw new NoClassDefFoundError("No errno.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
                 break;
             default:
-                throw new NoClassDefFoundError("No errno.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No errno.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
+    }
+
+    static {
+        NativeErrorException.addErrSymbolProvider(Errno::getErrnoSymbol);
     }
 
     /**

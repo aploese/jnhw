@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,12 +21,12 @@
  */
 package de.ibapl.jnhw.it.fun_with_memory_and_function_pointers;
 
-import de.ibapl.jnhw.common.callback.Callback_I_V;
-import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
+import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
+import de.ibapl.jnhw.common.upcall.Callback__V___I;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -36,7 +36,7 @@ public class FunctionPointer {
 
     public static void call_I__V() {
         System.out.println("\n\nFunctionPointer.call_I__V()\n");
-        Callback_I_V cb = new Callback_I_V_Impl() {
+        Callback__V___I cb = new Callback__V___I() {
 
             @Override
             protected void callback(int value) {
@@ -46,20 +46,15 @@ public class FunctionPointer {
             }
         };
         System.out.println("cb: " + cb.toString());
-
+        
         //get the native address and encapsulate it in an NativeAddressHolder..
-        NativeAddressHolder nah = NativeFunctionPointer.toNativeAddressHolder(cb);
-        System.out.println("nah: " + nah.toString());
-        CallNative_I_V cn = new CallNative_I_V(nah);
+        System.out.println("nah: " + cb.toAddress());
+        JnhwMi__V___I cn = new JnhwMi__V___I(cb.toAddress(), ResourceScope.globalScope());
         System.out.println("cn: " + cn.toString());
 
         System.out.println("Do the call!>>>");
-        cn.call(42);
+        cn.invoke__V__sI(42);
         System.out.println("<<<Done!");
-
-        //both can be interchangeable used ... in struct members or function calls
-        FunctionPtr_I_V ptr_cb = cb;
-        FunctionPtr_I_V ptr_cn = cn;
 
     }
 

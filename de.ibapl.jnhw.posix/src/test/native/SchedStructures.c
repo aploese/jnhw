@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,11 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_SchedTest_NativeSched_param.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
     //for offsetof
 #include <stddef.h>
 #include <unistd.h>
@@ -32,93 +28,48 @@ extern "C" {
 #ifdef _POSIX_VERSION
 #include <sched.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_SchedTest_NativeSched_param
-     * Method:    alignof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_SchedTest_00024NativeSched_1param_alignof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return __alignof__ (struct sched_param);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_SchedTest_NativeSched_param
-     * Method:    sizeof
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_SchedTest_00024NativeSched_1param_sizeof
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return sizeof (struct sched_param);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_SchedTest_NativeSched_param
-     * Method:    sched_priority
-     * Signature: ()J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SchedTest_00024NativeSched_1param_sched_1priority
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return offsetof(struct sched_param, sched_priority);
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_SchedTest_NativeSched_param
-     * Method:    sched_ss_low_priority
-     * Signature: ()J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SchedTest_00024NativeSched_1param_sched_1ss_1low_1priority
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
-        return -1;
-#else
-        return offsetof(struct sched_param, sched_ss_low_priority);
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_SchedTest_NativeSched_param
-     * Method:    sched_ss_repl_period
-     * Signature: ()J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SchedTest_00024NativeSched_1param_sched_1ss_1repl_1period
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
-        return -1;
-#else
-        return offsetof(struct sched_param, sched_ss_repl_period);
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_SchedTest_NativeSched_param
-     * Method:    sched_ss_init_budget
-     * Signature: ()J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SchedTest_00024NativeSched_1param_sched_1ss_1init_1budget
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
-        return -1;
-#else
-        return offsetof(struct sched_param, sched_ss_init_budget);
-#endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_SchedTest_NativeSched_param
-     * Method:    sched_ss_max_repl
-     * Signature: ()J
-     */
-    JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_posix_SchedTest_00024NativeSched_1param_sched_1ss_1max_1repl
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
-        return -1;
-#else
-        return offsetof(struct sched_param, sched_ss_max_repl);
-#endif
-    }
-
-#endif
-#ifdef __cplusplus
+int Sched_param_alignof() {
+    return __alignof__ (struct sched_param);
 }
+
+int Sched_param_sizeof() {
+    return sizeof (struct sched_param);
+}
+
+int Sched_param_offsetof_sched_priority() {
+    return offsetof(struct sched_param, sched_priority);
+}
+
+int Sched_param_offsetof_sched_ss_low_priority() {
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+    return -1;
+#else
+    return offsetof(struct sched_param, sched_ss_low_priority);
+#endif
+}
+
+int Sched_param_offsetof_sched_ss_repl_period() {
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+    return -1;
+#else
+    return offsetof(struct sched_param, sched_ss_repl_period);
+#endif
+}
+
+int Sched_param_offsetof_sched_ss_init_budget() {
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+    return -1;
+#else
+    return offsetof(struct sched_param, sched_ss_init_budget);
+#endif
+}
+
+int Sched_param_offsetof_sched_ss_max_repl() {
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+    return -1;
+#else
+    return offsetof(struct sched_param, sched_ss_max_repl);
+#endif
+}
+
 #endif

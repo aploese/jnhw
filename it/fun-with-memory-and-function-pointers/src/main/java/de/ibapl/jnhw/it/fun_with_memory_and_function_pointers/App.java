@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,6 +21,8 @@
  */
 package de.ibapl.jnhw.it.fun_with_memory_and_function_pointers;
 
+import jdk.incubator.foreign.ResourceScope;
+
 /**
  * Hello world!
  *
@@ -28,11 +30,13 @@ package de.ibapl.jnhw.it.fun_with_memory_and_function_pointers;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        Struct.getMemory();
-        Struct.onTheFlyStructure();
-        Struct.onTheFlyUnion();
-        Struct.printMemory();
+        try (ResourceScope scope = ResourceScope.newConfinedScope()) {
+        Struct.getMemory(scope);
+        Struct.onTheFlyStructure(scope);
+        Struct.onTheFlyUnion(scope);
+        Struct.printMemory(scope);
 
         FunctionPointer.call_I__V();
+        }
     }
 }

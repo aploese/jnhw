@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,1661 +20,897 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_ErrnoTest_NativeDefines.h"
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-    //We need the POSIX version ...
+//We need the POSIX version ...
 #if !defined(HAVE_ERRNO_H) || !defined(_POSIX_VERSION)
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    E2BIG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_E2BIG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
 #else
 #include <errno.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    E2BIG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_E2BIG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
+int getValueOf_E2BIG() {
+    return E2BIG;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EACCES
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EACCES
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EACCES;
-    }
+int getValueOf_EACCES() {
+    return EACCES;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EADDRINUSE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EADDRINUSE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EADDRINUSE;
-    }
+int getValueOf_EADDRINUSE() {
+    return EADDRINUSE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EADDRNOTAVAIL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EADDRNOTAVAIL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EADDRNOTAVAIL;
-    }
+int getValueOf_EADDRNOTAVAIL() {
+    return EADDRNOTAVAIL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EADV
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EADV
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EADV(int* value) {
 #if defined (__linux__)
-
-        return JnhwWrapInteger(env, EADV);
+    *value = EADV;
 #elif !defined(EADV)
-        return NULL;
+    value = NULL;
 #else
 #error "EADV defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EAFNOSUPPORT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EAFNOSUPPORT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EAFNOSUPPORT;
-    }
+int getValueOf_EAFNOSUPPORT() {
+    return EAFNOSUPPORT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EAGAIN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EAGAIN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EAGAIN;
-    }
+int getValueOf_EAGAIN() {
+    return EAGAIN;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EALREADY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EALREADY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EALREADY;
-    }
+int getValueOf_EALREADY() {
+    return EALREADY;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EBADE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EBADE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EBADE(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EBADE);
+    *value = EBADE;
 #elif !defined(EBADE)
-        return NULL;
+    value = NULL;
 #else
 #error "EBADE defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EBADF
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EBADF
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EBADF;
-    }
+int getValueOf_EBADF() {
+    return EBADF;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EBADFD
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EBADFD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EBADFD(int* value) {
 #if defined (__linux__)
-
-        return JnhwWrapInteger(env, EBADFD);
+    *value = EBADFD;
 #elif !defined(EBADFD)
-        return NULL;
+    value = NULL;
 #else
 #error "EBADFD defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EBADMSG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EBADMSG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EBADMSG;
-    }
+int getValueOf_EBADMSG() {
+    return EBADMSG;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EBADR
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EBADR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EBADR(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EBADR);
+    *value = EBADR;
 #elif !defined(EBADR)
-        return NULL;
+    value = NULL;
 #else
 #error "EBADR defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EBADRQC
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EBADRQC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EBADRQC(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EBADRQC);
+    *value = EBADRQC;
 #elif !defined(EBADRQC)
-        return NULL;
+    value = NULL;
 #else
 #error "EBADRQC defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EBADSLT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EBADSLT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EBADSLT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EBADSLT);
+    *value = EBADSLT;
 #elif !defined(EBADSLT)
-        return NULL;
+    value = NULL;
 #else
 #error "EBADSLT defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EBFONT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EBFONT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EBFONT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EBFONT);
+    *value = EBFONT;
 #elif !defined(EBFONT)
-        return NULL;
+    valkue = NULL;
 #else
 #error "EBFONT defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EBUSY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EBUSY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EBUSY;
-    }
+int getValueOf_EBUSY() {
+    return EBUSY;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ECANCELED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ECANCELED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECANCELED;
-    }
+int getValueOf_ECANCELED() {
+    return ECANCELED;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ECHILD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ECHILD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECHILD;
-    }
+int getValueOf_ECHILD() {
+    return ECHILD;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ECHRNG
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ECHRNG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ECHRNG(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ECHRNG);
+    *value = ECHRNG;
 #elif !defined(ECHRNG)
-        return NULL;
+    value = NULL;
 #else
 #error "ECHRNG defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ECOMM
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ECOMM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ECOMM(int* value) {
 #if defined (__linux__)
-
-        return JnhwWrapInteger(env, ECOMM);
+    *value = ECOMM;
 #elif !defined(ECOMM)
-        return NULL;
+    value = NULL;
 #else
 #error "ECOMM defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ECONNABORTED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ECONNABORTED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECONNABORTED;
-    }
+int getValueOf_ECONNABORTED() {
+    return ECONNABORTED;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ECONNREFUSED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ECONNREFUSED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECONNREFUSED;
-    }
+int getValueOf_ECONNREFUSED() {
+    return ECONNREFUSED;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ECONNRESET
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ECONNRESET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECONNRESET;
-    }
+int getValueOf_ECONNRESET() {
+    return ECONNRESET;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EDEADLK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EDEADLK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EDEADLK;
-    }
+int getValueOf_EDEADLK() {
+    return EDEADLK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EDEADLOCK
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EDEADLOCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EDEADLOCK(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EDEADLOCK);
+    *value = EDEADLOCK;
 #elif !defined(EDEADLOCK)
-        return NULL;
+    value = NULL;
 #else
 #error "EDEADLOCK defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EDESTADDRREQ
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EDESTADDRREQ
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EDESTADDRREQ;
-    }
+int getValueOf_EDESTADDRREQ() {
+    return EDESTADDRREQ;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EDOTDOT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EDOTDOT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EDOTDOT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EDOTDOT);
+    *value = EDOTDOT;
 #elif !defined(EDOTDOT)
-        return NULL;
+    value = NULL;
 #else
 #error "EDOTDOT defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EDQUOT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EDQUOT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EDQUOT;
-    }
+int getValueOf_EDQUOT() {
+    return EDQUOT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EEXIST
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EEXIST
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EEXIST;
-    }
+int getValueOf_EEXIST() {
+    return EEXIST;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EFAULT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EFAULT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EFAULT;
-    }
+int getValueOf_EFAULT() {
+    return EFAULT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EFBIG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EFBIG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EFBIG;
-    }
+int getValueOf_EFBIG() {
+    return EFBIG;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EHOSTDOWN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EHOSTDOWN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EHOSTDOWN;
-    }
+int getValueOf_EHOSTDOWN() {
+    return EHOSTDOWN;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EHOSTUNREACH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EHOSTUNREACH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EHOSTUNREACH;
-    }
+int getValueOf_EHOSTUNREACH() {
+    return EHOSTUNREACH;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EHWPOISON
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EHWPOISON
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EHWPOISON(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EHWPOISON);
+    *value = EHWPOISON;
 #elif !defined(EHWPOISON)
-        return NULL;
+    value = NULL;
 #else
 #error "EHWPOISON defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EIDRM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EIDRM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EIDRM;
-    }
+int getValueOf_EIDRM() {
+    return EIDRM;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EINPROGRESS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EINPROGRESS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EINPROGRESS;
-    }
+int getValueOf_EINPROGRESS() {
+    return EINPROGRESS;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EINTR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EINTR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EINTR;
-    }
+int getValueOf_EINTR() {
+    return EINTR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EINVAL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EINVAL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EINVAL;
-    }
+int getValueOf_EINVAL() {
+    return EINVAL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EIO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EIO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EIO;
-    }
+int getValueOf_EIO() {
+    return EIO;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EISCONN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EISCONN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EISCONN;
-    }
+int getValueOf_EISCONN() {
+    return EISCONN;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EISDIR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EISDIR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EISDIR;
-    }
+int getValueOf_EISDIR() {
+    return EISDIR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EISNAM
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EISNAM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EISNAM(int* value) {
 #if defined (__linux__)
-
-        return JnhwWrapInteger(env, EISNAM);
+    *value = EISNAM;
 #elif !defined(EISNAM)
-        return NULL;
+    value = NULL;
 #else
 #error "EISNAM defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EKEYEXPIRED
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EKEYEXPIRED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EKEYEXPIRED(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EKEYEXPIRED);
+    *value = EKEYEXPIRED;
 #elif !defined(EKEYEXPIRED)
-        return NULL;
+    value = NULL;
 #else
 #error "EKEYEXPIRED defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EKEYREJECTED
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EKEYREJECTED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EKEYREJECTED(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EKEYREJECTED);
+    *value = EKEYREJECTED;
 #elif !defined(EKEYREJECTED)
-        return NULL;
+    value = NULL;
 #else
 #error "EKEYREJECTED defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EKEYREVOKED
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EKEYREVOKED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EKEYREVOKED(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EKEYREVOKED);
+    *value = EKEYREVOKED;
 #elif !defined(EKEYREVOKED)
-        return NULL;
+    value = NULL;
 #else
 #error "EKEYREVOKED defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EL2HLT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EL2HLT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EL2HLT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EL2HLT);
+    *value = EL2HLT;
 #elif !defined(EL2HLT)
-        return NULL;
+    value = NULL;
 #else
 #error "EL2HLT defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EL2NSYNC
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EL2NSYNC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EL2NSYNC(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EL2NSYNC);
+    *value = EL2NSYNC;
 #elif !defined(EL2NSYNC)
-        return NULL;
+    value = NULL;
 #else
 #error "EL2NSYNC defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EL3HLT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EL3HLT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EL3HLT(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EL3HLT);
+    *value = EL3HLT;
 #elif !defined(EL3HLT)
-        return NULL;
+    value = NULL;
 #else
 #error "EL3HLT defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EL3RST
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EL3RST
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EL3RST(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EL3RST);
+    *value = EL3RST;
 #elif !defined(EL3RST)
-        return NULL;
+    value = NULL;
 #else
 #error "EL3RST defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ELIBACC
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ELIBACC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ELIBACC(int* value) {
 #if defined (__linux__)
-
-        return JnhwWrapInteger(env, ELIBACC);
+    *value = ELIBACC;
 #elif !defined(ELIBACC)
-        return NULL;
+    value = NULL;
 #else
 #error "ELIBACC defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ELIBBAD
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ELIBBAD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ELIBBAD(int* value) {
 #if defined (__linux__)
-
-        return JnhwWrapInteger(env, ELIBBAD);
+    *value = ELIBBAD;
 #elif !defined(ELIBBAD)
-        return NULL;
+    value = NULL;
 #else
 #error "ELIBBAD defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ELIBEXEC
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ELIBEXEC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ELIBEXEC(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ELIBEXEC);
+    *value = ELIBEXEC;
 #elif !defined(ELIBEXEC)
-        return NULL;
+    value = NULL;
 #else
 #error "ELIBEXEC defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ELIBMAX
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ELIBMAX
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ELIBMAX(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ELIBMAX);
+    *value = ELIBMAX;
 #elif !defined(ELIBMAX)
-        return NULL;
+    value = NULL;
 #else
 #error "ELIBMAX defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ELIBSCN
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ELIBSCN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ELIBSCN(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ELIBSCN);
+    *value = ELIBSCN;
 #elif !defined(ELIBSCN)
-        return NULL;
+    value = NULL;
 #else
 #error "ELIBSCN defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ELNRNG
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ELNRNG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ELNRNG(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ELNRNG);
+    *value = ELNRNG;
 #elif !defined(ELNRNG)
-        return NULL;
+    value = NULL;
 #else
 #error "ELNRNG defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ELOOP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ELOOP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ELOOP;
-    }
+int getValueOf_ELOOP() {
+    return ELOOP;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EMEDIUMTYPE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EMEDIUMTYPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EMEDIUMTYPE(int* value) {
 #if defined (__linux__) || defined(__OpenBSD__)
-        return JnhwWrapInteger(env, EMEDIUMTYPE);
+    *value = EMEDIUMTYPE;
 #elif !defined(EMEDIUMTYPE)
-        return NULL;
+    value = NULL;
 #else
 #error "EMEDIUMTYPE defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EMFILE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EMFILE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EMFILE;
-    }
+int getValueOf_EMFILE() {
+    return EMFILE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EMLINK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EMLINK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EMLINK;
-    }
+int getValueOf_EMLINK() {
+    return EMLINK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EMSGSIZE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EMSGSIZE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EMSGSIZE;
-    }
+int getValueOf_EMSGSIZE() {
+    return EMSGSIZE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EMULTIHOP
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EMULTIHOP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EMULTIHOP(int* value) {
 #if defined (__OpenBSD__)
 #if !defined(EMULTIHOP)
-        return NULL;
+    value = NULL;
 #else
 #error "EMULTIHOP defined"
 #endif
 #else
-        return JnhwWrapInteger(env, EMULTIHOP);
+    *value = EMULTIHOP;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENAMETOOLONG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENAMETOOLONG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENAMETOOLONG;
-    }
+int getValueOf_ENAMETOOLONG() {
+    return ENAMETOOLONG;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENAVAIL
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENAVAIL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENAVAIL(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ENAVAIL);
+    *value = ENAVAIL;
 #elif !defined(ENAVAIL)
-        return NULL;
+    value = NULL;
 #else
 #error "ENAVAIL defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENETDOWN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENETDOWN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENETDOWN;
-    }
+int getValueOf_ENETDOWN() {
+    return ENETDOWN;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENETRESET
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENETRESET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENETRESET;
-    }
+int getValueOf_ENETRESET() {
+    return ENETRESET;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENETUNREACH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENETUNREACH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENETUNREACH;
-    }
+int getValueOf_ENETUNREACH() {
+    return ENETUNREACH;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENFILE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENFILE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENFILE;
-    }
+int getValueOf_ENFILE() {
+    return ENFILE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOANO
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOANO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENOANO(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ENOANO);
+    *value = ENOANO;
 #elif !defined(ENOANO)
-        return NULL;
+    value = NULL;
 #else
 #error "ENOANO defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOBUFS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOBUFS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOBUFS;
-    }
+int getValueOf_ENOBUFS() {
+    return ENOBUFS;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOCSI
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOCSI
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENOCSI(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ENOCSI);
+    *value = ENOCSI;
 #elif !defined(ENOCSI)
-        return NULL;
+    value = NULL;
 #else
 #error "ENOCSI defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENODATA
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENODATA
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENODATA(int* value) {
 #if defined(__linux__) || defined(__APPLE__)
-
-        return JnhwWrapInteger(env, ENODATA);
+    *value = ENODATA;
 #elif !defined(ENODATA)
-        return NULL;
+    value = NULL;
 #else
 #error "ENODATA defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENODEV
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENODEV
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENODEV;
-    }
+int getValueOf_ENODEV() {
+    return ENODEV;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOENT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOENT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOENT;
-    }
+int getValueOf_ENOENT() {
+    return ENOENT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOEXEC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOEXEC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOEXEC;
-    }
+int getValueOf_ENOEXEC() {
+    return ENOEXEC;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOKEY
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOKEY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENOKEY(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ENOKEY);
+    *value = ENOKEY;
 #elif !defined(ENOKEY)
-        return NULL;
+    value = NULL;
 #else
 #error "ENOKEY defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOLCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOLCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOLCK;
-    }
+int getValueOf_ENOLCK() {
+    return ENOLCK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOLINK
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOLINK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENOLINK(int* value) {
 #if defined (__OpenBSD__)
 #if !defined(ENOLINK)
-        return NULL;
+    value = NULL;
 #else
 #error "ENOLINK defined"
 #endif
 #else
-        return JnhwWrapInteger(env, ENOLINK);
+    *value = ENOLINK;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOMEDIUM
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOMEDIUM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENOMEDIUM(int* value) {
 #if defined (__linux__) || defined(__OpenBSD__)
-        return JnhwWrapInteger(env, ENOMEDIUM);
+    *value = ENOMEDIUM;
 #elif !defined(ENOMEDIUM)
-        return NULL;
+    value = NULL;
 #else
 #error "ENOMEDIUM defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOMEM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOMEM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOMEM;
-    }
+int getValueOf_ENOMEM() {
+    return ENOMEM;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOMSG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOMSG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOMSG;
-    }
+int getValueOf_ENOMSG() {
+    return ENOMSG;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENONET
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENONET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENONET(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ENONET);
+    *value = ENONET;
 #elif !defined(ENONET)
-        return NULL;
+        value = NULL;
 #else
 #error "ENONET defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOPKG
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOPKG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENOPKG(int* value) {
 #if defined (__linux__)
-
-        return JnhwWrapInteger(env, ENOPKG);
+    *value = ENOPKG;
 #elif !defined(ENOPKG)
-        return NULL;
+    value = NULL;
 #else
 #error "ENOPKG defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOPROTOOPT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOPROTOOPT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOPROTOOPT;
-    }
+int getValueOf_ENOPROTOOPT() {
+    return ENOPROTOOPT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOSPC
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOSPC
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOSPC;
-    }
+int getValueOf_ENOSPC() {
+    return ENOSPC;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOSR
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOSR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENOSR(int* value) {
 #if defined(__linux__) || defined(__APPLE__)
-        return JnhwWrapInteger(env, ENOSR);
+    *value = ENOSR;
 #elif !defined(ENOSR)
-        return NULL;
+    value = NULL;
 #else
 #error "ENOSR defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOSTR
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOSTR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENOSTR(int* value) {
 #if defined(__FreeBSD__) || defined(__OpenBSD__)
 #if !defined(ENOSTR)
-        return NULL;
+    value = NULL;
 #else
 #error "ENOSTR defined"
 #endif
 #else
-        return JnhwWrapInteger(env, ENOSTR);
+    *value = ENOSTR;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOSYS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOSYS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOSYS;
-    }
+int getValueOf_ENOSYS() {
+    return ENOSYS;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOTBLK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOTBLK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTBLK;
-    }
+int getValueOf_ENOTBLK() {
+    return ENOTBLK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOTCONN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOTCONN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTCONN;
-    }
+int getValueOf_ENOTCONN() {
+    return ENOTCONN;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOTDIR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOTDIR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTDIR;
-    }
+int getValueOf_ENOTDIR() {
+    return ENOTDIR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOTEMPTY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOTEMPTY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTEMPTY;
-    }
+int getValueOf_ENOTEMPTY() {
+    return ENOTEMPTY;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOTNAM
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOTNAM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENOTNAM(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ENOTNAM);
+    *value = ENOTNAM;
 #elif !defined(ENOTNAM)
-        return NULL;
+    value = NULL;
 #else
 #error "ENOTNAM defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOTRECOVERABLE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOTRECOVERABLE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTRECOVERABLE;
-    }
+int getValueOf_ENOTRECOVERABLE() {
+    return ENOTRECOVERABLE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOTSOCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOTSOCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTSOCK;
-    }
+int getValueOf_ENOTSOCK() {
+    return ENOTSOCK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOTSUP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOTSUP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTSUP;
-    }
+int getValueOf_ENOTSUP() {
+    return ENOTSUP;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOTTY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOTTY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENOTTY;
-    }
+int getValueOf_ENOTTY() {
+    return ENOTTY;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENOTUNIQ
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENOTUNIQ
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ENOTUNIQ(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ENOTUNIQ);
+    *value = ENOTUNIQ;
 #elif !defined(ENOTUNIQ)
-        return NULL;
+        value = NULL;
 #else
 #error "ENOTUNIQ defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ENXIO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ENXIO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ENXIO;
-    }
+int getValueOf_ENXIO() {
+    return ENXIO;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EOPNOTSUPP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EOPNOTSUPP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EOPNOTSUPP;
-    }
+int getValueOf_EOPNOTSUPP() {
+    return EOPNOTSUPP;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EOVERFLOW
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EOVERFLOW
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EOVERFLOW;
-    }
+int getValueOf_EOVERFLOW() {
+    return EOVERFLOW;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EOWNERDEAD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EOWNERDEAD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EOWNERDEAD;
-    }
+int getValueOf_EOWNERDEAD() {
+    return EOWNERDEAD;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EPERM
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EPERM
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPERM;
-    }
+int getValueOf_EPERM() {
+    return EPERM;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EPFNOSUPPORT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EPFNOSUPPORT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPFNOSUPPORT;
-    }
+int getValueOf_EPFNOSUPPORT() {
+    return EPFNOSUPPORT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EPIPE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EPIPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPIPE;
-    }
+int getValueOf_EPIPE() {
+    return EPIPE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EPROTO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EPROTO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPROTO;
-    }
+int getValueOf_EPROTO() {
+    return EPROTO;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EPROTONOSUPPORT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EPROTONOSUPPORT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPROTONOSUPPORT;
-    }
+int getValueOf_EPROTONOSUPPORT() {
+    return EPROTONOSUPPORT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EPROTOTYPE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EPROTOTYPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EPROTOTYPE;
-    }
+int getValueOf_EPROTOTYPE() {
+    return EPROTOTYPE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EREMCHG
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EREMCHG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EREMCHG(int* value) {
 #if defined (__linux__)
-
-        return JnhwWrapInteger(env, EREMCHG);
+    *value = EREMCHG;
 #elif !defined(EREMCHG)
-        return NULL;
+    value = NULL;
 #else
 #error "EREMCHG defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EREMOTE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EREMOTE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EREMOTE;
-    }
+int getValueOf_EREMOTE() {
+    return EREMOTE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EREMOTEIO
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EREMOTEIO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EREMOTEIO(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EREMOTEIO);
+    *value = EREMOTEIO;
 #elif !defined(EREMOTEIO)
-        return NULL;
+    value = NULL;
 #else
 #error "EREMOTEIO defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ERESTART
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ERESTART
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ERESTART(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ERESTART);
+    *value = ERESTART;
 #elif !defined(ERESTART)
-        return NULL;
+    value = NULL;
 #else
 #error "ERESTART defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ERFKILL
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ERFKILL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ERFKILL(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ERFKILL);
+    *value = ERFKILL;
 #elif !defined(ERFKILL)
-        return NULL;
+    value = NULL;
 #else
 #error "ERFKILL defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EROFS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EROFS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EROFS;
-    }
+int getValueOf_EROFS() {
+    return EROFS;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ESHUTDOWN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ESHUTDOWN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ESHUTDOWN;
-    }
+int getValueOf_ESHUTDOWN() {
+    return ESHUTDOWN;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ESOCKTNOSUPPORT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ESOCKTNOSUPPORT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ESOCKTNOSUPPORT;
-    }
+int getValueOf_ESOCKTNOSUPPORT() {
+    return ESOCKTNOSUPPORT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ESPIPE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ESPIPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ESPIPE;
-    }
+int getValueOf_ESPIPE() {
+    return ESPIPE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ESRCH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ESRCH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ESRCH;
-    }
+int getValueOf_ESRCH() {
+    return ESRCH;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ESRMNT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ESRMNT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ESRMNT(int* value) {
 #if defined (__linux__)
-
-        return JnhwWrapInteger(env, ESRMNT);
+    *value = ESRMNT;
 #elif !defined(ESRMNT)
-        return NULL;
+    value = NULL;
 #else
 #error "ESRMNT defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ESTALE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ESTALE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ESTALE;
-    }
+int getValueOf_ESTALE() {
+    return ESTALE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ESTRPIPE
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ESTRPIPE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ESTRPIPE(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, ESTRPIPE);
+    *value = ESTRPIPE;
 #elif !defined(ESTRPIPE)
-        return NULL;
+    value = NULL;
 #else
 #error "ESTRPIPE defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ETIME
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ETIME
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_ETIME(int* value) {
 #if defined(__linux__) || defined(__APPLE__)
-        return JnhwWrapInteger(env, ETIME);
+    *value = ETIME;
 #elif !defined(ETIME)
-        return NULL;
+    value = NULL;
 #else
 #error "ETIME defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ETIMEDOUT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ETIMEDOUT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ETIMEDOUT;
-    }
+int getValueOf_ETIMEDOUT() {
+    return ETIMEDOUT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ETOOMANYREFS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ETOOMANYREFS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ETOOMANYREFS;
-    }
+int getValueOf_ETOOMANYREFS() {
+    return ETOOMANYREFS;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    ETXTBSY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_ETXTBSY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ETXTBSY;
-    }
+int getValueOf_ETXTBSY() {
+    return ETXTBSY;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EUCLEAN
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EUCLEAN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EUCLEAN(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EUCLEAN);
+    *value = EUCLEAN;
 #elif !defined(EUCLEAN)
-        return NULL;
+    value = NULL;
 #else
 #error "EUCLEAN defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EUNATCH
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EUNATCH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EUNATCH(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EUNATCH);
+    *value = EUNATCH;
 #elif !defined(EUNATCH)
-        return NULL;
+    value = NULL;
 #else
 #error "EUNATCH defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EUSERS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EUSERS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EUSERS;
-    }
+int getValueOf_EUSERS() {
+    return EUSERS;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EWOULDBLOCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EWOULDBLOCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EWOULDBLOCK;
-    }
+int getValueOf_EWOULDBLOCK() {
+    return EWOULDBLOCK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EXDEV
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EXDEV
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return EXDEV;
-    }
+int getValueOf_EXDEV() {
+    return EXDEV;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_ErrnoTest_NativeDefines
-     * Method:    EXFULL
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_ErrnoTest_00024NativeDefines_EXFULL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_EXFULL(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, EXFULL);
+    *value = EXFULL;
 #elif !defined(EXFULL)
-        return NULL;
+    value = NULL;
 #else
 #error "EXFULL defined"
 #endif
-    }
-
-#ifdef __cplusplus
+    return value;
 }
-#endif
+
 #endif

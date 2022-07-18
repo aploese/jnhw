@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -20,98 +20,43 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_PthreadTest_NativeDefines.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
     //We need the POSIX version ...
 #if !defined(HAVE_PTHREAD_H) || !defined(_POSIX_VERSION)
 
-/*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativeDefines
-     * Method:    HAVE_PTHREAD_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativeDefines_HAVE_1PTHREAD_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
+int getValueOf_HAVE_PTHREAD_H() {
+    return 0;
+}
+
 #else
 #include <pthread.h>
 
-/*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativeDefines
-     * Method:    HAVE_PTHREAD_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativeDefines_HAVE_1PTHREAD_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativeDefines
-     * Method:    PTHREAD_EXPLICIT_SCHED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativeDefines_PTHREAD_1EXPLICIT_1SCHED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_EXPLICIT_SCHED;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativeDefines
-     * Method:    PTHREAD_INHERIT_SCHED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativeDefines_PTHREAD_1INHERIT_1SCHED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_INHERIT_SCHED;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativeDefines
-     * Method:    PTHREAD_CANCEL_DISABLE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativeDefines_PTHREAD_1CANCEL_1DISABLE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_CANCEL_DISABLE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativeDefines
-     * Method:    PTHREAD_CANCEL_ENABLE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativeDefines_PTHREAD_1CANCEL_1ENABLE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_CANCEL_ENABLE;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativeDefines
-     * Method:    PTHREAD_CANCEL_DEFERRED
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativeDefines_PTHREAD_1CANCEL_1DEFERRED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_CANCEL_DEFERRED;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_PthreadTest_NativeDefines
-     * Method:    PTHREAD_CANCEL_ASYNCHRONOUS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_PthreadTest_00024NativeDefines_PTHREAD_1CANCEL_1ASYNCHRONOUS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PTHREAD_CANCEL_ASYNCHRONOUS;
-    }
-
-#endif
-#ifdef __cplusplus
+int getValueOf_HAVE_PTHREAD_H() {
+    return 1;
 }
+
+int getValueOf_PTHREAD_EXPLICIT_SCHED() {
+    return PTHREAD_EXPLICIT_SCHED;
+}
+
+int getValueOf_PTHREAD_INHERIT_SCHED() {
+    return PTHREAD_INHERIT_SCHED;
+}
+
+int getValueOf_PTHREAD_CANCEL_DISABLE() {
+    return PTHREAD_CANCEL_DISABLE;
+}
+
+int getValueOf_PTHREAD_CANCEL_ENABLE() {
+    return PTHREAD_CANCEL_ENABLE;
+}
+
+int getValueOf_PTHREAD_CANCEL_DEFERRED() {
+    return PTHREAD_CANCEL_DEFERRED;
+}
+
+int getValueOf_PTHREAD_CANCEL_ASYNCHRONOUS() {
+    return PTHREAD_CANCEL_ASYNCHRONOUS;
+}
+
 #endif

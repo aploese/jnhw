@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,20 +21,32 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import java.nio.charset.Charset;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.ResourceScope;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinntTest {
 
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
+    private ResourceScope scope;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        scope = ResourceScope.newConfinedScope();
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        scope.close();
+    }
 
     @Test
     public void test_INVALID_HANDLE_VALUE() throws Exception {
@@ -46,16 +58,16 @@ public class WinntTest {
     public void test_LPWSTR_stringValueOfNullTerminated() throws Exception {
         final String str = "HELLO WORLD!\0";
         byte[] data = str.getBytes(Charset.forName("UTF-16LE"));
-        Winnt.LPWSTR lpWStr = new Winnt.LPWSTR(64, SetMem.TO_0x00);
-        OpaqueMemory32.copy(data, 0, lpWStr, 0, data.length);
+        Winnt.LPWSTR lpWStr = Winnt.LPWSTR.allocateNative(64, scope);
+        OpaqueMemory.copy(data, 0, lpWStr, 0, data.length);
         Assertions.assertEquals("HELLO WORLD!", lpWStr.getUnicodeString(str.length() - 1));
-        Assertions.assertEquals("HELLO WORLD!", lpWStr.getUnicodeString(data.length / WinApiDataType.WCHAR.baseDataType.SIZE_OF - 1));
+        Assertions.assertEquals("HELLO WORLD!", lpWStr.getUnicodeString(data.length / WinApiDataType.WCHAR.SIZE_OF - 1));
     }
 
     @Test
     public void testArrayOfHandle() throws Exception {
-        Winnt.ArrayOfHandle aoh = new Winnt.ArrayOfHandle(3, SetMem.TO_0x00);
-        Winnt.HANDLE h1 = new Winnt.HANDLE(42);
+        Winnt.ArrayOfHandle aoh = Winnt.ArrayOfHandle.allocateNative(3, scope);
+        Winnt.HANDLE h1 = Winnt.HANDLE.of(MemoryAddress.ofLong(42));
         aoh.set(1, h1);
         Winnt.HANDLE h2 = Winnt.HANDLE.INVALID_HANDLE_VALUE;
         aoh.set(2, h2);

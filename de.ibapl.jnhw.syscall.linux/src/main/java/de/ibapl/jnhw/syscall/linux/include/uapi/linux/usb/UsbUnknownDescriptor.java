@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb;
 
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -31,14 +31,14 @@ import java.io.IOException;
  */
 public class UsbUnknownDescriptor extends AbstractDescriptor {
 
-    public UsbUnknownDescriptor(AbstractNativeMemory parent, long offset, int size, SetMem setMem) {
-        super(parent, offset, size, setMem);
+    public UsbUnknownDescriptor(MemorySegment memorySegment, long offset, int size) {
+        super(memorySegment, offset, size);
     }
 
     @Override
     protected void nativeToString(JsonStringBuilder jsb, String indentPrefix, String indent) throws IOException {
-        byte[] payload = new byte[sizeInBytes - Layout._sizeof];
-        MEM_ACCESS.copyMemory32(this, Layout._sizeof, payload, 0, payload.length);
+        byte[] payload = new byte[(int) sizeof() - Layout._sizeof];
+        MEM_ACCESS.copyMemory(memorySegment, Layout._sizeof, payload, 0, payload.length);
         jsb.appendRawDataMember("payload", payload);
     }
 

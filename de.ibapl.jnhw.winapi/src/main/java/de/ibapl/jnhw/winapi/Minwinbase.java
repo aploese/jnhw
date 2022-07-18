@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,19 +25,19 @@ import de.ibapl.jnhw.annotation.winapi.basetsd.BOOL;
 import de.ibapl.jnhw.annotation.winapi.basetsd.DWORD;
 import de.ibapl.jnhw.annotation.winapi.basetsd.PVOID;
 import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
-import de.ibapl.jnhw.common.callback.Callback_I_I_Mem_V_Impl;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
-import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import de.ibapl.jnhw.common.memory.layout.UnionLayout;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.common.upcall.Callback__V___I__I_MA;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
-import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
+import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import jdk.incubator.foreign.Addressable;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * Wrapper around the
@@ -49,10 +49,10 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 @Include("minwinbase.h")
 public class Minwinbase {
 
-    public abstract static class LPOVERLAPPED_COMPLETION_ROUTINE extends Callback_I_I_Mem_V_Impl<OVERLAPPED> {
+    public abstract static class LPOVERLAPPED_COMPLETION_ROUTINE extends Callback__V___I__I_MA<LPOVERLAPPED> {
 
         @Override
-        protected abstract void callback(int dwErrorCode, int dwNumberOfBytesTransfered, OVERLAPPED lpOverlapped);
+        protected abstract void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemoryAddress lpOverlapped);
 
     }
 
@@ -61,7 +61,11 @@ public class Minwinbase {
      * OVERLAPPED}</a>.
      *
      */
-    public final static class OVERLAPPED extends WinApiStruct32 {
+    public final static class LPOVERLAPPED extends WinApiStruct {
+
+        public static LPOVERLAPPED allocateNative(ResourceScope rs) {
+            return new LPOVERLAPPED(MemorySegment.allocateNative(Layout.sizeof, rs), 0);
+        }
 
         public static class Layout extends StructLayout {
 
@@ -125,27 +129,24 @@ public class Minwinbase {
 
         }
 
-        public OVERLAPPED() {
+        public LPOVERLAPPED(MemorySegment memorySegment, long offset) {
             //always clean field Pointer must be zero!
-            super((OpaqueMemory32) null, 0, Layout.sizeof, SetMem.TO_0x00);
-        }
-
-        public OVERLAPPED(NativeAddressHolder addressHolder) {
-            super(addressHolder, Layout.sizeof);
+            super(memorySegment, offset, Layout.sizeof);
+            this.memorySegment.fill((byte) 0);
         }
 
         /**
          * @return the native value of hEvent;
          */
         public HANDLE hEvent() {
-            return ACCESSOR_HANDLE.HANDLE(this, Layout.hEvent);
+            return ACCESSOR_HANDLE.HANDLE(memorySegment, Layout.hEvent);
         }
 
         /**
          * @param hEvent the value of hEvent to be set natively.
          */
         public void hEvent(HANDLE hEvent) {
-            ACCESSOR_HANDLE.HANDLE(this, Layout.hEvent, hEvent);
+            ACCESSOR_HANDLE.HANDLE(memorySegment, Layout.hEvent, hEvent);
         }
 
         /**
@@ -161,8 +162,8 @@ public class Minwinbase {
          *
          */
         @ULONG_PTR
-        public final long Internal() {
-            return ACCESSOR_ULONG_PTR.ULONG_PTR(this, Layout.Internal);
+        public final MemoryAddress Internal() {
+            return ACCESSOR_ULONG_PTR.ULONG_PTR(memorySegment, Layout.Internal);
         }
 
         /**
@@ -175,8 +176,8 @@ public class Minwinbase {
          * @return the native value of InternalHigh;
          */
         @ULONG_PTR
-        public final long InternalHigh() {
-            return ACCESSOR_ULONG_PTR.ULONG_PTR(this, Layout.InternalHigh);
+        public final MemoryAddress InternalHigh() {
+            return ACCESSOR_ULONG_PTR.ULONG_PTR(memorySegment, Layout.InternalHigh);
         }
 
         /**
@@ -187,11 +188,11 @@ public class Minwinbase {
          */
         @DWORD
         public final long Offset() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.Offset);
+            return ACCESSOR_DWORD.DWORD_AsLong(memorySegment, Layout.Offset);
         }
 
         public final void Offset(@DWORD long value) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.Offset, value);
+            ACCESSOR_DWORD.DWORD_FromLong(memorySegment, Layout.Offset, value);
         }
 
         /**
@@ -202,11 +203,11 @@ public class Minwinbase {
          */
         @DWORD
         public final long OffsetHigh() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.OffsetHigh);
+            return ACCESSOR_DWORD.DWORD_AsLong(memorySegment, Layout.OffsetHigh);
         }
 
         public final void OffsetHigh(@DWORD long value) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.OffsetHigh, value);
+            ACCESSOR_DWORD.DWORD_FromLong(memorySegment, Layout.OffsetHigh, value);
         }
 
         /**
@@ -215,8 +216,8 @@ public class Minwinbase {
          * @return
          */
         @PVOID
-        public final NativeAddressHolder Pointer() {
-            return ACCESSOR_PVOID.PVOID(this, Layout.InternalHigh);
+        public final MemoryAddress Pointer() {
+            return ACCESSOR_PVOID.PVOID(memorySegment, Layout.InternalHigh);
         }
 
     }
@@ -226,7 +227,7 @@ public class Minwinbase {
      * SECURITY_ATTRIBUTES}</a>.
      *
      */
-    public static class SECURITY_ATTRIBUTES extends WinApiStruct32 {
+    public static class SECURITY_ATTRIBUTES extends WinApiStruct {
 
         public static class Layout extends StructLayout {
 
@@ -247,15 +248,8 @@ public class Minwinbase {
 
         }
 
-        /**
-         * Make sure the native lib is loaded
-         */
-        static {
-            LibJnhwWinApiLoader.touch();
-        }
-
-        public SECURITY_ATTRIBUTES() {
-            super((OpaqueMemory32) null, 0, Layout.sizeof, SetMem.TO_0x00);
+        public SECURITY_ATTRIBUTES(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         /**
@@ -263,20 +257,20 @@ public class Minwinbase {
          */
         @BOOL
         public boolean bInheritHandle() {
-            return ACCESSOR_BOOL.BOOL(this, Layout.bInheritHandle);
+            return ACCESSOR_BOOL.BOOL(memorySegment, Layout.bInheritHandle);
         }
 
         public void bInheritHandle(@BOOL boolean bInheritHandle) {
-            ACCESSOR_BOOL.BOOL(this, Layout.bInheritHandle, bInheritHandle);
+            ACCESSOR_BOOL.BOOL(memorySegment, Layout.bInheritHandle, bInheritHandle);
         }
 
         @PVOID
-        public NativeAddressHolder lpSecurityDescriptor() {
-            return ACCESSOR_PVOID.PVOID(this, Layout.lpSecurityDescriptor);
+        public MemoryAddress lpSecurityDescriptor() {
+            return ACCESSOR_PVOID.PVOID(memorySegment, Layout.lpSecurityDescriptor);
         }
 
-        public void lpSecurityDescriptor(@PVOID NativeAddressHolder lpSecurityDescriptor) {
-            ACCESSOR_PVOID.PVOID(this, Layout.lpSecurityDescriptor, lpSecurityDescriptor);
+        public void lpSecurityDescriptor(@PVOID Addressable lpSecurityDescriptor) {
+            ACCESSOR_PVOID.PVOID(memorySegment, Layout.lpSecurityDescriptor, lpSecurityDescriptor);
         }
 
         /**
@@ -284,20 +278,13 @@ public class Minwinbase {
          */
         @DWORD
         public final long nLength() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.nLength);
+            return ACCESSOR_DWORD.DWORD_AsLong(memorySegment, Layout.nLength);
         }
 
         public final void nLength(@DWORD long nLength) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.nLength, nLength);
+            ACCESSOR_DWORD.DWORD_FromLong(memorySegment, Layout.nLength, nLength);
         }
 
     }
-
-    /**
-     * Make sure the native lib is loaded
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    };
 
 }

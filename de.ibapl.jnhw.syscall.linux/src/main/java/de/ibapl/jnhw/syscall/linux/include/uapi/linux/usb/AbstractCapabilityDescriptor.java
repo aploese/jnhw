@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,17 +21,17 @@
  */
 package de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb;
 
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.syscall.linux.annotation.SysFs;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
 
 @SysFs("/sys/bus/usb/devices/*/descriptors")
 public abstract class AbstractCapabilityDescriptor extends AbstractDescriptor {
 
-    public AbstractCapabilityDescriptor(AbstractNativeMemory parent, long offset, int sizeInBytes, SetMem setMem) {
-        super(parent, offset, sizeInBytes, setMem);
+    public AbstractCapabilityDescriptor(MemorySegment memorySegment, long offset, int sizeInBytes) {
+        super(memorySegment, offset, sizeInBytes);
     }
 
     @Override

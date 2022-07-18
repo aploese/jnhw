@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.isoc;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import org.junit.jupiter.api.Assertions;
@@ -32,25 +32,9 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class ErrnoTest {
 
-    public static class NativeDefines {
-
-        public final static native boolean HAVE_ERRNO_H();
-
-        public final static native int EDOM();
-
-        public final static native int EILSEQ();
-
-        public final static native int ERANGE();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
-
     @Test
     public void test_HAVE_ERRNO_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Errno.HAVE_ERRNO_H, "not expected to have errno.h");
         } else {
             Assertions.assertTrue(Errno.HAVE_ERRNO_H, "expected to have errno.h");
@@ -59,10 +43,10 @@ public class ErrnoTest {
 
     @Test
     public void test_ErrnoDefines() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
-        DefinesTest.testDefines(Errno.class, NativeDefines.class, "HAVE_ERRNO_H");
+        DefinesTest.testDefines(Errno.class, "HAVE_ERRNO_H");
     }
 
     @Test

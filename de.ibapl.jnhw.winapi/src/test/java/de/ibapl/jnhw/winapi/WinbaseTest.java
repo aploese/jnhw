@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,9 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import de.ibapl.jnhw.common.datatypes.MultiarchInfo;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -30,56 +31,54 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinbaseTest {
 
-    private final static MultiarchTupelBuilder MULTIARCH_TUPEL_BUILDER = new MultiarchTupelBuilder();
-
     @Test
     public void testCOMMTIMEOUTS() {
         System.out.println("test COMMTIMEOUTS");
-        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
+        switch (MultiarchTupelBuilder.getMemoryModel()) {
+            case ILP32:
                 assertEquals(20, Winbase.COMMTIMEOUTS.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.COMMTIMEOUTS.Layout.alignment);
                 break;
-            case _64_BIT:
+            case LLP64:
                 assertEquals(20, Winbase.COMMTIMEOUTS.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.COMMTIMEOUTS.Layout.alignment);
                 break;
             default:
-                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
+                throw new RuntimeException("Can't handle SizeOfPointer " + MultiarchTupelBuilder.getMemoryModel());
         }
     }
 
     @Test
     public void testCOMSTAT() {
         System.out.println("test COMSTAT");
-        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
+        switch (MultiarchTupelBuilder.getMemoryModel()) {
+            case ILP32:
                 assertEquals(12, Winbase.COMSTAT.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.COMSTAT.Layout.alignment);
                 break;
-            case _64_BIT:
+            case LLP64:
                 assertEquals(12, Winbase.COMSTAT.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.COMSTAT.Layout.alignment);
                 break;
             default:
-                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
+                throw new RuntimeException("Can't handle SizeOfPointer " + MultiarchTupelBuilder.getMemoryModel());
         }
     }
 
     @Test
     public void testDCB() {
         System.out.println("test COMMTIMEOUTS");
-        switch (MULTIARCH_TUPEL_BUILDER.getSizeOfPointer()) {
-            case _32_BIT:
+        switch (MultiarchTupelBuilder.getMemoryModel()) {
+            case ILP32:
                 assertEquals(28, Winbase.DCB.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.DCB.Layout.alignment);
                 break;
-            case _64_BIT:
+            case LLP64:
                 assertEquals(28, Winbase.DCB.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.DCB.Layout.alignment);
                 break;
             default:
-                throw new RuntimeException("Can't handle SizeOfPointer " + MULTIARCH_TUPEL_BUILDER.getSizeOfPointer());
+                throw new RuntimeException("Can't handle SizeOfPointer " + MultiarchTupelBuilder.getMemoryModel());
         }
     }
 

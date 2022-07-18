@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,8 +24,10 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.annotation.winapi.basetsd.LONG_PTR;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import jdk.incubator.foreign.MemoryAddress;
 
 /**
  * Wrapper around the
@@ -37,25 +39,17 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 @Include("handleapi.h")
 public abstract class Handleapi {
 
+    private final static JnhwMh__B___A CloseHandle = JnhwMh__B___A.of(
+            "CloseHandle",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE);
+
     /**
      * cached instance.
      */
     @de.ibapl.jnhw.annotation.winapi.basetsd.HANDLE
     @LONG_PTR
-    public final static HANDLE INVALID_HANDLE_VALUE = new HANDLE(-1);
-
-    /**
-     * Make sure the native lib is loaded
-     *
-     * @implNote The actual value for the define fields are injected by
-     * initFields. The static initialization block is used to set the value here
-     * to communicate that this static final fields are not statically foldable.
-     * {
-     * @see String#COMPACT_STRINGS}
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
+    public final static HANDLE INVALID_HANDLE_VALUE = HANDLE.INVALID_HANDLE_VALUE;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-closehandle">CloseHandle</a>
@@ -69,8 +63,9 @@ public abstract class Handleapi {
      * indicates an error.
      */
     public final static void CloseHandle(HANDLE hObject) throws NativeErrorException {
-        CloseHandle(HANDLE.getHandleValue(hObject));
+        if (!CloseHandle.invoke__B___P(hObject)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
 
-    private native static void CloseHandle(long ptrHObject) throws NativeErrorException;
 }

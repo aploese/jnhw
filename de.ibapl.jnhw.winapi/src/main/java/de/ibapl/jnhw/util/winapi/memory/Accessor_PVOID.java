@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,8 +22,9 @@
 package de.ibapl.jnhw.util.winapi.memory;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.PVOID;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import jdk.incubator.foreign.Addressable;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -33,8 +34,8 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 public interface Accessor_PVOID {
 
     @PVOID
-    NativeAddressHolder PVOID(OpaqueMemory32 mem, long offset);
+    MemoryAddress PVOID(MemorySegment memorySegment, long offset);
 
-    void PVOID(OpaqueMemory32 mem, long offset, @PVOID NativeAddressHolder value);
+    void PVOID(MemorySegment memorySegment, long offset, @PVOID Addressable value);
 
 }

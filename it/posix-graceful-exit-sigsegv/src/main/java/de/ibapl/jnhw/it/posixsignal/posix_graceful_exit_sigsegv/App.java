@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,14 +21,14 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_graceful_exit_sigsegv;
 
-import de.ibapl.jnhw.common.callback.Callback_I_V;
-import de.ibapl.jnhw.common.callback.Callback_I_V_Impl;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.nativecall.CallNative_I_V;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr_I_V;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
+import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
+import de.ibapl.jnhw.common.upcall.Callback__V___I;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
 import de.ibapl.jnhw.posix.Signal;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * The simplest way to handle a SIGSEGV. The shutdownhook will be called or the
@@ -40,8 +40,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
-        if (mtb.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             throw new RuntimeException("No POSIX system!");
         }
         //set a shutdown hook
@@ -60,7 +59,7 @@ public class App {
             }
         }));
 
-        Callback_I_V callback_I_V = new Callback_I_V_Impl() {
+        Callback__V___I callback__V___I = new Callback__V___I() {
             @Override
             protected void callback(int value) {
                 System.out.println("Signal: " + value + " caught! in thread: " + Thread.currentThread());
@@ -70,12 +69,11 @@ public class App {
         };
 
         //comment this out, and you will get the default JVM style of saying goodby after a SIGSEGV
-        FunctionPtr_I_V originalHandler = Signal.signal(Signal.SIGSEGV, callback_I_V);
+        FunctionPtr__V___I originalHandler = Signal.signal(Signal.SIGSEGV, callback__V___I);
 
         //We will call a NULL pointer on the native side. So we will force a segmentation violation.
-        NativeAddressHolder nah = NativeAddressHolder.NULL;
-        CallNative_I_V callNative_I_V = new CallNative_I_V(nah);
-        callNative_I_V.call(42);
+        JnhwMi__V___I downcall__V___I = new JnhwMi__V___I(MemoryAddress.NULL, ResourceScope.globalScope());
+        downcall__V___I.invoke__V__sI(42);
 
         System.err.println("We should never reach this.");
         System.err.flush();

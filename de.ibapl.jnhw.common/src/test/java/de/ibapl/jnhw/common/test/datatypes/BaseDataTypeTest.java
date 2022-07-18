@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,15 +21,15 @@
  */
 package de.ibapl.jnhw.common.test.datatypes;
 
-import de.ibapl.jnhw.common.*;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.datatypes.Endianess;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Uint64_t;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
-import de.ibapl.jnhw.libloader.Endianess;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,69 +39,127 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BaseDataTypeTest {
 
-    static {
-        LibJnhwCommonTestLoader.touch();
+    private static int getSizeOfPointer() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("sizeOf_pointer");
     }
 
-    private final static native int getSizeOfPointer();
+    private static int getSizeOf_int() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("sizeOf_int");
+    }
 
-    private final static native int getSizeOf_long();
+    private static int getSizeOf_long() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("sizeOf_long");
+    }
 
-    private final static native int getSizeOf_float();
+    private static int getSizeOf_long_long() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("sizeOf_long_long");
+    }
 
-    private final static native int getSizeOf_double();
+    private static int getSizeOf_float() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("sizeOf_float");
+    }
 
-    private final static native int getSizeOf_long_double();
+    private static int getSizeOf_double() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("sizeOf_double");
+    }
+
+    private static int getSizeOf_long_double() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("sizeOf_long_double");
+    }
+
+    private static boolean _L64() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("isDefined__L64") != 0;
+    }
+
+    private static boolean _LP64() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("isDefined__LP64") != 0;
+    }
+
+    private static boolean _ILP64() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("isDefined__ILP64") != 0;
+    }
+
+    private static boolean _LLP64() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("isDefined__LLP64") != 0;
+    }
+
+    private static boolean _ILP32() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("isDefined__ILP32") != 0;
+    }
+
+    private static boolean _LP32() {
+        return LibJnhwCommonTestLoader.invokeExact_Int_V("isDefined__LP32") != 0;
+    }
 
     public BaseDataTypeTest() {
     }
 
     @Test
-    public void testEndianes() {
-        final MultiarchInfo mi = LibJnhwCommonLoader.getLoadResult().multiarchInfo;
-        final Uint64_t uint64_t = new Uint64_t(null, 0, AbstractNativeMemory.SetMem.TO_0x00);
-        OpaqueMemory32.setByte(uint64_t, 0, (byte) 0x01);
-        OpaqueMemory32.setByte(uint64_t, 1, (byte) 0x02);
-        OpaqueMemory32.setByte(uint64_t, 2, (byte) 0x03);
-        OpaqueMemory32.setByte(uint64_t, 3, (byte) 0x04);
-        OpaqueMemory32.setByte(uint64_t, 4, (byte) 0x05);
-        OpaqueMemory32.setByte(uint64_t, 5, (byte) 0x06);
-        OpaqueMemory32.setByte(uint64_t, 6, (byte) 0x07);
-        OpaqueMemory32.setByte(uint64_t, 7, (byte) 0x08);
-        if (0x0807060504030201L == uint64_t.uint64_t()) {
-            assertEquals(Endianess.LITTLE, mi.getEndianess());
-        } else if (0x0102030405060708L == uint64_t.uint64_t()) {
-            assertEquals(Endianess.BIG, mi.getEndianess());
-        } else {
-            fail("Can't figure out the endianess for result: 0x" + uint64_t.nativeToHexString() + " multiarchinfo: " + mi);
+    public void testMemoryModel() {
+        switch (MultiarchTupelBuilder.getMemoryModel()) {
+            case L64:
+                assertTrue(_L64());
+                break;
+            case LP64:
+                assertTrue(_LP64());
+                break;
+            case ILP64:
+                assertTrue(_ILP64());
+                break;
+            case LLP64:
+                assertTrue(_LLP64());
+                break;
+            case ILP32:
+                assertTrue(_ILP32());
+                break;
+            case LP32:
+                assertTrue(_LP32());
+                break;
+            default:
+                throw new AssertionError("Unknown memory model: " + MultiarchTupelBuilder.getMemoryModel());
         }
+    }
 
+    @Test
+    public void testEndianes() {
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            final Uint64_t uint64_t = new Uint64_t(MemorySegment.allocateNative(BaseDataType.uint64_t.SIZE_OF, rs), 0);
+            OpaqueMemory.setByte(uint64_t, 0, (byte) 0x01);
+            OpaqueMemory.setByte(uint64_t, 1, (byte) 0x02);
+            OpaqueMemory.setByte(uint64_t, 2, (byte) 0x03);
+            OpaqueMemory.setByte(uint64_t, 3, (byte) 0x04);
+            OpaqueMemory.setByte(uint64_t, 4, (byte) 0x05);
+            OpaqueMemory.setByte(uint64_t, 5, (byte) 0x06);
+            OpaqueMemory.setByte(uint64_t, 6, (byte) 0x07);
+            OpaqueMemory.setByte(uint64_t, 7, (byte) 0x08);
+            if (0x0807060504030201L == uint64_t.uint64_t()) {
+                assertEquals(Endianess.LITTLE, MultiarchTupelBuilder.getEndianess());
+            } else if (0x0102030405060708L == uint64_t.uint64_t()) {
+                assertEquals(Endianess.BIG, MultiarchTupelBuilder.getEndianess());
+            } else {
+                fail("Can't figure out the endianess for result: 0x" + uint64_t.nativeToHexString() + " multiarchinfo: " + MultiarchTupelBuilder.getMultiarchs());
+            }
+        }
     }
 
     @Test
     public void testSizes() {
         assertAll(
                 () -> {
-                    assertEquals(getSizeOf_long(), BaseDataType.__SIZE_OF_LONG, "__SIZE_OF_LONG");
+                    assertEquals(getSizeOf_int(), BaseDataType.C_int.SIZE_OF, "sizeOf int");
                 }, () -> {
-                    assertEquals(getSizeOfPointer(), BaseDataType.__SIZE_OF_POINTER, "__SIZE_OF_POINTER");
+                    assertEquals(getSizeOf_long(), BaseDataType.C_long.SIZE_OF, "sizeOf long");
                 }, () -> {
-                    assertEquals(getSizeOf_float(), BaseDataType.__SIZE_OF_FLOAT, "__SIZE_OF_FLOAT");
+                    assertEquals(getSizeOf_long_long(), BaseDataType.C_long_long.SIZE_OF, "sizeOf long long");
                 }, () -> {
-                    assertEquals(getSizeOf_double(), BaseDataType.__SIZE_OF_DOUBLE, "__SIZE_OF_DOUBLE");
+                    assertEquals(getSizeOfPointer(), BaseDataType.C_pointer.SIZE_OF, "sizeof void*");
                 }, () -> {
-                    assertEquals(getSizeOf_long_double(), BaseDataType.__SIZE_OF_LONG_DOUBLE, "__SIZE_OF_LONG_DOUBLE");
+                    assertEquals(getSizeOf_float(), BaseDataType._float.SIZE_OF, "sizeOf float");
+                }, () -> {
+                    assertEquals(getSizeOf_double(), BaseDataType._double.SIZE_OF, "sizeOf double");
+                }, () -> {
+                    assertEquals(getSizeOf_long_double(), BaseDataType._long_double.SIZE_OF, "sizeOf long double");
                 });
-
-        MultiarchTupelBuilder mtb = new MultiarchTupelBuilder();
-        for (MultiarchInfo mi : mtb.getMultiarchs()) {
-
-            assertAll(
-                    () -> {
-                        assertEquals(mi.getSizeOfLong().sizeInBit, BaseDataType.__SIZE_OF_LONG * 8, "__SIZE_OF_LONG");
-                    }, () -> {
-                        assertEquals(mi.getSizeOfPointer().sizeInBit, BaseDataType.__SIZE_OF_POINTER * 8, "__SIZE_OF_POINTER");
-                    });
-        }
     }
+
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,13 +23,18 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A_uI_uI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uI__A__A__A__A__A__A;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.WinDef.HKEY;
 import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
 import de.ibapl.jnhw.winapi.WinDef.LPDWORD;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * Wrapper around the
@@ -49,7 +54,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_CLASSES_ROOT = new HKEY(0x80000000L);
+    public final static HKEY HKEY_CLASSES_ROOT = HKEY.of(MemoryAddress.ofLong(0x80000000L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_CONFIG</a>
@@ -58,7 +63,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_CURRENT_CONFIG = new HKEY(0x80000005L);
+    public final static HKEY HKEY_CURRENT_CONFIG = HKEY.of(MemoryAddress.ofLong(0x80000005L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER</a>
@@ -67,7 +72,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_CURRENT_USER = new HKEY(0x80000001L);
+    public final static HKEY HKEY_CURRENT_USER = HKEY.of(MemoryAddress.ofLong(0x80000001L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER_LOCAL_SETTINGS</a>
@@ -76,7 +81,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_CURRENT_USER_LOCAL_SETTINGS = new HKEY(0x80000007L);
+    public final static HKEY HKEY_CURRENT_USER_LOCAL_SETTINGS = HKEY.of(MemoryAddress.ofLong(0x80000007L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CLASSES_ROOT</a>
@@ -85,7 +90,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_DYN_DATA = new HKEY(0x80000006L);
+    public final static HKEY HKEY_DYN_DATA = HKEY.of(MemoryAddress.ofLong(0x80000006L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_LOCAL_MACHINE</a>
@@ -95,7 +100,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_LOCAL_MACHINE = new HKEY(0x80000002L);
+    public final static HKEY HKEY_LOCAL_MACHINE = HKEY.of(MemoryAddress.ofLong(0x80000002L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_DATA</a>
@@ -104,7 +109,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_PERFORMANCE_DATA = new HKEY(0x80000004L);
+    public final static HKEY HKEY_PERFORMANCE_DATA = HKEY.of(MemoryAddress.ofLong(0x80000004L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_NLSTEXT</a>
@@ -114,7 +119,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_PERFORMANCE_NLSTEXT = new HKEY(0x80000060L);
+    public final static HKEY HKEY_PERFORMANCE_NLSTEXT = HKEY.of(MemoryAddress.ofLong(0x80000060L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_TEXT</a>
@@ -123,7 +128,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_PERFORMANCE_TEXT = new HKEY(0x80000050L);
+    public final static HKEY HKEY_PERFORMANCE_TEXT = HKEY.of(MemoryAddress.ofLong(0x80000050L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_USERS</a>
@@ -133,20 +138,33 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_USERS = new HKEY(0x80000003L);
+    public final static HKEY HKEY_USERS = HKEY.of(MemoryAddress.ofLong(0x80000003L));
 
-    /**
-     * Make sure the native lib is loaded
-     *
-     * @implNote The actual value for the define fields are injected by
-     * initFields. The static initialization block is used to set the value here
-     * to communicate that this static final fields are not statically foldable.
-     * {
-     * @see String#COMPACT_STRINGS}
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
+    private final static JnhwMh_sI___A RegCloseKey = JnhwMh_sI___A.of(
+            "RegCloseKey",
+            WinApiDataType.LSTATUS,
+            WinApiDataType.HKEY);
+
+    private final static JnhwMh_sI___A_uI__A__A__A__A__A__A RegEnumValueW = JnhwMh_sI___A_uI__A__A__A__A__A__A.of(
+            "RegEnumValueW",
+            WinApiDataType.LSTATUS,
+            WinApiDataType.HKEY,
+            WinApiDataType.DWORD,
+            WinApiDataType.LPWSTR,
+            WinApiDataType.LPDWORD,
+            WinApiDataType.LPDWORD,
+            WinApiDataType.LPDWORD,
+            WinApiDataType.LPBYTE,
+            WinApiDataType.LPDWORD);
+
+    private final static JnhwMh_sI___A__A_uI_uI__A RegOpenKeyExW = JnhwMh_sI___A__A_uI_uI__A.of(
+            "RegOpenKeyExW",
+            WinApiDataType.LSTATUS,
+            WinApiDataType.HKEY,
+            WinApiDataType.LPCWSTR,
+            WinApiDataType.DWORD,
+            WinApiDataType.REGSAM,
+            WinApiDataType.PHKEY);
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regclosekey">RegCloseKey</a>
@@ -160,10 +178,11 @@ public abstract class Winreg {
      * indicates an error.
      */
     public final static void RegCloseKey(HKEY hKey) throws NativeErrorException {
-        RegCloseKey(HKEY.getHandleValue(hKey));
+        final int result = RegCloseKey.invoke_sI___P(hKey);
+        if (result != Winerror.ERROR_SUCCESS) {
+            throw new NativeErrorException(result);
+        }
     }
-
-    final static native void RegCloseKey(long ptrHKey) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regenumvaluew">RegEnumValueW</a>
@@ -202,11 +221,25 @@ public abstract class Winreg {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static long RegEnumValueW(HKEY hKey, int dwIndex, LPWSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpType, LPBYTE lpData, LPDWORD lpccData) throws NativeErrorException {
-        return RegEnumValueW(HKEY.getHandleValue(hKey), dwIndex, AbstractNativeMemory.toUintptr_t(lpValueName), AbstractNativeMemory.toUintptr_t(lpcchValueName), AbstractNativeMemory.toUintptr_t(lpType), AbstractNativeMemory.toUintptr_t(lpData), AbstractNativeMemory.toUintptr_t(lpccData));
+    public final static int RegEnumValueW(HKEY hKey, int dwIndex, LPWSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpType, LPBYTE lpData, LPDWORD lpccData) throws NativeErrorException {
+        final int result = RegEnumValueW.invoke_sI___P_uI__P__P__P__P__P__P(
+                hKey,
+                dwIndex,
+                lpValueName,
+                lpcchValueName,
+                Pointer.NULL,
+                lpType,
+                lpData,
+                lpccData);
+        switch (result) {
+            case Winerror.ERROR_SUCCESS:
+            case Winerror.ERROR_NO_MORE_ITEMS:
+            case Winerror.ERROR_MORE_DATA:
+                return result;
+            default:
+                throw new NativeErrorException(result);
+        }
     }
-
-    private static native long RegEnumValueW(long ptrHKey, int dwIndex, long ptrLpValueName, long ptrLpcchValueName, long ptrLpType, long ptrLpData, long ptrLpccData) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regopenkeyexw">RegOpenKeyExW</a>
@@ -222,7 +255,7 @@ public abstract class Winreg {
      * @param samDesired a mask that specifies the desired access rights to the
      * key to be opened. The function fails if the security descriptor of the
      * key does not permit the requested access for the calling process.
-     * @return phkResult a pointer to a variable that receives a handle to the
+     * @param phkResult a pointer to a variable that receives a handle to the
      * opened key.
      *
      * @throws NullPointerException if hKey or lpSubKey or phkResult is
@@ -231,9 +264,19 @@ public abstract class Winreg {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static WinDef.RegistryHKEY RegOpenKeyExW(HKEY hKey, String lpSubKey, int ulOptions, int samDesired) throws NativeErrorException {
-        return WinDef.RegistryHKEY.of(RegOpenKeyExW(HKEY.getHandleValue(hKey), lpSubKey, ulOptions, samDesired));
+    public final static void RegOpenKeyExW(HKEY hKey, String lpSubKey, int ulOptions, int samDesired, WinDef.PHKEY phkResult) throws NativeErrorException {
+        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+            Pointer<WinDef.LPWSTR> _lpSubKey = lpSubKey != null ? WinDef.LPWSTR.wrap(lpSubKey, true, scope) : Pointer.NULL;
+            final int result = RegOpenKeyExW.invoke_sI___P__P_uI_uI__P(
+                    hKey,
+                    _lpSubKey,
+                    ulOptions,
+                    samDesired,
+                    phkResult);
+            if (result != Winerror.ERROR_SUCCESS) {
+                throw new NativeErrorException(result);
+            }
+        }
     }
 
-    private static native long RegOpenKeyExW(long ptrHKey, String lpSubKey, int ulOptions, int samDesired) throws NativeErrorException;
 }

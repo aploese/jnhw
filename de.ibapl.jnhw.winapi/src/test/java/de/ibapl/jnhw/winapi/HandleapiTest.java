@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,6 +24,7 @@ package de.ibapl.jnhw.winapi;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
+import jdk.incubator.foreign.MemoryAddress;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class HandleapiTest {
@@ -31,7 +32,7 @@ public class HandleapiTest {
     @Test
     public void testDefines() throws Exception {
         Winnt.HANDLE h = Handleapi.INVALID_HANDLE_VALUE;
-        Assertions.assertNotEquals(h, new Winnt.HANDLE(0));
+        Assertions.assertNotEquals(h, Winnt.HANDLE.of(MemoryAddress.NULL));
     }
 
 }

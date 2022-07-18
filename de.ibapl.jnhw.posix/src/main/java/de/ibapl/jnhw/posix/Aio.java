@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -26,23 +26,33 @@ import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.ssize_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
-import de.ibapl.jnhw.common.memory.PointerArray32;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.memory.PointerArray;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
-import de.ibapl.jnhw.util.posix.memory.PosixStruct32;
+import de.ibapl.jnhw.util.posix.LibrtLoader;
+import de.ibapl.jnhw.util.posix.PosixDataType;
+import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_sI__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_sI__A;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -61,7 +71,7 @@ public class Aio {
      * aiocb}</a>.
      *
      */
-    public static final class Aiocb<T extends OpaqueMemory32> extends PosixStruct32 {
+    public static final class Aiocb<T extends OpaqueMemory> extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Aio_buf;
@@ -73,16 +83,11 @@ public class Aio {
         public final static long offsetof_Aio_sigevent;
         public final static int sizeof;
 
-        /**
-         * Make sure the native lib is loaded
-         */
         static {
-            LibJnhwPosixLoader.touch();
-            final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-            switch (multiarchInfo.getOS()) {
+            switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX:
-                    switch (multiarchInfo.getSizeOfPointer()) {
-                        case _32_BIT:
+                    switch (MultiarchTupelBuilder.getMemoryModel()) {
+                        case ILP32:
                             offsetof_Aio_fildes = 0;
                             offsetof_Aio_offset = 104;
                             offsetof_Aio_buf = 12;
@@ -93,7 +98,7 @@ public class Aio {
                             alignof = Alignment.AT_4;
                             sizeof = 144;
                             break;
-                        case _64_BIT:
+                        case LP64:
                             offsetof_Aio_fildes = 0;
                             offsetof_Aio_offset = 128;
                             offsetof_Aio_buf = 16;
@@ -105,7 +110,7 @@ public class Aio {
                             sizeof = 168;
                             break;
                         default:
-                            throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                            throw new NoClassDefFoundError("No aio.h defines for " + MultiarchTupelBuilder.getMultiarch());
                     }
                     break;
                 case DARWIN:
@@ -142,7 +147,7 @@ public class Aio {
                     sizeof = 0;
                     break;
                 default:
-                    throw new NoClassDefFoundError("No aio.h OS defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                    throw new NoClassDefFoundError("No aio.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
             }
         }
 
@@ -155,17 +160,11 @@ public class Aio {
          */
         public final Sigevent<T> aio_sigevent;
 
-        @SuppressWarnings("unchecked")
-        public Aiocb() throws NoSuchNativeTypeException {
-            this(null, 0, SetMem.TO_0x00);
-        }
-
-        public Aiocb(AbstractNativeMemory parent, long offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super(parent, offset, sizeof, setMem);
+        public static Aiocb tryAllocateNative(ResourceScope scope) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
-            aio_sigevent = new Sigevent(this, Aiocb.offsetof_Aio_sigevent, SetMem.DO_NOT_SET);
+            return new Aiocb(MemorySegment.allocateNative(sizeof, scope), 0);
         }
 
         /**
@@ -173,13 +172,19 @@ public class Aio {
          *
          * @param address
          */
-        @SuppressWarnings("unchecked")
-        public Aiocb(NativeAddressHolder address) throws NoSuchNativeTypeException {
-            super(address, sizeof);
+        public static Aiocb tryOfAddress(MemoryAddress address, ResourceScope scope) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
-            aio_sigevent = new Sigevent(this, Aiocb.offsetof_Aio_sigevent, SetMem.DO_NOT_SET);
+            return new Aiocb(MemorySegment.ofAddress(address, sizeof, scope), 0);
+        }
+
+        public Aiocb(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
+            super(memorySegment, offset, sizeof);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("aiocb");
+            }
+            aio_sigevent = new Sigevent(this.memorySegment, Aiocb.offsetof_Aio_sigevent);
         }
 
         /**
@@ -188,8 +193,8 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public NativeAddressHolder aio_buf() {
-            return MEM_ACCESS.uintptr_t_AsNativeAddressHolder(this, Aiocb.offsetof_Aio_buf);
+        public MemoryAddress aio_buf() {
+            return MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf);
         }
 
         /**
@@ -203,11 +208,11 @@ public class Aio {
          */
         public void aio_buf(ByteBuffer aio_buf) {
             if (aio_buf == null) {
-                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, NativeAddressHolder.NULL);
-                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, 0);
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemoryAddress.NULL);
+                ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, 0);
             } else {
-                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, aio_buf);
-                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, aio_buf.remaining());
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, aio_buf);
+                ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, aio_buf.remaining());
             }
             this.aio_buf = aio_buf;
         }
@@ -221,13 +226,33 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory32 aio_buf) {
+        public void aio_buf(OpaqueMemory aio_buf) {
             if (aio_buf == null) {
-                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, NativeAddressHolder.NULL);
-                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, 0);
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemoryAddress.NULL);
+                ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, 0);
             } else {
-                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, aio_buf);
-                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, aio_buf.sizeInBytes);
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, OpaqueMemory.getMemorySegment(aio_buf));
+                ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, aio_buf.sizeof());
+            }
+            this.aio_buf = aio_buf;
+        }
+
+        /**
+         * The location of buffer.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
+         * aiocb}</a>.
+         *
+         * aio_nbytes will also be set
+         *
+         * @param aio_buf the value of aio_buf to be set natively.
+         */
+        public void aio_buf(MemorySegment aio_buf) {
+            if (aio_buf == null) {
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemoryAddress.NULL);
+                ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, 0);
+            } else {
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, aio_buf);
+                ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, aio_buf.byteSize());
             }
             this.aio_buf = aio_buf;
         }
@@ -245,7 +270,7 @@ public class Aio {
          *
          * @param aio_buf the value of aio_buf to be set natively.
          */
-        public void aio_buf(OpaqueMemory32 aio_buf, int off, @size_t int aio_nbytes) {
+        public void aio_buf(OpaqueMemory aio_buf, int off, @size_t int aio_nbytes) {
             if (aio_buf == null) {
                 if (off != 0) {
                     throw new IllegalArgumentException("off must be 0");
@@ -253,17 +278,55 @@ public class Aio {
                 if (aio_nbytes != 0) {
                     throw new IllegalArgumentException("aio_nbytes must be 0");
                 }
-                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, NativeAddressHolder.NULL);
-                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, 0);
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemoryAddress.NULL);
+                ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, 0);
             } else {
-                if ((off < 0) || (off >= aio_buf.sizeInBytes)) {
+                if ((off < 0) || (off >= aio_buf.sizeof())) {
                     throw new IllegalArgumentException("off not in range");
                 }
-                if ((aio_nbytes < 0) || (aio_nbytes >= aio_buf.sizeInBytes)) {
+                if ((aio_nbytes < 0) || (aio_nbytes + off >= aio_buf.sizeof())) {
                     throw new IllegalArgumentException("aio_nbytes not in range");
                 }
-                MEM_ACCESS.uintptr_t(this, Aiocb.offsetof_Aio_buf, aio_buf, off);
-                ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes, aio_nbytes);
+                //Todo add off ???
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, OpaqueMemory.getMemorySegment(aio_buf).asSlice(off, aio_nbytes));
+                ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, aio_nbytes);
+            }
+            this.aio_buf = aio_buf;
+        }
+
+        /**
+         * The location of buffer.
+         * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
+         * aiocb}</a>.
+         *
+         * aio_nbytes will also be set
+         *
+         * @throws ArrayIndexOutOfBoundsException if {@code off} or
+         * {@code aio_nbytes} out of bounds.
+         *
+         *
+         * @param aio_buf the value of aio_buf to be set natively.
+         */
+        public void aio_buf(MemorySegment aio_buf, long off, @size_t long aio_nbytes) {
+            if (aio_buf == null) {
+                if (off != 0) {
+                    throw new IllegalArgumentException("off must be 0");
+                }
+                if (aio_nbytes != 0) {
+                    throw new IllegalArgumentException("aio_nbytes must be 0");
+                }
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemoryAddress.NULL);
+                ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, 0);
+            } else {
+                if ((off < 0) || (off >= aio_buf.byteSize())) {
+                    throw new IllegalArgumentException("off not in range");
+                }
+                if ((aio_nbytes < 0) || (aio_nbytes + off >= aio_buf.byteSize())) {
+                    throw new IllegalArgumentException("aio_nbytes not in range");
+                }
+                //Todo add off ???
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, aio_buf.asSlice(off, aio_nbytes));
+                ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, aio_nbytes);
             }
             this.aio_buf = aio_buf;
         }
@@ -275,9 +338,9 @@ public class Aio {
          * @return the native value of aio_buf.
          */
         public ByteBuffer aio_bufAsByteBuffer() {
-            final NativeAddressHolder result = aio_buf();
+            final MemoryAddress result = aio_buf();
             if (aio_buf == null) {
-                if (result.isNULL()) {
+                if (MemoryAddress.NULL.equals(result)) {
                     return null;
                 } else {
                     throw new RuntimeException("aio_buf_ expected to be NULL, but was " + result.toString());
@@ -296,19 +359,41 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public OpaqueMemory32 aio_bufAsOpaqueMemory() {
-            final NativeAddressHolder result = aio_buf();
+        public OpaqueMemory aio_bufAsOpaqueMemory() {
+            final MemoryAddress result = aio_buf();
             if (aio_buf == null) {
-                if (result.isNULL()) {
+                if (MemoryAddress.NULL.equals(result)) {
                     return null;
                 } else {
                     throw new RuntimeException("aio_buf_ expected to be NULL, but was " + result.toString());
                 }
-            } else if (aio_buf instanceof OpaqueMemory32) {
+            } else if (aio_buf instanceof OpaqueMemory) {
                 //TODO result inside of allocated memory?
-                return (OpaqueMemory32) aio_buf;
+                return (OpaqueMemory) aio_buf;
             } else {
                 throw new RuntimeException("Actual class of aio_buf\"" + aio_buf.getClass() + "\" is not OpaqueMemory");
+            }
+        }
+
+        /**
+         * The location of buffer.<b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/aio.h.html">{@code structure
+         * aiocb} </a>.
+         *
+         * @return the native value of aio_buf.
+         */
+        public MemorySegment aio_bufAsMemorySegment() {
+            final MemoryAddress result = aio_buf();
+            if (aio_buf == null) {
+                if (MemoryAddress.NULL.equals(result)) {
+                    return null;
+                } else {
+                    throw new RuntimeException("aio_buf_ expected to be NULL, but was " + result.toString());
+                }
+            } else if (aio_buf instanceof MemorySegment) {
+                //TODO result inside of allocated memory?
+                return (MemorySegment) aio_buf;
+            } else {
+                throw new RuntimeException("Actual class of aio_buf\"" + aio_buf.getClass() + "\" is not MemorySegment");
             }
         }
 
@@ -320,7 +405,7 @@ public class Aio {
          * @return the native value of aio_fildes.
          */
         public int aio_fildes() {
-            return MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_fildes);
+            return MEM_ACCESS.int32_t(memorySegment, Aiocb.offsetof_Aio_fildes);
         }
 
         /**
@@ -331,7 +416,7 @@ public class Aio {
          * @param aio_fildes the value of aio_fildes to be set natively.
          */
         public void aio_fildes(int aio_fildes) {
-            MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_fildes, aio_fildes);
+            MEM_ACCESS.int32_t(memorySegment, Aiocb.offsetof_Aio_fildes, aio_fildes);
         }
 
         /**
@@ -342,7 +427,7 @@ public class Aio {
          * @return the native value of aio_lio_opcode.
          */
         public int aio_lio_opcode() {
-            return MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_lio_opcode);
+            return MEM_ACCESS.int32_t(memorySegment, Aiocb.offsetof_Aio_lio_opcode);
         }
 
         /**
@@ -353,7 +438,7 @@ public class Aio {
          * @param aio_lio_opcode the value of aio_lio_opcode to be set natively.
          */
         public void aio_lio_opcode(int aio_lio_opcode) {
-            MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_lio_opcode, aio_lio_opcode);
+            MEM_ACCESS.int32_t(memorySegment, Aiocb.offsetof_Aio_lio_opcode, aio_lio_opcode);
         }
 
         /**
@@ -368,7 +453,7 @@ public class Aio {
          */
         @size_t
         public long aio_nbytes() {
-            return ACCESSOR_SIZE_T.size_t(this, Aiocb.offsetof_Aio_nbytes);
+            return ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes);
         }
 
         /**
@@ -380,7 +465,7 @@ public class Aio {
          */
         @off_t
         public long aio_offset() {
-            return ACCESSOR_OFF_T.off_t(this, Aiocb.offsetof_Aio_offset);
+            return ACCESSOR_OFF_T.off_t(memorySegment, Aiocb.offsetof_Aio_offset);
         }
 
         /**
@@ -391,7 +476,7 @@ public class Aio {
          * @param aio_offset the value of aio_offset to be set natively.
          */
         public void aio_offset(@off_t long aio_offset) {
-            ACCESSOR_OFF_T.off_t(this, Aiocb.offsetof_Aio_offset, aio_offset);
+            ACCESSOR_OFF_T.off_t(memorySegment, Aiocb.offsetof_Aio_offset, aio_offset);
         }
 
         /**
@@ -402,7 +487,7 @@ public class Aio {
          * @return the native value of aio_reqprio.
          */
         public int aio_reqprio() {
-            return MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_reqprio);
+            return MEM_ACCESS.int32_t(memorySegment, Aiocb.offsetof_Aio_reqprio);
         }
 
         /**
@@ -413,7 +498,7 @@ public class Aio {
          * @param aio_reqprio the value of aio_reqprio to be set natively.
          */
         public void aio_reqprio(int aio_reqprio) {
-            MEM_ACCESS.int32_t(this, Aiocb.offsetof_Aio_reqprio, aio_reqprio);
+            MEM_ACCESS.int32_t(memorySegment, Aiocb.offsetof_Aio_reqprio, aio_reqprio);
         }
 
         @Override
@@ -421,7 +506,7 @@ public class Aio {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
             jsb.appendIntMember("aio_fildes", aio_fildes());
             jsb.appendUnsignedLongMember("aio_offset", aio_offset());
-            jsb.appendNativeAddressHolderMember("aio_buf", aio_buf());
+            jsb.appendAddressMember("aio_buf", aio_buf());
             jsb.appendUnsignedLongMember("aio_nbytes", aio_nbytes());
             jsb.appendIntMember("aio_reqprio", aio_reqprio());
             jsb.appendStruct32Member("aio_sigevent", aio_sigevent);
@@ -436,25 +521,20 @@ public class Aio {
      * aiocb}</a>.
      *
      */
-    public static final class Aiocbs extends PointerArray32<Aiocb> {
+    public static final class Aiocbs extends PointerArray<Aiocb> {
 
-        /**
-         * Make sure the native lib is loaded ... this class is static, so we
-         * have to
-         */
-        static {
-            LibJnhwPosixLoader.touch();
-        }
-
-        public Aiocbs(int arrayLength, OpaqueMemory32 parent, int offset, SetMem setMem) throws NoSuchNativeTypeException {
-            super(arrayLength, parent, offset, setMem);
+        public final static Aiocbs tryAllocateNative(ResourceScope scope, int arraylength) throws NoSuchNativeTypeException {
             if (Aiocb.alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
+            return new Aiocbs(MemorySegment.allocateNative(BaseDataType.uintptr_t.SIZE_OF * arraylength, scope), 0, arraylength);
         }
 
-        public Aiocbs(int arraylength, SetMem setMem) throws NoSuchNativeTypeException {
-            this(arraylength, null, 0, setMem);
+        public Aiocbs(MemorySegment memorySegment, long offset, int arrayLength) throws NoSuchNativeTypeException {
+            super(memorySegment, offset, arrayLength);
+            if (Aiocb.alignof == null) {
+                throw new NoSuchNativeTypeException("aiocb");
+            }
         }
 
     }
@@ -568,8 +648,6 @@ public class Aio {
     public final static IntDefine LIO_WRITE;
 
     /**
-     * Make sure the native lib is loaded
-     *
      * @implNote The actual value for the define fields are injected by
      * initFields. The static initialization block is used to set the value here
      * to communicate that this static final fields are not statically foldable.
@@ -577,8 +655,7 @@ public class Aio {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
-        switch (LibJnhwPosixLoader.getLoadResult().multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_AIO_H = true;
                 AIO_ALLDONE = IntDefine.toIntDefine(LinuxDefines.AIO_ALLDONE);
@@ -625,9 +702,64 @@ public class Aio {
                 LIO_WRITE = IntDefine.UNDEFINED;
                 break;
             default:
-                throw new NoClassDefFoundError("No aio.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No aio.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
+
+    private final static JnhwMh_sI__sI__A aio_cancel = JnhwMh_sI__sI__A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "aio_cancel",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI___A aio_error = JnhwMh_sI___A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "aio_error",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_pointer);
+
+    private final static JnhwMh_sI__sI__A aio_fsync = JnhwMh_sI__sI__A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "aio_fsync",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI___A aio_read = JnhwMh_sI___A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "aio_read",
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sL___A aio_return = JnhwMh_sL___A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "aio_return",
+            PosixDataType.ssize_t,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI___A_sI__A aio_suspend = JnhwMh_sI___A_sI__A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "aio_suspend",
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_array,
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI___A aio_write = JnhwMh_sI___A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "aio_write",
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer);
+
+    private final static JnhwMh_sI__sI__A_sI__A lio_listio = JnhwMh_sI__sI__A_sI__A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            "lio_listio",
+            BaseDataType.C_int,
+            BaseDataType.C_int,
+            BaseDataType.C_const_struct_array,
+            BaseDataType.C_int,
+            BaseDataType.C_struct_pointer);
 
     /**
      * <b>POSIX:</b>
@@ -649,7 +781,20 @@ public class Aio {
      * available natively.
      */
     public final static int aio_cancel(Aiocb aiocbp) throws NativeErrorException, NoSuchNativeMethodException {
-        return aio_cancel(aiocbp.aio_fildes(), AbstractNativeMemory.toUintptr_t(aiocbp));
+        try {
+            final int result = aio_cancel.invoke_sI__sI__P(aiocbp.aio_fildes(), aiocbp);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
+        } catch (NullPointerException npe) {
+            if (aio_cancel == null) {
+                throw new NoSuchNativeMethodException("aio_cancel");
+            } else {
+                throw npe;
+            }
+        }
     }
 
     /**
@@ -672,10 +817,21 @@ public class Aio {
      * available natively.
      */
     public final static int aio_cancel(int fildes) throws NativeErrorException, NoSuchNativeMethodException {
-        return aio_cancel(fildes, 0);
+        try {
+            final int result = aio_cancel.invoke_sI__sI__P(fildes, Pointer.NULL);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
+        } catch (NullPointerException npe) {
+            if (aio_cancel == null) {
+                throw new NoSuchNativeMethodException("aio_cancel");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native int aio_cancel(int fildes, long ptrAiocbp) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -684,8 +840,9 @@ public class Aio {
      *
      * @param aiocb prefers to an asynchronous I/O control block.
      * @return If the asynchronous I/O operation has completed successfully,
-     * then 0 shall be returned. If the asynchronous operation has completed
-     * unsuccessfully, then the error status is returned.
+     * then false is returned. If the asynchronous operation as not yet
+     * completed, then true is returned. Otherwise NativeErrorException is
+     * thrown.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -693,10 +850,21 @@ public class Aio {
      * available natively.
      */
     public final static int aio_error(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        return aio_error(AbstractNativeMemory.toUintptr_t(aiocb));
+        try {
+            final int result = aio_error.invoke_sI___P(aiocb);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
+        } catch (NullPointerException npe) {
+            if (aio_error == null) {
+                throw new NoSuchNativeMethodException("aio_error");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native int aio_error(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -712,10 +880,18 @@ public class Aio {
      * available natively.
      */
     public final static void aio_fsync(int op, Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        aio_fsync(op, AbstractNativeMemory.toUintptr_t(aiocb));
+        try {
+            if (aio_fsync.invoke_sI__sI__P(op, aiocb) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (aio_fsync == null) {
+                throw new NoSuchNativeMethodException("aio_fsync");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native void aio_fsync(int op, long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -730,10 +906,18 @@ public class Aio {
      * available natively.
      */
     public final static void aio_read(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        aio_read(AbstractNativeMemory.toUintptr_t(aiocb));
+        try {
+            if (aio_read.invoke_sI___P(aiocb) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (aio_read == null) {
+                throw new NoSuchNativeMethodException("aio_read");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native void aio_read(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -752,10 +936,21 @@ public class Aio {
      */
     @ssize_t
     public final static long aio_return(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        return aio_return(AbstractNativeMemory.toUintptr_t(aiocb));
+        try {
+            final long result = aio_return.invoke_sL___P(aiocb);
+            if (result == -1) {
+                throw new NativeErrorException(Errno.errno());
+            } else {
+                return result;
+            }
+        } catch (NullPointerException npe) {
+            if (aio_return == null) {
+                throw new NoSuchNativeMethodException("aio_return");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native long aio_return(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -771,10 +966,18 @@ public class Aio {
      * available natively.
      */
     public final static void aio_suspend(Aiocbs list, Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
-        aio_suspend(AbstractNativeMemory.toUintptr_t(list), list.length(), AbstractNativeMemory.toUintptr_t(timeout));
+        try {
+            if (aio_suspend.invoke_sI___P_sI__P(list, list.length(), timeout) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (aio_suspend == null) {
+                throw new NoSuchNativeMethodException("aio_suspend");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native void aio_suspend(long ptrList, int nent, long ptrTimeout) throws NativeErrorException, NoSuchNativeMethodException;
 
     /**
      * <b>POSIX:</b>
@@ -789,13 +992,31 @@ public class Aio {
      * available natively.
      */
     public final static void aio_write(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        aio_write(AbstractNativeMemory.toUintptr_t(aiocb));
+        try {
+            if (aio_write.invoke_sI___P(aiocb) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (aio_write == null) {
+                throw new NoSuchNativeMethodException("aio_write");
+            } else {
+                throw npe;
+            }
+        }
     }
 
-    private static native void aio_write(long ptrAiocb) throws NativeErrorException, NoSuchNativeMethodException;
-
     public final static void lio_listio(int mode, Aiocbs list) throws NativeErrorException, NoSuchNativeMethodException {
-        lio_listio(mode, AbstractNativeMemory.toUintptr_t(list), list.length(), 0);
+        try {
+            if (lio_listio.invoke_sI__sI__P_sI__P(mode, list, list.length(), Pointer.NULL) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (lio_listio == null) {
+                throw new NoSuchNativeMethodException("lio_listio");
+            } else {
+                throw npe;
+            }
+        }
     }
 
     /**
@@ -813,9 +1034,17 @@ public class Aio {
      * available natively.
      */
     public final static void lio_listio(int mode, Aiocbs list, Sigevent sig) throws NativeErrorException, NoSuchNativeMethodException {
-        lio_listio(mode, AbstractNativeMemory.toUintptr_t(list), list.length(), AbstractNativeMemory.toUintptr_t(sig));
+        try {
+            if (lio_listio.invoke_sI__sI__P_sI__P(mode, list, list.length(), sig) != 0) {
+                throw new NativeErrorException(Errno.errno());
+            }
+        } catch (NullPointerException npe) {
+            if (lio_listio == null) {
+                throw new NoSuchNativeMethodException("lio_listio");
+            } else {
+                throw npe;
+            }
+        }
     }
-
-    private static native void lio_listio(int mode, long ptrList, int nent, long ptrSig) throws NativeErrorException, NoSuchNativeMethodException;
 
 }

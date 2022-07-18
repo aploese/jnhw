@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,8 +23,15 @@ package de.ibapl.jnhw.isoc;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.libloader.MultiarchInfo;
-import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import java.lang.invoke.MethodHandle;
+import jdk.incubator.foreign.CLinker;
+import jdk.incubator.foreign.FunctionDescriptor;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.ValueLayout;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
 
 /**
  * Wrapper around the {@code <errno.h>} header.
@@ -37,6 +44,11 @@ import de.ibapl.jnhw.util.posix.LibJnhwPosixLoader;
  */
 @Include("#include <errno.h>")
 public abstract class Errno {
+
+    protected final static CLinker JNHW_LINKER = CLinker.systemCLinker();
+    private final static JnhwMh_MA___V __errno_location = JnhwMh_MA___V.of(
+            "__errno_location",
+            BaseDataType.C_int_pointer);
 
     public static interface BsdDefines {
 
@@ -109,14 +121,12 @@ public abstract class Errno {
      * @see String#COMPACT_STRINGS}
      */
     static {
-        LibJnhwPosixLoader.touch();
-        final MultiarchInfo multiarchInfo = LibJnhwPosixLoader.getLoadResult().multiarchInfo;
-        switch (multiarchInfo.getOS()) {
+        switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_ERRNO_H = true;
                 EDOM = LinuxDefines.EDOM;
                 ERANGE = LinuxDefines.ERANGE;
-                switch (multiarchInfo.getArch()) {
+                switch (MultiarchTupelBuilder.getArch()) {
                     case MIPS:
                     case MIPS_64:
                         EILSEQ = Linux_Mips_Defines.EILSEQ;
@@ -150,7 +160,7 @@ public abstract class Errno {
                 ERANGE = 0;
                 break;
             default:
-                throw new NoClassDefFoundError("No fcntl.h defines for " + LibJnhwPosixLoader.getLoadResult().multiarchInfo);
+                throw new NoClassDefFoundError("No errno.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 
@@ -162,7 +172,9 @@ public abstract class Errno {
      * - system error numbers</a>.
      *
      */
-    public final static native int errno();
+    public final static int errno() {
+        return __errno_location.invoke_MA___V().get(ValueLayout.JAVA_INT, 0);
+    }
 
     /**
      * Write access to {@code errno}.
@@ -172,7 +184,13 @@ public abstract class Errno {
      * - system error numbers</a>.
      *
      */
-    public final static native void errno(int value);
+    public final static void errno(int value) {
+        __errno_location.invoke_MA___V().set(ValueLayout.JAVA_INT, 0, value);
+    }
+
+    static {
+        NativeErrorException.addErrSymbolProvider(de.ibapl.jnhw.posix.Errno::getErrnoSymbol);
+    }
 
     protected Errno() {
 

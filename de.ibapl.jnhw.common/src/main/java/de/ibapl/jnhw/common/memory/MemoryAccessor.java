@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,17 +25,46 @@ import de.ibapl.jnhw.common.annotation.int16_t;
 import de.ibapl.jnhw.common.annotation.int32_t;
 import de.ibapl.jnhw.common.annotation.int64_t;
 import de.ibapl.jnhw.common.annotation.int8_t;
+import de.ibapl.jnhw.common.annotation.intptr_t;
 import de.ibapl.jnhw.common.annotation.uint16_t;
 import de.ibapl.jnhw.common.annotation.uint32_t;
 import de.ibapl.jnhw.common.annotation.uint64_t;
 import de.ibapl.jnhw.common.annotation.uint8_t;
+import de.ibapl.jnhw.common.annotation.uintptr_t;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.util.ConversionsJava2Native;
+import de.ibapl.jnhw.common.util.ConversionsNative2Java;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import jdk.incubator.foreign.Addressable;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
  * @author aploese
  */
-public interface MemoryAccessor {
+public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
+
+    static MemoryAccessor getMemoryAccessor(ByteOrder byteOrder) {
+        return switch (MultiarchTupelBuilder.getMemoryModel()) {
+            case ILP32 ->
+                new MemoryAccessorImpl_ILP32(byteOrder);
+            case L64 ->
+                new MemoryAccessorImpl_L64(byteOrder);
+            case LLP64 ->
+                new MemoryAccessorImpl_LLP64(byteOrder);
+            case LP64 ->
+                new MemoryAccessorImpl_LP64(byteOrder);
+            default ->
+                throw new IllegalStateException("Unknow memory model: " + MultiarchTupelBuilder.getMemoryModel());
+        };
+    }
+
+    void copyMemory(byte[] src, int srcIndex, MemorySegment destMem, long dstOffset, int elementCount);
+
+    void copyMemory(MemorySegment srcMem, long srcOffset, byte[] dest, int dstIndex, int elementCount);
 
     /**
      *
@@ -46,6 +75,7 @@ public interface MemoryAccessor {
      * @throws ArrayIndexOutOfBoundsException if pos or len < 0 or pos + len >
      * arrayLength
      */
+    @Deprecated
     public static void outOfBoundsByteArray(int pos, int len, int arrayLength) {
         if (pos < 0) {
             throw new ArrayIndexOutOfBoundsException("pos: " + pos);
@@ -56,6 +86,7 @@ public interface MemoryAccessor {
         }
     }
 
+    @Deprecated
     public static void outOfBoundsMem(long pos, long len, long memLength) {
         if (pos < 0) {
             throw new IndexOutOfBoundsException("pos: " + pos);
@@ -67,87 +98,142 @@ public interface MemoryAccessor {
     }
 
     @int8_t
-    byte int8_t(OpaqueMemory32 mem, long offset);
+    byte int8_t(MemorySegment mem, long offset);
 
-    void int8_t(OpaqueMemory32 mem, long offset, @int8_t byte value);
+    void int8_t(MemorySegment mem, long offset, @int8_t byte value);
 
-    @int8_t
-    byte int8_t(OpaqueMemory64 mem, long offset);
+    default String int8_t_AsHex(MemorySegment mem, long offset) {
+        return String.format("0x%02x", int8_t(mem, offset));
+    }
 
-    void int8_t(OpaqueMemory64 mem, long offset, @int8_t byte value);
-
-    String int8_t_AsHex(OpaqueMemory32 mem, long offset);
-
-    String int8_t_nativeToString(OpaqueMemory32 mem, long offset);
+    default String int8_t_nativeToString(MemorySegment mem, long offset) {
+        return String.valueOf(int8_t(mem, offset));
+    }
 
     @int16_t
-    short int16_t(OpaqueMemory32 mem, long offset);
+    short int16_t(MemorySegment mem, long offset);
 
-    void int16_t(OpaqueMemory32 mem, long offset, @int16_t short value);
+    void int16_t(MemorySegment mem, long offset, @int16_t short value);
 
-    String int16_t_AsHex(OpaqueMemory32 mem, long offset);
+    default String int16_t_AsHex(MemorySegment mem, long offset) {
+        return String.format("0x%04x", int16_t(mem, offset));
+    }
 
-    String int16_t_nativeToString(OpaqueMemory32 mem, long offset);
+    default String int16_t_nativeToString(MemorySegment mem, long offset) {
+        return String.valueOf(int16_t(mem, offset));
+    }
 
     @int32_t
-    int int32_t(OpaqueMemory32 mem, long offset);
+    int int32_t(MemorySegment mem, long offset);
 
-    void int32_t(OpaqueMemory32 mem, long offset, @int32_t int value);
+    void int32_t(MemorySegment mem, long offset, @int32_t int value);
 
-    String int32_t_AsHex(OpaqueMemory32 mem, long offset);
+    default String int32_t_AsHex(MemorySegment mem, long offset) {
+        return String.format("0x%08x", int32_t(mem, offset));
+    }
 
-    String int32_t_nativeToString(OpaqueMemory32 mem, long offset);
+    default String int32_t_nativeToString(MemorySegment mem, long offset) {
+        return String.valueOf(int32_t(mem, offset));
+    }
 
     @int64_t
-    long int64_t(OpaqueMemory32 mem, long offset);
+    long int64_t(MemorySegment mem, long offset);
 
-    void int64_t(OpaqueMemory32 mem, long offset, @int64_t long value);
+    void int64_t(MemorySegment mem, long offset, @int64_t long value);
 
-    String int64_t_AsHex(OpaqueMemory32 mem, long offset);
+    default String int64_t_AsHex(MemorySegment mem, long offset) {
+        return String.format("0x%016x", int64_t(mem, offset));
+    }
 
-    String int64_t_nativeToString(OpaqueMemory32 mem, long offset);
+    default String int64_t_nativeToString(MemorySegment mem, long offset) {
+        return String.valueOf(int64_t(mem, offset));
+    }
+
+    @intptr_t
+    MemoryAddress intptr_t(MemorySegment mem, long offset);
+
+    void intptr_t(MemorySegment mem, long offset, @intptr_t Addressable value);
+
+    void intptr_t(MemorySegment mem, long offset, @intptr_t Pointer value);
+
+    String intptr_t_AsHex(MemorySegment mem, long offset);
+
+    String intptr_t_nativeToString(MemorySegment mem, long offset);
+
+    @intptr_t
+    MemoryAddress intptr_t_AtIndex(MemorySegment mem, long index);
+
+    @intptr_t
+    void intptr_t_AtIndex(MemorySegment mem, long index, Addressable dest);
+
+    @intptr_t
+    void intptr_t_AtIndex(MemorySegment mem, long index, Pointer dest);
 
     @uint8_t
-    byte uint8_t(OpaqueMemory32 mem, long offset);
+    byte uint8_t(MemorySegment mem, long offset);
 
     @uint8_t
-    short uint8_t_AsShort(OpaqueMemory32 mem, long offset);
+    default short uint8_t_AsShort(MemorySegment mem, long offset) {
+        return ConversionsNative2Java.uint8_t_TO_short(uint8_t(mem, offset));
+    }
 
-    void uint8_t(OpaqueMemory32 mem, long offset, @uint8_t byte value);
+    void uint8_t(MemorySegment mem, long offset, @uint8_t byte value);
 
-    void uint8_t_FromShort(OpaqueMemory32 mem, long offset, @uint8_t short value);
+    default void uint8_t_FromShort(MemorySegment mem, long offset, @uint8_t short value) {
+        uint8_t(mem, offset, ConversionsJava2Native.short_TO_uint8_t_(value));
+    }
 
-    String uint8_t_AsHex(OpaqueMemory32 mem, long offset);
+    default String uint8_t_AsHex(MemorySegment mem, long offset) {
+        return String.format("0x%02x", uint8_t(mem, offset));
+    }
 
-    String uint8_t_nativeToString(OpaqueMemory32 mem, long offset);
+    default String uint8_t_nativeToString(MemorySegment mem, long offset) {
+        return String.valueOf(uint8_t_AsShort(mem, offset));
+    }
 
     @uint16_t
-    short uint16_t(OpaqueMemory32 mem, long offset);
+    short uint16_t(MemorySegment mem, long offset);
 
     @uint16_t
-    int uint16_t_AsInt(OpaqueMemory32 mem, long offset);
+    default int uint16_t_AsInt(MemorySegment mem, long offset) {
+        return ConversionsNative2Java.uint16_t_TO_int(uint16_t(mem, offset));
+    }
 
-    void uint16_t(OpaqueMemory32 mem, long offset, @uint16_t short value);
+    void uint16_t(MemorySegment mem, long offset, @uint16_t short value);
 
-    void uint16_t_FromInt(OpaqueMemory32 mem, long offset, @uint16_t int value);
+    default void uint16_t_FromInt(MemorySegment mem, long offset, @uint16_t int value) {
+        uint16_t(mem, offset, ConversionsJava2Native.int_TO_uint16_t(value));
+    }
 
-    String uint16_t_AsHex(OpaqueMemory32 mem, long offset);
+    default String uint16_t_AsHex(MemorySegment mem, long offset) {
+        return String.format("0x%04x", uint16_t(mem, offset));
+    }
 
-    String uint16_t_nativeToString(OpaqueMemory32 mem, long offset);
+    default String uint16_t_nativeToString(MemorySegment mem, long offset) {
+        return String.valueOf(uint16_t_AsInt(mem, offset));
+    }
 
     @uint32_t
-    int uint32_t(OpaqueMemory32 mem, long offset);
+    int uint32_t(MemorySegment mem, long offset);
 
     @uint32_t
-    long uint32_t_AsLong(OpaqueMemory32 mem, long offset);
+    default long uint32_t_AsLong(MemorySegment mem, long offset) {
+        return ConversionsNative2Java.uint32_t_TO_long(uint32_t(mem, offset));
+    }
 
-    void uint32_t(OpaqueMemory32 mem, long offset, @uint32_t int value);
+    void uint32_t(MemorySegment mem, long offset, @uint32_t int value);
 
-    void uint32_t_FromLong(OpaqueMemory32 mem, long offset, @uint32_t long value);
+    default void uint32_t_FromLong(MemorySegment mem, long offset, @uint32_t long value) {
+        uint32_t(mem, offset, ConversionsJava2Native.long_TO_uint32_t(value));
+    }
 
-    String uint32_t_AsHex(OpaqueMemory32 mem, long offset);
+    default String uint32_t_AsHex(MemorySegment mem, long offset) {
+        return String.format("0x%08x", uint32_t(mem, offset));
+    }
 
-    String uint32_t_nativeToString(OpaqueMemory32 mem, long offset);
+    default String uint32_t_nativeToString(MemorySegment mem, long offset) {
+        return Integer.toUnsignedString(uint32_t(mem, offset));
+    }
 
     /**
      * access the native long (signed long) datatype. It m,ay be 32 or 64bis
@@ -156,7 +242,7 @@ public interface MemoryAccessor {
      * @param offset
      * @return
      */
-    long signed_long(OpaqueMemory32 mem, long offset);
+    long signed_long(MemorySegment mem, long offset);
 
     /**
      * access the native long (signed long) datatype. It m,ay be 32 or 64bis
@@ -165,7 +251,7 @@ public interface MemoryAccessor {
      * @param offset
      * @return
      */
-    void signed_long(OpaqueMemory32 mem, long offset, long value);
+    void signed_long(MemorySegment mem, long offset, long value);
 
     /**
      * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
@@ -173,7 +259,7 @@ public interface MemoryAccessor {
      * @param mem
      * @param offset
      */
-    long signed_long_AtIndex(OpaqueMemory32 mem, long offset, int index);
+    long signed_long_AtIndex(MemorySegment mem, long offset, int index);
 
     /**
      * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
@@ -181,7 +267,7 @@ public interface MemoryAccessor {
      * @param mem
      * @param offset
      */
-    void signed_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value);
+    void signed_long_AtIndex(MemorySegment mem, long offset, int index, long value);
 
     /**
      * access the native unsigned long datatype. It m,ay be 32 or 64bis
@@ -190,7 +276,7 @@ public interface MemoryAccessor {
      * @param offset
      * @return
      */
-    long unsigned_long(OpaqueMemory32 mem, long offset);
+    long unsigned_long(MemorySegment mem, long offset);
 
     /**
      * access the native unsigned long datatype. It m,ay be 32 or 64bis
@@ -198,7 +284,7 @@ public interface MemoryAccessor {
      * @param mem
      * @param offset
      */
-    void unsigned_long(OpaqueMemory32 mem, long offset, long value);
+    void unsigned_long(MemorySegment mem, long offset, long value);
 
     /**
      * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
@@ -206,7 +292,7 @@ public interface MemoryAccessor {
      * @param mem
      * @param offset
      */
-    long unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index);
+    long unsigned_long_AtIndex(MemorySegment mem, long offset, int index);
 
     /**
      * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
@@ -214,18 +300,44 @@ public interface MemoryAccessor {
      * @param mem
      * @param offset
      */
-    void unsigned_long_AtIndex(OpaqueMemory32 mem, long offset, int index, long value);
+    void unsigned_long_AtIndex(MemorySegment mem, long offset, int index, long value);
 
     @uint64_t
-    long uint64_t(OpaqueMemory32 mem, long offset);
+    long uint64_t(MemorySegment mem, long offset);
 
-    void uint64_t(OpaqueMemory32 mem, long offset, @uint64_t long value);
+    void uint64_t(MemorySegment mem, long offset, @uint64_t long value);
 
-    String uint64_t_AsHex(OpaqueMemory32 mem, long offset);
+    default String uint64_t_AsHex(MemorySegment mem, long offset) {
+        return String.format("0x%016x", uint64_t(mem, offset));
+    }
 
-    String uint64_t_nativeToString(OpaqueMemory32 mem, long offset);
+    default String uint64_t_nativeToString(MemorySegment mem, long offset) {
+        return Long.toUnsignedString(uint64_t(mem, offset));
+    }
 
-    default int getSignedIntOf(OpaqueMemory32 mem, long offset, int realSize) {
+    @uintptr_t
+    MemoryAddress uintptr_t(MemorySegment mem, long offset);
+
+    void uintptr_t(MemorySegment mem, long offset, @uintptr_t Addressable dest);
+
+    void uintptr_t(MemorySegment mem, long offset, @uintptr_t ByteBuffer dest);
+
+    void uintptr_t(MemorySegment mem, long offset, @uintptr_t NativeFunctionPointer dest);
+
+    String uintptr_t_nativeToString(MemorySegment mem, long offset);
+
+    String uintptr_t_AsHex(MemorySegment mem, long offset);
+
+    @uintptr_t
+    MemoryAddress uintptr_t_AtIndex(MemorySegment mem, long index);
+
+    //TODO use Addressable BUT Addressable is not found by junit
+    void uintptr_t_AtIndex(MemorySegment mem, long index, @uintptr_t MemoryAddress dest);
+
+    //TODO use Addressable BUT Addressable is not found by junit
+    void uintptr_t_AtIndex(MemorySegment mem, long index, @uintptr_t MemorySegment dest);
+
+    default int getSignedIntOf(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return int8_t(mem, offset);
@@ -238,7 +350,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default void setSignedIntOf(final OpaqueMemory32 mem, long offset, final int realSize, final int value) {
+    default void setSignedIntOf(final MemorySegment mem, long offset, final int realSize, final int value) {
         switch (realSize) {
             case 1:
                 if ((value > Byte.MAX_VALUE) || (value < Byte.MIN_VALUE)) {
@@ -260,7 +372,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default void setUnsignedIntOf(final OpaqueMemory32 mem, long offset, final int realSize, final int value) {
+    default void setUnsignedIntOf(final MemorySegment mem, long offset, final int realSize, final int value) {
         switch (realSize) {
             case 1:
                 if (value > 0x00ff) {
@@ -292,7 +404,7 @@ public interface MemoryAccessor {
      * @param realSize
      * @return
      */
-    default int getUnsignedIntOf(OpaqueMemory32 mem, long offset, int realSize) {
+    default int getUnsignedIntOf(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return uint8_t_AsShort(mem, offset);
@@ -305,7 +417,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default String getUnsignedIntOf_AsHex(OpaqueMemory32 mem, long offset, int realSize) {
+    default String getUnsignedIntOf_AsHex(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return uint8_t_AsHex(mem, offset);
@@ -318,7 +430,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default String getSignedIntOf_AsHex(OpaqueMemory32 mem, long offset, int realSize) {
+    default String getSignedIntOf_AsHex(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return int8_t_AsHex(mem, offset);
@@ -331,7 +443,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default String getUnsignedIntOf_nativeToString(OpaqueMemory32 mem, long offset, int realSize) {
+    default String getUnsignedIntOf_nativeToString(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return uint8_t_nativeToString(mem, offset);
@@ -344,7 +456,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default String getSignedIntOf_nativeToString(OpaqueMemory32 mem, long offset, int realSize) {
+    default String getSignedIntOf_nativeToString(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return int8_t_nativeToString(mem, offset);
@@ -368,7 +480,7 @@ public interface MemoryAccessor {
      * archs in 32 its 4 byte and on 64 8 byte long
      * @return
      */
-    default long getSignedLongOf(OpaqueMemory32 mem, long offset, int realSize) {
+    default long getSignedLongOf(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return int8_t(mem, offset);
@@ -383,7 +495,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default void setSignedLongOf(final OpaqueMemory32 mem, long offset, final int realSize, final long value) {
+    default void setSignedLongOf(final MemorySegment mem, long offset, final int realSize, final long value) {
         switch (realSize) {
             case 1:
                 if ((value > Byte.MAX_VALUE) || (value < Byte.MIN_VALUE)) {
@@ -411,7 +523,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default void setUnsignedLongOf(final OpaqueMemory32 mem, long offset, final int realSize, final long value) {
+    default void setUnsignedLongOf(final MemorySegment mem, long offset, final int realSize, final long value) {
         switch (realSize) {
             case 1:
                 if (value > 0x00ff) {
@@ -450,7 +562,7 @@ public interface MemoryAccessor {
      * @param realSize
      * @return
      */
-    default long getUnsignedLongOf(OpaqueMemory32 mem, long offset, int realSize) {
+    default long getUnsignedLongOf(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return uint8_t_AsShort(mem, offset);
@@ -465,7 +577,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default String getUnsignedLongOf_AsHex(OpaqueMemory32 mem, long offset, int realSize) {
+    default String getUnsignedLongOf_AsHex(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return uint8_t_AsHex(mem, offset);
@@ -480,7 +592,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default String getSignedLongOf_AsHex(OpaqueMemory32 mem, long offset, int realSize) {
+    default String getSignedLongOf_AsHex(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return int8_t_AsHex(mem, offset);
@@ -495,7 +607,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default String getUnsignedLongOf_nativeToString(OpaqueMemory32 mem, long offset, int realSize) {
+    default String getUnsignedLongOf_nativeToString(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return uint8_t_nativeToString(mem, offset);
@@ -510,7 +622,7 @@ public interface MemoryAccessor {
         }
     }
 
-    default String getSignedLongOf_nativeToString(OpaqueMemory32 mem, long offset, int realSize) {
+    default String getSignedLongOf_nativeToString(MemorySegment mem, long offset, int realSize) {
         switch (realSize) {
             case 1:
                 return int8_t_nativeToString(mem, offset);
@@ -525,58 +637,6 @@ public interface MemoryAccessor {
         }
     }
 
-    long allocateMemory(AbstractNativeMemory mem, long sizeInBytes);
-
-    void setMemory32(OpaqueMemory32 mem, byte value);
-
-    void setMemory64(OpaqueMemory64 mem, byte value);
-
-    void copyMemory32(byte[] src, int srcPos, OpaqueMemory32 destMem, int destPos, int length);
-
-    void copyMemory64(byte[] src, int srcPos, OpaqueMemory64 destMem, long destPos, int length);
-
-    void copyMemory32(OpaqueMemory32 srcMem, int srcPos, byte[] dest, int destPos, int length);
-
-    void copyMemory64(OpaqueMemory64 srcMem, long srcPos, byte[] dest, int destPos, int length);
-
-    long intptr_t(OpaqueMemory32 mem, long offset);
-
-    void intptr_t(OpaqueMemory32 mem, long offset, long dest);
-
-    String intptr_t_AsHex(OpaqueMemory32 mem, long offset);
-
-    long intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index);
-
-    void intptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, long dest);
-
-    long uintptr_t(OpaqueMemory32 mem, long offset);
-
-    NativeAddressHolder uintptr_t_AsNativeAddressHolder(OpaqueMemory32 mem, long offset);
-
-    void uintptr_t(OpaqueMemory32 mem, long offset, long dest);
-
-    void uintptr_t(OpaqueMemory32 mem, long offset, OpaqueMemory32 dest);
-
-    void uintptr_t(OpaqueMemory32 mem, long offset, OpaqueMemory32 dest, long destOffset);
-
-    void uintptr_t(OpaqueMemory32 mem, long offset, ByteBuffer dest);
-
-    void uintptr_t(OpaqueMemory32 mem, long offset, NativeAddressHolder dest);
-
-    void uintptr_t(OpaqueMemory32 mem, long offset, NativeFunctionPointer dest);
-
-    String uintptr_t_AsHex(OpaqueMemory32 mem, long offset);
-
-    long uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index);
-
-    NativeAddressHolder uintptr_t_AtIndex_AsNativeAddressHolder(OpaqueMemory32 mem, long offset, int index);
-
-    void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, long dest);
-
-    void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, OpaqueMemory32 dest);
-
-    void uintptr_t_AtIndex(OpaqueMemory32 mem, long offset, int index, NativeAddressHolder dest);
-
     /**
      * this is a NULL terminated string, so we have to fetch the complete
      * string.
@@ -585,31 +645,13 @@ public interface MemoryAccessor {
      * @param offset
      * @return
      */
-    String getUTF_8String(OpaqueMemory32 mem, long offset);
+    String getUTF_8String(MemorySegment mem, long offset);
 
-    void setUTF_8String(String s, int srcStart, OpaqueMemory32 mem, long offset, int len);
+    void setUTF_8String(MemorySegment mem, long offset, String s);
 
-    /**
-     * In order to calculate the needed size in bytes, add a 1 for NULL
-     * termination!
-     *
-     * @param s
-     * @return
-     */
-    int getUTF_8StringLength(String s);
+    String getUnicodeString(MemorySegment mem, long offset, int len);
 
-    String getUnicodeString(OpaqueMemory32 mem, long offset, int start, int len);
-
-    void setUnicodeString(String s, int srcStart, OpaqueMemory32 mem, long offset, int destStart, int len);
-
-    /**
-     * underlying datatype is 16 bit wide, so multiply this by 2 for bytes
-     * needed! this will not be NULL terminated!
-     *
-     * @param s
-     * @return
-     */
-    int getUnicodeStringLength(String s);
+    void setUnicodeString(MemorySegment mem, long offset, int len, String s);
 
     static long getBitsInLong(long value, int bitpos, int bitsize) {
         final long mask = (0xffffffffffffffffL >>> (64 - bitsize)); // just shift the mask...

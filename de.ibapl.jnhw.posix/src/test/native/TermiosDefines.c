@@ -3,7 +3,7 @@
 
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,1544 +23,853 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-posix.h"
-#include "de_ibapl_jnhw_posix_TermiosTest_NativeDefines.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
     //We need the POSIX version ...
 #if !defined(HAVE_TERMIOS_H) || !defined(_POSIX_VERSION)
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    HAVE_TERMIOS_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_HAVE_1TERMIOS_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_FALSE;
-    }
+int getValueOf_HAVE_TERMIOS_H() {
+    return 0;
+}
 #else
 #include <termios.h>
 #include <errno.h>
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    HAVE_TERMIOS_H
-     * Signature: ()Z
-     */
-    JNIEXPORT jboolean JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_HAVE_1TERMIOS_1H
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return JNI_TRUE;
-    }
+int getValueOf_HAVE_TERMIOS_H() {
+    return 1;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    _HAVE_STRUCT_TERMIOS_C_ISPEED
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines__1HAVE_1STRUCT_1TERMIOS_1C_1ISPEED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__HAVE_STRUCT_TERMIOS_C_ISPEED(int* value) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED)
-        return JnhwWrapInteger(env, _HAVE_STRUCT_TERMIOS_C_ISPEED);
+    *value = _HAVE_STRUCT_TERMIOS_C_ISPEED;
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    _HAVE_STRUCT_TERMIOS_C_OSPEED
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines__1HAVE_1STRUCT_1TERMIOS_1C_1OSPEED
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf__HAVE_STRUCT_TERMIOS_C_OSPEED(int* value) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED)
-        return JnhwWrapInteger(env, _HAVE_STRUCT_TERMIOS_C_OSPEED);
+    *value = _HAVE_STRUCT_TERMIOS_C_OSPEED;
 #else
-        return NULL;
+value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B0
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B0
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B0;
-    }
+int getValueOf_B0() {
+    return B0;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B1000000
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B1000000
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B1000000(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, B1000000);
+    *value = B1000000;
 #else
 #if !defined(B1000000)
-        return NULL;
+valuie = NULL;
 #else
 #error "B1000000 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B110
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B110
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B110;
-    }
+int getValueOf_B110() {
+    return B110;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B115200
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B115200
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B115200;
-    }
+int getValueOf_B115200() {
+    return B115200;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B1152000
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B1152000
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B1152000(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, B1152000);
+    *value = B1152000;
 #else
 #if !defined(B1152000)
-        return NULL;
+value = NULL;
 #else
 #error "B1152000 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B1200
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B1200
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B1200;
-    }
+int getValueOf_B1200() {
+    return B1200;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B134
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B134
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B134;
-    }
+int getValueOf_B134() {
+    return B134;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B150
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B150
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B150;
-    }
+int getValueOf_B150() {
+    return B150;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B1500000
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B1500000
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B1500000(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, B1500000);
+    *value = B1500000;
 #else
 #if !defined(B1500000)
-        return NULL;
+    value = NULL;
 #else
 #error "B1500000 defined"
 #endif
 #endif
+    return value;
+}
 
-    }
+int getValueOf_B1800() {
+    return B1800;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B1800
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B1800
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B1800;
-    }
+int getValueOf_B19200() {
+    return B19200;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B19200
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B19200
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B19200;
-    }
+int getValueOf_B200() {
+    return B200;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B200
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B200
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B200;
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B2000000
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B2000000
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B2000000(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, B2000000);
+    *value = B2000000;
 #else
 #if !defined(B2000000)
-        return NULL;
+    value = NULL;
 #else
 #error "B2000000 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B230400
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B230400
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B230400;
-    }
+int getValueOf_B230400() {
+    return B230400;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B2400
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B2400
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B2400;
-    }
+int getValueOf_B2400() {
+    return B2400;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B2500000
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B2500000
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B2500000(int* value) {
 #if defined (__linux__) && !defined(__sparc__)
-        return JnhwWrapInteger(env, B2500000);
+    *value = B2500000;
 #else
 #if !defined(B2500000)
-        return NULL;
+    value = NULL;
 #else
 #error "B2500000 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B300
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B300
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B300;
-    }
+int getValueOf_B300() {
+    return B300;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B3000000
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B3000000
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B3000000(int* value) {
 #if defined (__linux__) && !defined(__sparc__)
-        return JnhwWrapInteger(env, B3000000);
+    *value = B3000000;
 #else
 #if !defined(B3000000)
-        return NULL;
+    value = NULL;
 #else
 #error "B3000000 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B3500000
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B3500000
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B3500000(int* value) {
 #if defined (__linux__) && !defined(__sparc__)
-        return JnhwWrapInteger(env, B3500000);
+    *value = B3500000;
 #else
 #if !defined(B3500000)
-        return NULL;
+    value = NULL;
 #else
 #error "B3500000 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B38400
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B38400
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B38400;
-    }
+int getValueOf_B38400() {
+    return B38400;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B4000000
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B4000000
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B4000000(int* value) {
 #if defined (__linux__) && !defined(__sparc__)
-        return JnhwWrapInteger(env, B4000000);
+    *value = B4000000;
 #else
 #if !defined(B4000000)
-        return NULL;
+    value = NULL;
 #else
 #error "B4000000 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B460800
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B460800
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B460800(int* value) {
 #if defined (__linux__) || defined (__FreeBSD__)
-        return JnhwWrapInteger(env, B460800);
+    *value = B460800;
 #else
 #if !defined(B460800)
-        return NULL;
+    value = NULL;
 #else
 #error "B460800 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B4800
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B4800
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B4800;
-    }
+int getValueOf_B4800() {
+    return B4800;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B50
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B50
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B50;
-    }
+int getValueOf_B50() {
+    return B50;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B500000
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B500000
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B500000(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, B500000);
+    *value = B500000;
 #else
 #if !defined(B500000)
-        return NULL;
+    value = NULL;
 #else
 #error "B500000 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B57600
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B57600
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B57600;
-    }
+int getValueOf_B57600() {
+    return B57600;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B576000
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B576000
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B576000(int* value) {
 #if defined (__linux__)
-        return JnhwWrapInteger(env, B576000);
+    *value = B576000;
 #else
 #if !defined(B576000)
-        return NULL;
+    value = NULL;
 #else
 #error "B576000 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B600
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B600
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B600;
-    }
+int getValueOf_B600() {
+    return B600;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B75
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B75
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B75;
-    }
+int getValueOf_B75() {
+    return B75;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B921600
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B921600
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_B921600(int* value) {
 #if defined (__linux__) || defined (__FreeBSD__)
-        return JnhwWrapInteger(env, B921600);
+    *value = B921600;
 #else
 #if !defined(B921600)
-        return NULL;
+    value = NULL;
 #else
 #error "B921600 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    B9600
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_B9600
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return B9600;
-    }
+int getValueOf_B9600() {
+    return B9600;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    BRKINT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_BRKINT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return BRKINT;
-    }
+int getValueOf_BRKINT() {
+    return BRKINT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    BS0
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_BS0
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_BS0(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, BS0);
+    *value = BS0;
 #else
 #if !defined(BS0)
-        return NULL;
+    value = NULL;
 #else
 #error "BS0 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    BS1
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_BS1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_BS1(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, BS1);
+    *value = BS1;
 #else
 #if !defined(BS1)
-        return NULL;
+    value = NULL;
 #else
 #error "BS1 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    BSDLY
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_BSDLY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_BSDLY(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, BSDLY);
+    *value = BSDLY;
 #else
 #if !defined(BSDLY)
-        return NULL;
+    value = NULL;
 #else
 #error "BSDLY defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CLOCAL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CLOCAL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CLOCAL;
-    }
+int getValueOf_CLOCAL() {
+    return CLOCAL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CMSPAR
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CMSPAR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_CMSPAR(int* value) {
 #if defined(__linux__)
 #if defined(CMSPAR)
         //it is defined for mips at least since glibc 2.31
-        return JnhwWrapInteger(env, CMSPAR);
+    *value = CMSPAR;
 #else
-        return NULL;
+    value = NULL;
 #endif
 #else
-        return NULL;
+    value = NULL;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CR0
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CR0
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_CR0(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, CR0);
+    *value = CR0;
 #else
 #if !defined(CR0)
-        return NULL;
+    value = NULL;
 #else
 #error "CR0 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CR1
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CR1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_CR1(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, CR1);
+    *value = CR1;
 #else
 #if !defined(CR1)
-        return NULL;
+    value = NULL;
 #else
 #error "CR1 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CR2
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CR2
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_CR2(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, CR2);
+    *value = CR2;
 #else
 #if !defined(CR2)
-        return NULL;
+    value = NULL;
 #else
 #error "CR2 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CR3
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CR3
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_CR3(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, CR3);
+    *value = CR3;
 #else
 #if !defined(CR3)
-        return NULL;
+    value = NULL;
 #else
 #error "CR3 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CRDLY
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CRDLY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_CRDLY(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, CRDLY);
+    *value = CRDLY;
 #else
 #if !defined(CRDLY)
-        return NULL;
+    value = NULL;
 #else
 #error "CRDLY defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CREAD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CREAD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CREAD;
-    }
+int getValueOf_CREAD() {
+    return CREAD;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CRTSCTS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CRTSCTS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return (int32_t) CRTSCTS;
-    }
+int getValueOf_CRTSCTS() {
+#if defined (__linux__) && defined(__x86_64__)
+//TODO detect at compiletime if unsigned
+    return (int)CRTSCTS;
+#else
+    return CRTSCTS;
+#endif
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CS5
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CS5
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CS5;
-    }
+int getValueOf_CS5() {
+    return CS5;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CS6
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CS6
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CS6;
-    }
+int getValueOf_CS6() {
+    return CS6;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CS7
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CS7
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CS7;
-    }
+int getValueOf_CS7() {
+    return CS7;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CS8
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CS8
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CS8;
-    }
+int getValueOf_CS8() {
+    return CS8;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CSIZE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CSIZE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CSIZE;
-    }
+int getValueOf_CSIZE() {
+    return CSIZE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    CSTOPB
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_CSTOPB
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return CSTOPB;
-    }
+int getValueOf_CSTOPB() {
+    return CSTOPB;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    ECHO
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_ECHO
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECHO;
-    }
+int getValueOf_ECHO() {
+    return ECHO;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    ECHOE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_ECHOE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECHOE;
-    }
+int getValueOf_ECHOE() {
+    return ECHOE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    ECHOK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_ECHOK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECHOK;
-    }
+int getValueOf_ECHOK() {
+    return ECHOK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    ECHONL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_ECHONL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ECHONL;
-    }
+int getValueOf_ECHONL() {
+    return ECHONL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    FF0
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_FF0
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_FF0(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, FF0);
+    *value = FF0;
 #else
 #if !defined(FF0)
-        return NULL;
+    value = NULL;
 #else
 #error "FF0 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    FF1
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_FF1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_FF1(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, FF1);
+    *value = FF1;
 #else
 #if !defined(FF1)
-        return NULL;
+    value = NULL;
 #else
 #error "FF1 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    FFDLY
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_FFDLY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_FFDLY(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, FFDLY);
+    *value = FFDLY;
 #else
 #if !defined(FFDLY)
-        return NULL;
+    value = NULL;
 #else
 #error "FFDLY defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    HUPCL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_HUPCL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return HUPCL;
-    }
+int getValueOf_HUPCL() {
+    return HUPCL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    ICANON
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_ICANON
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ICANON;
-    }
+int getValueOf_ICANON() {
+    return ICANON;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    ICRNL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_ICRNL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ICRNL;
-    }
+int getValueOf_ICRNL() {
+    return ICRNL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    IEXTEN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_IEXTEN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return IEXTEN;
-    }
+int getValueOf_IEXTEN() {
+    return IEXTEN;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    IGNBRK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_IGNBRK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return IGNBRK;
-    }
+int getValueOf_IGNBRK() {
+    return IGNBRK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    IGNCR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_IGNCR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return IGNCR;
-    }
+int getValueOf_IGNCR() {
+    return IGNCR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    IGNPAR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_IGNPAR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return IGNPAR;
-    }
+int getValueOf_IGNPAR() {
+    return IGNPAR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    INLCR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_INLCR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return INLCR;
-    }
+int getValueOf_INLCR() {
+    return INLCR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    INPCK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_INPCK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return INPCK;
-    }
+int getValueOf_INPCK() {
+    return INPCK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    ISIG
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_ISIG
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ISIG;
-    }
+int getValueOf_ISIG() {
+    return ISIG;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    ISTRIP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_ISTRIP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ISTRIP;
-    }
+int getValueOf_ISTRIP() {
+    return ISTRIP;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    IXANY
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_IXANY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return IXANY;
-    }
+int getValueOf_IXANY() {
+    return IXANY;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    IXOFF
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_IXOFF
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return IXOFF;
-    }
+int getValueOf_IXOFF() {
+    return IXOFF;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    IXON
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_IXON
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return IXON;
-    }
+int getValueOf_IXON() {
+    return IXON;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    NCCS
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_NCCS
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return NCCS;
-    }
+int getValueOf_NCCS() {
+    return NCCS;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    NL0
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_NL0
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_NL0(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, NL0);
+    *value = NL0;
 #else
 #if !defined(NL0)
-        return NULL;
+    value = NULL;
 #else
 #error "NL0 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    NL1
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_NL1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_NL1(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, NL1);
+    *value = NL1;
 #else
 #if !defined(NL1)
-        return NULL;
+    value = NULL;
 #else
 #error "NL1 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    NLDLY
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_NLDLY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_NLDLY(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, NLDLY);
+    *value = NLDLY;
 #else
 #if !defined(NLDLY)
-        return NULL;
+    value = NULL;
 #else
 #error "NLDLY defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    NOFLSH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_NOFLSH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int getValueOf_NOFLSH() {
 #if defined (__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && (defined(__powerpc__) || defined(__alpha__)))
         return (int32_t) NOFLSH;
 #else
         return NOFLSH;
 #endif
-    }
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    OCRNL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_OCRNL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return OCRNL;
-    }
+int getValueOf_OCRNL() {
+    return OCRNL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    OFDEL
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_OFDEL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_OFDEL(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, OFDEL);
+    *value = OFDEL;
 #else
 #if !defined(OFDEL)
-        return NULL;
+    value = NULL;
 #else
 #error "OFDEL defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    OFILL
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_OFILL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_OFILL(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, OFILL);
+    *value = OFILL;
 #else
 #if !defined(OFILL)
-        return NULL;
+    value = NULL;
 #else
 #error "OFILL defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    ONLCR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_ONLCR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ONLCR;
-    }
+int getValueOf_ONLCR() {
+    return ONLCR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    ONLRET
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_ONLRET
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ONLRET;
-    }
+int getValueOf_ONLRET() {
+    return ONLRET;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    ONOCR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_ONOCR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return ONOCR;
-    }
+int getValueOf_ONOCR() {
+    return ONOCR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    OPOST
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_OPOST
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return OPOST;
-    }
+int getValueOf_OPOST() {
+    return OPOST;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    PARENB
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_PARENB
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PARENB;
-    }
+int getValueOf_PARENB() {
+    return PARENB;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    PAREXT
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_PAREXT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_PAREXT(int* value) {
 #if !defined(PAREXT)
-        return NULL;
+    value = NULL;
 #else
 #error "PAREXT defined"
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    PARMRK
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_PARMRK
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PARMRK;
-    }
+int getValueOf_PARMRK() {
+    return PARMRK;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    PARODD
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_PARODD
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return PARODD;
-    }
+int getValueOf_PARODD() {
+    return PARODD;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TAB0
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TAB0
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_TAB0(int* value) {
 #if defined(__OpenBSD__)
 #if !defined(TAB0)
-        return NULL;
+    value = NULL;
 #else
 #error "TAB0 defined"
 #endif
 #else
-        return JnhwWrapInteger(env, TAB0);
+    *value = TAB0;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TAB1
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TAB1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_TAB1(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, TAB1);
+    *value = TAB1;
 #else
 #if !defined(TAB1)
-        return NULL;
+    value = NULL;
 #else
 #error "TAB1 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TAB2
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TAB2
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_TAB2(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, TAB2);
+    *value = TAB2;
 #else
 #if !defined(TAB2)
-        return NULL;
+    value = NULL;
 #else
 #error "TAB2 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TAB3
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TAB3
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_TAB3(int* value) {
 #if defined(__OpenBSD__)
 #if !defined(TAB3)
-        return NULL;
+    value = NULL;
 #else
 #error "TAB3 defined"
 #endif
 #else
-        return JnhwWrapInteger(env, TAB3);
+    *value = TAB3;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TABDLY
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TABDLY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_TABDLY(int* value) {
 #if defined(__OpenBSD__)
 #if !defined(TABDLY)
-        return NULL;
+    value = NULL;
 #else
 #error "TABDLY defined"
 #endif
 #else
-        return JnhwWrapInteger(env, TABDLY);
+    *value = TABDLY;
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TCIFLUSH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TCIFLUSH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TCIFLUSH;
-    }
+int getValueOf_TCIFLUSH() {
+    return TCIFLUSH;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TCIOFF
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TCIOFF
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TCIOFF;
-    }
+int getValueOf_TCIOFF() {
+    return TCIOFF;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TCIOFLUSH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TCIOFLUSH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TCIOFLUSH;
-    }
+int getValueOf_TCIOFLUSH() {
+    return TCIOFLUSH;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TCION
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TCION
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TCION;
-    }
+int getValueOf_TCION() {
+    return TCION;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TCOFLUSH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TCOFLUSH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TCOFLUSH;
-    }
+int getValueOf_TCOFLUSH() {
+    return TCOFLUSH;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TCOOFF
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TCOOFF
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TCOOFF;
-    }
+int getValueOf_TCOOFF() {
+    return TCOOFF;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TCOON
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TCOON
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TCOON;
-    }
+int getValueOf_TCOON() {
+    return TCOON;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TCSADRAIN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TCSADRAIN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TCSADRAIN;
-    }
+int getValueOf_TCSADRAIN() {
+    return TCSADRAIN;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TCSAFLUSH
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TCSAFLUSH
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TCSAFLUSH;
-    }
+int getValueOf_TCSAFLUSH() {
+    return TCSAFLUSH;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TCSANOW
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TCSANOW
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TCSANOW;
-    }
+int getValueOf_TCSANOW() {
+    return TCSANOW;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    TOSTOP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_TOSTOP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return TOSTOP;
-    }
+int getValueOf_TOSTOP() {
+    return TOSTOP;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VEOF
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VEOF
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return VEOF;
-    }
+int getValueOf_VEOF() {
+    return VEOF;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VEOL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VEOL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return VEOL;
-    }
+int getValueOf_VEOL() {
+    return VEOL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VERASE
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VERASE
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return VERASE;
-    }
+int getValueOf_VERASE() {
+    return VERASE;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VINTR
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VINTR
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return VINTR;
-    }
+int getValueOf_VINTR() {
+    return VINTR;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VKILL
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VKILL
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return VKILL;
-    }
+int getValueOf_VKILL() {
+    return VKILL;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VMIN
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VMIN
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return VMIN;
-    }
+int getValueOf_VMIN() {
+    return VMIN;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VQUIT
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VQUIT
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return VQUIT;
-    }
+int getValueOf_VQUIT() {
+    return VQUIT;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VSTART
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VSTART
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return VSTART;
-    }
+int getValueOf_VSTART() {
+    return VSTART;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VSTOP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VSTOP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return VSTOP;
-    }
+int getValueOf_VSTOP() {
+    return VSTOP;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VSUSP
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VSUSP
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return VSUSP;
-    }
+int getValueOf_VSUSP() {
+    return VSUSP;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VT0
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VT0
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_VT0(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, VT0);
+    *value = VT0;
 #else
 #if !defined(VT0)
-        return NULL;
+    value = NULL;
 #else
 #error "VT0 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VT1
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VT1
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_VT1(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, VT1);
+    *value = VT1;
 #else
 #if !defined(VT1)
-        return NULL;
+    value = NULL;
 #else
 #error "VT1 defined"
 #endif
 #endif
-    }
+    return value;
+}
 
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VTDLY
-     * Signature: ()Ljava/lang/Integer;
-     */
-    JNIEXPORT jobject JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VTDLY
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
+int* tryGetValueOf_VTDLY(int* value) {
 #if defined (__linux__) || defined (__APPLE__)
-        return JnhwWrapInteger(env, VTDLY);
+    *value = VTDLY;
 #else
 #if !defined(VTDLY)
-        return NULL;
+    value = NULL;
 #else
 #error "VTDLY defined"
 #endif
 #endif
-    }
-
-    /*
-     * Class:     de_ibapl_jnhw_posix_TermiosTest_NativeDefines
-     * Method:    VTIME
-     * Signature: ()I
-     */
-    JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_posix_TermiosTest_00024NativeDefines_VTIME
-    (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz) {
-        return VTIME;
-    }
-
-#endif
-
-#ifdef __cplusplus
+    return value;
 }
+
+int getValueOf_VTIME() {
+    return VTIME;
+}
+
 #endif

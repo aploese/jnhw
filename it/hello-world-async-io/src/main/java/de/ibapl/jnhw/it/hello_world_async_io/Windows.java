@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,24 +21,32 @@
  */
 package de.ibapl.jnhw.it.hello_world_async_io;
 
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.Int32_t;
-import de.ibapl.jnhw.common.memory.NativeAddressHolder;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Uint32_t;
+import de.ibapl.jnhw.common.memory.UintPtr_t;
+import de.ibapl.jnhw.winapi.BaseTsd;
 import de.ibapl.jnhw.winapi.Fileapi;
 //Import only the needed define from the wrapper of processenv.h
 import de.ibapl.jnhw.winapi.Handleapi;
 import de.ibapl.jnhw.winapi.IoAPI;
 import de.ibapl.jnhw.winapi.Minwinbase;
+import de.ibapl.jnhw.winapi.WinDef;
 import de.ibapl.jnhw.winapi.Winbase;
 import de.ibapl.jnhw.winapi.Winnt;
 import java.io.File;
 import java.io.IOException;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
+import jdk.incubator.foreign.ValueLayout;
 
 public class Windows {
 
-    public static void aio(File file, OpaqueMemory32 aioBuffer, final boolean debug) throws NativeErrorException, IOException {
+    private final static ResourceScope scope = ResourceScope.newSharedScope();
+
+    public static void aio(File file, MemorySegment aioBuffer, final boolean debug) throws NativeErrorException, IOException {
 
         Winnt.HANDLE hFile = Fileapi.CreateFileW(file,
                 Winnt.GENERIC_WRITE,
@@ -48,16 +56,17 @@ public class Windows {
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
 
-        final Minwinbase.OVERLAPPED overlapped = new Minwinbase.OVERLAPPED();
+        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(scope);
         final long COMPLETION_KEY = 24;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        Int32_t lpNumberOfBytesTransferred = new Int32_t();
-        Uint32_t lpCompletionKey = new Uint32_t();
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(scope);
+        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(scope);
 
         Fileapi.WriteFile(hFile, aioBuffer, overlapped);
 
-        NativeAddressHolder<Minwinbase.OVERLAPPED> overlappedPtr = IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, 1000);
+        UintPtr_t<Minwinbase.LPOVERLAPPED> overlappedPtr = UintPtr_t.allocateNative(scope);
+        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
 
         /*
         Assertions.assertNotNull(overlappedPtr.value);
@@ -76,11 +85,11 @@ public class Windows {
                 null);
         hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        OpaqueMemory32.clear(aioBuffer);
+        aioBuffer.fill((byte) 0);
 
         Fileapi.ReadFile(hFile, aioBuffer, overlapped);
 
-        overlappedPtr = IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, 1000);
+        IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
 
         /*
         Assertions.assertNotNull(overlappedPtr.value);
@@ -90,9 +99,9 @@ public class Windows {
          */
         Handleapi.CloseHandle(hFile);
 
-        StringBuilder sb = new StringBuilder(aioBuffer.sizeInBytes);
-        for (int i = 0; i < aioBuffer.sizeInBytes; i++) {
-            sb.append((char) OpaqueMemory32.getByte(aioBuffer, i));
+        StringBuilder sb = new StringBuilder((int) aioBuffer.byteSize());
+        for (int i = 0; i < aioBuffer.byteSize(); i++) {
+            sb.append((char) aioBuffer.get(ValueLayout.JAVA_BYTE, i));
         }
 
         System.out.println(sb.toString());

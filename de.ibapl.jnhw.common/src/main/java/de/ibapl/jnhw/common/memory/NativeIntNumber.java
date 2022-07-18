@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,18 +21,16 @@
  */
 package de.ibapl.jnhw.common.memory;
 
+import jdk.incubator.foreign.MemorySegment;
+
 /**
  *
  * @author aploese
  */
-public abstract class NativeIntNumber extends OpaqueMemory32 {
+public abstract class NativeIntNumber<T extends Number> extends OpaqueMemory<T> {
 
-    protected NativeIntNumber(AbstractNativeMemory owner, long offset, int sizeInBytes, SetMem setMem) {
-        super(owner, offset, sizeInBytes, setMem);
-    }
-
-    protected NativeIntNumber(int sizeInBytes) {
-        super(null, 0, sizeInBytes, SetMem.DO_NOT_SET);
+    protected NativeIntNumber(MemorySegment memorySegment, long offset, long sizeInBytes) {
+        super(memorySegment, offset, sizeInBytes);
     }
 
 }

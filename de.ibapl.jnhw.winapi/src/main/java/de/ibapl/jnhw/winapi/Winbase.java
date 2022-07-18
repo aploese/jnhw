@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -26,18 +26,23 @@ import de.ibapl.jnhw.annotation.winapi.basetsd.DWORD;
 import de.ibapl.jnhw.annotation.winapi.basetsd.WORD;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory;
 import de.ibapl.jnhw.common.memory.Int32_t;
-import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
-import de.ibapl.jnhw.util.winapi.LibJnhwWinApiLoader;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A_uI;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
-import de.ibapl.jnhw.util.winapi.memory.WinApiStruct32;
+import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  * Wrapper around the
@@ -55,7 +60,7 @@ public abstract class Winbase {
      * COMMTIMEOUTS}</a>.
      *
      */
-    public final static class COMMTIMEOUTS extends WinApiStruct32 {
+    public final static class COMMTIMEOUTS extends WinApiStruct {
 
         public static class Layout extends StructLayout {
 
@@ -80,8 +85,8 @@ public abstract class Winbase {
 
         }
 
-        public COMMTIMEOUTS(SetMem setMem) {
-            super((OpaqueMemory32) null, 0, Layout.sizeof, setMem);
+        public COMMTIMEOUTS(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         /**
@@ -90,7 +95,7 @@ public abstract class Winbase {
          */
         @DWORD
         public long ReadIntervalTimeout() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.ReadIntervalTimeout);
+            return ACCESSOR_DWORD.DWORD_AsLong(memorySegment, Layout.ReadIntervalTimeout);
         }
 
         /**
@@ -98,7 +103,7 @@ public abstract class Winbase {
          * natively.
          */
         public void ReadIntervalTimeout(@DWORD long ReadIntervalTimeout) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.ReadIntervalTimeout, ReadIntervalTimeout);
+            ACCESSOR_DWORD.DWORD_FromLong(memorySegment, Layout.ReadIntervalTimeout, ReadIntervalTimeout);
         }
 
         /**
@@ -107,7 +112,7 @@ public abstract class Winbase {
          */
         @DWORD
         public long ReadTotalTimeoutConstant() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.ReadTotalTimeoutConstant);
+            return ACCESSOR_DWORD.DWORD_AsLong(memorySegment, Layout.ReadTotalTimeoutConstant);
         }
 
         /**
@@ -115,7 +120,7 @@ public abstract class Winbase {
          * to be set natively.
          */
         public void ReadTotalTimeoutConstant(@DWORD long ReadTotalTimeoutConstant) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.ReadTotalTimeoutConstant, ReadTotalTimeoutConstant);
+            ACCESSOR_DWORD.DWORD_FromLong(memorySegment, Layout.ReadTotalTimeoutConstant, ReadTotalTimeoutConstant);
         }
 
         /**
@@ -124,7 +129,7 @@ public abstract class Winbase {
          */
         @DWORD
         public long ReadTotalTimeoutMultiplier() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.ReadTotalTimeoutMultiplier);
+            return ACCESSOR_DWORD.DWORD_AsLong(memorySegment, Layout.ReadTotalTimeoutMultiplier);
         }
 
         /**
@@ -132,7 +137,7 @@ public abstract class Winbase {
          * ReadTotalTimeoutMultiplier to be set natively.
          */
         public void ReadTotalTimeoutMultiplier(@DWORD long ReadTotalTimeoutMultiplier) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.ReadTotalTimeoutMultiplier, ReadTotalTimeoutMultiplier);
+            ACCESSOR_DWORD.DWORD_FromLong(memorySegment, Layout.ReadTotalTimeoutMultiplier, ReadTotalTimeoutMultiplier);
         }
 
         /**
@@ -141,7 +146,7 @@ public abstract class Winbase {
          */
         @DWORD
         public long WriteTotalTimeoutConstant() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.WriteTotalTimeoutConstant);
+            return ACCESSOR_DWORD.DWORD_AsLong(memorySegment, Layout.WriteTotalTimeoutConstant);
 
         }
 
@@ -150,7 +155,7 @@ public abstract class Winbase {
          * WriteTotalTimeoutConstant to be set natively.
          */
         public void WriteTotalTimeoutConstant(@DWORD long WriteTotalTimeoutConstant) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.WriteTotalTimeoutConstant, WriteTotalTimeoutConstant);
+            ACCESSOR_DWORD.DWORD_FromLong(memorySegment, Layout.WriteTotalTimeoutConstant, WriteTotalTimeoutConstant);
         }
 
         /**
@@ -159,7 +164,7 @@ public abstract class Winbase {
          */
         @DWORD
         public long WriteTotalTimeoutMultiplier() {
-            return ACCESSOR_DWORD.DWORD_AsLong(this, Layout.WriteTotalTimeoutMultiplier);
+            return ACCESSOR_DWORD.DWORD_AsLong(memorySegment, Layout.WriteTotalTimeoutMultiplier);
         }
 
         /**
@@ -167,7 +172,7 @@ public abstract class Winbase {
          * WriteTotalTimeoutMultiplier to be set natively.
          */
         public void WriteTotalTimeoutMultiplier(@DWORD long WriteTotalTimeoutMultiplier) {
-            ACCESSOR_DWORD.DWORD_FromLong(this, Layout.WriteTotalTimeoutMultiplier, WriteTotalTimeoutMultiplier);
+            ACCESSOR_DWORD.DWORD_FromLong(memorySegment, Layout.WriteTotalTimeoutMultiplier, WriteTotalTimeoutMultiplier);
         }
 
     }
@@ -177,7 +182,7 @@ public abstract class Winbase {
      * COMSTAT}</a>.
      *
      */
-    public static class COMSTAT extends WinApiStruct32 {
+    public static class COMSTAT extends WinApiStruct {
 
         public static class Layout extends StructLayout {
 
@@ -214,8 +219,8 @@ public abstract class Winbase {
 
         }
 
-        public COMSTAT(SetMem setMem) {
-            super((OpaqueMemory32) null, 0, Layout.sizeof, setMem);
+        public COMSTAT(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
         }
 
         /**
@@ -224,7 +229,7 @@ public abstract class Winbase {
          */
         @DWORD
         public int cbInQue() {
-            return ACCESSOR_DWORD.DWORD(this, Layout.cbInQue);
+            return ACCESSOR_DWORD.DWORD(memorySegment, Layout.cbInQue);
         }
 
         /**
@@ -233,21 +238,21 @@ public abstract class Winbase {
          */
         @DWORD
         public int cbOutQue() {
-            return ACCESSOR_DWORD.DWORD(this, Layout.cbOutQue);
+            return ACCESSOR_DWORD.DWORD(memorySegment, Layout.cbOutQue);
         }
 
         /**
          * @return the native value of fCtsHold.
          */
         public boolean fCtsHold() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_0_1__fCtsHold);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_0_1__fCtsHold);
         }
 
         /**
          * @return the native value of fDsrHold.
          */
         public boolean fDsrHold() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_1_1__fDsrHold);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_1_1__fDsrHold);
         }
 
         /**
@@ -255,7 +260,7 @@ public abstract class Winbase {
          * @return the native value of fEof.
          */
         public boolean fEof() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_5_1__fEof);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_5_1__fEof);
         }
 
         /**
@@ -263,14 +268,14 @@ public abstract class Winbase {
          * @return the native value of fReserved.
          */
         public int fReserved() {
-            return ACCESSOR_DWORD.getBits(this, Layout.bitfield_Offset, Layout.BF_7_25__fReserved, 25);
+            return ACCESSOR_DWORD.getBits(memorySegment, Layout.bitfield_Offset, Layout.BF_7_25__fReserved, 25);
         }
 
         /**
          * @return the native value of fRlsdHold.
          */
         public boolean fRlsdHold() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_2_1__fRlsdHold);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_2_1__fRlsdHold);
         }
 
         /**
@@ -278,21 +283,21 @@ public abstract class Winbase {
          * @return the native value of fTxim.
          */
         public boolean fTxim() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_6_1__fTxim);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_6_1__fTxim);
         }
 
         /**
          * @return the native value of fXoffHold.
          */
         public boolean fXoffHold() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_3_1__fXoffHold);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_3_1__fXoffHold);
         }
 
         /**
          * @return the native value of fXoffSent.
          */
         public boolean fXoffSent() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_4_1__fXoffSent);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_4_1__fXoffSent);
         }
     }
 
@@ -301,7 +306,7 @@ public abstract class Winbase {
      * DCB}</a>.
      *
      */
-    public final static class DCB extends WinApiStruct32 {
+    public final static class DCB extends WinApiStruct {
 
         public static class Layout extends StructLayout {
 
@@ -374,8 +379,8 @@ public abstract class Winbase {
 
         }
 
-        public DCB(SetMem setMem) {
-            super(null, 0, Layout.sizeof, setMem);
+        public DCB(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Layout.sizeof);
             //set the current size explicitly.
             DCBlength(Layout.sizeof);
         }
@@ -386,14 +391,14 @@ public abstract class Winbase {
          */
         @DWORD
         public int BaudRate() {
-            return ACCESSOR_DWORD.DWORD(this, Layout.BaudRate);
+            return ACCESSOR_DWORD.DWORD(memorySegment, Layout.BaudRate);
         }
 
         /**
          * @param BaudRate the value of BaudRate to be set natively.
          */
         public void BaudRate(@DWORD int BaudRate) {
-            ACCESSOR_DWORD.DWORD(this, Layout.BaudRate, BaudRate);
+            ACCESSOR_DWORD.DWORD(memorySegment, Layout.BaudRate, BaudRate);
         }
 
         /**
@@ -402,14 +407,14 @@ public abstract class Winbase {
          */
         @BYTE
         public byte ByteSize() {
-            return ACCESSOR_BYTE.BYTE(this, Layout.ByteSize);
+            return ACCESSOR_BYTE.BYTE(memorySegment, Layout.ByteSize);
         }
 
         /**
          * @param ByteSize the value of ByteSize to be set natively.
          */
         public void ByteSize(@BYTE byte ByteSize) {
-            ACCESSOR_BYTE.BYTE(this, Layout.ByteSize, ByteSize);
+            ACCESSOR_BYTE.BYTE(memorySegment, Layout.ByteSize, ByteSize);
         }
 
         /**
@@ -418,14 +423,14 @@ public abstract class Winbase {
          */
         @DWORD
         public int DCBlength() {
-            return ACCESSOR_DWORD.DWORD(this, Layout.DCBlength);
+            return ACCESSOR_DWORD.DWORD(memorySegment, Layout.DCBlength);
         }
 
         /**
          * @param DCBlength the value of DCBlength to be set natively.
          */
         public void DCBlength(@DWORD int DCBlength) {
-            ACCESSOR_DWORD.DWORD(this, Layout.DCBlength, DCBlength);
+            ACCESSOR_DWORD.DWORD(memorySegment, Layout.DCBlength, DCBlength);
         }
 
         /**
@@ -433,7 +438,7 @@ public abstract class Winbase {
          * @return the native value of EofChar.
          */
         public char EofChar() {
-            return (char) MEM_ACCESS.int8_t(this, Layout.EofChar);
+            return (char) MEM_ACCESS.int8_t(memorySegment, Layout.EofChar);
         }
 
         /**
@@ -441,14 +446,14 @@ public abstract class Winbase {
          * @return the native value of ErrorChar.
          */
         public char ErrorChar() {
-            return (char) MEM_ACCESS.int8_t(this, Layout.ErrorChar);
+            return (char) MEM_ACCESS.int8_t(memorySegment, Layout.ErrorChar);
         }
 
         /**
          * @return the native value of EvtChar.
          */
         public char EvtChar() {
-            return (char) MEM_ACCESS.int8_t(this, Layout.EvtChar);
+            return (char) MEM_ACCESS.int8_t(memorySegment, Layout.EvtChar);
         }
 
         /**
@@ -456,7 +461,7 @@ public abstract class Winbase {
          * @return the native value of fAbortOnError.
          */
         public boolean fAbortOnError() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_14_1__fAbortOnError);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_14_1__fAbortOnError);
         }
 
         /**
@@ -464,7 +469,7 @@ public abstract class Winbase {
          * @return the native value of fBinary.
          */
         public boolean fBinary() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_0_1__fBinary);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_0_1__fBinary);
         }
 
         /**
@@ -472,7 +477,7 @@ public abstract class Winbase {
          * @return the native value of fDsrSensitivity.
          */
         public boolean fDsrSensitivity() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_6_1__fDsrSensitivity);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_6_1__fDsrSensitivity);
         }
 
         /**
@@ -481,7 +486,7 @@ public abstract class Winbase {
          * @return the native value of fDtrControl.
          */
         public byte fDtrControl() {
-            return (byte) ACCESSOR_DWORD.getBits(this, Layout.bitfield_Offset, Layout.BF_4_2__fDtrControl, 2);
+            return (byte) ACCESSOR_DWORD.getBits(memorySegment, Layout.bitfield_Offset, Layout.BF_4_2__fDtrControl, 2);
         }
 
         /**
@@ -489,7 +494,7 @@ public abstract class Winbase {
          * @return the native value of fDummy2.
          */
         public int fDummy2() {
-            return ACCESSOR_DWORD.getBits(this, Layout.bitfield_Offset, Layout.BF_15_17__fDummy2, 17);
+            return ACCESSOR_DWORD.getBits(memorySegment, Layout.bitfield_Offset, Layout.BF_15_17__fDummy2, 17);
         }
 
         /**
@@ -497,7 +502,7 @@ public abstract class Winbase {
          * @return the native value of fErrorChar.
          */
         public boolean fErrorChar() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_10_1__fErrorChar);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_10_1__fErrorChar);
         }
 
         /**
@@ -505,14 +510,14 @@ public abstract class Winbase {
          * @return the native value of fInX.
          */
         public boolean fInX() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_9_1__fInX);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_9_1__fInX);
         }
 
         /**
          * @param fInX the value of fInX to be set natively.
          */
         public void fInX(boolean fInX) {
-            ACCESSOR_DWORD.setBitAt(this, Layout.bitfield_Offset, Layout.BF_9_1__fInX, fInX);
+            ACCESSOR_DWORD.setBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_9_1__fInX, fInX);
         }
 
         /**
@@ -520,7 +525,7 @@ public abstract class Winbase {
          * @return the native value of fNull.
          */
         public boolean fNull() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_11_1__fNull);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_11_1__fNull);
         }
 
         /**
@@ -528,14 +533,14 @@ public abstract class Winbase {
          * @return the native value of fOutX.
          */
         public boolean fOutX() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_8_1__fOutX);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_8_1__fOutX);
         }
 
         /**
          * @param fOutX the value of fOutX to be set natively.
          */
         public void fOutX(boolean fOutX) {
-            ACCESSOR_DWORD.setBitAt(this, Layout.bitfield_Offset, Layout.BF_8_1__fOutX, fOutX);
+            ACCESSOR_DWORD.setBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_8_1__fOutX, fOutX);
         }
 
         /**
@@ -543,14 +548,14 @@ public abstract class Winbase {
          * @return the native value of fOutxCtsFlow.
          */
         public boolean fOutxCtsFlow() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_2_1__fOutxCtsFlow);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_2_1__fOutxCtsFlow);
         }
 
         /**
          * @param fOutxCtsFlow the value of fOutxCtsFlow to be set natively.
          */
         public void fOutxCtsFlow(boolean fOutxCtsFlow) {
-            ACCESSOR_DWORD.setBitAt(this, Layout.bitfield_Offset, Layout.BF_2_1__fOutxCtsFlow, fOutxCtsFlow);
+            ACCESSOR_DWORD.setBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_2_1__fOutxCtsFlow, fOutxCtsFlow);
         }
 
         /**
@@ -558,7 +563,7 @@ public abstract class Winbase {
          * @return the native value of fOutxDsrFlow.
          */
         public boolean fOutxDsrFlow() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_3_1__fOutxDsrFlow);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_3_1__fOutxDsrFlow);
         }
 
         /**
@@ -566,7 +571,7 @@ public abstract class Winbase {
          * @return the native value of fParity.
          */
         public boolean fParity() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_1_1__fParity);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_1_1__fParity);
         }
 
         /**
@@ -576,14 +581,14 @@ public abstract class Winbase {
          * @return the native value of fRtsControl.
          */
         public byte fRtsControl() {
-            return (byte) ACCESSOR_DWORD.getBits(this, Layout.bitfield_Offset, Layout.BF_12_2__fRtsControl, 2);
+            return (byte) ACCESSOR_DWORD.getBits(memorySegment, Layout.bitfield_Offset, Layout.BF_12_2__fRtsControl, 2);
         }
 
         /**
          * @param fRtsControl the value of fRtsControl to be set natively.
          */
         public void fRtsControl(byte fRtsControl) {
-            ACCESSOR_DWORD.setBits(this, Layout.bitfield_Offset, Layout.BF_12_2__fRtsControl, 2, fRtsControl);
+            ACCESSOR_DWORD.setBits(memorySegment, Layout.bitfield_Offset, Layout.BF_12_2__fRtsControl, 2, fRtsControl);
         }
 
         /**
@@ -591,7 +596,7 @@ public abstract class Winbase {
          * @return the native value of fTXContinueOnXoff.
          */
         public boolean fTXContinueOnXoff() {
-            return ACCESSOR_DWORD.getBitAt(this, Layout.bitfield_Offset, Layout.BF_7_1__fTXContinueOnXoff);
+            return ACCESSOR_DWORD.getBitAt(memorySegment, Layout.bitfield_Offset, Layout.BF_7_1__fTXContinueOnXoff);
         }
 
         /**
@@ -601,14 +606,14 @@ public abstract class Winbase {
          */
         @BYTE
         public byte Parity() {
-            return ACCESSOR_BYTE.BYTE(this, Layout.Parity);
+            return ACCESSOR_BYTE.BYTE(memorySegment, Layout.Parity);
         }
 
         /**
          * @param Parity the value of Parity to be set natively.
          */
         public void Parity(@BYTE byte Parity) {
-            ACCESSOR_BYTE.BYTE(this, Layout.Parity, Parity);
+            ACCESSOR_BYTE.BYTE(memorySegment, Layout.Parity, Parity);
         }
 
         /**
@@ -618,14 +623,14 @@ public abstract class Winbase {
          */
         @BYTE
         public byte StopBits() {
-            return ACCESSOR_BYTE.BYTE(this, Layout.StopBits);
+            return ACCESSOR_BYTE.BYTE(memorySegment, Layout.StopBits);
         }
 
         /**
          * @param StopBits the value of StopBits to be set natively.
          */
         public void StopBits(@BYTE byte StopBits) {
-            ACCESSOR_BYTE.BYTE(this, Layout.StopBits, StopBits);
+            ACCESSOR_BYTE.BYTE(memorySegment, Layout.StopBits, StopBits);
         }
 
         /**
@@ -634,7 +639,7 @@ public abstract class Winbase {
          */
         @WORD
         public short wReserved() {
-            return ACCESSOR_WORD.WORD(this, Layout.wReserved);
+            return ACCESSOR_WORD.WORD(memorySegment, Layout.wReserved);
         }
 
         /**
@@ -642,7 +647,7 @@ public abstract class Winbase {
          * @return the native value of wReserved1.
          */
         public short wReserved1() {
-            return ACCESSOR_WORD.WORD(this, Layout.wReserved1);
+            return ACCESSOR_WORD.WORD(memorySegment, Layout.wReserved1);
         }
 
         /**
@@ -650,14 +655,14 @@ public abstract class Winbase {
          * @return the native value of XoffChar.
          */
         public char XoffChar() {
-            return (char) MEM_ACCESS.int8_t(this, Layout.XoffChar);
+            return (char) MEM_ACCESS.int8_t(memorySegment, Layout.XoffChar);
         }
 
         /**
          * @param XoffChar the value of XoffChar to be set natively.
          */
         public void XoffChar(char XoffChar) {
-            MEM_ACCESS.int8_t(this, Layout.XoffChar, (byte) XoffChar);
+            MEM_ACCESS.int8_t(memorySegment, Layout.XoffChar, (byte) XoffChar);
         }
 
         /**
@@ -666,7 +671,7 @@ public abstract class Winbase {
          */
         @WORD
         public short XoffLim() {
-            return ACCESSOR_WORD.WORD(this, Layout.XoffLim);
+            return ACCESSOR_WORD.WORD(memorySegment, Layout.XoffLim);
         }
 
         /**
@@ -674,14 +679,14 @@ public abstract class Winbase {
          * @return the native value of XonChar.
          */
         public char XonChar() {
-            return (char) MEM_ACCESS.int8_t(this, Layout.XonChar);
+            return (char) MEM_ACCESS.int8_t(memorySegment, Layout.XonChar);
         }
 
         /**
          * @param XonChar the value of XonChar to be set natively.
          */
         public void XonChar(char XonChar) {
-            MEM_ACCESS.int8_t(this, Layout.XonChar, (byte) XonChar);
+            MEM_ACCESS.int8_t(memorySegment, Layout.XonChar, (byte) XonChar);
         }
 
         /**
@@ -690,7 +695,7 @@ public abstract class Winbase {
          */
         @WORD
         public short XonLim() {
-            return ACCESSOR_WORD.WORD(this, Layout.XoffLim);
+            return ACCESSOR_WORD.WORD(memorySegment, Layout.XoffLim);
         }
 
     }
@@ -1189,18 +1194,71 @@ public abstract class Winbase {
     @Define
     public final static int WAIT_OBJECT_0 = Winnt.STATUS_WAIT_0;
 
-    /**
-     * Make sure the native lib is loaded
-     *
-     * @implNote The actual value for the define fields are injected by
-     * initFields. The static initialization block is used to set the value here
-     * to communicate that this static final fields are not statically foldable.
-     * {
-     * @see String#COMPACT_STRINGS}
-     */
-    static {
-        LibJnhwWinApiLoader.touch();
-    }
+    private final static JnhwMh__B___A__A_uI BindIoCompletionCallback = JnhwMh__B___A__A_uI.of(
+            "BindIoCompletionCallback",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE,
+            WinApiDataType.LPOVERLAPPED_COMPLETION_ROUTINE,
+            WinApiDataType.ULONG);
+
+    private final static JnhwMh__B___A ClearCommBreak = JnhwMh__B___A.of(
+            "ClearCommBreak",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE);
+
+    private final static JnhwMh__B___A__A__A ClearCommError = JnhwMh__B___A__A__A.of(
+            "ClearCommError",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE,
+            WinApiDataType.LPDWORD,
+            WinApiDataType.LPCOMSTAT);
+
+    private final static JnhwMh__B___A_uI EscapeCommFunction = JnhwMh__B___A_uI.of(
+            "EscapeCommFunction",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE,
+            WinApiDataType.DWORD);
+
+    private final static JnhwMh__B___A__A GetCommModemStatus = JnhwMh__B___A__A.of(
+            "GetCommModemStatus",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE,
+            WinApiDataType.LPDWORD);
+
+    private final static JnhwMh__B___A__A GetCommState = JnhwMh__B___A__A.of(
+            "GetCommState",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE,
+            WinApiDataType.LPDCB);
+
+    private final static JnhwMh__B___A__A GetCommTimeouts = JnhwMh__B___A__A.of(
+            "GetCommTimeouts",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE,
+            WinApiDataType.LPDCB);
+
+    private final static JnhwMh__B___A SetCommBreak = JnhwMh__B___A.of(
+            "SetCommBreak",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE);
+
+    private final static JnhwMh__B___A__A SetCommState = JnhwMh__B___A__A.of(
+            "SetCommState",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE,
+            WinApiDataType.LPDCB);
+
+    private final static JnhwMh__B___A__A SetCommTimeouts = JnhwMh__B___A__A.of(
+            "SetCommTimeouts",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE,
+            WinApiDataType.LPDCB);
+
+    private final static JnhwMh__B___A_uI SetFileCompletionNotificationModes = JnhwMh__B___A_uI.of(
+            "SetFileCompletionNotificationModes",
+            WinApiDataType.BOOL,
+            WinApiDataType.HANDLE,
+            WinApiDataType.DWORD);
 
     /**
      * *
@@ -1216,10 +1274,10 @@ public abstract class Winbase {
      */
     //TODO Test
     public final static void BindIoCompletionCallback(HANDLE FileHandle, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE Function, int Flags) throws NativeErrorException {
-        BindIoCompletionCallback(HANDLE.getHandleValue(FileHandle), NativeFunctionPointer.toUintptr_t(Function), Flags);
+        if (!BindIoCompletionCallback.invoke__B___P__P_uI(FileHandle, Function, Flags)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void BindIoCompletionCallback(long ptrFileHandle, long ptrFunction, int Flags) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-clearcommbreak">ClearCommBreak</a>
@@ -1234,10 +1292,10 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void ClearCommBreak(HANDLE hFile) throws NativeErrorException {
-        ClearCommBreak(HANDLE.getHandleValue(hFile));
+        if (!ClearCommBreak.invoke__B___P(hFile)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private native static void ClearCommBreak(long ptrHFile) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-clearcommerror">ClearCommError</a>
@@ -1259,10 +1317,10 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void ClearCommError(HANDLE hFile, Int32_t lpErrors, COMSTAT lpStat) throws NativeErrorException {
-        ClearCommError(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpErrors), AbstractNativeMemory.toUintptr_tOrNULL(lpStat));
+        if (!ClearCommError.invoke__B___P__P__P(hFile, lpErrors != null ? lpErrors : Pointer.NULL, lpStat != null ? lpStat : Pointer.NULL)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void ClearCommError(long ptrHFile, long ptrLpErrors, long ptrLpStat) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-escapecommfunction">EscapeCommFunction</a>
@@ -1280,10 +1338,10 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void EscapeCommFunction(HANDLE hFile, int dwFunc) throws NativeErrorException {
-        EscapeCommFunction(HANDLE.getHandleValue(hFile), dwFunc);
+        if (!EscapeCommFunction.invoke__B___P_uI(hFile, dwFunc)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void EscapeCommFunction(long ptrHFile, int dwFunc) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getcommmodemstatus">GetCommModemStatus</a>
@@ -1300,11 +1358,11 @@ public abstract class Winbase {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static void GetCommModemStatus(HANDLE hFile, Int32_t lpModemStat) throws NativeErrorException {
-        GetCommModemStatus(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpModemStat));
+    public final static void GetCommModemStatus(HANDLE hFile, Uint32_t lpModemStat) throws NativeErrorException {
+        if (!GetCommModemStatus.invoke__B___P__P(hFile, lpModemStat)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void GetCommModemStatus(long ptrHFile, long ptrLpModemStat) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getcommstate">GetCommState</a>
@@ -1321,10 +1379,10 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void GetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException {
-        GetCommModemStatus(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpDCB));
+        if (!GetCommState.invoke__B___P__P(hFile, lpDCB)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void GetCommState(long ptrHFile, long ptrLpDCB) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getcommtimeouts">GetCommTimeouts</a>
@@ -1341,10 +1399,10 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void GetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException {
-        GetCommTimeouts(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpCommTimeouts));
+        if (!GetCommTimeouts.invoke__B___P__P(hFile, lpCommTimeouts)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void GetCommTimeouts(long ptrHFile, long ptrLpCommTimeouts) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setcommbreak">SetCommBreak</a>
@@ -1360,10 +1418,10 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void SetCommBreak(HANDLE hFile) throws NativeErrorException {
-        SetCommBreak(HANDLE.getHandleValue(hFile));
+        if (!SetCommBreak.invoke__B___P(hFile)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void SetCommBreak(long ptrHFile) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setcommstate">SetCommState</a>
@@ -1380,10 +1438,10 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void SetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException {
-        SetCommState(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpDCB));
+        if (!SetCommState.invoke__B___P__P(hFile, lpDCB)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void SetCommState(long ptrHFile, long ptrLpDCB) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setcommtimeouts">SetCommTimeouts</a>
@@ -1400,10 +1458,10 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void SetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException {
-        SetCommTimeouts(HANDLE.getHandleValue(hFile), AbstractNativeMemory.toUintptr_t(lpCommTimeouts));
+        if (!SetCommTimeouts.invoke__B___P__P(hFile, lpCommTimeouts)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void SetCommTimeouts(long ptrHFile, long ptrLpCommTimeouts) throws NativeErrorException;
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setfilecompletionnotificationmodes">SetFileCompletionNotificationModes</a>
@@ -1417,8 +1475,8 @@ public abstract class Winbase {
      */
     //TODO Test
     public final static void SetFileCompletionNotificationModes(HANDLE hFile, byte uFlags) throws NativeErrorException {
-        SetFileCompletionNotificationModes(HANDLE.getHandleValue(hFile), uFlags);
+        if (!SetFileCompletionNotificationModes.invoke__B___P_uI(hFile, uFlags)) {
+            throw new NativeErrorException(Errhandlingapi.GetLastError());
+        }
     }
-
-    private static native void SetFileCompletionNotificationModes(long ptrHFile, byte uFlags) throws NativeErrorException;
 }

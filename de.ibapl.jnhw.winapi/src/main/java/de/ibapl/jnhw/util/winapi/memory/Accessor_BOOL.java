@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.util.winapi.memory;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.BOOL;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -32,8 +32,8 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory32;
 public interface Accessor_BOOL {
 
     @BOOL
-    boolean BOOL(OpaqueMemory32 mem, long offset);
+    boolean BOOL(MemorySegment memorySegment, long offset);
 
-    void BOOL(OpaqueMemory32 mem, long offset, @BOOL boolean value);
+    void BOOL(MemorySegment memorySegment, long offset, @BOOL boolean value);
 
 }

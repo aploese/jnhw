@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,13 +22,12 @@
 package de.ibapl.jnhw.it.fun_with_memory_and_function_pointers;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.Int16_t;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Int64_t;
 import de.ibapl.jnhw.common.memory.Int8_t;
-import de.ibapl.jnhw.common.memory.Memory32Heap;
-import de.ibapl.jnhw.common.memory.OpaqueMemory32;
+import de.ibapl.jnhw.common.memory.MemoryHeap;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Uint16_t;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Uint64_t;
@@ -37,6 +36,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import java.io.IOException;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -44,27 +44,27 @@ import java.io.IOException;
  */
 public class Struct {
 
-    public static void getMemory() {
+    public static void getMemory(ResourceScope scope) {
         System.out.println("\n\nStruct.getMemory()\n");
-        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 1024, SetMem.DO_NOT_SET);
+        final MemoryHeap heap = MemoryHeap.allocateNative(1024, scope);
 
-        final Int8_t int8_t = new Int8_t(null, 0, SetMem.DO_NOT_SET);
+        final Int8_t int8_t = Int8_t.allocateNative(scope);
         int8_t.int8_t((byte) 42);
-        final Int16_t int16_t = new Int16_t(null, 0, SetMem.DO_NOT_SET);
+        final Int16_t int16_t = Int16_t.allocateNative(scope);
         int16_t.int16_t(int8_t.int8_t());
-        final Int32_t int32_t = new Int32_t(null, 0, SetMem.DO_NOT_SET);
+        final Int32_t int32_t = Int32_t.allocateNative(scope);
         int32_t.int32_t(int16_t.int16_t());
-        final Int64_t int64_t = new Int64_t(null, 0, SetMem.DO_NOT_SET);
+        final Int64_t int64_t = Int64_t.allocateNative(scope);
         int64_t.int64_t(int32_t.int32_t());
         System.out.println("int64_t: " + int64_t.int64_t());
 
-        final Uint8_t uint8_t = new Uint8_t(null, 0, SetMem.DO_NOT_SET);
+        final Uint8_t uint8_t = Uint8_t.allocateNative(scope);
         uint8_t.uint8_t((byte) 42);
-        final Uint16_t uint16_t = new Uint16_t(null, 0, SetMem.DO_NOT_SET);
+        final Uint16_t uint16_t = Uint16_t.allocateNative(scope);
         uint16_t.uint16_t(uint8_t.uint8_t());
-        final Uint32_t uint32_t = new Uint32_t(null, 0, SetMem.DO_NOT_SET);
+        final Uint32_t uint32_t = Uint32_t.allocateNative(scope);
         uint32_t.uint32_t(uint16_t.uint16_t());
-        final Uint64_t uint64_t = new Uint64_t(null, 0, SetMem.DO_NOT_SET);
+        final Uint64_t uint64_t = Uint64_t.allocateNative(scope);
         uint64_t.uint64_t(uint32_t.uint32_t());
         System.out.println("uint64_t: " + Long.toUnsignedString(uint64_t.uint64_t()));
         System.out.println();
@@ -80,21 +80,21 @@ public class Struct {
      * }
      * }
      */
-    public static void onTheFlyStructure() {
+    public static void onTheFlyStructure(ResourceScope scope) {
         System.out.println("\n\nStruct.onTheFlyStructure()\n");
-        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 16, null);
+        final MemoryHeap heap = MemoryHeap.allocateNative(16, scope);
         StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactory.Type.STRUCT);
         final long offsetInHeap = heap.getAlignmentOffset(0, Alignment.AT_16);
 
         //start with offset == 0
-        final Int8_t _int8_t = new Int8_t(heap, offsetInHeap + slf.int8_t(), SetMem.DO_NOT_SET);
+        final Int8_t _int8_t = Int8_t.map(heap, offsetInHeap + slf.int8_t());
         _int8_t.int8_t((byte) 0x61);//a
         //alignment on 2 byte boundary after int16_t
-        final Int16_t _int16_t = new Int16_t(heap, offsetInHeap + slf.int16_t(), SetMem.DO_NOT_SET);
+        final Int16_t _int16_t = Int16_t.map(heap, offsetInHeap + slf.int16_t());
         _int16_t.int16_t((short) 0x6362);//bc
-        final Int32_t _int32_t = new Int32_t(heap, offsetInHeap + slf.int32_t(), SetMem.DO_NOT_SET);
+        final Int32_t _int32_t = Int32_t.map(heap, offsetInHeap + slf.int32_t());
         _int32_t.int32_t(0x67666564);//defg
-        final Int64_t _int64_t = new Int64_t(heap, offsetInHeap + slf.int64_t(), SetMem.DO_NOT_SET);
+        final Int64_t _int64_t = Int64_t.map(heap, offsetInHeap + slf.int64_t());
         _int64_t.int64_t(0x6f6e6d6c6b6a6968L);//hijklmno
 
         System.out.println("int8_t: " + _int8_t.toString() + " " + _int8_t.int8_t());
@@ -119,22 +119,22 @@ public class Struct {
      * }
      * }
      */
-    public static void onTheFlyUnion() {
+    public static void onTheFlyUnion(ResourceScope scope) {
         System.out.println("\n\nStruct.onTheFlyUnion()\n");
-        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 16, SetMem.DO_NOT_SET);
+        final MemoryHeap heap = MemoryHeap.allocateNative(16, scope);
         StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactory.Type.STRUCT);
         final long offsetInHeap = heap.getAlignmentOffset(0, Alignment.AT_8);
 
         //start with offset == 0
-        final Int8_t _int8_t = new Int8_t(heap, offsetInHeap + slf.int8_t(), SetMem.DO_NOT_SET);
+        final Int8_t _int8_t = Int8_t.map(heap, offsetInHeap + slf.int8_t());
         _int8_t.int8_t((byte) 'a');
 
         //use the biggest alignment to align union
         final long unionOffset = offsetInHeap + slf.union(BaseDataType.int64_t.SIZE_OF, BaseDataType.int64_t.ALIGN_OF);
         //alignment on 2 byte boundary after int16_t
-        final Int16_t _int16_t = new Int16_t(heap, unionOffset, SetMem.DO_NOT_SET);
-        final Int32_t _int32_t = new Int32_t(heap, unionOffset, SetMem.DO_NOT_SET);
-        final Int64_t _int64_t = new Int64_t(heap, unionOffset, SetMem.DO_NOT_SET);
+        final Int16_t _int16_t = Int16_t.map(heap, unionOffset);
+        final Int32_t _int32_t = Int32_t.map(heap, unionOffset);
+        final Int64_t _int64_t = Int64_t.map(heap, unionOffset);
         _int32_t.int32_t('b');
 
         System.out.println("int8_t: " + _int8_t.int8_t());
@@ -145,11 +145,11 @@ public class Struct {
         System.out.println();
     }
 
-    public static void printMemory() throws IOException {
+    public static void printMemory(ResourceScope scope) throws IOException {
         System.out.println("\n\nStruct.printMemory()\n");
-        final Memory32Heap heap = new Memory32Heap((OpaqueMemory32) null, 0, 256, SetMem.DO_NOT_SET);
-        for (int i = 0; i < heap.sizeInBytes; i++) {
-            OpaqueMemory32.setByte(heap, i, (byte) i);
+        final MemoryHeap heap = MemoryHeap.allocateNative(256, scope);
+        for (int i = 0; i < heap.sizeof(); i++) {
+            OpaqueMemory.setByte(heap, i, (byte) i);
         }
         System.out.println();
         System.out.println("toString:\n" + heap.toString());
@@ -159,7 +159,7 @@ public class Struct {
         System.out.println("nativeToString:\n" + heap.nativeToString());
         System.out.println();
         System.out.println("OpaqueMemory32.printMemory:\n" + heap.nativeToString());
-        OpaqueMemory32.printMemory(System.out, heap, true);
+        OpaqueMemory.printMemory(System.out, heap, true);
         System.out.println();
     }
 

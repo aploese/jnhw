@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,20 +21,19 @@
  */
 package de.ibapl.jnhw.common.test.memory;
 
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static de.ibapl.jnhw.common.memory.AbstractNativeMemory.SetMem;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
  * @author aploese
  */
 public class Int32_tTest {
-
-    public Int32_tTest() {
-    }
 
     /**
      * Test of sizeofInt32_t method, of class Int32_t.
@@ -57,17 +56,21 @@ public class Int32_tTest {
      */
     @Test
     public void testInt32_t() {
-        Int32_t instance = new Int32_t(null, 0, SetMem.TO_0x00);
-        int expResult = 0x40302010;
-        instance.int32_t(expResult);
-        assertEquals(expResult, instance.int32_t());
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Int32_t instance = Int32_t.allocateNative(rs);
+            int expResult = 0x40302010;
+            instance.int32_t(expResult);
+            assertEquals(expResult, instance.int32_t());
+        }
     }
 
     @Test
     public void testNativeToString() {
-        Int32_t instance = new Int32_t(null, 0, SetMem.TO_0x00);
-        instance.int32_t(-2);
-        assertEquals("-2", instance.nativeToString());
-        assertEquals("0xfffffffe", instance.nativeToHexString());
+        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+            Int32_t instance = new Int32_t(MemorySegment.allocateNative(BaseDataType.int32_t.SIZE_OF, rs), 0);
+            instance.int32_t(-2);
+            assertEquals("-2", instance.nativeToString());
+            assertEquals("0xfffffffe", instance.nativeToHexString());
+        }
     }
 }

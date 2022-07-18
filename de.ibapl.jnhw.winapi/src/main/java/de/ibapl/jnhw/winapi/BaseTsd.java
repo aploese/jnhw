@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,6 +22,14 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.memory.AsUnsignedLong;
+import de.ibapl.jnhw.common.memory.NativeIntNumber;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * Wrapper around the
@@ -32,5 +40,70 @@ import de.ibapl.jnhw.common.annotation.Include;
  */
 @Include("basetsd.h")
 public abstract class BaseTsd {
+
+    public abstract class PULONG_PTR extends NativeIntNumber<Long> {
+
+        public final static BaseDataType DATA_TYPE = WinApiDataType.ULONG_PTR;
+
+        private static class PULONG_PTR64 extends PULONG_PTR {
+
+            private PULONG_PTR64(MemorySegment memorySegment, long offset) {
+                super(memorySegment, offset);
+            }
+
+            @Override
+            public long PULONG_PTR() {
+                return MEM_ACCESS.uint64_t(memorySegment, 0);
+            }
+
+            @Override
+            public void PULONG_PTR(long value) {
+                MEM_ACCESS.uint64_t(memorySegment, 0, value);
+            }
+
+        }
+
+        private static class PULONG_PTR32 extends PULONG_PTR {
+
+            private PULONG_PTR32(MemorySegment memorySegment, long offset) {
+                super(memorySegment, offset);
+            }
+
+            @Override
+            public long PULONG_PTR() {
+                return MEM_ACCESS.uint32_t_AsLong(memorySegment, 0);
+            }
+
+            @Override
+            public void PULONG_PTR(long value) {
+                MEM_ACCESS.uint32_t_FromLong(memorySegment, 0, value);
+            }
+
+        }
+
+        public static PULONG_PTR allocateNative(ResourceScope scope) {
+            switch (DATA_TYPE) {
+                case uint32_t:
+                    return new PULONG_PTR32(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, scope), 0);
+                case uint64_t:
+                    return new PULONG_PTR64(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, scope), 0);
+                default:
+                    throw new RuntimeException("Cant handle PULONG_PTR for " + MultiarchTupelBuilder.getMultiarch());
+            }
+        }
+
+        private PULONG_PTR(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, DATA_TYPE.SIZE_OF);
+        }
+
+        public abstract long PULONG_PTR();
+
+        public abstract void PULONG_PTR(long value);
+
+        @Override
+        public BaseDataType getBaseDataType() {
+            return DATA_TYPE;
+        }
+    }
 
 }

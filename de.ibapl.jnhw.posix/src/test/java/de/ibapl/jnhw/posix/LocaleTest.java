@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2021, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,16 +21,17 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.annotation.posix.locale.locale_t;
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import jdk.incubator.foreign.ResourceScope;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
@@ -41,128 +42,18 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class LocaleTest {
 
-    public static class NativeDefines {
-
-        public final static native boolean HAVE_LOCALE_H();
-
-        public final static native int LC_ALL();
-
-        public final static native int LC_ALL_MASK();
-
-        public final static native int LC_COLLATE();
-
-        public final static native int LC_COLLATE_MASK();
-
-        public final static native int LC_CTYPE();
-
-        public final static native int LC_CTYPE_MASK();
-
-        public final static native long LC_GLOBAL_LOCALE0();
-
-        public final static Locale.Locale_t LC_GLOBAL_LOCALE() {
-            return Locale.Locale_t.fromNativeValue(LC_GLOBAL_LOCALE0());
-        }
-
-        public final static native int LC_MESSAGES();
-
-        public final static native int LC_MESSAGES_MASK();
-
-        public final static native int LC_MONETARY();
-
-        public final static native int LC_MONETARY_MASK();
-
-        public final static native int LC_NUMERIC();
-
-        public final static native int LC_NUMERIC_MASK();
-
-        public final static native int LC_TIME();
-
-        public final static native int LC_TIME_MASK();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-
-    public static class NativeLconv_t {
-
-        public final static native int alignof();
-
-        public final static native int sizeof();
-
-        public final static native long currency_symbol();
-
-        public final static native long decimal_point();
-
-        public final static native long frac_digits();
-
-        public final static native long grouping();
-
-        public final static native long int_curr_symbol();
-
-        public final static native long int_frac_digits();
-
-        public final static native long int_n_cs_precedes();
-
-        public final static native long int_n_sep_by_space();
-
-        public final static native long int_n_sign_posn();
-
-        public final static native long int_p_cs_precedes();
-
-        public final static native long int_p_sep_by_space();
-
-        public final static native long int_p_sign_posn();
-
-        public final static native long mon_decimal_point();
-
-        public final static native long mon_grouping();
-
-        public final static native long mon_thousands_sep();
-
-        public final static native long negative_sign();
-
-        public final static native long n_cs_precedes();
-
-        public final static native long n_sep_by_space();
-
-        public final static native long n_sign_posn();
-
-        public final static native long positive_sign();
-
-        public final static native long p_cs_precedes();
-
-        public final static native long p_sep_by_space();
-
-        public final static native long p_sign_posn();
-
-        public final static native long thousands_sep();
-
-        static {
-            LibJnhwPosixTestLoader.touch();
-        }
-    }
-
-    public final static native long sizeof__locale_t();
-
-    static {
-        LibJnhwPosixTestLoader.touch();
-    }
-
-    private final static MultiarchTupelBuilder MULTIARCHTUPEL_BUILDER = new MultiarchTupelBuilder();
-
     @Test
     public static void testSizeof__locale_t() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
-        Assertions.assertTrue(sizeof__locale_t() > Defines.__SIZEOF_POINTER__, "sizeof locale_t must be >= sizeof uintptr_t");
-        DefinesTest.testDefines(Locale.class, NativeDefines.class, "HAVE_LOCALE_H");
+        Assertions.assertTrue(LibJnhwPosixTestLoader.invokeExact_Int_V("sizeof__locale_t") > Defines.__SIZEOF_POINTER__, "sizeof locale_t must be >= sizeof uintptr_t");
+        DefinesTest.testDefines(Locale.class, "HAVE_LOCALE_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_LOCALE_H() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Locale.HAVE_LOCALE_H, "not expected to have locale.h");
         } else {
             Assertions.assertTrue(Locale.HAVE_LOCALE_H, "expected to have locale.h");
@@ -171,100 +62,117 @@ public class LocaleTest {
 
     @BeforeAll
     public static void checkBeforeAll_LocaleDefines() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
-        DefinesTest.testDefines(Locale.class, NativeDefines.class, "HAVE_LOCALE_H");
+        DefinesTest.testDefines(Locale.class, "HAVE_LOCALE_H", (name) -> {
+            switch (name) {
+                case "LC_GLOBAL_LOCALE":
+                    return Locale.Locale_t.of(LibJnhwPosixTestLoader.getAdrDefine(name));
+                default:
+                    throw new AssertionError();
+            }
+        });
     }
 
     @BeforeAll
-    public static void checkBeforeAll_NativePthread_attr_t() throws Exception {
-        if (MULTIARCHTUPEL_BUILDER.getOS() == OS.WINDOWS) {
+    public static void checkBeforeAll_lconv_t() throws Exception {
+        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.sizeof(), Locale.Lconv.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_sizeof"), Locale.Lconv.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.alignof(), Locale.Lconv.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_alignof"), Locale.Lconv.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.currency_symbol(), Locale.Lconv.offsetof_Currency_symbol, "offsetof_Currency_symbol");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_currency_symbol"), Locale.Lconv.offsetof_Currency_symbol, "offsetof_Currency_symbol");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.decimal_point(), Locale.Lconv.offsetof_Decimal_point, "offsetof_Decimal_point");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_decimal_point"), Locale.Lconv.offsetof_Decimal_point, "offsetof_Decimal_point");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.frac_digits(), Locale.Lconv.offsetof_Frac_digits, "offsetof_Frac_digits");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_frac_digits"), Locale.Lconv.offsetof_Frac_digits, "offsetof_Frac_digits");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.grouping(), Locale.Lconv.offsetof_Grouping, "offsetof_Grouping");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_grouping"), Locale.Lconv.offsetof_Grouping, "offsetof_Grouping");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.int_curr_symbol(), Locale.Lconv.offsetof_Int_curr_symbol, "offsetof_Int_curr_symbol");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_curr_symbol"), Locale.Lconv.offsetof_Int_curr_symbol, "offsetof_Int_curr_symbol");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.int_frac_digits(), Locale.Lconv.offsetof_Int_frac_digits, "offsetof_Int_frac_digits");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_frac_digits"), Locale.Lconv.offsetof_Int_frac_digits, "offsetof_Int_frac_digits");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.int_n_cs_precedes(), Locale.Lconv.offsetof_Int_n_cs_precedes, "offsetof_Int_n_cs_precedes");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_n_cs_precedes"), Locale.Lconv.offsetof_Int_n_cs_precedes, "offsetof_Int_n_cs_precedes");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.int_n_sep_by_space(), Locale.Lconv.offsetof_Int_n_sep_by_space, "offsetof_Int_n_sep_by_space");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_n_sep_by_space"), Locale.Lconv.offsetof_Int_n_sep_by_space, "offsetof_Int_n_sep_by_space");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.int_n_sign_posn(), Locale.Lconv.offsetof_Int_n_sign_posn, "offsetof_Int_n_sign_posn");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_n_sign_posn"), Locale.Lconv.offsetof_Int_n_sign_posn, "offsetof_Int_n_sign_posn");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.int_p_cs_precedes(), Locale.Lconv.offsetof_Int_p_cs_precedes, "offsetof_Int_p_cs_precedes");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_p_cs_precedes"), Locale.Lconv.offsetof_Int_p_cs_precedes, "offsetof_Int_p_cs_precedes");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.int_p_sep_by_space(), Locale.Lconv.offsetof_Int_p_sep_by_space, "offsetof_Int_p_sep_by_space");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_p_sep_by_space"), Locale.Lconv.offsetof_Int_p_sep_by_space, "offsetof_Int_p_sep_by_space");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.int_p_sign_posn(), Locale.Lconv.offsetof_Int_p_sign_posn, "offsetof_Int_p_sign_posn");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_p_sign_posn"), Locale.Lconv.offsetof_Int_p_sign_posn, "offsetof_Int_p_sign_posn");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.mon_decimal_point(), Locale.Lconv.offsetof_Mon_decimal_point, "offsetof_Mon_decimal_point");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_mon_decimal_point"), Locale.Lconv.offsetof_Mon_decimal_point, "offsetof_Mon_decimal_point");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.mon_grouping(), Locale.Lconv.offsetof_Mon_grouping, "offsetof_Mon_grouping");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_mon_grouping"), Locale.Lconv.offsetof_Mon_grouping, "offsetof_Mon_grouping");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.mon_thousands_sep(), Locale.Lconv.offsetof_Mon_thousands_sep, "offsetof_Mon_thousands_sep");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_mon_thousands_sep"), Locale.Lconv.offsetof_Mon_thousands_sep, "offsetof_Mon_thousands_sep");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.n_cs_precedes(), Locale.Lconv.offsetof_N_cs_precedes, "offsetof_N_cs_precedes");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_n_cs_precedes"), Locale.Lconv.offsetof_N_cs_precedes, "offsetof_N_cs_precedes");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.n_sep_by_space(), Locale.Lconv.offsetof_N_sep_by_space, "offsetof_N_sep_by_space");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_n_sep_by_space"), Locale.Lconv.offsetof_N_sep_by_space, "offsetof_N_sep_by_space");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.n_sign_posn(), Locale.Lconv.offsetof_N_sign_posn, "offsetof_N_sign_posn");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_n_sign_posn"), Locale.Lconv.offsetof_N_sign_posn, "offsetof_N_sign_posn");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.negative_sign(), Locale.Lconv.offsetof_Negative_sign, "offsetof_Negative_sign");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_negative_sign"), Locale.Lconv.offsetof_Negative_sign, "offsetof_Negative_sign");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.p_cs_precedes(), Locale.Lconv.offsetof_P_cs_precedes, "offsetof_P_cs_precedes");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_p_cs_precedes"), Locale.Lconv.offsetof_P_cs_precedes, "offsetof_P_cs_precedes");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.p_sep_by_space(), Locale.Lconv.offsetof_P_sep_by_space, "offsetof_P_sep_by_space");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_p_sep_by_space"), Locale.Lconv.offsetof_P_sep_by_space, "offsetof_P_sep_by_space");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.p_sign_posn(), Locale.Lconv.offsetof_P_sign_posn, "offsetof_P_sign_posn");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_p_sign_posn"), Locale.Lconv.offsetof_P_sign_posn, "offsetof_P_sign_posn");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.positive_sign(), Locale.Lconv.offsetof_Positive_sign, "offsetof_Positive_sign");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_positive_sign"), Locale.Lconv.offsetof_Positive_sign, "offsetof_Positive_sign");
                 },
                 () -> {
-                    Assertions.assertEquals(NativeLconv_t.thousands_sep(), Locale.Lconv.offsetof_Thousands_sep, "offsetof_Thousands_sep");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_thousands_sep"), Locale.Lconv.offsetof_Thousands_sep, "offsetof_Thousands_sep");
                 }
         );
     }
 
-    private native void testNativelyLC_GLOBAL_LOCALE(@locale_t long value);
+    private ResourceScope scope;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        scope = ResourceScope.newConfinedScope();
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        scope.close();
+    }
 
     /**
      * Test of native create ans wrap of class Locale.Locale_t.
@@ -274,7 +182,7 @@ public class LocaleTest {
     @Test
     public void testUnwrapLC_GLOBAL_LOCALE() throws Exception {
         System.out.println("testUnwrapLC_GLOBAL_LOCALE");
-        testNativelyLC_GLOBAL_LOCALE(Locale.Locale_t.getNativeValue(Locale.LC_GLOBAL_LOCALE));
+        Assertions.assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_Adr("test_LC_GLOBAL_LOCALE_equals", Locale.LC_GLOBAL_LOCALE.toAddressable()), "Natively not the same LC_GLOBAL_LOCALE");
     }
 
     /**
@@ -301,7 +209,7 @@ public class LocaleTest {
     @Test
     public void testLocaleconv() {
         System.out.println("localeconv");
-        Locale.Lconv result = Locale.localeconv();
+        Locale.Lconv result = Locale.localeconv(scope);
         Assertions.assertNotNull(result);
         System.out.println("localeconv: " + result);
     }
@@ -321,11 +229,16 @@ public class LocaleTest {
      * Test of newlocale method, of class Locale.
      */
     @Test
-    public void testNewlocale_null() {
+    public void testNewlocale_null() throws Exception {
         System.out.println("newlocale locale == null");
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Locale.newlocale(Locale.LC_NUMERIC_MASK, null, Locale.LC_GLOBAL_LOCALE);
-        });
+        Locale.Locale_t locale = Locale.duplocale(Locale.LC_GLOBAL_LOCALE);
+        try {
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                Locale.newlocale(Locale.LC_NUMERIC_MASK, null, locale);
+            });
+        } finally {
+            Locale.freelocale(locale);
+        }
         System.out.println("newlocale base == null");
         Assertions.assertThrows(NullPointerException.class, () -> {
             Locale.newlocale(Locale.LC_NUMERIC_MASK, "", null);
@@ -342,7 +255,7 @@ public class LocaleTest {
         System.out.println("newlocale");
         final int category_mask = Locale.LC_NUMERIC_MASK;
         final String locale = "C";
-        final Locale.Locale_t base = Locale.Locale_t.locale_t_0();
+        final Locale.Locale_t base = Locale.Locale_t.LOCALE_T_0;
         final Locale.Locale_t result = Locale.newlocale(category_mask, locale, base);
         Assertions.assertNotNull(result);
         Locale.freelocale(result);
@@ -372,7 +285,7 @@ public class LocaleTest {
         Locale.Locale_t newloc = Locale.LC_GLOBAL_LOCALE;
         Locale.Locale_t result = Locale.uselocale(newloc);
         Assertions.assertNotNull(result);
-        Assertions.assertNotEquals(Locale.Locale_t.locale_t_0(), result);
+        Assertions.assertNotEquals(Locale.Locale_t.LOCALE_T_0, result);
     }
 
 }
