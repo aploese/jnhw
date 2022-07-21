@@ -24,6 +24,7 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA__uI;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 
@@ -38,6 +39,7 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 public class ProcessEnv {
 
     private final static JnhwMh_MA__uI GetStdHandle = JnhwMh_MA__uI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetStdHandle",
             WinApiDataType.HANDLE,
             WinApiDataType.DWORD);

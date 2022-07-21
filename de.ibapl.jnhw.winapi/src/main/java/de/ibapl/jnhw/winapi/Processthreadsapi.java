@@ -29,6 +29,7 @@ import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.UintPtr_t;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import jdk.incubator.foreign.MemoryAddress;
 
@@ -43,10 +44,12 @@ import jdk.incubator.foreign.MemoryAddress;
 public abstract class Processthreadsapi {
 
     private final static JnhwMh_MA___V GetCurrentThread = JnhwMh_MA___V.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCurrentThread",
             WinApiDataType.HANDLE);
 
     private final static JnhwMh__B___A__A__A QueueUserAPC = JnhwMh__B___A__A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "QueueUserAPC",
             WinApiDataType.BOOL,
             WinApiDataType.PAPCFUNC,

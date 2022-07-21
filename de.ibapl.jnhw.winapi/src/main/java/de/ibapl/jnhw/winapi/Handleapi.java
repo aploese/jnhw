@@ -25,6 +25,7 @@ import de.ibapl.jnhw.annotation.winapi.basetsd.LONG_PTR;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import jdk.incubator.foreign.MemoryAddress;
@@ -40,6 +41,7 @@ import jdk.incubator.foreign.MemoryAddress;
 public abstract class Handleapi {
 
     private final static JnhwMh__B___A CloseHandle = JnhwMh__B___A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CloseHandle",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);

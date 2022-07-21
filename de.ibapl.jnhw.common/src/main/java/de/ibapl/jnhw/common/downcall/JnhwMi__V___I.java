@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.common.downcall;
 
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__uI;
 import java.lang.reflect.Member;
 import jdk.incubator.foreign.Addressable;
 import jdk.incubator.foreign.FunctionDescriptor;
@@ -34,7 +35,7 @@ import jdk.incubator.foreign.ValueLayout;
  *
  * @author aploese
  */
-public class JnhwMi__V___I extends JnhwMethodInvoker implements JnhwMh__V__sI {
+public class JnhwMi__V___I extends JnhwMethodInvoker implements JnhwMh__V__sI, JnhwMh__V__uI  {
 
     private final static FunctionDescriptor FD = FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT);
 
@@ -48,6 +49,17 @@ public class JnhwMi__V___I extends JnhwMethodInvoker implements JnhwMh__V__sI {
 
     @Override
     public void invoke__V__sI(int arg1) {
+        try {
+            methodHandle.invokeExact(arg1);
+        } catch (NullPointerException npe) {
+            throw npe;
+        } catch (Throwable t) {
+            throw createRuntimeExceptionInvoke(t);
+        }
+    }
+
+    @Override
+    public void invoke__V__uI(int arg1) {
         try {
             methodHandle.invokeExact(arg1);
         } catch (NullPointerException npe) {

@@ -29,6 +29,7 @@ import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A_sI;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A_uL__A_uL__A_uL__A__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Minwinbase.LPOVERLAPPED;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -45,17 +46,20 @@ import java.nio.ByteBuffer;
 public final class Ioapiset {
 
     private final static JnhwMh__B___A CancelIo = JnhwMh__B___A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CancelIo",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
     private final static JnhwMh__B___A__A CancelIoEx = JnhwMh__B___A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CancelIo",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPOVERLAPPED);
 
     private final static JnhwMh__B___A_uL__A_uL__A_uL__A__A DeviceIoControl = JnhwMh__B___A_uL__A_uL__A_uL__A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "DeviceIoControl",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
@@ -68,6 +72,7 @@ public final class Ioapiset {
             WinApiDataType.LPOVERLAPPED);
 
     private final static JnhwMh__B___A__A__A_sI GetOverlappedResult = JnhwMh__B___A__A__A_sI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetOverlappedResult",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,

@@ -28,6 +28,7 @@ import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A_uI_uI__A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uI__A__A__A__A__A__A;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.WinDef.HKEY;
 import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
@@ -141,11 +142,13 @@ public abstract class Winreg {
     public final static HKEY HKEY_USERS = HKEY.of(MemoryAddress.ofLong(0x80000003L));
 
     private final static JnhwMh_sI___A RegCloseKey = JnhwMh_sI___A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "RegCloseKey",
             WinApiDataType.LSTATUS,
             WinApiDataType.HKEY);
 
     private final static JnhwMh_sI___A_uI__A__A__A__A__A__A RegEnumValueW = JnhwMh_sI___A_uI__A__A__A__A__A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "RegEnumValueW",
             WinApiDataType.LSTATUS,
             WinApiDataType.HKEY,
@@ -158,6 +161,7 @@ public abstract class Winreg {
             WinApiDataType.LPDWORD);
 
     private final static JnhwMh_sI___A__A_uI_uI__A RegOpenKeyExW = JnhwMh_sI___A__A_uI_uI__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "RegOpenKeyExW",
             WinApiDataType.LSTATUS,
             WinApiDataType.HKEY,

@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__sI;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___V;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 
 /**
  * Wrapper around the
@@ -37,10 +38,12 @@ import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___V;
 public abstract class Errhandlingapi {
 
     private final static JnhwMh_sI___V GetLastError = JnhwMh_sI___V.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetLastError",
             WinApiDataType.DWORD);
 
     private final static JnhwMh__V__sI SetLastError = JnhwMh__V__sI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetLastError",
             WinApiDataType.DWORD);
 

@@ -38,6 +38,7 @@ import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uI;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A_uI;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
@@ -1195,6 +1196,7 @@ public abstract class Winbase {
     public final static int WAIT_OBJECT_0 = Winnt.STATUS_WAIT_0;
 
     private final static JnhwMh__B___A__A_uI BindIoCompletionCallback = JnhwMh__B___A__A_uI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "BindIoCompletionCallback",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
@@ -1202,11 +1204,13 @@ public abstract class Winbase {
             WinApiDataType.ULONG);
 
     private final static JnhwMh__B___A ClearCommBreak = JnhwMh__B___A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ClearCommBreak",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
     private final static JnhwMh__B___A__A__A ClearCommError = JnhwMh__B___A__A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ClearCommError",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
@@ -1214,47 +1218,55 @@ public abstract class Winbase {
             WinApiDataType.LPCOMSTAT);
 
     private final static JnhwMh__B___A_uI EscapeCommFunction = JnhwMh__B___A_uI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "EscapeCommFunction",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.DWORD);
 
     private final static JnhwMh__B___A__A GetCommModemStatus = JnhwMh__B___A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCommModemStatus",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDWORD);
 
     private final static JnhwMh__B___A__A GetCommState = JnhwMh__B___A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCommState",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
     private final static JnhwMh__B___A__A GetCommTimeouts = JnhwMh__B___A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCommTimeouts",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
     private final static JnhwMh__B___A SetCommBreak = JnhwMh__B___A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetCommBreak",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
     private final static JnhwMh__B___A__A SetCommState = JnhwMh__B___A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetCommState",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
     private final static JnhwMh__B___A__A SetCommTimeouts = JnhwMh__B___A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetCommTimeouts",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
     private final static JnhwMh__B___A_uI SetFileCompletionNotificationModes = JnhwMh__B___A_uI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetFileCompletionNotificationModes",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,

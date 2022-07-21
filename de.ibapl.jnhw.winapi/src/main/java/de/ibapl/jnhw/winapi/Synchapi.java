@@ -38,6 +38,7 @@ import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI__A_uI_uI;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI__A_uI_uI_uI;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI_sI;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___A_uI__B;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 
 /**
  * Wrapper around the
@@ -51,6 +52,7 @@ import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___A_uI__B;
 public abstract class Synchapi {
 
     private final static JnhwMh_MA___A__B__B__A CreateEventW = JnhwMh_MA___A__B__B__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CreateEventW",
             WinApiDataType.HANDLE,
             WinApiDataType.LPSECURITY_ATTRIBUTES,
@@ -59,22 +61,26 @@ public abstract class Synchapi {
             WinApiDataType.LPCWSTR);
 
     private final static JnhwMh__B___A ResetEvent = JnhwMh__B___A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ResetEvent",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
     private final static JnhwMh__B___A SetEvent = JnhwMh__B___A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetEvent",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
     private final static JnhwMh_uI__uI_sI SleepEx = JnhwMh_uI__uI_sI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SleepEx",
             WinApiDataType.DWORD,
             WinApiDataType.DWORD,
             WinApiDataType.BOOL);
 
     private final static JnhwMh_uI__uI__A_uI_uI WaitForMultipleObjects = JnhwMh_uI__uI__A_uI_uI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WaitForMultipleObjects",
             WinApiDataType.DWORD,
             WinApiDataType.DWORD,
@@ -83,6 +89,7 @@ public abstract class Synchapi {
             WinApiDataType.DWORD);
 
     private final static JnhwMh_uI__uI__A_uI_uI_uI WaitForMultipleObjectsEx = JnhwMh_uI__uI__A_uI_uI_uI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WaitForMultipleObjectsEx",
             WinApiDataType.DWORD,
             WinApiDataType.DWORD,
@@ -92,12 +99,14 @@ public abstract class Synchapi {
             WinApiDataType.BOOL);
 
     private final static JnhwMh_uI___A_uI WaitForSingleObject = JnhwMh_uI___A_uI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WaitForSingleObject",
             WinApiDataType.DWORD,
             WinApiDataType.HANDLE,
             WinApiDataType.DWORD);
 
     private final static JnhwMh_uI___A_uI__B WaitForSingleObjectEx = JnhwMh_uI___A_uI__B.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WaitForSingleObjectEx",
             WinApiDataType.DWORD,
             WinApiDataType.HANDLE,

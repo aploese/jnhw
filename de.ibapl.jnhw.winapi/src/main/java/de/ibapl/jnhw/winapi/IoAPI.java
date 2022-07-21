@@ -29,6 +29,7 @@ import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A__A_uI;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A_uI_uL__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.UintPtr_t;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Minwinbase.LPOVERLAPPED;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -45,6 +46,7 @@ import jdk.incubator.foreign.MemoryAddress;
 public final class IoAPI {
 
     private final static JnhwMh_MA___A__A_uL_uI CreateIoCompletionPort = JnhwMh_MA___A__A_uL_uI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CreateIoCompletionPort",
             WinApiDataType.HANDLE,
             WinApiDataType.HANDLE,
@@ -53,6 +55,7 @@ public final class IoAPI {
             WinApiDataType.DWORD);
 
     private final static JnhwMh__B___A__A__A__A_uI GetQueuedCompletionStatus = JnhwMh__B___A__A__A__A_uI.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetQueuedCompletionStatus",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
@@ -62,6 +65,7 @@ public final class IoAPI {
             WinApiDataType.DWORD);
 
     private final static JnhwMh__B___A_uI_uL__A PostQueuedCompletionStatus = JnhwMh__B___A_uI_uL__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "PostQueuedCompletionStatus",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,

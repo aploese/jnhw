@@ -40,6 +40,7 @@ import jdk.incubator.foreign.ResourceScope;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A_uI_uI__A_uI_uI__A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uI__A__A;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 
 /**
  * Wrapper around the
@@ -92,6 +93,7 @@ public final class Fileapi {
     public final static int TRUNCATE_EXISTING = 5;
 
     private final static JnhwMh_MA___A_uI_uI__A_uI_uI__A CreateFileW = JnhwMh_MA___A_uI_uI__A_uI_uI__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CreateFileW",
             WinApiDataType.HANDLE,
             WinApiDataType.LPCWSTR,
@@ -103,11 +105,13 @@ public final class Fileapi {
             WinApiDataType.HANDLE);
 
     private final static JnhwMh__B___A FlushFileBuffers = JnhwMh__B___A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "FlushFileBuffers",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
     private final static JnhwMh__B___A__A_uI__A__A ReadFile = JnhwMh__B___A__A_uI__A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ReadFile",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
@@ -117,6 +121,7 @@ public final class Fileapi {
             WinApiDataType.LPOVERLAPPED);
 
     private final static JnhwMh__B___A__A_uI__A__A ReadFileEx = JnhwMh__B___A__A_uI__A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ReadFileEx",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
@@ -126,6 +131,7 @@ public final class Fileapi {
             WinApiDataType.LPOVERLAPPED_COMPLETION_ROUTINE);
 
     private final static JnhwMh__B___A__A_uI__A__A WriteFile = JnhwMh__B___A__A_uI__A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WriteFile",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
@@ -135,6 +141,7 @@ public final class Fileapi {
             WinApiDataType.LPOVERLAPPED);
 
     private final static JnhwMh__B___A__A_uI__A__A WriteFileEx = JnhwMh__B___A__A_uI__A__A.of(
+            Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WriteFileEx",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
