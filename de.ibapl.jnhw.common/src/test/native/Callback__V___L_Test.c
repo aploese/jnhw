@@ -22,6 +22,8 @@
 #include "../../../config.h"
 //First go for windows.h because mingw has a pthread.h too...
 
+#include <stdint.h>
+
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif
@@ -45,7 +47,8 @@ callback__V___L getCallback__V___L() {
 
 #ifdef HAVE_WINDOWS_H
 
-__attribute__ ((visibility ("hidden"))) DWORD WINAPI thr_fn_V_PtrInt64_t(LPVOID args) {
+//TODO This does not compile : __attribute__ ((visibility ("hidden"))) 
+DWORD WINAPI thr_fn_V_PtrInt64_t(LPVOID args) {
     ptrCallback__V___L(*((int64_t*) args));
         return 0;
 }
