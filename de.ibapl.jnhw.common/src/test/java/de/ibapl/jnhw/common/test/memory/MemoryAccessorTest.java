@@ -60,6 +60,7 @@ public class MemoryAccessorTest {
     private final static MemoryHeap heap = MemoryHeap.wrap(MemorySegment.allocateNative(HEAP_SIZE, rs));
     private final static Int64_t prev = Int64_t.map(heap, 0);
 
+    //Her is the place to write/read
     private final static Int64_t mem64 = Int64_t.map(heap, 8 * 1);
     private final static Int32_t mem32 = Int32_t.map(heap, 4 * 2);
     private final static MemoryHeap buff_16 = MemoryHeap.map(heap, 8 * 1, 16);

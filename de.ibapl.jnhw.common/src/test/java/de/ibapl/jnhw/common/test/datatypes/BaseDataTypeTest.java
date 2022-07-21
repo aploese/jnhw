@@ -24,6 +24,7 @@ package de.ibapl.jnhw.common.test.datatypes;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.Endianess;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
@@ -96,24 +97,60 @@ public class BaseDataTypeTest {
 
     @Test
     public void testMemoryModel() {
+
         switch (MultiarchTupelBuilder.getMemoryModel()) {
             case L64:
+                assertFalse(_LP32());
+                assertFalse(_ILP32());
                 assertTrue(_L64());
+                assertFalse(_LP64());
+                assertFalse(_LLP64());
+                assertFalse(_ILP64());
                 break;
             case LP64:
+                assertFalse(_LP32());
+                assertFalse(_ILP32());
+                assertFalse(_L64());
                 assertTrue(_LP64());
+                assertFalse(_LLP64());
+                assertFalse(_ILP64());
                 break;
             case ILP64:
+                assertFalse(_LP32());
+                assertFalse(_ILP32());
+                assertFalse(_L64());
+                assertFalse(_LP64());
+                assertFalse(_LLP64());
                 assertTrue(_ILP64());
                 break;
             case LLP64:
-                assertTrue(_LLP64());
+                assertFalse(_LP32());
+                assertFalse(_ILP32());
+                assertFalse(_L64());
+                assertFalse(_LP64());
+                assertFalse(_ILP64());
+                if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+                    //mingw does not define __LLP64 on 64 bit, but define __ILP32 on 32 bit!
+                    assertFalse(_LLP64());
+                } else {
+                    assertTrue(_LLP64());
+                }
                 break;
             case ILP32:
+                assertFalse(_LP32());
                 assertTrue(_ILP32());
+                assertFalse(_L64());
+                assertFalse(_LP64());
+                assertFalse(_LLP64());
+                assertFalse(_ILP64());
                 break;
             case LP32:
                 assertTrue(_LP32());
+                assertFalse(_ILP32());
+                assertFalse(_L64());
+                assertFalse(_LP64());
+                assertFalse(_LLP64());
+                assertFalse(_ILP64());
                 break;
             default:
                 throw new AssertionError("Unknown memory model: " + MultiarchTupelBuilder.getMemoryModel());

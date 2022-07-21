@@ -35,21 +35,12 @@ public final class MemoryAccessorImpl_LLP64 extends AbstractMemoryAccessorImpl {
 
     private final ValueLayout.OfInt LAYOUT__UNSIGNED_LONG;
 
-    private final ValueLayout.OfLong LAYOUT__INTPTR_T;
-
-    private final ValueLayout.OfLong LAYOUT__UINTPTR_T;
-
-    private final static int PTR_SIZE = 4;
-
-    private final static int LONG_SIZE = 8;
+    private final static int LONG_SIZE = 4;
 
     public MemoryAccessorImpl_LLP64(ByteOrder byteOrder) {
         super(byteOrder);
         LAYOUT__LONG = ValueLayout.JAVA_INT.withOrder(byteOrder);
         LAYOUT__UNSIGNED_LONG = ValueLayout.JAVA_INT.withOrder(byteOrder);
-
-        LAYOUT__INTPTR_T = ValueLayout.JAVA_LONG.withOrder(byteOrder);
-        LAYOUT__UINTPTR_T = ValueLayout.JAVA_LONG.withOrder(byteOrder);
     }
 
     @Override
@@ -112,12 +103,12 @@ public final class MemoryAccessorImpl_LLP64 extends AbstractMemoryAccessorImpl {
 
     @Override
     public String intptr_t_AsHex(MemorySegment mem, long offset) {
-        return String.format("0x%016x", intptr_t(mem, offset));
+        return String.format("0x%016x", intptr_t(mem, offset).toRawLongValue());
     }
 
     @Override
     public String uintptr_t_AsHex(MemorySegment mem, long offset) {
-        return String.format("0x%016x", uintptr_t(mem, offset));
+        return String.format("0x%016x", uintptr_t(mem, offset).toRawLongValue());
     }
 
 }

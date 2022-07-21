@@ -236,7 +236,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     }
 
     /**
-     * access the native long (signed long) datatype. It m,ay be 32 or 64bis
+     * access the native long (signed long) datatype. It may be 32 or 64 bit.
      *
      * @param mem
      * @param offset
@@ -245,7 +245,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     long signed_long(MemorySegment mem, long offset);
 
     /**
-     * access the native long (signed long) datatype. It m,ay be 32 or 64bis
+     * access the native long (signed long) datatype. It may be 32 or 64 bit.
      *
      * @param mem
      * @param offset
@@ -254,7 +254,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     void signed_long(MemorySegment mem, long offset, long value);
 
     /**
-     * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
+     * access the ith native unsigned long datatype. It may be 32 or 64 bit.
      *
      * @param mem
      * @param offset
@@ -262,7 +262,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     long signed_long_AtIndex(MemorySegment mem, long offset, int index);
 
     /**
-     * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
+     * access the ith native unsigned long datatype. It may be 32 or 64 bit.
      *
      * @param mem
      * @param offset
@@ -270,7 +270,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     void signed_long_AtIndex(MemorySegment mem, long offset, int index, long value);
 
     /**
-     * access the native unsigned long datatype. It m,ay be 32 or 64bis
+     * access the native unsigned long datatype. It may be 32 or 64 bit.
      *
      * @param mem
      * @param offset
@@ -279,7 +279,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     long unsigned_long(MemorySegment mem, long offset);
 
     /**
-     * access the native unsigned long datatype. It m,ay be 32 or 64bis
+     * access the native unsigned long datatype. It may be 32 or 64 bit.
      *
      * @param mem
      * @param offset
@@ -287,7 +287,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     void unsigned_long(MemorySegment mem, long offset, long value);
 
     /**
-     * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
+     * access the ith native unsigned long datatype. It may be 32 or 64 bit.
      *
      * @param mem
      * @param offset
@@ -295,7 +295,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     long unsigned_long_AtIndex(MemorySegment mem, long offset, int index);
 
     /**
-     * access the ith native unsigned long datatype. It m,ay be 32 or 64bis
+     * access the ith native unsigned long datatype. It may be 32 or 64 bit.
      *
      * @param mem
      * @param offset
