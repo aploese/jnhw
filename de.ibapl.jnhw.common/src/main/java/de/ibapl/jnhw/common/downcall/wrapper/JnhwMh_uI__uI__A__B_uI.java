@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.downcall.wrapper;
 
-import de.ibapl.jnhw.common.downcall.JnhwMi__I___A__I__I;
+import de.ibapl.jnhw.common.downcall.JnhwMi__I___I__A__I__I;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import java.util.NoSuchElementException;
@@ -31,34 +31,40 @@ import jdk.incubator.foreign.SymbolLookup;
  *
  * @author aploese
  */
-public interface JnhwMh_uI___A_uI__B extends JnhwMethodHandle {
+public interface JnhwMh_uI__uI__A__B_uI extends JnhwMethodHandle {
 
-    public static JnhwMh_uI___A_uI__B ofOrNull(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
-        return ofOrNull(C_LINKER, name, result, arg1, arg2, arg3);
+    public static JnhwMh_uI__uI__A__B_uI ofOrNull(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
+        return ofOrNull(C_LINKER, name, result, arg1, arg2, arg3, arg4);
     }
 
-    public static JnhwMh_uI___A_uI__B ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+    public static JnhwMh_uI__uI__A__B_uI ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
         try {
-            return of(symbolLookup, name, result, arg1, arg2, arg3);
+            return of(symbolLookup, name, result, arg1, arg2, arg3, arg4);
         } catch (NoSuchElementException elementException) {
             return null;
         }
     }
 
-    public static JnhwMh_uI___A_uI__B of(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
-        return of(C_LINKER, name, result, arg1, arg2, arg3);
+    public static JnhwMh_uI__uI__A__B_uI of(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
+        return of(C_LINKER, name, result, arg1, arg2, arg3, arg4);
     }
 
-    public static JnhwMh_uI___A_uI__B of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+    public static JnhwMh_uI__uI__A__B_uI of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
         switch (result) {
             case uint32_t -> {
                 switch (arg1) {
-                    case intptr_t, uintptr_t -> {
+                    case uint32_t -> {
                         switch (arg2) {
-                            case uint32_t -> {
+                            case intptr_t, uintptr_t -> {
                                 switch (arg3) {
                                     case int32_t -> {
-                                        return new JnhwMi__I___A__I__I(symbolLookup, name);
+                                        switch (arg4) {
+                                            case uint32_t -> {
+                                                return new JnhwMi__I___I__A__I__I(symbolLookup, name);
+                                            }
+                                            default ->
+                                                throw new IllegalArgumentException("arg4 unexpected data type: " + name + " " + arg4);
+                                        }
                                     }
                                     default ->
                                         throw new IllegalArgumentException("arg3 unexpected data type: " + name + " " + arg3);
@@ -77,6 +83,5 @@ public interface JnhwMh_uI___A_uI__B extends JnhwMethodHandle {
         }
     }
 
-    int invoke_uI__P_uI_B(Pointer<?> arg1, int arg2, boolean arg3);
-
+    long invoke_uL__uI__P__B_uI(int arg1, Pointer<?> arg2, boolean arg3, int arg4);
 }

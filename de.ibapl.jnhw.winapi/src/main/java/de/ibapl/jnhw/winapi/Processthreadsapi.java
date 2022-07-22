@@ -28,10 +28,9 @@ import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.UintPtr_t;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uL;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
-import jdk.incubator.foreign.MemoryAddress;
 
 /**
  * Wrapper around the
@@ -48,7 +47,7 @@ public abstract class Processthreadsapi {
             "GetCurrentThread",
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh__B___A__A__A QueueUserAPC = JnhwMh__B___A__A__A.of(
+    private final static JnhwMh__B___A__A_uL QueueUserAPC = JnhwMh__B___A__A_uL.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "QueueUserAPC",
             WinApiDataType.BOOL,
@@ -84,8 +83,8 @@ public abstract class Processthreadsapi {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, @ULONG_PTR UintPtr_t dwData) throws NativeErrorException {
-        if (!QueueUserAPC.invoke__B___P__P__P(pfnAPC, hThread, dwData)) {
+    public final static void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, @ULONG_PTR long dwData) throws NativeErrorException {
+        if (!QueueUserAPC.invoke__B___P__P_uL(pfnAPC, hThread, dwData)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }

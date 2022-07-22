@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.util.winapi.memory;
 
+import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.winapi.Winnt;
@@ -124,16 +125,30 @@ public class WinApiStruct extends Struct {
 
     }
 
-    protected static class Accessor_ULONG_PTR_As_uintptr_t implements Accessor_ULONG_PTR {
+    protected static class Accessor_ULONG_PTR_As_uint64_t implements Accessor_ULONG_PTR {
 
         @Override
-        public MemoryAddress ULONG_PTR(MemorySegment memorySegment, long offset) {
-            return MEM_ACCESS.uintptr_t(memorySegment, offset);
+        public long ULONG_PTR(MemorySegment memorySegment, long offset) {
+            return MEM_ACCESS.uint64_t(memorySegment, offset);
         }
 
         @Override
-        public void ULONG_PTR(MemorySegment memorySegment, long offset, Addressable value) {
-            MEM_ACCESS.uintptr_t(memorySegment, offset, value);
+        public void ULONG_PTR(MemorySegment memorySegment, long offset, long value) {
+            MEM_ACCESS.uint64_t(memorySegment, offset, value);
+        }
+
+    }
+
+    protected static class Accessor_ULONG_PTR_As_uint32_t implements Accessor_ULONG_PTR {
+
+        @Override
+        public long ULONG_PTR(MemorySegment memorySegment, long offset) {
+            return MEM_ACCESS.uint32_t_AsLong(memorySegment, offset);
+        }
+
+        @Override
+        public void ULONG_PTR(MemorySegment memorySegment, long offset, long value) {
+            MEM_ACCESS.uint32_t_FromLong(memorySegment, offset, value);
         }
 
     }
@@ -179,7 +194,14 @@ public class WinApiStruct extends Struct {
         ACCESSOR_DWORD = new Accessor_DWORD_As_uint32_t();
         ACCESSOR_HANDLE = new Accessor_HANDLE_As_intptr_t();
         ACCESSOR_PVOID = new Accessor_PVOID_As_uintptr_t();
-        ACCESSOR_ULONG_PTR = new Accessor_ULONG_PTR_As_uintptr_t();
+        ACCESSOR_ULONG_PTR = switch (MultiarchTupelBuilder.getMemoryModel()) {
+            case ILP32 ->
+                new Accessor_ULONG_PTR_As_uint32_t();
+            case LLP64 ->
+                new Accessor_ULONG_PTR_As_uint64_t();
+            default ->
+                throw new RuntimeException("Cant handle " + MultiarchTupelBuilder.getMemoryModel() + " for ULONG_PTR");
+        };
         ACCESSOR_WORD = new Accessor_WORD_As_uint16_t();
     }
 

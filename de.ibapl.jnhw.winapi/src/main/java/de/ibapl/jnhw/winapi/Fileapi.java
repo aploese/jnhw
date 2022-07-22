@@ -228,7 +228,7 @@ public final class Fileapi {
                     lpSecurityAttributes != null ? lpSecurityAttributes : Pointer.NULL,
                     dwCreationDisposition,
                     dwFlagsAndAttributes,
-                    hTemplateFile);
+                    hTemplateFile != null ? hTemplateFile : Pointer.NULL);
             if (HANDLE.isInvalid(result)) {
                 throw new NativeErrorException(Errhandlingapi.GetLastError());
             }
@@ -318,7 +318,7 @@ public final class Fileapi {
             if (!ReadFile.invoke__B___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
-                    lpBuffer.length,
+                    nNumberOfBytesToRead,
                     lpNumberOfBytesRead,
                     Pointer.NULL)) {
                 throw new NativeErrorException(Errhandlingapi.GetLastError());
@@ -839,7 +839,7 @@ public final class Fileapi {
             if (!WriteFile.invoke__B___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
-                    lpBuffer.length,
+                    nNumberOfBytesToWrite,
                     lpNumberOfBytesWritten,
                     Pointer.NULL)) {
                 throw new NativeErrorException(Errhandlingapi.GetLastError());
@@ -931,6 +931,9 @@ public final class Fileapi {
      */
     public final static void WriteFile(HANDLE hFile, ByteBuffer lpBuffer, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
         if (lpBuffer.isDirect()) {
+//TODO Not setting or reading LastError will fail the call to writeFile
+//            Errhandlingapi.SetLastError(Winerror.ERROR_SUCCESS);
+            System.err.println("de.ibapl.jnhw.winapi.Fileapi.WriteFile()" + Errhandlingapi.GetLastError());
             if (!WriteFile.invoke__B___P__A_uI__P__P(
                     hFile,
                     MemorySegment.ofByteBuffer(lpBuffer),

@@ -21,10 +21,8 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
-import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.UintPtr_t;
 import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import java.io.File;

@@ -411,6 +411,8 @@ public class Defines {
         __TIMESIZE = switch (os) {
             case LINUX ->
                 IntDefine.toIntDefine(BaseDataType.uint64_t.SIZE_OF * 8);
+            case WINDOWS ->
+                IntDefine.UNDEFINED;
             default ->
                 throw new NoClassDefFoundError("No default value for __TIMESIZE  " + MultiarchTupelBuilder.getMultiarch());
         };

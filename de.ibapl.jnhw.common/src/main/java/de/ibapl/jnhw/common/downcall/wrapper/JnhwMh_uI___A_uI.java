@@ -52,7 +52,7 @@ public interface JnhwMh_uI___A_uI extends JnhwMethodHandle {
 
     public static JnhwMh_uI___A_uI of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {
         switch (result) {
-            case int32_t:
+            case uint32_t:
                 switch (arg1) {
                     case intptr_t:
                         switch (arg2) {

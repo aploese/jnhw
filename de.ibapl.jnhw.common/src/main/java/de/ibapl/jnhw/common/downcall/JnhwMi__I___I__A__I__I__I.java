@@ -27,12 +27,13 @@ import jdk.incubator.foreign.SymbolLookup;
 import jdk.incubator.foreign.ValueLayout;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI__A_uI_uI_uI;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI__A__B_uI__B;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__I___I__A__I__I__I extends JnhwMethodInvoker implements JnhwMh_uI__uI__A_uI_uI_uI {
+public class JnhwMi__I___I__A__I__I__I extends JnhwMethodInvoker implements JnhwMh_uI__uI__A_uI_uI_uI, JnhwMh_uI__uI__A__B_uI__B {
 
     public JnhwMi__I___I__A__I__I__I(SymbolLookup symbolLookup, String name) {
         super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT));
@@ -50,13 +51,13 @@ public class JnhwMi__I___I__A__I__I__I extends JnhwMethodInvoker implements Jnhw
     }
 
     @Override
-    public int invoke_uI__uI__P__B_uL__B(int arg1, Pointer<?> arg2, boolean arg3, long arg4, boolean arg5) {
+    public int invoke_uI__uI__P__B_uI__B(int arg1, Pointer<?> arg2, boolean arg3, int arg4, boolean arg5) {
         try {
             return (int) methodHandle.invokeExact(
                     arg1,
                     arg2.toAddressable(),
                     ConversionsJava2Native.boolean_TO_int32_t(arg3),
-                    ConversionsJava2Native.long_TO_uint32_t(arg4),
+                    arg4,
                     ConversionsJava2Native.boolean_TO_int32_t(arg5));
         } catch (NullPointerException npe) {
             throw npe;

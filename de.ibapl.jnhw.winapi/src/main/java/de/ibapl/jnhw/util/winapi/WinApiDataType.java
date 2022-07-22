@@ -51,11 +51,14 @@ public interface WinApiDataType {
      * 32 bit unsigned
      */
     public final static BaseDataType ULONG = BaseDataType.C_unsigned_long;
+    /**
+     * <a href="https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types#ULONG_PTR">ULONG_PTR</a>
+     */
     public final static BaseDataType ULONG_PTR = switch (MultiarchTupelBuilder.getMemoryModel()) {
         case ILP32 ->
-            BaseDataType.int32_t;
+            BaseDataType.uint32_t;
         case LLP64 ->
-            BaseDataType.int64_t;
+            BaseDataType.uint64_t;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of ULONG_PTR on " + MultiarchTupelBuilder.getMultiarch());
     };

@@ -132,6 +132,9 @@ public final class Ioapiset {
      * indicates an error.
      */
     public final static void DeviceIoControl(HANDLE hDevice, int dwIoControlCode, OpaqueMemory lpInBuffer, OpaqueMemory lpOutBuffer, WinDef.LPDWORD lpBytesReturned, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
+//TODO Not setting or reading LastError will fail the call to DeviceIoControl
+        Errhandlingapi.SetLastError(Winerror.ERROR_SUCCESS);
+//        System.err.println("de.ibapl.jnhw.winapi.Ioapiset.DeviceIOControl()" + Errhandlingapi.GetLastError());
         if (!DeviceIoControl.invoke__B___P_uI__P_uL__P_uL__P__P(
                 hDevice,
                 dwIoControlCode,

@@ -50,24 +50,27 @@ public interface JnhwMh_uI__uI_sI extends JnhwMethodHandle {
 
     public static JnhwMh_uI__uI_sI of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {
         switch (result) {
-            case uint32_t:
+            case uint32_t -> {
                 switch (arg1) {
-                    case uint32_t:
+                    case uint32_t -> {
                         switch (arg2) {
-                            case int32_t:
+                            case int32_t -> {
                                 return new JnhwMi__I___I__I(symbolLookup, name);
-                            default:
+                            }
+                            default ->
                                 throw new IllegalArgumentException("arg2 unexpected data type: " + name + " " + arg2);
                         }
-                    default:
+                    }
+                    default ->
                         throw new IllegalArgumentException("arg1 unexpected data type: " + name + " " + arg1);
                 }
-            default:
+            }
+            default ->
                 throw new IllegalArgumentException("result unexpected data type: " + name + " " + result);
         }
     }
 
     int invoke_uI__uI_sI(int arg1, int arg2);
 
-    long invoke_uL__uL__B(long arg1, boolean arg2);
+    long invoke_uL__uI__B(int arg1, boolean arg2);
 }

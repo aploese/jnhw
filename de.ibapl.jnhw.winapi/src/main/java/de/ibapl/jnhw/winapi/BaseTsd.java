@@ -39,9 +39,7 @@ import jdk.incubator.foreign.ResourceScope;
 @Include("basetsd.h")
 public abstract class BaseTsd {
 
-    public abstract class PULONG_PTR extends NativeIntNumber<Long> {
-
-        public final static BaseDataType DATA_TYPE = WinApiDataType.ULONG_PTR;
+    public static abstract class PULONG_PTR extends NativeIntNumber<Long> {
 
         private static class PULONG_PTR64 extends PULONG_PTR {
 
@@ -79,18 +77,23 @@ public abstract class BaseTsd {
 
         }
 
+        public final static BaseDataType DATA_TYPE = WinApiDataType.ULONG_PTR;
+
         public static PULONG_PTR allocateNative(ResourceScope scope) {
+            final MemorySegment ms = MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, scope);
             switch (DATA_TYPE) {
-                case uint32_t:
-                    return new PULONG_PTR32(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, scope), 0);
-                case uint64_t:
-                    return new PULONG_PTR64(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, scope), 0);
-                default:
+                case uint32_t -> {
+                    return new PULONG_PTR32(ms, 0);
+                }
+                case uint64_t -> {
+                    return new PULONG_PTR64(ms, 0);
+                }
+                default ->
                     throw new RuntimeException("Cant handle PULONG_PTR for " + MultiarchTupelBuilder.getMultiarch());
             }
         }
 
-        private PULONG_PTR(MemorySegment memorySegment, long offset) {
+        protected PULONG_PTR(MemorySegment memorySegment, long offset) {
             super(memorySegment, offset, DATA_TYPE.SIZE_OF);
         }
 

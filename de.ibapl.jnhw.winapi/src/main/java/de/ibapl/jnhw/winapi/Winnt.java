@@ -28,10 +28,12 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.OpaquePointer;
-import de.ibapl.jnhw.common.upcall.Callback__V__MA;
-import de.ibapl.jnhw.util.winapi.CallbackFactoryPAPCFUNC;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
+import java.lang.ref.WeakReference;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.function.Function;
 import jdk.incubator.foreign.Addressable;
 import jdk.incubator.foreign.MemoryAddress;
@@ -151,7 +153,7 @@ public final class Winnt {
                 return false;
             }
             final HANDLE other = (HANDLE) obj;
-            return this.nativeValue == other.nativeValue;
+            return this.nativeValue.equals(other.nativeValue);
         }
 
         @Override
@@ -229,19 +231,55 @@ public final class Winnt {
 
     }
 
-    public abstract static class PAPCFUNC extends Callback__V__MA<OpaqueMemory> {
+    public abstract static class PAPCFUNC extends NativeFunctionPointer {
+
+        private static final List<WeakReference<PAPCFUNC>> REFS = new LinkedList<>();
+
+        /**
+         * Iterate over weak references all instances oth this class and if the
+         * reference is gone remove the weak reference. Return the first found
+         * instance or null if none is found.
+         *
+         * @param callbackPtr
+         * @return the first found instance or null if none is found.
+         */
+        public static PAPCFUNC find(MemoryAddress callbackPtr) {
+            final ListIterator<WeakReference<PAPCFUNC>> iter = REFS.listIterator();
+            while (iter.hasNext()) {
+                final WeakReference<PAPCFUNC> weak = iter.next();
+                final PAPCFUNC result = weak.get();
+                if (result == null) {
+                    iter.remove();
+                } else {
+                    if (result.memoryAddress.equals(callbackPtr)) {
+                        return result;
+                    }
+                }
+            }
+            return null;
+        }
 
         protected <T extends PAPCFUNC> PAPCFUNC(Function<T, MemoryAddress> producer) {
             super(producer);
+            REFS.add(new WeakReference<>(this));
         }
 
-        public PAPCFUNC(MemoryAddress src) {
+        protected PAPCFUNC(MemoryAddress src) {
             super(src);
+            REFS.add(new WeakReference<>(this));
         }
 
         public PAPCFUNC() {
-            super();
+            super(CallbackFactoryPAPCFUNC::aquire);
+            REFS.add(new WeakReference<>(this));
         }
+
+        /**
+         * this will be called from the native code.
+         *
+         * @param value
+         */
+        protected abstract void callback(@ULONG_PTR long value);
 
     }
 

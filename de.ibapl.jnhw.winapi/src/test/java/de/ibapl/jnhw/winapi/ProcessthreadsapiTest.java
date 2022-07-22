@@ -22,16 +22,13 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.UintPtr_t;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import de.ibapl.jnhw.winapi.Winnt.PAPCFUNC;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import jdk.incubator.foreign.ResourceScope;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.condition.EnabledOnOs;
-import jdk.incubator.foreign.MemoryAddress;
 
 /**
  *
@@ -69,18 +66,18 @@ public class ProcessthreadsapiTest {
     @Test
     public void testQueueUserAPC() throws NativeErrorException {
         System.out.println("QueueUserAPC");
-        final MemoryAddress[] ref = new MemoryAddress[1];
+        final long[] ref = new long[1];
 
         Winnt.PAPCFUNC pfnAPC = new Winnt.PAPCFUNC() {
 
             @Override
-            public void callback(MemoryAddress address) {
-                ref[0] = address;
+            public void callback(long value) {
+                ref[0] = value;
             }
         };
 
         HANDLE hThread = Processthreadsapi.GetCurrentThread();
-        UintPtr_t dwData = UintPtr_t.allocateNative(scope);
+        long dwData = 84;
 
         assertThrows(NullPointerException.class, () -> {
             Processthreadsapi.QueueUserAPC(null, hThread, dwData);
@@ -90,12 +87,11 @@ public class ProcessthreadsapiTest {
             Processthreadsapi.QueueUserAPC(pfnAPC, null, dwData);
         });
 
-        dwData.set(MemoryAddress.ofLong(42));
         Processthreadsapi.QueueUserAPC(pfnAPC, hThread, dwData);
 
         long result = Synchapi.SleepEx(100, true);
         assertEquals(Winbase.WAIT_IO_COMPLETION, result);
 
-        assertEquals(42, ref[0].toRawLongValue());
+        assertEquals(84, ref[0]);
     }
 }

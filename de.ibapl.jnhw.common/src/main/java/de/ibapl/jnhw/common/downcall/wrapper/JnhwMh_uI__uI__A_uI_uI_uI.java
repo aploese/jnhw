@@ -84,6 +84,4 @@ public interface JnhwMh_uI__uI__A_uI_uI_uI extends JnhwMethodHandle {
     }
 
     int invoke_uI__uI__P_uI_uI_uI(int arg1, Pointer<?> arg2, int arg3, int arg4, int arg5);
-
-    int invoke_uI__uI__P__B_uL__B(int arg1, Pointer<?> arg2, boolean arg3, long arg4, boolean arg5);
 }

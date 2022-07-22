@@ -22,9 +22,9 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__uI;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___V;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 
 /**
@@ -37,12 +37,12 @@ import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 @Include("errhandlingapi.h")
 public abstract class Errhandlingapi {
 
-    private final static JnhwMh_sI___V GetLastError = JnhwMh_sI___V.of(
+    private final static JnhwMh_uI___V GetLastError = JnhwMh_uI___V.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetLastError",
             WinApiDataType.DWORD);
 
-    private final static JnhwMh__V__sI SetLastError = JnhwMh__V__sI.of(
+    private final static JnhwMh__V__uI SetLastError = JnhwMh__V__uI.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetLastError",
             WinApiDataType.DWORD);
@@ -64,7 +64,7 @@ public abstract class Errhandlingapi {
      * others do not.
      */
     public final static int GetLastError() {
-        return GetLastError.invoke_sI___V();
+        return GetLastError.invoke_uI___V();
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class Errhandlingapi {
      *
      */
     public final static void SetLastError(int dwErrCode) {
-        SetLastError.invoke__V__sI(dwErrCode);
+        SetLastError.invoke__V__uI(dwErrCode);
     }
 
 }

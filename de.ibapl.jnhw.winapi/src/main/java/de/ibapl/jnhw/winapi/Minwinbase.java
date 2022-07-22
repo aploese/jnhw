@@ -162,7 +162,7 @@ public class Minwinbase {
          *
          */
         @ULONG_PTR
-        public final MemoryAddress Internal() {
+        public final long Internal() {
             return ACCESSOR_ULONG_PTR.ULONG_PTR(memorySegment, Layout.Internal);
         }
 
@@ -176,7 +176,7 @@ public class Minwinbase {
          * @return the native value of InternalHigh;
          */
         @ULONG_PTR
-        public final MemoryAddress InternalHigh() {
+        public final long InternalHigh() {
             return ACCESSOR_ULONG_PTR.ULONG_PTR(memorySegment, Layout.InternalHigh);
         }
 

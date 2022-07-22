@@ -51,29 +51,34 @@ public interface JnhwMh__B___A_uI_uL__A extends JnhwMethodHandle {
 
     public static JnhwMh__B___A_uI_uL__A of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
         switch (result) {
-            case int32_t:
+            case int32_t -> {
                 switch (arg1) {
-                    case intptr_t:
+                    case intptr_t, uintptr_t -> {
                         switch (arg2) {
-                            case uint32_t:
+                            case uint32_t -> {
                                 switch (arg3) {
-                                    case uint64_t:
+                                    case uint64_t -> {
                                         switch (arg4) {
-                                            case intptr_t:
+                                            case intptr_t, uintptr_t -> {
                                                 return new JnhwMi__I___A__I__L__A(symbolLookup, name);
-                                            default:
+                                            }
+                                            default ->
                                                 throw new IllegalArgumentException("arg4 unexpected data type: " + name + " " + arg4);
                                         }
-                                    default:
+                                    }
+                                    default ->
                                         throw new IllegalArgumentException("arg3 unexpected data type: " + name + " " + arg3);
                                 }
-                            default:
+                            }
+                            default ->
                                 throw new IllegalArgumentException("arg2 unexpected data type: " + name + " " + arg2);
                         }
-                    default:
+                    }
+                    default ->
                         throw new IllegalArgumentException("arg1 unexpected data type: " + name + " " + arg1);
                 }
-            default:
+            }
+            default ->
                 throw new IllegalArgumentException("result unexpected data type: " + name + " " + result);
         }
     }

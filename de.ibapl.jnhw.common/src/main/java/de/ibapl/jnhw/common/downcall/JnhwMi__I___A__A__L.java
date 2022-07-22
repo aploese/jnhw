@@ -26,7 +26,6 @@ import jdk.incubator.foreign.SymbolLookup;
 import jdk.incubator.foreign.ValueLayout;
 import jdk.incubator.foreign.FunctionDescriptor;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uI;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uL;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 
@@ -34,25 +33,10 @@ import de.ibapl.jnhw.common.util.ConversionsJava2Native;
  *
  * @author aploese
  */
-public class JnhwMi__I___A__A__I extends JnhwMethodInvoker implements JnhwMh__B___A__A_uI, JnhwMh__B___A__A_uL {
+public class JnhwMi__I___A__A__L extends JnhwMethodInvoker implements JnhwMh__B___A__A_uL {
 
-    public JnhwMi__I___A__A__I(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.JAVA_INT));
-    }
-
-    @Override
-    public boolean invoke__B___P__P_uI(Pointer<?> arg1, Pointer<?> arg2, int arg3) {
-        try {
-            return ConversionsNative2Java.int32_t_TO_boolean(
-                    (int) methodHandle.invokeExact(
-                            arg1.toAddressable(),
-                            arg2.toAddressable(),
-                            arg3));
-        } catch (NullPointerException npe) {
-            throw npe;
-        } catch (Throwable t) {
-            throw createRuntimeExceptionInvoke(t);
-        }
+    public JnhwMi__I___A__A__L(SymbolLookup symbolLookup, String name) {
+        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.JAVA_LONG));
     }
 
     @Override
@@ -62,7 +46,7 @@ public class JnhwMi__I___A__A__I extends JnhwMethodInvoker implements JnhwMh__B_
                     (int) methodHandle.invokeExact(
                             arg1.toAddressable(),
                             arg2.toAddressable(),
-                            ConversionsJava2Native.long_TO_uint32_t(arg3)));
+                            arg3));
         } catch (NullPointerException npe) {
             throw npe;
         } catch (Throwable t) {

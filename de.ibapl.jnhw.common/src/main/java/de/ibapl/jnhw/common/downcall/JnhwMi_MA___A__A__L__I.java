@@ -35,7 +35,7 @@ import jdk.incubator.foreign.ValueLayout;
 public class JnhwMi_MA___A__A__L__I extends JnhwMethodInvoker implements JnhwMh_MA___A__A_uL_uI {
 
     public JnhwMi_MA___A__A__L__I(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.JAVA_INT));
+        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT));
     }
 
     @Override

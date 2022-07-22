@@ -22,8 +22,6 @@
 package de.ibapl.jnhw.util.winapi.memory;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 
 /**
@@ -34,8 +32,8 @@ import jdk.incubator.foreign.MemorySegment;
 public interface Accessor_ULONG_PTR {
 
     @ULONG_PTR
-    MemoryAddress ULONG_PTR(MemorySegment memorySegment, long offset);
+    long ULONG_PTR(MemorySegment memorySegment, long offset);
 
-    void ULONG_PTR(MemorySegment memorySegment, long offset, @ULONG_PTR Addressable value);
+    void ULONG_PTR(MemorySegment memorySegment, long offset, @ULONG_PTR long value);
 
 }

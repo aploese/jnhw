@@ -236,11 +236,10 @@ public abstract class Winreg {
                 lpData,
                 lpccData);
         switch (result) {
-            case Winerror.ERROR_SUCCESS:
-            case Winerror.ERROR_NO_MORE_ITEMS:
-            case Winerror.ERROR_MORE_DATA:
+            case Winerror.ERROR_SUCCESS, Winerror.ERROR_NO_MORE_ITEMS, Winerror.ERROR_MORE_DATA -> {
                 return result;
-            default:
+            }
+            default ->
                 throw new NativeErrorException(result);
         }
     }

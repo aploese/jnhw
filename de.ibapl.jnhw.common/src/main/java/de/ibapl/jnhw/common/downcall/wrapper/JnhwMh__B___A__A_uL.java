@@ -21,9 +21,10 @@
  */
 package de.ibapl.jnhw.common.downcall.wrapper;
 
-import de.ibapl.jnhw.common.downcall.JnhwMi__I___A__I__I;
+import de.ibapl.jnhw.common.downcall.JnhwMi__I___A__A__I;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.downcall.JnhwMi__I___A__A__L;
 import java.util.NoSuchElementException;
 import jdk.incubator.foreign.SymbolLookup;
 
@@ -31,13 +32,13 @@ import jdk.incubator.foreign.SymbolLookup;
  *
  * @author aploese
  */
-public interface JnhwMh_uI___A_uI__B extends JnhwMethodHandle {
+public interface JnhwMh__B___A__A_uL extends JnhwMethodHandle {
 
-    public static JnhwMh_uI___A_uI__B ofOrNull(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+    public static JnhwMh__B___A__A_uL ofOrNull(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
         return ofOrNull(C_LINKER, name, result, arg1, arg2, arg3);
     }
 
-    public static JnhwMh_uI___A_uI__B ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+    public static JnhwMh__B___A__A_uL ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
         try {
             return of(symbolLookup, name, result, arg1, arg2, arg3);
         } catch (NoSuchElementException elementException) {
@@ -45,38 +46,35 @@ public interface JnhwMh_uI___A_uI__B extends JnhwMethodHandle {
         }
     }
 
-    public static JnhwMh_uI___A_uI__B of(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+    public static JnhwMh__B___A__A_uL of(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
         return of(C_LINKER, name, result, arg1, arg2, arg3);
     }
 
-    public static JnhwMh_uI___A_uI__B of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+    public static JnhwMh__B___A__A_uL of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
         switch (result) {
-            case uint32_t -> {
+            case int32_t:
                 switch (arg1) {
-                    case intptr_t, uintptr_t -> {
+                    case intptr_t:
                         switch (arg2) {
-                            case uint32_t -> {
+                            case intptr_t:
                                 switch (arg3) {
-                                    case int32_t -> {
-                                        return new JnhwMi__I___A__I__I(symbolLookup, name);
-                                    }
-                                    default ->
+                                    case uint32_t:
+                                        return new JnhwMi__I___A__A__I(symbolLookup, name);
+                                    case uint64_t:
+                                        return new JnhwMi__I___A__A__L(symbolLookup, name);
+                                    default:
                                         throw new IllegalArgumentException("arg3 unexpected data type: " + name + " " + arg3);
                                 }
-                            }
-                            default ->
+                            default:
                                 throw new IllegalArgumentException("arg2 unexpected data type: " + name + " " + arg2);
                         }
-                    }
-                    default ->
+                    default:
                         throw new IllegalArgumentException("arg1 unexpected data type: " + name + " " + arg1);
                 }
-            }
-            default ->
+            default:
                 throw new IllegalArgumentException("result unexpected data type: " + name + " " + result);
         }
     }
 
-    int invoke_uI__P_uI_B(Pointer<?> arg1, int arg2, boolean arg3);
-
+    boolean invoke__B___P__P_uL(Pointer<?> arg1, Pointer<?> arg2, long arg3);
 }

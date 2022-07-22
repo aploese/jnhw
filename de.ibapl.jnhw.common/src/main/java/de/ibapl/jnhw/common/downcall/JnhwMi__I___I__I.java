@@ -54,11 +54,11 @@ public class JnhwMi__I___I__I extends JnhwMethodInvoker implements JnhwMh_uI__uI
     }
 
     @Override
-    public long invoke_uL__uL__B(long arg1, boolean arg2) {
+    public long invoke_uL__uI__B(int arg1, boolean arg2) {
         try {
             return ConversionsNative2Java.uint32_t_TO_long(
                     (int) methodHandle.invokeExact(
-                            ConversionsJava2Native.long_TO_uint32_t(arg1),
+                            arg1,
                             ConversionsJava2Native.boolean_TO_int32_t(arg2)));
         } catch (NullPointerException npe) {
             throw npe;

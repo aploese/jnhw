@@ -51,19 +51,22 @@ public interface JnhwMh__B___A__A extends JnhwMethodHandle {
 
     public static JnhwMh__B___A__A of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {
         switch (result) {
-            case int32_t:
+            case int32_t, uint32_t -> {
                 switch (arg1) {
-                    case intptr_t:
+                    case intptr_t, uintptr_t -> {
                         switch (arg2) {
-                            case intptr_t:
+                            case intptr_t, uintptr_t -> {
                                 return new JnhwMi__I___A__A(symbolLookup, name);
-                            default:
+                            }
+                            default ->
                                 throw new IllegalArgumentException("arg2 unexpected data type: " + name + " " + arg2);
                         }
-                    default:
+                    }
+                    default ->
                         throw new IllegalArgumentException("arg1 unexpected data type: " + name + " " + arg1);
                 }
-            default:
+            }
+            default ->
                 throw new IllegalArgumentException("result unexpected data type: " + name + " " + result);
         }
     }

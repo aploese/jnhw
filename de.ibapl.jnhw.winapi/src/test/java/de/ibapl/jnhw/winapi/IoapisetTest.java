@@ -35,6 +35,7 @@ import java.io.File;
 import jdk.incubator.foreign.ResourceScope;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 
 /**
  *
@@ -100,18 +101,21 @@ public class IoapisetTest {
                 0,
                 null);
 
-        MemoryHeap lpOutBuffer = new MemoryHeap(null, 0, 128);
+        MemoryHeap lpOutBuffer = MemoryHeap.allocateNative(128, scope);
 
         WinDef.LPDWORD lpBytesReturned = WinDef.LPDWORD.allocateNative(scope);
 
         Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, lpOutBuffer, lpBytesReturned, null);
 
-        assertEquals(2, lpBytesReturned);
+        assertEquals(2, lpBytesReturned.uint32_t());
         Uint16_t uint16_t = new Uint16_t(OpaqueMemory.getMemorySegment(lpOutBuffer), 0);
         assertEquals(Winnt.COMPRESSION_FORMAT_NONE, uint16_t.uint16_t());
 
         Uint8_t uint8_t = Uint8_t.allocateNative(scope);
-        NativeErrorException nee = assertThrows(NativeErrorException.class, () -> Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, uint8_t, lpBytesReturned, null));
+        NativeErrorException nee = assertThrows(NativeErrorException.class, ()
+                -> Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, uint8_t, lpBytesReturned, null)
+        );
+        assertEquals(Winerror.ERROR_INVALID_PARAMETER, Errhandlingapi.GetLastError());
         assertEquals(Winerror.ERROR_INVALID_PARAMETER, nee.errno);
 
         Handleapi.CloseHandle(hDevice);

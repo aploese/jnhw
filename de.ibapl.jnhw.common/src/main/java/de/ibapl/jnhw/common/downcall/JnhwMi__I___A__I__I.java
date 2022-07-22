@@ -64,11 +64,11 @@ public class JnhwMi__I___A__I__I extends JnhwMethodInvoker implements JnhwMh_sI_
     }
 
     @Override
-    public int invoke_uI__P_uL_B(Pointer<?> arg1, long arg2, boolean arg3) {
+    public int invoke_uI__P_uI_B(Pointer<?> arg1, int arg2, boolean arg3) {
         try {
             return (int) methodHandle.invokeExact(
                     arg1.toAddressable(),
-                    ConversionsJava2Native.long_TO_uint32_t(arg2),
+                    arg2,
                     ConversionsJava2Native.boolean_TO_int32_t(arg3));
         } catch (NullPointerException | IllegalArgumentException ex) {
             throw ex;

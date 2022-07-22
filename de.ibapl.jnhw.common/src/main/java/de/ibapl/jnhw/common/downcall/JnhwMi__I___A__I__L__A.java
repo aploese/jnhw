@@ -35,7 +35,7 @@ import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A_uI_uL__A;
 public class JnhwMi__I___A__I__L__A extends JnhwMethodInvoker implements JnhwMh__B___A_uI_uL__A {
 
     public JnhwMi__I___A__I__L__A(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.JAVA_INT));
+        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.ADDRESS, ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG, ValueLayout.ADDRESS));
     }
 
     @Override

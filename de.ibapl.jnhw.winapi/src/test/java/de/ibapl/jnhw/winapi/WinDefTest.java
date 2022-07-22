@@ -48,7 +48,6 @@ public class WinDefTest {
     @Test
     public void test_LPBYTE_stringValueOfNullTerminated() throws Exception {
         byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
-        Assertions.fail("use UTF-8 ??? apl");
         WinDef.LPBYTE lpByte = WinDef.LPBYTE.allocateNative(64, scope);
         OpaqueMemory.copy(data, 0, lpByte, 0, data.length);
         Assertions.assertEquals("HELLO WORLD!", WinDef.LPBYTE.getUnicodeString(lpByte, true, data.length));

@@ -37,7 +37,7 @@ public class SynchapiTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        scope = ResourceScope.newConfinedScope();
+        scope = ResourceScope.newSharedScope();
     }
 
     @AfterEach

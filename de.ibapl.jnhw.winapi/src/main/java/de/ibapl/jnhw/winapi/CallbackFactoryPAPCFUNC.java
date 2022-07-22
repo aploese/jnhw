@@ -19,11 +19,11 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.util.winapi;
+package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import de.ibapl.jnhw.winapi.Winnt;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 import jdk.incubator.foreign.CLinker;
 import jdk.incubator.foreign.FunctionDescriptor;
 import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.NativeSymbol;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.ValueLayout;
@@ -43,9 +42,8 @@ import jdk.incubator.foreign.ValueLayout;
  * @author aploese
  */
 @SuppressWarnings("unchecked")
-@Deprecated
-public final class CallbackFactoryPAPCFUNC {
-    /*
+final class CallbackFactoryPAPCFUNC {
+
     private final static Logger LOG = Logger.getLogger("d.i.j.w.CallbackFactoryPAPCFUNC");
 
     private final static CLinker C_LINKER = CLinker.systemCLinker();
@@ -74,22 +72,25 @@ public final class CallbackFactoryPAPCFUNC {
     }
 
     static NativeSymbol registerCallBack(int index) throws NoSuchMethodException, IllegalAccessException {
-        final MethodHandle handle = switch (WinApiDataType.ULONG_PTR.SIZE_OF) {
-            case 4 ->
-                MethodHandles.lookup().findStatic(CallbackFactoryPAPCFUNC.class, "trampoline32_" + index, MethodType.methodType(void.class, Integer.class));
-            case 8 ->
-                MethodHandles.lookup().findStatic(CallbackFactoryPAPCFUNC.class, "trampoline64_" + index, MethodType.methodType(void.class, Long.class));
+        switch (WinApiDataType.ULONG_PTR.SIZE_OF) {
+            case 4 -> {
+                final MethodHandle handle = MethodHandles.lookup().findStatic(CallbackFactoryPAPCFUNC.class, "trampoline32_" + index, MethodType.methodType(void.class, int.class));
+                return C_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT), ResourceScope.globalScope());
+            }
+            case 8 -> {
+                final MethodHandle handle = MethodHandles.lookup().findStatic(CallbackFactoryPAPCFUNC.class, "trampoline64_" + index, MethodType.methodType(void.class, long.class));
+                return C_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG), ResourceScope.globalScope());
+            }
             default ->
                 throw new RuntimeException("Can't handle sizeof ULONG_PTR = " + WinApiDataType.ULONG_PTR.SIZE_OF);
-        };
-        return C_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.ADDRESS), ResourceScope.globalScope());
+        }
     }
 
     /**
      * this is just an estimation ...
      *
      * @return
-     * /
+     */
     public static int callbacksAvailable() {
         int result = 0;
         for (WeakReference<Winnt.PAPCFUNC> ref : REFS) {
@@ -535,5 +536,4 @@ public final class CallbackFactoryPAPCFUNC {
         //Hint: Try run GC to free any??? or add more cbs...
         throw new RuntimeException("No more Callbacks available! max: " + MAX_CALL_BACKS + " reached");
     }
-     */
 }
