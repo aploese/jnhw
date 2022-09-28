@@ -26,6 +26,7 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL_sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.AsUnsignedLong;
 import de.ibapl.jnhw.common.memory.MemoryArray;
@@ -37,7 +38,6 @@ import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.io.IOException;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL_sI;
 
 /**
  * Wrapper around the {@code <poll.h>} header.
@@ -275,6 +275,10 @@ public final class Poll {
 
         public final static PollFds allocateNative(ResourceScope scope, int arraylength) {
             return new PollFds(MemorySegment.allocateNative(PollFd.sizeof * arraylength, scope), 0, arraylength);
+        }
+
+        public final static PollFds wrap(OpaqueMemory mem, long offset, int arraylength) {
+            return new PollFds(OpaqueMemory.sliceMemorySegment(mem, offset, PollFd.sizeof * arraylength), 0, arraylength);
         }
 
         public PollFds(MemorySegment memorySegment, long offset, int arraylength) {

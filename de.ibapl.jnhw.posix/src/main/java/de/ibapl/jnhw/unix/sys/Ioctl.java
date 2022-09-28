@@ -25,13 +25,13 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_uL;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_uL__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.Int32_t;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_uL__A;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.posix.Errno;
 import jdk.incubator.foreign.VaList;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_uL;
 
 /**
  * Wrapper around the {@code  <sys/ioctl.h>} header. execute
@@ -610,7 +610,7 @@ public final class Ioctl {
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_unsigned_long_int,
-            BaseDataType.C_VaList);
+            BaseDataType.C_pointer);
 
     /*
  * Used to create numbers.
@@ -786,7 +786,7 @@ public final class Ioctl {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static int ioctl(int fd, int request) throws NativeErrorException {
+    public final static int ioctl(int fd, long request) throws NativeErrorException {
         final int result = ioctl.invoke_sI__sI_uL(fd, request);
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
@@ -813,7 +813,7 @@ public final class Ioctl {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
-    public final static int ioctl(int fd, int request, Int32_t value) throws NativeErrorException {
+    public final static int ioctl(int fd, long request, Int32_t value) throws NativeErrorException {
         final int result = ioctl_int_int_vaList.invoke_sI__sI_uL__P(fd, request, value);
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
@@ -822,7 +822,7 @@ public final class Ioctl {
         }
     }
 
-    public final static int ioctl(int fd, int request, VaList value) throws NativeErrorException {
+    public final static int ioctl(int fd, long request, VaList value) throws NativeErrorException {
         final int result = ioctl_int_int_vaList.invoke_sI__sI_uL__A(fd, request, value);
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());

@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.annotation.uintptr_t;
 import de.ibapl.jnhw.common.datatypes.Native;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.memory.layout.Alignment;

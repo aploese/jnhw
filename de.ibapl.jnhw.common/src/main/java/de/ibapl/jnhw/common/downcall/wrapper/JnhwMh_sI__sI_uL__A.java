@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.downcall.JnhwMi__I___I__L__A;
 import java.util.NoSuchElementException;
 import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.SymbolLookup;
 
 /**

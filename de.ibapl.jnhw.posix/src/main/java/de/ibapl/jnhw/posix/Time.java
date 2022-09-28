@@ -32,6 +32,21 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A___A__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__D__sL_sL;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_sI__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL__A__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___V;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NativeException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
@@ -40,14 +55,6 @@ import de.ibapl.jnhw.common.memory.IntPtr_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A___A__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL__A__A__A;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
@@ -64,13 +71,6 @@ import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.NativeSymbol;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.ValueLayout;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_sI__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__D__sL_sL;
 
 /**
  * Wrapper around the {@code <time.h>} header.
@@ -352,7 +352,11 @@ public class Time {
         }
 
         public final static Timespec allocateNative(ResourceScope ms) {
-            return new Timespec(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Timespec(MemorySegment.allocateNative(Timespec.sizeof, ms), 0);
+        }
+
+        public final static Timespec wrap(OpaqueMemory mem, long offset) {
+            return new Timespec(OpaqueMemory.sliceMemorySegment(mem, offset, Timespec.sizeof), 0);
         }
 
         public Timespec(MemorySegment memorySegment, long offset) {

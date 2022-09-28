@@ -27,23 +27,24 @@ import de.ibapl.jnhw.annotation.winapi.basetsd.WORD;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A_uI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A_uI;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * Wrapper around the
@@ -84,6 +85,10 @@ public abstract class Winbase {
                 alignment = slf.getAlignment();
             }
 
+        }
+
+        public static COMMTIMEOUTS allocateNative(ResourceScope rs) {
+            return new COMMTIMEOUTS(MemorySegment.allocateNative(Layout.sizeof, rs), 0);
         }
 
         public COMMTIMEOUTS(MemorySegment memorySegment, long offset) {
@@ -218,6 +223,10 @@ public abstract class Winbase {
                 alignment = slf.getAlignment();
             }
 
+        }
+
+        public static COMSTAT allocateNative(ResourceScope rs) {
+            return new COMSTAT(MemorySegment.allocateNative(Layout.sizeof, rs), 0);
         }
 
         public COMSTAT(MemorySegment memorySegment, long offset) {
@@ -380,10 +389,20 @@ public abstract class Winbase {
 
         }
 
+        public static DCB allocateNative(ResourceScope resourceScope) {
+            return new DCB(MemorySegment.allocateNative(Layout.sizeof, resourceScope), 0);
+        }
+
         public DCB(MemorySegment memorySegment, long offset) {
             super(memorySegment, offset, Layout.sizeof);
             //set the current size explicitly.
             DCBlength(Layout.sizeof);
+        }
+
+        public static void clean(DCB dcb) {
+            dcb.memorySegment.fill((byte) 0);
+            //set the current size explicitly.
+            dcb.DCBlength(Layout.sizeof);
         }
 
         /**
